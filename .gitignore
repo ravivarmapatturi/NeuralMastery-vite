@@ -22,6 +22,7 @@ dist-ssr
 # the script itself is kept for re-running future verification passes.
 .verify-scripts/*.png
 .verify-scripts/results.json
+.verify-scripts/mobilenav-results.json
 *.suo
 *.ntvs*
 *.njsproj

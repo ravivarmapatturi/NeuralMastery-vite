@@ -1,7 +1,14 @@
+import type { RefObject } from 'react';
 import { Link } from 'react-router-dom';
 import { useColorMode } from '../../theme/ThemeProvider';
 
-export default function Navbar() {
+export default function Navbar({
+  onMenuClick,
+  menuButtonRef,
+}: {
+  onMenuClick?: () => void;
+  menuButtonRef?: RefObject<HTMLButtonElement | null>;
+}) {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <header
@@ -15,11 +22,38 @@ export default function Navbar() {
         padding: '0.75rem 1.5rem',
         background: 'var(--nm-surface)',
         borderBottom: '1px solid var(--nm-border)',
+        gap: '0.75rem',
       }}
     >
-      <Link to="/" style={{ fontWeight: 700, fontSize: 17, color: 'var(--nm-text-primary)', textDecoration: 'none' }}>
-        Neural Mastery
-      </Link>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        {onMenuClick && (
+          <button
+            ref={menuButtonRef}
+            type="button"
+            onClick={onMenuClick}
+            className="nm-navbar-toggle"
+            aria-label="Open navigation menu"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 8,
+              border: '1px solid var(--nm-border)',
+              background: 'transparent',
+              color: 'var(--nm-text-primary)',
+              cursor: 'pointer',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 16,
+              flexShrink: 0,
+            }}
+          >
+            ☰
+          </button>
+        )}
+        <Link to="/" style={{ fontWeight: 700, fontSize: 17, color: 'var(--nm-text-primary)', textDecoration: 'none' }}>
+          Neural Mastery
+        </Link>
+      </div>
       <nav style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
         <Link to="/docs/getting-started/intro" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
           Learn

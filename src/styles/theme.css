@@ -111,6 +111,12 @@ body {
 .prose li { margin-bottom: 0.35rem; }
 .prose strong { font-weight: 700; }
 
+/* Hamburger button: only meaningful once the docked sidebar/TOC are hidden
+   (see the max-width: 900px block below), hidden by default on desktop. */
+.nm-navbar-toggle {
+  display: none;
+}
+
 /* KaTeX display math can render wider than the viewport (long formulas on
    narrow/mobile screens) -- scroll it horizontally instead of blowing out
    the page's layout width. */
@@ -122,12 +128,12 @@ body {
 
 /* The doc shell's sidebar (260px) and table of contents (220px) are fixed-
    width flex children with flexShrink:0 -- below ~900px there isn't enough
-   room left for the content column, which forces every visualization inside
-   it into a near-zero-width layout (the root cause of mobile-width overflow
-   and the GradientDescentExplorer canvas-width-0 bug found during Phase 1.5
-   browser verification). A responsive collapsible sidebar is a Phase 3
-   doc-shell concern; for now, hide both chrome columns below the breakpoint
-   so content gets the full viewport width and lays out correctly. */
+   room left for the content column (interactive visualizations are the
+   platform's most important content, so that column needs the full
+   viewport). Below the breakpoint the docked rails are replaced by
+   MobileNavDrawer's overlay (hamburger button + slide-out panel, reusing
+   these same Sidebar/TableOfContents components with variant="mobile") --
+   never a second hardcoded nav structure. */
 @media (max-width: 900px) {
   .nm-sidebar,
   .nm-toc {
@@ -135,6 +141,9 @@ body {
   }
   .nm-doc-main {
     padding: 1.25rem 1rem !important;
+  }
+  .nm-navbar-toggle {
+    display: inline-flex !important;
   }
 }
 

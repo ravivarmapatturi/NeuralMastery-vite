@@ -40,11 +40,43 @@ No fake content pages were created to mask this, per instruction.
 
 Three real, user-facing bugs were found and fixed — all responsive-layout bugs, none of them logic/math bugs in the ported visualizations themselves:
 
-1. **No mobile breakpoint in the doc shell at all.** `Sidebar` (fixed `width: 260`) and `TableOfContents` (fixed `width: 220`), both `flexShrink: 0`, never collapsed below any viewport width — at 375px they alone consumed more width than the viewport, squeezing the actual content column to near-zero and causing horizontal page overflow on *every* doc page, not just ones with visualizations. This was the root cause of most of the mobile-responsive failures found, including a downstream bug in GradientDescentExplorer (see #3). **Fix**: added `.nm-sidebar`/`.nm-toc` classes and a `@media (max-width: 900px) { display: none }` rule in `theme.css`, plus tighter mobile padding on the main content column. This is a scoped CSS fix (hide, don't redesign) — a proper collapsible/toggleable mobile sidebar is real future work, tracked below, not attempted here since it would cross into new UI, not stabilization.
+1. **No mobile breakpoint in the doc shell at all.** `Sidebar` (fixed `width: 260`) and `TableOfContents` (fixed `width: 220`), both `flexShrink: 0`, never collapsed below any viewport width — at 375px they alone consumed more width than the viewport, squeezing the actual content column to near-zero and causing horizontal page overflow on *every* doc page, not just ones with visualizations. This was the root cause of most of the mobile-responsive failures found, including a downstream bug in GradientDescentExplorer (see #3). **Fix at the time**: added `.nm-sidebar`/`.nm-toc` classes and a `@media (max-width: 900px) { display: none }` rule in `theme.css` as an emergency stopgap for verification. **Superseded** by the proper responsive navigation system below — the rails are still hidden below 900px, but now via `MobileNavDrawer` rather than simply disappearing with no replacement.
 2. **`EmbeddingSpaceExplorer`'s SVG had a hardcoded `width={420} height={420}`**, the only one of the 14 components not using a responsive container (every other canvas/SVG component uses `VisualizationCanvas`'s ResizeObserver or a `viewBox`-based scale). This alone caused ~86px of horizontal overflow on mobile after fixing #1. **Fix**: switched to `viewBox="0 0 420 420"` with `width: 100%; height: auto` and a `maxWidth: 420` wrapper — same internal coordinate math, now scales down responsively.
 3. **`GradientDescentExplorer` threw a runtime SVG error at mobile widths**: `<ellipse> attribute rx: A negative value is not valid`, repeated 7 times (once per contour level). Root cause was downstream of bug #1 — with the sidebar/TOC bug in place, the component's `VisualizationCanvas` container measured a width narrower than its `24px` margin on each side, flipping the D3 x-scale's output range and producing negative radii. **Fix**: this resolved itself once bug #1 was fixed (container width no longer collapses), confirmed by rerunning the mobile pass — zero console errors afterward. No change needed in the component itself.
 
 One suspected bug turned out to be a test-harness timing flake, not a real bug: an initial run flagged `NeuralNetworkPlayground`'s Pause as not stopping the training loop. Re-tested in isolation with 5 repeated trials, sampling epoch count every 100ms for 600ms after clicking Pause — stable (no further epoch changes) in all 5 trials. The original failure was a single too-tight timing check in the test script, not the component. No component change made.
+
+## Responsive navigation architecture
+
+Replaces the "hide below 900px" stopgap with a real tablet/mobile navigation system, built before Phase 2 per instruction (204+ pages all need to be navigable on a phone).
+
+**Design**: the desktop docked `Sidebar` (260px) and `TableOfContents` (220px) are unchanged in code and behavior above 900px. Below 900px they're hidden (same CSS rule as before) and replaced by `MobileNavDrawer` — a hamburger button in `Navbar`, a backdrop, and a slide-in panel. Critically, the drawer does **not** duplicate the navigation structure: it renders the exact same `Sidebar` and `TableOfContents` components (now accepting a `variant="mobile"` prop that only changes chrome — full width, no border, no fixed pixel width — never the data or structure) against the exact same `getSidebar()` content-tree data every page already uses. A new page added to `src/content/docs/` needs zero navigation-specific configuration to show up correctly in both places, per instruction.
+
+**Files**: `src/components/layout/MobileNavDrawer.tsx` (new), `Sidebar.tsx` (added `variant`/`onNavigate` props + active-section highlighting), `TableOfContents.tsx` (added `variant`/`onNavigate` props), `Navbar.tsx` (added hamburger button + `onMenuClick`/`menuButtonRef` props), `DocLayout.tsx` (wires drawer open/close state, closes automatically on route change), `theme.css` (`.nm-navbar-toggle` visibility rules).
+
+**Accessibility**: `role="dialog"` + `aria-modal="true"` + `aria-label="Site navigation"` on the panel; focus moves into the panel on open and returns to the hamburger button on close; Escape closes; backdrop click closes; Tab is trapped inside the panel while open (manual first/last-focusable-element wrap, verified by tabbing 30 times and confirming focus never left the panel); background scroll is locked while open; the slide/fade transitions inherit the app's existing global `prefers-reduced-motion` rule (zeroed `transition-duration`) with no component-specific work needed.
+
+### Verification results (Playwright, headless Chromium, `.verify-scripts/verify-mobilenav.cjs`)
+
+**33/33 checks passed** across 375px, 768px, and 1280px:
+
+| # | Check | Result |
+|---|---|---|
+| 1 | Mobile menu opens | PASS |
+| 2 | Sidebar contents appear (section label + real page link from content tree) | PASS |
+| 3 | Navigation works (URL changes on link click) | PASS |
+| 4 | Current page is highlighted (accent color, both in the drawer and the desktop rail) | PASS |
+| 5 | Menu closes correctly after navigating | PASS |
+| 6 | Escape closes it (+ focus returns to the hamburger button) | PASS |
+| 7 | Desktop layout unchanged (sidebar 260px, TOC 220px, hamburger hidden, active-page highlight, TOC scroll-spy link, prev/next present) | PASS |
+| 8 | No console errors (mobile, tablet, desktop passes) | PASS |
+| 9 | Representative visualization (Linear Regression Studio) still renders and its slider still updates state at 375px | PASS |
+| 10 | No horizontal page overflow at 375px, 768px, or 1280px | PASS |
+| — | Backdrop click closes menu | PASS |
+| — | Tab key is trapped inside the panel (30 tab-presses, focus never left) | PASS |
+| — | Docked sidebar/TOC confirmed hidden at 375px/768px, confirmed visible at 1280px | PASS |
+
+Also reran the full 14-component verification pass (`verify.cjs`) after this change: **all 14 components still PASS on every dimension** (render/interaction/animation/theme/responsive/console) — no regressions from the navigation rework.
 
 ## Reusable primitives/patterns extracted (cumulative)
 
@@ -54,14 +86,14 @@ One suspected bug turned out to be a test-harness timing flake, not a real bug: 
 
 ## Bundle-size observation (not optimized, per instruction)
 
-Main JS entry is now **815 KB / 257 KB gzipped** (grew slightly from the pre-verification 734 KB/232 KB due to the CSS/layout fixes above, not new dependencies). No route-based code-splitting yet. Left as-is — explicitly deferred to a later optimization phase.
+Main JS entry is now **818.6 KB / 257.9 KB gzipped** (grew marginally from 815 KB after adding `MobileNavDrawer` — a few KB, not a new dependency). No route-based code-splitting yet. Left as-is — explicitly deferred to a later optimization phase.
 
 ## Architectural concerns before mass content migration
 
-- **No responsive mobile navigation pattern yet.** The fix above hides the sidebar/TOC below 900px rather than replacing them with a collapsible drawer or hamburger menu. That's the right scope for a stabilization pass, but a real mobile nav is necessary before Phase 2 content migration ships 204 pages that all need to be navigable on a phone.
 - **`LearningPathMap` and `AlgorithmSelector`** target `/docs/category/*` and `/docs/machine-learning/*` routes that don't exist in `platform-vite` yet — confirmed working as designed (see "Special attention" above); will resolve automatically once those pages are migrated in Phase 2.
 - **No route-based code-splitting** — bundle-size note above; a Phase 3/4 concern.
+- **`TableOfContents` mounts twice on mobile** (once inside the hidden desktop rail's would-be slot — actually not mounted since `.nm-toc` is CSS-hidden, not unmounted — and once inside the drawer), each with its own `IntersectionObserver`. Harmless at this page/heading count; worth a `React.memo`/shared-state pass if TOC scroll-spy ever needs to sync across both mounts simultaneously (it doesn't currently, since only one is visible/interactive at a time).
 
 ## Phase 1.5 completion
 
-**Complete.** All 14 components have been opened in a real browser (headless Chromium via Playwright), every meaningful interaction exercised and asserted to actually change downstream state (not just clickability), animations verified to start/advance/pause/resume/reset cleanly with no runaway loops, all 7 theme states (dark, light, + 5 skins) checked for contrast/console issues, all 3 responsive breakpoints checked for overflow/console issues, 3 real bugs found and fixed, `npm run build` remains clean (zero TypeScript errors) after the fixes.
+**Complete, including the responsive-navigation follow-up.** All 14 components have been opened in a real browser (headless Chromium via Playwright), every meaningful interaction exercised and asserted to actually change downstream state (not just clickability), animations verified to start/advance/pause/resume/reset cleanly with no runaway loops, all 7 theme states (dark, light, + 5 skins) checked for contrast/console issues, all 3 responsive breakpoints checked for overflow/console issues, 3 real bugs found and fixed. The mobile-nav stopgap from the first verification pass has been replaced with a proper hamburger/drawer system reusing the same content-tree data as desktop, verified with 33/33 automated checks plus a full regression rerun of all 14 components (zero regressions). `npm run build` remains clean (zero TypeScript errors) throughout.

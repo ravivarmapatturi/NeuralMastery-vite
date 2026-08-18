@@ -9,11 +9,23 @@ interface Heading {
 /**
  * Scans h2/h3 elements inside the given content ref after each render and
  * builds a linked table of contents -- no MDX-AST dependency, so it works
- * identically regardless of how the content was authored.
+ * identically regardless of how the content was authored. Rendered twice on
+ * mobile (docked desktop rail is hidden via CSS, a second instance lives
+ * inside the mobile drawer) -- each mount keeps its own scroll-spy state,
+ * which is harmless at this page/heading count.
  */
-export default function TableOfContents({ contentRef }: { contentRef: React.RefObject<HTMLElement | null> }) {
+export default function TableOfContents({
+  contentRef,
+  variant = 'desktop',
+  onNavigate,
+}: {
+  contentRef: React.RefObject<HTMLElement | null>;
+  variant?: 'desktop' | 'mobile';
+  onNavigate?: () => void;
+}) {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>('');
+  const isMobile = variant === 'mobile';
 
   useEffect(() => {
     const el = contentRef.current;
@@ -41,7 +53,11 @@ export default function TableOfContents({ contentRef }: { contentRef: React.RefO
   if (headings.length === 0) return null;
 
   return (
-    <nav className="nm-toc" style={{ width: 220, flexShrink: 0, padding: '1.5rem 1rem', fontSize: 13 }}>
+    <nav
+      className={isMobile ? undefined : 'nm-toc'}
+      aria-label="On this page"
+      style={isMobile ? { width: '100%', fontSize: 13 } : { width: 220, flexShrink: 0, padding: '1.5rem 1rem', fontSize: 13 }}
+    >
       <div style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: 8 }}>
         On this page
       </div>
@@ -49,9 +65,10 @@ export default function TableOfContents({ contentRef }: { contentRef: React.RefO
         <a
           key={h.id}
           href={`#${h.id}`}
+          onClick={onNavigate}
           style={{
             display: 'block',
-            padding: '3px 0',
+            padding: '4px 0',
             paddingLeft: h.level === 3 ? 12 : 0,
             color: activeId === h.id ? 'var(--nm-accent-primary)' : 'var(--nm-text-secondary)',
             textDecoration: 'none',
