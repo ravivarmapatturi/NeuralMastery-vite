@@ -23,7 +23,7 @@ export default function App() {
     <ThemeProvider>
       <ProgressProvider>
         <MDXProvider components={mdxComponents}>
-          <BrowserRouter basename="/NeuralMastery">
+          <BrowserRouter basename="/NeuralMastery-vite">
             <Routes>
               <Route path="/" element={<HomeRedirect />} />
               <Route path="/docs/*" element={<DocLayout />} />

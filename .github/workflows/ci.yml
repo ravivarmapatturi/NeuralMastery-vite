@@ -3,14 +3,10 @@ name: CI
 # Validates platform-vite on every PR and every push to main. This workflow
 # never deploys anything -- see deploy.yml (manual-only) for that.
 #
-# Path note: this file assumes platform-vite becomes the ROOT of its own
-# GitHub repository (it's currently its own standalone local git repo, no
-# remote yet -- see CI_CD.md). If it's instead merged into the existing
-# NeuralMastery monorepo as a subdirectory alongside platform/, this
-# workflow needs a `working-directory: platform-vite` default and
-# `paths: ['platform-vite/**']` triggers added -- flagged in CI_CD.md as a
-# decision that can't be finalized without knowing which repository this
-# ends up in.
+# Repository: ravivarmapatturi/NeuralMastery-vite, its own standalone repo
+# (root of this repo == root of platform-vite), separate from the existing
+# Docusaurus site's ravivarmapatturi/NeuralMastery repository -- so no
+# working-directory or path filters are needed here.
 on:
   pull_request:
   push:

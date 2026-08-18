@@ -15,14 +15,14 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: 'http://localhost:4173/NeuralMastery/',
+    baseURL: 'http://localhost:4173/NeuralMastery-vite/',
     trace: 'retain-on-failure',
   },
   webServer: {
     // Serves the already-built dist/ -- run `npm run build` first (CI does
     // this as an earlier, separate stage; see .github/workflows/ci.yml).
     command: 'node scripts/static-server.cjs',
-    url: 'http://localhost:4173/NeuralMastery/',
+    url: 'http://localhost:4173/NeuralMastery-vite/',
     reuseExistingServer: !process.env.CI,
     timeout: 15000,
   },

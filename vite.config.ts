@@ -9,7 +9,7 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/NeuralMastery/',
+  base: '/NeuralMastery-vite/',
   plugins: [
     // MDX must run before the React plugin's JSX transform sees .mdx files
     mdx({

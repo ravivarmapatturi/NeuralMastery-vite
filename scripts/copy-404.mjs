@@ -9,7 +9,7 @@
 // real requested URL (GitHub Pages doesn't rewrite it), so BrowserRouter
 // reads `location.pathname` correctly once the shell's JS boots and renders
 // the right page. Without this, directly opening or refreshing a deep link
-// like /NeuralMastery/docs/machine-learning/linear-regression 404s instead
+// like /NeuralMastery-vite/docs/machine-learning/linear-regression 404s instead
 // of loading the app.
 import { copyFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';

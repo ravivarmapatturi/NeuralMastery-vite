@@ -7,7 +7,7 @@
 //      it serves dist/404.html (if present) with a real HTTP 404 status for
 //      any path that isn't a literal file on disk.
 //   2. GitHub Pages serves the built site under the repo's base path
-//      (/NeuralMastery/), not at the domain root.
+//      (/NeuralMastery-vite/), not at the domain root.
 // Used both for local `npm run serve:dist` verification and as Playwright's
 // CI webServer, so smoke tests exercise the exact production-shaped
 // behavior (base path + 404-fallback deep links), not the dev server's
@@ -17,7 +17,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const DIST = path.resolve(__dirname, '..', 'dist');
-const BASE = '/NeuralMastery';
+const BASE = '/NeuralMastery-vite';
 const PORT = Number(process.env.PORT) || 4173;
 
 const CONTENT_TYPES = {

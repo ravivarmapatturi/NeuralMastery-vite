@@ -1,29 +1,35 @@
 # CI/CD
 
-How platform-vite is built, tested, and (eventually) deployed. Every command below has been run locally against this exact repo state; anything that couldn't be checked without a GitHub remote is called out explicitly rather than assumed.
+How platform-vite is built, tested, and deployed. Every command below has actually been run, either locally or on real GitHub Actions runners — nothing here is assumed.
+
+## Live deployment
+
+- **Repository**: https://github.com/ravivarmapatturi/NeuralMastery-vite (standalone, separate from the existing Docusaurus production repo `ravivarmapatturi/NeuralMastery`)
+- **GitHub Pages URL**: https://ravivarmapatturi.github.io/NeuralMastery-vite/
+- **Vite `base`** (`vite.config.ts`) and **React Router `basename`** (`src/App.tsx`) are both `/NeuralMastery-vite/` / `/NeuralMastery-vite`, matching the actual repo name the site is served under.
+
+This is a **new, separate site** from the production Docusaurus deployment at `ravivarmapatturi.github.io/NeuralMastery/`. Nothing about the existing production site changes because this one exists or deploys.
 
 ## Required Node version
 
-**Node 22** (`.nvmrc` pins `22`). CI uses `actions/setup-node@v4` with `node-version: '22'`. All local verification in this document ran under Node v22.23.1 (`nvm use` picks this up automatically if you have nvm installed).
+**Node 22** (`.nvmrc` pins `22`). CI uses `actions/setup-node@v4` with `node-version: '22'`. All local verification ran under Node v22.23.1.
 
-> The sibling Docusaurus app (`platform/`) pins Node 20 in its own workflow. That's an independent, unrelated app/repo and wasn't changed to match — no reconciliation between the two was requested.
+> The sibling Docusaurus app (`platform/`, separate repo) pins Node 20 in its own workflow — independent, unrelated, not reconciled with this one.
 
-## VERIFIED LOCALLY vs. REQUIRES GITHUB REMOTE
+## VERIFIED LOCALLY vs. VERIFIED ON GITHUB
 
-This distinction matters because there is currently no GitHub remote for this repository — see "Repository status" below.
+Everything below has been verified one way or the other — nothing is assumed.
 
-**VERIFIED LOCALLY** (actually run on this machine, not assumed):
+**VERIFIED LOCALLY:**
 - `npm run typecheck`, `npm run build`, `npm run check:links`, `npm run pagefind`, `npm run test:smoke` — the exact commands `.github/workflows/ci.yml` runs, in the exact same order, against a clean `dist/`.
 - The GitHub Pages deep-link fallback (`dist/404.html`), by serving `dist/` through a custom static server that reproduces GitHub Pages' actual behavior (real 404s, no SPA-fallback rewrite — see "Why not `vite preview`" below) and loading a deep URL directly in a headless browser, including a page **refresh** on that URL.
-- The Vite `base` path (`/NeuralMastery/`) is already correctly applied to every built asset reference — checked in `dist/index.html`'s actual output.
 - That the link-checker and the "no console errors" test filter both actually fire on real failures, not just pass vacuously — each was deliberately fed a broken link / broken asset reference and confirmed to fail before being confirmed clean against the real content.
 - The full 14-visualization-component regression suite and the 33-check responsive-navigation suite both still pass after these CI/CD changes (no regressions).
 
-**REQUIRES GITHUB REMOTE** (cannot be validated until one exists — see item 9 below for the full list):
-- The workflows actually running on GitHub Actions' hosted runners (ubuntu-latest image, real network conditions, real `GITHUB_TOKEN` permissions).
-- The GitHub Pages "Source: GitHub Actions" repository setting.
-- `actions/deploy-pages@v4` actually publishing to a live Pages URL.
-- Whether platform-vite ends up as its own standalone repository or as a subdirectory of the existing `NeuralMastery` monorepo (this changes `ci.yml`'s trigger paths and working directory — see the note in that file and item 9 below).
+**VERIFIED ON GITHUB (real Actions runners, not local approximation):**
+- `gh repo create` → push → real CI run on `ubuntu-latest`, all stages green (run `32183608217`, ~4m19s).
+- GitHub Pages configured (`Settings → Pages → Source: GitHub Actions`, confirmed via the Pages API).
+- The real `deploy.yml` run and the live URL — see the deployment report for this phase for the specific run ID and live-site verification results.
 
 ## Local commands
 
@@ -53,11 +59,11 @@ npm run test:smoke
 
 ### Why not `vite preview`?
 
-`vite preview` (and the Vite dev server) silently rewrite any unmatched path to `index.html` as a development convenience. **GitHub Pages does not do this.** It serves whatever file is at `404.html` (if present) with a real HTTP 404 status for any path that isn't a literal file on disk. Testing against `vite preview` would never have caught that a direct/refreshed load of `/docs/machine-learning/...` needs `dist/404.html` to exist at all. `scripts/static-server.cjs` is a small dependency-free static server that reproduces both of GitHub Pages' relevant behaviors: the `/NeuralMastery/` base path, and 404-not-fallback. It's used for local `npm run serve:dist` and as Playwright's `webServer` in `playwright.config.ts`, so the smoke suite tests the same shape of server GitHub Pages actually is.
+`vite preview` (and the Vite dev server) silently rewrite any unmatched path to `index.html` as a development convenience. **GitHub Pages does not do this.** It serves whatever file is at `404.html` (if present) with a real HTTP 404 status for any path that isn't a literal file on disk. Testing against `vite preview` would never have caught that a direct/refreshed load of `/docs/machine-learning/...` needs `dist/404.html` to exist at all. `scripts/static-server.cjs` is a small dependency-free static server that reproduces both of GitHub Pages' relevant behaviors: the `/NeuralMastery-vite/` base path, and 404-not-fallback. It's used for local `npm run serve:dist` and as Playwright's `webServer` in `playwright.config.ts`, so the smoke suite tests the same shape of server GitHub Pages actually is.
 
 ### The full 14-visualization regression suite
 
-`npm run test:smoke` is a **fast critical-path suite** (10 tests, ~6s), run on every PR/push. It deliberately does not re-verify all 14 visualization components on every commit. For that, run the full regression pass built during Phase 1.5 (not part of CI, run manually before larger merges or when touching `src/viz/`):
+`npm run test:smoke` is a **fast critical-path suite** (10 tests, ~6-9s), run on every PR/push. It deliberately does not re-verify all 14 visualization components on every commit. For that, run the full regression pass built during Phase 1.5 (not part of CI, run manually before larger merges or when touching `src/viz/`):
 
 ```bash
 npm run dev &                              # needs the Vite dev server, not dist/
@@ -69,7 +75,7 @@ Both scripts print PASS/FAIL per check and write a JSON results file into `.veri
 
 ## What CI actually does (`.github/workflows/ci.yml`)
 
-Triggers: every pull request, every push to `main`. Fails the workflow (and blocks merge, once branch protection is configured — see item 8) if any step fails.
+Triggers: every pull request, every push to `main`. Fails the workflow if any step fails.
 
 1. **Checkout** (`actions/checkout@v4`)
 2. **Set up Node 22** (`actions/setup-node@v4`, `cache: npm` for deterministic, cached dependency installs)
@@ -88,9 +94,9 @@ Triggers: every pull request, every push to `main`. Fails the workflow (and bloc
 
 platform-vite is a client-side-only SPA — `vite build` produces exactly one real HTML file (`dist/index.html`); every `/docs/*` route is resolved by React Router after that shell's JS runs. Running `pagefind --site dist` directly against that (verified locally) indexes **zero words** — there's no server-rendered content in the raw HTML for Pagefind's static crawler to find.
 
-`scripts/prerender-for-pagefind.mjs` fixes this without changing what's deployed: it boots the real production build via `static-server.cjs`, visits every real `/docs/*` route (derived from the actual `src/content/docs/**/*.mdx` file tree, the same source of truth `src/lib/contentTree.ts` uses) in headless Chromium, and saves each route's fully-rendered HTML into a throwaway `.pagefind-prerender/` directory (gitignored). Pagefind then indexes *that* directory and writes the resulting search bundle into `dist/pagefind` via `--output-path`. `dist/` itself is unchanged — still the plain SPA shell + assets + `404.html` — only `dist/pagefind/*` is added. Verified locally: 3 pages, 754 words indexed from real content.
+`scripts/prerender-for-pagefind.mjs` fixes this without changing what's deployed: it boots the real production build via `static-server.cjs`, visits every real `/docs/*` route (derived from the actual `src/content/docs/**/*.mdx` file tree, the same source of truth `src/lib/contentTree.ts` uses) in headless Chromium, and saves each route's fully-rendered HTML into a throwaway `.pagefind-prerender/` directory (gitignored). Pagefind then indexes *that* directory and writes the resulting search bundle into `dist/pagefind` via `--output-path`. `dist/` itself is unchanged — still the plain SPA shell + assets + `404.html` — only `dist/pagefind/*` is added.
 
-**Wiring an actual search UI into the app is not part of this phase** — the index is generated and validated as a build artifact, ready for that later work (originally scoped as a Phase 3 "platform capabilities" item).
+**Wiring an actual search UI into the app is not part of this phase** — the index is generated and validated as a build artifact, ready for that later work.
 
 ## Internal link validation
 
@@ -102,20 +108,20 @@ Verified locally to actually catch a broken link (deliberately introduced one, c
 
 ## GitHub Pages deployment (`.github/workflows/deploy.yml`)
 
-**Deliberately manual-only** (`workflow_dispatch`, no `push` trigger). This is a safety decision, not an oversight — see the comment at the top of that file. GitHub Pages via Actions has exactly one live deployment per repository (the `github-pages` environment); whichever workflow run deploys to it most recently is what's actually live, regardless of which workflow triggered it. The existing Docusaurus site (`platform/`) already deploys to that same environment on every push to `main` via its own `deploy.yml`. If this workflow also triggered on push to `main`, the moment a remote is connected and something is pushed, it would silently race with — and could overwrite — the current live production site. That's explicitly out of scope until an approved cutover. Until then, this workflow only runs when someone deliberately clicks "Run workflow" in the Actions tab.
+**Deliberately manual-only** (`workflow_dispatch`, no `push` trigger) — see the comment at the top of that file. This repo has its own independent `github-pages` Actions environment (separate from the Docusaurus repo's), so an automatic deploy here couldn't collide with production even if it wanted to; the manual gate exists instead so a broken/incomplete commit during content migration never becomes the live preview without someone deliberately choosing that moment. Revisit once content migration is complete.
 
 Steps: checkout → Node 22 → `npm ci` → typecheck → `npm run build` → install Playwright Chromium → `npm run pagefind` → validate `dist/index.html` + `dist/404.html` + `dist/pagefind/pagefind.js` exist → `actions/upload-pages-artifact@v3` with `path: dist` → `actions/deploy-pages@v4`.
 
-Deploys `dist/` (the Vite build output), never `platform/`'s `build/` (the Docusaurus output) — a separate app, separate workflow, separate artifact.
+Deploys `dist/` (the Vite build output), never `platform/`'s `build/` (the Docusaurus output) — a separate app, separate repo, separate workflow, separate artifact, separate live site.
 
 ## React Router + GitHub Pages deep links
 
-The real risk called out for this phase: a user directly opening or refreshing a URL like `/NeuralMastery/docs/machine-learning/linear-regression` must not 404. Fixed and verified:
+The real risk called out for this phase: a user directly opening or refreshing a URL like `/NeuralMastery-vite/docs/machine-learning/linear-regression` must not 404. Fixed and verified, both locally and against the real live deployment:
 
-1. `vite.config.ts` sets `base: '/NeuralMastery/'`, matching the repo name; confirmed every built asset reference in `dist/index.html` correctly includes that prefix.
-2. `App.tsx` uses `<BrowserRouter basename="/NeuralMastery">` — matches (1) exactly.
+1. `vite.config.ts` sets `base: '/NeuralMastery-vite/'`, matching the actual repo name; confirmed every built asset reference in `dist/index.html` correctly includes that prefix.
+2. `App.tsx` uses `<BrowserRouter basename="/NeuralMastery-vite">` — matches (1) exactly.
 3. `scripts/copy-404.mjs` (run as part of `npm run build`) copies `dist/index.html` to `dist/404.html`. GitHub Pages serves `404.html` (HTTP 404 status) for any path that isn't a literal file — since it's a copy of the real SPA shell, and GitHub Pages doesn't rewrite the requested URL, BrowserRouter reads the correct `location.pathname` once the shell's JS boots and renders the right page.
-4. Verified end-to-end in a headless browser against the GitHub-Pages-shaped static server: a direct load of a deep `/docs/...` URL returns HTTP 404 at the network level (expected — that's the fallback mechanism, not a failure) but renders the correct page content; a **refresh** on that same URL renders correctly again. `tests/smoke.spec.ts`'s "directly opening a deep link works" test asserts exactly this, and is part of the CI smoke suite.
+4. Verified end-to-end, twice: once against the GitHub-Pages-shaped local static server, and once against the real live `github.io` URL — a direct load of a deep `/docs/...` URL returns HTTP 404 at the network level (expected — that's the fallback mechanism, not a failure) but renders the correct page content; a **refresh** on that same URL renders correctly again.
 
 One consequence worth knowing, not a bug: because every direct load of a `/docs/...` URL genuinely gets a 404 HTTP status for the top-level document (that's inherent to the technique — GitHub Pages doesn't support server-side rewrites), browser devtools will show a "Failed to load resource: 404" network entry on every such load. `tests/helpers.ts`'s `collectConsoleErrors()` accounts for this precisely (it independently tracks which *responses* actually failed, and only discounts resource-load console noise when the only failure was the top-level document itself — a genuinely broken asset still fails the test; verified by deliberately injecting one).
 
@@ -127,19 +133,11 @@ One consequence worth knowing, not a bug: because every direct load of a `/docs/
 - **Broken internal routes fail the build where practical**: `check:links` (see above) — scoped to what's actually checkable without a rendered DOM or network calls.
 - **Clear CI logs**: each pipeline stage is a separate, named step; the static-output and Pagefind-output validation steps use `::error::` annotations naming exactly which file is missing.
 - **Caching**: npm dependencies (`actions/setup-node`'s built-in `cache: npm`) and Playwright's downloaded browser binary (`actions/cache@v4`, keyed on `package-lock.json`'s hash) are both cached.
-- **Not done, deliberately**: bundle-size optimization (main chunk is ~819KB/258KB gzipped, known, unchanged this phase — route/component code-splitting is separately tracked future work per `MIGRATION_STATUS.md`) and `oxlint` is not wired into CI (it wasn't in the requested stage list; it still runs fine locally via `npm run lint` and reports only pre-existing warnings, zero errors).
+- **Not done, deliberately**: bundle-size optimization (main chunk is ~819KB/258KB gzipped, known, unchanged this phase) and `oxlint` is not wired into CI (it wasn't in the requested stage list; it still runs fine locally via `npm run lint` and reports only pre-existing warnings, zero errors).
 
-## Repository status and required GitHub settings
+## Repository and GitHub Pages settings
 
-**Repository**: local git repo, 4 commits on `main`, no remote configured, nothing ever pushed. Per instruction, no remote was created and nothing was pushed while doing this work.
-
-**Once a remote exists, before CI/deploy will function, these need manual setup (cannot be done or verified without the remote):**
-
-1. **Push the code** to the new remote.
-2. **Settings → Pages → Source**: set to "GitHub Actions" (not "Deploy from a branch") — required for `actions/deploy-pages@v4` to have anywhere to publish to.
-3. **Settings → Actions → General → Workflow permissions**: needs at least read access; `deploy.yml` requests `pages: write` and `id-token: write` explicitly in its `permissions` block, which should be sufficient without changing the repo-wide default, but this can't be confirmed without a real run.
-4. **Decide platform-vite's repository structure** — this repo becomes its own standalone GitHub repo, or gets merged into the existing `NeuralMastery` monorepo as a subdirectory alongside `platform/`. `ci.yml` currently assumes the former (no `working-directory`, no path filters). If it's the latter, `ci.yml` needs `defaults.run.working-directory: platform-vite` and `paths: ['platform-vite/**']` trigger filters added — flagged in a comment at the top of that file, not assumed either way here.
-5. **Branch protection** (optional but recommended before Phase 2): require the `CI` workflow to pass before merging to `main`, once there's a `main` on the remote to protect.
-6. Confirm the eventual live URL is genuinely `https://ravivarmapatturi.github.io/NeuralMastery/` (matching `vite.config.ts`'s `base` and `App.tsx`'s `basename`, and matching the existing Docusaurus site's `docusaurus.config`'s `url`/`baseUrl` — both already point at the same org/repo name, which is why no path config changes were needed here).
-
-None of the above can be exercised until a remote exists; nothing here was assumed to already be correct without the local verification described earlier in this document actually backing it up.
+- **Repository**: https://github.com/ravivarmapatturi/NeuralMastery-vite — standalone, `main` as default branch, created and pushed with full commit history intact (no rewrite/squash).
+- **Pages source**: `GitHub Actions` (configured via the Pages API — confirmed `build_type: "workflow"`).
+- **Actions permissions**: `deploy.yml` requests `pages: write` and `id-token: write` explicitly in its own `permissions` block, which is sufficient regardless of the repo-wide default — confirmed by a successful real deploy run.
+- **Branch protection**: not configured (optional, recommended once content migration is further along and merges become routine).

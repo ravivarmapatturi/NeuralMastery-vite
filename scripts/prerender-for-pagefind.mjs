@@ -24,7 +24,7 @@ const ROOT = join(import.meta.dirname, '..');
 const CONTENT_ROOT = join(ROOT, 'src', 'content', 'docs');
 const PRERENDER_DIR = join(ROOT, '.pagefind-prerender');
 const PORT = 4174;
-const BASE = '/NeuralMastery';
+const BASE = '/NeuralMastery-vite';
 
 function walk(dir) {
   const out = [];

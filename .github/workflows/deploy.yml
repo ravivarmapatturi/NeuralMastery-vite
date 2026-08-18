@@ -2,18 +2,16 @@ name: Deploy platform-vite to GitHub Pages
 
 # DELIBERATELY MANUAL-ONLY (workflow_dispatch), never on push to main.
 #
-# Why: GitHub Pages via Actions has exactly one live deployment per repo
-# (the `github-pages` environment, served by actions/deploy-pages@v4 --
-# whichever workflow run deploys to it most recently is what's live,
-# regardless of which workflow triggered it). If platform-vite ends up in
-# the same repository as the existing Docusaurus site (platform/, which
-# already deploys to that same environment on every push to main via its
-# own deploy.yml), an auto-triggered push-to-main deploy here would silently
-# race with -- and could overwrite -- the current live production site the
-# very first time someone pushes after connecting the remote. That is
-# explicitly out of scope until an approved cutover (see the platform-vite
-# migration plan's Phase 4). Until then, this workflow only ever runs when
-# someone deliberately clicks "Run workflow".
+# This repo (ravivarmapatturi/NeuralMastery-vite) is its own standalone
+# repository, separate from the existing Docusaurus production site's repo
+# (ravivarmapatturi/NeuralMastery) -- so each has its own independent
+# `github-pages` Actions environment, and deploying this one cannot collide
+# with or overwrite the other. The manual trigger is kept anyway during the
+# content-migration period: this site is deliberately re-deployed after
+# each verified batch of work, not automatically on every push, so a
+# broken/incomplete commit never becomes the live preview without a human
+# choosing that moment. Revisit once content migration + validation are
+# complete and continuous deploys are actually wanted.
 on:
   workflow_dispatch:
 
@@ -22,13 +20,6 @@ permissions:
   pages: write
   id-token: write
 
-# A distinct concurrency group from platform/'s "pages" group -- so even if
-# this is manually triggered, it can't cancel/interleave with a concurrent
-# Docusaurus deploy run. (If GitHub Pages truly only supports one active
-# deployment target per repo, running this against the same repo as
-# platform/ will still ultimately replace the live site on completion --
-# that's the real cutover action, which is exactly why this workflow stays
-# manual-only rather than automatic.)
 concurrency:
   group: pages-vite
   cancel-in-progress: false
