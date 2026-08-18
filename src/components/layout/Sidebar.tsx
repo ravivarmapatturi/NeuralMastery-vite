@@ -4,7 +4,7 @@ import { getSidebar } from '../../lib/contentTree';
 export default function Sidebar() {
   const sections = getSidebar();
   return (
-    <nav style={{ width: 260, flexShrink: 0, padding: '1.5rem 1rem', borderRight: '1px solid var(--nm-border)' }}>
+    <nav className="nm-sidebar" style={{ width: 260, flexShrink: 0, padding: '1.5rem 1rem', borderRight: '1px solid var(--nm-border)' }}>
       {sections.map((section) => (
         <div key={section.id} style={{ marginBottom: '1.25rem' }}>
           <div

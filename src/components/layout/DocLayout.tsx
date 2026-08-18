@@ -25,9 +25,9 @@ export default function DocLayout() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
       <Navbar />
-      <div style={{ display: 'flex', maxWidth: 1400, margin: '0 auto' }}>
+      <div className="nm-doc-row" style={{ display: 'flex', maxWidth: 1400, margin: '0 auto' }}>
         <Sidebar />
-        <main style={{ flex: 1, padding: '2rem 3rem', minWidth: 0 }} ref={contentRef}>
+        <main className="nm-doc-main" style={{ flex: 1, padding: '2rem 3rem', minWidth: 0 }} ref={contentRef}>
           <article className="prose">
             <Component />
           </article>

@@ -111,6 +111,33 @@ body {
 .prose li { margin-bottom: 0.35rem; }
 .prose strong { font-weight: 700; }
 
+/* KaTeX display math can render wider than the viewport (long formulas on
+   narrow/mobile screens) -- scroll it horizontally instead of blowing out
+   the page's layout width. */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+
+/* The doc shell's sidebar (260px) and table of contents (220px) are fixed-
+   width flex children with flexShrink:0 -- below ~900px there isn't enough
+   room left for the content column, which forces every visualization inside
+   it into a near-zero-width layout (the root cause of mobile-width overflow
+   and the GradientDescentExplorer canvas-width-0 bug found during Phase 1.5
+   browser verification). A responsive collapsible sidebar is a Phase 3
+   doc-shell concern; for now, hide both chrome columns below the breakpoint
+   so content gets the full viewport width and lays out correctly. */
+@media (max-width: 900px) {
+  .nm-sidebar,
+  .nm-toc {
+    display: none;
+  }
+  .nm-doc-main {
+    padding: 1.25rem 1rem !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

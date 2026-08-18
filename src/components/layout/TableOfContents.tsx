@@ -41,7 +41,7 @@ export default function TableOfContents({ contentRef }: { contentRef: React.RefO
   if (headings.length === 0) return null;
 
   return (
-    <nav style={{ width: 220, flexShrink: 0, padding: '1.5rem 1rem', fontSize: 13 }}>
+    <nav className="nm-toc" style={{ width: 220, flexShrink: 0, padding: '1.5rem 1rem', fontSize: 13 }}>
       <div style={{ fontWeight: 700, fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: 8 }}>
         On this page
       </div>

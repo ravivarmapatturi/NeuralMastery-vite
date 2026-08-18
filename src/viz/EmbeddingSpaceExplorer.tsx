@@ -62,8 +62,11 @@ export default function EmbeddingSpaceExplorer() {
     <VisualizationContainer footer="Hand-authored, structured demo vectors (no trained model here) -- but cosine similarity, nearest-neighbor lookup, the A - B + C word-vector analogy, and the 2D projection below are all real math, computed from scratch, live.">
       <VisualizationHeader eyebrow="Interactive" title="Embedding Space Explorer" />
       <div style={{ display: 'flex', gap: SPACING.md, flexWrap: 'wrap' }}>
-        <div>
-          <svg width={SIZE} height={SIZE} style={{ background: t.background, border: `1px solid ${t.border}`, borderRadius: RADIUS.md }}>
+        <div style={{ width: '100%', maxWidth: SIZE }}>
+          <svg
+            viewBox={`0 0 ${SIZE} ${SIZE}`}
+            style={{ width: '100%', height: 'auto', display: 'block', background: t.background, border: `1px solid ${t.border}`, borderRadius: RADIUS.md }}
+          >
             {points.map((p) => {
               const isSelected = p.word === selected;
               const isNeighbor = neighbors.some((n) => n.word === p.word);

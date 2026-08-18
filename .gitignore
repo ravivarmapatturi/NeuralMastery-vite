@@ -17,6 +17,11 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+
+# Generated output from .verify-scripts/verify.cjs (screenshots, results.json) --
+# the script itself is kept for re-running future verification passes.
+.verify-scripts/*.png
+.verify-scripts/results.json
 *.suo
 *.ntvs*
 *.njsproj
