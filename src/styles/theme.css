@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/**
+ * Design tokens, ported from the Docusaurus platform's src/css/custom.css
+ * (same brand palette every generated chart/diagram on the site already
+ * uses -- see visualize/design_tokens.yaml). Renamed from Infima's
+ * --ifm-* convention to plain --nm-* since this app has no Infima
+ * dependency, but every color value is unchanged.
+ *
+ * Runtime-switchable via [data-theme] / [data-page-theme] on <html>, not
+ * baked into Tailwind's static theme -- `@theme inline` below maps
+ * Tailwind's generated utilities (bg-background, text-primary, ...) to
+ * these CSS custom properties, so a class like `bg-background` re-resolves
+ * automatically whenever the attributes change, no re-render needed.
+ */
+
+:root {
+  --nm-bg: #ffffff;
+  --nm-surface: #f6f7f8;
+  --nm-surface-alt: #eef0f2;
+  --nm-border: #e3e6ea;
+  --nm-text-primary: #14161a;
+  --nm-text-secondary: #5b6470;
+  --nm-text-muted: #88919c;
+  --nm-accent-primary: #21a374;
+  --nm-accent-secondary: #3169e0;
+  --nm-accent-warn: #b9791e;
+  --nm-accent-danger: #d43f3f;
+}
+
+[data-theme='dark'] {
+  --nm-bg: #0a0a0b;
+  --nm-surface: #141416;
+  --nm-surface-alt: #1e1e21;
+  --nm-border: #2c2c30;
+  --nm-text-primary: #f5f5f7;
+  --nm-text-secondary: #ababb3;
+  --nm-text-muted: #707078;
+  --nm-accent-primary: #3ddc97;
+  --nm-accent-secondary: #5b8cff;
+  --nm-accent-warn: #f4b942;
+  --nm-accent-danger: #f45b5b;
+}
+
+/* Study-friendly page skins -- light mode only, tints of the light palette. */
+:root[data-theme='light'][data-page-theme='sepia'] {
+  --nm-bg: #f6eedd;
+  --nm-surface: #efe4cc;
+  --nm-border: #e3d5b8;
+  --nm-surface-alt: #ece0c9;
+}
+:root[data-theme='light'][data-page-theme='rose'] {
+  --nm-bg: #fbeef3;
+  --nm-surface: #f6e1ea;
+  --nm-border: #efd0de;
+  --nm-surface-alt: #f4dce6;
+}
+:root[data-theme='light'][data-page-theme='sage'] {
+  --nm-bg: #ebf4ec;
+  --nm-surface: #dfeee1;
+  --nm-border: #cde5d1;
+  --nm-surface-alt: #dcebde;
+}
+:root[data-theme='light'][data-page-theme='lavender'] {
+  --nm-bg: #f1ecfa;
+  --nm-surface: #e6def5;
+  --nm-border: #d8cbf0;
+  --nm-surface-alt: #e3daf3;
+}
+:root[data-theme='light'][data-page-theme='sky'] {
+  --nm-bg: #eaf2fb;
+  --nm-surface: #dceafa;
+  --nm-border: #c8dff5;
+  --nm-surface-alt: #d8e7f8;
+}
+
+@theme inline {
+  --color-background: var(--nm-bg);
+  --color-surface: var(--nm-surface);
+  --color-surface-alt: var(--nm-surface-alt);
+  --color-border: var(--nm-border);
+  --color-text-primary: var(--nm-text-primary);
+  --color-text-secondary: var(--nm-text-secondary);
+  --color-text-muted: var(--nm-text-muted);
+  --color-accent-primary: var(--nm-accent-primary);
+  --color-accent-secondary: var(--nm-accent-secondary);
+  --color-accent-warn: var(--nm-accent-warn);
+  --color-accent-danger: var(--nm-accent-danger);
+
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background: var(--nm-bg);
+  color: var(--nm-text-primary);
+  font-family: var(--font-sans);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.prose {
+  max-width: 760px;
+  line-height: 1.7;
+  font-size: 16px;
+}
+.prose h1 { font-size: 2.25rem; font-weight: 800; margin: 0 0 1rem; letter-spacing: -0.02em; }
+.prose h2 { font-size: 1.5rem; font-weight: 700; margin: 2.25rem 0 0.75rem; letter-spacing: -0.01em; }
+.prose h3 { font-size: 1.15rem; font-weight: 700; margin: 1.75rem 0 0.5rem; }
+.prose p { margin: 0 0 1rem; color: var(--nm-text-primary); }
+.prose a { color: var(--nm-accent-secondary); }
+.prose ul, .prose ol { margin: 0 0 1rem; padding-left: 1.5rem; }
+.prose li { margin-bottom: 0.35rem; }
+.prose strong { font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
