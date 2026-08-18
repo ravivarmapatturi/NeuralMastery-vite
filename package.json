@@ -5,7 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b",
+    "build": "tsc -b && vite build && node scripts/copy-404.mjs",
+    "pagefind": "node scripts/prerender-for-pagefind.mjs && pagefind --site .pagefind-prerender --output-path dist/pagefind",
+    "check:links": "node scripts/check-internal-links.mjs",
+    "serve:dist": "node scripts/static-server.cjs",
+    "test:smoke": "playwright test",
     "lint": "oxlint",
     "preview": "vite preview"
   },
@@ -29,6 +34,7 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/d3": "^7.4.3",
     "@types/js-yaml": "^4.0.9",

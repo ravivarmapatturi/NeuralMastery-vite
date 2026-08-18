@@ -1,0 +1,87 @@
+name: CI
+
+# Validates platform-vite on every PR and every push to main. This workflow
+# never deploys anything -- see deploy.yml (manual-only) for that.
+#
+# Path note: this file assumes platform-vite becomes the ROOT of its own
+# GitHub repository (it's currently its own standalone local git repo, no
+# remote yet -- see CI_CD.md). If it's instead merged into the existing
+# NeuralMastery monorepo as a subdirectory alongside platform/, this
+# workflow needs a `working-directory: platform-vite` default and
+# `paths: ['platform-vite/**']` triggers added -- flagged in CI_CD.md as a
+# decision that can't be finalized without knowing which repository this
+# ends up in.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  ci:
+    name: typecheck, build, pagefind, link-check, smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies (deterministic)
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Production build
+        run: npm run build
+
+      - name: Validate static build output
+        run: |
+          test -f dist/index.html || (echo "::error::dist/index.html missing" && exit 1)
+          test -f dist/404.html || (echo "::error::dist/404.html missing (GitHub Pages deep-link fallback)" && exit 1)
+          test -d dist/assets || (echo "::error::dist/assets missing" && exit 1)
+          echo "dist/ output validated: index.html, 404.html, assets/ present."
+
+      - name: Internal link validation
+        run: npm run check:links
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright OS dependencies (cache hit path)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Generate Pagefind index
+        run: npm run pagefind
+
+      - name: Validate Pagefind output
+        run: |
+          test -f dist/pagefind/pagefind.js || (echo "::error::dist/pagefind/pagefind.js missing" && exit 1)
+          echo "Pagefind output validated."
+
+      - name: Playwright smoke tests
+        run: npm run test:smoke
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

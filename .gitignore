@@ -12,6 +12,15 @@ dist
 dist-ssr
 *.local
 
+# Scratch directory used by scripts/prerender-for-pagefind.mjs -- rendered
+# HTML snapshots used only to generate the Pagefind index, never deployed.
+.pagefind-prerender
+
+# Playwright test artifacts
+test-results
+playwright-report
+blob-report
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
