@@ -1,0 +1,31 @@
+---
+title: "LLM / Agent Frameworks"
+sidebar_position: 4
+---
+
+
+# LLM / Agent Frameworks
+
+The tools that implement the concepts from [LLMs & GenAI](/docs/llms-genai/roadmap) and [Agents](/docs/agents/roadmap) so you're not wiring up RAG pipelines and tool-calling loops from scratch every time.
+
+## LangChain
+
+A framework for composing LLM applications out of reusable building blocks: **chains** (sequences of steps — prompt → LLM call → parse output → next step), **retrievers** (a standard interface over any vector store or search backend, see [RAG](/docs/llms-genai/rag)), and **agents** (LLM-driven loops that decide which tool to call, implementing patterns like [ReAct](/docs/llms-genai/prompt-engineering#react-reasoning--acting)). Its value is standardizing the plumbing — swapping an LLM provider, a vector database, or a retrieval strategy without rewriting application logic.
+
+## LlamaIndex
+
+Focused specifically on the **data indexing and retrieval** side of RAG — connecting to many data sources (documents, APIs, databases), chunking them (see [RAG — Chunking Strategies](/docs/llms-genai/rag#chunking-strategies)), building indexes over them, and providing query interfaces on top. Often used alongside or instead of LangChain specifically for the retrieval layer, when the bulk of the complexity in an application is "get the right context in front of the model" rather than complex multi-step orchestration.
+
+## MCP SDKs
+
+Building an [MCP server](/docs/agents/mcp/overview) — exposing your own tools/data to any MCP-compatible client — is done with an official SDK (Python or TypeScript). The SDK handles the protocol details (the message format, the connection lifecycle) so you just define your tools' logic and let the SDK expose them correctly.
+
+## Agent Orchestration Frameworks
+
+**LangGraph** (built on LangChain) models an agent's control flow as an explicit graph of nodes and edges — useful when an agent's logic is more complex than a simple loop (conditional branches, cycles, human-in-the-loop checkpoints), and you want that structure to be visible and debuggable rather than implicit in prompt text.
+
+**CrewAI** is built specifically around the [multi-agent](/docs/agents/multi-agent-systems) pattern of assigning different agents distinct roles (a "researcher," a "writer") and having them collaborate on a shared task — a higher-level abstraction than LangGraph, trading some flexibility for faster setup of common multi-agent patterns.
+
+**Choosing between them**: for a single agent with a fairly linear flow, you often don't need any of these — a direct loop calling the LLM API is simpler and easier to debug. Reach for an orchestration framework once the control flow itself (not just the prompting) becomes complex enough that managing it by hand gets error-prone.
+
+Next: [Serving & MLOps/LLMOps](/docs/frameworks/serving-mlops) — getting any of this into production reliably.

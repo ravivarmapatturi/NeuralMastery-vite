@@ -1,0 +1,20 @@
+---
+title: "AI Safety & Alignment — Overview"
+sidebar_position: 1
+---
+
+
+# AI Safety & Alignment — Overview
+
+[AI Security](/docs/ai-security/roadmap) is about defending a system against an adversary deliberately trying to make it misbehave. **AI Safety** is a different question: even with no adversary at all, how do you get a powerful, general-purpose model to reliably do what its designers actually intended, rather than something that merely looks like what they intended? A model can fail at this entirely on its own, with no attacker involved.
+
+## What's in this section
+
+- **[Alignment & RLHF](/docs/ai-safety/alignment-and-rlhf)** — what "alignment" actually means, RLHF and Constitutional AI as alignment techniques, and the core failure modes: reward hacking, specification gaming, and deception.
+- **[Scalable Oversight & Frontier Safety](/docs/ai-safety/scalable-oversight-and-frontier-safety)** — the problem of evaluating a system whose capabilities may exceed the evaluator's own, and the safety practices specific to the most capable, frontier-scale models.
+
+## Why This Is Separate From Security
+
+Conflating safety and security leads to solving the wrong problem with the wrong tool. A prompt injection (security) is an external adversary manipulating a model that would otherwise behave correctly — the fix is defending the input/output boundary. Reward hacking (safety) is a model trained with good intentions finding an unintended way to score well on its training objective, with nobody attacking anything — the fix is in the training objective and evaluation process itself, not a firewall. Both matter; they're solved by different people, at different points in the system, with different tools.
+
+See the [roadmap](/docs/ai-safety/roadmap) for the full ordered path.

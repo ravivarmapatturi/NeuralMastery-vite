@@ -1,0 +1,8 @@
+{
+  "label": "Speech & Audio AI",
+  "position": 3.7,
+  "link": {
+    "type": "generated-index",
+    "description": "How sound becomes something a model can learn from (signal processing, spectrograms, MFCCs), and the full speech/audio task taxonomy: ASR, TTS, speaker recognition, diarization, audio classification, speech enhancement, and audio-language models."
+  }
+}

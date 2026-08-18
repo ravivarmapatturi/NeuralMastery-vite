@@ -1,0 +1,44 @@
+---
+title: "DBSCAN & HDBSCAN, In Full Depth"
+sidebar_position: 6.2
+---
+
+import __migratedImg0 from './img/dbscan-clusters.png';
+
+
+# DBSCAN & HDBSCAN, In Full Depth
+
+[K-Means](/docs/machine-learning/kmeans-hierarchical-clustering) assumes round, similarly-sized blobs and forces every point into a cluster. DBSCAN drops both assumptions: it finds clusters of *any* shape, defined purely by density, and explicitly labels sparse points as noise rather than forcing them into a nearby group.
+
+## DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
+
+Two parameters define everything: $\epsilon$ (a distance radius) and `min_samples` (a density threshold). Every point falls into one of three roles:
+
+- **Core point**: has at least `min_samples` other points within distance $\epsilon$ of it.
+- **Border point**: within $\epsilon$ of a core point, but doesn't itself have enough neighbors to qualify as core.
+- **Noise point**: neither — too isolated to belong to any cluster.
+
+**The algorithm**: pick an unvisited point; if it's a core point, start a new cluster and recursively absorb every point density-reachable from it (every neighbor within $\epsilon$, and their neighbors, and so on, as long as each new point is itself a core point or directly borders one). If the starting point isn't core, mark it as noise (for now — it may still get absorbed later as a border point of some other cluster). Repeat until every point has been visited.
+
+<img src={__migratedImg0} alt="DBSCAN finds clusters of arbitrary shape and explicitly marks sparse points as noise (×)" style={{maxWidth: '100%'}} />
+
+**Why this handles non-convex shapes natively**: nothing in the algorithm ever computes a centroid or assumes a shape — clusters grow purely by chaining together dense neighborhoods, so an elongated, curved, or ring-shaped cluster is found exactly as easily as a round one. This is precisely why DBSCAN succeeds on the [two-moons data where K-Means fails](/docs/machine-learning/kmeans-hierarchical-clustering#k-means).
+
+**Choosing $\epsilon$ and `min_samples`**: `min_samples` is often set based on data dimensionality (a common heuristic: $\geq d+1$, where $d$ is the number of features). $\epsilon$ is typically chosen via a **k-distance plot** — sort each point's distance to its $k$-th nearest neighbor, plot it, and look for the "knee" where distances start increasing sharply — the same elbow-finding intuition as [K-Means' elbow method](/docs/machine-learning/kmeans-hierarchical-clustering#k-means), applied to density instead of inertia.
+
+**Weakness**: a single global $\epsilon$ assumes roughly uniform density everywhere. If one region of the data is naturally denser than another, one $\epsilon$ can't serve both well — too small and it fragments the dense region; too large and it merges the sparse region into noise or into the wrong cluster.
+
+## HDBSCAN (Hierarchical DBSCAN)
+
+Fixes DBSCAN's single-$\epsilon$ limitation directly: instead of one fixed radius, HDBSCAN builds a hierarchy across a *range* of $\epsilon$ values (conceptually similar to the [dendrogram](/docs/machine-learning/kmeans-hierarchical-clustering#hierarchical-clustering) from hierarchical clustering, but built from density rather than raw distance), then extracts the most *stable* clusters across that range — clusters that persist over a wide span of $\epsilon$ values are considered genuine; clusters that only appear briefly at one specific $\epsilon$ are treated as noise or merged.
+
+**Practical result**: HDBSCAN needs only `min_samples` (or `min_cluster_size`) as a real hyperparameter — no $\epsilon$ to tune at all — and handles varying-density data that plain DBSCAN cannot, at the cost of somewhat higher computational complexity and a less intuitive parameter to reason about than a simple distance radius.
+
+## When to Use Density-Based Clustering
+
+- Cluster shapes are irregular, elongated, or nested (rings within rings) — where [K-Means](/docs/machine-learning/kmeans-hierarchical-clustering#k-means)'s spherical assumption breaks down.
+- The dataset genuinely contains noise/outliers that shouldn't be forced into any cluster — geospatial data, sensor readings, anomaly-adjacent data.
+- You don't know the number of clusters upfront, and don't want to guess $k$ — DBSCAN/HDBSCAN discover the cluster count automatically from the data's density structure.
+- **Not ideal when**: clusters genuinely do vary smoothly in density with no clear gaps (DBSCAN needs some density contrast to find boundaries at all), or the dataset is very high-dimensional (density becomes a less meaningful concept — the same [curse of dimensionality](/docs/machine-learning/k-nearest-neighbors#the-curse-of-dimensionality) that hurts KNN affects any distance/density-based method).
+
+Next: [Gaussian Mixture Models & Spectral Clustering](/docs/machine-learning/gmm-spectral-clustering) — a probabilistic take on clustering, and a graph-based approach that handles non-convex shapes through an entirely different mechanism than density.

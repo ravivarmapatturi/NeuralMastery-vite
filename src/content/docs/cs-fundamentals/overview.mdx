@@ -1,0 +1,40 @@
+---
+title: "CS Fundamentals for AI Engineers — Overview"
+sidebar_position: 1
+---
+
+
+# CS Fundamentals for AI Engineers — Overview
+
+Someone who understands Transformers deeply but doesn't understand what actually happens between "I called `model.generate()`" and "a token appeared" isn't yet an AI systems engineer — they're someone who understands one layer of a much taller stack:
+
+```
+CPU
+ ↓
+RAM
+ ↓
+PCIe
+ ↓
+GPU
+ ↓
+VRAM
+ ↓
+network
+ ↓
+distributed workers
+```
+
+Every layer above has failure modes, bottlenecks, and design tradeoffs that show up constantly in real AI engineering work: why a training job is slow even though "the GPU is only at 40% utilization," why a distributed job hangs instead of crashing, why an inference server's p99 latency is terrible despite a fast median, why two processes writing to the same file corrupt each other's output. None of that is ML theory — it's computer science, and this section exists because most ML curricula skip it entirely and most AI engineering *jobs* don't.
+
+## What's in this section
+
+- **[Operating Systems & Concurrency](/docs/cs-fundamentals/operating-systems-and-concurrency)** — processes, threads, concurrency vs. parallelism, memory, CPU caches, virtual memory. The layer that explains why your dataloader is slow and why two GPU processes can't cleanly share memory.
+- **[Networking & Distributed Systems](/docs/cs-fundamentals/networking-and-distributed-systems)** — HTTP, TCP/IP, DNS, load balancing, the CAP theorem, consensus, and why distributed training and distributed serving are genuinely hard problems, not just "more machines."
+- **[Linux, Git & Developer Tooling](/docs/cs-fundamentals/linux-git-and-tooling)** — the shell, the filesystem, and Git internals (not just commands) — the daily-driver tools every AI engineering job assumes fluency in.
+- **[Software Engineering Practice](/docs/cs-fundamentals/software-engineering-practices)** — design patterns, testing philosophy, profiling, and debugging, applied to the specific ways ML code breaks that ordinary software doesn't.
+
+## Why this comes first
+
+Every later section in this site assumes you can read a stack trace, reason about why a process hung, and understand what "the network call timed out" actually means at the socket level. This section is the one prerequisite layer beneath [Mathematics for AI](/docs/mathematics-for-ai/roadmap) — not because you need it to understand an equation, but because you need it to understand why that equation runs the way it does on real hardware.
+
+See the [roadmap](/docs/cs-fundamentals/roadmap) for the full ordered path through this section.

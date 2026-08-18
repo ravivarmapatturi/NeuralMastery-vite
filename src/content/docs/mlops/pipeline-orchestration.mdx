@@ -1,0 +1,49 @@
+---
+title: "Pipeline Orchestration"
+sidebar_position: 6
+---
+
+
+# Pipeline Orchestration
+
+A trained model isn't produced by one script — it's produced by a sequence of steps that each depend on the last, need to run on a schedule, and need to recover cleanly when one of them fails at 3am. That's a pipeline orchestration problem, not a training problem.
+
+## The ML Lifecycle as a Pipeline
+
+```
+Validation → Preprocessing → Feature Engineering → Training → Evaluation → Registry → Deployment → Monitoring → Retraining
+```
+
+Each stage takes the previous stage's output as input. Running this by hand (or as one giant script) works exactly once — a real system needs to run this on a schedule, retry the step that failed without re-running everything before it, and show a human which step broke.
+
+## Core Concepts
+
+- **DAG (Directed Acyclic Graph)**: the pipeline as a graph of steps with dependencies — step C can't start until steps A and B finish, and there are no cycles. This is the data structure every orchestrator is built around.
+- **Task / Operator**: a single unit of work in the DAG (e.g. "run this Python function," "run this SQL query," "run this Docker container").
+- **Scheduling**: run the DAG on a cron-like schedule (nightly retraining) or trigger it on an event (new data landed).
+- **Retries**: if a task fails (a flaky API call, a transient network error), retry it automatically before escalating to a human.
+- **Caching**: skip re-running a step whose inputs haven't changed since the last successful run — the same principle as a build system, applied to a data pipeline.
+- **Backfilling**: run the pipeline for a range of past dates, e.g. after fixing a bug in a transformation step, without hand-rerunning each day individually.
+
+## Airflow
+
+The most widely used orchestrator, and the one whose vocabulary shows up everywhere else:
+
+- **DAG**: a Python file defining the pipeline structure.
+- **Task**: one node in the DAG.
+- **Operator**: the type of work a task does (`PythonOperator`, `BashOperator`, `KubernetesPodOperator`, etc.).
+- **Scheduler**: the process that decides when each DAG run should trigger.
+- **Executor**: the process that actually runs tasks (locally, on Celery workers, or on Kubernetes pods, depending on configuration).
+- **Sensor**: a special task type that waits for a condition (a file landing in S3, a partition appearing in a table) before letting downstream tasks proceed.
+- **XCom**: Airflow's mechanism for passing small pieces of data between tasks in the same DAG run.
+
+Airflow's model — DAGs as Python code, a scheduler, pluggable executors — is old enough (originally built at Airbnb) to be the de facto lingua franca; most job postings asking for "pipeline orchestration experience" mean Airflow specifically.
+
+## Alternatives
+
+- **Prefect**: a newer orchestrator with a lower-friction Python-native API (decorate a normal function with `@flow`/`@task` rather than building an explicit DAG object), stronger dynamic/conditional workflow support, and a more modern UI.
+- **Dagster**: orchestration built around **software-defined assets** rather than tasks — you declare the data assets a pipeline produces and their dependencies, and Dagster infers the DAG, with strong built-in data quality and lineage tracking.
+
+Airflow remains the safest default to learn first because of its ubiquity; Prefect and Dagster are the ones to reach for on a new project where Airflow's more verbose, less Pythonic API is a real cost.
+
+Next: [Containers](/docs/mlops/containers) — once a pipeline's steps are defined, each step needs to run the same way everywhere, which is what containers solve.

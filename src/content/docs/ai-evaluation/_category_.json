@@ -1,0 +1,8 @@
+{
+  "label": "AI Evaluation",
+  "position": 5.5,
+  "link": {
+    "type": "generated-index",
+    "description": "How to actually know whether a model, RAG pipeline, or agent is good: benchmark design, golden datasets, LLM-as-a-judge, human evaluation, agent trajectory evaluation, adversarial evaluation and red teaming, and continuous evaluation in production."
+  }
+}

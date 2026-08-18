@@ -1,0 +1,8 @@
+{
+  "label": "Python Engineering for AI",
+  "position": 0.7,
+  "link": {
+    "type": "generated-index",
+    "description": "Python beyond syntax: the language features, concurrency model, memory behavior, and tooling that separate a notebook script from production ML code. Python -> NumPy -> PyTorch -> production Python."
+  }
+}

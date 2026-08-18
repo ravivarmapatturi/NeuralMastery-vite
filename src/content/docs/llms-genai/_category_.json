@@ -1,0 +1,8 @@
+{
+  "label": "LLMs & GenAI",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Foundation models and LLM internals: tokenization, attention, training pipelines, fine-tuning, prompt engineering, RAG, evaluation, and multimodal/generative models."
+  }
+}

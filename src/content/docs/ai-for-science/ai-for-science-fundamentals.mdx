@@ -1,0 +1,45 @@
+---
+title: "AI for Science Fundamentals"
+sidebar_position: 3
+---
+
+
+# AI for Science Fundamentals
+
+The common thread across every topic below: a scientific domain has an expensive, slow way to get ground truth (a wet-lab experiment, a physical simulation, a clinical trial), and ML offers a way to either replace a fraction of that expensive process with a fast prediction, or to search an astronomically large space of candidates (molecules, materials, protein sequences) for the few worth actually testing physically.
+
+## Drug Discovery and Molecular ML
+
+Finding a molecule that binds to a specific biological target (a protein implicated in a disease) traditionally means synthesizing and testing enormous numbers of candidate compounds physically — ML accelerates this at several stages: **molecular property prediction** (given a molecule's structure, predict its binding affinity, toxicity, or solubility *without* synthesizing it, using [Graph ML](/docs/graph-ml/roadmap) since a molecule is naturally a graph — atoms as nodes, bonds as edges) dramatically narrows the candidate pool before any physical synthesis happens at all. This is squarely a [Graph Classification](/docs/graph-ml/graph-ml-fundamentals#task-taxonomy)-style task, just with molecules as the graphs and a biological/chemical property as the label.
+
+## Protein Structure Prediction
+
+A protein's 3D shape (which determines its function) is determined by its amino acid sequence — but predicting that 3D structure from the sequence alone (the "protein folding problem") was a decades-old, extremely hard open problem, since a protein can fold into an astronomical number of possible shapes and experimentally determining structure (X-ray crystallography, cryo-EM) is slow and expensive. AlphaFold's breakthrough (built on attention mechanisms, see [Attention & Transformers](/docs/deep-learning/attention-transformers), applied to model relationships between amino acid positions) predicts structure directly from sequence at a level of accuracy competitive with physical experimental methods — one of the clearest, most consequential wins for deep learning in science to date, having genuinely accelerated structural biology research broadly, not just as a research demo.
+
+## Genomics
+
+Applying ML to DNA/RNA sequence data — predicting gene expression from sequence, identifying disease-associated genetic variants, and increasingly, genomic foundation models (the same self-supervised pretraining approach as [LLM Pretraining](/docs/llms-genai/training-pipeline), applied to DNA sequences treated as a "language" with its own vocabulary and structure) that learn general-purpose sequence representations useful across many downstream genomic prediction tasks, the same pretrain-then-fine-tune pattern as NLP applied to a biological sequence instead of natural language.
+
+## Materials Science
+
+The materials-science analog of drug discovery: searching for new materials with desired properties (superconductivity, strength-to-weight ratio, battery capacity) from an intractably large space of possible atomic compositions and structures. ML property-prediction models (structurally similar to molecular property prediction above, since a crystal structure is also naturally graph-representable) screen candidate materials computationally before the expensive step of actually synthesizing and testing them physically — directly analogous to drug discovery's screening funnel, applied to inorganic materials instead of organic molecules.
+
+## Physics-Informed Neural Networks (PINNs) and Neural Operators
+
+- **PINNs**: train a neural network to approximate the solution to a physical system's governing differential equations by incorporating the equations themselves directly into the training loss (penalizing the network's output for violating the known physics), rather than training purely on labeled input-output data — useful specifically when physical laws are well-known but data is scarce, letting the known physics constrain the network's predictions in regions with little or no training data.
+- **Neural operators**: rather than learning a single function (mapping one specific input to one specific output, as a standard neural network does), a neural operator learns a mapping *between function spaces* — e.g. learning to map any initial condition of a physical system directly to its solution *function* over time, generalizing across different initial conditions without needing to be retrained or re-solved from scratch for each one. Once trained, a neural operator can evaluate a new scenario orders of magnitude faster than re-running a traditional numerical simulation, at some accuracy cost — a genuinely different tool than PINNs (which approximate one specific solution) for the specific case of needing many fast approximate solutions across varying conditions.
+
+## Simulation
+
+Beyond neural operators specifically, ML broadly accelerates scientific simulation by learning fast, approximate **surrogate models** that stand in for expensive traditional numerical simulations (computational fluid dynamics, molecular dynamics, climate models) — trained on a set of expensive traditional simulation runs, then used to explore many more scenarios far faster than running the full traditional simulation for each one, trading some accuracy for a large speedup that makes previously-intractable large-scale scenario exploration feasible.
+
+## Molecular Generation and Docking
+
+- **Molecular generation**: rather than only *screening* existing candidate molecules (drug discovery, above), directly *generate* novel molecular structures with desired properties — reusing the same [generative model](/docs/deep-learning/generative-models) machinery (VAEs, diffusion, and graph-generation-specific variants) covered elsewhere on this site, applied to molecular graphs as the object being generated instead of images or text.
+- **Docking**: predicting how (and how strongly) a candidate molecule physically binds to a target protein's 3D structure — a structure-prediction problem in its own right, increasingly tackled with learned models rather than purely classical physics-based simulation, directly consuming the protein structures AlphaFold-style models now make available at scale.
+
+## Scientific Foundation Models
+
+The pretrain-then-fine-tune pattern from [LLM Pretraining](/docs/llms-genai/training-pipeline) and [NLP](/docs/nlp/roadmap), applied within specific scientific domains: a large model pretrained (often self-supervised, in the same spirit as [LLM pretraining](/docs/llms-genai/training-pipeline#pretraining)) on a broad corpus of domain data — protein sequences, chemical structures, genomic sequences — producing general-purpose representations that get fine-tuned for many specific downstream scientific prediction tasks, rather than training a narrow model from scratch for each individual task. This mirrors exactly how a general-purpose LLM gets fine-tuned for many different downstream applications, just with the pretraining corpus and downstream tasks both drawn from a specific scientific domain instead of general text.
+
+AI for Science section complete. Next: [Domain AI Applications](/docs/domain-applications/roadmap) — where this section's biology/chemistry/physics focus sits alongside healthcare, finance, and other applied-AI domain tracks.

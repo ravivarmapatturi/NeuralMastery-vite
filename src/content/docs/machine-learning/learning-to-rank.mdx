@@ -1,0 +1,53 @@
+---
+title: "Learning-to-Rank, In Full Depth"
+sidebar_position: 6.91
+---
+
+
+# Learning-to-Rank, In Full Depth
+
+Search, recommendation ranking, and ad ranking are not classification problems and not regression problems — the thing that actually matters is the *order* of a list, and optimizing accuracy or MSE on individual item scores doesn't directly optimize for that at all. Learning-to-Rank (LTR) is the family of methods built to close that gap.
+
+## Why Ranking Isn't Classification or Regression
+
+Predicting "will the user click this" per item (see [Recommender Systems — CTR Prediction](/docs/machine-learning/recommender-systems#ctr-prediction)) is a reasonable *input* to ranking, but training a classifier to predict clicks and then sorting by predicted probability isn't the same as directly optimizing ranking quality:
+
+- A classifier trained on pointwise log-loss treats every item's prediction error equally — but a ranking error at position 1 (showing the wrong top result) matters far more to a user than an error at position 47.
+- Classification/regression metrics (accuracy, AUC, MSE) don't directly measure "is the list in the right order" — two models with identical AUC can produce meaningfully different orderings of the top-$k$ results, which is the only part of the list most users ever see.
+
+## Three Formulations
+
+- **Pointwise**: treat each item independently — predict a relevance score (or click probability) per item via ordinary regression/classification, then sort by the predicted score. Simple, reuses standard ML machinery directly, but optimizes the wrong objective (per above) — it's a reasonable baseline, not the endpoint.
+- **Pairwise**: reframe the problem as *classification over pairs* — for two items $i$ and $j$ where $i$ is known to be more relevant, train the model to predict $i > j$. This directly optimizes for getting relative order right, which is much closer to what ranking quality actually means. **RankNet** is the canonical pairwise method: it turns the score difference between a pair into a probability via a sigmoid, and trains with cross-entropy on whether the "more relevant" item actually scored higher.
+- **Listwise**: optimize a ranking-quality metric (below) directly over the *entire list* at once, rather than decomposing into independent pairs. **LambdaMART** (gradient-boosted trees, see [Boosting](/docs/machine-learning/boosting), trained with "lambda gradients" that weight each pairwise comparison by how much swapping that pair would actually change the list's NDCG) is the most widely deployed listwise-style method in production search/ranking systems — it captures listwise ranking quality while still training with the well-understood, efficient machinery of gradient boosting.
+
+The general pattern — pointwise is simplest but optimizes the wrong thing, pairwise gets the relative-order objective right, listwise gets closest to the metric that's actually reported — is worth internalizing beyond just ranking: it recurs anywhere "get the order right" matters more than "get each individual score right."
+
+## Ranking Evaluation Metrics
+
+These are worth knowing precisely, since "which metric" materially changes what a ranking model is optimized toward:
+
+- **Precision@k / Recall@k**: of the top $k$ results, what fraction are relevant (Precision@k); of all relevant items, what fraction appear in the top $k$ (Recall@k) — same definitions as [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics#classification-metrics), applied to a ranked list's top slice.
+- **MRR (Mean Reciprocal Rank)**: for each query, take $\frac{1}{\text{rank of the first relevant result}}$, then average across queries. Rewards getting *a* relevant result high up quickly — a good fit for queries with one clear right answer (a navigational search query, "find the answer").
+- **NDCG (Normalized Discounted Cumulative Gain)**: the most complete standard ranking metric, and the one most listwise methods (including LambdaMART) directly target:
+  - **DCG**: $\sum_{i=1}^{k} \frac{2^{rel_i} - 1}{\log_2(i + 1)}$ — sums each result's relevance (which can be graded, not just relevant/irrelevant — a 0-4 relevance scale, say), discounted logarithmically by position, so a highly relevant result buried at position 20 contributes far less than the same result at position 1.
+  - **NDCG**: DCG divided by the *ideal* DCG (the DCG of the best-possible ordering of the same result set) — normalizing to $[0, 1]$ so NDCG is comparable across queries with different numbers of relevant results, where raw DCG wouldn't be.
+- **Choosing between them**: MRR when there's typically one right answer near the top; NDCG when relevance is graded and the quality of the *entire* top-$k$ ordering matters, not just whether one good result appeared somewhere in it — NDCG is the default in most modern search/ranking evaluation for exactly this completeness.
+
+## Feature Engineering for Ranking
+
+LTR models are almost always gradient-boosted trees (LambdaMART) or a deep ranking network fed a rich, heavily engineered feature set per query-item pair — the modeling technique matters less than getting these features right:
+
+- **Query-item features**: text match score (BM25, see [RAG](/docs/llms-genai/rag#dense-vs-sparse-retrieval-and-bm25)), embedding similarity, category match.
+- **Item features**: popularity, recency, price, historical CTR.
+- **User features**: personalization signals — past behavior, stated preferences, session context.
+- **Context features**: time of day, device, location — relevance is often genuinely contextual, not a fixed property of the item.
+
+## Where This Shows Up
+
+- **Search engines**: ranking documents/pages by relevance to a query — the original LTR use case.
+- **Recommendation ranking**: the ranking stage of the retrieval→rank→re-rank pipeline in [Recommender Systems](/docs/machine-learning/recommender-systems).
+- **Ad ranking**: ordering ads by a combination of predicted CTR and bid price.
+- **RAG reranking**: re-ordering retrieved chunks by relevance before feeding them to an LLM — see [RAG — Re-ranking with Cross-Encoders](/docs/llms-genai/rag#re-ranking-with-cross-encoders), the same pairwise/listwise ranking principles applied to retrieved text chunks instead of search results.
+
+Back to [Supervised Learning](/docs/machine-learning/supervised-learning) for the full overview, or [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics) to continue the Machine Learning roadmap.

@@ -1,0 +1,53 @@
+---
+title: "ML Workflow Fundamentals"
+sidebar_position: 3
+---
+
+
+# ML Workflow Fundamentals
+
+Before any algorithm, there's a workflow — and most real-world model failures trace back to a mistake in this workflow, not a bad algorithm choice.
+
+## Types of Learning
+
+- **Supervised learning**: you have labeled examples (input → correct output) and train a model to predict the output for new inputs. Covers classification (discrete labels) and regression (continuous values).
+- **Unsupervised learning**: no labels — the model finds structure on its own (clusters, compressed representations).
+- **Semi-supervised learning**: a small amount of labeled data plus a large amount of unlabeled data, common when labeling is expensive.
+- **Self-supervised learning**: labels are generated automatically from the data itself (e.g. "predict the next word" — no human labeling needed). This is how every modern LLM is pretrained.
+
+## Train / Validation / Test Splits
+
+- **Training set**: what the model learns from.
+- **Validation set**: used to tune hyperparameters and pick between model candidates, without touching the test set.
+- **Test set**: touched exactly once, at the very end, to report an unbiased estimate of real-world performance.
+
+**Cross-validation** (commonly k-fold): instead of a single train/validation split, split the data into $k$ folds, train $k$ times (each time holding out a different fold for validation), and average the results. Gives a more reliable performance estimate on smaller datasets, at the cost of $k\times$ the training time.
+
+## Data Leakage
+
+Data leakage is when information from outside the training set — often from the future, or from the test set — sneaks into training and makes a model look far better than it will perform in production. Common causes:
+
+- Normalizing/scaling the *entire* dataset before splitting (test set statistics leak into training)
+- Using a feature that's only available *after* the event you're predicting (e.g. using "was this transaction refunded" to predict fraud)
+- Duplicate or near-duplicate rows split across train and test
+
+**This is one of the most common real-world ML bugs** — a model with suspiciously excellent validation metrics is the first thing to double-check for leakage, not celebrate.
+
+## Feature Engineering & Selection
+
+- **Feature engineering**: transforming raw data into inputs that make patterns easier for a model to find — e.g. extracting "day of week" from a timestamp, or computing a ratio between two raw columns.
+- **Feature selection**: removing irrelevant or redundant features to reduce overfitting and training cost. Methods range from simple correlation filtering to model-based importance (e.g. from a trained tree ensemble) to wrapper methods that search feature subsets directly.
+
+## Handling Messy Data
+
+- **Missing data**: drop rows/columns, impute with mean/median/mode, or use model-based imputation. The right choice depends on *why* data is missing (missing at random vs. systematically).
+- **Outliers**: can be genuine signal (fraud) or noise (sensor error) — investigate before removing.
+- **Imbalanced classes**: when one class vastly outnumbers another (e.g. 1% fraud rate). A naive model can get 99% accuracy by always predicting "not fraud" — which is useless. Addressed with resampling, class weighting, or better metrics (see [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)).
+
+## Sampling Strategies
+
+- **Stratified sampling**: preserves class proportions across train/validation/test splits — critical for imbalanced data.
+- **Bootstrap sampling**: sampling with replacement, used inside bagging methods like Random Forests and for estimating confidence intervals via the bootstrap method.
+- **SMOTE** (Synthetic Minority Oversampling): generates synthetic examples of the minority class by interpolating between existing ones, rather than just duplicating them.
+
+Next: [Supervised Learning](/docs/machine-learning/supervised-learning) — the algorithms that turn this workflow into predictions.

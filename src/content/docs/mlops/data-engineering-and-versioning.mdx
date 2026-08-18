@@ -1,0 +1,58 @@
+---
+title: "Data Engineering & Versioning"
+sidebar_position: 4
+---
+
+
+import dataPipelineDark from './img/data-pipeline.png';
+import dataPipelineLight from './img/data-pipeline-light.png';
+
+# Data Engineering & Versioning
+
+MLOps starts with data, not models. A perfectly engineered training pipeline running on badly-sourced, unvalidated data produces a model that's precisely wrong.
+
+## The Data Pipeline
+
+<ThemedImage alt="Data source through ingestion, validation, transformation, storage, feature engineering, to training" sources={{light: dataPipelineLight, dark: dataPipelineDark}} />
+
+- **Data sources**: CSV/JSON/Parquet files, relational databases, REST APIs, object storage (S3-style), streaming systems (Kafka) — real production systems usually pull from several of these simultaneously.
+- **Ingestion**: getting data from the source into your system, on a schedule or continuously.
+- **Validation**: checking incoming data matches expected schema, types, and ranges *before* anything downstream touches it — catching a broken upstream data source here, not three stages later as a confusing model failure.
+- **Transformation**: cleaning, joining, reshaping — turning raw ingested data into a usable table.
+- **Storage**: where the processed data lives until needed — a data warehouse, a data lake, or plain object storage, depending on scale and query patterns.
+- **Feature engineering**: turning stored data into the actual model inputs (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals)).
+
+## Databases
+
+- **PostgreSQL / MySQL**: the standard relational stores for structured application and pipeline metadata (see [Databases — Relational](/docs/databases/relational/overview)).
+- **Redis**: an in-memory key-value store, used in ML systems for caching (e.g. cached predictions, cached feature lookups) where sub-millisecond access matters more than durability.
+- **MongoDB**: a document store, useful when data doesn't fit a rigid relational schema (e.g. variable-structure event logs).
+
+## Data Processing at Scale
+
+- **Pandas / NumPy**: the default for data that fits in memory on one machine — most experimentation and small-to-mid production pipelines never need more than this.
+- **Polars**: a newer DataFrame library built for speed (multi-threaded, written in Rust) — a drop-in-flavored alternative to Pandas when single-machine performance starts to matter.
+- **PySpark**: distributed data processing across a cluster, for datasets too large for one machine's memory — the standard choice once you outgrow Pandas, especially paired with **Databricks** for managed Spark infrastructure.
+
+## Data Versioning: Why Code Versioning Isn't Enough
+
+Git versions code beautifully and versions large binary data terribly — datasets are too large for git's diffing model, and "which exact version of this 500GB dataset trained this model" is a question git alone can't answer. This is the entire reason dedicated data versioning tools exist.
+
+**What you actually need to track**:
+- **Data lineage**: which raw sources and transformations produced a given dataset.
+- **Data provenance**: where a specific piece of data originally came from.
+- **Dataset snapshots/versioning**: being able to reference "the exact dataset used to train model v3," reproducibly, months later.
+- **Data reproducibility**: given the same code and the same data version, get the same trained model.
+
+## Tools
+
+- **DVC (Data Version Control)**: the most common starting point — versions large files/datasets alongside git, storing the actual data in remote storage (S3, GCS, etc.) while git tracks lightweight pointer files. Effectively "git for data," using a workflow deliberately familiar to anyone who already knows git.
+- **LakeFS**: brings git-like branching and versioning semantics directly to a data lake — branch a dataset, experiment, merge back, exactly like a code branch.
+- **Delta Lake**: adds versioned, ACID-compliant tables on top of a data lake (built on Apache Spark) — every write creates a new, queryable version, enabling "time travel" queries against past states of a table.
+- **Apache Iceberg**: a similar table format to Delta Lake (versioned, schema-evolving tables over object storage), engine-agnostic rather than Spark-specific — increasingly the default choice for new data lake infrastructure.
+
+## Data Contracts & Schema Evolution
+
+A **data contract** is an explicit agreement between whoever produces data and whoever consumes it: field names, types, allowed ranges, update frequency — formalizing what used to be an implicit, easily-broken assumption. **Schema evolution** is the discipline of changing that schema over time (adding a field, changing a type) without silently breaking every downstream consumer — versioned schemas and backward-compatible changes (e.g. new fields are optional, not required) are the standard approach.
+
+Next: [Experiment Tracking](/docs/mlops/experiment-tracking) — once your data is versioned and trustworthy, tracking what you actually did with it.

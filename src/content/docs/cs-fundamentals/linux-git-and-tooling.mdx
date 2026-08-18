@@ -1,0 +1,41 @@
+---
+title: "Linux, Git & Developer Tooling"
+sidebar_position: 5
+---
+
+
+# Linux, Git & Developer Tooling
+
+The tools this page covers aren't ML-specific, but every ML job assumes fluency in them — training jobs run on Linux servers, every serious codebase is versioned with Git, and debugging a stuck training run at 2am means being comfortable at a shell prompt with no IDE in sight.
+
+## The Shell
+
+- **Pipes (`|`)**: chain commands together, feeding one command's output as the next's input — `cat train.log | grep "loss" | tail -20` to see the last 20 logged loss values without opening the file.
+- **Redirection (`>`, `>>`, `2>`)**: send a command's output to a file instead of the terminal (`>` overwrites, `>>` appends), and `2>` specifically redirects error output — separating a training script's real output from its warnings.
+- **`grep`**: search text for a pattern — `grep -n "CUDA out of memory" *.log` to find exactly which log file and line hit an OOM.
+- **`awk`**: pattern-scan and process structured text, especially column-based data — extracting the 3rd whitespace-separated column from every line of a metrics dump.
+- **`sed`**: stream-edit text — find-and-replace across files without opening an editor.
+- **Process management**: `ps` (list running processes), `top`/`htop` (live resource usage — the first thing to check when a training run "feels slow"), `kill`/`kill -9` (terminate a process gracefully vs. forcibly), `nvidia-smi` (the GPU equivalent of `top`, showing GPU utilization, memory, and which processes are using them).
+
+## The Linux Filesystem and Permissions
+
+- **Filesystem hierarchy**: `/home` (user files), `/tmp` (scratch space, often cleared on reboot — never store anything you need to keep here), `/var/log` (system and service logs), `/etc` (system configuration).
+- **Permissions**: every file has read/write/execute permissions for its owner, its group, and everyone else (`rwxr-xr-x` style notation, or the equivalent octal `755`). A common real gotcha: a script that "isn't running" because it's missing execute permission (`chmod +x script.sh`), or a training job failing to write checkpoints because it lacks write permission on the output directory.
+
+## Git Internals (Not Just Commands)
+
+Knowing `git add`/`commit`/`push` gets you through daily work; understanding what's actually happening underneath makes merge conflicts, rebases, and "how do I get back a commit I thought I lost" far less scary:
+
+- **Blob**: the compressed content of a single file's contents, identified by the SHA-1 hash of that content — identical file content anywhere in a repo's history is stored exactly once.
+- **Tree**: a snapshot of a directory — a list of blobs (files) and other trees (subdirectories), each with a name and mode.
+- **Commit**: a pointer to one tree (the full project state at that point), plus a pointer to its parent commit(s), an author, and a message. A commit is a snapshot of *everything*, not a diff — Git computes diffs on the fly for display, but what's actually stored is a chain of full snapshots (deduplicated via content-addressed blobs, so this is cheaper than it sounds).
+- **Branch**: nothing more than a movable pointer to a commit — `git branch` creates a new named pointer, `git commit` on that branch moves the pointer forward. This is why Git branches are so cheap to create compared to some other version control systems' branches.
+- **Why this matters for `rebase` vs. `merge`**: a merge creates a new commit with two parents, preserving the actual history of both branches. A rebase *rewrites* commits — it replays your branch's commits one by one on top of a new base, producing new commits with new hashes. Understanding that a rebased commit is a genuinely different object (not the "same" commit relocated) explains why force-pushing after a rebase is necessary, and why rebasing commits that have already been pushed and pulled by someone else causes real problems (their history now disagrees with yours about what those commits even are).
+
+## Compilers vs. Interpreters
+
+- **Compiled languages** (C++, Rust) translate source code into machine code *ahead of time*, producing a standalone executable — faster at runtime, but a build step is required before anything runs.
+- **Interpreted languages** (pure Python) execute source code line-by-line at runtime via an interpreter — no separate build step, slower per-operation.
+- **What Python/PyTorch actually are**: Python itself is technically compiled to bytecode (not machine code) which the CPython interpreter then executes — a hybrid, not purely interpreted in the strictest sense. The reason PyTorch code isn't nearly as slow as "pure Python would suggest" is that the actual numeric work (matrix multiplies, convolutions) happens in pre-compiled C++/CUDA kernels — Python is just the orchestration layer calling into compiled code, which is also exactly why a Python `for` loop over tensor elements is catastrophically slower than a single vectorized tensor operation: the loop version pays Python's interpretation overhead per element, the vectorized version pays it once.
+
+Next: [Software Engineering Practice](/docs/cs-fundamentals/software-engineering-practices) — turning this tooling fluency into code that survives contact with a team and a production system.

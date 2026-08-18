@@ -1,0 +1,48 @@
+---
+title: "Agents — Roadmap"
+sidebar_position: 2
+---
+
+
+# Agents — Roadmap
+
+How LLMs go from answering questions to taking actions, using tools, and coordinating with each other.
+
+## 1. [Agent Fundamentals](/docs/agents/agent-fundamentals)
+- [ ] What makes something an "agent" vs a single LLM call
+- [ ] Tool use / function calling — how models decide to call tools and parse results
+- [ ] Designing tools: naming, descriptions, argument schemas
+- [ ] Agent memory: short-term (context) vs long-term (persisted) memory
+
+## 2. [Agent Architectures](/docs/agents/agent-architectures)
+- [ ] ReAct (Reasoning + Acting) loop
+- [ ] Plan-and-Execute pattern
+- [ ] Reflection / self-critique loops
+- [ ] Routing and the supervisor pattern
+- [ ] Single-agent vs multi-agent systems
+- [ ] Sub-agents and orchestrator patterns
+- [ ] Memory and state: short-term vs long-term, episodic vs semantic
+- [ ] Human-in-the-loop: approval gates, escalation, active correction
+- [ ] Durable execution: retries, checkpoints, long-running agents
+- [ ] Sandboxing for code/computer-use actions
+- [ ] Application patterns: browser agents, coding agents, computer-use agents, autonomous research agents
+
+## 3. Protocols
+- [ ] **[MCP (Model Context Protocol)](/docs/agents/mcp/overview)** — standardizing how agents connect to tools and data sources
+  - [ ] MCP servers vs clients
+  - [ ] Resources, tools, and prompts in MCP
+  - [ ] **[Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive)** — transport (stdio/HTTP+SSE), sessions & lifecycle, tool discovery & JSON Schema, errors, auth/authz, security, enterprise deployment, building a server
+- [ ] **[A2A (Agent-to-Agent)](/docs/agents/a2a/overview)** — how independent agents discover and communicate with each other
+  - [ ] Agent cards / capability discovery
+  - [ ] Task delegation between agents
+
+## 4. [Multi-Agent Systems](/docs/agents/multi-agent-systems)
+- [ ] Coordination patterns: hierarchical, peer-to-peer, blackboard
+- [ ] Shared state and conflict resolution
+- [ ] When multi-agent actually beats a single well-prompted agent (and when it doesn't)
+
+## 5. Common Problems & SOTA Solutions
+- [ ] **Agent loses context over long tasks** → memory systems, summarization, external state stores
+- [ ] **Agent gets stuck in loops** → step limits, reflection checkpoints, human-in-the-loop escalation
+- [ ] **Tool-calling hallucination** (calling tools that don't exist, malformed args) → strict schemas, validation, retries
+- [ ] **Runaway cost/latency in multi-agent chains** → caching, cheaper models for sub-tasks, parallelization

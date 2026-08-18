@@ -1,0 +1,22 @@
+---
+title: "Logistic Regression Studio"
+sidebar_position: 12
+---
+
+
+import LogisticRegressionStudio from '../../../viz/LogisticRegressionStudio';
+
+# Logistic Regression Studio
+
+The same "drag it, watch it converge" treatment as the [Linear Regression Studio](/docs/visual-lab/linear-regression-studio), applied to classification: a real study-hours-vs-pass/fail dataset, a real sigmoid curve, and — the standout feature — a side-by-side comparison of real cross-entropy loss against the non-convex MSE-on-sigmoid alternative that [Logistic Regression, In Full Depth](/docs/machine-learning/logistic-regression) warns about, both computed from scratch.
+
+<LogisticRegressionStudio />
+
+## What to Try
+
+- In **Fit It Yourself**, drag $w$ and $b$ until every point turns green (correctly classified) — notice the decision boundary (the dashed vertical line) is always a single point on this 1D version, because it's exactly where the sigmoid crosses 0.5.
+- In **Gradient Descent Lab**, run **Cross-Entropy** from the default bad starting point and watch accuracy climb from near-zero to a respectable fit within a few hundred steps.
+- Now switch to **MSE (naive)** and **Reset** — same starting point, same learning rate, same data. Watch it get stuck: loss barely moves, `dw`/`db` in the step log shrink toward zero, and the loss landscape panel visibly looks bumpier and flatter near the (wrong) starting region than cross-entropy's landscape did. That's a **vanishing gradient**, live — the sigmoid's own derivative ($\hat{p}(1-\hat{p})$, at most 0.25) multiplies directly into the naive loss's gradient and crushes it near saturation, exactly the mechanism [Logistic Regression's "Why Not Just Use MSE Loss?"](/docs/machine-learning/logistic-regression#why-not-just-use-mse-loss) describes in prose.
+- Push the learning rate slider up in either loss mode and watch the loss stop decreasing monotonically and start bouncing around instead — real oscillation, not a scripted effect.
+
+Back to [Visual Lab Overview](/docs/visual-lab/overview).

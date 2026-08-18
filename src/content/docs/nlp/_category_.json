@@ -1,0 +1,8 @@
+{
+  "label": "NLP",
+  "position": 3.6,
+  "link": {
+    "type": "generated-index",
+    "description": "The classical NLP layer underneath every LLM: tokenization and normalization, POS tagging, NER, parsing, word embeddings (word2vec/GloVe), sequence labeling, and the task taxonomy (translation, summarization, QA, sentiment) Transformers now dominate."
+  }
+}

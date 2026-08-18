@@ -1,0 +1,42 @@
+---
+title: "APIs & Model Serving"
+sidebar_position: 8
+---
+
+
+# APIs & Model Serving
+
+A trained model artifact (a `.pkl`, a `.pt` file) does nothing by itself — something has to load it, accept requests, run inference, and return a response, reliably and at whatever scale production traffic demands.
+
+## Building the API
+
+- **FastAPI** (the modern default) / **Flask** (older, still common): Python web frameworks for exposing a `predict` endpoint over HTTP.
+- **REST**: the standard request/response API style — `POST /predict` with a JSON body in, a JSON body out.
+- **Auth**: API keys, OAuth2, or JWT tokens gating who can call the endpoint.
+- **Validation**: enforce the request schema (Pydantic in FastAPI) before it reaches the model — malformed input should fail fast with a clear error, not crash the model or silently produce garbage.
+- **Serialization**: converting model inputs/outputs to and from JSON (or a binary format like Protobuf for performance-sensitive paths).
+- **Async APIs**: `async def` endpoints let the server handle other requests while waiting on I/O (a database call, a feature-store lookup) instead of blocking — important once the endpoint does more than "call `model.predict()`."
+- **Versioning**: `/v1/predict`, `/v2/predict` — so a new model version can roll out without silently breaking every existing caller.
+- **Rate limiting**: caps requests per client to protect the service (and the GPU behind it) from being overwhelmed by one caller.
+
+## Batch, Online, and Streaming Inference
+
+- **Batch inference**: run predictions on a large accumulated dataset on a schedule (e.g. nightly), writing results to storage for later use — no latency pressure, optimized for throughput.
+- **Online (real-time) inference**: a live API call gets a prediction back synchronously, within a latency budget (often under 100ms) — the classic "serve a model behind an endpoint" case.
+- **Streaming inference**: predictions computed continuously as new events arrive on a stream (Kafka, Kinesis) — used for real-time fraud detection, recommendation updates, etc., where waiting for a batch window isn't acceptable.
+
+Picking the wrong one is a common design mistake: batch inference for a use case that actually needs sub-second responses (or the reverse — standing up a real-time API for a report that only needs to run nightly) wastes either latency budget or infrastructure cost.
+
+## Serving Tools
+
+- **FastAPI (hand-rolled)**: full control, but you own all the model-loading, batching, and versioning logic yourself.
+- **MLflow serving**: turns a model logged in MLflow (see [Experiment Tracking](/docs/mlops/experiment-tracking)) into a REST endpoint with one command — the fastest path from "logged experiment" to "running endpoint."
+- **BentoML**: a framework purpose-built for packaging and serving ML models, with built-in support for adaptive batching, multiple model runners in one service, and easy containerization.
+- **TorchServe**: PyTorch's official model-serving tool — handles model versioning, batching, and metrics out of the box for PyTorch models specifically.
+- **NVIDIA Triton Inference Server**: a general-purpose, multi-framework, GPU-optimized serving server (PyTorch, TensorFlow, ONNX, TensorRT models all served the same way) — the standard choice once GPU throughput and multi-model serving matter; see [LLM Inference Engines](/docs/mlops/llm-inference-engines) for how it compares to LLM-specific engines like vLLM.
+- **Ray Serve**: model serving built on Ray's distributed compute framework — strong for composing multiple models/steps into one serving pipeline (a "model graph") that scales horizontally.
+- **KServe**: a Kubernetes-native model serving layer (built on Knative) providing standardized serving, autoscaling (including scale-to-zero), and canary rollouts for models deployed on [Kubernetes](/docs/mlops/kubernetes).
+
+The right choice depends on where the model runs: a single PyTorch model behind a moderate-traffic API is well served by TorchServe or BentoML; a multi-model, GPU-heavy, high-throughput system is where Triton or KServe earn their extra operational complexity.
+
+Next: [Cloud Computing for ML](/docs/mlops/cloud-computing) — the infrastructure all of the above actually runs on.

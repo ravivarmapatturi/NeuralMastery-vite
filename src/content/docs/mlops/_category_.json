@@ -1,0 +1,8 @@
+{
+  "label": "MLOps",
+  "position": 6.5,
+  "link": {
+    "type": "generated-index",
+    "description": "Taking a model from a notebook to a production system: data versioning, experiment tracking, pipelines, containers, Kubernetes, CI/CD, monitoring, drift detection, and LLMOps/RAGOps for production GenAI systems."
+  }
+}

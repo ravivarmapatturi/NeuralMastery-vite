@@ -1,0 +1,51 @@
+---
+title: "Operating Systems & Concurrency"
+sidebar_position: 3
+---
+
+
+# Operating Systems & Concurrency
+
+Every "why is my training script slow" and "why did two processes corrupt each other's state" question eventually traces back to something in this page.
+
+## Processes vs. Threads
+
+- **Process**: an independently running program with its own private memory space. Two processes can't accidentally overwrite each other's variables — the OS isolates them — but that isolation means sharing data between them requires explicit mechanisms (pipes, shared memory, sockets), which is slower and more complex than just sharing a variable.
+- **Thread**: a unit of execution *within* a process, sharing that process's memory space with every other thread in it. Threads can read/write the same variables directly (fast, but dangerous — see race conditions below), and creating a thread is much cheaper than creating a process.
+- **The core tradeoff**: processes give you isolation at the cost of communication overhead; threads give you cheap communication at the cost of isolation (and the bugs that come from losing it).
+
+## Concurrency vs. Parallelism
+
+These get used interchangeably in casual conversation but mean different things:
+
+- **Concurrency**: *managing* multiple tasks that are in progress at overlapping times — they might not literally run at the same instant, just interleaved (e.g. a single CPU core rapidly switching between tasks).
+- **Parallelism**: multiple tasks *literally executing at the same instant*, which requires multiple actual execution units (multiple CPU cores, or a GPU's thousands of cores).
+
+Concurrency is about structure (how you organize overlapping work); parallelism is about execution (whether it's physically simultaneous). You can have concurrency without parallelism (single core, interleaved) and parallelism without much concurrency (SIMD operations on a GPU, structurally simple, massively parallel).
+
+## Python's GIL, and Why It Matters for ML Specifically
+
+The **Global Interpreter Lock (GIL)** ensures only one thread executes Python bytecode at a time within a single process, regardless of how many CPU cores are available. This has a direct, practical consequence for ML engineering:
+
+- **Multithreading in Python doesn't give you CPU parallelism** for pure-Python code — two threads doing CPU-bound Python work don't run any faster than one, because the GIL serializes them. Multithreading *does* still help for I/O-bound work (waiting on a network call, waiting on disk) because the GIL is released during I/O waits.
+- **Multiprocessing sidesteps the GIL entirely** — each process gets its own Python interpreter and its own GIL, so `n` processes really do get `n`-way CPU parallelism. This is why PyTorch's `DataLoader` uses `num_workers` (separate *processes*, not threads) to parallelize data loading/preprocessing — pure-Python image decoding and augmentation would otherwise be GIL-bottlenecked to one core no matter how many `DataLoader` threads you configured.
+- **Numeric libraries mostly don't hit this limit** — NumPy, PyTorch, and similar libraries release the GIL while executing their compiled C/C++/CUDA kernels, which is exactly why `tensor_a @ tensor_b` running across many cores (or a GPU) isn't GIL-limited even though it's called from Python.
+
+## Memory: Stack, Heap, Virtual Memory
+
+- **Stack**: fast, automatically-managed memory for function calls and local variables — allocated and freed automatically as functions are entered/exited, in strict last-in-first-out order.
+- **Heap**: memory you (or your language's garbage collector) explicitly manage — every Python object, every PyTorch tensor's underlying buffer lives here. Slower to allocate than the stack, but flexible in size and lifetime.
+- **Virtual memory**: every process sees its own private, contiguous address space, regardless of how physical RAM is actually laid out — the OS's memory management unit (MMU) translates virtual addresses to physical ones transparently. This is what lets a process reference more memory than is physically installed (backed by disk-based swap) and what keeps one process from directly reading another's memory.
+- **Paging**: virtual memory is divided into fixed-size pages, mapped to physical memory frames on demand — a **page fault** occurs when a program accesses a page not currently in physical RAM, triggering the OS to load it (from swap, or a memory-mapped file). Excessive paging ("thrashing") is a classic cause of a machine that's technically "not out of memory" but has become unusably slow.
+
+## CPU Caches
+
+Between the CPU and RAM sits a hierarchy of progressively larger, progressively slower caches (L1 → L2 → L3), because RAM access is orders of magnitude slower than the CPU's own clock cycle. **Cache-friendly code** accesses memory in predictable, sequential patterns (matching how caches load contiguous blocks, "cache lines," at once) — this is a large part of *why* NumPy/PyTorch operations on contiguous arrays are so much faster than the equivalent pure-Python loop over a list: vectorized operations access memory sequentially and predictably, keeping the CPU fed from cache instead of stalling on RAM access for every single element.
+
+## File Systems and I/O
+
+- **Sequential vs. random I/O**: reading a large file sequentially is dramatically faster than reading many small, scattered files — a direct, practical reason formats like TFRecord/WebDataset/Parquet (which pack many small training examples into large sequential files) exist for large-scale ML data pipelines, instead of one file per training example.
+- **Buffered I/O**: the OS caches recently-read disk blocks in RAM, which is why a second read of the same file is often much faster than the first — relevant when reasoning about "why did my dataloader suddenly speed up after the first epoch."
+- **Memory-mapped files (`mmap`)**: map a file's contents directly into a process's virtual address space, so reading from it looks like reading from memory, with the OS handling the actual disk I/O on demand via page faults — how many large-dataset and large-model-loading libraries avoid reading an entire multi-gigabyte file into RAM upfront.
+
+Next: [Networking & Distributed Systems](/docs/cs-fundamentals/networking-and-distributed-systems) — the same concurrency/isolation tradeoffs above, at the scale of multiple machines instead of multiple processes on one.

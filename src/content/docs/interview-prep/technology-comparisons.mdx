@@ -1,0 +1,66 @@
+---
+title: "Technology Comparisons & Decision Trees"
+sidebar_position: 5.5
+---
+
+
+# Technology Comparisons & Decision Trees
+
+"When would you use X instead of Y" is one of the most common senior/staff-level interview questions across ML, infra, and system design rounds — and one candidates who only know facts *about* each tool, not the tradeoff *between* them, consistently struggle with. This page is the tradeoff, stated directly, for the comparisons that come up most.
+
+## vLLM vs. SGLang vs. TensorRT-LLM vs. Triton vs. llama.cpp
+
+Covered individually in [LLM Inference Engines](/docs/mlops/llm-inference-engines) — the decision in one pass:
+
+- **Need the safest, best-supported general-purpose choice?** → vLLM.
+- **Heavy agent workloads with shared prompt prefixes, or need structured/constrained generation?** → SGLang (RadixAttention specifically targets prefix-sharing workloads).
+- **Need the absolute fastest inference on NVIDIA hardware, and can afford a heavier compilation/deployment workflow?** → TensorRT-LLM.
+- **Serving LLMs *and* classical/vision models, need one unified serving layer?** → Triton (general-purpose, multi-framework, not LLM-specialized).
+- **CPU-only, consumer hardware, or edge/local deployment?** → llama.cpp with GGUF.
+
+## LangChain vs. LangGraph
+
+- **LangChain**: a general toolkit for chaining LLM calls, tools, and retrieval together — the right choice for straightforward, mostly-linear pipelines (a RAG chain, a simple tool-calling agent) where you want pre-built integrations and don't need fine-grained control over control flow.
+- **LangGraph**: purpose-built for representing agents as an explicit state graph — nodes and edges, with conditional routing between them (see [Agent Architectures — Supervisor Pattern](/docs/agents/agent-architectures#supervisor-pattern)) — the right choice once an agent's control flow is genuinely non-linear (loops, conditional branches, multiple agents handing off to each other) and you need to reason about and debug that flow explicitly, which a simpler chain abstraction doesn't expose well.
+
+## RAG vs. Fine-Tuning
+
+The single most common "which should I use" question in applied LLM work — see [Prompt Engineering](/docs/llms-genai/prompt-engineering) and [Training Pipeline](/docs/llms-genai/training-pipeline) for each individually:
+
+- **Need the model to know specific, current, or proprietary facts?** → RAG. Fine-tuning is a poor tool for injecting *factual* knowledge reliably — it's much better at teaching *behavior* (format, tone, task-following) than at reliably making new facts recallable on demand, and RAG's grounding is also auditable (you can point to the retrieved source) in a way a fine-tuned model's "knowledge" isn't.
+- **Need the model to reliably follow a specific format, tone, or domain-specific behavior pattern?** → Fine-tuning (or, for many cases, well-designed prompting/few-shot examples first — fine-tuning is a bigger investment, reach for it once prompting alone genuinely isn't sufficient).
+- **Need both?** → Very common in practice: fine-tune for behavior/format, RAG for facts — the two solve different problems and combine cleanly rather than being mutually exclusive.
+
+## LoRA vs. QLoRA vs. Full Fine-Tuning
+
+Covered in [Training Pipeline — PEFT](/docs/llms-genai/training-pipeline#parameter-efficient-fine-tuning-peft):
+
+- **Full fine-tuning**: maximum capacity to change the model, most expensive (full gradient/optimizer state for every parameter), needed when the task requires substantial behavior change beyond what a low-rank update can capture.
+- **LoRA**: the default for most practical fine-tuning — far cheaper, nearly as effective for most tasks, produces small, swappable adapter weights.
+- **QLoRA**: LoRA plus 4-bit quantization of the frozen base model — the choice when GPU memory (not just compute) is the binding constraint, e.g. fine-tuning a large model on a single consumer GPU.
+
+## SQL Database vs. Vector Database vs. Graph Database
+
+- **SQL (relational)**: structured data with well-defined relationships, needing exact queries, transactions, and strong consistency guarantees — the default for transactional/operational data (see [Databases — Relational](/docs/databases/relational/overview)).
+- **Vector database**: semantic similarity search over embeddings — the right tool when the query is "find things *similar in meaning* to this," not an exact match (see [Databases — Vector](/docs/databases/vector/overview)), the backbone of RAG retrieval.
+- **Graph database**: data where the *relationships* between entities are the primary thing being queried — multi-hop traversals ("friends of friends who also..."), not just storing connected data in a relational schema (see [Databases — Graph](/docs/databases/graph/overview)) — the right choice when queries are naturally graph-shaped (GraphRAG, fraud rings, recommendation via shared connections) rather than forcing a graph-shaped query through relational joins, which gets slow and unwieldy past a few hops.
+- **Not mutually exclusive**: a real production system commonly uses all three together — SQL for transactional data, a vector DB for semantic retrieval, a graph DB for relationship traversal — each for the query pattern it's actually built for.
+
+## DDP vs. FSDP vs. ZeRO
+
+Covered in [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training):
+
+- **DDP (Distributed Data Parallel)**: the full model replicated on every GPU — simplest, works whenever the model fits on a single GPU's memory.
+- **FSDP / ZeRO**: shard the model's parameters, gradients, and optimizer state across GPUs instead of replicating everything — needed once the model no longer fits in one GPU's memory even before considering activations, or once memory (not compute) is the binding constraint on batch size. FSDP (PyTorch-native) and ZeRO (DeepSpeed) solve the same problem with similar mechanics — the practical choice between them usually comes down to which framework the rest of the training stack is already built on.
+
+## CUDA vs. ROCm
+
+- **CUDA**: NVIDIA's proprietary compute platform — the default, by far the most mature ecosystem (every major framework, every optimized kernel library targets it first), and the safe choice for nearly all real-world ML infrastructure work today.
+- **ROCm**: AMD's open-source alternative compute platform, for AMD GPUs — improving steadily, and relevant specifically when AMD hardware is already the deployment target (cost, procurement, or specific large-scale deals) or when open-source tooling independence from a single vendor matters strategically — but expect meaningfully less mature framework/library support and more rough edges than the CUDA ecosystem, as of this writing.
+
+## PyTorch vs. JAX
+
+- **PyTorch**: the dominant framework for the overwhelming majority of production ML and LLM work — eager-mode-first execution (easier to debug, more intuitive control flow), the largest ecosystem of pretrained models and libraries, and where essentially every tool covered in this site's [MLOps](/docs/mlops/roadmap) and [Inference Engineering](/docs/mlops/llm-inference-engines) coverage assumes you're starting from.
+- **JAX**: built around function transformations (`grad`, `jit`, `vmap`, `pmap`) composed functionally, with a strong emphasis on pure functions and explicit compilation — particularly favored in research settings (much of Google DeepMind's research work) and for large-scale TPU training specifically, where JAX's compilation model maps unusually well onto TPU hardware. The practical guidance: default to PyTorch unless you have a specific reason to reach for JAX (a research lab/team already standardized on it, or TPU-scale training where JAX's advantages are most pronounced).
+
+Next: [System Design Practice](/docs/interview-prep/system-design-practice) — where these tradeoffs get applied inside a full system design interview, not just recited in isolation.

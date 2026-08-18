@@ -1,0 +1,8 @@
+{
+  "label": "AI Security",
+  "position": 6.6,
+  "link": {
+    "type": "generated-index",
+    "description": "The adversarial-ML security discipline: the OWASP LLM Top 10, prompt injection and jailbreaks, insecure output handling and excessive agency, model extraction and membership inference, data poisoning and backdoors, adversarial examples, and AI supply-chain attacks."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Agents",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Agentic patterns, MCP, A2A, tool use, and multi-agent systems."
+  }
+}

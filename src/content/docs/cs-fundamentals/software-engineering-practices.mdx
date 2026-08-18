@@ -1,0 +1,46 @@
+---
+title: "Software Engineering Practice"
+sidebar_position: 6
+---
+
+
+# Software Engineering Practice
+
+Everything on this page is language- and domain-agnostic — it's general engineering skill, not ML theory. [Engineering Foundations for ML](/docs/mlops/engineering-foundations) covers the ML-specific *testing taxonomy* (data validation tests, model tests, and the rest); this page covers the general practice underneath: design patterns, testing philosophy, profiling, and debugging.
+
+## Design Patterns Relevant to ML Systems
+
+Not a full Gang-of-Four tour — the handful that show up constantly in ML codebases specifically:
+
+- **Strategy**: encapsulate an interchangeable algorithm behind a common interface — e.g. a `Model` class that can be backed by any of several architectures, or an `Optimizer` interface that SGD/Adam/AdamW all implement identically from the caller's perspective. This is *why* swapping an optimizer in PyTorch is a one-line change: the training loop only depends on the `Optimizer` interface, not a specific implementation.
+- **Factory**: centralize object creation behind a function/class instead of scattering `SomeClass(...)` construction calls everywhere — a `build_model(config)` function that returns the right architecture based on a config file is a factory, and it's what makes "swap the model by changing one YAML value" possible.
+- **Observer**: let objects subscribe to events without the event source knowing who's listening — the pattern behind logging/callback systems in training frameworks (a `on_epoch_end` callback doesn't require the training loop to know anything about what the callback does).
+- **Decorator**: wrap a function/object to add behavior without modifying its source — Python's `@decorator` syntax is a direct language-level implementation of this; `@torch.no_grad()` is a decorator that wraps a function so it runs without gradient tracking, without that function needing to know anything about gradients at all.
+- **Singleton**: ensure only one instance of something exists globally — used (and *overused*) for things like a shared logging configuration or a single database connection pool; worth knowing as a pattern and also worth being suspicious of, since singletons introduce hidden global state that makes testing harder.
+
+The unifying theme: every pattern above exists to reduce coupling — letting one piece of code change without forcing changes everywhere it's used. That's the actual skill; the named patterns are just recognizable shapes that solution recurringly takes.
+
+## Testing Philosophy
+
+- **The testing pyramid**: many fast, cheap unit tests at the base; fewer, slower integration tests in the middle; very few, slowest end-to-end tests at the top. Invert this (few unit tests, tons of slow end-to-end tests) and a test suite becomes too slow to run often, which defeats the point of having it.
+- **What to test**: logic with real branching/edge cases, anything that's broken in production before, anything a teammate would reasonably assume was already covered.
+- **What *not* to test**: framework code you don't own (don't test that PyTorch's `nn.Linear` computes a matrix multiply correctly — that's PyTorch's test suite's job), trivial getters/setters, implementation details that would make the test break on every harmless refactor even when behavior didn't change.
+- **Flaky tests**: a test that sometimes passes and sometimes fails with no code change is worse than no test at all — it trains the team to ignore red CI, which is how a real failure eventually slips through unnoticed. Common ML-specific causes: an un-seeded random number generator, a test that depends on wall-clock timing, floating-point comparisons using exact equality instead of a tolerance.
+
+## Profiling
+
+Guessing where a program spends its time is unreliable — profile before optimizing, always:
+
+- **CPU profiling**: measures where time is actually spent. **Sampling profilers** (e.g. `py-spy`) periodically snapshot the call stack with very low overhead, good for profiling a live production process without slowing it down meaningfully. **Instrumenting profilers** (e.g. `cProfile`) record every function call precisely, giving exact counts/timing at the cost of much higher overhead — better for isolated benchmarking than production use.
+- **Memory profiling**: tracks *where* memory is allocated and *what's* holding onto it — essential for tracking down a slow memory leak in a long-running training job or serving process, which usually isn't obvious from the code alone.
+- **Flame graphs**: a visualization of profiler output where each function's time is a horizontal bar, stacked by call depth — the width immediately shows which function actually dominates runtime, which is often surprising ("90% of the time is in a JSON-parsing call nobody thought was hot").
+- **The specific ML gotcha**: `nvidia-smi` showing "GPU at 40% utilization" during training usually doesn't mean "the GPU needs more work" — it usually means the GPU is *waiting* on something else (data loading, a CPU-bound preprocessing step, a synchronization point) far more often than it means the model itself is inefficient. Profile the *data pipeline*, not just the model, before assuming a slow training loop needs a faster GPU.
+
+## Debugging Methodology
+
+- **Reproduce first**: an intermittent bug you can't reliably reproduce is nearly unfixable — the first job is almost always finding a reliable, minimal way to trigger it, even if that means adding logging/retries to catch it "in the act."
+- **Bisection**: to find which of many changes introduced a bug, don't guess — binary search. `git bisect` automates exactly this: mark a known-good commit and a known-bad commit, and it checks out the midpoint repeatedly, halving the search space each time, turning "which of these 200 commits broke it" into ~8 checks instead of 200.
+- **Isolate variables**: strip a failing case down to the smallest input/configuration that still reproduces the bug — removing everything not strictly necessary to trigger it. A bug that only reproduces with the full training pipeline running is far harder to reason about than the same bug reproduced with a five-line script.
+- **Print debugging vs. a real debugger**: `print`/logging is fast to add and fine for straightforward "what value is this" questions; an interactive debugger (`pdb`, an IDE debugger) earns its overhead when you need to inspect state at a specific point, step through logic, or the bug depends on complex object state that's tedious to log completely.
+
+Next: [Mathematics for AI](/docs/mathematics-for-ai/roadmap) — with the systems layer in place, the math this section runs on.

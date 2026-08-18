@@ -1,0 +1,8 @@
+{
+  "label": "Domain AI Applications",
+  "position": 7.3,
+  "link": {
+    "type": "generated-index",
+    "description": "Healthcare AI in depth (clinical NLP, medical imaging, EHR, clinical RAG/agents, HIPAA, hallucination risk) as the flagship domain track, plus finance, semiconductor, cybersecurity, robotics, and manufacturing applications."
+  }
+}

@@ -70,14 +70,21 @@ function isThemedImageImport(line) {
   return /^import ThemedImage from ['"]@theme\/ThemedImage['"];?\s*$/.test(line);
 }
 
-/** Resolves a Docusaurus-relative doc link (./foo.md, ../section/foo.md#anchor) to a route. */
-function resolveDocLink(currentSection, linkPath) {
+/**
+ * Resolves a Docusaurus-relative doc link (./foo.md, ../section/foo.md,
+ * ../../other-section/foo.md#anchor) to a route. `currentDocDir` is the
+ * migrating file's own directory relative to docs/ (e.g. "agents/mcp" for
+ * a nested file, not just its top-level section "agents") -- resolving
+ * against the section alone breaks links from any file that itself lives
+ * in a subdirectory.
+ */
+function resolveDocLink(currentDocDir, linkPath) {
   const hashIdx = linkPath.indexOf('#');
   const pathPart = hashIdx === -1 ? linkPath : linkPath.slice(0, hashIdx);
   const hash = hashIdx === -1 ? '' : linkPath.slice(hashIdx);
   if (!pathPart) return linkPath; // pure in-page anchor
   const withoutExt = pathPart.replace(/\.mdx?$/, '');
-  const base = currentSection ? `/docs/${currentSection}` : '/docs';
+  const base = currentDocDir ? `/docs/${currentDocDir}` : '/docs';
   const resolved = path.posix.normalize(path.posix.join(base, withoutExt));
   return resolved + hash;
 }
@@ -92,6 +99,11 @@ function migrateFile(srcFile, section, sectionSrcRoot) {
   // levels (content, docs) + 1 for the section folder (root-level files
   // passed with section === '' have none) + any extra slug subdirectories.
   const depthFromSrc = 2 + (section ? 1 : 0) + (slug.split('/').length - 1);
+  // The file's own directory relative to docs/ -- e.g. "agents/mcp" for a
+  // nested file, "deep-learning" for a flat one -- used as the base for
+  // resolving that file's *own* relative links (not just its section).
+  const rawDocDir = path.posix.normalize(path.posix.join(section, path.posix.dirname(slug)));
+  const currentDocDir = rawDocDir === '.' ? '' : rawDocDir;
 
   let title = data.title;
   if (!title) {
@@ -102,6 +114,16 @@ function migrateFile(srcFile, section, sectionSrcRoot) {
   const lines = content.split('\n');
   const imageImports = [];
   let imgCounter = 0;
+  let admonitionOpen = false;
+
+  const ADMONITION_COLOR = {
+    info: 'var(--nm-accent-secondary)',
+    note: 'var(--nm-accent-secondary)',
+    tip: 'var(--nm-accent-primary)',
+    warning: 'var(--nm-accent-warn)',
+    caution: 'var(--nm-accent-warn)',
+    danger: 'var(--nm-accent-danger)',
+  };
 
   const transformed = lines.map((line) => {
     if (isThemedImageImport(line)) return null; // drop -- provided globally
@@ -109,8 +131,22 @@ function migrateFile(srcFile, section, sectionSrcRoot) {
     const componentImportRewrite = rewriteComponentImports(line, depthFromSrc);
     if (componentImportRewrite !== line) return componentImportRewrite;
 
-    if (/^:::/.test(line.trim())) {
-      console.warn(`  ! WARNING: admonition syntax (":::") found in ${srcFile} -- not auto-converted, needs manual fix: "${line.trim()}"`);
+    // Docusaurus admonitions (:::type [title] ... :::) have no MDX
+    // equivalent -- converted to a small styled callout div, generically
+    // (type -> accent color), so the (rare -- one known occurrence
+    // site-wide) usage survives re-running this script idempotently
+    // instead of needing a hand-patch reapplied after every migration run.
+    const admonitionOpenMatch = line.trim().match(/^:::(\w+)(?:\s+(.+))?$/);
+    if (!admonitionOpen && admonitionOpenMatch) {
+      admonitionOpen = true;
+      const [, type, admTitle] = admonitionOpenMatch;
+      const color = ADMONITION_COLOR[type.toLowerCase()] ?? 'var(--nm-accent-secondary)';
+      const heading = admTitle ?? type.charAt(0).toUpperCase() + type.slice(1);
+      return `<div style={{border: '1px solid var(--nm-border)', borderLeft: '3px solid ${color}', borderRadius: 8, padding: '12px 16px', margin: '16px 0', background: 'var(--nm-surface)'}}>\n<strong style={{color: '${color}'}}>${heading}</strong>\n`;
+    }
+    if (admonitionOpen && line.trim() === ':::') {
+      admonitionOpen = false;
+      return '</div>';
     }
 
     // Plain markdown images -> hoisted asset import + JSX <img>, so Vite's
@@ -124,7 +160,7 @@ function migrateFile(srcFile, section, sectionSrcRoot) {
     });
 
     // Internal doc links: ./foo.md, ../section/foo.md, optionally #anchor.
-    out = out.replace(/\]\((\.\.?\/[^)]+?\.mdx?(?:#[^)]*)?)\)/g, (_full, linkPath) => `](${resolveDocLink(section, linkPath)})`);
+    out = out.replace(/\]\((\.\.?\/[^)]+?\.mdx?(?:#[^)]*)?)\)/g, (_full, linkPath) => `](${resolveDocLink(currentDocDir, linkPath)})`);
 
     return out;
   });

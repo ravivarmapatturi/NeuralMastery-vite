@@ -1,0 +1,37 @@
+---
+title: "MCP (Model Context Protocol)"
+sidebar_position: 1
+---
+
+
+import mcpArchDark from '../img/mcp-architecture.png';
+import mcpArchLight from '../img/mcp-architecture-light.png';
+
+# MCP (Model Context Protocol)
+
+Before MCP, every AI application that wanted to connect an LLM to a tool (a database, a file system, a SaaS API) had to write custom integration code for that specific tool, for that specific application. MCP standardizes the interface so tools and applications can be built independently and still work together.
+
+## The Core Idea
+
+MCP defines a standard protocol between two roles:
+
+- **MCP servers** expose capabilities — tools the model can call, resources (data) it can read, and prompt templates — over a standard interface.
+- **MCP clients** (typically the AI application, e.g. an IDE or agent framework) connect to one or more MCP servers and make their capabilities available to the LLM, without needing custom code per server.
+
+<ThemedImage alt="MCP architecture: one AI application connecting to multiple MCP servers, each exposing tools, resources, and prompts" sources={{light: mcpArchLight, dark: mcpArchDark}} />
+
+This is analogous to what USB-C did for device connectors, or what LSP (Language Server Protocol) did for code editors and language tooling — a shared interface so an $M \times N$ integration problem (every app × every tool) becomes an $M + N$ problem (every app supports MCP; every tool exposes an MCP server).
+
+## Resources, Tools, and Prompts
+
+An MCP server can expose three kinds of capabilities:
+
+- **Tools**: functions the model can call to take an action or fetch data (e.g. "run this SQL query," "search this codebase").
+- **Resources**: readable data the client can pull in directly (e.g. "the contents of this file," "the current git diff") — conceptually closer to context than to an action.
+- **Prompts**: reusable prompt templates the server exposes, so common workflows for that tool don't need to be re-invented by every client.
+
+## Why This Matters for the Rest of the Agents Section
+
+The [tool use fundamentals](/docs/agents/agent-fundamentals) covered *how* an agent calls tools in general — MCP is the standardized transport and interface for actually wiring those tools up, so an agent framework doesn't need bespoke integration code for every data source or API it might need to touch. This is why many modern AI coding tools expose their capabilities via MCP servers — it lets any MCP-compatible client use them without custom glue code.
+
+Next: [MCP Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive) — transport, sessions, tool schemas, auth, security, and building a real MCP server; or [A2A (Agent-to-Agent)](/docs/agents/a2a/overview) for the complementary protocol for agents talking to *other agents*, rather than to tools.

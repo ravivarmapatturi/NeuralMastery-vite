@@ -1,0 +1,31 @@
+---
+title: "Agent Fundamentals"
+sidebar_position: 3
+---
+
+
+# Agent Fundamentals
+
+An LLM that only answers questions is a chatbot. An LLM that can look things up, run code, and take action based on what it finds is an agent.
+
+## What Makes Something an Agent
+
+A single LLM call takes an input, produces an output, and stops. An **agent** wraps an LLM in a loop: the model can decide to call a tool, observe the result, and decide what to do next — potentially many times — before producing a final answer. The defining feature isn't the model itself, it's the loop plus the ability to take actions that affect (or query) the outside world.
+
+## Tool Use / Function Calling
+
+Modern LLMs are trained to recognize when a task needs external information or action, and to emit a structured request (function name + arguments) instead of a plain text answer. The calling application executes the actual function, and feeds the result back into the model's context to continue.
+
+**Designing tools well matters enormously**:
+- **Clear names and descriptions** — the model chooses which tool to call based on these, exactly like a person choosing from a menu of documented functions.
+- **Well-specified argument schemas** — ambiguous or overly flexible schemas lead to malformed calls.
+- **Narrow, composable tools** beat one giant do-everything tool — easier for the model to reason about which one it needs.
+
+## Agent Memory
+
+- **Short-term memory**: whatever fits in the current context window — the conversation so far, retrieved documents, tool results.
+- **Long-term memory**: information that needs to persist *across* sessions or beyond what fits in context — typically implemented as an external store (a database or vector store) that the agent can write to and query, effectively turning memory into a retrieval problem (see [RAG](/docs/llms-genai/rag)).
+
+The core challenge: context windows are finite, but useful agent tasks often span far more information than fits in one window — so real agent systems need explicit strategies for what to keep, what to summarize, and what to offload to external memory.
+
+Next: [Agent Architectures](/docs/agents/agent-architectures) — the concrete patterns for structuring the reasoning-and-acting loop.

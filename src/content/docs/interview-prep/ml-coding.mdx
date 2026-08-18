@@ -1,0 +1,23 @@
+---
+title: "ML Coding"
+sidebar_position: 4
+---
+
+
+# ML Coding
+
+Where "I understand how gradient descent works" gets tested by actually asking you to implement it, from scratch, without a framework doing the hard part for you.
+
+## What Gets Asked
+
+- **Implement a classical algorithm from scratch**: k-means, k-NN, logistic regression, a decision tree split criterion — using only basic array operations, no scikit-learn. Forces you to actually understand the algorithm's mechanics (see [Supervised Learning](/docs/machine-learning/supervised-learning) and [Unsupervised Learning](/docs/machine-learning/unsupervised-learning)), not just how to call `.fit()`.
+- **Implement a neural network's forward/backward pass manually**: no PyTorch autograd — write out the matrix multiplications and apply the chain rule by hand (see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization) and [Neural Network Fundamentals](/docs/deep-learning/neural-network-fundamentals)). This is the single most common "prove you actually understand backprop" exercise.
+- **Implement attention from scratch**: given Q, K, V matrices, compute scaled dot-product attention manually (see [Attention & Transformers](/docs/deep-learning/attention-transformers)) — increasingly common given how central Transformers are to the field now.
+
+## How to Prepare
+
+- Work through each implementation **without looking at a reference solution first** — struggling through the matrix shapes yourself is where the actual learning happens.
+- Pay close attention to **tensor/matrix shapes** at every step — shape mismatches are the most common bug in this kind of exercise, and correctly reasoning about shapes signals real understanding of the underlying linear algebra.
+- Practice explaining **why** each step is there, not just reproducing the code from memory — interviewers frequently ask "why did you do X" mid-exercise.
+
+Next: [ML/GenAI Knowledge Q&A](/docs/interview-prep/knowledge-qa-strategy) — the rapid-fire conceptual questions that test breadth.

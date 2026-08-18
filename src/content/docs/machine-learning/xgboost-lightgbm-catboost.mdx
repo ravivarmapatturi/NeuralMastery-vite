@@ -1,0 +1,56 @@
+---
+title: "XGBoost, LightGBM & CatBoost, In Full Depth"
+sidebar_position: 5.4
+---
+
+
+# XGBoost, LightGBM & CatBoost, In Full Depth
+
+[Gradient Boosting](/docs/machine-learning/boosting) is an algorithm. XGBoost, LightGBM, and CatBoost are three separate, highly-engineered *implementations* of it — each making different systems and algorithmic tradeoffs, and each dominant in different situations. Together, they're the reason gradient boosting is still the strongest off-the-shelf method for tabular data, even in the deep learning era.
+
+## XGBoost (eXtreme Gradient Boosting)
+
+The implementation that made gradient boosting a Kaggle-competition staple. Its core additions beyond [vanilla gradient boosting](/docs/machine-learning/boosting#gradient-boosting-the-general-framework):
+
+- **Regularized objective**: adds an explicit penalty on tree complexity directly into the loss being optimized — $\Omega(f) = \gamma T + \frac{1}{2}\lambda\sum w_j^2$, where $T$ is the number of leaves and $w_j$ are leaf output values. This is [L2 regularization](/docs/machine-learning/ridge-regression#the-ridge-cost-function) applied to leaf weights, plus a penalty per leaf — controlling overfitting directly in the objective rather than only through hyperparameter limits.
+- **Second-order optimization**: instead of fitting trees to just the gradient (first derivative) of the loss, XGBoost uses a second-order (Newton's method style) approximation — using both the gradient *and* the Hessian (second derivative, see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization)) to choose splits and leaf values more precisely, converging in fewer rounds.
+- **Built-in handling of missing values**: learns, per split, which direction (left or right) missing values should default to, rather than requiring imputation beforehand.
+- **Systems engineering**: parallelized split-finding (evaluate candidate splits across features simultaneously), cache-aware memory access, and out-of-core computation for datasets too large for memory — a large fraction of XGBoost's real-world speed advantage is pure engineering, not algorithmic novelty.
+
+## LightGBM (Light Gradient Boosting Machine)
+
+Built for speed and scale, with two specific algorithmic innovations:
+
+- **Leaf-wise (best-first) tree growth**: standard tree growth (including XGBoost's default) is *level-wise* — grow every leaf at the current depth before going deeper. LightGBM instead always splits whichever single leaf would reduce loss the most, regardless of depth — often reaches lower loss with fewer splits, at the cost of trees that can grow unbalanced and overfit more easily on small datasets (mitigated with a `max_depth` cap in practice).
+- **Histogram-based splitting**: instead of considering every unique feature value as a candidate threshold (expensive), bucket continuous features into a fixed number of histogram bins upfront, and only search over bin boundaries — dramatically fewer candidate splits to evaluate, at a small, usually negligible cost in split quality.
+- **GOSS (Gradient-based One-Side Sampling)**: examples with small gradients are already well-fit by the ensemble so far and contribute little new information — GOSS keeps *all* examples with large gradients but only a random sample of small-gradient examples (reweighted to stay unbiased), cutting the effective dataset size per round without a proportional accuracy loss.
+- **EFB (Exclusive Feature Bundling)**: many real-world features (especially one-hot encoded categoricals) are sparse and rarely nonzero simultaneously — LightGBM bundles such mutually-exclusive features together into one, reducing the effective feature count without losing information.
+
+The net effect: LightGBM is typically the fastest of the three on large datasets, especially with many features.
+
+## CatBoost (Categorical Boosting)
+
+Built specifically to handle **categorical features** well, without manual preprocessing:
+
+- **Native categorical handling**: instead of requiring one-hot or manual target encoding beforehand, CatBoost encodes categories using an **ordered target statistic** — computing each category's average target value *only from examples that came before it* in a random permutation of the data, specifically to avoid target leakage (using an example's own label to help encode its own feature, which would leak information and cause overfitting).
+- **Ordered boosting**: applies a similar "only use data that came before, in a random order" principle to the boosting process itself, not just categorical encoding — reduces a subtle overfitting bias present in standard gradient boosting where every tree indirectly sees the same examples' residuals it will later be evaluated on.
+- **Symmetric (oblivious) trees**: every node at the same depth uses the *same* split condition across the whole tree — less flexible than XGBoost/LightGBM's trees, but faster to evaluate at inference time and provides implicit regularization.
+
+CatBoost typically needs the least manual feature engineering of the three, specifically when a dataset has many categorical columns.
+
+## Choosing Between Them
+
+| | XGBoost | LightGBM | CatBoost |
+|---|---|---|---|
+| Best for | General-purpose, well-understood, huge community | Very large datasets, speed-critical | Heavy categorical features, less tuning needed |
+| Tree growth | Level-wise (default) | Leaf-wise | Symmetric/oblivious |
+| Categorical features | Manual encoding needed | Some native support | Best native support |
+| Typical weakness | Slower than LightGBM at scale | Can overfit small datasets (leaf-wise growth) | Slower training than the other two |
+
+**In practice**: all three usually land within a small margin of each other on a given tabular problem after proper tuning — the differences above matter more for *training speed*, *ease of use with a specific data type*, and *robustness to less tuning*, than for a large gap in best-achievable accuracy. Trying more than one and comparing on your actual validation set (see [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)) is standard practice, not a sign that you picked wrong the first time.
+
+## When Gradient Boosting Beats Deep Learning
+
+For **tabular data specifically** (rows and columns of heterogeneous features — not images, text, or audio), gradient-boosted trees still routinely match or beat deep neural networks, for a few structural reasons: trees naturally handle mixed feature types and missing values without preprocessing, don't need large amounts of data to avoid overfitting the way deep nets do, and don't require the architecture search that gets neural nets their edge on unstructured data (see [Deep Learning](/docs/deep-learning/roadmap)). This is precisely why XGBoost/LightGBM/CatBoost remain the default first choice for tabular ML problems, even as deep learning dominates vision, language, and audio.
+
+This completes the tree-based model family: [Decision Tree](/docs/machine-learning/decision-tree) → [Random Forest & Extra Trees](/docs/machine-learning/random-forest) → [Boosting](/docs/machine-learning/boosting) → XGBoost/LightGBM/CatBoost. Next: [Support Vector Machines](/docs/machine-learning/support-vector-machines) and the other margin-based and instance-based classifiers.

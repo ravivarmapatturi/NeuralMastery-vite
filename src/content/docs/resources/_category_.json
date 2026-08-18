@@ -1,0 +1,8 @@
+{
+  "label": "Resources",
+  "position": 11,
+  "link": {
+    "type": "generated-index",
+    "description": "A running list of free, high-quality open-source AI/ML learning resources outside this site."
+  }
+}

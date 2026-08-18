@@ -1,0 +1,8 @@
+{
+  "label": "AI Safety & Alignment",
+  "position": 6.7,
+  "link": {
+    "type": "generated-index",
+    "description": "Alignment and RLHF, Constitutional AI, reward hacking and specification gaming, deception, scalable oversight, and frontier model safety - distinct from AI Security: safety is about a well-intentioned system still behaving badly, not defending against an adversary."
+  }
+}

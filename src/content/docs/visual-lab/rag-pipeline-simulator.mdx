@@ -1,0 +1,23 @@
+---
+title: "RAG Pipeline Simulator"
+sidebar_position: 6
+---
+
+
+import RagPipelineSimulator from '../../../viz/RagPipelineSimulator';
+
+# RAG Pipeline Simulator
+
+A real (if simplified) retrieval pipeline from [RAG](/docs/llms-genai/rag), running in your browser: real fixed-size chunking, real bag-of-words cosine-similarity ranking, and a real reranking pass — not a scripted animation.
+
+<RagPipelineSimulator />
+
+## What to Try
+
+- Ask about each topic in the demo corpus — linear regression, gradient descent, overfitting, decision trees, CNNs, attention, the KV cache, and RAG itself — and watch different chunks surface each time.
+- **Shrink the chunk size** to 8 words and watch retrieval get noisier — smaller chunks carry less context, so cosine similarity has less signal to work with, directly the ["too small loses context"](/docs/llms-genai/rag#chunking-strategies) tradeoff.
+- **Toggle the reranker off** and compare the ranking — the reranker here specifically rewards exact multi-word phrase overlap the bag-of-words retrieval score alone doesn't capture, a small-scale stand-in for why a real [cross-encoder reranker](/docs/llms-genai/rag#re-ranking-with-cross-encoders) improves precision over the fast first-pass retrieval.
+- **Click any node** in the diagram for a one-line explanation of what that stage does.
+- Try a question that doesn't match the corpus well ("what's the capital of France?") and watch every match score drop — real evidence that retrieval quality depends entirely on whether the answer's *content* actually exists in the indexed corpus, not on how the question is phrased.
+
+Back to [Visual Lab Overview](/docs/visual-lab/overview).

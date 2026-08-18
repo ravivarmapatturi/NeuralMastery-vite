@@ -1,0 +1,22 @@
+---
+title: "Ridge Regression Studio"
+sidebar_position: 13
+---
+
+
+import RidgeRegressionStudio from '../../../viz/RidgeRegressionStudio';
+
+# Ridge Regression Studio
+
+A real 4-feature synthetic dataset — two features deliberately correlated — and a real, from-scratch closed-form ridge solve (a hand-written Gauss-Jordan matrix inverse, no linear-algebra library) recomputed live as you drag $\lambda$. Makes [Ridge Regression, In Full Depth](/docs/machine-learning/ridge-regression)'s central claim — multicollinearity makes OLS coefficients unstable, ridge fixes it at a small MSE cost — something you watch happen, not just read.
+
+<RidgeRegressionStudio />
+
+## What to Try
+
+- Set **λ = 0** (plain OLS) and push **Correlation** up toward 0.98. Watch `x1` and `x2` swing apart individually — one shooting up, the other down — while `x1 + x2` in the readout barely moves. That's multicollinearity: the model can't tell which of two nearly-identical features deserves the credit, so it arbitrarily splits it unstably.
+- Now drag **λ** up from 0. Watch `x1` and `x2` converge toward each other instead of splitting — ridge treats correlated features symmetrically, pulling them toward sharing the credit evenly — while `x3` (genuinely irrelevant, true weight 0) shrinks toward zero fastest of all.
+- Watch the **MSE** readout while you do this: it barely moves. That's the whole trade — a large reduction in coefficient instability for a tiny cost in fit quality, exactly the [bias-variance tradeoff](/docs/machine-learning/model-evaluation-metrics#bias-variance-tradeoff) the page describes.
+- Set Correlation back to 0 and compare: with independent features, OLS is already stable, and increasing λ has nothing to fix — regularization is a solution to a specific problem, not a free improvement to apply blindly everywhere.
+
+Back to [Visual Lab Overview](/docs/visual-lab/overview).

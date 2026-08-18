@@ -1,0 +1,96 @@
+---
+title: "LLM Inference Optimization"
+sidebar_position: 19
+---
+
+
+# LLM Inference Optimization
+
+The techniques that make the engines from [LLM Inference Engines](/docs/mlops/llm-inference-engines) fast. Almost all of them exist to solve one of two problems: autoregressive generation is memory-bandwidth-bound, or the KV cache is too big.
+
+## Prefill vs. Decode
+
+Every LLM request has two distinct phases with opposite performance characteristics:
+
+- **Prefill**: processing the input prompt — all prompt tokens are known upfront, so this is done as one large, parallelizable matrix multiply. Prefill is **compute-bound**: it saturates the GPU's raw FLOPs, and its speed scales with prompt length and GPU compute throughput.
+- **Decode**: generating output tokens one at a time, autoregressively — each new token depends on the previous one, so this can't be parallelized across tokens the way prefill can. Decode is **memory-bandwidth-bound**: each step has to read the entire model's weights (and the growing KV cache) from GPU memory, and that memory traffic — not compute — is the bottleneck.
+
+This split is why the two standard latency metrics measure different things:
+
+- **TTFT (Time To First Token)**: dominated by prefill — how long until the first output token appears.
+- **TPOT (Time Per Output Token)**: dominated by decode — the per-token generation rate once streaming has started.
+
+A system optimized only for throughput can still feel slow to a user if TTFT is high; a system with fast TTFT can still feel slow overall if TPOT is high on long generations. Production systems report both, plus end-to-end latency, separately.
+
+## KV Cache
+
+During decode, re-computing attention over the full prior sequence at every step would be wasteful — instead, the Key and Value projections for every previous token are cached (the **KV cache**) and reused, so each new token only computes attention against the cache plus its own new K/V. This is what makes decode tractable at all, but the cache itself becomes the memory bottleneck: it grows linearly with sequence length and batch size, and at scale it can consume more GPU memory than the model weights themselves.
+
+- **Paged Attention** (introduced by vLLM): manages the KV cache like an OS manages virtual memory — allocating it in fixed-size, non-contiguous blocks ("pages") rather than one large contiguous buffer per request. This eliminates the memory fragmentation and over-allocation that plagued naive KV cache management, letting far more concurrent requests fit in the same GPU memory.
+- **Prefix caching**: when multiple requests share a common prompt prefix (a system prompt, a few-shot template, a shared agent instruction), the KV cache for that shared prefix is computed once and reused across requests instead of recomputed per request. SGLang's **RadixAttention** generalizes this into a radix tree that automatically finds and shares the longest common prefix across arbitrary requests, not just exact-matching ones.
+- **KV cache quantization**: storing cached K/V values at lower precision (e.g. FP8 or INT8 instead of FP16) to shrink the cache's memory footprint, trading a small amount of accuracy for meaningfully more concurrent capacity.
+- **KV cache sharing**: related requests (multiple samples from the same prompt, or multi-turn conversations that extend a previous cache) reuse cache rather than starting from scratch each time.
+
+## Attention Variants and Why They Matter for the KV Cache
+
+- **MHA (Multi-Head Attention)**: the original Transformer design — every attention head has its own full set of Key and Value projections. Highest quality, but the most expensive KV cache (proportional to the full number of heads).
+- **MQA (Multi-Query Attention)**: all heads share a single Key/Value projection, with only Query staying per-head — dramatically shrinks the KV cache (by a factor of the number of heads), at some cost to model quality.
+- **GQA (Grouped-Query Attention)**: a middle ground — heads are split into groups, and each group shares one Key/Value projection. This is the design most modern production LLMs (Llama 2/3, Mistral, and others) actually use, because it recovers most of MHA's quality while keeping most of MQA's KV cache savings.
+- **MLA (Multi-Head Latent Attention)**: introduced by DeepSeek-V2, compresses Key/Value into a smaller shared latent representation that's decompressed per head, achieving KV cache savings competitive with MQA while preserving quality closer to MHA.
+
+The reason this list belongs in an *inference* page rather than an architecture page: the choice of attention variant is made at training time, but its consequence — how much GPU memory the KV cache eats per token of context — is entirely an inference-serving concern, and directly determines how many concurrent requests/how much context length a given GPU can actually serve.
+
+## Quantization
+
+Reducing the numerical precision of model weights (and sometimes activations) to shrink memory footprint and increase throughput, at some cost to accuracy.
+
+- **PTQ (Post-Training Quantization)**: quantize an already-trained model, no retraining required — fast and simple, the default approach for most deployment quantization.
+- **QAT (Quantization-Aware Training)**: simulate quantization *during* training/fine-tuning so the model learns to be robust to the precision loss — higher quality at a given bit-width than PTQ, at the cost of requiring a training run.
+- **GPTQ**: a PTQ method that quantizes weights layer-by-layer, minimizing the reconstruction error of each layer's output — one of the earliest widely-adopted 4-bit LLM quantization schemes.
+- **AWQ (Activation-aware Weight Quantization)**: identifies and preserves the small fraction of weights that matter most (based on activation magnitude) at higher precision, quantizing the rest more aggressively — often outperforms GPTQ at the same bit-width.
+- **SmoothQuant**: shifts quantization difficulty from activations (harder to quantize, due to outliers) to weights (easier to quantize) via a mathematically equivalent rescaling — enables efficient INT8 *activation* quantization, not just weights.
+- **BitsAndBytes**: a popular library for on-the-fly 8-bit and 4-bit quantization, widely used in the Hugging Face ecosystem for making large models fit in less VRAM with minimal setup.
+- **HQQ (Half-Quadratic Quantization)**: a fast, calibration-data-free quantization method — useful when representative calibration data isn't available or a fast turnaround matters more than squeezing out the last bit of accuracy.
+- **AQLM**: an extreme low-bit (near 2-bit) quantization approach using additive quantization, pushing compression further than GPTQ/AWQ at correspondingly higher complexity.
+
+## The GGUF Ecosystem
+
+**GGUF** is the model file format used by **llama.cpp** (successor to the older GGML format) — a single self-contained file bundling weights, tokenizer, and metadata, purpose-built for efficient CPU and consumer-GPU inference. GGUF models ship in named **quantization levels**, trading size against quality:
+
+| Quant level | Bits/weight (approx.) | Typical use |
+|---|---|---|
+| Q8_0 | 8 | Near-lossless, largest of the quantized options |
+| Q6_K | 6 | Very close to full quality, meaningful size reduction |
+| Q5_K_M | 5 | Good quality/size balance |
+| Q4_K_M | ~4.5 | The most common default — best all-round tradeoff |
+| Q3_K_M | ~3.5 | Noticeable quality loss, for tight memory budgets |
+| Q2_K | 2 | Significant quality loss, only for extreme constraints |
+
+**Concrete size math**: a 7B-parameter model at FP16 (2 bytes/param) is roughly `7B × 2 bytes ≈ 14 GB`. The same model at Q4_K_M (~4.5 bits/param, plus overhead) comes out to roughly `7B × 4.5/8 bytes ≈ 4 GB` — small enough to run on a consumer GPU or even a modern laptop's CPU/RAM, which is the entire point of the format.
+
+## Model Format Reference
+
+| Format | Primary engine | Notes |
+|---|---|---|
+| Safetensors | HF Transformers, vLLM, TGI | The modern safe default for storing raw weights |
+| GGUF | llama.cpp, Ollama, LM Studio | Bundled + quantized, built for CPU/edge/consumer GPU |
+| ONNX | ONNX Runtime | Cross-framework interchange format |
+| TensorRT engine | TensorRT-LLM | Hardware-and-version-specific compiled artifact |
+| OpenVINO IR | OpenVINO | Intel-optimized intermediate representation |
+
+## Other Core Optimizations
+
+- **Batching**: **static batching** (fixed batch, all requests wait for the slowest to finish) → **dynamic batching** (batch requests arriving in a short window) → **continuous batching** (vLLM's core innovation: new requests join and finished requests leave a running batch at every decode step, not just at batch boundaries) — continuous batching is what makes high GPU utilization under real, bursty traffic possible.
+- **Kernel fusion & CUDA graphs**: combining multiple small GPU operations into one fused kernel (fewer memory round-trips) and capturing a fixed sequence of operations as a replayable CUDA graph (eliminating per-step kernel-launch overhead) — the core of what makes TensorRT-LLM fast.
+- **FlashAttention / FlashInfer**: IO-aware attention kernels that avoid materializing the full attention matrix in slow GPU memory, computing attention in fused, tiled blocks that stay in fast on-chip memory — a foundational speedup used inside most of the engines above, not a competing engine itself.
+- **Speculative decoding**: a small, fast **draft model** proposes several tokens ahead; the large **target model** verifies them all in a single forward pass and accepts the prefix that matches what it would have generated itself — when the **acceptance rate** is high, this trades a small amount of extra compute for a meaningful drop in wall-clock latency, since verification is cheaper than autoregressive generation.
+- **Parallelism for serving**: tensor and pipeline parallelism (see [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training)) apply to inference too — splitting a model too large for one GPU across several, specifically to serve it, not just to train it.
+
+## Inference Metrics Summary
+
+- **Latency**: TTFT, TPOT, end-to-end latency, and their P50/P95/P99 percentiles — averages hide the tail latency that actually determines user experience.
+- **Throughput**: requests/sec, tokens/sec (aggregate, across all concurrent requests).
+- **Resource**: GPU utilization, memory usage (weights + KV cache), batch size achieved.
+- **Cost**: cost per 1M tokens — the metric that ultimately determines whether a given engine/hardware/quantization combination is viable at production scale.
+
+Next: [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns) — where these engines actually run, and how a fine-tuned model gets from a training job to a served endpoint.

@@ -1,0 +1,43 @@
+---
+title: "Monitoring & Drift Detection"
+sidebar_position: 15
+---
+
+
+# Monitoring & Drift Detection
+
+A deployed model doesn't stay accurate by default — the world it's making predictions about keeps changing, and unlike a normal software bug, a degrading model usually fails silently: it keeps returning confident, well-formed predictions that are just quietly getting worse.
+
+## Three Layers of Monitoring
+
+- **Infrastructure monitoring**: is the serving system itself healthy — CPU/GPU utilization, memory, disk, request latency, error rate, uptime? This is standard software monitoring, nothing ML-specific about it.
+- **Application monitoring**: is the API behaving correctly — request/response schemas valid, correct status codes, no unhandled exceptions? Also not ML-specific.
+- **ML-specific monitoring**: is the *model* still good — are its predictions still accurate, and does the data it's seeing still resemble what it was trained on? This is the layer that has no equivalent in regular software monitoring, and the one most systems under-invest in.
+
+A system can be 100% "up" by every infrastructure and application metric while the model underneath has silently degraded to near-random — this is why ML-specific monitoring is its own discipline, not a subset of the first two.
+
+## Data Drift: The Math
+
+Data drift is a change in the distribution of the model's *input* features between training time and now. Several statistical distances quantify "how different are these two distributions":
+
+- **PSI (Population Stability Index)**: bins a feature's values and compares the proportion of data in each bin between a reference (training) distribution and a current distribution — `PSI = Σ (current_% − reference_%) × ln(current_% / reference_%)` summed over bins. PSI < 0.1 is typically considered stable, 0.1–0.25 moderate drift, > 0.25 significant drift — one of the most widely used thresholds in industry monitoring.
+- **KL divergence (Kullback-Leibler)**: measures how one probability distribution diverges from a reference distribution — asymmetric (KL(P‖Q) ≠ KL(Q‖P)), which matters when deciding which distribution is "reference" and which is "current."
+- **JS divergence (Jensen-Shannon)**: a symmetric, smoothed version of KL divergence — the fix when direction shouldn't matter, computed as the average of KL divergences from each distribution to their mixture.
+- **KS test (Kolmogorov-Smirnov)**: a statistical hypothesis test comparing two *continuous* distributions' empirical CDFs — gives a p-value for "these two samples plausibly come from the same distribution," rather than just a distance score.
+- **Chi-square test**: the categorical-feature analog of the KS test — compares observed vs. expected frequencies across categories.
+- **Wasserstein distance (Earth Mover's Distance)**: the minimum "work" needed to transform one distribution into another — more robust to small distributional shifts than KL/JS divergence and doesn't blow up when distributions have non-overlapping support (where KL divergence is undefined).
+
+## Data Drift vs. Concept Drift
+
+- **Data drift**: the *input* distribution changes (e.g. customer demographics shift), but the true relationship between input and output stays the same.
+- **Concept drift**: the relationship between input and output itself changes (e.g. what counted as "fraud" behavior changes as fraudsters adapt) — the same input now genuinely warrants a different prediction.
+
+This distinction matters for the fix: data drift can sometimes be handled by retraining on more recent data with the same labeling logic; concept drift means the model's *target definition* has moved, and retraining on stale labels won't help — the labeling/evaluation process itself needs revisiting.
+
+## Tools
+
+- **Evidently**: open-source, generates drift and data-quality reports/dashboards comparing a reference and current dataset — the most common starting point.
+- **WhyLabs**: a managed observability platform for ML, focused on data and model quality monitoring at scale without shipping raw data to a third party (it profiles data locally, sends only statistical summaries).
+- **Arize**: a managed ML observability platform with strong support for root-causing performance drops back to specific data segments (which slice of traffic is actually driving the drift).
+
+Next: [Observability](/docs/mlops/observability) — the general logging/metrics/tracing infrastructure that drift detection and everything else above is built on top of.

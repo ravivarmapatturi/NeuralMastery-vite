@@ -1,0 +1,41 @@
+---
+title: "Evaluation Fundamentals"
+sidebar_position: 3
+---
+
+
+# Evaluation Fundamentals
+
+Before LLM-as-judge, before agent trajectories — the basic question every evaluation effort has to answer honestly: is this measurement actually trustworthy?
+
+## Traditional ML Metrics
+
+Covered in full depth in [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics) — precision/recall/F1/ROC-AUC/PR-AUC for classification, MSE/MAE/R² for regression, calibration, threshold optimization, uncertainty estimation, and hyperparameter optimization. Everything below builds on the same underlying discipline (a metric is only useful if it measures the right thing, on the right data, reliably) applied to harder-to-measure outputs — free text, multi-step agent behavior, retrieval quality.
+
+## Benchmark Design
+
+A benchmark is itself a piece of engineering that can be done well or badly — three failure modes account for most bad benchmarks in practice:
+
+- **Construct validity**: does the benchmark actually measure the capability it claims to? A reading-comprehension benchmark answerable from surface pattern-matching (without needing to actually understand the passage) has poor construct validity — it produces a number, but that number doesn't mean what it claims to mean. This is the single most important, and most often skipped, question to ask before trusting any benchmark score: *what would a model have to actually be able to do to score well here, and is that the thing I care about?*
+- **Contamination**: the benchmark's questions (or close paraphrases) leaked into a model's training data — see [LLM Pretraining — The Data Pipeline](/docs/llms-genai/training-pipeline#the-data-pipeline)'s contamination-checking step. A contaminated benchmark score reflects memorization, not the capability being tested, and web-scale pretraining corpora make this a real, easy-to-introduce-by-accident risk rather than a hypothetical one.
+- **Saturation**: once most frontier models score near-ceiling on a benchmark, it stops discriminating between them — a saturated benchmark can't tell you "model A is better than model B" anymore, only "both are good at this specific thing," and continuing to report it as a meaningful differentiator is misleading. Benchmark saturation is *why* new, harder benchmarks keep replacing old ones as a field matures — not fashion, a real measurement-validity problem.
+
+A benchmark that avoids all three still only measures what it measures — generalizing "scores well on benchmark X" to "good at the broader capability X is supposed to represent" is itself an inference that needs justifying, not an automatic conclusion.
+
+## Golden Datasets
+
+A **golden dataset** is a curated, trusted set of examples with known-correct expected outputs, used as a stable reference point for evaluation — the same role a labeled test set plays in classical ML, made explicit as its own artifact for LLM/agent systems where "correct" is often less obvious than a single ground-truth label.
+
+- **Building one**: examples should cover the real distribution of production inputs (not just easy, obviously-correct cases) *and* known hard cases/edge cases specifically, since a golden set that's all easy examples will pass every model and tell you nothing.
+- **Maintaining one**: a golden dataset isn't "write once" — it needs to grow as new failure modes are discovered in production (every real bug that reaches production and gets fixed is a candidate new golden-set example, so it can't regress silently later) and needs periodic review, since what counted as a "correct" answer can itself become outdated (a factual answer changes, a product policy changes).
+- **Knowing when it's stale**: if production inputs have visibly drifted from what the golden set covers (see [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) for the general drift-detection machinery, applicable here too), the golden set's scores stop reflecting real-world performance even if the set itself hasn't changed.
+
+## Continuous Evaluation in Production
+
+Evaluation isn't a one-time gate before shipping — production systems need it running continuously, for the same reason [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) exists: real-world inputs and correctness criteria shift over time in ways a pre-launch evaluation can't anticipate.
+
+- **Shadow evaluation**: run evaluation against live production traffic (or a sample of it) without affecting what users actually see — the same [shadow deployment](/docs/mlops/deployment-strategies#shadow-deployment) pattern used for model rollouts, applied to ongoing quality measurement rather than a one-time rollout decision.
+- **Sampling strategy**: evaluating 100% of production traffic with an expensive method (human review, a large LLM-judge) is usually cost-prohibitive — a representative sample, plus targeted oversampling of segments known to be higher-risk (new feature areas, previously-problematic input types), is the practical default.
+- **Alerting on regression**: continuous evaluation is only useful if a quality drop actually triggers action — wiring evaluation scores into the same alerting infrastructure as [Observability](/docs/mlops/observability)'s metrics, not just a dashboard nobody checks.
+
+Next: [LLM, RAG & Agent Evaluation](/docs/ai-evaluation/llm-rag-agent-evaluation) — applying this foundation to the harder-to-measure outputs generative and agentic systems produce.

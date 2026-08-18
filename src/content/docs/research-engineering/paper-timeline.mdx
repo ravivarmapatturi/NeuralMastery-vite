@@ -1,0 +1,58 @@
+---
+title: "The Paper Timeline"
+sidebar_position: 4
+---
+
+
+# The Paper Timeline
+
+Every architecture on this site got covered as a standalone topic, organized by *category* (CNNs here, Transformers there, generative models elsewhere) for learnability. This page reconnects them along the one dimension category-based organization hides: **time** — what came before what, and what each landmark idea was actually responding to.
+
+## The Lineage
+
+```
+2012  AlexNet          — deep CNNs work at scale, given GPUs (see CNNs)
+        ↓
+2014  GAN              — adversarial training for generation (see Generative Models)
+        ↓
+2014  Seq2Seq          — encoder-decoder RNNs for sequence tasks (see Sequence Models)
+        ↓
+2015  ResNet           — residual connections enable much deeper networks (see CNNs, Training Deep Networks)
+        ↓
+2017  Transformer      — self-attention replaces recurrence entirely (see Attention & Transformers)
+        ↓
+2018  BERT             — encoder-only, bidirectional pretraining (see Attention & Transformers)
+        ↓
+2020  ViT              — attention applied to image patches, not just text (see Vision Architectures)
+        ↓
+2020  GPT-3            — decoder-only + scale produces few-shot in-context learning (see Attention & Transformers)
+        ↓
+2020  DDPM             — denoising diffusion becomes practical for image generation (see Generative Models)
+        ↓
+2022  ChatGPT          — SFT + RLHF turns a base LLM into an instructable assistant (see Training Pipeline)
+        ↓
+2023  Llama            — strong open-weight LLMs, enabling widescale fine-tuning/local deployment
+        ↓
+2023-24  RAG & Agents mature — retrieval grounding and tool-use loops become standard production patterns
+        ↓
+2024-25  Reasoning models & GRPO — RL-based training targets multi-step reasoning specifically
+```
+
+## Reading the Lineage as a Chain of Answered Questions
+
+Each link above is a direct response to a specific limitation of what came before it — worth tracing explicitly, since this is what makes the timeline more than a list of names:
+
+- **AlexNet → ResNet**: AlexNet showed depth helps; going *much* deeper hit a degradation problem (deeper plain networks got worse, not just harder to optimize) that residual connections directly fixed.
+- **Seq2Seq → Transformer**: Seq2Seq's fixed-size context vector bottlenecked long sequences; attention (first added *to* Seq2Seq, see [Sequence Models — Seq2Seq with Attention](/docs/deep-learning/sequence-models#named-variants-worth-knowing)) fixed the bottleneck, and the Transformer paper's insight was that attention alone, without the recurrence at all, was sufficient and dramatically more parallelizable.
+- **Transformer → BERT / GPT**: the original Transformer was encoder-decoder, built for translation. BERT kept only the encoder for understanding tasks; GPT kept only the decoder for generation — two different halves of the same architecture, specialized for two different jobs (see [Attention & Transformers — The Three Transformer Lineages](/docs/deep-learning/attention-transformers#the-three-transformer-lineages)).
+- **BERT → ViT**: BERT proved bidirectional attention-based pretraining works for text; ViT asked whether the same recipe (attention over a sequence of patches, pretrained at scale) works for images too — it does, given enough data, which is precisely the tradeoff [Vision Architectures](/docs/computer-vision/roadmap) covers.
+- **GPT-3 → ChatGPT**: GPT-3 showed scale alone produces powerful few-shot capability, but the base model wasn't reliably *instructable* — SFT and RLHF (see [Training Pipeline](/docs/llms-genai/training-pipeline)) were the specific fix for turning a capable-but-uncooperative base model into an assistant that follows instructions and refuses appropriately.
+- **DDPM → Stable Diffusion**: DDPM proved diffusion produces high-quality images but was expensive (many denoising steps, in full pixel space); Latent Diffusion (see [Generative Models](/docs/deep-learning/generative-models)) moved the same process into a compressed latent space, making it cheap enough for consumer hardware.
+- **ChatGPT → RAG/Agents**: a capable, instructable assistant still had frozen, incomplete knowledge and couldn't take action — RAG (see [RAG Engineering](/docs/llms-genai/rag)) and agentic tool use (see [Agent Architectures](/docs/agents/agent-architectures)) are the direct responses to those two specific remaining gaps.
+- **RLHF → GRPO/reasoning models**: RLHF optimizes for human-judged response *quality* broadly; reasoning-focused RL training (see [Training Pipeline — GRPO](/docs/llms-genai/training-pipeline#group-relative-policy-optimization-grpo)) narrows the same RL machinery toward specifically rewarding correct multi-step reasoning traces, not just generally-preferred responses.
+
+## How to Place a New Paper Into This Lineage
+
+When you encounter a new paper, the fastest way to actually understand its contribution is to ask exactly the "prior work" and "extend" questions from [How to Read AI Papers](/docs/research-engineering/how-to-read-ai-papers): what specific prior approach is this responding to, and what specific limitation of that approach does it fix? A paper that can't be placed onto a lineage like the one above — connected to a clear "before" and implying a plausible "after" — is either genuinely foundational (rare) or hasn't been understood deeply enough yet.
+
+Research Engineering section complete. Next: [Interview Prep](/docs/interview-prep/roadmap) — where research literacy becomes a specific, testable skill.

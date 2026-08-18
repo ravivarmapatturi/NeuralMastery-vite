@@ -1,0 +1,27 @@
+---
+title: "A2A (Agent-to-Agent)"
+sidebar_position: 1
+---
+
+
+# A2A (Agent-to-Agent)
+
+MCP standardizes how an agent talks to *tools*. A2A standardizes how an agent talks to *other agents* — a different problem, because agents (unlike tools) have their own reasoning, state, and potentially different owners/organizations entirely.
+
+## Why Agents Need a Different Protocol Than Tools
+
+A tool call is typically stateless and synchronous: call a function, get a result. An agent-to-agent interaction is closer to delegating a task to a colleague: the receiving agent might need to ask clarifying questions, take a while to complete a multi-step task, or report partial progress — none of which fits a simple function-call model well.
+
+## Agent Cards / Capability Discovery
+
+For one agent to delegate work to another, it first needs to know what that agent *can do*. A2A defines a way for agents to publish an "agent card" — a description of their capabilities, similar in spirit to an API's OpenAPI spec, but describing what tasks an agent can be trusted to handle rather than literal function signatures.
+
+## Task Delegation
+
+A2A defines how one agent hands a task to another: sending the task description, receiving updates as the task progresses, and getting the final result back — designed to work across agents built by different teams or organizations, using different underlying models or frameworks, as long as they both speak A2A.
+
+## How A2A Relates to Multi-Agent Systems
+
+[Multi-agent systems](/docs/agents/multi-agent-systems) covers *architectural patterns* for coordinating multiple agents (orchestrator/sub-agent, peer-to-peer, etc.) — A2A is one concrete protocol for implementing the communication layer those patterns need, particularly relevant when the agents involved aren't all built and controlled by the same team, and can't simply share a Python process and call each other's functions directly.
+
+Agent protocols section complete. Next: [Multi-Agent Systems](/docs/agents/multi-agent-systems) — the coordination patterns these protocols enable.

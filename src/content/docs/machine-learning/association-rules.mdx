@@ -1,0 +1,48 @@
+---
+title: "Association Rule Mining: Apriori & FP-Growth, In Full Depth"
+sidebar_position: 6.6
+---
+
+
+# Association Rule Mining: Apriori & FP-Growth, In Full Depth
+
+A different unsupervised problem entirely: not grouping examples ([clustering](/docs/machine-learning/kmeans-hierarchical-clustering)) or compressing features ([dimensionality reduction](/docs/machine-learning/pca-svd)), but finding **"if X, then usually Y"** patterns in transactional data — the algorithms behind "customers who bought this also bought that."
+
+## The Core Concepts
+
+Given a database of transactions (each one a set of items — a shopping basket, a browsing session), association rule mining looks for rules like $\{\text{bread}, \text{butter}\} \Rightarrow \{\text{milk}\}$, scored by three metrics:
+
+- **Support**: how often the itemset appears at all — $\text{support}(X) = \frac{\text{transactions containing } X}{\text{total transactions}}$. A rule about an itemset nobody buys isn't useful no matter how reliable the pattern is.
+- **Confidence**: given $X$ is present, how often is $Y$ also present — $\text{confidence}(X \Rightarrow Y) = \frac{\text{support}(X \cup Y)}{\text{support}(X)}$. This is literally $P(Y \mid X)$ (see [Probability & Statistics — Bayes' Theorem](/docs/mathematics-for-ai/probability-statistics#bayes-theorem)).
+- **Lift**: how much more often $X$ and $Y$ co-occur than you'd expect if they were independent — $\text{lift}(X \Rightarrow Y) = \frac{\text{confidence}(X \Rightarrow Y)}{\text{support}(Y)}$. Lift $> 1$ means a genuine positive association; lift $\approx 1$ means the "pattern" is just coincidental co-occurrence of two popular items — this is the metric that actually separates real signal from statistical noise, since confidence alone is misleadingly high for any popular item Y regardless of X.
+
+## Apriori
+
+**The core problem**: with $n$ possible items, there are $2^n$ possible itemsets — checking all of them is intractable for any real catalog. Apriori's insight, the **Apriori principle**: if an itemset is infrequent, every superset of it must also be infrequent (adding more required items can only make a pattern rarer, never more common). This lets you prune the search space aggressively.
+
+**The algorithm**:
+1. Find all frequent 1-item itemsets (support above a minimum threshold).
+2. Generate candidate 2-item itemsets *only* from combinations of frequent 1-itemsets, and filter by support.
+3. Repeat for 3-itemsets, 4-itemsets, etc. — at each step, only extending itemsets that were already frequent at the previous step.
+4. Stop when no new frequent itemsets are found; generate rules from the final frequent itemsets, filtered by minimum confidence and lift.
+
+**The cost**: Apriori still requires repeatedly scanning the full transaction database to check candidate support at every level — expensive on large datasets, and the main motivation for FP-Growth below.
+
+## FP-Growth (Frequent Pattern Growth)
+
+Solves the same problem without Apriori's expensive repeated database scans, using a compact data structure instead:
+
+1. Scan the database once to find frequent single items, and sort them by frequency.
+2. Build an **FP-tree**: insert each transaction's items (in frequency order) into a shared prefix tree, so transactions with common frequent items share tree branches — a compact representation of the entire database's itemset structure in one pass.
+3. Mine frequent itemsets directly from the tree structure, recursively, without ever regenerating and re-scanning candidate itemsets against the raw database the way Apriori does.
+
+**The practical result**: FP-Growth is substantially faster than Apriori on large datasets, at the cost of a more complex implementation and a data structure that has to fit reasonably in memory. It's the standard choice in production settings; Apriori remains more common in teaching contexts specifically because the Apriori principle is easier to reason about directly.
+
+## Where This Shows Up
+
+- **Market basket analysis**: the original, defining use case — physical or online retail recommendation ("frequently bought together").
+- **Web usage mining**: finding common navigation patterns across a site.
+- **Bioinformatics**: finding co-occurring genetic markers.
+- Conceptually related to (but distinct from) the collaborative-filtering approach used in [recommendation systems](/docs/ml-system-design/case-studies#recommendation-systems) — association rules find explicit, interpretable *rules*, while modern recommenders more often use learned embeddings and matrix factorization (see [Linear Algebra — SVD](/docs/mathematics-for-ai/linear-algebra#singular-value-decomposition-svd)) for the same underlying goal.
+
+Next: [Anomaly Detection](/docs/machine-learning/anomaly-detection) — Isolation Forest, Local Outlier Factor, and One-Class SVM.

@@ -1,0 +1,74 @@
+---
+title: "Language Fundamentals: OOP, Functional & Modern Python"
+sidebar_position: 3
+---
+
+
+# Language Fundamentals: OOP, Functional & Modern Python
+
+Every feature on this page shows up directly in ML codebases you'll actually read — PyTorch's `nn.Module` is OOP with a specific inheritance contract, a `DataLoader` is built on the iterator protocol, and `@torch.no_grad()` is a decorator. Understanding the language feature makes the framework's design legible instead of magic.
+
+## Object-Oriented Programming, Done Properly
+
+- **Classes**: bundle data (attributes) and behavior (methods) together. In ML code, almost everything is a class for a reason: a `Dataset` bundles "how to get item $i$" with whatever state it needs (a file path, a list of labels); an `nn.Module` bundles a layer's parameters with its forward computation.
+- **Inheritance**: a subclass gets its parent's behavior for free and can override specific pieces — every custom PyTorch model is `class MyModel(nn.Module)`, inheriting parameter tracking, `.to(device)`, `.eval()`/`.train()` mode switching, and overriding only `forward()`.
+- **Composition over inheritance**: often the better default — instead of a deep inheritance hierarchy, build a class *out of* other objects it holds as attributes. A model with an encoder and a decoder composes two `nn.Module`s rather than inheriting from some contorted `EncoderDecoderBase`; composition tends to stay flexible where deep inheritance hierarchies calcify.
+- **Magic methods** (`__init__`, `__repr__`, `__len__`, `__getitem__`, `__call__`): let your objects work with Python's built-in syntax instead of custom method names. `__getitem__` + `__len__` is the *entire* contract a PyTorch `Dataset` needs to implement — `dataset[i]` and `len(dataset)` just call these directly. `__call__` is why `model(x)` works instead of requiring `model.forward(x)` explicitly (calling the instance invokes `__call__`, which `nn.Module` implements to call `forward()` while also handling hooks).
+
+## Functional-Style Python
+
+- **`map`/`filter`**: apply a function across an iterable, or keep only elements matching a predicate — `list(map(preprocess, examples))` instead of a manual loop. In practice, list comprehensions (`[preprocess(e) for e in examples]`) are usually preferred in Python for readability, but recognizing the functional pattern matters when reading code (or `functools.reduce`) that uses it directly.
+- **Pure functions**: a function whose output depends only on its inputs, with no side effects (no mutating external state, no I/O). Pure functions are trivially testable (same input always gives same output, no setup/teardown needed) and safe to parallelize (no shared mutable state to race on) — both directly relevant to writing data-preprocessing functions that will run across many worker processes in a `DataLoader`.
+- **Immutability**: preferring to create new values over mutating existing ones. Not idiomatic everywhere in Python (unlike, say, Haskell), but a deliberate design choice in specific places — e.g. why many config objects are built as immutable `dataclasses` (below) rather than mutable dicts passed around and edited in place, avoiding an entire class of "which function mutated my config" bugs.
+
+## Iterators and Generators
+
+- **The iterator protocol**: any object implementing `__iter__` and `__next__` can be looped over with `for`. This is the exact mechanism `DataLoader` uses to hand your training loop one batch at a time.
+- **Generators**: functions using `yield` instead of `return`, producing values lazily, one at a time, instead of building a full list in memory upfront. `yield` pauses the function, returns one value, and resumes exactly where it left off on the next call — the reason a generator can iterate over a dataset far too large to fit in memory: it only ever holds the current item, not all of them.
+- **Why this matters for data pipelines**: a generator-based data loading pipeline (read one example, transform it, `yield` it) has flat, constant memory usage regardless of dataset size — the alternative (load everything into a list, then process it) scales memory linearly with dataset size and simply breaks once the dataset is larger than RAM.
+
+## Decorators
+
+A decorator is a function that takes a function and returns a (usually modified) function — `@decorator` above a function definition is exactly equivalent to `func = decorator(func)`. This is how you add behavior (logging, timing, caching, disabling gradient tracking) *around* a function without touching its internals:
+
+```python
+def log_calls(func):
+    def wrapper(*args, **kwargs):
+        print(f"calling {func.__name__}")
+        return func(*args, **kwargs)
+    return wrapper
+
+@log_calls
+def train_step(batch):
+    ...
+```
+
+`@torch.no_grad()`, `@functools.lru_cache`, `@pytest.fixture`, and `@app.get("/predict")` (FastAPI route registration) are all this exact same mechanism, applied to different problems — recognizing the pattern once means none of them are mysterious.
+
+## Context Managers
+
+The `with` statement guarantees cleanup code runs even if an exception occurs inside the block — `__enter__` runs at the start, `__exit__` runs at the end, unconditionally. `with open(f) as file:` is the canonical example (the file gets closed even if reading it throws), but the pattern generalizes to anything with a "setup, then guaranteed teardown" shape: `torch.no_grad()` is *also* a context manager (`with torch.no_grad():` disables gradient tracking for the block, then guarantees it's re-enabled after, even on an exception). `contextlib.contextmanager` lets you write one from a generator function instead of a full class with `__enter__`/`__exit__`, using `yield` to mark the boundary between setup and teardown.
+
+## Type Hints and Static Checking
+
+- **Type hints** (`def predict(x: torch.Tensor) -> torch.Tensor:`) don't change runtime behavior at all — Python remains dynamically typed — but they turn function signatures into documentation the IDE and other tools can actually use, catching an entire class of "passed a list where a tensor was expected" bugs before running anything.
+- **`mypy`** (or similar static type checkers) analyzes type-hinted code without running it, flagging type mismatches as part of CI — the same "catch it before it ships" philosophy as a linter, applied to types specifically.
+- **`typing` module essentials**: `Optional[X]` (X or `None`), `Union[X, Y]` (either type), `List[X]`/`Dict[K, V]` (generic containers), `Callable[[Args], Return]` (function signatures as types) — enough to type-hint the overwhelming majority of real ML code.
+
+## `dataclasses`
+
+`@dataclass` auto-generates `__init__`, `__repr__`, and `__eq__` for a class that's mostly just typed fields — the standard, boilerplate-free way to define a training config, a model's hyperparameters, or any other "bag of typed fields" object:
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class TrainConfig:
+    learning_rate: float = 3e-4
+    batch_size: int = 32
+    num_epochs: int = 10
+```
+
+This is directly the configuration-management practice from [Engineering Foundations for ML](/docs/mlops/engineering-foundations) made concrete in code — hyperparameters as a typed, version-controllable object instead of scattered magic numbers or an untyped dict.
+
+Next: [Concurrency, Memory & Performance](/docs/python-engineering/concurrency-memory-and-performance) — what happens when this code needs to run fast, and in parallel.

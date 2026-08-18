@@ -1,0 +1,8 @@
+{
+  "label": "Reinforcement Learning",
+  "position": 6.9,
+  "link": {
+    "type": "generated-index",
+    "description": "MDPs, Bellman equations, Q-learning and SARSA, policy gradients and actor-critic, PPO/SAC/TD3, offline RL, imitation and inverse RL - the theoretical foundation underneath RLHF, agentic systems, and game-playing AI."
+  }
+}

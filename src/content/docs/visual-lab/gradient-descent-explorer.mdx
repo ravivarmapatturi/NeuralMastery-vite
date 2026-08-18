@@ -1,0 +1,27 @@
+---
+title: "Gradient Descent Explorer"
+sidebar_position: 3
+---
+
+
+import GradientDescentExplorer from '../../../viz/GradientDescentExplorer';
+
+# Gradient Descent Explorer
+
+The same elongated ("ravine") loss surface from [Optimizers, In Full Depth](/docs/deep-learning/optimizers)'s animated version — except here, you're driving.
+
+<GradientDescentExplorer />
+
+## What to Try
+
+- **Click anywhere on the bowl** to set a new starting point, then hit **Play**.
+- Compare **SGD** against **Adam** from the same starting point — SGD crawls along the shallow axis and stalls; Adam adapts its step size per-dimension and reaches the minimum's neighborhood far faster.
+- Push the **learning rate** slider up on SGD until it starts oscillating instead of converging — this is the exact instability [Calculus & Optimization — Gradient Descent and Its Variants](/docs/mathematics-for-ai/calculus-optimization#gradient-descent-and-its-variants) warns "too large a learning rate" causes, made visible instead of just stated.
+- Try **Momentum** with a high learning rate from the default start — watch it overshoot the minimum and swing back, the real behavior "momentum can overshoot" describes.
+- Use **Step** instead of **Play** to advance one update at a time, and watch the loss readout — this is literally the update rule from [Optimizers](/docs/deep-learning/optimizers) executing, one line of math per click.
+
+## Why This Matters
+
+Every optimizer's behavior described in prose — "SGD oscillates in ravines," "momentum overshoots," "Adam adapts per-dimension" — is a claim about *dynamics*, something that unfolds over steps. A static picture of the final paths (still on this site, on the Optimizers page) shows you the *outcome*; this shows you *why*, by letting you change the one thing (starting point, learning rate, optimizer) and watch the outcome change in response.
+
+Back to [Visual Lab Overview](/docs/visual-lab/overview) for what's coming next.

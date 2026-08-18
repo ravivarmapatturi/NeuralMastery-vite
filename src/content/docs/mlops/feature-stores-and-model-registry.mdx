@@ -1,0 +1,37 @@
+---
+title: "Feature Stores & Model Registry"
+sidebar_position: 13
+---
+
+
+# Feature Stores & Model Registry
+
+Two related problems that both come from the same root cause — training and serving are different systems, built at different times, and easy to let drift apart. A feature store keeps the *data* consistent between them; a model registry keeps the *model versions* organized and traceable.
+
+## The Training-Serving Skew Problem
+
+A model is trained on features computed one way (often in a batch job, in Python, over historical data) and served in production where features must be computed another way (often in real time, in a different language/service, under a tight latency budget). If those two computations ever disagree — even subtly, e.g. a rolling average computed over a slightly different window — the model sees different feature distributions in production than it was trained on, and accuracy silently degrades. This is **training-serving skew**, and it's one of the most common, hardest-to-notice production ML bugs.
+
+## Feature Stores
+
+A feature store is the fix: a central system that computes features once and serves them consistently to both training and serving.
+
+- **Offline store**: large-scale, historical feature values, used for generating training datasets — typically backed by a data warehouse or lake.
+- **Online store**: low-latency, current feature values, used for real-time inference — typically backed by Redis or a similarly fast key-value store.
+- **Feature freshness**: how recently a feature's value was computed — critical for online serving (a stale "user's last-hour click count" defeats the point of a real-time feature).
+- The core guarantee a feature store provides: the *same* feature definition and computation logic produces both the offline training data and the online serving values, eliminating skew by construction rather than by discipline.
+
+**Feast** is the standard open-source feature store — defines feature views once, backs them with both an offline and online store, and serves consistent values to both training pipelines and live inference.
+
+## Model Registry
+
+Once a model is trained (see [Experiment Tracking](/docs/mlops/experiment-tracking)), the registry is where trained versions live as first-class, tracked objects rather than files scattered across a filesystem.
+
+- **Model versions**: every registered model gets a version number, tied back to the exact experiment run (code, data, params) that produced it.
+- **Stages**: a lifecycle a version moves through — commonly `None → Staging → Production → Archived` — so "what's actually serving traffic right now" is always a single, unambiguous answer.
+- **Lineage**: a registered model version traces back to its training run, which traces back to its data version — the full chain needed to answer "why did this specific prediction happen" months later.
+- **Promotion workflow**: moving a model from Staging to Production is a deliberate, often gated action (manual approval, or automated if it passes the regression checks from [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd)) — not an implicit side effect of training finishing.
+
+**MLflow Model Registry** is the most common open-source option, integrated directly with MLflow Tracking. **SageMaker Model Registry** is the AWS-managed equivalent, integrated with the rest of the SageMaker training/deployment flow (see [Cloud Computing for ML](/docs/mlops/cloud-computing)).
+
+Next: [Deployment Strategies](/docs/mlops/deployment-strategies) — how a model actually moves from "Production" in the registry to serving real traffic, safely.

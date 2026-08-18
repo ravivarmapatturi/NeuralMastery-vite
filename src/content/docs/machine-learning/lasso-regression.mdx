@@ -1,0 +1,97 @@
+---
+title: "Lasso Regression, In Full Depth"
+sidebar_position: 4.7
+---
+
+import __migratedImg0 from './img/lasso-path.png';
+
+
+import LassoRegressionStudio from '../../../viz/LassoRegressionStudio';
+import PredictFirst from '../../../viz/primitives/PredictFirst';
+
+# Lasso Regression, In Full Depth
+
+[Ridge Regression](/docs/machine-learning/ridge-regression) shrinks every weight toward zero but never eliminates any of them. Lasso uses a different penalty that can drive weights to *exactly* zero — turning regularization into automatic feature selection.
+
+## What Is Lasso Regression?
+
+Same hypothesis as [Linear Regression](/docs/machine-learning/linear-regression) — $\hat{y} = \mathbf{w}^T\mathbf{x} + b$ — with a different penalty than Ridge added to the cost function. "Lasso" stands for **L**east **A**bsolute **S**hrinkage and **S**election **O**perator — the name is a description of exactly what it does.
+
+## The Lasso Cost Function
+
+$$J_{\text{lasso}}(\mathbf{w}, b) = \frac{1}{n}\sum_{i=1}^n \left(\hat{y}^{(i)} - y^{(i)}\right)^2 + \lambda \sum_{j=1}^d |w_j|$$
+
+The only change from [Ridge](/docs/machine-learning/ridge-regression#the-ridge-cost-function) is the penalty term: $\lambda \sum |w_j|$ — the **L1 norm** of the weights (sum of absolute values, see [Linear Algebra — Norms](/docs/mathematics-for-ai/linear-algebra)) instead of the L2 norm (sum of squares).
+
+## Why L1 Produces Exact Zeros (and L2 Doesn't)
+
+This is the single most important thing to understand about Lasso, and it comes down to the *shape* of the penalty, not just its magnitude.
+
+$|w_j|$ has a constant derivative of $\pm 1$ (technically undefined exactly at $w_j = 0$ — a **subgradient**, see below) for any nonzero $w_j$, no matter how small. $w_j^2$'s derivative is $2w_j$, which shrinks toward zero *as $w_j$ shrinks toward zero* — the penalty's pull weakens exactly when it would matter most for actually reaching zero.
+
+Concretely: near $w_j = 0$, Ridge's penalty gradient vanishes, so the pull toward zero becomes negligible — weights approach zero asymptotically but essentially never land on it exactly. Lasso's penalty gradient stays constant magnitude all the way to zero, so it can push a small weight the rest of the way to *exactly* 0 and keep it there once the data's own pull (the MSE gradient) is weaker than that constant penalty pull.
+
+## The Subgradient at Zero
+
+$|w_j|$ isn't differentiable at exactly $w_j = 0$ — the slope jumps from $-1$ to $+1$. Optimizing Lasso by plain gradient descent as written doesn't quite work at that point; two standard approaches:
+
+- **Subgradient**: use any value in $[-1, 1]$ as a stand-in derivative at $w_j=0$ (commonly 0), and take (slower) subgradient descent steps.
+- **Coordinate descent** (the standard approach in practice): optimize one weight at a time, holding the others fixed. For a single weight, the optimal update has a closed form — the **soft-thresholding operator**:
+
+$$w_j \leftarrow \text{sign}(\rho_j) \cdot \max(|\rho_j| - \lambda, 0)$$
+
+where $\rho_j$ is the OLS-optimal value for $w_j$ given the other weights fixed. Read directly: if $\rho_j$'s magnitude is smaller than $\lambda$, $w_j$ gets set to *exactly* zero. If it's larger, $w_j$ shrinks by exactly $\lambda$ toward zero, keeping its sign. This closed-form "shrink or zero it" rule, applied to one coordinate at a time until convergence, is what actual Lasso solvers (like scikit-learn's) use — not naive gradient descent.
+
+## The Regularization Path
+
+Compare directly against [Ridge's path](/docs/machine-learning/ridge-regression#the-regularization-path) — same synthetic data, same range of $\lambda$:
+
+<img src={__migratedImg0} alt="Lasso regularization path — coefficients hit exactly zero at different thresholds as regularization strength increases" style={{maxWidth: '100%'}} />
+
+Notice the qualitative difference from Ridge's curve: coefficients here go flat at *exactly* zero and stay there, at different $\lambda$ thresholds for different features — Lasso is silently doing feature selection as $\lambda$ increases, keeping only the features whose signal is strong enough to survive the penalty.
+
+<PredictFirst
+  question="Using the exact same correlated-feature dataset as the Ridge Studio, what will happen to the irrelevant feature (x3, true weight 0) as λ increases in Lasso?"
+  options={[
+    'It shrinks smoothly but never quite reaches zero, like in Ridge',
+    'It hits exactly zero at a fairly low λ and gets dropped from the model entirely',
+    'It grows larger, since Lasso favors sparse, high-magnitude coefficients',
+    'Nothing changes -- λ only affects the informative features',
+  ]}
+  correctIndex={1}
+  explanation="L1's penalty gradient stays constant magnitude all the way to zero (unlike L2's, which weakens as the weight shrinks), so once the data's pull for a genuinely irrelevant feature is weaker than that constant penalty, coordinate descent snaps it to exactly 0 and keeps it there. Try it below: x3 typically zeroes out before any other feature."
+/>
+
+Try the real coordinate-descent solver below — same dataset, same λ range as the Ridge Studio, so the two paths are directly comparable:
+
+<LassoRegressionStudio />
+
+## When to Use Lasso Over Ridge
+
+- You suspect many features are irrelevant, and want the model to identify and drop them automatically
+- You want a sparse, more interpretable model — fewer nonzero coefficients means a simpler story about what actually drives predictions
+- **Caveat**: when features are highly correlated, Lasso tends to arbitrarily keep one and zero out the others, rather than spreading weight across them the way Ridge does — this can make Lasso's feature selection less stable than it looks (rerunning on a slightly different data sample can pick a different feature from the correlated group).
+
+## Minimal Implementation
+
+Coordinate descent with soft-thresholding, matching the derivation above:
+
+```python
+import numpy as np
+
+def soft_threshold(rho, lam):
+    return np.sign(rho) * max(abs(rho) - lam, 0)
+
+def fit_lasso(X, y, lam=1.0, epochs=200):
+    n, d = X.shape
+    w = np.zeros(d)
+    for _ in range(epochs):
+        for j in range(d):
+            residual = y - X @ w + w[j] * X[:, j]   # error if w_j were 0
+            rho = X[:, j] @ residual
+            z = (X[:, j] ** 2).sum()
+            w[j] = soft_threshold(rho, lam * n / 2) / z if z > 0 else 0
+    return w
+```
+
+Next: [Elastic Net](/docs/machine-learning/elastic-net) — combining both penalties to get Ridge's stability with Lasso's feature selection.

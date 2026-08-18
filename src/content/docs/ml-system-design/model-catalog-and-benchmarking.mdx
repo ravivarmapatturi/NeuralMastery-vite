@@ -1,0 +1,70 @@
+---
+title: "Model Catalog & Benchmarking Framework"
+sidebar_position: 5
+---
+
+
+# Model Catalog & Benchmarking Framework
+
+Choosing a model for a system is a recurring decision this site's content can't make *for* you with a fixed answer — specific models and their benchmark scores change every few months, often faster than any static page can track responsibly. What stays durable is the **framework**: which categories of model exist, which attributes actually matter for choosing between them, and which benchmark dimensions matter for each type of system. This page is that framework — deliberately a methodology, not a snapshot leaderboard that would be stale within a quarter of being written.
+
+## Model Categories
+
+A rough taxonomy of the model types most system-design decisions choose between, each covered in depth elsewhere on this site:
+
+| Category | Covered in |
+|---|---|
+| LLM | [LLMs & GenAI](/docs/llms-genai/roadmap), [Foundation Model Internals](/docs/llms-genai/foundation-model-internals) |
+| VLM (vision-language) | [Modern Vision & Multimodal](/docs/computer-vision/modern-vision-and-multimodal), [Multimodal & Generative Models](/docs/llms-genai/multimodal-generative-models) |
+| Embedding model | [RAG — Choosing an Embedding Model](/docs/llms-genai/rag#choosing-an-embedding-model) |
+| Reranker (cross-encoder) | [RAG — Re-ranking with Cross-Encoders](/docs/llms-genai/rag#re-ranking-with-cross-encoders) |
+| Speech (ASR/TTS) | [Speech & Audio Tasks](/docs/speech-audio/speech-audio-tasks) |
+| Image generation | [Generative Models](/docs/deep-learning/generative-models) |
+| Video generation/understanding | [Modern Vision & Multimodal](/docs/computer-vision/modern-vision-and-multimodal) |
+| Audio generation | [Speech & Audio Tasks](/docs/speech-audio/speech-audio-tasks) |
+| Reasoning models | [Training Pipeline — GRPO](/docs/llms-genai/training-pipeline#group-relative-policy-optimization-grpo) |
+
+## The Model Card Attribute Checklist
+
+When evaluating *any* model against this checklist, whatever its category — the same attribute set the [Model Cards](/docs/mlops/legal-licensing-and-governance#model-cards-and-data-cards) standard formalizes:
+
+- **Architecture**: what family it belongs to (decoder-only, encoder-decoder, diffusion, etc.) — see [Attention & Transformers](/docs/deep-learning/attention-transformers) and [Generative Models](/docs/deep-learning/generative-models) for the architectural vocabulary.
+- **Parameters**: total and (for MoE models, see [Foundation Model Internals — MoE](/docs/llms-genai/foundation-model-internals#mixture-of-experts-moe)) active parameter count — active parameters, not total, determine per-token inference compute cost.
+- **Context length**: maximum sequence length supported — directly bounds [KV cache memory](/docs/mlops/llm-inference-optimization#kv-cache) requirements at serving time.
+- **Modalities**: what input/output types the model actually supports (text-only, text+image-in, text+image+audio, etc.).
+- **Training data and recency**: what it was trained on, and its effective knowledge cutoff — directly relevant to the [RAG vs. fine-tuning](/docs/interview-prep/technology-comparisons#rag-vs-fine-tuning) decision.
+- **License**: see [Legal, Licensing & Governance — Model Licenses](/docs/mlops/legal-licensing-and-governance#model-licenses) — check the actual current terms before commercial use, every time, since terms have changed between versions of the same model family.
+- **Benchmark scores**: reported scores on standard benchmarks — read alongside [AI Evaluation — Benchmark Design](/docs/ai-evaluation/evaluation-fundamentals#benchmark-design)'s contamination/saturation cautions before trusting a number at face value.
+- **Hardware requirements**: VRAM needed to serve at a given precision — see [LLM Inference Optimization — GGUF Ecosystem](/docs/mlops/llm-inference-optimization#the-gguf-ecosystem) for concrete size-math worked examples.
+- **Inference support**: which engines support it (see [LLM Inference Engines](/docs/mlops/llm-inference-engines)) — a model with narrow engine support is a real operational constraint, not just a technical footnote.
+- **Fine-tuning support**: whether LoRA/QLoRA tooling has mature support for the architecture — see [Training Pipeline — PEFT](/docs/llms-genai/training-pipeline#parameter-efficient-fine-tuning-peft).
+- **Quantization support**: whether pre-quantized versions (GGUF, AWQ, GPTQ) are readily available, or quantization has to be done in-house.
+- **Use cases**: what the model card/provider explicitly states it's suited (and *not* suited) for — the out-of-scope-uses section is often more informative than the intended-use section.
+
+## Benchmark Dimensions by System Type
+
+What to actually measure, by the kind of system being built — durable regardless of which specific models are being compared:
+
+**For any served model (inference benchmarking)**:
+| Dimension | Covered in |
+|---|---|
+| Latency (TTFT, TPOT, end-to-end, P50/P95/P99) | [LLM Inference Optimization — Inference Metrics Summary](/docs/mlops/llm-inference-optimization#inference-metrics-summary) |
+| Throughput (tokens/sec, requests/sec) | same |
+| Memory (weights + KV cache) | [LLM Inference Optimization — KV Cache](/docs/mlops/llm-inference-optimization#kv-cache) |
+| Cost (per 1M tokens) | [AI Cost Engineering](/docs/mlops/ai-cost-engineering) |
+
+**For retrieval (embedding/reranker benchmarking)**:
+| Dimension | Covered in |
+|---|---|
+| Recall@k, Precision@k | [Learning-to-Rank — Ranking Evaluation Metrics](/docs/machine-learning/learning-to-rank#ranking-evaluation-metrics) |
+| MRR, NDCG | same |
+| Retrieval latency | [RAG — Evaluating RAG](/docs/llms-genai/rag#evaluating-rag) |
+| Cost per query | [AI Cost Engineering](/docs/mlops/ai-cost-engineering) |
+
+**For general model quality**: see [AI Evaluation](/docs/ai-evaluation/roadmap) in full — traditional metrics, LLM-as-judge, RAG evaluation, agent evaluation, and human/adversarial evaluation, each with the specific metrics and methodology to apply.
+
+## How to Use This Page
+
+When choosing a model for a real system: pull the current, specific candidates from primary sources (the model provider's own documentation, the inference engine's supported-models list, current leaderboards — treated with the [benchmark design](/docs/ai-evaluation/evaluation-fundamentals#benchmark-design) skepticism this site teaches, not at face value) and evaluate them against the attribute checklist and benchmark dimensions above. The checklist and dimensions are what stay true regardless of which specific models exist when you're reading this — that durability is the point.
+
+Next: [ML System Design Roadmap](/docs/ml-system-design/roadmap) — where model selection fits into the full 9-step system design framework.

@@ -1,0 +1,52 @@
+---
+title: "Anomaly Detection: Isolation Forest, LOF & One-Class SVM, In Full Depth"
+sidebar_position: 6.7
+---
+
+import __migratedImg0 from './img/anomaly-detection.png';
+
+
+# Anomaly Detection: Isolation Forest, LOF & One-Class SVM, In Full Depth
+
+A distinctive unsupervised problem: find the points that *don't* fit, usually with few or no labeled examples of what "anomalous" even looks like — fraud, defects, and intrusions are rare and varied enough that you rarely have a good labeled training set of them.
+
+<img src={__migratedImg0} alt="Anomaly detection: a normal cluster with a handful of clear outliers flagged" style={{maxWidth: '100%'}} />
+
+## Isolation Forest
+
+A genuinely different mechanism than every other tree-based method on this site — instead of trying to *classify* points, it exploits a simple structural fact: **anomalies are easier to isolate than normal points.**
+
+**The algorithm**: build many random trees, where each split picks a random feature and a random threshold within that feature's range (unlike [Decision Trees](/docs/machine-learning/decision-tree#how-a-split-is-chosen), no impurity criterion is optimized at all — splits are purely random). For any given point, count how many splits it takes to isolate it alone in its own leaf — the **path length**.
+
+**Why this isolates anomalies faster**: anomalies sit in sparse regions, far from other points — a single random split is disproportionately likely to separate them from the rest of the data immediately. Normal points sit in dense clusters, requiring many more splits to carve out individually, since each random split has to get "lucky" to fall exactly between an inlier and its many close neighbors. Average the path length across many random trees (the "forest" part — same ensembling logic as [Random Forest](/docs/machine-learning/random-forest#the-core-idea-bagging), just applied to isolation instead of prediction accuracy), and short average path length becomes directly the anomaly score.
+
+**Why it's fast**: unlike distance-based methods, no pairwise distance computation is needed at all — just random splits — making Isolation Forest one of the most scalable anomaly detection methods to large, high-dimensional datasets.
+
+## Local Outlier Factor (LOF)
+
+A density-based approach, conceptually close to [DBSCAN](/docs/machine-learning/dbscan-hdbscan#dbscan-density-based-spatial-clustering-of-applications-with-noise): compare each point's local density to the local density of its neighbors. A point sitting in a much sparser neighborhood than its neighbors' neighborhoods gets a high outlier score.
+
+**Why "local" matters specifically**: a single global density threshold (like DBSCAN's fixed $\epsilon$) fails when different regions of the data have genuinely different natural densities — a point that's sparse relative to a dense region might be entirely normal relative to a naturally sparser region elsewhere in the same dataset. LOF compares each point only to its *own* neighborhood's typical density, making it far more sensitive to local anomalies that a global threshold would miss entirely — directly the same varying-density problem that motivated [HDBSCAN](/docs/machine-learning/dbscan-hdbscan#hdbscan-hierarchical-dbscan) over plain DBSCAN.
+
+## One-Class SVM
+
+Adapts [SVM](/docs/machine-learning/support-vector-machines) to a setting with only one class (normal data, little or no labeled anomalies): instead of finding a boundary *between* two classes, it finds a boundary that separates the normal data from the origin (or, in the more common variant, fits the smallest possible enclosing region around the normal data) in the kernel-transformed feature space (see [SVM — The Kernel Trick](/docs/machine-learning/support-vector-machines#the-kernel-trick)).
+
+**How it's used**: train the boundary on normal data only; at inference, anything falling outside the learned boundary is flagged as anomalous. The kernel trick lets this boundary be arbitrarily non-linear, exactly as in standard SVM — critical since "normal" data rarely forms a simple, linearly-bounded region.
+
+## Autoencoder-Based Detection
+
+Covered in depth in [Autoencoders](/docs/deep-learning/autoencoders#the-autoencoder-architecture): train a reconstruction model on normal data only; at inference, high reconstruction error signals an anomaly, since the model never learned to compress and reconstruct that kind of input well. The deep-learning analog of the same "model what's normal, flag what doesn't fit" strategy as every method above.
+
+## Choosing an Approach
+
+| | Isolation Forest | LOF | One-Class SVM | Autoencoder |
+|---|---|---|---|---|
+| Scales to large data | Best | Moderate (pairwise distances) | Poor (like standard SVM) | Good |
+| Handles varying density | Reasonably | Best (explicitly local) | No | Depends on training data coverage |
+| Needs feature scaling | No (splits are threshold-based) | Yes (distance-based) | Yes | Yes |
+| Captures complex nonlinear structure | Limited | Limited | Yes (via kernel) | Yes (via depth) |
+
+**General rule of thumb**: Isolation Forest is the strong default for tabular data at any real scale; LOF when you specifically suspect varying-density regions; One-Class SVM for smaller, well-understood feature spaces; autoencoders when the data is high-dimensional/unstructured (images, sequences) where deep learning already has an architectural advantage (see [Deep Learning](/docs/deep-learning/roadmap)).
+
+This completes association rules and anomaly detection. Next: [Topic Modeling: LDA & BERTopic](/docs/machine-learning/topic-modeling) — unsupervised structure discovery specifically for text.

@@ -1,0 +1,38 @@
+---
+title: "CI/CD & ML CI/CD"
+sidebar_position: 12
+---
+
+
+# CI/CD & ML CI/CD
+
+Continuous Integration and Continuous Deployment automate the path from "code changed" to "that change is safely running in production." ML systems need everything regular CI/CD does, plus checks that don't exist in ordinary software at all — because a model can be *syntactically* fine and still be *wrong*.
+
+## CI vs. CD
+
+- **CI (Continuous Integration)**: on every push/PR, automatically test, build, and lint the code, and scan it for known vulnerabilities — catching breakage before it merges, not after.
+- **CD (Continuous Deployment/Delivery)**: on a successful CI run (often only from the main branch), automatically deploy the change, run post-deploy checks, and roll it out to production — removing manual, error-prone release steps.
+
+**GitHub Actions** is the most common CI engine — YAML workflows triggered by git events. **Argo CD** is a common CD tool specifically for Kubernetes: it continuously reconciles a cluster's actual state to match what's declared in a git repo ("GitOps") — deploying by merging a PR rather than running `kubectl apply` by hand.
+
+## Why ML CI/CD Needs More Than Code Checks
+
+Regular CI/CD assumes: if the code passes tests and builds, it's safe to ship. That assumption breaks for ML, because the artifact that actually matters — the trained model — is a function of code *and* data, and "passes unit tests" says nothing about whether the model is still accurate on real inputs. ML CI/CD adds:
+
+- **Drift checks**: does the incoming data still look like the data the model was trained/validated on? (See [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) for the actual math.) A code change can pass every test and still ship a model quietly degrading against data that's moved.
+- **Model regression testing**: run the candidate model against a fixed, held-out benchmark dataset and assert its metrics haven't dropped below a threshold — the ML equivalent of a regression test suite, because a model "passing" isn't binary the way a function returning the right value is.
+- **Automated retraining triggers**: a pipeline that retrains automatically on a schedule, or when drift crosses a threshold, and only promotes the new model if it beats the current production model on the benchmark — closing the loop from [Pipeline Orchestration](/docs/mlops/pipeline-orchestration) and [Deployment Strategies](/docs/mlops/deployment-strategies) into something that runs itself.
+
+## What a Real ML CI/CD Pipeline Checks, End to End
+
+1. Code passes lint/unit/integration tests (standard CI).
+2. New/changed data passes validation (schema, ranges — see [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning)).
+3. A training run completes and logs to the experiment tracker (see [Experiment Tracking](/docs/mlops/experiment-tracking)).
+4. The resulting model beats the current production model's metrics on a fixed benchmark — otherwise the pipeline stops here, automatically.
+5. The model is registered (see [Feature Stores & Model Registry](/docs/mlops/feature-stores-and-model-registry)) and containerized (see [Containers](/docs/mlops/containers)).
+6. The new version is deployed using a safe rollout strategy (see [Deployment Strategies](/docs/mlops/deployment-strategies)), not an instant full-traffic swap.
+7. Post-deploy monitoring confirms the new version is healthy before the rollout completes.
+
+Every step above exists because skipping it has a specific, real failure mode — a pipeline that only does step 1 is doing software CI/CD wearing an ML costume.
+
+Next: [Feature Stores & Model Registry](/docs/mlops/feature-stores-and-model-registry) — the systems that make steps 2 and 5 above actually queryable and reusable, not just "it happened once."

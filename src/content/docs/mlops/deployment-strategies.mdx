@@ -1,0 +1,38 @@
+---
+title: "Deployment Strategies"
+sidebar_position: 14
+---
+
+
+# Deployment Strategies
+
+Instantly swapping 100% of production traffic from the old model to a new one is the riskiest possible way to deploy — if the new model is subtly broken, every user hits it at once, with no easy way to isolate whether the model is actually the cause. Every strategy below exists to reduce that blast radius.
+
+## Blue-Green Deployment
+
+Run two complete, identical production environments — "blue" (currently live) and "green" (the new version). Deploy the new model fully into green, verify it's healthy, then switch the router/load balancer to send all traffic to green in one atomic cutover. Blue stays running, untouched, as an instant rollback target — if green misbehaves, flip traffic back to blue immediately. The cost is running two full production environments simultaneously, even if briefly.
+
+## Canary Deployment
+
+Route a small percentage of traffic (e.g. 5%) to the new model while the rest continues to hit the old one, then gradually increase that percentage as metrics stay healthy — 5% → 25% → 50% → 100%. If the canary's metrics degrade at any point, roll back by routing traffic away from it, having only affected a small fraction of users. This is the standard approach when a gradual, metric-gated rollout is more valuable than an instant switch.
+
+## Shadow Deployment
+
+Send production traffic to *both* the old and new model, but only ever return the old model's response to the user — the new model's predictions are logged and compared offline, invisibly. This is the safest possible way to validate a new model against real production traffic, because it can never affect what a real user sees, at the cost of extra compute (running two models on every request) and not testing real-world *feedback* to the new model's own outputs.
+
+## A/B Testing
+
+Similar to canary in mechanics (split traffic between two versions), but different in *purpose*: canary is about rollout safety (is the new model behaving correctly, technically), A/B testing is about business impact (does the new model produce a *better outcome* — more conversions, more engagement — not just "doesn't crash"). A/B tests are typically run for a fixed, pre-committed duration with statistical significance testing on the outcome metric, rather than being cut short the moment things look fine.
+
+## Choosing Between Them
+
+| Strategy | Answers | Cost |
+|---|---|---|
+| Blue-Green | "Is the new version safe to fully cut over to?" | Double infrastructure, briefly |
+| Canary | "Is the new version safe, at gradually increasing scale?" | Extra rollout time and monitoring |
+| Shadow | "How does the new model behave on real traffic, with zero user risk?" | Extra compute, no outcome feedback |
+| A/B Test | "Does the new model actually perform better on the metric that matters?" | Statistical rigor, longer time to a decision |
+
+In practice these compose: shadow-test a genuinely new model architecture first, canary-roll it once shadow metrics look good, and layer an A/B test on top if the real question is business impact rather than technical correctness.
+
+Next: [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) — every strategy above depends on having monitoring good enough to actually tell "safe" from "not" during rollout.

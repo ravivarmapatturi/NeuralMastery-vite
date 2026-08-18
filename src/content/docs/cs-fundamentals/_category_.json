@@ -1,0 +1,8 @@
+{
+  "label": "CS Fundamentals for AI Engineers",
+  "position": 0.5,
+  "link": {
+    "type": "generated-index",
+    "description": "Operating systems, concurrency, networking, distributed systems, Linux/Git internals, and software engineering practice — the systems knowledge underneath every AI model, before the math and the models themselves."
+  }
+}

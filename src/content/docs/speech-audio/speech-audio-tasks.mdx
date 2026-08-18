@@ -1,0 +1,50 @@
+---
+title: "Speech & Audio Tasks"
+sidebar_position: 4
+---
+
+
+# Speech & Audio Tasks
+
+The task taxonomy built on top of the representations in [Audio Fundamentals](/docs/speech-audio/audio-fundamentals) — every one of these reuses the sequence-modeling and attention machinery from [Deep Learning](/docs/deep-learning/roadmap) directly, just applied to spectrogram-like input instead of text tokens or image patches.
+
+## ASR: Automatic Speech Recognition
+
+Converting spoken audio into text — architecturally, a sequence-to-sequence problem (audio frames in, text tokens out), solved by a few structurally different approaches:
+
+- **CTC (Connectionist Temporal Classification)**: lets a model output a text sequence *shorter* than the input audio sequence without needing pre-aligned training data (exact "this audio frame corresponds to this character" labels, which are expensive to produce). CTC introduces a special "blank" token and a many-to-one collapsing rule (repeated characters and blanks get collapsed down), letting the model be trained with only the target *text*, no frame-level alignment — the model itself learns where each character should go via the CTC loss.
+- **Encoder-decoder with attention**: an audio encoder (often a CNN or Transformer over spectrogram frames) processes the full audio, and a decoder generates text tokens autoregressively, attending back over the encoded audio — the same encoder-decoder pattern as [machine translation](/docs/nlp/nlp-task-taxonomy#machine-translation), with audio frames in place of source-language tokens.
+- **Whisper-style approaches**: a large Transformer encoder-decoder trained on a massive, diverse, weakly-labeled dataset (audio paired with whatever transcripts/captions were available at scale, not painstakingly curated) — the same "scale beats careful curation, given enough data" lesson that drove LLM pretraining (see [LLM Pretraining](/docs/llms-genai/roadmap)) applied to speech, and the reason Whisper-family models generalize robustly across accents, background noise, and languages without task-specific fine-tuning.
+- **Evaluation**: **Word Error Rate (WER)** — edit distance (insertions + deletions + substitutions) between the predicted and reference transcript, divided by the reference's word count — the standard ASR metric, directly analogous to how [BLEU](/docs/nlp/nlp-task-taxonomy#machine-translation) scores translation, but based on edit distance rather than n-gram overlap.
+
+## TTS: Text-to-Speech
+
+Converting text into natural-sounding spoken audio — historically a two-stage pipeline, increasingly collapsed into one model:
+
+- **Acoustic model**: converts text (or phonemes — the distinct units of sound in a language) into an intermediate acoustic representation, typically a Mel spectrogram (see [Audio Fundamentals](/docs/speech-audio/audio-fundamentals#mel-spectrograms-and-mfccs)) — essentially predicting "what should this text sound like," in spectrogram form, without yet producing actual playable audio.
+- **Vocoder**: converts that intermediate spectrogram into an actual raw waveform — a genuinely hard problem on its own (a spectrogram discards the exact phase information needed to reconstruct a waveform sample-by-sample), solved by dedicated neural vocoders (e.g. WaveNet and its many faster successors) trained specifically for high-fidelity spectrogram-to-waveform synthesis.
+- **End-to-end neural TTS**: modern systems increasingly train a single model directly from text to waveform (or use a diffusion-based approach — see [Generative Models](/docs/deep-learning/generative-models) — over the audio representation), collapsing the two-stage pipeline and letting the acoustic and vocoding modeling be learned jointly rather than optimized separately.
+- **Voice cloning / speaker-conditioned TTS**: conditioning a TTS model on a short reference audio sample of a target speaker's voice, generating new speech in that voice for arbitrary text — reuses the same embedding-conditioning pattern as [Recommender Systems](/docs/machine-learning/recommender-systems)'s user/item embeddings or a VLM's image conditioning: a learned speaker embedding steers the generation process, rather than needing to retrain the whole model per speaker.
+
+## Speaker Recognition and Verification
+
+- **Speaker identification**: which of a known set of speakers is this audio from — a closed-set classification problem.
+- **Speaker verification**: does this audio match a specific claimed speaker's identity (a yes/no decision, often for authentication) — typically framed as a metric-learning problem, the same [Siamese network / contrastive embedding](/docs/deep-learning/advanced-architectures#metric-learning-networks) approach used for face verification, just with a learned speaker-embedding space instead of a face-embedding space: enroll a speaker via a reference embedding, then check whether new audio's embedding is close enough to match.
+
+## Speaker Diarization
+
+Answering "who spoke when" in multi-speaker audio (a meeting recording, a phone call) — segmenting the audio by time *and* clustering segments by speaker identity, without necessarily knowing in advance who's present or how many speakers there are. Combines voice-activity detection (finding when *someone* is speaking at all), speaker-embedding extraction per segment (the same embeddings from speaker recognition above), and clustering ([K-Means or hierarchical clustering](/docs/machine-learning/kmeans-hierarchical-clustering)) to group segments by speaker — a genuinely different problem from ASR (which just transcribes *what* was said) and often run alongside it to produce a full "Speaker A: ..., Speaker B: ..." transcript.
+
+## Audio Classification
+
+Assigning a label to an audio clip — environmental sound classification (glass breaking, a dog barking, a car alarm — used in smart-home/security applications), music genre classification, or general acoustic scene classification. Architecturally the most direct fit for standard CNN-style classification: treat a Mel spectrogram as an "image" and apply a CNN classifier (see [CNNs](/docs/deep-learning/cnns)) directly, or use a Transformer over spectrogram patches, essentially the same architectural playbook as [Computer Vision — Vision Tasks & Models](/docs/computer-vision/vision-tasks-and-models)'s classification task, applied to a time-frequency image instead of a photograph.
+
+## Speech Enhancement and Noise Suppression
+
+Removing background noise or isolating a target speaker's voice from a noisy recording — framed as predicting a *clean* spectrogram (or waveform) from a *noisy* one, trained on pairs of clean and artificially-noised audio, the same denoising-autoencoder idea as [Autoencoders](/docs/deep-learning/autoencoders)'s denoising variant, applied to audio instead of images. Real-time noise suppression (video call background noise removal) adds a hard latency constraint on top of the modeling problem — the model has to run faster than real-time, consistently, which shapes architecture choices (favoring smaller, more efficient models) as much as raw accuracy does.
+
+## Audio-Language Models and Multimodal Audio
+
+Extending the VLM pattern (see [Computer Vision — Modern Vision & Multimodal](/docs/computer-vision/modern-vision-and-multimodal#vision-language-models-and-image-text-alignment)) to audio: an audio encoder (processing spectrogram-like input) feeds learned audio features into an LLM alongside text, letting the model answer questions about audio content, follow spoken instructions directly, or reason jointly over audio and text — the same image→vision-encoder→projector→LLM architecture from [Multimodal & Generative Models](/docs/llms-genai/multimodal-generative-models), with an audio encoder standing in for the vision encoder. This is the direction voice-native assistants are headed: rather than a pipeline of separate ASR → LLM → TTS stages (each adding latency and losing paralinguistic information — tone, emphasis, pauses — that pure text transcription discards), a single audio-native model processes and responds to speech more directly.
+
+Speech & Audio AI section complete. Next: [LLMs & GenAI](/docs/llms-genai/roadmap) — where audio-language models connect back to the general multimodal Transformer story.

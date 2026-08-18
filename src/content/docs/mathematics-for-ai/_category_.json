@@ -1,0 +1,8 @@
+{
+  "label": "Mathematics for AI",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Linear algebra, calculus, probability & statistics, and optimization — the math foundations every AI topic builds on."
+  }
+}

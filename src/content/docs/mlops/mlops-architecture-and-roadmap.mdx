@@ -1,0 +1,119 @@
+---
+title: "The Full MLOps Architecture, Priority Stack & Learning Path"
+sidebar_position: 23
+---
+
+
+# The Full MLOps Architecture, Priority Stack & Learning Path
+
+Every previous page in this section is one piece of a single end-to-end system. This page assembles them, tells you which pieces to learn first, and gives you five projects to actually build it.
+
+## The Complete End-to-End Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  DATA LAYER                                                         │
+│  Sources → Ingestion → Validation → Transformation → Storage        │
+│  Versioning: DVC / LakeFS / Delta Lake / Iceberg                    │
+└───────────────────────────────┬───────────────────────────────────┘
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  FEATURE LAYER                                                      │
+│  Feature Store (Feast): Offline Store ⇄ Online Store                │
+└───────────────────────────────┬───────────────────────────────────┘
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  EXPERIMENTATION LAYER                                              │
+│  Pipeline Orchestration (Airflow/Prefect/Dagster)                   │
+│  Training → Experiment Tracking (MLflow) → Model Registry           │
+└───────────────────────────────┬───────────────────────────────────┘
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  CI/CD LAYER                                                        │
+│  Code CI → Model regression tests → Drift gate → Auto-promote       │
+└───────────────────────────────┬───────────────────────────────────┘
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  DEPLOYMENT LAYER                                                   │
+│  Container → Kubernetes/Cloud → Blue-Green / Canary / Shadow        │
+│  Classical: FastAPI/BentoML/Triton  |  LLM: vLLM/SGLang/TensorRT-LLM│
+└───────────────────────────────┬───────────────────────────────────┘
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  SERVING LAYER                                                      │
+│  API Gateway → Load Balancer → Inference Engine → GPU/CUDA          │
+└───────────────────────────────┬───────────────────────────────────┘
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  OBSERVABILITY LAYER                                                │
+│  Logs / Metrics / Traces (Prometheus, Grafana, OpenTelemetry)       │
+│  Drift Detection (PSI/KL/JS/KS) — LLM Eval (Ragas/DeepEval)         │
+└───────────────────────────────┬───────────────────────────────────┘
+                                 ▼
+                    feeds back into DATA LAYER
+                 (retraining trigger on drift/decay)
+```
+
+Every arrow is a page you've already read: Data Layer is [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning); Feature Layer is [Feature Stores & Model Registry](/docs/mlops/feature-stores-and-model-registry); Experimentation is [Experiment Tracking](/docs/mlops/experiment-tracking) + [Pipeline Orchestration](/docs/mlops/pipeline-orchestration); CI/CD is [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd); Deployment is [Containers](/docs/mlops/containers) + [Kubernetes](/docs/mlops/kubernetes) + [Deployment Strategies](/docs/mlops/deployment-strategies); Serving is [APIs & Model Serving](/docs/mlops/model-serving) and, for LLMs, [LLM Inference Engines](/docs/mlops/llm-inference-engines) through [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns); Observability is [Observability](/docs/mlops/observability) + [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) + [LLM Evaluation & RAGOps](/docs/mlops/llm-evaluation-and-ragops). [Security & Reproducibility](/docs/mlops/security-and-reproducibility) and [Engineering Foundations](/docs/mlops/engineering-foundations) apply across every layer, not one box. [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training) underlies the Experimentation and Serving layers wherever GPUs are involved.
+
+## From MLOps to AI Platform Engineering
+
+Everything in the architecture diagram above is usually built and described tool-by-tool — but at an organization with more than one ML team, the same pieces get built *once*, centrally, and offered as a self-service **platform** the rest of the org builds on top of, rather than each team standing up its own MLflow instance and Kubernetes cluster from scratch. This is the shift from "MLOps" (the practices) to **AI Platform Engineering** (the org function that operationalizes them for everyone at once):
+
+- **Training platform**: the [pipeline orchestration](/docs/mlops/pipeline-orchestration) + [experiment tracking](/docs/mlops/experiment-tracking) + [GPU/distributed training](/docs/mlops/gpu-and-distributed-training) layers, offered as a shared service — a data scientist submits a training job without personally provisioning GPUs, configuring FSDP, or standing up an MLflow server.
+- **Inference platform**: the [LLM inference engines](/docs/mlops/llm-inference-engines) through [hosting & serving patterns](/docs/mlops/llm-hosting-and-serving-patterns) layers, similarly centralized — teams deploy a model to a shared, already-optimized serving platform instead of each reinventing vLLM deployment and autoscaling from scratch.
+- **Experiment platform** and **evaluation platform**: shared, centrally-maintained instances of [experiment tracking](/docs/mlops/experiment-tracking) and [AI Evaluation](/docs/ai-evaluation/roadmap) tooling — the value of centralizing these specifically is *comparability*: experiments and evaluations run the same way, on the same infrastructure, are actually comparable across teams, where independently-run ad hoc evaluations often aren't.
+- **GPU orchestration**: centralized scheduling and cost allocation of a shared GPU fleet across teams (see [Kubernetes — GPU scheduling](/docs/mlops/kubernetes#why-this-matters-for-ml-specifically)) — the platform team's job is making expensive, scarce GPU capacity fairly and efficiently shared, rather than every team over-provisioning its own idle capacity out of uncertainty about what it'll get.
+- **Developer platform**: the actual interface (CLI, web UI, or both) a data scientist or ML engineer uses to interact with all of the above without needing to understand Kubernetes YAML or Terraform directly — the platform engineering team's product is this interface, not the underlying infrastructure itself; a platform nobody can use without platform-team hand-holding hasn't actually removed the toil it was built to remove.
+- **Governance**: organization-wide policy enforcement — which models are approved for production use, which data classifications can feed which pipelines, who can approve a production deployment — layered on top of the technical [CI/CD gates](/docs/mlops/cicd-and-ml-cicd) as an organizational control, not just a technical one.
+- **Lineage**: being able to answer, for any production prediction, the full chain that produced it — which model version, trained on which data version, with which code version, deployed via which pipeline run — stitching together [data versioning](/docs/mlops/data-engineering-and-versioning), [experiment tracking](/docs/mlops/experiment-tracking), and the [model registry](/docs/mlops/feature-stores-and-model-registry) into one traceable chain, essential for debugging, auditing, and [legal/compliance](/docs/mlops/roadmap) requirements alike.
+- **Cost management**: attributing GPU/compute/storage spend back to the teams and models actually generating it, and surfacing that cost *before* it becomes a surprise finance conversation — the platform-level view of the same problem individual teams face optimizing any single model's serving cost.
+- **Secrets** and **observability**: covered in depth in [Security & Reproducibility](/docs/mlops/security-and-reproducibility) and [Observability](/docs/mlops/observability) respectively — at the platform level, the difference is these become centrally-managed services every team consumes, rather than something each team configures independently (and inevitably configures inconsistently).
+
+**Kubeflow** is a useful reference architecture for what "MLOps as a platform on Kubernetes" looks like assembled end to end — it bundles pipeline orchestration, training job management, and model serving into one Kubernetes-native platform, covering much of the training/inference/experiment platform scope above in a single open-source project, and is worth studying even for teams that ultimately assemble their own platform from separate pieces rather than adopting it wholesale.
+
+**The practical signal for when this shift matters**: a single ML team building its own model doesn't need a "platform" — it needs the tools this section already covers. The platform-engineering framing earns its complexity specifically once *multiple* teams are duplicating the same infrastructure work independently, which is exactly when centralizing it starts paying for itself.
+
+## The Priority Stack
+
+Don't learn 30 tools at once. This is the order that maximizes what you can actually build at each stage:
+
+| Priority | Category | Learn first |
+|---|---|---|
+| 1 (essential) | Engineering foundations | Git, testing, clean code, config management |
+| 1 (essential) | Data | SQL, Pandas, one versioning tool (DVC) |
+| 1 (essential) | Experiment tracking | MLflow |
+| 1 (essential) | Containers | Docker |
+| 2 (core) | Serving | FastAPI + one dedicated tool (BentoML or TorchServe) |
+| 2 (core) | Orchestration | Airflow |
+| 2 (core) | CI/CD | GitHub Actions |
+| 2 (core) | Cloud | One cloud, deeply (AWS) |
+| 3 (scaling) | Kubernetes | Core objects, then Helm |
+| 3 (scaling) | IaC | Terraform |
+| 3 (scaling) | Monitoring | Prometheus + Grafana, then Evidently for drift |
+| 4 (specialized) | LLM inference | vLLM first, then llama.cpp for local/edge |
+| 4 (specialized) | RAGOps | Ragas + a vector database (see [Databases](/docs/databases/roadmap)) |
+| 5 (advanced) | Distributed training | FSDP/DeepSpeed, multi-GPU parallelism |
+| 5 (advanced) | Feature stores | Feast |
+| 5 (advanced) | LLM optimization internals | Quantization, PagedAttention, speculative decoding |
+
+## An 8-Phase Learning Order
+
+1. **Foundations**: Python engineering practices, Git, Docker, SQL.
+2. **Data**: build one real, versioned data pipeline end to end.
+3. **Experimentation**: train a model with MLflow tracking every run.
+4. **Serving v1**: wrap that model in a FastAPI endpoint, containerize it.
+5. **Automation**: orchestrate the pipeline with Airflow, gate deployment with CI/CD.
+6. **Scale**: deploy to Kubernetes, add Terraform-managed infrastructure, add real monitoring and drift detection.
+7. **LLM serving**: stand up vLLM, understand the inference stack, build a RAG pipeline with evaluation.
+8. **Production hardening**: security review, reproducibility audit, blue-green/canary rollout for a real change.
+
+## Five Capstone Projects
+
+1. **A production churn model**: full pipeline from raw customer data → versioned dataset → tracked training runs → registered model → FastAPI serving → canary deployment → drift monitoring dashboard. Covers the classical-ML half of this section end to end.
+2. **A self-retraining pipeline**: an Airflow DAG that checks for drift on a schedule, retrains automatically when drift crosses a threshold, runs the new model through automated regression tests, and only promotes it on a pass — the CI/CD-for-ML loop, actually running.
+3. **A Kubernetes-native serving platform**: containerized model, deployed via Helm to a Kubernetes cluster provisioned with Terraform, autoscaling under load, with Prometheus/Grafana dashboards and alerting.
+4. **A self-hosted LLM serving stack**: deploy an open-weight model with vLLM, expose it through an OpenAI-compatible API behind a gateway, benchmark TTFT/TPOT/throughput at different batch sizes and quantization levels, and compare against a llama.cpp/GGUF deployment on CPU.
+5. **A full LLM serving + RAG platform**: fine-tune a small model's adapter with a LoRA framework, serve it with multi-LoRA support on vLLM alongside the base model, build a RAG pipeline with an embedding model + reranker, and monitor the whole thing with Ragas-based faithfulness scoring and RAG-specific retrieval metrics — the complete arc from [Engineering Foundations](/docs/mlops/engineering-foundations) to [LLM Evaluation & RAGOps](/docs/mlops/llm-evaluation-and-ragops) in one project.
+
+See [ML System Design](/docs/ml-system-design/roadmap) for how to reason about *designing* a system like the above before building it, and [Interview Prep](/docs/interview-prep/roadmap) for how this section maps onto MLOps/infra interview questions.

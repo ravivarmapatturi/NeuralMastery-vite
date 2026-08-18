@@ -1,0 +1,37 @@
+---
+title: "ML & LLM Testing"
+sidebar_position: 22.1
+---
+
+
+# ML & LLM Testing
+
+[Engineering Foundations for ML](/docs/mlops/engineering-foundations) introduced the general testing taxonomy (unit, integration, data validation, model, API, load). This page goes deeper into two things that page only named: the specific statistical/model testing techniques classical ML needs, and the LLM-specific test types — prompt tests, golden datasets, hallucination/jailbreak/tool-call tests — that don't have a classical-ML equivalent at all.
+
+## Classical ML Testing, In More Depth
+
+- **Unit tests**: individual functions in isolation — a feature-computation function, a custom loss function's math, a data-cleaning transformation. Standard software unit testing, applied to ML code specifically.
+- **Data tests**: assert incoming data matches expected schema, types, and ranges — see [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning); this is the automated, CI-enforced version of that page's validation stage, not a separate concern.
+- **Schema tests**: a stricter, more structural version of data tests — the *shape* of the data (column names, types, nullability) matches a defined contract exactly, catching an upstream schema change (a renamed column, a type change) before it silently breaks a downstream pipeline stage that assumed the old schema.
+- **Statistical tests**: assert properties of a *distribution*, not a single value — does a feature's distribution in a new data batch still resemble the training distribution (directly the [drift detection](/docs/mlops/monitoring-and-drift) math — PSI, KS test — run as an automated test rather than a dashboard you have to remember to check), does a model's prediction distribution look sane (not collapsed to a single class, not wildly different from a known-good baseline run).
+- **Model tests**: beyond accuracy — does the model handle an empty or malformed input gracefully rather than crashing? Does it produce deterministic output for the same input when determinism is expected (see [Security & Reproducibility](/docs/mlops/security-and-reproducibility))? Does a known, specific edge case behave as expected — a unit test for model *behavior* on a case you know matters, not just an aggregate metric.
+- **Regression tests**: run the model against a fixed benchmark dataset and assert its metrics haven't dropped below a threshold — see [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd) for wiring this into an automated deployment gate.
+- **Performance tests**: does the model/pipeline complete within an acceptable time and resource budget — a slow-but-correct model can still fail a production requirement, which accuracy-focused testing alone won't catch.
+
+## LLM-Specific Testing
+
+None of the categories above naturally cover "does this prompt still produce the intended behavior" or "can this model be manipulated into ignoring its instructions" — LLM systems need their own test types:
+
+- **Prompt tests**: treat a prompt template as code under test — given a fixed set of inputs, does the resulting output still meet expected criteria (format, content, tone)? A prompt change is a code change, and deserves the same regression-testing discipline as any other code change, not ad hoc manual spot-checking.
+- **Golden datasets**: covered in depth in [AI Evaluation — Golden Datasets](/docs/ai-evaluation/evaluation-fundamentals#golden-datasets) — the curated, maintained reference set every regression test and prompt test above actually runs against.
+- **Hallucination tests**: specifically check whether the model states claims unsupported by its provided context — see [RAG — Evaluating RAG](/docs/llms-genai/rag#evaluating-rag)'s faithfulness/groundedness metrics, run as an automated test suite rather than only a production-monitoring signal.
+- **Jailbreak tests**: run known jailbreak patterns (see [AI Security — Jailbreaks](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks#jailbreaks)) against the system as part of the regular test suite, not just a one-time pre-launch red-teaming exercise — catching a regression where a previously-patched jailbreak starts working again after a model or prompt update.
+- **Tool-call tests**: for agentic systems, assert that a given input reliably produces the *correct* tool call with correctly-formed arguments — directly testing the [tool-call accuracy](/docs/ai-evaluation/llm-rag-agent-evaluation#agent-evaluation) dimension of agent evaluation as an automated, CI-enforced check rather than only a periodic manual evaluation.
+- **Structured-output tests**: when a model is expected to return output conforming to a schema (JSON with specific fields, a specific format), assert the output actually validates against that schema — a narrower, more mechanical check than general output-quality evaluation, but one that catches a real and common failure mode (a model drifting from the requested format) cheaply and reliably.
+- **Agent trajectory tests**: for multi-step agents, assert not just the final outcome but that the *sequence* of steps taken matches an expected pattern for known test scenarios — the automated-test version of the [trajectory analysis](/docs/ai-evaluation/llm-rag-agent-evaluation#agent-evaluation) evaluation technique, run against a fixed set of scripted scenarios in CI.
+
+## Wiring This Into CI/CD
+
+None of the above matters if it doesn't actually run automatically and block a bad deploy — see [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd) for how model/prompt regression tests, drift checks, and the LLM-specific tests above become an automated gate a change has to pass before shipping, the same discipline as any other software test suite, just testing statistical and generative properties instead of only deterministic logic.
+
+Next: [Production Reliability](/docs/mlops/production-reliability) — what happens after tests pass and the system is actually serving real traffic.

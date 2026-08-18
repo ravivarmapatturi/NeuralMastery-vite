@@ -1,0 +1,60 @@
+---
+title: "Vision Fundamentals"
+sidebar_position: 3
+---
+
+import __migratedImg0 from './img/convolution-demo.png';
+
+
+# Vision Fundamentals
+
+Before a CNN or a ViT ever sees an image, computer vision already had decades of classical techniques for representing and processing images — and a surprising amount of that machinery is still exactly what's running underneath a modern deep learning pipeline (augmentation, some preprocessing) or directly relevant to understanding why convolution works as a neural network layer at all.
+
+## Image Representation
+
+- **Pixels and channels**: a digital image is a grid of pixels, each holding one or more numeric intensity values — grayscale images have 1 channel, standard color images have 3 (red, green, blue), and some formats add a 4th (alpha, for transparency). A color image is really a 3D array: height × width × channels.
+- **Color spaces**: **RGB** is the default for display and most deep learning pipelines, but not the only useful representation — **HSV** (Hue, Saturation, Value) separates color identity from brightness, making it easier to threshold "find all the red pixels" robustly against lighting changes than RGB does; **grayscale** collapses to one channel when color itself doesn't carry task-relevant information (e.g. some OCR and edge-detection pipelines), reducing compute for no accuracy cost.
+- **Bit depth and normalization**: images are typically stored as 8-bit integers per channel (0-255) but neural networks train far better on **normalized floats** (0-1, or mean/std-normalized per channel to roughly match the distribution the network's weights were initialized for) — the exact same normalization principle as [Initialization, Regularization & LR Scheduling](/docs/deep-learning/initialization-regularization-scheduling), applied to pixel values instead of weights.
+
+## Convolution as Classical Filtering
+
+[CNNs](/docs/deep-learning/cnns) introduced convolution as a *learned* layer — but convolution itself long predates deep learning as a classical image-processing tool: slide a small, fixed (not learned) kernel across an image, computing a weighted sum at each position.
+
+<img src={__migratedImg0} alt="A 3x3 Sobel kernel applied to a synthetic image, producing an edge-detected output feature map" style={{maxWidth: '100%'}} />
+
+The chart above *is* a real convolution — a fixed 3×3 Sobel kernel (not learned, hand-designed decades ago) sliding across a 16×16 synthetic image, computing the weighted sum at every position. The output lights up exactly where the image transitions from dark to bright and back — a vertical edge detector, doing exactly what its name says. This is the entire mechanical operation a CNN's first convolutional layer performs; the *only* difference is that a CNN **learns** the kernel values from data via backpropagation instead of a human hand-designing them (Sobel, and the filters below) in advance. Understanding this fixed-kernel version first is what makes "the network learned an edge detector in its first layer" (a commonly observed, real phenomenon when visualizing trained CNN filters) make intuitive sense rather than sounding like magic.
+
+## Morphological Operations
+
+A family of operations on **binary** (black/white) images, built from two primitives applied with a small structuring element (a shape, like a 3×3 square):
+
+- **Erosion**: shrinks bright regions — a pixel stays "on" only if the *entire* structuring element around it is also on. Removes small noise specks and thin protrusions.
+- **Dilation**: grows bright regions — a pixel turns "on" if *any* part of the structuring element around it is on. Fills small holes and gaps.
+- **Opening** (erosion then dilation): removes small noise while roughly preserving the size of larger regions — the standard "clean up small speckle noise" operation.
+- **Closing** (dilation then erosion): fills small holes/gaps while roughly preserving overall shape — the standard "fill small gaps in a detected region" operation.
+
+Still genuinely used today as a fast, non-learned preprocessing/postprocessing step — cleaning up a segmentation mask's small holes and speckles before computing metrics on it, for instance, rather than asking a neural network to be perfectly clean at the pixel level.
+
+## Edge Detection
+
+- **Sobel**: the kernel shown above — approximates the image gradient (rate of intensity change) in the x or y direction via a small, fixed convolution; combining both directions gives gradient magnitude and orientation at every pixel.
+- **Canny**: a more complete, multi-stage edge detector built on top of the same gradient idea — Gaussian smoothing (reduce noise before differentiating), gradient computation (Sobel-like), non-maximum suppression (thin the resulting edges down to single-pixel width), and hysteresis thresholding (a two-threshold scheme that keeps weak edges only if they connect to a strong one, suppressing noisy fragments) — the standard "give me clean, thin edges" classical algorithm, still a common preprocessing step in non-deep-learning vision pipelines.
+
+## Classical Feature Extraction
+
+Before learned CNN features, computer vision relied on hand-engineered, mathematically-designed feature descriptors:
+
+- **SIFT (Scale-Invariant Feature Transform)** / **ORB (Oriented FAST and Rotated BRIEF)**: detect distinctive keypoints in an image (corners, blobs) and compute a descriptor vector for each, designed to be robust to scale, rotation, and (to a degree) illumination changes — the classical answer to "find and match the same physical point across two different photos of it," used for panorama stitching, classical object recognition, and visual SLAM (robot localization). ORB is a much faster, patent-unencumbered alternative to SIFT with similar practical use.
+- **HOG (Histogram of Oriented Gradients)**: divides an image into small cells, computes a histogram of gradient directions within each cell, and concatenates them into a feature vector — famously the feature representation behind the original real-time pedestrian/face detectors (paired with an SVM classifier, see [Support Vector Machines](/docs/machine-learning/support-vector-machines)) that predate deep learning-based detection entirely.
+
+Learned CNN features have superseded hand-engineered descriptors for most modern vision tasks (a trained network's features generalize better and require no manual design), but these remain relevant where a model needs to run with no training data at all, extremely low compute (classical descriptors are far cheaper than a CNN forward pass), or full mathematical interpretability of what's being matched.
+
+## Data Augmentation for Vision
+
+Artificially expanding a training set by applying label-preserving transformations — directly combating overfitting the same way [Regularization](/docs/machine-learning/model-evaluation-metrics#regularization) does, but at the data level instead of the model level:
+
+- **Geometric**: random crop, flip, rotation, scaling — teaches the model that an object's identity doesn't depend on its exact position/orientation in the frame.
+- **Photometric**: brightness/contrast/color jitter, adding noise — teaches robustness to lighting and sensor conditions that vary in the real world but shouldn't change the label.
+- **Modern/aggressive augmentation**: **Cutout** (mask out random square regions, forcing the model to not over-rely on any single part of the image), **MixUp** (blend two images and their labels proportionally), **CutMix** (paste a patch from one image onto another, mixing labels proportionally to the patch area) — all push regularization further than simple geometric/photometric jitter, and are standard in training recipes for modern vision backbones (see [EfficientNet and ConvNeXt](/docs/deep-learning/cnns#the-architecture-lineage)).
+
+Next: [Vision Tasks & Models](/docs/computer-vision/vision-tasks-and-models) — the full taxonomy of what vision systems are actually asked to do, beyond plain classification.

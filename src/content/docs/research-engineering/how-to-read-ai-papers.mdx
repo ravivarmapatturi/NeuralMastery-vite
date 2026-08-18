@@ -1,0 +1,55 @@
+---
+title: "How to Read AI Papers"
+sidebar_position: 3
+---
+
+
+# How to Read AI Papers
+
+Reading a paper front-to-back, linearly, at uniform attention, is the slowest and least effective way to extract what matters from it. This page is a structure for reading with intent — knowing what each section is *for*, so attention goes where the actual content is.
+
+## The Structure
+
+```
+Abstract
+ ↓
+Problem
+ ↓
+Prior Work
+ ↓
+Method
+ ↓
+Architecture
+ ↓
+Dataset
+ ↓
+Experiment
+ ↓
+Ablation
+ ↓
+Limitations
+ ↓
+Reproduce
+ ↓
+Extend
+```
+
+## What to Extract From Each Stage
+
+- **Abstract**: the paper's own compressed summary — read this first and last. First, to get the claim before the detail; last, to check whether your understanding after reading the full paper actually matches what the authors claimed, or whether the abstract oversold something the body doesn't fully support.
+- **Problem**: what specific gap or limitation in prior work motivated this paper — if you can't state the problem in one sentence after reading the introduction, re-read it before going further; everything downstream only makes sense relative to the problem it's solving.
+- **Prior work**: not just a list of citations to skim past — this section tells you what the field's *previous* best approach was, which is the actual baseline the paper's claimed improvement is measured against. A paper's results only mean something relative to this baseline.
+- **Method**: the core idea, usually explainable in a few sentences even when the full mathematical treatment takes pages — try to state the method's core idea in your own words before reading the full formal treatment; if you can't, the formal treatment probably won't clarify it either, and you may be missing conceptual context from the "prior work" section.
+- **Architecture**: the concrete implementation of the method — diagrams here are usually worth more time than the surrounding prose; trace data flow through the diagram explicitly rather than just recognizing it as "looks like a Transformer."
+- **Dataset**: what the method was actually trained/evaluated on — critical for judging how far the paper's claims generalize. A method validated only on one narrow benchmark dataset is a different, weaker claim than the same method validated across several diverse ones, even if both papers report similarly impressive numbers.
+- **Experiment**: the actual results — read the tables *before* the surrounding prose explaining them, and form your own read on what's actually shown before letting the authors' framing anchor your interpretation. Check: what's the baseline being compared against, and is it a *fair*, strong baseline, or a strawman?
+- **Ablation**: which components of the method actually matter — a good ablation study removes or varies one piece at a time and reports the effect, telling you what's load-bearing in the method versus what's incidental. Skipping the ablation section is one of the most common ways to walk away with a wrong mental model of *why* a method works.
+- **Limitations**: what the authors themselves acknowledge doesn't work well, or where the method's claims don't extend — increasingly a required section, and worth real attention; a paper's limitations section is where the honest caveats live, if it has one at all.
+- **Reproduce**: could you actually re-implement this from the paper alone, or does it depend on unstated details (unpublished hyperparameters, undocumented preprocessing)? This is the real test of whether a paper's contribution is precisely specified or partially hand-waved — see [Build From Scratch](/docs/build-from-scratch/roadmap) for actually doing this with several landmark papers.
+- **Extend**: once you understand the method, what's the natural next question it raises — this is usually exactly where the *next* influential paper in a lineage comes from (see [The Paper Timeline](/docs/research-engineering/paper-timeline)), and actively asking it is the difference between reading a paper as a fixed artifact and reading it as one step in an ongoing conversation.
+
+## What Changed Because of This Paper?
+
+The single most useful question to answer after finishing a paper, and the one most casual reading skips entirely: what did the field actually do differently *after* this paper that it wasn't doing before? Not "is this paper impressive" but "did this specific idea get adopted, and by what" — this is what separates genuinely understanding a paper's contribution and impact from having read it.
+
+Next: [The Paper Timeline](/docs/research-engineering/paper-timeline) — applying this reading structure to the specific lineage of landmark papers behind everything covered on this site.

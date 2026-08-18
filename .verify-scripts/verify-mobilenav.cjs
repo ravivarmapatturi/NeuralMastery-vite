@@ -63,10 +63,16 @@ async function main() {
     log('focus moves into panel on open', focusInPanel);
 
     // 3 + 5. Navigation works, then menu closes correctly after navigating
-    await dialog.getByRole('link', { name: 'Welcome to Neural Mastery' }).click();
+    // (scroll into view first -- the sidebar now has 200+ real migrated
+    // pages across 30 sections, so this link isn't guaranteed on-screen.
+    // .first() disambiguates: the real migrated docs/intro.mdx happens to
+    // share its title with the Phase-1 placeholder getting-started/intro.mdx)
+    const targetLink = dialog.getByRole('link', { name: 'Welcome to Neural Mastery' }).first();
+    await targetLink.scrollIntoViewIfNeeded();
+    await targetLink.click();
     await page.waitForTimeout(300);
     const urlAfterNav = page.url();
-    log('3. navigation works (URL changed)', /getting-started\/intro/.test(urlAfterNav), urlAfterNav);
+    log('3. navigation works (URL changed)', /\/docs\/(intro|getting-started\/intro)$/.test(urlAfterNav), urlAfterNav);
     const dialogVisibleAfterNav = await dialog.isVisible().catch(() => false);
     log('5. menu closes after navigating', !dialogVisibleAfterNav);
 

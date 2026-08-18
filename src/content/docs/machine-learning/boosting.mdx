@@ -1,0 +1,83 @@
+---
+title: "Boosting: AdaBoost & Gradient Boosting, In Full Depth"
+sidebar_position: 5.3
+---
+
+
+# Boosting: AdaBoost & Gradient Boosting, In Full Depth
+
+[Random Forest](/docs/machine-learning/random-forest) builds many trees **independently and in parallel**, then averages them to reduce variance. Boosting builds trees **sequentially**, where each new tree is trained specifically to fix the previous ensemble's mistakes — trading Random Forest's variance-reduction strategy for a bias-reduction strategy.
+
+## Bagging vs. Boosting, Precisely
+
+- **Bagging** (Random Forest): parallel, independent trees on resampled data, averaged. Reduces **variance**. Individual trees are usually grown deep (low bias, high variance) since averaging handles the variance.
+- **Boosting**: sequential trees, each correcting the ensemble-so-far's errors. Reduces **bias**. Individual trees are usually shallow — "weak learners," often just a few splits deep — since the sequential correction process handles building up accuracy over many rounds.
+
+## AdaBoost (Adaptive Boosting)
+
+The original boosting algorithm. The core mechanism: **reweight the training examples** after each round, increasing the weight of examples the ensemble-so-far got wrong, so the *next* weak learner is forced to focus on exactly those hard cases.
+
+1. Start with equal weight on every training example: $w_i = 1/n$.
+2. Train a weak learner (commonly a "stump" — a decision tree of depth 1) on the weighted data.
+3. Compute the weak learner's weighted error rate $\epsilon$, and its voting weight $\alpha = \frac{1}{2}\ln\left(\frac{1-\epsilon}{\epsilon}\right)$ — a learner that does better than random gets a positive $\alpha$ (more say in the final vote); a learner near 50% error gets $\alpha \approx 0$ (barely counted).
+4. Update example weights: increase weight on misclassified examples by a factor of $e^{\alpha}$, decrease correctly-classified examples' weight by $e^{-\alpha}$, then renormalize so weights sum to 1.
+5. Repeat for $T$ rounds. Final prediction: a weighted vote, $\text{sign}\left(\sum_t \alpha_t h_t(x)\right)$, across all $T$ weak learners.
+
+**The intuition, directly from the weight update**: examples the ensemble keeps getting wrong accumulate more and more weight round after round, until some weak learner is forced to get them right just to achieve reasonable weighted error — the ensemble's "attention" is adaptively redirected toward its own current weaknesses.
+
+## Gradient Boosting: The General Framework
+
+AdaBoost reweights examples. **Gradient Boosting** generalizes the same "sequentially correct mistakes" idea to work with *any* differentiable loss function (see [Loss Functions](/docs/deep-learning/loss-functions)), by fitting each new tree to the **residual gradient** of the loss, not to reweighted labels.
+
+For squared error specifically (regression), the algorithm becomes remarkably intuitive:
+
+1. Start with a constant prediction $F_0(x) = \bar{y}$ (the mean target).
+2. Compute the **residuals**: $r_i = y_i - F_{t-1}(x_i)$ — exactly the [residuals from Linear Regression](/docs/machine-learning/linear-regression#8-assumptions-behind-linear-regression), just computed against the current ensemble instead of a single linear fit.
+3. Train a new (shallow) tree to predict these residuals directly.
+4. Update the ensemble: $F_t(x) = F_{t-1}(x) + \eta \cdot h_t(x)$, where $\eta$ is a small learning rate (shrinking each tree's contribution — see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization#gradient-descent-and-its-variants)) and $h_t$ is the newly trained tree.
+5. Repeat for $T$ rounds.
+
+**Why "gradient" boosting specifically**: for squared-error loss, the residual $y_i - F_{t-1}(x_i)$ is *exactly* the negative gradient of $\frac{1}{2}(y_i - F(x_i))^2$ with respect to $F(x_i)$. Fitting a tree to residuals is, precisely, taking a gradient descent step in **function space** — instead of updating a fixed set of weights $\mathbf{w}$ (as in [Linear Regression](/docs/machine-learning/linear-regression#6-gradient-descent)), each round adds an entire new function (tree) that points the whole ensemble further downhill on the loss surface. For other losses (log-loss for classification, etc.), the "residual" generalizes to that loss's actual negative gradient rather than literally $y - \hat{y}$.
+
+## Key Hyperparameters
+
+- **Number of trees ($T$)**: too few underfits; too many starts overfitting (unlike Random Forest, boosting *can* overfit by adding more trees, since each one is chasing the training set's remaining errors specifically).
+- **Learning rate ($\eta$)**: smaller values need more trees but generalize better — the classic tradeoff, directly analogous to [gradient descent's learning rate](/docs/mathematics-for-ai/calculus-optimization#gradient-descent-and-its-variants).
+- **Tree depth**: kept shallow (often depth 3-8) — deep trees per round tend to overfit fast in a sequential, error-correcting setup.
+
+## AdaBoost vs. Gradient Boosting
+
+| | AdaBoost | Gradient Boosting |
+|---|---|---|
+| Corrects mistakes via | Reweighting examples | Fitting to the loss gradient (residuals) |
+| Loss function | Exponential loss (implicitly) | Any differentiable loss — flexible |
+| Weak learner | Usually depth-1 stumps | Usually shallow trees (depth 3-8) |
+| Sensitive to outliers | Very (outliers get reweighted up repeatedly) | Less, depending on loss choice (e.g. Huber — see [Loss Functions](/docs/deep-learning/loss-functions#regression-losses)) |
+
+Gradient Boosting's flexibility and generally stronger empirical performance are why it — not AdaBoost — became the basis for the modern, dominant implementations: [XGBoost, LightGBM & CatBoost](/docs/machine-learning/xgboost-lightgbm-catboost).
+
+## Minimal Implementation
+
+Gradient boosting for regression, matching the algorithm above exactly:
+
+```python
+import numpy as np
+
+def fit_gradient_boosting(X, y, tree_fit_fn, n_trees=100, lr=0.1):
+    F = np.full(len(y), y.mean())  # F_0: constant prediction
+    trees = []
+    for _ in range(n_trees):
+        residuals = y - F              # negative gradient of squared error
+        tree = tree_fit_fn(X, residuals)  # fit a shallow tree to residuals
+        F = F + lr * tree.predict(X)
+        trees.append(tree)
+    return trees, y.mean()
+
+def predict_gradient_boosting(X, trees, base, lr=0.1):
+    F = np.full(X.shape[0], base)
+    for tree in trees:
+        F += lr * tree.predict(X)
+    return F
+```
+
+Next: [XGBoost, LightGBM & CatBoost](/docs/machine-learning/xgboost-lightgbm-catboost) — the production-grade, highly optimized implementations of this exact algorithm that dominate tabular ML today.

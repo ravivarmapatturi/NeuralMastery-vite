@@ -1,0 +1,44 @@
+---
+title: "Human & Adversarial Evaluation"
+sidebar_position: 5
+---
+
+
+# Human & Adversarial Evaluation
+
+Automated metrics and LLM-as-judge (see [LLM, RAG & Agent Evaluation](/docs/ai-evaluation/llm-rag-agent-evaluation)) scale well but aren't sufficient alone — humans remain the ground truth for genuinely subjective quality judgments, and a system that's never been actively attacked hasn't really been evaluated for robustness at all.
+
+## Human Evaluation Methodology
+
+Getting a trustworthy number out of human evaluation requires the same rigor as any other measurement instrument:
+
+- **Rater agreement**: if two human raters given the same output disagree often, either the task is genuinely ambiguous or the rating instructions are — measured via **inter-rater reliability** statistics (e.g. Cohen's kappa for two raters, which corrects for the agreement expected by pure chance). Low agreement invalidates the resulting scores regardless of how many raters were used, since it means the "measurement" isn't actually measuring something raters share a consistent understanding of.
+- **Sample size**: a human evaluation run on 20 examples can look decisive and still be statistical noise — the same [statistical power](/docs/mathematics-for-ai/probability-statistics#hypothesis-testing--significance) consideration from hypothesis testing applies directly: know the minimum sample size needed to detect a difference of the size you actually care about, before running the study, not after it "didn't show a clear winner."
+- **Rubric design**: the same lesson as LLM-judge rubrics (see [LLM, RAG & Agent Evaluation](/docs/ai-evaluation/llm-rag-agent-evaluation#llm-evaluation-and-llm-as-a-judge-in-depth)) applies even more strongly to human raters — vague instructions ("is this good?") produce noisy, inconsistent ratings; specific, example-anchored criteria produce reliable ones.
+- **Rater expertise and bias**: domain-expert raters (a doctor rating medical text, a lawyer rating legal text) are essential for domain-specific quality judgments a general crowdworker can't reliably make — but expert time is expensive and scarce, which is exactly why LLM-as-judge, once validated against expert human judgments on a sample, is used to scale evaluation *beyond* what human review alone could afford.
+
+## Pairwise and Preference Evaluation
+
+Rather than asking a rater (human or LLM) to assign an absolute score to one output, **pairwise evaluation** shows two outputs side by side and asks which is better — generally produces more reliable, consistent judgments than absolute scoring, because "which of these two is better" is a much easier and more stable judgment to make than "rate this a 7 or an 8," especially for open-ended generation where there's no obvious absolute scale.
+
+- **Win rate**: the fraction of pairwise comparisons a given model/system wins against a baseline — the standard way pairwise judgments get aggregated into a single reportable number.
+- **Elo/Bradley-Terry ranking**: when comparing more than two systems, pairwise win/loss results can be aggregated into a single relative-skill ranking using the same rating-system math chess (Elo) or other competitive-ranking systems use — LMSYS's Chatbot Arena is the best-known example of this applied to LLMs at scale, using large-scale human pairwise preferences to produce a leaderboard.
+- **This is also directly the mechanism behind preference data collection for [RLHF and DPO](/docs/llms-genai/training-pipeline#rlhf--reinforcement-learning-from-human-feedback)** — pairwise preference judgments aren't just an evaluation technique, they're the actual training signal for an entire alignment methodology, which is why getting pairwise evaluation methodology right matters for training pipelines, not only for reporting benchmark numbers.
+
+## Adversarial Evaluation
+
+Testing a system specifically against inputs *designed* to break it, rather than the representative-but-cooperative inputs a golden dataset (see [Evaluation Fundamentals](/docs/ai-evaluation/evaluation-fundamentals#golden-datasets)) typically contains:
+
+- **Why standard evaluation misses this**: a golden dataset built from realistic production inputs tells you how the system performs on the inputs it's *likely* to see — it says very little about how it behaves under a deliberately crafted worst case, and those worst cases are exactly what a motivated user (or attacker) will find first.
+- **Constructing adversarial examples**: small, meaning-preserving perturbations to a normal input (paraphrasing, injecting distracting/irrelevant text, edge-case formatting) that a robust system should handle identically to the unperturbed version — if the output changes substantially, that's a real robustness gap, not a benchmark artifact.
+- **Automated adversarial generation**: using another LLM specifically prompted to generate inputs likely to cause failures (incorrect answers, policy violations, crashes) — the same "use a model to stress-test a model" idea as LLM-as-judge, applied to generating hard *inputs* rather than judging outputs.
+
+## Red Teaming
+
+A structured, adversarial security/safety evaluation practice — a dedicated team (or process) actively tries to make a system fail in specific, defined ways (produce harmful content, leak training data, be manipulated via [prompt injection](/docs/mlops/security-and-reproducibility), bypass safety guidelines) *before* real-world adversaries get the chance to find the same weaknesses:
+
+- **Structured red teaming**: predefined categories of attack (the OWASP LLM Top 10 categories, see [AI Security](/docs/mlops/security-and-reproducibility), are a common starting taxonomy) systematically tested against, rather than unstructured "try to break it" exploration — ensures coverage rather than depending on whatever the red team happens to think of first.
+- **Automated red teaming**: using an LLM to generate large volumes of adversarial attack attempts at a scale human red-teamers can't match, then having humans review and triage what the automated process surfaces — a force-multiplier for human red-teaming effort, not a full replacement, since novel, creative attack strategies still tend to come from human red-teamers first.
+- **The output is action, not just a report**: red teaming that doesn't feed directly back into the golden dataset (as new hard/adversarial examples), the regression test suite, and model/prompt fixes is mostly wasted effort — the entire point is closing the loop back into [Continuous Evaluation](/docs/ai-evaluation/evaluation-fundamentals#continuous-evaluation-in-production), not producing a one-time audit document.
+
+AI Evaluation section complete. Next: [ML System Design](/docs/ml-system-design/roadmap) — where these evaluation choices become part of a production system's design from the start, not bolted on afterward.

@@ -1,0 +1,20 @@
+---
+title: "Speech & Audio AI — Overview"
+sidebar_position: 1
+---
+
+
+# Speech & Audio AI — Overview
+
+A completely separate modality from text and images, with its own representation problem before any model can even start: raw audio is a continuous pressure wave sampled thousands of times a second — turning that into something a neural network can learn from is most of the work in this section.
+
+## What's in this section
+
+- **[Audio Fundamentals](/docs/speech-audio/audio-fundamentals)** — how sound is digitized, the Fourier transform, spectrograms, and MFCCs — the representations every downstream audio model is actually built on.
+- **[Speech & Audio Tasks](/docs/speech-audio/speech-audio-tasks)** — ASR (speech-to-text), TTS (text-to-speech), speaker recognition, diarization, audio classification, speech enhancement, and audio-language models.
+
+## Why Audio Needs Its Own Representation Layer
+
+Text arrives already discrete (characters, then subword tokens). Images arrive as a fixed spatial grid a CNN can convolve over directly. Raw audio is neither — a few seconds of CD-quality audio is tens of thousands of raw amplitude samples, far too long and far too low-level a sequence for a Transformer to attend over directly, and with no obvious "token" boundary the way text has words. Every technique in [Audio Fundamentals](/docs/speech-audio/audio-fundamentals) exists to solve exactly this: turning a raw waveform into a shorter, richer sequence of features a model can actually work with.
+
+See the [roadmap](/docs/speech-audio/roadmap) for the full ordered path.

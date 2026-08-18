@@ -1,0 +1,37 @@
+---
+title: "Classical Interpretability: Feature Importance, SHAP & LIME"
+sidebar_position: 3
+---
+
+
+# Classical Interpretability: Feature Importance, SHAP & LIME
+
+Every method here answers "why did the model predict this" for models where you either have direct access to internal structure (a tree) or don't need it at all (fully model-agnostic, black-box methods) — the deep-learning-specific tools (attention, activations, circuits) come next.
+
+## Built-In Feature Importance (Tree-Based Models)
+
+[Random Forest — Feature Importance](/docs/machine-learning/random-forest#feature-importance) covers this in depth: sum the impurity reduction a feature produces every time it's used to split, across every tree, and normalize. Fast (falls out of training essentially for free) and a reasonable first check, but biased toward high-cardinality/continuous features — a known limitation worth remembering before treating it as definitive.
+
+## Permutation Importance
+
+A model-agnostic alternative that fixes tree importance's bias: for each feature, randomly shuffle its values in the dataset (breaking any real relationship between that feature and the target while leaving every other feature untouched), and measure how much the model's performance drops. A feature the model genuinely relies on causes a large performance drop when shuffled; a feature the model ignores causes almost none. Because it only requires the ability to make predictions and shuffle a column, it works identically for a tree ensemble, a neural network, or any other model type — the "model-agnostic" property every method below shares.
+
+## SHAP (SHapley Additive exPlanations)
+
+Grounded in **Shapley values**, a concept from cooperative game theory originally developed to fairly divide a payout among players who contributed unequally to a joint outcome — applied here by treating each feature as a "player" contributing to the model's prediction, and asking: averaged over every possible ordering in which features could be "added" to the prediction, how much does each feature's presence change the output?
+
+- **What it produces**: a per-prediction, per-feature attribution — not just "feature X matters overall" (like permutation importance) but "for *this specific* prediction, feature X pushed the output up by this much, feature Y pushed it down by that much" — additive, so the attributions for one prediction sum exactly to the difference between that prediction and a baseline (average) prediction.
+- **Why the game-theoretic grounding matters**: Shapley values are the *unique* attribution method satisfying a specific set of fairness axioms (efficiency, symmetry, and others) — this is why SHAP has a rigorous mathematical justification other heuristic attribution methods lack, not just an intuitive one.
+- **The practical cost**: computing exact Shapley values requires considering every possible subset/ordering of features, which is combinatorially expensive — practical SHAP implementations use approximations (and model-specific fast paths, e.g. `TreeSHAP` for tree ensembles, computed exactly and efficiently by exploiting tree structure) rather than the brute-force definition.
+
+## LIME (Local Interpretable Model-Agnostic Explanations)
+
+A different strategy: rather than a global game-theoretic attribution, LIME explains one prediction by **approximating the model locally** — perturb the input slightly many times, observe how the (possibly very complex, non-linear) model's predictions change across those perturbations, and fit a simple, interpretable model (typically linear) to that local neighborhood of perturbed predictions. The simple model's coefficients become the explanation — "in the local neighborhood of this specific input, these features mattered this much" — under the assumption that even a wildly non-linear model behaves approximately linearly in a small enough neighborhood around any single point.
+
+- **SHAP vs. LIME**: SHAP's attributions have a rigorous theoretical grounding (Shapley values' fairness axioms) and guaranteed consistency properties; LIME's local-linear-approximation is more intuitive and often faster to compute, but its explanations can be less stable — a different random perturbation sample can produce a noticeably different local approximation and therefore a different explanation for the *same* prediction, a real practical downside SHAP's more principled construction avoids.
+
+## Choosing Between Them
+
+Use built-in tree importance or permutation importance for a fast, global "what does this model rely on overall" check; reach for SHAP when you need trustworthy, individual-prediction-level explanations (especially for anything with review/compliance requirements, given its rigorous grounding); reach for LIME when you need a quick local explanation for a single prediction and don't need SHAP's stronger guarantees, or when working with a model type SHAP doesn't have an efficient specialized implementation for.
+
+Next: [Deep Learning & LLM Interpretability](/docs/interpretability/deep-learning-and-llm-interpretability) — the tools built specifically for looking inside a neural network, rather than treating it as a black box.

@@ -1,0 +1,8 @@
+{
+  "label": "Graph ML",
+  "position": 7.1,
+  "link": {
+    "type": "generated-index",
+    "description": "Graph representation, the task taxonomy (node classification, link prediction, graph classification), GCN/GraphSAGE/GAT/GIN, graph embeddings (node2vec/DeepWalk), knowledge graphs, and Graph RAG."
+  }
+}

@@ -1,0 +1,22 @@
+---
+title: "Agent Execution Graph"
+sidebar_position: 7
+---
+
+
+import AgentExecutionGraph from '../../../viz/AgentExecutionGraph';
+
+# Agent Execution Graph
+
+A step-through, clickable trace of the [ReAct loop](/docs/agents/agent-architectures#react-reasoning--acting) — Thought → Action → Observation, repeating until the model has enough to answer. Unlike the other visualizations in this lab, this one is a **scripted, representative trace, not a live model call** — there's no LLM running in your browser here. The point is to make the *shape* of the loop something you step through and click, not something you only read a diagram of.
+
+<AgentExecutionGraph />
+
+## What to Try
+
+- Hit **Step** repeatedly and watch the active node move around the loop — Thought → Action → Observation → back to Thought — until the model exits the loop into **Answer** instead of looping again.
+- Switch scenarios: the "Company lookup" example needs *two* full loop iterations (first find the company, then find its employee count) before it has enough to answer — a concrete example of why multi-hop questions need more than one Action.
+- Click any entry in the trace log to jump back to it and re-read that exact step's detail.
+- Hit **Play** to watch the full loop run on its own, then compare it to the [Plan-and-Execute](/docs/agents/agent-architectures#plan-and-execute) pattern described on the same page — Plan-and-Execute would commit to *all* the steps up front instead of deciding one Action at a time based on what the last Observation actually returned.
+
+Back to [Visual Lab Overview](/docs/visual-lab/overview).

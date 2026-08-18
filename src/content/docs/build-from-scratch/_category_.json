@@ -1,0 +1,8 @@
+{
+  "label": "Build From Scratch",
+  "position": 7.5,
+  "link": {
+    "type": "generated-index",
+    "description": "Understand it by building it: NumPy-level autodiff, a neural network, a CNN, a BPE tokenizer, attention, a GPT, LoRA, a vector database, RAG, an agent, an inference server, and a distributed trainer - each a scoped project, not just a concept read about."
+  }
+}

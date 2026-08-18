@@ -1,0 +1,69 @@
+---
+title: "The Build List"
+sidebar_position: 3
+---
+
+
+# The Build List
+
+Fifteen builds, roughly ordered so each one uses ideas the previous ones established. Each entry states what "done" looks like — a concrete, checkable target, not an open-ended exploration — and links to the conceptual page it implements.
+
+## 1. NumPy-Level Array Operations
+
+**Build**: your own minimal array class supporting element-wise operations, broadcasting, matrix multiplication, and reshaping — no NumPy. **Done when**: you can explain exactly why `array_a + array_b` on two differently-shaped arrays either broadcasts correctly or fails, because you implemented the broadcasting rule yourself. See [Linear Algebra](/docs/mathematics-for-ai/linear-algebra) for the math this operationalizes.
+
+## 2. An Autodiff Engine
+
+**Build**: a `micrograd`-style scalar (or small-tensor) autodiff engine — a `Value`/`Tensor` class that records operations into a computation graph as they happen, and a `.backward()` method that walks the graph in reverse, applying the chain rule at each node. **Done when**: you can compute the gradient of an arbitrary composed expression correctly, and explain why the graph has to be walked in *reverse* topological order. See [Calculus & Optimization — The Chain Rule](/docs/mathematics-for-ai/calculus-optimization#the-chain-rule--backpropagation).
+
+## 3. A Neural Network
+
+**Build**: a multi-layer perceptron on top of your own autodiff engine — forward pass, a loss function, and a training loop using plain gradient descent. **Done when**: it trains on a simple dataset (XOR, or a small classification toy dataset) and the loss visibly decreases. See [Neural Network Fundamentals](/docs/deep-learning/neural-network-fundamentals).
+
+## 4. A CNN
+
+**Build**: a 2D convolution operation and a pooling operation, implemented as explicit sliding-window loops (then, separately, vectorized) — not a framework's `nn.Conv2d`. **Done when**: your convolution's output matches a framework's output exactly on the same input and kernel, confirming you've implemented the real operation, not an approximation. See [Vision Fundamentals — Convolution as Classical Filtering](/docs/computer-vision/vision-fundamentals#convolution-as-classical-filtering).
+
+## 5. A BPE Tokenizer
+
+**Build**: Byte Pair Encoding from scratch — count adjacent byte-pair frequencies in a training corpus, iteratively merge the most frequent pair into a new token, until reaching a target vocabulary size. **Done when**: you can encode a new string into your learned vocabulary and decode it back to the exact original text. See [Foundation Model Internals — Tokenization](/docs/llms-genai/foundation-model-internals#tokenization).
+
+## 6. Self-Attention
+
+**Build**: the QKV mechanism as explicit matrix operations — project an input sequence into Q, K, V, compute scaled dot-product attention scores, softmax, and the weighted sum. **Done when**: you can explain, from your own implementation, exactly why the scaling factor $\sqrt{d_k}$ is there. See [Attention & Transformers](/docs/deep-learning/attention-transformers#self-attention-query-key-value).
+
+## 7. A Transformer Block
+
+**Build**: compose attention (above) with an MLP, residual connections, and layer normalization into a full Transformer block. **Done when**: stacking several of your blocks and passing a sequence through produces output of the correct shape, and you can trace exactly where each residual connection reintroduces the block's input. See [Attention & Transformers — The Full Transformer Block](/docs/deep-learning/attention-transformers#the-full-transformer-block).
+
+## 8. A Small GPT
+
+**Build**: a `nanoGPT`-style decoder-only Transformer, trained on a small character-level or word-level corpus, with causal masking so each position only attends to earlier ones. **Done when**: it generates plausible-looking (even if not fully coherent) continuations of a prompt from your training corpus's style. See [Attention & Transformers — The GPT Lineage](/docs/deep-learning/attention-transformers#decoder-only-the-gpt-lineage).
+
+## 9. LoRA
+
+**Build**: inject trainable low-rank adapter matrices into a pretrained model's linear layers (freezing the original weights), and fine-tune only the adapters on a small task. **Done when**: you can show the adapted model's behavior changed on your fine-tuning task while its weights (outside the adapters) remained literally unchanged. See [Training Pipeline — PEFT](/docs/llms-genai/training-pipeline#parameter-efficient-fine-tuning-peft).
+
+## 10. A Vector Database
+
+**Build**: embedding storage plus nearest-neighbor search — start with brute-force cosine similarity over all stored vectors, then implement (or study) an approximate nearest-neighbor index for speed at scale. **Done when**: you can insert embeddings and retrieve the true top-k nearest neighbors correctly, and can explain the recall/speed tradeoff your approximate index makes. See [Databases — Vector](/docs/databases/vector/overview).
+
+## 11. A RAG Pipeline
+
+**Build**: chunk a set of documents, embed the chunks, store them (your vector database from #10, or a real one), and wire up retrieval + generation — with no RAG framework. **Done when**: it correctly answers a question whose answer requires content from your indexed documents, and you can point to exactly which chunk supplied the grounding. See [RAG](/docs/llms-genai/rag).
+
+## 12. An Agent
+
+**Build**: a ReAct loop — prompt an LLM to produce a thought, an action (a real tool call, not a mocked one), observe the result, and loop — with no agent framework. **Done when**: it correctly completes a task that genuinely requires more than one tool call, and you can trace every step of its reasoning/action/observation trace. See [Agent Architectures — ReAct](/docs/agents/agent-architectures#react-reasoning--acting).
+
+## 13. A Minimal Inference Server
+
+**Build**: an API endpoint serving a small model, implementing basic batching (grouping concurrent requests) and a KV cache (see [KV Cache](/docs/llms-genai/foundation-model-internals#kv-cache)) yourself — not vLLM. **Done when**: you can measure and explain the throughput improvement batching provides over serving requests one at a time. See [APIs & Model Serving](/docs/mlops/model-serving).
+
+## 14. A Minimal Distributed Trainer
+
+**Build**: data parallelism across multiple processes (or GPUs, if available) — replicate a small model, shard a dataset, and implement gradient synchronization (all-reduce) yourself rather than using `DistributedDataParallel` directly. **Done when**: training with N workers produces (approximately) the same result as training on the full data with one worker, and you can explain exactly where and why the gradients get synchronized. See [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training#parallelism-strategies).
+
+## What Comes Next
+
+Once several of these feel solid, move to [Projects](/docs/projects/roadmap) — larger, more complete systems that combine multiple from-scratch pieces (and, pragmatically, real libraries where a from-scratch version wouldn't add further insight) into something closer to an actual deployable project.

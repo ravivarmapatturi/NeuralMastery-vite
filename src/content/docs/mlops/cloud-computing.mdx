@@ -1,0 +1,75 @@
+---
+title: "Cloud Computing for ML"
+sidebar_position: 9
+---
+
+
+# Cloud Computing for ML
+
+Almost nothing in this section runs on a laptop in production — pick one cloud, go deep on it, and treat the others as "the same concepts, different names" once you know one well. AWS is the reference here because it's the most common in job postings, not because it's uniquely correct.
+
+## Compute
+
+- **EC2**: raw virtual machines — the building block everything else is built on top of. GPU instances (the `p`/`g` families) are where model training and self-hosted inference actually run.
+- **ECS**: AWS's own container orchestration service — simpler than Kubernetes, a reasonable choice when you don't need Kubernetes's full feature set.
+- **EKS**: managed Kubernetes on AWS — see [Kubernetes](/docs/mlops/kubernetes).
+- **Lambda**: serverless functions, billed per invocation — good for lightweight, spiky, stateless workloads (a small preprocessing step, a webhook handler); a poor fit for GPU inference or anything with a long cold-start-sensitive model to load.
+
+## Storage & Databases
+
+- **S3**: object storage — the default place datasets, model artifacts, and logs live; nearly every tool in this section (DVC, MLflow, Airflow, Docker registries) can use S3 as a backend.
+- **EBS**: block storage attached to a single EC2 instance — used for a VM's own disk, not for data meant to be shared across services.
+- **RDS**: managed relational databases (Postgres/MySQL) — see [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning).
+- **DynamoDB**: a managed NoSQL key-value/document store — used where Redis-like low-latency lookups need to be durable and fully managed rather than in-memory.
+
+## ML-Specific: SageMaker
+
+AWS's managed ML platform — training jobs, hyperparameter tuning, a built-in model registry, and managed endpoints for serving, all without provisioning the underlying infrastructure by hand. The tradeoff is the same as any managed platform: faster to get running, but more vendor lock-in and less control than assembling the equivalent from EC2 + Docker + a serving tool from [APIs & Model Serving](/docs/mlops/model-serving) yourself. Many teams use SageMaker for training (where its managed job infrastructure saves real time) while self-hosting serving on EKS/Triton for more control over latency and cost.
+
+## Networking & Security
+
+- **VPC**: an isolated virtual network — where every resource above actually lives, with subnets controlling what's public vs. private.
+- **ALB (Application Load Balancer)**: distributes incoming traffic across multiple instances/containers — sits in front of a serving fleet.
+- **API Gateway**: manages, authenticates, and rate-limits API traffic in front of Lambda or other backends — see [the inference stack](/docs/mlops/llm-inference-engines) for where an API gateway sits in front of LLM serving specifically.
+- **IAM**: identity and access management — who (or what service) is allowed to do what; the single most common source of both "why can't my pipeline read this S3 bucket" bugs and real security incidents (over-permissioned roles).
+- **Secrets Manager / KMS**: managed secret storage and encryption-key management — where API keys and database credentials belong instead of a config file or a Dockerfile.
+- **ECR**: AWS's container registry — see [Containers](/docs/mlops/containers).
+
+## The Pattern to Internalize
+
+Every cloud maps onto the same shape: compute (VMs, containers, serverless), storage (object, block, database), networking (VPC, load balancer, gateway), and identity (IAM). Learning AWS deeply and then encountering GCP or Azure is mostly a vocabulary-mapping exercise rather than learning new concepts from scratch:
+
+| Concept | AWS | GCP | Azure |
+|---|---|---|---|
+| Virtual machines | EC2 | Compute Engine (GCE) | Azure VMs |
+| Managed Kubernetes | EKS | GKE | AKS |
+| Serverless functions | Lambda | Cloud Functions / Cloud Run | Azure Functions |
+| Object storage | S3 | Cloud Storage (GCS) | Blob Storage |
+| Block storage | EBS | Persistent Disk | Managed Disks |
+| Managed relational DB | RDS | Cloud SQL | Azure SQL Database |
+| Managed NoSQL | DynamoDB | Firestore / Bigtable | Cosmos DB |
+| Data warehouse | Redshift | BigQuery | Synapse Analytics |
+| Container registry | ECR | Artifact Registry | Azure Container Registry |
+| Identity/access | IAM | Cloud IAM | Azure AD (Entra ID) |
+| Secrets management | Secrets Manager / KMS | Secret Manager / Cloud KMS | Key Vault |
+| Managed ML platform | SageMaker | Vertex AI | Azure ML |
+
+## GCP for ML
+
+- **Vertex AI**: Google's unified managed ML platform — training, hyperparameter tuning, a model registry, and managed endpoints, the direct GCP counterpart to SageMaker, with particularly strong integration with Google's own foundation models (Gemini) for teams already building on them.
+- **GKE (Google Kubernetes Engine)**: GCP's managed Kubernetes — notably where Kubernetes itself originated conceptually (Google's internal Borg system predates and inspired it), and a common choice for teams wanting the most mature managed Kubernetes experience specifically.
+- **BigQuery**: a serverless, fully-managed data warehouse — genuinely distinctive relative to AWS/Azure's warehouse offerings for how it separates storage and compute and charges per-query rather than per-provisioned-capacity, making it a common choice for large-scale, bursty analytical workloads feeding into ML feature engineering.
+- **Cloud Storage**: GCS, the direct S3 equivalent — the default backend for datasets and model artifacts in a GCP-based stack, same role as S3 in the AWS examples throughout this section.
+
+## Azure for ML
+
+- **Azure ML**: Microsoft's managed ML platform — training pipelines, a model registry, and managed endpoints, Azure's counterpart to SageMaker/Vertex AI, with deep integration into the broader Azure/Microsoft enterprise ecosystem (Active Directory, existing enterprise data estates) that's often the actual reason a team is on Azure in the first place.
+- **Azure OpenAI**: Microsoft's hosted access to OpenAI's models (GPT-4-class and others) through Azure's own infrastructure, identity, and compliance boundary — the common choice for enterprises that need OpenAI-class model capability but require it to run inside their existing Azure compliance/data-residency posture rather than calling OpenAI's API directly.
+- **AKS (Azure Kubernetes Service)**: Azure's managed Kubernetes — same role as EKS/GKE.
+- **Blob Storage**: Azure's S3/GCS equivalent object storage.
+
+## Choosing Cloud-Neutral Patterns
+
+Regardless of which cloud a stack runs on, the architecture patterns from the rest of this MLOps section — [Containers](/docs/mlops/containers), [Kubernetes](/docs/mlops/kubernetes), [CI/CD](/docs/mlops/cicd-and-ml-cicd), [Infrastructure as Code](/docs/mlops/infrastructure-as-code) — are deliberately cloud-agnostic: a Docker container, a Kubernetes manifest, and a Terraform module all run on any of the three clouds above with minimal (often zero) changes, which is exactly why containerizing and using Kubernetes/Terraform rather than deeply coupling to any one cloud's proprietary managed services is the standard way to keep a real option to migrate or run multi-cloud, even for a team that has no near-term plan to actually do so.
+
+Next: [Kubernetes](/docs/mlops/kubernetes) — the layer that orchestrates containers across a fleet of the compute above.

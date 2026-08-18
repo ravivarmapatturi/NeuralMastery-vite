@@ -1,0 +1,76 @@
+---
+title: "Random Forest & Extra Trees, In Full Depth"
+sidebar_position: 5.2
+---
+
+
+# Random Forest & Extra Trees, In Full Depth
+
+[Decision Trees](/docs/machine-learning/decision-tree) are high-variance: retrain on a slightly different sample and the tree structure can change completely. Random Forest fixes this with an idea that seems almost too simple to work: train many trees on randomized versions of the data, and average their predictions.
+
+## The Core Idea: Bagging
+
+**Bagging** (Bootstrap AGGregatING): train $B$ independent trees, each on a **bootstrap sample** — a sample of size $n$ drawn *with replacement* from the original $n$ training examples (so each bootstrap sample contains duplicates and omits roughly a third of the original data on average). Average the predictions (regression) or take a majority vote (classification) across all $B$ trees.
+
+**Why averaging reduces variance — the actual math**: if each tree's prediction has variance $\sigma^2$ and the trees were *perfectly independent*, averaging $B$ of them gives variance $\sigma^2/B$ — variance shrinks directly with more trees. Trees aren't fully independent in practice (they're trained on overlapping, correlated data), so the real reduction is smaller than $1/B$, but the effect is still large and is the entire justification for the method. This is the same bias-variance logic from [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics#bias-variance-tradeoff): individual deep trees have low bias but high variance; averaging trades a small amount of bias for a large reduction in variance.
+
+## Random Forest's Extra Ingredient: Feature Randomness
+
+Bagging alone isn't enough — if one feature is very strong, *every* bootstrap-sampled tree will likely pick it for the first split, making the trees highly correlated with each other (and correlated trees don't reduce variance nearly as much when averaged, per the math above).
+
+**Random Forest's fix**: at *each split*, restrict the tree to a random subset of features (commonly $\sqrt{d}$ features out of $d$ total, for classification) rather than considering all of them. This deliberately handicaps each individual tree, forcing different trees to discover different, less-correlated splitting patterns — which is precisely what makes the ensemble average more powerful than any single tree in it.
+
+## Extra Trees: One More Layer of Randomness
+
+**Extremely Randomized Trees (Extra Trees)** push the idea further: instead of searching for the *optimal* threshold for each candidate feature (as in a standard tree, see [Decision Tree — How a Split Is Chosen](/docs/machine-learning/decision-tree#how-a-split-is-chosen)), pick the threshold **randomly** and just choose the best among those random candidates. Also typically skips bootstrap sampling, training each tree on the full dataset instead.
+
+- **More randomness → more bias, less variance** than Random Forest — individual trees are worse, but the ensemble can be competitive or better, and training is faster (no per-split optimal-threshold search).
+- **Practical rule of thumb**: try Random Forest first; reach for Extra Trees specifically when training speed matters or when Random Forest is visibly overfitting even with feature randomness.
+
+## Out-of-Bag (OOB) Error: Free Validation
+
+Since each bootstrap sample leaves out roughly 37% of the data ($\left(1-\frac{1}{n}\right)^n \to e^{-1} \approx 0.368$ as $n\to\infty$ — see [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics)), each tree has a natural, unused validation set: the examples it never saw. Averaging each example's prediction across only the trees that *didn't* train on it gives an honest performance estimate — **without needing a separate held-out validation set** (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)). This is close to free — it falls directly out of the bagging procedure already being run.
+
+## Feature Importance
+
+Random Forests provide a natural feature importance score: sum up the impurity reduction (see [Decision Tree — Gini](/docs/machine-learning/decision-tree#how-a-split-is-chosen)) every time a feature is used to split, across every tree, and normalize. Features that consistently produce strong, high-impurity-reduction splits across many trees score higher — a practical, if imperfect, tool for understanding which inputs actually drive predictions (imperfect because it's biased toward high-cardinality/continuous features, similar to the single-tree bias noted in [Decision Tree — Strengths and Weaknesses](/docs/machine-learning/decision-tree#strengths-and-weaknesses)).
+
+## Random Forest vs. a Single Tree
+
+| | Single Decision Tree | Random Forest |
+|---|---|---|
+| Variance | High | Much lower (averaging) |
+| Bias | Low (if deep) | Slightly higher |
+| Interpretability | High — can read the exact rules | Low — hundreds of trees, no single readable logic |
+| Training cost | Cheap | $B\times$ a single tree (parallelizable) |
+| Overfitting risk | High if unconstrained | Much lower |
+
+## Minimal Implementation
+
+```python
+import numpy as np
+
+class SimpleRandomForest:
+    def __init__(self, n_trees=100, max_features="sqrt"):
+        self.n_trees = n_trees
+        self.max_features = max_features
+        self.trees = []
+
+    def fit(self, X, y, tree_fit_fn):
+        n, d = X.shape
+        k = int(np.sqrt(d)) if self.max_features == "sqrt" else d
+        for _ in range(self.n_trees):
+            # Bootstrap sample
+            idx = np.random.choice(n, size=n, replace=True)
+            X_boot, y_boot = X[idx], y[idx]
+            # Random feature subset considered at each split is handled
+            # inside tree_fit_fn; k is passed through for that purpose.
+            tree = tree_fit_fn(X_boot, y_boot, max_features=k)
+            self.trees.append(tree)
+
+    def predict(self, X, tree_predict_fn):
+        preds = np.array([tree_predict_fn(tree, X) for tree in self.trees])
+        return np.round(preds.mean(axis=0))  # majority vote via mean+round for binary labels
+```
+
+Next: [Boosting: AdaBoost & Gradient Boosting](/docs/machine-learning/boosting) — building an ensemble sequentially instead of in parallel, where each new tree specifically targets the previous ensemble's mistakes.

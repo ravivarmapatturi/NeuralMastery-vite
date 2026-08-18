@@ -1,0 +1,63 @@
+---
+title: "MCP Protocol Deep Dive"
+sidebar_position: 2
+---
+
+
+# MCP Protocol Deep Dive
+
+[MCP Overview](/docs/agents/mcp/overview) covered the architecture (client/server, tools/resources/prompts) at a conceptual level. This page is the engineering detail underneath: how a client and server actually talk, what a real MCP server implementation deals with, and how it gets deployed safely in an organization.
+
+## Transport
+
+MCP defines how clients and servers communicate over one of two transport mechanisms:
+
+- **stdio (standard input/output)**: the client launches the MCP server as a local subprocess and communicates over its stdin/stdout — the simplest transport, used for local tools (a server that reads local files, runs local commands) where client and server run on the same machine.
+- **HTTP with Server-Sent Events (SSE) / Streamable HTTP**: for remote servers — the client makes HTTP requests, and the server can stream responses back incrementally (useful for long-running tool calls or progressive results) — necessary once a server isn't a local subprocess, e.g. a hosted MCP server for a SaaS product that many different clients connect to over the network.
+
+Both transports carry the same underlying **JSON-RPC 2.0** message format — the transport is just how bytes move; the protocol semantics (requests, responses, notifications) are identical regardless of which one's in use.
+
+## Sessions and Lifecycle
+
+An MCP connection isn't stateless — it goes through an explicit lifecycle:
+
+1. **Initialization**: the client connects and sends an `initialize` request declaring its supported protocol version and capabilities; the server responds with its own capabilities (which tools/resources/prompts it exposes, and which optional protocol features it supports) — a capability-negotiation handshake, so client and server agree on what's actually available before any real work starts.
+2. **Operation**: the client can now call tools, read resources, and request prompts — the normal request/response traffic covered in [MCP Overview](/docs/agents/mcp/overview#resources-tools-and-prompts).
+3. **Shutdown**: a clean termination of the session, releasing any server-side state associated with it.
+
+For remote (HTTP-based) transports, this lifecycle maps onto an explicit **session** — a server may maintain per-session state (e.g. an authenticated user's context) across multiple requests within that session, requiring session identifiers rather than treating every request as fully independent.
+
+## Tool Discovery and Schemas
+
+- **Tool discovery**: a client lists a connected server's available tools via a `tools/list` request — the server responds with each tool's name, description, and **input schema**. This is how a client (and the LLM behind it) learns what a server can do *without* any hardcoded, tool-specific integration code — the entire point of standardizing the protocol.
+- **Tool schemas**: each tool declares its parameters as a **JSON Schema** — the same structured-schema approach as [Prompt Engineering — Structured Output](/docs/llms-genai/prompt-engineering), applied to defining a tool's *input* contract rather than a model's output contract. A well-specified schema (clear types, required vs. optional fields, descriptive field names) directly determines how reliably the LLM calls the tool correctly — a vague or missing schema is a common, avoidable cause of malformed tool calls.
+- **Resource and prompt discovery**: analogous `resources/list` and `prompts/list` requests let a client discover what data and prompt templates a server exposes, following the same discovery-before-use pattern as tools.
+
+## Errors
+
+MCP defines structured error responses (following JSON-RPC's error object format: a numeric code, a message, and optional additional data) rather than letting failures propagate as opaque exceptions — a tool call that fails (invalid arguments, a downstream API error, a permission problem) returns a structured error the client can inspect and, in an agentic loop, feed back to the LLM so it can self-correct (see [Agent Architectures — Durable Execution](/docs/agents/agent-architectures#durable-execution-retries-checkpoints--long-running-agents) for the retry patterns built on top of this) rather than the whole session crashing.
+
+## Authentication and Authorization
+
+Distinct concerns, both necessary for anything beyond a local, single-user stdio server:
+
+- **Authentication**: verifying *who* is connecting — for remote HTTP-based servers, typically OAuth 2.1 or API-key-based schemes, established during or before the initialization handshake above.
+- **Authorization**: once authenticated, determining *what* that identity is allowed to do — which tools it can call, which resources it can read. A server exposing sensitive tools (executing code, accessing a production database) needs authorization scoped per-identity, not an all-or-nothing "connected or not" model — the same least-privilege principle as [AI Security — Excessive Agency](/docs/mlops/security-and-reproducibility).
+
+## Security
+
+MCP's power — letting an LLM discover and call arbitrary tools dynamically — is also its core security surface:
+
+- **Prompt injection via tool results**: a malicious or compromised data source returned by a `resources/read` or tool call can contain text designed to manipulate the LLM's subsequent behavior (see [AI Security — Prompt Injection](/docs/mlops/security-and-reproducibility)) — treat all MCP-returned content as untrusted data, not as trusted instructions, exactly as with RAG-retrieved content.
+- **Tool permission scoping**: a client should not blindly grant every connected server's every tool unrestricted access — explicit user/admin approval for which tools a given server is allowed to expose to the LLM is a real, necessary control, not an optional nicety.
+- **Server trust**: connecting to an MCP server means running code (for local stdio servers) or granting network access to a service (for remote servers) — the same supply-chain trust question as installing any other third-party package or dependency, and worth treating with the same scrutiny.
+
+## Enterprise Deployment
+
+Running MCP servers inside an organization, rather than a single developer's local tool, adds operational concerns familiar from any internal service: centralized server registries (so teams discover approved, sanctioned MCP servers rather than connecting to arbitrary ones), centralized auth/identity integration (tying MCP authentication into existing SSO rather than per-server credentials), audit logging of tool calls (especially for tools that take real-world actions), and network-level restrictions (which servers are reachable from which environments) — the MCP-specific instance of the general [AI governance](/docs/mlops/roadmap) problem of knowing what an AI system can access and proving it after the fact.
+
+## Building an MCP Server
+
+A minimal MCP server implementation needs to: handle the initialization handshake and declare its capabilities, implement `tools/list` (and/or `resources/list`, `prompts/list`) to expose what it offers, implement the actual tool-call handler (validate arguments against the declared schema, execute, return a structured result or error), and handle the chosen transport (stdio is the simplest starting point for a local tool). The official MCP SDKs (Python, TypeScript, and others) handle the protocol-level plumbing (JSON-RPC framing, lifecycle handshake) so a server implementation is mostly just the tool logic itself plus schema definitions — the protocol overhead of "become MCP-compatible" is deliberately small by design, which is a large part of why adoption spread quickly across AI coding tools and agent frameworks.
+
+Next: [A2A (Agent-to-Agent)](/docs/agents/a2a/overview) — the complementary protocol for agents talking to *other agents*, rather than to tools.

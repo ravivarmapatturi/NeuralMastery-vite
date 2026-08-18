@@ -1,0 +1,33 @@
+---
+title: "Serving & MLOps / LLMOps"
+sidebar_position: 5
+---
+
+
+# Serving & MLOps / LLMOps
+
+A model that only runs in a notebook isn't a production system. This is the tooling layer that makes it one.
+
+## Model Serving
+
+- **vLLM**: an inference server purpose-built for LLMs, implementing Paged Attention and continuous batching (see [Evaluation & Serving](/docs/llms-genai/evaluation-and-serving)) to serve many concurrent requests efficiently — the de facto standard for self-hosting open LLMs at any meaningful scale.
+- **TorchServe**: general-purpose model serving for PyTorch models, handling request batching, versioning, and scaling for traditional (non-LLM) deep learning models.
+- **Triton Inference Server**: a high-performance serving platform supporting multiple frameworks (PyTorch, TensorFlow, ONNX) and multiple models on shared hardware, commonly used when a system serves a mix of model types, not just LLMs.
+
+## Containerization & Deployment
+
+**Docker** packages a model plus its exact runtime environment (dependencies, system libraries) into a single portable image — solving the "it works on my machine" problem and making deployment to any cloud or on-prem environment consistent. Nearly every production ML serving setup runs inside containers, orchestrated by something like Kubernetes at scale.
+
+## CI/CD for ML
+
+Traditional software CI/CD (test, build, deploy on every code change) extends to ML with extra pieces specific to models: automated retraining pipelines (trigger on a schedule or when enough new data has accumulated), automated evaluation gates (a new model version must beat the current one on held-out metrics before it's allowed to deploy — connecting back to [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)), and automated rollback if a newly deployed model's live metrics regress.
+
+## Observability for LLM Applications
+
+Unlike traditional software, LLM application behavior isn't fully deterministic or easy to unit-test in the usual sense — so observability focuses on:
+
+- **Tracing**: logging the full sequence of prompts, tool calls, and responses for a given request, so you can debug *why* an agent or RAG pipeline produced a particular output.
+- **Cost tracking**: monitoring token usage and cost per request/user, since LLM API costs scale directly with usage in a way traditional compute costs don't as visibly.
+- **Quality monitoring in production**: sampling live outputs for automated or human quality review (see [LLM-as-judge](/docs/llms-genai/evaluation-and-serving#evaluation)) to catch regressions that offline evaluation didn't anticipate.
+
+Frameworks section complete. Next: [Interview Prep](/docs/interview-prep/roadmap) — putting everything from the previous sections into practice under interview conditions.

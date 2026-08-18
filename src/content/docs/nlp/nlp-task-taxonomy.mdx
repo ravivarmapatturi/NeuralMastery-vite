@@ -1,0 +1,38 @@
+---
+title: "NLP Task Taxonomy"
+sidebar_position: 5
+---
+
+
+# NLP Task Taxonomy
+
+Every major NLP task predates Transformers, and every one of them is now dominated by Transformer-based approaches — but the classical approach to each is worth knowing, both for historical grounding and because classical methods are sometimes still the right, cheaper tool for a well-defined production task.
+
+## Sequence Labeling
+
+The general framing behind [POS tagging and NER](/docs/nlp/classical-nlp): assign a label to every token in a sequence, where the labels of nearby tokens are dependent on each other (not independent per-token classification). Classical: **HMMs/CRFs**, modeling the label sequence's transition structure explicitly. Modern: a BiLSTM or Transformer encoder with a classification head per token, letting the model learn label dependencies implicitly through its own representations rather than an explicit transition matrix.
+
+## Text Classification & Sentiment Analysis
+
+Assigning a label (or set of labels) to an entire document/sentence rather than per-token — spam/not-spam, topic categorization, or sentiment (positive/negative/neutral). Classical: bag-of-words or TF-IDF features (see [ML Workflow Fundamentals — Feature Engineering](/docs/machine-learning/ml-workflow-fundamentals#feature-engineering--selection)) feeding a [Logistic Regression](/docs/machine-learning/logistic-regression), [Naive Bayes](/docs/machine-learning/naive-bayes-lda-qda), or [SVM](/docs/machine-learning/support-vector-machines) classifier — still a completely reasonable, fast, interpretable baseline for well-scoped classification tasks with limited labeled data. Modern: fine-tuning a BERT-style encoder (see [Attention & Transformers](/docs/deep-learning/attention-transformers#encoder-only-the-bert-lineage)) or prompting an LLM directly (see [Prompt Engineering](/docs/llms-genai/prompt-engineering)) — better accuracy, especially on nuanced/context-dependent sentiment, at higher compute cost per prediction.
+
+## Machine Translation
+
+Translating text from one language to another — the task that originally motivated the encoder-decoder Transformer architecture ([Attention & Transformers — The T5 Lineage](/docs/deep-learning/attention-transformers#encoder-decoder-the-t5-lineage)):
+
+- **Statistical Machine Translation (SMT)**: pre-neural approaches built from explicit translation probability tables (phrase-to-phrase translation likelihoods learned from parallel corpora) combined with a language model scoring fluency — a pipeline of separately-optimized components, not end-to-end trained.
+- **Neural Machine Translation (NMT)**: end-to-end sequence-to-sequence models (originally RNN encoder-decoder with attention, see [Sequence Models — Seq2Seq with Attention](/docs/deep-learning/sequence-models#named-variants-worth-knowing), now Transformer encoder-decoder) trained directly on parallel text — a single model learns the entire mapping, substantially outperforming SMT's pipeline once enough training data and compute were available.
+- **Evaluation**: **BLEU** (n-gram precision overlap against reference translations) remains the standard automatic metric despite well-known limitations (penalizes valid paraphrases that don't n-gram-match the reference) — see [LLM Evaluation & RAGOps — Traditional Metrics](/docs/mlops/llm-evaluation-and-ragops#traditional-metrics-vs-llm-as-judge) for how LLM-as-judge approaches are increasingly used alongside or instead of BLEU for more nuanced translation quality assessment.
+
+## Summarization
+
+- **Extractive summarization**: select and concatenate existing sentences/phrases directly from the source document — guaranteed factually grounded (every word came from the source), but can read disjointedly since it's a selection, not a composition.
+- **Abstractive summarization**: generate genuinely new sentences that convey the source's meaning — reads more naturally, but introduces real risk of hallucination (stating something not actually supported by the source), which is exactly the faithfulness/groundedness concern covered in [LLM Evaluation & RAGOps](/docs/mlops/llm-evaluation-and-ragops).
+- Modern LLMs perform abstractive summarization by default when prompted to summarize — the extractive/abstractive distinction remains relevant for understanding *why* a summary might be unfaithful to its source (an abstractive method structurally can be, an extractive one structurally cannot).
+
+## Question Answering
+
+- **Extractive QA**: given a question and a passage, identify the exact span of the passage that answers it — framed as predicting a start and end token position, a structurally different (and simpler, more constrained) task than free-form generation.
+- **Generative/open-domain QA**: generate a free-form answer, potentially synthesizing information across multiple sources or requiring knowledge not explicitly present in any single retrieved passage — the task framing behind [RAG](/docs/llms-genai/rag), which combines retrieval (find relevant passages) with generative QA (compose an answer from them) rather than either extractive matching or ungrounded generation alone.
+
+NLP section complete. Next: [LLMs & GenAI](/docs/llms-genai/roadmap) — where this entire task taxonomy gets absorbed into general-purpose, prompted Transformer models rather than one specialized architecture per task.

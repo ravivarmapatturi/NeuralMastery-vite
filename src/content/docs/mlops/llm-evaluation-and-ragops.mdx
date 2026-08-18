@@ -1,0 +1,37 @@
+---
+title: "LLM Evaluation & RAGOps"
+sidebar_position: 21
+---
+
+
+# LLM Evaluation & RAGOps
+
+"The model returns fluent, plausible-sounding text" is a much lower bar than "the model returns *correct* text" — and unlike classical ML, there's rarely one ground-truth label to compare against. Evaluating LLMs and the RAG systems built on them is its own discipline.
+
+## Traditional Metrics vs. LLM-as-Judge
+
+- **BLEU / ROUGE**: n-gram overlap metrics originally built for machine translation/summarization — measure surface-level similarity to a reference text. Fast and cheap, but poorly correlated with actual quality for open-ended generation, since a correct answer phrased differently scores badly.
+- **F1**: precision/recall on extracted spans or classification-style outputs — useful when the task has a well-defined correct answer (extractive QA), less useful for open-ended generation.
+- **LLM-as-judge**: use a strong LLM to score a generation against defined criteria — **faithfulness** (does the output only claim things supported by the provided context/source), **relevance** (does it actually address the query), **groundedness** (are specific claims traceable back to source material). This has become the standard approach for evaluating open-ended LLM output at scale, because it captures semantic correctness that n-gram metrics miss, at the cost of being itself a model with its own biases and failure modes (a known area of active research: judge models can be gamed, or systematically prefer certain response styles regardless of actual quality).
+
+## Evaluation Tooling
+
+- **Ragas**: a framework purpose-built for evaluating RAG pipelines specifically — computes faithfulness, answer relevance, and context precision/recall from just a query, retrieved context, and generated answer, without requiring hand-labeled ground truth for every metric.
+- **DeepEval**: a general LLM evaluation framework with a `pytest`-style API — designed to be run as part of [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd), turning "did this prompt/model change regress quality" into an automated test rather than a manual spot-check.
+- **LangSmith**: LangChain's observability and evaluation platform — tracing every step of an LLM/agent pipeline (see [Observability](/docs/mlops/observability)'s tracing discussion, applied to LLM chains specifically) plus dataset-based evaluation.
+- **Arize Phoenix**: an open-source LLM observability tool, focused on tracing and evaluating LLM/RAG applications, including embedding drift visualization — extending the drift concepts from [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) to LLM-specific signals.
+
+## RAG Pipeline Monitoring
+
+A RAG system has more moving parts than a single model call, and each one can independently degrade:
+
+- **Chunk quality**: are documents split into chunks that preserve enough context to be useful when retrieved in isolation? Bad chunking (splitting mid-sentence, or too coarse/fine) silently caps retrieval quality no matter how good the embedding model is.
+- **Retrieval latency**: how long the vector/hybrid search step takes — often the largest controllable latency contributor in a RAG request, ahead of generation itself.
+- **Recall@K / Precision@K**: of the top-K retrieved chunks, what fraction of the actually-relevant chunks were retrieved (Recall@K), and what fraction of retrieved chunks were actually relevant (Precision@K) — the standard retrieval-quality metrics, computed against a labeled or LLM-judged relevance set.
+- **MRR (Mean Reciprocal Rank)**: rewards retrieving the first genuinely relevant result *early* in the ranked list, not just somewhere in the top-K — sensitive to ranking order in a way plain Recall@K isn't.
+- **NDCG (Normalized Discounted Cumulative Gain)**: a ranking metric that accounts for *graded* relevance (some results are more relevant than others, not just relevant/irrelevant) and discounts relevance found lower in the ranking — the most complete of the standard retrieval ranking metrics.
+- **Hallucination**: the generated answer contains claims not supported by the retrieved context — the specific failure mode RAG is meant to reduce (by grounding generation in retrieved facts) but doesn't eliminate; faithfulness scoring via LLM-as-judge (above) is the standard way to catch it in production.
+
+A RAG system that "feels wrong" is usually one of these four failing, not the generative model itself being bad — diagnosing which layer is broken (bad chunks → bad retrieval → bad ranking → ungrounded generation) is the actual day-to-day work of RAGOps.
+
+Next: [Security & Reproducibility](/docs/mlops/security-and-reproducibility) — the cross-cutting concerns that apply to every system covered so far, from classical ML pipelines to production LLM serving.

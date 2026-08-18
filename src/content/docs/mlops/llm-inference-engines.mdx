@@ -1,0 +1,65 @@
+---
+title: "LLM Inference Engines"
+sidebar_position: 18
+---
+
+
+# LLM Inference Engines
+
+Serving an LLM well is its own discipline, distinct from serving a classical ML model (see [APIs & Model Serving](/docs/mlops/model-serving)) — the models are enormous, autoregressive generation is sequential by nature, and the memory/compute tradeoffs are unlike anything in traditional serving. This page establishes the vocabulary the rest of this section depends on.
+
+## The Inference Stack
+
+A request to a hosted LLM passes through several distinct layers, each solving a different problem:
+
+```
+User → API Gateway → Serving Framework → Inference Engine → Model Runtime → GPU → CUDA
+```
+
+- **API Gateway**: authentication, rate limiting, routing — the same role it plays for any API (see [Cloud Computing for ML](/docs/mlops/cloud-computing)).
+- **Serving Framework**: exposes the model as an API and manages requests — request queuing, batching decisions, streaming responses back to the client.
+- **Inference Engine**: executes the model efficiently — the component actually running the forward passes, managing the KV cache, and implementing the optimizations covered in [LLM Inference Optimization](/docs/mlops/llm-inference-optimization).
+- **Model Runtime**: the lower-level execution layer (e.g. PyTorch, or a compiled runtime) the engine is built on.
+- **GPU / CUDA**: the hardware and driver layer everything ultimately runs on (see [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training)).
+
+## A Distinction Worth Getting Right
+
+These four terms get used interchangeably in casual conversation, but they are not the same thing, and confusing them leads to picking the wrong tool:
+
+- An **inference engine/runtime** *executes* the model efficiently (vLLM, llama.cpp, TensorRT-LLM).
+- A **serving framework** *exposes* the model as an API and manages requests (this is often the same tool as the engine — vLLM does both — but not always: NVIDIA Triton is a serving framework that can run several different engines/backends underneath it).
+- A **hosting/deployment platform** *provides* the infrastructure the above runs on (a cloud GPU provider, a Kubernetes cluster — see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns)).
+- A **fine-tuning framework** *trains/adapts* a model — it isn't primarily an inference engine.
+
+That last point matters enough to be explicit: **Unsloth is primarily a fine-tuning/training framework**, used to efficiently LoRA/QLoRA-adapt a model — it is not what you deploy to serve production traffic. **vLLM, llama.cpp, TensorRT-LLM, and SGLang**, by contrast, are the tools much more directly relevant to *inference*. A model fine-tuned with Unsloth still needs to be handed off to one of these (or an equivalent) to actually be served — see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns) for that handoff.
+
+## Tier 1: Must-Know Engines
+
+- **vLLM**: the current default for high-throughput, general-purpose LLM serving — built around PagedAttention and continuous batching (see [LLM Inference Optimization](/docs/mlops/llm-inference-optimization)), with an OpenAI-compatible API, broad model support, and strong multi-GPU support. The safest first choice for self-hosted LLM serving.
+- **SGLang**: a newer high-performance engine built around **RadixAttention** (a prefix-caching scheme using a radix tree to share KV cache across requests that share a prompt prefix) and a structured generation language for constrained/programmatic output — particularly strong for agent workloads that issue many related, prefix-sharing calls.
+- **llama.cpp**: a C/C++ inference engine built for running LLMs efficiently on CPU and consumer hardware (including Apple Metal and Vulkan), using the **GGUF** model format — the backbone of most local/on-device LLM tooling (Ollama and LM Studio both run on top of it).
+- **TensorRT-LLM**: NVIDIA's own highly optimized engine, compiling models into fused CUDA kernels with CUDA graph capture — typically the fastest option on NVIDIA hardware specifically, at the cost of a heavier compilation/deployment workflow and less flexibility than vLLM.
+- **Hugging Face TGI (Text Generation Inference)**: HF's own production serving engine, tightly integrated with the HF model ecosystem, supporting continuous batching and quantization — a reasonable default when everything else in a stack is already HF-centric.
+- **ONNX Runtime**: a general (not LLM-specific) cross-platform inference runtime built around the ONNX model format, with pluggable **execution providers** (CUDA, TensorRT, CPU, DirectML, CoreML) — used when a model needs to run across genuinely heterogeneous hardware from one exported format.
+- **OpenVINO**: Intel's inference toolkit, optimized specifically for Intel CPUs/iGPUs/VPUs — the standard choice for edge and CPU-heavy deployments on Intel hardware.
+
+## Tier 2: Also Worth Knowing
+
+- **DeepSpeed-Inference**: Microsoft's inference-side counterpart to DeepSpeed training, with kernel optimizations and tensor parallelism for large-model serving.
+- **NVIDIA Triton Inference Server**: a *general-purpose, multi-framework* serving server — not LLM-specific like vLLM, but a backend-agnostic server that can run PyTorch, TensorFlow, ONNX, TensorRT, and (via a backend) vLLM itself, standardizing serving across many model types in one system. The right choice when a team serves LLMs *and* classical/vision models and wants one serving layer for all of it, rather than the LLM-specialized throughput vLLM offers.
+- **ExecuTorch**: PyTorch's on-device inference runtime for mobile and embedded targets.
+- **Core ML**: Apple's own on-device inference framework (distinct from MLX) — the standard target for shipping a model inside an iOS/macOS app, with first-class Neural Engine acceleration on Apple hardware; models are typically exported/converted to Core ML's format rather than run directly from PyTorch.
+- **MLX**: Apple's array/ML framework, with strong support for efficient LLM inference on Apple Silicon's unified memory architecture — more of a general array/research framework (NumPy/PyTorch-like) than Core ML's app-deployment-focused runtime.
+- **MLC-LLM**: a compilation-based approach (built on Apache TVM) to deploying LLMs across a wide range of hardware backends from one model definition.
+- **Apache TVM**: a general deep learning compiler stack — MLC-LLM is built on top of it; worth knowing as the underlying compiler technology rather than a tool you reach for directly for LLM serving.
+- **Ray Serve**: general-purpose distributed serving (see [APIs & Model Serving](/docs/mlops/model-serving)) that can host LLM inference as one stage in a larger multi-model/multi-step serving pipeline.
+
+## The Baseline: Plain PyTorch Inference
+
+Before reaching for any engine above, the simplest possible option is just calling `model.forward()` (or `.generate()`) directly in eager-mode PyTorch — no batching optimization, no custom kernels, no KV-cache-aware memory management beyond what the model implementation does itself. This is the right starting point for prototyping, low-traffic internal tools, and anywhere the engineering cost of adopting a dedicated engine isn't yet justified by traffic volume — every engine in the tiers above exists specifically to fix a scaling problem plain PyTorch inference has (poor batching, no paged KV cache, slow per-kernel-launch overhead), and it's worth being able to name *which* problem before reaching for a heavier tool to fix it.
+
+## Edge and On-Device Inference
+
+A distinct deployment target from server-side serving above: running inference directly on a phone, laptop, or embedded device, with no network round-trip at all. This trades server-grade throughput/batching for privacy (data never leaves the device), offline capability, and zero marginal inference cost — llama.cpp/GGUF, ExecuTorch, Core ML, and MLX (all above) are the standard tools here, chosen based on target platform (llama.cpp for broad CPU/cross-platform reach, Core ML/MLX for Apple-specific deployment, ExecuTorch for PyTorch-native mobile/embedded export) rather than raw throughput, which is rarely the binding constraint for a single-user, single-request-at-a-time on-device workload.
+
+Next: [LLM Inference Optimization](/docs/mlops/llm-inference-optimization) — the specific techniques (PagedAttention, quantization, speculative decoding, and more) that make the Tier 1 engines above fast.

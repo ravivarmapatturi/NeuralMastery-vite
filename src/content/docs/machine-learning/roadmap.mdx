@@ -1,0 +1,57 @@
+---
+title: "Machine Learning — Roadmap"
+sidebar_position: 2
+---
+
+
+import AlgorithmSelector from '../../../viz/AlgorithmSelector';
+
+# Machine Learning — Roadmap
+
+Classical ML: the algorithms, the workflow around them, and the problems that show up constantly in practice.
+
+Not sure which algorithm fits your problem? Answer a few questions:
+
+<AlgorithmSelector />
+
+## 1. [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals)
+- [ ] Supervised vs unsupervised vs semi-supervised vs self-supervised learning
+- [ ] Train / validation / test splits, cross-validation
+- [ ] Data leakage — what it is and how it silently ruins models
+- [ ] Feature engineering & feature selection
+- [ ] Handling missing data, outliers, imbalanced classes
+- [ ] Sampling strategies (stratified, bootstrap, SMOTE)
+
+## 2. [Supervised Learning](/docs/machine-learning/supervised-learning)
+- [ ] Linear & logistic regression (and their assumptions)
+- [ ] Decision trees, Random Forests, Gradient Boosting (XGBoost, LightGBM)
+- [ ] Support Vector Machines
+- [ ] k-Nearest Neighbors
+- [ ] Naive Bayes
+- [ ] Ensemble methods: bagging vs boosting vs stacking
+- [ ] [Survival analysis](/docs/machine-learning/survival-analysis): Kaplan-Meier, Cox Proportional Hazards, censoring
+- [ ] [Recommender systems](/docs/machine-learning/recommender-systems): matrix factorization, two-tower embeddings, retrieval->rank->re-rank
+- [ ] [Learning-to-rank](/docs/machine-learning/learning-to-rank): pointwise/pairwise/listwise, NDCG/MRR
+
+## 3. [Unsupervised Learning](/docs/machine-learning/unsupervised-learning)
+- [ ] k-Means, hierarchical clustering, DBSCAN
+- [ ] Dimensionality reduction: PCA, t-SNE, UMAP
+- [ ] Anomaly detection
+
+## 4. [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)
+- [ ] Bias-variance tradeoff, underfitting vs overfitting
+- [ ] Regularization: L1, L2, dropout, early stopping
+- [ ] Classification metrics: precision, recall, F1, ROC-AUC, PR-AUC
+- [ ] Regression metrics: MSE, MAE, R²
+- [ ] Calibration, threshold optimization (cost-based, not just default 0.5)
+- [ ] Uncertainty estimation: prediction intervals, conformal prediction, ensemble disagreement
+- [ ] Hyperparameter optimization: grid, random, Bayesian, successive halving/Hyperband
+- [ ] Statistical significance of model improvements
+
+## 5. Common Problems & Their State-of-the-Art Solutions
+- [ ] **Class imbalance** → resampling, class weighting, focal loss
+- [ ] **Overfitting on small data** → regularization, data augmentation, transfer learning
+- [ ] **Concept drift in production** → monitoring, periodic retraining, online learning
+- [ ] **Curse of dimensionality** → feature selection, PCA, regularization
+- [ ] **Slow training on huge tabular data** → gradient boosting libraries (XGBoost/LightGBM), distributed training
+- [ ] **Explainability** → SHAP, LIME, feature importance

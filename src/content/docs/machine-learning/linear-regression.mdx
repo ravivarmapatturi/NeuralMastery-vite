@@ -1,0 +1,228 @@
+---
+title: "Linear Regression, In Full Depth"
+sidebar_position: 4.5
+---
+
+import __migratedImg0 from './img/linear-regression-at-a-glance.png';
+import __migratedImg1 from './img/linear-regression-scatter-fit.png';
+import __migratedImg2 from './img/linear-regression-residuals.png';
+
+
+import LinearRegressionStudio from '../../../viz/LinearRegressionStudio';
+import PredictFirst from '../../../viz/primitives/PredictFirst';
+import trainingLoopDark from './img/linear-regression-training-loop.png';
+import trainingLoopLight from './img/linear-regression-training-loop-light.png';
+import twoPathsDark from './img/linear-regression-two-paths.png';
+import twoPathsLight from './img/linear-regression-two-paths-light.png';
+
+# Linear Regression, In Full Depth
+
+[Supervised Learning](/docs/machine-learning/supervised-learning) introduced linear regression in a couple of sentences. This page derives it properly — the cost function, the gradient step by step, the closed-form solution, and where gradient descent actually comes from — because "minimize squared error" means nothing until you've done the derivative by hand at least once.
+
+<img src={__migratedImg0} alt="Linear Regression at a glance — hypothesis, cost, gradient, and update rule" style={{maxWidth: '100%'}} />
+
+## What Is Linear Regression?
+
+In plain terms: linear regression finds the straight line that best fits a set of data points, so you can predict a continuous output from one or more inputs.
+
+Take a familiar example: predicting a student's **exam score** from how many **hours they studied**. Plot each student as a point — hours studied on the x-axis, score on the y-axis — and you'll typically see a trend: more hours, generally, a higher score. Linear regression draws the single straight line through that cloud of points that fits it best.
+
+<img src={__migratedImg1} alt="Study hours vs. exam score, with a fitted regression line" style={{maxWidth: '100%'}} />
+
+You already know the equation for a line from algebra: $y = mx + b$, where $m$ is the slope and $b$ is where the line crosses the y-axis. Linear regression uses the exact same equation, just with different letters and one important addition — a *hat*:
+
+$$\hat{y} = w \cdot x + b$$
+
+The hat on $\hat{y}$ (read "y-hat") matters: it means *predicted* value, not the actual observed value $y$. Real data is noisy — two students who both studied 5 hours won't score identically — so the line can't pass through every point exactly. $\hat{y}$ is the line's best estimate for a given $x$; the gap between $\hat{y}$ and the real $y$ for any point is called the **residual**, and it's exactly what the rest of this page is about minimizing.
+
+**Simple vs. multiple linear regression:** the one-input example above is *simple* linear regression. Most real problems use several inputs at once — predicting a house's price from its size, location, and age, for instance — which is *multiple* linear regression: $\hat{y} = w_1 x_1 + w_2 x_2 + \cdots + w_d x_d + b$. Section 1 below writes this generally using vectors so both cases are the same formula.
+
+**A warning worth internalizing early:** a strong fit tells you $x$ and $y$ move together — it does *not* tell you $x$ *causes* $y$. Students who study more may also be more motivated overall, and that motivation — not the studying itself — could be doing some of the work. Linear regression describes correlation; establishing causation requires a controlled experiment, not just a good fit.
+
+<PredictFirst
+  question="In the Gradient Descent Lab below, if you push the learning rate from the default up to its max (0.03), what happens?"
+  options={[
+    'It converges faster to the same answer',
+    'It converges, just to a slightly different answer',
+    'The loss stops decreasing and starts exploding -- it diverges',
+    'Nothing changes -- learning rate only affects speed, never the outcome',
+  ]}
+  correctIndex={2}
+  explanation="Gradient descent's convergence guarantee only holds below a certain learning rate. Push it too high and each step overshoots the minimum by more than the last step undershot it -- the error compounds instead of shrinking. Try it below: drag the learning rate slider in Gradient Descent Lab mode past ~0.03 and watch w and b blow up in the step log."
+/>
+
+**Before the math below — try fitting the line yourself.** Drag the slope and intercept and watch MSE respond live:
+
+<LinearRegressionStudio />
+
+Notice how you had to guess-and-check to bring MSE down — nudge $w$, see if it helped, nudge $b$, see if it helped. That's exactly the problem gradient descent (Section 6) solves systematically: instead of guessing, compute the *direction* that reduces MSE fastest, from the data itself.
+
+Everything above is the intuition. Everything below is the actual math that makes it work — precisely, not just approximately.
+
+## 1. The Hypothesis
+
+Linear regression assumes the target is a linear function of the input, plus noise:
+
+$$\hat{y} = w \cdot x + b$$
+
+For multiple features, $x$ becomes a vector $\mathbf{x} \in \mathbb{R}^d$ and $w$ a weight vector $\mathbf{w} \in \mathbb{R}^d$ (see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)):
+
+$$\hat{y} = \mathbf{w}^T \mathbf{x} + b$$
+
+$w$ (the weights) and $b$ (the bias/intercept) are the parameters we need to *learn* — the entire rest of this page is about finding the $w, b$ that make $\hat{y}$ match the real data $y$ as closely as possible.
+
+**Why is it called "linear"?** Not because the *input* has to appear to the first power — because the model is linear *in its parameters*. $\hat{y} = w_1 x^2 + w_2 x + b$ is still linear regression (fit $x^2$ as just another input column, and it's identical math to fitting any other feature) — only $\hat{y} = w_1 x^{w_2}$, where a parameter multiplies or exponentiates another parameter, would break linearity. This distinction matters in practice: polynomial regression is a linear model in disguise, solvable with everything on this page unchanged.
+
+## 2. The Cost Function (Mean Squared Error)
+
+We need a number that measures "how wrong" a given $(w, b)$ is across the whole dataset of $n$ examples:
+
+$$J(w, b) = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right)^2 = \frac{1}{n} \sum_{i=1}^{n} \left( w x^{(i)} + b - y^{(i)} \right)^2$$
+
+**Why squared error, specifically?** Three reasons that all matter:
+- It's differentiable everywhere (unlike absolute error, which has a sharp corner at zero — its derivative is undefined right where the error is smallest, which complicates gradient-based optimization).
+- It penalizes large errors disproportionately more than small ones, which is often the right behavior — being off by 10 should hurt more than 10x being off by 1.
+- It's exactly the loss function that falls out of assuming Gaussian-distributed noise and doing Maximum Likelihood Estimation (see [Probability & Statistics — MLE vs MAP](/docs/mathematics-for-ai/probability-statistics#mle-vs-map)) — minimizing MSE *is* finding the maximum-likelihood parameters under that assumption, not an arbitrary choice.
+
+$J$ is convex in $(w, b)$ (see [Calculus & Optimization — Convexity](/docs/mathematics-for-ai/calculus-optimization#convexity)) — there's exactly one minimum, no false valleys to get stuck in. That's what makes everything below work cleanly.
+
+## 3. Deriving the Gradient, Step by Step
+
+To minimize $J$, we need $\dfrac{\partial J}{\partial w}$ and $\dfrac{\partial J}{\partial b}$ — the direction that increases the loss fastest, so we can step in the *opposite* direction (see [Calculus & Optimization — Gradients](/docs/mathematics-for-ai/calculus-optimization)).
+
+Start with a single example, error $e^{(i)} = \hat{y}^{(i)} - y^{(i)} = (w x^{(i)} + b) - y^{(i)}$, and its squared contribution to the cost, $\left(e^{(i)}\right)^2$. Apply the chain rule:
+
+$$\frac{\partial}{\partial w}\left(e^{(i)}\right)^2 = 2 e^{(i)} \cdot \frac{\partial e^{(i)}}{\partial w} = 2 e^{(i)} \cdot x^{(i)}$$
+
+because $\dfrac{\partial e^{(i)}}{\partial w} = \dfrac{\partial}{\partial w}\left(w x^{(i)} + b - y^{(i)}\right) = x^{(i)}$ — everything else in $e^{(i)}$ is constant with respect to $w$.
+
+Similarly, $\dfrac{\partial e^{(i)}}{\partial b} = 1$, so:
+
+$$\frac{\partial}{\partial b}\left(e^{(i)}\right)^2 = 2 e^{(i)}$$
+
+Now sum across all $n$ examples and divide by $n$ (matching the $\frac{1}{n}$ in $J$):
+
+$$\frac{\partial J}{\partial w} = \frac{2}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right) x^{(i)} \qquad\qquad \frac{\partial J}{\partial b} = \frac{2}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right)$$
+
+**Reading the intuition directly off the formula:** if a prediction is too high ($\hat{y}^{(i)} > y^{(i)}$), the gradient is positive, so the update step (below) *decreases* $w$ — pulling the prediction back down. If the estimate is already close to correct, the error term is small, so the gradient is small and the update barely moves $w$ at all. The gradient is literally "error times input" — the size of the correction is proportional to both how wrong you are and how much that particular input contributed to the prediction.
+
+## 4. Vectorized Form
+
+Looping over $n$ examples in Python is slow. Stack all examples into a matrix $X \in \mathbb{R}^{n \times d}$ (one row per example) and all targets into $\mathbf{y} \in \mathbb{R}^n$. The predictions for the whole dataset at once:
+
+$$\hat{\mathbf{y}} = X\mathbf{w} + b$$
+
+And the gradient across the entire dataset, as a single matrix expression:
+
+$$\nabla_w J = \frac{2}{n} X^T (\hat{\mathbf{y}} - \mathbf{y})$$
+
+This is the exact same formula as Section 3 — $X^T$ (transpose, see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)) is what turns "multiply each error by its matching input and sum" into one matrix multiplication. This is why frameworks are fast: a GPU does this single matrix multiply in parallel instead of looping example by example.
+
+## 5. The Closed-Form Solution (Normal Equation)
+
+Because $J$ is convex, we can skip iterating entirely and solve for the exact minimum directly: set the gradient to zero and solve.
+
+$$\nabla_w J = 0 \;\;\Rightarrow\;\; X^T(X\mathbf{w} - \mathbf{y}) = 0 \;\;\Rightarrow\;\; X^TX\mathbf{w} = X^T\mathbf{y}$$
+
+$$\mathbf{w} = (X^TX)^{-1}X^T\mathbf{y}$$
+
+This is the **normal equation** — it gives the exact optimal weights in one shot, no learning rate, no iterations. So why doesn't everyone just use this?
+
+**Because $(X^TX)^{-1}$ is expensive and sometimes doesn't exist.** Computing a matrix inverse costs roughly $O(d^3)$ where $d$ is the number of features (see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures)) — fine for a handful of features, prohibitive for thousands. And if features are linearly dependent (multicollinearity), $X^TX$ isn't invertible at all. This is exactly why gradient descent — next section — is the practical default at any real scale, even though the normal equation is "more exact."
+
+## 6. Gradient Descent
+
+Instead of solving in one step, take small repeated steps in the direction that reduces the cost:
+
+$$w \leftarrow w - \alpha \frac{\partial J}{\partial w} \qquad\qquad b \leftarrow b - \alpha \frac{\partial J}{\partial b}$$
+
+where $\alpha$ is the learning rate (see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization#gradient-descent-and-its-variants)). The full loop:
+
+<ThemedImage alt="Linear regression gradient descent training loop" sources={{light: trainingLoopLight, dark: trainingLoopDark}} />
+
+Because $J$ is convex, this loop is guaranteed to converge to the global minimum (not just *a* minimum) as long as $\alpha$ is small enough — no local-minima concerns here, unlike the non-convex loss surfaces in [Deep Learning](/docs/deep-learning/roadmap).
+
+Switch the [Studio](#what-is-linear-regression) above to **Gradient Descent Lab** mode to watch this loop run for real: real $\partial J/\partial w$ and $\partial J/\partial b$ computed every step, a live MSE surface with the descent path drawn on it, and a step log with the actual numbers. Push the learning rate slider too high and watch it diverge instead of converge — a direct, visceral answer to "why does the learning rate matter so much."
+
+## 7. Closed-Form vs. Gradient Descent
+
+<ThemedImage alt="Two paths to the same minimum — normal equation vs gradient descent" sources={{light: twoPathsLight, dark: twoPathsDark}} />
+
+| | Normal equation | Gradient descent |
+|---|---|---|
+| Result | Exact minimum in one step | Approximate, improves each iteration |
+| Cost | $O(d^3)$ from the matrix inverse | $O(nd)$ per iteration |
+| Scales to many features? | No — becomes impractical past a few thousand features | Yes |
+| Needs a learning rate? | No | Yes — and a badly chosen one breaks convergence |
+| Requires $X^TX$ invertible? | Yes | No |
+
+In practice: normal equation for small, low-dimensional problems where you want the exact answer with no tuning; gradient descent (or a variant — see [Adaptive Optimizers](/docs/mathematics-for-ai/calculus-optimization#adaptive-optimizers)) for anything larger, and universally in deep learning where a closed form doesn't exist at all.
+
+## 8. Assumptions Behind Linear Regression
+
+The model — and its statistical guarantees — rely on a few assumptions worth knowing explicitly, since violating them is a common real-world failure mode:
+
+- **Linearity**: the true relationship between features and target is (approximately) linear.
+- **Independence of errors**: residuals aren't correlated with each other (violated by time-series data with autocorrelation, for instance).
+- **Homoscedasticity**: the variance of the residuals is constant across all values of $x$ — not, say, growing larger for bigger predictions.
+- **Normally distributed residuals**: needed specifically for the statistical validity of confidence intervals and hypothesis tests on the coefficients (see [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics)), not for the point predictions themselves.
+- **No severe multicollinearity**: highly correlated features make $X^TX$ near-singular, causing the normal equation's coefficients to become unstable and hard to interpret.
+
+**How to actually check these**: plot the residuals (actual − predicted) against $x$. A healthy fit looks like random scatter centered on zero, with no pattern and roughly constant spread:
+
+<img src={__migratedImg2} alt="Residual plot for the study hours vs. exam score fit — scattered randomly around zero" style={{maxWidth: '100%'}} />
+
+If you instead saw a curve (points systematically above zero for small/large $x$ and below for the middle, or vice versa), that would signal a nonlinear relationship — linearity violated. If the spread visibly widens or narrows across $x$, that's heteroscedasticity — homoscedasticity violated. This one plot is the fastest real-world check for two of the five assumptions above.
+
+## 9. Minimal Implementation
+
+The entire training loop from Section 6, in plain NumPy — no framework, so every line maps directly to a formula above:
+
+```python
+import numpy as np
+
+def fit_linear_regression(X, y, lr=0.01, epochs=1000):
+    n, d = X.shape
+    w = np.zeros(d)
+    b = 0.0
+
+    for _ in range(epochs):
+        y_hat = X @ w + b                  # Section 1: predictions
+        error = y_hat - y
+        dw = (2 / n) * X.T @ error         # Section 4: vectorized gradient
+        db = (2 / n) * np.sum(error)
+        w -= lr * dw                       # Section 6: gradient descent update
+        b -= lr * db
+
+    return w, b
+```
+
+Compare this against the closed-form solution directly:
+
+```python
+def fit_normal_equation(X, y):
+    return np.linalg.inv(X.T @ X) @ X.T @ y   # Section 5
+```
+
+For a small, well-conditioned dataset, both should converge to (nearly) the same $w$ — a good way to sanity-check that a from-scratch gradient descent implementation is actually correct.
+
+**Engineering note:** `np.linalg.inv(X.T @ X) @ X.T @ y` above is the right way to *learn* the normal equation, but it's not what production numerical code actually does. Explicitly forming and inverting $X^TX$ is numerically less stable than solving the linear system directly — real implementations (scikit-learn's dense least-squares solver included) use **SVD** or **QR decomposition** instead (see [Linear Algebra — SVD](/docs/mathematics-for-ai/linear-algebra#singular-value-decomposition-svd)), which avoid explicitly computing an inverse at all. Know the formula; don't ship it literally.
+
+## 10. When *Not* to Use Linear Regression
+
+The assumptions in Section 8 aren't just theory — violate them badly enough and the model quietly gives you confident, wrong answers. Reach for something else when:
+
+| Symptom | Try instead |
+|---|---|
+| Relationship is strongly nonlinear | Trees / boosting ([Decision Trees](/docs/machine-learning/decision-tree), [Random Forest](/docs/machine-learning/random-forest)), or a nonlinear model |
+| Severe multicollinearity (unstable, hard-to-interpret coefficients) | [Ridge Regression](/docs/machine-learning/ridge-regression) |
+| You need automatic feature selection (many irrelevant features) | [Lasso Regression](/docs/machine-learning/lasso-regression) |
+| Complex feature interactions | Boosting ([XGBoost/LightGBM/CatBoost](/docs/machine-learning/xgboost-lightgbm-catboost)) |
+| Target changes over time (autocorrelated errors) | Specialized time-series forecasting |
+| Residuals show a clear pattern against $\hat{y}$ | The functional form is wrong — revisit linearity before tuning anything else |
+
+**Why Ridge comes right after this page:** Section 8 flagged multicollinearity as an assumption violation — in practice, it's one of the most common ones. When features are correlated, $X^TX$ becomes near-singular, and the normal equation's solution becomes wildly sensitive to small changes in the data: tiny noise in $y$ can flip a coefficient's sign or blow up its magnitude, even though predictions stay reasonable. [Ridge Regression](/docs/machine-learning/ridge-regression) fixes exactly this by penalizing large weights, trading a little bias for a lot less variance in the coefficients.
+
+---
+
+Next: [Ridge Regression](/docs/machine-learning/ridge-regression) — what happens when we penalize large weights — and [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics) for how to judge whether the resulting model is actually good.

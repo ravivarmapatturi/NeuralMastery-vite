@@ -1,0 +1,8 @@
+{
+  "label": "Interpretability",
+  "position": 6.8,
+  "link": {
+    "type": "generated-index",
+    "description": "Understanding why a model made a specific prediction: feature importance, SHAP and LIME for classical ML; saliency, activation and attention analysis, probing, sparse autoencoders, circuits, and mechanistic interpretability for deep learning and LLMs."
+  }
+}

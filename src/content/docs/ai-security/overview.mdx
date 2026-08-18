@@ -1,0 +1,22 @@
+---
+title: "AI Security — Overview"
+sidebar_position: 1
+---
+
+
+# AI Security — Overview
+
+[Security & Reproducibility](/docs/mlops/security-and-reproducibility) covers the operational security checklist every production system needs (IAM, secrets, TLS, dependency scanning) plus a brief LLM-specific list. This section goes deep on the part that's genuinely different from ordinary application security: **AI systems have attack surfaces that don't exist in traditional software at all** — a model can be attacked through its inputs, its training data, or the model artifact itself, in ways a REST API with a SQL database simply isn't exposed to.
+
+This should be treated as mandatory, not optional reading, for anyone shipping an LLM-based or ML-based system to real users — the failure modes here aren't hypothetical; they're actively exploited in production systems today.
+
+## What's in this section
+
+- **[OWASP LLM Top 10 & Prompt Attacks](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks)** — the standard taxonomy for LLM application vulnerabilities, prompt injection (direct and indirect) in depth, jailbreaks, insecure output handling, excessive agency, data exfiltration, and tool abuse.
+- **[Model & Data Attacks](/docs/ai-security/model-and-data-attacks)** — model extraction, membership inference, data poisoning, backdoors, adversarial examples, and AI supply-chain attacks (malicious models, datasets, and dependencies).
+
+## The Core Framing
+
+Traditional application security assumes a clear boundary between *code* (trusted, written by your team) and *data* (untrusted, comes from users). LLM systems blur that boundary specifically: the model's behavior is steered by *natural language in its input*, and there's no hard, reliable mechanical separation between "instructions" and "data" the way there is between SQL code and a SQL parameter. Nearly every vulnerability category in this section is a variation on that same blurred boundary — treat it as the unifying idea, not 15 unrelated attack types to memorize separately.
+
+See the [roadmap](/docs/ai-security/roadmap) for the full ordered path.

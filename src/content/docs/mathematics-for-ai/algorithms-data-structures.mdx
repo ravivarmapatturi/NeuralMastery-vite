@@ -1,0 +1,54 @@
+---
+title: "Algorithms & Data Structures for AI"
+sidebar_position: 6
+---
+
+
+# Algorithms & Data Structures for AI
+
+Not "pure math," but every AI/ML interview loop tests this alongside the theory — and understanding complexity is what lets you reason about whether an ML system will actually scale.
+
+## Big-O Complexity
+
+Big-O describes how an algorithm's running time (or memory) grows as input size $n$ grows, ignoring constant factors:
+
+- $O(1)$ — constant time (hash map lookup)
+- $O(\log n)$ — logarithmic (binary search, balanced tree operations)
+- $O(n)$ — linear (scanning a list once)
+- $O(n \log n)$ — the cost of efficient sorting, and many "divide and conquer" algorithms
+- $O(n^2)$ — quadratic (naive pairwise comparison — e.g. computing full pairwise attention scores)
+- $O(2^n)$ — exponential (brute-force search over subsets — avoid at all costs)
+
+**Why this matters for AI specifically**: self-attention is $O(n^2)$ in sequence length, which is *why* long-context LLMs are hard and expensive, and why Flash Attention / sparse attention exist — they're direct responses to this complexity bound.
+
+## Core Data Structures
+
+- **Arrays** — contiguous memory, $O(1)$ index access. Tensors are just multi-dimensional arrays.
+- **Hash maps** — average $O(1)$ insert/lookup via hashing. Used for tokenizer vocabularies, caching, and de-duplication in data pipelines.
+- **Trees** — hierarchical structure. Decision trees *are* this data structure directly; balanced trees (B-trees) underlie database indexes.
+- **Graphs** — nodes + edges. Directly relevant to graph databases (Neo4j), GraphRAG, and modeling multi-agent communication topology.
+- **Heaps / priority queues** — efficiently retrieve the min/max element. Used in beam search (keeping the top-$k$ candidate sequences during LLM decoding) and in Dijkstra-style search algorithms.
+
+## Sorting & Searching
+
+- **Sorting** ($O(n \log n)$ for comparison-based sorts like merge sort/quicksort) shows up whenever you rank candidates — e.g. sorting retrieved documents by relevance score in a RAG pipeline, or ranking recommendations.
+- **Binary search** ($O(\log n)$) — requires sorted data, used in efficient lookup structures.
+- **Approximate Nearest Neighbor search** (HNSW, IVF — covered in [Databases](/docs/databases/roadmap)) is the vector-database analog of search, trading exactness for speed at scale.
+
+## Complexity of Common ML Algorithms
+
+| Algorithm | Training complexity (roughly) | Notes |
+|---|---|---|
+| k-Nearest Neighbors | $O(1)$ train, $O(n)$ per query (naive) | No real "training" — all cost is at inference |
+| k-Means | $O(n \cdot k \cdot i)$ | $k$ clusters, $i$ iterations |
+| Decision Tree | $O(n \cdot d \cdot \log n)$ | $d$ features |
+| Matrix multiply (a layer's forward pass) | $O(n \cdot m \cdot p)$ | For an $n \times m$ by $m \times p$ multiply |
+| Self-attention | $O(n^2 \cdot d)$ | $n$ = sequence length, $d$ = embedding dim — the scaling bottleneck for LLMs |
+
+Knowing these numbers is what lets you answer "why is this slow, and what would make it faster" — a staple of both ML system design interviews and real production debugging.
+
+## Why this belongs in a math curriculum
+
+Interviewers (and real jobs) expect ML engineers to be comfortable with general software engineering fundamentals, not just theory — see [Interview Prep](/docs/interview-prep/roadmap) for how this gets tested directly. But it also isn't separable from the math: understanding *why* attention is expensive, *why* vector search needs approximate algorithms, and *why* certain training loops scale better than others all comes back to Big-O reasoning applied to the linear algebra operations covered on the [Linear Algebra](/docs/mathematics-for-ai/linear-algebra) page.
+
+Mathematics for AI complete. Next: [Machine Learning](/docs/machine-learning/roadmap) — where this math turns into working algorithms.

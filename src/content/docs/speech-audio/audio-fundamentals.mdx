@@ -1,0 +1,40 @@
+---
+title: "Audio Fundamentals"
+sidebar_position: 3
+---
+
+import __migratedImg0 from './img/spectrogram-demo.png';
+
+
+# Audio Fundamentals
+
+Every audio ML task — recognizing speech, classifying a sound, synthesizing a voice — starts from the same representation problem: raw audio is a long, low-level, continuous signal, and almost nothing works well trained directly on it. This page is how audio gets turned into something a model can actually learn from.
+
+## Digital Audio: Sampling Rate, Bit Depth, Nyquist
+
+- **Sampling rate**: how many times per second a continuous sound wave's amplitude is measured and stored as a number — 16kHz (16,000 samples/second) is common for speech, 44.1kHz for CD-quality music. A few seconds of audio is already tens of thousands of raw numbers.
+- **Bit depth**: how many bits represent each sample's amplitude — 16-bit is standard, giving 65,536 possible amplitude levels per sample.
+- **The Nyquist theorem**: a signal sampled at rate $f_s$ can only faithfully represent frequencies up to $f_s / 2$ (the **Nyquist frequency**) — sample too slowly relative to the frequencies actually present in the sound, and higher frequencies get misrepresented as false lower ones (**aliasing**), a real, audible artifact, not just a theoretical concern. This is the direct reason speech (mostly below 8kHz) can use a lower sampling rate than music (which needs to capture content up to ~20kHz, the top of human hearing) without losing anything perceptually relevant.
+
+## The Fourier Transform: Time Domain to Frequency Domain
+
+A raw waveform (amplitude vs. time) tells you *when* something happened, but not directly *what pitch/timbre* it was — that information is encoded in how the wave oscillates, not its raw value at any instant. The **Fourier transform** decomposes a signal into the sum of sine waves at different frequencies that reconstruct it — converting a time-domain signal into a **frequency-domain** representation: which frequencies are present, and how strongly. This single mathematical operation — reused directly from [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization)'s broader "represent a function differently to make its structure visible" theme — underlies every representation below.
+
+## Spectrograms: The Short-Time Fourier Transform
+
+A single Fourier transform over an entire audio clip tells you *what* frequencies are present overall, but throws away *when* — useless for speech, where which sounds happen in which order is the entire signal. The **Short-Time Fourier Transform (STFT)** fixes this: slide a short window across the waveform, compute a Fourier transform on each windowed frame independently, and stack the results into a 2D **spectrogram** — time on one axis, frequency on the other, and color/intensity showing how much energy is present at each time-frequency point.
+
+<img src={__migratedImg0} alt="A synthetic waveform (two steady tones, then a rising chirp) and its spectrogram via STFT" style={{maxWidth: '100%'}} />
+
+The chart above makes the payoff immediate: two steady tones are invisible as *distinct* things in the raw waveform (just a busy oscillating line, top panel) but appear as two clean, constant horizontal lines in the spectrogram (bottom panel) — the frequency-domain view exposes the structure the time-domain view hides. The rising diagonal line is a **chirp** (linearly increasing frequency), visually obvious in the spectrogram and essentially unreadable in the raw waveform. This is exactly why audio models are almost never trained on raw waveforms directly — the spectrogram (or one of its refinements below) makes the structure a model needs to learn *visible* to the model in a way the raw signal doesn't.
+
+**The window-size tradeoff**: a longer STFT window gives better frequency resolution (can distinguish close frequencies) but worse time resolution (blurs together events happening close in time) — and shorter windows trade the opposite way. This is a real instance of the **time-frequency uncertainty principle** (a signal-processing cousin of the Heisenberg uncertainty principle) — you cannot have arbitrarily good resolution in both domains simultaneously, and choosing the window size is choosing where on that tradeoff a given task needs to sit.
+
+## Mel Spectrograms and MFCCs
+
+A raw STFT spectrogram has frequency bins spaced *linearly*, but human hearing (and speech content) doesn't perceive pitch linearly — we're far more sensitive to differences at low frequencies than at high ones. Two refinements, both still standard in speech pipelines:
+
+- **Mel spectrogram**: reprojects the STFT's linear frequency bins onto the **Mel scale** — a frequency scale designed to match perceptual pitch spacing (equal steps on the Mel scale sound like equal pitch steps to a human ear, unlike equal steps in Hz) — concentrating more resolution where speech content actually lives and less where it doesn't. This is the standard input representation for most modern speech models (TTS acoustic models, many ASR encoders).
+- **MFCCs (Mel-Frequency Cepstral Coefficients)**: takes the Mel spectrogram one step further — apply a log, then a **Discrete Cosine Transform** (which compacts and decorrelates the Mel-spectrogram's frequency bands into a small number of coefficients, analogous to how [PCA](/docs/machine-learning/pca-svd) compacts correlated features into fewer, less-correlated ones). MFCCs were the dominant feature representation for classical (pre-deep-learning) speech recognition — compact, and effective with the statistical models (Gaussian Mixture Models, Hidden Markov Models) speech recognition used before end-to-end neural approaches. Modern deep learning-based ASR increasingly works from Mel spectrograms directly (letting the network learn what MFCCs used to hand-engineer), but MFCCs remain a standard, well-understood baseline feature set, especially for lighter-weight classification tasks (e.g. simple audio event classification) where a full neural pipeline is unnecessary overhead.
+
+Next: [Speech & Audio Tasks](/docs/speech-audio/speech-audio-tasks) — what actually gets built on top of these representations.

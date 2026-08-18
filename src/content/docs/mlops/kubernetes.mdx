@@ -1,0 +1,37 @@
+---
+title: "Kubernetes"
+sidebar_position: 10
+---
+
+
+# Kubernetes
+
+Docker solves "run this container the same way everywhere." Kubernetes solves the next problem: running hundreds of containers across a fleet of machines, restarting the ones that crash, scaling them under load, and routing traffic to healthy instances — none of which one `docker run` command can do.
+
+## Fundamentals
+
+- **Pod**: the smallest deployable unit — one or more tightly-coupled containers sharing network/storage, scheduled together onto a node.
+- **Deployment**: declares the desired state for a set of Pods (which image, how many replicas) — Kubernetes continuously reconciles reality toward that desired state, replacing crashed Pods automatically.
+- **Service**: a stable network endpoint in front of a changing set of Pods — Pods come and go (and get new IPs) as they scale and restart, a Service gives callers one address that doesn't.
+- **Namespace**: a logical partition of a cluster — separating `dev`/`staging`/`prod`, or separating teams, within one physical cluster.
+- **ConfigMap / Secret**: externalized configuration and sensitive values respectively, injected into Pods at runtime rather than baked into the image (the same principle as [Engineering Foundations](/docs/mlops/engineering-foundations)'s config management, at the cluster level).
+- **Volume / PV / PVC**: Kubernetes's storage abstraction — a `PersistentVolume` is actual storage, a `PersistentVolumeClaim` is a Pod's request for some of it, decoupling "what storage exists" from "what a given Pod needs."
+- **Ingress**: routes external HTTP(S) traffic into Services inside the cluster, based on hostname/path rules — the cluster's front door.
+- **Job / CronJob**: run-to-completion workloads (a batch inference job, a nightly retraining job) rather than long-running services — the Kubernetes-native equivalent of a scheduled pipeline step.
+
+## Advanced
+
+- **Helm**: a package manager for Kubernetes — templated YAML bundled into reusable "charts," so deploying a complex multi-resource application is one `helm install` instead of hand-writing dozens of YAML files.
+- **StatefulSets**: like a Deployment, but for Pods that need stable identities and storage (databases, anything that isn't safely interchangeable) — regular Deployments assume Pods are stateless and disposable.
+- **DaemonSets**: ensures exactly one copy of a Pod runs on every node — used for node-level agents (log collectors, monitoring agents, GPU device plugins).
+- **HPA (Horizontal Pod Autoscaler)**: automatically scales the number of Pod replicas based on observed metrics (CPU, memory, or custom metrics like queue depth/requests-per-second) — the mechanism behind "scale up under load, scale down when it's quiet."
+- **Resource requests/limits**: declare how much CPU/memory a Pod needs (`requests`, used for scheduling) and the hard ceiling it can't exceed (`limits`) — get this wrong and either the scheduler wastes capacity or a Pod gets OOM-killed under real load.
+- **RBAC (Role-Based Access Control)**: who/what can do what inside the cluster — the Kubernetes-level analog to IAM.
+- **Network policies**: firewall rules for which Pods can talk to which other Pods — default Kubernetes networking is flat and open, network policies restrict it.
+- **Operators**: custom controllers that encode operational knowledge for running a specific piece of software on Kubernetes (e.g. a Postgres Operator that knows how to fail over and back up itself) — the mechanism behind tools like KServe (see [APIs & Model Serving](/docs/mlops/model-serving)).
+
+## Why This Matters for ML Specifically
+
+GPU scheduling adds a wrinkle regular web workloads don't have: GPUs are expensive, often can't be fractionally shared cleanly, and Pods need explicit `nvidia.com/gpu` resource requests plus the NVIDIA device plugin (a DaemonSet) running on every GPU node. Autoscaling a GPU-backed inference Deployment under HPA is also slower and costlier than autoscaling a CPU web service — GPU nodes are expensive to keep idle and slow to provision on demand, which is a major reason serverless-style GPU platforms (see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns)) exist as an alternative to running your own GPU-backed Kubernetes cluster.
+
+Next: [Infrastructure as Code](/docs/mlops/infrastructure-as-code) — everything above should be defined in version-controlled code, not clicked together by hand.

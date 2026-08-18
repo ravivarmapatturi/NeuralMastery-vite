@@ -1,0 +1,8 @@
+{
+  "label": "Projects",
+  "position": 7.6,
+  "link": {
+    "type": "generated-index",
+    "description": "A six-level project ladder from tiny (an afternoon) to frontier (a genuine capstone) - each project scoped with the standard structure: problem, dataset, baseline, architecture, training, evaluation, deployment, monitoring, cost, failure analysis."
+  }
+}

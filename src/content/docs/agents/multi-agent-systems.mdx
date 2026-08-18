@@ -1,0 +1,37 @@
+---
+title: "Multi-Agent Systems"
+sidebar_position: 5
+---
+
+
+# Multi-Agent Systems
+
+When one agent isn't enough — and the coordination problems that come with adding more.
+
+## Coordination Patterns
+
+- **Hierarchical (orchestrator/sub-agent)**: one agent breaks down and delegates work to specialized sub-agents, then combines results — see [Agent Architectures](/docs/agents/agent-architectures#sub-agents-and-orchestrator-patterns). Easiest to reason about and debug, since there's a clear owner of the overall task. The [supervisor pattern](/docs/agents/agent-architectures#supervisor-pattern) is the more dynamic version of this — looping and re-routing between sub-agents based on intermediate results, rather than a fixed one-shot delegation plan.
+- **Peer-to-peer**: agents communicate directly with each other as equals, without a central coordinator — more flexible, but harder to guarantee the task actually converges to a result, and harder to debug when something goes wrong.
+- **Blackboard**: agents don't talk to each other directly at all — they read and write to a shared state/workspace ("the blackboard"), and react to changes in it. Useful when the set of contributing agents isn't fixed in advance.
+
+## Shared State and Conflict Resolution
+
+When multiple agents can read and write shared state (a document, a database, a plan), you need a strategy for conflicts — two agents editing the same resource, or reaching contradictory conclusions. Common approaches: locking/turn-taking (only one agent acts on a resource at a time), a designated "resolver" agent that reconciles conflicting outputs, or simply designing the task decomposition so agents own disjoint pieces of state and never need to reconcile.
+
+## When Multi-Agent Actually Helps
+
+Multi-agent systems earn their complexity when:
+- Different sub-tasks genuinely need different tools, instructions, or models (e.g. a coding sub-agent vs. a research sub-agent)
+- The task is large enough that a single agent's context window becomes a bottleneck
+- Sub-tasks can run in parallel, and wall-clock time matters
+
+They *don't* help — and often actively hurt — when a single well-prompted agent with good tools was already handling the task fine. Coordination overhead, extra latency, and extra points of failure are real costs, not free architecture upgrades.
+
+## Common Problems & SOTA Solutions
+
+- **Agent loses context over long tasks** → explicit memory systems, periodic summarization of progress-so-far, offloading state to an external store rather than keeping everything in the context window
+- **Agent gets stuck in loops** (repeating the same failed action) → hard step limits, reflection checkpoints that force the agent to reassess, escalation to a human when stuck
+- **Tool-calling hallucination** (calling tools that don't exist, or with malformed arguments) → strict schema validation on tool calls, clear error messages fed back to the model so it can self-correct, retry logic with backoff
+- **Runaway cost/latency in multi-agent chains** → caching repeated sub-results, using smaller/cheaper models for simple sub-tasks and reserving the largest model for the parts that need it, parallelizing independent sub-agent calls instead of running them sequentially
+
+Agents section complete. Next: [ML System Design](/docs/ml-system-design/roadmap) — how to turn any of this (models, RAG pipelines, agents) into a production system that scales.

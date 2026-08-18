@@ -1,0 +1,71 @@
+---
+title: "K-Means & Hierarchical Clustering, In Full Depth"
+sidebar_position: 6.1
+---
+
+import __migratedImg0 from './img/kmeans-clusters.png';
+import __migratedImg1 from './img/clustering-shape-comparison.png';
+import __migratedImg2 from './img/dendrogram.png';
+
+
+import DecisionBoundaryPlayground from '../../../viz/DecisionBoundaryPlayground';
+
+# K-Means & Hierarchical Clustering, In Full Depth
+
+Every model since [Linear Regression](/docs/machine-learning/linear-regression) has learned from labeled examples. Clustering is different: no labels at all — the goal is to discover groups that already exist in the data, purely from how points relate to each other.
+
+## K-Means
+
+**The algorithm** (already implemented once, informally, inside [Random Forest's](/docs/machine-learning/random-forest) cousin methods — here it's the main event):
+
+1. Choose $k$ (the number of clusters) and initialize $k$ centroids — commonly by picking $k$ random data points.
+2. **Assign**: put each point into the cluster of its nearest centroid (by Euclidean distance — see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)).
+3. **Update**: move each centroid to the mean position of the points now assigned to it.
+4. Repeat steps 2-3 until assignments stop changing.
+
+<img src={__migratedImg0} alt="K-Means clustering: three clusters found automatically, with centroids marked" style={{maxWidth: '100%'}} />
+
+**What K-Means is actually optimizing**: it minimizes **inertia** — the total squared distance from each point to its assigned centroid, $\sum_i \|\mathbf{x}_i - \mu_{c(i)}\|^2$. This is the *unsupervised* analog of the [squared-error cost function](/docs/machine-learning/linear-regression#2-the-cost-function-mean-squared-error) from linear regression — same functional form, just minimized over cluster assignments and centroid positions instead of over a fitted line.
+
+**Choosing $k$**: since there's no ground truth to check against, use the **elbow method** — plot inertia against $k$ for several candidate values, and look for the point where adding another cluster stops reducing inertia much (a bend in the curve). More rigorous alternatives include the silhouette score, which measures how well-separated clusters actually are.
+
+Click to place your own points (no labels needed — that's the point) and watch real Lloyd's-algorithm assignment/update steps converge live:
+
+<DecisionBoundaryPlayground defaultMode="kmeans" />
+
+**Weaknesses**:
+- **Assumes spherical, similarly-sized clusters** — because it minimizes distance-to-centroid, K-Means implicitly assumes clusters are round blobs. It fails badly on elongated or non-convex shapes:
+
+<img src={__migratedImg1} alt="K-Means fails on non-convex &quot;two moons&quot; data; density/graph-based methods respect the true shape" style={{maxWidth: '100%'}} />
+
+- **Sensitive to initialization** — a bad random start can converge to a poor local optimum; **K-Means++** (a smarter initialization that spreads initial centroids apart) is the standard fix, and the default in most libraries.
+- **Must choose $k$ upfront** — unlike hierarchical clustering below.
+
+## Hierarchical Clustering
+
+Instead of committing to a fixed $k$, hierarchical clustering builds a full tree of nested groupings, letting you choose how many clusters to cut out *after* seeing the structure.
+
+**Agglomerative** (bottom-up, the common approach): start with every point as its own cluster, then repeatedly merge the two closest clusters, until everything is one cluster. The result is a **dendrogram**:
+
+<img src={__migratedImg2} alt="A hierarchical clustering dendrogram — cutting at any height gives a different number of clusters" style={{maxWidth: '100%'}} />
+
+Read the dendrogram like this: the y-axis is the distance at which two groups merged — low merges are confident, tight groupings; high merges are combining already-dissimilar groups. **Cutting** the tree at any horizontal height gives a specific clustering: cut low for many small, tight clusters; cut high for few, broad clusters. This is hierarchical clustering's key advantage over K-Means — you see the *entire* range of possible groupings in one structure, and pick the cut that makes sense, rather than committing to one $k$ before even looking at the data.
+
+**Linkage criteria** — how "distance between two clusters" is defined, since a cluster is a group of points, not a single point:
+- **Single linkage**: distance between the two closest points across clusters — can produce long, straggly "chained" clusters.
+- **Complete linkage**: distance between the two *farthest* points — tends to produce tight, compact clusters.
+- **Average linkage**: average distance between all cross-cluster pairs — a middle ground.
+- **Ward linkage** (used in the dendrogram above): merges whichever pair of clusters increases total within-cluster variance the least — tends to produce well-balanced, similarly-sized clusters, and is the most common default.
+
+**Divisive** (top-down): the reverse — start with all points in one cluster, and recursively split. Far less common in practice than agglomerative, mainly because deciding *how* to split optimally at each step is more expensive than deciding what to merge.
+
+## K-Means vs. Hierarchical
+
+| | K-Means | Hierarchical (Agglomerative) |
+|---|---|---|
+| Must choose $k$ upfront? | Yes | No — cut the dendrogram anywhere after |
+| Scales to large datasets | Yes — roughly $O(nk)$ per iteration | Poorly — naive implementations are $O(n^2)$ or worse |
+| Cluster shape assumption | Spherical/convex | Depends on linkage; still generally struggles with non-convex shapes |
+| Deterministic? | No (depends on initialization) | Yes, given a fixed linkage and distance metric |
+
+Next: [DBSCAN & HDBSCAN](/docs/machine-learning/dbscan-hdbscan) — clustering by density instead of distance-to-centroid, which handles non-convex shapes natively.

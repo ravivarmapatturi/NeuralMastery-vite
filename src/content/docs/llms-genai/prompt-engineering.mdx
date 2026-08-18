@@ -1,0 +1,42 @@
+---
+title: "Prompt Engineering"
+sidebar_position: 5
+---
+
+
+# Prompt Engineering
+
+The cheapest, fastest lever for improving an LLM's behavior — no training required, just better instructions.
+
+## Zero-Shot, One-Shot, Few-Shot
+
+- **Zero-shot**: ask the model to do a task with no examples, relying entirely on its pretrained knowledge and instruction-following ability.
+- **One-shot / few-shot**: include one or a handful of example (input, output) pairs directly in the prompt before the real query. This works because the model conditions on the whole context — the examples establish a pattern it continues, without any weight updates.
+
+## Chain-of-Thought (CoT) Prompting
+
+Instead of asking for a direct answer, prompt the model to "think step by step" before answering. For reasoning-heavy tasks (math, multi-step logic), this reliably improves accuracy — generating intermediate reasoning tokens gives the model more computation and more context to condition the final answer on, rather than forcing it to jump straight to a conclusion in one forward pass.
+
+**Self-consistency**: sample multiple CoT reasoning paths for the same question and take a majority vote on the final answer — trades extra compute for higher accuracy.
+
+**Tree-of-Thought**: generalizes CoT by exploring multiple reasoning branches and backtracking, rather than committing to a single linear chain — more expensive, used for harder problems.
+
+## ReAct (Reasoning + Acting)
+
+Interleaves reasoning steps with actions (tool calls) and observations: *think → act → observe → think → ...*. This is the foundational pattern behind most tool-using agents (see [Agents](/docs/agents/roadmap)) — the model reasons about what it needs, calls a tool to get it, incorporates the result, and continues.
+
+## System Prompts & Structured Output
+
+A **system prompt** sets persistent context/behavior for the whole conversation (role, tone, constraints) separate from the user's actual messages. For production applications, prompts often need to enforce structured output (JSON/XML) so downstream code can parse it reliably — done via explicit formatting instructions, few-shot examples of the format, or (increasingly) model features that constrain generation to match a schema directly.
+
+## Prompt Injection and Jailbreaking
+
+**Prompt injection**: malicious text embedded in content the model processes (a webpage, a document, a tool's output) that tries to override the original instructions — a serious concern for any system where an LLM reads untrusted external content. **Jailbreaking**: techniques users apply directly to bypass a model's safety training. Defenses include strict separation of trusted instructions from untrusted data, input/output filtering, and models trained specifically to resist instruction override from non-privileged sources.
+
+## Failure Modes and Debugging
+
+- **Prompt sensitivity**: small wording changes causing inconsistent outputs — mitigated with more explicit instructions, few-shot examples, and lower sampling temperature.
+- **The "lost in the middle" problem**: models attend less reliably to information buried in the middle of a long context, even when it's technically within the context window — relevant to both prompting and RAG (see [RAG](/docs/llms-genai/rag)).
+- **Cost/latency optimization**: shorter prompts, caching repeated prefixes, and choosing the smallest model that reliably handles the task all reduce production cost.
+
+Next: [Retrieval-Augmented Generation (RAG)](/docs/llms-genai/rag) — giving a model access to knowledge beyond what's in its weights.

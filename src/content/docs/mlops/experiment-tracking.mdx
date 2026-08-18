@@ -1,0 +1,42 @@
+---
+title: "Experiment Tracking"
+sidebar_position: 5
+---
+
+
+# Experiment Tracking
+
+Training a model without tracking the experiment is running an experiment you can't reproduce, compare, or explain later. "It got 94% accuracy" is worthless without knowing which code, which data, which hyperparameters, and which environment produced that number.
+
+## What Every Experiment Needs to Answer
+
+- **Code**: which git commit trained this model?
+- **Data**: which version of which dataset (see [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning))?
+- **Model**: what architecture, what hyperparameters?
+- **Params**: learning rate, batch size, epochs, regularization — everything that isn't the data or the architecture but still changes the result.
+- **Metrics**: loss curves, accuracy, precision/recall, whatever the task's evaluation metric is — logged over training time, not just the final number.
+- **Environment**: package versions, hardware (GPU type/count), random seeds.
+- **Result**: the trained model artifact itself, retrievable later.
+
+Answer all seven for every run, automatically, or six months from now nobody — including you — can explain why the production model behaves the way it does.
+
+## MLflow
+
+The must-know tool in this space, open source and framework-agnostic. Four components:
+
+- **MLflow Tracking**: logs params, metrics, and artifacts for each run via a few lines of code (`mlflow.log_param`, `mlflow.log_metric`, `mlflow.log_artifact`), viewable in a comparison UI across runs.
+- **MLflow Projects**: packages code in a reusable, reproducible format (an `MLproject` file declaring entry points and dependencies) so a run can be repeated exactly, by you or someone else.
+- **MLflow Models**: a standard format for packaging a trained model so it can be loaded and served by many different tools without custom glue code per framework.
+- **MLflow Model Registry**: a central store for model versions with stage transitions (Staging → Production → Archived) and lineage back to the run that produced each version — see [Feature Stores & Model Registry](/docs/mlops/feature-stores-and-model-registry).
+
+A typical loop: wrap a training script in `with mlflow.start_run():`, log everything inside it, and every run becomes a permanent, comparable, queryable record instead of a lost terminal scrollback.
+
+## Alternatives
+
+- **Weights & Biases (W&B)**: a hosted, more polished experiment-tracking UI with strong visualization (live loss curves, hyperparameter sweep dashboards, model/dataset lineage) — the most common choice in research-heavy teams.
+- **Neptune**: similar hosted tracking focus, with strong support for tracking large numbers of metadata fields per run and team collaboration features.
+- **Comet**: another hosted alternative, notable for built-in model monitoring that extends past training into production.
+
+All three solve the same core problem as MLflow Tracking (log everything, compare runs, never lose a result) with different UI/hosting/collaboration tradeoffs — MLflow remains the default because it's open source, self-hostable, and the closest thing to an industry standard.
+
+Next: [Pipeline Orchestration](/docs/mlops/pipeline-orchestration) — once individual experiments are tracked, the next problem is stitching the steps around them into a repeatable, scheduled pipeline.

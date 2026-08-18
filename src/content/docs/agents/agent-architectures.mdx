@@ -1,0 +1,88 @@
+---
+title: "Agent Architectures"
+sidebar_position: 4
+---
+
+
+import AgentExecutionGraph from '../../../viz/AgentExecutionGraph';
+import reactLoopDark from './img/react-loop.png';
+import reactLoopLight from './img/react-loop-light.png';
+
+# Agent Architectures
+
+Different ways to structure the loop between reasoning and acting, each with different tradeoffs between reliability, cost, and how much the agent can handle on its own.
+
+## ReAct (Reasoning + Acting)
+
+The foundational pattern: at each step, the model produces a short reasoning trace ("I need to find X"), then an action (a tool call), observes the result, and loops — reason, act, observe, reason, act, observe — until it has enough information to answer. Interleaving reasoning with action lets the model course-correct based on real results, rather than committing to a full plan upfront that might be wrong. See [Prompt Engineering — ReAct](/docs/llms-genai/prompt-engineering#react-reasoning--acting) for the prompting technique this is built on.
+
+<ThemedImage alt="ReAct loop: Thought, Action, Observation, repeating until enough information to answer" sources={{light: reactLoopLight, dark: reactLoopDark}} />
+
+Step through a scripted example of the loop, one step at a time or on autoplay:
+
+<AgentExecutionGraph />
+
+## Plan-and-Execute
+
+Instead of interleaving reasoning and action one step at a time, the model first produces a full multi-step plan, then executes each step (possibly with a separate, cheaper model or the same model in a simpler "execution" mode), only returning to re-planning if a step fails or new information changes the picture. Generally more efficient than pure ReAct for tasks with a predictable structure, since it avoids re-reasoning about the whole task at every single step — but less adaptive to surprises mid-task.
+
+## Reflection / Self-Critique
+
+After producing an output (or completing a sub-task), the agent (or a separate call) critiques its own work against the original goal, and revises if needed. Useful for tasks where a first attempt is often flawed but a model is good at spotting flaws when explicitly asked to check — a form of using the same model's judgment as a lightweight quality gate.
+
+## Routing
+
+The lightest-weight multi-path pattern: a **router** (often just an LLM call classifying the incoming request) picks *one* specialized path/prompt/tool-set to handle a request, then that single path handles it end to end — no combining multiple agents' outputs afterward, unlike orchestration below. Cheap and simple, and the right choice when requests genuinely fall into a small number of distinct categories each best served by a differently-configured agent (a customer-support router sending billing questions one way and technical questions another) rather than needing multiple specialists to *collaborate* on one request.
+
+## Supervisor Pattern
+
+A more structured version of the orchestrator/sub-agent pattern below, common in graph-based agent frameworks (LangGraph is built around exactly this): a **supervisor** agent doesn't just delegate once and combine results — it sits in a loop, inspecting each sub-agent's output, deciding whether the result is sufficient or another sub-agent needs to run next, and maintaining overall control until it decides the task is complete. The distinction from a plain one-shot orchestrator matters: a supervisor can dynamically route between sub-agents multiple times based on intermediate results (sub-agent A's output determines whether B or C runs next), where a simpler orchestrator commits to a fixed delegation plan upfront.
+
+## Single-Agent vs. Multi-Agent
+
+A single, well-prompted agent with good tools can handle a surprising amount. Multi-agent systems (see [Multi-Agent Systems](/docs/agents/multi-agent-systems)) add value when a task genuinely benefits from specialization — different agents with different tools, instructions, or models for different sub-problems — but they also add coordination overhead, latency, and cost. The practical guidance: start with a single agent, and only split into multiple agents when you hit a concrete limitation (context overload, need for parallelism, need for genuinely different tool access per role).
+
+## Sub-Agents and Orchestrator Patterns
+
+A common middle ground: one **orchestrator** agent breaks a task into sub-tasks and delegates each to a specialized **sub-agent**, then combines their results. The orchestrator doesn't need deep expertise in each sub-task — it just needs to know *which* sub-agent to call and how to combine their outputs, similar in spirit to how a manager delegates without doing the work themselves.
+
+## Memory and State
+
+An agent's context window holds everything it currently "knows" during a run — but that's not the same as memory across steps or across sessions, and conflating the two is a common design mistake:
+
+- **Short-term (working) memory**: the current conversation/task's context window itself — everything the agent has seen or done so far *in this run*. Bounded by the model's context length, and the reason long-running agents need an explicit strategy (below) once a task's history stops fitting.
+- **Long-term memory**: information that needs to persist *across* runs/sessions — stored externally (a database, a vector store for semantic recall) and explicitly retrieved back into context when relevant, the same retrieval pattern as [RAG](/docs/llms-genai/rag) applied to an agent's own history instead of a document corpus.
+- **Episodic vs. semantic memory**: episodic memory stores specific past events/interactions ("last Tuesday, this user asked about X and we resolved it by Y"); semantic memory stores generalized facts/knowledge extracted from those events ("this user prefers concise answers") — the same distinction cognitive science draws for human memory, and a useful design split for what an agent should store as a raw log vs. what it should distill and keep.
+- **Context management for long tasks**: as a task runs longer than fits in context, common strategies are periodic **summarization** (compress older history into a shorter summary, keep recent turns verbatim), **offloading** (write detailed intermediate state to external storage, keep only a reference/pointer in context), or a **sliding window** (simply drop the oldest history) — chosen based on whether old detail still matters later in the task.
+
+## Human-in-the-Loop
+
+Not every agent action should happen fully autonomously — human-in-the-loop (HITL) patterns insert a person at specific points:
+
+- **Approval gates**: the agent proposes an action (send this email, execute this trade, delete this file) and pauses for explicit human approval before proceeding — standard for any action that's costly to reverse (see [AI Security](/docs/mlops/security-and-reproducibility)'s "excessive agency" concern, which HITL approval gates directly mitigate).
+- **Escalation**: the agent recognizes it's stuck, uncertain, or outside its competence, and hands off to a human rather than guessing — requires the agent to have an explicit "I don't know/can't do this confidently" path, not just always producing *an* answer regardless of confidence.
+- **Active correction**: a human reviews and can edit the agent's intermediate reasoning or output mid-task, not just approve/reject the final result — common in coding agents (reviewing a proposed diff before it's applied) and research agents (correcting a bad search direction early rather than after significant wasted work).
+
+## Durable Execution: Retries, Checkpoints & Long-Running Agents
+
+Agent tasks that run for minutes, hours, or days (a research task, a multi-day workflow) need infrastructure guarantees ordinary short-lived function calls don't:
+
+- **Retries**: a failed step (a tool call timeout, a transient API error) should retry automatically with backoff rather than failing the entire task — the same general retry/backoff reliability pattern production systems use everywhere, applied to individual agent steps.
+- **Checkpoints**: periodically persist the agent's full state (conversation history, intermediate results, current plan) so a crash or restart doesn't lose all progress — the task resumes from the last checkpoint instead of starting over.
+- **Durable execution frameworks**: purpose-built orchestration (e.g. Temporal, or a graph-based agent framework's own persistence layer) that automatically checkpoints and can resume a long-running, multi-step workflow across process restarts, deployments, or even infrastructure failures — treating a long agent task as a durable workflow rather than a single in-memory function call that dies if the process does.
+- **Long-running agents specifically**: tasks that legitimately take hours/days (deep research, large codebase migrations) need all of the above *plus* a way for a human to check progress asynchronously (rather than waiting synchronously for a response) — the UX shifts from "chat and wait" to "kick off and check back."
+
+## Sandboxing
+
+Agents that execute code or interact with a real computer (below) need to do so in an isolated environment, not the host system directly — the same [container isolation](/docs/mlops/containers) principle applied specifically to *untrusted, model-generated* actions: a sandboxed environment (a container, a VM, a restricted execution runtime) limits what damage a bad tool call or a prompt-injected malicious instruction (see [AI Security](/docs/mlops/security-and-reproducibility)) can actually do — file system access, network access, and resource limits are constrained regardless of what the agent tries to do inside the sandbox.
+
+## Agent Application Patterns
+
+Named categories of agent, each with a characteristic tool set and environment:
+
+- **Browser agents**: control a real (or headless) web browser — navigating pages, clicking, filling forms, reading rendered content — for tasks that require interacting with sites with no API, or that need to see a page exactly as a human user would.
+- **Coding agents**: operate on a codebase — reading files, writing/editing code, running tests, using version control — the category this very assistant belongs to, typically sandboxed to a specific repository/environment.
+- **Computer-use agents**: control a full desktop environment directly (mouse, keyboard, screen) rather than a scoped API or browser — the most general and highest-risk category, since the action space is "anything a human could do on this computer," making sandboxing and approval gates especially important.
+- **Autonomous research agents**: given an open-ended research question, iteratively search, read, synthesize, and refine their own follow-up questions over an extended run — the long-running-agent pattern above, applied specifically to information-gathering-and-synthesis tasks rather than code or UI actions.
+
+Next: [MCP (Model Context Protocol)](/docs/agents/mcp/overview) and [A2A (Agent-to-Agent)](/docs/agents/a2a/overview) — the standards that let agents connect to tools and to each other without custom integration for every pair.

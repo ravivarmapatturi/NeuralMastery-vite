@@ -1,0 +1,38 @@
+---
+title: "Classical NLP: Tokenization, POS Tagging, NER & Parsing"
+sidebar_position: 3
+---
+
+
+# Classical NLP: Tokenization, POS Tagging, NER & Parsing
+
+Before "tokenization" meant BPE splitting text for a Transformer (see [Foundation Model Internals](/docs/llms-genai/foundation-model-internals#tokenization)), it meant something more basic: turning raw text into linguistically meaningful units at all. This page is that older, still-relevant layer.
+
+## Text Normalization
+
+- **Tokenization** (classical sense): splitting text into words/sentences — genuinely harder than it sounds ("don't" is one word or two? does a period end a sentence or mark "Dr."?). Rule-based and statistical tokenizers handle these cases; this is a different, coarser-grained operation than an LLM's subword tokenizer, which operates on the output of (or in place of) this step.
+- **Stemming**: crude, rule-based suffix stripping to reduce a word to a root form — "running" → "run", but also sometimes "university" → "univers" (stemmers don't guarantee the output is a real word, just a consistent reduction useful for matching).
+- **Lemmatization**: a more linguistically correct version of the same goal — reduce a word to its dictionary base form ("better" → "good", "running" → "run") using an actual vocabulary and morphological analysis rather than blind suffix rules, at higher computational cost than stemming.
+- **Why this still matters**: search and information retrieval systems (matching "running shoes" against a document containing "run shoe") still commonly use stemming/lemmatization for query expansion and indexing, even in systems that also use modern embeddings — see [RAG — Dense vs. Sparse Retrieval](/docs/llms-genai/rag#dense-vs-sparse-retrieval-and-bm25)'s BM25/sparse retrieval, which benefits directly from this normalization.
+
+## Part-of-Speech (POS) Tagging
+
+Assigning a grammatical category (noun, verb, adjective, ...) to every word in a sentence. Classical approaches — **Hidden Markov Models** and **Conditional Random Fields** — frame this as sequence labeling: predict the most likely tag sequence given the word sequence, modeling the dependency between adjacent tags (a determiner is very likely followed by a noun or adjective, rarely by a verb) as well as each word's own likely tags. Modern approaches use a small Transformer or BiLSTM (see [Sequence Models — Bidirectional RNN/LSTM](/docs/deep-learning/sequence-models#named-variants-worth-knowing)) trained end-to-end on labeled data, but the underlying task framing — sequence labeling — is unchanged and reused directly for NER below.
+
+**Why it still matters**: POS tags are a useful *feature* for downstream tasks (parsing below depends on them), and understanding sequence labeling here is the direct conceptual bridge to NER and to general sequence-labeling problems in [NLP Task Taxonomy](/docs/nlp/nlp-task-taxonomy#sequence-labeling).
+
+## Named Entity Recognition (NER)
+
+Identifying and classifying spans of text into predefined categories — person names, organizations, locations, dates, monetary amounts. Framed identically to POS tagging as a sequence-labeling problem, using the standard **BIO tagging scheme**: each token is labeled **B**-(begin an entity), **I**-(inside/continuation of an entity), or **O**-(outside any entity) — e.g. "New York City" tags as `B-LOC I-LOC I-LOC`, correctly grouping the three tokens into one entity span rather than three separate ones.
+
+**Why it still matters in an LLM-heavy stack**: NER remains a common production pipeline stage even alongside LLMs — extracting structured entities (customer names, order IDs, dates) from unstructured text for downstream systems is often cheaper, faster, and more reliably schema-conformant with a dedicated NER model than with an LLM prompted to "extract the entities," especially at high request volume where a small fine-tuned NER model's latency and cost advantage over an LLM call matters.
+
+## Syntactic Parsing
+
+Recovering a sentence's grammatical structure — not just tagging individual words, but the relationships between them:
+
+- **Constituency parsing**: breaks a sentence into nested phrases (noun phrases, verb phrases) forming a tree, following a formal grammar — "the structure a sentence diagram in grade school represents," made rigorous.
+- **Dependency parsing**: instead of nested phrases, represents each word as depending on exactly one "head" word (a verb's subject and object both depend on the verb) — a directed graph (a tree, rooted at the sentence's main verb) rather than a nested-phrase tree. Dependency parsing has become the more commonly used representation in modern NLP pipelines because it more directly exposes "who did what to whom" relationships useful for downstream tasks like information extraction.
+- **Why this still matters**: even though end-to-end neural models (and LLMs) rarely require an explicit parse tree as an input feature anymore, parsing-derived relationships remain useful for structured information extraction, grammar/style checking tools, and as an interpretability lens — asking "does this model's attention pattern correspond to real syntactic dependencies" is a genuine, still-active [interpretability](/docs/deep-learning/attention-transformers) research question, directly reusing this classical structure as a ground truth to compare against.
+
+Next: [Word Embeddings](/docs/nlp/word-embeddings) — moving from discrete linguistic categories to continuous, learned representations of meaning.

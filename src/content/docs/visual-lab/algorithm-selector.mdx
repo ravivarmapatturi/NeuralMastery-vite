@@ -1,0 +1,22 @@
+---
+title: "Algorithm Selector"
+sidebar_position: 15
+---
+
+
+import AlgorithmSelector from '../../../viz/AlgorithmSelector';
+
+# Algorithm Selector
+
+A real branching decision tool over this site's own [Machine Learning](/docs/machine-learning/roadmap) pages — answer a few questions about your problem (regression vs. classification vs. clustering, linear vs. not, interpretability vs. raw accuracy) and get a specific recommendation with a real reason, not just a name.
+
+<AlgorithmSelector />
+
+## What to Try
+
+- Answer "Predict a number," then "No / not sure, or I need maximum accuracy," then "No, I care most about raw accuracy" — you'll land on Gradient Boosting, the practical default for tabular regression when interpretability isn't the priority.
+- Try the same first two answers but pick "Yes, interpretability matters" instead — same problem type, different constraint, different (correct) answer: Decision Tree.
+- Answer "Find groups in unlabeled data," then "No" (don't know cluster count), then "Yes" (irregular shapes / need outlier detection) — DBSCAN/HDBSCAN, not K-Means, because K-Means structurally can't do either of those things.
+- Use **Back** to change one answer partway through and watch the recommendation change — a concrete way to see which specific constraint is actually driving which specific choice.
+
+Back to [Visual Lab Overview](/docs/visual-lab/overview).

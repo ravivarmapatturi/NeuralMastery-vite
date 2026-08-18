@@ -1,0 +1,31 @@
+---
+title: "Core ML/DL Frameworks"
+sidebar_position: 3
+---
+
+
+# Core ML/DL Frameworks
+
+The tools that turn the theory from [Deep Learning](/docs/deep-learning/roadmap) into code you can actually run and train.
+
+## PyTorch
+
+The dominant deep learning framework in both research and production today. Three ideas make it what it is:
+
+- **Tensors**: PyTorch's core data structure — multi-dimensional arrays (see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)) that can live on CPU or GPU, with the same operations (matrix multiply, elementwise ops) either way.
+- **Autograd**: PyTorch automatically builds a computation graph as you run the forward pass, and calling `.backward()` computes every gradient via the chain rule (see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization)) — you write the forward pass, PyTorch derives backpropagation for you.
+- **`nn.Module`**: the base class for defining a layer or a whole model — you define `__init__` (the layers/parameters you need) and `forward` (how data flows through them), and PyTorch handles tracking parameters, moving them to GPU, and saving/loading.
+
+A typical training loop: forward pass → compute loss → `loss.backward()` → optimizer step → zero gradients → repeat. Once you've written this loop once by hand, every framework built on top of PyTorch (Hugging Face `Trainer`, PyTorch Lightning) is just automating that same loop with more features.
+
+## Hugging Face `transformers` and `datasets`
+
+`transformers` provides ready-to-use implementations of essentially every popular model architecture (BERT, GPT-family, LLaMA, ViT, and hundreds more) along with pretrained weights — instead of implementing a Transformer from scratch (worth doing once for learning, see [Attention & Transformers](/docs/deep-learning/attention-transformers)), you load a pretrained model in a few lines and fine-tune it for your task.
+
+`datasets` provides a standard interface for loading, processing, and streaming datasets (including many large public ones) without manually writing data-loading boilerplate for each one — important because efficient data loading is often the actual bottleneck in training, not the model itself.
+
+## Experiment Tracking
+
+Training runs involve many hyperparameters, and comparing dozens of runs by memory doesn't scale. Tools like **Weights & Biases** and **MLflow** log metrics, hyperparameters, and artifacts (model checkpoints) for every run automatically, and provide dashboards to compare runs side by side — the difference between "I think this run was better" and being able to actually prove it.
+
+Next: [LLM / Agent Frameworks](/docs/frameworks/llm-agent-frameworks) — the tooling layer built on top of these for building RAG pipelines and agents specifically.

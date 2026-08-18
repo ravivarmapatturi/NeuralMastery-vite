@@ -1,0 +1,46 @@
+---
+title: "Packaging, Testing & Tooling"
+sidebar_position: 5
+---
+
+
+# Packaging, Testing & Tooling
+
+The gap between "runs on my machine" and "runs anywhere, reliably" is almost entirely this page — dependency management, isolation, tests, and visibility into what a running program is actually doing.
+
+## `pyproject.toml`, Dependency Pinning, Lockfiles
+
+- **`pyproject.toml`**: the modern, standardized place to declare a Python project's metadata and dependencies — one file (`[project]` for metadata, `[project.dependencies]` for requirements) replacing the older `setup.py`/`requirements.txt` split.
+- **Dependency pinning**: specifying exact versions (`torch==2.4.0`) rather than open ranges (`torch>=2.0`) for anything you deploy. An ML pipeline that silently picks up a newer NumPy or PyTorch release and produces subtly different numbers is a debugging nightmare pinned dependencies prevent outright (see [Engineering Foundations for ML](/docs/mlops/engineering-foundations)).
+- **Lockfiles**: a generated file recording the *exact* resolved version of every dependency *and every one of their dependencies* (the full transitive tree) — pinning your direct dependencies isn't enough if an indirect one drifts. `uv.lock` (from `uv`) or `poetry.lock` serve this role; committing the lockfile is what makes "install exactly what I had" reproducible for anyone else, not just "roughly what I had."
+
+## Virtual Environments
+
+Every Python project needs its own isolated set of installed packages — without isolation, two projects needing different versions of the same library can't both work on one machine, and installing a project's dependencies pollutes every other project's environment too.
+
+- **`venv`**: Python's built-in tool for creating an isolated environment — a private directory with its own `site-packages`, activated to make `pip install` and `python` resolve within that isolated space instead of system-wide.
+- **`uv`**: a much faster, Rust-based alternative that handles environment creation, dependency resolution, and lockfile management in one tool — the modern default (used throughout this site's own [visualize skill](/docs/resources/open-source-ai-resources), which relies on `uv run`'s per-script dependency isolation via PEP 723 to avoid a shared environment entirely).
+- **Why isolation matters beyond "it works"**: a project without an isolated, pinned environment can't be reliably reproduced by a teammate, a CI runner, or *you* in six months — the reproducibility checklist in [Security & Reproducibility](/docs/mlops/security-and-reproducibility) starts here.
+
+## `pytest` in Practice
+
+- **Fixtures** (`@pytest.fixture`): reusable setup/teardown logic injected into test functions by name — a fixture that loads a small test dataset once and hands it to every test needing it, instead of every test reloading it manually. Fixtures can depend on other fixtures, building up setup incrementally, and `yield` inside a fixture marks the teardown boundary (setup before `yield`, cleanup after) — the exact same pattern as a context manager's `__enter__`/`__exit__`, applied to test setup.
+- **Parametrization** (`@pytest.mark.parametrize`): run the same test function against many different inputs without duplicating the test body — e.g. testing a data-validation function against a dozen different malformed-input cases in one parametrized test rather than a dozen near-identical test functions.
+- **Marks**: tag tests for selective running — `@pytest.mark.slow` on tests that hit a real GPU or download a model, then `pytest -m "not slow"` for a fast local loop and the full suite (including slow tests) in CI.
+- **`conftest.py`**: a special file `pytest` auto-discovers, for fixtures and configuration shared across many test files in a directory — avoids every test file re-importing/redefining the same fixtures.
+
+## Logging: the `logging` Module vs. `print`
+
+`print` statements are fine for a quick local check and actively wrong for anything that runs unattended — a production training job or serving process needs **structured, leveled, configurable** output, which is exactly what the `logging` module provides and `print` doesn't:
+
+- **Levels** (`DEBUG`/`INFO`/`WARNING`/`ERROR`/`CRITICAL`): filter verbosity without editing code — run at `INFO` in production, flip to `DEBUG` temporarily to investigate an issue, without touching a single `print` call.
+- **Structured output**: attach a timestamp, module name, and severity to every message automatically, and — for production systems — emit as structured JSON rather than free text, so log aggregation tools (see [Observability](/docs/mlops/observability)) can actually query and filter on fields instead of regex-parsing free text.
+- **Configurable destinations**: send logs to a file, stdout, a remote log-aggregation service, or all three simultaneously, without changing any logging call site — configured once, centrally, rather than baked into every `print`.
+
+## Debugging: `pdb` and Post-Mortem Debugging
+
+- **`pdb.set_trace()`** (or the built-in `breakpoint()` in modern Python) drops into an interactive debugger at that exact line — step through code (`n` next, `s` step into, `c` continue), inspect any variable in scope, and even evaluate arbitrary expressions, all live rather than guessing from added `print` statements.
+- **Post-mortem debugging** (`python -m pdb -c continue script.py`, or `pdb.pm()` after a crash in an interactive session): drop into a debugger *at the exact point an exception was raised*, with the full stack and local variables from the moment of failure still available — often faster than reproducing a crash from scratch with breakpoints pre-placed, especially for an error that's expensive or slow to trigger again.
+- This connects directly to the debugging methodology in [CS Fundamentals](/docs/cs-fundamentals/software-engineering-practices#debugging-methodology): a debugger is the tool of choice specifically when you need to inspect state at a point, not just confirm a value once.
+
+Python Engineering section complete. Next: [Mathematics for AI](/docs/mathematics-for-ai/roadmap) — the math this engineering foundation runs.

@@ -1,0 +1,36 @@
+---
+title: "Projects — Overview"
+sidebar_position: 1
+---
+
+
+# Projects — Overview
+
+[Build From Scratch](/docs/build-from-scratch/roadmap) is about implementing individual *components* for the insight of having built them. This section is about **complete projects** — systems with a real problem, a real dataset, a real evaluation, and (from Level 4 up) a real deployment, portfolio-worthy and interview-worthy in a way an isolated from-scratch exercise isn't.
+
+## What's in this section
+
+- **[The Project Ladder](/docs/projects/the-project-ladder)** — six levels, from a tiny afternoon project to a genuine capstone, each with the standard project structure and representative examples at that level.
+
+## The Standard Project Structure
+
+Every project on the ladder, regardless of level, is scoped using the same template — the [ML System Design](/docs/ml-system-design/roadmap) framework applied at project scale:
+
+```
+Project
+ ├── Problem           — what specifically are you solving, for whom
+ ├── Dataset            — where the data comes from, and its known limitations
+ ├── Baseline            — the simplest thing that could possibly work, built first
+ ├── Architecture         — what you're actually building, and why over alternatives
+ ├── Training              — how it's trained, tracked, and made reproducible
+ ├── Evaluation             — the metrics that actually matter for this problem
+ ├── Deployment              — how it's served (Level 4+)
+ ├── Monitoring               — how you'd know if it broke in production (Level 4+)
+ ├── Cost                      — what it actually costs to run
+ ├── Failure analysis           — where it breaks, and why
+ └── GitHub                      — a public, documented artifact
+```
+
+Every level below fills this template out with a different amount of rigor — a Level 1 project's "deployment" section might just be "runs locally," while a Level 4 project's is a real serving architecture. The template doesn't change; the depth expected at each field does.
+
+See the [roadmap](/docs/projects/roadmap) for the full ladder.

@@ -1,0 +1,8 @@
+{
+  "label": "AI for Science",
+  "position": 7.2,
+  "link": {
+    "type": "generated-index",
+    "description": "Drug discovery and molecular ML, protein structure prediction, genomics, materials science, physics-informed neural networks and neural operators, and molecular generation/docking - where AI directly extends scientific discovery."
+  }
+}
