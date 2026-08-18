@@ -1,0 +1,53 @@
+---
+title: "Training Deep Networks"
+sidebar_position: 4
+---
+
+
+import TrainingLossCurveMp4 from './img/training-loss-curve.mp4';
+import TrainingLossCurveWebm from './img/training-loss-curve.webm';
+
+# Training Deep Networks
+
+Making a network *deep* (many layers) makes it more expressive, but also much harder to train — this page covers the techniques that make deep training actually work.
+
+<video autoPlay loop muted playsInline width="100%" style={{maxWidth: 700, display: "block", margin: "0 auto"}}>
+  <source src={TrainingLossCurveWebm} type="video/webm" />
+  <source src={TrainingLossCurveMp4} type="video/mp4" />
+</video>
+<p style={{textAlign: "center", fontSize: "0.9em", opacity: 0.75}}>What "training" looks like in practice: loss dropping fastest early on, noisier and slower as it approaches a floor — every technique below exists to make this curve drop faster, more smoothly, or further</p>
+
+## Loss Functions
+
+- **Cross-entropy**: the standard loss for classification — measures how far the predicted probability distribution is from the true one (see [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics)). This is also the loss behind next-token prediction in every LLM.
+- **MSE**: standard for regression.
+- **Contrastive / triplet loss**: used when the goal is learning good *embeddings* rather than direct predictions — pulls similar examples together and pushes dissimilar ones apart in embedding space. Core to how modern embedding models (used for RAG retrieval) are trained.
+
+## Normalization
+
+- **Batch Normalization**: normalizes each layer's activations across the *batch* dimension during training, stabilizing and speeding up training significantly. Introduces a dependency on batch statistics, which complicates things at inference time (running averages are used instead).
+- **Layer Normalization**: normalizes across the *feature* dimension for each individual example, independent of batch size. This independence is why Transformers use LayerNorm instead of BatchNorm — sequence models often deal with variable-length inputs and small/variable batch sizes.
+- **RMSNorm**: a simplified LayerNorm variant that skips re-centering (mean subtraction) and only rescales by the root-mean-square — cheaper to compute, used in most modern LLMs (LLaMA, etc.) with no meaningful quality loss.
+
+## Regularization for Deep Nets
+
+- **Dropout**: randomly zero out a fraction of neurons each training step, forcing the network to not over-rely on any single neuron — effectively training an ensemble of sub-networks that share weights.
+- Standard L1/L2 weight regularization still applies (see [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)), though it's used more sparingly in very large models where data volume itself is often the main regularizer.
+
+## Vanishing & Exploding Gradients
+
+In a deep network, gradients are a *product* of many layers' local derivatives (chain rule). If those derivatives are consistently < 1, the gradient shrinks toward zero as it propagates back through many layers ("vanishing") — early layers barely learn. If consistently > 1, gradients blow up ("exploding"), causing unstable, diverging training.
+
+**Fixes**: careful initialization (He/Xavier), normalization layers, gradient clipping, and — most importantly — residual connections.
+
+## Residual (Skip) Connections
+
+Instead of a layer computing $y = f(x)$, a residual block computes $y = x + f(x)$ — the input is added directly to the output. This gives gradients a direct path backward that bypasses $f$ entirely, largely solving the vanishing gradient problem and enabling networks with hundreds of layers (ResNet) or dozens of Transformer blocks (every modern LLM) to train successfully. This is one of the single most important architectural ideas in deep learning.
+
+## Learning Rate Schedules & Gradient Clipping
+
+- **Warmup + decay**: start small, ramp up, then decay — covered in [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization); essential for training stability in Transformers specifically.
+- **Gradient clipping**: rescale the gradient if its norm exceeds a threshold, preventing a single bad batch from destabilizing training — near-universal in large-scale training runs.
+- **Mixed precision training**: use lower-precision (fp16/bf16) numbers for most computation to speed up training and reduce memory, while keeping certain operations (like the loss) in higher precision to avoid numerical instability.
+
+Next: [Convolutional Neural Networks](/docs/deep-learning/cnns) — the architecture that made deep learning work for images.

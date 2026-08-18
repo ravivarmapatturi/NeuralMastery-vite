@@ -1,0 +1,60 @@
+---
+title: "Generative Models: GANs & Diffusion"
+sidebar_position: 8.7
+---
+
+
+import DiffusionRandomWalkMp4 from './img/diffusion-random-walk.mp4';
+import DiffusionRandomWalkWebm from './img/diffusion-random-walk.webm';
+
+# Generative Models: GANs & Diffusion
+
+[Autoencoders & VAEs](/docs/deep-learning/autoencoders) were one route to generating new data. This page covers the other two dominant approaches — adversarial training and iterative denoising — and why diffusion won out for image generation specifically.
+
+## Generative Adversarial Networks (GANs)
+
+A GAN trains two networks against each other: a **Generator** $G$ that maps random noise $z$ to fake samples $G(z)$, trying to fool the second network, and a **Discriminator** $D$ that looks at a sample (real or fake) and predicts whether it's real. They're trained jointly, adversarially:
+
+$$\min_G \max_D \; \mathbb{E}_{x \sim p_{data}}[\log D(x)] + \mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]$$
+
+$D$ is trained to maximize this (correctly tell real from fake), $G$ is trained to minimize it (fool $D$). At the theoretical optimum, $G$ produces samples indistinguishable from real data — $D$ can do no better than random guessing.
+
+**Why GANs are hard to train**:
+- **Mode collapse**: $G$ discovers a small number of outputs that reliably fool $D$ and keeps producing only those, rather than covering the full diversity of the real data distribution — a direct consequence of $G$ optimizing to fool the current $D$, not to match the true data distribution.
+- **Training instability**: $G$ and $D$ are locked in a minimax game, not a single loss being minimized — if one network gets too strong too fast (e.g. $D$ becomes a perfect discriminator early), the other stops receiving useful gradient signal and training stalls.
+- **No single scalar loss to monitor**: unlike supervised training, "the loss is going down" doesn't straightforwardly mean "the model is getting better" — sample quality has to be judged directly or via separate metrics (e.g. FID, Fréchet Inception Distance) alongside the adversarial losses.
+
+## Named GAN Variants
+
+- **DCGAN (Deep Convolutional GAN)**: the architectural template most later GANs build on — replaces fully-connected layers with (transposed) convolutions, uses batch normalization and specific activation choices, established the design conventions that made GAN training more reliably stable.
+- **Conditional GAN (cGAN)**: feeds a class label (or other conditioning signal) into both $G$ and $D$, so generation can be controlled ("generate a 7," not just "generate a digit") rather than sampled unconditionally.
+- **Pix2Pix**: an image-to-image translation cGAN — learns a mapping from one image domain to another (sketches → photos, maps → satellite images) using *paired* training examples.
+- **CycleGAN**: image-to-image translation *without* paired examples — learns two generators (domain A→B and B→A) with a **cycle-consistency loss** requiring that translating an image to the other domain and back reproduces the original, which regularizes the mapping without ever needing matched pairs (e.g. photos of horses and photos of zebras, with no image showing the same scene as both).
+- **WGAN (Wasserstein GAN)**: replaces the original minimax loss with one based on the Wasserstein/Earth-Mover distance between real and fake distributions (see [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) for the same distance used for a different purpose) — provides a smoother, more informative training signal and largely fixes the vanishing-gradient instability of the original formulation.
+- **StyleGAN**: introduces a mapping network that transforms the input noise into an intermediate "style" space, then injects that style at multiple resolutions throughout the generator via adaptive normalization — enables fine-grained, disentangled control over generated image attributes (pose, texture, fine details independently) and produces some of the highest-fidelity GAN-generated faces to date.
+- **BigGAN**: shows that GAN sample quality and diversity improve substantially just from scaling up — larger batch sizes and more parameters, plus architectural tricks (self-attention layers, class-conditional normalization) to keep the larger model stable to train.
+
+## Diffusion Models, In More Depth
+
+[Multimodal & Generative Models](/docs/llms-genai/multimodal-generative-models#diffusion-models) introduced the core idea: learn to reverse a gradual noising process. That forward process — repeatedly nudging every pixel by a small random amount until the image is pure noise — is a random walk, the same stochastic process below (Brownian motion is the canonical continuous-time example): many independent small random steps, applied over and over.
+
+<video autoPlay loop muted playsInline width="100%" style={{maxWidth: 560, display: "block", margin: "0 auto"}}>
+  <source src={DiffusionRandomWalkWebm} type="video/webm" />
+  <source src={DiffusionRandomWalkMp4} type="video/mp4" />
+</video>
+<p style={{textAlign: "center", fontSize: "0.9em", opacity: 0.75}}>A 2D random walk — the same "many small random steps" idea behind diffusion's forward noising process, one particle highlighted</p>
+
+The named variants below are the ones actually worth recognizing:
+
+- **DDPM (Denoising Diffusion Probabilistic Models)**: the paper that made diffusion practical for high-quality image generation — a fixed forward process adds Gaussian noise over many steps (often 1000), and a neural network (typically a [U-Net](/docs/deep-learning/vision-architectures#segmentation)) is trained to predict the noise added at each step, enabling the reverse process to denoise from pure noise back to a sample.
+- **DDIM (Denoising Diffusion Implicit Models)**: reformulates the reverse process to be non-Markovian, allowing sampling with far fewer steps (tens instead of a thousand) at a small quality cost — the standard way to make diffusion sampling fast enough for interactive use.
+- **Score-based generative models / SDEs**: a mathematically equivalent formulation of diffusion as learning the *score function* (gradient of the log-probability density) and generating samples by solving a stochastic differential equation — the theoretical framework that unifies DDPM-style discrete diffusion with continuous-time generation.
+- **Latent Diffusion / Stable Diffusion**: runs the diffusion process in a compressed **latent space** (produced by a pretrained VAE encoder, see [Autoencoders & VAEs](/docs/deep-learning/autoencoders)) rather than directly on raw pixels, then decodes the final denoised latent back to pixel space — dramatically cheaper than pixel-space diffusion, which is what made high-resolution text-to-image generation practical on consumer hardware.
+- **Classifier-free guidance**: a technique for strengthening how closely generation follows a conditioning signal (e.g. a text prompt) — the model is trained both with and without the conditioning, and at sampling time the unconditional prediction is extrapolated *away from* to push the output more strongly toward the condition, without needing a separate classifier.
+- **ControlNet**: adds an auxiliary conditioning pathway to a pretrained diffusion model (e.g. conditioning on an edge map, a pose skeleton, a depth map) without retraining the base model — lets a frozen, powerful pretrained diffusion model be steered by precise structural constraints instead of text alone.
+
+## Why Diffusion Won for Images
+
+GANs generate in a single forward pass (fast) but are notoriously unstable to train and prone to mode collapse (limited diversity). Diffusion models are slower to sample (many iterative denoising steps, though DDIM and distillation techniques have closed much of this gap) but train far more stably — the training objective is a straightforward regression (predict the noise) rather than an adversarial minimax game — and cover the data distribution's diversity more faithfully. That stability-for-speed tradeoff is why diffusion, not GANs, became the dominant architecture behind modern text-to-image systems, while GANs remain relevant for tasks where fast single-pass generation or precise adversarial fine-tuning matters more than sample diversity.
+
+Next: [GNNs, RL Networks, Metric Learning, SSL & Multimodal Nets](/docs/deep-learning/advanced-architectures) — the remaining major architecture families: graphs, reinforcement learning, self-supervision, and cross-modal models.

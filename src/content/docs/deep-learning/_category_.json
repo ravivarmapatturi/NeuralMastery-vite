@@ -1,0 +1,8 @@
+{
+  "label": "Deep Learning",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Neural network architectures, training techniques, and state-of-the-art models."
+  }
+}

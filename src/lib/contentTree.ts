@@ -11,6 +11,11 @@ interface DocModule {
   frontmatter?: DocFrontmatter;
 }
 
+interface CategoryMeta {
+  label: string;
+  position?: number;
+}
+
 export interface DocPage {
   slug: string; // e.g. "deep-learning/attention-demo"
   route: string; // e.g. "/docs/deep-learning/attention-demo"
@@ -23,6 +28,7 @@ export interface DocPage {
 export interface SidebarSection {
   id: string;
   label: string;
+  position: number;
   pages: DocPage[];
 }
 
@@ -41,8 +47,30 @@ function titleCase(slug: string): string {
  * page's immediate parent folder, order within a group = frontmatter's
  * sidebar_position, page title = frontmatter.title (falling back to a
  * title-cased filename so an un-annotated page still renders sensibly).
+ *
+ * Each section folder's _category_.json (migrated verbatim from Docusaurus,
+ * same {label, position} shape) drives the section's sidebar label and
+ * ordering -- titleCase(folderName) alone gets slugs like "cs-fundamentals"
+ * or "llms-genai" wrong ("Cs Fundamentals", "Llms Genai" instead of "CS
+ * Fundamentals for AI Engineers", "LLMs & GenAI"). Falls back to
+ * titleCase + alphabetical for any section that doesn't have one.
  */
 const modules = import.meta.glob<DocModule>('/src/content/docs/**/*.mdx', { eager: true });
+const categoryModules = import.meta.glob<CategoryMeta>('/src/content/docs/*/_category_.json', {
+  eager: true,
+  import: 'default',
+});
+
+function buildCategoryMeta(): Map<string, CategoryMeta> {
+  const map = new Map<string, CategoryMeta>();
+  for (const [path, meta] of Object.entries(categoryModules)) {
+    const section = path.replace('/src/content/docs/', '').replace('/_category_.json', '');
+    map.set(section, meta);
+  }
+  return map;
+}
+
+const categoryMeta = buildCategoryMeta();
 
 function buildPages(): DocPage[] {
   const pages: DocPage[] = [];
@@ -75,9 +103,15 @@ export function getSidebar(): SidebarSection[] {
   const sections: SidebarSection[] = [];
   for (const [id, pages] of bySection) {
     pages.sort((a, b) => a.sidebarPosition - b.sidebarPosition || a.title.localeCompare(b.title));
-    sections.push({ id, label: titleCase(id), pages });
+    const meta = categoryMeta.get(id);
+    sections.push({
+      id,
+      label: meta?.label ?? titleCase(id),
+      position: meta?.position ?? 999,
+      pages,
+    });
   }
-  sections.sort((a, b) => a.label.localeCompare(b.label));
+  sections.sort((a, b) => a.position - b.position || a.label.localeCompare(b.label));
   return sections;
 }
 

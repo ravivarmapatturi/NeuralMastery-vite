@@ -1,0 +1,56 @@
+---
+title: "Weight Initialization, Regularization & LR Scheduling"
+sidebar_position: 3.8
+---
+
+import __migratedImg0 from './img/lr-schedules.png';
+
+
+# Weight Initialization, Regularization & LR Scheduling
+
+The last cluster of training-loop decisions, after [Activation Functions](/docs/deep-learning/activation-functions), [Loss Functions](/docs/deep-learning/loss-functions), and [Optimizers](/docs/deep-learning/optimizers): how weights start, how overfitting gets controlled, and how the learning rate changes over the course of training. [Training Deep Networks](/docs/deep-learning/training-deep-networks) already covers BatchNorm/LayerNorm/RMSNorm and dropout — this page fills in the rest of each category.
+
+## Weight Initialization
+
+Why initialization matters at all: start every weight at the same value (including zero) and every neuron in a layer computes an identical gradient forever — **symmetry** never breaks, and the extra neurons are wasted. Beyond avoiding that failure, the *scale* of initial weights controls whether activations and gradients stay in a reasonable range as they pass through many layers, or vanish/explode before training even gets going (see [Vanishing & Exploding Gradients](/docs/deep-learning/training-deep-networks#vanishing--exploding-gradients)).
+
+- **Zero Initialization**: all weights set to 0. Breaks nothing *except* symmetry — unusable in practice for exactly the reason above.
+- **Random Initialization**: small random values (e.g. $\mathcal{N}(0, 0.01^2)$). Breaks symmetry, but with no principled scale — for deep networks, naive random init tends to shrink or blow up activation variance layer by layer.
+- **Xavier / Glorot Initialization**: scales initial weights by $\sqrt{1/n_{in}}$ (or $\sqrt{2/(n_{in}+n_{out})}$ for the "normalized" version), derived specifically to keep activation variance roughly constant across layers *assuming a symmetric activation like tanh/sigmoid*.
+- **He Initialization**: scales by $\sqrt{2/n_{in}}$ — the factor of 2 accounts for ReLU zeroing out roughly half its inputs, which would otherwise halve the variance at every layer if using Xavier's constant. The standard choice for ReLU/GELU-family networks (see [Activation Functions](/docs/deep-learning/activation-functions)).
+- **LeCun Initialization**: scales by $\sqrt{1/n_{in}}$ — the basis both Xavier and He build on, and the correct choice specifically for SELU (see [Activation Functions — SELU](/docs/deep-learning/activation-functions#the-relu-family)), whose self-normalizing property depends on this exact scale.
+- **Orthogonal Initialization**: initializes weight matrices to be exactly orthogonal (rows/columns are unit vectors, mutually perpendicular — see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)). Preserves gradient norm exactly through a linear layer at initialization, historically important for training vanilla RNNs (see [Sequence Models](/docs/deep-learning/sequence-models)) deep enough to otherwise vanish/explode immediately.
+
+**Rule of thumb**: He init for ReLU/GELU-family networks (the vast majority of modern nets), Xavier for tanh/sigmoid, LeCun specifically for SELU.
+
+## Regularization, Beyond Dropout
+
+[Training Deep Networks](/docs/deep-learning/training-deep-networks#regularization-for-deep-nets) covers dropout and normalization. The rest of the toolkit:
+
+- **L1 / L2 weight penalties**: identical in mechanism to [Lasso](/docs/machine-learning/lasso-regression) and [Ridge](/docs/machine-learning/ridge-regression) regression — add $\lambda\sum|w|$ or $\lambda\sum w^2$ to the loss. In deep learning this is almost always applied as **weight decay** directly in the optimizer (see [AdamW](/docs/deep-learning/optimizers#adam-and-its-descendants)) rather than mixed into the loss function.
+- **Elastic Net**: the [same L1+L2 blend](/docs/machine-learning/elastic-net) as in classical ML, occasionally used on specific layers (e.g. embedding tables) where both sparsity and stability matter.
+- **DropConnect**: a generalization of dropout — instead of zeroing out entire neuron *outputs* at random, zero out individual *weights* (connections) at random. More fine-grained, less commonly used than standard dropout in practice.
+- **Weight Decay**: shrinks every weight toward zero by a small multiplicative factor every step, independent of the loss gradient — see the [Ridge Regression gradient derivation](/docs/machine-learning/ridge-regression#deriving-the-gradient) for exactly why this is mathematically the same mechanism as L2 regularization.
+- **Early Stopping**: stop training once validation loss stops improving (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)), rather than training for a fixed number of epochs regardless — the simplest regularizer that costs nothing extra to implement.
+- **Data Augmentation**: synthetically expand the training set with label-preserving transformations (crops/flips/rotations for images, synonym swaps for text) — regularizes by forcing the model to be invariant to changes that shouldn't affect the answer, rather than by penalizing weights directly.
+- **Label Smoothing**: instead of training toward a hard one-hot target ($[0,0,1,0]$), train toward a softened version ($[0.03,0.03,0.91,0.03]$) — prevents the model from becoming overconfident (pushing logits to extreme values to hit an exact 0 or 1 target), which empirically improves generalization and calibration.
+
+## Learning Rate Scheduling
+
+<img src={__migratedImg0} alt="Five common learning rate schedules over the course of training" style={{maxWidth: '100%'}} />
+
+[Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization#learning-rate-schedules--warmup) introduced warmup and decay conceptually — here's the actual shape of each schedule in the chart above:
+
+- **Step Decay** (green): multiply the LR by a fixed factor (e.g. 0.5) every fixed number of steps — simple, but the sudden drops can visibly disrupt the loss curve at each step.
+- **Exponential Decay** (blue): smooth continuous decay, $\alpha_t = \alpha_0 e^{-kt}$ — no sudden jumps, but decays "blindly," regardless of how training is actually progressing.
+- **Cosine Annealing** (gold): follows a cosine curve down from the base LR to ~0 — decays slowly at first, fastest in the middle, slowly again near the end. Extremely common as the default schedule for training from scratch.
+- **Cosine Warm Restarts** (red): repeatedly resets to the base LR and re-anneals via cosine — the periodic "restart" jumps can help escape a poor local region even late in training, at the cost of periodic visible spikes in loss.
+- **One-Cycle Policy** (gray): ramp *up* to a (relatively high) peak LR for the first phase, then back down for the second — deliberately spends the early-middle of training at higher LR than you'd otherwise dare, which empirically both speeds up convergence and acts as a regularizer.
+- **Cyclic LR**: oscillate the LR between a lower and upper bound throughout training (not shown above, but visually similar to a repeated sawtooth) — related to warm restarts, motivated by the same "periodically higher LR helps escape sharp minima" idea.
+- **Reduce on Plateau**: not a fixed schedule at all — monitor validation loss, and cut the LR by a factor whenever it stops improving for a set number of epochs. Adaptive to the *actual* training curve rather than a pre-committed shape.
+- **Warmup Scheduler**: ramp LR up from ~0 at the very start of training (visible in the first ~20 steps of the gold and blue curves above) — prevents the large, noisy gradients typical of an untrained model's first steps from destabilizing training, especially important for Transformers.
+- **Polynomial Decay**: $\alpha_t = \alpha_0(1 - t/T)^p$ — a tunable middle ground between linear ($p=1$) and more aggressive early decay ($p>1$).
+
+**In practice**: warmup + cosine annealing is the most common combination for training large models (including LLMs) from scratch; reduce-on-plateau is common for smaller-scale fine-tuning where you can afford to monitor validation loss closely.
+
+This completes the neural network building-blocks cluster: [Activation Functions](/docs/deep-learning/activation-functions) → [Loss Functions](/docs/deep-learning/loss-functions) → [Optimizers](/docs/deep-learning/optimizers) → initialization/regularization/scheduling. Next: [Convolutional Neural Networks](/docs/deep-learning/cnns) — the first full architecture family built from these pieces.

@@ -1,0 +1,51 @@
+---
+title: "Autoencoders & Variational Autoencoders, In Full Depth"
+sidebar_position: 8.5
+---
+
+
+import autoencoderDark from './img/autoencoder-architecture.png';
+import autoencoderLight from './img/autoencoder-architecture-light.png';
+
+# Autoencoders & Variational Autoencoders, In Full Depth
+
+Every model in [Deep Learning](/docs/deep-learning/roadmap) so far has been supervised — trained against labels. Autoencoders learn from data with no labels at all, using a strikingly simple trick: train a network to reconstruct its own input, and force the information through a narrow bottleneck along the way.
+
+## The Autoencoder Architecture
+
+<ThemedImage alt="Autoencoder: an encoder compresses input into a low-dimensional latent code, a decoder reconstructs it, and reconstruction error is the training signal" sources={{light: autoencoderLight, dark: autoencoderDark}} />
+
+Two halves: an **encoder** compresses the input $\mathbf{x}$ down to a low-dimensional **latent code** $\mathbf{z}$ (the bottleneck), and a **decoder** tries to reconstruct the original input from just that compressed code, $\hat{\mathbf{x}}$. Trained by minimizing reconstruction error — typically [MSE](/docs/deep-learning/loss-functions#regression-losses) for continuous data — with no labels involved anywhere.
+
+**Why the bottleneck forces learning**: if the latent code $\mathbf{z}$ had the same dimensionality as the input, the network could trivially learn the identity function and copy input to output with zero effort — no real learning happens. Forcing $\mathbf{z}$ to be much smaller than $\mathbf{x}$ means the network *must* discover a compressed representation that captures the input's essential structure, discarding what's redundant or reconstructible from context — conceptually the same compression logic as [PCA](/docs/machine-learning/pca-svd#pca-principal-component-analysis), except autoencoders can learn *nonlinear* compression, where PCA is restricted to linear projections.
+
+**Uses**: dimensionality reduction (a nonlinear alternative to PCA), denoising (train to reconstruct a *clean* input from a *corrupted* one — the network learns to discard noise as part of compression), and anomaly detection (see [Anomaly Detection](/docs/machine-learning/anomaly-detection) — a model trained only on normal data reconstructs normal inputs well and unfamiliar/anomalous inputs poorly, and that reconstruction error itself becomes the anomaly score).
+
+## Variants
+
+- **Sparse Autoencoder**: keeps the latent code the *same* size as the input (no bottleneck), but adds a penalty encouraging most latent units to be inactive (near zero) for any given input — forcing a different kind of compression: not fewer dimensions, but fewer *active* dimensions per example.
+- **Denoising Autoencoder**: deliberately corrupts the input (adding noise, masking pixels) before feeding it to the encoder, but still trains against the *original, clean* target — forces the network to learn robust features rather than a trivial pixel-copying shortcut.
+
+## Variational Autoencoder (VAE)
+
+A plain autoencoder's latent space has no particular structure — nearby points in $\mathbf{z}$-space don't necessarily decode into anything sensible, and there's no principled way to *generate* new data by sampling from it. VAE fixes this by making the encoder probabilistic.
+
+**The key change**: instead of encoding an input to a single point $\mathbf{z}$, the encoder outputs the parameters of a distribution — a mean $\mu$ and variance $\sigma^2$ — and $\mathbf{z}$ is *sampled* from $\mathcal{N}(\mu, \sigma^2)$ before being passed to the decoder.
+
+**The VAE loss** has two terms:
+
+$$\mathcal{L} = \underbrace{\|\mathbf{x} - \hat{\mathbf{x}}\|^2}_{\text{reconstruction loss}} + \underbrace{D_{KL}\big(\mathcal{N}(\mu,\sigma^2) \,\|\, \mathcal{N}(0,1)\big)}_{\text{KL regularization}}$$
+
+The first term is the same reconstruction objective as a plain autoencoder. The second is [KL divergence](/docs/mathematics-for-ai/probability-statistics#entropy-cross-entropy-and-kl-divergence), pulling every input's latent distribution toward a standard normal — this is what gives the latent space its structure: it prevents the model from just memorizing isolated points, and instead packs the whole latent space *continuously and densely* around the origin, so that sampling from $\mathcal{N}(0,1)$ anywhere and decoding produces a plausible, coherent output. This exact reconstruction-loss-plus-KL-penalty tradeoff reappears in [RLHF](/docs/llms-genai/training-pipeline#rlhf--reinforcement-learning-from-human-feedback), where a KL term similarly keeps a model from drifting too far from a reference distribution.
+
+**The reparameterization trick**: sampling $\mathbf{z} \sim \mathcal{N}(\mu, \sigma^2)$ directly isn't differentiable — you can't backpropagate through a random sampling operation. The fix: sample $\epsilon \sim \mathcal{N}(0,1)$ separately (a source of randomness with no learned parameters), then compute $\mathbf{z} = \mu + \sigma \cdot \epsilon$ — now $\mathbf{z}$ is a deterministic, differentiable function of $\mu$ and $\sigma$ (the parts the network actually learns), with all the randomness isolated in $\epsilon$, which needs no gradient at all.
+
+## Vector Quantized VAE (VQ-VAE)
+
+Replaces VAE's continuous Gaussian latent space with a **discrete** codebook of learned embedding vectors — the encoder's output gets snapped to the nearest codebook entry, rather than sampled from a continuous distribution. This discrete latent space turned out to be a much better fit for feeding into powerful autoregressive generative models afterward, and is a foundational component behind several modern image and audio generation pipelines (see [Multimodal & Generative Models](/docs/llms-genai/multimodal-generative-models)).
+
+## Autoencoders vs. Diffusion Models for Generation
+
+VAEs can generate new samples by decoding random latent vectors, but the outputs are typically blurrier and less sharp than what [diffusion models](/docs/llms-genai/multimodal-generative-models#diffusion-models) produce — diffusion's iterative denoising process has become the dominant approach for high-fidelity image generation, while VAE-style architectures remain important as building blocks (VQ-VAE inside Latent Diffusion pipelines) rather than as the final generator themselves.
+
+Next: [Generative Models](/docs/deep-learning/generative-models) — GANs and diffusion models, the other two major approaches to learning to generate data; or [Anomaly Detection](/docs/machine-learning/anomaly-detection), where autoencoder reconstruction error becomes a practical outlier-detection tool.

@@ -1,0 +1,309 @@
+---
+title: "Attention & Transformers"
+sidebar_position: 7
+---
+
+
+import AttentionStepThrough from '../../../viz/AttentionStepThrough';
+import attentionQkvDark from './img/attention-qkv.png';
+import attentionQkvLight from './img/attention-qkv-light.png';
+import rnnVsAttnDark from './img/rnn-vs-attention.png';
+import rnnVsAttnLight from './img/rnn-vs-attention-light.png';
+import archDark from './img/transformer-architecture.png';
+import archLight from './img/transformer-architecture-light.png';
+import tokEmbDark from './img/token-embeddings.png';
+import tokEmbLight from './img/token-embeddings-light.png';
+import w1Dark from './img/attn-worked-01-embeddings.png';
+import w1Light from './img/attn-worked-01-embeddings-light.png';
+import w2Dark from './img/attn-worked-02-qkv-projections.png';
+import w2Light from './img/attn-worked-02-qkv-projections-light.png';
+import w3Dark from './img/attn-worked-03-raw-scores.png';
+import w3Light from './img/attn-worked-03-raw-scores-light.png';
+import w4Dark from './img/attn-worked-04-scaled-scores.png';
+import w4Light from './img/attn-worked-04-scaled-scores-light.png';
+import w4bDark from './img/attn-worked-04b-sqrt-dk-comparison.png';
+import w4bLight from './img/attn-worked-04b-sqrt-dk-comparison-light.png';
+import w5Dark from './img/attn-worked-05-softmax-weights.png';
+import w5Light from './img/attn-worked-05-softmax-weights-light.png';
+import w6Dark from './img/attn-worked-06-output.png';
+import w6Light from './img/attn-worked-06-output-light.png';
+import multiHeadDark from './img/multi-head-attention.png';
+import multiHeadLight from './img/multi-head-attention-light.png';
+import padMaskDark from './img/masking-padding.png';
+import padMaskLight from './img/masking-padding-light.png';
+import causalMaskDark from './img/masking-causal.png';
+import causalMaskLight from './img/masking-causal-light.png';
+import crossAttnDark from './img/cross-attention-wiring.png';
+import crossAttnLight from './img/cross-attention-wiring-light.png';
+import posencSinDark from './img/posenc-sinusoids.png';
+import posencSinLight from './img/posenc-sinusoids-light.png';
+import posencHeatDark from './img/posenc-heatmap.png';
+import posencHeatLight from './img/posenc-heatmap-light.png';
+import addNormDark from './img/add-norm.png';
+import addNormLight from './img/add-norm-light.png';
+import ffnDark from './img/feed-forward.png';
+import ffnLight from './img/feed-forward-light.png';
+import encLayerDark from './img/encoder-layer.png';
+import encLayerLight from './img/encoder-layer-light.png';
+import finalSoftmaxDark from './img/final-softmax.png';
+import finalSoftmaxLight from './img/final-softmax-light.png';
+
+# Attention & Transformers
+
+The architecture behind GPT, Claude, LLaMA, and essentially every modern large model — text, vision, and beyond. This page follows the original architecture end to end: from *why* it exists, through every mechanism in the paper, worked out with real numbers rather than left abstract.
+
+## Why This Architecture Exists
+
+### Problems With RNNs
+
+Three specific, compounding problems, in the order they actually bite:
+
+- **Inputs are processed sequentially** — step $t$ can't start until $h_{t-1}$ exists, so there's no parallelism across time, no matter how much compute is available.
+- **Slow computation for long sequences** — a direct consequence of the above: a sequence of length $T$ costs $T$ sequential steps, with no shortcut around it.
+- **Vanishing or exploding gradients** — the same weight matrix gets multiplied into the gradient once per time step during backpropagation-through-time, so gradients either shrink toward zero or blow up exponentially over long sequences. See [Vanishing and Exploding Gradients, Derived](/docs/deep-learning/sequence-models#vanishing-and-exploding-gradients-derived) for the full chain-rule walkthrough of exactly how and why this happens.
+
+[Sequence Models](/docs/deep-learning/sequence-models) covers RNN/LSTM/GRU/Seq2Seq in depth and ends on their shared limitation: everything up through Seq2Seq+Attention kept **recurrence** — step $t$ can't start until step $t-1$ finishes, so there's no parallelism across time, and training on long sequences is slow no matter how good the gating is. The Transformer's move is to remove recurrence entirely and let every position attend directly to every other position, in parallel, regardless of distance:
+
+<ThemedImage alt="RNN processes tokens strictly sequentially, each step waiting for the previous one; attention gives every position direct, parallel access to every other position" sources={{light: rnnVsAttnLight, dark: rnnVsAttnDark}} />
+
+Trading recurrence for attention doesn't remove cost — it just changes its shape, from *sequential steps* to *quadratic attention cost in sequence length* (more on that in [Common Problems & SOTA Solutions](#common-problems--sota-solutions) below), which turns out to be a much more parallelizable problem to have.
+
+## The Shape of the Architecture
+
+Before any of the individual mechanisms, here's every block named once, top to bottom — nothing that follows should be an unfamiliar shape. An **encoder** (left) builds a full-context representation of the input; a **decoder** (right) generates the output one token at a time, conditioned on that representation via cross-attention. Both stacks repeat $N=6$ times in the base model from the original paper:
+
+<ThemedImage alt="Bird's-eye Transformer architecture: encoder and decoder stacks, each repeating 6 times, connected by cross-attention" sources={{light: archLight, dark: archDark}} />
+
+## Input Embeddings
+
+Getting from raw text to a vector the model can compute with is a short pipeline, and every step in it matters:
+
+1. **Tokenization** — split the raw sentence into tokens. Take "your cat is a lovely cat": word-level tokenization splits it into `["your", "cat", "is", "a", "lovely", "cat"]`. (Real models use subword tokenization like BPE instead of whole words — see [Foundation Model Internals](/docs/llms-genai/foundation-model-internals#tokenization) — but the rest of this pipeline is identical either way.)
+2. **Vocabulary → input IDs** — the model has a fixed **vocabulary**: every token it knows about, each assigned a unique integer ID once, ahead of training, covering the entire training corpus. Tokenization turns text into a sequence of these IDs, e.g. `[71, 1274, 253, 6, 5309, 1274]` — notice **"cat" maps to the same ID (1274) both times it appears**, since it's the same vocabulary entry.
+3. **Embedding lookup** — each input ID indexes one row of a learned **embedding table** of shape (vocab_size, $d_{\text{model}}$) — $d_{\text{model}}=512$ in the base model. The lookup is just indexing, not a computation, and it's the same table at every position in the sequence.
+
+<ThemedImage alt="A token is looked up in a learned embedding table, producing a d_model=512 vector" sources={{light: tokEmbLight, dark: tokEmbDark}} />
+
+Because the lookup only depends on the token, not where it sits in the sentence, both occurrences of "cat" above get back the exact same 512-dimensional vector at this stage — the model has no way yet to tell "cat" (word 2) from "cat" (word 6) apart. That's precisely the gap **positional encoding** (below) exists to close, added directly on top of this embedding before anything else happens to it.
+
+## Self-Attention: Query, Key, Value
+
+Self-attention as a mechanism predates the Transformer — earlier Seq2Seq+Attention models (see [Sequence Models](/docs/deep-learning/sequence-models#sequence-to-sequence-with-attention)) already used an attention mechanism, just between a decoder and a separate encoder. The Transformer's contribution is building an entire architecture out of it, starting with using it *within* one sequence: every token attends to every other token in the *same* sequence, all at once. "All at once" is the key phrase — this is one batched matrix operation ($QK^T$, below) covering the whole sequence in a single step, not a loop over token pairs the way an RNN loops over time steps.
+
+For each token, the model computes three vectors via learned linear projections: a **Query** (what am I looking for), a **Key** (what do I contain, for others to find), and a **Value** (what do I actually offer if selected).
+
+<ThemedImage alt="Self-attention: token embeddings produce Query, Key, and Value, which combine into a weighted output" sources={{light: attentionQkvLight, dark: attentionQkvDark}} />
+
+**A token attends to itself, too**: because $Q$, $K$, and $V$ all come from projecting the *same* input sequence, token $i$'s query gets dotted against token $i$'s own key along with every other token's key — there's nothing that excludes it. That score sits on the diagonal of the $QK^T$ matrix, and it's frequently one of the largest scores in its row (a token's content is often maximally "relevant to itself"), meaning a real, substantial share of each token's output is a copy of its own Value, blended with everyone else's. The worked example below shows this concretely.
+
+Attention scores between token $i$ and token $j$ are computed as $Q_i \cdot K_j$ (a dot product — see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)), scaled and passed through softmax to get weights, which are then used to compute a weighted sum of all Value vectors:
+
+$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) V$$
+
+### Matrix Shapes: Why QKᵀ Produces an n-by-n Grid
+
+Worth tracking the actual matrix shapes once, since everything above is a batch operation across the whole sequence at once, not one token at a time. A sequence of $n$ tokens, each a $d_{\text{model}}$-dimensional vector, is one input matrix of shape $(n, d_{\text{model}})$ — six words at $d_{\text{model}}=512$ is a $(6, 512)$ matrix. $Q$ and $K$ (after their linear projections) keep that same $(n, d_k)$ shape. Transposing $K$ flips it to $(d_k, n)$, and matrix multiplication cancels the shared inner dimension:
+
+$$\underbrace{(n, d_k)}_{Q} \times \underbrace{(d_k, n)}_{K^T} = \underbrace{(n, n)}_{QK^T}$$
+
+$(6, 512) \times (512, 6) \to (6, 6)$: the $512$ cancels, leaving a $6\times 6$ grid — one row per Query token, one column per Key token, exactly the "every token scored against every token" matrix the worked example below computes with real numbers.
+
+Scaling by $\sqrt{d_k}$ and softmax are both shape-preserving (softmax normalizes each row, it doesn't change the matrix's dimensions), so the full formula's shape trace for six 512-dimensional tokens is:
+
+$$\text{softmax}\!\left(\frac{\overbrace{(6,512)}^{Q} \times \overbrace{(512,6)}^{K^T}}{\sqrt{512}}\right)_{(6,6)} \times \overbrace{(6,512)}^{V} = \overbrace{(6,512)}^{\text{output}}$$
+
+The $(6,6)$ attention-weight matrix times the $(6,512)$ Value matrix cancels the shared $6$, landing back at $(6,512)$ — self-attention's output is the *same shape* as its input, one context-mixed vector per token, which is exactly what lets these blocks stack $N$ times without the shape ever changing. That $(6,512)$ output isn't just shape-compatible with the input — each of its 6 rows is now that word's vector carrying real information about its relationship to every other word in the sentence, mixed in proportion to the attention weights computed above.
+
+To be precise about what this single computation is: everything derived in this section — one $Q$, one $K$, one $V$, one $(6,6)$ score matrix — is **self-attention**, run once. **Multi-head attention** (next) is this exact same computation repeated $h$ times in parallel on different learned projections of the input, then concatenated — self-attention is the atomic operation multi-head is built from, not a different mechanism.
+
+### A Full Worked Example
+
+The formula above is compact enough to skim past without really seeing it compute anything. Here it is with real numbers — 3 tokens ("The cat sat"), $d_{\text{model}} = 4$ (far smaller than the paper's 512, purely so every value fits on screen), one head. Every matrix below was computed with `numpy`, not hand-picked to look nice.
+
+**1. Token embeddings** — each token is a length-4 vector:
+
+<ThemedImage alt="Token embeddings for The, cat, sat as 3x4 matrix X" sources={{light: w1Light, dark: w1Dark}} />
+
+**2. Project to Query, Key, Value** — three separate learned linear projections of the same input, $Q = XW_Q$, $K = XW_K$, $V = XW_V$:
+
+<ThemedImage alt="Q, K, V projections computed from X via three separate weight matrices" sources={{light: w2Light, dark: w2Dark}} />
+
+**3. Raw attention scores** — every Query dotted against every Key, $QK^T$:
+
+<ThemedImage alt="Raw attention scores as a 3x3 matrix from Q times K transpose" sources={{light: w3Light, dark: w3Dark}} />
+
+The diagonal of this matrix — 3, 3, 9 — is each token's score against *itself* ($Q_1{\cdot}K_1$, $Q_2{\cdot}K_2$, $Q_3{\cdot}K_3$): "The" attending to "The", "cat" attending to "cat", "sat" attending to "sat". Notice "sat"'s self-score (9) is already the largest value in its whole row before softmax even runs — a concrete instance of the "attends to itself" point above, not just an abstract claim.
+
+**4. Scale by $\sqrt{d_k}$** — divide every score by $\sqrt{4}=2$:
+
+<ThemedImage alt="Scaled attention scores, divided by square root of d_k" sources={{light: w4Light, dark: w4Dark}} />
+
+**5. Softmax** — each row becomes a probability distribution over which tokens to attend to:
+
+<ThemedImage alt="Softmax attention weights, each row summing to 1" sources={{light: w5Light, dark: w5Dark}} />
+
+**6. Weighted sum** — multiply the weights by $V$ to get each token's new, context-mixed representation:
+
+<ThemedImage alt="Final output as weighted sum of Value vectors" sources={{light: w6Light, dark: w6Dark}} />
+
+Read the last two steps as the whole mechanism in miniature: softmax turns raw compatibility scores into a proper probability distribution per token, and the weighted sum is a soft, differentiable lookup — "give me mostly Value 3's content, a little of Value 2's, almost none of Value 1's," instead of a hard, non-differentiable index lookup.
+
+### Two Properties of Self-Attention
+
+**It's permutation-equivariant** (often loosely called "permutation-invariant"): reorder the input tokens, and the output tokens come out reordered by *exactly the same permutation*, with every individual output vector's *value* completely unchanged. Take the worked example's rows for "cat" and "sat" — output vectors $[1.000, 1.547, 1.547, 1.878]$ and $[1.000, 1.665, 1.665, 1.755]$. Swap "cat" and "sat" in the *input*, recompute everything from scratch, and those exact same two vectors come back out — just in swapped positions. This isn't a coincidence: $Q=XW_Q$, $K=XW_K$, $V=XW_V$ are computed **per row, independently** — row $i$ of $Q$ only ever depends on row $i$ of $X$ — so permuting $X$'s rows permutes $Q$, $K$, $V$'s rows identically. That permutes $QK^T$'s rows *and* columns the same way (a Key's column index moves with it), softmax is applied independently per row so it doesn't care what order the rows arrive in, and the final weighted sum for a given token only ever mixes *that token's own row* of attention weights with $V$. Nothing in the mechanism has any notion of "row 2 comes before row 3" — order only enters the model at all because of **positional encoding**, added before any of this runs.
+
+**It requires no parameters of its own**: look again at the formula, $\text{softmax}(QK^T/\sqrt{d_k})\,V$ — there is no learnable weight anywhere inside it. Every parameter in a self-attention *layer* belongs to the linear projections that produce $Q$, $K$, $V$ in the first place ($W_Q$, $W_K$, $W_V$ — and $W^O$ for multi-head, below), not to the attention operation itself. In the simplest possible version of self-attention — scoring the raw embeddings directly against each other, $\text{softmax}(XX^T/\sqrt{d})\,X$, no $Q/K/V$ projections at all — the *entire* interaction between words is driven purely by their embeddings and positional encoding, with zero learned parameters governing how they interact. Adding learned $W_Q$, $W_K$, $W_V$ projections (as derived above) is what lets the model *learn* how tokens should relate to each other, rather than being stuck with a fixed, untrainable notion of similarity.
+
+**A related expectation**: because a token's Query is dotted against its *own* Key among everything else (self-attending, above), and a vector's dot product with itself is often its single largest dot product with anything, the diagonal of $QK^T$ is frequently — though not guaranteed to be — the highest score in its row, as seen concretely with "sat" in the worked example.
+
+### Why Scale by the Square Root of the Key Dimension
+
+The part most explanations wave a hand at instead of deriving. If a Query and Key's components are independent with mean 0 and variance 1, their dot product $q \cdot k = \sum_{i=1}^{d_k} q_i k_i$ is a sum of $d_k$ independent terms — and variance adds across independent terms, so the dot product ends up with **variance $d_k$**, not variance 1. As $d_k$ grows, raw scores grow with it, pushing softmax toward a near-one-hot distribution where gradients through every non-max entry are vanishingly small. Dividing by $\sqrt{d_k}$ renormalizes the variance back down to 1, regardless of dimension:
+
+<ThemedImage alt="Softmax weights before and after sqrt(d_k) scaling, showing the unscaled distribution is more saturated toward one token" sources={{light: w4bLight, dark: w4bDark}} />
+
+Same worked example, same raw scores — softmax without scaling puts 0.705 of its weight on a single token; scaled, that peak drops to 0.547, leaving real, learnable gradient on the other two tokens instead of squeezing them toward zero.
+
+**The result**: every token can directly attend to every other token in the sequence, in a single step — no sequential bottleneck like RNNs had, and no distance penalty for far-apart tokens.
+
+## Multi-Head Attention
+
+Instead of one attention computation, run several in parallel ("heads"), each with its own learned Q/K/V projections, then concatenate the results. Different heads tend to specialize — one might track syntactic relationships, another long-range coreference, another local patterns. $d_{\text{model}}=512$ splits into $h=8$ heads of $d_k=64$ each; every head runs the full scaled-dot-product mechanism above independently, and the outputs are concatenated back to 512 dimensions and projected once more through $W^O$:
+
+<ThemedImage alt="Multi-head attention: d_model splits into 8 parallel heads, each running attention independently, concatenated and projected through W_O" sources={{light: multiHeadLight, dark: multiHeadDark}} />
+
+### How the Split Actually Happens
+
+Start with $Q = XW_Q$, the same full projection derived earlier — shape $(n, d_{\text{model}})$, one 512-wide vector per token, call it $Q'$ to match the "project, then split" order of operations. Rather than 8 separate small $(d_{\text{model}}, d_k)$ projection matrices, one per head, $Q'$ is simply **split along its feature dimension** into 8 equal chunks of width $d_k=64$ each — head 1 gets columns 0-63, head 2 gets columns 64-127, and so on. $K$ and $V$ are split the identical way. This single-big-matrix-then-split is mathematically equivalent to having 8 separate small projections (splitting the output of one big matmul into column blocks gives the same numbers as multiplying by each of those column blocks separately) but is one efficient batched operation instead of 8 small ones — which is also why real implementations reshape rather than loop.
+
+### Attention() vs. head$_i$: the Same Function, Different Inputs
+
+Worth being precise about the difference between the generic $\text{Attention}(Q,K,V)$ defined earlier and $\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)$ from the paper's Equation 2: **they're the exact same function** — $\text{Attention}(\cdot,\cdot,\cdot) = \text{softmax}(\cdot\,\cdot^T/\sqrt{d_k})\cdot$, unchanged. What differs is only *what gets passed in*. The generic version takes whatever $Q$, $K$, $V$ you hand it; $\text{head}_i$ calls that identical function, but first passes $Q$, $K$, $V$ through head $i$'s own slice of the projection ($QW_i^Q$ instead of raw $Q$) — every head reuses one primitive operation, on 8 different projected views of the same input.
+
+$$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_8)\,W^O$$
+
+**Putting it together, in order**: project $Q$, $K$, $V$ once each (full $d_{\text{model}}$ width) → split each into 8 heads along the feature dimension → run the identical $\text{Attention}()$ primitive independently per head, in parallel → concatenate the 8 outputs back to $d_{\text{model}}$ width → project once more through $W^O$ to mix information across heads before it leaves the block.
+
+**Grouped-Query Attention (GQA)**: a memory/speed optimization where multiple query heads share the same key/value heads, reducing the size of the KV cache (below) at inference time with minimal quality loss — used in most modern production LLMs.
+
+Type your own sentence below and watch real $QK^T/\sqrt{d_k} \to \text{softmax}$ attention weights compute live — click any row token to see exactly how much attention it pays to every other token, and switch heads to see the "different heads specialize differently" claim above actually produce different attention patterns for the same sentence.
+
+<AttentionStepThrough />
+
+*The embeddings and Q/K/V weights here are deterministic demo values, not a trained model's — this shows the real computation attention performs, not what a trained model has learned to attend to. See [Foundation Model Internals](/docs/llms-genai/foundation-model-internals#tokenization) for how real tokenization (subword BPE) differs from this component's simpler word-level splitting.*
+
+## Masking
+
+Two unrelated reasons to block certain positions from attending to certain others, both implemented the same way: set the blocked score to $-\infty$ before softmax (`masked_fill(condition, -inf)`), so it becomes exactly 0 probability after softmax.
+
+**Why $-\infty$ becomes exactly 0, precisely**: softmax turns a row of scores into probabilities via $\text{softmax}(z)_i = e^{z_i} / \sum_j e^{z_j}$. Set a blocked position's score $z_i = -\infty$, and its numerator is $e^{-\infty}$ — and $e^z \to 0$ as $z \to -\infty$ (a negative exponent shrinks $e^z$ toward zero as it grows more negative, with no floor), so $e^{-\infty}=0$ exactly, not just very small. That position's numerator vanishes, so its output probability is $0/(\text{sum}) = 0$ exactly — a hard, mathematically clean zero, not an approximation — and it also contributes exactly $0$ to the denominator sum, so it has zero effect on every *other* position's probability either. In practice, implementations use a very large negative finite number (like `-1e9`) rather than literal infinity, purely to avoid `NaN` from computing $-\infty - (-\infty)$ during softmax's numerical-stability subtraction step — but $e^{-1e9}$ underflows to exactly $0.0$ in floating point anyway, so the effect is identical.
+
+**Padding mask** — sequences in a batch are padded to a common length; a real token should never attend to a `<pad>` placeholder, since it carries no information:
+
+<ThemedImage alt="Padding mask: real tokens attend to real tokens, never to the pad token" sources={{light: padMaskLight, dark: padMaskDark}} />
+
+**Causal (look-ahead) mask** — the decoder generates one token at a time and must never see the future token it's being trained to predict, so each position can only attend to itself and earlier positions:
+
+<ThemedImage alt="Causal mask: each query position can only attend to itself and earlier key positions, upper triangle blocked" sources={{light: causalMaskLight, dark: causalMaskDark}} />
+
+This is exactly what "causal (masked) self-attention" means in the GPT-lineage section [below](#decoder-only-the-gpt-lineage) — the same mechanism, applied inside the decoder's self-attention specifically.
+
+## Cross-Attention
+
+In encoder-decoder architectures (like the original Transformer for translation), the decoder's queries attend to the *encoder's* keys and values rather than its own — letting the decoder pull relevant information from the full input sequence at every generation step. This is the one genuinely new idea beyond self-attention, and the direct, more powerful successor to the sequence-to-sequence bottleneck problem from [Sequence Models](/docs/deep-learning/sequence-models):
+
+<ThemedImage alt="Self-attention draws Q, K, V from one source; cross-attention draws Q from the decoder and K, V from the encoder output" sources={{light: crossAttnLight, dark: crossAttnDark}} />
+
+## Positional Encoding
+
+The embedding lookup above gives every occurrence of a given token the *identical* vector, regardless of where it sits in the sentence — attention itself compounds this, since $QK^T$ scores every pair of tokens by content alone and has no inherent sense of order; shuffle the tokens and $QK^T$ produces the same set of pairwise scores, just relabeled. **Positional encoding** is the fix: inject a position-dependent signal so the model can tell "cat" (word 2) apart from "cat" (word 6), and — just as importantly — learn to treat nearby words as *close* and distant words as *distant*, the same intuitive notion of proximity a sentence actually has.
+
+- **Absolute (sinusoidal)**: add a fixed, deterministic pattern based on position directly to each token's embedding.
+- **RoPE (Rotary Position Embedding)**: instead of adding a position signal, *rotates* the Q and K vectors by an angle proportional to position — has the elegant property that the dot product between two rotated vectors naturally encodes their *relative* distance. This is the dominant choice in modern LLMs because it generalizes better to sequence lengths longer than what was seen in training.
+
+The original paper's sinusoidal formula — one special, fixed vector of length $d_{\text{model}}=512$ per position, computed once (not learned, not data-dependent) and simply added to that position's token embedding:
+
+$$PE(pos, 2i) = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right) \qquad PE(pos, 2i+1) = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)$$
+
+$pos$ is the token's position in the sequence (0, 1, 2, ...) and $2i$/$2i{+}1$ are the even/odd dimension indices within the 512-length vector — so half the dimensions get a sine, half get a cosine, each pair at a different frequency set by $10000^{2i/d_{\text{model}}}$. Every position uses this exact same formula; nothing about it depends on which sentence or which words are being encoded, only on the position and dimension indices — which is also why it can be computed once, up front, and reused for every input.
+
+Plotted for real — a handful of dimensions across 100 positions, each a sine/cosine wave at a different frequency:
+
+<ThemedImage alt="Positional encoding sinusoids at different frequencies across sequence position" sources={{light: posencSinLight, dark: posencSinDark}} />
+
+**Why sine and cosine specifically**: intuitively, they're a natural choice for encoding *pattern* — periodic, smoothly repeating functions that never blow up (always bounded in $[-1,1]$, unlike, say, just using $pos$ itself, which would grow unboundedly with sequence length and dominate the embedding). More precisely: for any fixed offset $k$, $PE(pos+k)$ can be written as a *linear function* of $PE(pos)$ — the encoding makes relative position linearly recoverable, which is exactly what lets attention learn to use it. Stacking every dimension into one matrix shows the pattern the formula produces: low dimensions oscillate fast (fine position detail), high dimensions oscillate slow (coarse position), so every position gets a unique fingerprint across the full vector:
+
+<ThemedImage alt="The full positional encoding matrix as a heatmap, low dimensions oscillating fast and high dimensions slow" sources={{light: posencHeatLight, dark: posencHeatDark}} />
+
+## The Full Transformer Block
+
+Each block is: **self-attention → add & normalize → feed-forward network → add & normalize** again.
+
+**Add & Norm**: the sublayer's output is added back to its own input — a residual/skip connection, letting gradients flow straight through depth without having to pass through every sublayer's transformation — then normalized. The original paper places this *after* the sublayer (post-norm): $\text{LayerNorm}(x + \text{Sublayer}(x))$:
+
+<ThemedImage alt="Add and Norm: residual connection adds the sublayer's input back to its output, then LayerNorm normalizes" sources={{light: addNormLight, dark: addNormDark}} />
+
+**Position-wise feed-forward network**: two linear layers with a ReLU between, applied identically and independently to every position. Attention mixes information *across* tokens; the FFN adds a non-linear transform *per token* afterward:
+
+$$\text{FFN}(x) = \max(0, xW_1+b_1)W_2+b_2$$
+
+<ThemedImage alt="Feed-forward network: linear layer expanding to d_ff=2048, ReLU, linear layer projecting back to 512" sources={{light: ffnLight, dark: ffnDark}} />
+
+Put together, that's one full encoder layer — self-attention, Add & Norm, feed-forward, Add & Norm — and $N=6$ identical layers (independently learned weights each) are stacked, every layer's output feeding the next layer's input:
+
+<ThemedImage alt="One assembled encoder layer: self-attention, add and norm, feed forward, add and norm, stacked 6 times" sources={{light: encLayerLight, dark: encLayerDark}} />
+
+The decoder layer adds one extra sublayer in the middle — masked self-attention, then cross-attention (above), then feed-forward, each followed by Add & Norm — also stacked $N=6$ times. At the very top of the decoder stack, the final output vector is projected through one more linear layer into vocabulary-sized logits, then softmax turns those into a probability distribution over the next token:
+
+<ThemedImage alt="Final linear and softmax: decoder output projected to vocabulary-sized logits, softmax gives a next-token probability distribution" sources={{light: finalSoftmaxLight, dark: finalSoftmaxDark}} />
+
+Stack many of these blocks, and you have GPT-style decoder-only models (predict next token, used by essentially every modern LLM), or encoder-only models (BERT-style, used for embeddings/classification), or encoder-decoder models (T5-style, used for translation/summarization).
+
+## Vision Transformers (ViT)
+
+Split an image into fixed-size patches, treat each patch like a "token" (via a linear projection), add positional encoding, and feed the sequence through a standard Transformer encoder. Proof that attention isn't text-specific — it's a general-purpose mechanism for relating elements of *any* sequence, which is also why multimodal models can mix image patches and text tokens in a single attention computation. See [Vision Architectures](/docs/deep-learning/vision-architectures) for ViT's variants (DeiT, Swin) and how vision Transformers get used for detection and segmentation, not just classification.
+
+## The Three Transformer Lineages
+
+The original 2017 Transformer had both an encoder and a decoder (built for translation). Three families since then each kept a different piece, because different tasks need different pieces:
+
+### Encoder-only: the BERT lineage
+
+Keeps only the encoder — every token attends to every other token *bidirectionally* (no masking), producing rich contextual representations rather than generating text. Trained with **Masked Language Modeling** (randomly mask tokens, predict them from both left and right context) rather than next-token prediction.
+
+- **BERT** (2018) — the original: bidirectional encoder pretraining, then fine-tuned per downstream task (classification, NER, QA). Made "pretrain then fine-tune" the standard NLP recipe.
+- **RoBERTa** — BERT with a more careful, longer training recipe (more data, bigger batches, no next-sentence-prediction objective) — showed BERT itself was meaningfully undertrained, not that the architecture needed to change.
+- **ALBERT** — shrinks BERT's parameter count via factorized embeddings and cross-layer parameter sharing, trading some capacity for a much smaller footprint.
+- **DistilBERT** — a smaller BERT trained via **knowledge distillation** (a compact "student" model trained to match a larger "teacher" model's outputs) — roughly BERT's accuracy at a fraction of the size and latency.
+- **SBERT (Sentence-BERT)** — fine-tunes BERT with a contrastive/siamese objective specifically to produce good *sentence-level* embeddings for similarity/retrieval — the direct ancestor of today's embedding models used in RAG (see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns)).
+
+Encoder-only models are the right choice whenever you need a representation *of* text (classification, retrieval, embeddings) rather than *generation of* text.
+
+### Decoder-only: the GPT lineage
+
+Keeps only the decoder, with **causal (masked) self-attention** — each token can only attend to itself and earlier tokens, never future ones, matching how text is actually generated one token at a time. Trained with plain next-token prediction on raw text at massive scale.
+
+- **GPT / GPT-2 / GPT-3** — each generation scaled up parameters and data, with GPT-3 demonstrating that scale alone produces qualitatively new abilities (few-shot in-context learning without any fine-tuning).
+- **GPT-4 and beyond, LLaMA, Mistral, Claude's underlying architecture** — all decoder-only Transformers at this point; differences between modern frontier models are mostly in data quality/scale, training technique (RLHF/RLAIF, see [LLMs & GenAI](/docs/llms-genai/roadmap)), and architectural refinements (RoPE, GQA, different normalization) layered on the same decoder-only skeleton.
+
+Decoder-only is the dominant architecture for essentially all modern general-purpose LLMs, because a single next-token objective, trained at sufficient scale, turns out to subsume translation, summarization, QA, and reasoning as special cases of "predict what comes next."
+
+### Encoder-decoder: the T5 lineage
+
+Keeps both halves, connected by cross-attention (above) — an encoder builds a full-context representation of the input, a decoder generates output conditioned on it. The natural fit for tasks that transform one sequence into a genuinely different one.
+
+- **T5 (Text-to-Text Transfer Transformer)** — reframes *every* NLP task (classification, translation, summarization) as text-to-text: the input is a text prompt describing the task, the output is text — a single architecture and training objective for tasks that previously needed task-specific heads.
+- **BART** — pretrained as a denoising autoencoder (corrupt text with various noise functions, reconstruct the original) — particularly strong for summarization and other generation tasks that start from an existing document.
+- **Original Transformer (2017)** and **modern machine translation systems** remain the clearest encoder-decoder use case: translate French *into* English is genuinely "transform sequence A into a related but different sequence B," which is exactly what cross-attention was built for.
+
+Encoder-decoder models have become less common for general-purpose chat/instruction-following (decoder-only dominates there), but remain a strong choice for well-defined sequence-to-sequence tasks with a clear input/output split.
+
+## Common Problems & SOTA Solutions
+
+- **Vanishing gradients in deep stacks** → residual connections + normalization (inherited from [Training Deep Networks](/docs/deep-learning/training-deep-networks))
+- **Quadratic cost of self-attention** ($O(n^2)$ in sequence length, see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures)) → **Flash Attention** (a GPU-memory-aware exact implementation that avoids materializing the full attention matrix), sparse/linear attention variants for very long contexts
+- **Growing KV cache during long generation** → Grouped-Query Attention, Paged Attention (memory-efficient KV cache management, covered further in [LLMs & GenAI](/docs/llms-genai/roadmap))
+- **Slow inference** → quantization, knowledge distillation, pruning
+- **Training instability at scale** → careful initialization, warmup schedules, gradient clipping, mixed precision
+
+Next: [Vision Architectures](/docs/deep-learning/vision-architectures) — detection, segmentation, and the ViT variants built for them; then on to [LLMs & GenAI](/docs/llms-genai/roadmap) for where this architecture becomes ChatGPT-class systems.

@@ -1,0 +1,73 @@
+---
+title: "Activation Functions, In Full Depth"
+sidebar_position: 3.5
+---
+
+import __migratedImg0 from './img/activation-functions.png';
+
+
+# Activation Functions, In Full Depth
+
+[Neural Network Fundamentals](/docs/deep-learning/neural-network-fundamentals) explained *why* nonlinear activations are necessary at all — without one, stacking linear layers collapses into a single linear function, no matter how deep. This page catalogs the actual functions used in practice, their tradeoffs, and why the field's default choice has shifted over time.
+
+<img src={__migratedImg0} alt="Every major activation function's shape, side by side" style={{maxWidth: '100%'}} />
+
+## The Core Tradeoffs to Judge Any Activation By
+
+- **Saturation**: does the function flatten out (near-zero gradient) for large inputs? Saturating functions cause vanishing gradients in deep networks (see [Training Deep Networks](/docs/deep-learning/training-deep-networks#vanishing--exploding-gradients)).
+- **Zero-centered output**: is the output centered around 0, or always positive? Non-zero-centered activations (like sigmoid) can slow convergence because gradients on the next layer's weights end up all-same-sign.
+- **Computational cost**: a cheap function (ReLU: one comparison) matters when it's evaluated billions of times per training step.
+- **Dead units**: can the function get permanently stuck outputting zero (or a constant) for some inputs, with zero gradient to ever recover?
+
+## Historical / Saturating Functions
+
+**Binary Step**: $f(z) = 1$ if $z \geq 0$ else $0$. Not differentiable at zero and has zero gradient everywhere else — unusable for gradient-based training. Included only because it's the original (1950s-era) perceptron activation, conceptually the ancestor of everything below.
+
+**Sigmoid**: $\sigma(z) = \frac{1}{1+e^{-z}}$ (see [Logistic Regression](/docs/machine-learning/logistic-regression#the-sigmoid-function) for the full derivation). Smooth, output in $(0,1)$ — but saturates hard at both ends (gradient $\to 0$ for $|z|$ large) and isn't zero-centered. Rarely used in hidden layers today; still standard for a binary classifier's *output* layer, where you specifically want a probability.
+
+**Tanh**: $\tanh(z) = \frac{e^z - e^{-z}}{e^z+e^{-z}}$, output in $(-1,1)$. Same saturation problem as sigmoid, but zero-centered — a real improvement, which made it the default hidden-layer activation before ReLU took over.
+
+## The ReLU Family
+
+**ReLU** (Rectified Linear Unit): $f(z) = \max(0, z)$. The modern default: trivially cheap, doesn't saturate for $z>0$, and empirically trains faster than sigmoid/tanh in deep networks. Its flaw: the **dying ReLU problem** — if a neuron's weights drift so its input is always negative, its output and gradient are permanently 0, and it can never recover via gradient descent (the gradient through it is exactly 0, so no update ever fixes it).
+
+**Leaky ReLU**: $f(z) = z$ if $z>0$ else $\alpha z$ (small $\alpha$, e.g. 0.01) — allows a small negative-side gradient specifically to fix dying ReLU, at negligible extra cost.
+
+**PReLU** (Parametric ReLU): same shape as Leaky ReLU, but $\alpha$ is a *learned* parameter rather than fixed — lets the network decide per-channel how much negative-side leak is useful.
+
+**ELU** (Exponential Linear Unit): $f(z) = z$ if $z>0$ else $\alpha(e^z - 1)$. Smoothly saturates on the negative side (rather than Leaky ReLU's straight line) toward $-\alpha$, which pushes mean activations closer to zero — empirically speeds up convergence — at the cost of computing an exponential.
+
+**SELU** (Scaled ELU): ELU with specific fixed constants ($\alpha \approx 1.6733$, scale $\approx 1.0507$) chosen so that, under specific initialization and architecture conditions, activations self-normalize (maintain roughly zero mean, unit variance) across layers without needing explicit BatchNorm/LayerNorm.
+
+## The Modern Default: Smooth Gated Units
+
+**GELU** (Gaussian Error Linear Unit): $f(z) = z \cdot \Phi(z)$, where $\Phi$ is the standard normal CDF — intuitively, "multiply the input by the probability a standard Gaussian is less than the input." Smooth everywhere (no sharp elbow like ReLU), slightly negative for small negative $z$, then approaches linear for large $z$. **The standard activation in Transformers** (BERT, GPT-family, and most modern LLMs use GELU in their feed-forward blocks — see [Attention & Transformers](/docs/deep-learning/attention-transformers#the-full-transformer-block)) because the smoothness empirically helps optimization at scale compared to ReLU's hard kink.
+
+**Swish / SiLU**: $f(z) = z \cdot \sigma(z)$ — same "gate the input by a sigmoid of itself" idea as GELU, using the exact sigmoid instead of the Gaussian CDF. Very similar shape and behavior to GELU in practice; the choice between them is often more about convention/library defaults than a meaningful performance difference.
+
+**Mish**: $f(z) = z \cdot \tanh(\text{softplus}(z))$ — another smooth, self-gated activation in the same family as GELU/Swish, used in some modern CNN architectures (e.g. YOLO variants).
+
+## Auxiliary Functions
+
+**Softplus**: $f(z) = \log(1+e^z)$ — a smooth approximation of ReLU (no sharp corner at 0), used as a building block inside Mish above and occasionally as an activation itself when smoothness at zero specifically matters.
+
+**Softsign**: $f(z) = \frac{z}{1+|z|}$ — a cheaper (no exponential), zero-centered alternative to tanh with similar S-shape but different tail behavior (approaches ±1 polynomially rather than exponentially).
+
+**Identity**: $f(z) = z$ — used at a regression output layer (where you want the raw linear value, not squashed into a bounded range — see [Linear Regression](/docs/machine-learning/linear-regression)), and conceptually as the "no activation" baseline.
+
+**Softmax**: unlike every function above, softmax operates on a *whole vector* at once, not element-by-element: $\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_j e^{z_j}}$ — converts a vector of raw scores into a probability distribution that sums to 1. This is the standard output-layer activation for multi-class classification (see [Logistic Regression — Softmax Regression](/docs/machine-learning/logistic-regression#multi-class-softmax-regression)) and is exactly what turns an LLM's raw output scores into a probability distribution over the next token.
+
+## Quick Reference
+
+| Function | Range | Zero-centered? | Saturates? | Typical use |
+|---|---|---|---|---|
+| Sigmoid | (0, 1) | No | Both ends | Binary output layer |
+| Tanh | (-1, 1) | Yes | Both ends | Legacy RNN hidden layers |
+| ReLU | [0, ∞) | No | Negative side only | CNN hidden layers (classic default) |
+| Leaky ReLU / PReLU | (-∞, ∞) | Roughly | No | Fixing dying ReLU |
+| ELU / SELU | (-α, ∞) | Roughly | Negative side (smoothly) | Self-normalizing nets |
+| GELU | (-~0.17, ∞) | Roughly | No | Transformers (default) |
+| Swish / SiLU | (-~0.28, ∞) | Roughly | No | Transformers, modern CNNs |
+| Softmax | (0,1), sums to 1 | N/A (vector) | N/A | Multi-class output layer |
+
+Next: [Loss Functions](/docs/deep-learning/loss-functions) — what each of these activations gets paired with to actually train a network.
