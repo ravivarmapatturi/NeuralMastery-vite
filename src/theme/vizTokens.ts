@@ -64,6 +64,13 @@ export const SPACING = { xs: 8, sm: 16, md: 24, lg: 40, xl: 64 };
 export const FONT_FAMILY =
   'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
 
+/** A small, consistent per-feature color palette -- used anywhere a chart
+ * needs to distinguish up to 4 named features by color (currently Ridge and
+ * Lasso Regression Studios' regularization-path charts). */
+export function getFeatureColors(t: VizTokens): string[] {
+  return [t.accentPrimary, t.accentSecondary, t.accentWarn, t.accentDanger];
+}
+
 export function useVizTokens(): VizTokens {
   const { colorMode } = useColorMode();
   return colorMode === 'dark' ? DARK : LIGHT;
