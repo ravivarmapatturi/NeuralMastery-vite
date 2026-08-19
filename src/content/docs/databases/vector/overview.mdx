@@ -4,9 +4,14 @@ sidebar_position: 3
 ---
 
 
+import EmbeddingSimilaritySearchDiagram from '../../../../viz/diagrams/EmbeddingSimilaritySearchDiagram';
+import HnswSearchDiagram from '../../../../viz/diagrams/HnswSearchDiagram';
+import AnnVsExactTradeoffDiagram from '../../../../viz/diagrams/AnnVsExactTradeoffDiagram';
+import VectorDbToolComparisonDiagram from '../../../../viz/diagrams/VectorDbToolComparisonDiagram';
+
 # Vector Databases
 
-Purpose-built for the exact operation RAG and semantic search depend on: given a query vector, find the most similar vectors among millions or billions, fast.
+Purpose-built for the exact operation RAG and semantic search depend on: given a query vector, find the most similar vectors among millions or billions, fast. [RAG](/docs/llms-genai/rag) already covers the *pipeline* this sits inside (chunking, embedding, retrieval, generation) — this page is about the database mechanics underneath the "retrieve" step specifically.
 
 ## What a Vector Database Actually Stores and Searches
 
@@ -18,7 +23,9 @@ Every item (a document chunk, an image, a product) is represented as an embeddin
 - **Dot product**: similar to cosine but sensitive to magnitude too — used when the embedding model was specifically trained with dot-product similarity in mind.
 - **Euclidean distance**: straight-line distance — more common for non-text embeddings (e.g. some image or audio embeddings).
 
-Which metric to use is typically dictated by how the embedding model itself was trained, not a free choice at query time.
+Which metric to use is typically dictated by how the embedding model itself was trained, not a free choice at query time — but which points end up "nearest" genuinely depends on the metric, not just the data:
+
+<EmbeddingSimilaritySearchDiagram />
 
 ## Indexing Algorithms
 
@@ -26,9 +33,25 @@ Which metric to use is typically dictated by how the embedding model itself was 
 - **IVF (Inverted File Index)**: clusters vectors into buckets ("cells") ahead of time; at query time, only search the most relevant few buckets instead of the entire dataset.
 - **Product Quantization**: compresses vectors by splitting them into sub-vectors and quantizing each independently, trading some accuracy for a large reduction in memory footprint — often combined with IVF for very large-scale deployments (billions of vectors).
 
+### How HNSW Search Actually Works
+
+The layer structure is the whole trick: every vector lives in the bottom layer, but only a shrinking fraction of vectors also exist in each layer above it — so the top layer is a sparse "highway" connecting distant regions of the space, and each layer down adds finer, more local connections. A search starts at a fixed entry point in the top layer, greedily walks toward the query (moving to whichever neighbor is closer, one hop at a time) until no neighbor helps anymore, then drops down one layer and repeats from there — narrowing in on the answer the same way you'd navigate a highway system down to city streets down to the exact address, rather than checking every address in the country:
+
+<HnswSearchDiagram />
+
+### The Recall/Speed/Memory Tradeoff
+
+"Approximate" is a real, tunable knob, not a fixed penalty — searching more candidates (widening how much of the graph a query explores before stopping) increases the odds of finding the *true* nearest neighbors (recall) at the cost of latency, with diminishing returns as you approach exhaustive search:
+
+<AnnVsExactTradeoffDiagram />
+
+Product Quantization sits on the memory axis of this same tradeoff: compressing vectors trades some accuracy for dramatically less RAM per vector, which is what makes indexing billions of vectors in memory feasible at all.
+
 ## ChromaDB and Beyond
 
-**ChromaDB** is a lightweight, embedded vector database — easy to run locally with no separate server, making it a common choice for prototyping and smaller-scale RAG applications. For production at larger scale, dedicated services (Pinecone, Weaviate, Milvus) or **pgvector** (a vector extension for Postgres, letting you keep vectors alongside your existing relational data — see [Relational Databases](/docs/databases/relational/overview)) are common choices. The right pick depends on scale, whether you want a managed service vs. self-hosted, and whether you'd rather keep vectors in the same database as your other structured data.
+<VectorDbToolComparisonDiagram />
+
+The right pick depends on scale, whether you want a managed service vs. self-hosted, and whether you'd rather keep vectors in the same database as your other structured data — see [PostgreSQL — pgvector and the AI Stack](/docs/databases/relational/postgresql#pgvector-and-the-ai-stack) for that last option in depth.
 
 ## Hybrid Search
 

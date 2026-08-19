@@ -4,27 +4,40 @@ sidebar_position: 4
 ---
 
 
+import PropertyGraphDiagram from '../../../../viz/diagrams/PropertyGraphDiagram';
+import CypherPatternMatchDiagram from '../../../../viz/diagrams/CypherPatternMatchDiagram';
+import RelationalVsGraphTraversalDiagram from '../../../../viz/diagrams/RelationalVsGraphTraversalDiagram';
+import DatabaseChoiceDecisionDiagram from '../../../../viz/diagrams/DatabaseChoiceDecisionDiagram';
+
 # Graph Databases (Neo4j)
 
-When the *relationships* between things matter as much as the things themselves, a graph database models that directly, instead of simulating it with foreign keys and joins.
+When the *relationships* between things matter as much as the things themselves, a graph database models that directly, instead of simulating it with foreign keys and joins. This page is about **querying and traversing** an existing graph of real entities — a different problem from [Graph ML Fundamentals](/docs/graph-ml/graph-ml-fundamentals), which is about *learning* from graph structure (node embeddings, GNNs, predicting a missing edge). A graph database answers "what is connected to what, right now"; graph ML answers "what does this graph's structure imply about a node/edge that isn't directly stored."
 
 ## The Property Graph Model
 
 - **Nodes**: entities (a person, a document, a product), each with properties (key-value attributes).
 - **Edges**: relationships between nodes (e.g. "WROTE," "CITES," "PURCHASED"), which can also carry their own properties (e.g. a "PURCHASED" edge might have a `date` and `amount`).
 
+<PropertyGraphDiagram />
+
 Unlike a relational database, where a multi-hop relationship requires a chain of joins that gets slower with each additional hop, graph databases store relationships as first-class citizens — traversing from one node to its neighbors (and their neighbors) is a fast, local operation regardless of how large the overall graph is.
+
+<RelationalVsGraphTraversalDiagram />
 
 ## Neo4j and Cypher
 
-Neo4j is the most widely used graph database, queried with **Cypher**, a declarative query language designed to read like a visual description of the pattern you're looking for — e.g. matching "a person who wrote a document that cites another document written by a different person" reads almost like an ASCII-art sketch of that pattern.
+Neo4j is the most widely used graph database, queried with **Cypher**, a declarative query language designed to read like a visual description of the pattern you're looking for — e.g. matching "a person who wrote a document that cites another document written by a different person" reads almost like an ASCII-art sketch of that pattern:
+
+<CypherPatternMatchDiagram />
 
 ## When a Graph Model Beats Relational
 
 Graph databases shine specifically for **highly connected data and multi-hop queries**: social networks (friends-of-friends), fraud detection (tracing chains of related transactions/accounts), recommendation via relationship paths ("people who bought what you bought also bought..."), and knowledge graphs. If your queries are mostly "get me this entity and its direct attributes," relational is simpler and faster; if your queries are mostly "find all the ways these entities are connected," a graph model is a much more natural fit — see [Relational Databases](/docs/databases/relational/overview) for the comparison from the other side.
 
+<DatabaseChoiceDecisionDiagram />
+
 ## GraphRAG
 
-The most directly relevant application to the rest of this curriculum: standard RAG retrieves isolated document chunks, which struggles when an answer requires connecting facts scattered across multiple documents (multi-hop reasoning). **GraphRAG** first builds a knowledge graph from the source documents (extracting entities and their relationships), and retrieval can then traverse those relationships directly — answering "how are X and Y connected" in a way flat vector similarity search structurally cannot. See [RAG — GraphRAG](/docs/llms-genai/rag#graphrag) for the full retrieval-pipeline context.
+The most directly relevant application to the rest of this curriculum: standard RAG retrieves isolated document chunks, which struggles when an answer requires connecting facts scattered across multiple documents (multi-hop reasoning). **GraphRAG** first builds a knowledge graph from the source documents (extracting entities and their relationships), and retrieval can then traverse those relationships directly — answering "how are X and Y connected" in a way flat [vector similarity search](/docs/databases/vector/overview) structurally cannot. See [RAG — GraphRAG](/docs/llms-genai/rag#graphrag) for the full retrieval-pipeline context.
 
 Databases section complete. Next: [Frameworks](/docs/frameworks/roadmap) — the concrete tools (PyTorch, LangChain, MCP SDKs) used to build with everything covered so far.
