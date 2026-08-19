@@ -4,34 +4,117 @@ sidebar_position: 3
 ---
 
 
+import TreeImportanceDiagram from '../../../viz/diagrams/TreeImportanceDiagram';
+import PermutationImportanceDiagram from '../../../viz/diagrams/PermutationImportanceDiagram';
+import ShapleyCoalitionDiagram from '../../../viz/diagrams/ShapleyCoalitionDiagram';
+import ShapWaterfallDiagram from '../../../viz/diagrams/ShapWaterfallDiagram';
+import LimeLocalApproxDiagram from '../../../viz/diagrams/LimeLocalApproxDiagram';
+import LimeStabilityDiagram from '../../../viz/diagrams/LimeStabilityDiagram';
+import InterpretabilityMethodChoiceDiagram from '../../../viz/diagrams/InterpretabilityMethodChoiceDiagram';
+
 # Classical Interpretability: Feature Importance, SHAP & LIME
 
-Every method here answers "why did the model predict this" for models where you either have direct access to internal structure (a tree) or don't need it at all (fully model-agnostic, black-box methods) — the deep-learning-specific tools (attention, activations, circuits) come next.
+Every method on this page answers the same question — "why did the model predict this" — for models where you either have direct access to internal structure (a tree) or don't need any at all (fully model-agnostic, black-box methods). The deep-learning-specific tools (attention, activations, circuits) come next, in [Deep Learning & LLM Interpretability](/docs/interpretability/deep-learning-and-llm-interpretability).
+
+## Intuition: Two Different Questions, Answered Two Different Ways
+
+There's a split worth internalizing before any formula: **global** methods answer "what does this model rely on, overall, across every prediction it makes" — built-in tree importance and permutation importance both live here. **Local** methods answer "why did the model produce *this specific* prediction, for *this specific* input" — SHAP and LIME both live here, and both happen to also produce a *global* picture if you average their local attributions across many predictions, which is part of why they've displaced the older global-only methods for anything that matters.
+
+The other axis is **model-agnostic vs. model-specific**: built-in tree importance only works because a tree exposes its internal split structure directly; everything else on this page — permutation importance, SHAP, LIME — treats the model as a black box that only needs to support "give me a prediction for this input," which is what makes them portable across a random forest, a neural network, or anything else.
 
 ## Built-In Feature Importance (Tree-Based Models)
 
-[Random Forest — Feature Importance](/docs/machine-learning/random-forest#feature-importance) covers this in depth: sum the impurity reduction a feature produces every time it's used to split, across every tree, and normalize. Fast (falls out of training essentially for free) and a reasonable first check, but biased toward high-cardinality/continuous features — a known limitation worth remembering before treating it as definitive.
+[Random Forest — Feature Importance](/docs/machine-learning/random-forest#feature-importance) covers this in depth: every time a feature is used to split a node, that split reduces the node's **Gini impurity** (or entropy) — a measure of how mixed the class labels are at that node. Sum each feature's impurity reduction across every split where it's used, weighted by how many samples pass through that node, and normalize. It's fast — it falls out of training essentially for free, no extra computation needed — and a reasonable first check, but it's biased toward high-cardinality/continuous features (they have more possible split points to exploit) and it only reflects *training-set* structure, not necessarily what generalizes.
+
+Click through the tree below — a real 3-split toy tree, with Gini impurity computed live from each node's actual class counts, feeding directly into the aggregated importance bars underneath:
+
+<TreeImportanceDiagram />
+
+Notice `income` dominates the importance ranking even though `age` produces a comparable per-split impurity reduction (0.16 vs. 0.19) — the difference is *where* each split sits. `income` is the root split, so its reduction gets weighted by all 100 samples; `credit_score` sits at a deeper node with only 40 samples reaching it, so its contribution barely registers even though it's a real, meaningful split. This weighting-by-sample-count is exactly why a tree can have a feature that's clearly useful deep in its structure and still show up as nearly zero importance overall.
 
 ## Permutation Importance
 
-A model-agnostic alternative that fixes tree importance's bias: for each feature, randomly shuffle its values in the dataset (breaking any real relationship between that feature and the target while leaving every other feature untouched), and measure how much the model's performance drops. A feature the model genuinely relies on causes a large performance drop when shuffled; a feature the model ignores causes almost none. Because it only requires the ability to make predictions and shuffle a column, it works identically for a tree ensemble, a neural network, or any other model type — the "model-agnostic" property every method below shares.
+A model-agnostic alternative that fixes tree importance's bias: for each feature, randomly shuffle its values across the dataset — breaking any real relationship between that feature and the target while leaving every other feature untouched — and measure how much the model's performance drops. A feature the model genuinely relies on causes a large performance drop when shuffled; a feature the model ignores (or never learned to use, even if it's correlated with the target) causes almost none. Because it only requires the ability to make predictions and shuffle a column, it works identically for a tree ensemble, a neural network, or any other model type — the "model-agnostic" property every remaining method on this page shares.
+
+Pick a feature below and watch the model's actual accuracy get recomputed after really shuffling that column, across three different fixed shuffles — the importance score is the *average* drop, not any single shuffle's result:
+
+<PermutationImportanceDiagram />
+
+`zip_code` was never used by the model at all, so shuffling it changes nothing — accuracy stays exactly at baseline every time, a real (not simulated) zero. `age` is used only as a secondary tiebreaker in this toy model, so it matters a little. `income` is the primary decision variable, so shuffling it — which scrambles which sample gets which income value while keeping every true label fixed — collapses accuracy hard, though not identically each time: the third shuffle happened to land close to baseline purely by chance, which is exactly why permutation importance is always reported as an *average* over multiple shuffles, never a single run.
 
 ## SHAP (SHapley Additive exPlanations)
 
-Grounded in **Shapley values**, a concept from cooperative game theory originally developed to fairly divide a payout among players who contributed unequally to a joint outcome — applied here by treating each feature as a "player" contributing to the model's prediction, and asking: averaged over every possible ordering in which features could be "added" to the prediction, how much does each feature's presence change the output?
+SHAP is grounded in **Shapley values**, a concept from cooperative game theory originally developed to fairly divide a payout among players who contributed unequally to a joint outcome. Applied here: treat each feature as a "player" contributing to the model's prediction, and ask — averaged over every possible order in which features could be "added" to the prediction — how much does each feature's presence change the output?
 
-- **What it produces**: a per-prediction, per-feature attribution — not just "feature X matters overall" (like permutation importance) but "for *this specific* prediction, feature X pushed the output up by this much, feature Y pushed it down by that much" — additive, so the attributions for one prediction sum exactly to the difference between that prediction and a baseline (average) prediction.
+### Working It Out: A Real Coalition Game
+
+Define a toy value function $v(S)$ = the model's average predicted loan score using only the features in coalition $S$ (any excluded features held at their average value). A feature's contribution when it joins a coalition depends on *which* features are already there — pick a different ordering below and watch the same three features get credited with different marginal contributions at each step:
+
+<ShapleyCoalitionDiagram />
+
+$$\phi_i = \frac{1}{|N|!} \sum_{\text{orderings}} \big[v(S \cup \{i\}) - v(S)\big]$$
+
+Averaging that marginal contribution across **every** ordering — all $3! = 6$ of them for three features — is precisely what makes a Shapley value fair rather than order-dependent: no single ordering gets to define "how much this feature mattered." The **efficiency axiom** is the payoff for doing this averaging correctly — the three Shapley values plus the baseline sum *exactly* to the actual prediction, with no residual left over, which the diagram above confirms numerically rather than asserting.
+
+- **What SHAP produces**: a per-prediction, per-feature attribution — not just "feature X matters overall" (like permutation importance) but "for *this specific* prediction, feature X pushed the output up by this much, feature Y pushed it down by that much."
 - **Why the game-theoretic grounding matters**: Shapley values are the *unique* attribution method satisfying a specific set of fairness axioms (efficiency, symmetry, and others) — this is why SHAP has a rigorous mathematical justification other heuristic attribution methods lack, not just an intuitive one.
-- **The practical cost**: computing exact Shapley values requires considering every possible subset/ordering of features, which is combinatorially expensive — practical SHAP implementations use approximations (and model-specific fast paths, e.g. `TreeSHAP` for tree ensembles, computed exactly and efficiently by exploiting tree structure) rather than the brute-force definition.
+- **The practical cost**: computing exact Shapley values requires considering every possible subset/ordering of features, which is combinatorially expensive at real feature counts (the coalition diagram above only stays exact because it has just 3 features) — practical SHAP implementations use approximations, plus model-specific fast paths like `TreeSHAP`, which exploits tree structure to compute exact Shapley values efficiently without brute-forcing every ordering.
+
+### What SHAP Actually Shows You: The Waterfall
+
+In practice, nobody looks at all six orderings — a SHAP library runs that averaging once and hands back one number per feature, rendered as a waterfall (or "force plot") for a single prediction. Same Shapley values as above, presented the way you'd actually see them:
+
+<ShapWaterfallDiagram />
+
+Read left to right: start at the **baseline** (the model's average prediction, with no information about this specific instance yet), then each feature's bar shifts the running total by exactly its Shapley value, landing precisely on this instance's real prediction. That's the efficiency axiom again, just drawn instead of summed in text.
 
 ## LIME (Local Interpretable Model-Agnostic Explanations)
 
-A different strategy: rather than a global game-theoretic attribution, LIME explains one prediction by **approximating the model locally** — perturb the input slightly many times, observe how the (possibly very complex, non-linear) model's predictions change across those perturbations, and fit a simple, interpretable model (typically linear) to that local neighborhood of perturbed predictions. The simple model's coefficients become the explanation — "in the local neighborhood of this specific input, these features mattered this much" — under the assumption that even a wildly non-linear model behaves approximately linearly in a small enough neighborhood around any single point.
+A different strategy: rather than a global game-theoretic attribution, LIME explains one prediction by **approximating the model locally** — perturb the input slightly, many times, observe how the (possibly very complex, non-linear) model's predictions change across those perturbations, and fit a simple, interpretable model (typically linear) to that local neighborhood, weighted so nearby perturbations count more than distant ones. The simple model's coefficients become the explanation, under the assumption that even a wildly non-linear model behaves approximately linearly in a small enough neighborhood around any single point.
 
-- **SHAP vs. LIME**: SHAP's attributions have a rigorous theoretical grounding (Shapley values' fairness axioms) and guaranteed consistency properties; LIME's local-linear-approximation is more intuitive and often faster to compute, but its explanations can be less stable — a different random perturbation sample can produce a noticeably different local approximation and therefore a different explanation for the *same* prediction, a real practical downside SHAP's more principled construction avoids.
+Drag the instance around a genuinely non-linear decision boundary (a circular region — not a toy stand-in for non-linearity, an actual $\text{sigmoid}(k(r^2 - x^2 - y^2))$ surface) and watch LIME really perturb around it, weight each perturbation by proximity, and refit a real weighted linear regression from scratch:
+
+<LimeLocalApproxDiagram />
+
+$$\hat{y} = b_0 + b_1 x + b_2 y, \qquad (b_0, b_1, b_2) = \arg\min_b \sum_i w_i\,(y_i - b^\top x_i)^2$$
+
+The fitted red line is a genuinely reasonable local approximation to the curved boundary *right around the instance* — and gets visibly worse the larger the kernel width $\sigma$ grows, since a wider kernel pulls in perturbations far enough away that the curvature the linear model can't represent starts to matter.
+
+### SHAP vs. LIME: Why Stability Is the Real Difference
+
+The local-linear fit above depends on which random perturbations happened to get sampled — run it again with a different random seed and you get a *different* local model, even for the exact same instance and the exact same underlying model. Five independent LIME runs, same instance, same kernel, nothing different except the perturbation sample:
+
+<LimeStabilityDiagram />
+
+With few samples, the fitted coefficients visibly scatter around the true local gradient (dashed); with more samples per run, they tighten up — LIME's instability is a *sample-size* problem, not a fundamental flaw, but it's a real practical difference from SHAP: for a fixed model and a fixed coalition-averaging procedure, SHAP's Shapley values don't have this run-to-run sampling noise at all (TreeSHAP, in particular, is exact). That's the concrete cost behind "LIME's explanations can be less stable" — not a vague caveat, but the literal variance visible above.
 
 ## Choosing Between Them
 
-Use built-in tree importance or permutation importance for a fast, global "what does this model rely on overall" check; reach for SHAP when you need trustworthy, individual-prediction-level explanations (especially for anything with review/compliance requirements, given its rigorous grounding); reach for LIME when you need a quick local explanation for a single prediction and don't need SHAP's stronger guarantees, or when working with a model type SHAP doesn't have an efficient specialized implementation for.
+<InterpretabilityMethodChoiceDiagram />
+
+## Code: Permutation Importance and a SHAP-Style Waterfall, For Real
+
+The diagrams above use hand-built toy numbers so every intermediate step is visible; here's the same two ideas run against a real `scikit-learn` model, showing how little code either actually takes:
+
+```python
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.inspection import permutation_importance
+
+model = RandomForestClassifier(n_estimators=200, random_state=0).fit(X_train, y_train)
+
+# Permutation importance: shuffle each column, remeasure accuracy, repeat n_repeats
+# times per feature, and average -- exactly the averaging the diagram above shows.
+result = permutation_importance(model, X_test, y_test, n_repeats=10, random_state=0)
+for name, mean_drop in sorted(zip(feature_names, result.importances_mean), key=lambda t: -t[1]):
+    print(f"{name}: {mean_drop:.4f}")
+
+# SHAP: TreeSHAP computes exact Shapley values for tree ensembles efficiently,
+# without brute-forcing every feature ordering.
+import shap
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(X_test)
+shap.plots.waterfall(explainer(X_test)[0])  # the exact plot style shown above, for a real instance
+```
 
 Next: [Deep Learning & LLM Interpretability](/docs/interpretability/deep-learning-and-llm-interpretability) — the tools built specifically for looking inside a neural network, rather than treating it as a black box.
