@@ -9,9 +9,15 @@ import { collectConsoleErrors } from './helpers';
 // 404-fallback behavior, not a more forgiving dev-server approximation.
 
 test.describe('Core application', () => {
-  test('homepage loads and redirects to a real doc page', async ({ page }) => {
+  test('homepage loads with real content and a working topic link', async ({ page }) => {
     const errors = collectConsoleErrors(page);
     await page.goto('');
+    // The homepage is real content now, not a redirect -- it stays at `/`
+    // and renders its own hero + topic grid (see src/components/Home.tsx).
+    await expect(page).toHaveURL(/NeuralMastery-vite\/$/);
+    await expect(page.locator('h1')).toBeVisible();
+    const firstTopicLink = page.locator('section a').first();
+    await firstTopicLink.click();
     await expect(page).toHaveURL(/\/docs\//);
     await expect(page.locator('article.prose h1').first()).toBeVisible();
     expect(errors.errors()).toEqual([]);
