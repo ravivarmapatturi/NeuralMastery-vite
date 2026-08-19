@@ -74,16 +74,30 @@ async function main() {
     const routes = routesFromContentTree();
     console.log(`prerender-for-pagefind: snapshotting ${routes.length} route(s)...`);
 
+    // 208 routes taken one at a time (each waiting for full network-idle)
+    // was the single slowest step in CI (~2.5 minutes). Snapshotting is
+    // embarrassingly parallel -- every route is independent -- so this
+    // fans the work out across a small pool of concurrent pages sharing
+    // one browser, and swaps 'networkidle' (waits for zero network
+    // activity) for 'domcontentloaded' + the existing waitForSelector,
+    // which is what was actually gating readiness anyway.
+    const CONCURRENCY = 8;
     const browser = await chromium.launch();
-    const page = await browser.newPage();
-    for (const route of routes) {
-      await page.goto(`http://localhost:${PORT}${BASE}${route}`, { waitUntil: 'networkidle' });
-      await page.waitForSelector('article.prose', { timeout: 10000 });
-      const html = await page.content();
-      const outFile = join(PRERENDER_DIR, route.replace(/^\//, ''), 'index.html');
-      mkdirSync(dirname(outFile), { recursive: true });
-      writeFileSync(outFile, html);
+    let cursor = 0;
+    async function worker() {
+      const page = await browser.newPage();
+      while (cursor < routes.length) {
+        const route = routes[cursor++];
+        await page.goto(`http://localhost:${PORT}${BASE}${route}`, { waitUntil: 'domcontentloaded' });
+        await page.waitForSelector('article.prose', { timeout: 10000 });
+        const html = await page.content();
+        const outFile = join(PRERENDER_DIR, route.replace(/^\//, ''), 'index.html');
+        mkdirSync(dirname(outFile), { recursive: true });
+        writeFileSync(outFile, html);
+      }
+      await page.close();
     }
+    await Promise.all(Array.from({ length: CONCURRENCY }, worker));
     await browser.close();
     console.log(`prerender-for-pagefind: wrote ${routes.length} rendered page(s) to ${relative(ROOT, PRERENDER_DIR)}/`);
   } finally {

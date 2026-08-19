@@ -103,10 +103,21 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
+/* Text reads best at ~760px; visualizations are the platform's most
+   important content and should use the full available column width (per
+   the visual-quality directive: "do not leave a tiny diagram floating
+   inside a huge desktop content area"). So the width cap lives on the
+   individual text-bearing elements, not on .prose itself -- anything else
+   rendered directly into .prose (VisualizationContainer's outer div, code
+   blocks, tables, images) naturally gets the full column instead of being
+   squeezed into the reading-width column alongside the prose. */
 .prose {
-  max-width: 760px;
+  max-width: 100%;
   line-height: 1.7;
   font-size: 16px;
+}
+.prose h1, .prose h2, .prose h3, .prose > p, .prose > ul, .prose > ol, .prose > blockquote, .prose > table {
+  max-width: 760px;
 }
 .prose h1 { font-size: 2.25rem; font-weight: 800; margin: 0 0 1rem; letter-spacing: -0.02em; }
 .prose h2 { font-size: 1.5rem; font-weight: 700; margin: 2.25rem 0 0.75rem; letter-spacing: -0.01em; }
@@ -116,11 +127,20 @@ body {
 .prose ul, .prose ol { margin: 0 0 1rem; padding-left: 1.5rem; }
 .prose li { margin-bottom: 0.35rem; }
 .prose strong { font-weight: 700; }
+.prose > img { max-width: 760px; display: block; }
 
 /* Hamburger button: only meaningful once the docked sidebar/TOC are hidden
    (see the max-width: 900px block below), hidden by default on desktop. */
 .nm-navbar-toggle {
   display: none;
+}
+
+/* Sidebar/TOC collapse-toggle tabs: a desktop-only affordance (mobile
+   already replaces both docked panels with MobileNavDrawer, so there's
+   nothing to collapse there -- hidden below 900px alongside them). */
+.nm-panel-toggle:hover {
+  color: var(--nm-text-primary);
+  border-color: var(--nm-accent-primary);
 }
 
 /* KaTeX display math can render wider than the viewport (long formulas on
@@ -150,6 +170,9 @@ body {
   }
   .nm-navbar-toggle {
     display: inline-flex !important;
+  }
+  .nm-panel-toggle {
+    display: none !important;
   }
 }
 
