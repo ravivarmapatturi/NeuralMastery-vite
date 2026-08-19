@@ -3,6 +3,12 @@ title: "LLM Inference Engines"
 sidebar_position: 18
 ---
 
+import InferenceStackLayersDiagram from '../../../viz/diagrams/InferenceStackLayersDiagram';
+import EngineTerminologyDiagram from '../../../viz/diagrams/EngineTerminologyDiagram';
+import Tier1EngineComparisonDiagram from '../../../viz/diagrams/Tier1EngineComparisonDiagram';
+import EngineSelectionDecisionDiagram from '../../../viz/diagrams/EngineSelectionDecisionDiagram';
+import BaselineVsEngineDiagram from '../../../viz/diagrams/BaselineVsEngineDiagram';
+import EdgeVsServerDeploymentDiagram from '../../../viz/diagrams/EdgeVsServerDeploymentDiagram';
 
 # LLM Inference Engines
 
@@ -22,6 +28,8 @@ User → API Gateway → Serving Framework → Inference Engine → Model Runtim
 - **Model Runtime**: the lower-level execution layer (e.g. PyTorch, or a compiled runtime) the engine is built on.
 - **GPU / CUDA**: the hardware and driver layer everything ultimately runs on (see [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training)).
 
+<InferenceStackLayersDiagram />
+
 ## A Distinction Worth Getting Right
 
 These four terms get used interchangeably in casual conversation, but they are not the same thing, and confusing them leads to picking the wrong tool:
@@ -33,6 +41,8 @@ These four terms get used interchangeably in casual conversation, but they are n
 
 That last point matters enough to be explicit: **Unsloth is primarily a fine-tuning/training framework**, used to efficiently LoRA/QLoRA-adapt a model — it is not what you deploy to serve production traffic. **vLLM, llama.cpp, TensorRT-LLM, and SGLang**, by contrast, are the tools much more directly relevant to *inference*. A model fine-tuned with Unsloth still needs to be handed off to one of these (or an equivalent) to actually be served — see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns) for that handoff.
 
+<EngineTerminologyDiagram />
+
 ## Tier 1: Must-Know Engines
 
 - **vLLM**: the current default for high-throughput, general-purpose LLM serving — built around PagedAttention and continuous batching (see [LLM Inference Optimization](/docs/mlops/llm-inference-optimization)), with an OpenAI-compatible API, broad model support, and strong multi-GPU support. The safest first choice for self-hosted LLM serving.
@@ -42,6 +52,10 @@ That last point matters enough to be explicit: **Unsloth is primarily a fine-tun
 - **Hugging Face TGI (Text Generation Inference)**: HF's own production serving engine, tightly integrated with the HF model ecosystem, supporting continuous batching and quantization — a reasonable default when everything else in a stack is already HF-centric.
 - **ONNX Runtime**: a general (not LLM-specific) cross-platform inference runtime built around the ONNX model format, with pluggable **execution providers** (CUDA, TensorRT, CPU, DirectML, CoreML) — used when a model needs to run across genuinely heterogeneous hardware from one exported format.
 - **OpenVINO**: Intel's inference toolkit, optimized specifically for Intel CPUs/iGPUs/VPUs — the standard choice for edge and CPU-heavy deployments on Intel hardware.
+
+<Tier1EngineComparisonDiagram />
+
+<EngineSelectionDecisionDiagram />
 
 ## Tier 2: Also Worth Knowing
 
@@ -58,8 +72,12 @@ That last point matters enough to be explicit: **Unsloth is primarily a fine-tun
 
 Before reaching for any engine above, the simplest possible option is just calling `model.forward()` (or `.generate()`) directly in eager-mode PyTorch — no batching optimization, no custom kernels, no KV-cache-aware memory management beyond what the model implementation does itself. This is the right starting point for prototyping, low-traffic internal tools, and anywhere the engineering cost of adopting a dedicated engine isn't yet justified by traffic volume — every engine in the tiers above exists specifically to fix a scaling problem plain PyTorch inference has (poor batching, no paged KV cache, slow per-kernel-launch overhead), and it's worth being able to name *which* problem before reaching for a heavier tool to fix it.
 
+<BaselineVsEngineDiagram />
+
 ## Edge and On-Device Inference
 
 A distinct deployment target from server-side serving above: running inference directly on a phone, laptop, or embedded device, with no network round-trip at all. This trades server-grade throughput/batching for privacy (data never leaves the device), offline capability, and zero marginal inference cost — llama.cpp/GGUF, ExecuTorch, Core ML, and MLX (all above) are the standard tools here, chosen based on target platform (llama.cpp for broad CPU/cross-platform reach, Core ML/MLX for Apple-specific deployment, ExecuTorch for PyTorch-native mobile/embedded export) rather than raw throughput, which is rarely the binding constraint for a single-user, single-request-at-a-time on-device workload.
+
+<EdgeVsServerDeploymentDiagram />
 
 Next: [LLM Inference Optimization](/docs/mlops/llm-inference-optimization) — the specific techniques (PagedAttention, quantization, speculative decoding, and more) that make the Tier 1 engines above fast.
