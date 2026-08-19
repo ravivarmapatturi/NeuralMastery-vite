@@ -3,6 +3,13 @@ title: "A2A (Agent-to-Agent)"
 sidebar_position: 1
 ---
 
+import McpVsA2aScopeDiagram from '../../../../viz/diagrams/McpVsA2aScopeDiagram';
+import AgentCardDiagram from '../../../../viz/diagrams/AgentCardDiagram';
+import CapabilityMatchingDiagram from '../../../../viz/diagrams/CapabilityMatchingDiagram';
+import TaskLifecycleDiagram from '../../../../viz/diagrams/TaskLifecycleDiagram';
+import DelegationSequenceDiagram from '../../../../viz/diagrams/DelegationSequenceDiagram';
+import CrossOrgInteropDiagram from '../../../../viz/diagrams/CrossOrgInteropDiagram';
+import ProtocolStackDiagram from '../../../../viz/diagrams/ProtocolStackDiagram';
 
 # A2A (Agent-to-Agent)
 
@@ -12,16 +19,40 @@ MCP standardizes how an agent talks to *tools*. A2A standardizes how an agent ta
 
 A tool call is typically stateless and synchronous: call a function, get a result. An agent-to-agent interaction is closer to delegating a task to a colleague: the receiving agent might need to ask clarifying questions, take a while to complete a multi-step task, or report partial progress — none of which fits a simple function-call model well.
 
+<McpVsA2aScopeDiagram />
+
 ## Agent Cards / Capability Discovery
 
-For one agent to delegate work to another, it first needs to know what that agent *can do*. A2A defines a way for agents to publish an "agent card" — a description of their capabilities, similar in spirit to an API's OpenAPI spec, but describing what tasks an agent can be trusted to handle rather than literal function signatures.
+For one agent to delegate work to another, it first needs to know what that agent *can do*. A2A defines a way for agents to publish an **agent card** — a description of their capabilities, similar in spirit to an API's OpenAPI spec, but describing what tasks an agent can be trusted to handle rather than literal function signatures:
+
+<AgentCardDiagram />
+
+A card typically names the agent, describes its skills in natural language (not just a function signature), and states what input/output modes it supports. A delegating agent (or the orchestrator choosing on its behalf) matches a task's requirements against published cards to find a capable agent — the same shape as a hiring manager reading a résumé for relevant skills, not a compiler checking a type signature:
+
+<CapabilityMatchingDiagram />
 
 ## Task Delegation
 
-A2A defines how one agent hands a task to another: sending the task description, receiving updates as the task progresses, and getting the final result back — designed to work across agents built by different teams or organizations, using different underlying models or frameworks, as long as they both speak A2A.
+A2A defines how one agent hands a task to another: sending the task description, receiving updates as the task progresses, and getting the final result back. Because a delegated task can be long-running and may need clarification partway through, A2A models it as a task with real states, not a single call-and-return:
+
+<TaskLifecycleDiagram />
+
+A task moves from `submitted` to `working`, may pause at `input-required` if the receiving agent needs clarification before it can continue, and eventually resolves to `completed` or `failed`. Concretely, that looks like a sequence of messages rather than one blocking call:
+
+<DelegationSequenceDiagram />
+
+## Built for Agents That Don't Share Code
+
+This design — capability discovery via cards, stateful tasks instead of blocking calls — is what lets A2A work across agents built by *different teams or organizations*, using *different underlying models or frameworks*, as long as they both speak A2A:
+
+<CrossOrgInteropDiagram />
+
+That cross-boundary case is the one MCP doesn't need to solve: an MCP server and client are usually deployed together by the same application. A2A has to work even when Agent A's team has never seen Agent B's code and never will.
 
 ## How A2A Relates to Multi-Agent Systems
 
-[Multi-agent systems](/docs/agents/multi-agent-systems) covers *architectural patterns* for coordinating multiple agents (orchestrator/sub-agent, peer-to-peer, etc.) — A2A is one concrete protocol for implementing the communication layer those patterns need, particularly relevant when the agents involved aren't all built and controlled by the same team, and can't simply share a Python process and call each other's functions directly.
+[Multi-agent systems](/docs/agents/multi-agent-systems) covers *architectural patterns* for coordinating multiple agents (orchestrator/sub-agent, peer-to-peer, etc.) — A2A is one concrete protocol for implementing the communication layer those patterns need, particularly relevant when the agents involved aren't all built and controlled by the same team, and can't simply share a Python process and call each other's functions directly:
+
+<ProtocolStackDiagram />
 
 Agent protocols section complete. Next: [Multi-Agent Systems](/docs/agents/multi-agent-systems) — the coordination patterns these protocols enable.
