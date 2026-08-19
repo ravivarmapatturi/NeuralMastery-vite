@@ -4,11 +4,17 @@ sidebar_position: 2
 ---
 
 
+import NineStepPipelineDiagram from '../../../viz/diagrams/NineStepPipelineDiagram';
+import ProblemSolutionMapDiagram from '../../../viz/diagrams/ProblemSolutionMapDiagram';
+
 # ML System Design — Roadmap
 
 How to take a model and turn it into a working, scalable production system. Framed around a repeatable 9-step formula plus worked problem categories.
 
 ## The [9-Step Framework](/docs/ml-system-design/the-9-step-framework)
+
+<NineStepPipelineDiagram />
+
 1. [ ] **Problem formulation** — translate a business need into an ML problem
 2. [ ] **Metrics** — offline metrics (what you optimize in dev) vs online metrics (what you measure in production, e.g. CTR, retention)
 3. [ ] **Architectural components** — sketch the MVP: data → features → model → serving
@@ -33,6 +39,9 @@ How to take a model and turn it into a working, scalable production system. Fram
 - [ ] Benchmark dimensions by system type: inference, retrieval, general quality
 
 ## Common Problems & SOTA Solutions
+
+<ProblemSolutionMapDiagram />
+
 - [ ] **Training-serving skew** → shared feature pipelines, feature stores
 - [ ] **Cold start** (new users/items) → content-based fallback, exploration strategies
 - [ ] **Feedback loops biasing the model** → randomized exploration, counterfactual evaluation

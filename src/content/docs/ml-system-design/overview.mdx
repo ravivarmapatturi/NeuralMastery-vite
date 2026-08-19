@@ -4,11 +4,99 @@ sidebar_position: 1
 ---
 
 
+import ThreeDisciplinesDiagram from '../../../viz/diagrams/ThreeDisciplinesDiagram';
+import TradeoffSpaceDiagram from '../../../viz/diagrams/TradeoffSpaceDiagram';
+import TwoStagePipelinePatternDiagram from '../../../viz/diagrams/TwoStagePipelinePatternDiagram';
+import BatchVsOnlineServingDiagram from '../../../viz/diagrams/BatchVsOnlineServingDiagram';
+import ProblemFormulationFunnelDiagram from '../../../viz/diagrams/ProblemFormulationFunnelDiagram';
+import ModelComplexityInterpretabilityDiagram from '../../../viz/diagrams/ModelComplexityInterpretabilityDiagram';
+import LatencyBudgetBreakdownDiagram from '../../../viz/diagrams/LatencyBudgetBreakdownDiagram';
+import OfflineVsOnlineMetricsDiagram from '../../../viz/diagrams/OfflineVsOnlineMetricsDiagram';
+import SectionMapDiagram from '../../../viz/diagrams/SectionMapDiagram';
+import WhenSystemDesignMattersDiagram from '../../../viz/diagrams/WhenSystemDesignMattersDiagram';
+
 # ML System Design Overview
 
-How to take a model and turn it into a working, scalable production system.
+Training a model that scores well on a held-out test set is not the same skill as shipping a system that serves millions of predictions a day, degrades gracefully when its inputs drift, and can be rolled back safely when a new version underperforms. **ML system design** is the discipline in between: taking a model (or a family of models) and architecting everything around it — data flow, serving infrastructure, evaluation, and the tradeoffs that determine whether the thing actually works in production, not just in a notebook.
 
-- **[The 9-Step Framework](/docs/ml-system-design/the-9-step-framework)** — problem formulation through scaling and monitoring
-- **[Case Studies](/docs/ml-system-design/case-studies)** — recommendation systems, search/ranking, and GenAI/LLM system design
+## Three Distinct Skills, Often Confused
 
-See the [roadmap](/docs/ml-system-design/roadmap) for the full ordered path through this section.
+"Making ML work" actually splits into three different jobs, each with its own section on this site, each answering a different question:
+
+<ThreeDisciplinesDiagram />
+
+- **Research / modeling** ([Deep Learning](/docs/deep-learning/roadmap), [Machine Learning](/docs/machine-learning/roadmap)): *can a model learn this pattern at all, and how well?* Concerned with architectures, loss functions, optimization — the model itself, largely independent of how it'll be served.
+- **ML system design** (this section): *given a working model, what does the system around it need to look like to solve the actual business problem, at the actual required scale and latency?* Concerned with architecture, tradeoffs, and the end-to-end shape of the solution — deliberately model-agnostic, since the same system-design reasoning applies whether the model underneath is a gradient-boosted tree or a transformer.
+- **MLOps** ([MLOps](/docs/mlops/roadmap)): *given a system design, how do you actually build, deploy, and operate it reliably?* Concerned with infrastructure, CI/CD, monitoring tooling, cost engineering — the operational machinery that keeps a designed system running.
+
+A team can have excellent researchers and excellent infrastructure and still ship a bad product if nobody did the system-design thinking connecting the two — picking the wrong serving pattern, the wrong metrics, or the wrong scope for step one.
+
+## The Tradeoff Space Every Design Sits In
+
+Every ML system design decision trades off against the same handful of axes, and the "right" answer depends entirely on which axis matters most for the specific problem:
+
+<TradeoffSpaceDiagram />
+
+A fraud-detection model can afford to be slow and opaque if it's more accurate — a human reviews flagged transactions anyway. A search-ranking model has the opposite constraints: a ~100ms latency budget caps how large or complex it can be, regardless of how much accuracy a bigger model might buy. Naming which axis dominates *before* picking an approach is most of what separates a good system-design answer from a bad one.
+
+## The Pattern That Recurs Everywhere
+
+Recommendation, search, ranking, and RAG retrieval all converge on the same two-stage shape, for the same reason: running an expensive, accurate model over an entire catalog for every request is too slow, so a cheap first stage narrows the field before an expensive second stage ranks precisely:
+
+<TwoStagePipelinePatternDiagram />
+
+Recognizing this pattern is a shortcut in itself — once you see "there are too many candidates to score expensively" in a problem statement, the two-stage shape is very often the right starting sketch, covered concretely per-domain in [Case Studies](/docs/ml-system-design/case-studies).
+
+## Batch vs. Online: When Predictions Actually Need to Be Fresh
+
+One of the earliest, highest-leverage decisions in any design: does a prediction need to reflect what just happened, or can it be computed on a schedule?
+
+<BatchVsOnlineServingDiagram />
+
+Batch serving is simpler and cheaper whenever staleness of a few hours (or a day) is acceptable — most recommendation and analytics use cases. Online serving is required the moment freshness matters more than that — a feed ranking that should reflect what a user clicked thirty seconds ago, or fraud detection that needs to block a transaction before it clears.
+
+## From Vague Goal to Concrete ML Problem
+
+Before any of the above, a system design has to survive its first and most commonly botched step: turning a fuzzy business ask into something a model can actually be trained to predict.
+
+<ProblemFormulationFunnelDiagram />
+
+"Increase engagement" isn't trainable. "Predict the probability a user clicks this specific post, and rank by that probability" is. The translation step — what exactly is being predicted, for whom, feeding what downstream decision — is where [the 9-step framework](/docs/ml-system-design/the-9-step-framework) starts, because a well-specified problem with a mediocre model reliably beats a vague problem with a great one.
+
+## Model Complexity Isn't Free
+
+Choosing *how* complex a model should be is itself a system-design decision, not just a modeling one — complexity costs interpretability, latency, and operational risk, and production systems very often start simpler than research intuition suggests:
+
+<ModelComplexityInterpretabilityDiagram />
+
+A strong, simple baseline (logistic regression, gradient boosting) is the default starting point for exactly this reason: it's fast to serve, easy to debug when it misbehaves in production, and its failure modes are legible to a human reviewing a bad prediction. Complexity is justified by a measured gap in the metric that matters, not by default.
+
+## Where a Latency Budget Actually Goes
+
+"100ms" sounds like a lot until it's split across every hop a request has to make before a prediction reaches a user:
+
+<LatencyBudgetBreakdownDiagram />
+
+Feature fetching and network hops routinely eat more of the budget than the model's own inference time — which is exactly why a system-design answer has to account for the whole request path, not just optimize the model in isolation.
+
+## Offline Metrics Are a Proxy, Not the Goal
+
+A model that improves on its offline metric can still make the actual business metric worse, because the offline metric was only ever a *proxy* for what really matters:
+
+<OfflineVsOnlineMetricsDiagram />
+
+This gap is exactly why [the 9-step framework](/docs/ml-system-design/the-9-step-framework#2-metrics)'s step 2 insists on naming both an offline metric (what you optimize during development) and an online metric (what you actually watch once the system is live) — and treating any offline win as a hypothesis to validate online, via A/B testing, not a guaranteed result.
+
+## Does This Problem Even Need System-Design Thinking?
+
+Not every ML problem is a system-design problem — a one-off analysis or a single offline model doesn't need a serving architecture, monitoring dashboards, or a rollback plan.
+
+<WhenSystemDesignMattersDiagram />
+
+The moment a prediction needs to run repeatedly, in production, in front of real users or real downstream decisions, at nontrivial scale — that's the moment the concerns on this page (latency budgets, serving patterns, online metrics, monitoring) stop being optional.
+
+## How This Section Fits Together
+
+<SectionMapDiagram />
+
+Start with [the 9-step framework](/docs/ml-system-design/the-9-step-framework) for the repeatable structure behind any "design an ML system for X" prompt, work through [Case Studies](/docs/ml-system-design/case-studies) to see that structure applied to the problem types that come up constantly (recommenders, search, GenAI/LLM systems), and use [Model Catalog & Benchmarking](/docs/ml-system-design/model-catalog-and-benchmarking) as the durable framework for the model-selection decision that step 6 depends on. See the [roadmap](/docs/ml-system-design/roadmap) for the full ordered path through this section.

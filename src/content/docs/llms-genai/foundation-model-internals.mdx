@@ -5,6 +5,16 @@ sidebar_position: 3
 
 
 import InferenceFlowVisualizer from '../../../viz/InferenceFlowVisualizer';
+import BpeTokenizationDiagram from '../../../viz/diagrams/BpeTokenizationDiagram';
+import AlibiPositionalBiasDiagram from '../../../viz/diagrams/AlibiPositionalBiasDiagram';
+import KvCacheDiagram from '../../../viz/diagrams/KvCacheDiagram';
+import ArchitectureFamiliesDiagram from '../../../viz/diagrams/ArchitectureFamiliesDiagram';
+import MoeRoutingDiagram from '../../../viz/diagrams/MoeRoutingDiagram';
+import AttentionVariantsKvCacheDiagram from '../../../viz/diagrams/AttentionVariantsKvCacheDiagram';
+import SlidingWindowAttentionDiagram from '../../../viz/diagrams/SlidingWindowAttentionDiagram';
+import SwiGluGatingDiagram from '../../../viz/diagrams/SwiGluGatingDiagram';
+import SamplingStrategiesDiagram from '../../../viz/diagrams/SamplingStrategiesDiagram';
+import ContextWindowScalingDiagram from '../../../viz/diagrams/ContextWindowScalingDiagram';
 
 # Foundation Model & Transformer Internals
 
@@ -61,6 +71,8 @@ Models don't see raw text — they see a sequence of integer token IDs from a fi
 
 Why subword tokenization at all, instead of whole words or single characters: whole-word vocabularies explode in size and can't handle unseen words; single-character vocabularies produce very long sequences (expensive, given attention's $O(n^2)$ cost — see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures)). Subwords are the practical middle ground — common words stay as one token, rare/novel words decompose into recognizable pieces.
 
+<BpeTokenizationDiagram />
+
 ## Embeddings
 
 The first layer of any Transformer is an embedding table — a lookup mapping each token ID to a learned vector. These vectors start random and, through training, come to encode meaning: semantically related tokens end up with similar embeddings (high cosine similarity — see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)).
@@ -69,9 +81,13 @@ The first layer of any Transformer is an embedding table — a lookup mapping ea
 
 [Attention & Transformers — Positional Encoding](/docs/deep-learning/attention-transformers#positional-encoding) covers RoPE (the dominant modern choice) in depth. **ALiBi (Attention with Linear Biases)** is the other approach worth knowing: instead of modifying the Q/K vectors like RoPE does, ALiBi adds a fixed, non-learned penalty directly to the attention scores, proportional to the distance between the two positions — the further apart two tokens are, the more their attention score gets penalized before the softmax. This is simpler than RoPE and was designed specifically for strong length extrapolation (performing well at sequence lengths longer than anything seen in training), though RoPE (often combined with explicit scaling techniques for long context) has become the more common choice in current frontier models.
 
+<AlibiPositionalBiasDiagram />
+
 ## KV Cache
 
 During autoregressive generation, the model produces one token at a time, and naively would recompute Key and Value vectors for the *entire* sequence so far at every single step — wasteful, since those K/V vectors for already-generated tokens never change. The **KV cache** stores them once and reuses them, so each new token only requires computing Q/K/V for itself. This is the single biggest practical speedup in LLM inference, and it's also the primary consumer of GPU memory during generation — which is exactly why GQA and Paged Attention (below) exist.
+
+<KvCacheDiagram />
 
 ## Architecture Families
 
@@ -79,9 +95,13 @@ During autoregressive generation, the model produces one token at a time, and na
 - **Decoder-only** (GPT-style): only attends to earlier tokens (causal/masked attention) — the dominant architecture for modern LLMs, since next-token prediction naturally trains a model that can also generate.
 - **Encoder-decoder** (T5-style): separate encoder for the input and decoder for the output, connected via cross-attention — well-suited to translation/summarization where input and output are distinct sequences.
 
+<ArchitectureFamiliesDiagram />
+
 ## Mixture of Experts (MoE)
 
 Instead of every token passing through the same dense feed-forward layer, an MoE layer has many "expert" feed-forward sub-networks, and a small router network picks a small subset (e.g. 2 of 8) of experts to actually run for each token. This decouples a model's total parameter count from its per-token compute cost — you get a much larger model (more knowledge capacity) without a proportional increase in inference cost, since most parameters sit idle for any given token. Mixtral and several frontier-scale models use this.
+
+<MoeRoutingDiagram />
 
 ## Attention Variants: MHA, GQA, MQA, MLA
 
@@ -92,12 +112,16 @@ Every variant below changes how many Key/Value projections are computed relative
 - **GQA (Grouped-Query Attention)**: the middle ground most current production LLMs actually use — heads are split into groups, each group shares one K/V projection.
 - **MLA (Multi-Head Latent Attention)**: introduced by DeepSeek-V2 — compresses K/V into a smaller shared latent representation, decompressed per head, recovering MHA-like quality at MQA-like KV cache cost.
 
+<AttentionVariantsKvCacheDiagram />
+
 ## Sparse and Sliding-Window Attention
 
 Full self-attention costs $O(n^2)$ in sequence length — every token attends to every other token. Two families of techniques restrict *which* pairs of tokens actually attend to each other, trading some long-range connectivity for much cheaper long-context compute:
 
 - **Sliding-window attention**: each token only attends to a fixed-size window of nearby tokens (e.g. the previous 4096 tokens), not the entire sequence — reduces the cost to linear in sequence length. Information from outside the window can still propagate indirectly across multiple layers (token A attends to B within its window, and B's own window reached C in an earlier layer), but not directly in a single attention operation. Mistral's models popularized this as a practical way to support long context without paying full quadratic cost.
 - **Sparse attention** (more generally): fixed or learned patterns where each token attends to only a subset of positions — combinations of local windows, strided/dilated patterns, and a small number of global tokens that everything attends to — trading the *guarantee* of full connectivity for sub-quadratic cost, useful when full $O(n^2)$ attention is the actual bottleneck at very long context lengths.
+
+<SlidingWindowAttentionDiagram />
 
 ## The MLP Block: SwiGLU
 
@@ -106,6 +130,8 @@ Every Transformer block's feed-forward sublayer (see [Attention & Transformers �
 $$\text{SwiGLU}(x) = \text{Swish}(xW_1) \odot (xW_3)\,W_2$$
 
 Where $\text{Swish}(x) = x \cdot \sigma(x)$ (see [Activation Functions](/docs/deep-learning/activation-functions)) and $\odot$ is elementwise multiplication. The key structural idea is the **gating mechanism**: $xW_3$ acts as a learned, per-element gate controlling how much of $\text{Swish}(xW_1)$ passes through, before the result is projected back down by $W_2$ — the network learns *which* features to let through, rather than applying the same fixed nonlinearity uniformly everywhere. This costs more parameters than a plain ReLU MLP (three weight matrices instead of two, for the same hidden dimension), which LLaMA-family models compensate for by shrinking the hidden dimension slightly — and empirically, SwiGLU-based MLPs train to better loss than ReLU-based ones at the same parameter budget, which is why virtually every current open-weight LLM uses it or a close variant (GeGLU, using GELU instead of Swish, is functionally similar).
+
+<SwiGluGatingDiagram />
 
 ## Sampling: From Logits to a Token
 
@@ -118,8 +144,12 @@ The LM head's output is **logits** — one raw score per vocabulary token — tu
 - **Repetition penalty**: directly reduce the logits of tokens that have already appeared in the generated output, discouraging the model from looping — a practical patch for a real failure mode (especially at low temperature) rather than a principled part of the probability model.
 - **What production APIs actually expose**: most LLM APIs (see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns)) let you set `temperature` and `top_p` directly — `temperature=0` for maximally deterministic/reproducible output (useful for structured extraction tasks), higher values for creative/varied generation.
 
+<SamplingStrategiesDiagram />
+
 ## Context Window
 
 The maximum sequence length a model can process at once. Limited fundamentally by (a) the $O(n^2)$ compute/memory cost of attention, and (b) the fact that positional encoding and attention patterns learned during training may not generalize well to sequence lengths never seen in training. Longer context comes from a combination of architectural tricks (RoPE scaling, sparse/sliding-window attention above), more efficient attention kernels ([FlashAttention](/docs/mlops/llm-inference-optimization#other-core-optimizations)), and training specifically on long sequences.
+
+<ContextWindowScalingDiagram />
 
 Next: [Training Pipeline](/docs/llms-genai/training-pipeline) — how a raw Transformer becomes a helpful, aligned assistant.

@@ -3,23 +3,19 @@ title: "Linear Regression, In Full Depth"
 sidebar_position: 4.5
 ---
 
-import __migratedImg0 from './img/linear-regression-at-a-glance.png';
-import __migratedImg1 from './img/linear-regression-scatter-fit.png';
-import __migratedImg2 from './img/linear-regression-residuals.png';
-
-
+import LinearRegressionAtAGlance from '../../../viz/diagrams/LinearRegressionAtAGlance';
+import ScatterFitDiagram from '../../../viz/diagrams/ScatterFitDiagram';
+import ResidualPlotDiagram from '../../../viz/diagrams/ResidualPlotDiagram';
 import LinearRegressionStudio from '../../../viz/LinearRegressionStudio';
 import PredictFirst from '../../../viz/primitives/PredictFirst';
-import trainingLoopDark from './img/linear-regression-training-loop.png';
-import trainingLoopLight from './img/linear-regression-training-loop-light.png';
-import twoPathsDark from './img/linear-regression-two-paths.png';
-import twoPathsLight from './img/linear-regression-two-paths-light.png';
+import GradientDescentLoopDiagram from '../../../viz/diagrams/GradientDescentLoopDiagram';
+import TwoPathsDiagram from '../../../viz/diagrams/TwoPathsDiagram';
 
 # Linear Regression, In Full Depth
 
 [Supervised Learning](/docs/machine-learning/supervised-learning) introduced linear regression in a couple of sentences. This page derives it properly — the cost function, the gradient step by step, the closed-form solution, and where gradient descent actually comes from — because "minimize squared error" means nothing until you've done the derivative by hand at least once.
 
-<img src={__migratedImg0} alt="Linear Regression at a glance — hypothesis, cost, gradient, and update rule" style={{maxWidth: '100%'}} />
+<LinearRegressionAtAGlance />
 
 ## What Is Linear Regression?
 
@@ -27,7 +23,7 @@ In plain terms: linear regression finds the straight line that best fits a set o
 
 Take a familiar example: predicting a student's **exam score** from how many **hours they studied**. Plot each student as a point — hours studied on the x-axis, score on the y-axis — and you'll typically see a trend: more hours, generally, a higher score. Linear regression draws the single straight line through that cloud of points that fits it best.
 
-<img src={__migratedImg1} alt="Study hours vs. exam score, with a fitted regression line" style={{maxWidth: '100%'}} />
+<ScatterFitDiagram />
 
 You already know the equation for a line from algebra: $y = mx + b$, where $m$ is the slope and $b$ is where the line crosses the y-axis. Linear regression uses the exact same equation, just with different letters and one important addition — a *hat*:
 
@@ -138,7 +134,7 @@ $$w \leftarrow w - \alpha \frac{\partial J}{\partial w} \qquad\qquad b \leftarro
 
 where $\alpha$ is the learning rate (see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization#gradient-descent-and-its-variants)). The full loop:
 
-<ThemedImage alt="Linear regression gradient descent training loop" sources={{light: trainingLoopLight, dark: trainingLoopDark}} />
+<GradientDescentLoopDiagram />
 
 Because $J$ is convex, this loop is guaranteed to converge to the global minimum (not just *a* minimum) as long as $\alpha$ is small enough — no local-minima concerns here, unlike the non-convex loss surfaces in [Deep Learning](/docs/deep-learning/roadmap).
 
@@ -146,7 +142,7 @@ Switch the [Studio](#what-is-linear-regression) above to **Gradient Descent Lab*
 
 ## 7. Closed-Form vs. Gradient Descent
 
-<ThemedImage alt="Two paths to the same minimum — normal equation vs gradient descent" sources={{light: twoPathsLight, dark: twoPathsDark}} />
+<TwoPathsDiagram />
 
 | | Normal equation | Gradient descent |
 |---|---|---|
@@ -170,7 +166,7 @@ The model — and its statistical guarantees — rely on a few assumptions worth
 
 **How to actually check these**: plot the residuals (actual − predicted) against $x$. A healthy fit looks like random scatter centered on zero, with no pattern and roughly constant spread:
 
-<img src={__migratedImg2} alt="Residual plot for the study hours vs. exam score fit — scattered randomly around zero" style={{maxWidth: '100%'}} />
+<ResidualPlotDiagram />
 
 If you instead saw a curve (points systematically above zero for small/large $x$ and below for the middle, or vice versa), that would signal a nonlinear relationship — linearity violated. If the spread visibly widens or narrows across $x$, that's heteroscedasticity — homoscedasticity violated. This one plot is the fastest real-world check for two of the five assumptions above.
 
