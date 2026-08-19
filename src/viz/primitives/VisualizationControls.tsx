@@ -48,7 +48,14 @@ export function PillSelect<T extends string | number>({
 }: {
   label?: string;
   value: T;
-  onChange: (v: T) => void;
+  // Structurally matches React's Dispatch<SetStateAction<T>> (not just
+  // `(v: T) => void`) so `onChange={setState}` infers T correctly from a
+  // raw useState setter -- passing `(v: T) => void` there defeats
+  // simultaneous inference across value/onChange/options and TS silently
+  // falls back to the `string | number` constraint. PillSelect itself only
+  // ever calls onChange with a plain value (never the updater-function
+  // form), so this is purely a wider accepted type, not a behavior change.
+  onChange: (v: T | ((prev: T) => T)) => void;
   options: { value: T; label: string }[];
 }) {
   const t = useVizTokens();
