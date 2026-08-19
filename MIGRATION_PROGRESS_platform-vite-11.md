@@ -11,15 +11,17 @@ Other sessions (confirmed via cross-session coordination on 2026-08-19):
 
 Status legend: `[ ]` not started · `[~]` in progress · `[x]` done (≥10 components, committed)
 
+**Scope calibration (decided after checking the established precedent in deep-learning/, the most mature folder):** `overview.mdx` and `roadmap.mdx` pages that already contain real explanatory prose (not a bare link-list stub) stay as lightweight navigation — no forced diagram count. deep-learning/overview.mdx (23 lines, guiding-questions + path-through-section, same shape as mlops/overview.mdx and speech-audio/overview.mdx) has zero diagrams even in the most actively-worked folder, and no roadmap.mdx sitewide has diagrams. The "expand stubs first" directive applies to genuinely bare pages (just links, no prose) like ml-system-design/overview.mdx was before platform-vite-38 expanded it — not to already-substantive overview/roadmap pages. computer-vision/overview.mdx already got the full 10-diagram treatment before this was decided; leaving it as-is (good work, not reverting), but not replicating that pattern on the remaining overview/roadmap pages in this scope. Diagram effort goes to the real topic pages instead.
+
 ## speech-audio/ (4 content pages)
-- [ ] overview.mdx — check for thin-stub content first (user policy 2026-08-19: expand stubs into real prose before adding diagrams)
-- [ ] roadmap.mdx — same check
+- [~] overview.mdx — has real explanatory prose already (not a bare stub); leaving as lightweight nav per scope calibration above, no diagrams needed
+- [~] roadmap.mdx — pure checklist by design (matches deep-learning/roadmap.mdx); no diagrams needed
 - [x] audio-fundamentals.mdx — 7 components (commit 386f71d): SamplingNyquistDiagram, BitDepthQuantizationDiagram, FourierSumOfSinesDiagram, WaveformSpectrogramDiagram (raster replacement), StftWindowTradeoffDiagram, MelScaleDiagram, MfccPipelineDiagram. Below the aspirational ≥10 target -- 7 genuinely content-tied diagrams, no padding.
 - [ ] speech-audio-tasks.mdx
 
 ## computer-vision/ (5 content pages)
-- [x] overview.mdx — 10 content-tied interactive diagrams, substantive prose expansion, and browser/build validation (commits ae5c29d + pending follow-up)
-- [ ] roadmap.mdx
+- [x] overview.mdx — 10 content-tied interactive diagrams, substantive prose expansion, and browser/build validation (commits ae5c29d, b212122, e55e039)
+- [~] roadmap.mdx — pure checklist by design; no diagrams needed
 - [ ] vision-fundamentals.mdx — has 1 raster (convolution-demo.png)
 - [ ] vision-tasks-and-models.mdx
 - [ ] modern-vision-and-multimodal.mdx
