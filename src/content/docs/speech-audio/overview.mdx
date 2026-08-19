@@ -4,6 +4,11 @@ sidebar_position: 1
 ---
 
 
+import RawAudioCompressionDiagram from '../../../viz/diagrams/RawAudioCompressionDiagram';
+import AudioTaskIODiagram from '../../../viz/diagrams/AudioTaskIODiagram';
+import LatencyBudgetDiagram from '../../../viz/diagrams/LatencyBudgetDiagram';
+import AudioEvaluationMetricsDiagram from '../../../viz/diagrams/AudioEvaluationMetricsDiagram';
+
 # Speech & Audio AI — Overview
 
 A completely separate modality from text and images, with its own representation problem before any model can even start: raw audio is a continuous pressure wave sampled thousands of times a second — turning that into something a neural network can learn from is most of the work in this section.
@@ -16,5 +21,29 @@ A completely separate modality from text and images, with its own representation
 ## Why Audio Needs Its Own Representation Layer
 
 Text arrives already discrete (characters, then subword tokens). Images arrive as a fixed spatial grid a CNN can convolve over directly. Raw audio is neither — a few seconds of CD-quality audio is tens of thousands of raw amplitude samples, far too long and far too low-level a sequence for a Transformer to attend over directly, and with no obvious "token" boundary the way text has words. Every technique in [Audio Fundamentals](/docs/speech-audio/audio-fundamentals) exists to solve exactly this: turning a raw waveform into a shorter, richer sequence of features a model can actually work with.
+
+<RawAudioCompressionDiagram />
+
+## The Shape of the Task Landscape
+
+Before [Speech & Audio Tasks](/docs/speech-audio/speech-audio-tasks) goes deep on each one, it's worth seeing the whole landscape at a glance — every task below is defined entirely by what goes in and what comes out, and that input/output shape is what determines which architecture pattern applies:
+
+<AudioTaskIODiagram />
+
+ASR and TTS are exact mirror images of each other (audio↔text, in opposite directions); diarization and classification both take audio in, but produce a structural answer (a segmentation, a label) rather than another modality entirely.
+
+## Latency Is a First-Class Design Constraint
+
+Unlike a lot of ML systems where "make it more accurate" is close to the whole story, audio systems routinely have a hard wall-clock budget baked into the product itself — a voice assistant that takes 3 seconds to respond has failed at its job regardless of transcript accuracy. The same task gets built completely differently depending on which latency zone it has to live in:
+
+<LatencyBudgetDiagram />
+
+This is why "streaming ASR" and "offline ASR" are practically different engineering problems built from the same underlying ideas, not just the same model run with a stopwatch.
+
+## Evaluation Is Task-Specific
+
+There is no single "audio accuracy" metric — what "correct" means changes with the task:
+
+<AudioEvaluationMetricsDiagram />
 
 See the [roadmap](/docs/speech-audio/roadmap) for the full ordered path.
