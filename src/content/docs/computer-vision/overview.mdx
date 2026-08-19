@@ -8,6 +8,11 @@ import VisionDataContractDiagram from '../../../viz/diagrams/VisionDataContractD
 import ImageTensorExplorerDiagram from '../../../viz/diagrams/ImageTensorExplorerDiagram';
 import VisionDataShiftDiagram from '../../../viz/diagrams/VisionDataShiftDiagram';
 import ClassicalAndLearnedVisionDiagram from '../../../viz/diagrams/ClassicalAndLearnedVisionDiagram';
+import VisionLabelGranularityDiagram from '../../../viz/diagrams/VisionLabelGranularityDiagram';
+import VisionInvarianceDiagram from '../../../viz/diagrams/VisionInvarianceDiagram';
+import VisionErrorCostDiagram from '../../../viz/diagrams/VisionErrorCostDiagram';
+import VisionFeedbackLoopDiagram from '../../../viz/diagrams/VisionFeedbackLoopDiagram';
+import VisionSectionMapDiagram from '../../../viz/diagrams/VisionSectionMapDiagram';
 
 # Computer Vision — Overview
 
@@ -29,6 +34,8 @@ Those questions explain why “just use a bigger vision model” is rarely a com
 
 <VisionDataContractDiagram />
 
+<VisionInvarianceDiagram />
+
 ## From Pixels to Decisions
 
 An image begins as a tensor: height × width × channels. The early part of a pipeline turns those numeric arrays into usable signal — normalizing values, resizing or cropping to a known input shape, and sometimes using classical operations such as filtering or morphology. A learned encoder then transforms local pixels into progressively more abstract features: edges and textures near the input, object parts in intermediate layers, and task-relevant representations near the output.
@@ -43,7 +50,19 @@ Vision systems are unusually sensitive to how and where their images were collec
 
 Labeling cost also rises sharply with output detail. Image-level labels are comparatively cheap; drawing boxes takes longer; pixel-perfect masks and pose keypoints require specialist effort and consistency checks. That creates a practical tradeoff: collect the least expensive label that still supports the downstream decision, then use transfer learning, augmentation, and targeted error analysis before expanding the annotation program.
 
+<VisionLabelGranularityDiagram />
+
 <VisionDataShiftDiagram />
+
+## Evaluation Is a Product Decision
+
+Accuracy alone cannot decide whether a vision system is ready. The costly error depends on the product: an extra tag in a photo library may be harmless, while a missed safety-critical object may need a conservative alert threshold and a fallback path. Evaluation should therefore break errors down by the conditions that will exist at deployment—not only one aggregate score—and connect the threshold to the available review and response process.
+
+<VisionErrorCostDiagram />
+
+Deployment evidence closes the loop: collect the failures, identify the missing data condition or label ambiguity, add targeted examples, and evaluate that slice explicitly on the next model version.
+
+<VisionFeedbackLoopDiagram />
 
 ## Where Classical and Modern Vision Meet
 
@@ -56,6 +75,8 @@ The division of labor is simple: use deterministic geometry or image processing 
 ## How to Read This Section
 
 Start with **Vision Fundamentals** to build intuition for the pixels, filters, and transformations that every later model consumes. Then move to **Vision Tasks & Models** to choose the correct output structure for a concrete product problem. Finish with **Modern Vision & Multimodal** for the systems that extend a still image into language, time, and 3D scene understanding. The deep-learning architecture pages remain the companion reference whenever you need to understand the backbone itself.
+
+<VisionSectionMapDiagram />
 
 ## What's in this section
 

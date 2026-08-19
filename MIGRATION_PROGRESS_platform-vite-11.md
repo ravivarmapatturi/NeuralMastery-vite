@@ -18,7 +18,7 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done (≥10 compo
 - [ ] speech-audio-tasks.mdx
 
 ## computer-vision/ (5 content pages)
-- [~] overview.mdx — prose expansion + first 5 content-tied interactive diagrams committed; continue with the remaining detail pass before marking done
+- [x] overview.mdx — 10 content-tied interactive diagrams, substantive prose expansion, and browser/build validation (commits ae5c29d + pending follow-up)
 - [ ] roadmap.mdx
 - [ ] vision-fundamentals.mdx — has 1 raster (convolution-demo.png)
 - [ ] vision-tasks-and-models.mdx
