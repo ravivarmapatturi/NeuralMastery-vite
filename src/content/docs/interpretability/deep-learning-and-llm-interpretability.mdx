@@ -4,36 +4,82 @@ sidebar_position: 4
 ---
 
 
+import SaliencyMapDiagram from '../../../viz/diagrams/SaliencyMapDiagram';
+import ActivationMaximizationDiagram from '../../../viz/diagrams/ActivationMaximizationDiagram';
+import AttentionHeadPatternDiagram from '../../../viz/diagrams/AttentionHeadPatternDiagram';
+import ProbingClassifierDiagram from '../../../viz/diagrams/ProbingClassifierDiagram';
+import SuperpositionDiagram from '../../../viz/diagrams/SuperpositionDiagram';
+import CircuitDiagram from '../../../viz/diagrams/CircuitDiagram';
+import InterpretabilityRigorLadderDiagram from '../../../viz/diagrams/InterpretabilityRigorLadderDiagram';
+
 # Deep Learning & LLM Interpretability
 
-Classical interpretability treats a model as a black box (or, at most, a tree structure) and explains its *outputs*. This page goes a level deeper — tools that inspect a neural network's actual internal activations and computation, from a single gradient-based heatmap up through the current frontier of mechanistic interpretability research.
+[Classical Interpretability](/docs/interpretability/classical-interpretability) treats a model as a black box (or, at most, a tree structure) and explains its *outputs*. This page goes a level deeper: tools built specifically for a differentiable, gradient-accessible neural network, from a single gradient-based heatmap up through the current frontier of mechanistic interpretability research.
+
+## Intuition: A Rigor Ladder, Not a Toolbox of Equals
+
+Every tool below answers "what's going on inside this network," but they don't all answer it with the same strength of evidence. A saliency map is cheap and fast, but purely correlational — it tells you *what correlates with* the output, not *what causes* it. A verified circuit is expensive to find, but it's an actual causal, mechanistic account. Keep this ladder in mind as you go — it's also how the page ends:
+
+<InterpretabilityRigorLadderDiagram />
 
 ## Saliency Maps and Gradient-Based Attribution
 
-The most direct way to ask "which input pixels/tokens mattered" for a neural network specifically: compute the gradient of the output with respect to the input (see [Jacobians](/docs/mathematics-for-ai/calculus-optimization#jacobians--hessians-derivatives-of-vector-valued-and-multivariate-functions)) — large gradient magnitude at a given input position means small changes there would meaningfully change the output, used as a proxy for "the model is paying attention to this region." For images, this produces a **saliency map** — a heatmap over the input image highlighting which pixels most influenced the prediction. Simple and fast, but known to be noisy and sometimes misleading on its own — refinements like **Integrated Gradients** (accumulating gradients along a path from a baseline input to the actual input, rather than a single gradient at one point) and **Grad-CAM** (using gradients flowing into a CNN's late convolutional layers specifically, producing coarser but often more semantically meaningful heatmaps) address specific failure modes of the raw-gradient approach.
+The most direct way to ask "which input pixels/tokens mattered" for a neural network specifically: compute the gradient of the output with respect to the input (see [Jacobians](/docs/mathematics-for-ai/calculus-optimization#jacobians--hessians-derivatives-of-vector-valued-and-multivariate-functions)) — large gradient magnitude at a given input position means small changes there would meaningfully change the output. For images, this produces a **saliency map**, a heatmap over the input highlighting which pixels most influenced the prediction. Simple and fast, but with a specific, well-documented failure mode: **gradient saturation**.
+
+### Gradient Saturation, Demonstrated
+
+If a model's score is already near 0 or 1 for a given input (deep into a sigmoid's flat region), the *local* gradient there is tiny — almost zero — even for input pixels that were genuinely decisive in getting the score that high in the first place. Watch it happen with a real toy scorer, $F(x) = \text{sigmoid}(k \cdot w{\cdot}x)$, evaluated at an input where $F(x) \approx 1$:
+
+<SaliencyMapDiagram />
+
+**Integrated Gradients** fixes this by not evaluating the gradient only at the saturated endpoint — it accumulates the gradient along the *entire straight-line path* from a baseline (typically all-zeros) to the actual input, most of which isn't saturated:
+
+$$\text{IG}_i(x) = (x_i - x_i^{\text{baseline}}) \int_0^1 \frac{\partial F(x^{\text{baseline}} + \alpha(x - x^{\text{baseline}}))}{\partial x_i}\, d\alpha$$
+
+The diagram above computes that integral for real, via a 40-step Riemann sum — which is exactly how it's done in practice, since the integral rarely has a closed form for a real network. **Grad-CAM** is a different fix for a different failure mode: rather than raw input-pixel gradients (noisy at pixel granularity), it uses gradients flowing into a CNN's late convolutional layers, producing coarser but often more semantically meaningful heatmaps.
 
 ## Activation Visualization
 
-Directly inspecting what individual neurons or channels respond to, rather than working backward from gradients — e.g. finding which input images (or which synthetic input, generated specifically to maximize a given neuron's activation) most strongly activate a specific channel in a CNN's intermediate layer. Classic results from this line of work showed early CNN layers learn recognizable edge and color detectors (directly consistent with the classical [Sobel-filter convolution](/docs/computer-vision/vision-fundamentals#convolution-as-classical-filtering) intuition — the network learns something similar to what was previously hand-designed), while deeper layers learn increasingly abstract, complex feature detectors (textures, then object parts, then whole objects) — direct empirical evidence for the "hierarchy of increasingly abstract features" intuition [CNNs](/docs/deep-learning/cnns) describes conceptually.
+A complementary strategy to saliency: instead of asking "which pixels of *this* input mattered," ask "what input would make *this neuron* fire maximally" — directly inspecting what a neuron or channel represents, rather than working backward from one specific example. In practice this means running real **gradient ascent** on the input itself, climbing the neuron's actual activation function step by step:
+
+<ActivationMaximizationDiagram />
+
+This is literally how classic feature-visualization results were produced (the widely-seen "what does this neuron want to see" synthesized images): not by inspecting weights directly, but by optimizing an input against a real, differentiable activation function, exactly like the toy version above, just with a full trained network's activation surface instead of two Gaussian bumps. Classic results from this line of work showed early CNN layers learn recognizable edge and color detectors — directly consistent with the classical [Sobel-filter convolution](/docs/computer-vision/vision-fundamentals#convolution-as-classical-filtering) intuition, the network learns something similar to what was previously hand-designed — while deeper layers learn increasingly abstract, complex feature detectors (textures, then object parts, then whole objects), direct empirical evidence for the "hierarchy of increasingly abstract features" intuition [CNNs](/docs/deep-learning/cnns) describes conceptually.
 
 ## Attention Analysis
 
-Specific to Transformers (see [Attention & Transformers](/docs/deep-learning/attention-transformers)): visualizing attention weights directly — which tokens a given head, at a given layer, attends to most strongly for a given input — since attention weights are themselves a normalized (softmax) distribution, they're directly visualizable as a heatmap without needing gradients or extra machinery at all. Genuinely useful for spotting *qualitative* patterns (a head that consistently attends to the previous token, a head that tracks a pronoun back to its antecedent), but a well-known caution applies: high attention weight on a token doesn't necessarily mean that token was *causally important* to the output — attention is one signal among many the model's computation combines, and treating attention weights as a complete, sufficient explanation for a model's behavior has been repeatedly shown to be an overclaim in the interpretability literature. Use it as a hypothesis-generating tool, not a final answer.
+Specific to Transformers (see [Attention & Transformers](/docs/deep-learning/attention-transformers)): visualizing attention weights directly — since they're already a normalized (softmax) distribution, they're directly viewable as a heatmap with no gradients or extra machinery needed. Two of the most-cited qualitative patterns found this way are shown below — a head that always looks one token back, and an **induction head** that pattern-matches against earlier context to predict a repeat:
+
+<AttentionHeadPatternDiagram />
+
+**A well-known caution applies**: high attention weight on a token doesn't necessarily mean that token was *causally important* to the output — attention is one signal among several the model's computation combines, and treating attention weights as a complete, sufficient explanation for a model's behavior has been repeatedly shown to be an overclaim in the interpretability literature. Use it as a hypothesis-generating tool, not a final answer — which is exactly why the induction pattern above only became a confirmed *circuit* (below), not just a suggestive picture, once it was verified causally.
 
 ## Probing Classifiers
 
-Train a small, separate classifier to predict some property of interest (part-of-speech, syntactic structure, a factual attribute) *from* a model's internal activations at a specific layer — if the probe can accurately predict the property, that's evidence the model's representation at that layer *encodes* that information, whether or not the model's own output ever makes it explicit. Probing revealed, for instance, that BERT-style encoders build up increasingly abstract linguistic structure across their layers (roughly: earlier layers encode more surface-level features like part-of-speech, later layers encode more abstract syntactic/semantic structure) — evidence for *what* a model represents internally, distinct from evidence about *how* it uses that representation to produce output (which circuits, below, address more directly).
+Train a small, separate classifier to predict some property of interest (part-of-speech, syntactic structure, a factual attribute) *from* a model's internal activations at a specific layer — if the probe can accurately predict the property, that's evidence the model's representation at that layer *linearly encodes* that information, whether or not the model's own output ever makes it explicit. Three real logistic-regression probes below, fit by real gradient descent to synthetic activations that only differ in how separable the underlying property is — a direct stand-in for "how cleanly a real layer encodes it":
 
-## Sparse Autoencoders
+<ProbingClassifierDiagram />
 
-A more recent technique specifically for addressing **superposition** — the empirical observation that a neural network's individual neurons often don't correspond to single, clean, human-interpretable concepts; instead, many neurons each participate in representing *several* different concepts simultaneously, and any one concept is spread across *many* neurons, making individual-neuron inspection (activation visualization, above) unreliable as a complete explanation. A **sparse autoencoder** (see [Autoencoders](/docs/deep-learning/autoencoders)) is trained on a model's internal activations to reconstruct them through a much *wider*, sparsely-activated hidden layer — the sparsity constraint pressures the autoencoder to discover a larger set of more individually-interpretable "features" than the original neuron basis provides, effectively un-mixing the superposed concepts into cleaner, separately-interpretable units. This has become one of the most actively used tools in current mechanistic interpretability research specifically because it addresses superposition head-on rather than working around it.
+Probing revealed, for instance, that BERT-style encoders build up increasingly abstract linguistic structure across their layers — roughly: earlier layers encode more surface-level features like part-of-speech, later layers encode more abstract syntactic/semantic structure — evidence for *what* a model represents internally, distinct from evidence about *how* it uses that representation to produce output (which circuits, below, address more directly). **A caveat mirroring attention's**: a probe finding a property decodable doesn't prove the model actually reads it out and uses it downstream — a powerful enough probe can sometimes decode information the model itself never acts on.
+
+## Sparse Autoencoders and Superposition
+
+A more recent technique specifically for addressing **superposition** — the empirical observation that a neural network's individual neurons often don't correspond to single, clean, human-interpretable concepts; instead, many neurons each participate in representing *several* different concepts simultaneously, and any one concept is spread across *many* neurons. This isn't a training accident to be fixed — it's close to mathematically forced whenever a model has more genuinely useful features to represent than it has neurons to represent them with:
+
+<SuperpositionDiagram />
+
+A **sparse autoencoder** is trained on a model's internal activations to reconstruct them through a much *wider*, sparsely-activated hidden layer (see [Autoencoders](/docs/deep-learning/autoencoders)) — the sparsity constraint pressures it to discover a larger set of more individually-interpretable "features" than the original neuron basis provides, effectively un-mixing the superposed concepts into cleaner, separately-interpretable units, the same geometric move the diagram above shows: give the same features more room and their interference collapses. This has become one of the most actively used tools in current mechanistic interpretability research specifically because it addresses superposition head-on rather than working around it.
 
 ## Circuits
 
-A **circuit** is a specific, identified subgraph of a network's components (attention heads, MLP neurons, or sparse-autoencoder features) that together implement a specific, identifiable piece of the model's computation — e.g. a small set of attention heads and MLP layers shown to jointly implement induction (predicting that a token seen earlier in the same pattern will repeat) or a specific factual-recall pathway. Finding and verifying a circuit means being able to point to the *actual mechanism* a model uses to perform a piece of its behavior, not just correlational evidence (like a probe or a saliency map) that some information is present somewhere — circuits are the unit of explanation mechanistic interpretability is ultimately trying to produce at scale.
+A **circuit** is a specific, identified subgraph of a network's components (attention heads, MLP neurons, or sparse-autoencoder features) that together implement a specific, identifiable piece of the model's computation. The induction pattern from the attention-analysis diagram above is the canonical example — traced end-to-end into an actual verified circuit:
+
+<CircuitDiagram />
+
+Finding and verifying a circuit means being able to point to the *actual mechanism* a model uses to perform a piece of its behavior, not just correlational evidence (like a probe or a saliency map) that some information is present somewhere. That's the qualitative jump circuits make over everything earlier on this page: from "this correlates with the behavior" to "this is how the behavior is computed, and here's the causal chain proving it."
 
 ## Mechanistic Interpretability
 
-The overarching research program these last several tools serve: reverse-engineering a neural network's learned computation into human-understandable algorithms — treating a trained model less like a black-box statistical function and more like compiled code to be decompiled, with sparse autoencoders providing cleaner interpretable units and circuit analysis providing the causal story of how those units combine to produce behavior. This is the most rigorous, and most labor-intensive, form of interpretability on this page — genuinely explaining *how* a specific capability works mechanistically, rather than *what* correlates with it — and directly the tool [AI Safety — Scalable Oversight](/docs/ai-safety/scalable-oversight-and-frontier-safety#interpretabilitys-role-in-safety) points to for inspecting a model's actual computation rather than trusting its self-reported reasoning.
+The overarching research program the last several tools serve: reverse-engineering a neural network's learned computation into human-understandable algorithms — treating a trained model less like a black-box statistical function and more like compiled code to be decompiled, with sparse autoencoders providing cleaner interpretable units and circuit analysis providing the causal story of how those units combine to produce behavior. It's the most rigorous, and most labor-intensive, tier of the ladder at the top of this page — genuinely explaining *how* a specific capability works mechanistically, rather than *what* correlates with it — and directly the tool [AI Safety — Scalable Oversight](/docs/ai-safety/scalable-oversight-and-frontier-safety#interpretabilitys-role-in-safety) points to for inspecting a model's actual computation rather than trusting its self-reported reasoning.
 
 Interpretability section complete. Next: [Reinforcement Learning](/docs/reinforcement-learning/roadmap) — a separate track with its own theoretical foundation underlying RLHF, agents, and game-playing systems.
