@@ -4,9 +4,19 @@ sidebar_position: 4
 ---
 
 
+import OverestimationBiasDiagram from '../../../viz/diagrams/OverestimationBiasDiagram';
+import SacEntropyDiagram from '../../../viz/diagrams/SacEntropyDiagram';
+import OfflineRlExtrapolationDiagram from '../../../viz/diagrams/OfflineRlExtrapolationDiagram';
+import CompoundingErrorDiagram from '../../../viz/diagrams/CompoundingErrorDiagram';
+import RlhfMappingDiagram from '../../../viz/diagrams/RlhfMappingDiagram';
+
 # Advanced RL
 
 [RL Fundamentals](/docs/reinforcement-learning/rl-fundamentals) covered tabular methods — a $Q$-value stored explicitly for every state-action pair, which only works for small, discrete state spaces. Everything on this page addresses what happens once state spaces get too large for a table, action spaces become continuous, or the clean "agent interacts live with an environment" assumption itself breaks down.
+
+## Intuition: Each Method Fixes One Specific Assumption Break
+
+Every topic below exists because one specific assumption from RL Fundamentals stopped holding, and each fix is narrowly scoped to that one break: SAC and TD3 fix specific *statistical* failure modes of actor-critic methods once a neural network stands in for the Q-table. Offline RL breaks the "agent can freely explore" assumption. Imitation and inverse RL break the "a reward function is given" assumption. Keep that mapping in mind — it turns this page from a list of algorithm names into "here's the assumption, here's exactly what breaks, here's the fix."
 
 ## Deep RL: DQN, Policy Gradients, Actor-Critic, PPO
 
@@ -14,18 +24,41 @@ Covered as architectures in [Advanced Architectures — Reinforcement Learning N
 
 ## SAC and TD3: Refining Continuous Control
 
-Two widely-used refinements specifically for continuous action spaces (robotics, physical control), addressing specific weaknesses in vanilla actor-critic/policy-gradient methods:
+Two widely-used refinements specifically for continuous action spaces (robotics, physical control), addressing specific weaknesses in vanilla actor-critic/policy-gradient methods.
 
-- **SAC (Soft Actor-Critic)**: adds an **entropy bonus** to the objective — the agent is rewarded not just for expected return, but for maintaining *some* randomness in its policy, explicitly trading off exploration against exploitation within the objective itself rather than requiring a separately-tuned exploration schedule. This tends to produce more robust policies that don't collapse prematurely onto a single, possibly-suboptimal deterministic behavior.
-- **TD3 (Twin Delayed DDPG)**: addresses a specific, well-documented failure mode of actor-critic methods — **overestimation bias**, where the learned value function's errors, combined with the policy directly optimizing against that value function, cause value estimates to systematically drift upward and mislead training. TD3 fixes this with three specific tricks: training *two* independent value networks and using the more conservative (minimum) of the two as the target (directly counteracting the upward-bias direction), delaying policy updates relative to value updates (letting the value estimate stabilize first), and adding noise to the target action (smoothing the value estimate against small errors in the exact action taken).
+### TD3: Fixing Overestimation Bias
+
+**Overestimation bias** is a specific, well-documented statistical failure: once a neural network approximates $Q$, its estimates carry noise — and taking a $\max$ over noisy estimates is a *biased* estimator of the true max, even when the noise itself averages to zero, because the max operation systematically favors whichever estimate got lucky. Run the real simulation below — 400 trials, one Monte Carlo run each:
+
+<OverestimationBiasDiagram />
+
+**TD3 (Twin Delayed DDPG)** fixes this with three specific tricks: training *two* independent value networks and using the more conservative (minimum) of the two as the target (directly counteracting the upward-bias direction, exactly as shown above), delaying policy updates relative to value updates (letting the value estimate stabilize first), and adding noise to the target action (smoothing the value estimate against small errors in the exact action taken).
+
+### SAC: Trading Off Return Against Exploration
+
+**SAC (Soft Actor-Critic)** adds an **entropy bonus** to the objective — the agent is rewarded not just for expected return, but for maintaining *some* randomness in its policy: $J = \mathbb{E}[Q] + \alpha H(\pi)$. This explicitly trades off exploration against exploitation within the objective itself, rather than requiring a separately-tuned exploration schedule. Drag $\alpha$ and watch which of two real policies — one peaked and greedy, one spread and exploratory — the objective actually prefers:
+
+<SacEntropyDiagram />
+
+This tends to produce more robust policies that don't collapse prematurely onto a single, possibly-suboptimal deterministic behavior — exactly the failure mode a purely greedy objective (α=0) is prone to.
 
 ## Offline RL
 
-Standard RL assumes the agent can freely interact with the environment, collecting new experience as it learns. **Offline RL** removes that assumption entirely — the agent learns from a fixed, pre-collected dataset of past experience, with no ability to try new actions and see what happens. This matters enormously wherever live experimentation is expensive, slow, or unsafe — a physical robot, a medical treatment policy, a recommender system where "trying a bad action" means showing a real user a bad recommendation. The core added difficulty beyond standard RL: without the ability to explore, the algorithm has no way to correct a value-function error for actions poorly represented in the fixed dataset, and naively extrapolating can produce a policy that looks good on paper (high estimated value) but fails badly in practice specifically because it exploits the value function's errors on data it never saw — a distribution-shift problem closely related to [training-serving skew](/docs/mlops/feature-stores-and-model-registry#the-training-serving-skew-problem) in the classical ML sense, just for RL's *action* distribution instead of a feature distribution.
+Standard RL assumes the agent can freely interact with the environment, collecting new experience as it learns. **Offline RL** removes that assumption entirely — the agent learns from a fixed, pre-collected dataset of past experience, with no ability to try new actions and see what happens. This matters enormously wherever live experimentation is expensive, slow, or unsafe — a physical robot, a medical treatment policy, a recommender system where "trying a bad action" means showing a real user a bad recommendation.
+
+The core added difficulty beyond standard RL: without the ability to explore, the algorithm has no way to correct a value-function error for actions poorly represented in the fixed dataset. Watch a real regression fit exploit exactly that gap:
+
+<OfflineRlExtrapolationDiagram />
+
+Naively extrapolating can produce a policy that looks good on paper (high estimated value) but fails badly in practice specifically because it exploits the value function's errors on data it never saw — a distribution-shift problem closely related to [training-serving skew](/docs/mlops/feature-stores-and-model-registry#the-training-serving-skew-problem) in the classical ML sense, just for RL's *action* distribution instead of a feature distribution.
 
 ## Imitation Learning
 
-Instead of learning from a reward signal at all, learn a policy directly from demonstrations of the desired behavior — a human (or existing expert policy) performing the task, with the agent trained (often via straightforward supervised learning) to reproduce the demonstrated actions given the observed states. The most direct form, **behavioral cloning**, is simple but has a well-known compounding-error problem: small mistakes push the agent into states slightly outside the demonstrated distribution, where it's never been trained and makes further mistakes, compounding over a trajectory — addressed by techniques that actively query the expert during training rather than training purely offline on a fixed demonstration set.
+Instead of learning from a reward signal at all, learn a policy directly from demonstrations of the desired behavior — a human (or existing expert policy) performing the task, with the agent trained (often via straightforward supervised learning) to reproduce the demonstrated actions given the observed states. The most direct form, **behavioral cloning**, is simple but has a well-known **compounding-error problem**: small mistakes push the agent into states slightly outside the demonstrated distribution, where it's never been trained and makes further mistakes. Same-sized per-step errors, fed two different ways:
+
+<CompoundingErrorDiagram />
+
+Behavioral cloning's error accumulates because the agent's own (already-drifted) state feeds into its next decision — a real feedback loop, not a metaphor, and exactly what the red trace above is doing: a genuine running sum of per-step error. Techniques that actively query the expert during training (rather than training purely offline on a fixed demonstration set) break that feedback loop by periodically resetting to the true state, exactly like the bounded green trace.
 
 ## Inverse RL
 
@@ -33,6 +66,26 @@ The reverse problem from imitation learning's direct behavior-cloning: instead o
 
 ## RLHF, RLAIF, and GRPO in the RL Framework
 
-[Training Pipeline — RLHF](/docs/llms-genai/training-pipeline#rlhf--reinforcement-learning-from-human-feedback) and [GRPO](/docs/llms-genai/training-pipeline#group-relative-policy-optimization-grpo) are genuine instances of this page's framework, worth mapping explicitly onto the vocabulary above: the LLM itself is the **policy** $\pi$, a generated response is a sampled **action** (or sequence of actions, one per token), the **reward** comes from a learned reward model (RLHF) or an AI judge instead of a human one (**RLAIF** — Reinforcement Learning from AI Feedback, the same mechanism with the human preference-labeling step replaced by another model's judgment), and PPO/GRPO are the specific policy-optimization algorithms used to actually update the policy against that reward. Seeing RLHF as "just RL, with a learned reward model standing in for the environment's reward function" is what makes the KL-divergence penalty, the reward-hacking failure mode (see [Alignment & RLHF](/docs/ai-safety/alignment-and-rlhf#reward-hacking)), and GRPO's critic-free design all make sense as specific engineering responses to specific, generic RL problems, not LLM-specific magic.
+[Training Pipeline — RLHF](/docs/llms-genai/training-pipeline#rlhf--reinforcement-learning-from-human-feedback) and [GRPO](/docs/llms-genai/training-pipeline#group-relative-policy-optimization-grpo) are genuine instances of this page's framework. Click through the mapping below to see exactly how each piece of RL vocabulary lands on the LLM side:
+
+<RlhfMappingDiagram />
+
+Seeing RLHF as "just RL, with a learned reward model standing in for the environment's reward function" is what makes the KL-divergence penalty, the reward-hacking failure mode (see [Alignment & RLHF](/docs/ai-safety/alignment-and-rlhf#reward-hacking)), and GRPO's critic-free design all make sense as specific engineering responses to specific, generic RL problems, not LLM-specific magic.
+
+## Code: TD3's Twin-Critic Target, For Real
+
+```python
+import torch
+
+# TD3's core fix -- take the MIN of two critics as the target, exactly
+# what closed the overestimation gap in the diagram above.
+def td3_target(critic1, critic2, target_actor, reward, next_state, gamma, noise_std=0.2):
+    next_action = target_actor(next_state)
+    next_action += torch.clamp(torch.randn_like(next_action) * noise_std, -0.5, 0.5)  # target policy smoothing
+    q1 = critic1(next_state, next_action)
+    q2 = critic2(next_state, next_action)
+    target_q = reward + gamma * torch.min(q1, q2)  # the twin-critic min, not a single critic's estimate
+    return target_q
+```
 
 Reinforcement Learning section complete. Next: [Graph ML](/docs/graph-ml/roadmap) — another specialized track, for data with explicit relational structure rather than sequential or spatial structure.
