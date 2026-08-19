@@ -4,10 +4,11 @@ Tracking interactive-diagram conversion (≥10 custom `.tsx` components per page
 `src/viz/diagrams/`, following `diagramSystem.ts` conventions — same standard as
 `deep-learning/attention-transformers.mdx`) for this session's assigned folders.
 
-Other sessions (confirmed via cross-session coordination on 2026-08-19):
-- `vite-react-visualization-migration` owns `deep-learning/`, `machine-learning/`.
+Other sessions (confirmed via cross-session coordination on 2026-08-19, updated 2026-08-20):
+- `vite-react-visualization-migration` — lead, platform strategy/homepage/cross-cutting fixes, assigns work.
 - `platform-vite-38` owns `databases/`, `ml-system-design/`, `llms-genai/`, `agents/` (incl. `agents/mcp/`).
-- This session owns `speech-audio/`, `computer-vision/`, `mlops/` — 35 pages.
+- `platform-vite-ad` owns `cs-fundamentals/` (APIs page) and, as of 2026-08-20, `mlops/` diagram coverage (reassigned from this session — mlops/message-queues-and-async-processing.mdx below was already shipped by this session before the reassignment and stays as-is, but no further mlops/ pages).
+- This session owns `speech-audio/`, `computer-vision/` (original scope) plus ad-hoc lead assignments: homepage, getting-started/intro.mdx, per-route document.title, intro.mdx deletion, message-queues page (all shipped), and next: `databases/vector/overview.mdx` + `databases/graph/overview.mdx`.
 
 Status legend: `[ ]` not started · `[~]` in progress · `[x]` done (≥10 components, committed)
 
