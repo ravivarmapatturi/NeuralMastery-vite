@@ -11,20 +11,26 @@ Other sessions (confirmed via cross-session coordination on 2026-08-19):
 
 Status legend: `[ ]` not started · `[~]` in progress · `[x]` done (≥10 components, committed)
 
-**Scope calibration (decided after checking the established precedent in deep-learning/, the most mature folder):** `overview.mdx` and `roadmap.mdx` pages that already contain real explanatory prose (not a bare link-list stub) stay as lightweight navigation — no forced diagram count. deep-learning/overview.mdx (23 lines, guiding-questions + path-through-section, same shape as mlops/overview.mdx and speech-audio/overview.mdx) has zero diagrams even in the most actively-worked folder, and no roadmap.mdx sitewide has diagrams. The "expand stubs first" directive applies to genuinely bare pages (just links, no prose) like ml-system-design/overview.mdx was before platform-vite-38 expanded it — not to already-substantive overview/roadmap pages. computer-vision/overview.mdx already got the full 10-diagram treatment before this was decided; leaving it as-is (good work, not reverting), but not replicating that pattern on the remaining overview/roadmap pages in this scope. Diagram effort goes to the real topic pages instead.
+**Scope calibration, revised 2026-08-20:** superseded by the lead's sitewide audit — 34 of 60 section overview.mdx/roadmap.mdx pages (15-28 lines) are a tracked P0 gap, since these are the homepage topic-grid's actual landing pages. speech-audio/overview.mdx (20 lines) and speech-audio/roadmap.mdx (24 lines) fall in that bucket and are claimed by this session (confirmed to the lead 2026-08-20) — will expand into real content, then diagram, once the message-queues page (next task, assigned by lead) is done. roadmap.mdx pages specifically may still end up staying closer to a checklist (matches deep-learning/roadmap.mdx precedent) even after a content pass — judgment call per page, not a blanket rule either way anymore. computer-vision/roadmap.mdx not yet claimed/decided; revisit after speech-audio.
+
+**Cross-project work done in this session outside the original 35-page diagram scope** (tracked here since it's the same session): built the homepage (src/components/Home.tsx, commit 313f1d9), rewrote getting-started/intro.mdx (3607bd1), added per-route document.title (270ef45), deleted the redundant src/content/docs/intro.mdx (d4e7c84). All pushed + deployed.
 
 ## speech-audio/ (4 content pages)
-- [~] overview.mdx — has real explanatory prose already (not a bare stub); leaving as lightweight nav per scope calibration above, no diagrams needed
-- [~] roadmap.mdx — pure checklist by design (matches deep-learning/roadmap.mdx); no diagrams needed
+- [ ] overview.mdx — claimed, P0 stub-expansion queued after message-queues page
+- [ ] roadmap.mdx — claimed, same
 - [x] audio-fundamentals.mdx — 7 components (commit 386f71d): SamplingNyquistDiagram, BitDepthQuantizationDiagram, FourierSumOfSinesDiagram, WaveformSpectrogramDiagram (raster replacement), StftWindowTradeoffDiagram, MelScaleDiagram, MfccPipelineDiagram. Below the aspirational ≥10 target -- 7 genuinely content-tied diagrams, no padding.
 - [ ] speech-audio-tasks.mdx
 
 ## computer-vision/ (5 content pages)
 - [x] overview.mdx — 10 content-tied interactive diagrams, substantive prose expansion, and browser/build validation (commits ae5c29d, b212122, e55e039)
-- [~] roadmap.mdx — pure checklist by design; no diagrams needed
+- [ ] roadmap.mdx — status TBD, see scope calibration note above
 - [ ] vision-fundamentals.mdx — has 1 raster (convolution-demo.png)
 - [ ] vision-tasks-and-models.mdx
 - [ ] modern-vision-and-multimodal.mdx
+
+## New: mlops/message-queues-and-async-processing.mdx (assigned by lead, 2026-08-20)
+- [x] Done. 6 components: SyncVsAsyncDiagram, ProducerQueueConsumerDiagram (live producer/consumer-rate simulation, genuinely accumulates/drains), PubSubVsPointToPointDiagram, DeliverySemanticsDiagram (at-most/at-least/exactly-once stepper), PartitionOrderingDiagram, QueueToolComparisonDiagram (Kafka/Celery/Redis/SQS). Cross-linked from pipeline-orchestration.mdx (updated its "Next:" to route through this page) and model-serving.mdx's streaming-inference section. Verified via headless browser (all 6 diagrams interact correctly) + full smoke suite (10/10).
+- Next queued (lead, 2026-08-20): databases/vector/overview.mdx and databases/graph/overview.mdx expansion -- both thin stubs, cross-linked from llms-genai/rag.mdx for RAG context, focus on DB mechanics (ANN/HNSW, Cypher, Neo4j) not duplicating retrieval-pipeline content.
 
 ## mlops/ (26 content pages)
 - [ ] overview.mdx

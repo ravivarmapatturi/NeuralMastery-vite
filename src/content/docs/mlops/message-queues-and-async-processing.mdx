@@ -1,0 +1,76 @@
+---
+title: "Message Queues & Async Processing"
+sidebar_position: 6.5
+---
+
+
+import SyncVsAsyncDiagram from '../../../viz/diagrams/SyncVsAsyncDiagram';
+import ProducerQueueConsumerDiagram from '../../../viz/diagrams/ProducerQueueConsumerDiagram';
+import PubSubVsPointToPointDiagram from '../../../viz/diagrams/PubSubVsPointToPointDiagram';
+import DeliverySemanticsDiagram from '../../../viz/diagrams/DeliverySemanticsDiagram';
+import PartitionOrderingDiagram from '../../../viz/diagrams/PartitionOrderingDiagram';
+import QueueToolComparisonDiagram from '../../../viz/diagrams/QueueToolComparisonDiagram';
+
+# Message Queues & Async Processing
+
+Kafka, Celery, and "background job" show up in passing across this section — [Pipeline Orchestration](/docs/mlops/pipeline-orchestration#airflow) mentions Celery workers as an Airflow executor, [APIs & Model Serving](/docs/mlops/model-serving#batch-online-and-streaming-inference) mentions Kafka as the backbone of streaming inference — without ever explaining what a message queue actually is or why it's there. This page is that missing piece: the mechanism underneath async task processing, streaming pipelines, and event-driven architectures generally.
+
+## Why Not Just Call the API Directly?
+
+A direct API call is a **synchronous, tightly coupled** dependency: the caller is blocked until the callee responds, and if the callee is down, slow, or overwhelmed, the caller feels all of that immediately and directly. A message queue sits between two systems and breaks that coupling in three specific ways:
+
+- **Decoupling**: the producer doesn't need to know who (or how many consumers) will process a message, or when — it just puts the message on the queue and moves on. The consumer can be redeployed, scaled, or temporarily down without the producer's code changing or failing.
+- **Buffering**: a burst of traffic that would overwhelm a downstream service gets absorbed by the queue instead of hitting it directly — the consumer drains the burst at its own sustainable pace instead of falling over.
+- **Backpressure**: the flip side of buffering — a queue makes the mismatch between producer and consumer rates *visible and manageable* (queue depth growing) instead of invisible until something crashes.
+
+## Sync vs. Async Processing
+
+<SyncVsAsyncDiagram />
+
+The core tradeoff: synchronous processing gives you an immediate, simple answer (the response *is* the result) at the cost of the caller being blocked for the full processing time. Asynchronous processing frees the caller immediately, at the cost of complexity — now something has to track the request's state, and the caller needs a way to find out when (or whether) it finished, e.g. polling a status endpoint or receiving a callback/webhook.
+
+## The Core Pattern: Producer, Queue, Consumer
+
+Every message-queue system reduces to the same three roles, regardless of which specific technology implements them:
+
+<ProducerQueueConsumerDiagram />
+
+- **Producer**: whatever creates the message — an API handler that just accepted a request, a cron job, an upstream service emitting an event.
+- **Queue (or topic)**: the durable (or at least persistent-enough) buffer holding messages until a consumer is ready for them.
+- **Consumer**: a worker process that pulls messages off the queue and does the actual work — send the email, run the inference, write the row.
+
+Producer and consumer rates rarely match exactly, which is precisely why the queue exists as a buffer — but an unbounded buffer just delays the failure instead of preventing it. Real systems cap queue depth and apply backpressure (reject new messages, slow the producer, or auto-scale consumer workers) once that cap is approached, rather than letting the queue grow until the process holding it runs out of memory.
+
+## Point-to-Point vs. Pub/Sub
+
+Two different fan-out shapes, both built on the same producer/queue/consumer primitives:
+
+<PubSubVsPointToPointDiagram />
+
+Point-to-point (a queue with a pool of **competing consumers**) is how you scale out processing of one logical stream of work — more workers pulling from the same queue means more throughput, and each unit of work still gets done exactly once. Pub/sub (a topic with independent **subscribers**) is how one event fans out to multiple, unrelated downstream systems that each need their own full copy of the stream — the same "order placed" event triggering a fraud check, a receipt email, and an analytics pipeline, none of which should have to compete with each other for it.
+
+## Delivery Semantics: At-Most-Once, At-Least-Once, Exactly-Once
+
+<DeliverySemanticsDiagram />
+
+The practical question underneath all three: **when does the consumer tell the queue "I'm done with this message"** relative to when it actually finishes the work? Acking too early risks losing work on a crash; acking too late (or not at all until success) risks redelivering and reprocessing a message that already succeeded. "Exactly-once" in practice almost always means at-least-once delivery plus an **idempotent consumer** — one that checks a message ID against what it's already processed before re-applying an effect, so a harmless duplicate delivery doesn't turn into a harmful duplicate *side effect* (charging a customer twice, sending a duplicate email).
+
+## Ordering Guarantees and Partitioning
+
+<PartitionOrderingDiagram />
+
+A single queue trivially preserves order (first in, first out), but a single queue is also a scaling bottleneck. Systems built for high throughput (Kafka is the canonical example) split a topic into multiple **partitions**, each independently ordered but with no ordering guarantee *across* partitions — the tradeoff for parallelism. **Partition keys** solve the "but I need this subset in order" problem: routing every message for a given key (a user ID, an order ID) to the same partition guarantees order *within* that key, at the cost of that partition becoming a hotspot if one key sees disproportionate traffic.
+
+## Kafka, Celery, Redis, SQS: Picking One
+
+<QueueToolComparisonDiagram />
+
+The real decision usually comes down to what you actually need: replay-able event history and multiple independent consumer groups reading the same stream → Kafka. Distributing background jobs across a worker pool with minimal setup → Celery. Already running Redis for caching and want a lightweight queue nearby, without hard durability requirements → Redis Streams. Zero infrastructure to manage on AWS → SQS.
+
+## Where This Shows Up in ML Systems
+
+- **Pipeline orchestration**: [Airflow's Celery executor](/docs/mlops/pipeline-orchestration#airflow) distributes DAG tasks across a worker pool using exactly the queue mechanics above.
+- **Streaming inference**: [Batch, Online, and Streaming Inference](/docs/mlops/model-serving#batch-online-and-streaming-inference) depends on a message queue (Kafka, Kinesis) as the event source predictions react to continuously.
+- **Background jobs generally**: anything a user shouldn't have to wait on synchronously — sending a notification, kicking off a long-running model training job from a UI click, ingesting a new document into a RAG index — is a producer/queue/consumer problem underneath, whether or not the framework on top calls it that.
+
+Next: [Containers](/docs/mlops/containers) — once a pipeline's steps (and its queue-backed workers) are defined, each one needs to run the same way everywhere.

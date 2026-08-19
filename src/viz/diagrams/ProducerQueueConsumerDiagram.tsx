@@ -1,0 +1,114 @@
+import { useEffect, useRef, useState } from 'react';
+import { useVizTokens } from '../../theme/vizTokens';
+import { VisualizationContainer, Slider, VizButton } from '../primitives';
+import { DIAGRAM_TYPE, getConceptColor } from './diagramSystem';
+
+const WIDTH = 560;
+const HEIGHT = 160;
+const MAX_VISIBLE_DEPTH = 40;
+const MAX_DEPTH = 400;
+
+/** Live, running simulation -- not a static illustration. Queue depth
+ * genuinely accumulates when producerRate > consumerRate and drains
+ * otherwise, exactly the mechanism that makes backpressure a real design
+ * problem rather than an abstract concern. */
+export default function ProducerQueueConsumerDiagram() {
+  const t = useVizTokens();
+  const [producerRate, setProducerRate] = useState(8);
+  const [consumerRate, setConsumerRate] = useState(5);
+  const [depth, setDepth] = useState(0);
+  const [running, setRunning] = useState(true);
+  const depthRef = useRef(0);
+
+  useEffect(() => {
+    if (!running) return;
+    const id = setInterval(() => {
+      depthRef.current = Math.max(0, Math.min(MAX_DEPTH, depthRef.current + (producerRate - consumerRate) * 0.3));
+      setDepth(depthRef.current);
+    }, 150);
+    return () => clearInterval(id);
+  }, [producerRate, consumerRate, running]);
+
+  const reset = () => {
+    depthRef.current = 0;
+    setDepth(0);
+  };
+
+  const visibleChips = Math.min(MAX_VISIBLE_DEPTH, Math.round(depth));
+  const overflowing = depth >= MAX_DEPTH * 0.95;
+  const queueColor = getConceptColor(t, 'attention');
+  const producerColor = getConceptColor(t, 'token');
+  const consumerColor = t.accentSecondary;
+
+  const chipCols = 10;
+  const chipSize = 12;
+  const chipGap = 2;
+  const queueX = 190;
+  const queueW = 220;
+
+  return (
+    <VisualizationContainer
+      footer={
+        overflowing
+          ? 'The queue is growing unbounded -- the producer is outpacing the consumer with no limit in place. In a real system this means unbounded memory growth, then an out-of-memory crash, unless something applies backpressure: capping queue size and rejecting/blocking new producers, or auto-scaling consumers.'
+          : producerRate > consumerRate
+            ? 'Producer rate exceeds consumer rate -- the queue is buffering the difference right now. That buffer absorbs a temporary spike, but it is not free capacity: without a cap, this keeps growing for as long as the imbalance holds.'
+            : 'Consumer rate keeps up with (or exceeds) the producer -- the queue stays shallow. This is the steady state every queue-backed system is designed to spend most of its time in.'
+      }
+    >
+      <Slider label={`Producer rate: ${producerRate} msg/s`} value={producerRate} onChange={setProducerRate} min={0} max={20} />
+      <Slider label={`Consumer rate: ${consumerRate} msg/s`} value={consumerRate} onChange={setConsumerRate} min={0} max={20} />
+      <div style={{ marginBottom: 10 }}>
+        <VizButton variant={running ? 'secondary' : 'primary'} onClick={() => setRunning((r) => !r)}>
+          {running ? 'Pause' : 'Resume'}
+        </VizButton>{' '}
+        <VizButton variant="secondary" onClick={reset}>
+          Reset
+        </VizButton>
+      </div>
+      <svg width="100%" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} style={{ display: 'block' }}>
+        <rect x={10} y={50} width={110} height={50} rx={8} fill={`${producerColor}22`} stroke={producerColor} strokeWidth={1.5} />
+        <text x={65} y={80} textAnchor="middle" fontSize={12} fontWeight={700} fill={producerColor}>Producer</text>
+
+        <rect x={queueX} y={30} width={queueW} height={90} rx={8} fill={t.surfaceAlt} stroke={overflowing ? t.accentDanger : t.border} strokeWidth={overflowing ? 2 : 1.5} />
+        <text x={queueX + queueW / 2} y={22} textAnchor="middle" fontSize={12} fontWeight={700} fill={t.textSecondary}>Queue</text>
+        {Array.from({ length: visibleChips }, (_, i) => {
+          const col = i % chipCols;
+          const row = Math.floor(i / chipCols);
+          return (
+            <rect
+              key={i}
+              x={queueX + 8 + col * (chipSize + chipGap)}
+              y={38 + row * (chipSize + chipGap)}
+              width={chipSize}
+              height={chipSize}
+              rx={2}
+              fill={overflowing ? t.accentDanger : queueColor}
+              opacity={0.85}
+            />
+          );
+        })}
+        <text x={queueX + queueW / 2} y={135} textAnchor="middle" fontSize={13} fontWeight={700} fontFamily="monospace" fill={overflowing ? t.accentDanger : t.textPrimary}>
+          depth: {Math.round(depth)}{depth >= MAX_DEPTH ? '+' : ''}
+        </text>
+
+        <rect x={WIDTH - 130} y={50} width={110} height={50} rx={8} fill={`${consumerColor}22`} stroke={consumerColor} strokeWidth={1.5} />
+        <text x={WIDTH - 75} y={80} textAnchor="middle" fontSize={12} fontWeight={700} fill={consumerColor}>Consumer</text>
+
+        <line x1={120} y1={75} x2={queueX - 6} y2={75} stroke={producerColor} strokeWidth={2} markerEnd="url(#pqc-arrow-p)" />
+        <line x1={queueX + queueW + 6} y1={75} x2={WIDTH - 130} y2={75} stroke={consumerColor} strokeWidth={2} markerEnd="url(#pqc-arrow-c)" />
+        <defs>
+          <marker id="pqc-arrow-p" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill={producerColor} />
+          </marker>
+          <marker id="pqc-arrow-c" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill={consumerColor} />
+          </marker>
+        </defs>
+      </svg>
+      <div style={{ fontSize: DIAGRAM_TYPE.secondaryLabel.size, color: t.textMuted, textAlign: 'center' }}>
+        Live simulation -- queue depth updates in real time from the two rates above.
+      </div>
+    </VisualizationContainer>
+  );
+}
