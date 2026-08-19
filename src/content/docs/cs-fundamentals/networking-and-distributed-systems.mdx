@@ -12,7 +12,9 @@ Every inference API call, every distributed training run, every RAG system's vec
 
 - **Request/response**: a client sends a request (method, URL, headers, optional body), a server sends back a response (status code, headers, body). Every LLM API call — `POST /v1/chat/completions` — is exactly this.
 - **Status codes**: `2xx` success, `3xx` redirect, `4xx` client error (`400` bad request, `401` unauthorized, `429` rate limited — the one every LLM API integration needs to handle gracefully), `5xx` server error.
-- **REST**: an architectural convention for structuring HTTP APIs around resources (`/users/123`) and standard verbs (`GET`/`POST`/`PUT`/`DELETE`) — the default style for the model-serving APIs covered in [APIs & Model Serving](/docs/mlops/model-serving).
+- **REST**: an architectural convention for structuring HTTP APIs around resources (`/users/123`) and standard verbs (`GET`/`POST`/`PUT`/`DELETE`) — the default style for the model-serving APIs covered in [Model Serving](/docs/mlops/model-serving).
+
+See [APIs, HTTP & Communication Patterns](/docs/cs-fundamentals/apis-http-and-protocols) for the full depth: methods and idempotency, status code families, REST vs. RPC vs. GraphQL, authentication/authorization (API keys, OAuth 2.0, JWTs), the five patterns covering every way two systems stay in sync (polling, webhooks, SSE, WebSockets — including what LLM token streaming actually is under the hood), and building an API in FastAPI.
 
 ## TCP/IP vs. UDP
 

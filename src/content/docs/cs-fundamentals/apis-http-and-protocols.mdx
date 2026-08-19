@@ -1,0 +1,127 @@
+---
+title: "APIs, HTTP & Communication Patterns"
+sidebar_position: 5
+---
+
+import RequestResponseCycleDiagram from '../../../viz/diagrams/RequestResponseCycleDiagram';
+import HttpMethodsDiagram from '../../../viz/diagrams/HttpMethodsDiagram';
+import StatusCodeFamiliesDiagram from '../../../viz/diagrams/StatusCodeFamiliesDiagram';
+import RestResourceModelDiagram from '../../../viz/diagrams/RestResourceModelDiagram';
+import AuthNvsAuthZDiagram from '../../../viz/diagrams/AuthNvsAuthZDiagram';
+import OAuthFlowDiagram from '../../../viz/diagrams/OAuthFlowDiagram';
+import JwtStructureDiagram from '../../../viz/diagrams/JwtStructureDiagram';
+import CommunicationPatternSequenceDiagram from '../../../viz/diagrams/CommunicationPatternSequenceDiagram';
+import PatternComparisonMatrixDiagram from '../../../viz/diagrams/PatternComparisonMatrixDiagram';
+import FastApiRequestFlowDiagram from '../../../viz/diagrams/FastApiRequestFlowDiagram';
+import DependencyInjectionDiagram from '../../../viz/diagrams/DependencyInjectionDiagram';
+
+# APIs, HTTP & Communication Patterns
+
+An **API** (Application Programming Interface) is a contract: a defined way for one piece of software to ask another for something, without needing to know how the other side is implemented internally. That definition sounds abstract until you notice how much of modern AI engineering *is* API calls, end to end:
+
+- Calling an LLM (Anthropic, OpenAI, any hosted model) is an API call, and its streaming response is a specific HTTP communication pattern (below), not magic.
+- An agent's [tool use](/docs/agents/agent-fundamentals#tool-use--function-calling) is, mechanically, the model producing a request that your code turns into an API call.
+- [MCP](/docs/agents/mcp/overview) — the protocol that lets an agent talk to tools — runs over HTTP as one of its two standard transports.
+- A model-serving endpoint you deploy (see [Model Serving](/docs/mlops/model-serving)) is a web API you write, and the framework you write it in is almost certainly the one covered at the end of this page.
+
+This page is the foundation those four things build on: how HTTP actually works, how REST structures an API around it, how authentication and authorization work, the handful of communication patterns that cover *every* way two systems exchange data over a network, and FastAPI — the framework you'll actually use to build one of these.
+
+## The Request/Response Cycle
+
+Every HTTP interaction is a client sending a **request** and a server sending back a **response** — the same basic shape whether it's a browser loading a page or your code calling an LLM API:
+
+<RequestResponseCycleDiagram />
+
+A request has a **method** (what kind of action), a **URL** (what resource), **headers** (metadata — content type, auth token, etc.), and an optional **body** (the actual payload, e.g. your prompt as JSON). A response has a **status code** (did it work, and how), its own headers, and a body (the result). `POST /v1/messages` with your prompt in a JSON body, getting back a `200` with the model's reply in JSON, is this exact cycle — nothing more exotic is happening underneath an LLM API call.
+
+## HTTP Methods
+
+- **GET**: retrieve a resource, no side effects. Safe to retry, safe to cache.
+- **POST**: create something, or trigger an action that has side effects (like generating a completion). Not safe to blindly retry — retrying a `POST` can create a duplicate.
+- **PUT**: replace a resource entirely with what you send.
+- **PATCH**: partially update a resource — send only the fields that changed.
+- **DELETE**: remove a resource.
+
+<HttpMethodsDiagram />
+
+**Idempotency** — whether calling an operation twice has the same effect as calling it once — is the property that actually matters in practice: `GET`, `PUT`, and `DELETE` are idempotent (safe to retry on a network timeout, since you're not sure if the first attempt landed); `POST` generally is not (retrying a payment or a completion request can duplicate it), which is exactly why production API clients need explicit retry logic that accounts for this, not blanket "retry on failure."
+
+## Status Codes
+
+<StatusCodeFamiliesDiagram />
+
+The families matter more than memorizing every code: `2xx` means it worked, `3xx` means go look elsewhere, `4xx` means *your* request was the problem (and is worth fixing before retrying — `400` malformed request, `401` missing/invalid auth, `403` authenticated but not allowed, `404` not found, `429` rate limited), `5xx` means the *server's* problem (worth retrying with backoff, since it might be transient). Every LLM API integration needs to handle `429` gracefully — it's not an edge case, it's the normal shape of using a shared, rate-limited service under load.
+
+## REST: Structuring an API Around Resources
+
+**REST** (Representational State Transfer) is the dominant convention for structuring HTTP APIs: model your data as **resources** identified by URLs (`/users/123`, `/conversations/456/messages`), and act on them using the standard HTTP methods above rather than inventing a custom verb per action:
+
+<RestResourceModelDiagram />
+
+This is a convention, not a protocol enforced by anything — it's worth briefly contrasting with the alternatives it's usually chosen over: **RPC-style APIs** (`/createUser`, `/sendMessage`) model actions directly as function calls instead of resources, which can be more natural for operations that don't map cleanly to CRUD; **GraphQL** lets the client specify exactly which fields it needs in a single request instead of the server dictating a fixed response shape per endpoint, trading REST's simplicity for flexibility when clients have very different data needs. Most model-serving and AI-tooling APIs (including this site's own examples) are REST or REST-adjacent, which is why it's the focus here.
+
+## Authentication vs. Authorization
+
+Two questions that get conflated constantly, and shouldn't be — they're answered by different mechanisms and fail in different ways:
+
+<AuthNvsAuthZDiagram />
+
+**Authentication** ("who are you?") establishes identity — an API key, a username/password, a signed token. **Authorization** ("what are you allowed to do?") is a separate decision made *after* identity is established — an authenticated user can still be authorized to read but not delete, or scoped to only their own resources. A system can authenticate perfectly and still be badly broken if authorization is missing (any logged-in user can delete any other user's data) — this is a real, common vulnerability class, not a theoretical distinction.
+
+### API Keys and OAuth 2.0
+
+The simplest authentication mechanism is an **API key** — a long secret string sent with every request (typically in a header), proving the caller is who they claim to be. It's what most LLM provider APIs use directly. For delegated access — "let this third-party app act on my behalf, without giving it my password" — **OAuth 2.0** is the standard:
+
+<OAuthFlowDiagram />
+
+The authorization-code flow: the user is redirected to the provider (e.g. "Sign in with Google") and approves access there, the provider redirects back with a short-lived **authorization code**, and the requesting app exchanges that code (server-to-server, using its own client secret) for an **access token** it can then use to call the API on the user's behalf. The user's password is never seen by the requesting app at any point.
+
+### JWTs
+
+A **JSON Web Token** is a common way to represent an access token itself — a compact, self-contained, cryptographically signed blob that carries claims (who this is, what they're allowed to do, when it expires) that any server can verify without a database lookup:
+
+<JwtStructureDiagram />
+
+Three base64url-encoded parts separated by dots: a **header** (which signing algorithm), a **payload** (the actual claims — user ID, roles, expiry), and a **signature** (proof the token wasn't tampered with, computed over the header and payload using a secret or private key only the issuer holds). Critically: the payload is only *encoded*, not encrypted — anyone can decode and read a JWT's contents, they just can't forge a valid signature for altered contents without the signing key. Never put secrets in a JWT payload expecting them to stay hidden.
+
+## Communication Patterns
+
+This is the part that determines *how* two systems actually stay in sync over time, and it's exactly the layer LLM streaming, webhooks, and real-time agent systems all live in. Five patterns cover essentially every real design:
+
+<CommunicationPatternSequenceDiagram />
+
+- **Synchronous request/response**: the basic cycle above — ask, wait, get one answer. Simple, but the client has to block or poll for anything that takes a while.
+- **Short polling**: the client repeatedly asks "is it ready yet?" on a timer. Simple to implement, wasteful (most requests get "not yet"), and adds latency up to one poll interval.
+- **Long polling**: the client asks once, and the server *holds the request open* until there's something to report (or a timeout), then the client immediately reopens it. Less wasteful than short polling, still fundamentally a pull.
+- **Webhooks**: inverts the control flow entirely — instead of the client asking, the *server calls the client* (a URL you registered in advance) the moment something happens. No polling at all, but requires your client to be a reachable server itself, and you have to handle retries/ordering/verification (was this request really from who it claims to be) on the receiving end.
+- **Server-Sent Events (SSE)**: one persistent HTTP connection, server streams events to the client as they happen, one direction only (server → client). This is exactly what LLM token streaming is — every token arriving as it's generated, over one open connection, is SSE (or a close variant) under the hood, at both Anthropic and OpenAI.
+- **WebSockets**: a persistent, full-duplex connection — both sides can push messages at any time. More powerful than SSE, but more complex to set up and operate (stateful connections, needs its own scaling story) — the right choice specifically when the *client* also needs to push updates mid-stream, not just receive them (voice/realtime agent sessions being a common AI use case).
+
+<PatternComparisonMatrixDiagram />
+
+Picking among these is a real design decision, not a default: if you just need occasional updates and simplicity beats latency, poll. If you're building the receiving side of a third-party integration (payment confirmations, CI status), webhooks are usually the provider's only option and you build to receive them. If you're streaming a model's output token by token, SSE is the standard answer — it's simpler than WebSockets and the traffic is one-directional anyway. If the client needs to interrupt, send audio, or otherwise talk back mid-stream, WebSockets earns its extra complexity.
+
+## Building APIs with FastAPI
+
+**FastAPI** is the dominant Python framework for building exactly this kind of API — serving models, building MCP servers, agent backends — because it's built around the same tools this whole page has covered: Pydantic models for request/response validation, native `async` support for the I/O-bound workloads AI serving involves, and automatic OpenAPI documentation generated from your code rather than written by hand.
+
+<FastApiRequestFlowDiagram />
+
+A **path operation** is a Python function decorated with the HTTP method and URL it handles (`@app.post("/v1/generate")`). Its parameters can be typed with **Pydantic models** describing the expected request body — FastAPI validates incoming JSON against that model automatically and returns a clean `422` if it doesn't match, before your function body even runs; the return value is validated against a response model the same way, so what you send back is guaranteed to match what you documented. Endpoints declared `async def` let FastAPI handle many concurrent in-flight requests on one process without blocking — the right default for endpoints that spend most of their time waiting on a model call or a downstream API, not burning CPU.
+
+### Dependency Injection
+
+FastAPI's `Depends()` mechanism lets a path operation declare "I need this" (a database session, the current authenticated user, a rate limiter check) and have FastAPI resolve and inject it automatically — including sharing one resolved dependency across multiple routes that need the same thing:
+
+<DependencyInjectionDiagram />
+
+This is where authentication actually gets *enforced* in a real FastAPI service: a `get_current_user` dependency decodes and validates the JWT/API key from the request, and any route that declares it as a dependency automatically requires valid auth — the authentication vs. authorization distinction from earlier, implemented as one reusable, testable function instead of copy-pasted checks in every handler.
+
+## Where This Shows Up Elsewhere on This Site
+
+- [MCP (Model Context Protocol)](/docs/agents/mcp/overview) uses HTTP with Server-Sent Events as one of its two standard transports — the streaming pattern above, applied to tool calls instead of chat tokens.
+- Every LLM provider's streaming chat completion — the token-by-token output you see in a chat UI — is Server-Sent Events over the request/response cycle covered above.
+- [Model Serving](/docs/mlops/model-serving) covers what sits *behind* the API you now understand the shape of: batching, autoscaling, and the infrastructure serving these endpoints at scale.
+- [LLM Inference Optimization](/docs/mlops/llm-inference-optimization) covers TTFT (time-to-first-token) and inter-token latency — metrics that only make sense once you know these are being measured over a streaming SSE connection, not a single request/response round trip.
+
+Next: [Linux, Git & Developer Tooling](/docs/cs-fundamentals/linux-git-and-tooling) — the daily tools every AI engineering job assumes fluency in.
