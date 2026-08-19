@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import AttentionStepThrough from '../viz/AttentionStepThrough';
 import { getSidebar, getFlatPages } from '../lib/contentTree';
+import { useDocumentTitle } from '../lib/useDocumentTitle';
 
 /**
  * The landing page. Built around one idea: prove the site's differentiator
@@ -13,6 +14,7 @@ import { getSidebar, getFlatPages } from '../lib/contentTree';
  * every level without asking anyone to self-select.
  */
 export default function Home() {
+  useDocumentTitle();
   const sections = getSidebar();
   const totalPages = getFlatPages().length;
 

@@ -7,6 +7,7 @@ import MobileNavDrawer from './MobileNavDrawer';
 import PrevNext from './PrevNext';
 import ThemeSkinPicker from '../ThemeSkinPicker';
 import { getPageByRoute } from '../../lib/contentTree';
+import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 const SIDEBAR_COLLAPSE_KEY = 'neural-mastery-sidebar-collapsed';
 const TOC_COLLAPSE_KEY = 'neural-mastery-toc-collapsed';
@@ -57,6 +58,8 @@ export default function DocLayout() {
   useEffect(() => {
     window.localStorage.setItem(TOC_COLLAPSE_KEY, String(tocCollapsed));
   }, [tocCollapsed]);
+
+  useDocumentTitle(page ? page.title : 'Page Not Found');
 
   if (!page) {
     return (

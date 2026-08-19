@@ -106,9 +106,12 @@ test.describe('Visualization', () => {
 
   test('representative interactive ML visualization: state actually changes on interaction', async ({ page }) => {
     const errors = collectConsoleErrors(page);
-    await page.goto('docs/deep-learning/component-porting-check');
-    const container = page.locator('h2:has-text("Linear Regression Studio") + div');
-    await container.scrollIntoViewIfNeeded();
+    // component-porting-check.mdx (the old Phase-1 dev scaffold this test
+    // used to target) has since been removed -- visual-lab/linear-regression-studio.mdx
+    // hosts the same LinearRegressionStudio component as real, permanent content.
+    await page.goto('docs/visual-lab/linear-regression-studio');
+    const container = page.locator('article.prose');
+    await container.locator('svg').first().scrollIntoViewIfNeeded();
     await expect(container.locator('svg').first()).toBeVisible();
 
     await container.getByRole('button', { name: 'Gradient Descent Lab' }).click();
