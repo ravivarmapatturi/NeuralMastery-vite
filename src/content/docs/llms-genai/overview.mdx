@@ -4,9 +4,92 @@ sidebar_position: 1
 ---
 
 
+import GenAiPipelineOverviewDiagram from '../../../viz/diagrams/GenAiPipelineOverviewDiagram';
+import CapabilityCostLatencyTradeoffDiagram from '../../../viz/diagrams/CapabilityCostLatencyTradeoffDiagram';
+import AlignmentPipelineDiagram from '../../../viz/diagrams/AlignmentPipelineDiagram';
+import FrozenWeightsVsFineTuningDiagram from '../../../viz/diagrams/FrozenWeightsVsFineTuningDiagram';
+import ScalingLawsGlanceDiagram from '../../../viz/diagrams/ScalingLawsGlanceDiagram';
+import WhereCostGoesDiagram from '../../../viz/diagrams/WhereCostGoesDiagram';
+import EvaluationThroughlineDiagram from '../../../viz/diagrams/EvaluationThroughlineDiagram';
+import ModalityGeneralizationDiagram from '../../../viz/diagrams/ModalityGeneralizationDiagram';
+import AgenticExtensionDiagram from '../../../viz/diagrams/AgenticExtensionDiagram';
+import GenAiSectionMapDiagram from '../../../viz/diagrams/GenAiSectionMapDiagram';
+
 # LLMs & GenAI Overview
 
 This is where the Transformer architecture from [Deep Learning](/docs/deep-learning/roadmap) turns into systems like GPT, Claude, and LLaMA: how they're built internally, how they're trained to be helpful and aligned, how to prompt and ground them effectively, and how to serve them efficiently in production.
+
+## The Pipeline, End to End
+
+A frontier LLM isn't the output of one training run — it's the end of a pipeline where each stage does a distinct job, and each stage is its own page in this section:
+
+<GenAiPipelineOverviewDiagram />
+
+[Foundation Model Internals](/docs/llms-genai/foundation-model-internals) covers the architecture that makes the model run at all (tokenization, attention variants, MoE, sampling). [Training Pipeline](/docs/llms-genai/training-pipeline) covers turning that architecture into weights, in two very different phases: pretraining (learn language and world knowledge from raw text, self-supervised) and post-training (SFT, RLHF, DPO, GRPO — turn a raw next-token predictor into something that follows instructions and reflects human preferences). Everything after that — [Prompt Engineering](/docs/llms-genai/prompt-engineering), [RAG](/docs/llms-genai/rag) — happens with the weights already frozen.
+
+## Capability, Cost, and Latency Are Always in Tension
+
+Before any of the pipeline stages, one axis shapes almost every downstream decision: bigger models are more capable, and also slower and more expensive to serve, with no free point in that space:
+
+<CapabilityCostLatencyTradeoffDiagram />
+
+This is the same tension [ML System Design](/docs/ml-system-design/overview#the-tradeoff-space-every-design-sits-in) covers in general terms, specialized to LLMs specifically — and it's why model-size selection is one of the highest-leverage decisions in [Evaluation & Serving](/docs/llms-genai/evaluation-and-serving#costlatency-tradeoffs).
+
+## Two Ways to Change What a Model Does
+
+A recurring decision in this whole section: does changing the model's behavior require touching its weights, or not?
+
+<FrozenWeightsVsFineTuningDiagram />
+
+Prompting, RAG, and tool use all operate entirely at inference time — zero training cost, instantly reversible, limited by what fits in a context window. Fine-tuning (full or PEFT — LoRA, QLoRA, DoRA) actually updates weights — more durable behavior change, but real training cost, and a new artifact to version and serve. In practice, most production systems reach for the frozen-weights options first (they're cheaper to iterate on and to roll back) and only fine-tune once prompting/RAG have demonstrably hit a ceiling.
+
+## Why Post-Training Exists at All
+
+Pretraining alone produces a model that continues text plausibly, not one that's reliably helpful — post-training is specifically the fix for that gap:
+
+<AlignmentPipelineDiagram />
+
+Each stage narrows a specific failure of the one before it: SFT teaches the *format* of being a helpful assistant (answer directly, follow instructions) from curated examples; RLHF/DPO/GRPO then teach *preference* — which of several acceptable responses is actually better — from comparison data, since "better" is much harder to specify with direct examples than "correct." [Training Pipeline](/docs/llms-genai/training-pipeline) covers every stage's mechanics in full, including the newer, cheaper alternatives to full RLHF.
+
+## Why Scale Works (And Why It's Not Free)
+
+Pretraining loss falls predictably as model size and data scale up together — a real, measured empirical relationship, not a hand-wave:
+
+<ScalingLawsGlanceDiagram />
+
+The **Chinchilla** result (covered in depth in [Training Pipeline](/docs/llms-genai/training-pipeline#scaling-laws-and-the-chinchilla-result)) showed that for a fixed compute budget, model size and training data need to scale *together* — a smaller model trained compute-optimally on more data beats a larger, undertrained one at the same cost. But scale isn't free at the other end either:
+
+<WhereCostGoesDiagram />
+
+Training is a large one-time cost; inference is a recurring cost paid on every single request, forever — which is exactly why [Evaluation & Serving](/docs/llms-genai/evaluation-and-serving) devotes so much attention to batching, speculative decoding, and Paged Attention. At scale, the aggregate cost of serving a model typically dwarfs the one-time cost of training it.
+
+## Evaluation Runs Through Every Stage, Not Just the End
+
+"Does this model work" isn't one question asked once at the end — it's asked differently at every stage:
+
+<EvaluationThroughlineDiagram />
+
+Perplexity and loss curves during pretraining, preference-model accuracy during RLHF, benchmark suites and LLM-as-judge once serving — see [Evaluation & Serving](/docs/llms-genai/evaluation-and-serving) for the serving-time methods, and treat any of them the way [ML System Design](/docs/ml-system-design/overview#offline-metrics-are-a-proxy-not-the-goal) treats an offline metric: a proxy to validate, not a guarantee.
+
+## One Architecture, Many Modalities
+
+Attention doesn't care whether a token represents a word or an image patch — the same mechanism generalizes with only the input embedding changed:
+
+<ModalityGeneralizationDiagram />
+
+[Multimodal & Generative Models](/docs/llms-genai/multimodal-generative-models) covers what changes when the modality isn't text: vision-language models, VLAs for robotics, and diffusion models as the dominant non-autoregressive alternative for images.
+
+## From Answering to Acting
+
+RAG is the natural end of "extend the model without retraining it" — but it's still one retrieval-then-generate pass. The next step past that is deciding, autonomously, *whether* and *how* to act:
+
+<AgenticExtensionDiagram />
+
+That's where this section hands off to [Agents](/docs/agents/roadmap) — tool use, multi-step planning, and multi-agent coordination, all still built on the same frozen-or-fine-tuned model this section covers.
+
+## How This Section Fits Together
+
+<GenAiSectionMapDiagram />
 
 Follow the [roadmap](/docs/llms-genai/roadmap) for the full ordered path, or jump straight to a topic:
 
