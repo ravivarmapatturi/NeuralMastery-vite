@@ -19,6 +19,20 @@ jobs:
   ci:
     name: typecheck, build, pagefind, link-check, smoke tests
     runs-on: ubuntu-latest
+    # Runs inside Playwright's own image (Chromium + every OS-level .so
+    # dependency already installed) instead of `npx playwright install
+    # --with-deps` / `install-deps` on a bare ubuntu-latest runner. That
+    # apt-based install refreshes every configured repo on the runner
+    # (Azure CLI, MS packages, Google Chrome, Ubuntu's own mirrors) on
+    # EVERY run, cache hit or not -- actions/cache only persists the browser
+    # binary itself (~/.cache/ms-playwright), never the system libraries
+    # apt installs, which don't survive between ephemeral runner VMs. That
+    # single step was taking 15+ minutes even when the binary was cached.
+    # Tag must track the installed @playwright/test version exactly (see
+    # package.json) -- image tags are per Playwright version + Ubuntu
+    # codename (noble = 24.04, matching ubuntu-latest as of this pin).
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,21 +61,6 @@ jobs:
 
       - name: Internal link validation
         run: npm run check:links
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - name: Install Playwright Chromium
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
-
-      - name: Install Playwright OS dependencies (cache hit path)
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
 
       - name: Generate Pagefind index
         run: npm run pagefind

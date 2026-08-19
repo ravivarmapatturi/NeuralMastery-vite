@@ -27,6 +27,12 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # See ci.yml's matching comment: Playwright's own image ships Chromium's
+    # OS-level dependencies pre-installed, so no apt-based `playwright
+    # install --with-deps` step is needed (that step was taking 15+ minutes
+    # per run). Tag must track the installed @playwright/test version.
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,9 +51,6 @@ jobs:
 
       - name: Production build (dist/, not Docusaurus's build/)
         run: npm run build
-
-      - name: Install Playwright Chromium (for Pagefind's prerender step)
-        run: npx playwright install --with-deps chromium
 
       - name: Generate Pagefind index
         run: npm run pagefind
