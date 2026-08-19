@@ -8,6 +8,40 @@ sidebar_position: 1
 
 [CNNs](/docs/deep-learning/cnns) and [Vision Architectures](/docs/deep-learning/vision-architectures) already cover the *models* — the ResNet/ViT/YOLO/U-Net lineage. This section is the rest of computer vision: what an image actually *is* to a computer before any model touches it, the full taxonomy of vision tasks beyond classification/detection/segmentation, and where vision is headed — video, 3D, and vision fused with language.
 
+The useful mental model is: vision is not one problem called “look at an image.” It is a family of prediction problems whose output geometry matters. A classifier returns one label for an entire frame; a detector returns a variable number of boxes; a segmenter assigns a label to every pixel; a tracker has to preserve an object's identity through time. The underlying backbone may be shared, but the data, losses, metrics, and ways a system can fail are different.
+
+## The Three Questions Behind Every Vision System
+
+Before choosing a model, make three decisions explicit:
+
+1. **What is the unit of prediction?** A whole image (is this defective?), a region (where are the defects?), a pixel (which pixels are defect?), a point/pose (where are the joints?), or a sequence (where did this object move?). This determines the labels you must collect.
+2. **What variation must the system ignore — and what variation must it preserve?** A retail classifier should be tolerant to lighting and background; an OCR system cannot casually ignore a one-pixel stroke that distinguishes `O` from `0`; a medical segmentation system must preserve tiny boundaries that a generic crop might erase.
+3. **What happens when the model is wrong?** A photo-organizing tag can be corrected later. A missed pedestrian in an autonomous-driving pipeline cannot. That difference sets the acceptable latency, confidence threshold, human-review path, and monitoring plan just as much as the chosen architecture does.
+
+Those questions explain why “just use a bigger vision model” is rarely a complete answer. A high-capacity model cannot compensate for labels that do not match the downstream decision, a camera pipeline that changes color space at inference, or an evaluation set that does not include the night, motion blur, and rare cases that matter in production.
+
+## From Pixels to Decisions
+
+An image begins as a tensor: height × width × channels. The early part of a pipeline turns those numeric arrays into usable signal — normalizing values, resizing or cropping to a known input shape, and sometimes using classical operations such as filtering or morphology. A learned encoder then transforms local pixels into progressively more abstract features: edges and textures near the input, object parts in intermediate layers, and task-relevant representations near the output.
+
+That last step is where task choice takes over. For classification, the model aggregates the image into one score vector. For detection, it must additionally localize each object and remove duplicate proposals. For segmentation, it must retain spatial detail all the way back to the pixel grid. For video, it has to separate actual motion from a moving camera, and carry relevant information from prior frames. The same “image encoder” therefore plugs into very different heads and post-processing pipelines.
+
+## Data Is Often the Actual Bottleneck
+
+Vision systems are unusually sensitive to how and where their images were collected. A model trained on well-lit product photos can look excellent offline and still fail on a warehouse camera because of viewpoint, lens distortion, compression, blur, seasonal changes, or an unrepresented product variant. In many real projects, improving coverage of those conditions is more valuable than replacing a ResNet with a newer backbone.
+
+Labeling cost also rises sharply with output detail. Image-level labels are comparatively cheap; drawing boxes takes longer; pixel-perfect masks and pose keypoints require specialist effort and consistency checks. That creates a practical tradeoff: collect the least expensive label that still supports the downstream decision, then use transfer learning, augmentation, and targeted error analysis before expanding the annotation program.
+
+## Where Classical and Modern Vision Meet
+
+Deep learning has replaced hand-designed features for most high-accuracy applications, but classical vision never disappeared. Camera calibration, color conversion, thresholding, geometric transforms, image-quality checks, and fast post-processing still appear around neural networks. Feature matching and optical flow remain valuable in robotics and 3D reconstruction; morphological cleanup can make a segmentation mask usable without retraining a model.
+
+The division of labor is simple: use deterministic geometry or image processing when the rule is known and stable; use learned models where the mapping from pixels to meaning is too varied to write down. Strong production systems freely combine both rather than treating them as competing eras of the field.
+
+## How to Read This Section
+
+Start with **Vision Fundamentals** to build intuition for the pixels, filters, and transformations that every later model consumes. Then move to **Vision Tasks & Models** to choose the correct output structure for a concrete product problem. Finish with **Modern Vision & Multimodal** for the systems that extend a still image into language, time, and 3D scene understanding. The deep-learning architecture pages remain the companion reference whenever you need to understand the backbone itself.
+
 ## What's in this section
 
 - **[Vision Fundamentals](/docs/computer-vision/vision-fundamentals)** — image representation, convolution as classical filtering (not just a neural network layer), morphology, edge detection, feature extraction, data augmentation.
