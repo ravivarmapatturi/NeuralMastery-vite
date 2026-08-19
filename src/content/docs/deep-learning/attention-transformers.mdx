@@ -10,26 +10,16 @@ import QkvProjectionDiagram from '../../../viz/diagrams/QkvProjectionDiagram';
 import AttentionWorkedExample from '../../../viz/diagrams/AttentionWorkedExample';
 import CausalMaskAnimated from '../../../viz/diagrams/CausalMaskAnimated';
 import FinalSoftmaxAnimated from '../../../viz/diagrams/FinalSoftmaxAnimated';
-import archDark from './img/transformer-architecture.png';
-import archLight from './img/transformer-architecture-light.png';
-import tokEmbDark from './img/token-embeddings.png';
-import tokEmbLight from './img/token-embeddings-light.png';
-import multiHeadDark from './img/multi-head-attention.png';
-import multiHeadLight from './img/multi-head-attention-light.png';
-import padMaskDark from './img/masking-padding.png';
-import padMaskLight from './img/masking-padding-light.png';
-import crossAttnDark from './img/cross-attention-wiring.png';
-import crossAttnLight from './img/cross-attention-wiring-light.png';
-import posencSinDark from './img/posenc-sinusoids.png';
-import posencSinLight from './img/posenc-sinusoids-light.png';
-import posencHeatDark from './img/posenc-heatmap.png';
-import posencHeatLight from './img/posenc-heatmap-light.png';
-import addNormDark from './img/add-norm.png';
-import addNormLight from './img/add-norm-light.png';
-import ffnDark from './img/feed-forward.png';
-import ffnLight from './img/feed-forward-light.png';
-import encLayerDark from './img/encoder-layer.png';
-import encLayerLight from './img/encoder-layer-light.png';
+import TransformerArchitectureDiagram from '../../../viz/diagrams/TransformerArchitectureDiagram';
+import TokenEmbeddingLookup from '../../../viz/diagrams/TokenEmbeddingLookup';
+import MultiHeadAttentionDiagram from '../../../viz/diagrams/MultiHeadAttentionDiagram';
+import PaddingMaskDiagram from '../../../viz/diagrams/PaddingMaskDiagram';
+import CrossAttentionDiagram from '../../../viz/diagrams/CrossAttentionDiagram';
+import PositionalEncodingSinusoids from '../../../viz/diagrams/PositionalEncodingSinusoids';
+import PositionalEncodingHeatmap from '../../../viz/diagrams/PositionalEncodingHeatmap';
+import AddNormDiagram from '../../../viz/diagrams/AddNormDiagram';
+import FeedForwardDiagram from '../../../viz/diagrams/FeedForwardDiagram';
+import EncoderLayerDiagram from '../../../viz/diagrams/EncoderLayerDiagram';
 
 # Attention & Transformers
 
@@ -55,7 +45,7 @@ Trading recurrence for attention doesn't remove cost — it just changes its sha
 
 Before any of the individual mechanisms, here's every block named once, top to bottom — nothing that follows should be an unfamiliar shape. An **encoder** (left) builds a full-context representation of the input; a **decoder** (right) generates the output one token at a time, conditioned on that representation via cross-attention. Both stacks repeat $N=6$ times in the base model from the original paper:
 
-<ThemedImage alt="Bird's-eye Transformer architecture: encoder and decoder stacks, each repeating 6 times, connected by cross-attention" sources={{light: archLight, dark: archDark}} />
+<TransformerArchitectureDiagram />
 
 ## Input Embeddings
 
@@ -65,7 +55,7 @@ Getting from raw text to a vector the model can compute with is a short pipeline
 2. **Vocabulary → input IDs** — the model has a fixed **vocabulary**: every token it knows about, each assigned a unique integer ID once, ahead of training, covering the entire training corpus. Tokenization turns text into a sequence of these IDs, e.g. `[71, 1274, 253, 6, 5309, 1274]` — notice **"cat" maps to the same ID (1274) both times it appears**, since it's the same vocabulary entry.
 3. **Embedding lookup** — each input ID indexes one row of a learned **embedding table** of shape (vocab_size, $d_{\text{model}}$) — $d_{\text{model}}=512$ in the base model. The lookup is just indexing, not a computation, and it's the same table at every position in the sequence.
 
-<ThemedImage alt="A token is looked up in a learned embedding table, producing a d_model=512 vector" sources={{light: tokEmbLight, dark: tokEmbDark}} />
+<TokenEmbeddingLookup />
 
 Because the lookup only depends on the token, not where it sits in the sentence, both occurrences of "cat" above get back the exact same 512-dimensional vector at this stage — the model has no way yet to tell "cat" (word 2) from "cat" (word 6) apart. That's precisely the gap **positional encoding** (below) exists to close, added directly on top of this embedding before anything else happens to it.
 
@@ -127,7 +117,7 @@ The part most explanations wave a hand at instead of deriving. If a Query and Ke
 
 Instead of one attention computation, run several in parallel ("heads"), each with its own learned Q/K/V projections, then concatenate the results. Different heads tend to specialize — one might track syntactic relationships, another long-range coreference, another local patterns. $d_{\text{model}}=512$ splits into $h=8$ heads of $d_k=64$ each; every head runs the full scaled-dot-product mechanism above independently, and the outputs are concatenated back to 512 dimensions and projected once more through $W^O$:
 
-<ThemedImage alt="Multi-head attention: d_model splits into 8 parallel heads, each running attention independently, concatenated and projected through W_O" sources={{light: multiHeadLight, dark: multiHeadDark}} />
+<MultiHeadAttentionDiagram />
 
 ### How the Split Actually Happens
 
@@ -157,7 +147,7 @@ Two unrelated reasons to block certain positions from attending to certain other
 
 **Padding mask** — sequences in a batch are padded to a common length; a real token should never attend to a `<pad>` placeholder, since it carries no information:
 
-<ThemedImage alt="Padding mask: real tokens attend to real tokens, never to the pad token" sources={{light: padMaskLight, dark: padMaskDark}} />
+<PaddingMaskDiagram />
 
 **Causal (look-ahead) mask** — the decoder generates one token at a time and must never see the future token it's being trained to predict, so each position can only attend to itself and earlier positions:
 
@@ -169,7 +159,7 @@ This is exactly what "causal (masked) self-attention" means in the GPT-lineage s
 
 In encoder-decoder architectures (like the original Transformer for translation), the decoder's queries attend to the *encoder's* keys and values rather than its own — letting the decoder pull relevant information from the full input sequence at every generation step. This is the one genuinely new idea beyond self-attention, and the direct, more powerful successor to the sequence-to-sequence bottleneck problem from [Sequence Models](/docs/deep-learning/sequence-models):
 
-<ThemedImage alt="Self-attention draws Q, K, V from one source; cross-attention draws Q from the decoder and K, V from the encoder output" sources={{light: crossAttnLight, dark: crossAttnDark}} />
+<CrossAttentionDiagram />
 
 ## Positional Encoding
 
@@ -186,11 +176,11 @@ $pos$ is the token's position in the sequence (0, 1, 2, ...) and $2i$/$2i{+}1$ a
 
 Plotted for real — a handful of dimensions across 100 positions, each a sine/cosine wave at a different frequency:
 
-<ThemedImage alt="Positional encoding sinusoids at different frequencies across sequence position" sources={{light: posencSinLight, dark: posencSinDark}} />
+<PositionalEncodingSinusoids />
 
 **Why sine and cosine specifically**: intuitively, they're a natural choice for encoding *pattern* — periodic, smoothly repeating functions that never blow up (always bounded in $[-1,1]$, unlike, say, just using $pos$ itself, which would grow unboundedly with sequence length and dominate the embedding). More precisely: for any fixed offset $k$, $PE(pos+k)$ can be written as a *linear function* of $PE(pos)$ — the encoding makes relative position linearly recoverable, which is exactly what lets attention learn to use it. Stacking every dimension into one matrix shows the pattern the formula produces: low dimensions oscillate fast (fine position detail), high dimensions oscillate slow (coarse position), so every position gets a unique fingerprint across the full vector:
 
-<ThemedImage alt="The full positional encoding matrix as a heatmap, low dimensions oscillating fast and high dimensions slow" sources={{light: posencHeatLight, dark: posencHeatDark}} />
+<PositionalEncodingHeatmap />
 
 ## The Full Transformer Block
 
@@ -198,17 +188,17 @@ Each block is: **self-attention → add & normalize → feed-forward network →
 
 **Add & Norm**: the sublayer's output is added back to its own input — a residual/skip connection, letting gradients flow straight through depth without having to pass through every sublayer's transformation — then normalized. The original paper places this *after* the sublayer (post-norm): $\text{LayerNorm}(x + \text{Sublayer}(x))$:
 
-<ThemedImage alt="Add and Norm: residual connection adds the sublayer's input back to its output, then LayerNorm normalizes" sources={{light: addNormLight, dark: addNormDark}} />
+<AddNormDiagram />
 
 **Position-wise feed-forward network**: two linear layers with a ReLU between, applied identically and independently to every position. Attention mixes information *across* tokens; the FFN adds a non-linear transform *per token* afterward:
 
 $$\text{FFN}(x) = \max(0, xW_1+b_1)W_2+b_2$$
 
-<ThemedImage alt="Feed-forward network: linear layer expanding to d_ff=2048, ReLU, linear layer projecting back to 512" sources={{light: ffnLight, dark: ffnDark}} />
+<FeedForwardDiagram />
 
 Put together, that's one full encoder layer — self-attention, Add & Norm, feed-forward, Add & Norm — and $N=6$ identical layers (independently learned weights each) are stacked, every layer's output feeding the next layer's input:
 
-<ThemedImage alt="One assembled encoder layer: self-attention, add and norm, feed forward, add and norm, stacked 6 times" sources={{light: encLayerLight, dark: encLayerDark}} />
+<EncoderLayerDiagram />
 
 The decoder layer adds one extra sublayer in the middle — masked self-attention, then cross-attention (above), then feed-forward, each followed by Add & Norm — also stacked $N=6$ times. At the very top of the decoder stack, the final output vector is projected through one more linear layer into vocabulary-sized logits, then softmax turns those into a probability distribution over the next token:
 
