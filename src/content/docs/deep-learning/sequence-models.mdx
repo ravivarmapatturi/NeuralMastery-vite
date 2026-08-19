@@ -4,16 +4,16 @@ sidebar_position: 6
 ---
 
 
-import rnnUnrolledDark from './img/rnn-unrolled.png';
-import rnnUnrolledLight from './img/rnn-unrolled-light.png';
-import lstmCellDark from './img/lstm-cell.png';
-import lstmCellLight from './img/lstm-cell-light.png';
-import gruCellDark from './img/gru-cell.png';
-import gruCellLight from './img/gru-cell-light.png';
-import seq2seqEncDecDark from './img/seq2seq-encoder-decoder.png';
-import seq2seqEncDecLight from './img/seq2seq-encoder-decoder-light.png';
-import seq2seqAttnDark from './img/seq2seq-attention.png';
-import seq2seqAttnLight from './img/seq2seq-attention-light.png';
+import RnnUnrolledDiagram from '../../../viz/diagrams/RnnUnrolledDiagram';
+import VanishingGradientDiagram from '../../../viz/diagrams/VanishingGradientDiagram';
+import LstmVsGruDiagram from '../../../viz/diagrams/LstmVsGruDiagram';
+import ArchitectureEvolutionDiagram from '../../../viz/diagrams/ArchitectureEvolutionDiagram';
+import BidirectionalRnnDiagram from '../../../viz/diagrams/BidirectionalRnnDiagram';
+import StackedRnnDiagram from '../../../viz/diagrams/StackedRnnDiagram';
+import LstmCellDiagram from '../../../viz/diagrams/LstmCellDiagram';
+import GruCellDiagram from '../../../viz/diagrams/GruCellDiagram';
+import Seq2SeqDiagram from '../../../viz/diagrams/Seq2SeqDiagram';
+import Seq2SeqAttentionDiagram from '../../../viz/diagrams/Seq2SeqAttentionDiagram';
 
 # Sequence Models
 
@@ -44,7 +44,7 @@ $$h_t = \tanh\left(W_h h_{t-1} + W_x x_t + b\right)$$
 
 The same weight matrices $W_h$, $W_x$, $b$ are reused at *every* time step — this weight sharing is what lets an RNN handle sequences of any length with a fixed number of parameters, and it's also exactly why gradients have to flow through so many repeated multiplications during training (below). In principle, this lets information from any earlier point in the sequence influence later predictions.
 
-<ThemedImage alt="RNN unrolled through time — the same cell and weights reused at every step, with the hidden state carried forward" sources={{light: rnnUnrolledLight, dark: rnnUnrolledDark}} />
+<RnnUnrolledDiagram />
 
 ### Three Problems With Plain RNNs
 
@@ -79,6 +79,10 @@ In plain terms: vanishing gradients are *why* a plain RNN struggles to access in
 
 Both failure modes are the same mechanism — a long product of Jacobians during BPTT — just on opposite sides of 1. And it's exactly the weight *sharing* that makes RNNs parameter-efficient (above) that causes this: every one of those $(T-t)$ factors reuses the identical $W_h$, so there's no averaging-out the way there might be with independent random matrices — a single dominant eigenvalue of $W_h$ compounds unchecked across the whole sequence.
 
+Drag $w_h$ below and watch the two failure modes happen in real time — same product, same formula, just which side of the threshold it lands on:
+
+<VanishingGradientDiagram />
+
 **The standard fixes**: gradient clipping directly caps the exploding case (rescale the gradient if its norm crosses a threshold — cheap and effective). The vanishing case is harder, and is exactly what LSTM and GRU's gating mechanisms below are built to solve, by giving gradients an additive path through the cell state instead of a purely multiplicative one. See [Training Deep Networks](/docs/deep-learning/training-deep-networks#vanishing--exploding-gradients) for the same problem's general (non-recurrent) form, and residual connections as its feedforward-network fix.
 
 ## LSTM and GRU
@@ -111,7 +115,7 @@ $$h_t = o_t \odot \tanh(c_t)$$
 
 where $[h_{t-1}, x_t]$ is the previous hidden state concatenated with the current input, and $\odot$ is the **Hadamard (elementwise) product** — each gate is a vector of values in $(0,1)$ that scales its target *elementwise*, not a full matrix multiply. Read the new-cell-state and new-hidden-state lines directly as the whole mechanism: the forget gate decides how much of the old cell state to keep, the input gate decides how much of the new candidate to add — both are $\sigma$-gated so each is a soft "keep this fraction" decision per dimension, computed fresh every time step by the gates above.
 
-<ThemedImage alt="LSTM cell — forget, input, and output gates controlling what's added to, kept in, and read from the cell state" sources={{light: lstmCellLight, dark: lstmCellDark}} />
+<LstmCellDiagram />
 
 **GRU (Gated Recurrent Unit)** simplifies LSTM's gating into two gates instead of three (reset and update, no separate cell state), with fewer parameters and often comparable performance — a common practical choice when compute is limited:
 
@@ -133,13 +137,17 @@ $$h_t = (1 - z_t) \odot h_{t-1} + z_t \odot \tilde{h}_t$$
 
 The last line is a direct interpolation between the old hidden state and the new candidate, controlled entirely by $z_t$ — no separate cell state to maintain, which is exactly where GRU's parameter savings come from. The reset gate $r_t$ decides how much of the *old* hidden state gets used when computing the new candidate in the first place.
 
-<ThemedImage alt="GRU cell — a reset gate and an update gate interpolating between the old hidden state and a new candidate" sources={{light: gruCellLight, dark: gruCellDark}} />
+<GruCellDiagram />
+
+"Fewer parameters" made concrete — same per-gate cost, one fewer gate:
+
+<LstmVsGruDiagram />
 
 ## Sequence-to-Sequence Models
 
 For tasks where both input and output are sequences of different lengths (translation, summarization): an **encoder** RNN compresses the input sequence into a fixed representation, and a **decoder** RNN generates the output sequence from that representation, one token at a time.
 
-<ThemedImage alt="Sequence-to-sequence: an encoder RNN compresses the whole input into one fixed-size context vector, which a decoder RNN then unpacks" sources={{light: seq2seqEncDecLight, dark: seq2seqEncDecDark}} />
+<Seq2SeqDiagram />
 
 **The bottleneck problem**: compressing an entire input sequence into one fixed-size vector loses information, especially for long sequences — no matter how long the input is, it has to fit through that same single vector.
 
@@ -147,14 +155,23 @@ For tasks where both input and output are sequences of different lengths (transl
 
 The direct fix, and the direct predecessor to the Transformer: instead of forcing the encoder to compress everything into one fixed-size context vector, let the decoder look back at *all* encoder hidden states directly, at every output step, weighted by relevance to what it's generating right now.
 
-<ThemedImage alt="Sequence-to-sequence with attention — the decoder computes a fresh weighted combination of every encoder state at each output step, instead of relying on one fixed summary" sources={{light: seq2seqAttnLight, dark: seq2seqAttnDark}} />
+<Seq2SeqAttentionDiagram />
 
 This is the **Bahdanau/Luong attention** mechanism: at each decoder step, score the current decoder state against every encoder state, turn those scores into weights (softmax), and take a weighted sum of the encoder states as that step's context — recomputed fresh every step, so the decoder can effectively "look at" whichever part of the input matters most for the token it's producing right now. This architecture is what proved attention works, before the 2017 "Attention Is All You Need" paper removed the RNN entirely and built a model out of attention alone (see [Attention & Transformers](/docs/deep-learning/attention-transformers)).
+
+The whole arc, walked as one chain — click a stage to see exactly what it fixed and what was still left over for the next one:
+
+<ArchitectureEvolutionDiagram />
 
 ## Named Variants Worth Knowing
 
 - **Bidirectional RNN/LSTM (BiRNN/BiLSTM)**: runs two RNNs over the sequence — one forward, one backward — and concatenates their hidden states at each position, so every position's representation depends on both past *and* future context. Only usable when the full sequence is available upfront (not for streaming/online generation), which is exactly why it's common in encoders but not decoders.
+
+<BidirectionalRnnDiagram />
+
 - **Deep (stacked) RNN**: multiple RNN layers stacked on top of each other, the way depth helps any network — each layer's output sequence feeds the next layer as its input sequence, building progressively more abstract sequence representations.
+
+<StackedRnnDiagram />
 - **Peephole LSTM**: a variant where the gates can also look at the cell state directly (not just the hidden state and input) when deciding what to forget/add — lets gating decisions depend on the actual memory content, useful for tasks sensitive to precise timing.
 - **ConvLSTM**: replaces the LSTM's fully-connected gate computations with convolutions — built for spatiotemporal data (video, weather radar) where each time step is itself a spatial grid, so convolution captures spatial structure while the LSTM's gating captures temporal structure.
 - **Pointer Networks**: a sequence-to-sequence variant where the output at each step is an attention-weighted *pointer back into the input sequence* (e.g. selecting one of the input tokens) rather than a token from a fixed output vocabulary — built for problems like combinatorial optimization (convex hull, TSP) and extractive summarization, where the output is literally a subset/reordering of the input.

@@ -124,6 +124,15 @@ body {
 .prose li { margin-bottom: 0.35rem; }
 .prose strong { font-weight: 700; }
 .prose > img { display: block; }
+.prose del { color: var(--nm-text-muted); }
+.prose blockquote { margin: 0 0 1rem; padding: 0.25rem 1rem; border-left: 3px solid var(--nm-border); color: var(--nm-text-secondary); }
+.prose code { font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 0.88em; background: var(--nm-surface-alt); padding: 0.15em 0.4em; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; } /* fenced code blocks style the <pre>, not each inline <code> inside it */
+.prose > table { border-collapse: collapse; margin: 0 0 1.5rem; font-size: 14px; }
+.prose th, .prose td { border: 1px solid var(--nm-border); padding: 0.5rem 0.85rem; text-align: left; vertical-align: top; }
+.prose th { background: var(--nm-surface); font-weight: 700; color: var(--nm-text-primary); }
+.prose td { color: var(--nm-text-secondary); }
+.prose tr:nth-child(even) td { background: var(--nm-surface); }
 
 /* Hamburger button: only meaningful once the docked sidebar/TOC are hidden
    (see the max-width: 900px block below), hidden by default on desktop. */

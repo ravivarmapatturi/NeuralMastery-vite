@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import mdx from '@mdx-js/rollup'
 import remarkMath from 'remark-math'
+import remarkGfm from 'remark-gfm'
 import rehypeKatex from 'rehype-katex'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
@@ -13,7 +14,11 @@ export default defineConfig({
   plugins: [
     // MDX must run before the React plugin's JSX transform sees .mdx files
     mdx({
-      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkMath],
+      // remarkGfm enables GitHub-Flavored Markdown -- tables, strikethrough,
+      // task lists, autolinks. Without it, `| a | b |` pipe tables (used
+      // across ~25 migrated docs) silently fall back to plain paragraph
+      // text instead of parsing as a table.
+      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkMath, remarkGfm],
       rehypePlugins: [rehypeKatex],
       providerImportSource: '@mdx-js/react',
     }),
