@@ -127,6 +127,18 @@ body {
 .prose del { color: var(--nm-text-muted); }
 .prose blockquote { margin: 0 0 1rem; padding: 0.25rem 1rem; border-left: 3px solid var(--nm-border); color: var(--nm-text-secondary); }
 .prose code { font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 0.88em; background: var(--nm-surface-alt); padding: 0.15em 0.4em; border-radius: 4px; }
+
+/* Pagefind's search-result excerpts wrap matched terms in <mark> -- style
+   to read as a highlight, not the browser default yellow-on-black block. */
+.nm-search-excerpt mark {
+  background: color-mix(in srgb, var(--nm-accent-primary) 30%, transparent);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+@media (max-width: 560px) {
+  .nm-search-kbd-hint { display: none; }
+}
 .prose pre code { background: none; padding: 0; } /* fenced code blocks style the <pre>, not each inline <code> inside it */
 .prose > table { border-collapse: collapse; margin: 0 0 1.5rem; font-size: 14px; }
 .prose th, .prose td { border: 1px solid var(--nm-border); padding: 0.5rem 0.85rem; text-align: left; vertical-align: top; }
