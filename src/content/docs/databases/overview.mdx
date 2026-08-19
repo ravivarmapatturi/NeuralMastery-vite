@@ -3,13 +3,67 @@ title: "Databases Overview"
 sidebar_position: 1
 ---
 
+import ThreeStoreComparisonDiagram from '../../../viz/diagrams/ThreeStoreComparisonDiagram';
+import DataShapeDecisionDiagram from '../../../viz/diagrams/DataShapeDecisionDiagram';
+import PolyglotArchitectureDiagram from '../../../viz/diagrams/PolyglotArchitectureDiagram';
+import QueryPatternMatchDiagram from '../../../viz/diagrams/QueryPatternMatchDiagram';
+import ConsistencyVsApproximationDiagram from '../../../viz/diagrams/ConsistencyVsApproximationDiagram';
+import ScaleCharacteristicsDiagram from '../../../viz/diagrams/ScaleCharacteristicsDiagram';
+import IndexingPhilosophyDiagram from '../../../viz/diagrams/IndexingPhilosophyDiagram';
+import DatabasesSectionMapDiagram from '../../../viz/diagrams/DatabasesSectionMapDiagram';
 
 # Databases Overview
 
-Every AI system needs somewhere to put data — and increasingly, that means three different kinds of database working together, not one.
+Every AI system needs somewhere to put data — and the honest answer, for almost any real system, is *three different somewheres*, not one. A production RAG application typically runs a relational database for users, sessions, and experiment metadata; a vector database for the embeddings retrieval depends on; and increasingly a graph database for the relationships flat retrieval can't see. None of the three is a strictly better general-purpose database — each optimizes for a genuinely different query shape, and picking wrong doesn't just cost performance, it can make a query structurally impossible to express efficiently at all.
 
-- **[Relational (MySQL, Postgres)](/docs/databases/relational/overview)** — structured data, transactions, ML metadata
-- **[Vector Databases](/docs/databases/vector/overview)** — embeddings and similarity search, the backbone of RAG
-- **[Graph Databases (Neo4j)](/docs/databases/graph/overview)** — relationships and multi-hop reasoning, GraphRAG
+## Three Different Questions, Three Different Engines
 
-See the [roadmap](/docs/databases/roadmap) for the full ordered path through this section.
+The three families covered in this section aren't competing solutions to the same problem — they're built to answer three different *kinds* of question well, and each is a poor fit for the other two's question:
+
+<ThreeStoreComparisonDiagram />
+
+- **[Relational (MySQL, Postgres)](/docs/databases/relational/overview)** answers *"give me rows matching these exact conditions, with guarantees"* — structured records, transactions, referential integrity.
+- **[Vector Databases](/docs/databases/vector/overview)** answer *"what's semantically similar to this?"* — embeddings and approximate nearest-neighbor search, the retrieval backbone of RAG.
+- **[Graph Databases (Neo4j)](/docs/databases/graph/overview)** answer *"how are these things connected, possibly several hops away?"* — relationship traversal, multi-hop reasoning, GraphRAG.
+
+## Picking the Right Store for a Query
+
+The practical skill isn't memorizing three sets of features — it's recognizing, from the *shape of a query itself*, which engine can actually answer it efficiently:
+
+<DataShapeDecisionDiagram />
+
+"Find all orders for user 4471" is a relational lookup. "Find the 10 chunks most semantically similar to this question" is a vector search. "Find every document connected to this one through a chain of citations, up to 3 hops away" is a graph traversal — and notably, that last query gets *slower with every additional join* in a relational database (each hop is another join), while a graph database treats it as a fast, local walk regardless of overall graph size, because relationships are stored as first-class structures instead of reconstructed from foreign keys every time. Same underlying question, structurally different cost depending on which engine answers it.
+
+<QueryPatternMatchDiagram />
+
+## Why Real Systems Run All Three at Once
+
+This isn't a theoretical menu to choose one item from — it's normal for a single AI application to run all three stores simultaneously, each owning the part of the data it's actually good at. This pattern (sometimes called **polyglot persistence**) is the default shape of a real RAG or agent system, not an exception:
+
+<PolyglotArchitectureDiagram />
+
+A concrete walk-through: a user asks a question → the app looks up their session and permissions in the **relational** store → embeds the question and retrieves the most relevant chunks from the **vector** store → for a multi-hop question, traverses the **graph** store to connect facts across documents (GraphRAG) → writes the interaction back to the relational store for logging and analytics. Three stores, three jobs, one request.
+
+## What Each Engine Trades Away
+
+Every one of these engines buys its specialty by giving something up elsewhere — worth naming explicitly, since the tradeoffs are exactly why you can't just pick one and use it for everything:
+
+<ConsistencyVsApproximationDiagram />
+
+Relational databases give you **exact, strongly-consistent answers** (ACID transactions — a query today returns the same correct result it would have a millisecond ago) but pay for it with join cost that grows with relationship depth. Vector databases give up exactness entirely — **Approximate Nearest Neighbor (ANN)** search trades a small, tunable chance of missing the true closest match for speed that stays roughly flat as the collection grows into the billions. Graph databases keep exactness but restructure storage so relationship-heavy queries stay fast regardless of depth, at the cost of being a worse fit for simple flat lookups than a relational table.
+
+<ScaleCharacteristicsDiagram />
+
+## Indexing: The Common Thread
+
+Different as they are, all three engines lean on the same underlying idea — precompute a structure that avoids scanning everything at query time — just specialized to what "nearby" means for that engine:
+
+<IndexingPhilosophyDiagram />
+
+A relational B-tree index narrows an exact-match or range query from a full table scan to a logarithmic lookup. A vector index (HNSW, IVF) narrows a similarity search from comparing against every stored vector to a small, well-chosen candidate set. A graph engine's native adjacency storage means a "neighbors of this node" query never needs an index at all in the traditional sense — the relationships *are* the index. Same goal, three different structures, because "what makes two things close" means something different in each engine.
+
+## Reading Path Through This Section
+
+<DatabasesSectionMapDiagram />
+
+Start with [Relational Databases](/docs/databases/relational/overview) for the model most ML metadata and application state still lives in, then its deep-dive companion [PostgreSQL](/docs/databases/relational/postgresql) for schemas, indexing, and Postgres-specific features like JSONB and pgvector. Move to [Vector Databases](/docs/databases/vector/overview) for the engine every RAG pipeline depends on, and finish with [Graph Databases](/docs/databases/graph/overview) for when relationships matter more than similarity. See the [roadmap](/docs/databases/roadmap) for the full checklist-style path through all four.
