@@ -3,10 +3,17 @@ title: "APIs & Model Serving"
 sidebar_position: 8
 ---
 
+import ModelServingRequestFlowDiagram from '../../../viz/diagrams/ModelServingRequestFlowDiagram';
+import AsyncBlockingDiagram from '../../../viz/diagrams/AsyncBlockingDiagram';
+import AdaptiveBatchingQueueDiagram from '../../../viz/diagrams/AdaptiveBatchingQueueDiagram';
+import BatchOnlineStreamingDiagram from '../../../viz/diagrams/BatchOnlineStreamingDiagram';
+import ServingToolComparisonDiagram from '../../../viz/diagrams/ServingToolComparisonDiagram';
+import VersioningAndCanaryDiagram from '../../../viz/diagrams/VersioningAndCanaryDiagram';
+import RateLimitingDiagram from '../../../viz/diagrams/RateLimitingDiagram';
 
 # APIs & Model Serving
 
-A trained model artifact (a `.pkl`, a `.pt` file) does nothing by itself — something has to load it, accept requests, run inference, and return a response, reliably and at whatever scale production traffic demands.
+A trained model artifact (a `.pkl`, a `.pt` file) does nothing by itself — something has to load it, accept requests, run inference, and return a response, reliably and at whatever scale production traffic demands. Everything below builds directly on [APIs, HTTP & Communication Patterns](/docs/cs-fundamentals/apis-http-and-protocols) — a model-serving endpoint is a REST API like any other, just with a GPU-bound function instead of a database query behind it.
 
 ## Building the API
 
@@ -15,9 +22,19 @@ A trained model artifact (a `.pkl`, a `.pt` file) does nothing by itself — som
 - **Auth**: API keys, OAuth2, or JWT tokens gating who can call the endpoint.
 - **Validation**: enforce the request schema (Pydantic in FastAPI) before it reaches the model — malformed input should fail fast with a clear error, not crash the model or silently produce garbage.
 - **Serialization**: converting model inputs/outputs to and from JSON (or a binary format like Protobuf for performance-sensitive paths).
+
+<ModelServingRequestFlowDiagram />
+
 - **Async APIs**: `async def` endpoints let the server handle other requests while waiting on I/O (a database call, a feature-store lookup) instead of blocking — important once the endpoint does more than "call `model.predict()`."
+
+<AsyncBlockingDiagram />
+
 - **Versioning**: `/v1/predict`, `/v2/predict` — so a new model version can roll out without silently breaking every existing caller.
 - **Rate limiting**: caps requests per client to protect the service (and the GPU behind it) from being overwhelmed by one caller.
+
+<VersioningAndCanaryDiagram />
+
+<RateLimitingDiagram />
 
 ## Batch, Online, and Streaming Inference
 
@@ -25,7 +42,13 @@ A trained model artifact (a `.pkl`, a `.pt` file) does nothing by itself — som
 - **Online (real-time) inference**: a live API call gets a prediction back synchronously, within a latency budget (often under 100ms) — the classic "serve a model behind an endpoint" case.
 - **Streaming inference**: predictions computed continuously as new events arrive on a stream (Kafka, Kinesis) — used for real-time fraud detection, recommendation updates, etc., where waiting for a batch window isn't acceptable.
 
+<BatchOnlineStreamingDiagram />
+
 Picking the wrong one is a common design mistake: batch inference for a use case that actually needs sub-second responses (or the reverse — standing up a real-time API for a report that only needs to run nightly) wastes either latency budget or infrastructure cost.
+
+Online serving specifically almost always uses **adaptive batching**: grouping multiple concurrent requests that arrive within a short window into one GPU forward pass, since running the model on a batch of 8 costs barely more than a batch of 1 on the same GPU:
+
+<AdaptiveBatchingQueueDiagram />
 
 ## Serving Tools
 
