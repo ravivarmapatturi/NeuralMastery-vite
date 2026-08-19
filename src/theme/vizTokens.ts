@@ -18,6 +18,8 @@ export interface VizTokens {
   accentSecondary: string;
   accentWarn: string;
   accentDanger: string;
+  accentPurple: string;
+  accentTeal: string;
   nodeFill: string;
   nodeBorder: string;
   edge: string;
@@ -36,6 +38,8 @@ export const DARK: VizTokens = {
   accentSecondary: '#5B8CFF',
   accentWarn: '#F4B942',
   accentDanger: '#F45B5B',
+  accentPurple: '#A78BFA',
+  accentTeal: '#2DD4BF',
   nodeFill: '#1E1E21',
   nodeBorder: '#3DDC97',
   edge: '#5B8CFF',
@@ -54,6 +58,8 @@ export const LIGHT: VizTokens = {
   accentSecondary: '#3169E0',
   accentWarn: '#B9791E',
   accentDanger: '#D43F3F',
+  accentPurple: '#7C3AED',
+  accentTeal: '#0D9488',
   nodeFill: '#EEF0F2',
   nodeBorder: '#21A374',
   edge: '#3169E0',

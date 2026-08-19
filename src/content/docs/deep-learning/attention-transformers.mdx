@@ -5,34 +5,19 @@ sidebar_position: 7
 
 
 import AttentionStepThrough from '../../../viz/AttentionStepThrough';
-import attentionQkvDark from './img/attention-qkv.png';
-import attentionQkvLight from './img/attention-qkv-light.png';
-import rnnVsAttnDark from './img/rnn-vs-attention.png';
-import rnnVsAttnLight from './img/rnn-vs-attention-light.png';
+import RnnVsAttentionComparison from '../../../viz/diagrams/RnnVsAttentionComparison';
+import QkvProjectionDiagram from '../../../viz/diagrams/QkvProjectionDiagram';
+import AttentionWorkedExample from '../../../viz/diagrams/AttentionWorkedExample';
+import CausalMaskAnimated from '../../../viz/diagrams/CausalMaskAnimated';
+import FinalSoftmaxAnimated from '../../../viz/diagrams/FinalSoftmaxAnimated';
 import archDark from './img/transformer-architecture.png';
 import archLight from './img/transformer-architecture-light.png';
 import tokEmbDark from './img/token-embeddings.png';
 import tokEmbLight from './img/token-embeddings-light.png';
-import w1Dark from './img/attn-worked-01-embeddings.png';
-import w1Light from './img/attn-worked-01-embeddings-light.png';
-import w2Dark from './img/attn-worked-02-qkv-projections.png';
-import w2Light from './img/attn-worked-02-qkv-projections-light.png';
-import w3Dark from './img/attn-worked-03-raw-scores.png';
-import w3Light from './img/attn-worked-03-raw-scores-light.png';
-import w4Dark from './img/attn-worked-04-scaled-scores.png';
-import w4Light from './img/attn-worked-04-scaled-scores-light.png';
-import w4bDark from './img/attn-worked-04b-sqrt-dk-comparison.png';
-import w4bLight from './img/attn-worked-04b-sqrt-dk-comparison-light.png';
-import w5Dark from './img/attn-worked-05-softmax-weights.png';
-import w5Light from './img/attn-worked-05-softmax-weights-light.png';
-import w6Dark from './img/attn-worked-06-output.png';
-import w6Light from './img/attn-worked-06-output-light.png';
 import multiHeadDark from './img/multi-head-attention.png';
 import multiHeadLight from './img/multi-head-attention-light.png';
 import padMaskDark from './img/masking-padding.png';
 import padMaskLight from './img/masking-padding-light.png';
-import causalMaskDark from './img/masking-causal.png';
-import causalMaskLight from './img/masking-causal-light.png';
 import crossAttnDark from './img/cross-attention-wiring.png';
 import crossAttnLight from './img/cross-attention-wiring-light.png';
 import posencSinDark from './img/posenc-sinusoids.png';
@@ -45,8 +30,6 @@ import ffnDark from './img/feed-forward.png';
 import ffnLight from './img/feed-forward-light.png';
 import encLayerDark from './img/encoder-layer.png';
 import encLayerLight from './img/encoder-layer-light.png';
-import finalSoftmaxDark from './img/final-softmax.png';
-import finalSoftmaxLight from './img/final-softmax-light.png';
 
 # Attention & Transformers
 
@@ -64,7 +47,7 @@ Three specific, compounding problems, in the order they actually bite:
 
 [Sequence Models](/docs/deep-learning/sequence-models) covers RNN/LSTM/GRU/Seq2Seq in depth and ends on their shared limitation: everything up through Seq2Seq+Attention kept **recurrence** — step $t$ can't start until step $t-1$ finishes, so there's no parallelism across time, and training on long sequences is slow no matter how good the gating is. The Transformer's move is to remove recurrence entirely and let every position attend directly to every other position, in parallel, regardless of distance:
 
-<ThemedImage alt="RNN processes tokens strictly sequentially, each step waiting for the previous one; attention gives every position direct, parallel access to every other position" sources={{light: rnnVsAttnLight, dark: rnnVsAttnDark}} />
+<RnnVsAttentionComparison />
 
 Trading recurrence for attention doesn't remove cost — it just changes its shape, from *sequential steps* to *quadratic attention cost in sequence length* (more on that in [Common Problems & SOTA Solutions](#common-problems--sota-solutions) below), which turns out to be a much more parallelizable problem to have.
 
@@ -92,7 +75,7 @@ Self-attention as a mechanism predates the Transformer — earlier Seq2Seq+Atten
 
 For each token, the model computes three vectors via learned linear projections: a **Query** (what am I looking for), a **Key** (what do I contain, for others to find), and a **Value** (what do I actually offer if selected).
 
-<ThemedImage alt="Self-attention: token embeddings produce Query, Key, and Value, which combine into a weighted output" sources={{light: attentionQkvLight, dark: attentionQkvDark}} />
+<QkvProjectionDiagram />
 
 **A token attends to itself, too**: because $Q$, $K$, and $V$ all come from projecting the *same* input sequence, token $i$'s query gets dotted against token $i$'s own key along with every other token's key — there's nothing that excludes it. That score sits on the diagonal of the $QK^T$ matrix, and it's frequently one of the largest scores in its row (a token's content is often maximally "relevant to itself"), meaning a real, substantial share of each token's output is a copy of its own Value, blended with everyone else's. The worked example below shows this concretely.
 
@@ -118,39 +101,17 @@ To be precise about what this single computation is: everything derived in this 
 
 ### A Full Worked Example
 
-The formula above is compact enough to skim past without really seeing it compute anything. Here it is with real numbers — 3 tokens ("The cat sat"), $d_{\text{model}} = 4$ (far smaller than the paper's 512, purely so every value fits on screen), one head. Every matrix below was computed with `numpy`, not hand-picked to look nice.
+The formula above is compact enough to skim past without really seeing it compute anything. Here it is with real numbers — 3 tokens ("The cat sat"), $d_{\text{model}} = 4$ (far smaller than the paper's 512, purely so every value fits on screen), one head. Every matrix below is computed live, by real matrix multiplication, not a fixed screenshot — step through it:
 
-**1. Token embeddings** — each token is a length-4 vector:
+<AttentionWorkedExample />
 
-<ThemedImage alt="Token embeddings for The, cat, sat as 3x4 matrix X" sources={{light: w1Light, dark: w1Dark}} />
+The diagonal of the raw-scores matrix (step 3) — 4, 4, 11 — is each token's score against *itself* ($Q_1{\cdot}K_1$, $Q_2{\cdot}K_2$, $Q_3{\cdot}K_3$): "The" attending to "The", "cat" attending to "cat", "sat" attending to "sat". Notice "sat"'s self-score (11) is already the largest value in its whole row before softmax even runs — a concrete instance of the "attends to itself" point above, not just an abstract claim.
 
-**2. Project to Query, Key, Value** — three separate learned linear projections of the same input, $Q = XW_Q$, $K = XW_K$, $V = XW_V$:
-
-<ThemedImage alt="Q, K, V projections computed from X via three separate weight matrices" sources={{light: w2Light, dark: w2Dark}} />
-
-**3. Raw attention scores** — every Query dotted against every Key, $QK^T$:
-
-<ThemedImage alt="Raw attention scores as a 3x3 matrix from Q times K transpose" sources={{light: w3Light, dark: w3Dark}} />
-
-The diagonal of this matrix — 3, 3, 9 — is each token's score against *itself* ($Q_1{\cdot}K_1$, $Q_2{\cdot}K_2$, $Q_3{\cdot}K_3$): "The" attending to "The", "cat" attending to "cat", "sat" attending to "sat". Notice "sat"'s self-score (9) is already the largest value in its whole row before softmax even runs — a concrete instance of the "attends to itself" point above, not just an abstract claim.
-
-**4. Scale by $\sqrt{d_k}$** — divide every score by $\sqrt{4}=2$:
-
-<ThemedImage alt="Scaled attention scores, divided by square root of d_k" sources={{light: w4Light, dark: w4Dark}} />
-
-**5. Softmax** — each row becomes a probability distribution over which tokens to attend to:
-
-<ThemedImage alt="Softmax attention weights, each row summing to 1" sources={{light: w5Light, dark: w5Dark}} />
-
-**6. Weighted sum** — multiply the weights by $V$ to get each token's new, context-mixed representation:
-
-<ThemedImage alt="Final output as weighted sum of Value vectors" sources={{light: w6Light, dark: w6Dark}} />
-
-Read the last two steps as the whole mechanism in miniature: softmax turns raw compatibility scores into a proper probability distribution per token, and the weighted sum is a soft, differentiable lookup — "give me mostly Value 3's content, a little of Value 2's, almost none of Value 1's," instead of a hard, non-differentiable index lookup.
+Read the last two steps as the whole mechanism in miniature: softmax turns raw compatibility scores into a proper probability distribution per token, and the weighted sum is a soft, differentiable lookup — "give me mostly one token's Value content, a little of another's, almost none of a third's," instead of a hard, non-differentiable index lookup.
 
 ### Two Properties of Self-Attention
 
-**It's permutation-equivariant** (often loosely called "permutation-invariant"): reorder the input tokens, and the output tokens come out reordered by *exactly the same permutation*, with every individual output vector's *value* completely unchanged. Take the worked example's rows for "cat" and "sat" — output vectors $[1.000, 1.547, 1.547, 1.878]$ and $[1.000, 1.665, 1.665, 1.755]$. Swap "cat" and "sat" in the *input*, recompute everything from scratch, and those exact same two vectors come back out — just in swapped positions. This isn't a coincidence: $Q=XW_Q$, $K=XW_K$, $V=XW_V$ are computed **per row, independently** — row $i$ of $Q$ only ever depends on row $i$ of $X$ — so permuting $X$'s rows permutes $Q$, $K$, $V$'s rows identically. That permutes $QK^T$'s rows *and* columns the same way (a Key's column index moves with it), softmax is applied independently per row so it doesn't care what order the rows arrive in, and the final weighted sum for a given token only ever mixes *that token's own row* of attention weights with $V$. Nothing in the mechanism has any notion of "row 2 comes before row 3" — order only enters the model at all because of **positional encoding**, added before any of this runs.
+**It's permutation-equivariant** (often loosely called "permutation-invariant"): reorder the input tokens, and the output tokens come out reordered by *exactly the same permutation*, with every individual output vector's *value* completely unchanged. Take the worked example's rows for "cat" and "sat" — output vectors $[2.000, 1.548, 1.548, 2.000]$ and $[2.754, 1.889, 2.643, 2.000]$. Swap "cat" and "sat" in the *input*, recompute everything from scratch, and those exact same two vectors come back out — just in swapped positions. This isn't a coincidence: $Q=XW_Q$, $K=XW_K$, $V=XW_V$ are computed **per row, independently** — row $i$ of $Q$ only ever depends on row $i$ of $X$ — so permuting $X$'s rows permutes $Q$, $K$, $V$'s rows identically. That permutes $QK^T$'s rows *and* columns the same way (a Key's column index moves with it), softmax is applied independently per row so it doesn't care what order the rows arrive in, and the final weighted sum for a given token only ever mixes *that token's own row* of attention weights with $V$. Nothing in the mechanism has any notion of "row 2 comes before row 3" — order only enters the model at all because of **positional encoding**, added before any of this runs.
 
 **It requires no parameters of its own**: look again at the formula, $\text{softmax}(QK^T/\sqrt{d_k})\,V$ — there is no learnable weight anywhere inside it. Every parameter in a self-attention *layer* belongs to the linear projections that produce $Q$, $K$, $V$ in the first place ($W_Q$, $W_K$, $W_V$ — and $W^O$ for multi-head, below), not to the attention operation itself. In the simplest possible version of self-attention — scoring the raw embeddings directly against each other, $\text{softmax}(XX^T/\sqrt{d})\,X$, no $Q/K/V$ projections at all — the *entire* interaction between words is driven purely by their embeddings and positional encoding, with zero learned parameters governing how they interact. Adding learned $W_Q$, $W_K$, $W_V$ projections (as derived above) is what lets the model *learn* how tokens should relate to each other, rather than being stuck with a fixed, untrainable notion of similarity.
 
@@ -158,11 +119,7 @@ Read the last two steps as the whole mechanism in miniature: softmax turns raw c
 
 ### Why Scale by the Square Root of the Key Dimension
 
-The part most explanations wave a hand at instead of deriving. If a Query and Key's components are independent with mean 0 and variance 1, their dot product $q \cdot k = \sum_{i=1}^{d_k} q_i k_i$ is a sum of $d_k$ independent terms — and variance adds across independent terms, so the dot product ends up with **variance $d_k$**, not variance 1. As $d_k$ grows, raw scores grow with it, pushing softmax toward a near-one-hot distribution where gradients through every non-max entry are vanishingly small. Dividing by $\sqrt{d_k}$ renormalizes the variance back down to 1, regardless of dimension:
-
-<ThemedImage alt="Softmax weights before and after sqrt(d_k) scaling, showing the unscaled distribution is more saturated toward one token" sources={{light: w4bLight, dark: w4bDark}} />
-
-Same worked example, same raw scores — softmax without scaling puts 0.705 of its weight on a single token; scaled, that peak drops to 0.547, leaving real, learnable gradient on the other two tokens instead of squeezing them toward zero.
+The part most explanations wave a hand at instead of deriving. If a Query and Key's components are independent with mean 0 and variance 1, their dot product $q \cdot k = \sum_{i=1}^{d_k} q_i k_i$ is a sum of $d_k$ independent terms — and variance adds across independent terms, so the dot product ends up with **variance $d_k$**, not variance 1. As $d_k$ grows, raw scores grow with it, pushing softmax toward a near-one-hot distribution where gradients through every non-max entry are vanishingly small. Dividing by $\sqrt{d_k}$ renormalizes the variance back down to 1, regardless of dimension — step 5 of the worked example above has a toggle for exactly this comparison: same raw scores, softmax without scaling puts 0.976 of "sat"'s row on a single token; scaled, that peak drops to 0.821, leaving real, learnable gradient on the other tokens instead of squeezing them toward zero.
 
 **The result**: every token can directly attend to every other token in the sequence, in a single step — no sequential bottleneck like RNNs had, and no distance penalty for far-apart tokens.
 
@@ -204,7 +161,7 @@ Two unrelated reasons to block certain positions from attending to certain other
 
 **Causal (look-ahead) mask** — the decoder generates one token at a time and must never see the future token it's being trained to predict, so each position can only attend to itself and earlier positions:
 
-<ThemedImage alt="Causal mask: each query position can only attend to itself and earlier key positions, upper triangle blocked" sources={{light: causalMaskLight, dark: causalMaskDark}} />
+<CausalMaskAnimated />
 
 This is exactly what "causal (masked) self-attention" means in the GPT-lineage section [below](#decoder-only-the-gpt-lineage) — the same mechanism, applied inside the decoder's self-attention specifically.
 
@@ -255,7 +212,7 @@ Put together, that's one full encoder layer — self-attention, Add & Norm, feed
 
 The decoder layer adds one extra sublayer in the middle — masked self-attention, then cross-attention (above), then feed-forward, each followed by Add & Norm — also stacked $N=6$ times. At the very top of the decoder stack, the final output vector is projected through one more linear layer into vocabulary-sized logits, then softmax turns those into a probability distribution over the next token:
 
-<ThemedImage alt="Final linear and softmax: decoder output projected to vocabulary-sized logits, softmax gives a next-token probability distribution" sources={{light: finalSoftmaxLight, dark: finalSoftmaxDark}} />
+<FinalSoftmaxAnimated />
 
 Stack many of these blocks, and you have GPT-style decoder-only models (predict next token, used by essentially every modern LLM), or encoder-only models (BERT-style, used for embeddings/classification), or encoder-decoder models (T5-style, used for translation/summarization).
 
