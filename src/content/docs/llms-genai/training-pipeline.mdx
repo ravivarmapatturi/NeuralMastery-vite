@@ -3,6 +3,18 @@ title: "Training Pipeline"
 sidebar_position: 4
 ---
 
+import PretrainingObjectiveDiagram from '../../../viz/diagrams/PretrainingObjectiveDiagram';
+import DataPipelineStagesDiagram from '../../../viz/diagrams/DataPipelineStagesDiagram';
+import ScalingLawsChinchillaDiagram from '../../../viz/diagrams/ScalingLawsChinchillaDiagram';
+import SftBeforeAfterDiagram from '../../../viz/diagrams/SftBeforeAfterDiagram';
+import RlhfPipelineDiagram from '../../../viz/diagrams/RlhfPipelineDiagram';
+import DpoVsRlhfDiagram from '../../../viz/diagrams/DpoVsRlhfDiagram';
+import GrpoVsPpoDiagram from '../../../viz/diagrams/GrpoVsPpoDiagram';
+import PreferenceOptimizationFamilyDiagram from '../../../viz/diagrams/PreferenceOptimizationFamilyDiagram';
+import LoraMechanicsDiagram from '../../../viz/diagrams/LoraMechanicsDiagram';
+import PeftMethodsComparisonDiagram from '../../../viz/diagrams/PeftMethodsComparisonDiagram';
+import DistillationDiagram from '../../../viz/diagrams/DistillationDiagram';
+import QuantizationBitDepthDiagram from '../../../viz/diagrams/QuantizationBitDepthDiagram';
 
 # Training Pipeline
 
@@ -11,6 +23,8 @@ Going from a randomly-initialized Transformer to something like ChatGPT is a mul
 ## Pretraining
 
 The model is trained on massive amounts of text with a simple self-supervised objective: predict the next token, given everything before it. Loss is cross-entropy between the predicted token distribution and the actual next token (see [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics)). This single objective, at sufficient scale, produces a model with broad world knowledge, grammar, reasoning patterns, and style — but one that isn't yet reliably *helpful* or *instructable*; it just continues text plausibly.
+
+<PretrainingObjectiveDiagram />
 
 ### The Data Pipeline
 
@@ -27,6 +41,8 @@ Crawl → Clean → Deduplicate → Filter → Tokenize → Pack → Pretraining
 - **Contamination checking**: specifically verify that benchmark evaluation sets (the ones the model will later be scored on) haven't leaked into the training data — a real, easy-to-introduce-by-accident problem, since web-scale crawls can and do contain copies of published benchmark questions and answers, and training on them invalidates the resulting evaluation scores the same way [data leakage](/docs/machine-learning/ml-workflow-fundamentals#data-leakage) invalidates a classical ML evaluation.
 - **Tokenize and pack**: convert cleaned text into token IDs (see [Foundation Model Internals — Tokenization](/docs/llms-genai/foundation-model-internals#tokenization)), then **pack** many documents back-to-back into fixed-length training sequences (with a separator token between documents) so every training batch is fully utilized — leaving sequences padded to a fixed length instead would waste significant compute on padding tokens that carry no signal.
 
+<DataPipelineStagesDiagram />
+
 ### Data Mixtures and Curriculum
 
 Not all data sources are weighted equally — pretraining corpora are deliberately **mixed** from multiple sources (web text, code, books, academic papers, multilingual text) in specific proportions, tuned because the mixture measurably affects downstream capability (e.g. including code data measurably improves a model's general reasoning ability, not just its coding ability). Some pretraining runs also use a **data curriculum** — deliberately changing the mixture over the course of training (e.g. upweighting higher-quality data in later stages) rather than sampling from a single fixed distribution throughout.
@@ -36,6 +52,8 @@ Not all data sources are weighted equally — pretraining corpora are deliberate
 **Scaling laws** are empirical relationships describing how model loss improves as you scale up model size, dataset size, and compute — power-law relationships fit from many training runs at different scales, precise enough to extrapolate and plan a training run's expected final loss *before* running it at full scale.
 
 The **Chinchilla** paper's specific, influential finding: for a fixed compute budget, earlier practice (exemplified by GPT-3-era models) trained models that were too large relative to the amount of data they saw — **compute-optimal** training instead scales model size and training tokens *together*, roughly in a fixed ratio (Chinchilla's finding was approximately 20 training tokens per parameter). A smaller model trained compute-optimally on more data reliably beats a larger model undertrained on less data, for the same total compute cost — a result that directly reshaped how frontier labs allocate compute between "bigger model" and "more data," and part of why data pipeline quality (above) matters as much as architecture.
+
+<ScalingLawsChinchillaDiagram />
 
 ### Compute, Batching, and Precision
 
@@ -47,6 +65,8 @@ The **Chinchilla** paper's specific, influential finding: for a fixed compute bu
 
 The pretrained model is fine-tuned on a smaller, curated dataset of (instruction, ideal response) pairs, written or curated by humans. This teaches the model the *format and behavior* of being a helpful assistant — following instructions, answering directly instead of just continuing text, refusing certain requests.
 
+<SftBeforeAfterDiagram />
+
 ## RLHF — Reinforcement Learning from Human Feedback
 
 SFT alone isn't enough to capture nuanced preferences ("this response is *better*, not just acceptable"). RLHF adds:
@@ -56,13 +76,19 @@ SFT alone isn't enough to capture nuanced preferences ("this response is *better
 
 **Reward hacking**: when the model finds a way to score highly on the reward model without genuinely satisfying human intent (e.g. being unnecessarily verbose because the reward model correlates length with thoroughness). A core failure mode RLHF practitioners actively guard against.
 
+<RlhfPipelineDiagram />
+
 ## Direct Preference Optimization (DPO)
 
 A simpler alternative to RLHF: instead of training a separate reward model and running full RL, DPO reformulates the preference-learning objective so it can be optimized *directly* on preference pairs (chosen vs. rejected response) with a supervised-learning-style loss. Removes the complexity and instability of RL while achieving comparable results — widely adopted because it's simpler to implement and tune.
 
+<DpoVsRlhfDiagram />
+
 ## Group Relative Policy Optimization (GRPO)
 
 A more recent RL approach (notably used in DeepSeek's models) that removes the need for a separate value/critic network by instead comparing a group of sampled outputs for the same prompt against each other's average reward — reducing training cost and complexity, particularly effective for reasoning-focused fine-tuning.
+
+<GrpoVsPpoDiagram />
 
 ## Other Preference-Optimization Objectives
 
@@ -75,11 +101,15 @@ DPO and GRPO are the two most widely deployed, but the same "learn directly from
 
 The practical pattern across all of these: the field has been steadily moving away from full RLHF's separate-reward-model-plus-PPO complexity toward objectives that get similar alignment quality more cheaply and stably — DPO-family methods differ mainly in what data format they need (paired vs. unpaired) and what theoretical failure mode of plain DPO they patch, while GRPO/RLOO stay genuinely RL-based but drop PPO's critic network specifically.
 
+<PreferenceOptimizationFamilyDiagram />
+
 ## Parameter-Efficient Fine-Tuning (PEFT)
 
 Full fine-tuning updates every parameter — expensive and requires storing a full copy of the model per fine-tuned variant. PEFT methods update far fewer parameters:
 
 - **LoRA (Low-Rank Adaptation)**: freezes the original weights and injects small trainable low-rank matrices alongside them (see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra) — this works because weight *updates* during fine-tuning empirically have low effective rank). Dramatically cuts trainable parameters and memory.
+
+<LoraMechanicsDiagram />
 - **QLoRA**: combines LoRA with quantizing the frozen base model to 4-bit precision, enabling fine-tuning of very large models on a single consumer GPU.
 - **DoRA (Weight-Decomposed Low-Rank Adaptation)**: decomposes each frozen weight matrix into a magnitude component and a direction component, applying LoRA's low-rank update only to the direction while letting magnitude adapt separately and freely — closes a measurable quality gap between LoRA and full fine-tuning by giving the model an extra, cheap degree of freedom (magnitude) that plain LoRA's low-rank constraint doesn't allow, at a small additional parameter cost over standard LoRA.
 - **Adapters**: small trainable modules (typically a down-projection, a nonlinearity, and an up-projection) inserted *between* frozen Transformer layers, rather than alongside a weight matrix like LoRA — one of the original PEFT approaches, predating LoRA.
@@ -88,14 +118,20 @@ Full fine-tuning updates every parameter — expensive and requires storing a fu
 - **Prompt tuning**: a simplification of prefix tuning — instead of learned KV vectors injected at every layer, learns a small number of continuous "soft prompt" embeddings prepended only at the *input* layer. Fewer trainable parameters than prefix tuning, generally somewhat less expressive, but simpler to implement and still effective at larger model scales.
 - **Quantization-aware fine-tuning**: distinct from QLoRA's "quantize the frozen base, train full-precision LoRA adapters on top" — this instead simulates quantization effects *during* the fine-tuning forward/backward pass itself (see [LLM Inference Optimization — QAT](/docs/mlops/llm-inference-optimization#quantization)), producing a model that's fine-tuned to already be robust to the precision loss it'll actually run at in production, rather than being fine-tuned in full precision and only quantized afterward.
 
+<PeftMethodsComparisonDiagram />
+
 PEFT frameworks like **Unsloth** make this training step itself faster and more memory-efficient — but training and serving are different jobs. Once fine-tuning produces adapter weights, they still need to be handed off to a real inference engine (vLLM, llama.cpp, SGLang) to actually serve traffic — see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns#the-fine-tuning--inference-pipeline) for that handoff, and why Unsloth itself isn't what you deploy.
 
 ## Knowledge Distillation
 
 Train a smaller "student" model to mimic a larger "teacher" model's output distribution (not just the hard labels, but the full soft probability distribution, which carries more information about the teacher's "reasoning"). Produces smaller, faster models that retain much of the teacher's capability — used heavily to create deployable small models from expensive frontier models.
 
+<DistillationDiagram />
+
 ## Quantization
 
 Reduces the numerical precision used to store model weights — from 32-bit or 16-bit floats down to 8-bit or 4-bit integers (int8, int4; GPTQ and AWQ are popular quantization algorithms). Cuts memory footprint and can speed up inference substantially, at a small, often negligible, cost to output quality — essential for running large models on limited hardware.
+
+<QuantizationBitDepthDiagram />
 
 Next: [Prompt Engineering](/docs/llms-genai/prompt-engineering) — getting the most out of a model without touching its weights at all.
