@@ -1,12 +1,12 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
 import { ThemeProvider } from './theme/ThemeProvider';
 import { ProgressProvider } from './contexts/ProgressContext';
 import DocLayout from './components/layout/DocLayout';
+import Home from './components/Home';
 import ThemedImage from './components/ThemedImage';
 import MDXCodeBlock from './components/MDXCodeBlock';
 import MDXLink from './components/MDXLink';
-import { getFlatPages } from './lib/contentTree';
 
 // Components available to every .mdx file without an explicit import --
 // mirrors how Docusaurus makes <ThemedImage> globally available in MDX.
@@ -17,11 +17,6 @@ import { getFlatPages } from './lib/contentTree';
 // a full page reload to a base-path-less URL -- see MDXLink.tsx.
 const mdxComponents = { ThemedImage, pre: MDXCodeBlock, a: MDXLink };
 
-function HomeRedirect() {
-  const first = getFlatPages()[0];
-  return <Navigate to={first ? first.route : '/docs/getting-started/intro'} replace />;
-}
-
 export default function App() {
   return (
     <ThemeProvider>
@@ -29,7 +24,7 @@ export default function App() {
         <MDXProvider components={mdxComponents}>
           <BrowserRouter basename="/NeuralMastery-vite">
             <Routes>
-              <Route path="/" element={<HomeRedirect />} />
+              <Route path="/" element={<Home />} />
               <Route path="/docs/*" element={<DocLayout />} />
             </Routes>
           </BrowserRouter>
