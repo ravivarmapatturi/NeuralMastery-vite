@@ -103,21 +103,17 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Text reads best at ~760px; visualizations are the platform's most
-   important content and should use the full available column width (per
-   the visual-quality directive: "do not leave a tiny diagram floating
-   inside a huge desktop content area"). So the width cap lives on the
-   individual text-bearing elements, not on .prose itself -- anything else
-   rendered directly into .prose (VisualizationContainer's outer div, code
-   blocks, tables, images) naturally gets the full column instead of being
-   squeezed into the reading-width column alongside the prose. */
+/* Every direct child of .prose (paragraphs, headings, lists, images,
+   VisualizationContainer's outer div, code blocks, tables) shares the same
+   full column width -- collapsing the sidebar/TOC widens the whole column,
+   text included, not just visualizations. (Previously text was hard-capped
+   at 760px while images/diagrams, wrapped in <p> and never matched by any
+   cap, silently grew with the column -- so collapsing panels visibly grew
+   images but left text stuck at 760px. That asymmetry is the bug.) */
 .prose {
   max-width: 100%;
   line-height: 1.7;
   font-size: 16px;
-}
-.prose h1, .prose h2, .prose h3, .prose > p, .prose > ul, .prose > ol, .prose > blockquote, .prose > table {
-  max-width: 760px;
 }
 .prose h1 { font-size: 2.25rem; font-weight: 800; margin: 0 0 1rem; letter-spacing: -0.02em; }
 .prose h2 { font-size: 1.5rem; font-weight: 700; margin: 2.25rem 0 0.75rem; letter-spacing: -0.01em; }
@@ -127,7 +123,7 @@ body {
 .prose ul, .prose ol { margin: 0 0 1rem; padding-left: 1.5rem; }
 .prose li { margin-bottom: 0.35rem; }
 .prose strong { font-weight: 700; }
-.prose > img { max-width: 760px; display: block; }
+.prose > img { display: block; }
 
 /* Hamburger button: only meaningful once the docked sidebar/TOC are hidden
    (see the max-width: 900px block below), hidden by default on desktop. */
