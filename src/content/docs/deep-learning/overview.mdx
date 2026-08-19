@@ -3,21 +3,30 @@ title: "Deep Learning Overview"
 sidebar_position: 1
 ---
 
-
 # Deep Learning Overview
 
-Neural networks from first principles up to the Transformer architecture behind every modern LLM.
+Everywhere [Machine Learning](/docs/machine-learning/overview) fits models with a small, hand-chosen set of features and a fixed functional form — a line, a tree, a kernel — deep learning takes the opposite bet: give a network enough layers and enough data, and let it learn its own features, end to end, directly from raw pixels, raw audio, or raw text. That single idea — stack simple, differentiable operations, and let gradient descent find the weights — is what this entire section is about, from the smallest building block up to the architecture behind every modern large language model.
 
-- **[Neural Network Fundamentals](/docs/deep-learning/neural-network-fundamentals)** — perceptrons, activations, backpropagation, initialization
-- **[Activation Functions](/docs/deep-learning/activation-functions)**, **[Loss Functions](/docs/deep-learning/loss-functions)**, **[Optimizers](/docs/deep-learning/optimizers)**, **[Initialization/Regularization/Scheduling](/docs/deep-learning/initialization-regularization-scheduling)** — every building block, in full depth
-- **[Training Deep Networks](/docs/deep-learning/training-deep-networks)** — normalization, regularization, residual connections
-- **[Convolutional Neural Networks (CNNs)](/docs/deep-learning/cnns)** — convolution, pooling, the ResNet lineage
-- **[Sequence Models](/docs/deep-learning/sequence-models)** — RNNs, LSTM/GRU, sequence-to-sequence
-- **[Attention & Transformers](/docs/deep-learning/attention-transformers)** — self-attention, multi-head attention, positional encoding, the BERT/GPT/T5 lineages
-- **[Vision Architectures](/docs/deep-learning/vision-architectures)** — ViT variants, object detection (YOLO, DETR), segmentation (U-Net, Mask R-CNN)
-- **[Autoencoders & VAE](/docs/deep-learning/autoencoders)** — unsupervised compression, the reparameterization trick, VQ-VAE
-- **[Generative Models: GANs & Diffusion](/docs/deep-learning/generative-models)** — adversarial training, DDPM/DDIM, Stable Diffusion, ControlNet
-- **[GNNs, RL, Metric Learning, SSL & Multimodal Nets](/docs/deep-learning/advanced-architectures)** — graphs, reinforcement learning, contrastive/self-supervised methods, CLIP-style models
-- **[NN Layers Reference](/docs/deep-learning/nn-layers-reference)** — every layer type used across the architectures above, in one lookup page
+## Why "deep" specifically
+
+A single layer of weighted sums and a nonlinearity (a **perceptron**, see [Neural Network Fundamentals](/docs/deep-learning/neural-network-fundamentals)) can only separate data that's linearly separable. Stack layers, and each one learns a progressively more abstract transformation of the last — edges into shapes into object parts into objects, for a vision network; characters into words into phrases into meaning, for a language model. Depth is what buys that hierarchy. The cost is that training a deep stack is a genuinely harder optimization problem than training a shallow one (vanishing/exploding gradients chief among the reasons — derived in full in [Sequence Models](/docs/deep-learning/sequence-models#vanishing-and-exploding-gradients-derived) and [Training Deep Networks](/docs/deep-learning/training-deep-networks)), which is exactly why so much of this section is about the *mechanics* of training, not just the architectures themselves.
+
+## How this section is organized
+
+Four clusters, roughly in the order the field actually solved them:
+
+**1. Foundations — how a network computes and learns at all.** [Neural Network Fundamentals](/docs/deep-learning/neural-network-fundamentals) derives the forward pass and backpropagation from scratch; [Activation Functions](/docs/deep-learning/activation-functions), [Loss Functions](/docs/deep-learning/loss-functions), [Optimizers](/docs/deep-learning/optimizers), and [Initialization, Regularization & Scheduling](/docs/deep-learning/initialization-regularization-scheduling) cover every choice you actually have to make to get a network training at all, and [Training Deep Networks](/docs/deep-learning/training-deep-networks) covers what changes once "a network" becomes "a *deep* network" — normalization, residual connections, and the vanishing-gradient problem they exist to fix.
+
+**2. Architectures for structured data.** Raw fully-connected layers ignore the *structure* of an input — a pixel's neighbors, a word's position in a sentence — and that structure is exactly what the next architectures are built to exploit. [CNNs](/docs/deep-learning/cnns) exploit spatial locality (a pixel is related to its neighbors) via convolution and pooling; [Vision Architectures](/docs/deep-learning/vision-architectures) covers what's built on top of that foundation (ViTs, detection, segmentation). [Sequence Models](/docs/deep-learning/sequence-models) exploits temporal order via recurrence (RNN → LSTM/GRU → Seq2Seq+Attention) and derives exactly why recurrence itself becomes the bottleneck at scale — the problem [Attention & Transformers](/docs/deep-learning/attention-transformers) exists to solve, removing recurrence entirely in favor of direct, parallel attention between every pair of positions. This is the architecture behind GPT, Claude, LLaMA, and effectively every frontier model today, so it's worth treating as the section's centerpiece, not just one topic among many.
+
+**3. Learning without labels.** [Autoencoders & VAEs](/docs/deep-learning/autoencoders) and [Generative Models: GANs & Diffusion](/docs/deep-learning/generative-models) cover architectures trained without hand-labeled targets — reconstruction error, adversarial competition, or iterative denoising standing in for supervision. [GNNs, RL, Metric Learning, SSL & Multimodal Nets](/docs/deep-learning/advanced-architectures) rounds out the architectures that don't fit neatly into "images" or "sequences": graphs, reinforcement learning, contrastive/self-supervised pretraining, and CLIP-style joint vision-language models.
+
+**4. Reference.** [NN Layers Reference](/docs/deep-learning/nn-layers-reference) is a single lookup page for every layer type introduced across the architectures above — useful once you've read the derivations and just need to check a shape or a formula.
+
+## How to actually use this section
+
+Read Foundations in order — everything after it assumes you can derive a forward pass and backward pass by hand. After that, [Sequence Models](/docs/deep-learning/sequence-models) → [Attention & Transformers](/docs/deep-learning/attention-transformers) is the single most valuable path if your goal is understanding modern LLMs, since it's written as one continuous argument (RNNs' limitations motivate LSTM/GRU, which motivate Seq2Seq+Attention, which motivates removing recurrence entirely). CNNs/Vision, and the unsupervised-learning cluster, are largely independent of that path and of each other — jump to whichever matches what you're building.
+
+**Prerequisite**: the derivations here lean on calculus (chain rule, gradients) and linear algebra (matrix/vector operations) — see [Mathematics for AI](/docs/mathematics-for-ai/overview) if any step feels unfamiliar. If you haven't seen the classical ML toolkit (linear/logistic regression, bias-variance, regularization) yet, [Machine Learning](/docs/machine-learning/overview) covers the concepts deep learning specializes and extends.
 
 See the [roadmap](/docs/deep-learning/roadmap) for the full ordered path through this section.

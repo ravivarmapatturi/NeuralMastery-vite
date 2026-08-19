@@ -3,14 +3,28 @@ title: "Machine Learning Overview"
 sidebar_position: 1
 ---
 
-
 # Machine Learning Overview
 
-Classical ML: the algorithms, the workflow around them, and the problems that show up constantly in practice.
+Before neural networks, there was — and still is — a large, battle-tested toolkit of algorithms that fit models directly to data: a line through points, a tree of yes/no splits, a boundary that maximizes margin. This section covers that toolkit in full depth: not just *how* each algorithm works, but the derivation behind it, when to actually reach for it over a deep net, and the workflow and evaluation discipline that applies no matter which algorithm you pick. [Deep Learning](/docs/deep-learning/overview) picks up from here — most of what makes a deep network trainable at all (loss functions, regularization, gradient descent) is introduced here first, in its simplest, most transparent form.
 
-- **[ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals)** — train/val/test splits, data leakage, feature engineering
-- **[Supervised Learning](/docs/machine-learning/supervised-learning)** — linear/logistic regression, trees, SVMs, k-NN, Naive Bayes
-- **[Unsupervised Learning](/docs/machine-learning/unsupervised-learning)** — clustering, dimensionality reduction, anomaly detection
-- **[Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)** — bias-variance, regularization, classification/regression metrics
+## Why classical ML still matters
+
+Deep learning gets the attention, but for tabular data — spreadsheets, databases, most real business data — gradient-boosted trees ([XGBoost, LightGBM & CatBoost](/docs/machine-learning/xgboost-lightgbm-catboost)) routinely beat neural networks, train in minutes instead of hours, and don't need a GPU. Linear and logistic regression remain the default first model for almost any new problem, specifically *because* they're interpretable — every weight has a direct, explainable meaning, which a deep network's millions of parameters generally don't offer. Knowing this toolkit isn't a historical detour before "the real stuff" — it's the right tool for a large fraction of real problems, and the conceptual foundation (loss functions, gradients, bias-variance, regularization) that every later section builds on.
+
+## How this section is organized
+
+**Start here**: [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals) — train/validation/test splits, data leakage, feature engineering. The discipline in this page applies to literally everything else in this section (and in Deep Learning); skipping it is the single most common way real projects go wrong, independent of which algorithm you end up using.
+
+**[Supervised Learning](/docs/machine-learning/supervised-learning)** — learning a mapping from inputs to known outputs. One hub page surveying every algorithm in depth: linear/ridge/lasso/elastic-net regression, logistic regression, decision trees, Random Forest/Extra Trees, AdaBoost/Gradient Boosting, XGBoost/LightGBM/CatBoost, SVMs, k-NN, Naive Bayes/LDA/QDA, the SGD training framework, plus the structurally different problems of time series forecasting, survival analysis, and recommender systems/learning-to-rank — each with its own full derivation page linked inline.
+
+**[Unsupervised Learning](/docs/machine-learning/unsupervised-learning)** — finding structure with no labels at all: clustering (k-Means, hierarchical, DBSCAN/HDBSCAN, GMM, spectral), dimensionality reduction (PCA, Kernel PCA, ICA, t-SNE, UMAP), association rule mining, topic modeling, and anomaly detection. Same pattern — one survey page, each topic linking to its own full-depth derivation.
+
+**[Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)** — bias-variance tradeoff, regularization, and the actual metrics (precision/recall/F1, ROC-AUC, RMSE/MAE, and more) for judging whether any model above is actually good. Read this *after* at least one algorithm from Supervised or Unsupervised Learning — the metrics make more sense once you've seen a model actually produce predictions to evaluate.
+
+## How to actually use this section
+
+If you're new to ML entirely: Workflow Fundamentals → Supervised Learning (read linear regression's full derivation on [its own page](/docs/machine-learning/linear-regression) — it's the one algorithm worth deriving completely by hand before moving on) → Model Evaluation. If you already know the basics and need a specific algorithm, the two hub pages are written to be jumped into directly — every algorithm section links straight to its full-depth page.
+
+**Prerequisite**: the derivations lean on calculus and linear algebra — see [Mathematics for AI](/docs/mathematics-for-ai/overview) if a gradient or a matrix operation feels unfamiliar.
 
 See the [roadmap](/docs/machine-learning/roadmap) for the full ordered path through this section.
