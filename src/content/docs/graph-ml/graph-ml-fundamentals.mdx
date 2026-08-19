@@ -4,38 +4,80 @@ sidebar_position: 3
 ---
 
 
+import GraphRepresentationDiagram from '../../../viz/diagrams/GraphRepresentationDiagram';
+import GraphTaskTaxonomyDiagram from '../../../viz/diagrams/GraphTaskTaxonomyDiagram';
+import GinExpressivenessDiagram from '../../../viz/diagrams/GinExpressivenessDiagram';
+import RandomWalkEmbeddingDiagram from '../../../viz/diagrams/RandomWalkEmbeddingDiagram';
+import TransEDiagram from '../../../viz/diagrams/TransEDiagram';
+import GraphRagDiagram from '../../../viz/diagrams/GraphRagDiagram';
+
 # Graph ML Fundamentals
 
-[Advanced Architectures — GNNs](/docs/deep-learning/advanced-architectures#graph-neural-networks-gnns) covered message passing and the GCN/GraphSAGE/GAT lineage. This page covers the rest: what graph ML tasks actually look like, one more architecture (GIN), the embedding methods that predate GNNs, knowledge graphs, and where graph structure shows up directly in modern LLM systems.
+[Advanced Architectures — GNNs](/docs/deep-learning/advanced-architectures#graph-neural-networks-gnns) covered message passing and the GCN/GraphSAGE/GAT lineage. This page covers the rest: what graph ML tasks actually look like, one more architecture (GIN) built specifically to fix a real expressiveness gap in that lineage, the embedding methods that predate GNNs, knowledge graphs, and where graph structure shows up directly in modern LLM systems.
+
+## Intuition: The One Constraint That Shapes Everything Here
+
+A graph has no canonical ordering of its nodes — unlike an image's fixed pixel grid or text's fixed left-to-right sequence, "node 3" is just whatever label happened to get assigned; a different labeling of the identical graph is still the identical graph. Every architecture and every embedding method on this page exists in the shadow of that one fact: it has to be **permutation-invariant**, producing the same answer no matter which arbitrary order the nodes are listed in.
 
 ## Graph Representation
 
-A graph is a set of **nodes** (entities — users, molecules' atoms, web pages) connected by **edges** (relationships — friendships, chemical bonds, hyperlinks), optionally with features on nodes and/or edges. The **adjacency matrix** — a square matrix where entry $(i,j)$ indicates whether (or how strongly) node $i$ connects to node $j$ — is the standard mathematical representation, and directly what GCN's neighbor-aggregation (see [Advanced Architectures](/docs/deep-learning/advanced-architectures#graph-neural-networks-gnns)) operates over. Unlike an image's fixed grid or text's fixed sequence order, a graph has no canonical ordering of nodes — any valid architecture has to be **permutation-invariant** (produce the same result regardless of the arbitrary order nodes happen to be listed in), which is exactly why standard CNN/Transformer architectures don't directly apply and GNN-specific architectures exist.
+A graph is a set of **nodes** (entities — users, molecules' atoms, web pages) connected by **edges** (relationships — friendships, chemical bonds, hyperlinks), optionally with features on nodes and/or edges. The **adjacency matrix** — a square matrix where entry $(i,j)$ indicates whether (or how strongly) node $i$ connects to node $j$ — is the standard mathematical representation, and directly what GCN's neighbor-aggregation (see [Advanced Architectures](/docs/deep-learning/advanced-architectures#graph-neural-networks-gnns)) operates over.
+
+Relabel the same 5-node graph three different ways and watch the matrix scramble every time, even though the picture underneath never changes:
+
+<GraphRepresentationDiagram />
+
+This is precisely why standard CNN/Transformer architectures don't directly apply — both assume a fixed grid or sequence order that a graph simply doesn't have, and why GNN-specific, permutation-invariant architectures exist at all.
 
 ## Task Taxonomy
 
+The same graph supports three structurally different prediction targets — pick a task below and watch what's actually being read from the graph change:
+
+<GraphTaskTaxonomyDiagram />
+
 - **Node classification**: predict a label for each node — is this user a bot, what category does this paper belong to (using its citation graph) — the graph-ML analog of standard classification, except a node's prediction can depend on its neighbors' features and labels, not just its own.
-- **Link prediction**: predict whether an edge should exist between two nodes that aren't currently connected — will these two users become friends, will this drug interact with this protein — directly the underlying task behind "people you may know" and drug-interaction prediction, and closely related to the collaborative-filtering framing in [Recommender Systems](/docs/machine-learning/recommender-systems).
+- **Link prediction**: predict whether an edge should exist between two nodes that aren't currently connected — will these two users become friends, will this drug interact with this protein — directly the underlying task behind "people you may know" and drug-interaction prediction, and closely related to the collaborative-filtering framing in [Recommender Systems](/docs/machine-learning/recommender-systems). Shared-neighbor count (shown above) is a real, simple baseline heuristic for this; learned GNN embeddings improve on it by capturing structure the heuristic can't.
 - **Graph classification**: predict a label for an *entire* graph, not a node or edge within it — is this molecule toxic, does this graph represent a stable protein structure — requires pooling node-level representations into one whole-graph representation, analogous to how a CNN pools spatial features down before a final classification layer.
 
 ## GIN (Graph Isomorphism Network)
 
-GCN and GraphSAGE's aggregation functions (weighted average, sampled-neighbor aggregation) turn out to not be **maximally expressive** — there exist pairs of structurally different graphs that a GCN-style aggregation can't actually distinguish, because averaging/mean-pooling neighbor features loses information about exactly how many neighbors had which features. **GIN** is specifically designed to be as powerful as the **Weisfeiler-Lehman graph isomorphism test** (a classical graph-theory algorithm for testing whether two graphs are structurally identical) — using a *sum* aggregation (provably more expressive than mean/max for distinguishing graph structure) followed by a learned MLP. The practical takeaway: GIN is the architecture to reach for when the fine-grained graph *structure* itself (not just node features) is what the task actually depends on distinguishing.
+GCN and GraphSAGE's aggregation functions (weighted average, sampled-neighbor aggregation) turn out to not be **maximally expressive** — there exist pairs of structurally different graphs that mean-style aggregation can't actually distinguish, because averaging loses information about exactly how many neighbors had which features. Watch it happen with a genuinely minimal example: two center nodes whose neighbor feature *sets* differ in size but have the same average:
+
+<GinExpressivenessDiagram />
+
+**GIN** is specifically designed to be as powerful as the **Weisfeiler-Lehman graph isomorphism test** (a classical graph-theory algorithm for testing whether two graphs are structurally identical) — using a *sum* aggregation (provably more expressive than mean/max for distinguishing graph structure, exactly as demonstrated above) followed by a learned MLP:
+
+$$h_v^{(k)} = \text{MLP}^{(k)}\!\left((1+\epsilon^{(k)}) \cdot h_v^{(k-1)} + \sum_{u \in \mathcal{N}(v)} h_u^{(k-1)}\right)$$
+
+The practical takeaway: GIN is the architecture to reach for when the fine-grained graph *structure* itself (not just node features) is what the task actually depends on distinguishing — molecular property prediction, where "how many of which substructure" genuinely changes the chemistry, is the canonical use case.
 
 ## Graph Embeddings: node2vec and DeepWalk
 
-Predating GNNs' message-passing approach, an earlier and still-useful family of methods learns node embeddings via a different strategy entirely — one directly borrowed from NLP:
+Predating GNNs' message-passing approach, an earlier and still-useful family of methods learns node embeddings via a strategy directly borrowed from NLP: generate random walks over the graph, then treat each walk exactly like a sentence and each node like a word.
 
-- **DeepWalk**: generates many random walks starting from each node (sequences of nodes visited by repeatedly hopping to a random neighbor), then treats each walk exactly like a sentence and each node like a word — running [word2vec's skip-gram](/docs/nlp/word-embeddings#word2vec) training objective directly on these node sequences to learn node embeddings that place structurally/contextually similar nodes close together.
-- **node2vec**: generalizes DeepWalk's random walk with two tunable parameters controlling whether walks behave more like breadth-first search (favoring nearby, locally-clustered nodes — capturing community structure) or depth-first search (favoring exploring further away — capturing structural roles, like "this node is a hub," that can hold regardless of which specific community a node belongs to).
-- **Embeddings vs. GNNs**: node2vec/DeepWalk produce a fixed embedding *per node in a specific, already-seen graph* — they don't naturally generalize to unseen nodes or incorporate node features the way GraphSAGE's inductive, feature-based aggregation does. They remain a fast, simple, often-sufficient baseline precisely when a graph is static, node features aren't available or aren't important, and full GNN training machinery is more complexity than the task needs.
+- **DeepWalk**: generates many uniform random walks starting from each node, then runs [word2vec's skip-gram](/docs/nlp/word-embeddings#word2vec) training objective directly on these node sequences to learn node embeddings that place structurally/contextually similar nodes close together.
+- **node2vec**: generalizes DeepWalk's random walk with two tunable parameters, $p$ and $q$, biasing each step's transition probability by its distance from the *previous* node — not just the current one. Toggle between the two regimes below and watch a real 2nd-order biased walk (not a uniform one) actually change shape on the same graph:
+
+<RandomWalkEmbeddingDiagram />
+
+Low $q$ rewards moving strictly further away at each step (favoring breadth away from the start — DFS-like — capturing **structural roles**, like "this node is a bridge," that can hold regardless of which specific community a node belongs to); high $q$ discourages that, keeping the walk circling inside a tight cluster (BFS-like — capturing **community structure**). $p$ separately controls how likely the walk is to immediately backtrack to the node it just came from.
+
+**Embeddings vs. GNNs**: node2vec/DeepWalk produce a fixed embedding *per node in a specific, already-seen graph* — they don't naturally generalize to unseen nodes or incorporate node features the way GraphSAGE's inductive, feature-based aggregation does. They remain a fast, simple, often-sufficient baseline precisely when a graph is static, node features aren't available or aren't important, and full GNN training machinery is more complexity than the task needs.
 
 ## Knowledge Graphs
 
-A **knowledge graph** is a graph specifically structured to represent facts — nodes are entities (people, places, concepts), edges are typed relationships (`born_in`, `works_at`, `is_a`), commonly represented as `(subject, relation, object)` triples ("Marie Curie", "born_in", "Warsaw"). **Knowledge graph embeddings** (TransE and successors) learn vector representations of entities and relations such that the triple structure is approximately preserved algebraically (e.g. TransE's core idea: `embedding(subject) + embedding(relation) ≈ embedding(object)`), enabling link prediction directly on facts — inferring plausible missing facts ("what city was this person likely born in") from the graph's existing structure.
+A **knowledge graph** is a graph specifically structured to represent facts — nodes are entities (people, places, concepts), edges are typed relationships (`born_in`, `works_at`, `is_a`), commonly represented as `(subject, relation, object)` triples ("Marie Curie", "born_in", "Warsaw"). **Knowledge graph embeddings** (TransE and successors) learn vector representations of entities and relations such that the triple structure is approximately preserved algebraically: `embedding(subject) + embedding(relation) ≈ embedding(object)`. Pick a candidate object below and watch the real vector arithmetic and real Euclidean distance decide how plausible it is:
+
+<TransEDiagram />
+
+This is what makes knowledge graph embeddings useful for link prediction directly on facts — inferring plausible missing facts ("what city was this person likely born in") by finding whichever candidate entity lands closest to `subject + relation` in the learned vector space, exactly the ranking computed above.
 
 ## Graph RAG
 
-[RAG — GraphRAG](/docs/llms-genai/rag#graphrag) covers this from the RAG-architecture side: build a knowledge graph from source documents, and let retrieval traverse entity relationships directly, addressing the multi-hop-reasoning questions standard chunk-based RAG structurally struggles with. Worth connecting explicitly to this page's vocabulary: GraphRAG's traversal step is a link-prediction-and-retrieval problem over a knowledge graph (both above), and the entity/relation extraction that builds the graph from raw text in the first place directly reuses [NER](/docs/nlp/classical-nlp#named-entity-recognition-ner) and relation-extraction techniques from classical NLP.
+[RAG — GraphRAG](/docs/llms-genai/rag#graphrag) covers this from the RAG-architecture side: build a knowledge graph from source documents, and let retrieval traverse entity relationships directly, addressing multi-hop-reasoning questions standard chunk-based RAG structurally struggles with:
+
+<GraphRagDiagram />
+
+Worth connecting explicitly to this page's vocabulary: GraphRAG's traversal step is a link-prediction-and-retrieval problem over a knowledge graph (both above), and the entity/relation extraction that builds the graph from raw text in the first place directly reuses [NER](/docs/nlp/classical-nlp#named-entity-recognition-ner) and relation-extraction techniques from classical NLP.
 
 Graph ML section complete. Next: [AI for Science](/docs/ai-for-science/roadmap) — where graph representations (molecules, protein structures) become one of several scientific-domain applications of ML.
