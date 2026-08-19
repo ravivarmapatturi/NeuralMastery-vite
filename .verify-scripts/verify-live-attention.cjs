@@ -17,7 +17,7 @@ function log(check, pass, detail) {
   await page.waitForTimeout(800);
 
   log('Page loads with correct H1', (await page.locator('h1').first().innerText()) === 'Attention & Transformers');
-  log('RNN vs Attention diagram renders', await page.locator('text=RNN — STRICTLY SEQUENTIAL').count() > 0);
+  log('RNN vs Attention diagram renders', await page.locator('text=RNN — HIDDEN STATE DEPENDS ON THE LAST ONE').count() > 0);
   log('QKV diagram renders', await page.locator('svg text:has-text("W_Q")').count() > 0);
   log('Worked example renders at step 1', await page.locator('text=/Step 1: Token embeddings/').count() > 0);
 
