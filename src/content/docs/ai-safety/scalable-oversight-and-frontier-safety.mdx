@@ -4,19 +4,45 @@ sidebar_position: 4
 ---
 
 
+import OversightApproachesDiagram from '../../../viz/diagrams/OversightApproachesDiagram';
+import DebateConvergenceDiagram from '../../../viz/diagrams/DebateConvergenceDiagram';
+import ProcessVsOutcomeDiagram from '../../../viz/diagrams/ProcessVsOutcomeDiagram';
+import StagedDeploymentDiagram from '../../../viz/diagrams/StagedDeploymentDiagram';
+import CapabilityThresholdDiagram from '../../../viz/diagrams/CapabilityThresholdDiagram';
+
 # Scalable Oversight & Frontier Safety
 
 The alignment techniques in [Alignment & RLHF](/docs/ai-safety/alignment-and-rlhf) all depend on a human (or human-derived signal) being able to judge whether a model's output is actually good. That assumption gets harder to sustain as models get more capable — this page is what happens at that edge.
 
+## Intuition: What Do You Do When the Evaluator Isn't the Expert?
+
+Every idea on this page answers the same question from a different angle: if properly verifying an answer requires exactly the expertise the evaluator doesn't have, what's left to lean on? Debate leans on adversarial scrutiny instead of direct expertise. Process-based oversight leans on checking the reasoning method instead of just the answer. Staged deployment and capability thresholds lean on bounding the damage instead of preventing every mistake outright. None of them fully solve the problem — they're each a specific, partial answer to "supervise something you can't fully verify."
+
 ## Scalable Oversight
 
-**Scalable oversight** is the problem of supervising and evaluating an AI system on tasks where the system's own competence may match or exceed the evaluator's — how do you know a model's answer to a hard research question, a complex piece of code, or a nuanced legal analysis is actually correct, if verifying it properly requires exactly the expertise the model is being used *because* the evaluator doesn't have at that depth? This isn't a hypothetical future problem — it already shows up whenever a non-expert uses an LLM to help with a task (debugging unfamiliar code, drafting in an unfamiliar domain) they can't fully independently verify.
+**Scalable oversight** is the problem of supervising and evaluating an AI system on tasks where the system's own competence may match or exceed the evaluator's — how do you know a model's answer to a hard research question, a complex piece of code, or a nuanced legal analysis is actually correct, if verifying it properly requires exactly the expertise the evaluator doesn't have at that depth? This isn't a hypothetical future problem — it already shows up whenever a non-expert uses an LLM to help with a task (debugging unfamiliar code, drafting in an unfamiliar domain) they can't fully independently verify.
 
-Approaches actively explored for this problem:
+Three approaches actively explored for this problem:
 
-- **Debate**: have two instances of a model argue opposing sides of a question in front of a human (or weaker-model) judge — the idea being that even a judge who can't independently verify a complex claim may still be able to judge which of two competing arguments holds up better under adversarial scrutiny, similar to how a judge or jury doesn't need to be a legal expert to assess which side's argument survives cross-examination.
-- **Recursive reward modeling**: use AI assistance to help humans evaluate outputs that would otherwise be too complex or time-consuming to judge unaided — bootstrapping evaluation capability with AI help rather than requiring a human to do the full evaluation task alone from scratch.
-- **Process-based oversight**: rather than only evaluating a final answer (outcome-based), evaluate the *reasoning process* that produced it — a wrong final answer reached through visibly sound reasoning is a different, more fixable failure than a right answer reached through reasoning that happened to work this time but wouldn't generalize; the reverse also matters, since a plausible-looking final answer built on flawed reasoning is exactly the case scalable oversight worries about most.
+<OversightApproachesDiagram />
+
+### Debate, Simulated
+
+**Debate**'s claim is that even a judge who can't independently verify a complex claim may still be able to judge which of two competing arguments holds up better under adversarial scrutiny — similar to how a judge or jury doesn't need to be a legal expert to assess which side's argument survives cross-examination. Run a real simulation of exactly that mechanism: a judge who never checks the underlying facts, only compares each round's argument strength:
+
+<DebateConvergenceDiagram />
+
+The judge's rising confidence isn't asserted — it's a real accumulated log-odds update, round by round, purely from comparing relative argument strength. This is also debate's real limitation, visible in the same mechanism: if the two sides' evidence quality were closer (or reversed), the same honest updating procedure would converge on the wrong answer just as confidently.
+
+### Process-Based Oversight, Worked
+
+Rather than only evaluating a final answer (outcome-based), evaluate the *reasoning process* that produced it. A worked example makes the distinction concrete rather than abstract — two traces answering the same question, graded two different ways:
+
+<ProcessVsOutcomeDiagram />
+
+A wrong final answer reached through visibly sound reasoning is a different, more fixable failure than a right answer reached through reasoning that happened to work this time but wouldn't generalize — the reverse also matters, since a plausible-looking final answer built on flawed reasoning is exactly the case scalable oversight worries about most.
+
+**Recursive reward modeling** takes a third angle entirely: rather than changing *what* gets graded (process vs. outcome), it changes *who* does the grading — using AI assistance to help humans evaluate outputs that would otherwise be too complex or time-consuming to judge unaided, bootstrapping evaluation capability with AI help rather than requiring a human to do the full evaluation task alone from scratch.
 
 ## Interpretability's Role in Safety
 
@@ -24,14 +50,40 @@ None of the scalable-oversight approaches above fully escape depending on the mo
 
 ## Model Behavior Evaluation for Safety
 
-Distinct from the general evaluation methodology in [AI Evaluation](/docs/ai-evaluation/roadmap): safety-specific behavioral evaluation deliberately probes for specific concerning behaviors — does the model comply with harmful requests under adversarial framing (overlapping with [red teaming](/docs/ai-evaluation/human-and-adversarial-evaluation#red-teaming)), does it behave consistently regardless of whether it seems to be "being tested," does it accurately represent its own confidence/uncertainty rather than always answering assertively regardless of actual reliability. This category of evaluation is what actually operationalizes alignment concerns like reward hacking and deception (see [Alignment & RLHF](/docs/ai-safety/alignment-and-rlhf)) into concrete, checkable test suites rather than leaving them as abstract concerns.
+Distinct from the general evaluation methodology in [AI Evaluation](/docs/ai-evaluation/roadmap): safety-specific behavioral evaluation deliberately probes for specific concerning behaviors — does the model comply with harmful requests under adversarial framing (overlapping with [red teaming](/docs/ai-evaluation/human-and-adversarial-evaluation#red-teaming)), does it behave consistently regardless of whether it seems to be "being tested," does it accurately represent its own confidence/uncertainty rather than always answering assertively regardless of actual reliability. This category of evaluation is what actually operationalizes alignment concerns like reward hacking and deception (see [Alignment & RLHF](/docs/ai-safety/alignment-and-rlhf)) into concrete, checkable test suites rather than leaving them as abstract concerns — with the same real detection-power limits shown on that page: a rare enough concerning behavior can hide from a fixed-size test suite the same way a rare deceptive behavior can.
 
 ## Frontier Model Safety Practices
 
-Practices specific to the most capable models being trained and deployed, where the stakes of getting evaluation wrong are highest:
+Practices specific to the most capable models being trained and deployed, where the stakes of getting evaluation wrong are highest.
 
-- **Staged/gradual deployment**: releasing a new, more capable model to progressively larger audiences (internal testing, then a limited external group, then general availability) rather than immediately to everyone — giving time to discover safety issues at a smaller blast radius before wide release, the same staged-rollout principle as [canary deployment](/docs/mlops/deployment-strategies#canary-deployment) applied to model capability/safety risk rather than infrastructure risk.
-- **Dangerous capability evaluations**: specifically testing whether a new model has crossed a capability threshold that would require additional safety measures before release (e.g. capabilities relevant to cybersecurity misuse, or providing meaningfully uplifting information for causing serious harm) — evaluation designed around specific, predefined risk thresholds rather than general capability benchmarks.
-- **External red-teaming and safety review**: independent, sometimes external evaluation of a frontier model before release, precisely to reduce the risk of a lab's own evaluation being insufficiently adversarial toward its own product — the same "don't grade your own homework" principle behind independent audits in other high-stakes industries.
+### Staged/Gradual Deployment
+
+Releasing a new, more capable model to progressively larger audiences (internal testing, then a limited external group, then general availability) rather than immediately to everyone — giving time to discover safety issues at a smaller blast radius before wide release, the same staged-rollout principle as [canary deployment](/docs/mlops/deployment-strategies#canary-deployment) applied to model capability/safety risk rather than infrastructure risk. This is the exact same detection-probability statistics as the deception diagram on the Alignment & RLHF page, just with audience size in place of eval-suite size:
+
+<StagedDeploymentDiagram />
+
+### Dangerous Capability Evaluations
+
+Specifically testing whether a new model has crossed a capability threshold that would require additional safety measures before release (e.g. capabilities relevant to cybersecurity misuse, or providing meaningfully uplifting information for causing serious harm) — evaluation designed around specific, predefined risk thresholds rather than general capability benchmarks:
+
+<CapabilityThresholdDiagram />
+
+### External Red-Teaming and Safety Review
+
+Independent, sometimes external evaluation of a frontier model before release, precisely to reduce the risk of a lab's own evaluation being insufficiently adversarial toward its own product — the same "don't grade your own homework" principle behind independent audits in other high-stakes industries.
+
+## Code: The Detection-Probability Math Behind Staged Deployment
+
+The same formula drives both the deception-detection diagram on the Alignment & RLHF page and the staged-deployment diagram above:
+
+```python
+def detection_probability(p: float, n: int) -> float:
+    """Probability of surfacing at least one instance of a real, rare
+    issue with per-interaction rate p, across n real interactions."""
+    return 1 - (1 - p) ** n
+
+for stage, n in [("internal", 50), ("limited external", 2_000), ("GA", 2_000_000)]:
+    print(f"{stage}: {detection_probability(p=0.0005, n=n):.1%} chance of catching it")
+```
 
 AI Safety & Alignment section complete. Next: [Interpretability](/docs/interpretability/roadmap) — the tools that make a model's internal behavior inspectable, which both this section's oversight approaches and AI Security both depend on.
