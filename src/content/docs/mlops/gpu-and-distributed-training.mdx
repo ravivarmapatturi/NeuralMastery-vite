@@ -3,6 +3,17 @@ title: "GPU/AI Infrastructure & Distributed Training"
 sidebar_position: 17
 ---
 
+import GpuMemoryHierarchyDiagram from '../../../viz/diagrams/GpuMemoryHierarchyDiagram';
+import CudaExecutionHierarchyDiagram from '../../../viz/diagrams/CudaExecutionHierarchyDiagram';
+import WarpDivergenceDiagram from '../../../viz/diagrams/WarpDivergenceDiagram';
+import OccupancyDiagram from '../../../viz/diagrams/OccupancyDiagram';
+import CudaStreamsDiagram from '../../../viz/diagrams/CudaStreamsDiagram';
+import ParallelismStrategiesDiagram from '../../../viz/diagrams/ParallelismStrategiesDiagram';
+import PipelineBubbleDiagram from '../../../viz/diagrams/PipelineBubbleDiagram';
+import FsdpZeroShardingDiagram from '../../../viz/diagrams/FsdpZeroShardingDiagram';
+import ThreeDParallelismCompositionDiagram from '../../../viz/diagrams/ThreeDParallelismCompositionDiagram';
+import CheckpointingTradeoffDiagram from '../../../viz/diagrams/CheckpointingTradeoffDiagram';
+import MixedPrecisionDiagram from '../../../viz/diagrams/MixedPrecisionDiagram';
 
 # GPU/AI Infrastructure & Distributed Training
 
@@ -24,12 +35,24 @@ The actual execution model underneath "the GPU runs matrix multiplies fast" — 
 - **Kernel**: a function written to run on the GPU, launched from the CPU (the "host") to execute on the GPU (the "device") — every CUDA operation PyTorch dispatches (a matrix multiply, an elementwise add) ultimately compiles down to a kernel launch.
 - **Thread, block, grid**: a kernel launch specifies a **grid** of **thread blocks**, each containing many individual **threads** — this three-level hierarchy (grid → blocks → threads) is how a single kernel launch describes potentially millions of parallel units of work. Each block is scheduled onto one SM (and stays there for its entire execution), while a grid's many blocks get distributed across all available SMs.
 - **Warps**: within a block, threads execute in groups of 32 called a **warp** — the actual unit of scheduling and execution on an SM's hardware. All 32 threads in a warp execute the same instruction at the same time (SIMT — Single Instruction, Multiple Threads); when threads within a warp take different branches of an `if` statement (**warp divergence**), the hardware has to execute both branches serially for the whole warp, masking out the inactive threads each time — a real performance cost, and part of why GPU code favors branch-free, uniform computation over the same per-element conditional logic that's cheap on a CPU.
+
+<CudaExecutionHierarchyDiagram />
+
+<WarpDivergenceDiagram />
+
 - **Memory hierarchy**: **registers** (fastest, private per-thread), **shared memory** (fast, shared across all threads in a block — explicitly managed, used to cache data reused many times within a block rather than re-reading from slower memory), and **global memory** (VRAM — largest, slowest, accessible from every thread). Writing fast CUDA code is largely about maximizing reuse from registers/shared memory and minimizing round-trips to global memory — exactly the same "keep data in the fast, small, close memory" principle as [CPU caches](/docs/cs-fundamentals/operating-systems-and-concurrency#cpu-caches), one level down the memory hierarchy.
+
+<GpuMemoryHierarchyDiagram />
 
 ## Occupancy, CUDA Streams & CUDA Graphs
 
 - **Occupancy**: the ratio of actively scheduled warps on an SM to the maximum it could support — low occupancy means an SM has spare scheduling capacity it isn't using, often because each thread block is using too many registers or too much shared memory to let the SM fit more blocks concurrently. Higher occupancy generally means better latency-hiding (while one warp waits on a slow memory access, the SM can switch to executing a different ready warp instead of stalling) — though maximum occupancy isn't always the goal if a kernel is genuinely compute-bound rather than memory-latency-bound.
+
+<OccupancyDiagram />
+
 - **CUDA streams**: independent queues of GPU work — operations within one stream execute in order, but operations in *different* streams can execute concurrently (and can overlap with CPU-to-GPU data transfers) — the mechanism behind overlapping data loading/transfer with compute rather than doing them strictly sequentially.
+
+<CudaStreamsDiagram />
 - **CUDA graphs**: capture a fixed sequence of kernel launches (and their dependencies) once, then replay the entire sequence as a single operation — eliminates the per-kernel-launch CPU overhead of repeatedly issuing the same sequence of small operations, which matters a great deal for workloads (like LLM decode, generating one token at a time) dominated by many small, repeated kernel launches rather than a few large ones. See [LLM Inference Optimization](/docs/mlops/llm-inference-optimization#other-core-optimizations) for CUDA graphs' role in fast inference serving specifically.
 
 ## Profiling GPU Workloads
@@ -54,6 +77,12 @@ Guessing where GPU time actually goes is unreliable in exactly the same way CPU 
 - **DeepSpeed**: Microsoft's training optimization library, built around **ZeRO** (Zero Redundancy Optimizer) — a family of stages (ZeRO-1/2/3) that progressively shard optimizer state, gradients, and parameters across GPUs, conceptually similar to FSDP and often mentioned alongside it.
 - **Expert parallelism**: specific to Mixture-of-Experts models (see [Foundation Model Internals — MoE](/docs/llms-genai/foundation-model-internals#mixture-of-experts-moe)) — different experts live on different GPUs, and each token's activations get routed to whichever GPU holds the expert its router selected, rather than every GPU holding a full copy of every expert.
 
+<ParallelismStrategiesDiagram />
+
+<PipelineBubbleDiagram />
+
+<FsdpZeroShardingDiagram />
+
 ## 3D and 4D Parallelism
 
 Training a frontier-scale model never uses just one parallelism strategy — it combines several simultaneously, each addressing a different bottleneck:
@@ -62,11 +91,15 @@ Training a frontier-scale model never uses just one parallelism strategy — it 
 - **4D parallelism**: adds a fourth dimension — most commonly sequence parallelism (splitting the sequence-length dimension of activations across GPUs, reducing the activation-memory cost that tensor parallelism alone doesn't address) or expert parallelism (above, for MoE models) layered on top of the 3D combination — the specific fourth dimension depends on which bottleneck (activation memory, or MoE routing) a given model/hardware combination is actually hitting.
 - **Why combine rather than pick one**: each strategy alone hits a different wall — pure data parallelism needs the whole model on one GPU, pure tensor parallelism doesn't scale well past a single fast-interconnect node, pure pipeline parallelism wastes GPU-time on bubble idle time as the number of stages grows. Combining them lets each dimension operate in the regime where it's actually efficient, rather than pushing any single strategy past the point where its own overhead dominates.
 
+<ThreeDParallelismCompositionDiagram />
+
 ## Elastic Training and Fault Tolerance
 
 Training runs spanning thousands of GPUs for weeks will experience hardware failures during the run — not as an edge case, but as a near-certainty at that scale, which changes what "handling failure" needs to mean:
 
 - **Checkpointing**: periodically save full training state (model weights, optimizer state, data-loader position) to persistent storage, so a failure loses at most the time since the last checkpoint, not the entire run — the single most important fault-tolerance mechanism, and the reason checkpoint frequency is a real tradeoff (more frequent checkpoints mean less lost work on failure, but more I/O overhead taking time away from actual training).
+
+<CheckpointingTradeoffDiagram />
 - **Fault tolerance**: detecting a failed worker (a crashed process, an unresponsive GPU, a network partition — see [CS Fundamentals — Distributed Systems](/docs/cs-fundamentals/networking-and-distributed-systems#why-distributed-training-and-serving-are-genuinely-hard)) and recovering without restarting the entire job from scratch — modern training frameworks increasingly automate this: detect the failure, restart just the affected worker(s) from the last checkpoint, and rejoin the running job.
 - **Elastic training**: goes a step further — dynamically changing the *number* of workers a training job uses while it's running, either scaling up (more GPUs became available) or down (some were reclaimed, or failed and haven't been replaced yet) without stopping the job. Requires the training framework to reshuffle data assignment and re-balance parallelism dimensions on the fly as the worker count changes, rather than assuming a fixed, static world size for the entire run — meaningfully more complex than static fault tolerance, but increasingly important on shared/spot-instance GPU clusters where available capacity genuinely fluctuates.
 
@@ -74,5 +107,7 @@ Training runs spanning thousands of GPUs for weeks will experience hardware fail
 
 - **Gradient accumulation**: simulate a larger batch size than fits in VRAM by accumulating gradients over several forward/backward passes before applying an optimizer step — trades wall-clock time for memory.
 - **Mixed precision training**: compute most operations in FP16/BF16 (faster, half the memory) while keeping a master copy of weights and certain sensitive operations in FP32 — the standard way to make full use of Tensor cores without sacrificing training stability.
+
+<MixedPrecisionDiagram />
 
 Next: [LLM Inference Engines](/docs/mlops/llm-inference-engines) — everything above trains a model; the next several pages cover the equally deep, equally hardware-bound problem of serving one efficiently.
