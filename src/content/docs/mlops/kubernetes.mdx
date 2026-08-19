@@ -3,6 +3,13 @@ title: "Kubernetes"
 sidebar_position: 10
 ---
 
+import K8sObjectHierarchyDiagram from '../../../viz/diagrams/K8sObjectHierarchyDiagram';
+import ReconciliationLoopDiagram from '../../../viz/diagrams/ReconciliationLoopDiagram';
+import WorkloadTypesDiagram from '../../../viz/diagrams/WorkloadTypesDiagram';
+import HpaAutoscalingDiagram from '../../../viz/diagrams/HpaAutoscalingDiagram';
+import ResourceRequestsLimitsDiagram from '../../../viz/diagrams/ResourceRequestsLimitsDiagram';
+import RbacNetworkPolicyDiagram from '../../../viz/diagrams/RbacNetworkPolicyDiagram';
+import GpuSchedulingDiagram from '../../../viz/diagrams/GpuSchedulingDiagram';
 
 # Kubernetes
 
@@ -19,19 +26,37 @@ Docker solves "run this container the same way everywhere." Kubernetes solves th
 - **Ingress**: routes external HTTP(S) traffic into Services inside the cluster, based on hostname/path rules — the cluster's front door.
 - **Job / CronJob**: run-to-completion workloads (a batch inference job, a nightly retraining job) rather than long-running services — the Kubernetes-native equivalent of a scheduled pipeline step.
 
+<K8sObjectHierarchyDiagram />
+
+<ReconciliationLoopDiagram />
+
 ## Advanced
 
 - **Helm**: a package manager for Kubernetes — templated YAML bundled into reusable "charts," so deploying a complex multi-resource application is one `helm install` instead of hand-writing dozens of YAML files.
 - **StatefulSets**: like a Deployment, but for Pods that need stable identities and storage (databases, anything that isn't safely interchangeable) — regular Deployments assume Pods are stateless and disposable.
 - **DaemonSets**: ensures exactly one copy of a Pod runs on every node — used for node-level agents (log collectors, monitoring agents, GPU device plugins).
+
+<WorkloadTypesDiagram />
+
 - **HPA (Horizontal Pod Autoscaler)**: automatically scales the number of Pod replicas based on observed metrics (CPU, memory, or custom metrics like queue depth/requests-per-second) — the mechanism behind "scale up under load, scale down when it's quiet."
+
+<HpaAutoscalingDiagram />
+
 - **Resource requests/limits**: declare how much CPU/memory a Pod needs (`requests`, used for scheduling) and the hard ceiling it can't exceed (`limits`) — get this wrong and either the scheduler wastes capacity or a Pod gets OOM-killed under real load.
+
+<ResourceRequestsLimitsDiagram />
+
 - **RBAC (Role-Based Access Control)**: who/what can do what inside the cluster — the Kubernetes-level analog to IAM.
 - **Network policies**: firewall rules for which Pods can talk to which other Pods — default Kubernetes networking is flat and open, network policies restrict it.
+
+<RbacNetworkPolicyDiagram />
+
 - **Operators**: custom controllers that encode operational knowledge for running a specific piece of software on Kubernetes (e.g. a Postgres Operator that knows how to fail over and back up itself) — the mechanism behind tools like KServe (see [APIs & Model Serving](/docs/mlops/model-serving)).
 
 ## Why This Matters for ML Specifically
 
 GPU scheduling adds a wrinkle regular web workloads don't have: GPUs are expensive, often can't be fractionally shared cleanly, and Pods need explicit `nvidia.com/gpu` resource requests plus the NVIDIA device plugin (a DaemonSet) running on every GPU node. Autoscaling a GPU-backed inference Deployment under HPA is also slower and costlier than autoscaling a CPU web service — GPU nodes are expensive to keep idle and slow to provision on demand, which is a major reason serverless-style GPU platforms (see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns)) exist as an alternative to running your own GPU-backed Kubernetes cluster.
+
+<GpuSchedulingDiagram />
 
 Next: [Infrastructure as Code](/docs/mlops/infrastructure-as-code) — everything above should be defined in version-controlled code, not clicked together by hand.

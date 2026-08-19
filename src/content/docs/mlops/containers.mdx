@@ -3,6 +3,12 @@ title: "Containers"
 sidebar_position: 7
 ---
 
+import ImageVsContainerDiagram from '../../../viz/diagrams/ImageVsContainerDiagram';
+import DockerfileLayerCachingDiagram from '../../../viz/diagrams/DockerfileLayerCachingDiagram';
+import VolumesAndNetworksDiagram from '../../../viz/diagrams/VolumesAndNetworksDiagram';
+import MultiStageBuildDiagram from '../../../viz/diagrams/MultiStageBuildDiagram';
+import ContainerSecurityChecklistDiagram from '../../../viz/diagrams/ContainerSecurityChecklistDiagram';
+import RegistryComparisonDiagram from '../../../viz/diagrams/RegistryComparisonDiagram';
 
 # Containers
 
@@ -12,16 +18,25 @@ sidebar_position: 7
 
 - **Image**: a read-only template — a filesystem snapshot plus metadata (entrypoint, exposed ports, env vars) — built once and run many times.
 - **Container**: a running instance of an image — an isolated process with its own filesystem view, network stack, and resource limits, sharing the host's kernel (unlike a full VM).
+
+<ImageVsContainerDiagram />
+
 - **Dockerfile**: the build recipe for an image — a sequence of instructions (`FROM`, `COPY`, `RUN`, `CMD`) executed top to bottom, each producing a cached layer.
 - **Compose**: `docker-compose.yml` defines and runs multi-container setups (e.g. an API container + a Postgres container + a Redis container) together, with one command.
 - **Volumes**: persistent storage that survives a container being removed and recreated — a container's own filesystem is ephemeral by default.
 - **Networks**: virtual networks connecting containers to each other and controlling what's exposed to the host.
 
+<VolumesAndNetworksDiagram />
+
 ## Multi-Stage Builds & Image Optimization
 
 A naive Dockerfile installs build tools (compilers, dev headers) into the final image and ships them to production, bloating the image and widening the attack surface. **Multi-stage builds** fix this: one stage compiles/builds using heavyweight tools, and a final, separate `FROM` stage copies only the compiled artifacts into a minimal base image (e.g. `python:3.12-slim` or a `distroless` image) — nothing else survives.
 
+<MultiStageBuildDiagram />
+
 Other standard optimizations: order Dockerfile instructions so rarely-changing layers (installing dependencies) come before frequently-changing ones (copying application code), so Docker's layer cache is actually useful; use `.dockerignore` to keep build context small; pin base image tags rather than `latest` for reproducibility.
+
+<DockerfileLayerCachingDiagram />
 
 ## Container Security
 
@@ -30,6 +45,8 @@ Other standard optimizations: order Dockerfile instructions so rarely-changing l
 - Keep base images minimal and current — most container CVEs come from an outdated base image, not application code.
 - Don't bake secrets (API keys, credentials) into image layers — even a deleted file in an earlier layer is still recoverable from the image history; use runtime secret injection instead.
 
+<ContainerSecurityChecklistDiagram />
+
 ## Registries
 
 Where built images are stored and pulled from in production:
@@ -37,6 +54,8 @@ Where built images are stored and pulled from in production:
 - **Docker Hub**: the original public registry — fine for public/open-source images, less common for private production images.
 - **Amazon ECR**: AWS's private registry, the default choice when the rest of the stack is on AWS (see [Cloud Computing for ML](/docs/mlops/cloud-computing)).
 - **GCP Artifact Registry** / **Azure Container Registry**: the equivalent managed registries on GCP and Azure.
+
+<RegistryComparisonDiagram />
 
 An ML-specific wrinkle worth knowing: images that bundle CUDA/cuDNN and a deep learning framework (PyTorch, TensorFlow) are often several GB — layer caching and multi-stage builds matter even more here than in typical web-app images.
 
