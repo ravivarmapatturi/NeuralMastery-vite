@@ -4,14 +4,87 @@ sidebar_position: 1
 ---
 
 
+import AgentCapabilityLadderDiagram from '../../../viz/diagrams/AgentCapabilityLadderDiagram';
+import PerceiveReasonActLoopDiagram from '../../../viz/diagrams/PerceiveReasonActLoopDiagram';
+import ToolMemoryPillarsDiagram from '../../../viz/diagrams/ToolMemoryPillarsDiagram';
+import ArchitectureSpectrumDiagram from '../../../viz/diagrams/ArchitectureSpectrumDiagram';
+import McpVsA2aScopeDiagram from '../../../viz/diagrams/McpVsA2aScopeDiagram';
+import CoordinationPatternsDiagram from '../../../viz/diagrams/CoordinationPatternsDiagram';
+import AgentFailureModesDiagram from '../../../viz/diagrams/AgentFailureModesDiagram';
+import WhenToUseAgentsDiagram from '../../../viz/diagrams/WhenToUseAgentsDiagram';
+import AutonomySpectrumDiagram from '../../../viz/diagrams/AutonomySpectrumDiagram';
+import AgentSectionMapDiagram from '../../../viz/diagrams/AgentSectionMapDiagram';
+
 # Agents Overview
 
-How LLMs go from answering questions to taking actions, using tools, and coordinating with each other.
+How LLMs go from answering questions to taking actions, using tools, and coordinating with each other. This section covers what actually makes something an "agent" rather than a chatbot, the concrete architectures for structuring an agent's reasoning loop, the emerging protocols that let agents talk to tools and to each other, and what changes once more than one agent is involved.
 
-- **[Agent Fundamentals](/docs/agents/agent-fundamentals)** — tool use, function calling, agent memory
-- **[Agent Architectures](/docs/agents/agent-architectures)** — ReAct, Plan-and-Execute, reflection
-- **[MCP (Model Context Protocol)](/docs/agents/mcp/overview)** — standardizing agent-to-tool connections
-- **[A2A (Agent-to-Agent)](/docs/agents/a2a/overview)** — standardizing agent-to-agent communication
-- **[Multi-Agent Systems](/docs/agents/multi-agent-systems)** — coordination patterns and common failure modes
+## From a Single Call to an Agent
 
-See the [roadmap](/docs/agents/roadmap) for the full ordered path through this section.
+"Agent" isn't a single capability — it's a ladder, and where a system sits on it determines what it can and can't do on its own:
+
+<AgentCapabilityLadderDiagram />
+
+A plain LLM call answers one prompt and stops. A chatbot holds a conversation but still can't act on the world. An agent adds a loop: the model can decide to call a tool, observe what comes back, and decide what to do next — see [Agent Fundamentals](/docs/agents/agent-fundamentals) for exactly how that loop and tool-calling work in detail.
+
+## The Loop at the Center of Everything
+
+Every agent, regardless of architecture, is running some version of the same cycle:
+
+<PerceiveReasonActLoopDiagram />
+
+**Perceive** — take in the current state (a user request, a tool result, an observation). **Reason** — decide what to do about it, given everything so far. **Act** — take an action (call a tool, respond, hand off to another agent) that changes the state and feeds the next perceive step. The architectures below are all different answers to "how exactly should this loop be structured?"
+
+## The Two Load-Bearing Pieces: Tools and Memory
+
+Everything an agent can *do* comes down to two capabilities, both covered in depth in [Agent Fundamentals](/docs/agents/agent-fundamentals):
+
+<ToolMemoryPillarsDiagram />
+
+Without well-designed tools, an agent has reasoning but no way to act. Without memory, an agent can act but can't accumulate context beyond a single conversation or a single context window's worth of history.
+
+## Architectures: Different Answers to "How Should the Loop Run?"
+
+<ArchitectureSpectrumDiagram />
+
+[Agent Architectures](/docs/agents/agent-architectures) covers ReAct (interleave reasoning and action, react to each result), Plan-and-Execute (commit to a full plan upfront, execute it, replan on failure), and reflection (critique and revise your own output) in detail — each trades reliability, cost, and latency differently, and the right choice depends on how predictable the task is upfront.
+
+## Standardizing Connections: MCP and A2A
+
+Once an agent needs to talk to tools *and* to other agents, ad hoc integration code doesn't scale — two emerging protocols standardize each side of that:
+
+<McpVsA2aScopeDiagram />
+
+[MCP](/docs/agents/mcp/overview) standardizes agent-to-*tool* connections (a database, a file system, an API) so tools and applications can be built independently. [A2A](/docs/agents/a2a/overview) standardizes agent-to-*agent* connections, which need to support longer-running, statesful, potentially cross-organization interactions that a simple function call doesn't fit.
+
+## When One Agent Isn't Enough
+
+<CoordinationPatternsDiagram />
+
+[Multi-Agent Systems](/docs/agents/multi-agent-systems) covers hierarchical (orchestrator delegates to sub-agents), peer-to-peer, and blackboard coordination patterns — each trading ease of debugging against flexibility, and each introducing its own conflict-resolution problem once more than one agent can act on shared state.
+
+## How Agentic Systems Actually Fail
+
+<AgentFailureModesDiagram />
+
+Most production agent failures cluster into a small set of recurring modes — tool misuse from ambiguous schemas, runaway loops that never converge, context windows silently overflowing with stale history, and multi-agent coordination producing contradictory results. Each is addressed at the layer it originates from (tool design, loop structure, memory management, coordination pattern) rather than by a single fix.
+
+## Is This Even an Agent Problem?
+
+Not every LLM-powered feature needs an agent — a lot of tasks are better served by a single call or a fixed pipeline:
+
+<WhenToUseAgentsDiagram />
+
+The moment a task's steps can't be fully predicted upfront — the right next action depends on what a previous step actually returned — is the moment a fixed pipeline stops working and an agentic loop earns its complexity.
+
+## How Much Autonomy Should an Agent Have?
+
+<AutonomySpectrumDiagram />
+
+More autonomy means less human-in-the-loop friction but higher blast radius when the agent is wrong — a coding agent that can read files is lower-risk than one that can also run `rm -rf` or push to production, independent of how capable its underlying model is. Scoping what an agent is *allowed* to do is as much a design decision as how it reasons.
+
+## How This Section Fits Together
+
+<AgentSectionMapDiagram />
+
+Start with [Agent Fundamentals](/docs/agents/agent-fundamentals) for the tool-calling and memory mechanics, move to [Agent Architectures](/docs/agents/agent-architectures) for how to structure the reasoning loop, then [MCP](/docs/agents/mcp/overview) and [A2A](/docs/agents/a2a/overview) for the protocols standardizing connections, and [Multi-Agent Systems](/docs/agents/multi-agent-systems) for what changes once more than one agent is coordinating. See the [roadmap](/docs/agents/roadmap) for the full ordered path through this section.
