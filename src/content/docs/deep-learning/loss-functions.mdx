@@ -3,7 +3,7 @@ title: "Loss Functions, In Full Depth"
 sidebar_position: 3.6
 ---
 
-import __migratedImg0 from './img/regression-losses.png';
+import RegressionLossesDiagram from '../../../viz/diagrams/RegressionLossesDiagram';
 
 
 # Loss Functions, In Full Depth
@@ -12,7 +12,7 @@ The loss function is what "training" actually optimizes — everything about a m
 
 ## Regression Losses
 
-<img src={__migratedImg0} alt="MSE, MAE, Huber, Log-Cosh, and Quantile loss compared as functions of the residual" style={{maxWidth: '100%'}} />
+<RegressionLossesDiagram />
 
 **Mean Squared Error (MSE)**: $\frac{1}{n}\sum(\hat{y}-y)^2$ — the default, derived and used throughout [Linear Regression](/docs/machine-learning/linear-regression#2-the-cost-function-mean-squared-error). Quadratic growth means large errors are penalized disproportionately — sensitive to outliers, for better (forces the model to address big misses) or worse (a few bad data points can dominate training).
 

@@ -3,7 +3,7 @@ title: "Weight Initialization, Regularization & LR Scheduling"
 sidebar_position: 3.8
 ---
 
-import __migratedImg0 from './img/lr-schedules.png';
+import LrSchedulesDiagram from '../../../viz/diagrams/LrSchedulesDiagram';
 
 
 # Weight Initialization, Regularization & LR Scheduling
@@ -37,7 +37,7 @@ Why initialization matters at all: start every weight at the same value (includi
 
 ## Learning Rate Scheduling
 
-<img src={__migratedImg0} alt="Five common learning rate schedules over the course of training" style={{maxWidth: '100%'}} />
+<LrSchedulesDiagram />
 
 [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization#learning-rate-schedules--warmup) introduced warmup and decay conceptually — here's the actual shape of each schedule in the chart above:
 
