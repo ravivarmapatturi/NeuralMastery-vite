@@ -20,6 +20,7 @@ import PositionalEncodingHeatmap from '../../../viz/diagrams/PositionalEncodingH
 import AddNormDiagram from '../../../viz/diagrams/AddNormDiagram';
 import FeedForwardDiagram from '../../../viz/diagrams/FeedForwardDiagram';
 import EncoderLayerDiagram from '../../../viz/diagrams/EncoderLayerDiagram';
+import TransformerModelFamiliesDiagram from '../../../viz/diagrams/TransformerModelFamiliesDiagram';
 
 # Attention & Transformers
 
@@ -244,6 +245,40 @@ Keeps both halves, connected by cross-attention (above) — an encoder builds a 
 - **Original Transformer (2017)** and **modern machine translation systems** remain the clearest encoder-decoder use case: translate French *into* English is genuinely "transform sequence A into a related but different sequence B," which is exactly what cross-attention was built for.
 
 Encoder-decoder models have become less common for general-purpose chat/instruction-following (decoder-only dominates there), but remain a strong choice for well-defined sequence-to-sequence tasks with a clear input/output split.
+
+## Major Transformer Model Families: How to Choose the Shape
+
+The original Transformer is a toolkit, not one fixed kind of model. The architectural choice is mostly about **which tokens may attend to which other tokens**, and therefore whether the system needs to *understand a complete input*, *generate an output one token at a time*, or *transform one sequence into another*. Select a family below to compare the actual computational path, its training objective, and representative models:
+
+<TransformerModelFamiliesDiagram />
+
+### BERT, RoBERTa, DeBERTa, and SBERT — encoder-only representations
+
+**BERT** is the canonical encoder-only Transformer: every input token can attend to tokens on both its left and right. During pretraining, some input tokens are hidden and BERT predicts them from that full surrounding context. This makes the final vector at each position a contextual representation rather than a prediction of the next word. For example, the vector for *bank* can encode whether the neighboring sentence means a financial institution or a riverbank.
+
+That bidirectional view is ideal for tasks whose answer is a property of an already-complete input: document classification, named-entity recognition, extractive question answering, reranking, and embeddings. It is a poor direct fit for free-form text generation, because allowing a position to inspect future tokens would leak the answer during next-token training.
+
+- **RoBERTa** keeps BERT's encoder shape but uses a stronger pretraining recipe: more data and training, dynamic masking, and no next-sentence-prediction objective.
+- **DeBERTa** separates content and position information more explicitly in attention, improving how the encoder models relative positions.
+- **SBERT** changes the fine-tuning objective so a single pooled sentence vector works well under cosine similarity. That is why SBERT-style descendants are natural building blocks for semantic search and RAG retrieval, while ordinary BERT's token representations are not automatically good sentence embeddings.
+
+### GPT, LLaMA, Mistral, and Claude-style models — decoder-only generation
+
+Decoder-only models replace BERT's bidirectional attention with a causal mask: token $t$ can read tokens $\leq t$, never future tokens. That constraint looks restrictive, but it makes one simple objective possible at scale—predict the next token—and it exactly matches how generation works at inference time. A prompt fills the visible prefix; the model emits one token, appends it, and repeats.
+
+**GPT**, **LLaMA**, **Mistral**, and Claude-style language models all use this overall shape, with important refinements around it: RoPE/other positional methods, RMSNorm, SwiGLU MLPs, grouped-query attention, mixture-of-experts routing, and instruction/alignment training. Those refinements change efficiency and behavior, but they do not change the core autoregressive contract. Choose this family when the output is open-ended language, code, structured text, or a tool call that must be generated sequentially.
+
+### T5, BART, and encoder–decoder systems — transform a source into a target
+
+Encoder–decoder models retain both halves of the original Transformer. The encoder reads the full source input bidirectionally; the decoder produces the target causally, using **cross-attention** to retrieve the relevant source representation at every generation step. This separates *understanding the input* from *writing the output*.
+
+That structure is especially natural for translation, summarization, transcription, and other source-to-target transformations. **T5** expresses every task as text-to-text and is pretrained with corrupted spans reconstructed by the decoder. **BART** is a denoising autoencoder that corrupts an input sequence and learns to restore it. Decoder-only models can perform these tasks too by placing source and target in one prompt, but encoder–decoders make the distinction explicit and can be more efficient when the source is long and fixed across generation.
+
+### Vision Transformers and multimodal models — Transformers are not text-only
+
+A **Vision Transformer (ViT)** turns an image into a sequence of fixed-size patches, linearly embeds those patches, adds position information, and sends them through an encoder stack. The attention operation is unchanged: patches play the role that tokens played in language. ViT variants such as **DeiT**, **Swin**, and self-supervised **DINO** models adapt the training recipe or attention pattern to images, but all rely on learned relationships between visual elements rather than CNN locality alone.
+
+Multimodal models then combine a vision encoder with a language model. A connector/projector maps visual features into the language model's embedding space; the decoder can condition text generation on those visual tokens. Contrastive systems such as **CLIP** learn aligned image and text embedding spaces for retrieval, while generative systems such as **LLaVA** and Flamingo-style architectures add image-conditioned language generation. The architectural question stays the same: what information should be encoded, which elements may attend, and what output should be predicted?
 
 ## Common Problems & SOTA Solutions
 
