@@ -31,7 +31,10 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done (≥10 compo
 
 ## New: mlops/message-queues-and-async-processing.mdx (assigned by lead, 2026-08-20)
 - [x] Done. 6 components: SyncVsAsyncDiagram, ProducerQueueConsumerDiagram (live producer/consumer-rate simulation, genuinely accumulates/drains), PubSubVsPointToPointDiagram, DeliverySemanticsDiagram (at-most/at-least/exactly-once stepper), PartitionOrderingDiagram, QueueToolComparisonDiagram (Kafka/Celery/Redis/SQS). Cross-linked from pipeline-orchestration.mdx (updated its "Next:" to route through this page) and model-serving.mdx's streaming-inference section. Verified via headless browser (all 6 diagrams interact correctly) + full smoke suite (10/10).
-- Next queued (lead, 2026-08-20): databases/vector/overview.mdx and databases/graph/overview.mdx expansion -- both thin stubs, cross-linked from llms-genai/rag.mdx for RAG context, focus on DB mechanics (ANN/HNSW, Cypher, Neo4j) not duplicating retrieval-pipeline content.
+## databases/vector/overview.mdx + databases/graph/overview.mdx (assigned by lead, 2026-08-20)
+- [x] Done, commit 60cde0f, pushed + deployed. vector/overview.mdx: 4 components (EmbeddingSimilaritySearchDiagram, HnswSearchDiagram -- real greedy multi-layer graph search -- AnnVsExactTradeoffDiagram, VectorDbToolComparisonDiagram). graph/overview.mdx: 4 components (PropertyGraphDiagram, RelationalVsGraphTraversalDiagram, CypherPatternMatchDiagram, DatabaseChoiceDecisionDiagram), plus an explicit note distinguishing it from graph-ml/graph-ml-fundamentals.mdx per the lead's ask. Verified headless (both pages, all 8 diagrams) + tsc -b + build, all clean at verification time.
+
+Note on pace: mlops/ is now platform-vite-ad's (reassigned 2026-08-20, see top-of-file ownership note) -- this session's remaining original scope is speech-audio/ (overview.mdx, roadmap.mdx, speech-audio-tasks.mdx) and computer-vision/ (roadmap.mdx, vision-fundamentals.mdx, vision-tasks-and-models.mdx, modern-vision-and-multimodal.mdx), plus whatever the lead assigns next.
 
 ## mlops/ (26 content pages)
 - [ ] overview.mdx
