@@ -37,4 +37,4 @@ These guarantees matter whenever correctness under concurrent access is non-nego
 
 Relational databases excel at structured data with well-defined relationships and a need for strong consistency — user accounts, transactional records, ML experiment/model metadata. They're a poor fit for storing and searching high-dimensional embeddings efficiently at scale (see [Vector Databases](/docs/databases/vector/overview)) or for deeply connected, multi-hop relationship queries (see [Graph Databases](/docs/databases/graph/overview)) — which is exactly why modern AI systems typically use relational databases *alongside* vector and graph stores, not instead of them.
 
-Next: [Vector Databases](/docs/databases/vector/overview) — the storage layer built specifically for embeddings.
+Next: [PostgreSQL](/docs/databases/relational/postgresql) — a deep dive into the system you'll actually run: schemas and types, writing queries end to end, indexing, transactions, and Postgres-specific features like JSONB and pgvector.

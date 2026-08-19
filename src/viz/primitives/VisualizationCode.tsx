@@ -7,7 +7,7 @@ import { useVizTokens, RADIUS, SPACING } from '../../theme/vizTokens';
 // requested (blew several chunks past 500kB-800kB in testing, including
 // languages this site will never use). Only what's needed, code-split from
 // the main bundle via the dynamic import below, loaded once on first use.
-const LANGS = ['python', 'javascript', 'typescript', 'jsx', 'tsx', 'bash', 'json', 'yaml'] as const;
+const LANGS = ['python', 'javascript', 'typescript', 'jsx', 'tsx', 'bash', 'json', 'yaml', 'sql'] as const;
 type Lang = (typeof LANGS)[number];
 
 async function createSiteHighlighter() {
@@ -15,7 +15,7 @@ async function createSiteHighlighter() {
     import('shiki/core'),
     import('shiki/engine/javascript'),
   ]);
-  const [python, javascript, typescript, jsx, tsx, bash, json, yaml, githubDark, githubLight] = await Promise.all([
+  const [python, javascript, typescript, jsx, tsx, bash, json, yaml, sql, githubDark, githubLight] = await Promise.all([
     import('shiki/langs/python.mjs'),
     import('shiki/langs/javascript.mjs'),
     import('shiki/langs/typescript.mjs'),
@@ -24,11 +24,12 @@ async function createSiteHighlighter() {
     import('shiki/langs/bash.mjs'),
     import('shiki/langs/json.mjs'),
     import('shiki/langs/yaml.mjs'),
+    import('shiki/langs/sql.mjs'),
     import('shiki/themes/github-dark.mjs'),
     import('shiki/themes/github-light.mjs'),
   ]);
   return createHighlighterCore({
-    langs: [python.default, javascript.default, typescript.default, jsx.default, tsx.default, bash.default, json.default, yaml.default],
+    langs: [python.default, javascript.default, typescript.default, jsx.default, tsx.default, bash.default, json.default, yaml.default, sql.default],
     themes: [githubDark.default, githubLight.default],
     engine: createJavaScriptRegexEngine(),
   });

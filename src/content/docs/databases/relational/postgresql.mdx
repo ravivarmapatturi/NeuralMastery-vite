@@ -1,0 +1,262 @@
+---
+title: "PostgreSQL"
+sidebar_position: 2
+---
+
+
+import SqlExecutionOrderDiagram from '../../../../viz/diagrams/SqlExecutionOrderDiagram';
+import JoinTypesDiagram from '../../../../viz/diagrams/JoinTypesDiagram';
+
+# PostgreSQL
+
+[Relational Databases](/docs/databases/relational/overview) covered the relational model in general. This page goes one level deeper on the specific system you'll actually run: **PostgreSQL** ("Postgres") — a free, open-source relational database that's become the default choice for new projects, ML metadata stores, and application backends alike, thanks to strict standards compliance, genuine extensibility (custom types, custom functions, and extensions like `pgvector`), and a feature set that keeps absorbing what used to require a separate specialized database (JSON documents, full-text search, even vector similarity search).
+
+## Tables, Schemas, and Data Types
+
+A Postgres server hosts one or more **databases**; each database is organized into **schemas** (`public` by default) — namespaces that let you group related tables and avoid name collisions, e.g. `analytics.events` vs. `app.events` in the same database. Inside a schema, a **table** is defined with a fixed set of typed columns:
+
+```sql
+CREATE TABLE users (
+    id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email       TEXT NOT NULL UNIQUE,
+    signup_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    plan        TEXT NOT NULL DEFAULT 'free',
+    metadata    JSONB NOT NULL DEFAULT '{}'
+);
+```
+
+The types that matter most in practice:
+
+- **Integers**: `SMALLINT` (2 bytes), `INTEGER` (4 bytes), `BIGINT` (8 bytes). `GENERATED ALWAYS AS IDENTITY` (the modern replacement for the older `SERIAL`) gives you an auto-incrementing primary key without hand-managing a sequence.
+- **Text**: `TEXT` (unlimited length) is almost always the right choice over `VARCHAR(n)` — Postgres stores both identically internally, and `VARCHAR(n)`'s length limit buys you nothing a `CHECK` constraint couldn't do more explicitly.
+- **Numeric**: `NUMERIC(precision, scale)` for exact decimal values (money, anything where floating-point rounding is unacceptable) vs. `DOUBLE PRECISION` for approximate floating point (scientific/ML data where speed matters more than exactness).
+- **Timestamps**: `TIMESTAMPTZ` (timestamp *with* time zone) should be your default for anything time-related — it stores an absolute instant (internally normalized to UTC) rather than a wall-clock reading with no fixed meaning, which is what plain `TIMESTAMP` gives you and is rarely what you actually want.
+- **Boolean**: `BOOLEAN` — a real type, not an integer standing in for one.
+- **JSONB**: binary-parsed JSON that supports indexing and efficient querying (see [JSONB, Arrays, and Full-Text Search](#jsonb-arrays-and-full-text-search) below) — almost always preferred over plain `JSON`, which just stores the text verbatim and re-parses it on every read.
+- **UUID**: `UUID` — common for primary keys in distributed systems where you can't rely on a single auto-incrementing sequence across multiple writers.
+
+## Writing Queries: SELECT Fundamentals
+
+The core read query, built up clause by clause:
+
+```sql
+SELECT id, email, plan
+FROM users
+WHERE plan != 'free'
+ORDER BY signup_at DESC
+LIMIT 10;
+```
+
+- **`SELECT`** names the columns (or expressions) to return — `SELECT *` returns every column, convenient while exploring but a habit worth dropping in real application code (it breaks silently if the table gains a column, and it pulls data you don't need over the wire).
+- **`WHERE`** filters rows by a boolean condition — `=`, `!=`, `<`, `>`, `AND`/`OR`, `IN (...)`, `LIKE`/`ILIKE` (pattern match, `ILIKE` case-insensitive), `IS NULL`/`IS NOT NULL` (never `= NULL`, which is always unknown — see [NULL and Three-Valued Logic](#null-and-three-valued-logic) below).
+- **`ORDER BY`** sorts the result; `DESC` for descending, `ASC` (the default) for ascending. `NULLS LAST` / `NULLS FIRST` control where `NULL`s land, since by default Postgres sorts them as *larger than any value*.
+- **`LIMIT`** / **`OFFSET`** cap the number of rows returned — the basis of pagination, though `OFFSET` gets slow on large tables since Postgres still has to scan and discard every skipped row; **keyset pagination** (`WHERE id > $last_seen_id ORDER BY id LIMIT 20`) avoids that by using an indexed condition instead.
+
+### NULL and Three-Valued Logic
+
+`NULL` means "unknown," not "empty" or "zero," and it propagates through comparisons in a way that trips up almost everyone at least once: `NULL = NULL` evaluates to `NULL` (unknown), not `TRUE` — you're asking "is one unknown value equal to another unknown value," which is itself unknown. `WHERE` only keeps rows where the condition evaluates to exactly `TRUE`, so a row with `NULL` in a compared column is silently dropped, not matched. Use `IS NULL` / `IS NOT NULL` to actually test for it, and `COALESCE(column, default)` to substitute a fallback value when it's `NULL`.
+
+## The Order Postgres Actually Executes a Query
+
+This is the single most useful mental model for debugging a query that "should" work and doesn't: **the order you write a query's clauses in is not the order Postgres evaluates them in.** `SELECT` is written first but runs nearly last — which is exactly why a `WHERE` clause can't reference a column alias defined in `SELECT` (that alias doesn't exist yet when `WHERE` runs), while `ORDER BY` can (it runs after `SELECT` has already computed it):
+
+<SqlExecutionOrderDiagram />
+
+The same gap is why aggregate conditions belong in `HAVING`, not `WHERE`: `WHERE` filters individual rows *before* grouping even happens, so `COUNT(*)` or `SUM(...)` simply doesn't exist yet at that point in execution — `HAVING` runs after `GROUP BY`, specifically so it can filter on the aggregated result.
+
+## Joins
+
+A **join** combines rows from two tables based on a matching condition — the mechanism [Relational Databases](/docs/databases/relational/overview#the-relational-model) referenced as the tradeoff for normalizing data instead of duplicating it. Which join type you pick determines what happens to rows on either side that *don't* have a match:
+
+<JoinTypesDiagram />
+
+```sql
+SELECT c.name, o.item
+FROM customers c
+INNER JOIN orders o ON o.customer_id = c.id;
+```
+
+- **`INNER JOIN`** (often just `JOIN`): keep only rows with a match on both sides — the default, and the right choice whenever an unmatched row on either side is meaningless for the question you're asking.
+- **`LEFT JOIN`**: keep every row from the left table regardless of a match, filling unmatched right-side columns with `NULL` — the standard tool for "give me every X, along with any related Y it might have" (e.g. every customer, including ones with zero orders).
+- **`RIGHT JOIN`**: the mirror image of `LEFT JOIN`; rare in practice, since you can always rewrite it as a `LEFT JOIN` by swapping which table you list first.
+- **`FULL JOIN`**: keep every row from both sides, `NULL`-padding whichever side has no match — used far less often, mostly for reconciliation-style queries ("what's in A but not B, and vice versa, in one pass").
+
+## Aggregation: GROUP BY and HAVING
+
+```sql
+SELECT plan, COUNT(*) AS user_count, AVG(EXTRACT(EPOCH FROM now() - signup_at) / 86400) AS avg_days_active
+FROM users
+GROUP BY plan
+HAVING COUNT(*) > 5
+ORDER BY user_count DESC;
+```
+
+`GROUP BY` collapses rows sharing the same value(s) into one row per group, and every column in `SELECT` that isn't inside an aggregate function (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`) must appear in `GROUP BY` — Postgres enforces this at parse time precisely because a non-aggregated, non-grouped column has no single well-defined value once rows have been collapsed. `HAVING` then filters the *groups* themselves, using the aggregates `WHERE` couldn't see (above).
+
+## Subqueries and CTEs
+
+A **subquery** is a query nested inside another; a **CTE** (`WITH ... AS (...)`, Common Table Expression) names a subquery upfront so the main query can reference it like a temporary table — usually the more readable choice once a query gets more than one nesting level deep:
+
+```sql
+WITH active_users AS (
+    SELECT id, email
+    FROM users
+    WHERE signup_at > now() - INTERVAL '30 days'
+)
+SELECT plan, COUNT(*)
+FROM users
+JOIN active_users USING (id)
+GROUP BY plan;
+```
+
+**Recursive CTEs** (`WITH RECURSIVE`) solve a genuinely different class of problem — walking a hierarchy of unknown depth (an org chart, a category tree, a bill-of-materials) that a fixed number of joins can't express, since you don't know ahead of time how many levels deep to join:
+
+```sql
+WITH RECURSIVE org_chart AS (
+    SELECT id, name, manager_id, 1 AS depth
+    FROM employees
+    WHERE manager_id IS NULL          -- anchor: the top of the tree
+
+    UNION ALL
+
+    SELECT e.id, e.name, e.manager_id, oc.depth + 1
+    FROM employees e
+    JOIN org_chart oc ON e.manager_id = oc.id   -- recursive step
+)
+SELECT * FROM org_chart ORDER BY depth;
+```
+
+The anchor query runs once; the recursive term then repeatedly re-runs against the *previous* iteration's output until it produces zero new rows.
+
+## Window Functions
+
+A **window function** computes a value across a set of related rows *without* collapsing them into one output row the way `GROUP BY` does — each input row keeps its own row in the output, with a computed column added alongside it. This is exactly the tool for "this user's running total" or "this row's rank within its group":
+
+```sql
+SELECT
+    email,
+    plan,
+    signup_at,
+    ROW_NUMBER() OVER (PARTITION BY plan ORDER BY signup_at) AS signup_rank_in_plan,
+    LAG(signup_at) OVER (PARTITION BY plan ORDER BY signup_at) AS previous_signup_in_plan
+FROM users;
+```
+
+`PARTITION BY` divides rows into groups (like `GROUP BY`, but without collapsing them); `ORDER BY` inside the `OVER (...)` clause determines the order the window function walks rows in *within* each partition. `ROW_NUMBER()`, `RANK()`, and `DENSE_RANK()` number rows within a partition (differing only in how they handle ties); `LAG()`/`LEAD()` read a value from the previous/next row; `SUM(...) OVER (...)` with an `ORDER BY` produces a running total instead of one final sum. This is precisely the tool [Relational Databases — SQL Fundamentals](/docs/databases/relational/overview#sql-fundamentals) points to for feature engineering over time-ordered event data — "this user's average order value over their last 5 orders" is a window function, not a `GROUP BY`.
+
+## Modifying Data: INSERT, UPDATE, DELETE, UPSERT
+
+```sql
+INSERT INTO users (email, plan) VALUES ('ada@example.com', 'pro');
+
+UPDATE users SET plan = 'free' WHERE id = 42;
+
+DELETE FROM users WHERE signup_at < now() - INTERVAL '2 years' AND plan = 'free';
+
+-- Upsert: insert, or update in place if the row already exists
+INSERT INTO users (email, plan)
+VALUES ('ada@example.com', 'pro')
+ON CONFLICT (email) DO UPDATE SET plan = EXCLUDED.plan;
+```
+
+`ON CONFLICT ... DO UPDATE` (the **upsert**) needs a unique constraint or index on the conflicting column(s) to know what counts as a conflict in the first place — here, the `UNIQUE` constraint on `email` from the table definition above. `EXCLUDED` refers to the row that *would* have been inserted, letting the update clause reuse its values. Both `UPDATE` and `DELETE` without a `WHERE` clause act on *every row in the table* — a common, expensive mistake, and worth a habit of writing the `WHERE` clause (or a matching `SELECT` to check what it targets) before running either.
+
+## Constraints
+
+Constraints are how the database itself enforces correctness, instead of trusting every application code path to get it right every time:
+
+- **`PRIMARY KEY`**: uniquely identifies each row; implicitly `NOT NULL` and `UNIQUE`, and automatically indexed.
+- **`FOREIGN KEY`**: requires a column's value to match an existing row in another table (e.g. `orders.customer_id REFERENCES customers(id)`) — this is what actually enforces the relationships that make the relational model relational, not just documentation of intent.
+- **`UNIQUE`**: no two rows may share the same value in that column (or column combination).
+- **`NOT NULL`**: rejects a missing value outright, rather than silently accepting one and pushing the problem downstream.
+- **`CHECK`**: an arbitrary boolean condition every row must satisfy, e.g. `CHECK (price >= 0)`.
+
+## Indexes and the Query Planner
+
+[Relational Databases — Indexing and Query Planning](/docs/databases/relational/overview#indexing-and-query-planning) already covers the general tradeoff (faster reads, slower writes, extra storage); Postgres's default index type is a **B-tree** (see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures)) — a balanced tree structure that turns "find the row(s) matching this condition" from an $O(n)$ full-table scan into roughly $O(\log n)$:
+
+```sql
+CREATE INDEX idx_users_signup_at ON users (signup_at);
+```
+
+**`EXPLAIN ANALYZE`** is how you stop guessing and actually see what the query planner did — it runs the query for real and reports the actual execution plan and timing:
+
+```sql
+EXPLAIN ANALYZE
+SELECT * FROM users WHERE signup_at > now() - INTERVAL '7 days';
+```
+
+Read the output bottom-up: the innermost step runs first. A `Seq Scan` means Postgres read every row in the table — fine for a small table or a query that matches most of it, but a red flag on a large table for a selective condition, and usually a sign the column needs an index (or the existing index isn't being used, e.g. because the query wraps the column in a function). An `Index Scan` (or `Index Only Scan`, which never touches the underlying table at all because every needed column is already in the index) means the planner found and used one. The planner isn't obligated to use every index that exists — for a query matching a large fraction of the table, a sequential scan is often genuinely faster than randomly jumping around an index, and Postgres's cost-based planner is specifically designed to make that call correctly more often than a fixed rule would.
+
+## Transactions, ACID, and Isolation Levels
+
+[Relational Databases — Transactions and ACID](/docs/databases/relational/overview#transactions-and-acid) covers the four guarantees in general; Postgres's mechanism for delivering **Isolation** without simply locking every reader out during every write is **MVCC** (Multi-Version Concurrency Control) — instead of overwriting a row in place, an `UPDATE` writes a *new version* of it and leaves the old version intact until nothing could still need it, so readers never block writers and writers never block readers.
+
+```sql
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;
+```
+
+Everything between `BEGIN` and `COMMIT` either takes effect together or, on `ROLLBACK` (or a crash), not at all — critical here, since a crash between the two `UPDATE`s would otherwise make $100 disappear rather than move. Postgres defaults to the **Read Committed** isolation level: a query only sees rows committed before *that specific query* started, so two queries in the same transaction can see different snapshots of the data if another transaction commits in between. **Repeatable Read** fixes the whole transaction to one snapshot taken at its first query; **Serializable** (the strictest, and the one with the most overhead) guarantees the outcome is equivalent to running every concurrent transaction one at a time in some order, which is what to reach for when concurrent transactions might otherwise produce a result that couldn't happen if they'd run sequentially (a classic case: two transactions each check "is there already a row like this?" and both insert, because neither saw the other's not-yet-committed insert).
+
+## JSONB, Arrays, and Full-Text Search
+
+Postgres absorbs several jobs that used to mean reaching for a separate specialized database:
+
+```sql
+-- JSONB: query and index semi-structured data alongside relational columns
+SELECT * FROM users WHERE metadata @> '{"referral_source": "twitter"}';
+CREATE INDEX idx_users_metadata ON users USING GIN (metadata);
+
+-- Arrays: a native column type, no join table required for simple cases
+SELECT * FROM posts WHERE 'postgres' = ANY(tags);
+
+-- Full-text search: rank documents by relevance to a query
+SELECT title, ts_rank(search_vector, query) AS rank
+FROM articles, to_tsquery('english', 'postgres & performance') AS query
+WHERE search_vector @@ query
+ORDER BY rank DESC;
+```
+
+`JSONB` earns its "almost always over `JSON`" recommendation here specifically: the `@>` containment operator and the `GIN` index above only work efficiently because `JSONB` is stored pre-parsed in a binary, indexable format — plain `JSON` would need to re-parse and re-scan the raw text on every single query. Full-text search (`tsvector`/`tsquery`) handles ranked keyword search well enough for a lot of real applications without needing a dedicated search engine like Elasticsearch — until relevance ranking or scale genuinely outgrows it.
+
+## pgvector and the AI Stack
+
+`pgvector` is a Postgres extension that adds a native `vector` column type and nearest-neighbor search (see [Vector Databases](/docs/databases/vector/overview) for the concepts — distance metrics, ANN indexes like HNSW) directly inside Postgres:
+
+```sql
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE document_chunks (
+    id        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    content   TEXT NOT NULL,
+    embedding VECTOR(1536)
+);
+
+CREATE INDEX ON document_chunks USING hnsw (embedding vector_cosine_ops);
+
+SELECT content
+FROM document_chunks
+ORDER BY embedding <=> '[0.01, -0.02, ...]'::vector
+LIMIT 5;
+```
+
+The `<=>` operator computes cosine distance directly in SQL. The practical case for `pgvector` over a dedicated vector database is keeping embeddings in the *same* transactional store as the structured data they belong to — a RAG pipeline's document metadata, permissions, and vectors can live in one table, queried with one `JOIN`, instead of keeping two systems in sync. At very large scale or very high query-per-second requirements, a dedicated vector database's purpose-built ANN indexing still wins — the tradeoff [Vector Databases](/docs/databases/vector/overview#chromadb-and-beyond) already frames from the other side.
+
+## Connecting From Application Code
+
+Never build a SQL string by concatenating in user input — that's a direct **SQL injection** vulnerability (see [OWASP LLM Top 10](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks) for the analogous, newer prompt-injection problem this predates by decades). Always use **parameterized queries**, where the driver sends the query text and its values separately and the database — not string interpolation — is what combines them safely:
+
+```python
+# psycopg (the standard Python Postgres driver) -- parameterized, safe
+cur.execute("SELECT * FROM users WHERE email = %s", (user_supplied_email,))
+
+# Never do this: the value is spliced directly into the query text
+cur.execute(f"SELECT * FROM users WHERE email = '{user_supplied_email}'")
+```
+
+Opening a fresh database connection is expensive relative to running a query, so production systems put a **connection pool** (`pgbouncer`, or a pool built into the application driver/ORM) in front of Postgres — a fixed set of already-open connections reused across requests, rather than opening and closing one per request.
+
+Next: [Vector Databases](/docs/databases/vector/overview) — the storage layer built specifically for embeddings, and where `pgvector` fits alongside dedicated systems like ChromaDB.
