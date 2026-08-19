@@ -80,4 +80,24 @@ This is what makes knowledge graph embeddings useful for link prediction directl
 
 Worth connecting explicitly to this page's vocabulary: GraphRAG's traversal step is a link-prediction-and-retrieval problem over a knowledge graph (both above), and the entity/relation extraction that builds the graph from raw text in the first place directly reuses [NER](/docs/nlp/classical-nlp#named-entity-recognition-ner) and relation-extraction techniques from classical NLP.
 
+## Code: GIN Aggregation and a node2vec Walk, For Real
+
+The diagrams above use small hand-built graphs so every step is visible; here's the same two ideas with real libraries:
+
+```python
+import torch
+from torch_geometric.nn import GINConv
+from torch.nn import Sequential, Linear, ReLU
+
+# GIN: sum aggregation + MLP, exactly the update rule shown above.
+mlp = Sequential(Linear(in_dim, hidden_dim), ReLU(), Linear(hidden_dim, hidden_dim))
+conv = GINConv(mlp, eps=0.0, train_eps=True)  # (1+eps)*h_v + sum of neighbors, then mlp()
+h = conv(x, edge_index)
+
+# node2vec: biased random walks + skip-gram, exactly the p/q mechanism above.
+from torch_geometric.nn import Node2Vec
+model = Node2Vec(edge_index, embedding_dim=64, walk_length=20,
+                  context_size=10, walks_per_node=10, p=1, q=0.5)  # q<1 -> exploratory
+```
+
 Graph ML section complete. Next: [AI for Science](/docs/ai-for-science/roadmap) — where graph representations (molecules, protein structures) become one of several scientific-domain applications of ML.
