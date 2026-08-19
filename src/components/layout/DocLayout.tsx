@@ -17,8 +17,8 @@ function readCollapsed(key: string): boolean {
 }
 
 const panelToggleStyle: CSSProperties = {
-  position: 'absolute',
-  top: '50%',
+  position: 'sticky',
+  top: '50vh',
   transform: 'translateY(-50%)',
   width: 22,
   height: 44,
@@ -74,16 +74,18 @@ export default function DocLayout() {
       <div className="nm-doc-row" style={{ display: 'flex', maxWidth: 1800, margin: '0 auto' }}>
         <div className="nm-sidebar-wrap" style={{ position: 'relative', flexShrink: 0 }}>
           {!sidebarCollapsed && <Sidebar />}
-          <button
-            type="button"
-            className="nm-panel-toggle"
-            onClick={() => setSidebarCollapsed((v) => !v)}
-            aria-label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
-            title={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
-            style={{ ...panelToggleStyle, right: -22, borderTopRightRadius: 6, borderBottomRightRadius: 6, borderLeft: 'none' }}
-          >
-            {sidebarCollapsed ? '›' : '‹'}
-          </button>
+          <div style={{ position: 'absolute', top: 0, bottom: 0, right: -22, width: 22 }}>
+            <button
+              type="button"
+              className="nm-panel-toggle"
+              onClick={() => setSidebarCollapsed((v) => !v)}
+              aria-label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
+              title={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
+              style={{ ...panelToggleStyle, borderTopRightRadius: 6, borderBottomRightRadius: 6, borderLeft: 'none' }}
+            >
+              {sidebarCollapsed ? '›' : '‹'}
+            </button>
+          </div>
         </div>
         <main className="nm-doc-main" style={{ flex: 1, padding: '2rem 3rem', minWidth: 0 }} ref={contentRef}>
           <article className="prose">
@@ -92,16 +94,18 @@ export default function DocLayout() {
           <PrevNext route={page.route} />
         </main>
         <div className="nm-toc-wrap" style={{ position: 'relative', flexShrink: 0 }}>
-          <button
-            type="button"
-            className="nm-panel-toggle"
-            onClick={() => setTocCollapsed((v) => !v)}
-            aria-label={tocCollapsed ? 'Show table of contents' : 'Hide table of contents'}
-            title={tocCollapsed ? 'Show table of contents' : 'Hide table of contents'}
-            style={{ ...panelToggleStyle, left: -22, borderTopLeftRadius: 6, borderBottomLeftRadius: 6, borderRight: 'none' }}
-          >
-            {tocCollapsed ? '‹' : '›'}
-          </button>
+          <div style={{ position: 'absolute', top: 0, bottom: 0, left: -22, width: 22 }}>
+            <button
+              type="button"
+              className="nm-panel-toggle"
+              onClick={() => setTocCollapsed((v) => !v)}
+              aria-label={tocCollapsed ? 'Show table of contents' : 'Hide table of contents'}
+              title={tocCollapsed ? 'Show table of contents' : 'Hide table of contents'}
+              style={{ ...panelToggleStyle, borderTopLeftRadius: 6, borderBottomLeftRadius: 6, borderRight: 'none' }}
+            >
+              {tocCollapsed ? '‹' : '›'}
+            </button>
+          </div>
           {!tocCollapsed && <TableOfContents contentRef={contentRef} />}
         </div>
       </div>
