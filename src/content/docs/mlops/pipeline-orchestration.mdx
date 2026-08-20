@@ -61,9 +61,62 @@ Airflow's model — DAGs as Python code, a scheduler, pluggable executors — is
 
 <AirflowConceptMapDiagram />
 
+A real DAG covering the training slice of the lifecycle above (validation → preprocessing → training → evaluation), using Airflow's modern TaskFlow API:
+
+```python
+from airflow.decorators import dag, task
+from datetime import datetime
+
+@dag(schedule="@nightly", start_date=datetime(2026, 1, 1), catchup=False)
+def retrain_fraud_model():
+    @task(retries=3, retry_delay=300)
+    def validate_data():
+        return check_schema_and_ranges("s3://data/fraud/latest")
+
+    @task
+    def preprocess(validated_path: str):
+        return build_features(validated_path)
+
+    @task
+    def train(feature_path: str):
+        return run_training(feature_path)  # logs to MLflow, see Experiment Tracking
+
+    @task
+    def evaluate(run_id: str):
+        if not beats_production_benchmark(run_id):
+            raise ValueError("candidate did not beat production -- stopping before registry/deploy")
+
+    evaluate(train(preprocess(validate_data())))
+
+retrain_fraud_model()
+```
+
+```bash
+airflow dags trigger retrain_fraud_model              # run it now, outside the schedule
+airflow tasks test retrain_fraud_model validate_data 2026-01-15   # run one task in isolation, for debugging
+airflow dags backfill retrain_fraud_model -s 2026-01-01 -e 2026-01-07   # rerun a past date range
+```
+
 ## Alternatives
 
 - **Prefect**: a newer orchestrator with a lower-friction Python-native API (decorate a normal function with `@flow`/`@task` rather than building an explicit DAG object), stronger dynamic/conditional workflow support, and a more modern UI.
+
+```python
+from prefect import flow, task
+
+@task(retries=3)
+def validate_data():
+    return check_schema_and_ranges("s3://data/fraud/latest")
+
+@task
+def train(feature_path: str):
+    return run_training(feature_path)
+
+@flow
+def retrain_fraud_model():
+    validated = validate_data()
+    train(validated)   # same dependency graph, no explicit DAG object -- inferred from the call order
+```
 - **Dagster**: orchestration built around **software-defined assets** rather than tasks — you declare the data assets a pipeline produces and their dependencies, and Dagster infers the DAG, with strong built-in data quality and lineage tracking.
 
 Airflow remains the safest default to learn first because of its ubiquity; Prefect and Dagster are the ones to reach for on a new project where Airflow's more verbose, less Pythonic API is a real cost.
