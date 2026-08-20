@@ -4,27 +4,15 @@ sidebar_position: 1
 ---
 
 
+import SystemStackFailureDiagram from '../../../viz/diagrams/SystemStackFailureDiagram';
+
 # CS Fundamentals for AI Engineers — Overview
 
-Someone who understands Transformers deeply but doesn't understand what actually happens between "I called `model.generate()`" and "a token appeared" isn't yet an AI systems engineer — they're someone who understands one layer of a much taller stack:
+Someone who understands Transformers deeply but doesn't understand what actually happens between "I called `model.generate()`" and "a token appeared" isn't yet an AI systems engineer — they're someone who understands one layer of a much taller stack. Click a layer below to see the specific kind of real-world failure it explains:
 
-```
-CPU
- ↓
-RAM
- ↓
-PCIe
- ↓
-GPU
- ↓
-VRAM
- ↓
-network
- ↓
-distributed workers
-```
+<SystemStackFailureDiagram />
 
-Every layer above has failure modes, bottlenecks, and design tradeoffs that show up constantly in real AI engineering work: why a training job is slow even though "the GPU is only at 40% utilization," why a distributed job hangs instead of crashing, why an inference server's p99 latency is terrible despite a fast median, why two processes writing to the same file corrupt each other's output. None of that is ML theory — it's computer science, and this section exists because most ML curricula skip it entirely and most AI engineering *jobs* don't.
+None of that is ML theory — it's computer science, and this section exists because most ML curricula skip it entirely and most AI engineering *jobs* don't.
 
 ## What's in this section
 
