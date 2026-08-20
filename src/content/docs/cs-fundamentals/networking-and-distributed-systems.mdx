@@ -4,6 +4,12 @@ sidebar_position: 4
 ---
 
 
+import TcpVsUdpDiagram from '../../../viz/diagrams/TcpVsUdpDiagram';
+import DnsResolutionDiagram from '../../../viz/diagrams/DnsResolutionDiagram';
+import LoadBalancingDiagram from '../../../viz/diagrams/LoadBalancingDiagram';
+import CapTheoremDiagram from '../../../viz/diagrams/CapTheoremDiagram';
+import ConsensusQuorumDiagram from '../../../viz/diagrams/ConsensusQuorumDiagram';
+
 # Networking & Distributed Systems
 
 Every inference API call, every distributed training run, every RAG system's vector DB query crosses a network — and networks fail in ways local function calls never do: partially, slowly, and unpredictably.
@@ -22,9 +28,13 @@ See [APIs, HTTP & Communication Patterns](/docs/cs-fundamentals/apis-http-and-pr
 - **UDP**: connectionless, no delivery guarantee, no ordering guarantee — but much lower overhead. Used where occasional loss is acceptable and latency matters more (real-time audio/video, some game networking) — rarely the choice for typical AI API traffic, but worth knowing exists as the alternative TCP is trading against.
 - **Latency vs. bandwidth**: latency is how long one request takes round-trip; bandwidth is how much data can flow per second once a connection is established. A high-bandwidth, high-latency connection (satellite link) can still feel slow for many small requests — this distinction is exactly why [LLM inference](/docs/mlops/llm-inference-optimization)'s TTFT (latency-bound) and tokens/sec (bandwidth-bound-ish) are reported as separate metrics, not one "speed" number.
 
+<TcpVsUdpDiagram />
+
 ## DNS
 
 Domain Name System resolution turns a hostname (`api.example.com`) into an IP address before a connection can even be opened — an often-invisible step that becomes very visible the moment it's slow or misconfigured (a DNS lookup adding 200ms to every cold request, or a stale DNS cache routing traffic to a decommissioned server).
+
+<DnsResolutionDiagram />
 
 ## Load Balancing
 
@@ -34,13 +44,19 @@ Distributing incoming requests across multiple backend instances so no single in
 - **Least-connections**: route to whichever backend currently has the fewest active requests — better than round-robin when request costs vary a lot, which is exactly the case for LLM inference (a short completion vs. a long one occupy a backend for very different amounts of time).
 - **Consistent hashing**: route requests with the same key (e.g. the same user, or — relevant to [prefix caching](/docs/mlops/llm-inference-optimization#kv-cache) — the same prompt prefix) to the same backend consistently, so that backend's warm cache/state keeps getting reused instead of being cold-started on every request.
 
+<LoadBalancingDiagram />
+
 ## The CAP Theorem
 
 A distributed data system can provide at most two of three guarantees simultaneously: **Consistency** (every read sees the most recent write), **Availability** (every request gets a response, even if it might not reflect the latest write), and **Partition tolerance** (the system keeps working despite network partitions between nodes). Since real networks *do* partition (a link goes down, a data center loses connectivity), partition tolerance isn't really optional — in practice the meaningful choice is between **CP** (stay consistent, refuse requests during a partition) and **AP** (stay available, accept the risk of serving stale data during a partition). This is why "which database/vector store fits this system" is a genuine engineering question, not just "which one has more features" — see [Databases](/docs/databases/roadmap).
 
+<CapTheoremDiagram />
+
 ## Consensus (Raft/Paxos, Intuition Only)
 
 How do multiple nodes agree on a single value (who's the leader, what's the latest committed state) when any node might crash or messages might be delayed? **Consensus algorithms** (Raft is the one most production systems actually implement, designed to be more understandable than the original Paxos) solve this by requiring a majority of nodes to agree before a value is considered committed — the same majority-quorum idea underlies leader election in distributed databases, distributed lock services, and orchestration systems like Kubernetes' etcd. You won't implement Raft yourself, but recognizing "this tool uses Raft under the hood" (etcd, many distributed databases) tells you a lot about its failure behavior for free.
+
+<ConsensusQuorumDiagram />
 
 ## Why Distributed Training and Serving Are Genuinely Hard
 
