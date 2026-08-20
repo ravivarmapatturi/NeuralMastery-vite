@@ -91,3 +91,15 @@ Note on pace: mlops/ is now platform-vite-ad's (reassigned 2026-08-20, see top-o
 - [ ] cs-fundamentals/software-engineering-practices.mdx
 - [x] cs-fundamentals/apis-http-and-protocols.mdx — already done (ad, 11 diagrams)
 - [~] cs-fundamentals/roadmap.mdx — checklist, stays as-is
+- [x] cs-fundamentals/overview.mdx (ba3d43a)
+- [x] cs-fundamentals/operating-systems-and-concurrency.mdx (755ec70)
+- [x] cs-fundamentals/networking-and-distributed-systems.mdx (fde20c3)
+- [x] cs-fundamentals/linux-git-and-tooling.mdx (33f030c)
+- [x] cs-fundamentals/software-engineering-practices.mdx (7602ebb)
+**cs-fundamentals/ complete.**
+
+# python-engineering/ + cs-fundamentals/ ASSIGNMENT COMPLETE (2026-08-20)
+
+Also shipped in this window (shared-primitive/bugfix work for the lead, interleaved):
+- Watermark on VisualizationContainer (58e10da)
+- Sidebar collapsible-tree fix, resolves the empty-gap bug too (0720ef1)
