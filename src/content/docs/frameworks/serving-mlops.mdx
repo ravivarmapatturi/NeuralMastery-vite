@@ -4,13 +4,17 @@ sidebar_position: 5
 ---
 
 
+import ContinuousBatchingDiagram from '../../../viz/diagrams/ContinuousBatchingDiagram';
+
 # Serving & MLOps / LLMOps
 
 A model that only runs in a notebook isn't a production system. This is the tooling layer that makes it one.
 
 ## Model Serving
 
-- **vLLM**: an inference server purpose-built for LLMs, implementing Paged Attention and continuous batching (see [Evaluation & Serving](/docs/llms-genai/evaluation-and-serving)) to serve many concurrent requests efficiently — the de facto standard for self-hosting open LLMs at any meaningful scale.
+- **vLLM**: an inference server purpose-built for LLMs, implementing Paged Attention and continuous batching (see [Evaluation & Serving](/docs/llms-genai/evaluation-and-serving)) to serve many concurrent requests efficiently — the de facto standard for self-hosting open LLMs at any meaningful scale. Real discrete-step simulation of exactly why continuous batching wins:
+
+<ContinuousBatchingDiagram />
 - **TorchServe**: general-purpose model serving for PyTorch models, handling request batching, versioning, and scaling for traditional (non-LLM) deep learning models.
 - **Triton Inference Server**: a high-performance serving platform supporting multiple frameworks (PyTorch, TensorFlow, ONNX) and multiple models on shared hardware, commonly used when a system serves a mix of model types, not just LLMs.
 

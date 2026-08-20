@@ -4,6 +4,8 @@ sidebar_position: 3
 ---
 
 
+import ChainRuleBackpropDiagram from '../../../viz/diagrams/ChainRuleBackpropDiagram';
+
 # Core ML/DL Frameworks
 
 The tools that turn the theory from [Deep Learning](/docs/deep-learning/roadmap) into code you can actually run and train.
@@ -13,7 +15,9 @@ The tools that turn the theory from [Deep Learning](/docs/deep-learning/roadmap)
 The dominant deep learning framework in both research and production today. Three ideas make it what it is:
 
 - **Tensors**: PyTorch's core data structure — multi-dimensional arrays (see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)) that can live on CPU or GPU, with the same operations (matrix multiply, elementwise ops) either way.
-- **Autograd**: PyTorch automatically builds a computation graph as you run the forward pass, and calling `.backward()` computes every gradient via the chain rule (see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization)) — you write the forward pass, PyTorch derives backpropagation for you.
+- **Autograd**: PyTorch automatically builds a computation graph as you run the forward pass, and calling `.backward()` computes every gradient via the chain rule (see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization)) — you write the forward pass, PyTorch derives backpropagation for you. This is exactly the real forward-then-backward computation `.backward()` automates — step through it by hand once, and every `.backward()` call afterward is legible instead of magic:
+
+<ChainRuleBackpropDiagram />
 - **`nn.Module`**: the base class for defining a layer or a whole model — you define `__init__` (the layers/parameters you need) and `forward` (how data flows through them), and PyTorch handles tracking parameters, moving them to GPU, and saving/loading.
 
 A typical training loop: forward pass → compute loss → `loss.backward()` → optimizer step → zero gradients → repeat. Once you've written this loop once by hand, every framework built on top of PyTorch (Hugging Face `Trainer`, PyTorch Lightning) is just automating that same loop with more features.
