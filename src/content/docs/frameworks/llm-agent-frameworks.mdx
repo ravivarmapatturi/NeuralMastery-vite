@@ -4,6 +4,8 @@ sidebar_position: 4
 ---
 
 
+import AgentControlFlowGraphDiagram from '../../../viz/diagrams/AgentControlFlowGraphDiagram';
+
 # LLM / Agent Frameworks
 
 The tools that implement the concepts from [LLMs & GenAI](/docs/llms-genai/roadmap) and [Agents](/docs/agents/roadmap) so you're not wiring up RAG pipelines and tool-calling loops from scratch every time.
@@ -25,6 +27,10 @@ Building an [MCP server](/docs/agents/mcp/overview) — exposing your own tools/
 **LangGraph** (built on LangChain) models an agent's control flow as an explicit graph of nodes and edges — useful when an agent's logic is more complex than a simple loop (conditional branches, cycles, human-in-the-loop checkpoints), and you want that structure to be visible and debuggable rather than implicit in prompt text.
 
 **CrewAI** is built specifically around the [multi-agent](/docs/agents/multi-agent-systems) pattern of assigning different agents distinct roles (a "researcher," a "writer") and having them collaborate on a shared task — a higher-level abstraction than LangGraph, trading some flexibility for faster setup of common multi-agent patterns.
+
+A simplified but real LangGraph-style control-flow graph — step through it and watch a genuine cycle (looping back to Act when confidence hasn't cleared the threshold yet) and a genuine conditional branch (Human review only when required):
+
+<AgentControlFlowGraphDiagram />
 
 **Choosing between them**: for a single agent with a fairly linear flow, you often don't need any of these — a direct loop calling the LLM API is simpler and easier to debug. Reach for an orchestration framework once the control flow itself (not just the prompting) becomes complex enough that managing it by hand gets error-prone.
 
