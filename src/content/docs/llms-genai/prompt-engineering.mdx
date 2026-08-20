@@ -4,6 +4,10 @@ sidebar_position: 5
 ---
 
 
+import SelfConsistencyVotingDiagram from '../../../viz/diagrams/SelfConsistencyVotingDiagram';
+import LostInTheMiddleDiagram from '../../../viz/diagrams/LostInTheMiddleDiagram';
+import PromptInjectionFlowDiagram from '../../../viz/diagrams/PromptInjectionFlowDiagram';
+
 # Prompt Engineering
 
 The cheapest, fastest lever for improving an LLM's behavior — no training required, just better instructions.
@@ -17,7 +21,9 @@ The cheapest, fastest lever for improving an LLM's behavior — no training requ
 
 Instead of asking for a direct answer, prompt the model to "think step by step" before answering. For reasoning-heavy tasks (math, multi-step logic), this reliably improves accuracy — generating intermediate reasoning tokens gives the model more computation and more context to condition the final answer on, rather than forcing it to jump straight to a conclusion in one forward pass.
 
-**Self-consistency**: sample multiple CoT reasoning paths for the same question and take a majority vote on the final answer — trades extra compute for higher accuracy.
+**Self-consistency**: sample multiple CoT reasoning paths for the same question and take a majority vote on the final answer — trades extra compute for higher accuracy. The real binomial math behind why this works whenever a single path beats a coin flip:
+
+<SelfConsistencyVotingDiagram />
 
 **Tree-of-Thought**: generalizes CoT by exploring multiple reasoning branches and backtracking, rather than committing to a single linear chain — more expensive, used for harder problems.
 
@@ -33,10 +39,14 @@ A **system prompt** sets persistent context/behavior for the whole conversation 
 
 **Prompt injection**: malicious text embedded in content the model processes (a webpage, a document, a tool's output) that tries to override the original instructions — a serious concern for any system where an LLM reads untrusted external content. **Jailbreaking**: techniques users apply directly to bypass a model's safety training. Defenses include strict separation of trusted instructions from untrusted data, input/output filtering, and models trained specifically to resist instruction override from non-privileged sources.
 
+<PromptInjectionFlowDiagram />
+
 ## Failure Modes and Debugging
 
 - **Prompt sensitivity**: small wording changes causing inconsistent outputs — mitigated with more explicit instructions, few-shot examples, and lower sampling temperature.
-- **The "lost in the middle" problem**: models attend less reliably to information buried in the middle of a long context, even when it's technically within the context window — relevant to both prompting and RAG (see [RAG](/docs/llms-genai/rag)).
+- **The "lost in the middle" problem**: models attend less reliably to information buried in the middle of a long context, even when it's technically within the context window — relevant to both prompting and RAG (see [RAG](/docs/llms-genai/rag)). The documented shape of this effect:
+
+<LostInTheMiddleDiagram />
 - **Cost/latency optimization**: shorter prompts, caching repeated prefixes, and choosing the smallest model that reliably handles the task all reduce production cost.
 
 Next: [Retrieval-Augmented Generation (RAG)](/docs/llms-genai/rag) — giving a model access to knowledge beyond what's in its weights.
