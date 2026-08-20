@@ -4,6 +4,8 @@ sidebar_position: 6.91
 ---
 
 
+import NdcgDiagram from '../../../viz/diagrams/NdcgDiagram';
+
 # Learning-to-Rank, In Full Depth
 
 Search, recommendation ranking, and ad ranking are not classification problems and not regression problems — the thing that actually matters is the *order* of a list, and optimizing accuracy or MSE on individual item scores doesn't directly optimize for that at all. Learning-to-Rank (LTR) is the family of methods built to close that gap.
@@ -31,7 +33,9 @@ These are worth knowing precisely, since "which metric" materially changes what 
 - **MRR (Mean Reciprocal Rank)**: for each query, take $\frac{1}{\text{rank of the first relevant result}}$, then average across queries. Rewards getting *a* relevant result high up quickly — a good fit for queries with one clear right answer (a navigational search query, "find the answer").
 - **NDCG (Normalized Discounted Cumulative Gain)**: the most complete standard ranking metric, and the one most listwise methods (including LambdaMART) directly target:
   - **DCG**: $\sum_{i=1}^{k} \frac{2^{rel_i} - 1}{\log_2(i + 1)}$ — sums each result's relevance (which can be graded, not just relevant/irrelevant — a 0-4 relevance scale, say), discounted logarithmically by position, so a highly relevant result buried at position 20 contributes far less than the same result at position 1.
-  - **NDCG**: DCG divided by the *ideal* DCG (the DCG of the best-possible ordering of the same result set) — normalizing to $[0, 1]$ so NDCG is comparable across queries with different numbers of relevant results, where raw DCG wouldn't be.
+  - **NDCG**: DCG divided by the *ideal* DCG (the DCG of the best-possible ordering of the same result set) — normalizing to $[0, 1]$ so NDCG is comparable across queries with different numbers of relevant results, where raw DCG wouldn't be. Real DCG/NDCG, recomputed live as you reorder the list:
+
+<NdcgDiagram />
 - **Choosing between them**: MRR when there's typically one right answer near the top; NDCG when relevance is graded and the quality of the *entire* top-$k$ ordering matters, not just whether one good result appeared somewhere in it — NDCG is the default in most modern search/ranking evaluation for exactly this completeness.
 
 ## Feature Engineering for Ranking

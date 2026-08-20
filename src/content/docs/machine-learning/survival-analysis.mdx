@@ -5,6 +5,7 @@ sidebar_position: 5.85
 
 import __migratedImg0 from './img/survival-curve.png';
 
+import KaplanMeierDiagram from '../../../viz/diagrams/KaplanMeierDiagram';
 
 # Survival Analysis: Kaplan-Meier & Cox Proportional Hazards, In Full Depth
 
@@ -36,6 +37,10 @@ At each observed *event* time $t_i$: $n_i$ is the number of subjects still "at r
 <img src={__migratedImg0} alt="Kaplan-Meier survival curves for two groups, with censoring marks" style={{maxWidth: '100%'}} />
 
 The chart above shows exactly this: each step down is an event, each tick mark is a censored subject leaving the risk set without an event. Group B's curve staying higher for longer is the direct visual read of "this group survives longer" — the entire point of plotting $\hat{S}(t)$ instead of reporting a single summary number.
+
+Step through the real product formula, one real event time at a time, on a real 10-subject toy dataset:
+
+<KaplanMeierDiagram />
 
 ## Comparing Groups: The Log-Rank Test
 

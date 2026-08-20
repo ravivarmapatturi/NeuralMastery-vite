@@ -5,6 +5,7 @@ sidebar_position: 6.9
 
 import __migratedImg0 from './img/matrix-factorization.png';
 
+import MatrixFactorizationDiagram from '../../../viz/diagrams/MatrixFactorizationDiagram';
 
 # Recommender Systems, In Full Depth
 
@@ -29,7 +30,9 @@ Each user gets a $k$-dimensional **latent factor vector** $u_i$, each item gets 
 
 <img src={__migratedImg0} alt="Sparse observed ratings matrix next to its dense reconstruction from learned user/item latent factors" style={{maxWidth: '100%'}} />
 
-The chart above is exactly this: the left panel is the real, mostly-empty observed data; the right panel is what $UV^T$ predicts for *every* cell, including the ones that were never observed — that's the entire value of the method, filling in the blanks based on the latent structure learned from the cells that were observed. This is the same low-rank-approximation idea as [SVD](/docs/machine-learning/pca-svd#truncated-svd), applied to a matrix that's sparse (mostly missing) instead of dense.
+The chart above is exactly this: the left panel is the real, mostly-empty observed data; the right panel is what $UV^T$ predicts for *every* cell, including the ones that were never observed — that's the entire value of the method, filling in the blanks based on the latent structure learned from the cells that were observed. This is the same low-rank-approximation idea as [SVD](/docs/machine-learning/pca-svd#truncated-svd), applied to a matrix that's sparse (mostly missing) instead of dense. Real gradient descent, trained on only the amber-bordered observed cells below:
+
+<MatrixFactorizationDiagram />
 
 **Training**: minimize squared error over only the *observed* entries, plus L2 regularization on the factors to prevent overfitting to the (typically very sparse) observed data:
 

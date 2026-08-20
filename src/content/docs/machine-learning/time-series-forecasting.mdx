@@ -6,6 +6,7 @@ sidebar_position: 5.9
 import __migratedImg0 from './img/time-series-decomposition.png';
 import __migratedImg1 from './img/time-series-forecast.png';
 
+import ArimaDifferencingDiagram from '../../../viz/diagrams/ArimaDifferencingDiagram';
 
 # Time Series Forecasting: ARIMA, SARIMA & Prophet, In Full Depth
 
@@ -30,6 +31,10 @@ ARIMA combines three ideas, named by its three parameters $(p, d, q)$:
 - **AR($p$) — AutoRegressive**: predict the current value as a linear combination of the previous $p$ values: $y_t = c + \phi_1 y_{t-1} + \cdots + \phi_p y_{t-p} + \epsilon_t$. Structurally, this is just [linear regression](/docs/machine-learning/linear-regression) where the "features" are the series' own past values.
 - **I($d$) — Integrated**: apply **differencing** $d$ times ($y_t' = y_t - y_{t-1}$) before modeling, to remove trend and make the series **stationary** (statistical properties like mean/variance constant over time — a requirement for AR/MA to work correctly). $d$ is *how many times* you need to difference before the trend disappears.
 - **MA($q$) — Moving Average**: model the current value as a function of the past $q$ forecast **errors**, not past values: $y_t = c + \epsilon_t + \theta_1\epsilon_{t-1} + \cdots + \theta_q\epsilon_{t-q}$ — captures short-term shocks whose effect lingers for a few steps before fading.
+
+Real non-stationary series, real differencing applied live:
+
+<ArimaDifferencingDiagram />
 
 **Choosing $(p,d,q)$**: classically done by inspecting **ACF** (autocorrelation function — correlation between $y_t$ and $y_{t-k}$ across lags $k$) and **PACF** (partial autocorrelation — the same, controlling for shorter lags) plots, or more commonly today, via automated search (grid search over candidate values, scored by AIC/BIC or cross-validated forecast error — see [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)).
 
