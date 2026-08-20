@@ -4,23 +4,17 @@ sidebar_position: 1
 ---
 
 
+import PythonLayerStackDiagram from '../../../viz/diagrams/PythonLayerStackDiagram';
+
 # Python Engineering for AI — Overview
 
 Almost everyone arrives at ML already knowing Python syntax. That's not the same as knowing Python *engineering* — the language features, concurrency model, and tooling that determine whether code is a one-off notebook cell or something a team can run in production for years.
 
-The path this section assumes, and the one worth following in practice:
+The path this section assumes, and the one worth following in practice — click a layer to see exactly what it reuses from the one below it:
 
-```
-Python (this section)
-   ↓
-NumPy (vectorized array computation)
-   ↓
-PyTorch (the same vectorized-computation idea, with autograd and a GPU backend)
-   ↓
-production Python (packaging, testing, serving — see MLOps)
-```
+<PythonLayerStackDiagram />
 
-Each layer reuses the one below it — PyTorch's tensor API deliberately mirrors NumPy's, and NumPy's vectorization habit of "avoid the Python `for` loop, reach for the array operation" is the single most important performance instinct in this entire stack, explained precisely in [CS Fundamentals](/docs/cs-fundamentals/operating-systems-and-concurrency#cpu-caches) and revisited here from the language side.
+PyTorch's tensor API deliberately mirrors NumPy's, and NumPy's vectorization habit of "avoid the Python `for` loop, reach for the array operation" is the single most important performance instinct in this entire stack, explained precisely in [CS Fundamentals](/docs/cs-fundamentals/operating-systems-and-concurrency#cpu-caches) and revisited here from the language side.
 
 ## What's in this section
 
