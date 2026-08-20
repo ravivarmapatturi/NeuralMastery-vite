@@ -3,6 +3,12 @@ title: "ML System Design Case Studies"
 sidebar_position: 4
 ---
 
+import TwoStagePipelinePatternDiagram from '../../../viz/diagrams/TwoStagePipelinePatternDiagram';
+import ColdStartDiagram from '../../../viz/diagrams/ColdStartDiagram';
+import BlendedObjectiveDiagram from '../../../viz/diagrams/BlendedObjectiveDiagram';
+import DomainAgnosticDesignDiagram from '../../../viz/diagrams/DomainAgnosticDesignDiagram';
+import GenAiCaseStudiesDiagram from '../../../viz/diagrams/GenAiCaseStudiesDiagram';
+import ProblemSolutionMapDiagram from '../../../viz/diagrams/ProblemSolutionMapDiagram';
 
 # ML System Design Case Studies
 
@@ -14,7 +20,11 @@ Almost always built as a **two-stage pipeline**:
 1. **Candidate generation**: cheaply narrow millions of items down to a few hundred plausible candidates (e.g. via collaborative filtering / matrix factorization — see [SVD](/docs/mathematics-for-ai/linear-algebra) — or approximate nearest-neighbor search over embeddings, see [Databases — Vector](/docs/databases/roadmap)).
 2. **Ranking**: apply a more expensive, more accurate model to rank just those few hundred candidates precisely, since running a heavy model over the *entire* catalog for every request would be far too slow.
 
+<TwoStagePipelinePatternDiagram />
+
 **Cold start**: new users or items have no interaction history to base recommendations on. Addressed with content-based fallbacks (recommend based on item attributes, not behavior) and exploration strategies (deliberately show some uncertain-but-promising items to gather signal).
+
+<ColdStartDiagram />
 
 ## Search & Ranking
 
@@ -24,9 +34,13 @@ Similar two-stage shape: **retrieval** (find documents/items that could plausibl
 
 A specialized case of ranking, usually optimizing a blended objective (engagement *and* revenue, for ads) with heavy weight on real-time signals (what a user just did in this session) and strict latency constraints, since feed ranking happens on every single scroll.
 
+<BlendedObjectiveDiagram />
+
 ## NLP and Computer Vision Systems at Scale
 
 Follow the same 9-step shape, with domain-specific model choices — Transformers (see [Deep Learning](/docs/deep-learning/roadmap)) for NLP, CNNs or ViTs for vision — but the *system design* concerns (latency budgets, monitoring, retraining cadence, A/B testing) are largely the same regardless of domain.
+
+<DomainAgnosticDesignDiagram />
 
 ## GenAI / LLM System Design (2026-era)
 
@@ -36,6 +50,8 @@ The newest and increasingly most-asked case study category:
 - **Agent system design**: designing a multi-step agentic workflow (see [Agents](/docs/agents/roadmap)) as a production system — including cost controls (agents can call tools and other LLMs repeatedly, so cost isn't a single inference call anymore), reliability (retries, fallbacks when a step fails), and observability (tracing what an agent actually did, since its behavior isn't fully deterministic).
 - **LLM serving infrastructure**: applying steps 7-9 (prediction service, deployment, monitoring) to LLM-specific serving concerns — batching, KV cache management, and cost-per-token monitoring (see [Evaluation & Serving](/docs/llms-genai/evaluation-and-serving)).
 
+<GenAiCaseStudiesDiagram />
+
 ## Common Problems & SOTA Solutions
 
 - **Training-serving skew** (features computed differently in training vs. production) → shared feature pipelines / feature stores, so the exact same code computes a feature both times
@@ -43,5 +59,7 @@ The newest and increasingly most-asked case study category:
 - **Feedback loops biasing the model** (a ranking model's own past recommendations shape what users click, reinforcing its own biases) → randomized exploration traffic, counterfactual/off-policy evaluation
 - **Model staleness / concept drift** → monitoring dashboards tracking live metrics vs. offline expectations, scheduled retraining, online learning for fast-moving domains
 - **Scaling inference to millions of requests** → caching frequent predictions, batching, model distillation to a smaller serving model, horizontal scaling behind a load balancer
+
+<ProblemSolutionMapDiagram />
 
 ML System Design section complete. Next: [Databases](/docs/databases/roadmap) — the storage layer every one of these systems depends on.
