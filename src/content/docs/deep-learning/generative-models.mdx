@@ -6,6 +6,8 @@ sidebar_position: 8.7
 
 import DiffusionRandomWalkMp4 from './img/diffusion-random-walk.mp4';
 import DiffusionRandomWalkWebm from './img/diffusion-random-walk.webm';
+import GanMinimaxDiagram from '../../../viz/diagrams/GanMinimaxDiagram';
+import DiffusionForwardProcessDiagram from '../../../viz/diagrams/DiffusionForwardProcessDiagram';
 
 # Generative Models: GANs & Diffusion
 
@@ -23,6 +25,10 @@ $D$ is trained to maximize this (correctly tell real from fake), $G$ is trained 
 - **Mode collapse**: $G$ discovers a small number of outputs that reliably fool $D$ and keeps producing only those, rather than covering the full diversity of the real data distribution — a direct consequence of $G$ optimizing to fool the current $D$, not to match the true data distribution.
 - **Training instability**: $G$ and $D$ are locked in a minimax game, not a single loss being minimized — if one network gets too strong too fast (e.g. $D$ becomes a perfect discriminator early), the other stops receiving useful gradient signal and training stalls.
 - **No single scalar loss to monitor**: unlike supervised training, "the loss is going down" doesn't straightforwardly mean "the model is getting better" — sample quality has to be judged directly or via separate metrics (e.g. FID, Fréchet Inception Distance) alongside the adversarial losses.
+
+Drag training progress and watch the generator's distribution close on the real one, and the discriminator's decision curve flatten out as it loses the ability to tell them apart:
+
+<GanMinimaxDiagram />
 
 ## Named GAN Variants
 
@@ -52,6 +58,10 @@ The named variants below are the ones actually worth recognizing:
 - **Latent Diffusion / Stable Diffusion**: runs the diffusion process in a compressed **latent space** (produced by a pretrained VAE encoder, see [Autoencoders & VAEs](/docs/deep-learning/autoencoders)) rather than directly on raw pixels, then decodes the final denoised latent back to pixel space — dramatically cheaper than pixel-space diffusion, which is what made high-resolution text-to-image generation practical on consumer hardware.
 - **Classifier-free guidance**: a technique for strengthening how closely generation follows a conditioning signal (e.g. a text prompt) — the model is trained both with and without the conditioning, and at sampling time the unconditional prediction is extrapolated *away from* to push the output more strongly toward the condition, without needing a separate classifier.
 - **ControlNet**: adds an auxiliary conditioning pathway to a pretrained diffusion model (e.g. conditioning on an edge map, a pose skeleton, a depth map) without retraining the base model — lets a frozen, powerful pretrained diffusion model be steered by precise structural constraints instead of text alone.
+
+The forward process's actual closed form, not just the random-walk intuition above — drag $t$ and watch a real noise schedule dissolve a fixed toy signal:
+
+<DiffusionForwardProcessDiagram />
 
 ## Why Diffusion Won for Images
 
