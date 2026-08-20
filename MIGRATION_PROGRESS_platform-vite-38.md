@@ -1,5 +1,54 @@
 # Diagram migration progress — platform-vite-38's scope
 
+## CURRENT STATUS (updated 2026-08-20, read this first on resume)
+
+Ownership below is stale — as of 2026-08-19/20 this session has been taking
+direct task assignments from the lead session `vite-react-visualization-migration`
+via cross-session messages, not from the static folder split further down.
+Actual current work: `mlops/` diagram coverage, in batches of 6 pages, assigned
+live by the lead. Do not re-derive from git log — this file is the source of truth.
+
+**mlops/ batch 4 (6 pages), in progress:**
+- [x] infrastructure-as-code.mdx — 7 diagrams, commit 78c066a
+- [x] security-and-reproducibility.mdx — 7 diagrams, commit a777eb7
+- [x] legal-licensing-and-governance.mdx — 7 diagrams, commit b5ac68a
+- [x] ai-cost-engineering.mdx — 7 diagrams, commit ace7bc8
+- [x] engineering-foundations.mdx — 7 diagrams (1 reused: DependencyPinningDiagram), commit b3ac193
+- [ ] llm-hosting-and-serving-patterns.mdx — NEXT, not started
+
+**mlops/ batch 3 (done, prior checkpoint):**
+- [x] llm-evaluation-and-ragops.mdx — commit 25de4ef
+- [x] production-reliability.mdx — commit 82ffaa9
+- [x] cloud-computing.mdx — commit 2cb2e5e
+
+After batch 4 finishes (llm-hosting-and-serving-patterns.mdx), mlops/ folder is
+COMPLETE (24/24 pages per lead's count). Next queued task from lead (high
+priority, sent 2026-08-20): expand `agents/mcp/protocol-deep-dive.mdx` from a
+63-line skeleton into real step-by-step depth across its existing 8 sections
+(Transport, Sessions/Lifecycle, Tool Discovery/Schemas, Errors, Auth, Security,
+Enterprise Deployment, Building an MCP Server) — outline is already right, don't
+restructure it. User's complaint: "full info step by step info is not there."
+Lead + user were explicit: fetch the REAL spec content via WebFetch from
+modelcontextprotocol.io/specification and github.com/modelcontextprotocol
+(JSON-RPC message shapes, initialize handshake, capability negotiation, session
+lifecycle) rather than reconstructing from memory — accuracy matters for a real,
+evolving protocol spec. Diagrams still built fresh with our own design system.
+Existing reference: McpVsA2aScopeDiagram, agents/a2a/overview.mdx.
+
+Per-page workflow established this session (repeat every time): read page →
+design 6-7 diagram concepts tied to actual section content (reuse an existing
+component when a page elsewhere already covers the same concept) → write .tsx
+files in src/viz/diagrams/ (VisualizationContainer + useVizTokens +
+getConceptColor, watch for unused imports) → add MDX imports + placements
+after the relevant bullet/section → `npx tsc --noEmit -p .` filtered to just
+the new files/page → `npx vite build` (bypass tsc -b, shared repo has other
+sessions' WIP) → `npm run check:links` → `git add` exact paths + `git commit
+-- ` exact paths (never broad `git add -A`, shared working directory) → `git
+push origin main` → `gh workflow run deploy.yml --repo
+ravivarmapatturi/NeuralMastery-vite` → SendMessage status to
+`vite-react-visualization-migration`.
+
+
 Tracking interactive-diagram conversion (≥10 custom `.tsx` components per page,
 `src/viz/diagrams/`, following `diagramSystem.ts` conventions — same standard as
 `deep-learning/attention-transformers.mdx`) for this session's assigned folders.
