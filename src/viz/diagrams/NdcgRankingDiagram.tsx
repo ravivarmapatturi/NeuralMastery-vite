@@ -52,7 +52,7 @@ export default function NdcgRankingDiagram() {
           </div>
         ))}
       </div>
-      <div style={{ fontSize: 9.5, color: t.textSecondary, marginBottom: 8 }}>{GRADE_LABEL.map((l, i) => `rank ${i + 1}: ${grades[i] === 2 ? 'highly relevant' : grades[i] === 1 ? 'somewhat relevant' : 'not relevant'}`).join(' · ')}</div>
+      <div style={{ fontSize: 9.5, color: t.textSecondary, marginBottom: 8 }}>{GRADE_LABEL.map((_l, i) => `rank ${i + 1}: ${grades[i] === 2 ? 'highly relevant' : grades[i] === 1 ? 'somewhat relevant' : 'not relevant'}`).join(' · ')}</div>
       <div style={{ display: 'flex', justifyContent: 'center', gap: 20, fontSize: DIAGRAM_TYPE.caption.size + 1 }}>
         <span style={{ color: t.textMuted }}>DCG = {score.toFixed(2)}</span>
         <span style={{ fontWeight: 700, color }}>NDCG = {ndcg.toFixed(2)}</span>
