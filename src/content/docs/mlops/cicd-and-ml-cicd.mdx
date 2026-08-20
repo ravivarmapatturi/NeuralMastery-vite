@@ -25,6 +25,55 @@ Continuous Integration and Continuous Deployment automate the path from "code ch
 
 <GitOpsReconciliationDiagram />
 
+A real GitHub Actions CI workflow — lint, test, and build a container image on every push:
+
+```yaml
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: ruff check .
+      - run: pytest tests/ --cov=src
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: my-registry/my-model-api:${{ github.sha }}
+```
+
+Argo CD's side of GitOps is a `kubectl apply` on its own Application resource, not a deploy script — Argo CD then continuously reconciles the cluster toward whatever's in the target repo/path from that point on:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: model-api
+spec:
+  source:
+    repoURL: https://github.com/my-org/model-api-manifests
+    path: overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
 ## Why ML CI/CD Needs More Than Code Checks
 
 Regular CI/CD assumes: if the code passes tests and builds, it's safe to ship. That assumption breaks for ML, because the artifact that actually matters — the trained model — is a function of code *and* data, and "passes unit tests" says nothing about whether the model is still accurate on real inputs. ML CI/CD adds:
@@ -52,6 +101,18 @@ Regular CI/CD assumes: if the code passes tests and builds, it's safe to ship. T
 
 <MlCicdPipelineStepsDiagram />
 
-Every step above exists because skipping it has a specific, real failure mode — a pipeline that only does step 1 is doing software CI/CD wearing an ML costume.
+Every step above exists because skipping it has a specific, real failure mode — a pipeline that only does step 1 is doing software CI/CD wearing an ML costume. Steps 3-4 (train, then gate on the benchmark) as an actual job, not just a description:
+
+```yaml
+  train-and-gate:
+    needs: test
+    runs-on: [self-hosted, gpu]
+    steps:
+      - uses: actions/checkout@v4
+      - run: python train.py --config configs/prod.yaml   # logs to the experiment tracker as it runs
+      - run: python evaluate.py --run-id ${{ steps.train.outputs.run_id }} --benchmark data/benchmark.parquet
+      # evaluate.py exits non-zero if the candidate's metrics don't beat production's --
+      # a failing step here stops the workflow before anything downstream (register, deploy) runs
+```
 
 Next: [Feature Stores & Model Registry](/docs/mlops/feature-stores-and-model-registry) — the systems that make steps 2 and 5 above actually queryable and reusable, not just "it happened once."

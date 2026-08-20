@@ -30,6 +30,47 @@ The dominant IaC tool, cloud-agnostic (one tool, many providers):
 - **Modules**: reusable, parameterized bundles of resources — package "a standard VPC" or "a standard ML training cluster" once, reuse it across projects instead of copy-pasting the underlying resources.
 - **State**: Terraform's record of what it last created — the mechanism that lets it compute a diff between "what's declared" and "what actually exists" and apply only the changes needed.
 
+A real, complete `main.tf` -- provider, a variable, a GPU training instance resource, and an output -- followed by the actual workflow that turns it into running infrastructure:
+
+```hcl
+terraform {
+  required_providers {
+    aws = { source = "hashicorp/aws", version = "~> 5.0" }
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+variable "instance_type" {
+  description = "GPU instance size for the training node"
+  type        = string
+  default     = "g5.xlarge"
+}
+
+resource "aws_instance" "training_node" {
+  ami           = "ami-0abcdef1234567890"
+  instance_type = var.instance_type
+  tags = {
+    Name = "ml-training-node"
+  }
+}
+
+output "training_node_ip" {
+  value = aws_instance.training_node.public_ip
+}
+```
+
+```bash
+terraform init                                    # downloads the aws provider plugin, sets up the backend
+terraform plan -out=tfplan                        # shows exactly what would change, before anything runs
+terraform apply tfplan                            # creates the instance, writes its state to the state file
+
+terraform plan -var="instance_type=g5.2xlarge"    # re-plan against a different variable value
+terraform destroy                                 # tears everything this config created back down
+```
+
 <StateDriftDiagram />
 
 - **Remote state**: storing that state file in a shared, locked backend (S3 + DynamoDB for locking is the classic AWS pattern) instead of a local file — required the moment more than one person or CI job touches the same infrastructure, to avoid two concurrent applies corrupting state.
