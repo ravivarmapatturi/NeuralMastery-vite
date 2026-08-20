@@ -3,19 +3,35 @@ title: "GNNs, RL Networks, Metric Learning, SSL & Multimodal Nets"
 sidebar_position: 8.8
 ---
 
+import MessagePassingDiagram from '../../../viz/diagrams/MessagePassingDiagram';
+import GnnVariantsDiagram from '../../../viz/diagrams/GnnVariantsDiagram';
+import SiameseTripletDiagram from '../../../viz/diagrams/SiameseTripletDiagram';
+import RLNetworkFamilyDiagram from '../../../viz/diagrams/RLNetworkFamilyDiagram';
+import SslMethodsDiagram from '../../../viz/diagrams/SslMethodsDiagram';
+import ClipDualEncoderDiagram from '../../../viz/diagrams/ClipDualEncoderDiagram';
+import TcnDilatedConvDiagram from '../../../viz/diagrams/TcnDilatedConvDiagram';
+import AdvancedArchDomainMapDiagram from '../../../viz/diagrams/AdvancedArchDomainMapDiagram';
 
 # GNNs, RL Networks, Metric Learning, SSL & Multimodal Nets
 
 The remaining major architecture families — each built for data or objectives that don't fit the standard "fixed-size input, single label" supervised mold: graphs, sequential decision-making, similarity rather than classification, learning without labels, and combining modalities.
+
+<AdvancedArchDomainMapDiagram />
 
 ## Graph Neural Networks (GNNs)
 
 Built for data that's naturally a graph — social networks, molecules, road networks — where a plain CNN/Transformer has no notion of arbitrary, irregular connectivity.
 
 - **The core idea, message passing**: each node updates its representation by aggregating information from its neighbors, layer by layer — after $k$ layers, a node's representation reflects its $k$-hop neighborhood. This is the graph analog of how convolution aggregates local pixel neighborhoods.
+
+<MessagePassingDiagram />
+
 - **GCN (Graph Convolutional Network)**: aggregates neighbor features via a (normalized) weighted average, the most direct graph generalization of convolution.
 - **GraphSAGE**: instead of using a full neighborhood (expensive for high-degree nodes, and doesn't generalize to unseen nodes), samples a fixed-size subset of neighbors and learns a general aggregation function — enables **inductive** learning (generalizing to nodes/graphs not seen during training), not just transductive learning on one fixed graph.
 - **GAT (Graph Attention Network)**: replaces GCN's fixed averaging with learned attention weights over neighbors, so the model learns which neighbors matter more for a given node — the same core idea as self-attention, applied to a graph's actual edges instead of a full sequence.
+
+<GnnVariantsDiagram />
+
 - **Applications**: molecule property prediction (atoms as nodes, bonds as edges), recommendation systems (users/items as nodes, interactions as edges), fraud detection (transactions as a graph), traffic forecasting (road network topology).
 
 ## Metric Learning Networks
@@ -25,6 +41,9 @@ Instead of learning to classify into fixed categories, learn an embedding space 
 - **Siamese Networks**: two identical (shared-weight) network branches process a pair of inputs, and the model is trained so the output embeddings are close for similar pairs and far apart for dissimilar pairs — the foundational architecture for this whole family.
 - **Triplet Loss**: trains on triplets (anchor, positive, negative), pushing the anchor-positive distance below the anchor-negative distance by at least a margin — a stronger training signal than pairs alone, because it directly encodes relative, not just absolute, similarity.
 - **Contrastive Loss**: the pairwise formulation underlying Siamese training — penalizes similar pairs for being far apart and dissimilar pairs for being closer than a margin.
+
+<SiameseTripletDiagram />
+
 - **Applications**: face verification/recognition (is this the same person), signature verification, few-shot/one-shot classification, and the same underlying idea behind the contrastive self-supervised methods below.
 
 ## Reinforcement Learning Networks
@@ -36,12 +55,17 @@ Networks trained not to match a label, but to maximize a reward signal through i
 - **Actor-Critic**: combines both — an **actor** network outputs the policy, a **critic** network estimates the value function to reduce the variance of the actor's gradient estimates, getting the sample efficiency benefits of value-based methods with the flexibility of policy-based methods.
 - **PPO (Proximal Policy Optimization)**: an actor-critic method that constrains each policy update to stay within a small "trust region" of the previous policy (via a clipped objective), preventing the destructively large policy updates that made earlier policy gradient methods unstable — the standard, default RL algorithm in practice today, including as the RL algorithm behind RLHF for LLM alignment (see [LLMs & GenAI](/docs/llms-genai/roadmap)).
 
+<RLNetworkFamilyDiagram />
+
 ## Self-Supervised Learning (SSL) Architectures
 
 Learn useful representations from unlabeled data by constructing a supervised-*seeming* task out of the data itself — no human labels required.
 
 - **Contrastive SSL (SimCLR, MoCo)**: create two augmented views of the same image, train the network to pull their embeddings together while pushing apart embeddings of different images — directly reuses the contrastive/triplet-loss ideas above, applied at pretraining scale instead of for a specific similarity task.
 - **Masked prediction SSL (BERT for text, MAE for images)**: mask out part of the input and train the model to reconstruct or predict the missing part — BERT's masked language modeling (see [Attention & Transformers](/docs/deep-learning/attention-transformers)) and the **Masked Autoencoder (MAE)** for images are the same underlying principle applied to different modalities.
+
+<SslMethodsDiagram />
+
 - **Why this matters**: SSL pretraining is how essentially every modern foundation model (LLMs, vision backbones) gets its initial general-purpose representations, before any task-specific fine-tuning — see [Transfer Learning & Fine-Tuning](/docs/llms-genai/roadmap) for what happens next.
 
 ## Multimodal Architectures
@@ -49,6 +73,9 @@ Learn useful representations from unlabeled data by constructing a supervised-*s
 Combine two or more input modalities (text, image, audio) in one model:
 
 - **Dual-encoder / contrastive multimodal models (CLIP)**: a separate encoder per modality (a ViT for images, a Transformer for text), trained contrastively so matching image-text pairs land close together in a shared embedding space and non-matching pairs land far apart — the same contrastive principle as SimCLR, across modalities instead of augmented views. This shared embedding space is what powers zero-shot image classification (compare an image embedding to text embeddings of candidate class names) and text-to-image retrieval.
+
+<ClipDualEncoderDiagram />
+
 - **Fusion-based VLMs**: rather than just aligning separate embeddings, project one modality's features directly into the other's token space and let a single Transformer attend jointly over both — see [Multimodal & Generative Models](/docs/llms-genai/multimodal-generative-models) for VLMs and VLAs in depth, and [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns) for how these get served in production.
 
 ## Time Series-Specific Networks
@@ -56,6 +83,8 @@ Combine two or more input modalities (text, image, audio) in one model:
 Beyond the classical statistical models in [Time Series Forecasting](/docs/machine-learning/time-series-forecasting) and the general sequence models in [Sequence Models](/docs/deep-learning/sequence-models):
 
 - **TCN (Temporal Convolutional Network)**: applies 1D causal, dilated convolutions along the time axis — causal so a prediction only depends on past values, dilated so the receptive field grows exponentially with depth without needing recurrence at all. Often trains faster than an RNN/LSTM on long sequences while matching or beating their accuracy, because convolutions parallelize across time steps during training in a way recurrence cannot.
+
+<TcnDilatedConvDiagram />
 - **N-BEATS**: a pure deep learning forecasting architecture built from stacked fully-connected blocks with backward/forward residual connections, explicitly designed to be interpretable (decomposing a forecast into trend and seasonality components) without hand-engineered statistical structure — competitive with, and often beating, classical statistical and hybrid models on standard forecasting benchmarks.
 - **TFT (Temporal Fusion Transformer)**: covered in [Time Series Forecasting](/docs/machine-learning/time-series-forecasting) — combines LSTM-based local processing with attention for long-range dependencies and built-in interpretability (which input features and time steps mattered most for a given forecast).
 
