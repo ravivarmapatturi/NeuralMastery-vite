@@ -3,6 +3,13 @@ title: "NN Layers Reference"
 sidebar_position: 8.9
 ---
 
+import CoreBuildingBlocksDiagram from '../../../viz/diagrams/CoreBuildingBlocksDiagram';
+import ConvolutionalLayersCatalogDiagram from '../../../viz/diagrams/ConvolutionalLayersCatalogDiagram';
+import TransposedConvUpsampleDiagram from '../../../viz/diagrams/TransposedConvUpsampleDiagram';
+import RecurrentLayersCatalogDiagram from '../../../viz/diagrams/RecurrentLayersCatalogDiagram';
+import AttentionLayersCatalogDiagram from '../../../viz/diagrams/AttentionLayersCatalogDiagram';
+import NormalizationAxisDiagram from '../../../viz/diagrams/NormalizationAxisDiagram';
+import RegularizationUtilityCatalogDiagram from '../../../viz/diagrams/RegularizationUtilityCatalogDiagram';
 
 # NN Layers Reference
 
@@ -14,6 +21,8 @@ Every architecture in this section is built from a small set of reusable layer t
 - **Embedding layer**: a lookup table mapping discrete tokens (words, categories) to dense learned vectors — the first layer of essentially every NLP/LLM model, converting token IDs into something a network can actually compute over.
 - **Flatten**: reshapes a multi-dimensional tensor (e.g. a CNN's final feature map) into a 1D vector, the standard bridge between convolutional/spatial layers and a dense classification head.
 
+<CoreBuildingBlocksDiagram />
+
 ## Convolutional Layers
 
 - **Conv1D**: convolution along a single axis (time or sequence) — used for audio, time series, and text convolutions.
@@ -23,11 +32,17 @@ Every architecture in this section is built from a small set of reusable layer t
 - **Transposed Convolution (Deconvolution)**: the operation that *upsamples* rather than downsamples — learns to expand a smaller feature map back to a larger spatial size, used in the decoder half of U-Net (see [Vision Architectures](/docs/deep-learning/vision-architectures)) and in GAN/diffusion generators (see [Generative Models](/docs/deep-learning/generative-models)).
 - **Pooling (Max/Average)**: downsamples a feature map by taking the max or average value in each local region — reduces spatial size and parameter count in the layers that follow.
 
+<ConvolutionalLayersCatalogDiagram />
+
+<TransposedConvUpsampleDiagram />
+
 ## Recurrent Layers
 
 - **RNN cell**: the basic recurrent unit, `h_t = f(h_{t-1}, x_t)` — see [Sequence Models](/docs/deep-learning/sequence-models) for the full mechanics and why it struggles with long sequences.
 - **LSTM cell**: adds a gated cell state that explicitly controls what's remembered/forgotten — see [Sequence Models](/docs/deep-learning/sequence-models#lstm-and-gru).
 - **GRU cell**: a simplified two-gate alternative to LSTM, fewer parameters, often comparable performance.
+
+<RecurrentLayersCatalogDiagram />
 
 ## Attention & Transformer Layers
 
@@ -37,6 +52,8 @@ Every architecture in this section is built from a small set of reusable layer t
 - **Positional Encoding layer**: injects order information into an otherwise order-blind attention computation — sinusoidal, learned, or RoPE (see [Attention & Transformers](/docs/deep-learning/attention-transformers#positional-encoding)).
 - **Transformer Block**: the composed unit — self-attention → add & norm → feed-forward → add & norm — stacked to build every Transformer-based model.
 
+<AttentionLayersCatalogDiagram />
+
 ## Normalization Layers
 
 - **Batch Normalization**: normalizes each feature's activations across the current mini-batch, then applies a learned scale and shift — stabilizes and speeds up training of deep CNNs, standard in the CNN lineage. Dependent on batch size/statistics, which makes it a poor fit for architectures processing variable-length sequences one token at a time.
@@ -44,11 +61,15 @@ Every architecture in this section is built from a small set of reusable layer t
 - **RMSNorm**: a simplified LayerNorm that only rescales by the root-mean-square of activations (no mean-centering, no learned bias) — cheaper to compute with comparable training stability, and the current default normalization in most modern LLMs (LLaMA and successors).
 - **Group Normalization**: normalizes within groups of channels rather than the whole batch or the whole layer — a middle ground used when batch sizes are too small for BatchNorm to be stable (common in diffusion model U-Nets, see [Generative Models](/docs/deep-learning/generative-models)).
 
+<NormalizationAxisDiagram />
+
 ## Regularization & Utility Layers
 
 - **Dropout**: randomly zeroes a fraction of activations during training, forcing the network not to rely on any single unit — see [Initialization, Regularization & LR Scheduling](/docs/deep-learning/initialization-regularization-scheduling) for the full mechanics and why it's turned off at inference time.
 - **Softmax**: converts a vector of raw scores into a probability distribution (non-negative, sums to 1) — the standard final-layer activation for multi-class classification, and the operation that turns attention scores into attention weights.
 - **Residual / Skip Connection**: adds a layer's input back to its output, `y = F(x) + x` — not a layer with its own parameters, but the connectivity pattern that makes very deep networks trainable (see [Training Deep Networks](/docs/deep-learning/training-deep-networks) and [CNNs](/docs/deep-learning/cnns#the-architecture-lineage)'s ResNet entry).
+
+<RegularizationUtilityCatalogDiagram />
 
 ## Graph Layers
 
