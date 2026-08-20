@@ -3,6 +3,12 @@ title: "Experiment Tracking"
 sidebar_position: 5
 ---
 
+import SevenAnswersChecklistDiagram from '../../../viz/diagrams/SevenAnswersChecklistDiagram';
+import RunComparisonChartDiagram from '../../../viz/diagrams/RunComparisonChartDiagram';
+import MlflowFourComponentsDiagram from '../../../viz/diagrams/MlflowFourComponentsDiagram';
+import ModelRegistryStageDiagram from '../../../viz/diagrams/ModelRegistryStageDiagram';
+import HyperparameterSweepDiagram from '../../../viz/diagrams/HyperparameterSweepDiagram';
+import TrackingToolComparisonDiagram from '../../../viz/diagrams/TrackingToolComparisonDiagram';
 
 # Experiment Tracking
 
@@ -20,6 +26,10 @@ Training a model without tracking the experiment is running an experiment you ca
 
 Answer all seven for every run, automatically, or six months from now nobody — including you — can explain why the production model behaves the way it does.
 
+<SevenAnswersChecklistDiagram />
+
+<RunComparisonChartDiagram />
+
 ## MLflow
 
 The must-know tool in this space, open source and framework-agnostic. Four components:
@@ -29,14 +39,23 @@ The must-know tool in this space, open source and framework-agnostic. Four compo
 - **MLflow Models**: a standard format for packaging a trained model so it can be loaded and served by many different tools without custom glue code per framework.
 - **MLflow Model Registry**: a central store for model versions with stage transitions (Staging → Production → Archived) and lineage back to the run that produced each version — see [Feature Stores & Model Registry](/docs/mlops/feature-stores-and-model-registry).
 
+<MlflowFourComponentsDiagram />
+
+<ModelRegistryStageDiagram />
+
 A typical loop: wrap a training script in `with mlflow.start_run():`, log everything inside it, and every run becomes a permanent, comparable, queryable record instead of a lost terminal scrollback.
 
 ## Alternatives
 
 - **Weights & Biases (W&B)**: a hosted, more polished experiment-tracking UI with strong visualization (live loss curves, hyperparameter sweep dashboards, model/dataset lineage) — the most common choice in research-heavy teams.
+
+<HyperparameterSweepDiagram />
+
 - **Neptune**: similar hosted tracking focus, with strong support for tracking large numbers of metadata fields per run and team collaboration features.
 - **Comet**: another hosted alternative, notable for built-in model monitoring that extends past training into production.
 
 All three solve the same core problem as MLflow Tracking (log everything, compare runs, never lose a result) with different UI/hosting/collaboration tradeoffs — MLflow remains the default because it's open source, self-hostable, and the closest thing to an industry standard.
+
+<TrackingToolComparisonDiagram />
 
 Next: [Pipeline Orchestration](/docs/mlops/pipeline-orchestration) — once individual experiments are tracked, the next problem is stitching the steps around them into a repeatable, scheduled pipeline.
