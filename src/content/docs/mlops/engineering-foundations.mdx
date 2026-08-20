@@ -3,6 +3,13 @@ title: "Engineering Foundations for ML"
 sidebar_position: 3
 ---
 
+import NotebookVsPipelineDiagram from '../../../viz/diagrams/NotebookVsPipelineDiagram';
+import SingleResponsibilityDiagram from '../../../viz/diagrams/SingleResponsibilityDiagram';
+import ConfigVsHardcodedDiagram from '../../../viz/diagrams/ConfigVsHardcodedDiagram';
+import DependencyPinningDiagram from '../../../viz/diagrams/DependencyPinningDiagram';
+import TestTypeGlossaryDiagram from '../../../viz/diagrams/TestTypeGlossaryDiagram';
+import TestingToolsDiagram from '../../../viz/diagrams/TestingToolsDiagram';
+import OnboardingStandardDiagram from '../../../viz/diagrams/OnboardingStandardDiagram';
 
 # Engineering Foundations for ML
 
@@ -12,12 +19,23 @@ The part of MLOps that gets skipped in most ML courses, and is the actual differ
 
 A model in a Jupyter notebook has implicit dependencies everywhere: cell execution order, global variables set three cells up, a specific package version installed by hand. None of that survives contact with a second person, a second machine, or six months of time passing. Everything below exists to remove that implicitness.
 
+<NotebookVsPipelineDiagram />
+
 ## Clean Code & Architecture
 
 - **SOLID principles**, applied to ML code specifically: a `Model` class shouldn't also handle data loading *and* API serialization (Single Responsibility) — split them so any one piece can change without breaking the others.
+
+<SingleResponsibilityDiagram />
+
 - **Modular architecture**: separate data loading, preprocessing, model definition, training loop, and evaluation into distinct modules — the same separation of concerns that makes any software maintainable, just applied to a domain (ML) that often skips it under deadline pressure.
 - **Configuration management**: hyperparameters, file paths, and environment-specific values belong in config files (YAML/JSON) or environment variables — never hardcoded, so the same code runs in dev/staging/production by changing config, not code.
+
+<ConfigVsHardcodedDiagram />
+
 - **Dependency management**: pin exact versions (`pyproject.toml` + a lockfile via `uv` or `poetry`) — an ML pipeline that silently picks up a newer NumPy/PyTorch and produces different numbers is a debugging nightmare that pinned dependencies prevent outright.
+
+<DependencyPinningDiagram />
+
 - **API design**: if your model is served behind an API (see [APIs & Model Serving](/docs/mlops/model-serving)), the contract (request/response schema, error format, versioning) is a design decision made deliberately, not whatever `FastAPI` happens to auto-generate from your first draft.
 
 ## Testing an ML System
@@ -33,6 +51,8 @@ Testing ML code is genuinely harder than testing normal software, because "corre
 - **API tests**: does the serving endpoint return the correct schema, correct status codes, and handle malformed requests without crashing?
 - **Load tests**: does the serving endpoint hold up under realistic (or peak) concurrent request volume, and what's the latency distribution under load?
 
+<TestTypeGlossaryDiagram />
+
 ## Tools
 
 - **`pytest`**: the standard Python test runner — fixtures, parametrized tests, and plugins cover nearly everything above.
@@ -41,8 +61,12 @@ Testing ML code is genuinely harder than testing normal software, because "corre
 - **Locust**: a load-testing tool — define realistic user behavior in Python, and it simulates many concurrent users hitting your API, reporting latency/throughput/error rate under load.
 - **Postman**: manual and scripted API testing/exploration — useful for exploring and documenting an API's actual behavior before automating tests against it.
 
+<TestingToolsDiagram />
+
 ## The Standard You're Aiming For
 
 A production-grade ML codebase should let a new engineer clone the repo, run one setup command, and have tests, linting, and a working local pipeline — no tribal knowledge required, no "ask Sarah how the data loads." Every practice above exists to make that true.
+
+<OnboardingStandardDiagram />
 
 Next: [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning) — MLOps starts with data, and data needs the same engineering discipline as code.
