@@ -3,6 +3,14 @@ title: "Vision Architectures: Transformers, Detection & Segmentation"
 sidebar_position: 7.5
 ---
 
+import ViTVariantsDiagram from '../../../viz/diagrams/ViTVariantsDiagram';
+import SwinWindowAttentionDiagram from '../../../viz/diagrams/SwinWindowAttentionDiagram';
+import TwoStageVsOneStageDetectionDiagram from '../../../viz/diagrams/TwoStageVsOneStageDetectionDiagram';
+import DetrSetPredictionDiagram from '../../../viz/diagrams/DetrSetPredictionDiagram';
+import SemanticVsInstanceSegmentationDiagram from '../../../viz/diagrams/SemanticVsInstanceSegmentationDiagram';
+import UNetArchitectureDiagram from '../../../viz/diagrams/UNetArchitectureDiagram';
+import MaskRcnnBranchesDiagram from '../../../viz/diagrams/MaskRcnnBranchesDiagram';
+import VisionArchitectureSelectionDiagram from '../../../viz/diagrams/VisionArchitectureSelectionDiagram';
 
 # Vision Architectures: Transformers, Detection & Segmentation
 
@@ -16,6 +24,10 @@ sidebar_position: 7.5
 - **DeiT (Data-efficient Image Transformer)** — trains a ViT effectively on much smaller datasets (ImageNet-scale rather than requiring hundreds of millions of images) using strong data augmentation and a **distillation token**: a second special token trained to match a CNN teacher's predictions, injecting some of CNN's inductive bias through distillation rather than architecture.
 - **Swin Transformer** — computes attention within local, non-overlapping windows (not globally across the whole image, which is what makes plain ViT quadratic in image size), and shifts the window boundaries between layers so information still flows across window edges over depth. This restores a CNN-like efficient, hierarchical structure (small windows early, effectively larger receptive field deeper) while keeping attention's flexibility — the standard backbone choice when ViT's full quadratic global attention is too expensive, e.g. for detection and segmentation on large images.
 
+<ViTVariantsDiagram />
+
+<SwinWindowAttentionDiagram />
+
 ## Object Detection
 
 Locate *and* classify multiple objects in an image, output as bounding boxes plus class labels.
@@ -23,7 +35,12 @@ Locate *and* classify multiple objects in an image, output as bounding boxes plu
 - **R-CNN family (R-CNN → Fast R-CNN → Faster R-CNN)**: two-stage detectors — first propose candidate regions likely to contain an object (originally via a separate algorithm, then a learned **Region Proposal Network** in Faster R-CNN), then classify and refine each proposed region. Accurate, but slower than single-stage approaches because of the two-stage pipeline.
 - **YOLO (You Only Look Once)**: a single-stage detector — divides the image into a grid and predicts bounding boxes and class probabilities directly, in one forward pass, no separate proposal stage. Dramatically faster than R-CNN-family models, historically at some accuracy cost (though later YOLO versions have closed most of that gap), making it the standard choice for real-time detection.
 - **SSD (Single Shot Detector)**: similar single-stage philosophy to YOLO, predicting boxes at multiple feature-map scales simultaneously to handle objects of very different sizes in one pass.
+
+<TwoStageVsOneStageDetectionDiagram />
+
 - **DETR (Detection Transformer)**: reformulates detection as a direct set-prediction problem using a Transformer encoder-decoder — a fixed set of learned "object queries" each attend over the image features and directly output one object's box and class, eliminating hand-designed components like anchor boxes and non-max suppression that every prior detector needed.
+
+<DetrSetPredictionDiagram />
 
 ## Segmentation
 
@@ -31,8 +48,16 @@ Classify *every pixel*, not just draw a box around an object.
 
 - **Semantic segmentation**: every pixel gets a class label (e.g. "road," "car," "sky") — objects of the same class aren't distinguished from each other.
 - **Instance segmentation**: like semantic segmentation, but also distinguishes *individual instances* of the same class (this car vs. that car).
+
+<SemanticVsInstanceSegmentationDiagram />
+
 - **U-Net**: an encoder-decoder architecture with an encoder that progressively downsamples (capturing context) and a decoder that progressively upsamples back to full resolution, with **skip connections** directly linking each encoder stage to its corresponding decoder stage — preserving fine spatial detail that pure downsampling would lose. Originally built for medical image segmentation (where training data is scarce and precise boundaries matter), U-Net's encoder-decoder-with-skip-connections pattern also became the backbone used inside diffusion models (see [Generative Models](/docs/deep-learning/generative-models)) for iterative image denoising — the same "preserve detail while processing at multiple scales" property applies there too.
+
+<UNetArchitectureDiagram />
+
 - **Mask R-CNN**: extends Faster R-CNN with a third output branch that predicts a pixel-level segmentation mask for each detected object, in addition to its box and class — the standard architecture for instance segmentation, unifying detection and segmentation in one model.
+
+<MaskRcnnBranchesDiagram />
 
 ## Choosing an Architecture
 
@@ -43,5 +68,7 @@ Classify *every pixel*, not just draw a box around an object.
 | Highest-accuracy detection, latency less critical | Faster R-CNN, DETR |
 | Pixel-level medical/precise segmentation | U-Net |
 | Detect *and* segment individual object instances | Mask R-CNN |
+
+<VisionArchitectureSelectionDiagram />
 
 Next: [Generative Models](/docs/deep-learning/generative-models) — GANs and diffusion models, the architectures that generate images rather than just understand them.
