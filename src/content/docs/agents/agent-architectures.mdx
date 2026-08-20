@@ -7,6 +7,10 @@ sidebar_position: 4
 import AgentExecutionGraph from '../../../viz/AgentExecutionGraph';
 import reactLoopDark from './img/react-loop.png';
 import reactLoopLight from './img/react-loop-light.png';
+import CoordinationPatternsDiagram from '../../../viz/diagrams/CoordinationPatternsDiagram';
+import ShortTermVsLongTermMemoryDiagram from '../../../viz/diagrams/ShortTermVsLongTermMemoryDiagram';
+import MemoryAsRetrievalDiagram from '../../../viz/diagrams/MemoryAsRetrievalDiagram';
+import HumanInTheLoopDiagram from '../../../viz/diagrams/HumanInTheLoopDiagram';
 
 # Agent Architectures
 
@@ -44,7 +48,9 @@ A single, well-prompted agent with good tools can handle a surprising amount. Mu
 
 ## Sub-Agents and Orchestrator Patterns
 
-A common middle ground: one **orchestrator** agent breaks a task into sub-tasks and delegates each to a specialized **sub-agent**, then combines their results. The orchestrator doesn't need deep expertise in each sub-task — it just needs to know *which* sub-agent to call and how to combine their outputs, similar in spirit to how a manager delegates without doing the work themselves.
+A common middle ground: one **orchestrator** agent breaks a task into sub-tasks and delegates each to a specialized **sub-agent**, then combines their results. The orchestrator doesn't need deep expertise in each sub-task — it just needs to know *which* sub-agent to call and how to combine their outputs, similar in spirit to how a manager delegates without doing the work themselves. This is the "hierarchical" topology among the coordination patterns [Multi-Agent Systems](/docs/agents/multi-agent-systems) covers:
+
+<CoordinationPatternsDiagram />
 
 ## Memory and State
 
@@ -52,6 +58,10 @@ An agent's context window holds everything it currently "knows" during a run —
 
 - **Short-term (working) memory**: the current conversation/task's context window itself — everything the agent has seen or done so far *in this run*. Bounded by the model's context length, and the reason long-running agents need an explicit strategy (below) once a task's history stops fitting.
 - **Long-term memory**: information that needs to persist *across* runs/sessions — stored externally (a database, a vector store for semantic recall) and explicitly retrieved back into context when relevant, the same retrieval pattern as [RAG](/docs/llms-genai/rag) applied to an agent's own history instead of a document corpus.
+
+<ShortTermVsLongTermMemoryDiagram />
+<MemoryAsRetrievalDiagram />
+
 - **Episodic vs. semantic memory**: episodic memory stores specific past events/interactions ("last Tuesday, this user asked about X and we resolved it by Y"); semantic memory stores generalized facts/knowledge extracted from those events ("this user prefers concise answers") — the same distinction cognitive science draws for human memory, and a useful design split for what an agent should store as a raw log vs. what it should distill and keep.
 - **Context management for long tasks**: as a task runs longer than fits in context, common strategies are periodic **summarization** (compress older history into a shorter summary, keep recent turns verbatim), **offloading** (write detailed intermediate state to external storage, keep only a reference/pointer in context), or a **sliding window** (simply drop the oldest history) — chosen based on whether old detail still matters later in the task.
 
@@ -62,6 +72,8 @@ Not every agent action should happen fully autonomously — human-in-the-loop (H
 - **Approval gates**: the agent proposes an action (send this email, execute this trade, delete this file) and pauses for explicit human approval before proceeding — standard for any action that's costly to reverse (see [AI Security](/docs/mlops/security-and-reproducibility)'s "excessive agency" concern, which HITL approval gates directly mitigate).
 - **Escalation**: the agent recognizes it's stuck, uncertain, or outside its competence, and hands off to a human rather than guessing — requires the agent to have an explicit "I don't know/can't do this confidently" path, not just always producing *an* answer regardless of confidence.
 - **Active correction**: a human reviews and can edit the agent's intermediate reasoning or output mid-task, not just approve/reject the final result — common in coding agents (reviewing a proposed diff before it's applied) and research agents (correcting a bad search direction early rather than after significant wasted work).
+
+<HumanInTheLoopDiagram />
 
 ## Durable Execution: Retries, Checkpoints & Long-Running Agents
 
