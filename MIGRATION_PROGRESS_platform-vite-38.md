@@ -44,9 +44,9 @@ consistent with the rest of the site.
 **New batch from lead (2026-08-20), 9 pages, deep-learning/ + llms-genai/
 (lead's own originally-claimed folder, "no folder gets quietly exempted"):**
 - [x] deep-learning/cnns.mdx — 9 diagrams, commit 1860d46
-- [ ] deep-learning/vision-architectures.mdx — NEXT
-- [ ] deep-learning/advanced-architectures.mdx
-- [ ] deep-learning/nn-layers-reference.mdx
+- [x] deep-learning/vision-architectures.mdx — 8 diagrams, commit 609fb7d
+- [x] deep-learning/advanced-architectures.mdx — 8 diagrams, commit 29812e5
+- [ ] deep-learning/nn-layers-reference.mdx — NEXT
 - [ ] deep-learning/training-deep-networks.mdx — lead flagged as high-value (norm/reg/residual)
 - [ ] deep-learning/generative-models.mdx — lead flagged as high-value (GANs/diffusion)
 - [ ] llms-genai/prompt-engineering.mdx
