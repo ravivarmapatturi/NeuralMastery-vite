@@ -4,6 +4,8 @@ sidebar_position: 6.3
 ---
 
 
+import GmmSoftAssignmentDiagram from '../../../viz/diagrams/GmmSoftAssignmentDiagram';
+
 # Gaussian Mixture Models & Spectral Clustering, In Full Depth
 
 [K-Means](/docs/machine-learning/kmeans-hierarchical-clustering) gives every point a hard, all-or-nothing cluster assignment. Gaussian Mixture Models give a *probability* of belonging to each cluster instead — a genuinely different, softer notion of what clustering even means.
@@ -16,7 +18,9 @@ $$P(\mathbf{x}) = \sum_{j=1}^k \pi_j \, \mathcal{N}(\mathbf{x} \mid \mu_j, \Sigm
 
 This is directly the generative modeling idea from [LDA/QDA](/docs/machine-learning/naive-bayes-lda-qda#lda-vs-qda) — model each group as a Gaussian — applied *without* known class labels. In fact, GMM is essentially unsupervised QDA: same Gaussian machinery, but the group membership itself is what needs to be discovered, not given.
 
-**Soft assignment**: for each point, GMM computes $P(\text{cluster } j \mid \mathbf{x})$ for every $j$ — a full probability distribution over cluster membership, not a single hard label. A point sitting between two cluster centers might get 60%/40% membership, honestly reflecting genuine ambiguity — something K-Means structurally cannot express (every point gets exactly one cluster, however close the call).
+**Soft assignment**: for each point, GMM computes $P(\text{cluster } j \mid \mathbf{x})$ for every $j$ — a full probability distribution over cluster membership, not a single hard label. A point sitting between two cluster centers might get 60%/40% membership, honestly reflecting genuine ambiguity — something K-Means structurally cannot express (every point gets exactly one cluster, however close the call). Real EM, real soft memberships, live:
+
+<GmmSoftAssignmentDiagram />
 
 ## Training GMM: Expectation-Maximization (EM)
 

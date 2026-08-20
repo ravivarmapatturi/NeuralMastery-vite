@@ -5,6 +5,7 @@ sidebar_position: 6.2
 
 import __migratedImg0 from './img/dbscan-clusters.png';
 
+import DbscanLiveDiagram from '../../../viz/diagrams/DbscanLiveDiagram';
 
 # DBSCAN & HDBSCAN, In Full Depth
 
@@ -25,6 +26,10 @@ Two parameters define everything: $\epsilon$ (a distance radius) and `min_sample
 **Why this handles non-convex shapes natively**: nothing in the algorithm ever computes a centroid or assumes a shape — clusters grow purely by chaining together dense neighborhoods, so an elongated, curved, or ring-shaped cluster is found exactly as easily as a round one. This is precisely why DBSCAN succeeds on the [two-moons data where K-Means fails](/docs/machine-learning/kmeans-hierarchical-clustering#k-means).
 
 **Choosing $\epsilon$ and `min_samples`**: `min_samples` is often set based on data dimensionality (a common heuristic: $\geq d+1$, where $d$ is the number of features). $\epsilon$ is typically chosen via a **k-distance plot** — sort each point's distance to its $k$-th nearest neighbor, plot it, and look for the "knee" where distances start increasing sharply — the same elbow-finding intuition as [K-Means' elbow method](/docs/machine-learning/kmeans-hierarchical-clustering#k-means), applied to density instead of inertia.
+
+Real DBSCAN, run live — drag ε and min_samples and watch cluster count, noise count, and every point's role recompute for real:
+
+<DbscanLiveDiagram />
 
 **Weakness**: a single global $\epsilon$ assumes roughly uniform density everywhere. If one region of the data is naturally denser than another, one $\epsilon$ can't serve both well — too small and it fragments the dense region; too large and it merges the sparse region into noise or into the wrong cluster.
 
