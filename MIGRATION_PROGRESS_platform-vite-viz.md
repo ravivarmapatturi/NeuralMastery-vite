@@ -27,24 +27,17 @@ ensembles, classifiers, specializedSupervised, clustering, dimreduction,
 unsupervisedMisc, elasticNet — reused across diagrams within a page/family
 instead of each component reinventing math.
 
-## In progress right now
-
-**machine-learning/model-evaluation-metrics.mdx** — 3 diagrams built and typechecked
-(BiasVarianceDecompositionDiagram, RocPrCurveDiagram, CalibrationDiagram,
-lib/modelEvaluation.ts), NOT YET inserted into the mdx or committed.
+**machine-learning/ is now 100% complete**, including model-evaluation-metrics.mdx
+and ml-workflow-fundamentals.mdx (both meta pages). supervised-learning.mdx and
+unsupervised-learning.mdx were skipped deliberately (pure hub/survey pages,
+coordinator's call).
 
 ## Next up
 
-1. Insert the 3 diagrams above into model-evaluation-metrics.mdx, verify, commit.
-2. ml-workflow-fundamentals.mdx — 2 diagrams planned (train/val/test split +
-   k-fold visual, and a real before/after data-leakage accuracy comparison) —
-   not yet built.
-3. Skip supervised-learning.mdx / unsupervised-learning.mdx (pure hub/survey
-   pages per coordinator's explicit call — would duplicate the deep-dive pages).
-4. After that: check in with coordinator for next assignment (queued list was:
-   ai-for-science, domain-applications, frameworks, build-from-scratch,
-   research-engineering — python-engineering/cs-fundamentals went to another
-   session, do not touch).
+Check in with coordinator for next assignment. Queued list as of last sync:
+ai-for-science, domain-applications, frameworks, build-from-scratch,
+research-engineering — python-engineering/cs-fundamentals went to another
+session (platform-vite-91), do not touch.
 
 ## Working pattern (keep doing this)
 
