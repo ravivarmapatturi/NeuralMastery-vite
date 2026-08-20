@@ -59,6 +59,15 @@ This distinction matters for the fix: data drift can sometimes be handled by ret
 ## Tools
 
 - **Evidently**: open-source, generates drift and data-quality reports/dashboards comparing a reference and current dataset — the most common starting point.
+
+```python
+from evidently.report import Report
+from evidently.metric_preset import DataDriftPreset
+
+report = Report(metrics=[DataDriftPreset()])
+report.run(reference_data=training_df, current_data=production_df)
+report.save_html("drift_report.html")   # per-feature PSI/KS-test results, and an overall drift verdict
+```
 - **WhyLabs**: a managed observability platform for ML, focused on data and model quality monitoring at scale without shipping raw data to a third party (it profiles data locally, sends only statistical summaries).
 - **Arize**: a managed ML observability platform with strong support for root-causing performance drops back to specific data segments (which slice of traffic is actually driving the drift).
 

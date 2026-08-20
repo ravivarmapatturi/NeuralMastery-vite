@@ -40,6 +40,41 @@ Numeric measurements aggregated over time — request rate, error rate, latency,
 
 <PrometheusGrafanaFlowDiagram />
 
+Instrumenting the FastAPI serving endpoint from [APIs & Model Serving](/docs/mlops/model-serving) to expose exactly the metrics a `/metrics` scrape needs:
+
+```python
+from prometheus_client import Counter, Histogram, make_asgi_app
+
+PREDICTIONS = Counter("model_predictions_total", "Total predictions served", ["model_version"])
+LATENCY = Histogram("model_predict_latency_seconds", "Prediction latency")
+
+app.mount("/metrics", make_asgi_app())  # Prometheus scrapes this
+
+@app.post("/v1/predict")
+@LATENCY.time()
+def predict(req: PredictRequest):
+    PREDICTIONS.labels(model_version="3").inc()
+    return PredictResponse(prediction=model.predict([req.features])[0])
+```
+
+The PromQL a dashboard or alert would actually run against that data — p95 latency, and an alert rule on error rate:
+
+```
+# p95 prediction latency over the last 5 minutes
+histogram_quantile(0.95, rate(model_predict_latency_seconds_bucket[5m]))
+```
+
+```yaml
+groups:
+  - name: model-api
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 10m
+        annotations:
+          summary: "model-api error rate above 5% for 10 minutes"
+```
+
 ## Traces
 
 A trace follows a single request across every service it touches, recording how long each step took — essential the moment a system is more than one service, because "the API was slow" could mean the API, the feature store, the model server, or a downstream database, and only a trace shows which one.
@@ -48,6 +83,20 @@ A trace follows a single request across every service it touches, recording how 
 
 - **OpenTelemetry**: the current standard, vendor-neutral instrumentation framework for generating traces (and metrics, and logs) — instrument once, export to whichever backend you choose.
 - **Jaeger**: a common open-source backend for storing and visualizing traces, frequently paired with OpenTelemetry instrumentation.
+
+```python
+from opentelemetry import trace
+
+tracer = trace.get_tracer(__name__)
+
+@app.post("/v1/predict")
+def predict(req: PredictRequest):
+    with tracer.start_as_current_span("feature-lookup"):
+        features = fetch_features(req.user_id)
+    with tracer.start_as_current_span("model-inference"):
+        prediction = model.predict([features])[0]
+    return PredictResponse(prediction=prediction)
+```
 
 ## Why All Three, Not Just One
 
