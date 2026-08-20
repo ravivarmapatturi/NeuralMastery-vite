@@ -76,3 +76,18 @@ Note on pace: mlops/ is now platform-vite-ad's (reassigned 2026-08-20, see top-o
 - [ ] legal-licensing-and-governance.mdx
 
 **Total: 35 pages.** Working smallest-folder-first (speech-audio → computer-vision → mlops) to dial in the pattern before the big mlops batch. Committing per page.
+
+## python-engineering/ + cs-fundamentals/ (assigned by lead, 2026-08-20)
+- [x] python-engineering/overview.mdx (ff57605)
+- [x] python-engineering/language-fundamentals-and-oop.mdx (46d8d75)
+- [x] python-engineering/concurrency-memory-and-performance.mdx (4ead237)
+- [x] python-engineering/packaging-testing-and-tooling.mdx (13980f8)
+- [~] python-engineering/roadmap.mdx — checklist, stays as-is
+**python-engineering/ complete.**
+- [ ] cs-fundamentals/overview.mdx
+- [ ] cs-fundamentals/operating-systems-and-concurrency.mdx — next
+- [ ] cs-fundamentals/networking-and-distributed-systems.mdx — HTTP section already trimmed to point at apis-http-and-protocols.mdx; other sections (TCP/UDP, DNS, load balancing, CAP, consensus) still need diagrams
+- [ ] cs-fundamentals/linux-git-and-tooling.mdx
+- [ ] cs-fundamentals/software-engineering-practices.mdx
+- [x] cs-fundamentals/apis-http-and-protocols.mdx — already done (ad, 11 diagrams)
+- [~] cs-fundamentals/roadmap.mdx — checklist, stays as-is
