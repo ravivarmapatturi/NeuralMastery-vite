@@ -24,6 +24,17 @@ Almost nothing in this section runs on a laptop in production — pick one cloud
 
 <ComputeSpectrumDiagram />
 
+```bash
+aws ec2 run-instances \
+  --image-id ami-0abcdef1234567890 \
+  --instance-type g5.xlarge \
+  --key-name my-key \
+  --count 1
+
+aws ec2 describe-instances --filters "Name=instance-type,Values=g5.xlarge" \
+  --query "Reservations[].Instances[].[InstanceId,State.Name]"
+```
+
 ## Storage & Databases
 
 - **S3**: object storage — the default place datasets, model artifacts, and logs live; nearly every tool in this section (DVC, MLflow, Airflow, Docker registries) can use S3 as a backend.
@@ -32,6 +43,22 @@ Almost nothing in this section runs on a laptop in production — pick one cloud
 - **DynamoDB**: a managed NoSQL key-value/document store — used where Redis-like low-latency lookups need to be durable and fully managed rather than in-memory.
 
 <StorageUseCaseDiagram />
+
+The AWS CLI and `boto3` (its Python SDK) for the two things every ML workflow actually does against S3 -- push a model artifact after training, pull it before serving:
+
+```bash
+aws s3 cp model.pkl s3://my-ml-bucket/models/fraud-detector/v3/model.pkl
+aws s3 sync ./training-data s3://my-ml-bucket/datasets/fraud/2026-01/
+aws s3 ls s3://my-ml-bucket/models/fraud-detector/
+```
+
+```python
+import boto3
+
+s3 = boto3.client("s3")
+s3.download_file("my-ml-bucket", "models/fraud-detector/v3/model.pkl", "model.pkl")
+s3.upload_file("model.pkl", "my-ml-bucket", "models/fraud-detector/v4/model.pkl")
+```
 
 ## ML-Specific: SageMaker
 
@@ -49,6 +76,29 @@ AWS's managed ML platform — training jobs, hyperparameter tuning, a built-in m
 - **ECR**: AWS's container registry — see [Containers](/docs/mlops/containers).
 
 <RequestPathSecurityDiagram />
+
+A real, minimal IAM policy — a training job's role gets read-only access to exactly one bucket prefix, nothing else:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:ListBucket"],
+      "Resource": [
+        "arn:aws:s3:::my-ml-bucket",
+        "arn:aws:s3:::my-ml-bucket/datasets/fraud/*"
+      ]
+    }
+  ]
+}
+```
+
+```bash
+aws secretsmanager get-secret-value --secret-id prod/model-api/db-credentials \
+  --query SecretString --output text
+```
 
 ## The Pattern to Internalize
 
