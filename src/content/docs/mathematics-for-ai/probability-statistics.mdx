@@ -4,13 +4,28 @@ sidebar_position: 5
 ---
 
 
+import DistributionExplorerDiagram from '../../../viz/diagrams/DistributionExplorerDiagram';
+import BayesUpdateDiagram from '../../../viz/diagrams/BayesUpdateDiagram';
+import MleVsMapDiagram from '../../../viz/diagrams/MleVsMapDiagram';
+import CltDemoDiagram from '../../../viz/diagrams/CltDemoDiagram';
+import PermutationPValueDiagram from '../../../viz/diagrams/PermutationPValueDiagram';
+import BootstrapDiagram from '../../../viz/diagrams/BootstrapDiagram';
+import ConfounderDiagram from '../../../viz/diagrams/ConfounderDiagram';
+import EntropyKlDiagram from '../../../viz/diagrams/EntropyKlDiagram';
+
 # Probability & Statistics for AI
 
 Models don't produce certainties — they produce probability distributions. Understanding probability is understanding what a model's output actually means, and statistics is how you tell whether a model's improvement is real or just noise.
 
+## Intuition: What a Model's Output Means, and Whether to Trust a Number
+
+Two threads run through this whole page. The first: a model's output is a *distribution*, not an answer — everything from Bayes' theorem to entropy is about how to reason correctly with that distribution rather than pretending it's a single certain fact. The second: any number computed from a finite sample of data (a p-value, a confidence interval, a correlation) can mislead you in specific, well-understood ways — the second half of this page is about the tools (bootstrap, permutation tests, causal reasoning) that keep you honest about what a number from data actually licenses you to conclude.
+
 ## Random Variables and Distributions
 
-A random variable is a quantity whose value depends on chance. Its **distribution** describes how likely each possible value is.
+A random variable is a quantity whose value depends on chance. Its **distribution** describes how likely each possible value is. Pick a distribution and adjust its real parameters below:
+
+<DistributionExplorerDiagram />
 
 - **Bernoulli**: a single yes/no outcome (e.g. "is this email spam?") — the distribution behind binary classification.
 - **Binomial**: the number of successes in $n$ independent Bernoulli trials.
@@ -30,35 +45,61 @@ Why it matters: the bias-variance tradeoff (see [Machine Learning](/docs/machine
 
 $$P(A \mid B) = \frac{P(B \mid A) \, P(A)}{P(B)}$$
 
-Lets you update a belief ($P(A)$, the *prior*) given new evidence ($B$) to get an updated belief ($P(A \mid B)$, the *posterior*). This single equation underlies Naive Bayes classifiers, Bayesian optimization (used for hyperparameter tuning), and the conceptual framing of how RAG systems should ideally combine a model's prior knowledge with retrieved evidence.
+Lets you update a belief ($P(A)$, the *prior*) given new evidence ($B$) to get an updated belief ($P(A \mid B)$, the *posterior*). Real numbers, the classic base-rate case:
+
+<BayesUpdateDiagram />
+
+This single equation underlies Naive Bayes classifiers, Bayesian optimization (used for hyperparameter tuning), and the conceptual framing of how RAG systems should ideally combine a model's prior knowledge with retrieved evidence.
 
 ## MLE vs MAP
 
 - **Maximum Likelihood Estimation (MLE)**: pick the model parameters that make the observed data most probable. This is what "minimizing cross-entropy loss" actually is under the hood — cross-entropy loss minimization *is* MLE for a categorical distribution.
-- **Maximum A Posteriori (MAP)**: like MLE, but also weighs in a prior belief about what parameters are reasonable. Adding L2 regularization to a loss function is mathematically equivalent to doing MAP estimation with a Gaussian prior on the weights.
+- **Maximum A Posteriori (MAP)**: like MLE, but also weighs in a prior belief about what parameters are reasonable.
+
+Real estimates from a real (small, adjustable) coin-flip dataset:
+
+<MleVsMapDiagram />
+
+Adding L2 regularization to a loss function is mathematically equivalent to doing MAP estimation with a Gaussian prior on the weights — the same shrinkage-toward-a-default-belief visible above, just applied to millions of weights instead of one coin bias.
 
 ## Central Limit Theorem
 
-The average of a large number of independent random variables tends toward a Gaussian distribution, regardless of the original variables' distribution. This is why so much of statistics gets to assume normality, and why metrics averaged over large evaluation sets behave predictably even when individual examples are noisy.
+The average of a large number of independent random variables tends toward a Gaussian distribution, regardless of the original variables' distribution. Watch it happen live, starting from a genuinely non-Gaussian source:
+
+<CltDemoDiagram />
+
+This is why so much of statistics gets to assume normality, and why metrics averaged over large evaluation sets behave predictably even when individual examples are noisy.
 
 ## Hypothesis Testing & Significance
 
 - **Null hypothesis** ($H_0$): the "nothing changed" baseline assumption — e.g. "the new model's conversion rate equals the old one's."
-- **p-value**: the probability of seeing a result at least this extreme *if the null hypothesis were true*. A small p-value (conventionally < 0.05) suggests the result probably isn't just noise. **A p-value is not "the probability the null hypothesis is true"** — that's the single most common misinterpretation, and worth internalizing precisely: it's a statement about how surprising the *data* would be under $H_0$, not a statement of probability about the hypothesis itself.
-- **Confidence intervals**: a range constructed from the observed data such that, if you repeated the experiment many times, that construction procedure would contain the true value some target fraction (e.g. 95%) of the time. A 95% CI that excludes zero for a lift metric is the interval-based equivalent of a p-value below 0.05 — the two are directly connected, and reporting the interval (not just the p-value) also tells you the *size* of the effect, not just whether it's "significant."
-- **Statistical power**: the probability of correctly detecting a real effect when one truly exists (i.e. $1 - P(\text{false negative})$). Power depends on sample size, effect size, and significance threshold — an underpowered A/B test can run for weeks and still correctly fail to find a real 2% lift simply because too few users saw it. Compute the required sample size *before* running an experiment, not after it "didn't reach significance."
-- **A/B testing**: the practical application — before shipping a new model to 100% of users, you run it against a control group and use hypothesis testing to confirm the improvement is real, not random variation. This is one of the most common day-to-day uses of statistics in an ML engineer's job.
+- **p-value**: the probability of seeing a result at least this extreme *if the null hypothesis were true*. Real permutation-test p-value, computed from the real empirical null distribution rather than a formula:
+
+<PermutationPValueDiagram />
+
+**A p-value is not "the probability the null hypothesis is true"** — that's the single most common misinterpretation, and worth internalizing precisely: it's a statement about how surprising the *data* would be under $H_0$, not a statement of probability about the hypothesis itself.
+
+- **Confidence intervals**: a range constructed from the observed data such that, if you repeated the experiment many times, that construction procedure would contain the true value some target fraction (e.g. 95%) of the time. A 95% CI that excludes zero for a lift metric is the interval-based equivalent of a p-value below 0.05.
+- **Statistical power**: the probability of correctly detecting a real effect when one truly exists. Power depends on sample size, effect size, and significance threshold — an underpowered A/B test can run for weeks and still correctly fail to find a real 2% lift simply because too few users saw it. Compute the required sample size *before* running an experiment, not after it "didn't reach significance."
+- **A/B testing**: the practical application — before shipping a new model to 100% of users, you run it against a control group and use hypothesis testing to confirm the improvement is real, not random variation.
 
 ## Bootstrap and Permutation Tests
 
 Two resampling techniques that estimate uncertainty *without* assuming a particular distribution (like the Gaussian assumption behind many classical formulas) — useful exactly when a metric's theoretical sampling distribution is unknown or intractable (e.g. the median, or a custom business metric).
 
-- **Bootstrap**: resample the observed data *with replacement* many times (each resample the same size as the original), compute the metric of interest on each resample, and use the spread of those computed values as an empirical confidence interval. If you've ever seen a metric reported with error bars from "1000 bootstrap resamples," this is exactly what produced them — and it's the same resampling-with-replacement idea bagging methods like Random Forest use internally, applied here to *uncertainty estimation* instead of ensembling.
-- **Permutation test**: to test whether two groups genuinely differ, randomly shuffle ("permute") the group labels many times, recomputing the difference in means (or whatever statistic) each time. This builds an empirical null distribution directly from the data itself, with no distributional assumptions — then the real observed difference is compared against that empirical null. The more of the permuted differences that meet or exceed the real one, the higher the p-value.
+**Bootstrap**: resample the observed data *with replacement* many times, compute the metric of interest on each resample, and use the spread of those computed values as an empirical confidence interval. Real 1000-resample run:
+
+<BootstrapDiagram />
+
+If you've ever seen a metric reported with error bars from "1000 bootstrap resamples," this is exactly what produced them — and it's the same resampling-with-replacement idea bagging methods like Random Forest use internally, applied here to *uncertainty estimation* instead of ensembling.
+
+**Permutation test** (the mechanism behind the p-value diagram above): to test whether two groups genuinely differ, randomly shuffle ("permute") the group labels many times, recomputing the difference in means each time. This builds an empirical null distribution directly from the data itself, with no distributional assumptions.
 
 ## Causal Inference & Sampling Bias
 
-**Correlation is not causation** is the single most important caveat in applied statistics, and the entire field of causal inference exists to formalize when you *can* legitimately conclude causation:
+**Correlation is not causation** is the single most important caveat in applied statistics. Watch a real spurious correlation appear from a shared confounder, and disappear under real randomization:
+
+<ConfounderDiagram />
 
 - **Confounders**: a variable that influences both the presumed cause and the presumed effect, creating a spurious correlation between them (e.g. ice cream sales and drowning deaths both rise with summer heat — heat is the confounder, ice cream doesn't cause drowning).
 - **Randomized controlled trials (RCTs)**: randomly assigning subjects to treatment/control is what breaks confounding — with random assignment, any systematic pre-existing difference between groups is (in expectation) eliminated, which is exactly why A/B testing (a form of RCT) is trusted to establish causation, while purely observational comparisons ("users who used feature X had higher retention") are not, without further assumptions.
@@ -66,9 +107,33 @@ Two resampling techniques that estimate uncertainty *without* assuming a particu
 
 ## Entropy, Cross-Entropy, and KL Divergence
 
-- **Entropy** $H(P) = -\sum_x P(x) \log P(x)$: measures the inherent uncertainty in a distribution. A fair coin has higher entropy than a biased one.
-- **Cross-entropy** $H(P, Q) = -\sum_x P(x) \log Q(x)$: measures how well a predicted distribution $Q$ matches the true distribution $P$. **This is the loss function used to train virtually every classifier and every LLM** (next-token prediction is a giant cross-entropy minimization over the vocabulary distribution).
-- **KL divergence** $D_{KL}(P \| Q) = H(P, Q) - H(P)$: measures how much information is lost when $Q$ is used to approximate $P$. Shows up in variational autoencoders, in RLHF (constraining the fine-tuned policy from drifting too far from the base model), and in DPO's loss formulation.
+- **Entropy** $H(P) = -\sum_x P(x) \log P(x)$: measures the inherent uncertainty in a distribution.
+- **Cross-entropy** $H(P, Q) = -\sum_x P(x) \log Q(x)$: measures how well a predicted distribution $Q$ matches the true distribution $P$.
+- **KL divergence** $D_{KL}(P \| Q) = H(P, Q) - H(P)$: measures how much information is lost when $Q$ is used to approximate $P$.
+
+Drag a predicted distribution $Q$ toward (or away from) the true $P$ and watch all three real quantities respond:
+
+<EntropyKlDiagram />
+
+**This is the loss function used to train virtually every classifier and every LLM** — next-token prediction is a giant cross-entropy minimization over the vocabulary distribution. KL divergence shows up in variational autoencoders, in RLHF (constraining the fine-tuned policy from drifting too far from the base model), and in DPO's loss formulation.
+
+## Code: A Real Bootstrap Confidence Interval
+
+The exact procedure the bootstrap diagram above runs:
+
+```python
+import numpy as np
+
+def bootstrap_ci(data: np.ndarray, statistic=np.median, n_resamples=1000, ci=0.95) -> tuple[float, float]:
+    resample_stats = []
+    for _ in range(n_resamples):
+        resample = np.random.choice(data, size=len(data), replace=True)  # WITH replacement
+        resample_stats.append(statistic(resample))
+    alpha = 1 - ci
+    lower = np.percentile(resample_stats, 100 * alpha / 2)
+    upper = np.percentile(resample_stats, 100 * (1 - alpha / 2))
+    return lower, upper
+```
 
 ## Where this shows up in the rest of the curriculum
 
