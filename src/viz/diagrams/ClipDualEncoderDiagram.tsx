@@ -1,13 +1,11 @@
 import { useVizTokens } from '../../theme/vizTokens';
 import { VisualizationContainer } from '../primitives';
-import { getConceptColor } from './diagramSystem';
 
 /** A separate encoder per modality, trained contrastively so matching
  * pairs land close in one shared embedding space -- what powers
  * zero-shot classification and text-to-image retrieval. */
 export default function ClipDualEncoderDiagram() {
   const t = useVizTokens();
-  const color = getConceptColor(t, 'attention');
   const okColor = t.accentPrimary;
 
   return (
