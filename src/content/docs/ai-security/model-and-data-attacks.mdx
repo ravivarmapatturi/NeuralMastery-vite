@@ -4,17 +4,34 @@ sidebar_position: 4
 ---
 
 
+import MembershipInferenceDiagram from '../../../viz/diagrams/MembershipInferenceDiagram';
+import ModelExtractionDiagram from '../../../viz/diagrams/ModelExtractionDiagram';
+import AdversarialPerturbationDiagram from '../../../viz/diagrams/AdversarialPerturbationDiagram';
+import BackdoorTriggerDiagram from '../../../viz/diagrams/BackdoorTriggerDiagram';
+
 # Model & Data Attacks
 
 A separate attack family from [prompt-based attacks](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks): these target the model artifact, its training data, or the broader supply chain that produced it — attacks that don't go through the model's normal input/output interface at all, or that corrupt what the model learns in the first place.
 
+## Intuition: Attacking What the Model *Is*, Not What It's *Told*
+
+Every attack on this page targets a different part of the model's existence rather than its runtime input: extraction and membership inference target what the model *learned* and how it *behaves statistically*; poisoning and backdoors target what it *learns in the first place*; adversarial examples target the *shape of its decision boundary*; supply-chain attacks target *where it came from*. None of these need a single malicious prompt — some don't even need API access at all.
+
 ## Model Extraction
 
-Stealing a model's functionality by repeatedly querying its API and using the input/output pairs to train a **surrogate model** that mimics the original — the attacker never accesses the original weights, but ends up with a functionally similar model at a fraction of the original training cost. This is a real commercial threat for any team offering a model as a paid API: a competitor (or anyone) can, in principle, distill your model's behavior into their own via API access alone, unless rate limiting, output randomization, and query-pattern monitoring (detecting the systematic, high-volume querying pattern extraction requires) raise the cost enough to deter it.
+Stealing a model's functionality by repeatedly querying its API and using the input/output pairs to train a **surrogate model** that mimics the original — the attacker never accesses the original weights, but ends up with a functionally similar model at a fraction of the original training cost. Real surrogate fidelity as a function of query budget, and the illustrative cost that buys it:
+
+<ModelExtractionDiagram />
+
+This is a real commercial threat for any team offering a model as a paid API: a competitor (or anyone) can, in principle, distill your model's behavior into their own via API access alone, unless rate limiting, output randomization, and query-pattern monitoring (detecting the systematic, high-volume querying pattern extraction requires) raise the cost enough to deter it.
 
 ## Membership Inference
 
-Determining whether a *specific* record was part of a model's training data, just by observing the model's behavior on that record (models tend to behave subtly differently — often more "confidently" — on data they were trained on versus data they weren't). This is a genuine **privacy** attack, not just an IP concern: if a model was trained on sensitive records (medical data, private communications), successfully inferring that a specific individual's record was included can itself leak sensitive information about that individual, even without extracting the record's actual content. This is part of why techniques like differential privacy (adding calibrated noise during training specifically to bound how much any single training example can influence — and therefore be inferred from — the final model) exist for privacy-sensitive training data.
+Determining whether a *specific* record was part of a model's training data, just by observing the model's behavior on that record — models tend to behave subtly differently (often more "confidently") on data they were trained on versus data they weren't. Real confidence distributions for trained-on vs. never-seen inputs, and what happens to the attack as training noise increases:
+
+<MembershipInferenceDiagram />
+
+This is a genuine **privacy** attack, not just an IP concern: if a model was trained on sensitive records (medical data, private communications), successfully inferring that a specific individual's record was included can itself leak sensitive information about that individual, even without extracting the record's actual content. This is exactly what the noise slider above demonstrates: **differential privacy** (adding calibrated noise during training specifically to bound how much any single training example can influence — and therefore be inferred from — the final model) works by directly widening those two distributions until they overlap too much for the attacker's threshold to separate them reliably.
 
 ## Data Poisoning
 
@@ -22,11 +39,19 @@ Corrupting a model's training data so the resulting model behaves in an attacker
 
 ## Backdoors / Trojaned Models
 
-A more targeted, deliberate form of poisoning: the model is trained (or fine-tuned) to behave normally on almost all inputs, but to produce a specific, attacker-chosen output when it encounters a particular hidden **trigger** (a specific phrase, an unusual pixel pattern in an image) — invisible in normal evaluation, since the model performs correctly on every input *except* ones containing the trigger, which an evaluator has no particular reason to test for. This is why supply-chain trust for pretrained/fine-tuned models matters as much as it does (below) — a backdoor introduced during training by whoever produced a model you didn't train yourself is extremely difficult to detect through black-box testing alone, since you'd need to already suspect a specific trigger to find it.
+A more targeted, deliberate form of poisoning: the model is trained (or fine-tuned) to behave normally on almost all inputs, but to produce a specific, attacker-chosen output when it encounters a particular hidden **trigger**. The reason black-box testing alone essentially never catches this is a real, computable statistics problem — the same shape as the deception-detection math on Alignment & RLHF, just applied to "possible trigger patterns" instead of "possible bad behaviors":
+
+<BackdoorTriggerDiagram />
+
+This is why supply-chain trust for pretrained/fine-tuned models matters as much as it does (below) — a backdoor introduced during training by whoever produced a model you didn't train yourself is extremely difficult to detect through black-box testing alone, since you'd need to already suspect a specific trigger to find it.
 
 ## Adversarial Examples
 
-Small, often human-imperceptible perturbations to an input that cause a model to misclassify it confidently — a classic, well-studied result in classical computer vision (a few pixels changed, imperceptible to a human, causing a model to misclassify a stop sign as a speed limit sign) that generalizes to other modalities. The existence of adversarial examples reveals that a model's learned decision boundary, however accurate on natural data, doesn't necessarily correspond to anything like human-perceptual similarity — two inputs that look identical to a human can sit on opposite sides of the model's decision boundary. Defenses include **adversarial training** (deliberately including adversarial examples in training data, so the model learns to be robust to them — directly analogous to [data augmentation](/docs/computer-vision/vision-fundamentals#data-augmentation-for-vision), just adversarially targeted instead of randomly generated) and input preprocessing/detection specifically looking for the statistical signature of adversarial perturbation.
+Small, often human-imperceptible perturbations to an input that cause a model to misclassify it confidently — a classic, well-studied result in classical computer vision that generalizes to other modalities. Real gradient-based perturbation, real decision boundary, real classification flip:
+
+<AdversarialPerturbationDiagram />
+
+The existence of adversarial examples reveals that a model's learned decision boundary, however accurate on natural data, doesn't necessarily correspond to anything like human-perceptual similarity — two inputs that look identical to a human can sit on opposite sides of the model's decision boundary. Defenses include **adversarial training** (deliberately including adversarial examples in training data, so the model learns to be robust to them — directly analogous to [data augmentation](/docs/computer-vision/vision-fundamentals#data-augmentation-for-vision), just adversarially targeted instead of randomly generated) and input preprocessing/detection specifically looking for the statistical signature of adversarial perturbation.
 
 ## AI Supply-Chain Attacks
 
@@ -35,5 +60,27 @@ The same software-supply-chain trust problem as any dependency, applied to the A
 - **Malicious models**: a pretrained model downloaded from a public hub can itself be the attack vector — a backdoor (above), or in the worst case, a model file format that allows arbitrary code execution on load (some older/insecure serialization formats for model weights have had exactly this vulnerability) — verify model provenance and prefer formats/sources with integrity guarantees, the same scrutiny applied to any third-party binary.
 - **Malicious datasets**: a public dataset used for training or fine-tuning can be poisoned (above) at the source, before you ever touch it — the same provenance-and-validation discipline applies to data sources as to model sources.
 - **Dependency attacks**: the ML-specific instance of the general software supply-chain problem — a compromised package in the Python ML ecosystem (PyTorch, a popular fine-tuning library, a data-loading utility) can execute arbitrary code the moment it's installed or imported, addressed by the same [container/dependency scanning](/docs/mlops/security-and-reproducibility) discipline as any other software dependency, with the added wrinkle that ML dependency trees tend to be unusually deep and fast-moving, making thorough auditing genuinely harder than for a typical web application's dependency tree.
+
+## Code: A Real Membership-Inference Check
+
+The actual attack the diagram above simulates, runnable against a real model:
+
+```python
+import numpy as np
+
+def membership_inference_score(model, x, y_true, threshold=0.7):
+    """Real attack: high model confidence on the TRUE label is the
+    signal, exactly the histogram separation shown above."""
+    probs = model.predict_proba(x.reshape(1, -1))[0]
+    confidence_on_true_label = probs[y_true]
+    return confidence_on_true_label >= threshold  # flagged as "likely a training member"
+
+# A real, cheap defense-side check: run this over a known-held-out set
+# and a known-training-set sample, and measure the real gap.
+train_confidences = [model.predict_proba(x.reshape(1, -1))[0][y] for x, y in train_sample]
+heldout_confidences = [model.predict_proba(x.reshape(1, -1))[0][y] for x, y in heldout_sample]
+gap = np.mean(train_confidences) - np.mean(heldout_confidences)
+print(f"Real confidence gap (bigger = more vulnerable to membership inference): {gap:.3f}")
+```
 
 AI Security section complete. Next: [AI Safety & Alignment](/docs/ai-safety/roadmap) — a related but distinct discipline: security defends against adversaries, safety is about a well-intentioned system still behaving badly on its own.
