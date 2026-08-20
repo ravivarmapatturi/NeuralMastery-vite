@@ -17,16 +17,16 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done (≥10 compo
 **Cross-project work done in this session outside the original 35-page diagram scope** (tracked here since it's the same session): built the homepage (src/components/Home.tsx, commit 313f1d9), rewrote getting-started/intro.mdx (3607bd1), added per-route document.title (270ef45), deleted the redundant src/content/docs/intro.mdx (d4e7c84). All pushed + deployed.
 
 ## speech-audio/ (4 content pages)
-- [ ] overview.mdx — claimed, P0 stub-expansion queued after message-queues page
-- [ ] roadmap.mdx — claimed, same
+- [x] overview.mdx — commit 9c5d237, pushed+deployed. 4 components (RawAudioCompressionDiagram, AudioTaskIODiagram, LatencyBudgetDiagram, AudioEvaluationMetricsDiagram)
+- [~] roadmap.mdx — decided: stays a checklist, matches sitewide precedent (no roadmap.mdx anywhere has been expanded)
 - [x] audio-fundamentals.mdx — 7 components (commit 386f71d): SamplingNyquistDiagram, BitDepthQuantizationDiagram, FourierSumOfSinesDiagram, WaveformSpectrogramDiagram (raster replacement), StftWindowTradeoffDiagram, MelScaleDiagram, MfccPipelineDiagram. Below the aspirational ≥10 target -- 7 genuinely content-tied diagrams, no padding.
-- [ ] speech-audio-tasks.mdx
+- [ ] speech-audio-tasks.mdx — has real content, zero diagrams; not yet started
 
 ## computer-vision/ (5 content pages)
 - [x] overview.mdx — 10 content-tied interactive diagrams, substantive prose expansion, and browser/build validation (commits ae5c29d, b212122, e55e039)
-- [ ] roadmap.mdx — status TBD, see scope calibration note above
-- [ ] vision-fundamentals.mdx — has 1 raster (convolution-demo.png)
-- [ ] vision-tasks-and-models.mdx
+- [~] roadmap.mdx — same decision as speech-audio/roadmap.mdx: stays a checklist
+- [x] vision-fundamentals.mdx — commit 21e720b, pushed. 5 components (ConvolutionSlideDiagram -- raster replacement, real computed convolution -- RgbChannelDecompositionDiagram, MorphologicalOpsDiagram, HogFeatureDiagram, DataAugmentationDiagram). Deploy triggered (run 32328743527).
+- [ ] vision-tasks-and-models.mdx — next
 - [ ] modern-vision-and-multimodal.mdx
 
 ## New: mlops/message-queues-and-async-processing.mdx (assigned by lead, 2026-08-20)
