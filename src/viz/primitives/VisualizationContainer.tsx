@@ -20,6 +20,7 @@ export default function VisualizationContainer({
   return (
     <div
       style={{
+        position: 'relative',
         background: t.surface,
         border: `1px solid ${t.border}`,
         borderRadius: RADIUS.lg,
@@ -44,6 +45,22 @@ export default function VisualizationContainer({
           {footer}
         </div>
       )}
+      <span
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: 6,
+          right: 10,
+          fontSize: 9,
+          letterSpacing: '0.02em',
+          color: t.textMuted,
+          opacity: 0.35,
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        Neural Mastery
+      </span>
     </div>
   );
 }
