@@ -4,6 +4,9 @@ sidebar_position: 3
 ---
 
 
+import ChainRuleBackpropDiagram from '../../../viz/diagrams/ChainRuleBackpropDiagram';
+import BpeTokenizationDiagram from '../../../viz/diagrams/BpeTokenizationDiagram';
+
 # The Build List
 
 Fifteen builds, roughly ordered so each one uses ideas the previous ones established. Each entry states what "done" looks like — a concrete, checkable target, not an open-ended exploration — and links to the conceptual page it implements.
@@ -14,7 +17,9 @@ Fifteen builds, roughly ordered so each one uses ideas the previous ones establi
 
 ## 2. An Autodiff Engine
 
-**Build**: a `micrograd`-style scalar (or small-tensor) autodiff engine — a `Value`/`Tensor` class that records operations into a computation graph as they happen, and a `.backward()` method that walks the graph in reverse, applying the chain rule at each node. **Done when**: you can compute the gradient of an arbitrary composed expression correctly, and explain why the graph has to be walked in *reverse* topological order. See [Calculus & Optimization — The Chain Rule](/docs/mathematics-for-ai/calculus-optimization#the-chain-rule--backpropagation).
+**Build**: a `micrograd`-style scalar (or small-tensor) autodiff engine — a `Value`/`Tensor` class that records operations into a computation graph as they happen, and a `.backward()` method that walks the graph in reverse, applying the chain rule at each node. **Done when**: you can compute the gradient of an arbitrary composed expression correctly, and explain why the graph has to be walked in *reverse* topological order. See [Calculus & Optimization — The Chain Rule](/docs/mathematics-for-ai/calculus-optimization#the-chain-rule--backpropagation) for the exact forward-then-backward computation your engine needs to reproduce:
+
+<ChainRuleBackpropDiagram />
 
 ## 3. A Neural Network
 
@@ -26,7 +31,9 @@ Fifteen builds, roughly ordered so each one uses ideas the previous ones establi
 
 ## 5. A BPE Tokenizer
 
-**Build**: Byte Pair Encoding from scratch — count adjacent byte-pair frequencies in a training corpus, iteratively merge the most frequent pair into a new token, until reaching a target vocabulary size. **Done when**: you can encode a new string into your learned vocabulary and decode it back to the exact original text. See [Foundation Model Internals — Tokenization](/docs/llms-genai/foundation-model-internals#tokenization).
+**Build**: Byte Pair Encoding from scratch — count adjacent byte-pair frequencies in a training corpus, iteratively merge the most frequent pair into a new token, until reaching a target vocabulary size. **Done when**: you can encode a new string into your learned vocabulary and decode it back to the exact original text. See [Foundation Model Internals — Tokenization](/docs/llms-genai/foundation-model-internals#tokenization) for the exact merge-by-merge algorithm to implement:
+
+<BpeTokenizationDiagram />
 
 ## 6. Self-Attention
 
