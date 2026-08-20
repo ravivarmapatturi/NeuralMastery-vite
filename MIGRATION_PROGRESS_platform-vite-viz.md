@@ -54,12 +54,26 @@ new diagram file, not just before touching shared infra files.**
 Also fixed an unrelated CI-breaking TS6133 error on main in
 NdcgRankingDiagram.tsx (not mine, but trivial + blocking everyone) and pushed.
 
+**build-from-scratch/** — complete (the-build-list.mdx: reused
+ChainRuleBackpropDiagram + BpeTokenizationDiagram rather than duplicating
+already-well-illustrated concept pages -- this is a checklist page, light
+touch is correct here).
+
+**research-engineering/** — complete (how-to-read-ai-papers.mdx: clickable
+paper-structure walkthrough; paper-timeline.mdx: clickable lineage diagram).
+Both are methodology pages, not technical math -- click-through structural
+diagrams, not real-computation ones, and that's the right call for this
+content type.
+
 ## Next up
 
-build-from-scratch/, research-engineering/, then interview-prep/ (6 pages,
-added to queue later — DSA/ML-coding/system-design/behavioral, visualize
-where it genuinely fits e.g. complexity/DS concepts).
+interview-prep/ (6 pages, last item on queue) — DSA/ML-coding/system-
+design/behavioral content, visualize where it genuinely fits (e.g.
+complexity/DS concepts), skip where it's pure advice/behavioral prose.
 python-engineering/cs-fundamentals belong to platform-vite-91, do not touch.
+
+After interview-prep/: my originally-queued list is fully done. Check in
+with coordinator for further assignment or confirm done.
 
 ## Working pattern (keep doing this)
 
