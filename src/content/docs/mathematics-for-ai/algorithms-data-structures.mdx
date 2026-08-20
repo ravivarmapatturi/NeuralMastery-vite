@@ -4,13 +4,25 @@ sidebar_position: 6
 ---
 
 
+import BigOGrowthDiagram from '../../../viz/diagrams/BigOGrowthDiagram';
+import HashMapVsArrayDiagram from '../../../viz/diagrams/HashMapVsArrayDiagram';
+import BeamSearchHeapDiagram from '../../../viz/diagrams/BeamSearchHeapDiagram';
+import AttentionComplexityDiagram from '../../../viz/diagrams/AttentionComplexityDiagram';
+import SortingComplexityDiagram from '../../../viz/diagrams/SortingComplexityDiagram';
+
 # Algorithms & Data Structures for AI
 
 Not "pure math," but every AI/ML interview loop tests this alongside the theory — and understanding complexity is what lets you reason about whether an ML system will actually scale.
 
+## Intuition: Complexity Classes Aren't Academic — They're a Budget
+
+Every number on this page is really answering one question: as a real input (a sequence, a vocabulary, a dataset) grows, does the cost grow slowly enough to still be affordable? $O(n)$ and $O(n^2)$ look similar on paper; at real production scale they're the difference between "fine" and "the reason this system can't ship." That gap, made concrete with real operation counts rather than asymptotic notation alone, is what this page is really about.
+
 ## Big-O Complexity
 
-Big-O describes how an algorithm's running time (or memory) grows as input size $n$ grows, ignoring constant factors:
+Big-O describes how an algorithm's running time (or memory) grows as input size $n$ grows, ignoring constant factors. Drag $n$ and watch real operation counts diverge:
+
+<BigOGrowthDiagram />
 
 - $O(1)$ — constant time (hash map lookup)
 - $O(\log n)$ — logarithmic (binary search, balanced tree operations)
@@ -19,21 +31,28 @@ Big-O describes how an algorithm's running time (or memory) grows as input size 
 - $O(n^2)$ — quadratic (naive pairwise comparison — e.g. computing full pairwise attention scores)
 - $O(2^n)$ — exponential (brute-force search over subsets — avoid at all costs)
 
-**Why this matters for AI specifically**: self-attention is $O(n^2)$ in sequence length, which is *why* long-context LLMs are hard and expensive, and why Flash Attention / sparse attention exist — they're direct responses to this complexity bound.
+**Why this matters for AI specifically**: self-attention is $O(n^2)$ in sequence length, which is *why* long-context LLMs are hard and expensive, and why Flash Attention / sparse attention exist — direct responses to this complexity bound, made concrete below.
 
 ## Core Data Structures
 
 - **Arrays** — contiguous memory, $O(1)$ index access. Tensors are just multi-dimensional arrays.
-- **Hash maps** — average $O(1)$ insert/lookup via hashing. Used for tokenizer vocabularies, caching, and de-duplication in data pipelines.
+- **Hash maps** — average $O(1)$ insert/lookup via hashing. Used for tokenizer vocabularies, caching, and de-duplication in data pipelines. Real op-count comparison against the naive alternative:
+
+<HashMapVsArrayDiagram />
+
 - **Trees** — hierarchical structure. Decision trees *are* this data structure directly; balanced trees (B-trees) underlie database indexes.
 - **Graphs** — nodes + edges. Directly relevant to graph databases (Neo4j), GraphRAG, and modeling multi-agent communication topology.
-- **Heaps / priority queues** — efficiently retrieve the min/max element. Used in beam search (keeping the top-$k$ candidate sequences during LLM decoding) and in Dijkstra-style search algorithms.
+- **Heaps / priority queues** — efficiently retrieve the min/max element. Used in beam search (keeping the top-$k$ candidate sequences during LLM decoding) and in Dijkstra-style search algorithms. Real beam search, real cumulative log-probabilities, real top-k pruning at every step:
+
+<BeamSearchHeapDiagram />
 
 ## Sorting & Searching
 
-- **Sorting** ($O(n \log n)$ for comparison-based sorts like merge sort/quicksort) shows up whenever you rank candidates — e.g. sorting retrieved documents by relevance score in a RAG pipeline, or ranking recommendations.
-- **Binary search** ($O(\log n)$) — requires sorted data, used in efficient lookup structures.
-- **Approximate Nearest Neighbor search** (HNSW, IVF — covered in [Databases](/docs/databases/roadmap)) is the vector-database analog of search, trading exactness for speed at scale.
+Sorting ($O(n \log n)$ for comparison-based sorts like merge sort/quicksort) shows up whenever you rank candidates — e.g. sorting retrieved documents by relevance score in a RAG pipeline, or ranking recommendations. Real comparison counts, not just the asymptotic label:
+
+<SortingComplexityDiagram />
+
+**Binary search** ($O(\log n)$) requires sorted data, used in efficient lookup structures. **Approximate Nearest Neighbor search** (HNSW, IVF — covered in [Databases](/docs/databases/roadmap)) is the vector-database analog of search, trading exactness for speed at scale.
 
 ## Complexity of Common ML Algorithms
 
@@ -45,7 +64,28 @@ Big-O describes how an algorithm's running time (or memory) grows as input size 
 | Matrix multiply (a layer's forward pass) | $O(n \cdot m \cdot p)$ | For an $n \times m$ by $m \times p$ multiply |
 | Self-attention | $O(n^2 \cdot d)$ | $n$ = sequence length, $d$ = embedding dim — the scaling bottleneck for LLMs |
 
+Real operation counts for self-attention's $O(n^2 \cdot d)$ against a linear-attention alternative, at real sequence lengths:
+
+<AttentionComplexityDiagram />
+
 Knowing these numbers is what lets you answer "why is this slow, and what would make it faster" — a staple of both ML system design interviews and real production debugging.
+
+## Code: The Beam Search Loop, For Real
+
+The exact algorithm the diagram above steps through:
+
+```python
+def beam_search(model, start_token: str, beam_width: int, num_steps: int):
+    beams = [(start_token, 0.0)]  # (sequence, cumulative log-prob)
+    for _ in range(num_steps):
+        candidates = []
+        for sequence, score in beams:
+            for token, log_prob in model.next_token_distribution(sequence):
+                candidates.append((f"{sequence} {token}", score + log_prob))
+        # Keep only the top-k -- exactly the heap/priority-queue operation.
+        beams = sorted(candidates, key=lambda c: c[1], reverse=True)[:beam_width]
+    return beams
+```
 
 ## Why this belongs in a math curriculum
 
