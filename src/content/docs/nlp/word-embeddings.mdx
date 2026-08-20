@@ -5,6 +5,7 @@ sidebar_position: 4
 
 
 import EmbeddingSpaceExplorer from '../../../viz/EmbeddingSpaceExplorer';
+import NegativeSamplingCostDiagram from '../../../viz/diagrams/NegativeSamplingCostDiagram';
 
 # Word Embeddings
 
@@ -26,7 +27,9 @@ Introduced two closely related, shallow neural network training schemes for lear
 Try that exact analogy (and others) below — real cosine similarity, real nearest-neighbor lookup, and a real [PCA](/docs/mathematics-for-ai/linear-algebra#eigenvalues-and-eigenvectors) projection down to 2D, computed live over a small hand-built demo vocabulary (not a trained model):
 
 <EmbeddingSpaceExplorer />
-- **Negative sampling**: computing a full softmax over the entire vocabulary at every training step is expensive at real vocabulary sizes (see [Loss Functions](/docs/deep-learning/loss-functions)) — negative sampling reframes training as binary classification (is this context word real, or one of a handful of randomly sampled "negative" fake ones), a large practical speedup that made training word2vec at scale feasible.
+- **Negative sampling**: computing a full softmax over the entire vocabulary at every training step is expensive at real vocabulary sizes (see [Loss Functions](/docs/deep-learning/loss-functions)) — negative sampling reframes training as binary classification (is this context word real, or one of a handful of randomly sampled "negative" fake ones), a large practical speedup that made training word2vec at scale feasible. Real per-step operation counts, not a vague "it's faster":
+
+<NegativeSamplingCostDiagram />
 
 ## GloVe (Global Vectors)
 
