@@ -7,6 +7,13 @@ import { collectConsoleErrors } from './helpers';
 // production build (dist/) via scripts/static-server.cjs -- not vite dev,
 // not vite preview -- so it exercises GitHub Pages' actual base-path and
 // 404-fallback behavior, not a more forgiving dev-server approximation.
+//
+// Targets real content pages, not dev-scaffolding fixtures -- the last
+// scaffold page these tests depended on (deep-learning/attention-demo.mdx,
+// "Phase 1 Acceptance Test") was deleted because it was pure QA scaffolding
+// with no reader value; its two embedded components already have real,
+// permanent homes elsewhere (or a proper successor), which is where these
+// tests point now.
 
 test.describe('Core application', () => {
   test('homepage loads with real content and a working topic link', async ({ page }) => {
@@ -25,8 +32,8 @@ test.describe('Core application', () => {
 
   test('representative documentation page loads', async ({ page }) => {
     const errors = collectConsoleErrors(page);
-    await page.goto('docs/deep-learning/attention-demo');
-    await expect(page.locator('h1')).toHaveText('Phase 1 Acceptance Test');
+    await page.goto('docs/deep-learning/attention-transformers');
+    await expect(page.locator('h1')).toHaveText('Attention & Transformers');
     expect(errors.errors()).toEqual([]);
   });
 
@@ -37,9 +44,9 @@ test.describe('Core application', () => {
     // "Deep Learning" collapses by default when it's not the active section
     // (see Sidebar.tsx) -- expand it before its link is clickable.
     await page.locator('.nm-sidebar button', { hasText: 'Deep Learning' }).click();
-    await page.locator('.nm-sidebar a', { hasText: 'Phase 1 Acceptance Test' }).click();
-    await expect(page).toHaveURL(/attention-demo/);
-    await expect(page.locator('h1')).toHaveText('Phase 1 Acceptance Test');
+    await page.locator('.nm-sidebar a', { hasText: 'Attention & Transformers' }).click();
+    await expect(page).toHaveURL(/attention-transformers/);
+    await expect(page.locator('h1')).toHaveText('Attention & Transformers');
     expect(errors.errors()).toEqual([]);
   });
 
@@ -58,9 +65,9 @@ test.describe('Core application', () => {
     // Same collapsed-section behavior as the desktop sidebar -- expand
     // "Deep Learning" before its link is clickable.
     await dialog.getByRole('button', { name: 'Deep Learning' }).click();
-    await dialog.getByRole('link', { name: 'Phase 1 Acceptance Test' }).click();
+    await dialog.getByRole('link', { name: 'Attention & Transformers' }).click();
 
-    await expect(page).toHaveURL(/attention-demo/);
+    await expect(page).toHaveURL(/attention-transformers/);
     await expect(dialog).toBeHidden();
 
     const overflow = await page.evaluate(() => ({
@@ -75,13 +82,13 @@ test.describe('Core application', () => {
     // Simulates a user pasting/refreshing a deep URL rather than navigating
     // via the app -- exactly the case scripts/copy-404.mjs exists for.
     const errors = collectConsoleErrors(page);
-    const response = await page.goto('docs/deep-learning/attention-demo');
+    const response = await page.goto('docs/deep-learning/attention-transformers');
     // GitHub Pages genuinely serves this with a 404 status -- that's the
     // fallback mechanism working as intended, not a failure.
     expect(response?.status()).toBe(404);
-    await expect(page.locator('h1')).toHaveText('Phase 1 Acceptance Test');
+    await expect(page.locator('h1')).toHaveText('Attention & Transformers');
     await page.reload();
-    await expect(page.locator('h1')).toHaveText('Phase 1 Acceptance Test');
+    await expect(page.locator('h1')).toHaveText('Attention & Transformers');
     expect(errors.errors()).toEqual([]);
   });
 });
@@ -89,16 +96,26 @@ test.describe('Core application', () => {
 test.describe('Visualization', () => {
   test('D3 visualization renders and responds to interaction', async ({ page }) => {
     const errors = collectConsoleErrors(page);
-    await page.goto('docs/deep-learning/attention-demo');
-    const container = page.locator('h2:has-text("A D3 Visualization") + div');
-    await expect(container.locator('svg')).toBeVisible();
+    // GradientDescentExplorer (real d3.scaleLinear-driven canvas) is the
+    // permanent successor to the old Phase-1 D3 scaffold component.
+    await page.goto('docs/visual-lab/gradient-descent-explorer');
+    const container = page.locator('article.prose');
+    await container.locator('svg').first().scrollIntoViewIfNeeded();
+    await expect(container.locator('svg').first()).toBeVisible();
+
+    const before = await container.locator('text=/^Step \\d/').innerText();
+    await container.getByRole('button', { name: 'Step', exact: true }).click();
+    const after = await container.locator('text=/^Step \\d/').innerText();
+    expect(after).not.toBe(before);
     expect(errors.errors()).toEqual([]);
   });
 
   test('React Flow visualization renders and responds to interaction', async ({ page }) => {
     const errors = collectConsoleErrors(page);
-    await page.goto('docs/deep-learning/attention-demo');
-    const container = page.locator('h2:has-text("A React Flow Visualization") + div');
+    // RagPipelineSimulator's permanent home -- same component the old
+    // Phase-1 scaffold page also embedded, now a real Visual Lab page.
+    await page.goto('docs/visual-lab/rag-pipeline-simulator');
+    const container = page.locator('article.prose');
     await expect(container.locator('.react-flow__node').first()).toBeVisible();
     const nodeCount = await container.locator('.react-flow__node').count();
     expect(nodeCount).toBeGreaterThanOrEqual(8);
@@ -130,14 +147,14 @@ test.describe('Visualization', () => {
 
   test('KaTeX math renders on a content page', async ({ page }) => {
     const errors = collectConsoleErrors(page);
-    await page.goto('docs/deep-learning/attention-demo');
+    await page.goto('docs/deep-learning/attention-transformers');
     await expect(page.locator('.katex').first()).toBeVisible();
     expect(errors.errors()).toEqual([]);
   });
 
   test('Shiki-highlighted code block renders on a content page', async ({ page }) => {
     const errors = collectConsoleErrors(page);
-    await page.goto('docs/deep-learning/attention-demo');
+    await page.goto('docs/machine-learning/linear-regression');
     const code = page.locator('pre code, pre.shiki, pre');
     await expect(code.first()).toBeVisible();
     // Shiki inlines per-token color styles -- a plain unstyled <pre> would
