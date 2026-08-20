@@ -23,18 +23,15 @@ live by the lead. Do not re-derive from git log — this file is the source of t
 
 **mlops/ folder is now COMPLETE — 24/24 pages, batch 4 done 2026-08-20.**
 
-Next queued task from lead (high
-priority, sent 2026-08-20): expand `agents/mcp/protocol-deep-dive.mdx` from a
-63-line skeleton into real step-by-step depth across its existing 8 sections
-(Transport, Sessions/Lifecycle, Tool Discovery/Schemas, Errors, Auth, Security,
-Enterprise Deployment, Building an MCP Server) — outline is already right, don't
-restructure it. User's complaint: "full info step by step info is not there."
-Lead + user were explicit: fetch the REAL spec content via WebFetch from
-modelcontextprotocol.io/specification and github.com/modelcontextprotocol
-(JSON-RPC message shapes, initialize handshake, capability negotiation, session
-lifecycle) rather than reconstructing from memory — accuracy matters for a real,
-evolving protocol spec. Diagrams still built fresh with our own design system.
-Existing reference: McpVsA2aScopeDiagram, agents/a2a/overview.mdx.
+**MCP protocol-deep-dive.mdx task: DONE.** Expanded from 63-line skeleton into
+real step-by-step depth across all 8 existing sections, grounded in the actual
+spec (fetched 2025-06-18 revision from modelcontextprotocol.io/specification:
+lifecycle, transports, tools, authorization pages) plus the official Python
+quickstart server example for the "Building an MCP Server" section. 9 new
+diagrams. Commit 96b5606, pushed + deployed.
+`agents/mcp/overview.mdx` is STILL a thin stub (37 lines, raster ThemedImage,
+0 diagrams) — not part of this task's scope (task was specifically
+protocol-deep-dive.mdx), flagging in case it's picked up next.
 
 Per-page workflow established this session (repeat every time): read page →
 design 6-7 diagram concepts tied to actual section content (reuse an existing
