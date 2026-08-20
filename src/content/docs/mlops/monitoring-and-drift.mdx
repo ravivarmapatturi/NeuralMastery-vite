@@ -3,6 +3,13 @@ title: "Monitoring & Drift Detection"
 sidebar_position: 15
 ---
 
+import ThreeMonitoringLayersDiagram from '../../../viz/diagrams/ThreeMonitoringLayersDiagram';
+import PsiCalculatorDiagram from '../../../viz/diagrams/PsiCalculatorDiagram';
+import KlVsJsDivergenceDiagram from '../../../viz/diagrams/KlVsJsDivergenceDiagram';
+import KsTestDiagram from '../../../viz/diagrams/KsTestDiagram';
+import WassersteinDistanceDiagram from '../../../viz/diagrams/WassersteinDistanceDiagram';
+import DataVsConceptDriftDiagram from '../../../viz/diagrams/DataVsConceptDriftDiagram';
+import DriftToolComparisonDiagram from '../../../viz/diagrams/DriftToolComparisonDiagram';
 
 # Monitoring & Drift Detection
 
@@ -16,16 +23,29 @@ A deployed model doesn't stay accurate by default — the world it's making pred
 
 A system can be 100% "up" by every infrastructure and application metric while the model underneath has silently degraded to near-random — this is why ML-specific monitoring is its own discipline, not a subset of the first two.
 
+<ThreeMonitoringLayersDiagram />
+
 ## Data Drift: The Math
 
 Data drift is a change in the distribution of the model's *input* features between training time and now. Several statistical distances quantify "how different are these two distributions":
 
 - **PSI (Population Stability Index)**: bins a feature's values and compares the proportion of data in each bin between a reference (training) distribution and a current distribution — `PSI = Σ (current_% − reference_%) × ln(current_% / reference_%)` summed over bins. PSI < 0.1 is typically considered stable, 0.1–0.25 moderate drift, > 0.25 significant drift — one of the most widely used thresholds in industry monitoring.
+
+<PsiCalculatorDiagram />
+
 - **KL divergence (Kullback-Leibler)**: measures how one probability distribution diverges from a reference distribution — asymmetric (KL(P‖Q) ≠ KL(Q‖P)), which matters when deciding which distribution is "reference" and which is "current."
 - **JS divergence (Jensen-Shannon)**: a symmetric, smoothed version of KL divergence — the fix when direction shouldn't matter, computed as the average of KL divergences from each distribution to their mixture.
+
+<KlVsJsDivergenceDiagram />
+
 - **KS test (Kolmogorov-Smirnov)**: a statistical hypothesis test comparing two *continuous* distributions' empirical CDFs — gives a p-value for "these two samples plausibly come from the same distribution," rather than just a distance score.
 - **Chi-square test**: the categorical-feature analog of the KS test — compares observed vs. expected frequencies across categories.
+
+<KsTestDiagram />
+
 - **Wasserstein distance (Earth Mover's Distance)**: the minimum "work" needed to transform one distribution into another — more robust to small distributional shifts than KL/JS divergence and doesn't blow up when distributions have non-overlapping support (where KL divergence is undefined).
+
+<WassersteinDistanceDiagram />
 
 ## Data Drift vs. Concept Drift
 
@@ -34,10 +54,14 @@ Data drift is a change in the distribution of the model's *input* features betwe
 
 This distinction matters for the fix: data drift can sometimes be handled by retraining on more recent data with the same labeling logic; concept drift means the model's *target definition* has moved, and retraining on stale labels won't help — the labeling/evaluation process itself needs revisiting.
 
+<DataVsConceptDriftDiagram />
+
 ## Tools
 
 - **Evidently**: open-source, generates drift and data-quality reports/dashboards comparing a reference and current dataset — the most common starting point.
 - **WhyLabs**: a managed observability platform for ML, focused on data and model quality monitoring at scale without shipping raw data to a third party (it profiles data locally, sends only statistical summaries).
 - **Arize**: a managed ML observability platform with strong support for root-causing performance drops back to specific data segments (which slice of traffic is actually driving the drift).
+
+<DriftToolComparisonDiagram />
 
 Next: [Observability](/docs/mlops/observability) — the general logging/metrics/tracing infrastructure that drift detection and everything else above is built on top of.
