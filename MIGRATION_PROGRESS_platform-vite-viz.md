@@ -77,18 +77,48 @@ coordinator). Reused CoordinationPatternsDiagram (already existed,
 built for this exact page per its own doc comment, was living on
 agents/overview.mdx) + new real greedy-scheduling parallel-speedup sim.
 
-## Status: full queue complete
+## Status: sole owner of platform-vite content (ad and 91 pivoted to other departments)
 
-Everything assigned across this session is shipped: original 7-section
-assignment, mathematics-for-ai/ (4 pages), machine-learning/ (20 pages),
-ai-for-science/, domain-applications/, frameworks/, build-from-scratch/,
-research-engineering/, interview-prep/, agents/multi-agent-systems.mdx.
-Checked in with coordinator for further assignment or sign-off.
+Original queue (above) shipped and signed off. Self-QA pass done (code-level
++ server-level; browser-extension-dependent checks -- both-theme render,
+console, mobile -- still blocked by a Chrome extension connection failure,
+retrying opportunistically). Found and fixed one unrelated CI-blocking
+TS6133 in ClipDualEncoderDiagram.tsx (not mine), pushed as 80e981a.
+
+**Handoff batch from ad/91, all shipped** (7 pages):
+- deep-learning/training-deep-networks.mdx -- 4 diagrams, all reused
+- deep-learning/generative-models.mdx -- 2 new (GanMinimaxDiagram,
+  DiffusionForwardProcessDiagram) + new lib src/viz/lib/generativeModels.ts
+- llms-genai/prompt-engineering.mdx -- 2 new (SelfConsistencyVotingDiagram,
+  LostInTheMiddleDiagram) + 1 reused
+- llms-genai/multimodal-generative-models.mdx -- 1 new
+  (AutoregressiveVsDiffusionGenerationDiagram) + 2 reused
+- llms-genai/evaluation-and-serving.mdx -- 4 diagrams, all reused
+- databases/relational/overview.mdx -- 1 new (IndexScanComparisonDiagram)
+  + 2 reused
+- agents/agent-architectures.mdx -- 1 new (HumanInTheLoopDiagram) + 3 reused
+
+A pre-handoff survey found most of the "older unfinished scope" list ad
+flagged was already done by someone (databases/ 4-of-6, ml-system-design/
+all 5, llms-genai/overview+training-pipeline, agents/overview+
+agent-fundamentals, agents/a2a/overview) -- only the 2 above were actually
+open. Worth re-verifying state before assuming a list is current, next time.
 
 Remaining known page-level TODOs (not mine, don't touch): python-engineering/,
-cs-fundamentals/ (platform-vite-91). roadmaps/suggested-paths.mdx,
-resources/open-source-ai-resources.mdx, projects/the-project-ladder.mdx were
-checked and judged nav/list content, not deep-dive material -- fine as-is.
+cs-fundamentals/ (platform-vite-91, though 91 has now pivoted -- may be
+unowned, don't touch without checking). roadmaps/suggested-paths.mdx,
+resources/open-source-ai-resources.mdx, projects/the-project-ladder.mdx,
+and all `*/roadmap.mdx` pages (databases, llms-genai, agents) were checked
+and judged nav/list content, not deep-dive material -- fine as-is.
+
+Still open: sitewide regression sweep (sidebar collapse/watermark/console/
+mobile across sections other sessions touched) -- not started, blocked on
+Chrome extension connectivity for the visual parts.
+
+Feedback applied going forward: for well-known concepts, check for a
+known-good reference visualization/paper figure first and adapt its
+structure rather than designing from a blank page (still re-skinned to
+this platform's diagramSystem tokens always).
 
 ## Working pattern (keep doing this)
 
