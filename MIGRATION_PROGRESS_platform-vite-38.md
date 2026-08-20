@@ -29,9 +29,17 @@ spec (fetched 2025-06-18 revision from modelcontextprotocol.io/specification:
 lifecycle, transports, tools, authorization pages) plus the official Python
 quickstart server example for the "Building an MCP Server" section. 9 new
 diagrams. Commit 96b5606, pushed + deployed.
-`agents/mcp/overview.mdx` is STILL a thin stub (37 lines, raster ThemedImage,
-0 diagrams) — not part of this task's scope (task was specifically
-protocol-deep-dive.mdx), flagging in case it's picked up next.
+**agents/mcp/overview.mdx: DONE too** (lead approved doing it next). Expanded
+from 37-line stub with one raster ThemedImage into full section-level
+coverage (M×N-to-M+N problem, client/server architecture replacing the
+raster image, capability types, roles, real-world servers, local vs remote,
+agent-loop tie-in, A2A tie-in). 7 new diagrams + 1 reused
+(McpVsA2aScopeDiagram). PNG pair deleted. Commit 8731904 (pushed after a
+pathspec snag from re-adding an already-git-rm'd file — resolved by not
+re-adding already-staged deletions). Pushed + deployed.
+
+mcp/ subfolder (overview.mdx + protocol-deep-dive.mdx) is now fully
+consistent with the rest of the site.
 
 Per-page workflow established this session (repeat every time): read page →
 design 6-7 diagram concepts tied to actual section content (reuse an existing
