@@ -5,6 +5,7 @@ sidebar_position: 6.4
 
 import __migratedImg0 from './img/pca-scree.png';
 
+import PcaProjectionDiagram from '../../../viz/diagrams/PcaProjectionDiagram';
 
 # PCA, Kernel PCA & Truncated SVD, In Full Depth
 
@@ -14,7 +15,9 @@ Every model so far assumed the given features are the right ones to work with. D
 
 **The idea**: find the directions in feature space along which the data varies the most, and project onto just those — discarding directions with little variance, since a direction the data barely moves along carries little information.
 
-**The mechanism**, connecting directly back to [Linear Algebra](/docs/mathematics-for-ai/linear-algebra#eigenvalues-and-eigenvectors): compute the data's covariance matrix, then find its eigenvectors and eigenvalues. Each eigenvector is a **principal component** — a direction in the original feature space — and its corresponding eigenvalue is exactly how much variance the data has along that direction. Sort components by eigenvalue (largest first), and keep only the top $k$ — that's PCA, in its entirety.
+**The mechanism**, connecting directly back to [Linear Algebra](/docs/mathematics-for-ai/linear-algebra#eigenvalues-and-eigenvectors): compute the data's covariance matrix, then find its eigenvectors and eigenvalues. Each eigenvector is a **principal component** — a direction in the original feature space — and its corresponding eigenvalue is exactly how much variance the data has along that direction. Sort components by eigenvalue (largest first), and keep only the top $k$ — that's PCA, in its entirety. Real covariance, real eigendecomposition, real projection:
+
+<PcaProjectionDiagram />
 
 **Choosing $k$**: plot each component's share of total variance, and how much accumulates as you keep adding components:
 

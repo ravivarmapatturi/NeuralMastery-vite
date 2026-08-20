@@ -5,6 +5,7 @@ sidebar_position: 6.5
 
 import __migratedImg0 from './img/embedding-2d.png';
 
+import IcaCocktailPartyDiagram from '../../../viz/diagrams/IcaCocktailPartyDiagram';
 
 # ICA, t-SNE & UMAP, In Full Depth
 
@@ -16,7 +17,9 @@ import __migratedImg0 from './img/embedding-2d.png';
 
 **The key assumption**: unlike PCA (which looks for directions of maximum variance, and produces components that are merely *uncorrelated*), ICA looks for components that are **statistically independent** — a much stronger condition. Two variables can be uncorrelated (zero linear relationship) while still being highly dependent in a nonlinear way; independence rules out *any* relationship, linear or not.
 
-**Why independence, and why it works**: ICA relies on the Central Limit Theorem (see [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics#central-limit-theorem)) in reverse — a mixture of independent signals tends to look *more* Gaussian than any of the original signals alone (sums of independent random variables trend toward Gaussian). So ICA searches for a transformation that makes the resulting components as **non-Gaussian** as possible, on the logic that this is exactly what un-mixes the original signals back out.
+**Why independence, and why it works**: ICA relies on the Central Limit Theorem (see [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics#central-limit-theorem)) in reverse — a mixture of independent signals tends to look *more* Gaussian than any of the original signals alone (sums of independent random variables trend toward Gaussian). So ICA searches for a transformation that makes the resulting components as **non-Gaussian** as possible, on the logic that this is exactly what un-mixes the original signals back out. Real signals, a real linear mixing matrix, and real non-Gaussianity (excess kurtosis) measured before and after:
+
+<IcaCocktailPartyDiagram />
 
 **Practical uses beyond audio**: separating overlapping sources in EEG/fMRI brain signal data, removing specific artifacts (like eye-blink noise) from a signal, and general blind source separation problems — anywhere the data is genuinely a *mixture* of independent underlying causes, which is a different situation than PCA's "compress correlated features" use case.
 
