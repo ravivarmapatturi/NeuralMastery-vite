@@ -4,6 +4,11 @@ sidebar_position: 5
 ---
 
 
+import TemporalConsistencyDiagram from '../../../viz/diagrams/TemporalConsistencyDiagram';
+import VideoUnderstandingArchitectureDiagram from '../../../viz/diagrams/VideoUnderstandingArchitectureDiagram';
+import PointCloudDiagram from '../../../viz/diagrams/PointCloudDiagram';
+import NerfRayMarchingDiagram from '../../../viz/diagrams/NerfRayMarchingDiagram';
+
 # Modern Vision & Multimodal
 
 Where vision has been heading for the last several years: attention instead of (or alongside) convolution, images understood *jointly* with language, and vision extended into time (video) and space (3D) instead of a single flat frame.
@@ -23,11 +28,15 @@ Where vision has been heading for the last several years: attention instead of (
 - **Image generation**: GANs and diffusion models, covered in full depth in [Generative Models](/docs/deep-learning/generative-models) — DDPM/DDIM, Latent/Stable Diffusion, ControlNet, and why diffusion overtook GANs for this task specifically.
 - **Video generation**: extends image diffusion along a time axis — the core challenge beyond per-frame image quality is **temporal consistency** (an object's appearance and the scene's geometry need to stay coherent frame to frame, not just look plausible in isolation). Approaches generally either extend a 2D diffusion U-Net with temporal attention/convolution layers connecting adjacent frames, or model video generation directly in a learned spatiotemporal latent space — an active, fast-moving research area where architectural details vary significantly model to model.
 
+<TemporalConsistencyDiagram />
+
 ## Video Understanding
 
 Classifying or describing *what's happening* in a video, as opposed to generating one — the discriminative counterpart to video generation:
 
 - **Action recognition**: classify what action is being performed in a video clip — architecturally, either a **3D CNN** (convolving across height, width, *and* time simultaneously, extending [Conv3D](/docs/deep-learning/nn-layers-reference#convolutional-layers)) or a two-stream approach combining per-frame appearance features with [optical flow](/docs/computer-vision/vision-tasks-and-models#optical-flow) motion features, or a video Transformer applying attention across both spatial patches and time steps.
+
+<VideoUnderstandingArchitectureDiagram />
 - **Temporal action localization**: not just "what action" but "when does it start and end" within a longer, untrimmed video — structurally similar to object detection, except localizing a time interval instead of a spatial bounding box.
 - **Video captioning / video QA**: describing or answering questions about video content — extends the VLM approach above by feeding a sequence of sampled frames (or learned video features) into a language model instead of a single image.
 
@@ -36,7 +45,12 @@ Classifying or describing *what's happening* in a video, as opposed to generatin
 Moving beyond a single 2D image to genuine 3D scene understanding:
 
 - **Point clouds**: a set of 3D points (x, y, z, often with additional attributes like color), the standard representation for LiDAR sensor output — processed by architectures specifically designed for unordered point sets (e.g. PointNet-style networks), since a point cloud has no natural grid structure for standard convolution to exploit.
+
+<PointCloudDiagram />
+
 - **NeRF (Neural Radiance Fields)**: represents an entire 3D scene implicitly as a neural network — given a 3D coordinate and a viewing direction, the network outputs color and density at that point, and rendering a novel viewpoint means querying the network along camera rays through the scene. Trained from a set of 2D photos of a scene from different angles, producing remarkably photorealistic novel-view synthesis without ever building an explicit 3D mesh.
+
+<NerfRayMarchingDiagram />
 - **3D reconstruction**: recovering 3D scene structure from 2D images — classical **Structure from Motion (SfM)** triangulates 3D points from matched features (see [Vision Fundamentals — SIFT/ORB](/docs/computer-vision/vision-fundamentals#classical-feature-extraction)) across multiple photos of the same scene from different viewpoints; modern learned approaches increasingly fold this into end-to-end differentiable pipelines, including NeRF-style implicit representations above.
 - **Applications**: autonomous driving (LiDAR point cloud processing), AR/VR (scene reconstruction), robotics (spatial mapping/SLAM), and content creation (turning photos into 3D assets).
 
