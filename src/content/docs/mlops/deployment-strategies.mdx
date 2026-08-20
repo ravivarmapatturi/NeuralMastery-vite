@@ -20,17 +20,88 @@ Run two complete, identical production environments — "blue" (currently live) 
 
 <BlueGreenCutoverDiagram />
 
+On [Kubernetes](/docs/mlops/kubernetes), this is two Deployments with different labels, and the Service's `selector` is what actually determines which one is "live" — the cutover is a one-line patch, not a redeploy:
+
+```bash
+# Both deployments already running -- model-api-blue (live) and model-api-green (new version, verified healthy)
+kubectl get deployments -l app=model-api
+
+# Cut over: repoint the Service's selector from blue to green
+kubectl patch service model-api -p '{"spec":{"selector":{"app":"model-api","version":"green"}}}'
+
+# Instant rollback if green misbehaves -- flip the selector straight back
+kubectl patch service model-api -p '{"spec":{"selector":{"app":"model-api","version":"blue"}}}'
+```
+
 ## Canary Deployment
 
 Route a small percentage of traffic (e.g. 5%) to the new model while the rest continues to hit the old one, then gradually increase that percentage as metrics stay healthy — 5% → 25% → 50% → 100%. If the canary's metrics degrade at any point, roll back by routing traffic away from it, having only affected a small fraction of users. This is the standard approach when a gradual, metric-gated rollout is more valuable than an instant switch.
 
 <CanaryRampDiagram />
 
+Plain Kubernetes has no percentage-based traffic split (a Service load-balances evenly across whatever Pods match its selector — the closest you get natively is a coarse approximation via replica ratio, e.g. 1 canary Pod alongside 19 stable Pods ≈ 5%). **Argo Rollouts** is the standard tool for real percentage-based, metric-gated canaries on Kubernetes:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: model-api
+spec:
+  replicas: 20
+  strategy:
+    canary:
+      steps:
+        - setWeight: 5
+        - pause: { duration: 10m }
+        - setWeight: 25
+        - pause: { duration: 10m }
+        - setWeight: 50
+        - pause: { duration: 10m }
+        - setWeight: 100
+  selector:
+    matchLabels:
+      app: model-api
+  template:
+    metadata:
+      labels:
+        app: model-api
+    spec:
+      containers:
+        - name: model-api
+          image: my-registry/my-model-api:2.0
+```
+
+```bash
+kubectl argo rollouts get rollout model-api --watch   # live view of the canary ramp
+kubectl argo rollouts promote model-api                # manually advance past a pause step
+kubectl argo rollouts abort model-api                  # roll back immediately if metrics degrade
+```
+
 ## Shadow Deployment
 
 Send production traffic to *both* the old and new model, but only ever return the old model's response to the user — the new model's predictions are logged and compared offline, invisibly. This is the safest possible way to validate a new model against real production traffic, because it can never affect what a real user sees, at the cost of extra compute (running two models on every request) and not testing real-world *feedback* to the new model's own outputs.
 
 <ShadowDeploymentDiagram />
+
+A service mesh (Istio) implements this via traffic mirroring at the routing layer, rather than any change to application code — `mirror` sends a copy of the request to the shadow service, and its response is discarded:
+
+```yaml
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: model-api
+spec:
+  hosts:
+    - model-api
+  http:
+    - route:
+        - destination:
+            host: model-api-stable
+      mirror:
+        host: model-api-shadow
+      mirrorPercentage:
+        value: 100.0
+```
 
 ## A/B Testing
 

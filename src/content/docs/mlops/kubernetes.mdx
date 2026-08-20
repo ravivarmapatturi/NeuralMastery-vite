@@ -30,6 +30,60 @@ Docker solves "run this container the same way everywhere." Kubernetes solves th
 
 <ReconciliationLoopDiagram />
 
+A real Deployment + Service pair for a model-serving container built in [Containers](/docs/mlops/containers) — three replicas, explicit resource requests/limits, behind a stable ClusterIP:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: model-api
+  template:
+    metadata:
+      labels:
+        app: model-api
+    spec:
+      containers:
+        - name: model-api
+          image: my-registry/my-model-api:1.0
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-api
+spec:
+  selector:
+    app: model-api
+  ports:
+    - port: 80
+      targetPort: 8000
+```
+
+```bash
+kubectl apply -f deployment.yaml
+kubectl get pods -l app=model-api
+kubectl describe pod model-api-<hash>          # scheduling/events for one Pod
+kubectl logs -f deployment/model-api           # follow logs across all replicas
+kubectl exec -it deployment/model-api -- bash  # shell into a running Pod
+
+kubectl rollout status deployment/model-api    # watch a rollout finish
+kubectl rollout undo deployment/model-api      # roll back to the previous revision
+kubectl scale deployment/model-api --replicas=5
+```
+
 ## Advanced
 
 - **Helm**: a package manager for Kubernetes — templated YAML bundled into reusable "charts," so deploying a complex multi-resource application is one `helm install` instead of hand-writing dozens of YAML files.
@@ -41,6 +95,32 @@ Docker solves "run this container the same way everywhere." Kubernetes solves th
 - **HPA (Horizontal Pod Autoscaler)**: automatically scales the number of Pod replicas based on observed metrics (CPU, memory, or custom metrics like queue depth/requests-per-second) — the mechanism behind "scale up under load, scale down when it's quiet."
 
 <HpaAutoscalingDiagram />
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: model-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: model-api
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+```
+
+```bash
+kubectl apply -f hpa.yaml
+kubectl get hpa model-api --watch    # observe replica count react to load in real time
+```
 
 - **Resource requests/limits**: declare how much CPU/memory a Pod needs (`requests`, used for scheduling) and the hard ceiling it can't exceed (`limits`) — get this wrong and either the scheduler wastes capacity or a Pod gets OOM-killed under real load.
 
@@ -58,5 +138,20 @@ Docker solves "run this container the same way everywhere." Kubernetes solves th
 GPU scheduling adds a wrinkle regular web workloads don't have: GPUs are expensive, often can't be fractionally shared cleanly, and Pods need explicit `nvidia.com/gpu` resource requests plus the NVIDIA device plugin (a DaemonSet) running on every GPU node. Autoscaling a GPU-backed inference Deployment under HPA is also slower and costlier than autoscaling a CPU web service — GPU nodes are expensive to keep idle and slow to provision on demand, which is a major reason serverless-style GPU platforms (see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns)) exist as an alternative to running your own GPU-backed Kubernetes cluster.
 
 <GpuSchedulingDiagram />
+
+The resource request that actually reserves a GPU for a Pod (this replaces the `resources` block in the Deployment above for a GPU-backed inference workload):
+
+```yaml
+resources:
+  requests:
+    nvidia.com/gpu: 1
+  limits:
+    nvidia.com/gpu: 1   # GPUs can't be overcommitted like CPU/memory -- request == limit
+```
+
+```bash
+kubectl get nodes -o json | jq '.items[].status.allocatable."nvidia.com/gpu"'  # GPU capacity per node
+kubectl describe node <gpu-node-name>   # confirm the NVIDIA device plugin advertised GPUs as allocatable
+```
 
 Next: [Infrastructure as Code](/docs/mlops/infrastructure-as-code) — everything above should be defined in version-controlled code, not clicked together by hand.

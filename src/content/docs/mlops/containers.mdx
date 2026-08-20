@@ -28,11 +28,84 @@ import RegistryComparisonDiagram from '../../../viz/diagrams/RegistryComparisonD
 
 <VolumesAndNetworksDiagram />
 
+A minimal but real Dockerfile for a Python model-serving app, and the commands to build, run, and inspect it:
+
+```dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "app:api", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+```bash
+docker build -t my-model-api:1.0 .
+docker run -d --name model-api -p 8000:8000 --env-file .env my-model-api:1.0
+
+docker ps                          # list running containers
+docker logs -f model-api           # follow logs
+docker exec -it model-api bash     # shell into the running container
+docker stop model-api && docker rm model-api
+```
+
+A `docker-compose.yml` bringing the API up alongside Redis (e.g. for caching model responses), with one command instead of three separate `docker run`s:
+
+```yaml
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://cache:6379
+    depends_on:
+      - cache
+  cache:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+```
+
+```bash
+docker compose up -d
+docker compose logs -f api
+docker compose down
+```
+
 ## Multi-Stage Builds & Image Optimization
 
 A naive Dockerfile installs build tools (compilers, dev headers) into the final image and ships them to production, bloating the image and widening the attack surface. **Multi-stage builds** fix this: one stage compiles/builds using heavyweight tools, and a final, separate `FROM` stage copies only the compiled artifacts into a minimal base image (e.g. `python:3.12-slim` or a `distroless` image) — nothing else survives.
 
 <MultiStageBuildDiagram />
+
+```dockerfile
+# Stage 1: build -- has compilers and dev headers, never shipped
+FROM python:3.12 AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# Stage 2: final -- only the compiled/installed packages survive
+FROM python:3.12-slim
+WORKDIR /app
+COPY --from=builder /root/.local /root/.local
+COPY . .
+ENV PATH=/root/.local/bin:$PATH
+USER 1000
+CMD ["uvicorn", "app:api", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+```bash
+docker images my-model-api          # compare image size vs. the single-stage version
+docker history my-model-api:1.0     # inspect what each layer actually added
+```
 
 Other standard optimizations: order Dockerfile instructions so rarely-changing layers (installing dependencies) come before frequently-changing ones (copying application code), so Docker's layer cache is actually useful; use `.dockerignore` to keep build context small; pin base image tags rather than `latest` for reproducibility.
 
@@ -44,6 +117,10 @@ Other standard optimizations: order Dockerfile instructions so rarely-changing l
 - Scan images for known-vulnerable packages (Trivy, Grype, or a registry's built-in scanner) as part of CI, not after deployment.
 - Keep base images minimal and current — most container CVEs come from an outdated base image, not application code.
 - Don't bake secrets (API keys, credentials) into image layers — even a deleted file in an earlier layer is still recoverable from the image history; use runtime secret injection instead.
+
+```bash
+trivy image my-model-api:1.0        # scan a built image for known-vulnerable packages
+```
 
 <ContainerSecurityChecklistDiagram />
 
