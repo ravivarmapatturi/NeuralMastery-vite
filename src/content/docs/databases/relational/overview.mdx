@@ -4,6 +4,10 @@ sidebar_position: 1
 ---
 
 
+import JoinTypesDiagram from '../../../../viz/diagrams/JoinTypesDiagram';
+import IndexScanComparisonDiagram from '../../../../viz/diagrams/IndexScanComparisonDiagram';
+import IndexingPhilosophyDiagram from '../../../../viz/diagrams/IndexingPhilosophyDiagram';
+
 # Relational Databases (MySQL, Postgres)
 
 The default storage layer for structured data — and still the right choice for a huge fraction of what an ML system needs to store, even in an AI-first stack.
@@ -18,11 +22,15 @@ Data lives in tables (rows and columns), with relationships between tables expre
 - **Aggregations**: `GROUP BY` with `COUNT`, `SUM`, `AVG`, etc. — computing summary statistics, exactly the kind of query you'd run to build training features from raw event logs.
 - **Window functions**: compute values across a set of rows related to the current row (running totals, rankings, moving averages) without collapsing them into a single aggregated row — extremely useful for feature engineering over time-series-like data (e.g. "this user's average order value over their last 5 orders").
 
+<JoinTypesDiagram />
+
 ## Indexing and Query Planning
 
 An index is an auxiliary data structure (typically a B-tree — see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures)) that lets the database find rows matching a condition without scanning the entire table, turning an $O(n)$ scan into roughly $O(\log n)$ lookup. The tradeoff: indexes speed up reads but slow down writes (every insert/update must also update the index) and consume extra storage — so indexing is a deliberate design decision based on actual query patterns, not something to apply everywhere by default.
 
 The **query planner** decides how to execute a given SQL query (which indexes to use, what order to join tables in) — understanding how to read a query plan (`EXPLAIN` in both MySQL and Postgres) is the core skill for diagnosing a slow query.
+
+<IndexScanComparisonDiagram />
 
 ## Transactions and ACID
 
@@ -36,5 +44,7 @@ These guarantees matter whenever correctness under concurrent access is non-nego
 ## When Relational Is (and Isn't) the Right Tool
 
 Relational databases excel at structured data with well-defined relationships and a need for strong consistency — user accounts, transactional records, ML experiment/model metadata. They're a poor fit for storing and searching high-dimensional embeddings efficiently at scale (see [Vector Databases](/docs/databases/vector/overview)) or for deeply connected, multi-hop relationship queries (see [Graph Databases](/docs/databases/graph/overview)) — which is exactly why modern AI systems typically use relational databases *alongside* vector and graph stores, not instead of them.
+
+<IndexingPhilosophyDiagram />
 
 Next: [PostgreSQL](/docs/databases/relational/postgresql) — a deep dive into the system you'll actually run: schemas and types, writing queries end to end, indexing, transactions, and Postgres-specific features like JSONB and pgvector.
