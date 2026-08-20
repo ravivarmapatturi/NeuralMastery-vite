@@ -3,6 +3,13 @@ title: "Security & Reproducibility"
 sidebar_position: 22
 ---
 
+import SecurityLayerChecklistDiagram from '../../../viz/diagrams/SecurityLayerChecklistDiagram';
+import SecretsInjectionDiagram from '../../../viz/diagrams/SecretsInjectionDiagram';
+import LlmAttackSurfaceDiagram from '../../../viz/diagrams/LlmAttackSurfaceDiagram';
+import PromptInjectionFlowDiagram from '../../../viz/diagrams/PromptInjectionFlowDiagram';
+import LeastPrivilegeAgencyDiagram from '../../../viz/diagrams/LeastPrivilegeAgencyDiagram';
+import ReproducibilityChecklistDiagram from '../../../viz/diagrams/ReproducibilityChecklistDiagram';
+import HardwareDeterminismDiagram from '../../../viz/diagrams/HardwareDeterminismDiagram';
 
 # Security & Reproducibility
 
@@ -12,6 +19,11 @@ Two cross-cutting concerns that apply to every layer covered so far — not a ne
 
 - **IAM**: identity and access management — who, and what service, can do what (see [Cloud Computing for ML](/docs/mlops/cloud-computing)). Over-permissioned roles are the single most common source of real security incidents, not exotic exploits.
 - **Secrets management**: API keys, database credentials, and model-provider tokens belong in a secrets manager (AWS Secrets Manager, HashiCorp Vault) injected at runtime — never in a config file, a Dockerfile, or a git-committed `.env`.
+
+<SecurityLayerChecklistDiagram />
+
+<SecretsInjectionDiagram />
+
 - **API auth/RBAC**: every serving endpoint (see [APIs & Model Serving](/docs/mlops/model-serving), [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns)) needs authentication and role-based access control — not every caller should have access to every model or every capability.
 - **TLS**: encrypt traffic in transit, always — between users and the API gateway, and ideally between internal services too.
 - **Container/dependency scanning**: scan images and dependency trees for known CVEs as part of CI (see [Containers](/docs/mlops/containers), [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd)) — catching a vulnerable base image or package before it ships, not after.
@@ -20,10 +32,18 @@ Two cross-cutting concerns that apply to every layer covered so far — not a ne
 
 Generative systems introduce attack surfaces that don't exist in classical ML serving:
 
+<LlmAttackSurfaceDiagram />
+
 - **Prompt injection**: malicious instructions embedded in user input (or in retrieved RAG content) attempt to override the system prompt or intended behavior — e.g. a document retrieved by RAG contains hidden text instructing the model to ignore its original task. Mitigation is layered (input/output filtering, strict system-prompt design, treating retrieved content as untrusted data rather than instructions) rather than fully solved by any single technique.
+
+<PromptInjectionFlowDiagram />
+
 - **Data leakage**: a model trained or fine-tuned on sensitive data can memorize and later regurgitate it; a RAG system with insufficiently scoped retrieval can surface documents a given user shouldn't see — both require access controls enforced *before* retrieval/generation, not just filtering the output after.
 - **Jailbreaks**: adversarial prompts designed to bypass a model's safety training — an ongoing arms race, addressed with a combination of model-level safety tuning and system-level guardrails (input/output classifiers) rather than either alone.
 - **Excessive agency**: giving an LLM-based agent (see [Agents](/docs/agents/roadmap)) more real-world capability (API calls, file writes, financial transactions) than a given task actually requires — the fix is the same principle as least-privilege IAM, applied to what tools an agent is allowed to invoke and under what confirmation requirements.
+
+<LeastPrivilegeAgencyDiagram />
+
 - **PII protection**: detecting and redacting personally identifiable information both in data used for training/fine-tuning and in logs/traces captured during serving (see [Observability](/docs/mlops/observability)) — logging full prompts and completions by default is a common, easily-avoided way to accidentally create a PII exposure.
 
 ## Reproducibility Checklist
@@ -37,6 +57,10 @@ Given the same inputs below, a training run should produce the same result — t
 - **Environment**: exact package versions, ideally captured as a container image (see [Containers](/docs/mlops/containers)), not just a `requirements.txt`.
 - **Seeds**: random seeds for data shuffling, weight initialization, and any stochastic training component.
 - **Hardware**: GPU type and count — some operations (certain CUDA kernels, some forms of mixed precision) are not bit-for-bit deterministic across different hardware or GPU counts, so "same result" sometimes means "same result within a documented, acceptable tolerance," not literal bit-identical output.
+
+<ReproducibilityChecklistDiagram />
+
+<HardwareDeterminismDiagram />
 
 A pipeline that can't satisfy this checklist can't be debugged when something goes wrong in production — "the model started behaving differently" is unanswerable without knowing exactly what changed.
 
