@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { useVizTokens, RADIUS, SPACING, FONT_FAMILY } from '../../theme/vizTokens';
 
 /**
@@ -7,18 +7,31 @@ import { useVizTokens, RADIUS, SPACING, FONT_FAMILY } from '../../theme/vizToken
  * VisualizationControls, VisualizationCanvas, etc. inside it. Matches the
  * static diagram card look (see visualize/templates/card.html.j2) so an
  * interactive component reads as native next to the site's generated charts.
+ *
+ * Accessibility: `footer` is, across the ~580 diagrams that pass one, always
+ * a real prose description of what the diagram currently shows (values,
+ * axes, what changed) -- so it doubles as the diagram's accessible
+ * description for free, wired via aria-describedby, rather than requiring
+ * a separate aria-label on every one of ~590 individual diagram files.
+ * `title`, when a diagram does pass one, becomes the group's aria-label.
  */
 export default function VisualizationContainer({
   children,
   footer,
+  title,
 }: {
   children: React.ReactNode;
   footer?: React.ReactNode;
+  title?: string;
 }) {
   const t = useVizTokens();
+  const footerId = useId();
 
   return (
     <div
+      role="group"
+      aria-label={title}
+      aria-describedby={footer ? footerId : undefined}
       style={{
         position: 'relative',
         background: t.surface,
@@ -34,6 +47,7 @@ export default function VisualizationContainer({
       {children}
       {footer && (
         <div
+          id={footerId}
           style={{
             marginTop: SPACING.sm,
             paddingTop: SPACING.sm,
