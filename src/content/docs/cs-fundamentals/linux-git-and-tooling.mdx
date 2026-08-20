@@ -24,10 +24,30 @@ The tools this page covers aren't ML-specific, but every ML job assumes fluency 
 - **`sed`**: stream-edit text — find-and-replace across files without opening an editor.
 - **Process management**: `ps` (list running processes), `top`/`htop` (live resource usage — the first thing to check when a training run "feels slow"), `kill`/`kill -9` (terminate a process gracefully vs. forcibly), `nvidia-smi` (the GPU equivalent of `top`, showing GPU utilization, memory, and which processes are using them).
 
+A real 2am-debugging session using all of the above together — a training run is stuck, and this is the actual sequence of commands to find out why:
+
+```bash
+tail -f train.log | grep -i "error\|oom\|nan"          # watch for trouble live, filtered
+grep -n "CUDA out of memory" *.log                       # search every log file for a known failure signature
+awk '{print $3}' metrics.log | sort -n | tail -5          # the 5 highest values in a column of a metrics dump
+sed -i 's/batch_size: 64/batch_size: 32/' config.yaml     # edit the config in place, no editor needed
+
+ps aux | grep train.py                                    # find the stuck process
+nvidia-smi                                                 # is the GPU actually busy, or idle while "running"?
+kill -9 12345                                              # nothing else worked -- force-kill by PID
+```
+
 ## The Linux Filesystem and Permissions
 
 - **Filesystem hierarchy**: `/home` (user files), `/tmp` (scratch space, often cleared on reboot — never store anything you need to keep here), `/var/log` (system and service logs), `/etc` (system configuration).
 - **Permissions**: every file has read/write/execute permissions for its owner, its group, and everyone else (`rwxr-xr-x` style notation, or the equivalent octal `755`). A common real gotcha: a script that "isn't running" because it's missing execute permission (`chmod +x script.sh`), or a training job failing to write checkpoints because it lacks write permission on the output directory.
+
+```bash
+ls -l train.sh                    # -rw-r--r--  1 alice  alice  842 train.sh -- not executable yet
+chmod +x train.sh                 # -rwxr-xr-x -- now it is
+chmod 755 checkpoints/             # owner: rwx, group/other: r-x -- the standard "shared, read-only to others" mode
+chown alice:ml-team checkpoints/   # change owner/group -- fixes "permission denied" on a shared output dir
+```
 
 ## Git Internals (Not Just Commands)
 
@@ -40,9 +60,58 @@ Knowing `git add`/`commit`/`push` gets you through daily work; understanding wha
 
 <GitObjectModelDiagram />
 
+The plumbing commands that make blobs/trees/commits directly visible, not just conceptual:
+
+```bash
+git cat-file -p HEAD                    # the commit object: tree pointer, parent, author, message
+git cat-file -p HEAD^{tree}              # the tree object: filenames pointing at blob hashes
+git cat-file -p <blob-hash>              # the blob object: the raw file content itself
+git rev-parse HEAD                       # the current commit's actual SHA-1
+git log --graph --oneline --all          # the commit-pointer chain, drawn as a graph
+```
+
 - **Why this matters for `rebase` vs. `merge`**: a merge creates a new commit with two parents, preserving the actual history of both branches. A rebase *rewrites* commits — it replays your branch's commits one by one on top of a new base, producing new commits with new hashes. Understanding that a rebased commit is a genuinely different object (not the "same" commit relocated) explains why force-pushing after a rebase is necessary, and why rebasing commits that have already been pushed and pulled by someone else causes real problems (their history now disagrees with yours about what those commits even are).
 
 <RebaseVsMergeDiagram />
+
+```bash
+git checkout main && git pull
+git checkout -b add-mixed-precision
+# ...commits...
+
+git merge main                    # preserves both branches' real history, creates a merge commit
+
+# vs.
+
+git rebase main                   # replays add-mixed-precision's commits on top of main's tip -- new hashes
+git push --force-with-lease       # required after rebase; --force-with-lease refuses if someone else pushed first
+```
+
+Beyond `add`/`commit`/`push`, the commands that come up once a repo has real history and real conflicts:
+
+```bash
+# interactive rebase: squash 3 messy WIP commits into one clean one before pushing
+git rebase -i HEAD~3
+# opens an editor listing the 3 commits -- change "pick" to "squash" on the last 2
+
+# a merge conflict, resolved by hand
+git merge main
+# CONFLICT (content): Merge conflict in train.py
+# <<<<<<< HEAD / ======= / >>>>>>> main markers show both versions inline
+git add train.py                  # after manually editing to resolve the conflict
+git commit                        # completes the merge
+
+# bisect: find which of the last 50 commits introduced a regression, via binary search
+git bisect start
+git bisect bad HEAD                       # current commit is broken
+git bisect good v1.2.0                    # this old tag was known-good
+# git checks out a commit halfway between -- test it, then:
+git bisect good   # or: git bisect bad     # repeat until git names the exact culprit commit
+git bisect reset
+
+# worktrees: check out a second branch into its own directory, no stashing needed
+git worktree add ../hotfix main           # a real second working copy, same repo, same .git
+```
 
 ## Compilers vs. Interpreters
 

@@ -34,6 +34,15 @@ Every HTTP interaction is a client sending a **request** and a server sending ba
 
 A request has a **method** (what kind of action), a **URL** (what resource), **headers** (metadata — content type, auth token, etc.), and an optional **body** (the actual payload, e.g. your prompt as JSON). A response has a **status code** (did it work, and how), its own headers, and a body (the result). `POST /v1/messages` with your prompt in a JSON body, getting back a `200` with the model's reply in JSON, is this exact cycle — nothing more exotic is happening underneath an LLM API call.
 
+That exact cycle, as a real request:
+
+```bash
+curl https://api.anthropic.com/v1/messages \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{"model": "<model-id>", "max_tokens": 256, "messages": [{"role": "user", "content": "Explain HTTP in one sentence."}]}'
+```
+
 ## HTTP Methods
 
 - **GET**: retrieve a resource, no side effects. Safe to retry, safe to cache.
@@ -51,6 +60,21 @@ A request has a **method** (what kind of action), a **URL** (what resource), **h
 <StatusCodeFamiliesDiagram />
 
 The families matter more than memorizing every code: `2xx` means it worked, `3xx` means go look elsewhere, `4xx` means *your* request was the problem (and is worth fixing before retrying — `400` malformed request, `401` missing/invalid auth, `403` authenticated but not allowed, `404` not found, `429` rate limited), `5xx` means the *server's* problem (worth retrying with backoff, since it might be transient). Every LLM API integration needs to handle `429` gracefully — it's not an edge case, it's the normal shape of using a shared, rate-limited service under load.
+
+```python
+import httpx, time
+
+def call_with_backoff(payload: dict, max_attempts: int = 5) -> dict:
+    for attempt in range(max_attempts):
+        response = httpx.post(API_URL, json=payload, headers=headers)
+        if response.status_code == 429:
+            retry_after = float(response.headers.get("retry-after", 2 ** attempt))
+            time.sleep(retry_after)
+            continue
+        response.raise_for_status()   # 4xx/5xx other than 429 -- fail loudly, don't silently swallow
+        return response.json()
+    raise RuntimeError("exhausted retries against a rate-limited endpoint")
+```
 
 ## REST: Structuring an API Around Resources
 
@@ -116,6 +140,32 @@ FastAPI's `Depends()` mechanism lets a path operation declare "I need this" (a d
 <DependencyInjectionDiagram />
 
 This is where authentication actually gets *enforced* in a real FastAPI service: a `get_current_user` dependency decodes and validates the JWT/API key from the request, and any route that declares it as a dependency automatically requires valid auth — the authentication vs. authorization distinction from earlier, implemented as one reusable, testable function instead of copy-pasted checks in every handler.
+
+Everything above, together, in one real endpoint -- a Pydantic request model, a `Depends()`-enforced auth check, and streaming the response back over Server-Sent Events:
+
+```python
+from fastapi import FastAPI, Depends, Header, HTTPException
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class GenerateRequest(BaseModel):
+    prompt: str
+
+def get_current_user(authorization: str = Header(...)) -> str:
+    token = authorization.removeprefix("Bearer ")
+    if not is_valid_token(token):
+        raise HTTPException(status_code=401, detail="invalid or expired token")
+    return decode_user_id(token)
+
+@app.post("/v1/generate")
+async def generate(req: GenerateRequest, user_id: str = Depends(get_current_user)):
+    async def token_stream():
+        async for token in model.stream(req.prompt):
+            yield f"data: {token}\n\n"   # the SSE wire format -- "data: <payload>\n\n" per event
+    return StreamingResponse(token_stream(), media_type="text/event-stream")
+```
 
 ## Where This Shows Up Elsewhere on This Site
 
