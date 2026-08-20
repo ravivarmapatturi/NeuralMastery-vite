@@ -1,0 +1,38 @@
+import { useState } from 'react';
+import { useVizTokens } from '../../theme/vizTokens';
+import { VisualizationContainer } from '../primitives';
+import { getConceptColor } from './diagramSystem';
+
+const STEPS = [
+  { key: 'write', label: 'Write config', desc: 'Infrastructure declared in .tf files -- reviewed like any other code change, in a pull request.' },
+  { key: 'plan', label: 'terraform plan', desc: 'Terraform diffs "what\'s declared" against its state file (what it last created) and shows exactly what would change -- before touching anything.' },
+  { key: 'apply', label: 'terraform apply', desc: 'Only the computed diff is actually applied -- unchanged resources are left alone.' },
+  { key: 'state', label: 'State updated', desc: 'The state file now reflects reality again -- the record the next plan diffs against.' },
+];
+
+/** The core Terraform loop -- click a step to see what it actually
+ * does, from declared config to applied infrastructure. */
+export default function TerraformWorkflowDiagram() {
+  const t = useVizTokens();
+  const [active, setActive] = useState('plan');
+  const color = getConceptColor(t, 'attention');
+  const s = STEPS.find((x) => x.key === active)!;
+
+  return (
+    <VisualizationContainer footer={s.desc}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
+        {STEPS.map((x, i) => {
+          const isActive = active === x.key;
+          return (
+            <div key={x.key} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <div onClick={() => setActive(x.key)} onMouseEnter={() => setActive(x.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.65rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
+                <span style={{ fontSize: 9.5, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textPrimary }}>{x.label}</span>
+              </div>
+              {i < STEPS.length - 1 && <span style={{ color: t.textMuted, fontSize: 12 }}>→</span>}
+            </div>
+          );
+        })}
+      </div>
+    </VisualizationContainer>
+  );
+}

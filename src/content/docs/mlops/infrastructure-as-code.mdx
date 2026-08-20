@@ -3,6 +3,13 @@ title: "Infrastructure as Code"
 sidebar_position: 11
 ---
 
+import TerraformWorkflowDiagram from '../../../viz/diagrams/TerraformWorkflowDiagram';
+import TerraformCoreConceptsDiagram from '../../../viz/diagrams/TerraformCoreConceptsDiagram';
+import StateDriftDiagram from '../../../viz/diagrams/StateDriftDiagram';
+import RemoteStateLockingDiagram from '../../../viz/diagrams/RemoteStateLockingDiagram';
+import ImmutableVsConfigMgmtDiagram from '../../../viz/diagrams/ImmutableVsConfigMgmtDiagram';
+import TerraformAnsibleSplitDiagram from '../../../viz/diagrams/TerraformAnsibleSplitDiagram';
+import TerraformVsPulumiDiagram from '../../../viz/diagrams/TerraformVsPulumiDiagram';
 
 # Infrastructure as Code
 
@@ -12,13 +19,23 @@ Clicking through a cloud console to create a VPC, three subnets, an EKS cluster,
 
 The dominant IaC tool, cloud-agnostic (one tool, many providers):
 
+<TerraformWorkflowDiagram />
+
+<TerraformCoreConceptsDiagram />
+
 - **Providers**: plugins that let Terraform talk to a specific platform (AWS, GCP, Azure, Kubernetes, even SaaS tools like Datadog) — declare a provider block once, then define resources against it.
 - **Resources**: the actual infrastructure being declared — `resource "aws_instance" "training_node" { ... }` — Terraform's core building block.
 - **Variables**: parameterize a configuration (instance type, region, environment name) so the same Terraform code deploys dev, staging, and prod with different inputs.
 - **Outputs**: values exposed after `apply` (a generated endpoint URL, a resource ID) — consumed by other Terraform configs or by humans/CI.
 - **Modules**: reusable, parameterized bundles of resources — package "a standard VPC" or "a standard ML training cluster" once, reuse it across projects instead of copy-pasting the underlying resources.
 - **State**: Terraform's record of what it last created — the mechanism that lets it compute a diff between "what's declared" and "what actually exists" and apply only the changes needed.
+
+<StateDriftDiagram />
+
 - **Remote state**: storing that state file in a shared, locked backend (S3 + DynamoDB for locking is the classic AWS pattern) instead of a local file — required the moment more than one person or CI job touches the same infrastructure, to avoid two concurrent applies corrupting state.
+
+<RemoteStateLockingDiagram />
+
 - **Workspaces**: Terraform's built-in mechanism for managing multiple instances of the same configuration (e.g. one workspace per environment) without duplicating the code.
 
 ## Immutable Infrastructure vs. Configuration Management
@@ -28,10 +45,16 @@ Two different philosophies for keeping infrastructure in a known state:
 - **Configuration management** (Ansible, Chef, Puppet): describe the desired *configuration* of a long-lived server, and the tool mutates it into that state — install this package, set this config file, restart this service. The server itself persists and gets updated in place.
 - **Immutable infrastructure**: never mutate a running server — build a new image/container with the change baked in, and replace the old instance entirely. This is the model containers and most cloud-native infrastructure default to today, because it eliminates an entire class of "it drifted from what the config says it should be" bugs.
 
+<ImmutableVsConfigMgmtDiagram />
+
 Terraform itself is agnostic to this distinction (it provisions infrastructure either way) — Ansible is commonly used *alongside* Terraform, with Terraform provisioning the VM and Ansible configuring what runs on it, though the immutable-infrastructure trend has pushed more of that configuration into the container image itself instead.
+
+<TerraformAnsibleSplitDiagram />
 
 ## Pulumi
 
 An alternative to Terraform's own HCL language: define infrastructure in a general-purpose language (Python, TypeScript, Go) instead of a domain-specific config format — appealing when infrastructure logic needs real programming constructs (loops, conditionals, functions) that HCL makes awkward. Terraform remains the more common default; Pulumi is worth knowing as the answer to "what if I want to write infrastructure in Python."
+
+<TerraformVsPulumiDiagram />
 
 Next: [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd) — once infrastructure is code, it deploys through the same automated pipelines as everything else.
