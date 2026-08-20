@@ -3,24 +3,35 @@ title: "The 9-Step ML System Design Framework"
 sidebar_position: 3
 ---
 
-
-import nineStepDark from './img/nine-step-framework.png';
-import nineStepLight from './img/nine-step-framework-light.png';
+import NineStepPipelineDiagram from '../../../viz/diagrams/NineStepPipelineDiagram';
+import ProblemFormulationFunnelDiagram from '../../../viz/diagrams/ProblemFormulationFunnelDiagram';
+import OfflineVsOnlineMetricsDiagram from '../../../viz/diagrams/OfflineVsOnlineMetricsDiagram';
+import DataBiasDiagram from '../../../viz/diagrams/DataBiasDiagram';
+import FeatureCategoriesDiagram from '../../../viz/diagrams/FeatureCategoriesDiagram';
+import ModelComplexityInterpretabilityDiagram from '../../../viz/diagrams/ModelComplexityInterpretabilityDiagram';
+import TimeBasedSplitDiagram from '../../../viz/diagrams/TimeBasedSplitDiagram';
+import LatencyBudgetBreakdownDiagram from '../../../viz/diagrams/LatencyBudgetBreakdownDiagram';
+import ABShadowCanaryDiagram from '../../../viz/diagrams/ABShadowCanaryDiagram';
+import MonitoringRetrainLoopDiagram from '../../../viz/diagrams/MonitoringRetrainLoopDiagram';
 
 # The 9-Step ML System Design Framework
 
 A repeatable structure for approaching any "design an ML system for X" problem — in an interview or in a real project kickoff.
 
-<ThemedImage alt="The 9-step ML system design framework, from problem formulation through scaling and monitoring, with a feedback loop back to model development" sources={{light: nineStepLight, dark: nineStepDark}} />
+<NineStepPipelineDiagram />
 
 ## 1. Problem Formulation
 
 Translate a vague business goal ("increase engagement") into a concrete ML problem ("predict the probability a user clicks this post, rank by that probability"). This step is where most real-world ML projects succeed or fail — a well-specified ML problem with a mediocre model beats a vague problem with a great model. Ask: what exactly are we predicting, for whom, and what decision does that prediction drive?
 
+<ProblemFormulationFunnelDiagram />
+
 ## 2. Metrics
 
 - **Offline metrics**: what you optimize and measure during development — precision/recall, RMSE, ranking metrics like NDCG (see [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)).
 - **Online metrics**: what you actually measure once the system is live — click-through rate, retention, revenue, latency. Offline metrics are a *proxy* for online metrics, and the two don't always move together — a model that improves offline accuracy can still hurt a business metric if it wasn't optimizing for the right proxy.
+
+<OfflineVsOnlineMetricsDiagram />
 
 ## 3. Architectural Components (MVP Logic)
 
@@ -30,13 +41,23 @@ Sketch the system end to end before diving into any one piece: where does data c
 
 Where does labeled (or implicit) training data come from? User interactions (clicks, purchases) are the most common implicit label source; explicit human labeling is expensive but sometimes necessary. Consider bias in how the data was collected — data collected under an old system's behavior encodes that system's blind spots.
 
+<DataBiasDiagram />
+
 ## 5. Feature Engineering
 
 What signals actually predict the target? For most production systems this includes user features (history, preferences), item features (content, metadata), and context features (time of day, device, location). See [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals) for the general principles.
 
+<FeatureCategoriesDiagram />
+
 ## 6. Model Development and Offline Evaluation
 
-Pick a model class appropriate to the problem's data volume, latency budget, and interpretability needs — often starting with a strong, simple baseline (logistic regression, gradient boosting) before justifying anything more complex. Validate offline using the metrics chosen in step 2, with a train/validation/test split that reflects how the model will actually be used (e.g. splitting by time, not randomly, if the model predicts the future).
+Pick a model class appropriate to the problem's data volume, latency budget, and interpretability needs — often starting with a strong, simple baseline (logistic regression, gradient boosting) before justifying anything more complex.
+
+<ModelComplexityInterpretabilityDiagram />
+
+Validate offline using the metrics chosen in step 2, with a train/validation/test split that reflects how the model will actually be used (e.g. splitting by time, not randomly, if the model predicts the future).
+
+<TimeBasedSplitDiagram />
 
 ## 7. Prediction Service
 
@@ -45,14 +66,20 @@ Pick a model class appropriate to the problem's data volume, latency budget, and
 
 Latency budget matters enormously here: a search ranking system might have a ~100ms budget for the entire request, which directly constrains model size and feature complexity.
 
+<LatencyBudgetBreakdownDiagram />
+
 ## 8. Online Testing and Model Deployment
 
 - **A/B testing**: route a fraction of traffic to the new model, compare online metrics against the current system, using the hypothesis-testing principles from [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics) to judge whether an observed improvement is real.
 - **Shadow deployment**: run the new model alongside the current one in production without acting on its output, to observe its behavior on real traffic risk-free before it affects users.
 - **Canary rollout**: gradually increase the new model's traffic share, watching for regressions at each stage before going to 100%.
 
+<ABShadowCanaryDiagram />
+
 ## 9. Scaling, Monitoring, and Updates
 
 Once live, a model isn't done — it needs monitoring for performance degradation (concept drift, see [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics)), a defined retraining cadence, and a rollback plan if a new version underperforms. This is the step most interview answers skip, and the step real production systems live or die by.
+
+<MonitoringRetrainLoopDiagram />
 
 Next: [Case Studies](/docs/ml-system-design/case-studies) — applying this framework to recommendation systems, search, and GenAI/LLM system design.
