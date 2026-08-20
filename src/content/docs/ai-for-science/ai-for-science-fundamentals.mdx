@@ -4,9 +4,15 @@ sidebar_position: 3
 ---
 
 
+import ScreeningFunnelDiagram from '../../../viz/diagrams/ScreeningFunnelDiagram';
+import PinnLossDiagram from '../../../viz/diagrams/PinnLossDiagram';
+import NeuralOperatorDiagram from '../../../viz/diagrams/NeuralOperatorDiagram';
+
 # AI for Science Fundamentals
 
-The common thread across every topic below: a scientific domain has an expensive, slow way to get ground truth (a wet-lab experiment, a physical simulation, a clinical trial), and ML offers a way to either replace a fraction of that expensive process with a fast prediction, or to search an astronomically large space of candidates (molecules, materials, protein sequences) for the few worth actually testing physically.
+The common thread across every topic below: a scientific domain has an expensive, slow way to get ground truth (a wet-lab experiment, a physical simulation, a clinical trial), and ML offers a way to either replace a fraction of that expensive process with a fast prediction, or to search an astronomically large space of candidates (molecules, materials, protein sequences) for the few worth actually testing physically. That second pattern — a real ML filter narrowing an enormous candidate space before anything expensive happens — is genuinely computable, not just a description:
+
+<ScreeningFunnelDiagram />
 
 ## Drug Discovery and Molecular ML
 
@@ -26,8 +32,12 @@ The materials-science analog of drug discovery: searching for new materials with
 
 ## Physics-Informed Neural Networks (PINNs) and Neural Operators
 
-- **PINNs**: train a neural network to approximate the solution to a physical system's governing differential equations by incorporating the equations themselves directly into the training loss (penalizing the network's output for violating the known physics), rather than training purely on labeled input-output data — useful specifically when physical laws are well-known but data is scarce, letting the known physics constrain the network's predictions in regions with little or no training data.
-- **Neural operators**: rather than learning a single function (mapping one specific input to one specific output, as a standard neural network does), a neural operator learns a mapping *between function spaces* — e.g. learning to map any initial condition of a physical system directly to its solution *function* over time, generalizing across different initial conditions without needing to be retrained or re-solved from scratch for each one. Once trained, a neural operator can evaluate a new scenario orders of magnitude faster than re-running a traditional numerical simulation, at some accuracy cost — a genuinely different tool than PINNs (which approximate one specific solution) for the specific case of needing many fast approximate solutions across varying conditions.
+- **PINNs**: train a neural network to approximate the solution to a physical system's governing differential equations by incorporating the equations themselves directly into the training loss (penalizing the network's output for violating the known physics), rather than training purely on labeled input-output data — useful specifically when physical laws are well-known but data is scarce, letting the known physics constrain the network's predictions in regions with little or no training data. Real network, real ODE residual, one single labeled point:
+
+<PinnLossDiagram />
+- **Neural operators**: rather than learning a single function (mapping one specific input to one specific output, as a standard neural network does), a neural operator learns a mapping *between function spaces* — e.g. learning to map any initial condition of a physical system directly to its solution *function* over time, generalizing across different initial conditions without needing to be retrained or re-solved from scratch for each one. Once trained, a neural operator can evaluate a new scenario orders of magnitude faster than re-running a traditional numerical simulation, at some accuracy cost — a genuinely different tool than PINNs (which approximate one specific solution) for the specific case of needing many fast approximate solutions across varying conditions. A real closed-form example of exactly this function-to-function shape — the 1D heat equation, solved for real, for any initial condition instantly:
+
+<NeuralOperatorDiagram />
 
 ## Simulation
 
