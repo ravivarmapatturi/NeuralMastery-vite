@@ -32,12 +32,22 @@ and ml-workflow-fundamentals.mdx (both meta pages). supervised-learning.mdx and
 unsupervised-learning.mdx were skipped deliberately (pure hub/survey pages,
 coordinator's call).
 
+**ai-for-science/** — complete (ai-for-science-fundamentals.mdx: real screening
+funnel, real PINN loss, real neural-operator heat-equation demo).
+
+**domain-applications/** — complete (healthcare-ai.mdx: real cost-weighted
+threshold; other-domain-applications.mdx: real sim-to-real domain-randomization
+gain comparison).
+
 ## Next up
 
-Check in with coordinator for next assignment. Queued list as of last sync:
-ai-for-science, domain-applications, frameworks, build-from-scratch,
-research-engineering — python-engineering/cs-fundamentals went to another
-session (platform-vite-91), do not touch.
+frameworks/, build-from-scratch/, research-engineering/, then interview-prep/
+(6 pages, added to queue later — DSA/ML-coding/system-design/behavioral,
+visualize where it genuinely fits e.g. complexity/DS concepts).
+python-engineering/cs-fundamentals belong to platform-vite-91, do not touch.
+
+Also fixed an unrelated CI-breaking TS6133 error on main in
+NdcgRankingDiagram.tsx (not mine, but trivial + blocking everyone) and pushed.
 
 ## Working pattern (keep doing this)
 
