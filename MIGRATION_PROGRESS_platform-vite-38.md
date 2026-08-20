@@ -41,6 +41,18 @@ re-adding already-staged deletions). Pushed + deployed.
 mcp/ subfolder (overview.mdx + protocol-deep-dive.mdx) is now fully
 consistent with the rest of the site.
 
+**New batch from lead (2026-08-20), 9 pages, deep-learning/ + llms-genai/
+(lead's own originally-claimed folder, "no folder gets quietly exempted"):**
+- [x] deep-learning/cnns.mdx — 9 diagrams, commit 1860d46
+- [ ] deep-learning/vision-architectures.mdx — NEXT
+- [ ] deep-learning/advanced-architectures.mdx
+- [ ] deep-learning/nn-layers-reference.mdx
+- [ ] deep-learning/training-deep-networks.mdx — lead flagged as high-value (norm/reg/residual)
+- [ ] deep-learning/generative-models.mdx — lead flagged as high-value (GANs/diffusion)
+- [ ] llms-genai/prompt-engineering.mdx
+- [ ] llms-genai/multimodal-generative-models.mdx
+- [ ] llms-genai/evaluation-and-serving.mdx
+
 Per-page workflow established this session (repeat every time): read page →
 design 6-7 diagram concepts tied to actual section content (reuse an existing
 component when a page elsewhere already covers the same concept) → write .tsx
