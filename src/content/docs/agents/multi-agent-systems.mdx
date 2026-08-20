@@ -4,11 +4,18 @@ sidebar_position: 5
 ---
 
 
+import CoordinationPatternsDiagram from '../../../viz/diagrams/CoordinationPatternsDiagram';
+import ParallelAgentSpeedupDiagram from '../../../viz/diagrams/ParallelAgentSpeedupDiagram';
+
 # Multi-Agent Systems
 
 When one agent isn't enough — and the coordination problems that come with adding more.
 
 ## Coordination Patterns
+
+The three topologies, drawn as actual graphs rather than described in prose — the shape difference is the entire tradeoff between debuggability and flexibility:
+
+<CoordinationPatternsDiagram />
 
 - **Hierarchical (orchestrator/sub-agent)**: one agent breaks down and delegates work to specialized sub-agents, then combines results — see [Agent Architectures](/docs/agents/agent-architectures#sub-agents-and-orchestrator-patterns). Easiest to reason about and debug, since there's a clear owner of the overall task. The [supervisor pattern](/docs/agents/agent-architectures#supervisor-pattern) is the more dynamic version of this — looping and re-routing between sub-agents based on intermediate results, rather than a fixed one-shot delegation plan.
 - **Peer-to-peer**: agents communicate directly with each other as equals, without a central coordinator — more flexible, but harder to guarantee the task actually converges to a result, and harder to debug when something goes wrong.
@@ -23,7 +30,9 @@ When multiple agents can read and write shared state (a document, a database, a 
 Multi-agent systems earn their complexity when:
 - Different sub-tasks genuinely need different tools, instructions, or models (e.g. a coding sub-agent vs. a research sub-agent)
 - The task is large enough that a single agent's context window becomes a bottleneck
-- Sub-tasks can run in parallel, and wall-clock time matters
+- Sub-tasks can run in parallel, and wall-clock time matters — a real greedy-scheduling simulation of exactly that speedup:
+
+<ParallelAgentSpeedupDiagram />
 
 They *don't* help — and often actively hurt — when a single well-prompted agent with good tools was already handling the task fine. Coordination overhead, extra latency, and extra points of failure are real costs, not free architecture upgrades.
 
