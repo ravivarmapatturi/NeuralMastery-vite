@@ -4,6 +4,12 @@ sidebar_position: 3
 ---
 
 
+import ProcessVsThreadDiagram from '../../../viz/diagrams/ProcessVsThreadDiagram';
+import ConcurrencyVsParallelismDiagram from '../../../viz/diagrams/ConcurrencyVsParallelismDiagram';
+import GilReleaseDiagram from '../../../viz/diagrams/GilReleaseDiagram';
+import CpuCacheLatencyDiagram from '../../../viz/diagrams/CpuCacheLatencyDiagram';
+import SequentialVsRandomIoDiagram from '../../../viz/diagrams/SequentialVsRandomIoDiagram';
+
 # Operating Systems & Concurrency
 
 Every "why is my training script slow" and "why did two processes corrupt each other's state" question eventually traces back to something in this page.
@@ -14,6 +20,8 @@ Every "why is my training script slow" and "why did two processes corrupt each o
 - **Thread**: a unit of execution *within* a process, sharing that process's memory space with every other thread in it. Threads can read/write the same variables directly (fast, but dangerous — see race conditions below), and creating a thread is much cheaper than creating a process.
 - **The core tradeoff**: processes give you isolation at the cost of communication overhead; threads give you cheap communication at the cost of isolation (and the bugs that come from losing it).
 
+<ProcessVsThreadDiagram />
+
 ## Concurrency vs. Parallelism
 
 These get used interchangeably in casual conversation but mean different things:
@@ -23,6 +31,8 @@ These get used interchangeably in casual conversation but mean different things:
 
 Concurrency is about structure (how you organize overlapping work); parallelism is about execution (whether it's physically simultaneous). You can have concurrency without parallelism (single core, interleaved) and parallelism without much concurrency (SIMD operations on a GPU, structurally simple, massively parallel).
 
+<ConcurrencyVsParallelismDiagram />
+
 ## Python's GIL, and Why It Matters for ML Specifically
 
 The **Global Interpreter Lock (GIL)** ensures only one thread executes Python bytecode at a time within a single process, regardless of how many CPU cores are available. This has a direct, practical consequence for ML engineering:
@@ -30,6 +40,8 @@ The **Global Interpreter Lock (GIL)** ensures only one thread executes Python by
 - **Multithreading in Python doesn't give you CPU parallelism** for pure-Python code — two threads doing CPU-bound Python work don't run any faster than one, because the GIL serializes them. Multithreading *does* still help for I/O-bound work (waiting on a network call, waiting on disk) because the GIL is released during I/O waits.
 - **Multiprocessing sidesteps the GIL entirely** — each process gets its own Python interpreter and its own GIL, so `n` processes really do get `n`-way CPU parallelism. This is why PyTorch's `DataLoader` uses `num_workers` (separate *processes*, not threads) to parallelize data loading/preprocessing — pure-Python image decoding and augmentation would otherwise be GIL-bottlenecked to one core no matter how many `DataLoader` threads you configured.
 - **Numeric libraries mostly don't hit this limit** — NumPy, PyTorch, and similar libraries release the GIL while executing their compiled C/C++/CUDA kernels, which is exactly why `tensor_a @ tensor_b` running across many cores (or a GPU) isn't GIL-limited even though it's called from Python.
+
+<GilReleaseDiagram />
 
 ## Memory: Stack, Heap, Virtual Memory
 
@@ -42,9 +54,13 @@ The **Global Interpreter Lock (GIL)** ensures only one thread executes Python by
 
 Between the CPU and RAM sits a hierarchy of progressively larger, progressively slower caches (L1 → L2 → L3), because RAM access is orders of magnitude slower than the CPU's own clock cycle. **Cache-friendly code** accesses memory in predictable, sequential patterns (matching how caches load contiguous blocks, "cache lines," at once) — this is a large part of *why* NumPy/PyTorch operations on contiguous arrays are so much faster than the equivalent pure-Python loop over a list: vectorized operations access memory sequentially and predictably, keeping the CPU fed from cache instead of stalling on RAM access for every single element.
 
+<CpuCacheLatencyDiagram />
+
 ## File Systems and I/O
 
 - **Sequential vs. random I/O**: reading a large file sequentially is dramatically faster than reading many small, scattered files — a direct, practical reason formats like TFRecord/WebDataset/Parquet (which pack many small training examples into large sequential files) exist for large-scale ML data pipelines, instead of one file per training example.
+
+<SequentialVsRandomIoDiagram />
 - **Buffered I/O**: the OS caches recently-read disk blocks in RAM, which is why a second read of the same file is often much faster than the first — relevant when reasoning about "why did my dataloader suddenly speed up after the first epoch."
 - **Memory-mapped files (`mmap`)**: map a file's contents directly into a process's virtual address space, so reading from it looks like reading from memory, with the OS handling the actual disk I/O on demand via page faults — how many large-dataset and large-model-loading libraries avoid reading an entire multi-gigabyte file into RAM upfront.
 
