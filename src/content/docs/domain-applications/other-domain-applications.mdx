@@ -4,6 +4,8 @@ sidebar_position: 4
 ---
 
 
+import SimToRealGapDiagram from '../../../viz/diagrams/SimToRealGapDiagram';
+
 # Other Domain Applications
 
 The same lens as [Healthcare AI](/docs/domain-applications/healthcare-ai) — the general toolkit, plus what each domain's specific data and constraints add — applied more briefly across five more domains.
@@ -29,7 +31,9 @@ The same lens as [Healthcare AI](/docs/domain-applications/healthcare-ai) — th
 
 - **Perception**: [computer vision](/docs/computer-vision/roadmap) tasks (object detection, depth estimation, [optical flow](/docs/computer-vision/vision-tasks-and-models#optical-flow)) feeding a robot's understanding of its physical environment in real time.
 - **Control and planning**: [reinforcement learning](/docs/reinforcement-learning/roadmap) is a natural fit for robotic control specifically because the RL formulation (an agent taking actions in an environment, receiving reward) maps almost directly onto a robot moving through and manipulating the physical world — with [offline RL](/docs/reinforcement-learning/advanced-rl#offline-rl) and [imitation learning](/docs/reinforcement-learning/advanced-rl#imitation-learning) mattering more here than in most RL applications, since live trial-and-error exploration on physical hardware is slow, expensive, and can damage the robot.
-- **Sim-to-real transfer**: training a policy in a fast, cheap simulated environment, then transferring it to work on the real physical robot — a distribution-shift problem (the simulation is never a perfect match for physical reality) addressed with domain randomization (deliberately varying simulated physics/appearance during training so the learned policy is robust to the simulation-to-reality gap rather than overfit to one specific simulator's quirks).
+- **Sim-to-real transfer**: training a policy in a fast, cheap simulated environment, then transferring it to work on the real physical robot — a distribution-shift problem (the simulation is never a perfect match for physical reality) addressed with domain randomization (deliberately varying simulated physics/appearance during training so the learned policy is robust to the simulation-to-reality gap rather than overfit to one specific simulator's quirks). Real closed-form controller gains, real generalization gap:
+
+<SimToRealGapDiagram />
 
 ## Manufacturing
 

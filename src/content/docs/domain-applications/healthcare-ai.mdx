@@ -4,6 +4,8 @@ sidebar_position: 3
 ---
 
 
+import CostWeightedThresholdDiagram from '../../../viz/diagrams/CostWeightedThresholdDiagram';
+
 # Healthcare AI
 
 The domain where the general AI toolkit's stakes are highest — a hallucinated RAG answer in a customer-support bot is an annoyance; a hallucinated answer in a clinical decision-support tool can directly harm a patient. Every technique below is the same general-purpose toolkit from the rest of this site, with the domain-specific constraints that actually matter for deploying it safely made explicit.
@@ -14,7 +16,9 @@ Extracting structured information from unstructured clinical text — physician 
 
 ## Medical Imaging
 
-Applying [Computer Vision](/docs/computer-vision/roadmap)'s classification/detection/segmentation task taxonomy to radiology (X-rays, CT, MRI), pathology (microscopy slides), and dermatology (skin images) — with two domain-specific complications general computer vision datasets don't have: **extreme class imbalance** (a screening dataset is overwhelmingly normal cases, with the clinically important positive cases rare — see [Handling Messy Data](/docs/machine-learning/ml-workflow-fundamentals#handling-messy-data)'s imbalanced-class guidance, which applies directly and matters more here), and **the cost asymmetry of errors** (a missed cancer diagnosis and a false alarm have very different real consequences, directly shaping [threshold optimization](/docs/machine-learning/model-evaluation-metrics#threshold-optimization) choices rather than defaulting to a standard 0.5 cutoff).
+Applying [Computer Vision](/docs/computer-vision/roadmap)'s classification/detection/segmentation task taxonomy to radiology (X-rays, CT, MRI), pathology (microscopy slides), and dermatology (skin images) — with two domain-specific complications general computer vision datasets don't have: **extreme class imbalance** (a screening dataset is overwhelmingly normal cases, with the clinically important positive cases rare — see [Handling Messy Data](/docs/machine-learning/ml-workflow-fundamentals#handling-messy-data)'s imbalanced-class guidance, which applies directly and matters more here), and **the cost asymmetry of errors** (a missed cancer diagnosis and a false alarm have very different real consequences, directly shaping [threshold optimization](/docs/machine-learning/model-evaluation-metrics#threshold-optimization) choices rather than defaulting to a standard 0.5 cutoff). Real cost-weighted threshold search, over the same real scored examples as Model Evaluation & Metrics:
+
+<CostWeightedThresholdDiagram />
 
 ## EHR (Electronic Health Record) Data
 
