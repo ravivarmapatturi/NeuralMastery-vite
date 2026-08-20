@@ -25,11 +25,37 @@ Everything covered so far in MLOps gets a model trained, deployed, and monitored
 
 <JitteredBackoffDiagram />
 
+Both timeout and capped, jittered retry as real Python (`tenacity` is the standard library for exactly this):
+
+```python
+from tenacity import retry, stop_after_attempt, wait_random_exponential
+import httpx
+
+@retry(stop=stop_after_attempt(3), wait=wait_random_exponential(multiplier=0.5, max=8))
+def call_llm_provider(prompt: str) -> str:
+    response = httpx.post(LLM_API_URL, json={"prompt": prompt}, timeout=5.0)  # explicit timeout, every call
+    response.raise_for_status()
+    return response.json()["text"]
+```
+
 ## Circuit Breakers
 
 A **circuit breaker** tracks a dependency's recent failure rate and, once it crosses a threshold, stops sending requests to that dependency entirely for a cooldown period — rather than continuing to retry against something that's clearly down, which wastes resources and adds latency to every request without any chance of success. The pattern name is deliberate: like an electrical circuit breaker, it "trips" open on sustained failure, and periodically allows a small number of test requests through to check whether the dependency has recovered before fully "closing" again. This turns a downstream outage into a fast, predictable failure for callers instead of every request hanging until its own timeout expires.
 
 <CircuitBreakerStateDiagram />
+
+```python
+import pybreaker
+
+llm_breaker = pybreaker.CircuitBreaker(fail_max=5, reset_timeout=30)
+
+@llm_breaker
+def call_llm_provider(prompt: str) -> str:
+    return httpx.post(LLM_API_URL, json={"prompt": prompt}, timeout=5.0).json()["text"]
+
+# after 5 consecutive failures, further calls raise CircuitBreakerError immediately
+# (no network round-trip, no waiting on a timeout) until the 30s reset_timeout elapses
+```
 
 ## Fallback Models and Graceful Degradation
 
@@ -51,6 +77,17 @@ A **circuit breaker** tracks a dependency's recent failure rate and, once it cro
 - **Idempotency**: an operation is idempotent if performing it multiple times has the same effect as performing it once — critical for anything triggered by a retry (above): if a "charge the customer" or "send this notification" action isn't idempotent, a retried request (after a timeout where the first attempt actually *did* succeed, just slowly) can duplicate the action. The standard fix is an idempotency key — a unique identifier per logical operation that the receiving system checks against, rejecting a duplicate request carrying an already-processed key.
 
 <IdempotencyKeyDiagram />
+
+```python
+@app.post("/v1/charge")
+def charge(req: ChargeRequest, idempotency_key: str = Header(...)):
+    if (cached := redis.get(f"idempotency:{idempotency_key}")):
+        return json.loads(cached)   # already processed -- return the original result, don't charge again
+
+    result = process_charge(req)
+    redis.set(f"idempotency:{idempotency_key}", json.dumps(result), ex=86400)
+    return result
+```
 
 - **Distributed locks**: when multiple workers/processes might operate on the same resource concurrently (two training jobs writing to the same checkpoint location, two workers processing the same queued item), a distributed lock ensures only one actually proceeds at a time — implemented via a coordination service (the same kind of majority-consensus mechanism as [CS Fundamentals — Consensus](/docs/cs-fundamentals/networking-and-distributed-systems#consensus-raftpaxos-intuition-only)) rather than assuming single-process, single-machine execution.
 

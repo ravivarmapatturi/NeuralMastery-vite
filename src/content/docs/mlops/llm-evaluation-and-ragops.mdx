@@ -28,7 +28,30 @@ import RagFailureLayerDiagram from '../../../viz/diagrams/RagFailureLayerDiagram
 ## Evaluation Tooling
 
 - **Ragas**: a framework purpose-built for evaluating RAG pipelines specifically — computes faithfulness, answer relevance, and context precision/recall from just a query, retrieved context, and generated answer, without requiring hand-labeled ground truth for every metric.
+
+```python
+from ragas import evaluate
+from ragas.metrics import faithfulness, answer_relevancy, context_precision
+from datasets import Dataset
+
+dataset = Dataset.from_dict({
+    "question": questions, "answer": generated_answers,
+    "contexts": retrieved_contexts, "ground_truth": reference_answers,
+})
+results = evaluate(dataset, metrics=[faithfulness, answer_relevancy, context_precision])
+```
+
 - **DeepEval**: a general LLM evaluation framework with a `pytest`-style API — designed to be run as part of [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd), turning "did this prompt/model change regress quality" into an automated test rather than a manual spot-check.
+
+```python
+from deepeval import assert_test
+from deepeval.metrics import FaithfulnessMetric
+from deepeval.test_case import LLMTestCase
+
+def test_rag_answer_is_grounded():
+    test_case = LLMTestCase(input=question, actual_output=generated_answer, retrieval_context=retrieved_chunks)
+    assert_test(test_case, [FaithfulnessMetric(threshold=0.8)])   # fails the pytest run (and CI) below 0.8
+```
 - **LangSmith**: LangChain's observability and evaluation platform — tracing every step of an LLM/agent pipeline (see [Observability](/docs/mlops/observability)'s tracing discussion, applied to LLM chains specifically) plus dataset-based evaluation.
 - **Arize Phoenix**: an open-source LLM observability tool, focused on tracing and evaluating LLM/RAG applications, including embedding drift visualization — extending the drift concepts from [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) to LLM-specific signals.
 
@@ -47,6 +70,16 @@ A RAG system has more moving parts than a single model call, and each one can in
 - **MRR (Mean Reciprocal Rank)**: rewards retrieving the first genuinely relevant result *early* in the ranked list, not just somewhere in the top-K — sensitive to ranking order in a way plain Recall@K isn't.
 
 <MrrCalculatorDiagram />
+
+```python
+def reciprocal_rank(ranked_chunk_ids: list[str], relevant_ids: set[str]) -> float:
+    for rank, chunk_id in enumerate(ranked_chunk_ids, start=1):
+        if chunk_id in relevant_ids:
+            return 1 / rank
+    return 0.0
+
+mrr = sum(reciprocal_rank(retrieved, relevant) for retrieved, relevant in eval_set) / len(eval_set)
+```
 
 - **NDCG (Normalized Discounted Cumulative Gain)**: a ranking metric that accounts for *graded* relevance (some results are more relevant than others, not just relevant/irrelevant) and discounts relevance found lower in the ranking — the most complete of the standard retrieval ranking metrics.
 

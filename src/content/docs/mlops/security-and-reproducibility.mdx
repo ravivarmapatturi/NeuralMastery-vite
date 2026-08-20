@@ -24,6 +24,23 @@ Two cross-cutting concerns that apply to every layer covered so far — not a ne
 
 <SecretsInjectionDiagram />
 
+On [Kubernetes](/docs/mlops/kubernetes), that runtime injection is a `Secret` resource mounted as an environment variable — the value never touches the image or the Deployment YAML in plaintext:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: model-api-secrets
+type: Opaque
+stringData:
+  LLM_PROVIDER_API_KEY: "..."   # in practice, populated by a tool like External Secrets Operator from Vault/Secrets Manager, not hand-typed
+---
+# in the Deployment's container spec:
+envFrom:
+  - secretRef:
+      name: model-api-secrets
+```
+
 - **API auth/RBAC**: every serving endpoint (see [APIs & Model Serving](/docs/mlops/model-serving), [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns)) needs authentication and role-based access control — not every caller should have access to every model or every capability.
 - **TLS**: encrypt traffic in transit, always — between users and the API gateway, and ideally between internal services too.
 - **Container/dependency scanning**: scan images and dependency trees for known CVEs as part of CI (see [Containers](/docs/mlops/containers), [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd)) — catching a vulnerable base image or package before it ships, not after.
@@ -61,6 +78,23 @@ Given the same inputs below, a training run should produce the same result — t
 <ReproducibilityChecklistDiagram />
 
 <HardwareDeterminismDiagram />
+
+The seeds and determinism knobs a training script actually needs to set, and the one environment variable PyTorch requires for its own deterministic-algorithm guarantee to hold:
+
+```python
+import torch, random, numpy as np
+
+def set_seed(seed: int):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.use_deterministic_algorithms(True)
+```
+
+```bash
+CUBLAS_WORKSPACE_CONFIG=:4096:8 python train.py --seed 42
+```
 
 A pipeline that can't satisfy this checklist can't be debugged when something goes wrong in production — "the model started behaving differently" is unanswerable without knowing exactly what changed.
 
