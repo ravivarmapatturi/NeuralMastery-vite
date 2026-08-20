@@ -4,6 +4,11 @@ sidebar_position: 7
 ---
 
 
+import JudgePositionBiasDiagram from '../../../viz/diagrams/JudgePositionBiasDiagram';
+import ContinuousBatchingDiagram from '../../../viz/diagrams/ContinuousBatchingDiagram';
+import SpeculativeDecodingDiagram from '../../../viz/diagrams/SpeculativeDecodingDiagram';
+import PagedAttentionDiagram from '../../../viz/diagrams/PagedAttentionDiagram';
+
 # Evaluation & Serving
 
 An LLM system isn't done when it works once — it needs measurable evaluation and a serving setup that's fast and affordable enough to actually run in production.
@@ -16,15 +21,23 @@ An LLM system isn't done when it works once — it needs measurable evaluation a
 
 **LLM-as-judge**: use a strong LLM to evaluate another model's outputs against criteria (helpfulness, correctness, tone) — scales far better than human evaluation for iterating quickly, though it inherits whatever biases the judge model has and works best combined with periodic human spot-checks.
 
+<JudgePositionBiasDiagram />
+
 **Evaluating for hallucination, toxicity, bias**: typically a mix of automated classifiers, curated adversarial test sets, and human review — this isn't a solved problem, and production systems generally layer several imperfect checks rather than relying on one.
 
 ## Serving & Inference Optimization
 
 **Batching**: process multiple requests' forward passes together to better utilize GPU compute — the core lever for serving throughput. **Continuous batching** (dynamically adding new requests to a running batch as others finish) further improves GPU utilization over static batching.
 
+<ContinuousBatchingDiagram />
+
 **Speculative decoding**: use a small, fast "draft" model to propose several tokens ahead, then have the large model verify them all in a single forward pass — accepted tokens are free speedup, rejected ones fall back to normal generation. Effective because verifying is cheaper than generating token-by-token.
 
+<SpeculativeDecodingDiagram />
+
 **Paged Attention**: manages the KV cache (see [Foundation Model Internals](/docs/llms-genai/foundation-model-internals)) using memory paging techniques borrowed from operating systems — allocates KV cache memory in fixed-size blocks rather than one large contiguous buffer per request, dramatically reducing memory waste and allowing many more concurrent requests to be served on the same hardware.
+
+<PagedAttentionDiagram />
 
 ## Cost/Latency Tradeoffs
 
