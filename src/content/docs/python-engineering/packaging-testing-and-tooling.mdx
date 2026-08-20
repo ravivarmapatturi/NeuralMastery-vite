@@ -21,6 +21,27 @@ The gap between "runs on my machine" and "runs anywhere, reliably" is almost ent
 
 <DependencyPinningDiagram />
 
+```toml
+[project]
+name = "fraud-model"
+requires-python = ">=3.12"
+dependencies = ["torch==2.4.0", "pydantic==2.9.0"]
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.0", "ruff==0.6.8"]
+```
+
+```bash
+# uv
+uv add torch==2.4.0          # adds to pyproject.toml, resolves, writes uv.lock, installs -- one command
+uv run pytest                 # runs inside the locked environment, no manual activation
+
+# poetry -- same idea, different tool
+poetry add torch@2.4.0
+poetry run pytest
+poetry install                # installs exactly what poetry.lock specifies, on a fresh machine/CI runner
+```
+
 ## Virtual Environments
 
 Every Python project needs its own isolated set of installed packages — without isolation, two projects needing different versions of the same library can't both work on one machine, and installing a project's dependencies pollutes every other project's environment too.
@@ -31,6 +52,24 @@ Every Python project needs its own isolated set of installed packages — withou
 
 <VirtualEnvIsolationDiagram />
 
+## Linting & Formatting: Ruff
+
+**Ruff** is a Rust-based linter/formatter that has largely displaced the older Flake8 + Black + isort combination — one fast tool doing what used to take three, configured in the same `pyproject.toml` everything else already lives in:
+
+```toml
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]   # pycodestyle, pyflakes, import sort, pyupgrade
+```
+
+```bash
+ruff check .              # lint -- unused imports, undefined names, style violations
+ruff check . --fix        # auto-fix what's safely fixable
+ruff format .              # the Black-equivalent formatter, built into the same tool
+```
+
 ## `pytest` in Practice
 
 - **Fixtures** (`@pytest.fixture`): reusable setup/teardown logic injected into test functions by name — a fixture that loads a small test dataset once and hands it to every test needing it, instead of every test reloading it manually. Fixtures can depend on other fixtures, building up setup incrementally, and `yield` inside a fixture marks the teardown boundary (setup before `yield`, cleanup after) — the exact same pattern as a context manager's `__enter__`/`__exit__`, applied to test setup.
@@ -39,6 +78,48 @@ Every Python project needs its own isolated set of installed packages — withou
 - **`conftest.py`**: a special file `pytest` auto-discovers, for fixtures and configuration shared across many test files in a directory — avoids every test file re-importing/redefining the same fixtures.
 
 <PytestFixtureLifecycleDiagram />
+
+Fixtures, parametrization, marks, and mocking, together in one real test file:
+
+```python
+# conftest.py -- shared across every test file in this directory
+import pytest
+
+@pytest.fixture
+def small_dataset():
+    data = load_fixture("tests/fixtures/100_rows.parquet")
+    yield data                    # setup runs before this line
+    data.close()                  # teardown runs after the test finishes
+
+@pytest.fixture
+def trained_model(small_dataset):
+    return train(small_dataset, epochs=1)   # fixtures can depend on other fixtures
+```
+
+```python
+# test_predict.py
+import pytest
+from unittest.mock import patch
+
+@pytest.mark.parametrize("raw, expected", [(" $1,200.50 ", 1200.50), ("0", 0.0)])
+def test_clean_amount(raw, expected):
+    assert clean_transaction_amount(raw) == expected
+
+def test_predict_calls_model_once(trained_model):
+    with patch.object(trained_model, "predict") as mock_predict:
+        mock_predict.return_value = [0.87]
+        predict_endpoint(trained_model, features=[5.1, 3.5])
+        mock_predict.assert_called_once()   # verifies the interaction, not just the output
+
+@pytest.mark.slow
+def test_full_training_run_on_gpu():
+    ...
+```
+
+```bash
+pytest tests/ -v -m "not slow"    # fast local loop
+pytest tests/ -v                  # everything, including @pytest.mark.slow -- what CI runs
+```
 
 ## Logging: the `logging` Module vs. `print`
 
@@ -49,6 +130,17 @@ Every Python project needs its own isolated set of installed packages — withou
 - **Configurable destinations**: send logs to a file, stdout, a remote log-aggregation service, or all three simultaneously, without changing any logging call site — configured once, centrally, rather than baked into every `print`.
 
 <LogLevelFilterDiagram />
+
+```python
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+logger = logging.getLogger(__name__)
+
+logger.info("training started", extra={"batch_size": 64, "lr": 0.001})
+logger.warning("validation loss increased for 3 consecutive epochs")
+logger.error("checkpoint save failed", exc_info=True)   # includes the full traceback
+```
 
 ## Debugging: `pdb` and Post-Mortem Debugging
 
