@@ -3,29 +3,48 @@ title: "Observability"
 sidebar_position: 16
 ---
 
+import MonitoringVsObservabilityDiagram from '../../../viz/diagrams/MonitoringVsObservabilityDiagram';
+import StructuredLogsDiagram from '../../../viz/diagrams/StructuredLogsDiagram';
+import LogStackComparisonDiagram from '../../../viz/diagrams/LogStackComparisonDiagram';
+import MetricsAggregationDiagram from '../../../viz/diagrams/MetricsAggregationDiagram';
+import PrometheusGrafanaFlowDiagram from '../../../viz/diagrams/PrometheusGrafanaFlowDiagram';
+import TraceWaterfallDiagram from '../../../viz/diagrams/TraceWaterfallDiagram';
+import ThreePillarsIncidentDiagram from '../../../viz/diagrams/ThreePillarsIncidentDiagram';
 
 # Observability
 
 Monitoring tells you *that* something is wrong (a metric crossed a threshold, an alert fired). Observability is what lets you actually figure out *why* — by giving you enough raw, queryable signal about the system's internal state to debug a problem you didn't anticipate in advance. The three pillars below are the standard decomposition of what that raw signal is made of.
 
+<MonitoringVsObservabilityDiagram />
+
 ## Logs
 
 Structured, timestamped records of discrete events — a request came in, a model version loaded, an exception was thrown. "Structured" is the operative word for production systems: unstructured free-text logs are fine to `grep` by hand, but structured logs (JSON, with consistent fields) are what makes logs queryable and aggregatable at scale.
+
+<StructuredLogsDiagram />
 
 - **ELK stack (Elasticsearch, Logstash, Kibana)**: the classic self-hosted logging stack — Logstash ingests and processes logs, Elasticsearch indexes and stores them, Kibana visualizes and queries them.
 - **OpenSearch**: an open-source fork of Elasticsearch (post-license-change), largely API-compatible, increasingly the default when avoiding Elastic's licensing terms matters.
 - **Loki**: a log aggregation system built by Grafana Labs, designed to be cheaper to run than Elasticsearch by indexing only metadata (labels) rather than full log content — pairs naturally with Grafana/Prometheus.
 
+<LogStackComparisonDiagram />
+
 ## Metrics
 
 Numeric measurements aggregated over time — request rate, error rate, latency, GPU utilization, model prediction distribution. Unlike logs, metrics are cheap to store at high volume because they're pre-aggregated, which is exactly what makes them good for dashboards and alerting rather than deep forensic debugging.
 
+<MetricsAggregationDiagram />
+
 - **Prometheus**: the standard open-source metrics collection system — services expose a `/metrics` endpoint, Prometheus scrapes it on an interval and stores a time series; its query language (PromQL) is what most alerting rules and dashboards are built on.
 - **Grafana**: the standard visualization layer on top of Prometheus (and Loki, and most other data sources) — dashboards, alerting, and exploration, decoupled from whichever backend actually stores the data.
+
+<PrometheusGrafanaFlowDiagram />
 
 ## Traces
 
 A trace follows a single request across every service it touches, recording how long each step took — essential the moment a system is more than one service, because "the API was slow" could mean the API, the feature store, the model server, or a downstream database, and only a trace shows which one.
+
+<TraceWaterfallDiagram />
 
 - **OpenTelemetry**: the current standard, vendor-neutral instrumentation framework for generating traces (and metrics, and logs) — instrument once, export to whichever backend you choose.
 - **Jaeger**: a common open-source backend for storing and visualizing traces, frequently paired with OpenTelemetry instrumentation.
@@ -33,5 +52,7 @@ A trace follows a single request across every service it touches, recording how 
 ## Why All Three, Not Just One
 
 Each pillar answers a different question a real incident needs: metrics tell you *something* degraded and roughly when (a dashboard spike), traces tell you *where* in a multi-service request path it happened, and logs tell you *exactly what* happened at that point (the specific error, the specific input). Alerting is usually built on metrics (cheap, fast to query); root-causing an actual incident usually means pivoting from a metric spike into the traces and logs around that same time window.
+
+<ThreePillarsIncidentDiagram />
 
 Next: [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training) — the hardware layer everything above is ultimately monitoring.
