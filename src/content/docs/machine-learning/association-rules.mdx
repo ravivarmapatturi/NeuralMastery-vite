@@ -4,6 +4,8 @@ sidebar_position: 6.6
 ---
 
 
+import AssociationRulesDiagram from '../../../viz/diagrams/AssociationRulesDiagram';
+
 # Association Rule Mining: Apriori & FP-Growth, In Full Depth
 
 A different unsupervised problem entirely: not grouping examples ([clustering](/docs/machine-learning/kmeans-hierarchical-clustering)) or compressing features ([dimensionality reduction](/docs/machine-learning/pca-svd)), but finding **"if X, then usually Y"** patterns in transactional data — the algorithms behind "customers who bought this also bought that."
@@ -14,7 +16,9 @@ Given a database of transactions (each one a set of items — a shopping basket,
 
 - **Support**: how often the itemset appears at all — $\text{support}(X) = \frac{\text{transactions containing } X}{\text{total transactions}}$. A rule about an itemset nobody buys isn't useful no matter how reliable the pattern is.
 - **Confidence**: given $X$ is present, how often is $Y$ also present — $\text{confidence}(X \Rightarrow Y) = \frac{\text{support}(X \cup Y)}{\text{support}(X)}$. This is literally $P(Y \mid X)$ (see [Probability & Statistics — Bayes' Theorem](/docs/mathematics-for-ai/probability-statistics#bayes-theorem)).
-- **Lift**: how much more often $X$ and $Y$ co-occur than you'd expect if they were independent — $\text{lift}(X \Rightarrow Y) = \frac{\text{confidence}(X \Rightarrow Y)}{\text{support}(Y)}$. Lift $> 1$ means a genuine positive association; lift $\approx 1$ means the "pattern" is just coincidental co-occurrence of two popular items — this is the metric that actually separates real signal from statistical noise, since confidence alone is misleadingly high for any popular item Y regardless of X.
+- **Lift**: how much more often $X$ and $Y$ co-occur than you'd expect if they were independent — $\text{lift}(X \Rightarrow Y) = \frac{\text{confidence}(X \Rightarrow Y)}{\text{support}(Y)}$. Lift $> 1$ means a genuine positive association; lift $\approx 1$ means the "pattern" is just coincidental co-occurrence of two popular items — this is the metric that actually separates real signal from statistical noise, since confidence alone is misleadingly high for any popular item Y regardless of X. Real counts, real metrics, over a real toy transaction database:
+
+<AssociationRulesDiagram />
 
 ## Apriori
 

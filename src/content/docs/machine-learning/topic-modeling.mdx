@@ -5,6 +5,7 @@ sidebar_position: 6.8
 
 import __migratedImg0 from './img/topic-words.png';
 
+import TopicMixtureDiagram from '../../../viz/diagrams/TopicMixtureDiagram';
 
 # Topic Modeling: LDA & BERTopic, In Full Depth
 
@@ -21,6 +22,10 @@ There are **two completely different "LDA"s** on this site. [Linear Discriminant
 **The generative story LDA assumes**: every document is a mixture of a handful of topics, and every topic is a probability distribution over words. To "generate" a document under this model: pick a mixture of topics for it (e.g. 70% "finance," 30% "politics"), then for each word slot, pick a topic according to that mixture, and pick a word according to that topic's word distribution.
 
 LDA works backward from this story: given only the observed documents (no topic labels), infer the most likely topic-word distributions and document-topic mixtures that could have generated them. "Dirichlet" refers to the specific probability distribution (a distribution *over* distributions) used as a prior on both the topic mixtures and the word distributions — a smooth, computationally convenient way of encoding "most documents focus on relatively few topics, most topics have relatively few dominant words" before seeing any data.
+
+A real (simplified) version of the inference direction — given fixed topic-word distributions, estimate a document's real topic mixture from its actual words:
+
+<TopicMixtureDiagram />
 
 **What a "topic" actually is**: not a labeled category — just a weighted list of words that tend to co-occur across the corpus:
 

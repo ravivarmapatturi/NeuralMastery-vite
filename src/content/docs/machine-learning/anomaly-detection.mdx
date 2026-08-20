@@ -5,6 +5,7 @@ sidebar_position: 6.7
 
 import __migratedImg0 from './img/anomaly-detection.png';
 
+import IsolationPathLengthDiagram from '../../../viz/diagrams/IsolationPathLengthDiagram';
 
 # Anomaly Detection: Isolation Forest, LOF & One-Class SVM, In Full Depth
 
@@ -18,7 +19,9 @@ A genuinely different mechanism than every other tree-based method on this site 
 
 **The algorithm**: build many random trees, where each split picks a random feature and a random threshold within that feature's range (unlike [Decision Trees](/docs/machine-learning/decision-tree#how-a-split-is-chosen), no impurity criterion is optimized at all — splits are purely random). For any given point, count how many splits it takes to isolate it alone in its own leaf — the **path length**.
 
-**Why this isolates anomalies faster**: anomalies sit in sparse regions, far from other points — a single random split is disproportionately likely to separate them from the rest of the data immediately. Normal points sit in dense clusters, requiring many more splits to carve out individually, since each random split has to get "lucky" to fall exactly between an inlier and its many close neighbors. Average the path length across many random trees (the "forest" part — same ensembling logic as [Random Forest](/docs/machine-learning/random-forest#the-core-idea-bagging), just applied to isolation instead of prediction accuracy), and short average path length becomes directly the anomaly score.
+**Why this isolates anomalies faster**: anomalies sit in sparse regions, far from other points — a single random split is disproportionately likely to separate them from the rest of the data immediately. Normal points sit in dense clusters, requiring many more splits to carve out individually, since each random split has to get "lucky" to fall exactly between an inlier and its many close neighbors. Average the path length across many random trees (the "forest" part — same ensembling logic as [Random Forest](/docs/machine-learning/random-forest#the-core-idea-bagging), just applied to isolation instead of prediction accuracy), and short average path length becomes directly the anomaly score. Real random splits, real path lengths, real Monte Carlo average:
+
+<IsolationPathLengthDiagram />
 
 **Why it's fast**: unlike distance-based methods, no pairwise distance computation is needed at all — just random splits — making Isolation Forest one of the most scalable anomaly detection methods to large, high-dimensional datasets.
 
