@@ -83,6 +83,36 @@ Guessing where GPU time actually goes is unreliable in exactly the same way CPU 
 
 <FsdpZeroShardingDiagram />
 
+Launching data-parallel training with PyTorch's own tooling, and wrapping a model in FSDP:
+
+```bash
+torchrun --nproc_per_node=8 --nnodes=1 train.py   # 8 GPUs, one node -- DDP handles the rest
+```
+
+```python
+from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
+
+model = FSDP(model)   # parameters, gradients, and optimizer state now sharded across the launched processes
+```
+
+DeepSpeed's ZeRO stages are configured declaratively rather than in code -- this is a real ZeRO-2 config (shard optimizer state + gradients, keep parameters replicated):
+
+```json
+{
+  "train_batch_size": 256,
+  "gradient_accumulation_steps": 4,
+  "fp16": { "enabled": true },
+  "zero_optimization": {
+    "stage": 2,
+    "offload_optimizer": { "device": "cpu" }
+  }
+}
+```
+
+```bash
+deepspeed --num_gpus=8 train.py --deepspeed --deepspeed_config ds_config.json
+```
+
 ## 3D and 4D Parallelism
 
 Training a frontier-scale model never uses just one parallelism strategy — it combines several simultaneously, each addressing a different bottleneck:
@@ -109,5 +139,23 @@ Training runs spanning thousands of GPUs for weeks will experience hardware fail
 - **Mixed precision training**: compute most operations in FP16/BF16 (faster, half the memory) while keeping a master copy of weights and certain sensitive operations in FP32 — the standard way to make full use of Tensor cores without sacrificing training stability.
 
 <MixedPrecisionDiagram />
+
+Both together, real PyTorch:
+
+```python
+scaler = torch.cuda.amp.GradScaler()
+accumulation_steps = 4
+
+for step, (inputs, targets) in enumerate(dataloader):
+    with torch.autocast(device_type="cuda", dtype=torch.bfloat16):
+        loss = model(inputs, targets) / accumulation_steps
+
+    scaler.scale(loss).backward()
+
+    if (step + 1) % accumulation_steps == 0:
+        scaler.step(optimizer)
+        scaler.update()
+        optimizer.zero_grad()
+```
 
 Next: [LLM Inference Engines](/docs/mlops/llm-inference-engines) — everything above trains a model; the next several pages cover the equally deep, equally hardware-bound problem of serving one efficiently.

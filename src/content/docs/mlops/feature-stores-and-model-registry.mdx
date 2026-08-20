@@ -41,11 +41,44 @@ A feature store is the fix: a central system that computes features once and ser
 
 <FeastArchitectureDiagram />
 
+Defining a feature view once, then the exact same definition serving both sides of the training/serving skew problem above:
+
+```python
+from feast import FeatureView, Field, FileSource
+from feast.types import Float32
+
+txn_source = FileSource(path="data/transactions.parquet", timestamp_field="event_timestamp")
+
+user_features = FeatureView(
+    name="user_transaction_features",
+    source=txn_source,
+    schema=[Field(name="avg_txn_amount_7d", dtype=Float32)],
+)
+```
+
+```bash
+feast apply                     # registers the feature view, provisions the online store
+feast materialize-incremental $(date -u +"%Y-%m-%dT%H:%M:%S")   # backfills the online store up to now
+```
+
+```python
+# Training: pull a point-in-time-correct historical dataset from the offline store
+training_df = store.get_historical_features(entity_df=entities, features=["user_transaction_features:avg_txn_amount_7d"]).to_df()
+
+# Serving: the same feature, looked up in the online store with millisecond latency
+features = store.get_online_features(features=["user_transaction_features:avg_txn_amount_7d"], entity_rows=[{"user_id": 42}]).to_dict()
+```
+
 ## Model Registry
 
 Once a model is trained (see [Experiment Tracking](/docs/mlops/experiment-tracking)), the registry is where trained versions live as first-class, tracked objects rather than files scattered across a filesystem.
 
 - **Model versions**: every registered model gets a version number, tied back to the exact experiment run (code, data, params) that produced it.
+
+```python
+mlflow.register_model(model_uri=f"runs:/{run_id}/model", name="fraud-detector")
+# -> registers a new, auto-incrementing version (e.g. v4) linked back to that exact run
+```
 - **Stages**: a lifecycle a version moves through — commonly `None → Staging → Production → Archived` — so "what's actually serving traffic right now" is always a single, unambiguous answer.
 
 <ModelRegistryStageDiagram />
