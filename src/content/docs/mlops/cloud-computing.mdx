@@ -3,6 +3,13 @@ title: "Cloud Computing for ML"
 sidebar_position: 9
 ---
 
+import ComputeSpectrumDiagram from '../../../viz/diagrams/ComputeSpectrumDiagram';
+import StorageUseCaseDiagram from '../../../viz/diagrams/StorageUseCaseDiagram';
+import ManagedMlPlatformTradeoffDiagram from '../../../viz/diagrams/ManagedMlPlatformTradeoffDiagram';
+import RequestPathSecurityDiagram from '../../../viz/diagrams/RequestPathSecurityDiagram';
+import CloudVocabularyMapDiagram from '../../../viz/diagrams/CloudVocabularyMapDiagram';
+import CloudDistinctiveFeaturesDiagram from '../../../viz/diagrams/CloudDistinctiveFeaturesDiagram';
+import CloudNeutralPortabilityDiagram from '../../../viz/diagrams/CloudNeutralPortabilityDiagram';
 
 # Cloud Computing for ML
 
@@ -15,6 +22,8 @@ Almost nothing in this section runs on a laptop in production — pick one cloud
 - **EKS**: managed Kubernetes on AWS — see [Kubernetes](/docs/mlops/kubernetes).
 - **Lambda**: serverless functions, billed per invocation — good for lightweight, spiky, stateless workloads (a small preprocessing step, a webhook handler); a poor fit for GPU inference or anything with a long cold-start-sensitive model to load.
 
+<ComputeSpectrumDiagram />
+
 ## Storage & Databases
 
 - **S3**: object storage — the default place datasets, model artifacts, and logs live; nearly every tool in this section (DVC, MLflow, Airflow, Docker registries) can use S3 as a backend.
@@ -22,9 +31,13 @@ Almost nothing in this section runs on a laptop in production — pick one cloud
 - **RDS**: managed relational databases (Postgres/MySQL) — see [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning).
 - **DynamoDB**: a managed NoSQL key-value/document store — used where Redis-like low-latency lookups need to be durable and fully managed rather than in-memory.
 
+<StorageUseCaseDiagram />
+
 ## ML-Specific: SageMaker
 
 AWS's managed ML platform — training jobs, hyperparameter tuning, a built-in model registry, and managed endpoints for serving, all without provisioning the underlying infrastructure by hand. The tradeoff is the same as any managed platform: faster to get running, but more vendor lock-in and less control than assembling the equivalent from EC2 + Docker + a serving tool from [APIs & Model Serving](/docs/mlops/model-serving) yourself. Many teams use SageMaker for training (where its managed job infrastructure saves real time) while self-hosting serving on EKS/Triton for more control over latency and cost.
+
+<ManagedMlPlatformTradeoffDiagram />
 
 ## Networking & Security
 
@@ -34,6 +47,8 @@ AWS's managed ML platform — training jobs, hyperparameter tuning, a built-in m
 - **IAM**: identity and access management — who (or what service) is allowed to do what; the single most common source of both "why can't my pipeline read this S3 bucket" bugs and real security incidents (over-permissioned roles).
 - **Secrets Manager / KMS**: managed secret storage and encryption-key management — where API keys and database credentials belong instead of a config file or a Dockerfile.
 - **ECR**: AWS's container registry — see [Containers](/docs/mlops/containers).
+
+<RequestPathSecurityDiagram />
 
 ## The Pattern to Internalize
 
@@ -54,6 +69,8 @@ Every cloud maps onto the same shape: compute (VMs, containers, serverless), sto
 | Secrets management | Secrets Manager / KMS | Secret Manager / Cloud KMS | Key Vault |
 | Managed ML platform | SageMaker | Vertex AI | Azure ML |
 
+<CloudVocabularyMapDiagram />
+
 ## GCP for ML
 
 - **Vertex AI**: Google's unified managed ML platform — training, hyperparameter tuning, a model registry, and managed endpoints, the direct GCP counterpart to SageMaker, with particularly strong integration with Google's own foundation models (Gemini) for teams already building on them.
@@ -68,8 +85,12 @@ Every cloud maps onto the same shape: compute (VMs, containers, serverless), sto
 - **AKS (Azure Kubernetes Service)**: Azure's managed Kubernetes — same role as EKS/GKE.
 - **Blob Storage**: Azure's S3/GCS equivalent object storage.
 
+<CloudDistinctiveFeaturesDiagram />
+
 ## Choosing Cloud-Neutral Patterns
 
 Regardless of which cloud a stack runs on, the architecture patterns from the rest of this MLOps section — [Containers](/docs/mlops/containers), [Kubernetes](/docs/mlops/kubernetes), [CI/CD](/docs/mlops/cicd-and-ml-cicd), [Infrastructure as Code](/docs/mlops/infrastructure-as-code) — are deliberately cloud-agnostic: a Docker container, a Kubernetes manifest, and a Terraform module all run on any of the three clouds above with minimal (often zero) changes, which is exactly why containerizing and using Kubernetes/Terraform rather than deeply coupling to any one cloud's proprietary managed services is the standard way to keep a real option to migrate or run multi-cloud, even for a team that has no near-term plan to actually do so.
+
+<CloudNeutralPortabilityDiagram />
 
 Next: [Kubernetes](/docs/mlops/kubernetes) — the layer that orchestrates containers across a fleet of the compute above.
