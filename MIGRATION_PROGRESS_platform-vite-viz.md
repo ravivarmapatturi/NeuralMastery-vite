@@ -39,15 +39,27 @@ funnel, real PINN loss, real neural-operator heat-equation demo).
 threshold; other-domain-applications.mdx: real sim-to-real domain-randomization
 gain comparison).
 
-## Next up
+**frameworks/** — complete (core-ml-dl-frameworks.mdx reuses ChainRuleBackpropDiagram
+for autograd; serving-mlops.mdx: real static-vs-continuous-batching simulation).
+llm-agent-frameworks.mdx intentionally skipped -- pure tool-selection prose.
 
-frameworks/, build-from-scratch/, research-engineering/, then interview-prep/
-(6 pages, added to queue later — DSA/ML-coding/system-design/behavioral,
-visualize where it genuinely fits e.g. complexity/DS concepts).
-python-engineering/cs-fundamentals belong to platform-vite-91, do not touch.
+INCIDENT (self-caught, fixed, pushed as 1d652b0): created a new
+ContinuousBatchingDiagram.tsx without checking for an existing file of that
+name first -- collided with and overwrote another session's component (from
+49830f5) used by mlops/llm-inference-optimization.mdx. Restored the original,
+renamed mine to ContinuousBatchingSimulationDiagram.tsx. **New standing
+practice: `ls src/viz/diagrams/ | grep -i <PlannedName>` before writing any
+new diagram file, not just before touching shared infra files.**
 
 Also fixed an unrelated CI-breaking TS6133 error on main in
 NdcgRankingDiagram.tsx (not mine, but trivial + blocking everyone) and pushed.
+
+## Next up
+
+build-from-scratch/, research-engineering/, then interview-prep/ (6 pages,
+added to queue later — DSA/ML-coding/system-design/behavioral, visualize
+where it genuinely fits e.g. complexity/DS concepts).
+python-engineering/cs-fundamentals belong to platform-vite-91, do not touch.
 
 ## Working pattern (keep doing this)
 
