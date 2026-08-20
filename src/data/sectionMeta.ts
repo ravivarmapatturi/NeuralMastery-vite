@@ -151,3 +151,15 @@ export function timeEstimate(pageCount: number): string {
   const hi = Math.round((pageCount * 25) / 60) || 1;
   return `${lo}-${hi} hrs (${pageCount} pages)`;
 }
+
+/** Fraction (0..1) of a top-level group's pages marked understood --
+ * matches a page's permalink against the group's folders/subsections, the
+ * same "which pages count toward this group" logic LearningPathMap and
+ * the progress dashboard both need. */
+export function completionFor(key: string, understood: Record<string, boolean>): number {
+  const meta = SECTION_META[key];
+  const done = Object.keys(understood).filter((permalink) =>
+    meta.folders ? meta.folders.some((f) => permalink.includes(`/docs/${f}/`)) : meta.subsections.some((s) => permalink.includes(`/docs/${s.dir}/`)),
+  ).length;
+  return Math.min(1, done / meta.pageCount);
+}

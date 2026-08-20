@@ -4,7 +4,7 @@ import { ReactFlow, Background, Controls, type Node, type Edge } from '@xyflow/r
 import '@xyflow/react/dist/style.css';
 import { useVizTokens, RADIUS, FONT_FAMILY, type VizTokens } from '../theme/vizTokens';
 import { VisualizationContainer, VisualizationHeader } from './primitives';
-import { SECTION_META, SECTION_ORDER, timeEstimate, type SectionMetaEntry } from '../data/sectionMeta';
+import { SECTION_META, SECTION_ORDER, timeEstimate, completionFor, type SectionMetaEntry } from '../data/sectionMeta';
 import { useProgress } from '../contexts/ProgressContext';
 
 // The 7 top-level content groups, laid out as ONE single linear path -- there
@@ -21,14 +21,6 @@ const NODE_LAYOUT = SECTION_ORDER.map((key, i) => ({
 }));
 
 const EDGES: [string, string][] = NODE_LAYOUT.slice(1).map((node, i) => [NODE_LAYOUT[i].key, node.key]);
-
-function completionFor(key: string, understood: Record<string, boolean>): number {
-  const meta = SECTION_META[key];
-  const done = Object.keys(understood).filter((permalink) =>
-    meta.folders ? meta.folders.some((f) => permalink.includes(`/docs/${f}/`)) : meta.subsections.some((s) => permalink.includes(`/docs/${s.dir}/`)),
-  ).length;
-  return Math.min(1, done / meta.pageCount);
-}
 
 function NodeLabel({ meta, pct, t }: { meta: SectionMetaEntry; pct: number; t: VizTokens }) {
   return (
