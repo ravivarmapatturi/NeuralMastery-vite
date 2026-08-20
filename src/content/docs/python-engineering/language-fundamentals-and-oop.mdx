@@ -4,6 +4,11 @@ sidebar_position: 3
 ---
 
 
+import IteratorProtocolDiagram from '../../../viz/diagrams/IteratorProtocolDiagram';
+import GeneratorMemoryDiagram from '../../../viz/diagrams/GeneratorMemoryDiagram';
+import DecoratorMechanismDiagram from '../../../viz/diagrams/DecoratorMechanismDiagram';
+import ContextManagerFlowDiagram from '../../../viz/diagrams/ContextManagerFlowDiagram';
+
 # Language Fundamentals: OOP, Functional & Modern Python
 
 Every feature on this page shows up directly in ML codebases you'll actually read — PyTorch's `nn.Module` is OOP with a specific inheritance contract, a `DataLoader` is built on the iterator protocol, and `@torch.no_grad()` is a decorator. Understanding the language feature makes the framework's design legible instead of magic.
@@ -24,8 +29,13 @@ Every feature on this page shows up directly in ML codebases you'll actually rea
 ## Iterators and Generators
 
 - **The iterator protocol**: any object implementing `__iter__` and `__next__` can be looped over with `for`. This is the exact mechanism `DataLoader` uses to hand your training loop one batch at a time.
+
+<IteratorProtocolDiagram />
+
 - **Generators**: functions using `yield` instead of `return`, producing values lazily, one at a time, instead of building a full list in memory upfront. `yield` pauses the function, returns one value, and resumes exactly where it left off on the next call — the reason a generator can iterate over a dataset far too large to fit in memory: it only ever holds the current item, not all of them.
 - **Why this matters for data pipelines**: a generator-based data loading pipeline (read one example, transform it, `yield` it) has flat, constant memory usage regardless of dataset size — the alternative (load everything into a list, then process it) scales memory linearly with dataset size and simply breaks once the dataset is larger than RAM.
+
+<GeneratorMemoryDiagram />
 
 ## Decorators
 
@@ -45,9 +55,13 @@ def train_step(batch):
 
 `@torch.no_grad()`, `@functools.lru_cache`, `@pytest.fixture`, and `@app.get("/predict")` (FastAPI route registration) are all this exact same mechanism, applied to different problems — recognizing the pattern once means none of them are mysterious.
 
+<DecoratorMechanismDiagram />
+
 ## Context Managers
 
 The `with` statement guarantees cleanup code runs even if an exception occurs inside the block — `__enter__` runs at the start, `__exit__` runs at the end, unconditionally. `with open(f) as file:` is the canonical example (the file gets closed even if reading it throws), but the pattern generalizes to anything with a "setup, then guaranteed teardown" shape: `torch.no_grad()` is *also* a context manager (`with torch.no_grad():` disables gradient tracking for the block, then guarantees it's re-enabled after, even on an exception). `contextlib.contextmanager` lets you write one from a generator function instead of a full class with `__enter__`/`__exit__`, using `yield` to mark the boundary between setup and teardown.
+
+<ContextManagerFlowDiagram />
 
 ## Type Hints and Static Checking
 
