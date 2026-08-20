@@ -4,6 +4,8 @@ sidebar_position: 5.8
 ---
 
 
+import SgdLossPenaltyDiagram from '../../../viz/diagrams/SgdLossPenaltyDiagram';
+
 # SGD Classifier & Regressor, In Full Depth
 
 Not a new algorithm — a **framing**. `SGDClassifier`/`SGDRegressor` (as named in libraries like scikit-learn) are the same linear model family covered throughout this section, unified by training them all with the same generic engine: [mini-batch stochastic gradient descent](/docs/deep-learning/optimizers#gradient-descent-variants-by-batch-size).
@@ -20,7 +22,9 @@ Every linear model on this site — [Linear Regression](/docs/machine-learning/l
 | [Logistic Regression](/docs/machine-learning/logistic-regression) | Log loss | L2 (default) |
 | Linear [SVM](/docs/machine-learning/support-vector-machines) | Hinge loss | L2 |
 
-An "SGD Classifier/Regressor" is exactly this table, implemented as **one generic training loop** — pick a loss, pick a penalty, and SGD optimizes whichever combination you chose. This is why the [gradient descent derivation from Linear Regression](/docs/machine-learning/linear-regression#3-deriving-the-gradient-step-by-step) and the [gradient derivation from Logistic Regression](/docs/machine-learning/logistic-regression#deriving-the-gradient) look structurally identical — they're literally the same training procedure with a different loss plugged in.
+An "SGD Classifier/Regressor" is exactly this table, implemented as **one generic training loop** — pick a loss, pick a penalty, and SGD optimizes whichever combination you chose. The exact same loop, the exact same data, three different (loss, penalty) pairs plugged in:
+
+<SgdLossPenaltyDiagram /> This is why the [gradient descent derivation from Linear Regression](/docs/machine-learning/linear-regression#3-deriving-the-gradient-step-by-step) and the [gradient derivation from Logistic Regression](/docs/machine-learning/logistic-regression#deriving-the-gradient) look structurally identical — they're literally the same training procedure with a different loss plugged in.
 
 ## Why This Framing Matters in Practice
 

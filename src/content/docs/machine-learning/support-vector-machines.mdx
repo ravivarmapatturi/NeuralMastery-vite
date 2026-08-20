@@ -5,6 +5,7 @@ sidebar_position: 5.5
 
 import __migratedImg0 from './img/svm-margin.png';
 
+import KernelTrickDiagram from '../../../viz/diagrams/KernelTrickDiagram';
 
 # Support Vector Machines (SVM & SVR), In Full Depth
 
@@ -46,7 +47,9 @@ SVM as described so far only draws straight lines. The **kernel trick** is what 
 - **Polynomial kernel**: $K(\mathbf{x}_i,\mathbf{x}_j) = (\mathbf{x}_i \cdot \mathbf{x}_j + c)^d$ — equivalent to adding polynomial feature combinations, without explicitly constructing them.
 - **RBF (Gaussian) kernel**: $K(\mathbf{x}_i,\mathbf{x}_j) = \exp(-\gamma\|\mathbf{x}_i - \mathbf{x}_j\|^2)$ — implicitly corresponds to an *infinite-dimensional* feature space. The most common default for non-linear SVM, with $\gamma$ controlling how far each point's influence reaches.
 
-This is why SVMs were historically so powerful for non-linear problems before deep learning: full non-linear modeling power, without ever paying the computational cost of actually working in a high (or infinite) dimensional space.
+This is why SVMs were historically so powerful for non-linear problems before deep learning: full non-linear modeling power, without ever paying the computational cost of actually working in a high (or infinite) dimensional space. A real, minimal example of the underlying idea — real data, genuinely not linearly separable in 1D, made separable by an explicit feature map:
+
+<KernelTrickDiagram />
 
 ## SVR: Support Vector Regression
 

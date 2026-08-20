@@ -6,6 +6,7 @@ sidebar_position: 5.7
 import __migratedImg0 from './img/lda-boundary.png';
 import __migratedImg1 from './img/qda-boundary.png';
 
+import LdaQdaBoundaryDiagram from '../../../viz/diagrams/LdaQdaBoundaryDiagram';
 
 # Naive Bayes, LDA & QDA, In Full Depth
 
@@ -45,6 +46,10 @@ Under this assumption, the log-ratio $\log\frac{P(y=1\mid\mathbf{x})}{P(y=0\mid\
 Drop LDA's shared-covariance assumption — let each class have its **own** covariance matrix $\Sigma_y$. Now the quadratic terms in the log-ratio no longer cancel, producing a genuinely curved boundary:
 
 <img src={__migratedImg1} alt="QDA's decision boundary curves, because each class now has its own covariance shape" style={{maxWidth: '100%'}} />
+
+Toggle between the two directly on the same real data, with each boundary computed live from real fitted means and covariances rather than pre-rendered:
+
+<LdaQdaBoundaryDiagram />
 
 ## LDA vs. QDA
 
