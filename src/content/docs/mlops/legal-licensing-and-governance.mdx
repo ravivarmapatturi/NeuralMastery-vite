@@ -3,6 +3,13 @@ title: "Legal, Licensing & Governance"
 sidebar_position: 22.4
 ---
 
+import ModelLicenseSpectrumDiagram from '../../../viz/diagrams/ModelLicenseSpectrumDiagram';
+import DatasetProvenanceRiskDiagram from '../../../viz/diagrams/DatasetProvenanceRiskDiagram';
+import CopyrightUncertaintyDiagram from '../../../viz/diagrams/CopyrightUncertaintyDiagram';
+import PrivacyRegulationScopeDiagram from '../../../viz/diagrams/PrivacyRegulationScopeDiagram';
+import GovernanceApprovalFlowDiagram from '../../../viz/diagrams/GovernanceApprovalFlowDiagram';
+import ModelCardVsDataCardDiagram from '../../../viz/diagrams/ModelCardVsDataCardDiagram';
+import AuditTrailVsLineageDiagram from '../../../viz/diagrams/AuditTrailVsLineageDiagram';
 
 # Legal, Licensing & Governance
 
@@ -12,13 +19,19 @@ Everything else in this section is about whether a system works and runs reliabl
 
 Open-weight models ship under a range of license types, and the differences have real practical consequences: some (Apache 2.0, MIT) permit essentially unrestricted commercial use; others (many "open" LLM releases) carry usage restrictions — a user-count threshold above which a commercial license is required, restrictions on using the model's outputs to train a competing model, or restrictions on specific use cases. **Always check the actual license text for a specific model version before commercial deployment** — "open-weight" and "open source" are not the same guarantee, and license terms have changed between versions of the same model family.
 
+<ModelLicenseSpectrumDiagram />
+
 ## Dataset Licenses
 
 The same scrutiny applies to training/fine-tuning data: a dataset scraped or aggregated from the web can carry mixed, unclear, or restrictive licensing on its constituent parts even when the dataset itself is published as "open" — training a commercial model on data with unclear provenance is a genuine legal risk, not just an ethical nicety, and is exactly the kind of thing [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning)'s provenance tracking exists to make auditable after the fact.
 
+<DatasetProvenanceRiskDiagram />
+
 ## Copyright
 
 Whether training on copyrighted material constitutes infringement (versus fair use/fair dealing) is genuinely unsettled law in multiple jurisdictions as of this writing, actively being litigated — a real, live legal uncertainty rather than a solved question with a clean rule to follow. The practical implication for a team building on top of a foundation model: understand what you can about a chosen model's training data policies and indemnification terms (some commercial model providers offer legal indemnification for output copyright claims, which is itself a signal of how seriously the underlying risk is taken), and treat this as an active area to monitor rather than a settled question to check off once.
+
+<CopyrightUncertaintyDiagram />
 
 ## Privacy: PII, GDPR, HIPAA
 
@@ -26,9 +39,13 @@ Whether training on copyrighted material constitutes infringement (versus fair u
 - **GDPR** (EU): grants individuals rights over their personal data — including, notably, a right to have personal data deleted ("right to be forgotten") — which is genuinely difficult to fully satisfy for a model that was *trained* on data containing that individual's information, since "delete this person's data from the trained model's weights" has no clean equivalent to deleting a database row. This tension (between GDPR's deletion rights and how neural network training actually works) is an active, unresolved area of AI governance practice, not a solved compliance checkbox.
 - **HIPAA** (U.S. healthcare): covered in depth for the healthcare-specific case in [Healthcare AI — Privacy and HIPAA](/docs/domain-applications/healthcare-ai#privacy-and-hipaa) — the general pattern (access controls scoped to legitimate need, audit logging, careful third-party data-processing agreements) generalizes to other regulated-data domains beyond healthcare specifically.
 
+<PrivacyRegulationScopeDiagram />
+
 ## AI Governance
 
 Organization-level policy and process for how AI systems get built, approved, and monitored — covered as part of the platform-engineering view in [MLOps → AI Platform Engineering — Governance](/docs/mlops/mlops-architecture-and-roadmap#from-mlops-to-ai-platform-engineering): which models are approved for which use cases, who has authority to approve a production deployment, and how policy gets enforced technically (via the [CI/CD gates](/docs/mlops/cicd-and-ml-cicd) covered earlier) rather than remaining a document nobody actually checks against before shipping.
+
+<GovernanceApprovalFlowDiagram />
 
 ## Model Cards and Data Cards
 
@@ -37,8 +54,12 @@ Standardized documentation formats for transparency about a model or dataset's i
 - **Model cards**: document a model's intended use cases, out-of-scope uses, training data summary, evaluation results (including across relevant subgroups, not just an aggregate metric — directly connecting to [fairness evaluation](/docs/ai-evaluation/roadmap) elsewhere on this site), and known limitations — the standard a model consumer should be able to check *before* deploying it for a given use case, rather than discovering a limitation the hard way in production.
 - **Data cards**: the same transparency discipline applied to a dataset — provenance, collection methodology, known biases, and licensing (above) — increasingly expected alongside any dataset released for others to use, for exactly the same "know before you build on this" reason model cards exist.
 
+<ModelCardVsDataCardDiagram />
+
 ## Audit Trails
 
 The ability to reconstruct, after the fact, exactly what a system did and why — which model version served a given prediction, which data it was trained on, who approved its deployment, what a given user was told. This is the direct consumer of the [lineage](/docs/mlops/mlops-architecture-and-roadmap#from-mlops-to-ai-platform-engineering) tracking covered in the platform-engineering section: lineage is the *technical* capability (can you trace the chain), an audit trail is what that capability gets used for when a regulator, a legal team, or an internal investigation needs an actual accounting of what happened and why — the difference between having the data and being able to produce it, verified and complete, when it's actually asked for.
+
+<AuditTrailVsLineageDiagram />
 
 MLOps section complete. Next: [The Full MLOps Architecture, Priority Stack & Learning Path](/docs/mlops/mlops-architecture-and-roadmap) — putting every page in this section together into one end-to-end picture.
