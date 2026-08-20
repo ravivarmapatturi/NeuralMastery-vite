@@ -14,15 +14,16 @@ live by the lead. Do not re-derive from git log — this file is the source of t
 - [x] legal-licensing-and-governance.mdx — 7 diagrams, commit b5ac68a
 - [x] ai-cost-engineering.mdx — 7 diagrams, commit ace7bc8
 - [x] engineering-foundations.mdx — 7 diagrams (1 reused: DependencyPinningDiagram), commit b3ac193
-- [ ] llm-hosting-and-serving-patterns.mdx — NEXT, not started
+- [x] llm-hosting-and-serving-patterns.mdx — 8 diagrams, commit ee3437a
 
 **mlops/ batch 3 (done, prior checkpoint):**
 - [x] llm-evaluation-and-ragops.mdx — commit 25de4ef
 - [x] production-reliability.mdx — commit 82ffaa9
 - [x] cloud-computing.mdx — commit 2cb2e5e
 
-After batch 4 finishes (llm-hosting-and-serving-patterns.mdx), mlops/ folder is
-COMPLETE (24/24 pages per lead's count). Next queued task from lead (high
+**mlops/ folder is now COMPLETE — 24/24 pages, batch 4 done 2026-08-20.**
+
+Next queued task from lead (high
 priority, sent 2026-08-20): expand `agents/mcp/protocol-deep-dive.mdx` from a
 63-line skeleton into real step-by-step depth across its existing 8 sections
 (Transport, Sessions/Lifecycle, Tool Discovery/Schemas, Errors, Auth, Security,
