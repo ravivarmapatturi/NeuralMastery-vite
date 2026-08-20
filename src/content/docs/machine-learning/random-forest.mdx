@@ -4,6 +4,8 @@ sidebar_position: 5.2
 ---
 
 
+import BaggingVarianceDiagram from '../../../viz/diagrams/BaggingVarianceDiagram';
+
 # Random Forest & Extra Trees, In Full Depth
 
 [Decision Trees](/docs/machine-learning/decision-tree) are high-variance: retrain on a slightly different sample and the tree structure can change completely. Random Forest fixes this with an idea that seems almost too simple to work: train many trees on randomized versions of the data, and average their predictions.
@@ -12,7 +14,11 @@ sidebar_position: 5.2
 
 **Bagging** (Bootstrap AGGregatING): train $B$ independent trees, each on a **bootstrap sample** — a sample of size $n$ drawn *with replacement* from the original $n$ training examples (so each bootstrap sample contains duplicates and omits roughly a third of the original data on average). Average the predictions (regression) or take a majority vote (classification) across all $B$ trees.
 
-**Why averaging reduces variance — the actual math**: if each tree's prediction has variance $\sigma^2$ and the trees were *perfectly independent*, averaging $B$ of them gives variance $\sigma^2/B$ — variance shrinks directly with more trees. Trees aren't fully independent in practice (they're trained on overlapping, correlated data), so the real reduction is smaller than $1/B$, but the effect is still large and is the entire justification for the method. This is the same bias-variance logic from [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics#bias-variance-tradeoff): individual deep trees have low bias but high variance; averaging trades a small amount of bias for a large reduction in variance.
+**Why averaging reduces variance — the actual math**: if each tree's prediction has variance $\sigma^2$ and the trees were *perfectly independent*, averaging $B$ of them gives variance $\sigma^2/B$ — variance shrinks directly with more trees. Trees aren't fully independent in practice (they're trained on overlapping, correlated data), so the real reduction is smaller than $1/B$, but the effect is still large and is the entire justification for the method. Real Monte Carlo simulation, not the formula alone:
+
+<BaggingVarianceDiagram />
+
+This is the same bias-variance logic from [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics#bias-variance-tradeoff): individual deep trees have low bias but high variance; averaging trades a small amount of bias for a large reduction in variance.
 
 ## Random Forest's Extra Ingredient: Feature Randomness
 

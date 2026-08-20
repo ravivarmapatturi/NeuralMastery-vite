@@ -4,6 +4,8 @@ sidebar_position: 5.4
 ---
 
 
+import TreeGrowthStrategyDiagram from '../../../viz/diagrams/TreeGrowthStrategyDiagram';
+
 # XGBoost, LightGBM & CatBoost, In Full Depth
 
 [Gradient Boosting](/docs/machine-learning/boosting) is an algorithm. XGBoost, LightGBM, and CatBoost are three separate, highly-engineered *implementations* of it — each making different systems and algorithmic tradeoffs, and each dominant in different situations. Together, they're the reason gradient boosting is still the strongest off-the-shelf method for tabular data, even in the deep learning era.
@@ -21,7 +23,9 @@ The implementation that made gradient boosting a Kaggle-competition staple. Its 
 
 Built for speed and scale, with two specific algorithmic innovations:
 
-- **Leaf-wise (best-first) tree growth**: standard tree growth (including XGBoost's default) is *level-wise* — grow every leaf at the current depth before going deeper. LightGBM instead always splits whichever single leaf would reduce loss the most, regardless of depth — often reaches lower loss with fewer splits, at the cost of trees that can grow unbalanced and overfit more easily on small datasets (mitigated with a `max_depth` cap in practice).
+- **Leaf-wise (best-first) tree growth**: standard tree growth (including XGBoost's default) is *level-wise* — grow every leaf at the current depth before going deeper. LightGBM instead always splits whichever single leaf would reduce loss the most, regardless of depth — often reaches lower loss with fewer splits, at the cost of trees that can grow unbalanced and overfit more easily on small datasets (mitigated with a `max_depth` cap in practice). Real per-leaf gain values, same split budget, two different orders:
+
+<TreeGrowthStrategyDiagram />
 - **Histogram-based splitting**: instead of considering every unique feature value as a candidate threshold (expensive), bucket continuous features into a fixed number of histogram bins upfront, and only search over bin boundaries — dramatically fewer candidate splits to evaluate, at a small, usually negligible cost in split quality.
 - **GOSS (Gradient-based One-Side Sampling)**: examples with small gradients are already well-fit by the ensemble so far and contribute little new information — GOSS keeps *all* examples with large gradients but only a random sample of small-gradient examples (reweighted to stay unbiased), cutting the effective dataset size per round without a proportional accuracy loss.
 - **EFB (Exclusive Feature Bundling)**: many real-world features (especially one-hot encoded categoricals) are sparse and rarely nonzero simultaneously — LightGBM bundles such mutually-exclusive features together into one, reducing the effective feature count without losing information.

@@ -4,6 +4,8 @@ sidebar_position: 5.3
 ---
 
 
+import GradientBoostingResidualDiagram from '../../../viz/diagrams/GradientBoostingResidualDiagram';
+
 # Boosting: AdaBoost & Gradient Boosting, In Full Depth
 
 [Random Forest](/docs/machine-learning/random-forest) builds many trees **independently and in parallel**, then averages them to reduce variance. Boosting builds trees **sequentially**, where each new tree is trained specifically to fix the previous ensemble's mistakes — trading Random Forest's variance-reduction strategy for a bias-reduction strategy.
@@ -36,6 +38,10 @@ For squared error specifically (regression), the algorithm becomes remarkably in
 3. Train a new (shallow) tree to predict these residuals directly.
 4. Update the ensemble: $F_t(x) = F_{t-1}(x) + \eta \cdot h_t(x)$, where $\eta$ is a small learning rate (shrinking each tree's contribution — see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization#gradient-descent-and-its-variants)) and $h_t$ is the newly trained tree.
 5. Repeat for $T$ rounds.
+
+Step through a real 5-round fit, on real data — each round a genuine search over every candidate split threshold:
+
+<GradientBoostingResidualDiagram />
 
 **Why "gradient" boosting specifically**: for squared-error loss, the residual $y_i - F_{t-1}(x_i)$ is *exactly* the negative gradient of $\frac{1}{2}(y_i - F(x_i))^2$ with respect to $F(x_i)$. Fitting a tree to residuals is, precisely, taking a gradient descent step in **function space** — instead of updating a fixed set of weights $\mathbf{w}$ (as in [Linear Regression](/docs/machine-learning/linear-regression#6-gradient-descent)), each round adds an entire new function (tree) that points the whole ensemble further downhill on the loss surface. For other losses (log-loss for classification, etc.), the "residual" generalizes to that loss's actual negative gradient rather than literally $y - \hat{y}$.
 
