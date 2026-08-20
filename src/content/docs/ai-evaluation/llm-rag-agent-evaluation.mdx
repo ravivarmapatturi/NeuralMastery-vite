@@ -4,18 +4,50 @@ sidebar_position: 4
 ---
 
 
+import JudgePositionBiasDiagram from '../../../viz/diagrams/JudgePositionBiasDiagram';
+import JudgeVerbosityBiasDiagram from '../../../viz/diagrams/JudgeVerbosityBiasDiagram';
+import JudgeValidationDiagram from '../../../viz/diagrams/JudgeValidationDiagram';
+import AgentTrajectoryDiagram from '../../../viz/diagrams/AgentTrajectoryDiagram';
+
 # LLM, RAG & Agent Evaluation
 
 Three progressively harder evaluation problems — a single text output, a text output grounded in retrieved context, and a multi-step sequence of decisions and tool calls — each needing a different evaluation approach because "correct" means something structurally different for each.
 
+## Intuition: Every Evaluator Is Itself Something to Evaluate
+
+The theme connecting every section below: the thing doing the measuring (an LLM-judge, a coarse success metric) has its own failure modes, and trusting it without checking those failure modes just relocates the "is this measurement trustworthy" problem from [Evaluation Fundamentals](/docs/ai-evaluation/evaluation-fundamentals) one level down instead of solving it. An LLM-judge can be biased by irrelevant surface features. A single success/fail metric can hide exactly how an agent got there. Both are demonstrated below with real, computed numbers.
+
 ## LLM Evaluation and LLM-as-a-Judge, In Depth
 
-[LLM Evaluation & RAGOps](/docs/mlops/llm-evaluation-and-ragops) covers the tooling (Ragas, DeepEval, LangSmith, Arize Phoenix) and the traditional-metrics-vs-LLM-as-judge distinction. Going one level deeper into *how* an LLM-as-judge actually works, and where it breaks:
+[LLM Evaluation & RAGOps](/docs/mlops/llm-evaluation-and-ragops) covers the tooling (Ragas, DeepEval, LangSmith, Arize Phoenix) and the traditional-metrics-vs-LLM-as-judge distinction. Going one level deeper into *how* an LLM-as-judge actually works, and where it breaks.
 
-- **The basic mechanism**: prompt a (typically strong, often larger) LLM with the input, the output being evaluated, and explicit grading criteria, asking it to produce a score or judgment — effectively using a model's own language understanding as the measurement instrument, which scales far better than human review while capturing semantic quality that n-gram metrics (BLEU/ROUGE) structurally cannot.
-- **Known judge biases**, worth designing around rather than ignoring: **position bias** (in pairwise comparisons, judges tend to favor whichever response is shown first — mitigated by evaluating both orderings and checking for consistency), **verbosity bias** (judges tend to rate longer responses as better, independent of actual quality — mitigated by explicit rubric criteria that don't reward length), and **self-preference bias** (a model tends to rate its own outputs more favorably than a different model's — a real reason to use a *different*, ideally stronger, model as judge rather than a model evaluating itself).
-- **Rubric design**: a vague instruction ("rate this response 1-10") produces noisy, low-agreement scores; an explicit rubric (specific criteria, each with concrete examples of what a low/medium/high score looks like) produces far more consistent, defensible judgments — the same principle as writing a clear grading rubric for a human TA, applied to an LLM grader.
-- **Validating the judge itself**: before trusting an LLM-judge's scores at scale, check its agreement against human judgments on a sample — an unvalidated judge is exactly the "untrustworthy measurement" problem [Evaluation Fundamentals](/docs/ai-evaluation/evaluation-fundamentals) warns about, just one layer removed.
+**The basic mechanism**: prompt a (typically strong, often larger) LLM with the input, the output being evaluated, and explicit grading criteria, asking it to produce a score or judgment — effectively using a model's own language understanding as the measurement instrument, which scales far better than human review while capturing semantic quality that n-gram metrics (BLEU/ROUGE) structurally cannot.
+
+### Position Bias, Made to Flip a Verdict
+
+In pairwise comparisons, judges tend to favor whichever response is shown first. Toggle the display order below on the exact same two responses and watch the verdict actually flip:
+
+<JudgePositionBiasDiagram />
+
+Standard mitigation: evaluate both orderings and check for consistency — precisely what the toggle above simulates.
+
+### Verbosity Bias, Measured With a Real Correlation
+
+Judges tend to rate longer responses as better, independent of actual quality. Real quality is generated independent of length below; watch a real Pearson correlation appear anyway as judge bias increases:
+
+<JudgeVerbosityBiasDiagram />
+
+Mitigated by explicit rubric criteria that don't reward length — not by hoping the judge doesn't notice length at all.
+
+**Self-preference bias** rounds out the three: a model tends to rate its own outputs more favorably than a different model's — a real reason to use a *different*, ideally stronger, model as judge rather than a model evaluating itself.
+
+### Rubric Design and Validating the Judge
+
+A vague instruction ("rate this response 1-10") produces noisy, low-agreement scores; an explicit rubric (specific criteria, each with concrete examples of what a low/medium/high score looks like) produces far more consistent, defensible judgments. Before trusting an LLM-judge's scores at scale, check its agreement against human judgments on a sample — real agreement, computed, for two rubric styles on the same items:
+
+<JudgeValidationDiagram />
+
+An unvalidated judge is exactly the "untrustworthy measurement" problem [Evaluation Fundamentals](/docs/ai-evaluation/evaluation-fundamentals) warns about, just one layer removed.
 
 ## RAG Evaluation
 
@@ -23,10 +55,12 @@ Covered in full in [RAG — Evaluating RAG](/docs/llms-genai/rag#evaluating-rag)
 
 ## Agent Evaluation
 
-Evaluating an agent is structurally different from evaluating a single LLM call — the object being evaluated is a *sequence* of decisions and actions, not one output, and "did it get the right final answer" can be true even when the path there was unreliable (or false even when every individual step was reasonable, if the task was simply very hard).
+Evaluating an agent is structurally different from evaluating a single LLM call — the object being evaluated is a *sequence* of decisions and actions, not one output, and "did it get the right final answer" can be true even when the path there was unreliable. Click through a real toy trajectory below and watch task success and trajectory quality diverge:
+
+<AgentTrajectoryDiagram />
 
 - **Task success rate**: did the agent actually accomplish the end goal — the most important single metric, but a coarse one that says nothing about *how* it got there or how reliably it would succeed on a slightly different version of the same task.
-- **Trajectory analysis**: evaluating the *sequence* of actions the agent took, not just the final outcome — did it use tools in a sensible order, did it recover gracefully from a failed tool call, did it waste steps on unproductive exploration? A trajectory can be evaluated by a human, by an LLM-judge given the full action log (extending the LLM-as-judge approach above to a sequence rather than a single output), or against a reference trajectory when tasks are constrained enough to have one.
+- **Trajectory analysis**: evaluating the *sequence* of actions the agent took, not just the final outcome — did it use tools in a sensible order, did it recover gracefully from a failed tool call, did it waste steps on unproductive exploration, exactly like step 2 above? A trajectory can be evaluated by a human, by an LLM-judge given the full action log (extending the LLM-as-judge approach above to a sequence rather than a single output), or against a reference trajectory when tasks are constrained enough to have one.
 - **Tool-call accuracy**: specifically, did the agent call the right tool, with correctly-formed and correctly-valued arguments, at each step — a narrower, more mechanical metric than overall trajectory quality, useful for isolating whether failures come from *reasoning* (choosing the wrong approach) or *execution* (choosing the right approach but calling the tool incorrectly).
 - **Efficiency metrics**: number of steps/tool calls, total tokens used, and wall-clock latency to complete the task — two agents with identical success rates can have very different production cost/latency profiles, and efficiency is invisible if success rate is the only metric tracked (see [AI Cost Engineering](/docs/mlops/roadmap) for the broader cost-optimization context this feeds into).
 - **Why this had no dedicated treatment before**: single-turn LLM evaluation and RAG evaluation both inherited well-established metric traditions (classification metrics, information-retrieval metrics) to build on. Agent evaluation doesn't have an equally mature inherited tradition — it's a genuinely newer problem, closer to evaluating a multi-step plan or a reinforcement learning policy's *rollout* than to evaluating a single prediction, and the field's evaluation practice here is still actively maturing.
@@ -34,5 +68,26 @@ Evaluating an agent is structurally different from evaluating a single LLM call 
 ## Regression Testing for Models and Prompts
 
 Extends [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals)' classical regression-testing idea (does a change degrade performance against a fixed benchmark) to prompts and models specifically: every prompt change, model version bump, or fine-tune should run against the golden dataset (see [Evaluation Fundamentals](/docs/ai-evaluation/evaluation-fundamentals#golden-datasets)) before shipping, with a defined threshold for what counts as an acceptable regression — the same automated gate [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd) describes for classical ML, applied to generative and agentic systems where "did this get worse" is measured by the evaluation methods on this page rather than a single accuracy number.
+
+## Code: A Real Judge-Bias Smoke Test
+
+The same check the position/verbosity diagrams above simulate, runnable against a real judge model:
+
+```python
+import numpy as np
+from scipy.stats import pearsonr
+
+# Position bias: run every pairwise comparison in both orders, flag flips.
+def check_position_bias(judge_fn, pairs):
+    flips = sum(1 for a, b in pairs if judge_fn(a, b) != judge_fn(b, a))
+    return flips / len(pairs)  # real flip rate -- should be ~0 for an unbiased judge
+
+# Verbosity bias: correlate judge score against response length directly.
+lengths = [len(r.split()) for r in responses]
+scores = [judge_fn(r) for r in responses]
+r, p_value = pearsonr(lengths, scores)
+if abs(r) > 0.3 and p_value < 0.01:
+    print(f"Judge score correlates with length (r={r:.2f}) -- likely verbosity bias.")
+```
 
 Next: [Human & Adversarial Evaluation](/docs/ai-evaluation/human-and-adversarial-evaluation) — where automated evaluation isn't enough on its own.
