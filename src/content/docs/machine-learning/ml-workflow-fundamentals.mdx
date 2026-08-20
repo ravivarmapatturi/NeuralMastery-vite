@@ -4,6 +4,9 @@ sidebar_position: 3
 ---
 
 
+import SplitCrossValidationDiagram from '../../../viz/diagrams/SplitCrossValidationDiagram';
+import DataLeakageDiagram from '../../../viz/diagrams/DataLeakageDiagram';
+
 # ML Workflow Fundamentals
 
 Before any algorithm, there's a workflow — and most real-world model failures trace back to a mistake in this workflow, not a bad algorithm choice.
@@ -21,7 +24,9 @@ Before any algorithm, there's a workflow — and most real-world model failures 
 - **Validation set**: used to tune hyperparameters and pick between model candidates, without touching the test set.
 - **Test set**: touched exactly once, at the very end, to report an unbiased estimate of real-world performance.
 
-**Cross-validation** (commonly k-fold): instead of a single train/validation split, split the data into $k$ folds, train $k$ times (each time holding out a different fold for validation), and average the results. Gives a more reliable performance estimate on smaller datasets, at the cost of $k\times$ the training time.
+**Cross-validation** (commonly k-fold): instead of a single train/validation split, split the data into $k$ folds, train $k$ times (each time holding out a different fold for validation), and average the results. Gives a more reliable performance estimate on smaller datasets, at the cost of $k\times$ the training time. Toggle between a fixed split and real fold rotation:
+
+<SplitCrossValidationDiagram />
 
 ## Data Leakage
 
@@ -31,7 +36,9 @@ Data leakage is when information from outside the training set — often from th
 - Using a feature that's only available *after* the event you're predicting (e.g. using "was this transaction refunded" to predict fraud)
 - Duplicate or near-duplicate rows split across train and test
 
-**This is one of the most common real-world ML bugs** — a model with suspiciously excellent validation metrics is the first thing to double-check for leakage, not celebrate.
+**This is one of the most common real-world ML bugs** — a model with suspiciously excellent validation metrics is the first thing to double-check for leakage, not celebrate. Real logistic regression, real accuracy, with and without a genuinely leaky feature:
+
+<DataLeakageDiagram />
 
 ## Feature Engineering & Selection
 
