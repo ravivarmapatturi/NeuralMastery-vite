@@ -4,9 +4,18 @@ sidebar_position: 3
 ---
 
 
+import ConstructValidityDiagram from '../../../viz/diagrams/ConstructValidityDiagram';
+import ContaminationDiagram from '../../../viz/diagrams/ContaminationDiagram';
+import SaturationDiagram from '../../../viz/diagrams/SaturationDiagram';
+import GoldenDatasetCoverageDiagram from '../../../viz/diagrams/GoldenDatasetCoverageDiagram';
+
 # Evaluation Fundamentals
 
 Before LLM-as-judge, before agent trajectories — the basic question every evaluation effort has to answer honestly: is this measurement actually trustworthy?
+
+## Intuition: A Number Is Not a Measurement
+
+A benchmark score, a golden-dataset pass rate, a production quality metric — all of them are *numbers*, but a number only becomes a *measurement* once you can trust what it actually reflects. Every failure mode on this page is a different way that trust breaks: the number reflects a shortcut instead of the real capability (construct validity), reflects memorization instead of genuine performance (contamination), reflects nothing discriminating anymore (saturation), or reflects a distribution of inputs that no longer matches reality (a stale golden set). Each is demonstrated below with a real, computed number, not an abstract warning.
 
 ## Traditional ML Metrics
 
@@ -14,21 +23,43 @@ Covered in full depth in [Model Evaluation & Metrics](/docs/machine-learning/mod
 
 ## Benchmark Design
 
-A benchmark is itself a piece of engineering that can be done well or badly — three failure modes account for most bad benchmarks in practice:
+A benchmark is itself a piece of engineering that can be done well or badly — three failure modes account for most bad benchmarks in practice.
 
-- **Construct validity**: does the benchmark actually measure the capability it claims to? A reading-comprehension benchmark answerable from surface pattern-matching (without needing to actually understand the passage) has poor construct validity — it produces a number, but that number doesn't mean what it claims to mean. This is the single most important, and most often skipped, question to ask before trusting any benchmark score: *what would a model have to actually be able to do to score well here, and is that the thing I care about?*
-- **Contamination**: the benchmark's questions (or close paraphrases) leaked into a model's training data — see [LLM Pretraining — The Data Pipeline](/docs/llms-genai/training-pipeline#the-data-pipeline)'s contamination-checking step. A contaminated benchmark score reflects memorization, not the capability being tested, and web-scale pretraining corpora make this a real, easy-to-introduce-by-accident risk rather than a hypothetical one.
-- **Saturation**: once most frontier models score near-ceiling on a benchmark, it stops discriminating between them — a saturated benchmark can't tell you "model A is better than model B" anymore, only "both are good at this specific thing," and continuing to report it as a meaningful differentiator is misleading. Benchmark saturation is *why* new, harder benchmarks keep replacing old ones as a field matures — not fashion, a real measurement-validity problem.
+### Construct Validity
+
+Does the benchmark actually measure the capability it claims to? A reading-comprehension benchmark answerable from surface pattern-matching (without needing to actually understand the passage) has poor construct validity — it produces a number, but that number doesn't mean what it claims to mean. Watch a real "shortcut model" with zero genuine understanding outscore a real, genuinely capable model, purely by exploiting a benchmark's surface artifact:
+
+<ConstructValidityDiagram />
+
+This is the single most important, and most often skipped, question to ask before trusting any benchmark score: *what would a model have to actually be able to do to score well here, and is that the thing I care about?*
+
+### Contamination
+
+The benchmark's questions (or close paraphrases) leaked into a model's training data — see [LLM Pretraining — The Data Pipeline](/docs/llms-genai/training-pipeline#the-data-pipeline)'s contamination-checking step. Real, linear score inflation as contamination grows:
+
+<ContaminationDiagram />
+
+A contaminated benchmark score reflects memorization, not the capability being tested, and web-scale pretraining corpora make this a real, easy-to-introduce-by-accident risk rather than a hypothetical one.
+
+### Saturation
+
+Once most frontier models score near-ceiling on a benchmark, it stops discriminating between them. Real scores across 5 simulated model generations, clustering tighter as they approach the ceiling:
+
+<SaturationDiagram />
+
+A saturated benchmark can't tell you "model A is better than model B" anymore, only "both are good at this specific thing," and continuing to report it as a meaningful differentiator is misleading. Benchmark saturation is *why* new, harder benchmarks keep replacing old ones as a field matures — not fashion, a real measurement-validity problem, visible directly in the shrinking spread above.
 
 A benchmark that avoids all three still only measures what it measures — generalizing "scores well on benchmark X" to "good at the broader capability X is supposed to represent" is itself an inference that needs justifying, not an automatic conclusion.
 
 ## Golden Datasets
 
-A **golden dataset** is a curated, trusted set of examples with known-correct expected outputs, used as a stable reference point for evaluation — the same role a labeled test set plays in classical ML, made explicit as its own artifact for LLM/agent systems where "correct" is often less obvious than a single ground-truth label.
+A **golden dataset** is a curated, trusted set of examples with known-correct expected outputs, used as a stable reference point for evaluation — the same role a labeled test set plays in classical ML, made explicit as its own artifact for LLM/agent systems where "correct" is often less obvious than a single ground-truth label. Real coverage, computed against a real synthetic production-input distribution:
 
-- **Building one**: examples should cover the real distribution of production inputs (not just easy, obviously-correct cases) *and* known hard cases/edge cases specifically, since a golden set that's all easy examples will pass every model and tell you nothing.
+<GoldenDatasetCoverageDiagram />
+
+- **Building one**: examples should cover the real distribution of production inputs (not just easy, obviously-correct cases) *and* known hard cases/edge cases specifically — the sparse tail visible above — since a golden set that's all easy examples will pass every model and tell you nothing.
 - **Maintaining one**: a golden dataset isn't "write once" — it needs to grow as new failure modes are discovered in production (every real bug that reaches production and gets fixed is a candidate new golden-set example, so it can't regress silently later) and needs periodic review, since what counted as a "correct" answer can itself become outdated (a factual answer changes, a product policy changes).
-- **Knowing when it's stale**: if production inputs have visibly drifted from what the golden set covers (see [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) for the general drift-detection machinery, applicable here too), the golden set's scores stop reflecting real-world performance even if the set itself hasn't changed.
+- **Knowing when it's stale**: if production inputs have visibly drifted from what the golden set covers (see [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) for the general drift-detection machinery, applicable here too), the golden set's scores stop reflecting real-world performance even if the set itself hasn't changed — exactly the coverage gap the diagram above makes visible.
 
 ## Continuous Evaluation in Production
 
@@ -37,5 +68,30 @@ Evaluation isn't a one-time gate before shipping — production systems need it 
 - **Shadow evaluation**: run evaluation against live production traffic (or a sample of it) without affecting what users actually see — the same [shadow deployment](/docs/mlops/deployment-strategies#shadow-deployment) pattern used for model rollouts, applied to ongoing quality measurement rather than a one-time rollout decision.
 - **Sampling strategy**: evaluating 100% of production traffic with an expensive method (human review, a large LLM-judge) is usually cost-prohibitive — a representative sample, plus targeted oversampling of segments known to be higher-risk (new feature areas, previously-problematic input types), is the practical default.
 - **Alerting on regression**: continuous evaluation is only useful if a quality drop actually triggers action — wiring evaluation scores into the same alerting infrastructure as [Observability](/docs/mlops/observability)'s metrics, not just a dashboard nobody checks.
+
+## Code: A Real Contamination Check
+
+The concrete version of the contamination diagram above — checking a training corpus for benchmark leakage before trusting a score:
+
+```python
+from datasketch import MinHash, MinHashLSH
+
+def check_contamination(benchmark_items: list[str], training_corpus_shards: list[str], threshold=0.8):
+    lsh = MinHashLSH(threshold=threshold, num_perm=128)
+    for i, shard_text in enumerate(training_corpus_shards):
+        m = MinHash(num_perm=128)
+        for token in shard_text.split():
+            m.update(token.encode("utf8"))
+        lsh.insert(f"shard_{i}", m)
+
+    contaminated = []
+    for item in benchmark_items:
+        m = MinHash(num_perm=128)
+        for token in item.split():
+            m.update(token.encode("utf8"))
+        if lsh.query(m):  # near-duplicate found in training data
+            contaminated.append(item)
+    return len(contaminated) / len(benchmark_items)  # real contamination fraction, feeds the diagram above
+```
 
 Next: [LLM, RAG & Agent Evaluation](/docs/ai-evaluation/llm-rag-agent-evaluation) — applying this foundation to the harder-to-measure outputs generative and agentic systems produce.
