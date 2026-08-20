@@ -4,6 +4,8 @@ sidebar_position: 4.8
 ---
 
 
+import ElasticNetStudio from '../../../viz/ElasticNetStudio';
+
 # Elastic Net, In Full Depth
 
 [Ridge](/docs/machine-learning/ridge-regression) handles correlated features gracefully but never drops any. [Lasso](/docs/machine-learning/lasso-regression) drops features automatically but picks unstably among correlated ones. Elastic Net combines both penalties to get most of the benefit of each.
@@ -28,7 +30,9 @@ Simply the sum of the [Ridge](/docs/machine-learning/ridge-regression#deriving-t
 
 $$\frac{\partial J_{\text{elastic}}}{\partial w_j} = \underbrace{\frac{2}{n}\sum_i\left(\hat{y}^{(i)} - y^{(i)}\right)x_j^{(i)}}_{\text{OLS gradient}} + \lambda\alpha \cdot \text{sign}(w_j) + \lambda(1-\alpha)\cdot 2w_j$$
 
-In practice, Elastic Net is solved with the same coordinate-descent + soft-thresholding approach as Lasso (see [Lasso — Coordinate Descent](/docs/machine-learning/lasso-regression#the-subgradient-at-zero)), just with a rescaled threshold that accounts for the added L2 term.
+In practice, Elastic Net is solved with the same coordinate-descent + soft-thresholding approach as Lasso (see [Lasso — Coordinate Descent](/docs/machine-learning/lasso-regression#the-subgradient-at-zero)), just with a rescaled threshold that accounts for the added L2 term. Try it on the exact same synthetic correlated dataset as the Ridge and Lasso studios — drag α between the two extremes and watch the regularization path itself change shape, not just the numbers:
+
+<ElasticNetStudio />
 
 ## Choosing λ and α
 
