@@ -20,14 +20,22 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done (≥10 compo
 - [x] overview.mdx — commit 9c5d237, pushed+deployed. 4 components (RawAudioCompressionDiagram, AudioTaskIODiagram, LatencyBudgetDiagram, AudioEvaluationMetricsDiagram)
 - [~] roadmap.mdx — decided: stays a checklist, matches sitewide precedent (no roadmap.mdx anywhere has been expanded)
 - [x] audio-fundamentals.mdx — 7 components (commit 386f71d): SamplingNyquistDiagram, BitDepthQuantizationDiagram, FourierSumOfSinesDiagram, WaveformSpectrogramDiagram (raster replacement), StftWindowTradeoffDiagram, MelScaleDiagram, MfccPipelineDiagram. Below the aspirational ≥10 target -- 7 genuinely content-tied diagrams, no padding.
-- [ ] speech-audio-tasks.mdx — has real content, zero diagrams; not yet started
+- [x] speech-audio-tasks.mdx — commit 34f79e2, pushed, deploy triggered (run 32330037695). 5 components (CtcAlignmentDiagram -- real CTC collapse rule -- TtsPipelineDiagram, SpeakerVerificationDiagram, DiarizationTimelineDiagram, SpeechEnhancementDiagram).
+
+**speech-audio/ complete.**
 
 ## computer-vision/ (5 content pages)
 - [x] overview.mdx — 10 content-tied interactive diagrams, substantive prose expansion, and browser/build validation (commits ae5c29d, b212122, e55e039)
 - [~] roadmap.mdx — same decision as speech-audio/roadmap.mdx: stays a checklist
 - [x] vision-fundamentals.mdx — commit 21e720b, pushed+deployed. 5 components (ConvolutionSlideDiagram -- raster replacement, real computed convolution -- RgbChannelDecompositionDiagram, MorphologicalOpsDiagram, HogFeatureDiagram, DataAugmentationDiagram).
 - [x] vision-tasks-and-models.mdx — commit 1c660cc, pushed+deployed. 5 components (PoseEstimationApproachDiagram, OcrPipelineDiagram, TrackingAssociationDiagram, StereoDepthDiagram -- real disparity geometry -- OpticalFlowFieldDiagram).
-- [x] modern-vision-and-multimodal.mdx — commit e6f8d2e, pushed, deploy triggered (run 32329718557). 4 components (TemporalConsistencyDiagram, VideoUnderstandingArchitectureDiagram, PointCloudDiagram -- live 3D rotation -- NerfRayMarchingDiagram -- real volume-rendering accumulation).
+- [x] modern-vision-and-multimodal.mdx — commit e6f8d2e, pushed+deployed. 4 components (TemporalConsistencyDiagram, VideoUnderstandingArchitectureDiagram, PointCloudDiagram -- live 3D rotation -- NerfRayMarchingDiagram -- real volume-rendering accumulation).
+
+**computer-vision/ complete.**
+
+# ORIGINAL 35-PAGE SCOPE COMPLETE (2026-08-20)
+
+All of speech-audio/ and computer-vision/ done. Plus, along the way: homepage, getting-started/intro.mdx, per-route document.title, intro.mdx deletion, mlops/message-queues-and-async-processing.mdx, databases/vector+graph overview.mdx expansions -- all shipped, pushed, and deployed. Awaiting next assignment from the lead.
 
 **computer-vision/ complete** (all 5 pages: overview + 3 content pages with diagrams, roadmap.mdx staying a checklist by design).
 
