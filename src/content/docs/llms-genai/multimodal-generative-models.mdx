@@ -4,6 +4,10 @@ sidebar_position: 8
 ---
 
 
+import VlmArchitectureDiagram from '../../../viz/diagrams/VlmArchitectureDiagram';
+import DiffusionForwardProcessDiagram from '../../../viz/diagrams/DiffusionForwardProcessDiagram';
+import AutoregressiveVsDiffusionGenerationDiagram from '../../../viz/diagrams/AutoregressiveVsDiffusionGenerationDiagram';
+
 # Multimodal & Generative Models
 
 Attention doesn't care whether a "token" represents a word or an image patch — which is exactly why the same architecture generalizes across modalities.
@@ -11,6 +15,8 @@ Attention doesn't care whether a "token" represents a word or an image patch —
 ## Vision-Language Models (VLMs)
 
 Combine a vision encoder (often a Vision Transformer, see [CNNs](/docs/deep-learning/cnns) and [Attention & Transformers](/docs/deep-learning/attention-transformers)) with an LLM: image patches are encoded, projected into the same embedding space as text tokens, and fed into the language model alongside a text prompt — letting the model reason jointly over both. This is how models can answer questions about an image, describe it, or follow instructions that reference visual content.
+
+<VlmArchitectureDiagram />
 
 ## Vision-Language-Action Models (VLAs)
 
@@ -20,11 +26,17 @@ Extend VLMs with an additional output head that predicts *actions* (e.g. robot m
 
 Instead of generating autoregressively (one token/pixel at a time), diffusion models learn to reverse a gradual noising process: starting from pure noise, the model iteratively denoises step by step until a coherent image (or audio, or video) emerges. Trained by teaching the model to predict the noise that was added at each step of a forward "noising" process — a form of the same gradient-descent-on-a-loss-function idea from [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization), just with a different objective. This is the dominant approach behind modern image generation models. See [Generative Models](/docs/deep-learning/generative-models) for the named variants (DDPM, DDIM, Latent/Stable Diffusion, ControlNet) and how diffusion compares to its main alternative, GANs.
 
+The real forward-process math behind that noising, applied here too:
+
+<DiffusionForwardProcessDiagram />
+
 ## Diffusion vs. Autoregressive Generation
 
 - **Autoregressive** (standard LLMs): generates sequentially, one token conditioned on all previous ones — naturally suited to text, where order and causality matter.
 - **Diffusion**: generates the whole output "at once," refined iteratively — naturally suited to images, where there's no inherent left-to-right ordering.
 
-**Diffusion Language Models (DLMs)**: an active research direction applying diffusion-style generation to text instead of autoregression — potentially enabling faster parallel generation (denoising a whole sequence at once rather than token-by-token), though autoregressive models remain dominant in production as of today.
+**Diffusion Language Models (DLMs)**: an active research direction applying diffusion-style generation to text instead of autoregression — potentially enabling faster parallel generation (denoising a whole sequence at once rather than token-by-token), though autoregressive models remain dominant in production as of today. The structural difference made concrete, step by step:
+
+<AutoregressiveVsDiffusionGenerationDiagram />
 
 LLMs & GenAI section complete. Next: [Agents](/docs/agents/roadmap) — where models stop just answering and start taking action.
