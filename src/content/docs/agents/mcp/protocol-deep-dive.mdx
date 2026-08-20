@@ -3,61 +3,199 @@ title: "MCP Protocol Deep Dive"
 sidebar_position: 2
 ---
 
+import McpLifecycleSequenceDiagram from '../../../../viz/diagrams/McpLifecycleSequenceDiagram';
+import TransportComparisonDiagram from '../../../../viz/diagrams/TransportComparisonDiagram';
+import CapabilityNegotiationDiagram from '../../../../viz/diagrams/CapabilityNegotiationDiagram';
+import ToolCallFlowDiagram from '../../../../viz/diagrams/ToolCallFlowDiagram';
+import ToolErrorTypesDiagram from '../../../../viz/diagrams/ToolErrorTypesDiagram';
+import StreamableHttpSessionDiagram from '../../../../viz/diagrams/StreamableHttpSessionDiagram';
+import OAuthAuthorizationFlowDiagram from '../../../../viz/diagrams/OAuthAuthorizationFlowDiagram';
+import TokenAudienceBindingDiagram from '../../../../viz/diagrams/TokenAudienceBindingDiagram';
+import McpServerBuildStepsDiagram from '../../../../viz/diagrams/McpServerBuildStepsDiagram';
 
 # MCP Protocol Deep Dive
 
-[MCP Overview](/docs/agents/mcp/overview) covered the architecture (client/server, tools/resources/prompts) at a conceptual level. This page is the engineering detail underneath: how a client and server actually talk, what a real MCP server implementation deals with, and how it gets deployed safely in an organization.
+[MCP Overview](/docs/agents/mcp/overview) covered the architecture (client/server, tools/resources/prompts) at a conceptual level. This page is the engineering detail underneath: how a client and server actually talk, what a real MCP server implementation deals with, and how it gets deployed safely in an organization. The details below follow the official spec (`2025-06-18` revision) directly, not a paraphrase of it — where a rule matters (a `MUST`, a specific header name, an exact message shape), it's reproduced as written.
 
 ## Transport
 
-MCP defines how clients and servers communicate over one of two transport mechanisms:
+MCP encodes every message as **JSON-RPC 2.0**, UTF-8 encoded. The transport is just how those bytes move between client and server — request/response/notification semantics are identical either way. Two standard transports are defined:
 
-- **stdio (standard input/output)**: the client launches the MCP server as a local subprocess and communicates over its stdin/stdout — the simplest transport, used for local tools (a server that reads local files, runs local commands) where client and server run on the same machine.
-- **HTTP with Server-Sent Events (SSE) / Streamable HTTP**: for remote servers — the client makes HTTP requests, and the server can stream responses back incrementally (useful for long-running tool calls or progressive results) — necessary once a server isn't a local subprocess, e.g. a hosted MCP server for a SaaS product that many different clients connect to over the network.
+### stdio
 
-Both transports carry the same underlying **JSON-RPC 2.0** message format — the transport is just how bytes move; the protocol semantics (requests, responses, notifications) are identical regardless of which one's in use.
+The client launches the MCP server as a local subprocess and talks to it over its own stdin/stdout:
+
+- The server reads JSON-RPC messages from `stdin` and writes them to `stdout`.
+- Messages are **newline-delimited** and **must not contain embedded newlines** — one message per line, full stop.
+- The server **must not** write anything to `stdout` that isn't a valid MCP message — `stdout` is the message channel, not a place for stray `print()` debugging output. `stderr` is free for logging; the client may capture it, forward it, or ignore it entirely.
+- Clients **should** support stdio whenever possible — it's the simplest transport and the spec explicitly recommends it as the default.
+
+### Streamable HTTP
+
+For remote servers — a hosted MCP server for a SaaS product that many different clients connect to over the network. This replaces the older HTTP+SSE transport from the 2024-11-05 spec revision:
+
+- The server exposes a **single endpoint** (e.g. `https://example.com/mcp`) that supports both `POST` and `GET`.
+- Every JSON-RPC message the client sends is a new `POST` to that endpoint, with an `Accept` header listing both `application/json` and `text/event-stream`.
+- The server responds either with `Content-Type: application/json` (one JSON object) or `Content-Type: text/event-stream` (an SSE stream) — useful for a long-running tool call where the server wants to send progress notifications before the final result.
+- A client can also issue a `GET` to open a standing SSE stream, letting the server push requests/notifications to the client without the client speaking first.
+- **Security requirement**: servers **must** validate the `Origin` header on every incoming connection (to prevent DNS rebinding attacks), and **should** bind to `localhost` only when running purely locally.
+
+<TransportComparisonDiagram />
 
 ## Sessions and Lifecycle
 
-An MCP connection isn't stateless — it goes through an explicit lifecycle:
+An MCP connection goes through three explicit phases, and the **initialization phase must be the first interaction** — no other request is valid before it completes.
 
-1. **Initialization**: the client connects and sends an `initialize` request declaring its supported protocol version and capabilities; the server responds with its own capabilities (which tools/resources/prompts it exposes, and which optional protocol features it supports) — a capability-negotiation handshake, so client and server agree on what's actually available before any real work starts.
-2. **Operation**: the client can now call tools, read resources, and request prompts — the normal request/response traffic covered in [MCP Overview](/docs/agents/mcp/overview#resources-tools-and-prompts).
-3. **Shutdown**: a clean termination of the session, releasing any server-side state associated with it.
+1. **Initialization** — the client sends an `initialize` request:
 
-For remote (HTTP-based) transports, this lifecycle maps onto an explicit **session** — a server may maintain per-session state (e.g. an authenticated user's context) across multiple requests within that session, requiring session identifiers rather than treating every request as fully independent.
+   ```json
+   {
+     "jsonrpc": "2.0",
+     "id": 1,
+     "method": "initialize",
+     "params": {
+       "protocolVersion": "2025-06-18",
+       "capabilities": { "roots": { "listChanged": true }, "sampling": {}, "elicitation": {} },
+       "clientInfo": { "name": "ExampleClient", "version": "1.0.0" }
+     }
+   }
+   ```
+
+   The client sends the *latest* protocol version it supports. The server responds with the same version if it supports it, or a different version it does support otherwise — if the client can't accept the server's answer, it **should** disconnect. The response also carries the server's own capabilities (which of `tools`/`resources`/`prompts`/`logging`/`completions` it offers) and `serverInfo`.
+
+2. **`initialized` notification** — after a successful response, the client **must** send a one-way `notifications/initialized` message (no `id`, no response expected) signaling it's ready for real traffic. Neither side should send ordinary requests before this point — only [pings](https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping) are allowed earlier.
+
+3. **Operation** — normal `tools/call`, `resources/read`, etc., using only the capabilities that were actually negotiated in step 1. Using a capability neither side declared is a protocol violation, not just bad practice.
+
+4. **Shutdown** — MCP defines no dedicated shutdown message; termination happens at the transport layer. For stdio, the client closes the server's `stdin`, waits, then escalates to `SIGTERM` and finally `SIGKILL` if the process doesn't exit. For HTTP, closing the connection is the signal.
+
+<McpLifecycleSequenceDiagram />
+
+**Version and capability negotiation** together determine what's actually usable for the rest of the session — a client requesting `sampling` support means nothing if the server never checks for it, and a server offering `resources.subscribe` is wasted if the client doesn't understand subscriptions.
+
+<CapabilityNegotiationDiagram />
+
+For Streamable HTTP specifically, this lifecycle maps onto an explicit **session**: the server *may* assign a session ID at initialization time, returned via an `Mcp-Session-Id` HTTP response header. If issued, the client **must** echo it on every subsequent request; a server that requires sessions **should** reject a non-init request missing it with `400`. The server may terminate a session at any point, after which it **must** respond `404` to further requests carrying that ID — and on seeing that `404`, the client **must** start over with a fresh `initialize` request carrying no session ID at all.
+
+<StreamableHttpSessionDiagram />
 
 ## Tool Discovery and Schemas
 
-- **Tool discovery**: a client lists a connected server's available tools via a `tools/list` request — the server responds with each tool's name, description, and **input schema**. This is how a client (and the LLM behind it) learns what a server can do *without* any hardcoded, tool-specific integration code — the entire point of standardizing the protocol.
-- **Tool schemas**: each tool declares its parameters as a **JSON Schema** — the same structured-schema approach as [Prompt Engineering — Structured Output](/docs/llms-genai/prompt-engineering), applied to defining a tool's *input* contract rather than a model's output contract. A well-specified schema (clear types, required vs. optional fields, descriptive field names) directly determines how reliably the LLM calls the tool correctly — a vague or missing schema is a common, avoidable cause of malformed tool calls.
-- **Resource and prompt discovery**: analogous `resources/list` and `prompts/list` requests let a client discover what data and prompt templates a server exposes, following the same discovery-before-use pattern as tools.
+**Discovery** — a client sends a `tools/list` request (paginated via an optional `cursor`); the server responds with each tool's `name`, `description`, and `inputSchema`:
+
+```json
+{
+  "result": {
+    "tools": [{
+      "name": "get_weather",
+      "description": "Get current weather information for a location",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "location": { "type": "string", "description": "City name or zip code" } },
+        "required": ["location"]
+      }
+    }]
+  }
+}
+```
+
+This is *the* mechanism that lets a client (and the LLM behind it) learn what a server can do without any hardcoded, tool-specific integration code — the entire point of standardizing the protocol. A tool can optionally declare an `outputSchema` too, describing the shape of its `structuredContent` — when present, the server **must** return conforming structured results and the client **should** validate against it.
+
+**Invocation** — a `tools/call` request carries the tool's `name` and its `arguments`, matched against the declared `inputSchema`:
+
+```json
+{ "method": "tools/call", "params": { "name": "get_weather", "arguments": { "location": "New York" } } }
+```
+
+The result's `content` is an array that can mix content types in one response — `text`, `image` (base64 + `mimeType`), `audio`, a `resource_link` (a URI the client can fetch or subscribe to later), or a fully `embedded resource`. A well-specified schema (clear types, required vs. optional fields, descriptive field names) directly determines how reliably the LLM calls the tool correctly — a vague or missing schema is a common, avoidable cause of malformed tool calls.
+
+<ToolCallFlowDiagram />
+
+**Resource and prompt discovery** follow the identical pattern: `resources/list` / `prompts/list` for discovery, `resources/read` / `prompts/get` for use — the same discovery-before-use shape as tools, just for two different capability kinds.
 
 ## Errors
 
-MCP defines structured error responses (following JSON-RPC's error object format: a numeric code, a message, and optional additional data) rather than letting failures propagate as opaque exceptions — a tool call that fails (invalid arguments, a downstream API error, a permission problem) returns a structured error the client can inspect and, in an agentic loop, feed back to the LLM so it can self-correct (see [Agent Architectures — Durable Execution](/docs/agents/agent-architectures#durable-execution-retries-checkpoints--long-running-agents) for the retry patterns built on top of this) rather than the whole session crashing.
+MCP tools actually have **two separate error-reporting paths**, and conflating them is a common implementation mistake:
+
+1. **Protocol errors** — a standard JSON-RPC error object, used when the *request itself* is invalid (an unknown tool name, malformed arguments, an internal server fault):
+
+   ```json
+   { "error": { "code": -32602, "message": "Unknown tool: invalid_tool_name" } }
+   ```
+
+2. **Tool execution errors** — the request was valid and the tool *ran*, but failed at the business-logic level (an API rate limit, a downstream 500, invalid input data it couldn't process). This is a normal JSON-RPC **success** response, with `isError: true` set inside the result:
+
+   ```json
+   { "result": { "content": [{ "type": "text", "text": "Failed to fetch weather data: API rate limit exceeded" }], "isError": true } }
+   ```
+
+<ToolErrorTypesDiagram />
+
+The distinction matters for how a caller reacts: a protocol error usually means "this call was malformed, fix the call"; a tool execution error means "the call was fine, but here's what happened" — exactly the kind of structured failure an agentic loop can feed back to the LLM so it can self-correct (see [Agent Architectures — Durable Execution](/docs/agents/agent-architectures#durable-execution-retries-checkpoints--long-running-agents) for the retry patterns built on top of this) rather than crashing the whole session.
 
 ## Authentication and Authorization
 
-Distinct concerns, both necessary for anything beyond a local, single-user stdio server:
+Authorization in MCP is **optional**, applies only to HTTP-based transports, and is built on a specific, restricted subset of OAuth 2.1 — a stdio server instead just reads credentials from its environment.
 
-- **Authentication**: verifying *who* is connecting — for remote HTTP-based servers, typically OAuth 2.1 or API-key-based schemes, established during or before the initialization handshake above.
-- **Authorization**: once authenticated, determining *what* that identity is allowed to do — which tools it can call, which resources it can read. A server exposing sensitive tools (executing code, accessing a production database) needs authorization scoped per-identity, not an all-or-nothing "connected or not" model — the same least-privilege principle as [AI Security — Excessive Agency](/docs/mlops/security-and-reproducibility).
+- **Roles**: the MCP server itself acts as an OAuth 2.1 **resource server**; the MCP client acts as the OAuth **client**; a separate (or co-hosted) **authorization server** issues tokens after handling the actual user consent.
+- **Discovery** — the server **must** implement OAuth 2.0 Protected Resource Metadata ([RFC 9728](https://datatracker.ietf.org/doc/html/rfc9728)), and on an unauthenticated request **must** return `401` with a `WWW-Authenticate` header pointing to its metadata URL. The client fetches that metadata to learn which authorization server(s) it trusts, then fetches *that* server's own OAuth 2.0 Authorization Server Metadata ([RFC 8414](https://datatracker.ietf.org/doc/html/rfc8414)) to get its actual endpoints.
+- **The `resource` parameter** — the client **must** implement [RFC 8707](https://www.rfc-editor.org/rfc/rfc8707.html) Resource Indicators, including a `resource` parameter (the MCP server's canonical URI, e.g. `https://mcp.example.com/mcp`) in *both* the authorization request and the token request. This binds the issued token to this specific server, not just to whatever the authorization server happened to hand out.
+- **PKCE is mandatory** — the client **must** implement PKCE (OAuth 2.1 §7.5.2) to prevent authorization-code interception.
+- **Using the token** — every request carries `Authorization: Bearer <access-token>` as a header; tokens **must never** appear in a URL query string.
+
+<OAuthAuthorizationFlowDiagram />
+
+**Authorization** (once authenticated) is a distinct question from *who* is connecting: which tools an identity can call, which resources it can read. A server exposing sensitive tools (executing code, touching a production database) needs authorization scoped per-identity, not an all-or-nothing "connected or not" model — the same least-privilege principle as [AI Security — Excessive Agency](/docs/mlops/security-and-reproducibility).
 
 ## Security
 
-MCP's power — letting an LLM discover and call arbitrary tools dynamically — is also its core security surface:
+MCP's power — letting an LLM discover and call arbitrary tools dynamically — is also its core security surface, and the spec calls out specific attack patterns by name:
 
-- **Prompt injection via tool results**: a malicious or compromised data source returned by a `resources/read` or tool call can contain text designed to manipulate the LLM's subsequent behavior (see [AI Security — Prompt Injection](/docs/mlops/security-and-reproducibility)) — treat all MCP-returned content as untrusted data, not as trusted instructions, exactly as with RAG-retrieved content.
-- **Tool permission scoping**: a client should not blindly grant every connected server's every tool unrestricted access — explicit user/admin approval for which tools a given server is allowed to expose to the LLM is a real, necessary control, not an optional nicety.
+- **Prompt injection via tool results**: a malicious or compromised data source returned by a `resources/read` or a `tools/call` result can contain text designed to manipulate the LLM's subsequent behavior (see [AI Security — Prompt Injection](/docs/mlops/security-and-reproducibility)) — treat all MCP-returned content as untrusted data, not as trusted instructions, exactly as with RAG-retrieved content.
+- **Tool permission scoping**: a client should not blindly grant every connected server's every tool unrestricted access. The spec is explicit that there **should** always be a human in the loop able to deny a tool invocation — clients **should** show which tools are exposed, indicate visually when one is invoked, and confirm sensitive operations before running them.
+- **The confused deputy problem**: if an MCP server acts as an intermediary to a third-party API, forwarding the *client's* token unmodified to that upstream API lets the upstream incorrectly trust it as validated by the server. The spec is explicit here: an MCP server **must not** pass through the token it received from its own client — if it needs to call an upstream API, it acts as its own separate OAuth client and obtains a *different* token for that call.
+
+<TokenAudienceBindingDiagram />
+
+- **Token audience validation**: a server **must** validate that any token presented to it was actually issued *for it* (its audience claim), and reject tokens issued for other services — accepting a token meant for a different resource is exactly what enables the confused-deputy attack above.
 - **Server trust**: connecting to an MCP server means running code (for local stdio servers) or granting network access to a service (for remote servers) — the same supply-chain trust question as installing any other third-party package or dependency, and worth treating with the same scrutiny.
 
 ## Enterprise Deployment
 
-Running MCP servers inside an organization, rather than a single developer's local tool, adds operational concerns familiar from any internal service: centralized server registries (so teams discover approved, sanctioned MCP servers rather than connecting to arbitrary ones), centralized auth/identity integration (tying MCP authentication into existing SSO rather than per-server credentials), audit logging of tool calls (especially for tools that take real-world actions), and network-level restrictions (which servers are reachable from which environments) — the MCP-specific instance of the general [AI governance](/docs/mlops/roadmap) problem of knowing what an AI system can access and proving it after the fact.
+Running MCP servers inside an organization, rather than a single developer's local tool, adds operational concerns familiar from any internal service:
+
+- **Centralized server registries** — teams discover approved, sanctioned MCP servers rather than connecting to arbitrary ones found online.
+- **Centralized auth/identity integration** — tying MCP authentication into existing SSO rather than per-server credentials, using the OAuth discovery flow above against an organization's own authorization server.
+- **Audit logging of tool calls** — especially for tools that take real-world actions (writing files, calling external APIs, touching production data); this is the direct application of [Legal, Licensing & Governance — Audit Trails](/docs/mlops/legal-licensing-and-governance) to the MCP layer specifically.
+- **Network-level restrictions** — which servers are reachable from which environments, so a compromised or misconfigured MCP server can't reach further than it needs to.
+
+This is the MCP-specific instance of the general [AI governance](/docs/mlops/roadmap) problem of knowing what an AI system can access and proving it after the fact.
 
 ## Building an MCP Server
 
-A minimal MCP server implementation needs to: handle the initialization handshake and declare its capabilities, implement `tools/list` (and/or `resources/list`, `prompts/list`) to expose what it offers, implement the actual tool-call handler (validate arguments against the declared schema, execute, return a structured result or error), and handle the chosen transport (stdio is the simplest starting point for a local tool). The official MCP SDKs (Python, TypeScript, and others) handle the protocol-level plumbing (JSON-RPC framing, lifecycle handshake) so a server implementation is mostly just the tool logic itself plus schema definitions — the protocol overhead of "become MCP-compatible" is deliberately small by design, which is a large part of why adoption spread quickly across AI coding tools and agent frameworks.
+A minimal MCP server needs to: handle the initialization handshake and declare its capabilities, implement `tools/list` (and/or `resources/list`, `prompts/list`), implement the `tools/call` handler (validate arguments against the declared schema, execute, return a structured result or error), and speak the chosen transport (stdio is the simplest starting point). In practice, the official SDKs handle nearly all of this — a real example, from the [official Python quickstart](https://modelcontextprotocol.io/quickstart/server), using the `FastMCP` decorator pattern:
+
+```python
+@mcp.tool()
+async def get_alerts(state: str) -> str:
+    """Get weather alerts for a US state.
+
+    Args:
+        state: Two-letter US state code (e.g. CA, NY)
+    """
+    data = await make_nws_request(f"{NWS_API_BASE}/alerts/active/area/{state}")
+    if not data or not data["features"]:
+        return "No active alerts for this state."
+    return "\n---\n".join(format_alert(f) for f in data["features"])
+
+if __name__ == "__main__":
+    mcp.run(transport="stdio")
+```
+
+The `inputSchema` from earlier is derived automatically from the function's type hints and docstring — nothing hand-written. The plain string return value is wrapped into the `content` array's `text` block automatically. `mcp.run(transport="stdio")` handles the JSON-RPC framing and the entire initialize/initialized handshake underneath — the actual server code is almost entirely just the tool logic itself.
+
+<McpServerBuildStepsDiagram />
+
+This is a large part of why MCP adoption spread quickly across AI coding tools and agent frameworks: the protocol overhead of "become MCP-compatible" is deliberately small, and the SDKs absorb nearly all of the wire-format detail covered on this page.
 
 Next: [A2A (Agent-to-Agent)](/docs/agents/a2a/overview) — the complementary protocol for agents talking to *other agents*, rather than to tools.
