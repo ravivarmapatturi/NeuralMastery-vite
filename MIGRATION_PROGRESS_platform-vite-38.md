@@ -1,5 +1,24 @@
 # Diagram migration progress — platform-vite-38's scope
 
+## SESSION HANDOFF (2026-08-21) — this session is leaving platform-vite
+
+Org change from the user: this session (`platform-vite-38`) is now leading a new
+department — optimizing the user's personal GitHub RAG project
+(`qa_rag_application`) — and is stepping off platform-vite entirely.
+`platform-vite-5d` is now sole owner of platform-vite going forward.
+
+**Everything below in the deep-learning/ + llms-genai/ 9-page batch that is
+still unchecked is now unassigned and up for grabs by `platform-vite-5d`:**
+- [ ] deep-learning/training-deep-networks.mdx — flagged high-value (norm/reg/residual)
+- [ ] deep-learning/generative-models.mdx — flagged high-value (GANs/diffusion)
+- [ ] llms-genai/prompt-engineering.mdx
+- [ ] llms-genai/multimodal-generative-models.mdx
+- [ ] llms-genai/evaluation-and-serving.mdx
+
+Also still unassigned/incomplete from this session's original scope further
+down this file (databases/, ml-system-design/, remaining llms-genai/ and
+agents/ pages) — all of it reverts to `platform-vite-5d`.
+
 ## CURRENT STATUS (updated 2026-08-20, read this first on resume)
 
 Ownership below is stale — as of 2026-08-19/20 this session has been taking
@@ -46,8 +65,8 @@ consistent with the rest of the site.
 - [x] deep-learning/cnns.mdx — 9 diagrams, commit 1860d46
 - [x] deep-learning/vision-architectures.mdx — 8 diagrams, commit 609fb7d
 - [x] deep-learning/advanced-architectures.mdx — 8 diagrams, commit 29812e5
-- [ ] deep-learning/nn-layers-reference.mdx — NEXT
-- [ ] deep-learning/training-deep-networks.mdx — lead flagged as high-value (norm/reg/residual)
+- [x] deep-learning/nn-layers-reference.mdx — 7 diagrams, commit d8434fa
+- [ ] deep-learning/training-deep-networks.mdx — lead flagged as high-value (norm/reg/residual) — UNASSIGNED, see handoff note at top
 - [ ] deep-learning/generative-models.mdx — lead flagged as high-value (GANs/diffusion)
 - [ ] llms-genai/prompt-engineering.mdx
 - [ ] llms-genai/multimodal-generative-models.mdx
