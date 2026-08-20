@@ -3,6 +3,13 @@ title: "AI Cost Engineering"
 sidebar_position: 22.3
 ---
 
+import TrainingVsInferenceCostDiagram from '../../../viz/diagrams/TrainingVsInferenceCostDiagram';
+import CostPerMillionTokensDiagram from '../../../viz/diagrams/CostPerMillionTokensDiagram';
+import UtilizationCostDiagram from '../../../viz/diagrams/UtilizationCostDiagram';
+import CachingSavingsDiagram from '../../../viz/diagrams/CachingSavingsDiagram';
+import ModelRoutingSavingsDiagram from '../../../viz/diagrams/ModelRoutingSavingsDiagram';
+import CompressionCostDiagram from '../../../viz/diagrams/CompressionCostDiagram';
+import QualityLatencyCostTriangleDiagram from '../../../viz/diagrams/QualityLatencyCostTriangleDiagram';
 
 # AI Cost Engineering
 
@@ -16,9 +23,15 @@ Dominated by GPU-hours — see [GPU/AI Infrastructure & Distributed Training](/d
 
 For most deployed AI products, inference cost — not training cost — dominates total spend over the system's lifetime, since training happens once (or periodically) while inference happens on every single request, indefinitely. Every technique in [LLM Inference Optimization](/docs/mlops/llm-inference-optimization) is, from a cost-engineering lens, a cost-per-token reduction technique: quantization shrinks memory and increases throughput per GPU, continuous batching increases GPU utilization (more requests served per GPU-hour), speculative decoding reduces wall-clock time per response. The standard unit to optimize and report is **cost per 1M tokens** — see [LLM Inference Optimization — Inference Metrics Summary](/docs/mlops/llm-inference-optimization#inference-metrics-summary) — because it's comparable across models, engines, and hardware choices in a way raw GPU-hour cost alone isn't.
 
+<TrainingVsInferenceCostDiagram />
+
+<CostPerMillionTokensDiagram />
+
 ## GPU and Memory Utilization
 
 Idle GPU capacity is pure waste — a GPU costs the same whether it's at 20% or 95% utilization. Low utilization traces back to specific, diagnosable causes covered elsewhere: a data-loading bottleneck starving training compute (see [Python Engineering — Performance](/docs/python-engineering/concurrency-memory-and-performance)), insufficient batching during inference (see [Inference Optimization — Batching](/docs/mlops/llm-inference-optimization#other-core-optimizations)), or simply over-provisioned capacity relative to actual demand (addressed by [autoscaling](/docs/mlops/kubernetes#advanced) or [serverless inference](/docs/mlops/llm-hosting-and-serving-patterns#serverless-inference) for spiky workloads specifically). Cost engineering starts with measuring utilization, not just measuring spend — a high bill with low utilization is a fixable efficiency problem; a high bill with high utilization is a genuine scale/pricing problem, and the fix is different for each.
+
+<UtilizationCostDiagram />
 
 ## Caching
 
@@ -26,6 +39,8 @@ Avoiding redundant computation entirely is cheaper than computing it efficiently
 
 - **Prompt/response caching**: for requests that repeat exactly or nearly exactly (a common FAQ-style query, a repeated API call with identical parameters), cache the response and skip inference entirely for a cache hit — the cheapest possible inference cost is the one you never pay.
 - **Prefix caching**: covered in [LLM Inference Optimization — KV Cache](/docs/mlops/llm-inference-optimization#kv-cache) — reusing computed KV cache for a shared prompt prefix (a system prompt, a few-shot template) across many requests, avoiding redundant computation on the shared portion of the input.
+
+<CachingSavingsDiagram />
 
 ## Batching and Quantization
 
@@ -36,13 +51,19 @@ Both covered in depth in [LLM Inference Optimization](/docs/mlops/llm-inference-
 - **Model routing**: not every request needs the largest, most capable (and most expensive) model — routing simpler requests to a smaller, cheaper model and reserving the largest model for genuinely complex requests can cut average cost substantially with minimal quality impact on the easy majority of traffic. This requires a reliable way to classify request difficulty upfront — often itself a small, cheap classifier model, or confidence-based escalation (try the cheap model first, escalate to the expensive one only if its own confidence is low).
 - **Distillation**: covered in [Training Pipeline — Knowledge Distillation](/docs/llms-genai/training-pipeline#knowledge-distillation) — training a smaller, cheaper "student" model to mimic a larger "teacher," producing a genuinely smaller model to deploy rather than routing between two separately-maintained models.
 
+<ModelRoutingSavingsDiagram />
+
 ## Prompt and Context Compression
 
 - **Prompt compression**: shortening a prompt while preserving the information the model actually needs from it — directly reduces token cost (most LLM APIs charge per input token) and, for long prompts, reduces prefill latency (see [LLM Inference Optimization — Prefill vs. Decode](/docs/mlops/llm-inference-optimization#prefill-vs-decode)) as a side benefit.
 - **Context compression**: for RAG and agent systems specifically, retrieving and passing only the genuinely necessary context (well-tuned [chunk size and top-k](/docs/llms-genai/rag#chunking-strategies), rather than defaulting to "retrieve more, just in case") directly controls both cost and the ["lost in the middle"](/docs/llms-genai/rag#common-failure-modes) quality problem — a case where the cost-optimal choice and the quality-optimal choice point the same direction, not opposite ones.
 
+<CompressionCostDiagram />
+
 ## The Central Tradeoff: Quality vs. Latency vs. Cost
 
 Nearly every technique on this page (and the inference-optimization page it draws from) is a point on a three-way tradeoff surface, not a free win: a smaller/more-quantized model is cheaper and faster but somewhat lower quality; a larger batch size improves throughput/cost but can increase per-request latency; a cache hit is free but only helps for repeated requests. The actual engineering job is choosing *where* on that tradeoff surface a given product needs to sit — a real-time chat interface prioritizes latency more than a batch analytics job does, and a customer-facing feature has a different quality floor than an internal tool — rather than assuming any single technique is a universal improvement independent of what a specific system actually needs.
+
+<QualityLatencyCostTriangleDiagram />
 
 Next: [Legal, Licensing & Governance](/docs/mlops/legal-licensing-and-governance) — the non-technical constraints that shape which of these tradeoffs are even legally available to make.
