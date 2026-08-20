@@ -3,6 +3,11 @@ title: "Model Catalog & Benchmarking Framework"
 sidebar_position: 5
 ---
 
+import ModelCategoryMapDiagram from '../../../viz/diagrams/ModelCategoryMapDiagram';
+import ModelCardChecklistDiagram from '../../../viz/diagrams/ModelCardChecklistDiagram';
+import ActiveVsTotalParamsDiagram from '../../../viz/diagrams/ActiveVsTotalParamsDiagram';
+import BenchmarkDimensionsSelectorDiagram from '../../../viz/diagrams/BenchmarkDimensionsSelectorDiagram';
+import UsageWorkflowDiagram from '../../../viz/diagrams/UsageWorkflowDiagram';
 
 # Model Catalog & Benchmarking Framework
 
@@ -24,12 +29,16 @@ A rough taxonomy of the model types most system-design decisions choose between,
 | Audio generation | [Speech & Audio Tasks](/docs/speech-audio/speech-audio-tasks) |
 | Reasoning models | [Training Pipeline — GRPO](/docs/llms-genai/training-pipeline#group-relative-policy-optimization-grpo) |
 
+<ModelCategoryMapDiagram />
+
 ## The Model Card Attribute Checklist
 
 When evaluating *any* model against this checklist, whatever its category — the same attribute set the [Model Cards](/docs/mlops/legal-licensing-and-governance#model-cards-and-data-cards) standard formalizes:
 
 - **Architecture**: what family it belongs to (decoder-only, encoder-decoder, diffusion, etc.) — see [Attention & Transformers](/docs/deep-learning/attention-transformers) and [Generative Models](/docs/deep-learning/generative-models) for the architectural vocabulary.
 - **Parameters**: total and (for MoE models, see [Foundation Model Internals — MoE](/docs/llms-genai/foundation-model-internals#mixture-of-experts-moe)) active parameter count — active parameters, not total, determine per-token inference compute cost.
+
+<ActiveVsTotalParamsDiagram />
 - **Context length**: maximum sequence length supported — directly bounds [KV cache memory](/docs/mlops/llm-inference-optimization#kv-cache) requirements at serving time.
 - **Modalities**: what input/output types the model actually supports (text-only, text+image-in, text+image+audio, etc.).
 - **Training data and recency**: what it was trained on, and its effective knowledge cutoff — directly relevant to the [RAG vs. fine-tuning](/docs/interview-prep/technology-comparisons#rag-vs-fine-tuning) decision.
@@ -40,6 +49,8 @@ When evaluating *any* model against this checklist, whatever its category — th
 - **Fine-tuning support**: whether LoRA/QLoRA tooling has mature support for the architecture — see [Training Pipeline — PEFT](/docs/llms-genai/training-pipeline#parameter-efficient-fine-tuning-peft).
 - **Quantization support**: whether pre-quantized versions (GGUF, AWQ, GPTQ) are readily available, or quantization has to be done in-house.
 - **Use cases**: what the model card/provider explicitly states it's suited (and *not* suited) for — the out-of-scope-uses section is often more informative than the intended-use section.
+
+<ModelCardChecklistDiagram />
 
 ## Benchmark Dimensions by System Type
 
@@ -63,8 +74,12 @@ What to actually measure, by the kind of system being built — durable regardle
 
 **For general model quality**: see [AI Evaluation](/docs/ai-evaluation/roadmap) in full — traditional metrics, LLM-as-judge, RAG evaluation, agent evaluation, and human/adversarial evaluation, each with the specific metrics and methodology to apply.
 
+<BenchmarkDimensionsSelectorDiagram />
+
 ## How to Use This Page
 
 When choosing a model for a real system: pull the current, specific candidates from primary sources (the model provider's own documentation, the inference engine's supported-models list, current leaderboards — treated with the [benchmark design](/docs/ai-evaluation/evaluation-fundamentals#benchmark-design) skepticism this site teaches, not at face value) and evaluate them against the attribute checklist and benchmark dimensions above. The checklist and dimensions are what stay true regardless of which specific models exist when you're reading this — that durability is the point.
+
+<UsageWorkflowDiagram />
 
 Next: [ML System Design Roadmap](/docs/ml-system-design/roadmap) — where model selection fits into the full 9-step system design framework.
