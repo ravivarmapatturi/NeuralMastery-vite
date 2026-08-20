@@ -47,6 +47,13 @@ Running an LLM entirely on local hardware — a laptop, a workstation, an on-pre
 
 <LocalHostingStackDiagram />
 
+```bash
+ollama pull llama3.1:8b       # downloads and stores the GGUF weights locally
+ollama run llama3.1:8b        # interactive chat, or pipe a prompt in non-interactively
+ollama serve                  # starts Ollama's own local API on :11434
+curl http://localhost:11434/api/generate -d '{"model": "llama3.1:8b", "prompt": "Explain KV caching in one sentence."}'
+```
+
 ## The Fine-Tuning → Inference Pipeline
 
 Training/fine-tuning and inference are different jobs, done by different tools, and conflating them is a common mistake. The correct pipeline:
@@ -65,6 +72,17 @@ Rather than fully merging a LoRA adapter into a base model (one model per fine-t
 
 <MultiLoraServingDiagram />
 
+```bash
+vllm serve meta-llama/Llama-3.1-8B-Instruct \
+  --enable-lora \
+  --lora-modules support-tone=./adapters/support-tone billing-tone=./adapters/billing-tone
+```
+
+```bash
+# a request picks the adapter by name in the `model` field -- same base weights underneath
+curl http://localhost:8000/v1/completions -d '{"model": "support-tone", "prompt": "..."}'
+```
+
 ## Multimodal / VLM Inference
 
 Vision-language models (LLaVA, Qwen-VL, and similar) follow a consistent architecture: **Image → Vision Encoder → Projector → LLM** — an image encoder (often a ViT, see [CNNs & Vision Architectures](/docs/deep-learning/cnns)) produces image features, a projector module maps those features into the LLM's embedding space, and the LLM then processes them as if they were additional input tokens alongside the text prompt. Serving a VLM means the inference engine must support this multi-stage forward pass (image preprocessing plus the extra encoder/projector compute) in addition to standard text generation — vLLM and TGI both have growing native VLM support, rather than requiring a fully separate serving stack.
@@ -80,6 +98,15 @@ RAG systems (see [LLM Evaluation & RAGOps](/docs/mlops/llm-evaluation-and-ragops
 - **TEI (Text Embeddings Inference)**: Hugging Face's dedicated serving engine for embedding and reranker models, playing the same specialized role for these smaller models that vLLM plays for generative LLMs. Triton and plain FastAPI deployments are also common for embedding serving, especially at lower volume.
 
 <EmbeddingRerankerPipelineDiagram />
+
+```bash
+docker run --gpus all -p 8081:80 \
+  ghcr.io/huggingface/text-embeddings-inference:latest \
+  --model-id BAAI/bge-base-en-v1.5
+
+curl http://localhost:8081/embed -H "Content-Type: application/json" \
+  -d '{"inputs": "How does prefix caching work?"}'
+```
 
 ## LLMOps Monitoring
 

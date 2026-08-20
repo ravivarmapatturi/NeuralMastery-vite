@@ -55,6 +55,26 @@ That last point matters enough to be explicit: **Unsloth is primarily a fine-tun
 
 <Tier1EngineComparisonDiagram />
 
+The launch command for each of the top three is genuinely this simple to get a first server running -- the complexity in each is in the flags, covered in [LLM Inference Optimization](/docs/mlops/llm-inference-optimization):
+
+```bash
+# vLLM -- serves an OpenAI-compatible API on :8000
+vllm serve meta-llama/Llama-3.1-8B-Instruct
+
+# llama.cpp -- serves a local GGUF file, -ngl offloads layers to GPU
+llama-server -m ./llama-3.1-8b-instruct.Q4_K_M.gguf -c 4096 -ngl 999 --port 8080
+
+# NVIDIA Triton -- serves every model found in a model repository directory
+tritonserver --model-repository=/models
+```
+
+TensorRT-LLM's workflow is real but heavier, as the comparison above shows -- models are compiled ahead of time into hardware-specific engines rather than loaded directly:
+
+```bash
+trtllm-build --checkpoint_dir ./llama-3.1-8b-checkpoint --output_dir ./engine --gemm_plugin float16
+python3 -m tensorrt_llm.serve --engine_dir ./engine --port 8000
+```
+
 <EngineSelectionDecisionDiagram />
 
 ## Tier 2: Also Worth Knowing

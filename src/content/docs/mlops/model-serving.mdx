@@ -25,6 +25,36 @@ A trained model artifact (a `.pkl`, a `.pt` file) does nothing by itself — som
 
 <ModelServingRequestFlowDiagram />
 
+A real, minimal FastAPI endpoint showing all of the above together — Pydantic validates the request before the model ever sees it:
+
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
+import joblib
+
+app = FastAPI()
+model = joblib.load("model.pkl")
+
+class PredictRequest(BaseModel):
+    features: list[float]
+
+class PredictResponse(BaseModel):
+    prediction: float
+
+@app.post("/v1/predict", response_model=PredictResponse)
+def predict(req: PredictRequest):
+    prediction = model.predict([req.features])[0]
+    return PredictResponse(prediction=prediction)
+```
+
+```bash
+uvicorn app:app --host 0.0.0.0 --port 8000
+
+curl -X POST http://localhost:8000/v1/predict \
+  -H "Content-Type: application/json" \
+  -d '{"features": [5.1, 3.5, 1.4, 0.2]}'
+```
+
 - **Async APIs**: `async def` endpoints let the server handle other requests while waiting on I/O (a database call, a feature-store lookup) instead of blocking — important once the endpoint does more than "call `model.predict()`."
 
 <AsyncBlockingDiagram />
@@ -54,6 +84,14 @@ Online serving specifically almost always uses **adaptive batching**: grouping m
 
 - **FastAPI (hand-rolled)**: full control, but you own all the model-loading, batching, and versioning logic yourself.
 - **MLflow serving**: turns a model logged in MLflow (see [Experiment Tracking](/docs/mlops/experiment-tracking)) into a REST endpoint with one command — the fastest path from "logged experiment" to "running endpoint."
+
+```bash
+mlflow models serve -m runs:/<run_id>/model --port 5000 --no-conda
+
+curl -X POST http://localhost:5000/invocations \
+  -H "Content-Type: application/json" \
+  -d '{"dataframe_split": {"columns": ["f1", "f2"], "data": [[5.1, 3.5]]}}'
+```
 - **BentoML**: a framework purpose-built for packaging and serving ML models, with built-in support for adaptive batching, multiple model runners in one service, and easy containerization.
 - **TorchServe**: PyTorch's official model-serving tool — handles model versioning, batching, and metrics out of the box for PyTorch models specifically.
 - **NVIDIA Triton Inference Server**: a general-purpose, multi-framework, GPU-optimized serving server (PyTorch, TensorFlow, ONNX, TensorRT models all served the same way) — the standard choice once GPU throughput and multi-model serving matter; see [LLM Inference Engines](/docs/mlops/llm-inference-engines) for how it compares to LLM-specific engines like vLLM.

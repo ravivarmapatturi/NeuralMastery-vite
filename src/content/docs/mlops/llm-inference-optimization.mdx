@@ -97,6 +97,20 @@ Reducing the numerical precision of model weights (and sometimes activations) to
 
 <GgufSizeCalculatorDiagram />
 
+Producing that Q4_K_M file from a full-precision checkpoint, and the two most-tuned vLLM flags that put the KV cache/quantization tradeoffs above directly into practice:
+
+```bash
+# llama.cpp: convert to GGUF, then quantize down to Q4_K_M
+python3 convert_hf_to_gguf.py ./llama-3.1-8b --outfile llama-3.1-8b-f16.gguf
+llama-quantize llama-3.1-8b-f16.gguf llama-3.1-8b-Q4_K_M.gguf Q4_K_M
+
+# vLLM: serve a pre-quantized (AWQ) checkpoint, cap concurrency, budget KV cache memory
+vllm serve TheBloke/Llama-3.1-8B-Instruct-AWQ \
+  --quantization awq \
+  --max-num-seqs 256 \
+  --gpu-memory-utilization 0.9
+```
+
 ## Model Format Reference
 
 | Format | Primary engine | Notes |
