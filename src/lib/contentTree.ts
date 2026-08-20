@@ -20,6 +20,7 @@ export interface DocPage {
   slug: string; // e.g. "deep-learning/attention-demo"
   route: string; // e.g. "/docs/deep-learning/attention-demo"
   title: string;
+  description?: string;
   sidebarPosition: number;
   section: string; // top-level folder name, e.g. "deep-learning"
   Component: ComponentType;
@@ -83,6 +84,7 @@ function buildPages(): DocPage[] {
       slug: rel,
       route: `/docs/${rel}`,
       title: fm.title ?? titleCase(parts[parts.length - 1]),
+      description: fm.description,
       sidebarPosition: fm.sidebar_position ?? 999,
       section,
       Component: mod.default,

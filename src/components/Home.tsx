@@ -3,6 +3,7 @@ import Navbar from './layout/Navbar';
 import AttentionStepThrough from '../viz/AttentionStepThrough';
 import { getSidebar, getFlatPages } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
+import { useDocumentMeta } from '../lib/useDocumentMeta';
 
 /**
  * The landing page. Built around one idea: prove the site's differentiator
@@ -15,6 +16,7 @@ import { useDocumentTitle } from '../lib/useDocumentTitle';
  */
 export default function Home() {
   useDocumentTitle();
+  useDocumentMeta(undefined);
   const sections = getSidebar();
   const totalPages = getFlatPages().length;
 

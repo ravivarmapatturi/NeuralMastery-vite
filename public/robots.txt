@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ravivarmapatturi.github.io/NeuralMastery-vite/sitemap.xml

@@ -8,6 +8,7 @@ import PrevNext from './PrevNext';
 import ThemeSkinPicker from '../ThemeSkinPicker';
 import { getPageByRoute } from '../../lib/contentTree';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
+import { useDocumentMeta } from '../../lib/useDocumentMeta';
 
 const SIDEBAR_COLLAPSE_KEY = 'neural-mastery-sidebar-collapsed';
 const TOC_COLLAPSE_KEY = 'neural-mastery-toc-collapsed';
@@ -60,6 +61,7 @@ export default function DocLayout() {
   }, [tocCollapsed]);
 
   useDocumentTitle(page ? page.title : 'Page Not Found');
+  useDocumentMeta(page?.title, page?.description);
 
   if (!page) {
     return (
