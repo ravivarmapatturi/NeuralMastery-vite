@@ -3,6 +3,13 @@ title: "Pipeline Orchestration"
 sidebar_position: 6
 ---
 
+import MlLifecyclePipelineDiagram from '../../../viz/diagrams/MlLifecyclePipelineDiagram';
+import DagDependencyDiagram from '../../../viz/diagrams/DagDependencyDiagram';
+import RetryBackoffDiagram from '../../../viz/diagrams/RetryBackoffDiagram';
+import PipelineCachingDiagram from '../../../viz/diagrams/PipelineCachingDiagram';
+import BackfillDiagram from '../../../viz/diagrams/BackfillDiagram';
+import AirflowConceptMapDiagram from '../../../viz/diagrams/AirflowConceptMapDiagram';
+import OrchestratorComparisonDiagram from '../../../viz/diagrams/OrchestratorComparisonDiagram';
 
 # Pipeline Orchestration
 
@@ -16,14 +23,27 @@ Validation → Preprocessing → Feature Engineering → Training → Evaluation
 
 Each stage takes the previous stage's output as input. Running this by hand (or as one giant script) works exactly once — a real system needs to run this on a schedule, retry the step that failed without re-running everything before it, and show a human which step broke.
 
+<MlLifecyclePipelineDiagram />
+
 ## Core Concepts
 
 - **DAG (Directed Acyclic Graph)**: the pipeline as a graph of steps with dependencies — step C can't start until steps A and B finish, and there are no cycles. This is the data structure every orchestrator is built around.
+
+<DagDependencyDiagram />
+
 - **Task / Operator**: a single unit of work in the DAG (e.g. "run this Python function," "run this SQL query," "run this Docker container").
 - **Scheduling**: run the DAG on a cron-like schedule (nightly retraining) or trigger it on an event (new data landed).
 - **Retries**: if a task fails (a flaky API call, a transient network error), retry it automatically before escalating to a human.
+
+<RetryBackoffDiagram />
+
 - **Caching**: skip re-running a step whose inputs haven't changed since the last successful run — the same principle as a build system, applied to a data pipeline.
+
+<PipelineCachingDiagram />
+
 - **Backfilling**: run the pipeline for a range of past dates, e.g. after fixing a bug in a transformation step, without hand-rerunning each day individually.
+
+<BackfillDiagram />
 
 ## Airflow
 
@@ -39,11 +59,15 @@ The most widely used orchestrator, and the one whose vocabulary shows up everywh
 
 Airflow's model — DAGs as Python code, a scheduler, pluggable executors — is old enough (originally built at Airbnb) to be the de facto lingua franca; most job postings asking for "pipeline orchestration experience" mean Airflow specifically.
 
+<AirflowConceptMapDiagram />
+
 ## Alternatives
 
 - **Prefect**: a newer orchestrator with a lower-friction Python-native API (decorate a normal function with `@flow`/`@task` rather than building an explicit DAG object), stronger dynamic/conditional workflow support, and a more modern UI.
 - **Dagster**: orchestration built around **software-defined assets** rather than tasks — you declare the data assets a pipeline produces and their dependencies, and Dagster infers the DAG, with strong built-in data quality and lineage tracking.
 
 Airflow remains the safest default to learn first because of its ubiquity; Prefect and Dagster are the ones to reach for on a new project where Airflow's more verbose, less Pythonic API is a real cost.
+
+<OrchestratorComparisonDiagram />
 
 Next: [Message Queues & Async Processing](/docs/mlops/message-queues-and-async-processing) — the mechanism underneath Celery workers (and streaming pipelines generally) that this page only referenced in passing.
