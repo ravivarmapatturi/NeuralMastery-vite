@@ -3,6 +3,12 @@ title: "CI/CD & ML CI/CD"
 sidebar_position: 12
 ---
 
+import CiVsCdDiagram from '../../../viz/diagrams/CiVsCdDiagram';
+import GitOpsReconciliationDiagram from '../../../viz/diagrams/GitOpsReconciliationDiagram';
+import WhyMlNeedsMoreDiagram from '../../../viz/diagrams/WhyMlNeedsMoreDiagram';
+import MlCicdPipelineStepsDiagram from '../../../viz/diagrams/MlCicdPipelineStepsDiagram';
+import ModelRegressionGateDiagram from '../../../viz/diagrams/ModelRegressionGateDiagram';
+import AutomatedRetrainLoopDiagram from '../../../viz/diagrams/AutomatedRetrainLoopDiagram';
 
 # CI/CD & ML CI/CD
 
@@ -13,15 +19,26 @@ Continuous Integration and Continuous Deployment automate the path from "code ch
 - **CI (Continuous Integration)**: on every push/PR, automatically test, build, and lint the code, and scan it for known vulnerabilities — catching breakage before it merges, not after.
 - **CD (Continuous Deployment/Delivery)**: on a successful CI run (often only from the main branch), automatically deploy the change, run post-deploy checks, and roll it out to production — removing manual, error-prone release steps.
 
+<CiVsCdDiagram />
+
 **GitHub Actions** is the most common CI engine — YAML workflows triggered by git events. **Argo CD** is a common CD tool specifically for Kubernetes: it continuously reconciles a cluster's actual state to match what's declared in a git repo ("GitOps") — deploying by merging a PR rather than running `kubectl apply` by hand.
+
+<GitOpsReconciliationDiagram />
 
 ## Why ML CI/CD Needs More Than Code Checks
 
 Regular CI/CD assumes: if the code passes tests and builds, it's safe to ship. That assumption breaks for ML, because the artifact that actually matters — the trained model — is a function of code *and* data, and "passes unit tests" says nothing about whether the model is still accurate on real inputs. ML CI/CD adds:
 
+<WhyMlNeedsMoreDiagram />
+
 - **Drift checks**: does the incoming data still look like the data the model was trained/validated on? (See [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) for the actual math.) A code change can pass every test and still ship a model quietly degrading against data that's moved.
 - **Model regression testing**: run the candidate model against a fixed, held-out benchmark dataset and assert its metrics haven't dropped below a threshold — the ML equivalent of a regression test suite, because a model "passing" isn't binary the way a function returning the right value is.
+
+<ModelRegressionGateDiagram />
+
 - **Automated retraining triggers**: a pipeline that retrains automatically on a schedule, or when drift crosses a threshold, and only promotes the new model if it beats the current production model on the benchmark — closing the loop from [Pipeline Orchestration](/docs/mlops/pipeline-orchestration) and [Deployment Strategies](/docs/mlops/deployment-strategies) into something that runs itself.
+
+<AutomatedRetrainLoopDiagram />
 
 ## What a Real ML CI/CD Pipeline Checks, End to End
 
@@ -32,6 +49,8 @@ Regular CI/CD assumes: if the code passes tests and builds, it's safe to ship. T
 5. The model is registered (see [Feature Stores & Model Registry](/docs/mlops/feature-stores-and-model-registry)) and containerized (see [Containers](/docs/mlops/containers)).
 6. The new version is deployed using a safe rollout strategy (see [Deployment Strategies](/docs/mlops/deployment-strategies)), not an instant full-traffic swap.
 7. Post-deploy monitoring confirms the new version is healthy before the rollout completes.
+
+<MlCicdPipelineStepsDiagram />
 
 Every step above exists because skipping it has a specific, real failure mode — a pipeline that only does step 1 is doing software CI/CD wearing an ML costume.
 
