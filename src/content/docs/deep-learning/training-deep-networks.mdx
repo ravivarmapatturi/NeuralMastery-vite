@@ -6,6 +6,10 @@ sidebar_position: 4
 
 import TrainingLossCurveMp4 from './img/training-loss-curve.mp4';
 import TrainingLossCurveWebm from './img/training-loss-curve.webm';
+import NormalizationAxisDiagram from '../../../viz/diagrams/NormalizationAxisDiagram';
+import VanishingGradientDiagram from '../../../viz/diagrams/VanishingGradientDiagram';
+import AddNormDiagram from '../../../viz/diagrams/AddNormDiagram';
+import LrScheduleDiagram from '../../../viz/diagrams/LrScheduleDiagram';
 
 # Training Deep Networks
 
@@ -29,6 +33,10 @@ Making a network *deep* (many layers) makes it more expressive, but also much ha
 - **Layer Normalization**: normalizes across the *feature* dimension for each individual example, independent of batch size. This independence is why Transformers use LayerNorm instead of BatchNorm — sequence models often deal with variable-length inputs and small/variable batch sizes.
 - **RMSNorm**: a simplified LayerNorm variant that skips re-centering (mean subtraction) and only rescales by the root-mean-square — cheaper to compute, used in most modern LLMs (LLaMA, etc.) with no meaningful quality loss.
 
+Same tensor, different axis normalized over — click a norm type to see exactly which cells get grouped together:
+
+<NormalizationAxisDiagram />
+
 ## Regularization for Deep Nets
 
 - **Dropout**: randomly zero out a fraction of neurons each training step, forcing the network to not over-rely on any single neuron — effectively training an ensemble of sub-networks that share weights.
@@ -40,14 +48,22 @@ In a deep network, gradients are a *product* of many layers' local derivatives (
 
 **Fixes**: careful initialization (He/Xavier), normalization layers, gradient clipping, and — most importantly — residual connections.
 
+Drag $w_h$ below and watch the same product-of-Jacobians mechanism either vanish or explode as it's carried back through more steps:
+
+<VanishingGradientDiagram />
+
 ## Residual (Skip) Connections
 
 Instead of a layer computing $y = f(x)$, a residual block computes $y = x + f(x)$ — the input is added directly to the output. This gives gradients a direct path backward that bypasses $f$ entirely, largely solving the vanishing gradient problem and enabling networks with hundreds of layers (ResNet) or dozens of Transformer blocks (every modern LLM) to train successfully. This is one of the single most important architectural ideas in deep learning.
+
+<AddNormDiagram />
 
 ## Learning Rate Schedules & Gradient Clipping
 
 - **Warmup + decay**: start small, ramp up, then decay — covered in [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization); essential for training stability in Transformers specifically.
 - **Gradient clipping**: rescale the gradient if its norm exceeds a threshold, preventing a single bad batch from destabilizing training — near-universal in large-scale training runs.
 - **Mixed precision training**: use lower-precision (fp16/bf16) numbers for most computation to speed up training and reduce memory, while keeping certain operations (like the loss) in higher precision to avoid numerical instability.
+
+<LrScheduleDiagram />
 
 Next: [Convolutional Neural Networks](/docs/deep-learning/cnns) — the architecture that made deep learning work for images.
