@@ -34,6 +34,9 @@ test.describe('Core application', () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     const errors = collectConsoleErrors(page);
     await page.goto('docs/getting-started/intro');
+    // "Deep Learning" collapses by default when it's not the active section
+    // (see Sidebar.tsx) -- expand it before its link is clickable.
+    await page.locator('.nm-sidebar button', { hasText: 'Deep Learning' }).click();
     await page.locator('.nm-sidebar a', { hasText: 'Phase 1 Acceptance Test' }).click();
     await expect(page).toHaveURL(/attention-demo/);
     await expect(page.locator('h1')).toHaveText('Phase 1 Acceptance Test');
@@ -52,6 +55,9 @@ test.describe('Core application', () => {
 
     const dialog = page.getByRole('dialog', { name: 'Site navigation' });
     await expect(dialog).toBeVisible();
+    // Same collapsed-section behavior as the desktop sidebar -- expand
+    // "Deep Learning" before its link is clickable.
+    await dialog.getByRole('button', { name: 'Deep Learning' }).click();
     await dialog.getByRole('link', { name: 'Phase 1 Acceptance Test' }).click();
 
     await expect(page).toHaveURL(/attention-demo/);
