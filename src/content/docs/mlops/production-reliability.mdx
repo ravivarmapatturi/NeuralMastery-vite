@@ -3,6 +3,13 @@ title: "Production Reliability"
 sidebar_position: 22.2
 ---
 
+import TimeoutCascadeDiagram from '../../../viz/diagrams/TimeoutCascadeDiagram';
+import JitteredBackoffDiagram from '../../../viz/diagrams/JitteredBackoffDiagram';
+import CircuitBreakerStateDiagram from '../../../viz/diagrams/CircuitBreakerStateDiagram';
+import GracefulDegradationLadderDiagram from '../../../viz/diagrams/GracefulDegradationLadderDiagram';
+import BackpressureQueueDiagram from '../../../viz/diagrams/BackpressureQueueDiagram';
+import IdempotencyKeyDiagram from '../../../viz/diagrams/IdempotencyKeyDiagram';
+import RollbackBlastRadiusDiagram from '../../../viz/diagrams/RollbackBlastRadiusDiagram';
 
 # Production Reliability
 
@@ -11,16 +18,25 @@ Everything covered so far in MLOps gets a model trained, deployed, and monitored
 ## Retries and Timeouts
 
 - **Timeouts**: every external call (a downstream API, a database query, an LLM provider call) needs an explicit maximum wait time — without one, a single slow dependency can hang a request indefinitely, and under load, enough hung requests exhaust the server's available connections/threads, turning one slow dependency into a full outage.
+
+<TimeoutCascadeDiagram />
+
 - **Retries**: transient failures (a momentary network blip, a brief downstream overload) often succeed on a second attempt — retrying automatically, rather than failing the whole request on the first error, meaningfully improves reliability for exactly this class of failure. Retries should have a capped maximum count (an unlimited retry loop against a truly broken dependency just adds load to an already-struggling system) and **backoff** (waiting progressively longer between attempts, often with a small random jitter added to prevent many clients from retrying in synchronized bursts that re-overload the dependency the moment it recovers).
+
+<JitteredBackoffDiagram />
 
 ## Circuit Breakers
 
 A **circuit breaker** tracks a dependency's recent failure rate and, once it crosses a threshold, stops sending requests to that dependency entirely for a cooldown period — rather than continuing to retry against something that's clearly down, which wastes resources and adds latency to every request without any chance of success. The pattern name is deliberate: like an electrical circuit breaker, it "trips" open on sustained failure, and periodically allows a small number of test requests through to check whether the dependency has recovered before fully "closing" again. This turns a downstream outage into a fast, predictable failure for callers instead of every request hanging until its own timeout expires.
 
+<CircuitBreakerStateDiagram />
+
 ## Fallback Models and Graceful Degradation
 
 - **Fallback models**: if a primary model (or the primary inference engine serving it) is unavailable or exceeding its latency budget, fall back to a smaller, faster, or simpler model rather than failing the request outright — a degraded response is usually better than no response, and this is exactly why [multi-LoRA serving](/docs/mlops/llm-hosting-and-serving-patterns#multi-lora-serving) and [model routing](/docs/mlops/roadmap) architectures often keep a cheap fallback path alongside the primary model.
 - **Graceful degradation**: more generally, a system should fail by doing *less*, not by failing completely — if a RAG system's retrieval step is down, answering from the LLM's own knowledge (clearly caveated as ungrounded) is more graceful than returning an error; if personalization data is unavailable, falling back to generic (non-personalized) recommendations keeps the core feature working rather than breaking entirely. Identify, in advance, which parts of a system are "nice to have" versus "must work," and design the failure behavior for each accordingly — rather than treating every dependency as equally critical by default.
+
+<GracefulDegradationLadderDiagram />
 
 ## Rate Limits and Backpressure
 
@@ -28,14 +44,21 @@ A **circuit breaker** tracks a dependency's recent failure rate and, once it cro
 - **Backpressure**: when incoming request volume exceeds what a system can currently handle, backpressure means explicitly signaling "slow down" back to callers (rejecting or queuing new requests) rather than silently accepting more work than can actually be processed, which just delays every request further and can eventually crash the service entirely. A system with no backpressure mechanism degrades catastrophically under overload; a system with backpressure degrades predictably (some requests rejected or queued, the rest served normally) — the difference between a bad afternoon and a full outage.
 - **Queues**: decouple request arrival from request processing — incoming requests land in a queue, and workers process them at a sustainable rate, absorbing traffic bursts smoothly rather than requiring capacity provisioned for worst-case instantaneous load. Directly relevant to GPU-backed LLM serving specifically, where provisioning for peak load is expensive enough that smoothing bursts through a queue is often more cost-effective than always having peak capacity on standby.
 
+<BackpressureQueueDiagram />
+
 ## Idempotency and Distributed Locks
 
 - **Idempotency**: an operation is idempotent if performing it multiple times has the same effect as performing it once — critical for anything triggered by a retry (above): if a "charge the customer" or "send this notification" action isn't idempotent, a retried request (after a timeout where the first attempt actually *did* succeed, just slowly) can duplicate the action. The standard fix is an idempotency key — a unique identifier per logical operation that the receiving system checks against, rejecting a duplicate request carrying an already-processed key.
+
+<IdempotencyKeyDiagram />
+
 - **Distributed locks**: when multiple workers/processes might operate on the same resource concurrently (two training jobs writing to the same checkpoint location, two workers processing the same queued item), a distributed lock ensures only one actually proceeds at a time — implemented via a coordination service (the same kind of majority-consensus mechanism as [CS Fundamentals — Consensus](/docs/cs-fundamentals/networking-and-distributed-systems#consensus-raftpaxos-intuition-only)) rather than assuming single-process, single-machine execution.
 
 ## Disaster Recovery and Rollback
 
 - **Disaster recovery**: a documented, *tested* plan for restoring service after a major failure (a region-wide cloud outage, a corrupted database) — backups alone aren't a disaster recovery plan until someone has actually verified they can be restored successfully within an acceptable time window; an untested backup is a hope, not a plan.
 - **Rollback**: the ability to quickly revert to a previously-known-good model/code version when a new deployment causes problems — this is exactly what [Deployment Strategies](/docs/mlops/deployment-strategies)' blue-green pattern provides directly (the old environment stays live, ready to receive traffic back instantly) and what canary deployment enables at a smaller blast radius (only a fraction of traffic needs rolling back). A deployment process with no fast rollback path turns every deploy into a higher-stakes, harder-to-reverse decision than it needs to be.
+
+<RollbackBlastRadiusDiagram />
 
 Next: [AI Cost Engineering](/docs/mlops/ai-cost-engineering) — reliability and cost are frequently in tension (more redundancy costs more), which is exactly why they're covered back to back.
