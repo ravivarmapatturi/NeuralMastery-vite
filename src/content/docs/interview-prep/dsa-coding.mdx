@@ -4,6 +4,8 @@ sidebar_position: 3
 ---
 
 
+import HashMapVsArrayDiagram from '../../../viz/diagrams/HashMapVsArrayDiagram';
+
 # General Coding (DSA)
 
 AI/ML roles at most companies still include a general software engineering coding round — this isn't optional prep even if your target role is ML-focused.
@@ -11,7 +13,9 @@ AI/ML roles at most companies still include a general software engineering codin
 ## Core Patterns to Drill
 
 - **Arrays & strings**: two pointers, sliding window — the majority of "easy/medium" problems reduce to one of these patterns.
-- **Hash maps**: turning an $O(n^2)$ brute-force lookup into $O(n)$ — see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures) for why this works.
+- **Hash maps**: turning an $O(n^2)$ brute-force lookup into $O(n)$ — see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures) for why this works, made concrete below:
+
+<HashMapVsArrayDiagram />
 - **Trees & graphs**: BFS/DFS traversal, and recognizing when a problem is secretly a graph problem (it often is, even when not stated explicitly).
 - **Dynamic programming**: identifying overlapping subproblems and optimal substructure — usually the hardest pattern to get comfortable with, and worth the most practice time relative to how often it comes up.
 

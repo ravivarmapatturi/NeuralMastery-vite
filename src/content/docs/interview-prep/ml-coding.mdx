@@ -4,6 +4,9 @@ sidebar_position: 4
 ---
 
 
+import ChainRuleBackpropDiagram from '../../../viz/diagrams/ChainRuleBackpropDiagram';
+import QkvProjectionDiagram from '../../../viz/diagrams/QkvProjectionDiagram';
+
 # ML Coding
 
 Where "I understand how gradient descent works" gets tested by actually asking you to implement it, from scratch, without a framework doing the hard part for you.
@@ -11,8 +14,13 @@ Where "I understand how gradient descent works" gets tested by actually asking y
 ## What Gets Asked
 
 - **Implement a classical algorithm from scratch**: k-means, k-NN, logistic regression, a decision tree split criterion — using only basic array operations, no scikit-learn. Forces you to actually understand the algorithm's mechanics (see [Supervised Learning](/docs/machine-learning/supervised-learning) and [Unsupervised Learning](/docs/machine-learning/unsupervised-learning)), not just how to call `.fit()`.
-- **Implement a neural network's forward/backward pass manually**: no PyTorch autograd — write out the matrix multiplications and apply the chain rule by hand (see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization) and [Neural Network Fundamentals](/docs/deep-learning/neural-network-fundamentals)). This is the single most common "prove you actually understand backprop" exercise.
-- **Implement attention from scratch**: given Q, K, V matrices, compute scaled dot-product attention manually (see [Attention & Transformers](/docs/deep-learning/attention-transformers)) — increasingly common given how central Transformers are to the field now.
+- **Implement a neural network's forward/backward pass manually**: no PyTorch autograd — write out the matrix multiplications and apply the chain rule by hand (see [Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization) and [Neural Network Fundamentals](/docs/deep-learning/neural-network-fundamentals)). This is the single most common "prove you actually understand backprop" exercise -- the exact real computation to reproduce:
+
+<ChainRuleBackpropDiagram />
+
+- **Implement attention from scratch**: given Q, K, V matrices, compute scaled dot-product attention manually (see [Attention & Transformers](/docs/deep-learning/attention-transformers)) — increasingly common given how central Transformers are to the field now:
+
+<QkvProjectionDiagram />
 
 ## How to Prepare
 
