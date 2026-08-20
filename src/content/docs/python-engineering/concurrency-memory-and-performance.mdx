@@ -4,6 +4,11 @@ sidebar_position: 4
 ---
 
 
+import AsyncEventLoopDiagram from '../../../viz/diagrams/AsyncEventLoopDiagram';
+import ThreadingVsMultiprocessingDiagram from '../../../viz/diagrams/ThreadingVsMultiprocessingDiagram';
+import RefCountingDiagram from '../../../viz/diagrams/RefCountingDiagram';
+import VectorizationSpeedupDiagram from '../../../viz/diagrams/VectorizationSpeedupDiagram';
+
 # Concurrency, Memory & Performance
 
 [CS Fundamentals](/docs/cs-fundamentals/operating-systems-and-concurrency) covered concurrency/parallelism and the GIL conceptually. This page is the Python-specific mechanics: which tool to actually reach for, how CPython manages memory, and where Python performance really goes in ML code.
@@ -16,6 +21,8 @@ Python's `async def` marks a function as a **coroutine** — a function that can
 
 **When it doesn't help**: CPU-bound work. `await` only yields control at I/O boundaries — a CPU-heavy computation inside an `async def` function still blocks the entire event loop for its full duration, starving every other coroutine. Model inference itself (the actual forward pass) is CPU/GPU-bound, not I/O-bound — wrapping it in `async def` doesn't speed it up; if anything, doing it naively inside an async request handler can stall every other concurrent request. The GPU work should either run in a way that yields properly (a queue and a separate worker) or be dispatched to a thread/process pool from the async handler.
 
+<AsyncEventLoopDiagram />
+
 ## `multiprocessing` vs. `threading`, in Practice
 
 Given the GIL (see [CS Fundamentals](/docs/cs-fundamentals/operating-systems-and-concurrency#pythons-gil-and-why-it-matters-for-ml-specifically)):
@@ -25,11 +32,15 @@ Given the GIL (see [CS Fundamentals](/docs/cs-fundamentals/operating-systems-and
 - **The real cost of `multiprocessing`**: each worker process gets its own memory space, so data has to be *serialized* (pickled) to cross the process boundary — passing a huge object to worker processes repeatedly can itself become the bottleneck. This is part of why `DataLoader` workers are typically set up to each independently load and preprocess their own data (from disk/a shared dataset object) rather than have the main process compute something and ship it to workers.
 - **Shared memory**: for cases where copying data between processes is prohibitively expensive, `multiprocessing.shared_memory` (or PyTorch's own tensor sharing for `num_workers`) lets processes access the same underlying memory directly, avoiding the serialization cost — the exception to "processes don't share memory," used deliberately when the copying cost would dominate.
 
+<ThreadingVsMultiprocessingDiagram />
+
 ## Reference Counting and the Cyclic Garbage Collector
 
 CPython manages memory primarily through **reference counting**: every object tracks how many references point to it, and the moment that count hits zero, the object is immediately deallocated. This is why Python memory is usually freed the instant it becomes unreachable, not on some unpredictable garbage-collection pause — helpful for reasoning about when a large tensor or dataset actually gets freed.
 
 Reference counting alone can't handle **reference cycles** (object A references B, B references A, but nothing external references either) — their count never reaches zero even though nothing outside the cycle can reach them. CPython's **cyclic garbage collector** runs periodically, specifically to find and clean up these cycles. Practical consequence: an object with a reference cycle (a common accidental case: a class instance that stores a reference to a callback which itself closes over the instance) won't necessarily be freed the instant you expect — if a training loop's memory usage creeps up unexpectedly despite no obvious leak, reference cycles holding onto GPU tensors are a real, specific thing to check for, alongside the more general memory-profiling advice in [CS Fundamentals](/docs/cs-fundamentals/software-engineering-practices#profiling).
+
+<RefCountingDiagram />
 
 ## Profiling Python Code
 
@@ -40,6 +51,8 @@ Reference counting alone can't handle **reference cycles** (object A references 
 ## Performance Optimization: Where Python Time Actually Goes
 
 - **Vectorization over loops**: a Python `for` loop over individual elements pays Python's per-iteration interpretation overhead every single time; a NumPy/PyTorch vectorized operation pays that overhead once and does the actual work in compiled C/CUDA. This single habit — reach for `array_a + array_b`, never `for i in range(len(a)): result[i] = a[i] + b[i]` — is worth more to typical ML code performance than almost anything else on this page.
+
+<VectorizationSpeedupDiagram />
 - **Avoiding unnecessary copies**: NumPy/PyTorch operations sometimes return a *view* (sharing the same underlying memory) and sometimes a *copy* (new memory) — slicing usually returns a view, but many transformations (e.g. `.reshape()` when the data isn't contiguous) silently force a copy. An accidental copy of a large tensor is easy to miss and can dominate both memory and time; when in doubt, check `.data_ptr()` equality (PyTorch) or profile memory directly rather than assuming.
 - **The GPU-specific version of this same lesson**: launching many small CUDA operations (the GPU equivalent of a Python `for` loop) pays per-launch overhead repeatedly, instead of one larger fused operation — see [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training) and [LLM Inference Optimization](/docs/mlops/llm-inference-optimization#other-core-optimizations)'s discussion of kernel fusion and CUDA graphs, which is this exact same vectorization principle one level down the stack.
 
