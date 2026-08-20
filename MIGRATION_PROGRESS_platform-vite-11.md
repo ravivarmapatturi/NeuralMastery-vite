@@ -26,8 +26,10 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done (≥10 compo
 - [x] overview.mdx — 10 content-tied interactive diagrams, substantive prose expansion, and browser/build validation (commits ae5c29d, b212122, e55e039)
 - [~] roadmap.mdx — same decision as speech-audio/roadmap.mdx: stays a checklist
 - [x] vision-fundamentals.mdx — commit 21e720b, pushed+deployed. 5 components (ConvolutionSlideDiagram -- raster replacement, real computed convolution -- RgbChannelDecompositionDiagram, MorphologicalOpsDiagram, HogFeatureDiagram, DataAugmentationDiagram).
-- [x] vision-tasks-and-models.mdx — commit 1c660cc, pushed. 5 components (PoseEstimationApproachDiagram, OcrPipelineDiagram, TrackingAssociationDiagram, StereoDepthDiagram -- real disparity geometry -- OpticalFlowFieldDiagram). Deploy triggered (run 32329203291).
-- [ ] modern-vision-and-multimodal.mdx — next, last computer-vision page
+- [x] vision-tasks-and-models.mdx — commit 1c660cc, pushed+deployed. 5 components (PoseEstimationApproachDiagram, OcrPipelineDiagram, TrackingAssociationDiagram, StereoDepthDiagram -- real disparity geometry -- OpticalFlowFieldDiagram).
+- [x] modern-vision-and-multimodal.mdx — commit e6f8d2e, pushed, deploy triggered (run 32329718557). 4 components (TemporalConsistencyDiagram, VideoUnderstandingArchitectureDiagram, PointCloudDiagram -- live 3D rotation -- NerfRayMarchingDiagram -- real volume-rendering accumulation).
+
+**computer-vision/ complete** (all 5 pages: overview + 3 content pages with diagrams, roadmap.mdx staying a checklist by design).
 
 ## New: mlops/message-queues-and-async-processing.mdx (assigned by lead, 2026-08-20)
 - [x] Done. 6 components: SyncVsAsyncDiagram, ProducerQueueConsumerDiagram (live producer/consumer-rate simulation, genuinely accumulates/drains), PubSubVsPointToPointDiagram, DeliverySemanticsDiagram (at-most/at-least/exactly-once stepper), PartitionOrderingDiagram, QueueToolComparisonDiagram (Kafka/Celery/Redis/SQS). Cross-linked from pipeline-orchestration.mdx (updated its "Next:" to route through this page) and model-serving.mdx's streaming-inference section. Verified via headless browser (all 6 diagrams interact correctly) + full smoke suite (10/10).
