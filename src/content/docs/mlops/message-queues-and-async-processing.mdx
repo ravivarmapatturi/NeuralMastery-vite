@@ -41,6 +41,34 @@ Every message-queue system reduces to the same three roles, regardless of which 
 
 Producer and consumer rates rarely match exactly, which is precisely why the queue exists as a buffer — but an unbounded buffer just delays the failure instead of preventing it. Real systems cap queue depth and apply backpressure (reject new messages, slow the producer, or auto-scale consumer workers) once that cap is approached, rather than letting the queue grow until the process holding it runs out of memory.
 
+The exact producer/queue/consumer roles above, as real Celery code -- an API handler that returns immediately, and a worker that does the actual (slow) work later:
+
+```python
+# tasks.py -- the consumer side
+from celery import Celery
+
+app = Celery("ml_tasks", broker="redis://localhost:6379/0")
+
+@app.task
+def run_inference(user_id: int, features: list[float]):
+    prediction = model.predict([features])[0]
+    save_prediction(user_id, prediction)
+```
+
+```python
+# api.py -- the producer side
+from tasks import run_inference
+
+@app.post("/v1/predict-async")
+def predict_async(req: PredictRequest):
+    task = run_inference.delay(req.user_id, req.features)  # returns immediately, doesn't block on inference
+    return {"task_id": task.id}
+```
+
+```bash
+celery -A tasks worker --loglevel=info --concurrency=8   # the consumer pool draining the queue
+```
+
 ## Point-to-Point vs. Pub/Sub
 
 Two different fan-out shapes, both built on the same producer/queue/consumer primitives:
@@ -61,11 +89,37 @@ The practical question underneath all three: **when does the consumer tell the q
 
 A single queue trivially preserves order (first in, first out), but a single queue is also a scaling bottleneck. Systems built for high throughput (Kafka is the canonical example) split a topic into multiple **partitions**, each independently ordered but with no ordering guarantee *across* partitions — the tradeoff for parallelism. **Partition keys** solve the "but I need this subset in order" problem: routing every message for a given key (a user ID, an order ID) to the same partition guarantees order *within* that key, at the cost of that partition becoming a hotspot if one key sees disproportionate traffic.
 
+A Kafka producer keying by `user_id` (every event for one user lands in the same partition, in order), and a consumer reading the stream:
+
+```python
+from kafka import KafkaProducer, KafkaConsumer
+import json
+
+producer = KafkaProducer(bootstrap_servers="localhost:9092", value_serializer=lambda v: json.dumps(v).encode())
+producer.send("user-events", key=str(user_id).encode(), value={"event": "click", "user_id": user_id})
+
+consumer = KafkaConsumer("user-events", bootstrap_servers="localhost:9092", group_id="fraud-scoring")
+for message in consumer:
+    score_event(json.loads(message.value))
+```
+
 ## Kafka, Celery, Redis, SQS: Picking One
 
 <QueueToolComparisonDiagram />
 
 The real decision usually comes down to what you actually need: replay-able event history and multiple independent consumer groups reading the same stream → Kafka. Distributing background jobs across a worker pool with minimal setup → Celery. Already running Redis for caching and want a lightweight queue nearby, without hard durability requirements → Redis Streams. Zero infrastructure to manage on AWS → SQS.
+
+```python
+import boto3
+sqs = boto3.client("sqs")
+
+sqs.send_message(QueueUrl=queue_url, MessageBody=json.dumps({"user_id": 42, "features": [...]}))
+
+response = sqs.receive_message(QueueUrl=queue_url, MaxNumberOfMessages=10, WaitTimeSeconds=20)
+for msg in response.get("Messages", []):
+    process(json.loads(msg["Body"]))
+    sqs.delete_message(QueueUrl=queue_url, ReceiptHandle=msg["ReceiptHandle"])  # the "I'm done" ack from above
+```
 
 ## Where This Shows Up in ML Systems
 

@@ -36,6 +36,21 @@ A model in a Jupyter notebook has implicit dependencies everywhere: cell executi
 
 <DependencyPinningDiagram />
 
+```toml
+[project]
+name = "fraud-model"
+dependencies = [
+    "torch==2.4.0",
+    "numpy==1.26.4",
+    "scikit-learn==1.5.1",
+]
+```
+
+```bash
+uv sync             # installs exactly what's in uv.lock -- no version resolution surprises
+uv lock --upgrade   # a deliberate, reviewable step to bump versions, not an implicit side effect of installing
+```
+
 - **API design**: if your model is served behind an API (see [APIs & Model Serving](/docs/mlops/model-serving)), the contract (request/response schema, error format, versioning) is a design decision made deliberately, not whatever `FastAPI` happens to auto-generate from your first draft.
 
 ## Testing an ML System
@@ -62,6 +77,37 @@ Testing ML code is genuinely harder than testing normal software, because "corre
 - **Postman**: manual and scripted API testing/exploration — useful for exploring and documenting an API's actual behavior before automating tests against it.
 
 <TestingToolsDiagram />
+
+A real parametrized unit test, and a Locust load test for the serving endpoint from [APIs & Model Serving](/docs/mlops/model-serving):
+
+```python
+import pytest
+from features import clean_transaction_amount
+
+@pytest.mark.parametrize("raw, expected", [
+    (" $1,200.50 ", 1200.50),
+    ("0", 0.0),
+    ("-42", None),   # negative amounts are invalid -- should be dropped, not coerced
+])
+def test_clean_transaction_amount(raw, expected):
+    assert clean_transaction_amount(raw) == expected
+```
+
+```python
+from locust import HttpUser, task, between
+
+class ModelApiUser(HttpUser):
+    wait_time = between(0.1, 0.5)
+
+    @task
+    def predict(self):
+        self.client.post("/v1/predict", json={"features": [5.1, 3.5, 1.4, 0.2]})
+```
+
+```bash
+pytest tests/ -v
+locust -f locustfile.py --host=http://localhost:8000 --users 100 --spawn-rate 10
+```
 
 ## The Standard You're Aiming For
 

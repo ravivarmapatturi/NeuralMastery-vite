@@ -32,6 +32,15 @@ import CiCdTestGateDiagram from '../../../viz/diagrams/CiCdTestGateDiagram';
 
 <ClassicalTestTypesDiagram />
 
+The regression-test gate as a real, CI-runnable pytest function -- this is what `evaluate.py` from the CI/CD pipeline actually asserts:
+
+```python
+def test_candidate_beats_production_benchmark():
+    candidate_f1 = evaluate(candidate_model, benchmark_dataset)
+    production_f1 = evaluate(load_production_model(), benchmark_dataset)
+    assert candidate_f1 >= production_f1 - 0.01   # allow a small tolerance, not strict improvement every time
+```
+
 ## LLM-Specific Testing
 
 None of the categories above naturally cover "does this prompt still produce the intended behavior" or "can this model be manipulated into ignoring its instructions" — LLM systems need their own test types:
@@ -39,6 +48,14 @@ None of the categories above naturally cover "does this prompt still produce the
 - **Prompt tests**: treat a prompt template as code under test — given a fixed set of inputs, does the resulting output still meet expected criteria (format, content, tone)? A prompt change is a code change, and deserves the same regression-testing discipline as any other code change, not ad hoc manual spot-checking.
 
 <PromptAsCodeDiagram />
+
+```python
+@pytest.mark.parametrize("query", GOLDEN_DATASET)
+def test_support_prompt_stays_on_format(query):
+    response = llm.invoke(SUPPORT_PROMPT.format(query=query))
+    assert response.startswith(("I can help", "I'm sorry"))   # the two sanctioned opening patterns
+    assert "as an AI language model" not in response.lower()  # a known regression this prompt version fixed
+```
 
 - **Golden datasets**: covered in depth in [AI Evaluation — Golden Datasets](/docs/ai-evaluation/evaluation-fundamentals#golden-datasets) — the curated, maintained reference set every regression test and prompt test above actually runs against.
 - **Hallucination tests**: specifically check whether the model states claims unsupported by its provided context — see [RAG — Evaluating RAG](/docs/llms-genai/rag#evaluating-rag)'s faithfulness/groundedness metrics, run as an automated test suite rather than only a production-monitoring signal.
@@ -48,6 +65,19 @@ None of the categories above naturally cover "does this prompt still produce the
 
 - **Tool-call tests**: for agentic systems, assert that a given input reliably produces the *correct* tool call with correctly-formed arguments — directly testing the [tool-call accuracy](/docs/ai-evaluation/llm-rag-agent-evaluation#agent-evaluation) dimension of agent evaluation as an automated, CI-enforced check rather than only a periodic manual evaluation.
 - **Structured-output tests**: when a model is expected to return output conforming to a schema (JSON with specific fields, a specific format), assert the output actually validates against that schema — a narrower, more mechanical check than general output-quality evaluation, but one that catches a real and common failure mode (a model drifting from the requested format) cheaply and reliably.
+
+```python
+from pydantic import BaseModel
+
+class TicketClassification(BaseModel):
+    category: str
+    priority: int
+    summary: str
+
+def test_ticket_classification_matches_schema():
+    raw = llm.invoke(CLASSIFY_PROMPT.format(ticket=SAMPLE_TICKET))
+    TicketClassification.model_validate_json(raw)  # raises if the model drifted from the requested schema
+```
 - **Agent trajectory tests**: for multi-step agents, assert not just the final outcome but that the *sequence* of steps taken matches an expected pattern for known test scenarios — the automated-test version of the [trajectory analysis](/docs/ai-evaluation/llm-rag-agent-evaluation#agent-evaluation) evaluation technique, run against a fixed set of scripted scenarios in CI.
 
 <LlmTestTypesDiagram />
