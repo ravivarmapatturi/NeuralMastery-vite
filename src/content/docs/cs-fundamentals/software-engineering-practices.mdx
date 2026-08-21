@@ -36,6 +36,26 @@ The unifying theme: every pattern above exists to reduce coupling — letting on
 - **What *not* to test**: framework code you don't own (don't test that PyTorch's `nn.Linear` computes a matrix multiply correctly — that's PyTorch's test suite's job), trivial getters/setters, implementation details that would make the test break on every harmless refactor even when behavior didn't change.
 - **Flaky tests**: a test that sometimes passes and sometimes fails with no code change is worse than no test at all — it trains the team to ignore red CI, which is how a real failure eventually slips through unnoticed. Common ML-specific causes: an un-seeded random number generator, a test that depends on wall-clock timing, floating-point comparisons using exact equality instead of a tolerance.
 
+The pyramid's three tiers, as real tests for the same feature (a feature-preprocessing step feeding a model endpoint) — notice the tests get slower and fewer going up:
+
+```python
+# unit -- fast, many, no I/O
+def test_clean_transaction_amount():
+    assert clean_transaction_amount(" $1,200.50 ") == 1200.50
+
+# integration -- fewer, real components wired together, still no network
+def test_preprocessing_pipeline_produces_model_input_shape():
+    raw_batch = load_fixture("tests/fixtures/10_rows.parquet")
+    features = preprocess(raw_batch)
+    assert features.shape == (10, 24)   # exactly what the model expects downstream
+
+# end-to-end -- slowest, fewest, exercises the real deployed path
+def test_predict_endpoint_returns_valid_response(live_test_server):
+    response = httpx.post(f"{live_test_server}/v1/predict", json={"features": [5.1, 3.5, 1.4, 0.2]})
+    assert response.status_code == 200
+    assert "prediction" in response.json()
+```
+
 ## Profiling
 
 Guessing where a program spends its time is unreliable — profile before optimizing, always:
@@ -53,6 +73,16 @@ Guessing where a program spends its time is unreliable — profile before optimi
 - **Bisection**: to find which of many changes introduced a bug, don't guess — binary search. `git bisect` automates exactly this: mark a known-good commit and a known-bad commit, and it checks out the midpoint repeatedly, halving the search space each time, turning "which of these 200 commits broke it" into ~8 checks instead of 200.
 
 <GitBisectDiagram />
+
+Fully automated, when the bug can be checked by a script (a failing test, in this case) — no manual good/bad judgment needed at each step:
+
+```bash
+git bisect start
+git bisect bad HEAD
+git bisect good v1.2.0
+git bisect run pytest tests/test_regression.py -x   # runs this at every midpoint; exit code decides good/bad
+# git bisect names the exact culprit commit and resets automatically when the script finds it
+```
 - **Isolate variables**: strip a failing case down to the smallest input/configuration that still reproduces the bug — removing everything not strictly necessary to trigger it. A bug that only reproduces with the full training pipeline running is far harder to reason about than the same bug reproduced with a five-line script.
 - **Print debugging vs. a real debugger**: `print`/logging is fast to add and fine for straightforward "what value is this" questions; an interactive debugger (`pdb`, an IDE debugger) earns its overhead when you need to inspect state at a specific point, step through logic, or the bug depends on complex object state that's tedious to log completely.
 
