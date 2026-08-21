@@ -159,9 +159,12 @@ test.describe('Visualization', () => {
     await expect(code.first()).toBeVisible();
     // Shiki inlines per-token color styles -- a plain unstyled <pre> would
     // have none of these, so this distinguishes "real syntax highlighting
-    // rendered" from "a bare code block".
-    const styledSpanCount = await page.locator('pre span[style*="color"]').count();
-    expect(styledSpanCount).toBeGreaterThan(0);
+    // rendered" from "a bare code block". Shiki's highlighter loads async
+    // (see VisualizationCode.tsx, which renders raw text as an immediate
+    // fallback and re-renders once the highlighter resolves), and pages
+    // are now lazy-loaded route chunks on top of that -- so this needs an
+    // auto-retrying assertion, not a one-shot .count() read.
+    await expect(page.locator('pre span[style*="color"]').first()).toBeVisible();
     expect(errors.errors()).toEqual([]);
   });
 });

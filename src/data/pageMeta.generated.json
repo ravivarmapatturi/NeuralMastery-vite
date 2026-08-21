@@ -1,0 +1,1598 @@
+{
+  "pages": {
+    "/docs/agents/a2a/overview": {
+      "slug": "agents/a2a/overview",
+      "section": "agents",
+      "title": "A2A (Agent-to-Agent)",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/agents/agent-architectures": {
+      "slug": "agents/agent-architectures",
+      "section": "agents",
+      "title": "Agent Architectures",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/agents/agent-fundamentals": {
+      "slug": "agents/agent-fundamentals",
+      "section": "agents",
+      "title": "Agent Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/agents/mcp/overview": {
+      "slug": "agents/mcp/overview",
+      "section": "agents",
+      "title": "MCP (Model Context Protocol)",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/agents/mcp/protocol-deep-dive": {
+      "slug": "agents/mcp/protocol-deep-dive",
+      "section": "agents",
+      "title": "MCP Protocol Deep Dive",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/agents/multi-agent-systems": {
+      "slug": "agents/multi-agent-systems",
+      "section": "agents",
+      "title": "Multi-Agent Systems",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/agents/overview": {
+      "slug": "agents/overview",
+      "section": "agents",
+      "title": "Agents Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/agents/roadmap": {
+      "slug": "agents/roadmap",
+      "section": "agents",
+      "title": "Agents — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/ai-evaluation/evaluation-fundamentals": {
+      "slug": "ai-evaluation/evaluation-fundamentals",
+      "section": "ai-evaluation",
+      "title": "Evaluation Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/ai-evaluation/human-and-adversarial-evaluation": {
+      "slug": "ai-evaluation/human-and-adversarial-evaluation",
+      "section": "ai-evaluation",
+      "title": "Human & Adversarial Evaluation",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/ai-evaluation/llm-rag-agent-evaluation": {
+      "slug": "ai-evaluation/llm-rag-agent-evaluation",
+      "section": "ai-evaluation",
+      "title": "LLM, RAG & Agent Evaluation",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/ai-evaluation/overview": {
+      "slug": "ai-evaluation/overview",
+      "section": "ai-evaluation",
+      "title": "AI Evaluation — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/ai-evaluation/roadmap": {
+      "slug": "ai-evaluation/roadmap",
+      "section": "ai-evaluation",
+      "title": "AI Evaluation — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/ai-for-science/ai-for-science-fundamentals": {
+      "slug": "ai-for-science/ai-for-science-fundamentals",
+      "section": "ai-for-science",
+      "title": "AI for Science Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/ai-for-science/overview": {
+      "slug": "ai-for-science/overview",
+      "section": "ai-for-science",
+      "title": "AI for Science — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/ai-for-science/roadmap": {
+      "slug": "ai-for-science/roadmap",
+      "section": "ai-for-science",
+      "title": "AI for Science — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/ai-safety/alignment-and-rlhf": {
+      "slug": "ai-safety/alignment-and-rlhf",
+      "section": "ai-safety",
+      "title": "Alignment & RLHF",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/ai-safety/overview": {
+      "slug": "ai-safety/overview",
+      "section": "ai-safety",
+      "title": "AI Safety & Alignment — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/ai-safety/roadmap": {
+      "slug": "ai-safety/roadmap",
+      "section": "ai-safety",
+      "title": "AI Safety & Alignment — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/ai-safety/scalable-oversight-and-frontier-safety": {
+      "slug": "ai-safety/scalable-oversight-and-frontier-safety",
+      "section": "ai-safety",
+      "title": "Scalable Oversight & Frontier Safety",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/ai-security/model-and-data-attacks": {
+      "slug": "ai-security/model-and-data-attacks",
+      "section": "ai-security",
+      "title": "Model & Data Attacks",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/ai-security/overview": {
+      "slug": "ai-security/overview",
+      "section": "ai-security",
+      "title": "AI Security — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/ai-security/owasp-llm-top-10-and-prompt-attacks": {
+      "slug": "ai-security/owasp-llm-top-10-and-prompt-attacks",
+      "section": "ai-security",
+      "title": "OWASP LLM Top 10 & Prompt Attacks",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/ai-security/roadmap": {
+      "slug": "ai-security/roadmap",
+      "section": "ai-security",
+      "title": "AI Security — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/build-from-scratch/overview": {
+      "slug": "build-from-scratch/overview",
+      "section": "build-from-scratch",
+      "title": "Build From Scratch — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/build-from-scratch/roadmap": {
+      "slug": "build-from-scratch/roadmap",
+      "section": "build-from-scratch",
+      "title": "Build From Scratch — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/build-from-scratch/the-build-list": {
+      "slug": "build-from-scratch/the-build-list",
+      "section": "build-from-scratch",
+      "title": "The Build List",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/computer-vision/modern-vision-and-multimodal": {
+      "slug": "computer-vision/modern-vision-and-multimodal",
+      "section": "computer-vision",
+      "title": "Modern Vision & Multimodal",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/computer-vision/overview": {
+      "slug": "computer-vision/overview",
+      "section": "computer-vision",
+      "title": "Computer Vision — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/computer-vision/roadmap": {
+      "slug": "computer-vision/roadmap",
+      "section": "computer-vision",
+      "title": "Computer Vision — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/computer-vision/vision-fundamentals": {
+      "slug": "computer-vision/vision-fundamentals",
+      "section": "computer-vision",
+      "title": "Vision Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/computer-vision/vision-tasks-and-models": {
+      "slug": "computer-vision/vision-tasks-and-models",
+      "section": "computer-vision",
+      "title": "Vision Tasks & Models",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/cs-fundamentals/apis-http-and-protocols": {
+      "slug": "cs-fundamentals/apis-http-and-protocols",
+      "section": "cs-fundamentals",
+      "title": "APIs, HTTP & Communication Patterns",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/cs-fundamentals/linux-git-and-tooling": {
+      "slug": "cs-fundamentals/linux-git-and-tooling",
+      "section": "cs-fundamentals",
+      "title": "Linux, Git & Developer Tooling",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/cs-fundamentals/networking-and-distributed-systems": {
+      "slug": "cs-fundamentals/networking-and-distributed-systems",
+      "section": "cs-fundamentals",
+      "title": "Networking & Distributed Systems",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/cs-fundamentals/operating-systems-and-concurrency": {
+      "slug": "cs-fundamentals/operating-systems-and-concurrency",
+      "section": "cs-fundamentals",
+      "title": "Operating Systems & Concurrency",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/cs-fundamentals/overview": {
+      "slug": "cs-fundamentals/overview",
+      "section": "cs-fundamentals",
+      "title": "CS Fundamentals for AI Engineers — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/cs-fundamentals/roadmap": {
+      "slug": "cs-fundamentals/roadmap",
+      "section": "cs-fundamentals",
+      "title": "CS Fundamentals for AI Engineers — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/cs-fundamentals/software-engineering-practices": {
+      "slug": "cs-fundamentals/software-engineering-practices",
+      "section": "cs-fundamentals",
+      "title": "Software Engineering Practice",
+      "sidebarPosition": 7,
+      "description": null
+    },
+    "/docs/databases/graph/overview": {
+      "slug": "databases/graph/overview",
+      "section": "databases",
+      "title": "Graph Databases (Neo4j)",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/databases/overview": {
+      "slug": "databases/overview",
+      "section": "databases",
+      "title": "Databases Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/databases/relational/overview": {
+      "slug": "databases/relational/overview",
+      "section": "databases",
+      "title": "Relational Databases (MySQL, Postgres)",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/databases/relational/postgresql": {
+      "slug": "databases/relational/postgresql",
+      "section": "databases",
+      "title": "PostgreSQL",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/databases/roadmap": {
+      "slug": "databases/roadmap",
+      "section": "databases",
+      "title": "Databases — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/databases/vector/overview": {
+      "slug": "databases/vector/overview",
+      "section": "databases",
+      "title": "Vector Databases",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/deep-learning/activation-functions": {
+      "slug": "deep-learning/activation-functions",
+      "section": "deep-learning",
+      "title": "Activation Functions, In Full Depth",
+      "sidebarPosition": 3.5,
+      "description": null
+    },
+    "/docs/deep-learning/advanced-architectures": {
+      "slug": "deep-learning/advanced-architectures",
+      "section": "deep-learning",
+      "title": "GNNs, RL Networks, Metric Learning, SSL & Multimodal Nets",
+      "sidebarPosition": 8.8,
+      "description": null
+    },
+    "/docs/deep-learning/attention-transformers": {
+      "slug": "deep-learning/attention-transformers",
+      "section": "deep-learning",
+      "title": "Attention & Transformers",
+      "sidebarPosition": 7,
+      "description": null
+    },
+    "/docs/deep-learning/autoencoders": {
+      "slug": "deep-learning/autoencoders",
+      "section": "deep-learning",
+      "title": "Autoencoders & Variational Autoencoders, In Full Depth",
+      "sidebarPosition": 8.5,
+      "description": null
+    },
+    "/docs/deep-learning/cnns": {
+      "slug": "deep-learning/cnns",
+      "section": "deep-learning",
+      "title": "Convolutional Neural Networks (CNNs)",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/deep-learning/generative-models": {
+      "slug": "deep-learning/generative-models",
+      "section": "deep-learning",
+      "title": "Generative Models: GANs & Diffusion",
+      "sidebarPosition": 8.7,
+      "description": null
+    },
+    "/docs/deep-learning/initialization-regularization-scheduling": {
+      "slug": "deep-learning/initialization-regularization-scheduling",
+      "section": "deep-learning",
+      "title": "Weight Initialization, Regularization & LR Scheduling",
+      "sidebarPosition": 3.8,
+      "description": null
+    },
+    "/docs/deep-learning/loss-functions": {
+      "slug": "deep-learning/loss-functions",
+      "section": "deep-learning",
+      "title": "Loss Functions, In Full Depth",
+      "sidebarPosition": 3.6,
+      "description": null
+    },
+    "/docs/deep-learning/neural-network-fundamentals": {
+      "slug": "deep-learning/neural-network-fundamentals",
+      "section": "deep-learning",
+      "title": "Neural Network Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/deep-learning/nn-layers-reference": {
+      "slug": "deep-learning/nn-layers-reference",
+      "section": "deep-learning",
+      "title": "NN Layers Reference",
+      "sidebarPosition": 8.9,
+      "description": null
+    },
+    "/docs/deep-learning/optimizers": {
+      "slug": "deep-learning/optimizers",
+      "section": "deep-learning",
+      "title": "Optimizers, In Full Depth",
+      "sidebarPosition": 3.7,
+      "description": null
+    },
+    "/docs/deep-learning/overview": {
+      "slug": "deep-learning/overview",
+      "section": "deep-learning",
+      "title": "Deep Learning Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/deep-learning/roadmap": {
+      "slug": "deep-learning/roadmap",
+      "section": "deep-learning",
+      "title": "Deep Learning — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/deep-learning/sequence-models": {
+      "slug": "deep-learning/sequence-models",
+      "section": "deep-learning",
+      "title": "Sequence Models",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/deep-learning/training-deep-networks": {
+      "slug": "deep-learning/training-deep-networks",
+      "section": "deep-learning",
+      "title": "Training Deep Networks",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/deep-learning/vision-architectures": {
+      "slug": "deep-learning/vision-architectures",
+      "section": "deep-learning",
+      "title": "Vision Architectures: Transformers, Detection & Segmentation",
+      "sidebarPosition": 7.5,
+      "description": null
+    },
+    "/docs/domain-applications/healthcare-ai": {
+      "slug": "domain-applications/healthcare-ai",
+      "section": "domain-applications",
+      "title": "Healthcare AI",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/domain-applications/other-domain-applications": {
+      "slug": "domain-applications/other-domain-applications",
+      "section": "domain-applications",
+      "title": "Other Domain Applications",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/domain-applications/overview": {
+      "slug": "domain-applications/overview",
+      "section": "domain-applications",
+      "title": "Domain AI Applications — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/domain-applications/roadmap": {
+      "slug": "domain-applications/roadmap",
+      "section": "domain-applications",
+      "title": "Domain AI Applications — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/frameworks/core-ml-dl-frameworks": {
+      "slug": "frameworks/core-ml-dl-frameworks",
+      "section": "frameworks",
+      "title": "Core ML/DL Frameworks",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/frameworks/llm-agent-frameworks": {
+      "slug": "frameworks/llm-agent-frameworks",
+      "section": "frameworks",
+      "title": "LLM / Agent Frameworks",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/frameworks/overview": {
+      "slug": "frameworks/overview",
+      "section": "frameworks",
+      "title": "Frameworks Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/frameworks/roadmap": {
+      "slug": "frameworks/roadmap",
+      "section": "frameworks",
+      "title": "Frameworks — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/frameworks/serving-mlops": {
+      "slug": "frameworks/serving-mlops",
+      "section": "frameworks",
+      "title": "Serving & MLOps / LLMOps",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/getting-started/intro": {
+      "slug": "getting-started/intro",
+      "section": "getting-started",
+      "title": "How to Use This Site",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/graph-ml/graph-ml-fundamentals": {
+      "slug": "graph-ml/graph-ml-fundamentals",
+      "section": "graph-ml",
+      "title": "Graph ML Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/graph-ml/overview": {
+      "slug": "graph-ml/overview",
+      "section": "graph-ml",
+      "title": "Graph ML — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/graph-ml/roadmap": {
+      "slug": "graph-ml/roadmap",
+      "section": "graph-ml",
+      "title": "Graph ML — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/interpretability/classical-interpretability": {
+      "slug": "interpretability/classical-interpretability",
+      "section": "interpretability",
+      "title": "Classical Interpretability: Feature Importance, SHAP & LIME",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/interpretability/deep-learning-and-llm-interpretability": {
+      "slug": "interpretability/deep-learning-and-llm-interpretability",
+      "section": "interpretability",
+      "title": "Deep Learning & LLM Interpretability",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/interpretability/overview": {
+      "slug": "interpretability/overview",
+      "section": "interpretability",
+      "title": "Interpretability — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/interpretability/roadmap": {
+      "slug": "interpretability/roadmap",
+      "section": "interpretability",
+      "title": "Interpretability — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/interview-prep/behavioral": {
+      "slug": "interview-prep/behavioral",
+      "section": "interview-prep",
+      "title": "Behavioral",
+      "sidebarPosition": 7,
+      "description": null
+    },
+    "/docs/interview-prep/dsa-coding": {
+      "slug": "interview-prep/dsa-coding",
+      "section": "interview-prep",
+      "title": "General Coding (DSA)",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/interview-prep/knowledge-qa-strategy": {
+      "slug": "interview-prep/knowledge-qa-strategy",
+      "section": "interview-prep",
+      "title": "ML/GenAI Knowledge Q&A",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/interview-prep/ml-coding": {
+      "slug": "interview-prep/ml-coding",
+      "section": "interview-prep",
+      "title": "ML Coding",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/interview-prep/overview": {
+      "slug": "interview-prep/overview",
+      "section": "interview-prep",
+      "title": "Interview Prep Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/interview-prep/roadmap": {
+      "slug": "interview-prep/roadmap",
+      "section": "interview-prep",
+      "title": "Interview Prep — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/interview-prep/system-design-practice": {
+      "slug": "interview-prep/system-design-practice",
+      "section": "interview-prep",
+      "title": "System Design Practice",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/interview-prep/technology-comparisons": {
+      "slug": "interview-prep/technology-comparisons",
+      "section": "interview-prep",
+      "title": "Technology Comparisons & Decision Trees",
+      "sidebarPosition": 5.5,
+      "description": null
+    },
+    "/docs/learning-path": {
+      "slug": "learning-path",
+      "section": "general",
+      "title": "Learning Path",
+      "sidebarPosition": 0.5,
+      "description": null
+    },
+    "/docs/llms-genai/evaluation-and-serving": {
+      "slug": "llms-genai/evaluation-and-serving",
+      "section": "llms-genai",
+      "title": "Evaluation & Serving",
+      "sidebarPosition": 7,
+      "description": null
+    },
+    "/docs/llms-genai/foundation-model-internals": {
+      "slug": "llms-genai/foundation-model-internals",
+      "section": "llms-genai",
+      "title": "Foundation Model & Transformer Internals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/llms-genai/multimodal-generative-models": {
+      "slug": "llms-genai/multimodal-generative-models",
+      "section": "llms-genai",
+      "title": "Multimodal & Generative Models",
+      "sidebarPosition": 8,
+      "description": null
+    },
+    "/docs/llms-genai/overview": {
+      "slug": "llms-genai/overview",
+      "section": "llms-genai",
+      "title": "LLMs & GenAI Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/llms-genai/prompt-engineering": {
+      "slug": "llms-genai/prompt-engineering",
+      "section": "llms-genai",
+      "title": "Prompt Engineering",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/llms-genai/rag": {
+      "slug": "llms-genai/rag",
+      "section": "llms-genai",
+      "title": "Retrieval-Augmented Generation (RAG)",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/llms-genai/roadmap": {
+      "slug": "llms-genai/roadmap",
+      "section": "llms-genai",
+      "title": "LLMs & GenAI — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/llms-genai/training-pipeline": {
+      "slug": "llms-genai/training-pipeline",
+      "section": "llms-genai",
+      "title": "Training Pipeline",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/machine-learning/anomaly-detection": {
+      "slug": "machine-learning/anomaly-detection",
+      "section": "machine-learning",
+      "title": "Anomaly Detection: Isolation Forest, LOF & One-Class SVM, In Full Depth",
+      "sidebarPosition": 6.7,
+      "description": null
+    },
+    "/docs/machine-learning/association-rules": {
+      "slug": "machine-learning/association-rules",
+      "section": "machine-learning",
+      "title": "Association Rule Mining: Apriori & FP-Growth, In Full Depth",
+      "sidebarPosition": 6.6,
+      "description": null
+    },
+    "/docs/machine-learning/boosting": {
+      "slug": "machine-learning/boosting",
+      "section": "machine-learning",
+      "title": "Boosting: AdaBoost & Gradient Boosting, In Full Depth",
+      "sidebarPosition": 5.3,
+      "description": null
+    },
+    "/docs/machine-learning/dbscan-hdbscan": {
+      "slug": "machine-learning/dbscan-hdbscan",
+      "section": "machine-learning",
+      "title": "DBSCAN & HDBSCAN, In Full Depth",
+      "sidebarPosition": 6.2,
+      "description": null
+    },
+    "/docs/machine-learning/decision-tree": {
+      "slug": "machine-learning/decision-tree",
+      "section": "machine-learning",
+      "title": "Decision Trees, In Full Depth",
+      "sidebarPosition": 5.1,
+      "description": null
+    },
+    "/docs/machine-learning/elastic-net": {
+      "slug": "machine-learning/elastic-net",
+      "section": "machine-learning",
+      "title": "Elastic Net, In Full Depth",
+      "sidebarPosition": 4.8,
+      "description": null
+    },
+    "/docs/machine-learning/gmm-spectral-clustering": {
+      "slug": "machine-learning/gmm-spectral-clustering",
+      "section": "machine-learning",
+      "title": "Gaussian Mixture Models & Spectral Clustering, In Full Depth",
+      "sidebarPosition": 6.3,
+      "description": null
+    },
+    "/docs/machine-learning/ica-tsne-umap": {
+      "slug": "machine-learning/ica-tsne-umap",
+      "section": "machine-learning",
+      "title": "ICA, t-SNE & UMAP, In Full Depth",
+      "sidebarPosition": 6.5,
+      "description": null
+    },
+    "/docs/machine-learning/k-nearest-neighbors": {
+      "slug": "machine-learning/k-nearest-neighbors",
+      "section": "machine-learning",
+      "title": "K-Nearest Neighbors, In Full Depth",
+      "sidebarPosition": 5.6,
+      "description": null
+    },
+    "/docs/machine-learning/kmeans-hierarchical-clustering": {
+      "slug": "machine-learning/kmeans-hierarchical-clustering",
+      "section": "machine-learning",
+      "title": "K-Means & Hierarchical Clustering, In Full Depth",
+      "sidebarPosition": 6.1,
+      "description": null
+    },
+    "/docs/machine-learning/lasso-regression": {
+      "slug": "machine-learning/lasso-regression",
+      "section": "machine-learning",
+      "title": "Lasso Regression, In Full Depth",
+      "sidebarPosition": 4.7,
+      "description": null
+    },
+    "/docs/machine-learning/learning-to-rank": {
+      "slug": "machine-learning/learning-to-rank",
+      "section": "machine-learning",
+      "title": "Learning-to-Rank, In Full Depth",
+      "sidebarPosition": 6.91,
+      "description": null
+    },
+    "/docs/machine-learning/linear-regression": {
+      "slug": "machine-learning/linear-regression",
+      "section": "machine-learning",
+      "title": "Linear Regression, In Full Depth",
+      "sidebarPosition": 4.5,
+      "description": null
+    },
+    "/docs/machine-learning/logistic-regression": {
+      "slug": "machine-learning/logistic-regression",
+      "section": "machine-learning",
+      "title": "Logistic Regression, In Full Depth",
+      "sidebarPosition": 4.9,
+      "description": null
+    },
+    "/docs/machine-learning/ml-workflow-fundamentals": {
+      "slug": "machine-learning/ml-workflow-fundamentals",
+      "section": "machine-learning",
+      "title": "ML Workflow Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/machine-learning/model-evaluation-metrics": {
+      "slug": "machine-learning/model-evaluation-metrics",
+      "section": "machine-learning",
+      "title": "Model Evaluation & Metrics",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/machine-learning/naive-bayes-lda-qda": {
+      "slug": "machine-learning/naive-bayes-lda-qda",
+      "section": "machine-learning",
+      "title": "Naive Bayes, LDA & QDA, In Full Depth",
+      "sidebarPosition": 5.7,
+      "description": null
+    },
+    "/docs/machine-learning/overview": {
+      "slug": "machine-learning/overview",
+      "section": "machine-learning",
+      "title": "Machine Learning Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/machine-learning/pca-svd": {
+      "slug": "machine-learning/pca-svd",
+      "section": "machine-learning",
+      "title": "PCA, Kernel PCA & Truncated SVD, In Full Depth",
+      "sidebarPosition": 6.4,
+      "description": null
+    },
+    "/docs/machine-learning/random-forest": {
+      "slug": "machine-learning/random-forest",
+      "section": "machine-learning",
+      "title": "Random Forest & Extra Trees, In Full Depth",
+      "sidebarPosition": 5.2,
+      "description": null
+    },
+    "/docs/machine-learning/recommender-systems": {
+      "slug": "machine-learning/recommender-systems",
+      "section": "machine-learning",
+      "title": "Recommender Systems, In Full Depth",
+      "sidebarPosition": 6.9,
+      "description": null
+    },
+    "/docs/machine-learning/ridge-regression": {
+      "slug": "machine-learning/ridge-regression",
+      "section": "machine-learning",
+      "title": "Ridge Regression, In Full Depth",
+      "sidebarPosition": 4.6,
+      "description": null
+    },
+    "/docs/machine-learning/roadmap": {
+      "slug": "machine-learning/roadmap",
+      "section": "machine-learning",
+      "title": "Machine Learning — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/machine-learning/sgd-classifier-regressor": {
+      "slug": "machine-learning/sgd-classifier-regressor",
+      "section": "machine-learning",
+      "title": "SGD Classifier & Regressor, In Full Depth",
+      "sidebarPosition": 5.8,
+      "description": null
+    },
+    "/docs/machine-learning/supervised-learning": {
+      "slug": "machine-learning/supervised-learning",
+      "section": "machine-learning",
+      "title": "Supervised Learning",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/machine-learning/support-vector-machines": {
+      "slug": "machine-learning/support-vector-machines",
+      "section": "machine-learning",
+      "title": "Support Vector Machines (SVM & SVR), In Full Depth",
+      "sidebarPosition": 5.5,
+      "description": null
+    },
+    "/docs/machine-learning/survival-analysis": {
+      "slug": "machine-learning/survival-analysis",
+      "section": "machine-learning",
+      "title": "Survival Analysis: Kaplan-Meier & Cox Proportional Hazards, In Full Depth",
+      "sidebarPosition": 5.85,
+      "description": null
+    },
+    "/docs/machine-learning/time-series-forecasting": {
+      "slug": "machine-learning/time-series-forecasting",
+      "section": "machine-learning",
+      "title": "Time Series Forecasting: ARIMA, SARIMA & Prophet, In Full Depth",
+      "sidebarPosition": 5.9,
+      "description": null
+    },
+    "/docs/machine-learning/topic-modeling": {
+      "slug": "machine-learning/topic-modeling",
+      "section": "machine-learning",
+      "title": "Topic Modeling: LDA & BERTopic, In Full Depth",
+      "sidebarPosition": 6.8,
+      "description": null
+    },
+    "/docs/machine-learning/unsupervised-learning": {
+      "slug": "machine-learning/unsupervised-learning",
+      "section": "machine-learning",
+      "title": "Unsupervised Learning",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/machine-learning/xgboost-lightgbm-catboost": {
+      "slug": "machine-learning/xgboost-lightgbm-catboost",
+      "section": "machine-learning",
+      "title": "XGBoost, LightGBM & CatBoost, In Full Depth",
+      "sidebarPosition": 5.4,
+      "description": null
+    },
+    "/docs/mathematics-for-ai/algorithms-data-structures": {
+      "slug": "mathematics-for-ai/algorithms-data-structures",
+      "section": "mathematics-for-ai",
+      "title": "Algorithms & Data Structures for AI",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/mathematics-for-ai/calculus-optimization": {
+      "slug": "mathematics-for-ai/calculus-optimization",
+      "section": "mathematics-for-ai",
+      "title": "Calculus & Optimization for AI",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/mathematics-for-ai/linear-algebra": {
+      "slug": "mathematics-for-ai/linear-algebra",
+      "section": "mathematics-for-ai",
+      "title": "Linear Algebra for AI",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/mathematics-for-ai/overview": {
+      "slug": "mathematics-for-ai/overview",
+      "section": "mathematics-for-ai",
+      "title": "Mathematics for AI Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/mathematics-for-ai/probability-statistics": {
+      "slug": "mathematics-for-ai/probability-statistics",
+      "section": "mathematics-for-ai",
+      "title": "Probability & Statistics for AI",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/mathematics-for-ai/roadmap": {
+      "slug": "mathematics-for-ai/roadmap",
+      "section": "mathematics-for-ai",
+      "title": "Mathematics for AI — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/ml-system-design/case-studies": {
+      "slug": "ml-system-design/case-studies",
+      "section": "ml-system-design",
+      "title": "ML System Design Case Studies",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/ml-system-design/model-catalog-and-benchmarking": {
+      "slug": "ml-system-design/model-catalog-and-benchmarking",
+      "section": "ml-system-design",
+      "title": "Model Catalog & Benchmarking Framework",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/ml-system-design/overview": {
+      "slug": "ml-system-design/overview",
+      "section": "ml-system-design",
+      "title": "ML System Design Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/ml-system-design/roadmap": {
+      "slug": "ml-system-design/roadmap",
+      "section": "ml-system-design",
+      "title": "ML System Design — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/ml-system-design/the-9-step-framework": {
+      "slug": "ml-system-design/the-9-step-framework",
+      "section": "ml-system-design",
+      "title": "The 9-Step ML System Design Framework",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/mlops/ai-cost-engineering": {
+      "slug": "mlops/ai-cost-engineering",
+      "section": "mlops",
+      "title": "AI Cost Engineering",
+      "sidebarPosition": 22.3,
+      "description": null
+    },
+    "/docs/mlops/cicd-and-ml-cicd": {
+      "slug": "mlops/cicd-and-ml-cicd",
+      "section": "mlops",
+      "title": "CI/CD & ML CI/CD",
+      "sidebarPosition": 12,
+      "description": null
+    },
+    "/docs/mlops/cloud-computing": {
+      "slug": "mlops/cloud-computing",
+      "section": "mlops",
+      "title": "Cloud Computing for ML",
+      "sidebarPosition": 9,
+      "description": null
+    },
+    "/docs/mlops/containers": {
+      "slug": "mlops/containers",
+      "section": "mlops",
+      "title": "Containers",
+      "sidebarPosition": 7,
+      "description": null
+    },
+    "/docs/mlops/data-engineering-and-versioning": {
+      "slug": "mlops/data-engineering-and-versioning",
+      "section": "mlops",
+      "title": "Data Engineering & Versioning",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/mlops/deployment-strategies": {
+      "slug": "mlops/deployment-strategies",
+      "section": "mlops",
+      "title": "Deployment Strategies",
+      "sidebarPosition": 14,
+      "description": null
+    },
+    "/docs/mlops/engineering-foundations": {
+      "slug": "mlops/engineering-foundations",
+      "section": "mlops",
+      "title": "Engineering Foundations for ML",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/mlops/experiment-tracking": {
+      "slug": "mlops/experiment-tracking",
+      "section": "mlops",
+      "title": "Experiment Tracking",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/mlops/feature-stores-and-model-registry": {
+      "slug": "mlops/feature-stores-and-model-registry",
+      "section": "mlops",
+      "title": "Feature Stores & Model Registry",
+      "sidebarPosition": 13,
+      "description": null
+    },
+    "/docs/mlops/gpu-and-distributed-training": {
+      "slug": "mlops/gpu-and-distributed-training",
+      "section": "mlops",
+      "title": "GPU/AI Infrastructure & Distributed Training",
+      "sidebarPosition": 17,
+      "description": null
+    },
+    "/docs/mlops/infrastructure-as-code": {
+      "slug": "mlops/infrastructure-as-code",
+      "section": "mlops",
+      "title": "Infrastructure as Code",
+      "sidebarPosition": 11,
+      "description": null
+    },
+    "/docs/mlops/kubernetes": {
+      "slug": "mlops/kubernetes",
+      "section": "mlops",
+      "title": "Kubernetes",
+      "sidebarPosition": 10,
+      "description": null
+    },
+    "/docs/mlops/legal-licensing-and-governance": {
+      "slug": "mlops/legal-licensing-and-governance",
+      "section": "mlops",
+      "title": "Legal, Licensing & Governance",
+      "sidebarPosition": 22.4,
+      "description": null
+    },
+    "/docs/mlops/llm-evaluation-and-ragops": {
+      "slug": "mlops/llm-evaluation-and-ragops",
+      "section": "mlops",
+      "title": "LLM Evaluation & RAGOps",
+      "sidebarPosition": 21,
+      "description": null
+    },
+    "/docs/mlops/llm-hosting-and-serving-patterns": {
+      "slug": "mlops/llm-hosting-and-serving-patterns",
+      "section": "mlops",
+      "title": "LLM Hosting, Serving Patterns & LLMOps Monitoring",
+      "sidebarPosition": 20,
+      "description": null
+    },
+    "/docs/mlops/llm-inference-engines": {
+      "slug": "mlops/llm-inference-engines",
+      "section": "mlops",
+      "title": "LLM Inference Engines",
+      "sidebarPosition": 18,
+      "description": null
+    },
+    "/docs/mlops/llm-inference-optimization": {
+      "slug": "mlops/llm-inference-optimization",
+      "section": "mlops",
+      "title": "LLM Inference Optimization",
+      "sidebarPosition": 19,
+      "description": null
+    },
+    "/docs/mlops/message-queues-and-async-processing": {
+      "slug": "mlops/message-queues-and-async-processing",
+      "section": "mlops",
+      "title": "Message Queues & Async Processing",
+      "sidebarPosition": 6.5,
+      "description": null
+    },
+    "/docs/mlops/ml-and-llm-testing": {
+      "slug": "mlops/ml-and-llm-testing",
+      "section": "mlops",
+      "title": "ML & LLM Testing",
+      "sidebarPosition": 22.1,
+      "description": null
+    },
+    "/docs/mlops/mlops-architecture-and-roadmap": {
+      "slug": "mlops/mlops-architecture-and-roadmap",
+      "section": "mlops",
+      "title": "The Full MLOps Architecture, Priority Stack & Learning Path",
+      "sidebarPosition": 23,
+      "description": null
+    },
+    "/docs/mlops/model-serving": {
+      "slug": "mlops/model-serving",
+      "section": "mlops",
+      "title": "APIs & Model Serving",
+      "sidebarPosition": 8,
+      "description": null
+    },
+    "/docs/mlops/monitoring-and-drift": {
+      "slug": "mlops/monitoring-and-drift",
+      "section": "mlops",
+      "title": "Monitoring & Drift Detection",
+      "sidebarPosition": 15,
+      "description": null
+    },
+    "/docs/mlops/observability": {
+      "slug": "mlops/observability",
+      "section": "mlops",
+      "title": "Observability",
+      "sidebarPosition": 16,
+      "description": null
+    },
+    "/docs/mlops/overview": {
+      "slug": "mlops/overview",
+      "section": "mlops",
+      "title": "MLOps Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/mlops/pipeline-orchestration": {
+      "slug": "mlops/pipeline-orchestration",
+      "section": "mlops",
+      "title": "Pipeline Orchestration",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/mlops/production-reliability": {
+      "slug": "mlops/production-reliability",
+      "section": "mlops",
+      "title": "Production Reliability",
+      "sidebarPosition": 22.2,
+      "description": null
+    },
+    "/docs/mlops/roadmap": {
+      "slug": "mlops/roadmap",
+      "section": "mlops",
+      "title": "MLOps — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/mlops/security-and-reproducibility": {
+      "slug": "mlops/security-and-reproducibility",
+      "section": "mlops",
+      "title": "Security & Reproducibility",
+      "sidebarPosition": 22,
+      "description": null
+    },
+    "/docs/nlp/classical-nlp": {
+      "slug": "nlp/classical-nlp",
+      "section": "nlp",
+      "title": "Classical NLP: Tokenization, POS Tagging, NER & Parsing",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/nlp/nlp-task-taxonomy": {
+      "slug": "nlp/nlp-task-taxonomy",
+      "section": "nlp",
+      "title": "NLP Task Taxonomy",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/nlp/overview": {
+      "slug": "nlp/overview",
+      "section": "nlp",
+      "title": "NLP — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/nlp/roadmap": {
+      "slug": "nlp/roadmap",
+      "section": "nlp",
+      "title": "NLP — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/nlp/word-embeddings": {
+      "slug": "nlp/word-embeddings",
+      "section": "nlp",
+      "title": "Word Embeddings",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/projects/overview": {
+      "slug": "projects/overview",
+      "section": "projects",
+      "title": "Projects — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/projects/roadmap": {
+      "slug": "projects/roadmap",
+      "section": "projects",
+      "title": "Projects — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/projects/the-project-ladder": {
+      "slug": "projects/the-project-ladder",
+      "section": "projects",
+      "title": "The Project Ladder",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/python-engineering/concurrency-memory-and-performance": {
+      "slug": "python-engineering/concurrency-memory-and-performance",
+      "section": "python-engineering",
+      "title": "Concurrency, Memory & Performance",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/python-engineering/language-fundamentals-and-oop": {
+      "slug": "python-engineering/language-fundamentals-and-oop",
+      "section": "python-engineering",
+      "title": "Language Fundamentals: OOP, Functional & Modern Python",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/python-engineering/overview": {
+      "slug": "python-engineering/overview",
+      "section": "python-engineering",
+      "title": "Python Engineering for AI — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/python-engineering/packaging-testing-and-tooling": {
+      "slug": "python-engineering/packaging-testing-and-tooling",
+      "section": "python-engineering",
+      "title": "Packaging, Testing & Tooling",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/python-engineering/roadmap": {
+      "slug": "python-engineering/roadmap",
+      "section": "python-engineering",
+      "title": "Python Engineering for AI — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/reinforcement-learning/advanced-rl": {
+      "slug": "reinforcement-learning/advanced-rl",
+      "section": "reinforcement-learning",
+      "title": "Advanced RL",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/reinforcement-learning/overview": {
+      "slug": "reinforcement-learning/overview",
+      "section": "reinforcement-learning",
+      "title": "Reinforcement Learning — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/reinforcement-learning/rl-fundamentals": {
+      "slug": "reinforcement-learning/rl-fundamentals",
+      "section": "reinforcement-learning",
+      "title": "RL Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/reinforcement-learning/roadmap": {
+      "slug": "reinforcement-learning/roadmap",
+      "section": "reinforcement-learning",
+      "title": "Reinforcement Learning — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/research-engineering/how-to-read-ai-papers": {
+      "slug": "research-engineering/how-to-read-ai-papers",
+      "section": "research-engineering",
+      "title": "How to Read AI Papers",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/research-engineering/overview": {
+      "slug": "research-engineering/overview",
+      "section": "research-engineering",
+      "title": "Research Engineering — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/research-engineering/paper-timeline": {
+      "slug": "research-engineering/paper-timeline",
+      "section": "research-engineering",
+      "title": "The Paper Timeline",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/research-engineering/roadmap": {
+      "slug": "research-engineering/roadmap",
+      "section": "research-engineering",
+      "title": "Research Engineering — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/resources/open-source-ai-resources": {
+      "slug": "resources/open-source-ai-resources",
+      "section": "resources",
+      "title": "Open Source AI Resources",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/roadmaps/overview": {
+      "slug": "roadmaps/overview",
+      "section": "roadmaps",
+      "title": "The Neural Mastery Roadmap",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/roadmaps/suggested-paths": {
+      "slug": "roadmaps/suggested-paths",
+      "section": "roadmaps",
+      "title": "Suggested Paths",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/speech-audio/audio-fundamentals": {
+      "slug": "speech-audio/audio-fundamentals",
+      "section": "speech-audio",
+      "title": "Audio Fundamentals",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/speech-audio/overview": {
+      "slug": "speech-audio/overview",
+      "section": "speech-audio",
+      "title": "Speech & Audio AI — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/speech-audio/roadmap": {
+      "slug": "speech-audio/roadmap",
+      "section": "speech-audio",
+      "title": "Speech & Audio AI — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/speech-audio/speech-audio-tasks": {
+      "slug": "speech-audio/speech-audio-tasks",
+      "section": "speech-audio",
+      "title": "Speech & Audio Tasks",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/visual-lab/agent-execution-graph": {
+      "slug": "visual-lab/agent-execution-graph",
+      "section": "visual-lab",
+      "title": "Agent Execution Graph",
+      "sidebarPosition": 7,
+      "description": null
+    },
+    "/docs/visual-lab/algorithm-selector": {
+      "slug": "visual-lab/algorithm-selector",
+      "section": "visual-lab",
+      "title": "Algorithm Selector",
+      "sidebarPosition": 15,
+      "description": null
+    },
+    "/docs/visual-lab/attention-step-through": {
+      "slug": "visual-lab/attention-step-through",
+      "section": "visual-lab",
+      "title": "Attention Step-Through",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/visual-lab/decision-boundary-playground": {
+      "slug": "visual-lab/decision-boundary-playground",
+      "section": "visual-lab",
+      "title": "Decision Boundary Playground",
+      "sidebarPosition": 9,
+      "description": null
+    },
+    "/docs/visual-lab/embedding-space-explorer": {
+      "slug": "visual-lab/embedding-space-explorer",
+      "section": "visual-lab",
+      "title": "Embedding Space Explorer",
+      "sidebarPosition": 10,
+      "description": null
+    },
+    "/docs/visual-lab/gradient-descent-explorer": {
+      "slug": "visual-lab/gradient-descent-explorer",
+      "section": "visual-lab",
+      "title": "Gradient Descent Explorer",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/visual-lab/inference-flow-visualizer": {
+      "slug": "visual-lab/inference-flow-visualizer",
+      "section": "visual-lab",
+      "title": "LLM Inference Flow Visualizer",
+      "sidebarPosition": 8,
+      "description": null
+    },
+    "/docs/visual-lab/lasso-regression-studio": {
+      "slug": "visual-lab/lasso-regression-studio",
+      "section": "visual-lab",
+      "title": "Lasso Regression Studio",
+      "sidebarPosition": 14,
+      "description": null
+    },
+    "/docs/visual-lab/linear-regression-studio": {
+      "slug": "visual-lab/linear-regression-studio",
+      "section": "visual-lab",
+      "title": "Linear Regression Studio",
+      "sidebarPosition": 11,
+      "description": null
+    },
+    "/docs/visual-lab/logistic-regression-studio": {
+      "slug": "visual-lab/logistic-regression-studio",
+      "section": "visual-lab",
+      "title": "Logistic Regression Studio",
+      "sidebarPosition": 12,
+      "description": null
+    },
+    "/docs/visual-lab/neural-network-playground": {
+      "slug": "visual-lab/neural-network-playground",
+      "section": "visual-lab",
+      "title": "Neural Network Playground",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/visual-lab/overview": {
+      "slug": "visual-lab/overview",
+      "section": "visual-lab",
+      "title": "Visual Lab — Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/visual-lab/rag-pipeline-simulator": {
+      "slug": "visual-lab/rag-pipeline-simulator",
+      "section": "visual-lab",
+      "title": "RAG Pipeline Simulator",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/visual-lab/ridge-regression-studio": {
+      "slug": "visual-lab/ridge-regression-studio",
+      "section": "visual-lab",
+      "title": "Ridge Regression Studio",
+      "sidebarPosition": 13,
+      "description": null
+    },
+    "/docs/visual-lab/roadmap": {
+      "slug": "visual-lab/roadmap",
+      "section": "visual-lab",
+      "title": "Visual Lab — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    }
+  },
+  "categories": {
+    "agents": {
+      "label": "Agents",
+      "position": 5
+    },
+    "agents/a2a": {
+      "label": "A2A (Agent-to-Agent)",
+      "position": 2
+    },
+    "agents/mcp": {
+      "label": "MCP (Model Context Protocol)",
+      "position": 1
+    },
+    "ai-evaluation": {
+      "label": "AI Evaluation",
+      "position": 5.5
+    },
+    "ai-for-science": {
+      "label": "AI for Science",
+      "position": 7.2
+    },
+    "ai-safety": {
+      "label": "AI Safety & Alignment",
+      "position": 6.7
+    },
+    "ai-security": {
+      "label": "AI Security",
+      "position": 6.6
+    },
+    "build-from-scratch": {
+      "label": "Build From Scratch",
+      "position": 7.5
+    },
+    "computer-vision": {
+      "label": "Computer Vision",
+      "position": 3.5
+    },
+    "cs-fundamentals": {
+      "label": "CS Fundamentals for AI Engineers",
+      "position": 0.5
+    },
+    "databases": {
+      "label": "Databases",
+      "position": 7
+    },
+    "databases/graph": {
+      "label": "Graph Databases (Neo4j)",
+      "position": 3
+    },
+    "databases/relational": {
+      "label": "Relational (MySQL, Postgres)",
+      "position": 1
+    },
+    "databases/vector": {
+      "label": "Vector Databases (ChromaDB & others)",
+      "position": 2
+    },
+    "deep-learning": {
+      "label": "Deep Learning",
+      "position": 3
+    },
+    "domain-applications": {
+      "label": "Domain AI Applications",
+      "position": 7.3
+    },
+    "frameworks": {
+      "label": "Frameworks",
+      "position": 8
+    },
+    "graph-ml": {
+      "label": "Graph ML",
+      "position": 7.1
+    },
+    "interpretability": {
+      "label": "Interpretability",
+      "position": 6.8
+    },
+    "interview-prep": {
+      "label": "Interview Prep",
+      "position": 9
+    },
+    "llms-genai": {
+      "label": "LLMs & GenAI",
+      "position": 4
+    },
+    "machine-learning": {
+      "label": "Machine Learning",
+      "position": 2
+    },
+    "mathematics-for-ai": {
+      "label": "Mathematics for AI",
+      "position": 1
+    },
+    "ml-system-design": {
+      "label": "ML System Design",
+      "position": 6
+    },
+    "mlops": {
+      "label": "MLOps",
+      "position": 6.5
+    },
+    "nlp": {
+      "label": "NLP",
+      "position": 3.6
+    },
+    "projects": {
+      "label": "Projects",
+      "position": 7.6
+    },
+    "python-engineering": {
+      "label": "Python Engineering for AI",
+      "position": 0.7
+    },
+    "reinforcement-learning": {
+      "label": "Reinforcement Learning",
+      "position": 6.9
+    },
+    "research-engineering": {
+      "label": "Research Engineering",
+      "position": 7.4
+    },
+    "resources": {
+      "label": "Resources",
+      "position": 11
+    },
+    "roadmaps": {
+      "label": "Roadmaps",
+      "position": 10
+    },
+    "speech-audio": {
+      "label": "Speech & Audio AI",
+      "position": 3.7
+    },
+    "visual-lab": {
+      "label": "Visual Lab",
+      "position": 7.7
+    }
+  }
+}
