@@ -9,6 +9,7 @@ interface ProgressContextValue {
   toggle: (permalink: string) => void;
   isUnderstood: (permalink: string) => boolean;
   countWithin: (permalinks: string[]) => number;
+  reset: () => void;
 }
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
@@ -64,8 +65,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     [understood],
   );
 
+  const reset = useCallback(() => {
+    setUnderstood({});
+    writeStorage({});
+  }, []);
+
   return (
-    <ProgressContext.Provider value={{ understood, toggle, isUnderstood, countWithin }}>
+    <ProgressContext.Provider value={{ understood, toggle, isUnderstood, countWithin, reset }}>
       {children}
     </ProgressContext.Provider>
   );

@@ -4,6 +4,7 @@ import { ThemeProvider } from './theme/ThemeProvider';
 import { ProgressProvider } from './contexts/ProgressContext';
 import DocLayout from './components/layout/DocLayout';
 import Home from './components/Home';
+import ProgressPage from './components/ProgressPage';
 import ThemedImage from './components/ThemedImage';
 import MDXCodeBlock from './components/MDXCodeBlock';
 import MDXLink from './components/MDXLink';
@@ -25,6 +26,7 @@ export default function App() {
           <BrowserRouter basename="/NeuralMastery-vite">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/progress" element={<ProgressPage />} />
               <Route path="/docs/*" element={<DocLayout />} />
             </Routes>
           </BrowserRouter>

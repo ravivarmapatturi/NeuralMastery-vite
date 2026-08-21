@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import TableOfContents from './TableOfContents';
 import MobileNavDrawer from './MobileNavDrawer';
 import PrevNext from './PrevNext';
+import MarkUnderstoodButton from './MarkUnderstoodButton';
 import ThemeSkinPicker from '../ThemeSkinPicker';
 import { getPageByRoute } from '../../lib/contentTree';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
@@ -96,6 +97,7 @@ export default function DocLayout() {
           <article className="prose">
             <Component />
           </article>
+          <MarkUnderstoodButton />
           <PrevNext route={page.route} />
         </main>
         <div className="nm-toc-wrap" style={{ position: 'relative', flexShrink: 0 }}>

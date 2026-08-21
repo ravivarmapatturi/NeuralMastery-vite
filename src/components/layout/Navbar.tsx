@@ -78,6 +78,9 @@ export default function Navbar({
           <Link to="/docs/getting-started/intro" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
             Learn
           </Link>
+          <Link to="/progress" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
+            Progress
+          </Link>
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
