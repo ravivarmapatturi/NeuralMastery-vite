@@ -16,7 +16,7 @@ const CARDS = [
 export default function LinearRegressionAtAGlance() {
   const t = useVizTokens();
   return (
-    <VisualizationContainer>
+    <VisualizationContainer footer="The whole page in four lines: the hypothesis produces a prediction, the cost function measures how wrong it is, the gradient says which direction reduces that cost, and the update rule is that direction applied to the weights -- every section below derives one of these four lines in full.">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
         {CARDS.map((c) => (
           <div key={c.label} style={{ background: t.surfaceAlt, border: `1.5px solid ${t[c.color]}`, borderRadius: 8, padding: '14px 12px', textAlign: 'center' }}>

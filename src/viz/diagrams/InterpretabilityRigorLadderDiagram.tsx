@@ -18,7 +18,7 @@ export default function InterpretabilityRigorLadderDiagram() {
   const active = RUNGS.find((r) => r.id === selected)!;
 
   return (
-    <VisualizationContainer>
+    <VisualizationContainer footer={`Rung ${RUNGS.indexOf(active) + 1} (${active.label}) -- tells you: ${active.tells} Doesn't: ${active.not} Rungs going up cost more effort and buy more causal certainty -- not a strict pipeline every project must climb in full. Which rung is "enough" depends entirely on what the answer is being used for.`}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {RUNGS.map((r, i) => {
           const isSelected = selected === r.id;
@@ -44,9 +44,6 @@ export default function InterpretabilityRigorLadderDiagram() {
       <div style={{ marginTop: 12, padding: '0.7rem 0.9rem', borderRadius: 8, background: t.surfaceAlt, border: `1px solid ${t.border}` }}>
         <div style={{ fontSize: DIAGRAM_TYPE.caption.size, color: t.textPrimary, marginBottom: 4 }}><strong>Tells you:</strong> {active.tells}</div>
         <div style={{ fontSize: DIAGRAM_TYPE.caption.size, color: t.textMuted }}><strong>Doesn't:</strong> {active.not}</div>
-      </div>
-      <div style={{ textAlign: 'center', fontSize: DIAGRAM_TYPE.caption.size, color: t.textMuted, marginTop: 8 }}>
-        Rungs going up cost more effort and buy more causal certainty -- not a strict pipeline every project must climb in full. Which rung is "enough" depends entirely on what the answer is being used for.
       </div>
     </VisualizationContainer>
   );
