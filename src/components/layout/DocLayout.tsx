@@ -6,6 +6,7 @@ import TableOfContents from './TableOfContents';
 import MobileNavDrawer from './MobileNavDrawer';
 import PrevNext from './PrevNext';
 import MarkUnderstoodButton from './MarkUnderstoodButton';
+import PageFeedback from './PageFeedback';
 import ThemeSkinPicker from '../ThemeSkinPicker';
 import { getPageByRoute } from '../../lib/contentTree';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
@@ -97,6 +98,7 @@ export default function DocLayout() {
           <article className="prose">
             <Component />
           </article>
+          <PageFeedback page={page} />
           <MarkUnderstoodButton />
           <PrevNext route={page.route} />
         </main>

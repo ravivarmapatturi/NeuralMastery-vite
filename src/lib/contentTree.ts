@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import lastUpdatedMap from '../data/lastUpdated.generated.json';
 
 export interface DocFrontmatter {
   title?: string;
@@ -24,6 +25,7 @@ export interface DocPage {
   sidebarPosition: number;
   section: string; // top-level folder name, e.g. "deep-learning"
   Component: ComponentType;
+  lastUpdated?: string; // ISO date of the most recent commit touching this page, from lastUpdated.generated.json
 }
 
 export interface SidebarSection {
@@ -80,13 +82,15 @@ function buildPages(): DocPage[] {
     const parts = rel.split('/');
     const section = parts.length > 1 ? parts[0] : 'general';
     const fm = mod.frontmatter ?? {};
+    const route = `/docs/${rel}`;
     pages.push({
       slug: rel,
-      route: `/docs/${rel}`,
+      route,
       title: fm.title ?? titleCase(parts[parts.length - 1]),
       description: fm.description,
       sidebarPosition: fm.sidebar_position ?? 999,
       section,
+      lastUpdated: (lastUpdatedMap as Record<string, string>)[route],
       Component: mod.default,
     });
   }
