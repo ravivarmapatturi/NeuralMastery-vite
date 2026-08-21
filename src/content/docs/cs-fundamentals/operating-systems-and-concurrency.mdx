@@ -43,6 +43,27 @@ The **Global Interpreter Lock (GIL)** ensures only one thread executes Python by
 
 <GilReleaseDiagram />
 
+The GIL's effect made directly measurable — the same CPU-bound pure-Python function, 4 threads vs. 4 processes:
+
+```python
+import time
+from threading import Thread
+from multiprocessing import Process
+
+def cpu_bound_work():
+    return sum(i * i for i in range(20_000_000))   # pure Python -- no GIL-releasing C/CUDA call inside
+
+def run(worker_cls, n=4):
+    start = time.perf_counter()
+    workers = [worker_cls(target=cpu_bound_work) for _ in range(n)]
+    for w in workers: w.start()
+    for w in workers: w.join()
+    return time.perf_counter() - start
+
+print(f"4 threads:   {run(Thread):.2f}s")     # ~= the time for 1 thread -- the GIL serializes all 4
+print(f"4 processes: {run(Process):.2f}s")    # ~= 1/4 the threaded time on a 4+ core machine -- real parallelism
+```
+
 ## Memory: Stack, Heap, Virtual Memory
 
 - **Stack**: fast, automatically-managed memory for function calls and local variables — allocated and freed automatically as functions are entered/exited, in strict last-in-first-out order.
@@ -63,5 +84,14 @@ Between the CPU and RAM sits a hierarchy of progressively larger, progressively 
 <SequentialVsRandomIoDiagram />
 - **Buffered I/O**: the OS caches recently-read disk blocks in RAM, which is why a second read of the same file is often much faster than the first — relevant when reasoning about "why did my dataloader suddenly speed up after the first epoch."
 - **Memory-mapped files (`mmap`)**: map a file's contents directly into a process's virtual address space, so reading from it looks like reading from memory, with the OS handling the actual disk I/O on demand via page faults — how many large-dataset and large-model-loading libraries avoid reading an entire multi-gigabyte file into RAM upfront.
+
+```python
+import mmap
+
+with open("weights.safetensors", "rb") as f:
+    mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)  # no upfront read -- pages fault in on demand
+    header = mm[:8]              # looks like slicing an in-memory bytes object
+    tensor_bytes = mm[1024:2048]  # only these pages actually get read from disk, lazily
+```
 
 Next: [Networking & Distributed Systems](/docs/cs-fundamentals/networking-and-distributed-systems) — the same concurrency/isolation tradeoffs above, at the scale of multiple machines instead of multiple processes on one.
