@@ -30,6 +30,38 @@ See [APIs, HTTP & Communication Patterns](/docs/cs-fundamentals/apis-http-and-pr
 
 <TcpVsUdpDiagram />
 
+Everything above (HTTP, REST, TCP) at the socket level, underneath the frameworks that normally hide it:
+
+```python
+import socket
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:  # SOCK_STREAM = TCP
+    s.connect(("api.example.com", 443))
+    request = b"GET /v1/health HTTP/1.1\r\nHost: api.example.com\r\nConnection: close\r\n\r\n"
+    s.sendall(request)
+    response = b""
+    while chunk := s.recv(4096):
+        response += chunk
+```
+
+**HTTP vs. gRPC vs. WebSockets** for service-to-service communication specifically — three different tradeoffs, not just three transports:
+
+```protobuf
+// gRPC: a strict, code-generated contract via Protocol Buffers -- faster to (de)serialize than JSON,
+// and the client/server stubs are generated, not hand-written
+service InferenceService {
+  rpc Predict (PredictRequest) returns (PredictResponse);
+}
+message PredictRequest { repeated float features = 1; }
+```
+
+```python
+# the generated client, used like a normal function call -- the network round-trip is hidden
+response = stub.Predict(inference_pb2.PredictRequest(features=[5.1, 3.5, 1.4, 0.2]))
+```
+
+HTTP/REST (see [APIs, HTTP & Communication Patterns](/docs/cs-fundamentals/apis-http-and-protocols)) wins on universal tooling and human-readability (`curl` anything, no codegen step); gRPC wins on performance and a strict typed contract, common for internal service-to-service calls (e.g. a gateway calling an inference server) where every caller is also your own code; WebSockets win when the *client* needs to push data mid-connection too, not just receive it — none of the three is strictly better, the choice depends on who's calling and what they need.
+
 ## DNS
 
 Domain Name System resolution turns a hostname (`api.example.com`) into an IP address before a connection can even be opened — an often-invisible step that becomes very visible the moment it's slow or misconfigured (a DNS lookup adding 200ms to every cold request, or a stale DNS cache routing traffic to a decommissioned server).
