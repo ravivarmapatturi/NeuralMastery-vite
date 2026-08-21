@@ -36,7 +36,7 @@ export default function NdcgRankingDiagram() {
         {(['good', 'poor'] as Rankings[]).map((r) => {
           const isActive = ranking === r;
           return (
-            <div key={r} onClick={() => setRanking(r)} onMouseEnter={() => setRanking(r)} style={{ cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
+            <div key={r} onClick={() => setRanking(r)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setRanking(r); } }} onMouseEnter={() => setRanking(r)} style={{ cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
               <span style={{ fontSize: 10.5, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textPrimary }}>{r === 'good' ? 'Highly-relevant ranked first' : 'Highly-relevant ranked last'}</span>
             </div>
           );

@@ -20,11 +20,11 @@ export default function CanaryVsAbPurposeDiagram() {
         : 'A/B testing asks: "does the new version produce a BETTER OUTCOME -- more conversions, more engagement?" -- run for a fixed, pre-committed duration with statistical significance testing, not cut short early.'}
     >
       <div style={{ display: 'flex', gap: 8 }}>
-        <div onClick={() => setActive('canary')} onMouseEnter={() => setActive('canary')} style={{ flex: 1, cursor: 'pointer', padding: '0.8rem', borderRadius: 9, background: active === 'canary' ? `${canaryColor}18` : t.surfaceAlt, border: `1.5px solid ${active === 'canary' ? canaryColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setActive('canary')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('canary'); } }} onMouseEnter={() => setActive('canary')} style={{ flex: 1, cursor: 'pointer', padding: '0.8rem', borderRadius: 9, background: active === 'canary' ? `${canaryColor}18` : t.surfaceAlt, border: `1.5px solid ${active === 'canary' ? canaryColor : t.border}`, textAlign: 'center' }}>
           <div style={{ fontSize: 12, fontWeight: 700, color: active === 'canary' ? canaryColor : t.textPrimary }}>Canary</div>
           <div style={{ fontSize: 9.5, color: t.textMuted, marginTop: 4 }}>rollout safety</div>
         </div>
-        <div onClick={() => setActive('ab')} onMouseEnter={() => setActive('ab')} style={{ flex: 1, cursor: 'pointer', padding: '0.8rem', borderRadius: 9, background: active === 'ab' ? `${abColor}18` : t.surfaceAlt, border: `1.5px solid ${active === 'ab' ? abColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setActive('ab')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('ab'); } }} onMouseEnter={() => setActive('ab')} style={{ flex: 1, cursor: 'pointer', padding: '0.8rem', borderRadius: 9, background: active === 'ab' ? `${abColor}18` : t.surfaceAlt, border: `1.5px solid ${active === 'ab' ? abColor : t.border}`, textAlign: 'center' }}>
           <div style={{ fontSize: 12, fontWeight: 700, color: active === 'ab' ? abColor : t.textPrimary }}>A/B Test</div>
           <div style={{ fontSize: 9.5, color: t.textMuted, marginTop: 4 }}>business impact</div>
         </div>

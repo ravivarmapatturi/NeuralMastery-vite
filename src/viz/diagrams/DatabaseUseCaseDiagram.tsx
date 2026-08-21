@@ -23,7 +23,7 @@ export default function DatabaseUseCaseDiagram() {
         {DBS.map((d) => {
           const isSelected = selected === d.key;
           return (
-            <div key={d.key} onClick={() => setSelected(d.key)} onMouseEnter={() => setSelected(d.key)} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}`, textAlign: 'center' }}>
+            <div key={d.key} onClick={() => setSelected(d.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(d.key); } }} onMouseEnter={() => setSelected(d.key)} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}`, textAlign: 'center' }}>
               <span style={{ fontSize: 11, fontWeight: 700, color: isSelected ? color : t.textPrimary }}>{d.label}</span>
             </div>
           );

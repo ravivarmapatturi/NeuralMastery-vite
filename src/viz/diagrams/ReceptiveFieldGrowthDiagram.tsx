@@ -23,7 +23,7 @@ export default function ReceptiveFieldGrowthDiagram() {
     <VisualizationContainer footer={`After ${layers} layer${layers > 1 ? 's' : ''} of stacked 3×3 convolutions, one output neuron "sees" a ${rf}×${rf} patch of the original image -- deeper layers see larger, more abstract patterns (${ABSTRACTION[layers - 1]}).`}>
       <div style={{ display: 'flex', gap: 5, marginBottom: 10 }}>
         {LAYERS.map((l) => (
-          <div key={l} onClick={() => setLayers(l)} onMouseEnter={() => setLayers(l)} style={{ cursor: 'pointer', padding: '0.4rem 0.7rem', borderRadius: 7, background: layers === l ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${layers === l ? color : t.border}` }}>
+          <div key={l} onClick={() => setLayers(l)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLayers(l); } }} onMouseEnter={() => setLayers(l)} style={{ cursor: 'pointer', padding: '0.4rem 0.7rem', borderRadius: 7, background: layers === l ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${layers === l ? color : t.border}` }}>
             <span style={{ fontSize: 10, fontWeight: layers === l ? 700 : 500, color: layers === l ? color : t.textPrimary }}>{l} layer{l > 1 ? 's' : ''}</span>
           </div>
         ))}

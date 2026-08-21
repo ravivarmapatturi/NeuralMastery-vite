@@ -27,7 +27,7 @@ export default function DpoVsRlhfDiagram() {
     >
       <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
         {(['rlhf', 'dpo'] as const).map((m) => (
-          <div key={m} onClick={() => setMethod(m)} style={{ padding: '6px 14px', borderRadius: 999, fontSize: 11, cursor: 'pointer', background: method === m ? t.accentPrimary : t.surfaceAlt, color: method === m ? t.background : t.textSecondary, fontWeight: method === m ? 700 : 400 }}>
+          <div key={m} onClick={() => setMethod(m)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMethod(m); } }} style={{ padding: '6px 14px', borderRadius: 999, fontSize: 11, cursor: 'pointer', background: method === m ? t.accentPrimary : t.surfaceAlt, color: method === m ? t.background : t.textSecondary, fontWeight: method === m ? 700 : 400 }}>
             {m.toUpperCase()}
           </div>
         ))}

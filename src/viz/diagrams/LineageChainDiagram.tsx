@@ -22,7 +22,7 @@ export default function LineageChainDiagram() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {CHAIN.map((c, i) => (
           <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div onClick={() => setActive(i)} onMouseEnter={() => setActive(i)} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 7, background: active === i ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${active === i ? color : t.border}`, fontSize: 11, fontWeight: active === i ? 700 : 500, color: active === i ? color : t.textPrimary }}>
+            <div onClick={() => setActive(i)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(i); } }} onMouseEnter={() => setActive(i)} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 7, background: active === i ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${active === i ? color : t.border}`, fontSize: 11, fontWeight: active === i ? 700 : 500, color: active === i ? color : t.textPrimary }}>
               {c.label}
             </div>
             {i < CHAIN.length - 1 && <span style={{ color: t.textMuted, fontSize: 12 }}>←</span>}

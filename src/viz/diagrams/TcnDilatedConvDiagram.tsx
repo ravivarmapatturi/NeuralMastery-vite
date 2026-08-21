@@ -21,7 +21,7 @@ export default function TcnDilatedConvDiagram() {
     <VisualizationContainer footer={`Layer ${layer}: dilation = ${dilation}, receptive field = ${rf} time steps, all strictly in the PAST -- the prediction at time t never depends on t+1 or later. Dilation doubling each layer means the field grows exponentially with depth, not linearly like a plain (non-dilated) convolution.`}>
       <div style={{ display: 'flex', gap: 5, marginBottom: 10 }}>
         {[1, 2, 3].map((l) => (
-          <div key={l} onClick={() => setLayer(l)} onMouseEnter={() => setLayer(l)} style={{ cursor: 'pointer', padding: '0.4rem 0.7rem', borderRadius: 7, background: layer === l ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${layer === l ? color : t.border}` }}>
+          <div key={l} onClick={() => setLayer(l)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLayer(l); } }} onMouseEnter={() => setLayer(l)} style={{ cursor: 'pointer', padding: '0.4rem 0.7rem', borderRadius: 7, background: layer === l ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${layer === l ? color : t.border}` }}>
             <span style={{ fontSize: 10, fontWeight: layer === l ? 700 : 500, color: layer === l ? color : t.textPrimary }}>layer {l}</span>
           </div>
         ))}

@@ -29,7 +29,7 @@ export default function ModelCategoryMapDiagram() {
         {CATEGORIES.map((c) => {
           const isSelected = selected === c.key;
           return (
-            <div key={c.key} onClick={() => setSelected(c.key)} onMouseEnter={() => setSelected(c.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
+            <div key={c.key} onClick={() => setSelected(c.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(c.key); } }} onMouseEnter={() => setSelected(c.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
               <span style={{ fontSize: 11, fontWeight: isSelected ? 700 : 500, color: isSelected ? color : t.textPrimary }}>{c.label}</span>
             </div>
           );

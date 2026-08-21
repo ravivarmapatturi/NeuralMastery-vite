@@ -43,7 +43,7 @@ export default function MessagePassingDiagram() {
     <VisualizationContainer footer={`After ${k} layer${k > 1 ? 's' : ''} of message passing, node 0's representation reflects its ${k}-hop neighborhood -- ${[...dist.values()].filter((d) => d <= k).length - 1} other node(s) have influenced it so far.`}>
       <div style={{ display: 'flex', gap: 5, marginBottom: 10 }}>
         {[1, 2, 3].map((x) => (
-          <div key={x} onClick={() => setK(x)} onMouseEnter={() => setK(x)} style={{ cursor: 'pointer', padding: '0.4rem 0.7rem', borderRadius: 7, background: k === x ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${k === x ? color : t.border}` }}>
+          <div key={x} onClick={() => setK(x)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setK(x); } }} onMouseEnter={() => setK(x)} style={{ cursor: 'pointer', padding: '0.4rem 0.7rem', borderRadius: 7, background: k === x ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${k === x ? color : t.border}` }}>
             <span style={{ fontSize: 10, fontWeight: k === x ? 700 : 500, color: k === x ? color : t.textPrimary }}>k={x}</span>
           </div>
         ))}

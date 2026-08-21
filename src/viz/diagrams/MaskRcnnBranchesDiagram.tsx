@@ -27,7 +27,7 @@ export default function MaskRcnnBranchesDiagram() {
           const isActive = active === x.key;
           const isNew = x.key === 'mask';
           return (
-            <div key={x.key} onClick={() => setActive(x.key)} onMouseEnter={() => setActive(x.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.6rem', borderRadius: 7, background: isActive ? `${color}20` : isNew ? `${t.accentPrimary}10` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : isNew ? t.accentPrimary : t.border}`, textAlign: 'center' }}>
+            <div key={x.key} onClick={() => setActive(x.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(x.key); } }} onMouseEnter={() => setActive(x.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.6rem', borderRadius: 7, background: isActive ? `${color}20` : isNew ? `${t.accentPrimary}10` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : isNew ? t.accentPrimary : t.border}`, textAlign: 'center' }}>
               <span style={{ fontSize: 9, fontWeight: isActive ? 700 : 500, color: isActive ? color : isNew ? t.accentPrimary : t.textPrimary }}>{x.label}</span>
             </div>
           );

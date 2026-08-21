@@ -23,7 +23,7 @@ export default function GenAiCaseStudiesDiagram() {
         {CATEGORIES.map((c) => {
           const isSelected = selected === c.key;
           return (
-            <div key={c.key} onClick={() => setSelected(c.key)} onMouseEnter={() => setSelected(c.key)} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}`, textAlign: 'center' }}>
+            <div key={c.key} onClick={() => setSelected(c.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(c.key); } }} onMouseEnter={() => setSelected(c.key)} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}`, textAlign: 'center' }}>
               <div style={{ fontSize: 10.5, fontWeight: 700, color: isSelected ? color : t.textPrimary }}>{c.label}</div>
             </div>
           );

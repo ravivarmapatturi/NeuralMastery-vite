@@ -24,7 +24,7 @@ export default function ContainerSecurityChecklistDiagram() {
         {ITEMS.map((item) => {
           const isActive = active === item.key;
           return (
-            <div key={item.key} onClick={() => setActive(item.key)} onMouseEnter={() => setActive(item.key)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, padding: '0.55rem 0.8rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
+            <div key={item.key} onClick={() => setActive(item.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(item.key); } }} onMouseEnter={() => setActive(item.key)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, padding: '0.55rem 0.8rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
               <span style={{ color, fontSize: 13 }}>✓</span>
               <span style={{ fontSize: 12, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textPrimary }}>{item.label}</span>
             </div>

@@ -25,7 +25,7 @@ export default function LeastPrivilegeAgencyDiagram() {
           const isActive = active === y.key;
           const c = tierColor(y.tier);
           return (
-            <div key={y.key} onClick={() => setActive(y.key)} onMouseEnter={() => setActive(y.key)} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.5rem 0.5rem', borderRadius: 7, background: isActive ? `${c}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? c : t.border}` }}>
+            <div key={y.key} onClick={() => setActive(y.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(y.key); } }} onMouseEnter={() => setActive(y.key)} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.5rem 0.5rem', borderRadius: 7, background: isActive ? `${c}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? c : t.border}` }}>
               <div style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, color: isActive ? c : t.textPrimary }}>{y.label}</div>
               <div style={{ fontSize: 8, color: c, marginTop: 2, textTransform: 'uppercase', letterSpacing: 0.3 }}>{y.tier}</div>
             </div>

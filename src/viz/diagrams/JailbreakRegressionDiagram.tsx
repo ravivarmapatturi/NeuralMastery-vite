@@ -24,7 +24,7 @@ export default function JailbreakRegressionDiagram() {
           const isActive = step === i;
           const c = s.blocked ? okColor : badColor;
           return (
-            <div key={s.label} onClick={() => setStep(i)} onMouseEnter={() => setStep(i)} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, textAlign: 'center', background: isActive ? `${c}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? c : t.border}` }}>
+            <div key={s.label} onClick={() => setStep(i)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setStep(i); } }} onMouseEnter={() => setStep(i)} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, textAlign: 'center', background: isActive ? `${c}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? c : t.border}` }}>
               <div style={{ fontSize: 9, fontWeight: isActive ? 700 : 500, color: isActive ? c : t.textPrimary }}>{s.label}</div>
               <div style={{ fontSize: 8, color: c, marginTop: 2 }}>{s.blocked ? '✓ blocked' : '✗ works again'}</div>
             </div>

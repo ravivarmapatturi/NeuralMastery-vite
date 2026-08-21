@@ -23,7 +23,7 @@ export default function LogStackComparisonDiagram() {
         {STACKS.map((s) => {
           const isSelected = selected === s.key;
           return (
-            <div key={s.key} onClick={() => setSelected(s.key)} onMouseEnter={() => setSelected(s.key)} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}`, textAlign: 'center' }}>
+            <div key={s.key} onClick={() => setSelected(s.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(s.key); } }} onMouseEnter={() => setSelected(s.key)} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}`, textAlign: 'center' }}>
               <span style={{ fontSize: 11.5, fontWeight: 700, color: isSelected ? color : t.textPrimary }}>{s.label}</span>
             </div>
           );

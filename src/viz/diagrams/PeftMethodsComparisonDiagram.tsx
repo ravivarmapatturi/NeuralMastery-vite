@@ -32,7 +32,7 @@ export default function PeftMethodsComparisonDiagram() {
           const widthPct = ((logPct - minLog) / (maxLog - minLog)) * 100;
           const isSelected = selected === m.key;
           return (
-            <div key={m.key} onClick={() => setSelected(m.key)} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+            <div key={m.key} onClick={() => setSelected(m.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(m.key); } }} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
               <div style={{ width: 90, fontSize: 10, color: isSelected ? color : t.textSecondary, fontWeight: isSelected ? 700 : 400 }}>{m.label}</div>
               <div style={{ flex: 1, height: 14, background: t.surfaceAlt, borderRadius: 4, overflow: 'hidden' }}>
                 <div style={{ width: `${widthPct}%`, height: '100%', background: isSelected ? color : t.textMuted, opacity: isSelected ? 0.85 : 0.4 }} />

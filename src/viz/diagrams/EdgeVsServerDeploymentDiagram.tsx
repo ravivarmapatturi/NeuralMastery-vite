@@ -27,7 +27,7 @@ export default function EdgeVsServerDeploymentDiagram() {
     <VisualizationContainer footer={focus === 'server' ? 'Server-side: raw throughput and batching win, at the cost of a network round trip and per-request infrastructure cost.' : 'Edge/on-device: privacy, offline capability, and zero marginal cost win -- llama.cpp/GGUF, ExecuTorch, Core ML, MLX chosen by target platform, not raw throughput (rarely the binding constraint for single-request-at-a-time on-device work).'}>
       <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
         {(['server', 'edge'] as Target[]).map((k) => (
-          <div key={k} onClick={() => setFocus(k)} style={{ cursor: 'pointer', padding: '5px 12px', borderRadius: 6, fontSize: 12, fontWeight: focus === k ? 700 : 500, background: focus === k ? `${k === 'server' ? serverColor : edgeColor}25` : t.surfaceAlt, color: focus === k ? (k === 'server' ? serverColor : edgeColor) : t.textSecondary, border: `1.25px solid ${focus === k ? (k === 'server' ? serverColor : edgeColor) : t.border}` }}>
+          <div key={k} onClick={() => setFocus(k)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setFocus(k); } }} style={{ cursor: 'pointer', padding: '5px 12px', borderRadius: 6, fontSize: 12, fontWeight: focus === k ? 700 : 500, background: focus === k ? `${k === 'server' ? serverColor : edgeColor}25` : t.surfaceAlt, color: focus === k ? (k === 'server' ? serverColor : edgeColor) : t.textSecondary, border: `1.25px solid ${focus === k ? (k === 'server' ? serverColor : edgeColor) : t.border}` }}>
             {k === 'server' ? 'Server-side serving' : 'Edge / on-device'}
           </div>
         ))}

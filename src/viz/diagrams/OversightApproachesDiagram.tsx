@@ -20,7 +20,7 @@ export default function OversightApproachesDiagram() {
         {APPROACHES.map((a) => {
           const isSelected = selected === a.id;
           return (
-            <div key={a.id} onClick={() => setSelected(a.id)} style={{
+            <div key={a.id} onClick={() => setSelected(a.id)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(a.id); } }} style={{
               display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', padding: '0.7rem 0.9rem', borderRadius: 8,
               background: isSelected ? `${t.accentPrimary}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? t.accentPrimary : t.border}`,
             }}>

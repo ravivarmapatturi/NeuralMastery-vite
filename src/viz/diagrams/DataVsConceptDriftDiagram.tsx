@@ -21,10 +21,10 @@ export default function DataVsConceptDriftDiagram() {
         : 'Concept drift: the SAME input now genuinely warrants a DIFFERENT prediction (fraudsters adapt their behavior) -- the target definition itself moved. Retraining on stale labels won\'t help; the labeling/evaluation process needs revisiting.'}
     >
       <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-        <div onClick={() => setKind('data')} onMouseEnter={() => setKind('data')} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: kind === 'data' ? `${dataColor}18` : t.surfaceAlt, border: `1.5px solid ${kind === 'data' ? dataColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setKind('data')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setKind('data'); } }} onMouseEnter={() => setKind('data')} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: kind === 'data' ? `${dataColor}18` : t.surfaceAlt, border: `1.5px solid ${kind === 'data' ? dataColor : t.border}`, textAlign: 'center' }}>
           <span style={{ fontSize: 11.5, fontWeight: 700, color: kind === 'data' ? dataColor : t.textPrimary }}>Data drift</span>
         </div>
-        <div onClick={() => setKind('concept')} onMouseEnter={() => setKind('concept')} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: kind === 'concept' ? `${conceptColor}18` : t.surfaceAlt, border: `1.5px solid ${kind === 'concept' ? conceptColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setKind('concept')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setKind('concept'); } }} onMouseEnter={() => setKind('concept')} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: kind === 'concept' ? `${conceptColor}18` : t.surfaceAlt, border: `1.5px solid ${kind === 'concept' ? conceptColor : t.border}`, textAlign: 'center' }}>
           <span style={{ fontSize: 11.5, fontWeight: 700, color: kind === 'concept' ? conceptColor : t.textPrimary }}>Concept drift</span>
         </div>
       </div>

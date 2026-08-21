@@ -23,7 +23,7 @@ export default function BaselineVsEngineDiagram() {
     <VisualizationContainer footer="Naming which problem you actually have is worth doing before reaching for a heavier tool to fix it -- low-traffic prototyping genuinely doesn't need any of this yet.">
       <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
         {PROBLEMS.map((p) => (
-          <div key={p.key} onClick={() => setSelected(p.key)} style={{ cursor: 'pointer', padding: '5px 10px', borderRadius: 6, fontSize: 11, fontWeight: selected === p.key ? 700 : 500, background: selected === p.key ? `${engineColor}25` : t.surfaceAlt, border: `1.25px solid ${selected === p.key ? engineColor : t.border}`, color: selected === p.key ? engineColor : t.textSecondary }}>
+          <div key={p.key} onClick={() => setSelected(p.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(p.key); } }} style={{ cursor: 'pointer', padding: '5px 10px', borderRadius: 6, fontSize: 11, fontWeight: selected === p.key ? 700 : 500, background: selected === p.key ? `${engineColor}25` : t.surfaceAlt, border: `1.25px solid ${selected === p.key ? engineColor : t.border}`, color: selected === p.key ? engineColor : t.textSecondary }}>
             {p.label}
           </div>
         ))}

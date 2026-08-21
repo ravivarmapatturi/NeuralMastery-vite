@@ -24,7 +24,7 @@ export default function TrackingToolComparisonDiagram() {
         {TOOLS.map((tool) => {
           const isSelected = selected === tool.key;
           return (
-            <div key={tool.key} onClick={() => setSelected(tool.key)} onMouseEnter={() => setSelected(tool.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 7, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
+            <div key={tool.key} onClick={() => setSelected(tool.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(tool.key); } }} onMouseEnter={() => setSelected(tool.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 7, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: isSelected ? color : t.textPrimary }}>{tool.label}</div>
               <div style={{ fontSize: 8.5, color: t.textMuted, marginTop: 2 }}>{tool.hosted}</div>
             </div>

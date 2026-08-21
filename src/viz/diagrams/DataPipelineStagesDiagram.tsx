@@ -29,7 +29,7 @@ export default function DataPipelineStagesDiagram() {
           const h = (s.volume / maxVolume) * 110;
           const isSelected = selected === s.key;
           return (
-            <div key={s.key} onClick={() => setSelected(s.key)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', width: 80 }}>
+            <div key={s.key} onClick={() => setSelected(s.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(s.key); } }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer', width: 80 }}>
               <div style={{ fontSize: 9, color: isSelected ? color : t.textMuted, fontWeight: isSelected ? 700 : 400, marginBottom: 4 }}>{s.volume}%</div>
               <div style={{ width: 44, height: h, background: isSelected ? color : t.surfaceAlt, opacity: isSelected ? 0.85 : 0.6, border: `1.5px solid ${isSelected ? color : t.border}`, borderRadius: '4px 4px 0 0' }} />
             </div>

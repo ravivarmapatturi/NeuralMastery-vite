@@ -26,7 +26,7 @@ export default function MixedPrecisionDiagram() {
           const isSelected = active === s.key;
           const color = s.precision === 'fp32' ? fp32Color : s.precision.includes('16') && !s.precision.includes('32') ? fp16Color : t.accentWarn;
           return (
-            <div key={s.key} onClick={() => setActive(s.key)} onMouseEnter={() => setActive(s.key)} style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0.8rem', borderRadius: 7, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
+            <div key={s.key} onClick={() => setActive(s.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(s.key); } }} onMouseEnter={() => setActive(s.key)} style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0.8rem', borderRadius: 7, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
               <span style={{ fontSize: 12, fontWeight: isSelected ? 700 : 500, color: isSelected ? color : t.textPrimary }}>{s.label}</span>
               <span style={{ fontSize: 10.5, fontFamily: 'monospace', color }}>{s.precision}</span>
             </div>

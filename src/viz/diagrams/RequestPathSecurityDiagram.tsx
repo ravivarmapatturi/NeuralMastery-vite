@@ -25,7 +25,7 @@ export default function RequestPathSecurityDiagram() {
           const isActive = active === x.key;
           return (
             <div key={x.key} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <div onClick={() => setActive(x.key)} onMouseEnter={() => setActive(x.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.55rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}`, maxWidth: 110 }}>
+              <div onClick={() => setActive(x.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(x.key); } }} onMouseEnter={() => setActive(x.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.55rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}`, maxWidth: 110 }}>
                 <span style={{ fontSize: 9, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textPrimary }}>{x.label}</span>
               </div>
               {i < LAYERS.length - 1 && <span style={{ color: t.textMuted, fontSize: 11 }}>→</span>}

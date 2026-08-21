@@ -24,7 +24,7 @@ export default function RegistryComparisonDiagram() {
         {REGISTRIES.map((r) => {
           const isSelected = selected === r.key;
           return (
-            <div key={r.key} onClick={() => setSelected(r.key)} onMouseEnter={() => setSelected(r.key)} style={{ cursor: 'pointer', padding: '0.6rem 0.9rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}`, flex: '1 1 120px', textAlign: 'center' }}>
+            <div key={r.key} onClick={() => setSelected(r.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(r.key); } }} onMouseEnter={() => setSelected(r.key)} style={{ cursor: 'pointer', padding: '0.6rem 0.9rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}`, flex: '1 1 120px', textAlign: 'center' }}>
               <span style={{ fontSize: 11.5, fontWeight: isSelected ? 700 : 500, color: isSelected ? color : t.textPrimary }}>{r.label}</span>
             </div>
           );

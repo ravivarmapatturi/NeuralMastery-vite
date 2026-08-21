@@ -20,7 +20,7 @@ export default function PipelineCachingDiagram() {
         {STAGES.map((s, i) => {
           const reruns = i >= changedStage;
           return (
-            <div key={s} onClick={() => setChangedStage(i)} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem 0.4rem', borderRadius: 7, textAlign: 'center', background: reruns ? `${rerunColor}18` : `${cachedColor}18`, border: `1.5px solid ${reruns ? rerunColor : cachedColor}` }}>
+            <div key={s} onClick={() => setChangedStage(i)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setChangedStage(i); } }} style={{ flex: 1, cursor: 'pointer', padding: '0.6rem 0.4rem', borderRadius: 7, textAlign: 'center', background: reruns ? `${rerunColor}18` : `${cachedColor}18`, border: `1.5px solid ${reruns ? rerunColor : cachedColor}` }}>
               <div style={{ fontSize: 9.5, fontWeight: 700, color: reruns ? rerunColor : cachedColor }}>{reruns ? 'rerun' : 'cached'}</div>
               <div style={{ fontSize: 8.5, color: t.textMuted, marginTop: 3 }}>{s}</div>
             </div>

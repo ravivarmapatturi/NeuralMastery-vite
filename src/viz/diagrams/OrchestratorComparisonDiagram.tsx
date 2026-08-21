@@ -27,7 +27,7 @@ export default function OrchestratorComparisonDiagram() {
         {TOOLS.map((tool) => {
           const isSelected = selected === tool.key;
           return (
-            <div key={tool.key} onClick={() => setSelected(tool.key)} onMouseEnter={() => setSelected(tool.key)} style={{ cursor: 'pointer', padding: '0.6rem 0.85rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
+            <div key={tool.key} onClick={() => setSelected(tool.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(tool.key); } }} onMouseEnter={() => setSelected(tool.key)} style={{ cursor: 'pointer', padding: '0.6rem 0.85rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: isSelected ? color : t.textPrimary }}>{tool.label}</span>
                 <div style={{ display: 'flex', gap: 12, fontSize: 9, color: t.textMuted }}>

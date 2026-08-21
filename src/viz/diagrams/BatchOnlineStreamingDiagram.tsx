@@ -28,7 +28,7 @@ export default function BatchOnlineStreamingDiagram() {
         {MODES.map((m) => {
           const isSelected = selected === m.key;
           return (
-            <div key={m.key} onClick={() => setSelected(m.key)} onMouseEnter={() => setSelected(m.key)} style={{ flex: '1 1 150px', cursor: 'pointer', padding: '0.7rem 0.85rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
+            <div key={m.key} onClick={() => setSelected(m.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(m.key); } }} onMouseEnter={() => setSelected(m.key)} style={{ flex: '1 1 150px', cursor: 'pointer', padding: '0.7rem 0.85rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
               <div style={{ fontWeight: 700, fontSize: 12.5, color }}>{m.label}</div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9.5, color: t.textMuted }}>
                 <span>latency <Dots n={m.latency} color={color} t={t} /></span>

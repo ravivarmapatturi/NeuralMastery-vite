@@ -27,7 +27,7 @@ export default function GpuMemoryHierarchyDiagram() {
         {TIERS.map((tier) => {
           const isSelected = selected === tier.key;
           return (
-            <div key={tier.key} onClick={() => setSelected(tier.key)} onMouseEnter={() => setSelected(tier.key)} style={{ cursor: 'pointer', padding: '0.6rem 0.85rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
+            <div key={tier.key} onClick={() => setSelected(tier.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(tier.key); } }} onMouseEnter={() => setSelected(tier.key)} style={{ cursor: 'pointer', padding: '0.6rem 0.85rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontWeight: 700, fontSize: 12.5, color: isSelected ? color : t.textPrimary }}>{tier.label}</span>
                 <span style={{ fontSize: 9, color: t.textMuted }}>{tier.scope}</span>

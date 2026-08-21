@@ -71,7 +71,7 @@ export default function TechComparisonDiagram() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {category.options.map((o) => (
-          <div key={o.key} onClick={() => setOptKey(o.key)} style={{
+          <div key={o.key} onClick={() => setOptKey(o.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOptKey(o.key); } }} style={{
             display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '0.55rem 0.8rem', borderRadius: 8,
             background: optKey === o.key ? `${t.accentPrimary}18` : t.surfaceAlt,
             border: `1.5px solid ${optKey === o.key ? t.accentPrimary : t.border}`,

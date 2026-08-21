@@ -37,7 +37,7 @@ export default function RunComparisonChartDiagram() {
           const c = getConceptColor(t, r.color);
           const isActive = highlighted === r.key;
           return (
-            <div key={r.key} onClick={() => setHighlighted(r.key)} onMouseEnter={() => setHighlighted(r.key)} style={{ cursor: 'pointer', padding: '4px 10px', borderRadius: 6, fontSize: 10, fontWeight: isActive ? 700 : 500, background: isActive ? `${c}20` : t.surfaceAlt, border: `1.25px solid ${isActive ? c : t.border}`, color: isActive ? c : t.textSecondary }}>
+            <div key={r.key} onClick={() => setHighlighted(r.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setHighlighted(r.key); } }} onMouseEnter={() => setHighlighted(r.key)} style={{ cursor: 'pointer', padding: '4px 10px', borderRadius: 6, fontSize: 10, fontWeight: isActive ? 700 : 500, background: isActive ? `${c}20` : t.surfaceAlt, border: `1.25px solid ${isActive ? c : t.border}`, color: isActive ? c : t.textSecondary }}>
               {r.label}
             </div>
           );

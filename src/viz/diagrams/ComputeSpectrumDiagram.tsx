@@ -25,7 +25,7 @@ export default function ComputeSpectrumDiagram() {
         {OPTIONS.map((x) => {
           const isActive = active === x.key;
           return (
-            <div key={x.key} onClick={() => setActive(x.key)} onMouseEnter={() => setActive(x.key)} style={{ position: 'absolute', left: `${100 - x.control}%`, top: 0, transform: 'translateX(-50%)', cursor: 'pointer', textAlign: 'center', width: 70 }}>
+            <div key={x.key} onClick={() => setActive(x.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(x.key); } }} onMouseEnter={() => setActive(x.key)} style={{ position: 'absolute', left: `${100 - x.control}%`, top: 0, transform: 'translateX(-50%)', cursor: 'pointer', textAlign: 'center', width: 70 }}>
               <div style={{ fontSize: 9.5, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textSecondary, marginBottom: 4 }}>{x.label}</div>
               <div style={{ width: isActive ? 14 : 10, height: isActive ? 14 : 10, borderRadius: '50%', background: isActive ? color : t.textMuted, margin: '0 auto', border: `2px solid ${t.background}` }} />
             </div>

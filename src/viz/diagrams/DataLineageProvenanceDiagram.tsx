@@ -24,7 +24,7 @@ export default function DataLineageProvenanceDiagram() {
         {CONCEPTS.map((c) => {
           const isActive = active === c.key;
           return (
-            <div key={c.key} onClick={() => setActive(c.key)} onMouseEnter={() => setActive(c.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
+            <div key={c.key} onClick={() => setActive(c.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(c.key); } }} onMouseEnter={() => setActive(c.key)} style={{ cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
               <span style={{ fontSize: 11, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textPrimary }}>{c.label}</span>
             </div>
           );

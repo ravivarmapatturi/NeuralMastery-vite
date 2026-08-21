@@ -24,7 +24,7 @@ export default function MlflowFourComponentsDiagram() {
         {PARTS.map((p) => {
           const isActive = active === p.key;
           return (
-            <div key={p.key} onClick={() => setActive(p.key)} onMouseEnter={() => setActive(p.key)} style={{ flex: '1 1 100px', cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}`, textAlign: 'center' }}>
+            <div key={p.key} onClick={() => setActive(p.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(p.key); } }} onMouseEnter={() => setActive(p.key)} style={{ flex: '1 1 100px', cursor: 'pointer', padding: '0.6rem', borderRadius: 8, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}`, textAlign: 'center' }}>
               <span style={{ fontSize: 10.5, fontWeight: 700, color: isActive ? color : t.textPrimary }}>{p.label}</span>
             </div>
           );

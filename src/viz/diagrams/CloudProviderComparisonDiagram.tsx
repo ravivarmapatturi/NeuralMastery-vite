@@ -25,7 +25,7 @@ export default function CloudProviderComparisonDiagram() {
         {PROVIDERS.map((x) => {
           const isActive = active === x.key;
           return (
-            <div key={x.key} onClick={() => setActive(x.key)} onMouseEnter={() => setActive(x.key)} style={{ position: 'absolute', left: `${100 - x.control}%`, top: 0, transform: 'translateX(-50%)', cursor: 'pointer', textAlign: 'center', width: 90 }}>
+            <div key={x.key} onClick={() => setActive(x.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(x.key); } }} onMouseEnter={() => setActive(x.key)} style={{ position: 'absolute', left: `${100 - x.control}%`, top: 0, transform: 'translateX(-50%)', cursor: 'pointer', textAlign: 'center', width: 90 }}>
               <div style={{ width: isActive ? 14 : 10, height: isActive ? 14 : 10, borderRadius: '50%', background: isActive ? color : t.textMuted, margin: '0 auto', border: `2px solid ${t.background}` }} />
             </div>
           );
@@ -39,7 +39,7 @@ export default function CloudProviderComparisonDiagram() {
         {PROVIDERS.map((x) => {
           const isActive = active === x.key;
           return (
-            <div key={x.key} onClick={() => setActive(x.key)} style={{ cursor: 'pointer', padding: '0.4rem 0.6rem', borderRadius: 6, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
+            <div key={x.key} onClick={() => setActive(x.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(x.key); } }} style={{ cursor: 'pointer', padding: '0.4rem 0.6rem', borderRadius: 6, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}>
               <span style={{ fontSize: 9, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textPrimary }}>{x.label}</span>
             </div>
           );

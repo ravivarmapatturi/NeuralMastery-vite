@@ -21,11 +21,11 @@ export default function OfflineVsOnlineStoreDiagram() {
   return (
     <VisualizationContainer footer={info.use}>
       <div style={{ display: 'flex', gap: 8 }}>
-        <div onClick={() => setStore('offline')} onMouseEnter={() => setStore('offline')} style={{ flex: 1, cursor: 'pointer', padding: '0.7rem', borderRadius: 9, background: store === 'offline' ? `${offlineColor}18` : t.surfaceAlt, border: `1.5px solid ${store === 'offline' ? offlineColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setStore('offline')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setStore('offline'); } }} onMouseEnter={() => setStore('offline')} style={{ flex: 1, cursor: 'pointer', padding: '0.7rem', borderRadius: 9, background: store === 'offline' ? `${offlineColor}18` : t.surfaceAlt, border: `1.5px solid ${store === 'offline' ? offlineColor : t.border}`, textAlign: 'center' }}>
           <div style={{ fontSize: 11.5, fontWeight: 700, color: store === 'offline' ? offlineColor : t.textPrimary }}>Offline store</div>
           <div style={{ fontSize: 9, color: t.textMuted, marginTop: 3 }}>{INFO.offline.backend}</div>
         </div>
-        <div onClick={() => setStore('online')} onMouseEnter={() => setStore('online')} style={{ flex: 1, cursor: 'pointer', padding: '0.7rem', borderRadius: 9, background: store === 'online' ? `${onlineColor}18` : t.surfaceAlt, border: `1.5px solid ${store === 'online' ? onlineColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setStore('online')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setStore('online'); } }} onMouseEnter={() => setStore('online')} style={{ flex: 1, cursor: 'pointer', padding: '0.7rem', borderRadius: 9, background: store === 'online' ? `${onlineColor}18` : t.surfaceAlt, border: `1.5px solid ${store === 'online' ? onlineColor : t.border}`, textAlign: 'center' }}>
           <div style={{ fontSize: 11.5, fontWeight: 700, color: store === 'online' ? onlineColor : t.textPrimary }}>Online store</div>
           <div style={{ fontSize: 9, color: t.textMuted, marginTop: 3 }}>{INFO.online.backend}</div>
         </div>

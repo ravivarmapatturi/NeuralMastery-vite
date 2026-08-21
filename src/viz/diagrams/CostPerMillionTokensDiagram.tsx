@@ -25,7 +25,7 @@ export default function CostPerMillionTokensDiagram() {
         {CONFIGS.map((c) => {
           const isActive = active === c.key;
           return (
-            <div key={c.key} onClick={() => setActive(c.key)} onMouseEnter={() => setActive(c.key)} style={{ cursor: 'pointer' }}>
+            <div key={c.key} onClick={() => setActive(c.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(c.key); } }} onMouseEnter={() => setActive(c.key)} style={{ cursor: 'pointer' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 9.5, color: isActive ? color : t.textSecondary, marginBottom: 2, fontWeight: isActive ? 700 : 500 }}>
                 <span>{c.label}</span>
                 <span>${c.cost.toFixed(2)} / 1M tokens</span>

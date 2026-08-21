@@ -21,7 +21,7 @@ export default function MemoryAsRetrievalDiagram() {
     <VisualizationContainer footer={active === 'write' ? "Session 1: something worth remembering gets embedded and written into the store — this is the exact same embed step RAG uses for indexing documents." : "Session 2 (later, possibly a new context entirely): the agent embeds a query and searches the SAME store — nearest-neighbor retrieval, not a special 'memory' operation."}>
       <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginBottom: 8 }}>
         {(['write', 'query'] as const).map((k) => (
-          <div key={k} onClick={() => setActive(k)} style={{ padding: '6px 14px', borderRadius: 999, fontSize: 11, cursor: 'pointer', background: active === k ? color : t.surfaceAlt, color: active === k ? t.background : t.textSecondary, fontWeight: active === k ? 700 : 400 }}>
+          <div key={k} onClick={() => setActive(k)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(k); } }} style={{ padding: '6px 14px', borderRadius: 999, fontSize: 11, cursor: 'pointer', background: active === k ? color : t.surfaceAlt, color: active === k ? t.background : t.textSecondary, fontWeight: active === k ? 700 : 400 }}>
             {k === 'write' ? 'Write (session 1)' : 'Query (session 2+)'}
           </div>
         ))}

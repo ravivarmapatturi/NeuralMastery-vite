@@ -30,7 +30,7 @@ export default function DefenseInDepthDiagram() {
         {LAYERS.map((l) => {
           const isOn = active.has(l.id);
           return (
-            <div key={l.id} onClick={() => toggle(l.id)} style={{
+            <div key={l.id} onClick={() => toggle(l.id)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(l.id); } }} style={{
               display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '0.5rem 0.8rem', borderRadius: 8,
               background: isOn ? `${t.accentPrimary}18` : t.surfaceAlt, border: `1.5px solid ${isOn ? t.accentPrimary : t.border}`, opacity: isOn ? 1 : 0.5,
             }}>

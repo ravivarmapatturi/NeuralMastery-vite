@@ -22,10 +22,10 @@ export default function SchemaEvolutionDiagram() {
         : 'New field added as REQUIRED -- every existing consumer that doesn\'t send it now fails validation. A breaking change, silently rolled out.'}
     >
       <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-        <div onClick={() => setChange('safe')} onMouseEnter={() => setChange('safe')} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, background: change === 'safe' ? `${okColor}18` : t.surfaceAlt, border: `1.5px solid ${change === 'safe' ? okColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setChange('safe')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setChange('safe'); } }} onMouseEnter={() => setChange('safe')} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, background: change === 'safe' ? `${okColor}18` : t.surfaceAlt, border: `1.5px solid ${change === 'safe' ? okColor : t.border}`, textAlign: 'center' }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: change === 'safe' ? okColor : t.textPrimary }}>New field: optional</span>
         </div>
-        <div onClick={() => setChange('breaking')} onMouseEnter={() => setChange('breaking')} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, background: change === 'breaking' ? `${badColor}18` : t.surfaceAlt, border: `1.5px solid ${change === 'breaking' ? badColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setChange('breaking')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setChange('breaking'); } }} onMouseEnter={() => setChange('breaking')} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, background: change === 'breaking' ? `${badColor}18` : t.surfaceAlt, border: `1.5px solid ${change === 'breaking' ? badColor : t.border}`, textAlign: 'center' }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: change === 'breaking' ? badColor : t.textPrimary }}>New field: required</span>
         </div>
       </div>

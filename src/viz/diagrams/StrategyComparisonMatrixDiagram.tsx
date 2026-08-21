@@ -24,7 +24,7 @@ export default function StrategyComparisonMatrixDiagram() {
         {ROWS.map((r) => {
           const isSelected = selected === r.key;
           return (
-            <div key={r.key} onClick={() => setSelected(r.key)} onMouseEnter={() => setSelected(r.key)} style={{ cursor: 'pointer', padding: '0.55rem 0.8rem', borderRadius: 7, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
+            <div key={r.key} onClick={() => setSelected(r.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(r.key); } }} onMouseEnter={() => setSelected(r.key)} style={{ cursor: 'pointer', padding: '0.55rem 0.8rem', borderRadius: 7, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
               <div style={{ fontSize: 11.5, fontWeight: 700, color: isSelected ? color : t.textPrimary }}>{r.label}</div>
               <div style={{ fontSize: 10, color: t.textSecondary, marginTop: 2, fontStyle: 'italic' }}>&ldquo;{r.answers}&rdquo;</div>
             </div>

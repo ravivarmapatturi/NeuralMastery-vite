@@ -22,7 +22,7 @@ export default function MrrCalculatorDiagram() {
           const isRelevant = s === rank;
           const isBefore = s < rank;
           return (
-            <div key={s} onClick={() => setRank(s)} onMouseEnter={() => setRank(s)} style={{ cursor: 'pointer', flex: 1, textAlign: 'center' }}>
+            <div key={s} onClick={() => setRank(s)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setRank(s); } }} onMouseEnter={() => setRank(s)} style={{ cursor: 'pointer', flex: 1, textAlign: 'center' }}>
               <div style={{ height: 44, borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', background: isRelevant ? `${okColor}22` : t.surfaceAlt, border: `1.5px solid ${isRelevant ? okColor : isBefore ? t.textMuted : t.border}`, opacity: isBefore ? 0.5 : 1 }}>
                 <span style={{ fontSize: 15, fontWeight: 700, color: isRelevant ? okColor : t.textMuted }}>{isRelevant ? '✓' : isBefore ? '✗' : ''}</span>
               </div>

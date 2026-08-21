@@ -21,10 +21,10 @@ export default function SchemaVsDataTestDiagram() {
         : 'Schema test: the column itself was RENAMED (user_id -> userId) -- every downstream stage that references "user_id" breaks, even though every individual value would have been perfectly valid.'}
     >
       <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-        <div onClick={() => setKind('data')} onMouseEnter={() => setKind('data')} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, background: kind === 'data' ? `${dataColor}18` : t.surfaceAlt, border: `1.5px solid ${kind === 'data' ? dataColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setKind('data')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setKind('data'); } }} onMouseEnter={() => setKind('data')} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, background: kind === 'data' ? `${dataColor}18` : t.surfaceAlt, border: `1.5px solid ${kind === 'data' ? dataColor : t.border}`, textAlign: 'center' }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: kind === 'data' ? dataColor : t.textPrimary }}>Data test</span>
         </div>
-        <div onClick={() => setKind('schema')} onMouseEnter={() => setKind('schema')} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, background: kind === 'schema' ? `${schemaColor}18` : t.surfaceAlt, border: `1.5px solid ${kind === 'schema' ? schemaColor : t.border}`, textAlign: 'center' }}>
+        <div onClick={() => setKind('schema')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setKind('schema'); } }} onMouseEnter={() => setKind('schema')} style={{ flex: 1, cursor: 'pointer', padding: '0.5rem', borderRadius: 7, background: kind === 'schema' ? `${schemaColor}18` : t.surfaceAlt, border: `1.5px solid ${kind === 'schema' ? schemaColor : t.border}`, textAlign: 'center' }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: kind === 'schema' ? schemaColor : t.textPrimary }}>Schema test</span>
         </div>
       </div>

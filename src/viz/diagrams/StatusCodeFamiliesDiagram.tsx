@@ -25,7 +25,7 @@ export default function StatusCodeFamiliesDiagram() {
           const isSelected = selected === f.key;
           const color = colorFor(f.key);
           return (
-            <div key={f.key} onClick={() => setSelected(f.key)} onMouseEnter={() => setSelected(f.key)} style={{ flex: '1 1 120px', cursor: 'pointer', padding: '0.6rem 0.8rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
+            <div key={f.key} onClick={() => setSelected(f.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(f.key); } }} onMouseEnter={() => setSelected(f.key)} style={{ flex: '1 1 120px', cursor: 'pointer', padding: '0.6rem 0.8rem', borderRadius: 8, background: isSelected ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isSelected ? color : t.border}` }}>
               <div style={{ fontWeight: 700, fontSize: 12.5, color }}>{f.label}</div>
               <div style={{ fontSize: 10.5, color: t.textMuted, marginTop: 2 }}>{f.desc}</div>
             </div>
