@@ -27,7 +27,7 @@ export default function AirflowConceptMapDiagram() {
         {CONCEPTS.map((c) => {
           const isActive = active === c.key;
           return (
-            <div key={c.key} onClick={() => setActive(c.key)} onMouseEnter={() => setActive(c.key)} style={{ cursor: 'pointer', padding: '5px 12px', borderRadius: 6, fontSize: 11, fontWeight: isActive ? 700 : 500, background: isActive ? `${color}20` : t.surfaceAlt, border: `1.25px solid ${isActive ? color : t.border}`, color: isActive ? color : t.textSecondary, fontFamily: 'monospace' }}>
+            <div key={c.key} onClick={() => setActive(c.key)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(c.key); } }} onMouseEnter={() => setActive(c.key)} style={{ cursor: 'pointer', padding: '5px 12px', borderRadius: 6, fontSize: 11, fontWeight: isActive ? 700 : 500, background: isActive ? `${color}20` : t.surfaceAlt, border: `1.25px solid ${isActive ? color : t.border}`, color: isActive ? color : t.textSecondary, fontFamily: 'monospace' }}>
               {c.label}
             </div>
           );

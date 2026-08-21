@@ -24,15 +24,15 @@ export default function ThreeDParallelismCompositionDiagram() {
 
   return (
     <VisualizationContainer footer={desc[active]}>
-      <div onClick={() => setActive('data')} onMouseEnter={() => setActive('data')} style={{ cursor: 'pointer', padding: 14, borderRadius: 12, background: active === 'data' ? `${dataColor}12` : 'transparent', border: `2px solid ${active === 'data' ? dataColor : t.border}` }}>
+      <div onClick={() => setActive('data')} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('data'); } }} onMouseEnter={() => setActive('data')} style={{ cursor: 'pointer', padding: 14, borderRadius: 12, background: active === 'data' ? `${dataColor}12` : 'transparent', border: `2px solid ${active === 'data' ? dataColor : t.border}` }}>
         <div style={{ fontSize: 10, fontWeight: 700, color: active === 'data' ? dataColor : t.textMuted, marginBottom: 8 }}>DATA PARALLEL (replicated groups)</div>
         <div style={{ display: 'flex', gap: 10 }}>
           {[0, 1].map((g) => (
-            <div key={g} onClick={(e) => { e.stopPropagation(); setActive('pipeline'); }} onMouseEnter={(e) => { e.stopPropagation(); setActive('pipeline'); }} style={{ cursor: 'pointer', flex: 1, padding: 10, borderRadius: 10, background: active === 'pipeline' ? `${pipelineColor}14` : t.surfaceAlt, border: `2px solid ${active === 'pipeline' ? pipelineColor : t.border}` }}>
+            <div key={g} onClick={(e) => { e.stopPropagation(); setActive('pipeline'); }} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); setActive('pipeline'); } }} onMouseEnter={(e) => { e.stopPropagation(); setActive('pipeline'); }} style={{ cursor: 'pointer', flex: 1, padding: 10, borderRadius: 10, background: active === 'pipeline' ? `${pipelineColor}14` : t.surfaceAlt, border: `2px solid ${active === 'pipeline' ? pipelineColor : t.border}` }}>
               <div style={{ fontSize: 9, fontWeight: 700, color: active === 'pipeline' ? pipelineColor : t.textMuted, marginBottom: 6 }}>PIPELINE (across nodes)</div>
               <div style={{ display: 'flex', gap: 6 }}>
                 {[0, 1].map((node) => (
-                  <div key={node} onClick={(e) => { e.stopPropagation(); setActive('tensor'); }} onMouseEnter={(e) => { e.stopPropagation(); setActive('tensor'); }} style={{ cursor: 'pointer', flex: 1, padding: 8, borderRadius: 8, background: active === 'tensor' ? `${tensorColor}20` : t.surface, border: `2px solid ${active === 'tensor' ? tensorColor : t.border}` }}>
+                  <div key={node} onClick={(e) => { e.stopPropagation(); setActive('tensor'); }} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); setActive('tensor'); } }} onMouseEnter={(e) => { e.stopPropagation(); setActive('tensor'); }} style={{ cursor: 'pointer', flex: 1, padding: 8, borderRadius: 8, background: active === 'tensor' ? `${tensorColor}20` : t.surface, border: `2px solid ${active === 'tensor' ? tensorColor : t.border}` }}>
                     <div style={{ fontSize: 8, fontWeight: 700, color: active === 'tensor' ? tensorColor : t.textMuted, marginBottom: 4 }}>TENSOR (within node)</div>
                     <div style={{ display: 'flex', gap: 3 }}>
                       {[0, 1, 2, 3].map((gpu) => (

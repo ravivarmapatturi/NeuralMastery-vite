@@ -15,7 +15,7 @@ export default function AgentTrajectoryDiagram() {
     <VisualizationContainer footer={step.note}>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {TRAJECTORY.map((s, i) => (
-          <div key={i} onClick={() => setSelected(i)} style={{
+          <div key={i} onClick={() => setSelected(i)} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(i); } }} style={{
             flex: '1 1 140px', cursor: 'pointer', padding: '0.6rem 0.7rem', borderRadius: 8,
             background: selected === i ? `${t.accentPrimary}18` : t.surfaceAlt,
             border: `1.5px solid ${selected === i ? t.accentPrimary : s.good ? t.border : t.accentDanger}`,
