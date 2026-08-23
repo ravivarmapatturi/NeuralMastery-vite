@@ -81,7 +81,7 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
     icon: '🏗️',
     color: '#F45B5B',
     description: 'Designing, building, and running production ML/AI systems at scale.',
-    pageCount: 42,
+    pageCount: 51,
     difficulty: 'Advanced',
     prerequisites: 'Agents & Applications',
     leadsTo: 'Safety & Evaluation',
@@ -90,6 +90,7 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
       { dir: 'mlops', label: 'MLOps' },
       { dir: 'databases', label: 'Databases' },
       { dir: 'frameworks', label: 'Frameworks' },
+      { dir: 'cli-reference', label: 'CLI Reference' },
     ],
   },
   '/docs/category/safety--evaluation': {

@@ -1,0 +1,100 @@
+---
+title: "Docker & Compose"
+sidebar_position: 5
+---
+
+
+# Docker & Compose
+
+[Containers](/docs/mlops/containers) covers what an image, a layer, and a container actually are. This page is the command reference for building, running, and debugging them.
+
+## Images
+
+```bash
+docker build -t my-app:1.0 .                # build from ./Dockerfile, tag it
+docker build -f Dockerfile.prod -t my-app:prod .   # use a specific Dockerfile
+docker images                                # list local images
+docker rmi my-app:1.0                        # remove an image
+docker tag my-app:1.0 my-registry/my-app:1.0 # add a second tag (e.g. before pushing)
+docker push my-registry/my-app:1.0           # push to a registry
+docker pull my-registry/my-app:1.0           # pull from a registry
+docker history my-app:1.0                    # show each layer and its size
+```
+
+## Running containers
+
+```bash
+docker run my-app:1.0                        # run in the foreground
+docker run -d my-app:1.0                     # detached (background)
+docker run -p 8080:80 my-app:1.0             # map host:container ports
+docker run -e KEY=value my-app:1.0           # set an environment variable
+docker run -v $(pwd)/data:/app/data my-app:1.0  # bind-mount a host directory
+docker run --name my-container my-app:1.0    # give it a fixed name
+docker run --rm my-app:1.0                   # auto-remove the container when it exits
+docker run -it my-app:1.0 /bin/bash          # interactive shell instead of the default CMD
+```
+
+## Inspecting and debugging running containers
+
+```bash
+docker ps                          # running containers
+docker ps -a                       # every container, including stopped ones
+docker logs my-container            # stdout/stderr from a container
+docker logs -f my-container         # follow, like `tail -f`
+docker exec -it my-container bash   # shell into a running container
+docker inspect my-container          # full JSON: config, mounts, network, env
+docker stats                        # live CPU/memory/network usage per container
+docker top my-container              # processes running inside a container
+```
+
+## Lifecycle and cleanup
+
+```bash
+docker stop my-container             # graceful stop (SIGTERM, then SIGKILL after a timeout)
+docker start my-container            # restart a stopped container
+docker restart my-container          # stop + start
+docker rm my-container               # remove a stopped container
+docker rm -f my-container            # force-remove, even if running
+
+docker system prune                  # remove stopped containers, dangling images, unused networks
+docker system prune -a               # also remove all unused images, not just dangling ones
+docker volume prune                  # remove unused volumes
+docker image prune -a                # remove all images not used by an existing container
+```
+
+## Compose: multi-container local dev
+
+```bash
+docker compose up                    # start every service defined in docker-compose.yml
+docker compose up -d                 # detached
+docker compose up --build            # rebuild images before starting
+docker compose down                  # stop and remove containers, networks
+docker compose down -v               # also remove named volumes
+docker compose ps                    # status of each service
+docker compose logs -f api            # follow logs for one service
+docker compose exec api bash          # shell into a running service
+docker compose restart api            # restart one service without touching the others
+```
+
+A minimal `docker-compose.yml` for an API + database pair:
+
+```yaml
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:pass@db:5432/app
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+```

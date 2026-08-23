@@ -1,0 +1,101 @@
+---
+title: "Linux & Shell Commands"
+sidebar_position: 3
+---
+
+
+# Linux & Shell Commands
+
+[CS Fundamentals's Linux, Git & Tooling](/docs/cs-fundamentals/linux-git-and-tooling) page covers *why* the shell and filesystem work the way they do. This page is the command lookup: the ones you actually type, dozens of times a day, once you're debugging a real machine instead of reading about one.
+
+## Process inspection and control
+
+```bash
+ps aux                      # every process, full listing
+ps aux | grep <name>        # find a specific process
+top                         # live, interactive process/resource monitor
+htop                        # top, but readable (if installed)
+
+kill <pid>                  # SIGTERM -- ask it to stop
+kill -9 <pid>                # SIGKILL -- force-stop, no cleanup
+pkill -f <pattern>           # kill by matching the command line, not just a PID
+
+jobs                         # background/suspended jobs in this shell
+fg %1                        # bring job 1 to the foreground
+bg %1                        # resume job 1 in the background
+nohup <command> &            # run detached, survives the shell exiting
+disown                       # detach a job from the current shell without killing it
+```
+
+## Files, permissions, and disk
+
+```bash
+find . -name "*.log"                 # find files by name from the current dir
+find . -mtime -1                     # files modified in the last day
+find . -size +100M                   # files bigger than 100MB
+
+chmod +x script.sh                   # make executable
+chmod 644 file.txt                   # rw-r--r--
+chown user:group file.txt            # change owner and group
+
+du -sh *                             # size of each item in the current dir, human-readable
+du -sh . 2>/dev/null | sort -rh      # sorted, largest first
+df -h                                 # disk free space per mounted filesystem
+
+ln -s /path/to/target linkname       # symlink
+tar -czf archive.tar.gz dir/         # create a gzipped tarball
+tar -xzf archive.tar.gz              # extract one
+```
+
+## Text processing
+
+The four tools that turn "grep through some logs" into "actually answer the question":
+
+```bash
+grep -r "pattern" .                  # recursive search from the current dir
+grep -n "pattern" file                # with line numbers
+grep -v "pattern" file                # invert -- lines that DON'T match
+grep -E "foo|bar" file                # extended regex (alternation, etc.)
+
+sed 's/old/new/g' file                # replace every occurrence, per line
+sed -n '10,20p' file                  # print only lines 10-20
+sed -i 's/old/new/g' file             # edit the file in place
+
+awk '{print $1}' file                 # print the first whitespace-separated field
+awk -F',' '{print $2}' file.csv        # print the second field of a CSV
+awk '{sum += $1} END {print sum}' file # sum a column
+
+jq '.data[].id' response.json          # extract a field from JSON
+jq -r '.name' response.json            # -r: raw string output, no quotes
+echo '{"a":1}' | jq '.a'               # pipe JSON straight from another command
+```
+
+## Networking diagnostics
+
+```bash
+curl -s https://api.example.com/health           # -s: silent, no progress meter
+curl -sD - -o /dev/null https://example.com        # headers only
+curl -X POST -H "Content-Type: application/json" -d '{"k":"v"}' https://api.example.com
+
+ss -tulpn                             # listening TCP/UDP ports and owning processes (netstat's modern replacement)
+netstat -tulpn                        # same, older tool -- still common on minimal images
+
+dig example.com                       # DNS resolution, verbose
+dig +short example.com                # just the IP
+nslookup example.com                  # simpler DNS lookup
+
+ssh -i key.pem user@host              # connect with a specific key
+ssh -L 8080:localhost:80 user@host    # local port forward: localhost:8080 -> remote:80
+scp file.txt user@host:/remote/path   # copy a file over SSH
+```
+
+## Environment and shell state
+
+```bash
+export VAR=value              # set an environment variable for this shell and its children
+env                             # list all environment variables
+which <command>                # which binary would run for this command name
+type <command>                 # same, but also reports aliases/functions/builtins
+history | grep <term>          # search shell history
+alias ll='ls -alh'             # define a shortcut for this session (add to ~/.bashrc to persist)
+```

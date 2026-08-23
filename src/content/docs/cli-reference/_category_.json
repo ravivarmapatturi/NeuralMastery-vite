@@ -1,0 +1,8 @@
+{
+  "label": "CLI Reference",
+  "position": 8.5,
+  "link": {
+    "type": "generated-index",
+    "description": "Real, verified command syntax for the tools you actually type into a terminal: Linux/shell, git, Docker, kubectl, Terraform, the AWS/Azure/GCP CLIs, and Python/JS package managers."
+  }
+}

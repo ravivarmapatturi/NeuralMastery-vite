@@ -189,6 +189,69 @@
       "sidebarPosition": 3,
       "description": null
     },
+    "/docs/cli-reference/cloud-cli-aws-azure-gcp": {
+      "slug": "cli-reference/cloud-cli-aws-azure-gcp",
+      "section": "cli-reference",
+      "title": "Cloud CLIs: AWS, Azure, GCP",
+      "sidebarPosition": 8,
+      "description": null
+    },
+    "/docs/cli-reference/docker-and-compose": {
+      "slug": "cli-reference/docker-and-compose",
+      "section": "cli-reference",
+      "title": "Docker & Compose",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/cli-reference/git-command-reference": {
+      "slug": "cli-reference/git-command-reference",
+      "section": "cli-reference",
+      "title": "Git Command Reference",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/cli-reference/kubectl-command-reference": {
+      "slug": "cli-reference/kubectl-command-reference",
+      "section": "cli-reference",
+      "title": "kubectl Command Reference",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/cli-reference/linux-and-shell-commands": {
+      "slug": "cli-reference/linux-and-shell-commands",
+      "section": "cli-reference",
+      "title": "Linux & Shell Commands",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/cli-reference/overview": {
+      "slug": "cli-reference/overview",
+      "section": "cli-reference",
+      "title": "CLI Reference Overview",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/cli-reference/python-and-js-package-managers": {
+      "slug": "cli-reference/python-and-js-package-managers",
+      "section": "cli-reference",
+      "title": "Python & JS Package Managers",
+      "sidebarPosition": 9,
+      "description": null
+    },
+    "/docs/cli-reference/roadmap": {
+      "slug": "cli-reference/roadmap",
+      "section": "cli-reference",
+      "title": "CLI Reference — Roadmap",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/cli-reference/terraform-command-reference": {
+      "slug": "cli-reference/terraform-command-reference",
+      "section": "cli-reference",
+      "title": "Terraform Command Reference",
+      "sidebarPosition": 7,
+      "description": null
+    },
     "/docs/computer-vision/modern-vision-and-multimodal": {
       "slug": "computer-vision/modern-vision-and-multimodal",
       "section": "computer-vision",
@@ -1503,6 +1566,10 @@
     "build-from-scratch": {
       "label": "Build From Scratch",
       "position": 7.5
+    },
+    "cli-reference": {
+      "label": "CLI Reference",
+      "position": 8.5
     },
     "computer-vision": {
       "label": "Computer Vision",

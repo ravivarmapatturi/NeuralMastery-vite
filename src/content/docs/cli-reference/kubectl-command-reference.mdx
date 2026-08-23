@@ -1,0 +1,84 @@
+---
+title: "kubectl Command Reference"
+sidebar_position: 6
+---
+
+
+# kubectl Command Reference
+
+[Kubernetes](/docs/mlops/kubernetes) covers what a Pod, Deployment, Service, and the reconciliation loop actually are. This page is the command reference for operating a real cluster.
+
+## Context and cluster info
+
+```bash
+kubectl config get-contexts             # every cluster/context this kubeconfig knows about
+kubectl config current-context           # which one is active right now
+kubectl config use-context my-cluster    # switch active context
+kubectl cluster-info                     # control plane and core service endpoints
+kubectl version                          # client and server (API) versions
+```
+
+## Reading cluster state
+
+```bash
+kubectl get pods                              # pods in the current namespace
+kubectl get pods -A                           # pods in every namespace
+kubectl get pods -o wide                      # + node, IP, extra columns
+kubectl get pods -w                           # watch for changes, live
+kubectl get deployments,services,pods         # multiple resource types at once
+
+kubectl describe pod my-pod                   # full detail, including recent Events -- the first
+                                               # thing to check when a pod won't start or is crashlooping
+kubectl get pod my-pod -o yaml                # the pod's actual resolved manifest
+
+kubectl logs my-pod                           # stdout/stderr from a pod's (only) container
+kubectl logs my-pod -c my-container           # a specific container in a multi-container pod
+kubectl logs -f my-pod                        # follow
+kubectl logs --previous my-pod                # logs from the PREVIOUS instance of a crashed/restarted pod
+```
+
+## Creating and modifying resources
+
+```bash
+kubectl apply -f deployment.yaml         # create or update, declaratively -- the normal path
+kubectl apply -f ./manifests/            # apply every manifest in a directory
+kubectl create -f deployment.yaml        # create only -- errors if it already exists
+kubectl delete -f deployment.yaml        # delete whatever that manifest describes
+kubectl delete pod my-pod                # delete by name directly
+
+kubectl edit deployment my-app           # open the live resource in $EDITOR, applies on save
+kubectl patch deployment my-app -p '{"spec":{"replicas":5}}'   # targeted partial update
+kubectl scale deployment my-app --replicas=5                    # the common case of the above
+```
+
+## Debugging a running workload
+
+```bash
+kubectl exec -it my-pod -- /bin/bash          # shell into a pod's container
+kubectl exec my-pod -- env                    # run one command, see the output, exit
+
+kubectl port-forward pod/my-pod 8080:80       # localhost:8080 -> pod:80, for local debugging
+kubectl port-forward svc/my-service 8080:80   # same, via a Service
+
+kubectl top pods                              # live CPU/memory per pod (needs metrics-server)
+kubectl top nodes                             # live CPU/memory per node
+```
+
+## Rollouts
+
+```bash
+kubectl rollout status deployment/my-app       # watch a rollout to completion
+kubectl rollout history deployment/my-app      # revision history
+kubectl rollout undo deployment/my-app         # roll back to the previous revision
+kubectl rollout undo deployment/my-app --to-revision=3   # roll back to a specific one
+kubectl rollout restart deployment/my-app      # force a rolling restart of all pods (no image change)
+```
+
+## Namespaces and context scoping
+
+```bash
+kubectl get namespaces
+kubectl create namespace staging
+kubectl get pods -n staging                     # scope a single command to a namespace
+kubectl config set-context --current --namespace=staging   # make it the default for this context
+```

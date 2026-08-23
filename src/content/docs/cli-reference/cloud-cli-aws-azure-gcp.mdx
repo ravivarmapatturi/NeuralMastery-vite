@@ -1,0 +1,115 @@
+---
+title: "Cloud CLIs: AWS, Azure, GCP"
+sidebar_position: 8
+---
+
+
+# Cloud CLIs: AWS, Azure, GCP
+
+[Cloud Computing for ML](/docs/mlops/cloud-computing) covers the concepts and how the three providers map onto each other. [Deploying Models on AWS & Azure](/docs/mlops/cloud-model-deployment) covers real model-serving deployment methods. This page is the command reference for the three CLIs side by side, for the tasks you need in all of them: auth, compute, storage, and managed Kubernetes.
+
+## Authentication
+
+```bash
+# AWS
+aws configure                          # interactive: access key, secret, region, output format
+aws sts get-caller-identity            # confirm which identity is currently active
+export AWS_PROFILE=my-profile          # switch profiles without re-running configure
+
+# Azure
+az login                               # opens a browser for interactive auth
+az account set --subscription <name-or-id>   # pick which subscription commands target
+az account show                        # confirm the active subscription
+
+# GCP
+gcloud auth login                      # interactive user auth
+gcloud auth application-default login  # credentials for SDKs/client libraries, separate from the CLI's own auth
+gcloud config set project <project-id> # pick which project commands target
+```
+
+## Compute instances
+
+```bash
+# AWS EC2
+aws ec2 describe-instances                          # list instances
+aws ec2 run-instances --image-id ami-xxxx --instance-type t3.medium --key-name my-key
+aws ec2 start-instances --instance-ids i-0123456789abcdef0
+aws ec2 stop-instances --instance-ids i-0123456789abcdef0
+aws ec2 terminate-instances --instance-ids i-0123456789abcdef0
+
+# Azure VMs
+az vm list -g my-resource-group
+az vm create -n my-vm -g my-resource-group --image Ubuntu2204 --size Standard_D2s_v5 --admin-username azureuser
+az vm start -n my-vm -g my-resource-group
+az vm deallocate -n my-vm -g my-resource-group    # stop AND release compute resources (stops billing for compute)
+
+# GCP Compute Engine
+gcloud compute instances list
+gcloud compute instances create my-instance --machine-type=e2-medium --image-family=debian-12 --image-project=debian-cloud
+gcloud compute instances start my-instance
+gcloud compute instances stop my-instance
+```
+
+## Object storage
+
+```bash
+# AWS S3
+aws s3 ls s3://my-bucket/
+aws s3 cp local-file.txt s3://my-bucket/path/
+aws s3 sync ./local-dir s3://my-bucket/path/       # only transfer what changed
+aws s3 rm s3://my-bucket/path/local-file.txt
+
+# Azure Blob Storage
+az storage account create --name mystorageacct -g my-resource-group -l eastus --sku Standard_LRS
+az storage blob upload --account-name mystorageacct --container-name my-container --name blob-name --file local-file.txt
+az storage blob upload-batch --account-name mystorageacct --destination my-container --source ./local-dir
+
+# GCP Cloud Storage
+gcloud storage cp local-file.txt gs://my-bucket/path/
+gcloud storage cp -r ./local-dir gs://my-bucket/path/
+gcloud storage ls gs://my-bucket/
+gcloud storage rm gs://my-bucket/path/local-file.txt
+# `gcloud storage` is the current tool; `gsutil` is the older one and still works, but gcloud storage is what Google now recommends.
+```
+
+## Managed Kubernetes credentials
+
+Getting `kubectl` pointed at a managed cluster on each provider:
+
+```bash
+# AWS EKS
+aws eks update-kubeconfig --name my-cluster --region us-east-1
+
+# Azure AKS
+az aks get-credentials --name my-cluster --resource-group my-resource-group
+
+# GCP GKE
+gcloud container clusters get-credentials my-cluster --zone us-central1-a
+```
+
+## IAM basics
+
+```bash
+# AWS
+aws iam create-role --role-name my-role --assume-role-policy-document file://trust-policy.json
+aws iam attach-role-policy --role-name my-role --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess
+aws iam list-roles
+
+# Azure
+az role assignment create --assignee <principal-id> --role "Contributor" --scope <resource-scope>
+az ad sp create-for-rbac --name my-service-principal    # create a service principal for CI/automation
+
+# GCP
+gcloud iam service-accounts create my-service-account
+gcloud projects add-iam-policy-binding <project-id> --member="serviceAccount:my-sa@<project-id>.iam.gserviceaccount.com" --role="roles/storage.objectViewer"
+```
+
+## Cross-provider cheat sheet
+
+| Task | AWS | Azure | GCP |
+|---|---|---|---|
+| Auth | `aws configure` | `az login` | `gcloud auth login` |
+| List VMs | `aws ec2 describe-instances` | `az vm list` | `gcloud compute instances list` |
+| Copy to object storage | `aws s3 cp` | `az storage blob upload` | `gcloud storage cp` |
+| Get k8s credentials | `aws eks update-kubeconfig` | `az aks get-credentials` | `gcloud container clusters get-credentials` |
+| Current identity | `aws sts get-caller-identity` | `az account show` | `gcloud config list` |

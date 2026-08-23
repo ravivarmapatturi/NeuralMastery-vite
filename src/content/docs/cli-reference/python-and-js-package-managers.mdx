@@ -1,0 +1,90 @@
+---
+title: "Python & JS Package Managers"
+sidebar_position: 9
+---
+
+
+# Python & JS Package Managers
+
+[Packaging, Testing & Tooling](/docs/python-engineering/packaging-testing-and-tooling) covers *why* the Python packaging landscape looks the way it does (wheels, `pyproject.toml`, lockfiles). This page is the command reference for `pip`, Poetry, `uv`, and `npm`.
+
+## pip and venv
+
+The baseline every Python environment falls back to, even if a project uses something else on top.
+
+```bash
+python3 -m venv .venv                 # create a virtual environment in ./.venv
+source .venv/bin/activate             # activate it (Linux/macOS)
+deactivate                            # leave the virtual environment
+
+pip install requests                  # install one package
+pip install -r requirements.txt       # install from a requirements file
+pip install -e .                      # editable install of the current project (local dev)
+pip install -e ".[dev]"               # editable install, plus an optional-dependencies group
+
+pip freeze > requirements.txt         # snapshot exact installed versions
+pip list                              # what's installed in the active environment
+pip show requests                     # details on one installed package
+pip uninstall requests
+```
+
+## Poetry
+
+Dependency management and packaging in one tool, with a lockfile.
+
+```bash
+poetry init                    # interactively create a new pyproject.toml
+poetry add requests            # add a dependency, updates pyproject.toml and poetry.lock
+poetry add --group dev pytest  # add to a specific dependency group (e.g. dev-only)
+poetry remove requests         # remove a dependency
+
+poetry install                 # install everything from poetry.lock, exactly
+poetry lock                    # regenerate the lockfile from pyproject.toml
+poetry update                  # update dependencies to the latest allowed versions AND relock
+
+poetry run pytest              # run a command inside the project's virtual environment
+poetry shell                   # drop into a shell with the project's virtual environment active
+poetry build                   # build a wheel + sdist for distribution
+```
+
+## uv
+
+A newer, much faster Python package/project manager (Rust-based), increasingly the default choice for new projects — same jobs as pip/venv and Poetry, one tool.
+
+```bash
+uv init                        # create a new project (pyproject.toml + basic structure)
+uv add requests                # add a dependency, updates pyproject.toml and uv.lock
+uv remove requests              # remove a dependency
+uv sync                        # install the environment to exactly match uv.lock
+uv lock                        # regenerate the lockfile
+
+uv run pytest                  # run a command inside the project's environment (auto-syncs first)
+uv venv                        # create a virtual environment directly (pip/venv-compatible workflow)
+uv pip install requests         # pip-compatible interface, but much faster resolution/install
+
+uv python install 3.12          # install a specific Python version, managed by uv
+uv python pin 3.12              # pin this project to that version
+
+uv tool install ruff             # install a CLI tool user-wide, isolated from any project
+uvx ruff check .                 # run a tool in a throwaway environment without installing it first
+```
+
+## npm
+
+JavaScript/TypeScript's package manager — relevant even on an ML-focused path the moment you touch a web frontend, a Node-based tool, or (as with this site) a Vite/React build.
+
+```bash
+npm install                     # install everything from package.json / package-lock.json
+npm install axios                # add a dependency, updates package.json + package-lock.json
+npm install -D typescript        # add a dev-only dependency (devDependencies)
+npm uninstall axios
+
+npm run build                   # run the "build" script defined in package.json
+npm run dev                     # same, for a "dev" script (common for local dev servers)
+npm ci                          # clean install strictly from the lockfile -- the reproducible-build
+                                 # command CI should use instead of `npm install`
+
+npm outdated                    # which installed packages have newer versions available
+npm audit                       # check installed dependencies for known vulnerabilities
+npx <tool>                      # run a package's CLI without installing it globally first
+```

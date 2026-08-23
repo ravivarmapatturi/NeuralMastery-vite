@@ -1,0 +1,87 @@
+---
+title: "Git Command Reference"
+sidebar_position: 4
+---
+
+
+# Git Command Reference
+
+[CS Fundamentals's Linux, Git & Tooling](/docs/cs-fundamentals/linux-git-and-tooling#git-internals-not-just-commands) covers what a commit, a branch, and the object graph actually *are* underneath these commands. This page assumes `add`/`commit`/`push`/`pull` are already muscle memory and covers the commands that actually save you once something's gone wrong or history needs reshaping.
+
+## Interactive rebase
+
+The tool for cleaning up commit history before it's shared — squashing, reordering, rewording, or dropping commits.
+
+```bash
+git rebase -i HEAD~5           # interactively rebase the last 5 commits
+git rebase -i main             # rebase the current branch onto main, interactively
+```
+
+In the editor that opens, each commit line takes a verb: `pick` (keep as-is), `reword` (keep, edit message), `edit` (pause here to amend), `squash`/`fixup` (merge into the previous commit), `drop` (remove).
+
+```bash
+git rebase --continue           # after resolving a conflict or finishing an `edit` stop
+git rebase --abort              # bail out, return to the pre-rebase state
+git rebase --skip               # skip the current commit entirely
+```
+
+## Bisect: finding which commit broke something
+
+Binary search over history for the commit that introduced a bug.
+
+```bash
+git bisect start
+git bisect bad                  # current commit is broken
+git bisect good v1.2.0          # this earlier tag/commit was known good
+# git checks out a midpoint commit -- test it, then:
+git bisect good                 # or `git bisect bad`, repeat until it narrows to one commit
+git bisect reset                # done -- return to the original HEAD
+```
+
+## Reflog: recovering "lost" commits
+
+`git log` only shows reachable history. `reflog` shows everywhere `HEAD` has pointed, including commits a `reset --hard` or a bad rebase seemed to delete — they're still there until garbage collected.
+
+```bash
+git reflog                              # every HEAD movement in this repo, most recent first
+git reset --hard HEAD@{2}               # jump back to what HEAD pointed to 2 moves ago
+git checkout <sha-from-reflog>          # inspect a "lost" commit directly
+git branch recovered-work <sha>          # turn it back into a real branch
+```
+
+## Worktree: multiple branches checked out at once
+
+Avoids the stash-switch-stash dance when you need to work on two branches simultaneously without two full clones.
+
+```bash
+git worktree add ../hotfix hotfix-branch   # new working directory, existing branch
+git worktree add ../new-feature -b feature/x  # new working directory AND new branch
+git worktree list                            # show all active worktrees
+git worktree remove ../hotfix                # clean up when done
+```
+
+## Cherry-pick and stash
+
+```bash
+git cherry-pick <sha>                # apply one specific commit onto the current branch
+git cherry-pick <sha1>..<sha2>       # apply a range of commits
+git cherry-pick --continue           # after resolving a conflict mid-cherry-pick
+
+git stash                            # shelve uncommitted changes, working dir goes clean
+git stash -u                         # also stash untracked files
+git stash list                       # see all stashes
+git stash pop                        # reapply the most recent stash and drop it
+git stash apply stash@{1}            # reapply a specific stash, keep it in the list
+git stash drop stash@{1}             # delete a stash without applying it
+```
+
+## Diagnosing and diffing
+
+```bash
+git log --oneline --graph --all      # compact, visual branch history
+git log -p -- path/to/file           # full diff for every commit touching a file
+git log -S"searchTerm"                # commits that added/removed a string (the "pickaxe")
+git blame path/to/file                # who last touched each line, and in which commit
+git diff HEAD~3                       # working tree vs. 3 commits ago
+git diff branch-a..branch-b            # what changed between two branches
+```

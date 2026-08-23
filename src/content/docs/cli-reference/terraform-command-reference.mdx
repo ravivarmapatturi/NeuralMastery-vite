@@ -1,0 +1,70 @@
+---
+title: "Terraform Command Reference"
+sidebar_position: 7
+---
+
+
+# Terraform Command Reference
+
+[Infrastructure as Code](/docs/mlops/infrastructure-as-code) covers why declarative, state-tracked infrastructure beats a pile of one-off cloud console clicks or ad hoc scripts. This page is the command reference for actually driving Terraform.
+
+## The core loop
+
+```bash
+terraform init          # download providers/modules, set up the backend -- run this first, and
+                         # again any time providers/backend config change
+terraform validate      # check syntax and internal consistency, no cloud calls
+terraform fmt            # reformat .tf files to the canonical style
+terraform fmt -recursive # ...across every subdirectory
+
+terraform plan           # compute and show the diff between config and real infrastructure,
+                          # without changing anything
+terraform plan -out=tfplan   # save the computed plan to apply later, exactly as reviewed
+
+terraform apply           # plan, then prompt to confirm, then execute
+terraform apply tfplan     # apply a previously-saved plan, no re-prompt (the safe CI pattern --
+                            # what got reviewed is exactly what gets applied)
+terraform apply -auto-approve   # skip the confirmation prompt (CI only, never by habit)
+
+terraform destroy         # plan and apply the removal of everything this config manages
+```
+
+## State inspection and surgery
+
+Terraform tracks what it manages in a state file — these commands are for when that state has drifted from reality, or needs to be reorganized.
+
+```bash
+terraform state list                       # every resource address currently in state
+terraform state show aws_instance.web       # full attributes of one resource, as Terraform knows them
+terraform state mv aws_instance.web aws_instance.web_server   # rename a resource without destroying/recreating it
+terraform state rm aws_instance.web          # stop tracking a resource (does NOT destroy it in the cloud)
+terraform show                               # human-readable dump of the entire current state
+
+terraform import aws_instance.web i-0123456789abcdef0
+                         # bring an already-existing, manually-created resource under Terraform's management
+```
+
+## Workspaces: separating environments in one config
+
+```bash
+terraform workspace list           # all workspaces, current one marked with *
+terraform workspace new staging     # create and switch to a new workspace
+terraform workspace select prod     # switch to an existing one
+terraform workspace show            # which one is active right now
+```
+
+## Everything else worth knowing
+
+```bash
+terraform output                    # show every declared output value
+terraform output vpc_id             # show one specific output
+terraform providers                 # list providers required by this configuration
+terraform console                   # interactive REPL for testing expressions against the current state
+
+terraform apply -target=aws_instance.web   # apply changes to one resource only (escape hatch, not a habit --
+                                            # it can leave dependent resources out of sync with config)
+terraform apply -replace="aws_instance.web"   # force-recreate one resource on the next apply
+                                               # (the current replacement for the deprecated `terraform taint`)
+terraform plan -var="instance_type=t3.large"   # override a variable for one run
+terraform plan -var-file="prod.tfvars"         # load variables from a file
+```
