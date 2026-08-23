@@ -103,6 +103,19 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
+/* The browser's native default focus ring is a near-black outline
+   regardless of theme -- effectively invisible against this site's
+   near-black dark-mode background (confirmed by screenshot: visible in
+   light mode, gone in dark). :focus-visible (not :focus) so this only
+   shows for keyboard navigation, not every mouse click -- applies
+   site-wide to every focusable element (nav links, buttons, the
+   diagram library's keyboard-accessible pill controls) via one rule
+   rather than needing per-component styling. */
+:focus-visible {
+  outline: 2px solid var(--nm-accent-primary);
+  outline-offset: 2px;
+}
+
 /* Every direct child of .prose (paragraphs, headings, lists, images,
    VisualizationContainer's outer div, code blocks, tables) shares the same
    full column width -- collapsing the sidebar/TOC widens the whole column,

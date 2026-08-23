@@ -1,4 +1,7 @@
 {
+  "/docs/mlops/cloud-computing": "2026-08-23T11:08:50+05:30",
+  "/docs/mlops/cloud-model-deployment": "2026-08-23T11:08:50+05:30",
+  "/docs/mlops/roadmap": "2026-08-23T11:08:50+05:30",
   "/docs/cs-fundamentals/software-engineering-practices": "2026-08-21T11:05:07+05:30",
   "/docs/cs-fundamentals/operating-systems-and-concurrency": "2026-08-21T11:04:16+05:30",
   "/docs/cs-fundamentals/networking-and-distributed-systems": "2026-08-21T11:03:30+05:30",
@@ -15,7 +18,6 @@
   "/docs/mlops/data-engineering-and-versioning": "2026-08-21T04:55:39+05:30",
   "/docs/mlops/feature-stores-and-model-registry": "2026-08-21T04:55:39+05:30",
   "/docs/mlops/gpu-and-distributed-training": "2026-08-21T04:55:39+05:30",
-  "/docs/mlops/cloud-computing": "2026-08-21T04:54:10+05:30",
   "/docs/mlops/monitoring-and-drift": "2026-08-21T04:53:16+05:30",
   "/docs/mlops/observability": "2026-08-21T04:53:16+05:30",
   "/docs/mlops/pipeline-orchestration": "2026-08-21T04:52:10+05:30",
@@ -177,7 +179,6 @@
   "/docs/mathematics-for-ai/roadmap": "2026-08-19T02:46:13+05:30",
   "/docs/mlops/mlops-architecture-and-roadmap": "2026-08-19T02:46:13+05:30",
   "/docs/mlops/overview": "2026-08-19T02:46:13+05:30",
-  "/docs/mlops/roadmap": "2026-08-19T02:46:13+05:30",
   "/docs/nlp/overview": "2026-08-19T02:46:13+05:30",
   "/docs/nlp/roadmap": "2026-08-19T02:46:13+05:30",
   "/docs/projects/overview": "2026-08-19T02:46:13+05:30",
