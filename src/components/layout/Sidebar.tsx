@@ -4,13 +4,12 @@ import { getSidebar } from '../../lib/contentTree';
 
 const EXPANDED_KEY = 'neural-mastery-sidebar-expanded-sections';
 
-function readExpanded(): Record<string, boolean> {
-  if (typeof window === 'undefined') return {};
+function readExpanded(): string | null {
+  if (typeof window === 'undefined') return null;
   try {
-    const raw = window.localStorage.getItem(EXPANDED_KEY);
-    return raw ? JSON.parse(raw) : {};
+    return window.localStorage.getItem(EXPANDED_KEY);
   } catch {
-    return {};
+    return null;
   }
 }
 
@@ -20,15 +19,16 @@ function readExpanded(): Record<string, boolean> {
  * changes chrome (fixed width/border vs. full-width-in-drawer), never the
  * underlying navigation structure, per the "one source of truth" rule.
  *
- * Sections collapse/expand individually (persisted in localStorage, same
- * pattern as DocLayout's sidebar/TOC collapse) -- with ~30 sections and
- * 209 pages total, rendering everything expanded at once both buries the
- * active section in a huge flat list and, via flexbox's default
- * align-items: stretch on .nm-doc-row, forces every other column
- * (including short pages' <main>) to stretch to the oversized sidebar's
- * height. The section containing the current page always auto-expands,
- * regardless of stored state, so navigating never leaves you looking at a
- * collapsed section with no visible indication of where you are.
+ * Only one section is expanded at a time (accordion, persisted in
+ * localStorage, same pattern as DocLayout's sidebar/TOC collapse) --
+ * with ~30 sections and 209 pages total, rendering everything expanded
+ * at once both buries the active section in a huge flat list and, via
+ * flexbox's default align-items: stretch on .nm-doc-row, forces every
+ * other column (including short pages' <main>) to stretch to the
+ * oversized sidebar's height. The section containing the current page
+ * always auto-expands (and collapses whatever else was open),
+ * regardless of stored state, so navigating never leaves you looking at
+ * a collapsed section with no visible indication of where you are.
  */
 export default function Sidebar({
   variant = 'desktop',
@@ -40,21 +40,23 @@ export default function Sidebar({
   const sections = getSidebar();
   const location = useLocation();
   const isMobile = variant === 'mobile';
-  const [expanded, setExpanded] = useState<Record<string, boolean>>(readExpanded);
+  const [openSectionId, setOpenSectionId] = useState<string | null>(readExpanded);
 
   const activeSection = sections.find((s) => s.pages.some((p) => p.route === location.pathname));
 
-  // Auto-expand the section containing the current page whenever it
-  // changes, without clobbering any other section the user already opened.
+  // Navigating into a section always makes it the one open section,
+  // closing whatever else was open -- an accordion, not independently
+  // toggled sections.
   useEffect(() => {
-    if (!activeSection || expanded[activeSection.id]) return;
-    setExpanded((prev) => ({ ...prev, [activeSection.id]: true }));
+    if (!activeSection || openSectionId === activeSection.id) return;
+    setOpenSectionId(activeSection.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSection?.id]);
 
   useEffect(() => {
-    window.localStorage.setItem(EXPANDED_KEY, JSON.stringify(expanded));
-  }, [expanded]);
+    if (openSectionId) window.localStorage.setItem(EXPANDED_KEY, openSectionId);
+    else window.localStorage.removeItem(EXPANDED_KEY);
+  }, [openSectionId]);
 
   return (
     <nav
@@ -68,12 +70,12 @@ export default function Sidebar({
     >
       {sections.map((section) => {
         const sectionActive = section.id === activeSection?.id;
-        const isOpen = !!expanded[section.id];
+        const isOpen = section.id === openSectionId;
         return (
           <div key={section.id} style={{ marginBottom: '1.25rem' }}>
             <button
               type="button"
-              onClick={() => setExpanded((prev) => ({ ...prev, [section.id]: !prev[section.id] }))}
+              onClick={() => setOpenSectionId((prev) => (prev === section.id ? null : section.id))}
               aria-expanded={isOpen}
               style={{
                 display: 'flex',
