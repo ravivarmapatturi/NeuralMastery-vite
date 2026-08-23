@@ -21,13 +21,18 @@
   --nm-border: #e3e6ea;
   --nm-text-primary: #14161a;
   --nm-text-secondary: #5b6470;
-  --nm-text-muted: #88919c;
-  --nm-accent-primary: #21a374;
-  --nm-accent-secondary: #3169e0;
-  --nm-accent-warn: #b9791e;
-  --nm-accent-danger: #d43f3f;
+  /* textMuted through accentTeal darkened from the original palette --
+     every one failed WCAG AA (4.5:1) at caption/label text size against
+     surfaceAlt (as low as 2.79:1). HSL-lightness-only adjustment, hue/
+     saturation preserved -- see vizTokens.ts for the full before/after
+     and the same change mirrored there for the diagram library. */
+  --nm-text-muted: #656e7a;
+  --nm-accent-primary: #197c59;
+  --nm-accent-secondary: #2e66df;
+  --nm-accent-warn: #976218;
+  --nm-accent-danger: #cf2e2e;
   --nm-accent-purple: #7c3aed;
-  --nm-accent-teal: #0d9488;
+  --nm-accent-teal: #0b7a71;
 }
 
 [data-theme='dark'] {
@@ -37,7 +42,8 @@
   --nm-border: #2c2c30;
   --nm-text-primary: #f5f5f7;
   --nm-text-secondary: #ababb3;
-  --nm-text-muted: #707078;
+  /* Lightened from #707078 -- failed WCAG AA (3.39:1 against surfaceAlt). */
+  --nm-text-muted: #85858d;
   --nm-accent-primary: #3ddc97;
   --nm-accent-secondary: #5b8cff;
   --nm-accent-warn: #f4b942;

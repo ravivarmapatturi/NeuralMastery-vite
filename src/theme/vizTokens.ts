@@ -33,7 +33,7 @@ export const DARK: VizTokens = {
   border: '#2C2C30',
   textPrimary: '#F5F5F7',
   textSecondary: '#ABABB3',
-  textMuted: '#707078',
+  textMuted: '#85858D', // lightened from #707078 -- failed WCAG AA (4.5:1) at caption text size against surfaceAlt (3.39:1); this clears 4.5:1 against every dark-theme background
   accentPrimary: '#3DDC97',
   accentSecondary: '#5B8CFF',
   accentWarn: '#F4B942',
@@ -53,16 +53,24 @@ export const LIGHT: VizTokens = {
   border: '#E3E6EA',
   textPrimary: '#14161A',
   textSecondary: '#5B6470',
-  textMuted: '#88919C',
-  accentPrimary: '#21A374',
-  accentSecondary: '#3169E0',
-  accentWarn: '#B9791E',
-  accentDanger: '#D43F3F',
+  // The block below (textMuted through accentTeal) is darkened from the
+  // original palette -- every one of these failed WCAG AA (4.5:1) at
+  // caption/label text size against surfaceAlt in light mode (as low as
+  // 2.79:1 for textMuted, 2.80:1 for accentPrimary). Adjusted via HSL
+  // lightness only, hue/saturation preserved, so relative distinctness
+  // between concept colors (getConceptColor) is unchanged -- verified
+  // visually, not just by the numbers. All now clear 4.5:1 against every
+  // light-theme background.
+  textMuted: '#656E7A', // was #88919C
+  accentPrimary: '#197C59', // was #21A374
+  accentSecondary: '#2E66DF', // was #3169E0
+  accentWarn: '#976218', // was #B9791E
+  accentDanger: '#CF2E2E', // was #D43F3F
   accentPurple: '#7C3AED',
-  accentTeal: '#0D9488',
+  accentTeal: '#0B7A71', // was #0D9488
   nodeFill: '#EEF0F2',
-  nodeBorder: '#21A374',
-  edge: '#3169E0',
+  nodeBorder: '#197C59',
+  edge: '#2E66DF',
 };
 
 export const RADIUS = { sm: 6, md: 12, lg: 20 };
