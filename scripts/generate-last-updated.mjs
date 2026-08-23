@@ -13,7 +13,11 @@ import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'src', 'data', 'lastUpdated.generated.json');
 
-const raw = execSync('git log --format="C:%H|%aI" --name-only -- src/content/docs/', {
+// -c safe.directory='*' -- CI checks out the repo as one user and runs git
+// as another (GitHub Actions' container UID mismatch), which git treats as
+// a "dubious ownership" security risk and refuses by default. Scoped
+// inline to this one invocation, not a global/system git config change.
+const raw = execSync('git -c safe.directory=\'*\' log --format="C:%H|%aI" --name-only -- src/content/docs/', {
   cwd: root,
   maxBuffer: 1024 * 1024 * 64,
 }).toString();
