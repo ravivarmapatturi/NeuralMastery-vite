@@ -1,0 +1,95 @@
+---
+title: "Problem Statement Atlas"
+sidebar_position: 4
+---
+
+
+# Problem Statement Atlas
+
+A living directory of concrete problem statements across the domains most worth having a real, built project for — the master list [Case Studies](/docs/ml-system-design/case-studies) and this site's actual [built projects](/docs/projects/the-project-ladder) both plug into. Each entry tracks one status:
+
+- **Not started** — no dedicated content or project yet.
+- **Content only** — the concepts are covered somewhere on this site, but there's no dedicated deep-dive case study or a real built project for this *specific* problem statement yet.
+- **Real project built** — an actual, deployed, documented system exists for it, linked below.
+
+This page gets updated as case studies and real projects land — it's the index, not the content itself. See [Case Studies](/docs/ml-system-design/case-studies) for the deep-dive write-ups (problem → requirements → scale estimation → architecture → SOTA comparison → failure modes → cost/latency tradeoffs) as they're built out, and [The Project Ladder](/docs/projects/the-project-ladder) for how a project's rigor scales by level.
+
+## Production RAG
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Multi-source enterprise RAG (docs + tickets + chat, unified retrieval) | Content only | [RAG](/docs/llms-genai/rag) |
+| Hybrid search + reranking at production scale | Content only | [RAG](/docs/llms-genai/rag), [Embedding & Reranker Inference](/docs/mlops/llm-hosting-and-serving-patterns#embedding-reranker-inference-for-production-rag) |
+| Long-document RAG (legal/medical) with chunking-strategy tradeoffs | Not started | — |
+
+## Agentic RAG
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Agentic RAG with query planning + multi-hop retrieval | Not started | — |
+| Self-correcting RAG (critique-and-retry on low-confidence retrieval) | Not started | — |
+
+## Multi-Agent Orchestration
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Supervisor-pattern multi-agent research assistant | Content only | [Agent Architectures](/docs/agents/agent-architectures), [Multi-Agent Systems](/docs/agents/multi-agent-systems) |
+| Multi-agent coding assistant with sandboxed execution | Not started | [Sandboxing](/docs/agents/agent-architectures#sandboxing) |
+
+## Recommendation & Ranking at Scale
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Two-stage retrieval + ranking recommender on a real dataset | Content only | [Recommender Systems](/docs/machine-learning/recommender-systems), [Learning to Rank](/docs/machine-learning/learning-to-rank) |
+| Real-time personalization with online/incremental learning | Not started | — |
+
+## Search Systems
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Hybrid lexical + semantic search over a real corpus | Content only | [Vector Databases](/docs/databases/vector/overview) |
+| Learning-to-rank search reranker, benchmarked | Content only | [Learning to Rank](/docs/machine-learning/learning-to-rank) |
+
+## LLM Serving & Inference at Scale
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Multi-engine benchmark: vLLM vs. SGLang vs. TensorRT-LLM vs. llama.cpp | Content only | [LLM Inference Engines](/docs/mlops/llm-inference-engines) — also a named [Level 6 capstone](/docs/projects/the-project-ladder#level-6-frontier-capstones-a-genuine-portfolio-centerpiece) |
+| Autoscaling LLM serving with real cost/latency tradeoffs | Content only | [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns), [AI Cost Engineering](/docs/mlops/ai-cost-engineering) |
+
+## Model Routing & Gateways
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Cost-aware LLM router (cheap vs. expensive model by query difficulty) | Content only | [AI Cost Engineering](/docs/mlops/ai-cost-engineering) |
+| Unified multi-provider LLM gateway with fallback | Not started | — |
+
+## Fine-Tuning Under Constraints
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| LoRA/QLoRA fine-tune on a limited GPU budget | Content only | [Training Pipeline — PEFT](/docs/llms-genai/training-pipeline#parameter-efficient-fine-tuning-peft) |
+| Distilling a large model's task performance into a small one | Content only | [AI Cost Engineering](/docs/mlops/ai-cost-engineering) |
+
+## MLOps / CI-CD for ML
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Full CI/CD pipeline with automated retraining gate | Content only | [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd) |
+| Production churn model with canary deployment + drift monitoring | Content only | [The Full MLOps Architecture — Five Capstone Projects](/docs/mlops/mlops-architecture-and-roadmap#five-capstone-projects) |
+
+## AI Security (Prompt Injection / RAG Poisoning)
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| RAG poisoning red-team + defense evaluation | Content only | [AI Security](/docs/ai-security/roadmap) |
+| Prompt injection detection/defense pipeline | Content only | [AI Security](/docs/ai-security/roadmap) |
+
+## Agent Evaluation
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Agent trajectory + tool-call accuracy evaluation harness | Content only | [LLM/RAG/Agent Evaluation](/docs/ai-evaluation/llm-rag-agent-evaluation) |
+| Automated agent regression testing (jailbreak/tool-call CI gate) | Content only | [ML & LLM Testing](/docs/mlops/ml-and-llm-testing) |
+
+Next: [The Project Ladder](/docs/projects/the-project-ladder) — once you've picked a problem statement above, scope it to the right level of rigor.

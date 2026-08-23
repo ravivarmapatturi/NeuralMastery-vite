@@ -1204,6 +1204,13 @@
       "sidebarPosition": 1,
       "description": null
     },
+    "/docs/projects/problem-statement-atlas": {
+      "slug": "projects/problem-statement-atlas",
+      "section": "projects",
+      "title": "Problem Statement Atlas",
+      "sidebarPosition": 4,
+      "description": null
+    },
     "/docs/projects/roadmap": {
       "slug": "projects/roadmap",
       "section": "projects",
