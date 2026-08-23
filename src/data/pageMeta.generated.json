@@ -980,6 +980,13 @@
       "sidebarPosition": 9,
       "description": null
     },
+    "/docs/mlops/cloud-model-deployment": {
+      "slug": "mlops/cloud-model-deployment",
+      "section": "mlops",
+      "title": "Deploying Models on AWS & Azure",
+      "sidebarPosition": 9.5,
+      "description": null
+    },
     "/docs/mlops/containers": {
       "slug": "mlops/containers",
       "section": "mlops",

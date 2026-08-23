@@ -1,0 +1,312 @@
+---
+title: "Deploying Models on AWS & Azure"
+sidebar_position: 9.5
+---
+
+# Deploying Models on AWS & Azure
+
+[Cloud Computing for ML](/docs/mlops/cloud-computing) covered the vocabulary; [APIs & Model Serving](/docs/mlops/model-serving) covered cloud-agnostic serving concepts. This page is the part in between: the actual, concrete methods for getting a trained model deployed and answering real traffic on AWS and Azure specifically, with real commands for each — not just names.
+
+## AWS: Amazon SageMaker
+
+SageMaker's inference methods all follow the same three-step shape — `create_model` (point at a container image and model artifact), `create_endpoint_config` (choose a deployment mode and resources), `create_endpoint` (stand it up) — with the *config* step being where each method actually differs.
+
+### Real-Time Endpoints
+
+The default: a persistent, always-on HTTPS endpoint for synchronous, low-latency inference.
+
+```python
+import boto3
+sm = boto3.client("sagemaker")
+
+sm.create_model(
+    ModelName="fraud-detector",
+    PrimaryContainer={"Image": "<account>.dkr.ecr.us-east-1.amazonaws.com/fraud-detector:1.0", "ModelDataUrl": "s3://my-ml-bucket/models/fraud-detector/v3/model.tar.gz"},
+    ExecutionRoleArn="arn:aws:iam::<account>:role/SageMakerExecutionRole",
+)
+
+sm.create_endpoint_config(
+    EndpointConfigName="fraud-detector-config",
+    ProductionVariants=[{
+        "VariantName": "AllTraffic",
+        "ModelName": "fraud-detector",
+        "InstanceType": "ml.m5.xlarge",
+        "InitialInstanceCount": 2,
+    }],
+)
+
+sm.create_endpoint(EndpointName="fraud-detector-endpoint", EndpointConfigName="fraud-detector-config")
+```
+
+```bash
+aws sagemaker-runtime invoke-endpoint \
+  --endpoint-name fraud-detector-endpoint \
+  --body '{"features": [5.1, 3.5, 1.4, 0.2]}' \
+  --content-type application/json \
+  output.json
+```
+
+### Serverless Inference
+
+No always-on instance to manage or pay for while idle — SageMaker provisions compute per request and scales to zero, at the cost of cold-start latency (the same tradeoff [Serverless Inference](/docs/mlops/llm-hosting-and-serving-patterns#serverless-inference) covers for LLM hosting generally). Swap `InstanceType`/`InitialInstanceCount` for a `ServerlessConfig`:
+
+```python
+sm.create_endpoint_config(
+    EndpointConfigName="fraud-detector-serverless-config",
+    ProductionVariants=[{
+        "VariantName": "AllTraffic",
+        "ModelName": "fraud-detector",
+        "ServerlessConfig": {
+            "MemorySizeInMB": 2048,       # 1024-6144, in fixed steps
+            "MaxConcurrency": 20,          # 1-200
+            "ProvisionedConcurrency": 10,  # optional: keep this many instances warm, avoids cold starts up to this concurrency
+        },
+    }],
+)
+```
+
+Right fit: spiky or low-average-traffic endpoints where paying for an always-on `ml.m5.xlarge` would mostly pay for idle time.
+
+### Async Inference
+
+For requests that take too long for a synchronous HTTP response (large payloads, slow models) — the caller gets an immediate acknowledgment and polls (or gets an SNS notification) for the result, landing in S3:
+
+```python
+sm.create_endpoint_config(
+    EndpointConfigName="fraud-detector-async-config",
+    ProductionVariants=[{"VariantName": "AllTraffic", "ModelName": "fraud-detector", "InstanceType": "ml.m5.xlarge", "InitialInstanceCount": 1}],
+    AsyncInferenceConfig={
+        "OutputConfig": {
+            "S3OutputPath": "s3://my-ml-bucket/async-output/",
+            "NotificationConfig": {
+                "SuccessTopic": "arn:aws:sns:us-east-1:<account>:fraud-detector-success",
+                "ErrorTopic": "arn:aws:sns:us-east-1:<account>:fraud-detector-error",
+            },
+        },
+        "ClientConfig": {"MaxConcurrentInvocationsPerInstance": 4},
+    },
+)
+```
+
+### Batch Transform
+
+No endpoint at all — point at a whole dataset in S3, get predictions back in S3, and the compute tears down when the job finishes. The right choice for [batch inference](/docs/mlops/model-serving#batch-online-and-streaming-inference) with no latency pressure.
+
+```python
+sm.create_transform_job(
+    TransformJobName="fraud-scores-2026-01",
+    ModelName="fraud-detector",
+    TransformInput={"DataSource": {"S3DataSource": {"S3DataType": "S3Prefix", "S3Uri": "s3://my-ml-bucket/datasets/fraud/2026-01/"}}, "ContentType": "text/csv", "SplitType": "Line"},
+    TransformOutput={"S3OutputPath": "s3://my-ml-bucket/batch-output/2026-01/", "AssembleWith": "Line"},
+    TransformResources={"InstanceType": "ml.m5.xlarge", "InstanceCount": 4},
+    MaxConcurrentTransforms=4,
+)
+```
+
+### Multi-Model & Multi-Container Endpoints
+
+Rather than one endpoint per model (expensive to keep dozens of low-traffic models each on their own instance), serve many models behind one endpoint:
+
+```python
+# Multi-model endpoint: Mode="MultiModel" points at a whole S3 prefix of model artifacts,
+# loaded onto the instance on demand and cached/evicted by access pattern
+sm.create_model(
+    ModelName="multi-tenant-models",
+    PrimaryContainer={"Image": "<account>.dkr.ecr.us-east-1.amazonaws.com/multi-model-server:1.0", "ModelDataUrl": "s3://my-ml-bucket/models/", "Mode": "MultiModel"},
+    ExecutionRoleArn="arn:aws:iam::<account>:role/SageMakerExecutionRole",
+)
+```
+
+```bash
+# each invocation picks the specific model by S3 key relative to ModelDataUrl
+aws sagemaker-runtime invoke-endpoint \
+  --endpoint-name multi-tenant-endpoint \
+  --target-model customer-42/model.tar.gz \
+  --body '{"features": [...]}' output.json
+```
+
+Multi-*container* endpoints are a different pattern: several different containers (a preprocessor, a model, a postprocessor, or entirely separate models) behind one endpoint, invoked either in `Direct` mode (caller picks which container per request via `TargetContainerHostname`) or `Serial` mode (request flows through all containers as a pipeline) via `InferenceExecutionConfig` on `create_endpoint_config`.
+
+## AWS: Container-Native Serving
+
+The alternative to SageMaker's managed inference layer: run the serving container from [Containers](/docs/mlops/containers) yourself, on general compute.
+
+**ECS**: a real task definition and service for the FastAPI endpoint from [APIs & Model Serving](/docs/mlops/model-serving):
+
+```json
+{
+  "family": "model-api",
+  "containerDefinitions": [{
+    "name": "model-api",
+    "image": "<account>.dkr.ecr.us-east-1.amazonaws.com/my-model-api:1.0",
+    "portMappings": [{ "containerPort": 8000 }],
+    "cpu": 1024,
+    "memory": 2048
+  }],
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc"
+}
+```
+
+```bash
+aws ecs register-task-definition --cli-input-json file://task-def.json
+aws ecs create-service --cluster my-cluster --service-name model-api --task-definition model-api --desired-count 3 --launch-type FARGATE
+```
+
+**EKS**: the same [Kubernetes](/docs/mlops/kubernetes) Deployment/Service/HPA manifests from that page apply directly once connected to an EKS cluster:
+
+```bash
+eksctl create cluster --name ml-cluster --region us-east-1 --node-type m5.xlarge --nodes 3
+aws eks update-kubeconfig --name ml-cluster --region us-east-1   # kubectl now points at EKS
+kubectl apply -f deployment.yaml   # same manifest as the Kubernetes page
+```
+
+**Lambda**: works for a model small and fast enough to fit Lambda's execution model, packaged as a container image (the standard zip-based Lambda package limit is too small for most real model artifacts):
+
+```dockerfile
+FROM public.ecr.aws/lambda/python:3.12
+COPY requirements.txt model.pkl app.py ${LAMBDA_TASK_ROOT}/
+RUN pip install -r requirements.txt
+CMD ["app.handler"]
+```
+
+```bash
+aws lambda create-function \
+  --function-name model-predict \
+  --package-type Image \
+  --code ImageUri=<account>.dkr.ecr.us-east-1.amazonaws.com/model-predict:1.0 \
+  --role arn:aws:iam::<account>:role/LambdaExecutionRole \
+  --memory-size 2048 --timeout 30
+```
+
+## AWS: Bedrock (Managed LLMs)
+
+For foundation models specifically, Bedrock is the managed-LLM-serving equivalent of SageMaker real-time endpoints — no infrastructure to provision at all, just an API call against a hosted model:
+
+```python
+import boto3, json
+bedrock = boto3.client("bedrock-runtime")
+
+response = bedrock.invoke_model(
+    modelId="anthropic.claude-sonnet-4-5-v1:0",
+    body=json.dumps({"anthropic_version": "bedrock-2023-05-31", "max_tokens": 256, "messages": [{"role": "user", "content": "Summarize this ticket."}]}),
+)
+result = json.loads(response["body"].read())
+```
+
+## Azure: Azure Machine Learning
+
+Azure ML's CLI v2 uses declarative YAML for both endpoint and deployment definitions, applied via `az ml`.
+
+### Managed Online Endpoints
+
+The real-time equivalent of a SageMaker real-time endpoint:
+
+```yaml
+# endpoint.yml
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
+name: fraud-detector-endpoint
+auth_mode: key
+```
+
+```yaml
+# blue-deployment.yml
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: fraud-detector-endpoint
+model: azureml:fraud-detector:3
+instance_type: Standard_DS3_v2
+instance_count: 2
+```
+
+```bash
+az ml online-endpoint create -n fraud-detector-endpoint -f endpoint.yml
+az ml online-deployment create -n blue --endpoint fraud-detector-endpoint -f blue-deployment.yml --all-traffic
+
+# canary rollout of a new "green" deployment, same shape as Deployment Strategies' canary pattern:
+az ml online-endpoint update -n fraud-detector-endpoint --traffic "blue=90 green=10"
+```
+
+### Batch Endpoints
+
+The batch-transform equivalent — score a whole dataset, no persistent endpoint:
+
+```yaml
+# batch-deployment.yml
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+name: fraud-batch
+endpoint_name: fraud-detector-batch-endpoint
+model: azureml:fraud-detector:3
+compute: azureml:batch-cluster
+resources:
+  instance_count: 4
+settings:
+  max_concurrency_per_instance: 2
+  mini_batch_size: 10
+```
+
+```bash
+az ml batch-endpoint create -f batch-endpoint.yml --name fraud-detector-batch-endpoint
+az ml batch-deployment create -f batch-deployment.yml --endpoint-name fraud-detector-batch-endpoint --set-default
+az ml batch-endpoint invoke --name fraud-detector-batch-endpoint --input s3://my-ml-bucket/datasets/fraud/2026-01/
+```
+
+## Azure: Container-Native Serving
+
+**AKS**: same Kubernetes manifests as always, once connected:
+
+```bash
+az aks create --resource-group ml-rg --name ml-cluster --node-count 3 --node-vm-size Standard_D4s_v3
+az aks get-credentials --resource-group ml-rg --name ml-cluster   # kubectl now points at AKS
+kubectl apply -f deployment.yaml
+```
+
+**Container Apps**: a managed, serverless-ish container platform (scale-to-zero, no cluster to manage) — a lighter-weight option than AKS for a single serving container:
+
+```bash
+az containerapp create \
+  --name model-api --resource-group ml-rg \
+  --image <registry>.azurecr.io/my-model-api:1.0 \
+  --target-port 8000 --ingress external \
+  --cpu 1.0 --memory 2Gi \
+  --min-replicas 0 --max-replicas 5
+```
+
+**Container Instances**: the simplest option — one container, no orchestration, no scaling — fine for a low-traffic internal tool:
+
+```bash
+az container create \
+  --resource-group ml-rg --name model-api \
+  --image <registry>.azurecr.io/my-model-api:1.0 \
+  --cpu 1 --memory 2 --ports 8000
+```
+
+## Azure OpenAI Service (Managed LLMs)
+
+Azure's equivalent of Bedrock for foundation models — hosted access to OpenAI's models through Azure's own infrastructure and compliance boundary (see [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns#cloud-gpu-hosting) for why an enterprise might choose this over calling OpenAI directly):
+
+```python
+from openai import AzureOpenAI
+
+client = AzureOpenAI(azure_endpoint="https://my-resource.openai.azure.com/", api_version="2026-01-01-preview", api_key=api_key)
+
+response = client.chat.completions.create(
+    model="gpt-4o-deployment",  # the deployment name you chose, not the raw model name
+    messages=[{"role": "user", "content": "Summarize this ticket."}],
+)
+```
+
+## Choosing Among These
+
+The same decision criteria as [Batch, Online, and Streaming Inference](/docs/mlops/model-serving#batch-online-and-streaming-inference) and [LLM Inference Optimization](/docs/mlops/llm-inference-optimization) apply directly to picking a method here, not just a serving tool:
+
+| Need | AWS | Azure |
+|---|---|---|
+| Synchronous, low-latency, steady traffic | SageMaker real-time endpoint | AML managed online endpoint |
+| Spiky/low-average traffic, tolerate cold starts | SageMaker Serverless Inference | Container Apps (scale-to-zero) |
+| Slow requests, large payloads, async result | SageMaker Async Inference | AML online endpoint + your own queue (no direct AML equivalent) |
+| Score a whole dataset, no persistent endpoint | SageMaker Batch Transform | AML batch endpoint |
+| Full control over the serving stack | ECS / EKS | AKS |
+| Managed foundation models, zero infra | Bedrock | Azure OpenAI Service |
+
+Next: [Kubernetes](/docs/mlops/kubernetes) — the orchestration layer underneath the EKS/AKS paths above, in full depth.
