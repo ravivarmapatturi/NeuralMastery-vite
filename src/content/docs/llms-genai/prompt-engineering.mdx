@@ -27,6 +27,17 @@ Instead of asking for a direct answer, prompt the model to "think step by step" 
 
 **Tree-of-Thought**: generalizes CoT by exploring multiple reasoning branches and backtracking, rather than committing to a single linear chain — more expensive, used for harder problems.
 
+## Reasoning Models vs. Prompted Chain-of-Thought
+
+Everything above is a *prompting* technique — asking any model to write out its reasoning, which helps because it's more tokens of computation before the final answer, but the model was never specifically trained to do this well. A **reasoning model** (OpenAI's o-series, DeepSeek-R1, and similar) is a different thing entirely: a model additionally trained with RL (see [Training Pipeline — GRPO](/docs/llms-genai/training-pipeline#group-relative-policy-optimization-grpo)) specifically to discover its own effective thinking strategies on math and code problems — backtracking, revisiting an assumption, trying an approach and abandoning it — rather than having a human write out what "good reasoning" should look like. The result at inference time is a model that spends a variable, often substantial amount of extra time and tokens on an internal reasoning process before committing to a final answer, without needing to be prompted to do so.
+
+That extra inference-time compute is a real cost, not a free upgrade, which makes *when* to reach for one a genuine engineering decision:
+
+- **Worth it**: problems with real, checkable structure where a first-pass answer is often wrong in a specific, findable way — a subtle bug, a multi-step proof, a logic puzzle. The gap between a non-reasoning and a reasoning model's accuracy is largest exactly here.
+- **Not worth it**: factual lookups, straightforward formatting, casual/subjective questions, or anything where a first response is already reliably good — the extra latency (sometimes minutes, not seconds) buys accuracy you didn't need.
+
+In production, this is usually a **routing** decision (see [Agent Architectures — Routing](/docs/agents/agent-architectures#routing)): classify or detect whether a request is the kind that benefits from extended reasoning, and only pay the latency/cost premium for the requests that actually need it, rather than defaulting every request to the most expensive mode available.
+
 ## ReAct (Reasoning + Acting)
 
 Interleaves reasoning steps with actions (tool calls) and observations: *think → act → observe → think → ...*. This is the foundational pattern behind most tool-using agents (see [Agents](/docs/agents/roadmap)) — the model reasons about what it needs, calls a tool to get it, incorporates the result, and continues.

@@ -66,7 +66,7 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
     icon: '🤖',
     color: '#F4B942',
     description: 'Agentic systems, and where AI meets specific domains — science, healthcare, and beyond.',
-    pageCount: 15,
+    pageCount: 16,
     difficulty: 'Advanced',
     prerequisites: 'Models — especially LLMs & GenAI',
     leadsTo: 'Systems & Infrastructure',

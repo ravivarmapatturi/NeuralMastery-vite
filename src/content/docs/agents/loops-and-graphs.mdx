@@ -1,0 +1,71 @@
+---
+title: "Loops and Graphs: The Actual Anatomy"
+sidebar_position: 4.5
+---
+
+import LoopGraphAnatomyDiagram from '../../../viz/diagrams/LoopGraphAnatomyDiagram';
+
+# Loops and Graphs: The Actual Anatomy
+
+[Agent Architectures](/docs/agents/agent-architectures#how-we-got-here-prompt--context--harness--loop--graph) narrated *why* the field moved from a single loop to a graph of them. This page stops narrating and gets precise: what is actually inside a Loop, what is actually inside a Graph, and where each one earns its keep.
+
+## Loop vs. Graph, Precisely
+
+A **loop** is the mechanism that makes one unit of work correct without supervision: produce → check → correct → repeat, until a real pass/fail condition is met. "Real" is doing a lot of work in that sentence — "looks good" isn't a check, and "no error was raised" isn't evidence of correctness either, since plenty of wrong output raises no error at all. A real check is something a program (not a vibe) could evaluate: the test suite exits 0, every factual claim in the output resolves to a real source, the diff only touches the files the plan said it would touch.
+
+A **graph** is the layer above the loop, not a fancier version of it: it decides *which* units of work exist in the first place, what order they run in, and what runs in parallel versus sequentially. Loops live inside nodes; graphs live in the space between them.
+
+Neither substitutes for the other. A graph with no real loop inside its nodes just ships unverified work faster and in parallel — worse than one slow, unverified loop, not better. A loop with no graph around it is one well-built step sitting in an undesigned queue, with no say over what runs before or after it.
+
+This distinction has a real, recent formal treatment: Hu Wei's ["From Agent Loops to Structured Graphs: A Scheduler-Theoretic Framework for LLM Agent Execution"](https://arxiv.org/abs/2604.11378) applies scheduler theory — the same lens distributed systems uses for task scheduling — to the "Agent Loop" pattern, and finds three structural weaknesses in a plain loop: dependencies between steps stay implicit rather than declared, a stuck loop can recover indefinitely with no bound, and the execution history it accumulates is mutable rather than an auditable record. It's worth being precise about what the paper actually claims: the author describes it explicitly as "a position paper and design proposal," not an implementation with measured results, and the formal guarantee offered is *termination and soundness* for its proposed graph harness (SGH) — not a claim that graphs are provably optimal over loops in every case. Real, useful formal grounding; not a benchmark result.
+
+## Four Node Types
+
+<LoopGraphAnatomyDiagram />
+
+- **Splitter** — cuts the incoming task into units of work. The single highest-leverage decision in the graph: split along the wrong dimension (by page instead of by section, by file instead of by concern) and every node downstream inherits that mistake, no matter how good each individual node is.
+- **Worker** — does one unit, from its own isolated context. Isolated matters: two workers sharing the same context tend to converge on the same answer, which means paying for two calls and getting one opinion, not two independent ones.
+- **Code node** — a deterministic transformation: merge, rank, dedupe, diff. No model call belongs here. A useful test: if a step can be fully described without a verb like "judge," "decide," "assess," or "summarize," it's code, not an LLM call — and code is faster, cheaper, and doesn't hallucinate.
+- **Gate** — the approval checkpoint. Not a confidence score; a real pass/fail condition, evaluated the same way a loop's own internal check is (see above), deciding whether a unit's output is accepted, and if not, where it goes next.
+
+## Real Edges vs. Fake Edges
+
+Not every arrow in a diagram is a real dependency. "Do X, then do Y" is not automatically an edge — it's easy to write a pipeline where steps run in typed order purely because that's the order someone wrote them in, with no actual data dependency between them. The test: can you name the specific variable or artifact that crosses the edge, the thing node B genuinely can't start without? If not, there's no real edge — just an artificial wait imposed by writing steps sequentially. Finding and removing these fake edges (running the falsely-sequential steps in parallel instead) is usually the single biggest available speedup in an existing agent pipeline, and it costs nothing but the audit.
+
+## Two Return Paths on Rejection
+
+<LoopGraphAnatomyDiagram />
+
+When a gate rejects a unit, there are two genuinely different things that can happen next, and most systems only build one of them:
+
+- **Short correction edge** — the gate sends the rejected unit back to whatever node produced it, with the specific reason it failed. This fixes *this run*, nothing more.
+- **Long learning edge** — an accepted result doesn't just move on; it becomes a **constraint**, fed back into the splitter's own brief for next time ("units of this shape need this extra check going forward"). This is the edge that fixes *every future run*, not just the current one.
+
+A system that's fast but never gets smarter on repeat problems is, specifically, a system that only built the short edge.
+
+## Return the Unit, Not the Batch
+
+When one unit out of several parallel units fails its gate, only that unit should go back for correction. Sending the whole batch back means re-verifying units that already passed, for no reason other than they happened to run alongside a failure — pure wasted cost. Worse, doing this more than once in a single run risks the batch never converging at all, since a full-batch retry has more chances for some unrelated unit to fail on the next pass too.
+
+## Gate on Reversibility, Not Confidence
+
+Confidence is the weakest signal available for a gate to use, for a specific reason: it's the *only* one of the model's own outputs the model itself can influence. A model that's wrong and a model that's right can both report high confidence — self-assessment isn't an independent check.
+
+The variable that actually matters is **blast radius**: how hard is this specific action to undo if it's wrong?
+
+- **Reversible and contained** — a draft, a local branch, a sandboxed run. Opens easily; a bad result costs almost nothing to discard.
+- **Reversible but wide** — a shared branch, a staged deploy, anything other people will see before it's fixed. Needs real deterministic checks and a clean trajectory through the graph, not just a passing gate.
+- **Hard to reverse** — a database migration, a deletion, anything touching money. This lane doesn't open on a good score, ever — it requires the one thing the graph itself can't grant.
+
+That last tier is exactly where a human belongs, and *only* there: the single highest-consequence, least-reversible step (approving the migration, approving the payout) — not reviewing every intermediate step along the way, which just makes the human the slowest node in the graph without actually catching more than the one decision that matters.
+
+Prefect's engineering team frames the same idea from the workflow-orchestration side, in ["Loops vs. Graphs"](https://www.prefect.io/blog/loops-vs-graphs): autonomy lives *inside* a node (the agent decides freely once it's running), and control lives *at* the edges (a human or a program decides what happens once it's done) — a graph is what lets a team dial each of those independently instead of choosing one blanket setting for an entire agent. Their concrete example is a refund workflow split so the eligibility-check node has no refund capability at all, and only a later, separate node — reached after the gate — can actually issue a refund. The capability lives on the node, not on the agent generally, which is the same reversibility-tiering principle applied to tool access instead of just approval.
+
+## Which "Graph" Is This — Micro or Macro?
+
+Worth being precise about, since "graph" gets used for two genuinely different scopes: a framework like LangGraph typically models **one agent's internals** — the nodes are steps inside a single agent's own reasoning. A **macro-orchestration** graph, by contrast, coordinates across multiple agents, where each node is a full, independent agentic invocation in its own right. Both are real graphs in the sense this page describes — splitters, workers, gates, and real edges all still apply — they just operate one level apart. A single LangGraph agent with well-designed internal state is the micro case; a system that assigns different sub-agents to different nodes is the macro case. Neither is "the" graph — they're the same idea at two different altitudes.
+
+## References
+
+- Hu Wei, ["From Agent Loops to Structured Graphs: A Scheduler-Theoretic Framework for LLM Agent Execution"](https://arxiv.org/abs/2604.11378) — arXiv:2604.11378. A position paper and design proposal (not an empirical/production paper), formally critiquing the plain agent-loop pattern and proposing a graph harness with termination and soundness guarantees.
+- Prefect, ["Loops vs. Graphs"](https://www.prefect.io/blog/loops-vs-graphs) — the autonomy-inside-nodes/control-at-edges framing, the refund-workflow capability-scoping example, and the micro/macro graph distinction referenced above.

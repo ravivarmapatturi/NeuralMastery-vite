@@ -24,8 +24,8 @@ Every pattern on this page is a point along one evolution, and it helps to see t
 - **Prompt** — a single completion. No memory of anything not already written into it, no way to act.
 - **Context** — retrieved documents, tool outputs, and conversation history get assembled into the prompt before generation. Richer input, still one shot.
 - **Harness** — code wraps the model so it can actually execute a tool call and get the real result back, not just describe what it would do.
-- **Loop** — the harness repeats: reason, act, observe, reason again. This is [ReAct](#react-reasoning-acting), below — the first stage that can course-correct mid-task instead of committing to one shot.
-- **Graph** — multiple loops, tool calls, and sub-agents become nodes; the edges between them (including *conditional* edges) carry shared state. This is the [Supervisor Pattern](#supervisor-pattern) below, and what a framework like LangGraph makes concrete: an explicit state machine instead of one long linear transcript.
+- **Loop** — the harness repeats: reason, act, observe, reason again. This is [ReAct](#react-reasoning-acting), below — the first stage that can course-correct mid-task instead of committing to one shot. For what actually makes one loop trustworthy on its own (a real pass/fail condition, not "looks good"), see [Loops and Graphs: The Actual Anatomy](/docs/agents/loops-and-graphs#loop-vs-graph-precisely).
+- **Graph** — multiple loops, tool calls, and sub-agents become nodes; the edges between them (including *conditional* edges) carry shared state. This is the [Supervisor Pattern](#supervisor-pattern) below, and what a framework like LangGraph makes concrete: an explicit state machine instead of one long linear transcript. For the actual node types, real-vs-fake edges, and how rejections get routed, see [Loops and Graphs: The Actual Anatomy](/docs/agents/loops-and-graphs).
 
 <AgentEvolutionDiagram />
 

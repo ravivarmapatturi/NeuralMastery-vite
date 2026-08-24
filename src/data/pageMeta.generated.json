@@ -21,6 +21,13 @@
       "sidebarPosition": 3,
       "description": null
     },
+    "/docs/agents/loops-and-graphs": {
+      "slug": "agents/loops-and-graphs",
+      "section": "agents",
+      "title": "Loops and Graphs: The Actual Anatomy",
+      "sidebarPosition": 4.5,
+      "description": null
+    },
     "/docs/agents/mcp/overview": {
       "slug": "agents/mcp/overview",
       "section": "agents",
