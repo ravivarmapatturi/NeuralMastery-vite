@@ -11,10 +11,25 @@ import CoordinationPatternsDiagram from '../../../viz/diagrams/CoordinationPatte
 import ShortTermVsLongTermMemoryDiagram from '../../../viz/diagrams/ShortTermVsLongTermMemoryDiagram';
 import MemoryAsRetrievalDiagram from '../../../viz/diagrams/MemoryAsRetrievalDiagram';
 import HumanInTheLoopDiagram from '../../../viz/diagrams/HumanInTheLoopDiagram';
+import AgentEvolutionDiagram from '../../../viz/diagrams/AgentEvolutionDiagram';
 
 # Agent Architectures
 
 Different ways to structure the loop between reasoning and acting, each with different tradeoffs between reliability, cost, and how much the agent can handle on its own.
+
+## How We Got Here: Prompt → Context → Harness → Loop → Graph
+
+Every pattern on this page is a point along one evolution, and it helps to see the whole chain before the individual stops:
+
+- **Prompt** — a single completion. No memory of anything not already written into it, no way to act.
+- **Context** — retrieved documents, tool outputs, and conversation history get assembled into the prompt before generation. Richer input, still one shot.
+- **Harness** — code wraps the model so it can actually execute a tool call and get the real result back, not just describe what it would do.
+- **Loop** — the harness repeats: reason, act, observe, reason again. This is [ReAct](#react-reasoning-acting), below — the first stage that can course-correct mid-task instead of committing to one shot.
+- **Graph** — multiple loops, tool calls, and sub-agents become nodes; the edges between them (including *conditional* edges) carry shared state. This is the [Supervisor Pattern](#supervisor-pattern) below, and what a framework like LangGraph makes concrete: an explicit state machine instead of one long linear transcript.
+
+<AgentEvolutionDiagram />
+
+Why bother reaching Graph instead of stretching a single Loop further: a graph makes failure paths explicit rather than buried in one prompt's instructions ("if the search comes back empty, branch to a different node" is a real edge, not a hoped-for instruction the model might follow); it supports splitting a **writer** node from a **checker** node so one call's output gets independently verified rather than the same call grading its own work, which is where a lot of hallucination in long single-loop agents actually comes from; and because each node can be a smaller, tightly-scoped call instead of one enormous prompt carrying the whole task, well-designed graphs are often cheaper to run, not more expensive, despite having more moving parts.
 
 ## ReAct (Reasoning + Acting)
 
