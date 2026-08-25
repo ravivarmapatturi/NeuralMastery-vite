@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import AttentionStepThrough from '../viz/AttentionStepThrough';
-import { getSidebar, getFlatPages } from '../lib/contentTree';
+import { getFlatPages } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { SECTION_META, SECTION_ORDER, timeEstimate } from '../data/sectionMeta';
 
 /**
  * The landing page. Built around one idea: prove the site's differentiator
@@ -17,7 +18,6 @@ import { useDocumentMeta } from '../lib/useDocumentMeta';
 export default function Home() {
   useDocumentTitle();
   useDocumentMeta(undefined);
-  const sections = getSidebar();
   const totalPages = getFlatPages().length;
 
   return (
@@ -96,41 +96,49 @@ export default function Home() {
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
             color: 'var(--nm-text-muted)',
-            marginBottom: '1.25rem',
+            marginBottom: '0.4rem',
           }}
         >
-          Pick a topic
+          Or browse by area
         </h2>
+        <p style={{ fontSize: 13.5, color: 'var(--nm-text-muted)', margin: '0 0 1.25rem' }}>
+          The 7 sections Start Learning walks in order, roughly foundations-first — jump straight to the one you need.
+        </p>
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
             gap: '1rem',
           }}
         >
-          {sections.map((section) => {
-            const entryPage = section.pages[0];
-            if (!entryPage) return null;
+          {SECTION_ORDER.map((key) => {
+            const meta = SECTION_META[key];
             return (
               <Link
-                key={section.id}
-                to={entryPage.route}
+                key={key}
+                to={key}
                 style={{
                   display: 'block',
                   padding: '1.25rem',
                   borderRadius: 12,
                   border: '1px solid var(--nm-border)',
+                  borderTop: `3px solid ${meta.color}`,
                   background: 'var(--nm-surface)',
                   textDecoration: 'none',
                   transition: 'border-color 120ms ease, transform 120ms ease',
                 }}
                 className="nm-home-card"
               >
-                <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)', marginBottom: 4 }}>
-                  {section.label}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  <span style={{ fontSize: 20 }}>{meta.icon}</span>
+                  <span style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)' }}>{meta.label}</span>
                 </div>
-                <div style={{ fontSize: 13, color: 'var(--nm-text-muted)' }}>
-                  {section.pages.length} page{section.pages.length === 1 ? '' : 's'}
+                <p style={{ fontSize: 13, color: 'var(--nm-text-secondary)', margin: '0 0 10px', lineHeight: 1.5 }}>
+                  {meta.description}
+                </p>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', fontSize: 12, color: 'var(--nm-text-muted)' }}>
+                  <span>⏱ {timeEstimate(meta.pageCount)}</span>
+                  <span>⭐ {meta.difficulty}</span>
                 </div>
               </Link>
             );
