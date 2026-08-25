@@ -41,14 +41,20 @@ export default function Home() {
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
       <Navbar />
 
-      <section
+      <div
         style={{
-          maxWidth: 1100,
-          margin: '0 auto',
-          padding: '4rem 1.5rem 2rem',
-          textAlign: 'center',
+          background:
+            'radial-gradient(1200px 480px at 50% -120px, color-mix(in srgb, var(--nm-accent-primary) 14%, transparent), transparent 70%), radial-gradient(900px 420px at 85% 60px, color-mix(in srgb, var(--nm-accent-secondary) 10%, transparent), transparent 70%)',
         }}
       >
+        <section
+          style={{
+            maxWidth: 1100,
+            margin: '0 auto',
+            padding: '4rem 1.5rem 2rem',
+            textAlign: 'center',
+          }}
+        >
         <h1
           style={{
             fontSize: 'clamp(2rem, 4.5vw, 3rem)',
@@ -102,9 +108,17 @@ export default function Home() {
           </Link>{' '}
           — one of {totalPages}+ pages built the same way.
         </p>
-      </section>
+        </section>
+      </div>
 
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '2.5rem 1.5rem 5rem' }}>
+      <section
+        style={{
+          background: 'var(--nm-surface)',
+          borderTop: '1px solid var(--nm-border)',
+          padding: '2.5rem 0 5rem',
+        }}
+      >
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem' }}>
         <h2
           style={{
             fontSize: 13,
@@ -157,6 +171,7 @@ export default function Home() {
             );
           })}
         </div>
+      </div>
       </section>
     </div>
   );
