@@ -4,6 +4,22 @@ import AttentionStepThrough from '../viz/AttentionStepThrough';
 import { getSidebar, getFlatPages } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
+
+/** section id (e.g. "mlops") -> its parent group's icon/color, so each of
+ * the 32 topic cards below can carry real visual identity without
+ * changing which page it links to -- decoration only, same routes as
+ * before. Falls back to a plain dot for any section not in a group. */
+function buildSectionAccent(): Record<string, { icon: string; color: string }> {
+  const accent: Record<string, { icon: string; color: string }> = {};
+  for (const key of SECTION_ORDER) {
+    const meta = SECTION_META[key];
+    for (const sub of meta.subsections) {
+      accent[sub.dir] = { icon: meta.icon, color: meta.color };
+    }
+  }
+  return accent;
+}
 
 /**
  * The landing page. Built around one idea: prove the site's differentiator
@@ -19,6 +35,7 @@ export default function Home() {
   useDocumentMeta(undefined);
   const sections = getSidebar();
   const totalPages = getFlatPages().length;
+  const accent = buildSectionAccent();
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
@@ -110,6 +127,7 @@ export default function Home() {
           {sections.map((section) => {
             const entryPage = section.pages[0];
             if (!entryPage) return null;
+            const a = accent[section.id];
             return (
               <Link
                 key={section.id}
@@ -119,14 +137,18 @@ export default function Home() {
                   padding: '1.25rem',
                   borderRadius: 12,
                   border: '1px solid var(--nm-border)',
+                  borderTop: a ? `3px solid ${a.color}` : '1px solid var(--nm-border)',
                   background: 'var(--nm-surface)',
                   textDecoration: 'none',
                   transition: 'border-color 120ms ease, transform 120ms ease',
                 }}
                 className="nm-home-card"
               >
-                <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)', marginBottom: 4 }}>
-                  {section.label}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                  {a && <span style={{ fontSize: 15 }}>{a.icon}</span>}
+                  <span style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)' }}>
+                    {section.label}
+                  </span>
                 </div>
                 <div style={{ fontSize: 13, color: 'var(--nm-text-muted)' }}>
                   {section.pages.length} page{section.pages.length === 1 ? '' : 's'}
