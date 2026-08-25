@@ -69,9 +69,9 @@ export default function Home() {
             lineHeight: 1.6,
           }}
         >
-          {totalPages}+ pages on math, machine learning, deep learning, LLMs, and agents — each one
-          built around real, computed, interactive visualizations instead of static diagrams. This isn't
-          a screenshot: type a sentence below and watch real attention weights compute live.
+          Learn from the fundamentals up — CS, math, machine learning, deep learning, agents, loops and
+          graphs, and the latest research — all {totalPages}+ pages built around real, computed,
+          interactive visualizations, not static diagrams.
         </p>
 
         <Link
