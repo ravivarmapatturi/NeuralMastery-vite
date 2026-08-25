@@ -41,22 +41,40 @@ export default function Home() {
             color: 'var(--nm-text-primary)',
           }}
         >
-          See how AI actually works — not just read about it.
+          One platform to master AI — math, ML, deep learning, agents, and beyond.
         </h1>
         <p
           style={{
             fontSize: 'clamp(1rem, 1.6vw, 1.15rem)',
             color: 'var(--nm-text-secondary)',
             maxWidth: 680,
-            margin: '0 auto 2.5rem',
+            margin: '0 auto 2rem',
             lineHeight: 1.6,
           }}
         >
-          {totalPages}+ pages on machine learning, deep learning, LLMs, and agents — every one built
-          mechanism-first, around real, computed, interactive visualizations instead of another wall of
-          static diagrams. This isn't a screenshot: type a sentence below and watch real attention weights
-          compute live.
+          {totalPages}+ pages covering math, machine learning, deep learning, LLMs, and agents — every
+          one built mechanism-first, around real, computed, interactive visualizations instead of another
+          wall of static diagrams. This isn't a screenshot: type a sentence below and watch real attention
+          weights compute live.
         </p>
+
+        <Link
+          to="/docs/learning-path"
+          className="nm-home-cta"
+          style={{
+            display: 'inline-block',
+            padding: '0.85rem 1.75rem',
+            borderRadius: 10,
+            background: 'var(--nm-accent-primary)',
+            color: 'var(--nm-bg)',
+            fontWeight: 700,
+            fontSize: '1rem',
+            textDecoration: 'none',
+            marginBottom: '2.5rem',
+          }}
+        >
+          Start Learning →
+        </Link>
 
         <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'left' }}>
           <AttentionStepThrough />
