@@ -43,7 +43,7 @@ Data leakage is when information from outside the training set — often from th
 ## Feature Engineering & Selection
 
 - **Feature engineering**: transforming raw data into inputs that make patterns easier for a model to find — e.g. extracting "day of week" from a timestamp, or computing a ratio between two raw columns.
-- **Feature selection**: removing irrelevant or redundant features to reduce overfitting and training cost. Methods range from simple correlation filtering to model-based importance (e.g. from a trained tree ensemble) to wrapper methods that search feature subsets directly.
+- **Feature selection**: removing irrelevant or redundant features to reduce overfitting and training cost. Methods range from simple correlation filtering to wrapper methods that search feature subsets directly to model-based importance — see [Classical Interpretability](/docs/interpretability/classical-interpretability) for the real depth on that last one: permutation importance and SHAP, with real formulas, real code, and why SHAP's game-theoretic grounding gives it a guarantee heuristic importance methods don't have.
 
 ## Handling Messy Data
 
