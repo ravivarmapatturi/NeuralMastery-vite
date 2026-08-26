@@ -12,10 +12,19 @@ import ConvexVsNonConvexDiagram from '../../../viz/diagrams/ConvexVsNonConvexDia
 import GradientDescentExplorer from '../../../viz/GradientDescentExplorer';
 import LrScheduleDiagram from '../../../viz/diagrams/LrScheduleDiagram';
 import LagrangeKktDiagram from '../../../viz/diagrams/LagrangeKktDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Calculus & Optimization for AI
 
 Linear algebra tells you how data flows through a model. Calculus tells you how to *change the model* so it gets better. Every training run, at its core, is an optimization loop built entirely on the ideas in this page.
+
+<ELI5>
+
+Imagine hiking in thick fog, trying to find the lowest point in a valley. You can't see the landscape, but you can feel the slope right under your feet — that's the gradient, and "step downhill" is the entire idea behind training a model. The hard part: the ground under a model's millions of parameters isn't a simple bowl, it's a wild, high-dimensional landscape full of ridges, flat plateaus, and false valleys — so *how* you walk downhill (how big a step, whether you remember your recent direction, whether you speed up or slow down) ends up mattering enormously. Optimizers like Adam are just smarter walking strategies built on top of "feel the slope, step downhill."
+
+Everything below makes both the slope-feeling and the walking strategies exact.
+
+</ELI5>
 
 ## Intuition: Slope, Curvature, and the Chain Rule
 
@@ -51,6 +60,24 @@ This converges dramatically faster than gradient descent near a minimum, but com
 
 **Taylor expansion** ties gradient and Hessian together: near a point $\theta_0$, $f(\theta) \approx f(\theta_0) + \nabla f(\theta_0)^T(\theta - \theta_0) + \frac{1}{2}(\theta-\theta_0)^T H (\theta-\theta_0)$ — a linear term (the gradient) plus a quadratic correction (the Hessian). This is *the* justification for why loss surfaces look locally like the elongated bowl in the optimizer-race chart below — near any point, a smooth loss function genuinely is approximately a quadratic form, which is why understanding quadratic optimization (above) transfers so directly to understanding real training dynamics.
 
+<GoDeeper title="Go deeper: derive Newton's update rule from the Taylor expansion above">
+
+Newton's method's update, $\theta \leftarrow \theta - H^{-1}\nabla f$, isn't a separate idea — it falls straight out of the Taylor expansion just given. The move: instead of minimizing the true (hard, unknown-shape) function $f$, minimize its local quadratic *approximation* around the current point $\theta_0$ exactly, since a quadratic is easy to minimize in closed form.
+
+Take the gradient of the quadratic approximation with respect to $\theta$ (treating $\theta_0$, $\nabla f(\theta_0)$, and $H$ as fixed constants at this step):
+
+$$\nabla_\theta\left[f(\theta_0) + \nabla f(\theta_0)^T(\theta-\theta_0) + \frac{1}{2}(\theta-\theta_0)^TH(\theta-\theta_0)\right] = \nabla f(\theta_0) + H(\theta - \theta_0)$$
+
+using two standard matrix-calculus identities (see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)): $\nabla_\theta\left[a^T(\theta-\theta_0)\right] = a$ for a constant vector $a$, and $\nabla_\theta\left[\frac{1}{2}(\theta-\theta_0)^TH(\theta-\theta_0)\right] = H(\theta-\theta_0)$ for symmetric $H$.
+
+Set that gradient to zero — the condition for a minimum of the quadratic approximation — and solve for $\theta$:
+
+$$\nabla f(\theta_0) + H(\theta-\theta_0) = 0 \;\;\Rightarrow\;\; H(\theta - \theta_0) = -\nabla f(\theta_0) \;\;\Rightarrow\;\; \theta = \theta_0 - H^{-1}\nabla f(\theta_0)$$
+
+That last line *is* the Newton's-method update rule stated above — not a separately motivated formula, but exactly "jump to the minimum of the local quadratic model." It's also precisely why Newton's method converges so fast near a true minimum (the quadratic approximation becomes very accurate there) and can behave badly far from one (where the real function looks nothing like a quadratic, so jumping to that quadratic's minimum can overshoot badly or even step toward a maximum if $H$ isn't positive definite).
+
+</GoDeeper>
+
 ## The Chain Rule → Backpropagation
 
 If $y = f(g(x))$, then $\dfrac{dy}{dx} = \dfrac{dy}{dg} \cdot \dfrac{dg}{dx}$. A neural network is a chain of functions (layer 1 → layer 2 → ... → loss). Step through a real forward pass, then a real backward pass, on a genuine 2-layer network:
@@ -83,6 +110,34 @@ Plain SGD treats every parameter the same. Modern optimizers adapt the step size
 - **AdaGrad**: scales down the learning rate for parameters that get frequent large updates — good for sparse features, but its accumulated sum only grows, eventually shrinking the learning rate to near zero.
 - **RMSProp**: fixes AdaGrad's decay problem by using a *moving* average of squared gradients instead of a running sum.
 - **Adam**: combines momentum (first moment) and RMSProp-style adaptive scaling (second moment). The default choice for training almost every modern neural network, including LLMs.
+
+<GoDeeper title="Go deeper: Adam's real update equations, and why bias correction is needed">
+
+Adam maintains two exponential moving averages of the gradient $g_t$ at each step $t$, starting from $m_0 = 0$, $v_0 = 0$:
+
+$$m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t \qquad\qquad v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^2$$
+
+($\beta_1 \approx 0.9$, $\beta_2 \approx 0.999$ by default) — $m_t$ is the running-average gradient direction (momentum), $v_t$ the running-average *squared* gradient (RMSProp-style, tracking how large recent gradients have been per parameter, regardless of sign).
+
+**Why bias correction is needed** — the part almost always asserted, rarely shown. Unroll the recursion for $m_t$ starting from $m_0=0$:
+
+$$m_t = (1-\beta_1)\sum_{i=1}^{t}\beta_1^{\,t-i}\,g_i$$
+
+Assume the true gradient is roughly stationary over these few steps, $E[g_i] \approx E[g_t]$ for each $i$ in the sum (the same simplifying assumption the original Adam paper makes). Then:
+
+$$E[m_t] \approx E[g_t]\cdot(1-\beta_1)\sum_{i=1}^{t}\beta_1^{\,t-i} = E[g_t]\cdot(1-\beta_1)\cdot\frac{1-\beta_1^{\,t}}{1-\beta_1} = (1-\beta_1^{\,t})\,E[g_t]$$
+
+using the finite geometric series $\sum_{i=1}^{t}\beta_1^{\,t-i} = \sum_{k=0}^{t-1}\beta_1^{\,k} = \frac{1-\beta_1^{\,t}}{1-\beta_1}$. So $m_t$ systematically *underestimates* the true gradient moment by exactly the factor $(1-\beta_1^{\,t})$ — severe at small $t$ (at $t=1$ with $\beta_1=0.9$: $m_1$ carries only $1-0.9=10\%$ of the true magnitude, since it started from a zero initialization with nothing yet averaged in) and fading to negligible as $t\to\infty$. Dividing by exactly that factor removes the bias completely:
+
+$$\hat{m}_t = \frac{m_t}{1-\beta_1^{\,t}} \qquad\qquad \hat{v}_t = \frac{v_t}{1-\beta_2^{\,t}}$$
+
+so that $E[\hat{m}_t] \approx E[g_t]$, with the identical argument applying to $v_t$ and $\beta_2$. The final parameter update uses these corrected estimates:
+
+$$\theta_t = \theta_{t-1} - \eta\,\frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}$$
+
+$\sqrt{\hat v_t}$ in the denominator is exactly the "adaptive scaling" named above: parameters with a history of large gradients get a smaller effective step, parameters with small/rare gradients get a relatively larger one; $\epsilon$ (typically $10^{-8}$) exists purely to prevent division by zero when $\hat v_t$ is tiny.
+
+</GoDeeper>
 
 ## Learning Rate Schedules & Warmup
 
