@@ -1,0 +1,59 @@
+---
+title: "Multi-Armed & Contextual Bandits"
+sidebar_position: 5
+---
+
+
+import BanditRegretRaceDiagram from '../../../viz/diagrams/BanditRegretRaceDiagram';
+
+# Multi-Armed & Contextual Bandits
+
+[RL Fundamentals](/docs/reinforcement-learning/rl-fundamentals) opened with an MDP: state, action, reward, *new state* — the loop repeats, and what happens next depends on where the agent ends up. A bandit is what's left when you delete the "new state" part entirely: one state, forever. Pick an action, get a reward, the world doesn't change underneath you, repeat. That sounds like a simplification, and it is one — but it's also the actual formal name for a problem this site has already described twice without naming it: [Reinforcement Learning — Overview](/docs/reinforcement-learning/overview) calls out "a recommender system choosing what to show a user across a session" as a real RL instance, and [ML System Design Case Studies — Cold Start](/docs/ml-system-design/case-studies#recommendation-systems) describes "exploration strategies (deliberately show some uncertain-but-promising items to gather signal)" without ever calling it what it is. It's a bandit problem, and bandits are the actual production answer, not full MDP machinery.
+
+## The Explore/Exploit Problem, Stripped to Its Purest Form
+
+$k$ arms (options), each with an unknown, fixed reward distribution. Pull one arm per round, observe only that arm's reward, repeat for $T$ rounds. **Regret** is the formal way to score a strategy: the gap between what you'd have earned always pulling the single best arm (known only in hindsight) and what your strategy actually earned. A strategy that keeps trying to learn forever (never fully commits to the best arm) accumulates regret linearly, forever — the entire game is finding a strategy whose regret grows *sublinearly*, so it effectively "solves" the problem given enough time.
+
+Three real strategies, run against the same fixed 3-arm bandit, real cumulative regret, not illustrative curves:
+
+<BanditRegretRaceDiagram />
+
+- **ε-greedy**: with probability $\varepsilon$, pick a random arm (explore); otherwise pick the current best-estimated arm (exploit). Simple, but $\varepsilon$ never decays in this version — it keeps exploring at a constant rate forever, which is exactly why its regret line never stops climbing at roughly the same rate: a real, structural property, not a tuning artifact.
+- **UCB1 (Upper Confidence Bound)**: pick $\arg\max_a \left[ \hat{Q}(a) + \sqrt{\dfrac{2\ln t}{N(a)}} \right]$ — an arm's estimated value *plus* a bonus that shrinks as that arm gets pulled more (and grows for arms that haven't been tried in a while) — "optimism in the face of uncertainty." The bonus term is provably enough to guarantee **logarithmic** regret, which is what the diagram's flattening UCB1 curve actually is, not an approximation of it.
+- **Thompson Sampling**: maintain a Beta$(\alpha, \beta)$ posterior per arm (starting at Beta$(1,1)$, the uniform prior), sample once from each arm's posterior, pull whichever arm's sample is highest, then update that arm's posterior — Beta$(\alpha+1, \beta)$ on a win, Beta$(\alpha, \beta{+}1)$ on a loss. A genuinely Bayesian answer to the same question UCB1 answers with a hand-derived bound.
+
+Worth sitting with what the diagram actually shows, because it's a real, slightly counter-intuitive result, not a foregone conclusion: **UCB1 looks worse than plain ε-greedy for a long stretch.** Its $\sqrt{2\ln t}$ confidence bound front-loads exploration hard. Only once the horizon gets long enough for "regret grows like $\log t$" to actually beat "regret grows like $t$" does UCB1 pull ahead — watch it happen by dragging the horizon slider past a few thousand pulls. Thompson Sampling, in this run and in the empirical literature generally, wins throughout — a big part of why it's the default choice in most real deployed bandit systems today, despite UCB1's cleaner textbook regret proof.
+
+## Contextual Bandits: When "Which Arm" Depends on Who's Asking
+
+Plain multi-armed bandits assume every round is the same decision — but a real recommendation isn't "which of these 5 articles is best, in general," it's "which of these 5 articles is best *for this specific user, right now*." **Contextual bandits** add a feature vector $x_t$ (user features, time of day, device, whatever context is available) at each round, and the reward model becomes a function of that context, not a fixed per-arm constant.
+
+**LinUCB** is the standard, still-deployed answer: model each arm's expected reward as *linear* in the context, $\mathbb{E}[r \mid x, a] = x^\top \theta_a$, and extend UCB1's same "estimate plus confidence bound" logic into that linear model — pick the arm maximizing $x^\top \hat\theta_a + \alpha \sqrt{x^\top A_a^{-1} x}$, where $A_a^{-1}$ (the inverse of that arm's running feature-covariance matrix) is what makes the confidence bound shrink specifically in the directions of feature space that arm has actually been tested in, not just shrink overall the more it's pulled.
+
+This isn't a hypothetical: [Li, Chu, Langford & Schapire's original LinUCB paper](https://arxiv.org/abs/1003.0146) (WWW 2010) ran it against 33 million real events from Yahoo's Front Page Today Module and measured a **12.5% click-through lift** over a context-free bandit baseline — the concrete, quantified value of "which arm" actually depending on context, not just in theory.
+
+## Why Not Just Use Full RL?
+
+Nothing stops you from modeling a recommendation problem as a full MDP with states — but if the "state" you'd define doesn't actually carry forward any consequence from action to action (showing user A article 3 today doesn't change what article is best for user B tomorrow, or even for user A tomorrow, if there's no real session-to-session memory being modeled), you're paying for machinery — Bellman backups, discounting, credit assignment across time steps — that isn't solving anything a bandit doesn't already solve, at real algorithmic and engineering cost. The dividing line is concrete: if the current round's outcome depends on the current round's context and nothing else's action history, it's a bandit problem, however sophisticated the context; the moment an action today provably changes what's optimal in a *future* round beyond just refining the context, that's genuinely sequential, and you're back to [RL Fundamentals](/docs/reinforcement-learning/rl-fundamentals)' full MDP.
+
+## Code: UCB1's Actual Selection Rule
+
+The exact update the diagram above runs, at the core of it:
+
+```python
+import math
+
+def select_arm_ucb1(counts: list[int], sums: list[float], t: int) -> int:
+    """counts[a] = times arm a pulled, sums[a] = total reward from arm a,
+    t = total pulls so far. Plays every arm once before trusting the bound."""
+    for a, c in enumerate(counts):
+        if c == 0:
+            return a
+    ucb_values = [
+        sums[a] / counts[a] + math.sqrt(2 * math.log(t) / counts[a])
+        for a in range(len(counts))
+    ]
+    return max(range(len(counts)), key=lambda a: ucb_values[a])
+```
+
+Reinforcement Learning section complete. Next: [Graph ML](/docs/graph-ml/roadmap) — another specialized track, for data with explicit relational structure rather than sequential or spatial structure.
