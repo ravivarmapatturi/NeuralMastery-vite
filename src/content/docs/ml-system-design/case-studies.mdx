@@ -9,10 +9,71 @@ import BlendedObjectiveDiagram from '../../../viz/diagrams/BlendedObjectiveDiagr
 import DomainAgnosticDesignDiagram from '../../../viz/diagrams/DomainAgnosticDesignDiagram';
 import GenAiCaseStudiesDiagram from '../../../viz/diagrams/GenAiCaseStudiesDiagram';
 import ProblemSolutionMapDiagram from '../../../viz/diagrams/ProblemSolutionMapDiagram';
+import DiscoverySequenceDiagram from '../../../viz/diagrams/DiscoverySequenceDiagram';
 
 # ML System Design Case Studies
 
 Applying [the 9-step framework](/docs/ml-system-design/the-9-step-framework) to the problem types that come up constantly, both in interviews and in real systems.
+
+## Learning From a Real Problem, Not a Topic List
+
+Nobody sets out to "learn Vector Databases" — they set out to build something, hit a wall a plain keyword search can't get past, and *that's* when a vector database becomes the obvious next thing to learn, motivated by a real constraint instead of arriving cold. The two case studies below are built that way on purpose: each one narrates a real system end to end, and every technology shows up exactly where the problem actually demands it, linking out to this site's real deep-dive page for that piece rather than re-explaining it here. This page's job is motivation and sequencing; the linked pages own the actual depth.
+
+## Case Study: A RAG System Over 100M Enterprise Documents
+
+The requirement sounds simple — "let people ask questions and get answers grounded in our own documents" — until the real numbers show up: 100 million documents, sub-second latency expectations, and answers that have to be *right*, not just plausible-sounding, because a wrong answer in an enterprise setting has real consequences. Walk it in the order the constraints actually force:
+
+<DiscoverySequenceDiagram steps={[
+  { name: 'Chunking', constraint: "Can't hand 100M documents to a model at once, and even one long document usually blows the context window." },
+  { name: 'Embeddings', constraint: 'Chunks need to be searchable by meaning, not just keyword-matched.' },
+  { name: 'Vector DB', constraint: "100M embedded chunks is too many to brute-force compare against on every query." },
+  { name: 'Hybrid Search', constraint: "Pure embedding search misses things a keyword search catches instantly — an exact product code, an error string." },
+  { name: 'Reranking', constraint: 'Fast retrieval over-fetches; "plausible" and "actually the best" aren\'t the same list.' },
+  { name: 'Caching', constraint: 'At real query volume, a meaningful share of retrieval + generation work is redundant.' },
+  { name: 'Eval', constraint: '"It gives an answer" isn\'t "it gives a right, grounded answer" — and you won\'t know the difference without measuring.' },
+  { name: 'Observability', constraint: 'A wrong answer could be bad retrieval or bad generation — two different bugs, same symptom.' },
+  { name: 'Security', constraint: "Enterprise documents are exactly the untrusted content an attacker can plant an injection inside." },
+  { name: 'Scaling', constraint: "Traffic doesn't arrive evenly, and embedding + reranking inference is its own real compute cost at this scale." },
+]} />
+
+Each step, in the order it's actually forced, with the real page that owns the depth:
+
+1. **Chunking** — first wall: you can't hand 100M documents to a model at once, and even one long document usually blows the context window. See [Chunking Strategies](/docs/llms-genai/rag#chunking-strategies) for how to split documents so a chunk is retrievable on its own without losing the context that made it meaningful in the first place — the actual hard part, not just "split every 500 words."
+2. **Embeddings** — chunks need to be searchable by meaning, not just keyword-matched: a question phrased differently than the document should still find it. See [Choosing an Embedding Model](/docs/llms-genai/rag#choosing-an-embedding-model) for the real tradeoffs (dimensionality, domain fit, cost) in picking the model that turns each chunk into a vector.
+3. **Vector DB** — 100M embedded chunks is too many to brute-force compare against on every query; you need a real index, not a linear scan. See [Vector Databases](/docs/databases/vector/overview#indexing-algorithms) for how approximate nearest-neighbor indexing makes that search fast at this scale, and what accuracy it trades away to get there.
+4. **Hybrid Search** — pure embedding search misses things a keyword search would catch instantly (an exact product code, a specific error string) — semantic similarity isn't the same as relevance for every query. See [Dense vs. Sparse Retrieval, and BM25](/docs/llms-genai/rag#dense-vs-sparse-retrieval-and-bm25) for combining both instead of picking one.
+5. **Reranking** — retrieval has to be fast, so it over-fetches (the top 50 plausible chunks, cheaply) — but "plausible" and "actually the best" aren't the same list. See [Re-ranking with Cross-Encoders](/docs/llms-genai/rag#re-ranking-with-cross-encoders) for the expensive-but-accurate second pass that reorders those 50 down to the handful that actually go in the prompt.
+6. **Caching** — at real query volume, a meaningful fraction of retrieval + generation work is redundant: the same system prompt, similar questions, repeated sub-queries. See [KV Cache & Prefix Caching](/docs/mlops/llm-inference-optimization#kv-cache) for reusing computation across requests instead of redoing it from scratch every time.
+7. **Eval** — "it gives an answer" isn't the same as "it gives a right, grounded answer," and you won't know the difference without measuring it. See [Evaluating RAG](/docs/llms-genai/rag#evaluating-rag) for faithfulness/relevance metrics that catch hallucination and irrelevant retrieval specifically, not just generic answer quality.
+8. **Observability** — when an answer is wrong in production, you need to know whether retrieval found the wrong chunks or generation misread the right ones — two completely different bugs with the same symptom. See [Observability](/docs/mlops/observability) for tracing a request through every stage of the pipeline, not just logging the final output.
+9. **Security** — enterprise documents are exactly the kind of untrusted content an attacker can plant a prompt injection inside, and a poisoned document can corrupt what the whole system retrieves for everyone. See [AI Red Teaming](/docs/ai-security/ai-red-teaming) for testing specifically against retrieval/RAG-poisoning attacks, not just the model's own prompt-injection surface.
+10. **Scaling** — enterprise traffic doesn't arrive evenly, and embedding + reranking inference is its own real compute cost at 100M-document scale, separate from the LLM call itself. See [Embedding & Reranker Inference for Production RAG](/docs/mlops/llm-hosting-and-serving-patterns#embedding-reranker-inference-for-production-rag) for serving that piece of the pipeline at real load, not just the generation step.
+
+Every one of those ten links is depth this site already has — this page's contribution is the order they actually get discovered in, and the specific reason each one becomes necessary, which is a different (and more durable) kind of understanding than reading the same ten pages as an unordered list of "things RAG systems use."
+
+## Case Study: Real-Time Fraud Detection at 100K Events/Sec
+
+Different shape of problem entirely: not "search accurately," but "decide, correctly, on every single transaction, in milliseconds, at a sustained 100,000 events per second, where fraud is rare and getting it wrong in either direction is expensive." Walk the same way:
+
+<DiscoverySequenceDiagram steps={[
+  { name: 'Event Stream', constraint: "100K events/sec arriving continuously isn't a batch job." },
+  { name: 'Features', constraint: "A model needs the same feature computed identically online and offline, or training and serving quietly diverge." },
+  { name: 'Imbalance', constraint: 'Fraud is often well under 1% of transactions — a model can hit 99%+ accuracy by never flagging anything.' },
+  { name: 'Serving', constraint: "A notebook doesn't score a live transaction in milliseconds." },
+  { name: 'Threshold', constraint: 'A missed fraud case costs far more than a false alarm — the right cutoff is almost never 0.5.' },
+  { name: 'Monitoring', constraint: "Fraud patterns actively adapt to whatever the current model catches, with no code change on your side." },
+  { name: 'Rollout', constraint: "A regression in a fraud model means real financial loss, silently, until someone notices." },
+]} />
+
+1. **Event Stream** — 100K events/sec arriving continuously isn't a batch job; nothing about "load a CSV and run inference" survives contact with a real transaction stream. See [Message Queues & Async Processing](/docs/mlops/message-queues-and-async-processing#the-core-pattern-producer-queue-consumer) for the producer/queue/consumer shape that decouples "a transaction happened" from "something processed it," and [Kafka, Celery, Redis, SQS: Picking One](/docs/mlops/message-queues-and-async-processing#kafka-celery-redis-sqs-picking-one) for why Kafka specifically is the real answer at this throughput.
+2. **Features** — a model needs real features per transaction (spending velocity, merchant history, device fingerprint) computed identically online and offline; get that wrong and the model trained on one version of a feature scores on a subtly different one in production. See [The Training-Serving Skew Problem](/docs/mlops/feature-stores-and-model-registry#the-training-serving-skew-problem) and [Feature Stores](/docs/mlops/feature-stores-and-model-registry#feature-stores) for the shared pipeline that makes training and serving compute features the exact same way.
+3. **Imbalance** — fraud is rare, often well under 1% of transactions, so a model can hit 99%+ accuracy by never flagging anything, which is useless. See [Handling Messy Data](/docs/machine-learning/ml-workflow-fundamentals#handling-messy-data) and [Sampling Strategies](/docs/machine-learning/ml-workflow-fundamentals#sampling-strategies) for resampling and class-weighting approaches that keep a rare-class problem learnable.
+4. **Serving** — a model sitting in a notebook doesn't score a live transaction in milliseconds; it needs a real, low-latency serving path in the critical path of every single payment. See [APIs & Model Serving](/docs/mlops/model-serving#building-the-api) for the real online-inference shape this requires, distinct from the batch/offline serving a slower problem could get away with.
+5. **Threshold** — the model outputs a probability, not a decision, and a missed fraud case costs far more than a false alarm, so the right cutoff is almost never 0.5. See [Threshold Optimization](/docs/machine-learning/model-evaluation-metrics#threshold-optimization) for choosing the cutoff deliberately from the real cost asymmetry, instead of defaulting to the number that looks best on a leaderboard metric.
+6. **Monitoring** — fraud patterns actively adapt to whatever the current model catches; a model accurate at launch degrades on its own as fraudsters route around it, with no code change on your side at all. See [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift#data-drift-vs-concept-drift) for telling "the world changed" apart from "the pipeline broke," and catching it before it shows up as a business loss.
+7. **Rollout** — a new fraud model can't just replace the old one and hope; a regression here means real financial loss, silently, until someone notices. See [Statistical Significance of Improvements](/docs/machine-learning/model-evaluation-metrics#statistical-significance-of-improvements) for confirming a new model is genuinely better before it takes over 100% of live traffic, not just better on one offline split.
+
+Notice the shape difference from the RAG case study even though the underlying framework (the [9-step design process](/docs/ml-system-design/the-9-step-framework)) is identical: a search problem's constraints are mostly about *retrieval quality at scale*; a fraud problem's constraints are mostly about *streaming infrastructure and decision cost* — same process, genuinely different technology stack, because the technology stack is downstream of the problem, not chosen first.
 
 ## Recommendation Systems
 
