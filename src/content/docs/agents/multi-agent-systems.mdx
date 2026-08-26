@@ -43,4 +43,4 @@ They *don't* help — and often actively hurt — when a single well-prompted ag
 - **Tool-calling hallucination** (calling tools that don't exist, or with malformed arguments) → strict schema validation on tool calls, clear error messages fed back to the model so it can self-correct, retry logic with backoff
 - **Runaway cost/latency in multi-agent chains** → caching repeated sub-results, using smaller/cheaper models for simple sub-tasks and reserving the largest model for the parts that need it, parallelizing independent sub-agent calls instead of running them sequentially
 
-Agents section complete. Next: [ML System Design](/docs/ml-system-design/roadmap) — how to turn any of this (models, RAG pipelines, agents) into a production system that scales.
+Next: [Agentic Coding Assistants](/docs/agents/agentic-coding-assistants) — a real, named, everyday application of everything above: the loop, the tool palette, and the safety/reversibility tradeoffs, in tools you're probably already using.

@@ -5,10 +5,15 @@ sidebar_position: 4
 
 
 import AgentControlFlowGraphDiagram from '../../../viz/diagrams/AgentControlFlowGraphDiagram';
+import AgentFrameworkAxisDiagram from '../../../viz/diagrams/AgentFrameworkAxisDiagram';
 
 # LLM / Agent Frameworks
 
 The tools that implement the concepts from [LLMs & GenAI](/docs/llms-genai/roadmap) and [Agents](/docs/agents/roadmap) so you're not wiring up RAG pipelines and tool-calling loops from scratch every time.
+
+## When You Need a Framework at All
+
+Worth asking before reaching for any of these: [HuggingFace's Agents Course](https://huggingface.co/learn/agents-course) puts it plainly — an agentic framework isn't always needed. If the flow is simple (a chain of prompts), plain code gives full control with no abstraction to learn; frameworks earn their cost once the workflow gets complex enough (function-calling loops, multiple agents) that managing it by hand becomes error-prone. Underneath any of the frameworks below, the same real components recur: an LLM engine, a list of tools, a parser for extracting tool calls from the model's output, a system prompt kept in sync with that parser, a memory system, and error-logging/retry for when the model gets a tool call wrong.
 
 ## LangChain
 
@@ -16,7 +21,47 @@ A framework for composing LLM applications out of reusable building blocks: **ch
 
 ## LlamaIndex
 
-Focused specifically on the **data indexing and retrieval** side of RAG — connecting to many data sources (documents, APIs, databases), chunking them (see [RAG — Chunking Strategies](/docs/llms-genai/rag#chunking-strategies)), building indexes over them, and providing query interfaces on top. Often used alongside or instead of LangChain specifically for the retrieval layer, when the bulk of the complexity in an application is "get the right context in front of the model" rather than complex multi-step orchestration.
+Started as, and is still strong at, the **data indexing and retrieval** side of RAG — connecting to many data sources (documents, APIs, databases), chunking them (see [RAG — Chunking Strategies](/docs/llms-genai/rag#chunking-strategies)), building indexes over them, and providing query interfaces on top. But it's also a real agent framework in its own right, not just a retrieval layer: `FunctionAgent` for straightforward tool-calling, `AgentWorkflow` for coordinating multiple agents, plus `ReActAgent` and `CodeActAgent` for different reasoning styles. A tool is just a typed, docstring-described Python function:
+
+```python
+def multiply(a: float, b: float) -> float:
+    """Multiply two numbers and returns the product"""
+    return a * b
+
+from llama_index.core.agent.workflow import FunctionAgent
+workflow = FunctionAgent(tools=[multiply], llm=llm, system_prompt="...")
+response = await workflow.run(user_msg="What is 20*4?")
+```
+
+The natural fit when an agent's main job really is connecting to and reasoning over many data sources — the same strength the RAG side already has.
+
+## Five More, Each on a Different Axis
+
+Beyond LangChain/LangGraph and LlamaIndex, five more frameworks show up often enough to be worth knowing specifically — not as a longer feature checklist, but because each one is genuinely built around a different core idea, not a variation on the same one:
+
+<AgentFrameworkAxisDiagram />
+
+**smolagents** ([HuggingFace](https://github.com/huggingface/smolagents)) writes its actions *as executable code* rather than JSON tool calls — its own docs put it as "agents that think in code," not "agents used to write code." The whole agent loop fits in roughly 1,000 lines; sandboxing (Docker, E2B, Modal) matters more here specifically because the action really is arbitrary code execution, not a fixed set of pre-registered functions.
+
+**Microsoft Agent Framework** is what to reach for where you might expect AutoGen — AutoGen is officially in maintenance mode, and Microsoft's own migration guide points existing users at Agent Framework instead. It adds the things AutoGen didn't have: graph-based orchestration patterns (sequential, concurrent, handoff, group), checkpointing and time-travel, built-in OpenTelemetry tracing, and first-class .NET alongside Python — aimed specifically at the prototype-to-production gap.
+
+**Google ADK** (Agent Development Kit) is a code-first, graph-based workflow runtime — routing, fan-out/fan-in, loops, and retry as explicit `Workflow` primitives, plus a `Task API` for structured agent-to-agent delegation. Model-agnostic, optimized for Gemini, with a local dev UI (`adk web`) for interactively testing an agent before deploying it.
+
+**DSPy** ([Stanford NLP](https://dspy.ai)) sits on a different axis from all four of the others: it isn't about orchestrating multi-step control flow, it's about not writing prompts by hand at all. Declare a typed `Signature`, run it through a `Module` (`Predict`, `ChainOfThought`, `ReAct`), and an optimizer — a "teleprompter" — tunes the actual prompt text against a metric on real training data:
+
+```python
+class ExtractEvent(dspy.Signature):
+    """Extract event details from an email."""
+    email: str = dspy.InputField()
+    event_name: str = dspy.OutputField()
+    date: str = dspy.OutputField()
+
+extract = dspy.Predict(ExtractEvent)
+optimizer = dspy.GEPA(metric=accuracy, auto="medium")
+optimized = optimizer.compile(extract, trainset=labeled_emails)
+```
+
+The prompt becomes a compiled, versioned artifact instead of a string you hand-edit — genuinely useful once a prompt has enough labeled examples to optimize against, and genuinely unnecessary before that point.
 
 ## MCP SDKs
 
@@ -32,6 +77,15 @@ A simplified but real LangGraph-style control-flow graph — step through it and
 
 <AgentControlFlowGraphDiagram />
 
-**Choosing between them**: for a single agent with a fairly linear flow, you often don't need any of these — a direct loop calling the LLM API is simpler and easier to debug. Reach for an orchestration framework once the control flow itself (not just the prompting) becomes complex enough that managing it by hand gets error-prone.
+**Choosing between them**: for a single agent with a fairly linear flow, you often don't need any of these — a direct loop calling the LLM API is simpler and easier to debug. Reach for an orchestration framework once the control flow itself (not just the prompting) becomes complex enough that managing it by hand gets error-prone. See also [Agentic Coding Assistants](/docs/agents/agentic-coding-assistants) for a specific, real application built on top of this same family of ideas.
+
+## References
+
+- [HuggingFace Agents Course, Unit 2](https://huggingface.co/learn/agents-course) — the "when do you need a framework at all" framing and the real component checklist (LLM engine, tools, parser, system prompt, memory, error handling) referenced above.
+- [smolagents](https://github.com/huggingface/smolagents) — HuggingFace's code-as-action agent framework.
+- [Microsoft Agent Framework](https://github.com/microsoft/agent-framework) and [AutoGen](https://github.com/microsoft/autogen) — AutoGen's own README states it's in maintenance mode and points new users to Agent Framework.
+- [Google ADK (adk-python)](https://github.com/google/adk-python) — Agent Development Kit.
+- [DSPy](https://dspy.ai) — programming, not prompting, language models.
+- [LlamaIndex agent docs](https://developers.llamaindex.ai/python/framework/understanding/agent/) — `FunctionAgent`/`AgentWorkflow` and LlamaIndex's agent-building APIs.
 
 Next: [Serving & MLOps/LLMOps](/docs/frameworks/serving-mlops) — getting any of this into production reliably.

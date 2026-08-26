@@ -21,6 +21,13 @@
       "sidebarPosition": 3,
       "description": null
     },
+    "/docs/agents/agentic-coding-assistants": {
+      "slug": "agents/agentic-coding-assistants",
+      "section": "agents",
+      "title": "Agentic Coding Assistants",
+      "sidebarPosition": 5.5,
+      "description": null
+    },
     "/docs/agents/loops-and-graphs": {
       "slug": "agents/loops-and-graphs",
       "section": "agents",

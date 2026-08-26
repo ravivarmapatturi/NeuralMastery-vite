@@ -1,0 +1,71 @@
+---
+title: "Agentic Coding Assistants"
+sidebar_position: 5.5
+---
+
+import AgenticCodingLoopDiagram from '../../../viz/diagrams/AgenticCodingLoopDiagram';
+import CodingAgentSafetyModelDiagram from '../../../viz/diagrams/CodingAgentSafetyModelDiagram';
+import OversightSpectrumDiagram from '../../../viz/diagrams/OversightSpectrumDiagram';
+
+# Agentic Coding Assistants
+
+[Agent Architectures](/docs/agents/agent-architectures) and [Loops and Graphs](/docs/agents/loops-and-graphs) describe agent loops in general. This page is the specific, named application: tools like Claude Code, Cursor, Windsurf, and Gemini CLI that read a real codebase, edit real files, and run real commands — not a toy example, a tool that operates on the same repository you're actually working in.
+
+These are all real, current, open or hybrid tools, not a hypothetical category: [Claude Code](https://code.claude.com/docs/en/overview) (Anthropic), [Cursor](https://cursor.com) (built on VS Code), [Gemini CLI](https://github.com/google-gemini/gemini-cli) (Google, open source, 100k+ GitHub stars), and Windsurf (Cognition) are all in active daily use, and DeepLearning.AI alone runs on the order of a dozen short courses specifically on this category — spec-driven development, AI code review, and each individual tool.
+
+## The Core Loop
+
+The loop is the same one [Loops and Graphs](/docs/agents/loops-and-graphs#loop-vs-graph-precisely) describes generically — produce, check, correct, repeat — applied concretely: gather context, decide a plan, take an action, verify the result against something real (a test, a build), and go back for more context if it didn't work.
+
+<AgenticCodingLoopDiagram />
+
+The step through above is a real (if abbreviated) trace: the first fix doesn't actually resolve the failure, so the loop goes back for *more* context rather than trying random variations of the same fix — the same "real pass/fail condition" discipline Loops and Graphs insists a gate needs, applied to a test's exit code instead of a human's approval.
+
+## Context Gathering: Search, Not Necessarily an Index
+
+A common assumption is that a coding agent works off a pre-built semantic index of the whole repository, the way a code-search product might. That's not quite how the two most-used tools actually describe their own agent mode: Claude Code's agent [reads files and greps for patterns as it goes](https://code.claude.com/docs/en/overview), and Cursor's Agent similarly "relies on its available tools to search and access codebase information as needed during task execution" rather than a pre-computed index driving the agent loop itself. (Cursor does offer separate codebase indexing for other features; the point here is specifically about what drives the *agent's* moment-to-moment decisions, not every feature the product ships.)
+
+This matters practically: a coding agent's first few tool calls on an unfamiliar task are almost always search — grep for the failing test's name, read the file it exercises, check what calls what — not a single "understood the whole repo" step. Context gathering is itself part of the loop, not a setup phase that happens once before it starts.
+
+## The Tool Palette
+
+Across every major coding agent, the actual tools converge on the same short list: read a file, edit or write a file, run a shell command, and search (grep/glob) across the repository. [Claude Code's tool set](https://code.claude.com/docs/en/overview) and [Cursor's Agent tools](https://cursor.com/docs/agent/overview) both name this same handful, plus MCP as the standard way to extend it — see [MCP Overview](/docs/agents/mcp/overview) for the protocol these tools increasingly share to connect to external systems (Jira, Slack, a design doc) instead of every product inventing its own integration.
+
+## Two Different Safety Models
+
+Giving an agent `bash` access and file-write access is a real risk surface — the same "blast radius" question [Loops and Graphs](/docs/agents/loops-and-graphs#gate-on-reversibility-not-confidence) raises for any gate applies directly here. The two dominant tools answer it two genuinely different ways:
+
+<CodingAgentSafetyModelDiagram />
+
+Neither is strictly safer in the abstract. Gate-before catches a bad action before it happens, at the cost of a pause on every risky step (mitigated by allowlisting known-safe commands, or — per [Claude Code's permission docs](https://code.claude.com/docs/en/permissions) — swapping the human gate for a classifier in "auto" mode, which keeps the gate but changes who evaluates it). Checkpoint-after assumes the action really is cheaply reversible, which holds for a local file edit and stops holding the moment the action leaves the machine — a `git push`, a deploy, an API call with a side effect. That's exactly the reversibility tiering Loops and Graphs describes: reversible-and-contained actions are where "just let it run and allow undo" is a reasonable default; the "hard to reverse" tier needs a real gate regardless of which tool you're using.
+
+## Iterative Self-Correction, Including in Parallel
+
+The verify step in the core loop above is what actually makes an agent's edits trustworthy rather than merely fast: run the test, read the real output, and if it's still red, go back to context-gathering with the new information instead of guessing again blind. [Claude Code documents running multiple agents in parallel](https://code.claude.com/docs/en/overview) on different parts of a task, with a lead agent coordinating and merging results — the macro-orchestration graph from [Loops and Graphs](/docs/agents/loops-and-graphs#which-graph-is-this--micro-or-macro) applied to coding tasks specifically: independent sub-agents each running their own loop, coordinated rather than sharing one context.
+
+## Persistent Project Context
+
+Re-explaining a codebase's conventions every single session doesn't scale. Claude Code's answer is a `CLAUDE.md` file at the project root — read at the start of every session, holding coding standards, architecture decisions, and review checklists — plus an auto-memory system that accumulates learnings across sessions without anyone writing them down by hand. It's the same idea as a graph's "long learning edge" from Loops and Graphs: an accepted result (or a correction) doesn't just fix the current run, it becomes a standing constraint future runs start from.
+
+## From "Vibe Coding" to Spec-Driven Development
+
+"Vibe coding" has a real, specific origin: Andrej Karpathy [coined the term in a February 2025 post](https://x.com/karpathy/status/1886192184808149383), describing his own workflow as "I just see stuff, say stuff, run stuff, and copy-paste stuff, and it mostly works" — no diff review, errors pasted back in until they clear. It's one real point on a spectrum, not the only way to work with these tools, and by 2026 the term itself draws as much pushback as adoption even as the underlying no-review workflow persists under other names.
+
+<OversightSpectrumDiagram />
+
+Spec-driven development is the disciplined middle, not a compromise: write and review the spec or plan first, then let the agent implement against it with less line-by-line scrutiny on the resulting diff. The oversight moves earlier in the loop rather than disappearing — closer to reviewing a PR description before the PR exists than to reviewing every line after the fact.
+
+## Seen Elsewhere on This Site
+
+The [qa_rag_application](https://github.com/ravivarmapatturi/qa_rag_application) and [Multi_Agent_Research_System](https://github.com/ravivarmapatturi/Multi_Agent_Research_System) projects referenced throughout [MLOps](/docs/mlops/roadmap) and [Agents](/docs/agents/roadmap) were built using exactly this loop — an agentic coding assistant reading the real repository, editing real files, running real tests, and iterating on real failures, with the safety and context-gathering mechanics described above, not a simplified stand-in for them.
+
+## References
+
+- [Claude Code Overview](https://code.claude.com/docs/en/overview) and [Claude Code Permissions](https://code.claude.com/docs/en/permissions) — Anthropic's own documentation for the tool palette, parallel sub-agents, `CLAUDE.md`/auto-memory, and the tiered permission system.
+- [Cursor Agent Overview](https://cursor.com/docs/agent/overview) — Cursor's own documentation for its Agent mode's tools and checkpoint-based safety model.
+- [Gemini CLI](https://github.com/google-gemini/gemini-cli) — Google's open-source terminal coding agent.
+- Andrej Karpathy, [the original "vibe coding" post](https://x.com/karpathy/status/1886192184808149383), February 2, 2025.
+- [Loops and Graphs](/docs/agents/loops-and-graphs) — the general loop/gate/reversibility framing this page applies specifically to coding agents.
+- [Agent Frameworks](/docs/frameworks/llm-agent-frameworks) — the libraries you'd actually use to build a loop like this yourself, rather than use a packaged product.
+
+Agents section complete. Next: [ML System Design](/docs/ml-system-design/roadmap) — how to turn any of this (models, RAG pipelines, agents) into a production system that scales.
