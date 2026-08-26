@@ -203,6 +203,13 @@
       "sidebarPosition": 4,
       "description": null
     },
+    "/docs/ai-security/ai-red-teaming": {
+      "slug": "ai-security/ai-red-teaming",
+      "section": "ai-security",
+      "title": "AI Red Teaming & Adversarial Testing",
+      "sidebarPosition": 5,
+      "description": null
+    },
     "/docs/ai-security/model-and-data-attacks": {
       "slug": "ai-security/model-and-data-attacks",
       "section": "ai-security",
@@ -1001,6 +1008,13 @@
       "sidebarPosition": 6.8,
       "description": null
     },
+    "/docs/machine-learning/uncertainty-estimation-and-conformal-prediction": {
+      "slug": "machine-learning/uncertainty-estimation-and-conformal-prediction",
+      "section": "machine-learning",
+      "title": "Uncertainty Estimation & Conformal Prediction",
+      "sidebarPosition": 6.06,
+      "description": null
+    },
     "/docs/machine-learning/unsupervised-learning": {
       "slug": "machine-learning/unsupervised-learning",
       "section": "machine-learning",
@@ -1405,6 +1419,13 @@
       "section": "reinforcement-learning",
       "title": "Advanced RL",
       "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/reinforcement-learning/bandits": {
+      "slug": "reinforcement-learning/bandits",
+      "section": "reinforcement-learning",
+      "title": "Multi-Armed & Contextual Bandits",
+      "sidebarPosition": 5,
       "description": null
     },
     "/docs/reinforcement-learning/overview": {

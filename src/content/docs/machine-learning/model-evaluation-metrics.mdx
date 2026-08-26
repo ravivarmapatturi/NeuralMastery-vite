@@ -68,12 +68,7 @@ A classifier's raw output is a probability; turning it into a decision requires 
 
 ## Uncertainty Estimation
 
-Calibration (above) asks "are the predicted *probabilities* trustworthy." Uncertainty estimation asks a related but distinct question: "how confident should I be in *this specific prediction*," which matters most when a model needs to know what it doesn't know.
-
-- **Prediction intervals** (regression): instead of a single predicted value, output a range likely to contain the true value — e.g. quantile regression trains separate models (or heads) for different quantiles (10th, 50th, 90th percentile) of the target, giving a range directly rather than a point estimate plus an assumed error distribution.
-- **Conformal prediction**: a distribution-free, model-agnostic framework for producing prediction sets/intervals with a *guaranteed* coverage rate (e.g. "the true value falls in this interval at least 90% of the time"), calibrated using a held-out calibration set — unlike many uncertainty methods, this guarantee holds regardless of what model produced the underlying predictions, which is why it's increasingly used as a wrapper around black-box models (including LLMs) rather than requiring the model itself to be uncertainty-aware.
-- **Ensemble-based uncertainty**: train several models (or use dropout at inference time — "Monte Carlo dropout") and treat the *disagreement* across them as an uncertainty signal — high variance across ensemble members on a given input suggests the model is extrapolating into territory it hasn't seen reliable examples of.
-- **Why this matters in production**: a model that can say "I don't know" (high uncertainty) on out-of-distribution inputs enables routing those cases to a human reviewer or a fallback system, instead of returning a confident-looking wrong answer — the single biggest practical payoff of uncertainty estimation over just trusting a point prediction.
+Calibration (above) asks "are the predicted *probabilities* trustworthy." Uncertainty estimation asks a related but distinct question: "how confident should I be in *this specific prediction*," which matters most when a model needs to know what it doesn't know. See [Uncertainty Estimation & Conformal Prediction](/docs/machine-learning/uncertainty-estimation-and-conformal-prediction) for prediction intervals, ensemble-based uncertainty, and — the part with an actual proof, not just an assertion — conformal prediction's real distribution-free coverage guarantee, verified live against a held-out test set rather than just stated.
 
 ## Hyperparameter Optimization
 

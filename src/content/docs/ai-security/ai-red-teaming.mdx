@@ -1,0 +1,58 @@
+---
+title: "AI Red Teaming & Adversarial Testing"
+sidebar_position: 5
+---
+
+
+import AgenticTop10CoverageDiagram from '../../../viz/diagrams/AgenticTop10CoverageDiagram';
+
+# AI Red Teaming & Adversarial Testing
+
+[OWASP LLM Top 10 & Prompt Attacks](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks) and [Model & Data Attacks](/docs/ai-security/model-and-data-attacks) taught the *attacks*. This page is the missing other half: how you actually go find out, systematically and repeatably, whether a specific system you built is vulnerable to any of them — not by reading a taxonomy and hoping, but by running real adversarial tools against it.
+
+## A Second Top 10, Specifically for Agents
+
+The OWASP LLM Top 10 already covered is about the *model's* behavior — prompt injection, jailbreaks, insecure output handling. Once a system can plan, call tools, hold memory across turns, and hand off to other agents, a separate set of failure modes opens up that aren't about tricking the model into a bad *response* — they're about tricking the *system* into a bad *action*. OWASP's [Top 10 for Agentic Applications](https://owasp.org/www-project-top-10-for-agentic-applications/) (ASI01-10, a distinct taxonomy from the LLM Top 10, not a subset of it) is the standard reference for this, and current red-team tooling maps unevenly onto it — some categories have mature, dedicated tooling; others are still open problems:
+
+<AgenticTop10CoverageDiagram />
+
+Worth sitting with the honest gaps above rather than skimming past them: **ASI07 (Insecure Inter-Agent Communication)** — an injected instruction propagating through a trusted agent-to-agent handoff — doesn't have a dedicated red-team plugin yet in either major open-source framework, as of this writing. That's not this page failing to find one; it's a real, current limitation of the field, directly connected to the security discussion in [Single-Agent vs. Multi-Agent](/docs/agents/single-vs-multi-agent).
+
+## The Two Real Frameworks
+
+**[PyRIT](https://github.com/Azure/PyRIT)** (Microsoft's Python Risk Identification Tool, ~4k GitHub stars) is built from four composable pieces: a **target** (the system under test), **converters** (mutate/disguise a prompt to test whether a filter catches the disguised version), **scorers** (judge whether an attack succeeded — via an LLM-as-judge, a content-safety classifier, or custom logic), and **orchestrators** that drive the loop. The orchestrators aren't interchangeable — each tests something structurally different: `PromptSendingOrchestrator` is a single-turn batch spray; `RedTeamingOrchestrator` runs a full multi-turn conversation where an attacker LLM adapts its next message to what the target just said; `CrescendoOrchestrator` specifically escalates gradually across turns (the "boil the frog slowly" attack pattern); `TreeOfAttacksWithPruningOrchestrator` explores multiple attack branches in parallel and prunes the ones that aren't working.
+
+**[Promptfoo](https://www.promptfoo.dev/)** (acquired by OpenAI in 2025 specifically to strengthen agentic security testing) takes a declarative-config approach instead of an orchestrator API: a YAML file names **plugins** (which generate the base adversarial inputs for a category — `excessive-agency`, `bfla`, `bola`, `tool-discovery`, `rag-poisoning`, `prompt-extraction`, and 50+ others) and **strategies** (which transform those base attacks into harder variants — `jailbreak`, `jailbreak:tree`, `crescendo`). It ships a real MCP-aware provider specifically for testing agents that call tools and process their return values, not just single-turn chat.
+
+Real, current config — this is what [Agent Security Gateway](https://github.com/ravivarmapatturi/Agent_Security_Gateway)'s own red-team suite actually runs against its demo agent:
+
+```yaml
+redteam:
+  plugins:
+    - excessive-agency   # can the agent be talked into acting beyond its scope?
+    - bfla                # function-level authorization bypass
+    - bola                # object-level authorization bypass
+    - tool-discovery       # does the agent leak which tools exist?
+    - injection
+    - rag-poisoning
+    - prompt-extraction
+  strategies:
+    - jailbreak
+    - jailbreak:tree
+    - crescendo            # gradual multi-turn escalation
+  numTests: 25
+```
+
+## Runtime Defense: OWASP Agent Memory Guard
+
+Red-teaming finds vulnerabilities; it doesn't fix them by itself. For ASI06 specifically, [OWASP Agent Memory Guard](https://owasp.org/www-project-agent-memory-guard/) is the actual OWASP-sanctioned reference implementation — `pip install agent-memory-guard` — a runtime layer that screens every memory read and write through a detector pipeline (prompt injection, sensitive-data leakage, protected-key tampering, size/rate anomalies, self-reinforcement loops) against a declarative policy (allow / redact / block / quarantine per detector). It's the "don't hand-roll detection" answer to the same problem [Model & Data Attacks — Backdoors](/docs/ai-security/model-and-data-attacks#backdoors--trojaned-models) raises for training-time poisoning, applied at inference-time memory instead.
+
+## Mapping Findings: MITRE ATLAS
+
+Once a red-team run produces findings, map them to a shared taxonomy rather than a project-specific write-up — [MITRE ATLAS](https://atlas.mitre.org/) is the standard one, built on the same tactics/techniques structure as MITRE ATT&CK for classical security, adapted for AI-specific attack chains. This matters concretely for hiring: postings for AI Red Teamer / LLM Security Engineer roles specifically list PyRIT or Garak experience and findings mapped to OWASP's taxonomies and MITRE ATLAS as expected baseline skills, not nice-to-haves.
+
+## Putting It Together: A Real Gateway, Not Just a Test Run
+
+Red-teaming and runtime defense are meant to compose, not stand alone. [Agent Security Gateway](https://github.com/ravivarmapatturi/Agent_Security_Gateway) is a concrete, complete example: an OPA/Rego policy engine gates every tool call the demo agent proposes (deny-by-default, human-approval-only for high-risk actions — see [Agent Architectures](/docs/agents/agent-architectures)), Agent Memory Guard screens what gets written to memory, and the Promptfoo config above is what actually tries to break both, so the finding isn't "we think this is safe" but "here's what we tried, and here's what got through vs. what didn't."
+
+AI Security section complete. Next: [AI Safety & Alignment](/docs/ai-safety/roadmap) — a related but distinct discipline: security defends against adversaries, safety is about a well-intentioned system still behaving badly on its own.
