@@ -1001,6 +1001,13 @@
       "sidebarPosition": 6.8,
       "description": null
     },
+    "/docs/machine-learning/uncertainty-estimation-and-conformal-prediction": {
+      "slug": "machine-learning/uncertainty-estimation-and-conformal-prediction",
+      "section": "machine-learning",
+      "title": "Uncertainty Estimation & Conformal Prediction",
+      "sidebarPosition": 6.06,
+      "description": null
+    },
     "/docs/machine-learning/unsupervised-learning": {
       "slug": "machine-learning/unsupervised-learning",
       "section": "machine-learning",
