@@ -5,10 +5,17 @@ sidebar_position: 5
 
 
 import AgenticTop10CoverageDiagram from '../../../viz/diagrams/AgenticTop10CoverageDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # AI Red Teaming & Adversarial Testing
 
 [OWASP LLM Top 10 & Prompt Attacks](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks) and [Model & Data Attacks](/docs/ai-security/model-and-data-attacks) taught the *attacks*. This page is the missing other half: how you actually go find out, systematically and repeatably, whether a specific system you built is vulnerable to any of them — not by reading a taxonomy and hoping, but by running real adversarial tools against it.
+
+<ELI5>
+
+Knowing the theory of lock-picking doesn't tell you whether *your specific* front door is actually pickable — you have to try picking it, with real tools, and see what happens. Red-teaming is that for an AI system: instead of just listing "prompt injection is a risk" and hoping your system handles it, you run real adversarial tools that actually try to trick your agent — feed it disguised instructions, push it to overstep its permissions, see if it leaks what tools it has — and see what actually gets through versus what your defenses actually stop.
+
+</ELI5>
 
 ## A Second Top 10, Specifically for Agents
 
@@ -17,6 +24,12 @@ The OWASP LLM Top 10 already covered is about the *model's* behavior — prompt 
 <AgenticTop10CoverageDiagram />
 
 Worth sitting with the honest gaps above rather than skimming past them: **ASI07 (Insecure Inter-Agent Communication)** — an injected instruction propagating through a trusted agent-to-agent handoff — doesn't have a dedicated red-team plugin yet in either major open-source framework, as of this writing. That's not this page failing to find one; it's a real, current limitation of the field, directly connected to the security discussion in [Single-Agent vs. Multi-Agent](/docs/agents/single-vs-multi-agent).
+
+<GoDeeper title="Go deeper: why is ASI07 structurally harder to test than prompt injection at the model boundary">
+
+Ordinary prompt injection (already covered on [OWASP LLM Top 10](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks)) has one clear trust boundary: untrusted content flows into the model, so a red-team plugin knows exactly where to inject a payload and exactly what output to check for. Inter-agent handoffs erase that boundary by design — agent B receives agent A's output *already trusted*, because that's the entire point of a multi-agent pipeline (A did real work, B builds on it without redoing it). If A gets compromised, its output looks structurally identical to legitimate work product to B — there's no "this came from outside" signal left to detect, because from B's position, nothing came from outside; it came from a trusted collaborator. A red-team plugin would need to simulate a *specific* compromised agent producing *plausible-looking* poisoned output and then trace whether that specific poison propagates through an arbitrary downstream pipeline — a combinatorially different problem than injecting one canned payload at one well-defined model boundary, which is why tooling here lags the single-agent case rather than just being an oversight.
+
+</GoDeeper>
 
 ## The Two Real Frameworks
 

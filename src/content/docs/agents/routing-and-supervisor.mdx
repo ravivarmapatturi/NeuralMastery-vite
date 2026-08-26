@@ -5,10 +5,17 @@ sidebar_position: 4.6
 
 
 import RouterVsSupervisorDiagram from '../../../viz/diagrams/RouterVsSupervisorDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Routing & Supervisor Pattern
 
 Both patterns answer "which agent handles this?" — but they answer it at a different frequency. A router answers it once, up front. A supervisor answers it again after every result, for as long as the task needs.
+
+<ELI5>
+
+A router is like a receptionist: hears your question once, points you to the right department, and that's the whole job — they never check back in on how it went. A supervisor is more like a project manager: assigns the first task, but then actually looks at what came back, decides if more work is needed, and keeps deciding that after every update until the whole thing is done. The receptionist is cheaper and faster for simple requests; the project manager is what you need when one request might genuinely take several people working in sequence.
+
+</ELI5>
 
 ## The Actual Difference, Not Just the Definitions
 
@@ -51,6 +58,12 @@ app = workflow.compile()
 ```
 
 Worth knowing if you're picking a library rather than hand-rolling this: [`langgraph-supervisor-py`](https://github.com/langchain-ai/langgraph-supervisor-py)'s own maintainers now recommend implementing the supervisor pattern directly with plain LangGraph tool-calling for most new projects, rather than reaching for the dedicated library — it gives more direct control over exactly what context each handoff carries, which matters once you're tuning a real system rather than following a quickstart.
+
+<GoDeeper title="Go deeper: why 'workers as tools' is the actual mechanism, not just an API choice">
+
+The router's `Command(goto=active_agent)` is a hard-coded jump — the graph edge to take is decided by ordinary Python code (`classify_query`), not by the model choosing among options at runtime. The supervisor's worker-as-tool pattern is structurally different: each worker agent gets exposed to the supervisor's own LLM call as a function in its tool schema, the same mechanism [tool use / function calling](/docs/agents/agent-fundamentals) uses for any tool — the model reads each tool's name and description, and its own reasoning (not a Python `if`/`else`) decides which one to call, with what arguments, based on the current state of the conversation. That's the actual source of the supervisor's flexibility: routing decisions live inside the model's forward pass, re-evaluated fresh every turn against whatever the previous worker just returned, instead of being fixed once by a classifier that never sees intermediate results. It's also exactly why a supervisor costs more per turn than a router — every dispatch decision is a real LLM call reasoning over tool schemas, not a lookup.
+
+</GoDeeper>
 
 ## When to Use Which
 

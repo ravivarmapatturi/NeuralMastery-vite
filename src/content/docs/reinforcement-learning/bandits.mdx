@@ -5,8 +5,15 @@ sidebar_position: 5
 
 
 import BanditRegretRaceDiagram from '../../../viz/diagrams/BanditRegretRaceDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Multi-Armed & Contextual Bandits
+
+<ELI5>
+
+The name comes from slot machines ("one-armed bandits") — imagine a row of them, each with a different, unknown payout rate, and you get a limited number of pulls total. Every pull teaches you a little about that one machine, but pulling it costs you the chance to learn about (or profit from) a different one instead. That's the entire problem: balancing trying machines you're unsure about against sticking with the one that's paid off so far, when you only find out a machine's true payout rate by actually pulling it.
+
+</ELI5>
 
 [RL Fundamentals](/docs/reinforcement-learning/rl-fundamentals) opened with an MDP: state, action, reward, *new state* — the loop repeats, and what happens next depends on where the agent ends up. A bandit is what's left when you delete the "new state" part entirely: one state, forever. Pick an action, get a reward, the world doesn't change underneath you, repeat. That sounds like a simplification, and it is one — but it's also the actual formal name for a problem this site has already described twice without naming it: [Reinforcement Learning — Overview](/docs/reinforcement-learning/overview) calls out "a recommender system choosing what to show a user across a session" as a real RL instance, and [ML System Design Case Studies — Cold Start](/docs/ml-system-design/case-studies#recommendation-systems) describes "exploration strategies (deliberately show some uncertain-but-promising items to gather signal)" without ever calling it what it is. It's a bandit problem, and bandits are the actual production answer, not full MDP machinery.
 
@@ -20,6 +27,12 @@ Three real strategies, run against the same fixed 3-arm bandit, real cumulative 
 
 - **ε-greedy**: with probability $\varepsilon$, pick a random arm (explore); otherwise pick the current best-estimated arm (exploit). Simple, but $\varepsilon$ never decays in this version — it keeps exploring at a constant rate forever, which is exactly why its regret line never stops climbing at roughly the same rate: a real, structural property, not a tuning artifact.
 - **UCB1 (Upper Confidence Bound)**: pick $\arg\max_a \left[ \hat{Q}(a) + \sqrt{\dfrac{2\ln t}{N(a)}} \right]$ — an arm's estimated value *plus* a bonus that shrinks as that arm gets pulled more (and grows for arms that haven't been tried in a while) — "optimism in the face of uncertainty." The bonus term is provably enough to guarantee **logarithmic** regret, which is what the diagram's flattening UCB1 curve actually is, not an approximation of it.
+
+<GoDeeper title="Go deeper: why that specific √(2 ln t / N(a)) term, and not some other bonus?">
+
+The bonus comes directly from **Hoeffding's inequality**, a real concentration bound: for $N(a)$ independent samples of a value bounded in $[0,1]$, the true mean $Q(a)$ and the sample mean $\hat Q(a)$ satisfy $P\big(Q(a) > \hat Q(a) + \epsilon\big) \le e^{-2N(a)\epsilon^2}$ — the probability the true value exceeds the estimate by more than $\epsilon$ shrinks exponentially as more samples come in. Setting that failure probability to shrink at rate $t^{-4}$ (small enough that the total failure probability across all $t$ rounds, summed, still converges) and solving for $\epsilon$ gives exactly $\epsilon = \sqrt{2\ln t / N(a)}$ — the bonus isn't a tuned hyperparameter, it's the $\epsilon$ that makes "the true value is above my upper confidence bound" a genuinely rare event at every round simultaneously. That's the actual mechanism behind "optimism in the face of uncertainty": UCB1 acts as if every arm's true value equals its upper confidence bound, which is very likely to either be roughly correct (informative) or get corrected fast (the bound shrinks the moment that arm gets pulled again) — and it's this same Hoeffding argument, applied per-round, that sums to the provable $O(\log t)$ regret bound.
+
+</GoDeeper>
 - **Thompson Sampling**: maintain a Beta$(\alpha, \beta)$ posterior per arm (starting at Beta$(1,1)$, the uniform prior), sample once from each arm's posterior, pull whichever arm's sample is highest, then update that arm's posterior — Beta$(\alpha+1, \beta)$ on a win, Beta$(\alpha, \beta{+}1)$ on a loss. A genuinely Bayesian answer to the same question UCB1 answers with a hand-derived bound.
 
 Worth sitting with what the diagram actually shows, because it's a real, slightly counter-intuitive result, not a foregone conclusion: **UCB1 looks worse than plain ε-greedy for a long stretch.** Its $\sqrt{2\ln t}$ confidence bound front-loads exploration hard. Only once the horizon gets long enough for "regret grows like $\log t$" to actually beat "regret grows like $t$" does UCB1 pull ahead — watch it happen by dragging the horizon slider past a few thousand pulls. Thompson Sampling, in this run and in the empirical literature generally, wins throughout — a big part of why it's the default choice in most real deployed bandit systems today, despite UCB1's cleaner textbook regret proof.

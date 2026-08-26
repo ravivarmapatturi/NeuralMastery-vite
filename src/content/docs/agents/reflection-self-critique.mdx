@@ -4,10 +4,17 @@ sidebar_position: 4.3
 ---
 
 import ReflexionLoopDiagram from '../../../viz/diagrams/ReflexionLoopDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Reflection / Self-Critique
 
 [Plan-and-Execute](/docs/agents/plan-and-execute) changes *when* an agent thinks — all upfront, versus per step. Reflection changes what happens *after* a result comes back: does the agent just move on, or does it actually check its own work first?
+
+<ELI5>
+
+Imagine redoing a homework problem, but before turning it in, you re-read your own work and ask "does this actually answer the question, and where did I probably mess up?" That's reflection: after the agent produces an attempt, a separate step grades it, and if it's wrong, writes down *specifically* what went wrong — not "try again," but "you looked in the wrong drawer, check the desk instead." The agent reads that note before its next attempt. No re-training happens anywhere; the "learning" is just a sentence the agent gets to read next time.
+
+</ELI5>
 
 ## The Real Architecture: Reflexion
 
@@ -18,6 +25,12 @@ Shinn et al.'s ["Reflexion: Language Agents with Verbal Reinforcement Learning"]
 - **Self-Reflection** — takes the Evaluator's (often sparse — just pass/fail) signal and the actual trajectory, and generates *specific, actionable* natural-language feedback: not "that was wrong," but what specifically to do differently next time.
 
 The paper calls this **verbal reinforcement learning** deliberately: there's no weight update anywhere in the loop. The "learning" is a piece of text, written to an episodic memory buffer, that the Actor reads before its next attempt.
+
+<GoDeeper title="Go deeper: how does text in a prompt change behavior with no gradient step?">
+
+This isn't a metaphor for reinforcement learning — it's a real substitution in the RL objective. Standard RL updates the *policy's parameters* $\theta$ using a reward signal: $\theta \leftarrow \theta + \alpha \nabla_\theta J(\theta)$, nudging weights in the direction that would have produced more reward. Reflexion replaces the parameter update with a *context* update: instead of changing $\theta$, it appends text $m$ to the prompt, so the effective policy becomes $\pi_\theta(a \mid s, m)$ rather than $\pi_\theta(a \mid s)$ — same frozen weights, different conditioning input. This works specifically because a large enough language model's behavior is highly sensitive to its context (the same mechanism behind [few-shot prompting](/docs/llms-genai/prompt-engineering) and [in-context learning](/docs/llms-genai/prompt-engineering) generally) — reflection is a way of writing that context *adaptively*, based on the model's own most recent failure, rather than a human hand-picking few-shot examples in advance. The tradeoff is exactly what you'd expect from optimizing a prompt instead of a weight: it's cheap and immediate (no training run), but the "learning" only persists as long as $m$ stays in context — nothing is retained once the episode ends and the buffer isn't carried forward.
+
+</GoDeeper>
 
 ## A Real Trial, Not a Constructed Example
 

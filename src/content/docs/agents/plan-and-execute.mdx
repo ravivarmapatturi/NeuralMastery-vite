@@ -4,10 +4,17 @@ sidebar_position: 4.2
 ---
 
 import PlanExecuteReplanDiagram from '../../../viz/diagrams/PlanExecuteReplanDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Plan-and-Execute
 
 [Agent Architectures](/docs/agents/agent-architectures#react-reasoning-acting) covers [ReAct](/docs/agents/agent-architectures#react-reasoning-acting) — reason, act, observe, one step at a time. Plan-and-execute inverts the order: think through the whole task *before* acting on any of it, then execute the resulting plan with far less per-step reasoning.
+
+<ELI5>
+
+Think of the difference between planning a road trip turn-by-turn as you drive versus mapping the whole route before leaving the driveway. ReAct is the first: figure out the next move, do it, see what happened, figure out the next move again — useful when the road might be closed and you won't know until you get there. Plan-and-execute is the second: work out the whole route up front, then just follow it — much less thinking per mile, as long as the roads are actually open the way you expected. The "replanner" is what happens when you hit a detour anyway: it doesn't throw out the whole trip, it just re-routes from where you actually are.
+
+</ELI5>
 
 ## The Architecture
 
@@ -34,6 +41,12 @@ LangChain's own framing of the tradeoff names three real advantages of separatin
 The tradeoff runs the other way for tasks that genuinely need per-step adaptation: a plan committed to upfront is exactly the wrong structure when each step's *result* changes what the next step should even be, not just whether it succeeded. ReAct's interleaved reason-act-observe cycle handles that naturally; plan-and-execute has to detour through the replanner every time, which is slower than never having committed to a rigid plan in the first place.
 
 The basic version also has a real, named limitation: it's "still restricted by serial tool calling" and "doesn't support variable assignment" between steps — later frameworks (LLMCompiler and similar DAG-based approaches) address this by letting independent steps run in parallel and by passing structured values between steps instead of only natural-language results, but that's beyond what the basic planner/executor/replanner pattern itself provides.
+
+<GoDeeper title="Go deeper: serial tool calling is exactly the fake-edge problem, named">
+
+[Loops and Graphs' real-vs-fake-edge test](/docs/agents/loops-and-graphs#real-edges-vs-fake-edges) applies directly to this limitation, not just by analogy. A plan with 5 steps, executed serially, has 4 edges between them by default — but the real-vs-fake test asks: can you name the variable crossing each one? If step 3 doesn't actually consume anything step 2 produced, that edge is fake — an artificial wait imposed by writing the plan as a numbered list. The basic planner/executor/replanner pattern executes every plan as if all its edges were real, because a flat step list has no way to *represent* the difference between "step 3 needs step 2's output" and "step 3 just happens to be listed after step 2." LLMCompiler's fix is exactly what the loops-and-graphs framing predicts: represent the plan as an actual DAG, not a list, so real edges (data dependencies) stay serial and fake edges (mere ordering) get parallelized — the plan becomes a graph, with the planner's job now including which edges are real.
+
+</GoDeeper>
 
 ## When to Reach for It
 

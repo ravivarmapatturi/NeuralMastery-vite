@@ -4,10 +4,17 @@ sidebar_position: 6.05
 ---
 
 import HyperparamSearchDiagram from '../../../viz/diagrams/HyperparamSearchDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Hyperparameter Optimization
 
 [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics) covers *what* to measure. This page covers the actual search problem underneath "tune the hyperparameters": model hyperparameters (learning rate, tree depth, regularization strength, number of layers) aren't learned from data the way weights are — they have to be searched over, using validation performance (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)) as the search signal, never the test set.
+
+<ELI5>
+
+Imagine tuning an old radio with two knobs — one actually changes the station, the other does nothing (it's broken). If you test every combination of both knobs systematically (a grid), you waste half your turns twiddling the broken knob while barely varying the one that matters. If you just spin both knobs randomly instead, you end up trying way more distinct settings of the knob that actually matters, for the same number of tries. That's the whole surprising result below: most models have a few "real" knobs and several "broken" ones, and grid search doesn't know which is which — random search doesn't need to.
+
+</ELI5>
 
 ## Grid Search vs. Random Search — the Real Result, Not the Obvious One
 
@@ -16,6 +23,12 @@ The obvious intuition is that a denser, more systematic grid search should beat 
 That single fact is what breaks grid search. A $k \times k$ grid over two hyperparameters spends $k^2$ evaluations — but if only one of those two hyperparameters is actually important, every one of those $k^2$ evaluations only ever tries $k$ *distinct* values of the dimension that matters, because each of the $k$ important-dimension values gets repeated $k$ times while the unimportant dimension varies. Random search, drawing $k^2$ independent samples, tries close to $k^2$ distinct values of *every* dimension — including the one that matters — for the identical evaluation budget.
 
 <HyperparamSearchDiagram />
+
+<GoDeeper title="Go deeper: how many random draws until you're confident you've hit the good region?">
+
+This has a clean, real answer, independent of anything about the model being tuned. Say the top $X$ fraction of the hyperparameter space counts as "good" (e.g. the top 5%, so $X = 0.05$) — with $N$ independent random draws, the probability that *none* of them land in that good region is $(1-X)^N$, since each draw independently misses it with probability $1-X$. So the probability at least one draw *does* land in the good region is $1 - (1-X)^N$. Plugging in $X = 0.05$: at $N=20$ draws, that's $1 - 0.95^{20} \approx 64\%$; by $N=60$, it's $1 - 0.95^{60} \approx 95\%$. This is exactly why random search needs surprisingly few evaluations to be confident of finding a near-optimal setting — the sample size needed depends only on how large you consider the "good" region to be, not on the number of hyperparameters or how the model itself behaves, which is part of why the guarantee holds even for models nobody understands well enough to reason about directly.
+
+</GoDeeper>
 
 ## Bayesian Optimization: Using Every Result to Pick the Next One
 

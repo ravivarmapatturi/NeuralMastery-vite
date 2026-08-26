@@ -4,10 +4,17 @@ sidebar_position: 6.06
 ---
 
 import ConformalPredictionDiagram from '../../../viz/diagrams/ConformalPredictionDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Uncertainty Estimation & Conformal Prediction
 
 [Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics) covers calibration — "are the predicted *probabilities* trustworthy." This page covers a related but distinct question: "how confident should I be in *this specific prediction*," which matters most exactly when a model needs to know what it doesn't know.
+
+<ELI5>
+
+A weather forecaster saying "70% chance of rain" is making a calibration claim: across every day they said 70%, it should actually rain about 70% of the time. Conformal prediction answers a different question: instead of a single number's trustworthiness, it gives you a *range* — "the temperature tomorrow will be between 60°F and 75°F" — built specifically so that range genuinely contains the true answer at least as often as promised, no matter how good or bad the underlying forecasting model actually is. That last part is the surprising bit: the guarantee doesn't require the model to be any good, only that you calibrate the range using real held-out examples first.
+
+</ELI5>
 
 ## Prediction Intervals and Ensembles
 
@@ -32,6 +39,16 @@ This is the part of "uncertainty estimation" that most explanations assert rathe
 $$P\big(Y_{\text{test}} \in C(X_{\text{test}})\big) \ge 1 - \alpha$$
 
 The proof sketch is genuinely simple, which is part of why the guarantee is so robust: exchangeability means the true test score is equally likely to land in any rank position among the $n+1$ scores (the $n$ calibration scores plus the test score itself) — so the probability the test score exceeds the $\lceil(n+1)(1-\alpha)\rceil$-th largest of those $n+1$ values is, by construction, at most $\alpha$. Nothing in that argument uses the *quality* of the underlying model or score function — a bad score function still gets valid coverage, it just produces wide, uninformative intervals rather than invalid ones. Coverage and informativeness are separate axes: conformal prediction only promises the first.
+
+<GoDeeper title="Go deeper: the sketch above, made fully rigorous">
+
+Let $s_1, \dots, s_n$ be the calibration scores and $s_{n+1}$ the (unknown, at decision time) test score, with $k = \lceil (n+1)(1-\alpha) \rceil$ so that $\hat q$ is the $k$-th smallest of $s_1,\dots,s_n$. Exchangeability of $(X_1,Y_1),\dots,(X_{n+1},Y_{n+1})$ means every ordering of $(s_1,\dots,s_{n+1})$ is equally likely, so $\text{rank}(s_{n+1})$ among all $n+1$ scores is uniformly distributed over $\{1,\dots,n+1\}$ (ties broken at random). The prediction set fails to cover — $s_{n+1} > \hat q$ — exactly when $s_{n+1}$'s rank exceeds $k$, i.e. $\text{rank}(s_{n+1}) \in \{k+1,\dots,n+1\}$, which is $n+1-k$ of the $n+1$ equally-likely rank positions:
+
+$$P(s_{n+1} > \hat q) = \frac{n+1-k}{n+1} \le \frac{n+1-(n+1)(1-\alpha)}{n+1} = \alpha$$
+
+using $k = \lceil (n+1)(1-\alpha) \rceil \ge (n+1)(1-\alpha)$ in the second step. So $P(Y_{\text{test}} \in C(X_{\text{test}})) = P(s_{n+1} \le \hat q) \ge 1-\alpha$ — Theorem 1, from nothing but counting rank positions among exchangeable values.
+
+</GoDeeper>
 
 <ConformalPredictionDiagram />
 
