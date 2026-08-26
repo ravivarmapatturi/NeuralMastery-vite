@@ -92,11 +92,18 @@ export default function Home() {
             fontWeight: 700,
             fontSize: '1rem',
             textDecoration: 'none',
-            marginBottom: '2.5rem',
           }}
         >
           Start Learning →
         </Link>
+        <div style={{ marginTop: '0.75rem', marginBottom: '2.5rem' }}>
+          <Link
+            to="/docs/ml-system-design/case-studies"
+            style={{ fontSize: 13.5, color: 'var(--nm-text-muted)', textDecoration: 'none' }}
+          >
+            or start from a real problem instead →
+          </Link>
+        </div>
 
         <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'left' }}>
           <AttentionStepThrough />
