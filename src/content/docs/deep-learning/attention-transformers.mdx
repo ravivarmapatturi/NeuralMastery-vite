@@ -50,7 +50,7 @@ Three specific, compounding problems, in the order they actually bite:
 
 <RnnVsAttentionComparison />
 
-Trading recurrence for attention doesn't remove cost — it just changes its shape, from *sequential steps* to *quadratic attention cost in sequence length* (more on that in [Common Problems & SOTA Solutions](#common-problems--sota-solutions) below), which turns out to be a much more parallelizable problem to have.
+Trading recurrence for attention doesn't remove cost — it just changes its shape, from *sequential steps* to *quadratic attention cost in sequence length* (more on that in [Common Problems & SOTA Solutions](#common-problems-sota-solutions) below), which turns out to be a much more parallelizable problem to have.
 
 ## The Shape of the Architecture
 
@@ -68,9 +68,34 @@ Getting from raw text to a vector the model can compute with is a short pipeline
 
 <TokenEmbeddingLookup />
 
-Because the lookup only depends on the token, not where it sits in the sentence, both occurrences of "cat" above get back the exact same 512-dimensional vector at this stage — the model has no way yet to tell "cat" (word 2) from "cat" (word 6) apart. That's precisely the gap **positional encoding** (below) exists to close, added directly on top of this embedding before anything else happens to it.
+Because the lookup only depends on the token, not where it sits in the sentence, both occurrences of "cat" above get back the exact same 512-dimensional vector at this stage — the model has no way yet to tell "cat" (word 2) from "cat" (word 6) apart. That's precisely the gap the next section, **positional encoding**, exists to close, added directly on top of this embedding before anything else — including attention — ever runs.
+
+## Positional Encoding
+
+The embedding lookup above gives every occurrence of a given token the *identical* vector, regardless of where it sits in the sentence. Attention — the mechanism the next section introduces — can't fix this gap after the fact either: it scores every pair of tokens purely by their content, with no inherent sense of which token came first or how far apart they are. (The next section proves this precisely: self-attention is *permutation-equivariant* — reorder the input tokens and the output vectors come back reordered by that exact same permutation, with every individual output *value* completely unchanged. Order has to enter the model some other way.) So position has to be injected **before** attention ever runs, not patched on afterward. **Positional encoding** is that fix: inject a position-dependent signal so the model can tell "cat" (word 2) apart from "cat" (word 6), and — just as importantly — learn to treat nearby words as *close* and distant words as *distant*, the same intuitive notion of proximity a sentence actually has.
+
+- **Absolute (sinusoidal)**: add a fixed, deterministic pattern based on position directly to each token's embedding.
+- **RoPE (Rotary Position Embedding)**: instead of adding a position signal, *rotates* the Q and K vectors by an angle proportional to position — has the elegant property that the dot product between two rotated vectors naturally encodes their *relative* distance. This is the dominant choice in modern LLMs because it generalizes better to sequence lengths longer than what was seen in training.
+
+The original paper's sinusoidal formula — one special, fixed vector of length $d_{\text{model}}=512$ per position, computed once (not learned, not data-dependent) and simply added to that position's token embedding:
+
+$$PE(pos, 2i) = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right) \qquad PE(pos, 2i+1) = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)$$
+
+$pos$ is the token's position in the sequence (0, 1, 2, ...) and $2i$/$2i{+}1$ are the even/odd dimension indices within the 512-length vector — so half the dimensions get a sine, half get a cosine, each pair at a different frequency set by $10000^{2i/d_{\text{model}}}$. Every position uses this exact same formula; nothing about it depends on which sentence or which words are being encoded, only on the position and dimension indices — which is also why it can be computed once, up front, and reused for every input.
+
+Plotted for real — a handful of dimensions across 100 positions, each a sine/cosine wave at a different frequency:
+
+<PositionalEncodingSinusoids />
+
+**Why sine and cosine specifically**: intuitively, they're a natural choice for encoding *pattern* — periodic, smoothly repeating functions that never blow up (always bounded in $[-1,1]$, unlike, say, just using $pos$ itself, which would grow unboundedly with sequence length and dominate the embedding). More precisely: for any fixed offset $k$, $PE(pos+k)$ can be written as a *linear function* of $PE(pos)$ — the encoding makes relative position linearly recoverable, which is exactly what lets attention learn to use it. Stacking every dimension into one matrix shows the pattern the formula produces: low dimensions oscillate fast (fine position detail), high dimensions oscillate slow (coarse position), so every position gets a unique fingerprint across the full vector:
+
+<PositionalEncodingHeatmap />
+
+The output of this section — token embedding plus positional encoding, summed into one vector per position — is what every Query, Key, and Value projection below actually reads from, not the raw token embedding alone.
 
 ## Self-Attention: Query, Key, Value
+
+Every vector self-attention operates on from here forward is a token's embedding *plus* its positional encoding, already summed together — the $Q$, $K$, $V$ projections below all read from that combined vector.
 
 Self-attention as a mechanism predates the Transformer — earlier Seq2Seq+Attention models (see [Sequence Models](/docs/deep-learning/sequence-models#sequence-to-sequence-with-attention)) already used an attention mechanism, just between a decoder and a separate encoder. The Transformer's contribution is building an entire architecture out of it, starting with using it *within* one sequence: every token attends to every other token in the *same* sequence, all at once. "All at once" is the key phrase — this is one batched matrix operation ($QK^T$, below) covering the whole sequence in a single step, not a loop over token pairs the way an RNN loops over time steps.
 
@@ -246,40 +271,21 @@ This is exactly what "causal (masked) self-attention" means in the GPT-lineage s
 
 ## Cross-Attention
 
-In encoder-decoder architectures (like the original Transformer for translation), the decoder's queries attend to the *encoder's* keys and values rather than its own — letting the decoder pull relevant information from the full input sequence at every generation step. This is the one genuinely new idea beyond self-attention, and the direct, more powerful successor to the sequence-to-sequence bottleneck problem from [Sequence Models](/docs/deep-learning/sequence-models):
+In encoder-decoder architectures (like the original Transformer for translation), the decoder's queries attend to the *encoder's* keys and values rather than its own — letting the decoder pull relevant information from the full input sequence at every generation step. This is the one genuinely new idea beyond self-attention, and the direct, more powerful successor to the sequence-to-sequence bottleneck problem from [Sequence Models](/docs/deep-learning/sequence-models).
+
+**What exactly does the encoder hand off?** The encoder stack runs all $N=6$ layers to completion first — the decoder doesn't start until it does. It's the *final* layer's output, one context-mixed vector per input token (not any intermediate layer's, and not the raw embeddings), that becomes the single representation every decoder layer reads from. Every decoder layer computes its own Queries from its own hidden state at that depth, but all $N$ decoder layers' cross-attention read Keys and Values from that same, one-time final encoder output:
 
 <CrossAttentionDiagram />
 
-## Positional Encoding
-
-The embedding lookup above gives every occurrence of a given token the *identical* vector, regardless of where it sits in the sentence — attention itself compounds this, since $QK^T$ scores every pair of tokens by content alone and has no inherent sense of order; shuffle the tokens and $QK^T$ produces the same set of pairwise scores, just relabeled. **Positional encoding** is the fix: inject a position-dependent signal so the model can tell "cat" (word 2) apart from "cat" (word 6), and — just as importantly — learn to treat nearby words as *close* and distant words as *distant*, the same intuitive notion of proximity a sentence actually has.
-
-- **Absolute (sinusoidal)**: add a fixed, deterministic pattern based on position directly to each token's embedding.
-- **RoPE (Rotary Position Embedding)**: instead of adding a position signal, *rotates* the Q and K vectors by an angle proportional to position — has the elegant property that the dot product between two rotated vectors naturally encodes their *relative* distance. This is the dominant choice in modern LLMs because it generalizes better to sequence lengths longer than what was seen in training.
-
-The original paper's sinusoidal formula — one special, fixed vector of length $d_{\text{model}}=512$ per position, computed once (not learned, not data-dependent) and simply added to that position's token embedding:
-
-$$PE(pos, 2i) = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right) \qquad PE(pos, 2i+1) = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)$$
-
-$pos$ is the token's position in the sequence (0, 1, 2, ...) and $2i$/$2i{+}1$ are the even/odd dimension indices within the 512-length vector — so half the dimensions get a sine, half get a cosine, each pair at a different frequency set by $10000^{2i/d_{\text{model}}}$. Every position uses this exact same formula; nothing about it depends on which sentence or which words are being encoded, only on the position and dimension indices — which is also why it can be computed once, up front, and reused for every input.
-
-Plotted for real — a handful of dimensions across 100 positions, each a sine/cosine wave at a different frequency:
-
-<PositionalEncodingSinusoids />
-
-**Why sine and cosine specifically**: intuitively, they're a natural choice for encoding *pattern* — periodic, smoothly repeating functions that never blow up (always bounded in $[-1,1]$, unlike, say, just using $pos$ itself, which would grow unboundedly with sequence length and dominate the embedding). More precisely: for any fixed offset $k$, $PE(pos+k)$ can be written as a *linear function* of $PE(pos)$ — the encoding makes relative position linearly recoverable, which is exactly what lets attention learn to use it. Stacking every dimension into one matrix shows the pattern the formula produces: low dimensions oscillate fast (fine position detail), high dimensions oscillate slow (coarse position), so every position gets a unique fingerprint across the full vector:
-
-<PositionalEncodingHeatmap />
-
 ## The Full Transformer Block
 
-Each block is: **self-attention → add & normalize → feed-forward network → add & normalize** again.
+Self-attention and cross-attention both mix information *across* tokens — every token's output is a blend of every other token's Value, weighted by relevance. What comes next in the architecture happens *per token*, after that mixing is done: normalize, transform, normalize again. Each block is: **self-attention → add & normalize → feed-forward network → add & normalize** again.
 
 **Add & Norm**: the sublayer's output is added back to its own input — a residual/skip connection, letting gradients flow straight through depth without having to pass through every sublayer's transformation — then normalized. The original paper places this *after* the sublayer (post-norm): $\text{LayerNorm}(x + \text{Sublayer}(x))$:
 
 <AddNormDiagram />
 
-**Position-wise feed-forward network**: two linear layers with a ReLU between, applied identically and independently to every position. Attention mixes information *across* tokens; the FFN adds a non-linear transform *per token* afterward:
+**Position-wise feed-forward network**: two linear layers with a ReLU between, applied identically and independently to every position — the "per token" half of the pattern above:
 
 $$\text{FFN}(x) = \max(0, xW_1+b_1)W_2+b_2$$
 
