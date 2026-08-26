@@ -1,4 +1,6 @@
 {
+  "/docs/agents/plan-and-execute": "2026-08-27T00:36:42+05:30",
+  "/docs/machine-learning/linear-regression": "2026-08-27T00:32:42+05:30",
   "/docs/machine-learning/uncertainty-estimation-and-conformal-prediction": "2026-08-27T00:27:25+05:30",
   "/docs/machine-learning/hyperparameter-optimization": "2026-08-26T21:23:57+05:30",
   "/docs/agents/agent-architectures": "2026-08-26T21:05:46+05:30",
@@ -38,7 +40,6 @@
   "/docs/frameworks/core-ml-dl-frameworks": "2026-08-26T17:45:17+05:30",
   "/docs/mlops/cloud-model-deployment": "2026-08-26T17:40:17+05:30",
   "/docs/mlops/federated-learning": "2026-08-26T17:40:17+05:30",
-  "/docs/agents/plan-and-execute": "2026-08-26T17:27:51+05:30",
   "/docs/agents/routing-and-supervisor": "2026-08-26T17:27:51+05:30",
   "/docs/reinforcement-learning/bandits": "2026-08-26T17:27:51+05:30",
   "/docs/machine-learning/ml-workflow-fundamentals": "2026-08-26T16:20:41+05:30",
@@ -171,7 +172,6 @@
   "/docs/computer-vision/overview": "2026-08-19T22:31:37+05:30",
   "/docs/agents/agent-fundamentals": "2026-08-19T21:38:56+05:30",
   "/docs/llms-genai/foundation-model-internals": "2026-08-19T21:38:56+05:30",
-  "/docs/machine-learning/linear-regression": "2026-08-19T21:38:56+05:30",
   "/docs/ml-system-design/overview": "2026-08-19T21:38:56+05:30",
   "/docs/ml-system-design/roadmap": "2026-08-19T21:38:56+05:30",
   "/docs/speech-audio/audio-fundamentals": "2026-08-19T19:23:21+05:30",
