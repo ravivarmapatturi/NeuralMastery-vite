@@ -1,0 +1,130 @@
+---
+title: "Federated Learning"
+sidebar_position: 17.5
+---
+
+import FederatedRoundDiagram from '../../../viz/diagrams/FederatedRoundDiagram';
+
+# Federated Learning
+
+[GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training) covers splitting one training job across many GPUs you control, in one datacenter, to go faster. Federated learning is a different problem entirely: training one shared model across data you *don't* control and *can't* centralize — a hospital's patient records, a bank's transaction history, a phone's keyboard input — because moving it would violate privacy law, a data-sharing agreement, or just user trust.
+
+## The core idea: move the computation, not the data
+
+McMahan et al.'s foundational paper, ["Communication-Efficient Learning of Deep Networks from Decentralized Data"](https://arxiv.org/abs/1602.05629) (2017), states the principle directly: instead of centralizing training data, "leave the training data distributed on the mobile devices, and learn a shared model by aggregating locally-computed updates." Each participant (a phone, a hospital, a bank branch — called a **client**) keeps its data exactly where it is; only model updates, never raw data, travel to a coordinating **server**.
+
+This isn't a workaround bolted onto privacy after the fact — the paper frames it as a direct application of **data minimization**: the server only ever needs the minimal update required to improve the current model, and by the data processing inequality, that update provably carries less information than the raw data that produced it.
+
+## FedAvg: the algorithm
+
+The paper's practical algorithm, **FederatedAveraging (FedAvg)**, runs in synchronous rounds. Given $K$ total clients, each holding $n_k$ local examples:
+
+<FederatedRoundDiagram />
+
+The real pseudocode from the paper (Algorithm 1), unsimplified:
+
+```text
+Server executes:
+  initialize w0
+  for each round t = 1, 2, ... do
+    m ← max(C·K, 1)                        # C = fraction of clients this round
+    St ← (random set of m clients)
+    for each client k ∈ St in parallel do
+      w^k_{t+1} ← ClientUpdate(k, wt)
+    mt ← Σ_{k∈St} n_k
+    w_{t+1} ← Σ_{k∈St} (n_k / mt) · w^k_{t+1}   # weighted by each client's data size
+
+ClientUpdate(k, w):                          # runs locally on client k
+  split client k's data into batches of size B
+  for each local epoch i = 1 to E do
+    for each batch b do
+      w ← w − η · ∇ℓ(w; b)
+  return w to server
+```
+
+Three hyperparameters control the whole algorithm's behavior: **C** (fraction of clients sampled per round — trades speed for statistical quality), **E** (local epochs per round — more local computation per round of communication), and **B** (local minibatch size; $B=\infty$ treats a client's whole dataset as one batch). Setting $E=1, B=\infty$ reduces FedAvg exactly to **FedSGD**, a simpler baseline that does one gradient step per client per round instead of several — the paper's actual contribution is showing that doing *more* local computation (larger $E$) before each communication round, not less, is what makes federated training practical: their real reported result is a **10–100× reduction in communication rounds** versus synchronized SGD, at approximately no cost in final model quality, because computation on-device is nearly free compared to the cost of a communication round.
+
+## Why this is hard: the four defining properties
+
+The paper names the properties that make federated optimization a genuinely different problem from ordinary distributed training in a datacenter, not just "the same thing, slower":
+
+- **Non-IID**: a client's local data reflects *that specific client's* usage — one hospital sees more of one condition, one phone's keyboard sees one person's vocabulary. No client's local distribution looks like the global population.
+- **Unbalanced**: some clients generate far more data than others (a busy hospital vs. a small clinic), so naive unweighted averaging would let a low-data client's noisy update dominate — exactly why FedAvg's aggregation step weights each client's contribution by $n_k$.
+- **Massively distributed**: the number of participating clients is often far larger than the average amount of data any single one holds — the opposite regime from a datacenter cluster of a few dozen well-provisioned GPU nodes.
+- **Limited communication**: clients are frequently offline, on metered or slow connections, and only available to communicate briefly — the reason the whole algorithm is designed around minimizing communication rounds rather than minimizing compute.
+
+## Privacy: what federated learning does and doesn't guarantee on its own
+
+Keeping raw data on-device is real privacy benefit, but the paper is explicit that a client's *update* can still leak information about its data — a dense gradient is a harder target than a sparse bag-of-words gradient, but "attacks are still possible." Two techniques close that gap, and DeepLearning.AI's federated learning course (built with Flower's own team) treats both as standard practice, not optional extras:
+
+- **Differential privacy (DP)**: add calibrated noise so no single training example's presence or absence measurably changes the output. **Central DP** adds noise at the server, after aggregation; **local DP** adds noise on each client before its update ever leaves the device — stronger privacy guarantee, more noise, more accuracy cost. Both typically pair with **gradient clipping** (bound each update's norm before noising it), since DP's noise budget assumes a bounded-sensitivity input.
+- **Secure aggregation**: cryptographic protocols (secure multiparty computation) that let the server compute the *sum* of client updates without ever seeing any individual client's update in the clear — the server learns the aggregate, nothing more.
+
+## Federated fine-tuning of LLMs
+
+Federated learning predates LLMs, but it's directly relevant to them for the same reason it mattered for keyboards: [Training Pipeline — SFT/RLHF](/docs/llms-genai/training-pipeline) fine-tunes on real conversation and preference data, and that data is often exactly the kind an organization can't centralize (private chat logs, proprietary documents, patient interactions). Federated fine-tuning applies the same FedAvg-style round structure to LoRA/PEFT updates (see [Training Pipeline — PEFT](/docs/llms-genai/training-pipeline#parameter-efficient-fine-tuning-peft)) instead of full model weights — small enough to make per-round communication cost tractable even for a multi-billion-parameter base model — while directly addressing a real, documented risk: LLMs can memorize and later leak specific training examples, and keeping that data distributed rather than centralized meaningfully lowers the blast radius of such a leak.
+
+## Building one: Flower
+
+[Flower (`flwr`)](https://flower.ai/) is the most widely used open-source federated learning framework, framework-agnostic (PyTorch, TensorFlow, JAX, or plain NumPy) and built around exactly the client/server split above. A minimal PyTorch client and server:
+
+```python
+# client_app.py
+from flwr.app import ClientApp, Message, Context
+from flwr.common import ArrayRecord, MetricRecord, RecordDict
+
+app = ClientApp()
+
+@app.train()
+def train(msg: Message, context: Context):
+    model = Net()
+    model.load_state_dict(msg.content["arrays"].to_torch_state_dict())
+    trainloader = load_local_partition(context.node_config["partition-id"])
+
+    train_loss = local_train(model, trainloader, epochs=context.run_config["local-epochs"])
+
+    return Message(
+        content=RecordDict({
+            "arrays": ArrayRecord(model.state_dict()),
+            "metrics": MetricRecord({"train_loss": train_loss, "num-examples": len(trainloader.dataset)}),
+        }),
+        reply_to=msg,
+    )
+```
+
+```python
+# server_app.py
+from flwr.app import ServerApp, Context
+from flwr.server import Grid
+from flwr.serverapp.strategy import FedAvg
+from flwr.common import ArrayRecord
+
+app = ServerApp()
+
+@app.main()
+def main(grid: Grid, context: Context) -> None:
+    global_model = Net()
+    strategy = FedAvg(fraction_evaluate=context.run_config["fraction-evaluate"])
+    result = strategy.start(
+        grid=grid,
+        initial_arrays=ArrayRecord(global_model.state_dict()),
+        num_rounds=context.run_config["num-server-rounds"],
+    )
+```
+
+```bash
+pip install flwr
+flwr new my-fl-project --framework PyTorch   # scaffolds client_app.py, server_app.py, pyproject.toml
+cd my-fl-project
+flwr run .                                    # runs a local simulation over N clients by default
+```
+
+`flwr run` defaults to simulating every client on one machine (Flower's Simulation Runtime) — the same code deploys unchanged to real distributed clients by pointing at a real Flower `SuperLink`/`SuperNode` deployment instead. See [Flower's documentation](https://flower.ai/docs/framework/) for the full deployment path.
+
+## Frameworks at a glance
+
+| Framework | Best for |
+|---|---|
+| **Flower (`flwr`)** | Framework-agnostic (PyTorch/TF/JAX), the most active open-source ecosystem, real production deployment path beyond simulation |
+| **TensorFlow Federated (TFF)** | TensorFlow-native research, Google's original research framework for this space |
+| **PySyft** | Federated learning combined with other privacy-preserving techniques (secure computation, differential privacy) as a broader toolkit |

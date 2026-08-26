@@ -92,6 +92,13 @@ Everything between "a model that works in a notebook" and "a model that reliably
 - [ ] 3D and 4D parallelism: how the strategies combine at frontier scale
 - [ ] Elastic training and fault tolerance: checkpointing, failure recovery, dynamic worker scaling
 
+## 15.5. [Federated Learning](/docs/mlops/federated-learning)
+- [ ] FedAvg: the round cycle (distribute, local train, upload, weighted aggregate), and the C/E/B hyperparameters
+- [ ] Non-IID, unbalanced, massively-distributed, limited-communication -- why this isn't just "distributed training but slower"
+- [ ] Differential privacy (central vs. local) and gradient clipping; secure aggregation
+- [ ] Federated fine-tuning of LLMs with LoRA/PEFT updates instead of full weights
+- [ ] Flower (`flwr`): ClientApp/ServerApp, the FedAvg strategy, `flwr run`
+
 ## 16. [LLM Inference Engines](/docs/mlops/llm-inference-engines)
 - [ ] The inference stack: API gateway → serving framework → inference engine → model runtime → GPU/CUDA
 - [ ] Engine vs framework vs platform: inference engine *executes* the model, serving framework *exposes* it as an API, hosting platform *provides* the infrastructure, fine-tuning framework *trains/adapts* it (not the same job as an inference engine)

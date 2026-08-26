@@ -1,5 +1,7 @@
 {
-  "/docs/agents/agent-architectures": "2026-08-24T21:05:28+05:30",
+  "/docs/agents/agent-architectures": "2026-08-24T21:18:27+05:30",
+  "/docs/agents/loops-and-graphs": "2026-08-24T21:18:27+05:30",
+  "/docs/llms-genai/prompt-engineering": "2026-08-24T21:18:27+05:30",
   "/docs/cli-reference/cloud-cli-aws-azure-gcp": "2026-08-23T21:02:52+05:30",
   "/docs/cli-reference/docker-and-compose": "2026-08-23T21:02:52+05:30",
   "/docs/cli-reference/git-command-reference": "2026-08-23T21:02:52+05:30",
@@ -47,7 +49,6 @@
   "/docs/databases/relational/overview": "2026-08-21T04:32:54+05:30",
   "/docs/llms-genai/evaluation-and-serving": "2026-08-21T04:31:04+05:30",
   "/docs/llms-genai/multimodal-generative-models": "2026-08-21T04:30:04+05:30",
-  "/docs/llms-genai/prompt-engineering": "2026-08-21T04:28:39+05:30",
   "/docs/deep-learning/generative-models": "2026-08-21T04:26:28+05:30",
   "/docs/deep-learning/training-deep-networks": "2026-08-21T04:24:18+05:30",
   "/docs/frameworks/llm-agent-frameworks": "2026-08-21T04:22:45+05:30",

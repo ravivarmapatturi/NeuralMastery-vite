@@ -1099,6 +1099,13 @@
       "sidebarPosition": 13,
       "description": null
     },
+    "/docs/mlops/federated-learning": {
+      "slug": "mlops/federated-learning",
+      "section": "mlops",
+      "title": "Federated Learning",
+      "sidebarPosition": 17.5,
+      "description": null
+    },
     "/docs/mlops/gpu-and-distributed-training": {
       "slug": "mlops/gpu-and-distributed-training",
       "section": "mlops",

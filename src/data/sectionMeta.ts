@@ -81,7 +81,7 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
     icon: '🏗️',
     color: '#F45B5B',
     description: 'Designing, building, and running production ML/AI systems at scale.',
-    pageCount: 51,
+    pageCount: 52,
     difficulty: 'Advanced',
     prerequisites: 'Agents & Applications',
     leadsTo: 'Safety & Evaluation',
