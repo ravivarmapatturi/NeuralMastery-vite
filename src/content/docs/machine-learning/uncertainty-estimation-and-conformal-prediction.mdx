@@ -5,6 +5,7 @@ sidebar_position: 6.06
 
 import ConformalPredictionDiagram from '../../../viz/diagrams/ConformalPredictionDiagram';
 import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
+import RunnableCode from '../../../components/content/RunnableCode';
 
 # Uncertainty Estimation & Conformal Prediction
 
@@ -53,6 +54,79 @@ using $k = \lceil (n+1)(1-\alpha) \rceil \ge (n+1)(1-\alpha)$ in the second step
 <ConformalPredictionDiagram />
 
 That diagram is the guarantee checked, not just stated: the calibration and test sets are two different random draws, $\hat q$ is computed only from calibration data, and the reported coverage is measured on the held-out test points afterward. Moving the target miscoverage slider changes $\hat q$ and the interval width, but the measured rate should track the target at every setting — including at $\alpha = 0.3$, where the underlying regression fit is visibly worse in the noisy region, because the guarantee doesn't depend on the fit being good.
+
+### Check the Guarantee Yourself, in Real Python
+
+The diagram animates the guarantee; this runs the actual four-step recipe from above — real synthetic data, a real (deliberately ordinary) least-squares fit, real calibration, and a real coverage measurement on fresh test data the calibration step never saw:
+
+<RunnableCode code={`import numpy as np
+
+rng = np.random.default_rng(42)
+
+def true_fn(x):
+    return 2 * x + 5
+
+n_train, n_cal, n_test = 500, 500, 2000
+
+# Heteroskedastic noise (variance grows with x) -- on purpose. The
+# guarantee below doesn't require the noise to be well-behaved.
+x_train = rng.uniform(0, 10, n_train)
+y_train = true_fn(x_train) + rng.normal(0, 1 + 0.5 * x_train, n_train)
+
+# Step 1: any fitted model, even a plain OLS line -- ordinary least squares.
+A = np.vstack([x_train, np.ones_like(x_train)]).T
+a, b = np.linalg.lstsq(A, y_train, rcond=None)[0]
+
+def predict(x):
+    return a * x + b
+
+# Step 2 + 3: score function = absolute residual, q_hat = the
+# finite-sample-corrected empirical quantile of calibration scores.
+x_cal = rng.uniform(0, 10, n_cal)
+y_cal = true_fn(x_cal) + rng.normal(0, 1 + 0.5 * x_cal, n_cal)
+scores = np.abs(y_cal - predict(x_cal))
+
+alpha = 0.1  # target: 90% coverage
+k = int(np.ceil((n_cal + 1) * (1 - alpha)))
+q_hat = np.sort(scores)[k - 1]
+
+# Step 4: build the interval, then check coverage on FRESH test data
+# the calibration step never touched.
+x_test = rng.uniform(0, 10, n_test)
+y_test = true_fn(x_test) + rng.normal(0, 1 + 0.5 * x_test, n_test)
+covered = np.abs(y_test - predict(x_test)) <= q_hat
+coverage = covered.mean()
+
+print(f"Fitted line: y = {a:.3f}x + {b:.3f}  (true: y = 2x + 5)")
+print(f"q_hat (half-width of every interval): {q_hat:.3f}")
+print(f"Target coverage: {(1 - alpha) * 100:.0f}%")
+print(f"Measured coverage on {n_test} fresh test points: {coverage * 100:.2f}%")
+print(f"Guarantee holds: {coverage >= 1 - alpha}")
+
+# Try raising alpha to 0.3 (looser target) or changing the noise scale --
+# the measured coverage keeps tracking the target, same as the diagram
+# above, because the guarantee never depended on this being a good model.
+`} />
+
+### Implement the Core Formula Yourself
+
+Everything above leans on one function: turning $n$ calibration scores into $\hat q$. The tests are hand-derivable directly from the formula in step 3 above — no simulation, no floating-point tolerance, just $k = \lceil (n+1)(1-\alpha) \rceil$ and the $k$-th smallest score.
+
+<RunnableCode
+  code={`import math
+
+def conformal_quantile(scores, alpha):
+    """Return q_hat: the ceil((n+1)(1-alpha))-th smallest of the calibration
+    scores (1-indexed) -- the finite-sample-corrected empirical quantile
+    from step 3 of the conformal prediction recipe above."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert conformal_quantile([1, 2, 3, 4, 5, 6, 7, 8, 9], 0.2) == 8
+assert conformal_quantile([10, 20, 30, 40], 0.5) == 30
+assert conformal_quantile([42], 0.5) == 42
+assert conformal_quantile(list(range(1, 20)), 0.05) == 19`}
+/>
 
 ## Why This Matters in Production
 
