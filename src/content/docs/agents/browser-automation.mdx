@@ -1,0 +1,50 @@
+---
+title: "Browser Automation Agents"
+sidebar_position: 7
+---
+
+
+import BrowserAgentActionDiagram from '../../../viz/diagrams/BrowserAgentActionDiagram';
+
+# Browser Automation Agents
+
+An agent that needs to "use the internet" doesn't need full [computer-use](/docs/agents/computer-use) — most web tasks live entirely inside a browser, and a browser exposes far more structure than a screen full of pixels. Browser automation agents exploit that: instead of clicking pixel coordinates, they act on the page's actual DOM.
+
+## The Real Mechanism: Indexed DOM Extraction, Not Screenshots
+
+[browser-use](https://github.com/browser-use/browser-use) is the reference example: on each step, it parses the current page's DOM (or accessibility tree) into a numbered list of interactive elements — links, buttons, inputs — and the model chooses an action against an *index*, not a coordinate:
+
+<BrowserAgentActionDiagram />
+
+This is the concrete technical difference from computer-use: `click(3)` names an element; `click(640, 460)` names a screen position that happens to have something under it right now. The indexed approach is also why browser agents don't need to solve the scaling/coordinate-math problem computer-use has to (see that page) — there's no image resolution to reason about at all.
+
+A minimal real usage example (from the project's own README):
+
+```python
+import asyncio
+from browser_use import Agent, ChatBrowserUse
+
+async def main():
+    agent = Agent(
+        task="Find the number of stars of the browser-use repo",
+        llm=ChatBrowserUse(model='openai/gpt-5.5'),
+    )
+    history = await agent.run()
+
+asyncio.run(main())
+```
+
+The `llm` parameter accepts models from OpenAI, Anthropic, Google, or local models via Ollama — the DOM-extraction mechanism is model-agnostic; only the reasoning step (which index to act on) goes through the LLM.
+
+## What's Different, and Riskier, Than API Tool-Calling
+
+A REST API tool call has a fixed contract: the tool's schema *is* the complete list of what it can do. A browser agent's action space is "anything a logged-in user could click on this website" — which is exactly as broad as the site itself, and not knowable in advance from a schema. Two consequences worth building around, not just knowing about:
+
+- **CAPTCHAs and bot-detection** are a real, acknowledged constraint — the open-source project explicitly defers production-grade stealth/proxy handling to a separate hosted offering rather than solving it in the OSS library itself. Don't assume an agent can reliably get past anti-automation defenses; design tasks (and fallbacks) assuming it sometimes can't.
+- **Sandboxing isn't handled for you.** The open-source library's own documentation doesn't go into sandboxing specifics — if the agent is browsing with a real session (logged into a real account, holding real cookies), a page that manipulates the agent into an unintended action is a real risk, the browser-specific version of the memory/context-poisoning problem covered under [Agent Architectures](/docs/agents/agent-architectures). Treat "what pages can this agent reach, and what is it logged into while it does" as a real access-control question, not an afterthought.
+
+## When to Use This vs. Computer-Use vs. No Tools at All
+
+Pick browser automation when the task is genuinely web-only and you want the cost/reliability benefits of structured access. Reach for [computer-use](/docs/agents/computer-use) instead when the task crosses out of the browser — a desktop app, a file manager, a settings dialog nothing in the DOM covers. And for either, don't reach for full autonomous control at all if the task is just "fetch this one page and read it" — a plain HTTP request or a simple scraping tool is cheaper and more predictable than routing a static task through an agentic loop.
+
+Next: [Computer-Use & GUI Agents](/docs/agents/computer-use) — the same idea with no DOM to fall back on at all.
