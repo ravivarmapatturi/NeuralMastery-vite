@@ -9,10 +9,19 @@ import __migratedImg1 from './img/decision-boundary.png';
 
 import LogisticRegressionStudio from '../../../viz/LogisticRegressionStudio';
 import PredictFirst from '../../../viz/primitives/PredictFirst';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Logistic Regression, In Full Depth
 
 Despite the name, logistic regression is a *classification* algorithm, not a regression one — it predicts a probability, then a class. It's the natural next step after [Linear Regression](/docs/machine-learning/linear-regression): same linear core, adapted to output something that behaves like a probability.
+
+<ELI5>
+
+Imagine sorting emails into "spam" or "not spam." You don't want a flat yes/no — you want a confidence, like "92% sure this is spam," so obviously-spam and borderline cases can be treated differently. Logistic regression does exactly that: it takes the same "weighted sum of features" idea as linear regression, but instead of outputting a raw number that could be anything, it squashes that number into a value between 0 and 1 that behaves like a real probability. Only after that does it draw a line — probability above 50%, call it spam; below, call it not spam.
+
+Everything below is that same idea, made exact: the actual squashing function, the actual loss that makes training it work, and why that loss — not the obvious one — is the right choice.
+
+</ELI5>
 
 ## What Is Logistic Regression?
 
@@ -65,11 +74,49 @@ This looks intimidating but is simple per-example: only one of the two terms is 
 
 **This is exactly cross-entropy** from [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics#entropy-cross-entropy-and-kl-divergence), specialized to two classes — and it's not an arbitrary design choice: minimizing this loss is precisely Maximum Likelihood Estimation for a Bernoulli-distributed target (see [MLE vs MAP](/docs/mathematics-for-ai/probability-statistics#mle-vs-map)). Unlike MSE-on-sigmoid, this cost function *is* convex in $(\mathbf{w}, b)$, so gradient descent is guaranteed to find the global minimum.
 
+<GoDeeper title="Go deeper: derive cross-entropy from the Bernoulli likelihood">
+
+Same move as [Linear Regression's Gaussian-noise derivation](/docs/machine-learning/linear-regression#2-the-cost-function-mean-squared-error), with a different distribution. A single label $y^{(i)} \in \{0,1\}$ is Bernoulli-distributed with parameter $\hat{p}^{(i)}$ — the compact way to write "probability $\hat{p}^{(i)}$ that $y^{(i)}=1$, probability $1-\hat{p}^{(i)}$ that $y^{(i)}=0$" as one formula is:
+
+$$P\left(y^{(i)} \mid x^{(i)}\right) = \left(\hat{p}^{(i)}\right)^{y^{(i)}} \left(1-\hat{p}^{(i)}\right)^{1-y^{(i)}}$$
+
+Check it: when $y^{(i)}=1$, the second factor becomes $(\cdot)^0=1$, leaving just $\hat{p}^{(i)}$; when $y^{(i)}=0$, the first factor vanishes the same way, leaving $1-\hat{p}^{(i)}$ — exactly the two cases, folded into one expression.
+
+For $n$ independent examples, the likelihood is the product across all of them, and the log-likelihood turns that product into a sum:
+
+$$\log L(\mathbf{w}, b) = \sum_{i=1}^{n}\left[y^{(i)}\log\hat{p}^{(i)} + \left(1-y^{(i)}\right)\log\left(1-\hat{p}^{(i)}\right)\right]$$
+
+Maximizing $\log L$ is identical to minimizing $-\log L$, and dividing by the constant $n$ doesn't move the minimizer — so minimizing $-\frac{1}{n}\log L(\mathbf{w},b)$ is *exactly* $J(\mathbf{w},b)$ as written above. Binary cross-entropy isn't a separately invented penalty that happens to look reasonable; it *is* the negative log-likelihood of the Bernoulli model, the direct analogue of how Gaussian noise produces squared error.
+
+</GoDeeper>
+
 ## Deriving the Gradient
 
 This is where something elegant happens. Working through the chain rule — differentiating the log-loss with respect to $z$, then $z$ with respect to $w_j$ — the sigmoid's own derivative ($\sigma'(z) = \sigma(z)(1-\sigma(z))$) cancels almost entirely against terms from the log-loss derivative, leaving:
 
 $$\frac{\partial J}{\partial w_j} = \frac{1}{n}\sum_{i=1}^n \left(\hat{p}^{(i)} - y^{(i)}\right)x_j^{(i)}$$
+
+<GoDeeper title="Go deeper: watch the cancellation happen, term by term">
+
+Work with one example at a time — drop the $(i)$ superscript and the $\frac1n$ average, and restore both at the end. Let $\ell = -\left[y\log\hat{p} + (1-y)\log(1-\hat{p})\right]$, with $\hat{p}=\sigma(z)$ and $z=\mathbf{w}^T\mathbf{x}+b$. Three chain-rule steps: $\ell \to \hat{p} \to z \to w_j$.
+
+**Step 1 — $\dfrac{\partial \ell}{\partial \hat{p}}$:** differentiate each log term directly ($\frac{d}{dp}\log p = \frac1p$; $\frac{d}{dp}\log(1-p) = \frac{-1}{1-p}$):
+
+$$\frac{\partial \ell}{\partial \hat{p}} = -\frac{y}{\hat{p}} + \frac{1-y}{1-\hat{p}}$$
+
+**Step 2 — $\dfrac{\partial \hat{p}}{\partial z} = \sigma'(z)$:** worth deriving this once too, from $\sigma(z) = (1+e^{-z})^{-1}$:
+
+$$\sigma'(z) = -(1+e^{-z})^{-2}\cdot(-e^{-z}) = \frac{e^{-z}}{(1+e^{-z})^2} = \underbrace{\frac{1}{1+e^{-z}}}_{\sigma(z)}\cdot\underbrace{\frac{e^{-z}}{1+e^{-z}}}_{1-\sigma(z)} = \hat{p}(1-\hat{p})$$
+
+**Step 3 — multiply and watch it collapse:**
+
+$$\frac{\partial \ell}{\partial z} = \frac{\partial \ell}{\partial \hat{p}}\cdot\frac{\partial \hat{p}}{\partial z} = \left(-\frac{y}{\hat{p}}+\frac{1-y}{1-\hat{p}}\right)\hat{p}(1-\hat{p}) = -y(1-\hat{p}) + (1-y)\hat{p} = -y+y\hat{p}+\hat{p}-y\hat{p} = \hat{p}-y$$
+
+The $\hat{p}$ in the denominator of the first term cancels exactly against the $\hat{p}$ multiplied in from $\sigma'(z)$; same for $(1-\hat{p})$ in the second term. Everything the log-loss derivative and the sigmoid derivative each contributed disappears, leaving the strikingly plain $\hat{p}-y$ — that's the "elegant" cancellation the prose above promises, not a hand-wave.
+
+**Step 4 — finish the chain:** $\dfrac{\partial z}{\partial w_j} = x_j$ (identical to linear regression), so $\dfrac{\partial \ell}{\partial w_j} = (\hat{p}-y)x_j$. Restore the $(i)$ superscripts, sum over $n$ examples, divide by $n$ — exactly the formula above.
+
+</GoDeeper>
 
 **This is the identical formula shape as linear regression's gradient** (see [Linear Regression — Section 3](/docs/machine-learning/linear-regression#3-deriving-the-gradient-step-by-step)) — "error times input," summed over examples — even though the loss function and the model's output are completely different. This isn't a coincidence: it's a general property of combining a sigmoid/softmax output with cross-entropy loss (the same clean gradient shape reappears in [neural network classifiers](/docs/deep-learning/training-deep-networks) and in LLM next-token prediction).
 
