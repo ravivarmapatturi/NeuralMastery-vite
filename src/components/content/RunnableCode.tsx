@@ -121,6 +121,31 @@ export default function RunnableCode({
         </div>
       </div>
 
+      {status === 'loading' && (
+        <div style={{ padding: `${SPACING.xs}px ${SPACING.sm}px`, borderBottom: `1px solid ${t.border}` }}>
+          <div style={{ fontSize: 11.5, color: t.textSecondary, marginBottom: 4 }}>
+            Downloading a real Python + NumPy runtime into your browser — usually under 20s, one time per page visit.
+          </div>
+          <div style={{ height: 3, borderRadius: 2, background: t.border, overflow: 'hidden' }}>
+            <div
+              style={{
+                height: '100%',
+                width: '40%',
+                borderRadius: 2,
+                background: t.accentTeal,
+                animation: 'runnable-code-loading-sweep 1.1s ease-in-out infinite',
+              }}
+            />
+          </div>
+          <style>{`
+            @keyframes runnable-code-loading-sweep {
+              0% { transform: translateX(-100%); }
+              100% { transform: translateX(250%); }
+            }
+          `}</style>
+        </div>
+      )}
+
       <textarea
         value={code}
         onChange={(e) => setCode(e.target.value)}
