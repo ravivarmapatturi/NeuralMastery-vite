@@ -51,7 +51,7 @@ export default function AgenticCodingLoopDiagram() {
           setStep(i);
           setStage(TRACE[i].stage);
         }}
-        options={TRACE.map((tr, i) => ({ value: i, label: `${i + 1}` }))}
+        options={TRACE.map((_, i) => ({ value: i, label: `${i + 1}` }))}
       />
       <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap', marginTop: 8 }}>
         <svg width={260} height={220} viewBox="0 0 260 220">
@@ -71,8 +71,8 @@ export default function AgenticCodingLoopDiagram() {
                 style={{ cursor: 'pointer' }}
               >
                 <circle cx={x} cy={y} r={30} fill={isActive ? `${color}30` : t.surfaceAlt} stroke={color} strokeWidth={isActive ? 2.5 : 1.5} />
-                <text x={x} y={y + 4} textAnchor="middle" fontSize={10} fontWeight={700} fill={color} textTransform="capitalize">
-                  {s}
+                <text x={x} y={y + 4} textAnchor="middle" fontSize={10} fontWeight={700} fill={color}>
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
                 </text>
               </g>
             );
