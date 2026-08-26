@@ -1,0 +1,144 @@
+/// <reference lib="webworker" />
+// Runs in a dedicated module Worker (see RunnableCode.tsx, which spawns
+// this via `new Worker(new URL('./pyodideWorker.ts', import.meta.url), {
+// type: 'module' })`). Loading Pyodide here, not on the main thread, is
+// the whole point: CPython-in-WASM executing the user's code cannot then
+// freeze the page's UI.
+//
+// One real constraint this design works around rather than ignores:
+// GitHub Pages cannot serve the COOP/COEP response headers Pyodide's
+// SharedArrayBuffer-based interrupt-buffer needs for a clean mid-script
+// stop -- so there is no interrupt() call here. RunnableCode's "Stop"
+// button instead calls worker.terminate() and spins up a fresh worker for
+// the next run. That loses whatever the terminated run had in progress,
+// which is the correct, honest tradeoff for this hosting, not a
+// simplification of a "real" feature that was available.
+//
+// Pyodide is loaded from jsdelivr's CDN via dynamic import of its ESM
+// build (pyodide.mjs) -- NOT importScripts(), which classic workers use
+// but module workers (required here, since pyodide.asm.mjs is itself an
+// ES module) do not support.
+const PYODIDE_VERSION = 'v314.0.5';
+const PYODIDE_INDEX_URL = `https://cdn.jsdelivr.net/pyodide/${PYODIDE_VERSION}/full/`;
+
+type RunMessage = { id: number; type: 'run'; code: string };
+type RunTestsMessage = { id: number; type: 'run-tests'; code: string; tests: string };
+type InMessage = RunMessage | RunTestsMessage;
+
+interface TestResult {
+  name: string;
+  passed: boolean;
+  detail: string;
+}
+
+interface OutMessage {
+  id: number;
+  type: 'ready' | 'result' | 'load-error';
+  stdout?: string;
+  error?: string | null;
+  testResults?: TestResult[];
+  loadErrorDetail?: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let pyodide: any = null;
+let loadPromise: Promise<void> | null = null;
+
+async function ensureLoaded(): Promise<void> {
+  if (pyodide) return;
+  if (!loadPromise) {
+    loadPromise = (async () => {
+      // Dynamic import of a remote ESM URL -- valid in a dedicated module
+      // worker (unlike a service worker, which forbids dynamic import()
+      // and needs pyodide.asm.mjs passed in statically instead).
+      const { loadPyodide } = await import(/* @vite-ignore */ `${PYODIDE_INDEX_URL}pyodide.mjs`);
+      pyodide = await loadPyodide({ indexURL: PYODIDE_INDEX_URL });
+    })();
+  }
+  await loadPromise;
+}
+
+// Wraps arbitrary user code so stdout is captured via io.StringIO instead
+// of depending on a specific Pyodide JS-side stdout API -- plain stdlib
+// behavior, stable across Pyodide versions.
+const CAPTURE_PREAMBLE = `
+import sys, io, traceback
+_captured_stdout = io.StringIO()
+_real_stdout = sys.stdout
+sys.stdout = _captured_stdout
+_run_error = None
+try:
+`;
+const CAPTURE_POSTAMBLE = `
+except Exception:
+    _run_error = traceback.format_exc()
+finally:
+    sys.stdout = _real_stdout
+`;
+
+function indent(code: string): string {
+  return code
+    .split('\n')
+    .map((line) => '    ' + line)
+    .join('\n');
+}
+
+self.onmessage = async (event: MessageEvent<InMessage>) => {
+  const msg = event.data;
+  try {
+    await ensureLoaded();
+  } catch (err) {
+    const out: OutMessage = { id: msg.id, type: 'load-error', loadErrorDetail: String(err) };
+    (self as unknown as Worker).postMessage(out);
+    return;
+  }
+
+  if (msg.type === 'run') {
+    // loadPyodide() only bundles core CPython -- packages like numpy are
+    // separate, lazily-fetched wheels. loadPackagesFromImports scans the
+    // code's `import` statements and fetches whatever's actually needed
+    // (no-op, fast, if everything's already loaded from a prior run).
+    await pyodide.loadPackagesFromImports(msg.code);
+    const wrapped = CAPTURE_PREAMBLE + indent(msg.code) + CAPTURE_POSTAMBLE;
+    await pyodide.runPythonAsync(wrapped);
+    const stdout: string = pyodide.globals.get('_captured_stdout').getvalue();
+    const error: string | null = pyodide.globals.get('_run_error');
+    const out: OutMessage = { id: msg.id, type: 'result', stdout, error };
+    (self as unknown as Worker).postMessage(out);
+    return;
+  }
+
+  if (msg.type === 'run-tests') {
+    // Run the learner's implementation first, then each test as its own
+    // isolated `assert` so one failing test doesn't stop the rest from
+    // reporting -- real pass/fail per case, not a single all-or-nothing gate.
+    await pyodide.loadPackagesFromImports(msg.code);
+    const setup = CAPTURE_PREAMBLE + indent(msg.code) + CAPTURE_POSTAMBLE;
+    await pyodide.runPythonAsync(setup);
+    const setupError: string | null = pyodide.globals.get('_run_error');
+
+    const testResults: TestResult[] = [];
+    if (!setupError) {
+      const testCases = msg.tests
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l.startsWith('assert '));
+      for (const testCase of testCases) {
+        const testWrapped = CAPTURE_PREAMBLE + indent(testCase) + CAPTURE_POSTAMBLE;
+        await pyodide.runPythonAsync(testWrapped);
+        const testError: string | null = pyodide.globals.get('_run_error');
+        testResults.push({ name: testCase, passed: !testError, detail: testError ?? 'passed' });
+      }
+    }
+
+    const stdout: string = pyodide.globals.get('_captured_stdout').getvalue();
+    const out: OutMessage = {
+      id: msg.id,
+      type: 'result',
+      stdout,
+      error: setupError,
+      testResults: setupError ? [] : testResults,
+    };
+    (self as unknown as Worker).postMessage(out);
+  }
+};

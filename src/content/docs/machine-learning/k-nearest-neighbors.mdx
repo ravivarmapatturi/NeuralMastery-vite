@@ -7,6 +7,7 @@ import __migratedImg0 from './img/knn-boundary.png';
 
 
 import DecisionBoundaryPlayground from '../../../viz/DecisionBoundaryPlayground';
+import RunnableCode from '../../../components/content/RunnableCode';
 
 # K-Nearest Neighbors, In Full Depth
 
@@ -61,5 +62,48 @@ def knn_predict(X_train, y_train, x_query, k=5):
     nearest_labels = y_train[nearest_idx]
     return Counter(nearest_labels).most_common(1)[0][0]
 ```
+
+Not just reading it — run the exact code above for real, right here, in an actual Python interpreter compiled to WebAssembly and loaded into your browser on click (nothing sent to a server):
+
+<RunnableCode code={`import numpy as np
+from collections import Counter
+
+def knn_predict(X_train, y_train, x_query, k=5):
+    distances = np.sqrt(((X_train - x_query) ** 2).sum(axis=1))
+    nearest_idx = np.argsort(distances)[:k]
+    nearest_labels = y_train[nearest_idx]
+    return Counter(nearest_labels).most_common(1)[0][0]
+
+X_train = np.array([[0, 0], [0, 1], [5, 5], [5, 6]])
+y_train = np.array([0, 0, 1, 1])
+
+print("Prediction for [0.2, 0.2], k=1:", knn_predict(X_train, y_train, np.array([0.2, 0.2]), k=1))
+print("Prediction for [4.8, 5.2], k=3:", knn_predict(X_train, y_train, np.array([4.8, 5.2]), k=3))
+
+# Try changing the query point or k yourself and hit Run again.
+`} />
+
+## Implement It Yourself
+
+The function signature and the same 4-point dataset from above — write the body, then run it against 4 real test cases. No partial credit language, no LLM grading: each line below either passes or it doesn't.
+
+<RunnableCode
+  code={`import numpy as np
+from collections import Counter
+
+X_train = np.array([[0, 0], [0, 1], [5, 5], [5, 6]])
+y_train = np.array([0, 0, 1, 1])
+
+def knn_predict(X_train, y_train, x_query, k=5):
+    """Return the predicted class label (0 or 1) for x_query using
+    k-nearest-neighbors majority vote over X_train/y_train."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert knn_predict(X_train, y_train, np.array([0.2, 0.2]), k=1) == 0
+assert knn_predict(X_train, y_train, np.array([0.2, 0.2]), k=3) == 0
+assert knn_predict(X_train, y_train, np.array([4.8, 5.2]), k=1) == 1
+assert knn_predict(X_train, y_train, np.array([4.8, 5.2]), k=3) == 1`}
+/>
 
 Next: [Naive Bayes, LDA & QDA](/docs/machine-learning/naive-bayes-lda-qda) — generative classifiers that model each class's distribution directly, rather than learning a boundary between classes.
