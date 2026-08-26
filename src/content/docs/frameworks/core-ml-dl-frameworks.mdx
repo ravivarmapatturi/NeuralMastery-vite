@@ -5,6 +5,7 @@ sidebar_position: 3
 
 
 import ChainRuleBackpropDiagram from '../../../viz/diagrams/ChainRuleBackpropDiagram';
+import ExperimentTrackingComparisonDiagram from '../../../viz/diagrams/ExperimentTrackingComparisonDiagram';
 
 # Core ML/DL Frameworks
 
@@ -30,6 +31,37 @@ A typical training loop: forward pass → compute loss → `loss.backward()` →
 
 ## Experiment Tracking
 
-Training runs involve many hyperparameters, and comparing dozens of runs by memory doesn't scale. Tools like **Weights & Biases** and **MLflow** log metrics, hyperparameters, and artifacts (model checkpoints) for every run automatically, and provide dashboards to compare runs side by side — the difference between "I think this run was better" and being able to actually prove it.
+Training runs involve many hyperparameters, and comparing dozens of runs by memory doesn't scale. Tools like **Weights & Biases (W&B)** and **MLflow** log metrics, hyperparameters, and artifacts (model checkpoints) for every run automatically, and provide dashboards to compare runs side by side — the difference between "I think this run was better" and being able to actually prove it.
+
+A real 5-run learning-rate sweep on the same task, shown the way a tracking dashboard would actually show it — sortable by final loss, click any run to see its full curve:
+
+<ExperimentTrackingComparisonDiagram />
+
+Sorted by final loss rather than eyeballed, the ranking isn't obvious in advance: `run-4` (lr=0.4) converges fastest, `run-1` (lr=0.01) is still barely moving after 25 steps despite being a perfectly reasonable-*looking* learning rate, and `run-5` (lr=1.1) doesn't just fail to converge — it diverges, ending up worse than never training at all. Without a tracked, sortable comparison, `run-5`'s divergence is obvious from a single glance, but distinguishing `run-3` from `run-4` — both looking "converged" by eye on a live loss curve — genuinely isn't, without the actual final numbers side by side.
+
+**W&B**, in code, logs each run under a project with its hyperparameters as `config` and metrics logged per step:
+
+```python
+import wandb
+
+wandb.init(project="lr-sweep", config={"lr": 0.4, "batch_size": 64})
+for step, loss in enumerate(training_loop()):
+    wandb.log({"loss": loss, "step": step})
+wandb.finish()
+```
+
+**MLflow** takes the same shape with an open-source, self-hostable backend instead of a managed SaaS dashboard:
+
+```python
+import mlflow
+
+with mlflow.start_run():
+    mlflow.log_param("lr", 0.4)
+    mlflow.log_param("batch_size", 64)
+    for step, loss in enumerate(training_loop()):
+        mlflow.log_metric("loss", loss, step=step)
+```
+
+Running an actual **sweep** (a grid or Bayesian search over hyperparameters, exactly the 5-run comparison above but automated instead of launched by hand) is what both tools are built to orchestrate directly — W&B Sweeps and MLflow's integration with Optuna/Ray Tune both launch, track, and rank many runs like this one automatically, rather than requiring a human to remember to compare them after the fact.
 
 Next: [LLM / Agent Frameworks](/docs/frameworks/llm-agent-frameworks) — the tooling layer built on top of these for building RAG pipelines and agents specifically.
