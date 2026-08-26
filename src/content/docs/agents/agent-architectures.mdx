@@ -25,7 +25,7 @@ Every pattern on this page is a point along one evolution, and it helps to see t
 - **Context** — retrieved documents, tool outputs, and conversation history get assembled into the prompt before generation. Richer input, still one shot.
 - **Harness** — code wraps the model so it can actually execute a tool call and get the real result back, not just describe what it would do.
 - **Loop** — the harness repeats: reason, act, observe, reason again. This is [ReAct](#react-reasoning-acting), below — the first stage that can course-correct mid-task instead of committing to one shot. For what actually makes one loop trustworthy on its own (a real pass/fail condition, not "looks good"), see [Loops and Graphs: The Actual Anatomy](/docs/agents/loops-and-graphs#loop-vs-graph-precisely).
-- **Graph** — multiple loops, tool calls, and sub-agents become nodes; the edges between them (including *conditional* edges) carry shared state. This is the [Supervisor Pattern](#supervisor-pattern) below, and what a framework like LangGraph makes concrete: an explicit state machine instead of one long linear transcript. For the actual node types, real-vs-fake edges, and how rejections get routed, see [Loops and Graphs: The Actual Anatomy](/docs/agents/loops-and-graphs).
+- **Graph** — multiple loops, tool calls, and sub-agents become nodes; the edges between them (including *conditional* edges) carry shared state. This is the [Supervisor Pattern](/docs/agents/routing-and-supervisor#the-actual-difference-not-just-the-definitions) below, and what a framework like LangGraph makes concrete: an explicit state machine instead of one long linear transcript. For the actual node types, real-vs-fake edges, and how rejections get routed, see [Loops and Graphs: The Actual Anatomy](/docs/agents/loops-and-graphs).
 
 <AgentEvolutionDiagram />
 
@@ -49,17 +49,13 @@ Instead of interleaving reasoning and action one step at a time, the model first
 
 After producing an output, the agent (or a separate call) critiques its own work against the original goal, and revises if needed — a form of using the same model's judgment as a lightweight quality gate. See [Reflection / Self-Critique](/docs/agents/reflection-self-critique) for the real Actor/Evaluator/Self-Reflection architecture from the Reflexion paper, a real trial from the paper (not a constructed example), and the paper's own named failure modes.
 
-## Routing
+## Routing & Supervisor Pattern
 
-The lightest-weight multi-path pattern: a **router** (often just an LLM call classifying the incoming request) picks *one* specialized path/prompt/tool-set to handle a request, then that single path handles it end to end — no combining multiple agents' outputs afterward, unlike orchestration below. Cheap and simple, and the right choice when requests genuinely fall into a small number of distinct categories each best served by a differently-configured agent (a customer-support router sending billing questions one way and technical questions another) rather than needing multiple specialists to *collaborate* on one request.
-
-## Supervisor Pattern
-
-A more structured version of the orchestrator/sub-agent pattern below, common in graph-based agent frameworks (LangGraph is built around exactly this): a **supervisor** agent doesn't just delegate once and combine results — it sits in a loop, inspecting each sub-agent's output, deciding whether the result is sufficient or another sub-agent needs to run next, and maintaining overall control until it decides the task is complete. The distinction from a plain one-shot orchestrator matters: a supervisor can dynamically route between sub-agents multiple times based on intermediate results (sub-agent A's output determines whether B or C runs next), where a simpler orchestrator commits to a fixed delegation plan upfront.
+Two different answers to "which agent handles this?" — a **router** classifies once and dispatches to exactly one specialist, no looping back; a **supervisor** sits in a loop, inspecting each sub-agent's result and deciding whether another one needs to run before the task is actually done. The distinction matters more than it sounds: a router can't notice a request needs more than one specialist's output combined, and a supervisor pays a real coordination cost (extra LLM calls) for the ability to notice. Real code for both, and the same request handled both ways so the difference is concrete, not asserted: see [Routing & Supervisor Pattern](/docs/agents/routing-and-supervisor).
 
 ## Single-Agent vs. Multi-Agent
 
-A single, well-prompted agent with good tools can handle a surprising amount. Multi-agent systems (see [Multi-Agent Systems](/docs/agents/multi-agent-systems)) add value when a task genuinely benefits from specialization — different agents with different tools, instructions, or models for different sub-problems — but they also add coordination overhead, latency, and cost. The practical guidance: start with a single agent, and only split into multiple agents when you hit a concrete limitation (context overload, need for parallelism, need for genuinely different tool access per role).
+A single, well-prompted agent with good tools can handle a surprising amount. Multi-agent systems (see [Multi-Agent Systems](/docs/agents/multi-agent-systems)) add value when a task genuinely benefits from specialization — different agents with different tools, instructions, or models for different sub-problems — but they also add coordination overhead, latency, cost, and (the part usually left out) a real expansion of the attack surface, since every inter-agent handoff is a point where one agent's output becomes another's trusted input. A worked cost/complexity comparison and the specific security tradeoffs: see [Single-Agent vs. Multi-Agent](/docs/agents/single-vs-multi-agent).
 
 ## Sub-Agents and Orchestrator Patterns
 
