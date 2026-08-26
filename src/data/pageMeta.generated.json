@@ -840,6 +840,13 @@
       "sidebarPosition": 6.3,
       "description": null
     },
+    "/docs/machine-learning/hyperparameter-optimization": {
+      "slug": "machine-learning/hyperparameter-optimization",
+      "section": "machine-learning",
+      "title": "Hyperparameter Optimization",
+      "sidebarPosition": 6.05,
+      "description": null
+    },
     "/docs/machine-learning/ica-tsne-umap": {
       "slug": "machine-learning/ica-tsne-umap",
       "section": "machine-learning",
