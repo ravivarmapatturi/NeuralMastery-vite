@@ -15,10 +15,19 @@ import SlidingWindowAttentionDiagram from '../../../viz/diagrams/SlidingWindowAt
 import SwiGluGatingDiagram from '../../../viz/diagrams/SwiGluGatingDiagram';
 import SamplingStrategiesDiagram from '../../../viz/diagrams/SamplingStrategiesDiagram';
 import ContextWindowScalingDiagram from '../../../viz/diagrams/ContextWindowScalingDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Foundation Model & Transformer Internals
 
 The engineering details that turn the Transformer architecture (see [Attention & Transformers](/docs/deep-learning/attention-transformers)) into a model you can actually run efficiently at billions of parameters.
+
+<ELI5>
+
+A giant language model is really just "predict the next word, over and over" — run through a lot of clever engineering to make that fast and reliable at scale. Text gets chopped into small chunks (tokenization), those chunks become numbers the model can actually compute with (embeddings), the model figures out how each chunk relates to every other chunk it's seen so far (attention, repeated through a stack of layers), and out comes a ranked guess for what comes next. Everything on this page is either "how do you make that guess-the-next-word loop fast and cheap enough to run in production" (KV cache, quantization, attention variants) or "once you have a ranked list of next-token guesses, how do you actually pick one" (sampling).
+
+Everything below makes each of those engineering pieces exact.
+
+</ELI5>
 
 ## The Full Pipeline: Text to Token
 
@@ -89,6 +98,22 @@ During autoregressive generation, the model produces one token at a time, and na
 
 <KvCacheDiagram />
 
+<GoDeeper title="Go deeper: the actual KV cache memory formula">
+
+"Primary consumer of GPU memory" is a precise, computable claim, not just a warning. For one sequence, the cache has to hold a Key vector *and* a Value vector, for every attention layer, for every KV head, for every token generated so far:
+
+$$\text{KV cache bytes (per sequence)} = 2 \times N_{\text{layers}} \times n_{\text{kv\_heads}} \times d_{\text{head}} \times L \times \text{bytes\_per\_value}$$
+
+where the leading $2$ is for storing both K *and* V, $N_{\text{layers}}$ is the number of Transformer blocks, $n_{\text{kv\_heads}}$ is the number of Key/Value heads (equal to the number of attention heads for plain MHA, far smaller for GQA/MQA — see Attention Variants below), $d_{\text{head}}$ is each head's dimension, $L$ is the sequence length so far, and $\text{bytes\_per\_value}$ is 2 for fp16/bf16 (the common inference precision).
+
+Plugging in illustrative production-scale numbers — 32 layers, $d_{\text{head}}=128$, 8 KV heads (a GQA configuration), an 8192-token context, fp16:
+
+$$2 \times 32 \times 8 \times 128 \times 8192 \times 2 = 1{,}073{,}741{,}824 \text{ bytes} = 1\text{ GiB}$$
+
+**Per sequence, just for the cache** — before counting the model's own weights at all. That number scales *linearly* in every one of its factors: double the context length, double the cache; serve 50 concurrent requests at that context length, and it's 50 GiB of KV cache alone, competing directly with model weights for the same GPU memory. This is exactly why $n_{\text{kv\_heads}}$ — the one factor in this formula that's a pure design choice, not a property of the sequence — is worth shrinking: GQA with 8 heads instead of MHA's, say, 32 cuts this entire number by 4x with no change to sequence length or model depth, which is precisely the tradeoff the Attention Variants section below is about.
+
+</GoDeeper>
+
 ## Architecture Families
 
 - **Encoder-only** (BERT-style): sees the full input at once (bidirectional attention) — good for understanding tasks (classification, embeddings), not for generation.
@@ -139,6 +164,24 @@ The LM head's output is **logits** — one raw score per vocabulary token — tu
 
 - **Greedy decoding**: always pick the single highest-probability token. Deterministic and fast, but tends to produce repetitive, generic text — greedy decoding has no mechanism to recover from committing to a locally-optimal-but-globally-poor token early in a generation.
 - **Temperature**: rescale the logits by dividing by $T$ before softmax — $T < 1$ sharpens the distribution (more confident, closer to greedy, less diverse), $T > 1$ flattens it (more random, more diverse, more likely to produce incoherent text at extremes). $T \to 0$ recovers greedy decoding exactly.
+
+<GoDeeper title="Go deeper: prove the two limiting cases of temperature">
+
+Temperature-scaled softmax is $P(x_i) = \dfrac{e^{z_i/T}}{\sum_j e^{z_j/T}}$. Both limiting claims above — $T\to0$ gives greedy, $T\to\infty$ gives uniform — are provable directly from this formula, not just intuitive.
+
+**As $T \to 0^+$:** let $z_{\max} = \max_j z_j$, and factor $e^{z_{\max}/T}$ out of both the numerator and every term in the denominator (a constant factor that cancels, so it doesn't change $P$):
+
+$$P(x_i) = \frac{e^{(z_i - z_{\max})/T}}{\sum_j e^{(z_j - z_{\max})/T}}$$
+
+For any token $i$ that isn't the arg-max, $z_i - z_{\max} < 0$ is a fixed negative number, so as $T \to 0^+$, $(z_i - z_{\max})/T \to -\infty$, and $e^{(z_i-z_{\max})/T} \to 0$. For the arg-max token itself, $z_i - z_{\max} = 0$ exactly, so its term is $e^0 = 1$ regardless of $T$. So every non-max term vanishes, the max term stays at exactly 1, and the whole distribution collapses to a one-hot on $\arg\max_i z_i$ — precisely greedy decoding, not just something that resembles it.
+
+**As $T \to \infty$:** every ratio $z_i/T \to 0$, since $T$ grows without bound while each $z_i$ stays fixed. So every $e^{z_i/T} \to e^0 = 1$, and:
+
+$$P(x_i) \to \frac{1}{\sum_j 1} = \frac{1}{|V|}$$
+
+— exactly the uniform distribution over the vocabulary, the maximum-entropy, most-random distribution possible. Both stated limiting behaviors are exact consequences of the formula, not approximations.
+
+</GoDeeper>
 - **Top-k sampling**: restrict sampling to only the $k$ highest-probability tokens (renormalizing their probabilities to sum to 1), discarding the long tail entirely — prevents the rare but real failure mode of sampling a wildly implausible token from the distribution's tail.
 - **Top-p / nucleus sampling**: instead of a fixed count $k$, keep the smallest set of tokens whose cumulative probability exceeds threshold $p$ (e.g. 0.9) — adapts automatically to how peaked or flat the distribution is at each step (a very confident next-token prediction keeps very few candidates; a genuinely ambiguous one keeps more), which is why top-p is generally preferred over a fixed top-k in production systems.
 - **Repetition penalty**: directly reduce the logits of tokens that have already appeared in the generated output, discouraging the model from looping — a practical patch for a real failure mode (especially at low temperature) rather than a principled part of the probability model.
