@@ -77,12 +77,7 @@ Calibration (above) asks "are the predicted *probabilities* trustworthy." Uncert
 
 ## Hyperparameter Optimization
 
-Model hyperparameters (learning rate, tree depth, regularization strength, number of layers) aren't learned from data the way weights are — they have to be searched over, using validation performance (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)) as the search signal, never the test set.
-
-- **Grid search**: exhaustively try every combination of a predefined set of values per hyperparameter — simple and reproducible, but scales exponentially with the number of hyperparameters, wasting most of its budget on combinations that were never going to be competitive.
-- **Random search**: sample hyperparameter combinations randomly instead of exhaustively — counterintuitively often *outperforms* grid search for the same compute budget, because grid search wastes evaluations varying unimportant hyperparameters together, while random search's independent sampling spends more effective evaluations on each dimension.
-- **Bayesian optimization**: build a probabilistic surrogate model (e.g. a Gaussian Process) of "hyperparameters → validation score" from evaluations run so far, and use it to pick the *next* combination most likely to either improve on the best result or reduce uncertainty about promising regions (directly reusing [Bayes' theorem](/docs/mathematics-for-ai/probability-statistics#bayes-theorem) to update belief about where the optimum lives as each new evaluation comes in) — far more sample-efficient than grid/random search when each evaluation (a full training run) is expensive, at the cost of being inherently sequential rather than trivially parallelizable.
-- **Successive halving / Hyperband**: allocate a small compute budget to many configurations, discard the worst-performing half, and give the survivors a larger budget, repeating — exploits the fact that a bad hyperparameter configuration is often identifiable early, without training it to completion, letting the search spend its real budget only on genuinely promising candidates.
+Model hyperparameters (learning rate, tree depth, regularization strength, number of layers) aren't learned from data the way weights are — they have to be searched over, using validation performance as the search signal, never the test set. See [Hyperparameter Optimization](/docs/machine-learning/hyperparameter-optimization) for the real Bergstra & Bengio result on why random search beats grid search (not just intuition — a real distinct-values-tried comparison), the actual Expected Improvement formula behind Bayesian optimization, and successive halving/Hyperband.
 
 ## Statistical Significance of Improvements
 

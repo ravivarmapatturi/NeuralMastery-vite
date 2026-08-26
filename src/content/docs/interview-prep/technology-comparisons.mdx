@@ -27,7 +27,7 @@ Covered individually in [LLM Inference Engines](/docs/mlops/llm-inference-engine
 ## LangChain vs. LangGraph
 
 - **LangChain**: a general toolkit for chaining LLM calls, tools, and retrieval together — the right choice for straightforward, mostly-linear pipelines (a RAG chain, a simple tool-calling agent) where you want pre-built integrations and don't need fine-grained control over control flow.
-- **LangGraph**: purpose-built for representing agents as an explicit state graph — nodes and edges, with conditional routing between them (see [Agent Architectures — Supervisor Pattern](/docs/agents/agent-architectures#supervisor-pattern)) — the right choice once an agent's control flow is genuinely non-linear (loops, conditional branches, multiple agents handing off to each other) and you need to reason about and debug that flow explicitly, which a simpler chain abstraction doesn't expose well.
+- **LangGraph**: purpose-built for representing agents as an explicit state graph — nodes and edges, with conditional routing between them (see [Routing & Supervisor Pattern](/docs/agents/routing-and-supervisor)) — the right choice once an agent's control flow is genuinely non-linear (loops, conditional branches, multiple agents handing off to each other) and you need to reason about and debug that flow explicitly, which a simpler chain abstraction doesn't expose well.
 
 ## RAG vs. Fine-Tuning
 

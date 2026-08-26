@@ -1,0 +1,43 @@
+---
+title: "Hyperparameter Optimization"
+sidebar_position: 6.05
+---
+
+import HyperparamSearchDiagram from '../../../viz/diagrams/HyperparamSearchDiagram';
+
+# Hyperparameter Optimization
+
+[Model Evaluation & Metrics](/docs/machine-learning/model-evaluation-metrics) covers *what* to measure. This page covers the actual search problem underneath "tune the hyperparameters": model hyperparameters (learning rate, tree depth, regularization strength, number of layers) aren't learned from data the way weights are — they have to be searched over, using validation performance (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)) as the search signal, never the test set.
+
+## Grid Search vs. Random Search — the Real Result, Not the Obvious One
+
+The obvious intuition is that a denser, more systematic grid search should beat randomly guessing. Bergstra and Bengio's ["Random Search for Hyper-Parameter Optimization"](https://jmlr.org/papers/v13/bergstra12a.html) (JMLR, 2012) shows this is backwards, and explains precisely why: across real deep belief network tuning tasks spanning 32 hyperparameter dimensions, pure random search matched or beat grid and manual search — and a Gaussian-process analysis of validation performance as a function of the hyperparameters revealed that **for most datasets, only a few of the hyperparameters actually matter**.
+
+That single fact is what breaks grid search. A $k \times k$ grid over two hyperparameters spends $k^2$ evaluations — but if only one of those two hyperparameters is actually important, every one of those $k^2$ evaluations only ever tries $k$ *distinct* values of the dimension that matters, because each of the $k$ important-dimension values gets repeated $k$ times while the unimportant dimension varies. Random search, drawing $k^2$ independent samples, tries close to $k^2$ distinct values of *every* dimension — including the one that matters — for the identical evaluation budget.
+
+<HyperparamSearchDiagram />
+
+## Bayesian Optimization: Using Every Result to Pick the Next One
+
+Grid and random search are both **open-loop**: every point to evaluate is decided in advance, before seeing a single result. Bayesian optimization is **closed-loop** — it builds a probabilistic model of "hyperparameters → validation score" from every evaluation run so far, and uses that model to choose the next point deliberately.
+
+The standard surrogate model is a **Gaussian Process (GP)**: at any untried hyperparameter setting $x$, the GP gives both a predicted score $\mu(x)$ and an uncertainty $\sigma(x)$ — confident and low-uncertainty near points already evaluated, uncertain and high-variance far from anything tried yet. The next point to evaluate is chosen by maximizing an **acquisition function** built from $\mu$ and $\sigma$; the standard choice, **Expected Improvement (EI)**, is (see [Distill's "Exploring Bayesian Optimization"](https://distill.pub/2020/bayesian-optimization/)):
+
+$$EI(x) = \big(\mu(x) - f(x^+) - \epsilon\big)\,\Phi(Z) + \sigma(x)\,\phi(Z), \qquad Z = \frac{\mu(x) - f(x^+) - \epsilon}{\sigma(x)}$$
+
+where $f(x^+)$ is the best score found so far, $\Phi$/$\phi$ are the standard normal CDF/PDF, and $\epsilon$ is a small constant controlling how much improvement counts as worth chasing. The formula is worth reading as two additive terms, not one opaque expression: $(\mu(x)-f(x^+)-\epsilon)\Phi(Z)$ rewards points predicted to beat the current best — **exploitation** — and $\sigma(x)\phi(Z)$ rewards points the model is simply uncertain about, regardless of predicted value — **exploration**. EI is high when either term is high, which is exactly the mechanism that keeps Bayesian optimization from just greedily re-exploring the best region found so far.
+
+<HyperparamSearchDiagram />
+
+This sequential, informed selection is why Bayesian optimization typically needs far fewer evaluations than grid or random search to reach a comparable result — a real, practically significant gap when each evaluation is an expensive full training run — at the real cost of being inherently sequential (each point depends on all previous results) rather than trivially parallelizable the way grid/random search are.
+
+## Successive Halving and Hyperband
+
+A different lever entirely: instead of choosing *which* configurations to try more cleverly, spend the *budget* per configuration adaptively. **Successive halving** allocates a small budget (a few epochs, a data subsample) to many configurations at once, discards the worst-performing half, and gives the survivors a larger budget — repeating until one configuration remains. This exploits a real empirical regularity: a bad hyperparameter configuration is usually identifiable early, well before training to completion, so the real budget only ever goes toward configurations that already looked competitive. **Hyperband** wraps successive halving in an outer loop that varies the initial budget-vs-configuration-count tradeoff itself, hedging against picking a bad tradeoff for problems where it isn't obvious in advance whether wide-and-shallow or narrow-and-deep search will win.
+
+## Choosing an Approach
+
+- **Few hyperparameters, cheap evaluations**: random search is a strong, simple default — Bergstra & Bengio's result holds precisely here.
+- **Expensive evaluations (full training runs), evaluation budget matters most**: Bayesian optimization's sample efficiency is worth its sequential-only constraint.
+- **Cheap early signal available (can tell early if a run is bad)**: successive halving / Hyperband, often combined *with* Bayesian optimization for choosing which configurations to allocate budget to in the first place (the approach real tools like Optuna and Ray Tune default to).
+- **Grid search**: rarely the right default given the result above — reach for it only when a hyperparameter genuinely has just 2-3 sensible discrete choices worth enumerating exhaustively, not as the general-purpose method.

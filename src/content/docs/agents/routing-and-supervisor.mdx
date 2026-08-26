@@ -1,0 +1,59 @@
+---
+title: "Routing & Supervisor Pattern"
+sidebar_position: 4.6
+---
+
+
+import RouterVsSupervisorDiagram from '../../../viz/diagrams/RouterVsSupervisorDiagram';
+
+# Routing & Supervisor Pattern
+
+Both patterns answer "which agent handles this?" — but they answer it at a different frequency. A router answers it once, up front. A supervisor answers it again after every result, for as long as the task needs.
+
+## The Actual Difference, Not Just the Definitions
+
+[LangChain's own docs](https://docs.langchain.com/oss/python/langchain/multi-agent/router) draw the line precisely: a **router** is "a dedicated routing step... that classifies the input and dispatches to agents... it typically doesn't maintain conversation history or perform multi-turn orchestration — it's a preprocessing step." A **supervisor**, by contrast, "maintains context, can call multiple subagents across turns, and orchestrates complex multi-step workflows."
+
+Same two-part request, stepped through both ways:
+
+<RouterVsSupervisorDiagram />
+
+The router isn't a worse supervisor — it's architecturally incapable of noticing the second half of a request needs more work, because nothing re-reads the first agent's output before returning it. That's not a bug to fix; it's the entire reason routing is cheap: one classification call, one dispatch, no loop.
+
+## Real Code, Both Patterns
+
+Router — LangGraph's `Command` primitive dispatches once, deterministically:
+
+```python
+from langgraph.types import Command
+
+def route_query(state: State) -> Command:
+    active_agent = classify_query(state["query"])
+    return Command(goto=active_agent)
+```
+
+Supervisor — a tool-calling loop where each worker agent is exposed to the supervisor *as a tool*, not a routing label:
+
+```python
+from langgraph_supervisor import create_supervisor
+from langgraph.prebuilt import create_react_agent
+
+math_agent = create_react_agent(model, tools=[add, multiply], name="math_expert")
+research_agent = create_react_agent(model, tools=[web_search], name="research_expert")
+
+workflow = create_supervisor(
+    [research_agent, math_agent],
+    model=model,
+    prompt="You manage a research expert and a math expert. Use research_agent for "
+           "current events; use math_agent for calculations.",
+)
+app = workflow.compile()
+```
+
+Worth knowing if you're picking a library rather than hand-rolling this: [`langgraph-supervisor-py`](https://github.com/langchain-ai/langgraph-supervisor-py)'s own maintainers now recommend implementing the supervisor pattern directly with plain LangGraph tool-calling for most new projects, rather than reaching for the dedicated library — it gives more direct control over exactly what context each handoff carries, which matters once you're tuning a real system rather than following a quickstart.
+
+## When to Use Which
+
+Reach for a **router** when requests genuinely fall into a small number of distinct categories, each fully handled by one specialist, with no need to combine results afterward — a support router sending billing questions one way and technical questions another. Reach for a **supervisor** when a single request might genuinely need more than one specialist's output combined, or when you can't know in advance how many sub-agents a request will need until you see the first one's result. Don't default to supervisor "to be safe" — every extra round of supervisor decision-making is a real LLM call, and the diagram above shows exactly where that cost comes from: 2 extra "inspect and decide" steps the router never pays, in exchange for actually answering the whole question.
+
+Next: [Single-Agent vs. Multi-Agent](/docs/agents/single-vs-multi-agent) — the more fundamental question underneath both of these: whether to split the work into multiple agents at all.

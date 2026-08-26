@@ -1,0 +1,39 @@
+---
+title: "Single-Agent vs. Multi-Agent"
+sidebar_position: 4.7
+---
+
+
+import AgentSplitTradeoffDiagram from '../../../viz/diagrams/AgentSplitTradeoffDiagram';
+
+# Single-Agent vs. Multi-Agent
+
+The default answer is: don't split. A single, well-prompted agent with good tools handles more than most designs give it credit for, and every specialized agent you add is a real cost, not a free architecture upgrade.
+
+## When Splitting Actually Pays Off
+
+Three concrete triggers, not vibes:
+
+- **Context overload** — the task genuinely needs more source material (documents, tool outputs, conversation history) than fits usefully in one context window, or than one agent can reason over without the signal getting lost in the noise.
+- **Need for parallelism** — independent sub-tasks that don't depend on each other's output can run concurrently across agents instead of sequentially in one agent's loop, and wall-clock time actually matters for the use case.
+- **Genuinely different tool access per role** — a coding sub-agent needs shell and filesystem access a research sub-agent shouldn't have at all; forcing both through one agent means either over-provisioning tools (a security problem on its own) or awkwardly conditioning tool availability on task type inside one prompt.
+
+## The Real Cost, Computed
+
+Splitting a task across N specialized agents isn't just "more agents = more parallelism, strictly better." A single fixed task, actually costed out as N changes:
+
+<AgentSplitTradeoffDiagram />
+
+The wall-clock speedup is real when work is genuinely parallelizable — but it's not free: every agent added is 2 more coordination LLM calls (a delegate call and a result-integration call the supervisor makes) that a single agent never pays, and — the part usually left out of the "just add more agents" conversation entirely — one more point where one agent's output becomes another agent's trusted input.
+
+## The Security Cost Nobody Puts on the Diagram
+
+That last number — inter-agent handoff points — isn't just an accounting curiosity. OWASP's [Top 10 for Agentic Applications](https://owasp.org/www-project-top-10-for-agentic-applications/) has a dedicated category for exactly this, **ASI07: Insecure Inter-Agent Communication**, precisely because splitting into multiple agents expands the attack surface in a way single-agent systems don't have at all: agent-to-agent messages are typically trusted and unfiltered by default, which is what makes delegation efficient — and exactly what a compromised or manipulated agent can exploit. Current research on this is more specific than "prompt injection can spread": intermediate agents that are themselves trusted have been shown to *actively reformat* an injected instruction to strip the markers a downstream filter would have caught, making the attack more effective the further it travels, not less. In simulated multi-agent systems, a single compromised agent has been shown to poison 87% of downstream decision-making within four hours.
+
+This connects directly to tool-call policy gating (see [Agent Architectures](/docs/agents/agent-architectures) and this account's [Agent Security Gateway](https://github.com/ravivarmapatturi/Agent_Security_Gateway)): the same "an agent's decision alone is not authorization" boundary that gates a single agent's tool calls generalizes to gating what one agent's output is allowed to trigger in another — the handoff point is exactly where that boundary needs to exist in a multi-agent system, the same way it needs to exist between an agent and its tools. Today's version of that gateway project gates tool calls specifically, not inter-agent handoffs — worth noting honestly rather than implying it already covers this, since the pattern generalizes but the implementation doesn't yet.
+
+## The Practical Rule
+
+Start with one agent. Move to multiple only when you hit one of the three concrete triggers above, and when you do, treat every new inter-agent handoff as a real trust boundary that needs the same scrutiny a tool call gets — not as a free internal detail because "it's all your own agents."
+
+Next: [Multi-Agent Systems](/docs/agents/multi-agent-systems) — the coordination topologies (hierarchical, peer-to-peer, blackboard) once you've actually decided to split.

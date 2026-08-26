@@ -105,6 +105,20 @@
       "sidebarPosition": 2,
       "description": null
     },
+    "/docs/agents/routing-and-supervisor": {
+      "slug": "agents/routing-and-supervisor",
+      "section": "agents",
+      "title": "Routing & Supervisor Pattern",
+      "sidebarPosition": 4.6,
+      "description": null
+    },
+    "/docs/agents/single-vs-multi-agent": {
+      "slug": "agents/single-vs-multi-agent",
+      "section": "agents",
+      "title": "Single-Agent vs. Multi-Agent",
+      "sidebarPosition": 4.7,
+      "description": null
+    },
     "/docs/ai-evaluation/evaluation-fundamentals": {
       "slug": "ai-evaluation/evaluation-fundamentals",
       "section": "ai-evaluation",
@@ -824,6 +838,13 @@
       "section": "machine-learning",
       "title": "Gaussian Mixture Models & Spectral Clustering, In Full Depth",
       "sidebarPosition": 6.3,
+      "description": null
+    },
+    "/docs/machine-learning/hyperparameter-optimization": {
+      "slug": "machine-learning/hyperparameter-optimization",
+      "section": "machine-learning",
+      "title": "Hyperparameter Optimization",
+      "sidebarPosition": 6.05,
       "description": null
     },
     "/docs/machine-learning/ica-tsne-umap": {

@@ -36,7 +36,7 @@ That extra inference-time compute is a real cost, not a free upgrade, which make
 - **Worth it**: problems with real, checkable structure where a first-pass answer is often wrong in a specific, findable way — a subtle bug, a multi-step proof, a logic puzzle. The gap between a non-reasoning and a reasoning model's accuracy is largest exactly here.
 - **Not worth it**: factual lookups, straightforward formatting, casual/subjective questions, or anything where a first response is already reliably good — the extra latency (sometimes minutes, not seconds) buys accuracy you didn't need.
 
-In production, this is usually a **routing** decision (see [Agent Architectures — Routing](/docs/agents/agent-architectures#routing)): classify or detect whether a request is the kind that benefits from extended reasoning, and only pay the latency/cost premium for the requests that actually need it, rather than defaulting every request to the most expensive mode available.
+In production, this is usually a **routing** decision (see [Routing & Supervisor Pattern](/docs/agents/routing-and-supervisor)): classify or detect whether a request is the kind that benefits from extended reasoning, and only pay the latency/cost premium for the requests that actually need it, rather than defaulting every request to the most expensive mode available.
 
 ## ReAct (Reasoning + Acting)
 
