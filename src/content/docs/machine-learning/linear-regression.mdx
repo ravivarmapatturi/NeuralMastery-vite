@@ -10,10 +10,19 @@ import LinearRegressionStudio from '../../../viz/LinearRegressionStudio';
 import PredictFirst from '../../../viz/primitives/PredictFirst';
 import GradientDescentLoopDiagram from '../../../viz/diagrams/GradientDescentLoopDiagram';
 import TwoPathsDiagram from '../../../viz/diagrams/TwoPathsDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Linear Regression, In Full Depth
 
 [Supervised Learning](/docs/machine-learning/supervised-learning) introduced linear regression in a couple of sentences. This page derives it properly — the cost function, the gradient step by step, the closed-form solution, and where gradient descent actually comes from — because "minimize squared error" means nothing until you've done the derivative by hand at least once.
+
+<ELI5>
+
+Say you're guessing how well a friend will do on a test based on how many hours they studied. Plot "hours vs. score" for everyone you know and you'll see a cloud of dots, not a perfect line — real life is noisy, so no single line hits every point. Linear regression is just a precise way of picking *one best* line through that cloud: out of every line you could draw, it picks the one where the total "distance from the line, squared and added up across every point" is as small as possible. The squaring matters — it means one wildly-wrong guess hurts far more than several slightly-wrong ones.
+
+Everything below is that same idea, made exact: the actual formula for "how wrong," and the actual math for finding the line that minimizes it.
+
+</ELI5>
 
 <LinearRegressionAtAGlance />
 
@@ -79,6 +88,20 @@ $$J(w, b) = \frac{1}{n} \sum_{i=1}^{n} \left( \hat{y}^{(i)} - y^{(i)} \right)^2 
 - It's differentiable everywhere (unlike absolute error, which has a sharp corner at zero — its derivative is undefined right where the error is smallest, which complicates gradient-based optimization).
 - It penalizes large errors disproportionately more than small ones, which is often the right behavior — being off by 10 should hurt more than 10x being off by 1.
 - It's exactly the loss function that falls out of assuming Gaussian-distributed noise and doing Maximum Likelihood Estimation (see [Probability & Statistics — MLE vs MAP](/docs/mathematics-for-ai/probability-statistics#mle-vs-map)) — minimizing MSE *is* finding the maximum-likelihood parameters under that assumption, not an arbitrary choice.
+
+<GoDeeper title="Go deeper: derive the MLE-MSE equivalence">
+
+The claim above is precise enough to actually prove. Assume each observation is the true line plus Gaussian noise: $y^{(i)} = w x^{(i)} + b + \epsilon^{(i)}$, with $\epsilon^{(i)} \sim \mathcal{N}(0, \sigma^2)$ i.i.d. Equivalently, $y^{(i)} \mid x^{(i)} \sim \mathcal{N}(\hat{y}^{(i)}, \sigma^2)$, so the probability density of observing $y^{(i)}$ given $x^{(i)}$ and the parameters is:
+
+$$p\left(y^{(i)} \mid x^{(i)}; w, b\right) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{\left(y^{(i)} - \hat{y}^{(i)}\right)^2}{2\sigma^2}\right)$$
+
+Since the $n$ observations are independent, the likelihood of the whole dataset is the product of each one's density, and maximum likelihood estimation picks the $(w, b)$ that maximizes it. Products of exponentials are unpleasant to differentiate, so take the log instead — $\log$ is monotonic increasing, so whatever maximizes the likelihood also maximizes the log-likelihood:
+
+$$\log L(w, b) = \sum_{i=1}^{n} \left[ -\frac{1}{2}\log(2\pi\sigma^2) - \frac{\left(y^{(i)} - \hat{y}^{(i)}\right)^2}{2\sigma^2} \right] = -\frac{n}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^{n}\left(y^{(i)} - \hat{y}^{(i)}\right)^2$$
+
+Now look at what actually depends on $(w, b)$: the first term, $-\frac{n}{2}\log(2\pi\sigma^2)$, doesn't involve $w$ or $b$ at all — it's a fixed constant with respect to the parameters we're optimizing. The *only* piece that moves as $(w, b)$ change is $-\frac{1}{2\sigma^2}\sum_i\left(y^{(i)} - \hat{y}^{(i)}\right)^2$, and since $\sigma^2 > 0$, that's a positive constant times the *negative* sum of squared errors. Maximizing a negative quantity means minimizing the quantity itself — so maximizing $\log L(w,b)$ over $(w, b)$ is *exactly* the same optimization problem as minimizing $\sum_i\left(y^{(i)} - \hat{y}^{(i)}\right)^2$, which is $J(w,b)$ up to the constant factor $\frac{1}{n}$ that doesn't change where the minimum sits. Gaussian-noise assumption in, squared-error loss out — not a convenient approximation, a mathematical identity.
+
+</GoDeeper>
 
 $J$ is convex in $(w, b)$ (see [Calculus & Optimization — Convexity](/docs/mathematics-for-ai/calculus-optimization#convexity)) — there's exactly one minimum, no false valleys to get stuck in. That's what makes everything below work cleanly.
 
@@ -203,6 +226,20 @@ def fit_normal_equation(X, y):
 For a small, well-conditioned dataset, both should converge to (nearly) the same $w$ — a good way to sanity-check that a from-scratch gradient descent implementation is actually correct.
 
 **Engineering note:** `np.linalg.inv(X.T @ X) @ X.T @ y` above is the right way to *learn* the normal equation, but it's not what production numerical code actually does. Explicitly forming and inverting $X^TX$ is numerically less stable than solving the linear system directly — real implementations (scikit-learn's dense least-squares solver included) use **SVD** or **QR decomposition** instead (see [Linear Algebra — SVD](/docs/mathematics-for-ai/linear-algebra#singular-value-decomposition-svd)), which avoid explicitly computing an inverse at all. Know the formula; don't ship it literally.
+
+<GoDeeper title="Go deeper: why forming X^TX specifically destroys precision">
+
+"Less stable" is a specific, measurable claim, not a vague warning. A matrix's **condition number** $\kappa(A)$ — the ratio of its largest to smallest singular value, $\kappa(A) = \sigma_{\max}(A)/\sigma_{\min}(A)$ — measures how much a small error in the input can get amplified in the output when you solve a linear system with it; a large $\kappa$ means small floating-point rounding errors can blow up into large errors in the answer.
+
+Here's the fact that makes forming $X^TX$ dangerous: **the singular values of $X^TX$ are exactly the squares of the singular values of $X$.** That follows directly from the SVD: write $X = U\Sigma V^T$ (see [Linear Algebra — SVD](/docs/mathematics-for-ai/linear-algebra#singular-value-decomposition-svd)), then $X^TX = V\Sigma U^T U \Sigma V^T = V\Sigma^2 V^T$ — since $U^TU = I$ ($U$'s columns are orthonormal). $V\Sigma^2V^T$ is itself a valid SVD-like decomposition of $X^TX$ (orthogonal $V$ on both sides, diagonal in between), so its singular values are literally the diagonal entries of $\Sigma^2$ — each of $X$'s singular values, squared.
+
+That means:
+
+$$\kappa(X^TX) = \frac{\sigma_{\max}(X)^2}{\sigma_{\min}(X)^2} = \kappa(X)^2$$
+
+**Forming $X^TX$ squares the condition number.** If $X$ itself is only mildly ill-conditioned — say $\kappa(X) = 10^8$, plausible with correlated real-world features — then $\kappa(X^TX) = 10^{16}$. Double-precision floats carry roughly 15–16 significant decimal digits of precision, so a condition number at $10^{16}$ means the normal equation's matrix inverse can lose *all* of it — the computed $\mathbf{w}$ becomes numerically meaningless, even though the underlying least-squares problem (solved via SVD or QR directly on $X$, never forming $X^TX$) was perfectly well-posed. This is precisely why real solvers work from $X$'s own decomposition instead of squaring their way into a much worse-conditioned problem first.
+
+</GoDeeper>
 
 ## 10. When *Not* to Use Linear Regression
 
