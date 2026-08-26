@@ -17,7 +17,7 @@ Applying [the 9-step framework](/docs/ml-system-design/the-9-step-framework) to 
 
 ## Learning From a Real Problem, Not a Topic List
 
-Nobody sets out to "learn Vector Databases" — they set out to build something, hit a wall a plain keyword search can't get past, and *that's* when a vector database becomes the obvious next thing to learn, motivated by a real constraint instead of arriving cold. The two case studies below are built that way on purpose: each one narrates a real system end to end, and every technology shows up exactly where the problem actually demands it, linking out to this site's real deep-dive page for that piece rather than re-explaining it here. This page's job is motivation and sequencing; the linked pages own the actual depth.
+Nobody sets out to "learn Vector Databases" — they set out to build something, hit a wall a plain keyword search can't get past, and *that's* when a vector database becomes the obvious next thing to learn, motivated by a real constraint instead of arriving cold. The case studies below are built that way on purpose: each one narrates a real system end to end, and every technology shows up exactly where the problem actually demands it, linking out to this site's real deep-dive page for that piece rather than re-explaining it here. This page's job is motivation and sequencing; the linked pages own the actual depth.
 
 ## Case Study: A RAG System Over 100M Enterprise Documents
 
@@ -74,6 +74,36 @@ Different shape of problem entirely: not "search accurately," but "decide, corre
 7. **Rollout** — a new fraud model can't just replace the old one and hope; a regression here means real financial loss, silently, until someone notices. See [Statistical Significance of Improvements](/docs/machine-learning/model-evaluation-metrics#statistical-significance-of-improvements) for confirming a new model is genuinely better before it takes over 100% of live traffic, not just better on one offline split.
 
 Notice the shape difference from the RAG case study even though the underlying framework (the [9-step design process](/docs/ml-system-design/the-9-step-framework)) is identical: a search problem's constraints are mostly about *retrieval quality at scale*; a fraud problem's constraints are mostly about *streaming infrastructure and decision cost* — same process, genuinely different technology stack, because the technology stack is downstream of the problem, not chosen first.
+
+## Case Study: A Support Agent That Can Actually Take Actions
+
+A third shape again: not "retrieve accurately" or "decide fast on a stream," but "let a model *do* things — look up an order, issue a refund, escalate a case — safely, for 50,000 conversations a day, without either being uselessly restricted or dangerously unrestricted." This is where the constraints stop being about data or infrastructure and start being about *trust*:
+
+<DiscoverySequenceDiagram steps={[
+  { name: 'Tool Use', constraint: "Answering questions from training data isn't enough — the agent needs to actually look up a real order." },
+  { name: 'The Loop', constraint: 'One tool call rarely resolves a real request; the agent needs to reason about what it learned and decide what to do next.' },
+  { name: 'Memory', constraint: "A support conversation spans multiple turns — losing earlier context mid-conversation is a real, visible failure." },
+  { name: 'Reversibility', constraint: "Looking up an order and issuing a refund are not the same risk — treating every action identically is wrong in both directions." },
+  { name: 'Excessive Agency', constraint: "An agent with refund access can be talked into using it for a request that never needed it." },
+  { name: 'Guardrails', constraint: "A good prompt is not a control — you need something that holds even when the prompt doesn't." },
+  { name: 'Human-in-the-Loop', constraint: "Full autonomy on a real refund is a real financial risk; full manual review of everything defeats the point of automating." },
+  { name: 'Durability', constraint: "A conversation can be interrupted, retried, or resumed hours later — losing state mid-flow is a real, visible bug." },
+  { name: 'Observability', constraint: "When an agent does the wrong thing, you need to see the actual reasoning and tool calls, not just the final message." },
+  { name: 'Evaluation', constraint: '"The response sounds right" is not the same as "the agent did the right thing" — those need different checks.' },
+]} />
+
+1. **Tool Use** — answering from training data isn't enough; the agent needs to actually look up a real order, not describe what looking one up would involve. See [Tool Use / Function Calling](/docs/agents/agent-fundamentals#tool-use-function-calling) for how a model actually gets access to real systems instead of just talking about them.
+2. **The Loop** — one tool call rarely resolves a real support request; the agent needs to reason about what the lookup returned and decide what to do next, possibly several times. See [ReAct](/docs/agents/agent-architectures#react-reasoning-acting) for the reason-act-observe cycle this requires, and [How We Got Here](/docs/agents/agent-architectures#how-we-got-here-prompt-context-harness-loop-graph) for why a single prompt was never going to be enough in the first place.
+3. **Memory** — a real support conversation spans multiple turns; forgetting what the customer already said two messages ago is a real, visible failure mode, not a hypothetical one. See [Agent Memory](/docs/agents/agent-fundamentals#agent-memory) for short-term vs. long-term memory and what belongs in each.
+4. **Reversibility** — looking up an order and issuing a refund are not the same risk, and treating every action as equally sensitive (or equally safe) is wrong in both directions. See [Gate on Reversibility, Not Confidence](/docs/agents/loops-and-graphs#gate-on-reversibility-not-confidence) for sorting actions by actual blast radius instead of a single uniform approval policy.
+5. **Excessive Agency** — an agent with real refund access can be talked (by a confused customer, or a deliberately adversarial one) into using it for a request that never needed it. See [Excessive Agency](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks#excessive-agency) for the real OWASP-named failure mode this is, and why scoping what an agent *can* do matters as much as what it's told to do.
+6. **Guardrails** — a well-written prompt is not a control; it's a strong suggestion the model usually follows, which isn't the same guarantee a real system needs for a refund path. See [Guardrails](/docs/llms-genai/evaluation-and-serving#guardrails) for the systematic constraints that hold even when the prompt alone wouldn't.
+7. **Human-in-the-Loop** — full autonomy on a real refund is a real financial risk; requiring manual review of every single interaction defeats the entire point of building the agent. See [Human-in-the-Loop](/docs/agents/agent-architectures#human-in-the-loop) for approval gates placed specifically at the high-consequence steps, not sprinkled everywhere.
+8. **Durability** — a real conversation can be interrupted, retried, or resumed hours later; losing all context because the process restarted is a real, visible bug, not an edge case. See [Durable Execution](/docs/agents/agent-architectures#durable-execution-retries-checkpoints-long-running-agents) for checkpointing a long-running or interrupted agent task properly.
+9. **Observability** — when an agent does the wrong thing, you need to see the actual reasoning and tool calls that led there, not just the final message the customer saw. See [Observability](/docs/mlops/observability) for tracing what actually happened, not just logging outcomes.
+10. **Evaluation** — "the response sounds right" is not the same claim as "the agent did the right thing," and conflating them hides real failures behind plausible-sounding text. See [Evaluation](/docs/llms-genai/evaluation-and-serving#evaluation) for checking agent behavior specifically, not just output fluency.
+
+Three case studies, three genuinely different technology stacks — retrieval-heavy, streaming-and-decision-heavy, trust-and-control-heavy — from applying the exact same [9-step framework](/docs/ml-system-design/the-9-step-framework) to three differently-shaped problems. That's the actual claim this page is making: the framework is constant, the stack is downstream of the problem.
 
 ## Recommendation Systems
 
