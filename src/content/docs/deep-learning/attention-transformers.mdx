@@ -21,10 +21,19 @@ import AddNormDiagram from '../../../viz/diagrams/AddNormDiagram';
 import FeedForwardDiagram from '../../../viz/diagrams/FeedForwardDiagram';
 import EncoderLayerDiagram from '../../../viz/diagrams/EncoderLayerDiagram';
 import TransformerModelFamiliesDiagram from '../../../viz/diagrams/TransformerModelFamiliesDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Attention & Transformers
 
 The architecture behind GPT, Claude, LLaMA, and essentially every modern large model — text, vision, and beyond. This page follows the original architecture end to end: from *why* it exists, through every mechanism in the paper, worked out with real numbers rather than left abstract.
+
+<ELI5>
+
+Attention is a way for a model to look at every word in a sentence at once and decide, for each word, which *other* words matter most to understanding it. Reading "the animal didn't cross the street because **it** was too tired," you instantly know "it" means the animal, not the street — you weighed every earlier word and let the relevant one (animal) matter more. Attention gives a model the same move: for every word, compute a relevance score against every other word, turn those scores into weights (the highest-relevance words count most), and blend the words together using those weights. Do that for every word, all at once instead of one at a time, and you get a representation of the whole sentence where every word already "knows" which other words it should be paying attention to.
+
+Everything below is that same idea, made exact: real formulas, real numbers, and why each piece of the formula is shaped the way it is.
+
+</ELI5>
 
 ## Why This Architecture Exists
 
@@ -111,6 +120,22 @@ Read the last two steps as the whole mechanism in miniature: softmax turns raw c
 ### Why Scale by the Square Root of the Key Dimension
 
 The part most explanations wave a hand at instead of deriving. If a Query and Key's components are independent with mean 0 and variance 1, their dot product $q \cdot k = \sum_{i=1}^{d_k} q_i k_i$ is a sum of $d_k$ independent terms — and variance adds across independent terms, so the dot product ends up with **variance $d_k$**, not variance 1. As $d_k$ grows, raw scores grow with it, pushing softmax toward a near-one-hot distribution where gradients through every non-max entry are vanishingly small. Dividing by $\sqrt{d_k}$ renormalizes the variance back down to 1, regardless of dimension — step 5 of the worked example above has a toggle for exactly this comparison: same raw scores, softmax without scaling puts 0.976 of "sat"'s row on a single token; scaled, that peak drops to 0.821, leaving real, learnable gradient on the other tokens instead of squeezing them toward zero.
+
+<GoDeeper title="Go deeper: why does variance actually add across independent terms?">
+
+The claim above leans on one fact: for independent $X, Y$, $\text{Var}(X+Y) = \text{Var}(X) + \text{Var}(Y)$. It's worth actually deriving rather than citing, since it's the one step even careful explanations tend to assert.
+
+Start from the definition, $\text{Var}(Z) = E[Z^2] - (E[Z])^2$, applied to $Z = X + Y$:
+
+$$\text{Var}(X+Y) = E[(X+Y)^2] - (E[X+Y])^2 = E[X^2 + 2XY + Y^2] - (E[X] + E[Y])^2$$
+
+Expand both sides — linearity of expectation lets $E[X^2+2XY+Y^2]$ split into $E[X^2] + 2E[XY] + E[Y^2]$, and $(E[X]+E[Y])^2$ expands to $E[X]^2 + 2E[X]E[Y] + E[Y]^2$:
+
+$$\text{Var}(X+Y) = \big(E[X^2] - E[X]^2\big) + \big(E[Y^2] - E[Y]^2\big) + 2\big(E[XY] - E[X]E[Y]\big) = \text{Var}(X) + \text{Var}(Y) + 2\,\text{Cov}(X,Y)$$
+
+The cross term is exactly $\text{Cov}(X,Y)$, and independence is precisely the assumption that makes it vanish: independent $X,Y$ satisfy $E[XY] = E[X]E[Y]$ by definition, so $\text{Cov}(X,Y) = 0$. That's the entire gap the "independent" assumption is doing work in — with $d_k$ independent query/key components, all $\binom{d_k}{2}$ cross terms drop out, and only the $d_k$ individual variances (each 1, by assumption) survive: $\text{Var}\left(\sum_{i=1}^{d_k} q_ik_i\right) = \sum_{i=1}^{d_k}\text{Var}(q_ik_i) = d_k$.
+
+</GoDeeper>
 
 **The result**: every token can directly attend to every other token in the sequence, in a single step — no sequential bottleneck like RNNs had, and no distance penalty for far-apart tokens.
 
