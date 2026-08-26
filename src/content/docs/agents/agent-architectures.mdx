@@ -43,11 +43,11 @@ Step through a scripted example of the loop, one step at a time or on autoplay:
 
 ## Plan-and-Execute
 
-Instead of interleaving reasoning and action one step at a time, the model first produces a full multi-step plan, then executes each step (possibly with a separate, cheaper model or the same model in a simpler "execution" mode), only returning to re-planning if a step fails or new information changes the picture. Generally more efficient than pure ReAct for tasks with a predictable structure, since it avoids re-reasoning about the whole task at every single step — but less adaptive to surprises mid-task.
+Instead of interleaving reasoning and action one step at a time, the model first produces a full multi-step plan, then executes each step (possibly with a separate, cheaper model), only returning to re-planning if a step fails or new information changes the picture. Generally more efficient than pure ReAct for tasks with a predictable structure — but less adaptive to surprises mid-task. See [Plan-and-Execute](/docs/agents/plan-and-execute) for the real Planner/Executor/Replanner architecture, a stepped-through worked example including a real replanning-on-failure trace, and when this pattern loses to ReAct.
 
 ## Reflection / Self-Critique
 
-After producing an output (or completing a sub-task), the agent (or a separate call) critiques its own work against the original goal, and revises if needed. Useful for tasks where a first attempt is often flawed but a model is good at spotting flaws when explicitly asked to check — a form of using the same model's judgment as a lightweight quality gate.
+After producing an output, the agent (or a separate call) critiques its own work against the original goal, and revises if needed — a form of using the same model's judgment as a lightweight quality gate. See [Reflection / Self-Critique](/docs/agents/reflection-self-critique) for the real Actor/Evaluator/Self-Reflection architecture from the Reflexion paper, a real trial from the paper (not a constructed example), and the paper's own named failure modes.
 
 ## Routing
 

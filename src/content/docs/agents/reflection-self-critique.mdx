@@ -1,0 +1,51 @@
+---
+title: "Reflection / Self-Critique"
+sidebar_position: 4.3
+---
+
+import ReflexionLoopDiagram from '../../../viz/diagrams/ReflexionLoopDiagram';
+
+# Reflection / Self-Critique
+
+[Plan-and-Execute](/docs/agents/plan-and-execute) changes *when* an agent thinks — all upfront, versus per step. Reflection changes what happens *after* a result comes back: does the agent just move on, or does it actually check its own work first?
+
+## The Real Architecture: Reflexion
+
+Shinn et al.'s ["Reflexion: Language Agents with Verbal Reinforcement Learning"](https://arxiv.org/abs/2303.11366) (2023) is the paper this pattern is named after, and it's precise about the mechanism — three distinct models, not one agent grading itself in the same breath it answered:
+
+- **Actor** — generates the actual attempt (an action, an answer, a piece of code), conditioned on the task and — critically — any reflections from *previous* trials.
+- **Evaluator** — scores the attempt: exact-match grading for reasoning tasks, heuristics for decision-making tasks, or an LLM-based judgment call, depending on the domain.
+- **Self-Reflection** — takes the Evaluator's (often sparse — just pass/fail) signal and the actual trajectory, and generates *specific, actionable* natural-language feedback: not "that was wrong," but what specifically to do differently next time.
+
+The paper calls this **verbal reinforcement learning** deliberately: there's no weight update anywhere in the loop. The "learning" is a piece of text, written to an episodic memory buffer, that the Actor reads before its next attempt.
+
+## A Real Trial, Not a Constructed Example
+
+This is the actual ALFWorld trial from the paper — a household-task agent that needs to find a mug and use a desklamp:
+
+<ReflexionLoopDiagram />
+
+Step through it: trial 1 fails at "use desklamp 1" because the agent never actually found the lamp first — a genuinely different mistake than the wrong desklamp, which matters because self-reflection has to name what actually went wrong to be useful. The reflection it generates is specific enough to change trial 2's very first action — the agent goes straight to desk 1 instead of wherever it was searching before. That specificity is the whole mechanism: a reflection that just says "try harder" wouldn't have fixed anything.
+
+## Not the Same as a Verifier/Grader
+
+A plain verifier checks one output and accepts or rejects it — useful, but the lesson dies with that single decision. Reflexion's self-reflection step does something structurally different: it writes a *reusable* lesson into memory that changes the *next* attempt's starting point, not just this one's verdict. In the terms [Loops and Graphs](/docs/agents/loops-and-graphs#two-return-paths-on-rejection) uses for a gate's two return paths, a plain verifier is closer to the **short correction edge** (fixes this run); Reflexion's memory buffer is closer to the **long learning edge** (an accepted-or-corrected result becomes a standing constraint for future runs) — except here it's built from natural language instead of a structured constraint, and it persists across trials of the *same* task rather than across entirely different future tasks.
+
+## Real Numbers, and Real Limitations
+
+The paper's headline result: Reflexion reaches **91% pass@1 on HumanEval**, versus GPT-4's 80% without it — a genuine, cited improvement from the reflect-and-retry loop alone, not a marginal gain.
+
+It's not universal, and the paper says so directly rather than leaving it implied:
+
+- On **WebShop**, Reflexion "is unable to solve tasks that require a significant amount of diversity and exploration" — the pattern helps an agent get *better at the same kind of mistake*, not discover fundamentally different strategies it never considered.
+- The system "may still succumb to non-optimal local minima" — a specific, wrong approach can get incrementally refined without ever being abandoned for a better one.
+- Some trials produced "unhelpful, unintuitive self-reflections" — the Self-Reflection model is still an LLM call, and it can misdiagnose its own failure just as easily as the Actor can fail in the first place. Nothing here checks the reflection's own accuracy.
+
+That last point is the real, honest failure mode worth naming explicitly: self-critique catches the failures the model *can* recognize as failures. A blind spot in the model's judgment is invisible to a critique step running on the same judgment.
+
+## References
+
+- Shinn, Cassano, Berman, Gopinath, Narasimhan, Yao, ["Reflexion: Language Agents with Verbal Reinforcement Learning"](https://arxiv.org/abs/2303.11366) — arXiv:2303.11366. The Actor/Evaluator/Self-Reflection architecture, the ALFWorld trial, the 91%/80% HumanEval result, and the WebShop/local-minima/unhelpful-reflection limitations cited above are all directly from this paper.
+- [Loops and Graphs](/docs/agents/loops-and-graphs#two-return-paths-on-rejection) — the short-correction-edge vs. long-learning-edge framing applied to Reflexion's memory buffer above.
+
+Next: [Loops and Graphs](/docs/agents/loops-and-graphs) — the general anatomy both this page and Plan-and-Execute are specific instances of. For the rest of Agent Architectures' patterns (routing, supervisor, memory, durable execution), see [Agent Architectures](/docs/agents/agent-architectures#routing).

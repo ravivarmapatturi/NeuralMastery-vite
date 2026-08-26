@@ -84,6 +84,20 @@
       "sidebarPosition": 1,
       "description": null
     },
+    "/docs/agents/plan-and-execute": {
+      "slug": "agents/plan-and-execute",
+      "section": "agents",
+      "title": "Plan-and-Execute",
+      "sidebarPosition": 4.2,
+      "description": null
+    },
+    "/docs/agents/reflection-self-critique": {
+      "slug": "agents/reflection-self-critique",
+      "section": "agents",
+      "title": "Reflection / Self-Critique",
+      "sidebarPosition": 4.3,
+      "description": null
+    },
     "/docs/agents/roadmap": {
       "slug": "agents/roadmap",
       "section": "agents",

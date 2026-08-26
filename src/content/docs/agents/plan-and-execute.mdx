@@ -1,0 +1,48 @@
+---
+title: "Plan-and-Execute"
+sidebar_position: 4.2
+---
+
+import PlanExecuteReplanDiagram from '../../../viz/diagrams/PlanExecuteReplanDiagram';
+
+# Plan-and-Execute
+
+[Agent Architectures](/docs/agents/agent-architectures#react-reasoning-acting) covers [ReAct](/docs/agents/agent-architectures#react-reasoning-acting) — reason, act, observe, one step at a time. Plan-and-execute inverts the order: think through the whole task *before* acting on any of it, then execute the resulting plan with far less per-step reasoning.
+
+## The Architecture
+
+Three real components, matching how [LangChain describes the pattern](https://www.langchain.com/blog/planning-agents), which traces back to earlier work like [Plan-and-Solve prompting](https://arxiv.org/abs/2305.04091) and BabyAGI:
+
+- **Planner** — one LLM call that reasons about the entire task and produces a full multi-step plan upfront, not one step at a time.
+- **Executor** — runs each step in the plan. Each step is "the user's query and a step in the plan," invoking whatever tools that step needs — a much smaller prompt than re-reasoning about the whole task, and cheap enough to hand off to a smaller model.
+- **Replanner** — after execution, decides whether to finish with a response or generate a follow-up plan, based on what actually happened during execution (not just what was planned).
+
+<PlanExecuteReplanDiagram />
+
+Step through the trace above: two steps run exactly as planned with zero re-planning, then a third step fails against reality (a dead page), and the replanner does something a fixed plan can't — it revises based on what the failure actually was, rather than blindly retrying the same broken step or giving up.
+
+## Why It's Often More Efficient Than ReAct
+
+LangChain's own framing of the tradeoff names three real advantages of separating planning from execution:
+
+- **Speed** — no LLM call is needed after every single tool invocation; a step that doesn't need re-reasoning just runs.
+- **Cost** — "smaller, domain-specific models" can execute individual steps, reserving the larger (and more expensive) model specifically for the planning call that needs the most reasoning.
+- **Quality** — forcing one call to reason through the *entire* problem space upfront, chain-of-thought style, produces more coherent multi-step plans than reasoning about each step in isolation without seeing the whole shape of the task first.
+
+## Where It Loses to ReAct
+
+The tradeoff runs the other way for tasks that genuinely need per-step adaptation: a plan committed to upfront is exactly the wrong structure when each step's *result* changes what the next step should even be, not just whether it succeeded. ReAct's interleaved reason-act-observe cycle handles that naturally; plan-and-execute has to detour through the replanner every time, which is slower than never having committed to a rigid plan in the first place.
+
+The basic version also has a real, named limitation: it's "still restricted by serial tool calling" and "doesn't support variable assignment" between steps — later frameworks (LLMCompiler and similar DAG-based approaches) address this by letting independent steps run in parallel and by passing structured values between steps instead of only natural-language results, but that's beyond what the basic planner/executor/replanner pattern itself provides.
+
+## When to Reach for It
+
+Predictable-structure tasks — the ones where you could sketch the steps yourself before starting — are the actual fit: "search three specific sources and synthesize a comparison" has a shape you already know; "debug this failing test" doesn't, since what to do next depends entirely on what the previous step revealed. The general rule from [Agent Architectures](/docs/agents/agent-architectures#react-reasoning-acting) still applies: reach for structure once managing a plain loop by hand gets error-prone, not by default.
+
+## References
+
+- [LangChain, "Plan-and-Execute Agents"](https://www.langchain.com/blog/planning-agents) — the architecture description, efficiency reasoning, and named limitation cited above.
+- Wang et al., ["Plan-and-Solve Prompting"](https://arxiv.org/abs/2305.04091) — arXiv:2305.04091, cited prior work on separating planning from execution in a single prompt.
+- [Loops and Graphs](/docs/agents/loops-and-graphs) — the general loop/graph framing this pattern is one concrete instance of; the replanner here is functionally a gate deciding whether to loop back or finish.
+
+Next: [Reflection / Self-Critique](/docs/agents/reflection-self-critique) — a different axis entirely: not *how many steps ahead* to plan, but whether the agent checks its own work.
