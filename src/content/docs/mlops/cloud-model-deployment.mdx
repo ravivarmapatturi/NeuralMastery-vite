@@ -3,9 +3,17 @@ title: "Deploying Models on AWS & Azure"
 sidebar_position: 9.5
 ---
 
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
+
 # Deploying Models on AWS & Azure
 
 [Cloud Computing for ML](/docs/mlops/cloud-computing) covered the vocabulary; [APIs & Model Serving](/docs/mlops/model-serving) covered cloud-agnostic serving concepts. This page is the part in between: the actual, concrete methods for getting a trained model deployed and answering real traffic on AWS and Azure specifically, with real commands for each — not just names.
+
+<ELI5>
+
+A trained model sitting on a laptop is like a chef who can cook but has no restaurant — great food, nobody can order it. Deploying a model is opening the restaurant: standing up something that can receive a real request over the network, run the model, and hand back an answer, reliably, whether one customer shows up or a thousand. AWS and Azure each give you several different "restaurant" shapes for this — always-open (real-time endpoints), open-on-demand-only (serverless), and a kitchen that takes orders for later instead of making people wait at the counter (async/batch) — and which shape fits depends entirely on how requests actually arrive: steady and fast, spiky and occasional, or huge and slow.
+
+</ELI5>
 
 ## AWS: Amazon SageMaker
 
@@ -66,6 +74,12 @@ sm.create_endpoint_config(
 ```
 
 Right fit: spiky or low-average-traffic endpoints where paying for an always-on `ml.m5.xlarge` would mostly pay for idle time.
+
+<GoDeeper title="Go deeper: what a 'cold start' actually is, in order">
+
+"Cold-start latency" isn't one delay, it's a real sequence of them, each with a different cause and a different fix: (1) provisioning compute — SageMaker has to allocate a container instance that wasn't already running, on the order of seconds; (2) pulling the container image — if it isn't already cached on that host, this can dominate the whole cold start for large images (a multi-gigabyte deep learning image with CUDA/cuDNN baked in is common); (3) loading the model into memory (or GPU memory) — reading model weights off disk/network storage and initializing the framework's runtime; (4) framework warm-up — some inference engines JIT-compile or build internal caches on the first real request, making even the *first served request* slower than the steady-state ones after it. `ProvisionedConcurrency` above doesn't eliminate any of these steps — it pre-pays for them ahead of time, keeping that many containers already through all four stages and idling warm, so only requests beyond that concurrency level pay the real cold-start cost.
+
+</GoDeeper>
 
 ### Async Inference
 

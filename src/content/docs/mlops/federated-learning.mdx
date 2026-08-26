@@ -4,10 +4,17 @@ sidebar_position: 17.5
 ---
 
 import FederatedRoundDiagram from '../../../viz/diagrams/FederatedRoundDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Federated Learning
 
 [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training) covers splitting one training job across many GPUs you control, in one datacenter, to go faster. Federated learning is a different problem entirely: training one shared model across data you *don't* control and *can't* centralize — a hospital's patient records, a bank's transaction history, a phone's keyboard input — because moving it would violate privacy law, a data-sharing agreement, or just user trust.
+
+<ELI5>
+
+Normally, training a model means gathering everyone's data in one place and learning from it directly. Federated learning flips that: instead of bringing the data to the model, it sends a copy of the model *out* to where the data already lives — a hospital, a phone — lets it learn a little there, and only brings back what it learned (not the data itself) to combine with everyone else's. Nobody's raw records ever leave the building; only the lessons do.
+
+</ELI5>
 
 ## The core idea: move the computation, not the data
 
@@ -50,6 +57,16 @@ The paper names the properties that make federated optimization a genuinely diff
 
 - **Non-IID**: a client's local data reflects *that specific client's* usage — one hospital sees more of one condition, one phone's keyboard sees one person's vocabulary. No client's local distribution looks like the global population.
 - **Unbalanced**: some clients generate far more data than others (a busy hospital vs. a small clinic), so naive unweighted averaging would let a low-data client's noisy update dominate — exactly why FedAvg's aggregation step weights each client's contribution by $n_k$.
+
+<GoDeeper title="Go deeper: n_k-weighting isn't a heuristic, it's what makes the objective correct">
+
+Write the true objective as if all $n = \sum_k n_k$ examples across every client really were centralized in one place: $f(w) = \frac{1}{n}\sum_{i=1}^n f_i(w)$, ordinary empirical risk minimization. Partition that sum by which client holds each example, and define $F_k(w) = \frac{1}{n_k}\sum_{i \in \mathcal{P}_k} f_i(w)$ (client $k$'s own local average loss). Regrouping the terms:
+
+$$f(w) = \frac{1}{n}\sum_{i=1}^n f_i(w) = \sum_{k=1}^K \frac{n_k}{n} F_k(w)$$
+
+That's not an approximation — it's an exact algebraic identity, true for any partition of the data. It says the *only* way to combine each client's local average loss into the same objective centralized training would optimize is to weight each client's contribution by its share of the total data, $n_k/n$. Weight every client equally instead (ignoring $n_k$), and FedAvg would be optimizing a *different* objective — implicitly treating a 10-example client's average loss as equally important as a 10,000-example client's, which is provably not the same function as training on the pooled data. The $n_k$-weighting in the server's aggregation step isn't compensating for imbalance after the fact; it's the specific weighting required for federated and centralized training to be optimizing the same $f(w)$ in the first place.
+
+</GoDeeper>
 - **Massively distributed**: the number of participating clients is often far larger than the average amount of data any single one holds — the opposite regime from a datacenter cluster of a few dozen well-provisioned GPU nodes.
 - **Limited communication**: clients are frequently offline, on metered or slow connections, and only available to communicate briefly — the reason the whole algorithm is designed around minimizing communication rounds rather than minimizing compute.
 

@@ -14,10 +14,17 @@ import LstmCellDiagram from '../../../viz/diagrams/LstmCellDiagram';
 import GruCellDiagram from '../../../viz/diagrams/GruCellDiagram';
 import Seq2SeqDiagram from '../../../viz/diagrams/Seq2SeqDiagram';
 import Seq2SeqAttentionDiagram from '../../../viz/diagrams/Seq2SeqAttentionDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Sequence Models
 
 Text, audio, time series, DNA — anywhere order carries meaning, you need an architecture that processes sequences, not fixed-size independent inputs.
+
+<ELI5>
+
+Most models this site covers look at one snapshot at a time — a row of a spreadsheet, one image — and it wouldn't matter if you shuffled the rows first. A sequence model can't work that way, because the order *is* the information: "dog bites man" and "man bites dog" use the exact same words. Everything below is the history of how the field built models that read left-to-right (or through-time) and actually remember what came before, from a simple "carry a running summary forward" idea (RNNs) through the fixes for that idea's real, mathematical failure mode (LSTM/GRU) up to the architecture — Attention — that ended up not needing a running summary at all.
+
+</ELI5>
 
 ## What Is Sequential Data?
 
@@ -78,6 +85,12 @@ A product, not a sum — that's the entire problem. $\tanh'(z) = 1 - \tanh^2(z)$
 In plain terms: vanishing gradients are *why* a plain RNN struggles to access information from long ago in a sequence — not because the hidden state literally forgets it, but because the training signal needed to *learn* to preserve it decays to nothing before it reaches that far back. In practice this caps a plain RNN's usable memory at roughly 10-20 steps, no matter how large the hidden state is.
 
 Both failure modes are the same mechanism — a long product of Jacobians during BPTT — just on opposite sides of 1. And it's exactly the weight *sharing* that makes RNNs parameter-efficient (above) that causes this: every one of those $(T-t)$ factors reuses the identical $W_h$, so there's no averaging-out the way there might be with independent random matrices — a single dominant eigenvalue of $W_h$ compounds unchecked across the whole sequence.
+
+<GoDeeper title="Go deeper: why 'the dominant eigenvalue' specifically, not just 'the weights'">
+
+This connects directly to [Linear Algebra's Power Iteration](/docs/mathematics-for-ai/linear-algebra#code-power-iteration-for-real), not just by loose analogy — it's the same operation. Power iteration finds a matrix's dominant eigenvector by repeatedly applying the matrix to a vector and renormalizing: $v_{k+1} = W v_k / \|W v_k\|$, and after enough repetitions $v_k$ converges to the eigenvector with the largest-magnitude eigenvalue, because that eigenvalue's component grows (or shrinks) faster than every other component with each application. BPTT's gradient product $\prod_{k=t+1}^{T} \text{diag}(\tanh'(z_k))\, W_h$ is *exactly* this same repeated-application structure — $(T-t)$ applications of (a scaled version of) $W_h$ to a vector, which is precisely power iteration's update rule. So for a long enough sequence, the gradient doesn't just get "scaled by roughly $\|W_h\|$" as a loose bound — it structurally converges to be dominated by $W_h$'s single largest eigenvalue, in the same direction power iteration would converge to, whether that eigenvalue is safely under 1 (vanishing) or over it (exploding). The vanishing/exploding gradient problem isn't a separate phenomenon from eigenvalue dominance — it's power iteration happening as an unwanted side effect of backpropagation, every single training step.
+
+</GoDeeper>
 
 Drag $w_h$ below and watch the two failure modes happen in real time — same product, same formula, just which side of the threshold it lands on:
 
