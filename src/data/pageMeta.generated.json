@@ -109,14 +109,14 @@
       "slug": "agents/routing-and-supervisor",
       "section": "agents",
       "title": "Routing & Supervisor Pattern",
-      "sidebarPosition": 4.2,
+      "sidebarPosition": 4.6,
       "description": null
     },
     "/docs/agents/single-vs-multi-agent": {
       "slug": "agents/single-vs-multi-agent",
       "section": "agents",
       "title": "Single-Agent vs. Multi-Agent",
-      "sidebarPosition": 4.3,
+      "sidebarPosition": 4.7,
       "description": null
     },
     "/docs/ai-evaluation/evaluation-fundamentals": {
