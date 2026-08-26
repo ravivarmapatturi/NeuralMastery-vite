@@ -20,7 +20,7 @@ import DependencyInjectionDiagram from '../../../viz/diagrams/DependencyInjectio
 An **API** (Application Programming Interface) is a contract: a defined way for one piece of software to ask another for something, without needing to know how the other side is implemented internally. That definition sounds abstract until you notice how much of modern AI engineering *is* API calls, end to end:
 
 - Calling an LLM (Anthropic, OpenAI, any hosted model) is an API call, and its streaming response is a specific HTTP communication pattern (below), not magic.
-- An agent's [tool use](/docs/agents/agent-fundamentals#tool-use--function-calling) is, mechanically, the model producing a request that your code turns into an API call.
+- An agent's [tool use](/docs/agents/agent-fundamentals#tool-use-function-calling) is, mechanically, the model producing a request that your code turns into an API call.
 - [MCP](/docs/agents/mcp/overview) — the protocol that lets an agent talk to tools — runs over HTTP as one of its two standard transports.
 - A model-serving endpoint you deploy (see [Model Serving](/docs/mlops/model-serving)) is a web API you write, and the framework you write it in is almost certainly the one covered at the end of this page.
 

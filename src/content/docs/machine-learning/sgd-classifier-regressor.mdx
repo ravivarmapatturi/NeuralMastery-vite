@@ -34,7 +34,7 @@ An "SGD Classifier/Regressor" is exactly this table, implemented as **one generi
 
 ## Practical Considerations
 
-- **Feature scaling matters** — like [KNN](/docs/machine-learning/k-nearest-neighbors#distance-metrics), SGD-trained models converge much better when features are standardized first, since a badly-scaled feature can dominate the gradient and destabilize the learning rate choice (see [Calculus & Optimization — Learning Rate Schedules](/docs/mathematics-for-ai/calculus-optimization#learning-rate-schedules--warmup)).
+- **Feature scaling matters** — like [KNN](/docs/machine-learning/k-nearest-neighbors#distance-metrics), SGD-trained models converge much better when features are standardized first, since a badly-scaled feature can dominate the gradient and destabilize the learning rate choice (see [Calculus & Optimization — Learning Rate Schedules](/docs/mathematics-for-ai/calculus-optimization#learning-rate-schedules-warmup)).
 - **Learning rate schedule matters more here than for the closed-form versions** of these same models — see [LR Scheduling](/docs/deep-learning/initialization-regularization-scheduling#learning-rate-scheduling) for the standard shapes (constant, invscaling, adaptive) libraries expose for SGD-trained linear models.
 - **When to reach for it over the closed-form/batch version**: dataset too large for memory, need online/incremental learning, or you specifically want to swap losses/penalties without switching model classes entirely.
 

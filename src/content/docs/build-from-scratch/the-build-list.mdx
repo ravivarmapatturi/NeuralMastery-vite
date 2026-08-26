@@ -17,7 +17,7 @@ Fifteen builds, roughly ordered so each one uses ideas the previous ones establi
 
 ## 2. An Autodiff Engine
 
-**Build**: a `micrograd`-style scalar (or small-tensor) autodiff engine — a `Value`/`Tensor` class that records operations into a computation graph as they happen, and a `.backward()` method that walks the graph in reverse, applying the chain rule at each node. **Done when**: you can compute the gradient of an arbitrary composed expression correctly, and explain why the graph has to be walked in *reverse* topological order. See [Calculus & Optimization — The Chain Rule](/docs/mathematics-for-ai/calculus-optimization#the-chain-rule--backpropagation) for the exact forward-then-backward computation your engine needs to reproduce:
+**Build**: a `micrograd`-style scalar (or small-tensor) autodiff engine — a `Value`/`Tensor` class that records operations into a computation graph as they happen, and a `.backward()` method that walks the graph in reverse, applying the chain rule at each node. **Done when**: you can compute the gradient of an arbitrary composed expression correctly, and explain why the graph has to be walked in *reverse* topological order. See [Calculus & Optimization — The Chain Rule](/docs/mathematics-for-ai/calculus-optimization#the-chain-rule-backpropagation) for the exact forward-then-backward computation your engine needs to reproduce:
 
 <ChainRuleBackpropDiagram />
 
@@ -61,7 +61,7 @@ Fifteen builds, roughly ordered so each one uses ideas the previous ones establi
 
 ## 12. An Agent
 
-**Build**: a ReAct loop — prompt an LLM to produce a thought, an action (a real tool call, not a mocked one), observe the result, and loop — with no agent framework. **Done when**: it correctly completes a task that genuinely requires more than one tool call, and you can trace every step of its reasoning/action/observation trace. See [Agent Architectures — ReAct](/docs/agents/agent-architectures#react-reasoning--acting).
+**Build**: a ReAct loop — prompt an LLM to produce a thought, an action (a real tool call, not a mocked one), observe the result, and loop — with no agent framework. **Done when**: it correctly completes a task that genuinely requires more than one tool call, and you can trace every step of its reasoning/action/observation trace. See [Agent Architectures — ReAct](/docs/agents/agent-architectures#react-reasoning-acting).
 
 ## 13. A Minimal Inference Server
 

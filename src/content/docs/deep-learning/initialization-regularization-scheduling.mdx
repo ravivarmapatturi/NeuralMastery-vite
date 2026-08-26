@@ -12,7 +12,7 @@ The last cluster of training-loop decisions, after [Activation Functions](/docs/
 
 ## Weight Initialization
 
-Why initialization matters at all: start every weight at the same value (including zero) and every neuron in a layer computes an identical gradient forever — **symmetry** never breaks, and the extra neurons are wasted. Beyond avoiding that failure, the *scale* of initial weights controls whether activations and gradients stay in a reasonable range as they pass through many layers, or vanish/explode before training even gets going (see [Vanishing & Exploding Gradients](/docs/deep-learning/training-deep-networks#vanishing--exploding-gradients)).
+Why initialization matters at all: start every weight at the same value (including zero) and every neuron in a layer computes an identical gradient forever — **symmetry** never breaks, and the extra neurons are wasted. Beyond avoiding that failure, the *scale* of initial weights controls whether activations and gradients stay in a reasonable range as they pass through many layers, or vanish/explode before training even gets going (see [Vanishing & Exploding Gradients](/docs/deep-learning/training-deep-networks#vanishing-exploding-gradients)).
 
 - **Zero Initialization**: all weights set to 0. Breaks nothing *except* symmetry — unusable in practice for exactly the reason above.
 - **Random Initialization**: small random values (e.g. $\mathcal{N}(0, 0.01^2)$). Breaks symmetry, but with no principled scale — for deep networks, naive random init tends to shrink or blow up activation variance layer by layer.
@@ -31,7 +31,7 @@ Why initialization matters at all: start every weight at the same value (includi
 - **Elastic Net**: the [same L1+L2 blend](/docs/machine-learning/elastic-net) as in classical ML, occasionally used on specific layers (e.g. embedding tables) where both sparsity and stability matter.
 - **DropConnect**: a generalization of dropout — instead of zeroing out entire neuron *outputs* at random, zero out individual *weights* (connections) at random. More fine-grained, less commonly used than standard dropout in practice.
 - **Weight Decay**: shrinks every weight toward zero by a small multiplicative factor every step, independent of the loss gradient — see the [Ridge Regression gradient derivation](/docs/machine-learning/ridge-regression#deriving-the-gradient) for exactly why this is mathematically the same mechanism as L2 regularization.
-- **Early Stopping**: stop training once validation loss stops improving (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)), rather than training for a fixed number of epochs regardless — the simplest regularizer that costs nothing extra to implement.
+- **Early Stopping**: stop training once validation loss stops improving (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train-validation-test-splits)), rather than training for a fixed number of epochs regardless — the simplest regularizer that costs nothing extra to implement.
 - **Data Augmentation**: synthetically expand the training set with label-preserving transformations (crops/flips/rotations for images, synonym swaps for text) — regularizes by forcing the model to be invariant to changes that shouldn't affect the answer, rather than by penalizing weights directly.
 - **Label Smoothing**: instead of training toward a hard one-hot target ($[0,0,1,0]$), train toward a softened version ($[0.03,0.03,0.91,0.03]$) — prevents the model from becoming overconfident (pushing logits to extreme values to hit an exact 0 or 1 target), which empirically improves generalization and calibration.
 
@@ -39,7 +39,7 @@ Why initialization matters at all: start every weight at the same value (includi
 
 <LrSchedulesDiagram />
 
-[Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization#learning-rate-schedules--warmup) introduced warmup and decay conceptually — here's the actual shape of each schedule in the chart above:
+[Calculus & Optimization](/docs/mathematics-for-ai/calculus-optimization#learning-rate-schedules-warmup) introduced warmup and decay conceptually — here's the actual shape of each schedule in the chart above:
 
 - **Step Decay** (green): multiply the LR by a fixed factor (e.g. 0.5) every fixed number of steps — simple, but the sudden drops can visibly disrupt the loss curve at each step.
 - **Exponential Decay** (blue): smooth continuous decay, $\alpha_t = \alpha_0 e^{-kt}$ — no sudden jumps, but decays "blindly," regardless of how training is actually progressing.

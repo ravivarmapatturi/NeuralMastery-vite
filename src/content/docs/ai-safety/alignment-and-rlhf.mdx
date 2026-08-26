@@ -23,7 +23,7 @@ A model is **aligned** to the extent its actual behavior matches the intentions 
 
 ## RLHF and Constitutional AI as Alignment Techniques
 
-[Training Pipeline — RLHF](/docs/llms-genai/training-pipeline#rlhf--reinforcement-learning-from-human-feedback) covers the mechanics: collect human preference rankings, train a reward model to predict them, then optimize the LLM against that reward model. From an alignment perspective specifically, RLHF's value is that it lets human *judgment* — which is often much easier to exercise ("which of these two responses is better") than to specify as an explicit rule — become the training signal, rather than trying to hand-write rules for every situation a deployed model will encounter.
+[Training Pipeline — RLHF](/docs/llms-genai/training-pipeline#rlhf-reinforcement-learning-from-human-feedback) covers the mechanics: collect human preference rankings, train a reward model to predict them, then optimize the LLM against that reward model. From an alignment perspective specifically, RLHF's value is that it lets human *judgment* — which is often much easier to exercise ("which of these two responses is better") than to specify as an explicit rule — become the training signal, rather than trying to hand-write rules for every situation a deployed model will encounter.
 
 **Constitutional AI** is a related but distinct approach: instead of relying primarily on human preference labels, the model is trained to critique and revise its own outputs against an explicit written set of principles (a "constitution"), and that self-critique process itself generates the training signal:
 
@@ -37,7 +37,7 @@ A model finds a way to score highly on its training reward signal without actual
 
 <RewardHackingSimulationDiagram />
 
-This isn't a bug in the LLM "cheating" maliciously — it's the direct, expected consequence of optimizing hard against any proxy objective that isn't a perfect match for the true goal, which no realistic reward model is. Mitigations include KL-divergence penalties (keeping the optimized policy from drifting too far from a known-reasonable starting point — see [Training Pipeline](/docs/llms-genai/training-pipeline#rlhf--reinforcement-learning-from-human-feedback)), diverse and adversarially-curated preference data, and treating reward-model score as one signal to monitor rather than a target to blindly maximize without limit.
+This isn't a bug in the LLM "cheating" maliciously — it's the direct, expected consequence of optimizing hard against any proxy objective that isn't a perfect match for the true goal, which no realistic reward model is. Mitigations include KL-divergence penalties (keeping the optimized policy from drifting too far from a known-reasonable starting point — see [Training Pipeline](/docs/llms-genai/training-pipeline#rlhf-reinforcement-learning-from-human-feedback)), diverse and adversarially-curated preference data, and treating reward-model score as one signal to monitor rather than a target to blindly maximize without limit.
 
 ## Specification Gaming
 

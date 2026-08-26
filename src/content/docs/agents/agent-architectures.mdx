@@ -33,7 +33,7 @@ Why bother reaching Graph instead of stretching a single Loop further: a graph m
 
 ## ReAct (Reasoning + Acting)
 
-The foundational pattern: at each step, the model produces a short reasoning trace ("I need to find X"), then an action (a tool call), observes the result, and loops — reason, act, observe, reason, act, observe — until it has enough information to answer. Interleaving reasoning with action lets the model course-correct based on real results, rather than committing to a full plan upfront that might be wrong. See [Prompt Engineering — ReAct](/docs/llms-genai/prompt-engineering#react-reasoning--acting) for the prompting technique this is built on.
+The foundational pattern: at each step, the model produces a short reasoning trace ("I need to find X"), then an action (a tool call), observes the result, and loops — reason, act, observe, reason, act, observe — until it has enough information to answer. Interleaving reasoning with action lets the model course-correct based on real results, rather than committing to a full plan upfront that might be wrong. See [Prompt Engineering — ReAct](/docs/llms-genai/prompt-engineering#react-reasoning-acting) for the prompting technique this is built on.
 
 <ThemedImage alt="ReAct loop: Thought, Action, Observation, repeating until enough information to answer" sources={{light: reactLoopLight, dark: reactLoopDark}} />
 

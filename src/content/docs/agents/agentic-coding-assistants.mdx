@@ -41,7 +41,7 @@ Neither is strictly safer in the abstract. Gate-before catches a bad action befo
 
 ## Iterative Self-Correction, Including in Parallel
 
-The verify step in the core loop above is what actually makes an agent's edits trustworthy rather than merely fast: run the test, read the real output, and if it's still red, go back to context-gathering with the new information instead of guessing again blind. [Claude Code documents running multiple agents in parallel](https://code.claude.com/docs/en/overview) on different parts of a task, with a lead agent coordinating and merging results — the macro-orchestration graph from [Loops and Graphs](/docs/agents/loops-and-graphs#which-graph-is-this--micro-or-macro) applied to coding tasks specifically: independent sub-agents each running their own loop, coordinated rather than sharing one context.
+The verify step in the core loop above is what actually makes an agent's edits trustworthy rather than merely fast: run the test, read the real output, and if it's still red, go back to context-gathering with the new information instead of guessing again blind. [Claude Code documents running multiple agents in parallel](https://code.claude.com/docs/en/overview) on different parts of a task, with a lead agent coordinating and merging results — the macro-orchestration graph from [Loops and Graphs](/docs/agents/loops-and-graphs#which-graph-is-this-micro-or-macro) applied to coding tasks specifically: independent sub-agents each running their own loop, coordinated rather than sharing one context.
 
 ## Persistent Project Context
 

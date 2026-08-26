@@ -31,7 +31,7 @@ Low agreement invalidates the resulting scores regardless of how many raters wer
 
 ### Sample Size and Statistical Power
 
-A human evaluation run on 20 examples can look decisive and still be statistical noise — the same [statistical power](/docs/mathematics-for-ai/probability-statistics#hypothesis-testing--significance) consideration from hypothesis testing applies directly. A real power calculation, computable before running the study:
+A human evaluation run on 20 examples can look decisive and still be statistical noise — the same [statistical power](/docs/mathematics-for-ai/probability-statistics#hypothesis-testing-significance) consideration from hypothesis testing applies directly. A real power calculation, computable before running the study:
 
 <StatisticalPowerDiagram />
 
@@ -50,7 +50,7 @@ Rather than asking a rater (human or LLM) to assign an absolute score to one out
 
 <EloRatingDiagram />
 
-LMSYS's Chatbot Arena is the best-known example of this applied to LLMs at scale, using large-scale human pairwise preferences to produce a leaderboard. **This is also directly the mechanism behind preference data collection for [RLHF and DPO](/docs/llms-genai/training-pipeline#rlhf--reinforcement-learning-from-human-feedback)** — pairwise preference judgments aren't just an evaluation technique, they're the actual training signal for an entire alignment methodology, which is why getting pairwise evaluation methodology right matters for training pipelines, not only for reporting benchmark numbers.
+LMSYS's Chatbot Arena is the best-known example of this applied to LLMs at scale, using large-scale human pairwise preferences to produce a leaderboard. **This is also directly the mechanism behind preference data collection for [RLHF and DPO](/docs/llms-genai/training-pipeline#rlhf-reinforcement-learning-from-human-feedback)** — pairwise preference judgments aren't just an evaluation technique, they're the actual training signal for an entire alignment methodology, which is why getting pairwise evaluation methodology right matters for training pipelines, not only for reporting benchmark numbers.
 
 ## Adversarial Evaluation
 

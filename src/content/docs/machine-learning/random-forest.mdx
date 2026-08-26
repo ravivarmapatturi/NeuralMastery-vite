@@ -35,7 +35,7 @@ Bagging alone isn't enough — if one feature is very strong, *every* bootstrap-
 
 ## Out-of-Bag (OOB) Error: Free Validation
 
-Since each bootstrap sample leaves out roughly 37% of the data ($\left(1-\frac{1}{n}\right)^n \to e^{-1} \approx 0.368$ as $n\to\infty$ — see [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics)), each tree has a natural, unused validation set: the examples it never saw. Averaging each example's prediction across only the trees that *didn't* train on it gives an honest performance estimate — **without needing a separate held-out validation set** (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)). This is close to free — it falls directly out of the bagging procedure already being run.
+Since each bootstrap sample leaves out roughly 37% of the data ($\left(1-\frac{1}{n}\right)^n \to e^{-1} \approx 0.368$ as $n\to\infty$ — see [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics)), each tree has a natural, unused validation set: the examples it never saw. Averaging each example's prediction across only the trees that *didn't* train on it gives an honest performance estimate — **without needing a separate held-out validation set** (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train-validation-test-splits)). This is close to free — it falls directly out of the bagging procedure already being run.
 
 ## Feature Importance
 

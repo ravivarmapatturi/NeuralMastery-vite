@@ -14,7 +14,7 @@ import ActivationFunctionsDiagram from '../../../viz/diagrams/ActivationFunction
 
 ## The Core Tradeoffs to Judge Any Activation By
 
-- **Saturation**: does the function flatten out (near-zero gradient) for large inputs? Saturating functions cause vanishing gradients in deep networks (see [Training Deep Networks](/docs/deep-learning/training-deep-networks#vanishing--exploding-gradients)).
+- **Saturation**: does the function flatten out (near-zero gradient) for large inputs? Saturating functions cause vanishing gradients in deep networks (see [Training Deep Networks](/docs/deep-learning/training-deep-networks#vanishing-exploding-gradients)).
 - **Zero-centered output**: is the output centered around 0, or always positive? Non-zero-centered activations (like sigmoid) can slow convergence because gradients on the next layer's weights end up all-same-sign.
 - **Computational cost**: a cheap function (ReLU: one comparison) matters when it's evaluated billions of times per training step.
 - **Dead units**: can the function get permanently stuck outputting zero (or a constant) for some inputs, with zero gradient to ever recover?

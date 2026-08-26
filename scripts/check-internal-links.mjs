@@ -7,7 +7,8 @@
 // src/content/docs/**/*.mdx (`[text](/docs/...)` and `href="/docs/..."`)
 // against the known-real route set. It does NOT check:
 //   - external links (http/https) -- no network calls in CI, by design
-//   - in-page anchors (#heading-id) -- would need a rendered DOM
+//   - in-page anchors (#heading-id) -- see check-anchor-links.mjs (run
+//     together via `npm run check:links`), which validates those instead
 //   - links generated at runtime from component data (e.g. AlgorithmSelector's
 //     decision-tree hrefs, LearningPathMap's section hrefs) -- those
 //     intentionally point at not-yet-migrated routes right now (see

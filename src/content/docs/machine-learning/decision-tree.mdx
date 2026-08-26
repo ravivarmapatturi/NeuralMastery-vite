@@ -61,7 +61,7 @@ An unconstrained tree will grow until every leaf is perfectly pure — which usu
 - **Max depth**: hard cap on how many questions deep the tree can go.
 - **Min samples per leaf / per split**: refuse to split a node with too few examples, or produce a leaf with too few.
 - **Min impurity decrease**: refuse a split that doesn't improve purity by at least some threshold.
-- **Pruning**: grow the full tree first, then remove branches that don't improve validation performance (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)) — a post-hoc alternative to constraining growth upfront.
+- **Pruning**: grow the full tree first, then remove branches that don't improve validation performance (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train-validation-test-splits)) — a post-hoc alternative to constraining growth upfront.
 
 A single, well-pruned tree is rarely the strongest model on its own — its real value, as the next page covers, is as the *building block* inside ensembles like [Random Forest](/docs/machine-learning/random-forest) and [Gradient Boosting](/docs/machine-learning/boosting).
 

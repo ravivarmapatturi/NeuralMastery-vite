@@ -96,7 +96,7 @@ Drag $w_h$ below and watch the two failure modes happen in real time — same pr
 
 <VanishingGradientDiagram />
 
-**The standard fixes**: gradient clipping directly caps the exploding case (rescale the gradient if its norm crosses a threshold — cheap and effective). The vanishing case is harder, and is exactly what LSTM and GRU's gating mechanisms below are built to solve, by giving gradients an additive path through the cell state instead of a purely multiplicative one. See [Training Deep Networks](/docs/deep-learning/training-deep-networks#vanishing--exploding-gradients) for the same problem's general (non-recurrent) form, and residual connections as its feedforward-network fix.
+**The standard fixes**: gradient clipping directly caps the exploding case (rescale the gradient if its norm crosses a threshold — cheap and effective). The vanishing case is harder, and is exactly what LSTM and GRU's gating mechanisms below are built to solve, by giving gradients an additive path through the cell state instead of a purely multiplicative one. See [Training Deep Networks](/docs/deep-learning/training-deep-networks#vanishing-exploding-gradients) for the same problem's general (non-recurrent) form, and residual connections as its feedforward-network fix.
 
 ## LSTM and GRU
 

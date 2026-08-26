@@ -131,7 +131,7 @@ MCP tools actually have **two separate error-reporting paths**, and conflating t
 
 <ToolErrorTypesDiagram />
 
-The distinction matters for how a caller reacts: a protocol error usually means "this call was malformed, fix the call"; a tool execution error means "the call was fine, but here's what happened" — exactly the kind of structured failure an agentic loop can feed back to the LLM so it can self-correct (see [Agent Architectures — Durable Execution](/docs/agents/agent-architectures#durable-execution-retries-checkpoints--long-running-agents) for the retry patterns built on top of this) rather than crashing the whole session.
+The distinction matters for how a caller reacts: a protocol error usually means "this call was malformed, fix the call"; a tool execution error means "the call was fine, but here's what happened" — exactly the kind of structured failure an agentic loop can feed back to the LLM so it can self-correct (see [Agent Architectures — Durable Execution](/docs/agents/agent-architectures#durable-execution-retries-checkpoints-long-running-agents) for the retry patterns built on top of this) rather than crashing the whole session.
 
 ## Authentication and Authorization
 

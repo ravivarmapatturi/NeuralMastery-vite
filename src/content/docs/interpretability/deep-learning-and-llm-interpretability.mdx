@@ -24,7 +24,7 @@ Every tool below answers "what's going on inside this network," but they don't a
 
 ## Saliency Maps and Gradient-Based Attribution
 
-The most direct way to ask "which input pixels/tokens mattered" for a neural network specifically: compute the gradient of the output with respect to the input (see [Jacobians](/docs/mathematics-for-ai/calculus-optimization#jacobians--hessians-derivatives-of-vector-valued-and-multivariate-functions)) — large gradient magnitude at a given input position means small changes there would meaningfully change the output. For images, this produces a **saliency map**, a heatmap over the input highlighting which pixels most influenced the prediction. Simple and fast, but with a specific, well-documented failure mode: **gradient saturation**.
+The most direct way to ask "which input pixels/tokens mattered" for a neural network specifically: compute the gradient of the output with respect to the input (see [Jacobians](/docs/mathematics-for-ai/calculus-optimization#jacobians-hessians-derivatives-of-vector-valued-and-multivariate-functions)) — large gradient magnitude at a given input position means small changes there would meaningfully change the output. For images, this produces a **saliency map**, a heatmap over the input highlighting which pixels most influenced the prediction. Simple and fast, but with a specific, well-documented failure mode: **gradient saturation**.
 
 ### Gradient Saturation, Demonstrated
 

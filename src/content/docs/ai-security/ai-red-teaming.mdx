@@ -58,7 +58,7 @@ redteam:
 
 ## Runtime Defense: OWASP Agent Memory Guard
 
-Red-teaming finds vulnerabilities; it doesn't fix them by itself. For ASI06 specifically, [OWASP Agent Memory Guard](https://owasp.org/www-project-agent-memory-guard/) is the actual OWASP-sanctioned reference implementation — `pip install agent-memory-guard` — a runtime layer that screens every memory read and write through a detector pipeline (prompt injection, sensitive-data leakage, protected-key tampering, size/rate anomalies, self-reinforcement loops) against a declarative policy (allow / redact / block / quarantine per detector). It's the "don't hand-roll detection" answer to the same problem [Model & Data Attacks — Backdoors](/docs/ai-security/model-and-data-attacks#backdoors--trojaned-models) raises for training-time poisoning, applied at inference-time memory instead.
+Red-teaming finds vulnerabilities; it doesn't fix them by itself. For ASI06 specifically, [OWASP Agent Memory Guard](https://owasp.org/www-project-agent-memory-guard/) is the actual OWASP-sanctioned reference implementation — `pip install agent-memory-guard` — a runtime layer that screens every memory read and write through a detector pipeline (prompt injection, sensitive-data leakage, protected-key tampering, size/rate anomalies, self-reinforcement loops) against a declarative policy (allow / redact / block / quarantine per detector). It's the "don't hand-roll detection" answer to the same problem [Model & Data Attacks — Backdoors](/docs/ai-security/model-and-data-attacks#backdoors-trojaned-models) raises for training-time poisoning, applied at inference-time memory instead.
 
 ## Mapping Findings: MITRE ATLAS
 

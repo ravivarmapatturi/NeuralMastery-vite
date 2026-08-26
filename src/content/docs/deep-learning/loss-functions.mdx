@@ -36,7 +36,7 @@ The loss function is what "training" actually optimizes — everything about a m
 
 **Hinge Loss**: $\max(0,\ 1 - y\cdot\hat{y})$ (with $y \in \{-1,+1\}$) — the loss behind [Support Vector Machines](/docs/machine-learning/supervised-learning#support-vector-machines). Unlike cross-entropy, it doesn't just want the correct side of the boundary — it wants a *margin*: zero loss only once a prediction is correct *and* confidently past the boundary by at least 1 unit.
 
-**KL Divergence**: covered in depth in [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics#entropy-cross-entropy-and-kl-divergence) — measures how much one distribution diverges from another. Used directly as a training loss in VAEs (regularizing the latent distribution toward a prior) and in RLHF/DPO to keep a fine-tuned model close to its base policy (see [Training Pipeline](/docs/llms-genai/training-pipeline#rlhf--reinforcement-learning-from-human-feedback)).
+**KL Divergence**: covered in depth in [Probability & Statistics](/docs/mathematics-for-ai/probability-statistics#entropy-cross-entropy-and-kl-divergence) — measures how much one distribution diverges from another. Used directly as a training loss in VAEs (regularizing the latent distribution toward a prior) and in RLHF/DPO to keep a fine-tuned model close to its base policy (see [Training Pipeline](/docs/llms-genai/training-pipeline#rlhf-reinforcement-learning-from-human-feedback)).
 
 ## Metric Learning Losses
 

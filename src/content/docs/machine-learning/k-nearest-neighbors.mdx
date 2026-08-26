@@ -43,12 +43,12 @@ KNN is called a **lazy learner**: `fit()` does nothing but store the data. All t
 
 - **Small $k$** (e.g. $k=1$): the boundary hugs individual training points tightly — low bias, high variance, prone to being thrown off by a single noisy/mislabeled point.
 - **Large $k$**: the boundary smooths out, averaging over more neighbors — higher bias, lower variance. In the extreme, $k=n$ just predicts the global majority class for every point, ignoring the query entirely.
-- This is the [bias-variance tradeoff](/docs/machine-learning/model-evaluation-metrics#bias-variance-tradeoff) again, controlled by a single hyperparameter — chosen via cross-validation (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train--validation--test-splits)) like any other.
+- This is the [bias-variance tradeoff](/docs/machine-learning/model-evaluation-metrics#bias-variance-tradeoff) again, controlled by a single hyperparameter — chosen via cross-validation (see [ML Workflow Fundamentals](/docs/machine-learning/ml-workflow-fundamentals#train-validation-test-splits)) like any other.
 - **Practical tip**: use an odd $k$ for binary classification, to avoid tie votes.
 
 ## The Curse of Dimensionality
 
-KNN's Achilles' heel. As the number of features grows, the volume of the feature space grows exponentially, and points that were "close" in low dimensions become roughly equidistant from each other in high dimensions — the whole notion of "nearest" neighbor stops being meaningful. This is the concrete, mechanical reason KNN degrades badly on high-dimensional data (many features), while tree-based and linear methods are far less affected — see [Model Evaluation & Metrics — Curse of Dimensionality](/docs/machine-learning/model-evaluation-metrics#common-problems--their-state-of-the-art-solutions) for the standard fixes (dimensionality reduction, feature selection).
+KNN's Achilles' heel. As the number of features grows, the volume of the feature space grows exponentially, and points that were "close" in low dimensions become roughly equidistant from each other in high dimensions — the whole notion of "nearest" neighbor stops being meaningful. This is the concrete, mechanical reason KNN degrades badly on high-dimensional data (many features), while tree-based and linear methods are far less affected — see [Model Evaluation & Metrics — Curse of Dimensionality](/docs/machine-learning/model-evaluation-metrics#common-problems-their-state-of-the-art-solutions) for the standard fixes (dimensionality reduction, feature selection).
 
 ## Minimal Implementation
 
