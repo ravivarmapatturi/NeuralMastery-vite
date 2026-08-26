@@ -45,7 +45,21 @@ export default function OversightSpectrumDiagram() {
           const isActive = p.key === selected;
           const x = toX(p.pos);
           return (
-            <g key={p.key} onClick={() => setSelected(p.key)} style={{ cursor: 'pointer' }}>
+            <g
+              key={p.key}
+              onClick={() => setSelected(p.key)}
+              role="button"
+              tabIndex={0}
+              aria-pressed={isActive}
+              aria-label={p.label}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelected(p.key);
+                }
+              }}
+              style={{ cursor: 'pointer' }}
+            >
               <circle cx={x} cy={trackY} r={isActive ? 10 : 7} fill={isActive ? color : t.surfaceAlt} stroke={color} strokeWidth={2} />
               <text x={x} y={trackY - 18} textAnchor="middle" fontSize={9.5} fontWeight={isActive ? 700 : 500} fill={isActive ? color : t.textSecondary}>
                 {p.label}

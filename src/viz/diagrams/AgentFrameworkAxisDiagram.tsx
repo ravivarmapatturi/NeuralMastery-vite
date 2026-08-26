@@ -57,6 +57,15 @@ export default function AgentFrameworkAxisDiagram() {
               key={x.key}
               onClick={() => setActive(x.key)}
               onMouseEnter={() => setActive(x.key)}
+              role="button"
+              tabIndex={0}
+              aria-pressed={isActive}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setActive(x.key);
+                }
+              }}
               style={{
                 cursor: 'pointer',
                 padding: '0.5rem 0.7rem',

@@ -60,13 +60,24 @@ export default function AgenticCodingLoopDiagram() {
             const x = cx + r * Math.cos(a);
             const y = cy + r * Math.sin(a);
             const isActive = s === stage;
+            const selectStage = () => {
+              setStage(s);
+              const idx = TRACE.findIndex((tr) => tr.stage === s);
+              if (idx >= 0) setStep(idx);
+            };
             return (
               <g
                 key={s}
-                onClick={() => {
-                  setStage(s);
-                  const idx = TRACE.findIndex((tr) => tr.stage === s);
-                  if (idx >= 0) setStep(idx);
+                onClick={selectStage}
+                role="button"
+                tabIndex={0}
+                aria-pressed={isActive}
+                aria-label={`${s} stage`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectStage();
+                  }
                 }}
                 style={{ cursor: 'pointer' }}
               >
