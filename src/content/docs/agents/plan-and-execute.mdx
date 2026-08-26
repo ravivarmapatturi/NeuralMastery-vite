@@ -5,6 +5,7 @@ sidebar_position: 4.2
 
 import PlanExecuteReplanDiagram from '../../../viz/diagrams/PlanExecuteReplanDiagram';
 import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
+import RunnableCode from '../../../components/content/RunnableCode';
 
 # Plan-and-Execute
 
@@ -27,6 +28,91 @@ Three real components, matching how [LangChain describes the pattern](https://ww
 <PlanExecuteReplanDiagram />
 
 Step through the trace above: two steps run exactly as planned with zero re-planning, then a third step fails against reality (a dead page), and the replanner does something a fixed plan can't — it revises based on what the failure actually was, rather than blindly retrying the same broken step or giving up.
+
+### Run the Control Loop For Real
+
+A real planner/replanner is an LLM call — not something to fake in a browser sandbox. What *is* real and runnable here is the **orchestration loop itself**: given any planner's output and any replanner's decision, exactly how does the loop advance, splice in a fix, and keep going? Below, `execute_step` and `replan` are deterministic stand-ins (so the whole trace is reproducible) for what would otherwise be tool calls and an LLM call — but `run_plan`, the actual control flow being demonstrated, is the real thing, unsimplified:
+
+<RunnableCode code={`def execute_step(step):
+    # Deterministic mock "tool call" -- step 3 is the dead page from the
+    # diagram's trace above.
+    if step == "fetch https://old-blog.example/post-42":
+        return {"ok": False, "reason": "404 Not Found"}
+    return {"ok": True, "result": f"done: {step}"}
+
+def replan(original_plan, failed_index, failure):
+    # A fixed lookup standing in for what would be an LLM call in a real
+    # system -- deterministic here so the loop's behavior is reproducible.
+    if "old-blog.example" in original_plan[failed_index]:
+        return ["fetch https://web.archive.org/web/2023/old-blog.example/post-42"]
+    return []  # no fix available -> give up on this step
+
+def run_plan(plan, execute_step, replan):
+    """The real orchestration loop: execute each step in order; on
+    failure, ask the replanner for replacement step(s), splice them in
+    right after the failed step, and keep going."""
+    steps = list(plan)
+    results = []
+    i = 0
+    while i < len(steps):
+        step = steps[i]
+        outcome = execute_step(step)
+        results.append((step, outcome["ok"]))
+        if not outcome["ok"]:
+            steps[i + 1:i + 1] = replan(plan, i, outcome)
+        i += 1
+    return results
+
+plan = ["search source A", "search source B", "fetch https://old-blog.example/post-42"]
+results = run_plan(plan, execute_step, replan)
+
+print("Executing plan:")
+for step, ok in results:
+    print(f"  [{'OK' if ok else 'FAILED'}] {step}")
+
+replan_calls = sum(1 for _, ok in results if not ok)
+task_completed = results[-1][1]  # did the LAST attempt at each position succeed
+print(f"\\nReplanner invoked: {replan_calls} time(s)")
+print(f"Every individual attempt succeeded: {all(ok for _, ok in results)}",
+      "(False is correct here -- the original dead-page fetch is honestly",
+      "recorded as a failure, not silently dropped from the trace)")
+print(f"Task ultimately completed (last attempt succeeded): {task_completed}")
+
+# Try changing execute_step so a second step also fails, or make replan()
+# return an empty list (give up) instead of a fix -- watch how run_plan's
+# behavior changes without changing run_plan itself at all.
+`} />
+
+### Implement the Orchestration Loop Yourself
+
+`execute_step` and `replan` are given below, fixed and deterministic, matching the trace above exactly. The tests check the real control-flow behavior: does a failed step get recorded as failed (not silently dropped), does its replacement get spliced in right after it, and does execution continue.
+
+<RunnableCode
+  code={`def execute_step(step):
+    if step == "fetch https://old-blog.example/post-42":
+        return {"ok": False, "reason": "404 Not Found"}
+    return {"ok": True, "result": f"done: {step}"}
+
+def replan(original_plan, failed_index, failure):
+    if "old-blog.example" in original_plan[failed_index]:
+        return ["fetch https://web.archive.org/web/2023/old-blog.example/post-42"]
+    return []
+
+plan = ["search source A", "search source B", "fetch https://old-blog.example/post-42"]
+
+def run_plan(plan, execute_step, replan):
+    """Execute each step in order. On failure, call replan(original_plan,
+    failed_index, outcome) for replacement step(s), splice them in right
+    after the failed step, and keep going. Return a list of
+    (step, succeeded) pairs in the order actually executed."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert len(run_plan(plan, execute_step, replan)) == 4
+assert run_plan(plan, execute_step, replan)[0] == ("search source A", True)
+assert run_plan(plan, execute_step, replan)[2] == ("fetch https://old-blog.example/post-42", False)
+assert run_plan(plan, execute_step, replan)[3] == ("fetch https://web.archive.org/web/2023/old-blog.example/post-42", True)`}
+/>
 
 ## Why It's Often More Efficient Than ReAct
 
