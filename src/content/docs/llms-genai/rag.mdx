@@ -15,10 +15,19 @@ import QueryTransformationDiagram from '../../../viz/diagrams/QueryTransformatio
 import AdvancedRagArchitecturesDiagram from '../../../viz/diagrams/AdvancedRagArchitecturesDiagram';
 import GraphRagDiagram from '../../../viz/diagrams/GraphRagDiagram';
 import RagEvalMetricsDiagram from '../../../viz/diagrams/RagEvalMetricsDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Retrieval-Augmented Generation (RAG)
 
 An LLM's knowledge is frozen at training time and limited to what fit in its weights. RAG fixes both problems by retrieving relevant information at query time and feeding it into the prompt as grounding context.
+
+<ELI5>
+
+Picture an open-book exam versus a closed-book one. A model with no RAG is closed-book: it can only answer from what it memorized during training, which might be stale, incomplete, or just never covered your specific documents. RAG turns it into an open-book exam — before answering, the model (or a system around it) goes and looks up the most relevant pages from your actual documents, then writes its answer using what it just read, not just what it memorized. The two hard parts are exactly like taking an open-book exam well: finding the *right* pages quickly out of a huge book (retrieval), and actually using what you found instead of ignoring it or misreading it (generation, grounded).
+
+Everything below is how each piece of that "find the right pages, then use them well" pipeline actually works.
+
+</ELI5>
 
 ## Basic Architecture
 
@@ -62,7 +71,35 @@ Two structurally different ways to find relevant chunks, worth distinguishing pr
 
 <Bm25ScoringDiagram />
 
+<GoDeeper title="Go deeper: the actual BM25 formula">
+
+The prose above describes two corrections in words; here's the formula they're actually corrections *to*. For a query $Q$ with terms $q_1,\ldots,q_n$ and a document $D$:
+
+$$\text{score}(D, Q) = \sum_{i=1}^{n} \text{IDF}(q_i) \cdot \frac{f(q_i, D) \cdot (k_1 + 1)}{f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot \dfrac{|D|}{\text{avgdl}}\right)}$$
+
+where $f(q_i, D)$ is how many times term $q_i$ literally appears in $D$, $|D|$ is $D$'s length in words, $\text{avgdl}$ is the average document length across the whole corpus, and $k_1$ (typically 1.2–2.0) and $b$ (typically 0.75) are tunable constants.
+
+**The saturation correction** lives in how $f(q_i,D)$ appears in *both* the numerator and denominator. As a term's raw count $f$ grows large, the fraction $\frac{f\cdot(k_1+1)}{f + \text{const}}$ approaches a fixed ceiling of $(k_1+1)$ rather than growing linearly — the 5th occurrence of a word adds far less to the score than the 1st did, exactly the diminishing-returns behavior described above, and $k_1$ is literally the knob that controls how fast that saturation kicks in.
+
+**The length-normalization correction** is the $\frac{|D|}{\text{avgdl}}$ term inside the denominator: when a document is longer than average, that ratio exceeds 1, inflating the denominator and shrinking the score — a term match in a long document counts for less than the identical match in a short, focused one. $b$ controls how strongly this applies: $b=0$ disables length normalization entirely, $b=1$ applies it in full.
+
+$\text{IDF}(q_i)$ (commonly $\log\frac{N - n(q_i) + 0.5}{n(q_i) + 0.5}$, with $N$ documents total and $n(q_i)$ containing $q_i$) is the term-rarity correction: a term appearing in almost every document (like "the") contributes almost nothing, while a term appearing in only a handful of documents contributes heavily when matched.
+
+</GoDeeper>
+
 - **Hybrid search**: combines both — run dense and sparse retrieval independently, then merge the two ranked result sets (commonly via **Reciprocal Rank Fusion**, which combines rankings based on each result's *position* in each list rather than trying to normalize and compare two differently-scaled similarity scores directly). Hybrid search is the practical default in production RAG precisely because dense and sparse retrieval fail in different, complementary ways.
+
+<GoDeeper title="Go deeper: why Reciprocal Rank Fusion uses positions, not scores">
+
+The formula itself is simple — for a document $d$ appearing in one or more ranked lists:
+
+$$\text{RRF}(d) = \sum_{r \,\in\, \text{rankings}} \frac{1}{k + \text{rank}_r(d)}$$
+
+where $\text{rank}_r(d)$ is $d$'s 1-indexed position in ranking $r$ (dense results, sparse/BM25 results, or — in RAG-Fusion — each of several query-variant result lists), and $k$ is a damping constant (commonly 60) that keeps a single 1st-place finish from completely dominating the sum. Compute this sum for every document that appears in *any* of the lists being fused, then sort by total RRF score descending.
+
+**Why positions and not the raw scores directly:** a dense retriever's cosine similarities live in one range (typically $[0,1]$ or $[-1,1]$), and BM25's scores are unbounded and depend on corpus statistics ($\text{avgdl}$, term rarity) — there's no principled way to compare a BM25 score of 8.3 against a cosine similarity of 0.82 and decide which result is "really" more relevant; averaging them would be combining numbers on two different, incompatible scales. A rank, by contrast, means the same thing regardless of how it was produced — "1st place" is 1st place whether the underlying list came from cosine similarity or BM25 term matching. RRF sidesteps the scale-incompatibility problem entirely by throwing away the raw scores and working only with each result's position.
+
+</GoDeeper>
 
 <HybridSearchFusionDiagram />
 
