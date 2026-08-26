@@ -5,6 +5,7 @@ sidebar_position: 6.05
 
 import HyperparamSearchDiagram from '../../../viz/diagrams/HyperparamSearchDiagram';
 import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
+import RunnableCode from '../../../components/content/RunnableCode';
 
 # Hyperparameter Optimization
 
@@ -23,6 +24,60 @@ The obvious intuition is that a denser, more systematic grid search should beat 
 That single fact is what breaks grid search. A $k \times k$ grid over two hyperparameters spends $k^2$ evaluations — but if only one of those two hyperparameters is actually important, every one of those $k^2$ evaluations only ever tries $k$ *distinct* values of the dimension that matters, because each of the $k$ important-dimension values gets repeated $k$ times while the unimportant dimension varies. Random search, drawing $k^2$ independent samples, tries close to $k^2$ distinct values of *every* dimension — including the one that matters — for the identical evaluation budget.
 
 <HyperparamSearchDiagram />
+
+### See the Distinct-Values Gap For Real
+
+The diagram above illustrates the claim; here it is proven with a real count, for a real budget. Say only hyperparameter $A$ actually matters (call it "learning rate") and hyperparameter $B$ doesn't ("some knob that turns out not to matter") — a $k\times k$ grid spends $k^2$ evaluations but every one of them only ever tries $k$ *distinct* values of $A$, since each of those $k$ values gets repeated $k$ times as $B$ varies underneath it. Count it yourself, for the exact same evaluation budget:
+
+<RunnableCode code={`import numpy as np
+
+def grid_search_distinct_values(k):
+    """k x k grid over (A, B). Returns (distinct A values tried, total evaluations)."""
+    grid_A = np.linspace(0, 1, k)
+    grid_B = np.linspace(0, 1, k)
+    evaluated_A = [a for a in grid_A for b in grid_B]  # k^2 evaluations total
+    return len(set(evaluated_A)), len(evaluated_A)
+
+def random_search_distinct_values(n_evals, seed=0):
+    """n_evals random (A, B) draws. Returns (distinct A values tried, total evaluations)."""
+    rng = np.random.default_rng(seed)
+    A = rng.uniform(0, 1, n_evals)
+    return len(set(A.tolist())), n_evals
+
+k = 20
+budget = k * k  # same total evaluation budget for both methods: 400
+
+grid_distinct, grid_total = grid_search_distinct_values(k)
+random_distinct, random_total = random_search_distinct_values(budget)
+
+print(f"Same budget: {budget} evaluations each.")
+print(f"Grid search:   {grid_distinct} distinct values of the ONE dimension that matters",
+      f"(out of {grid_total} evaluations -- {grid_total - grid_distinct} were redundant re-tests of an already-tried value).")
+print(f"Random search: {random_distinct} distinct values of that same dimension",
+      f"-- {random_distinct / grid_distinct:.0f}x more, for the identical budget.")
+
+# Try raising k (say, to 40 -- an 1600-evaluation budget) and re-run:
+# grid search's distinct-value count only ever grows as k, random search's
+# grows as k^2 -- the gap widens, it doesn't stay fixed.
+`} />
+
+### Implement the Grid-Search Counter Yourself
+
+The tests check an exact, hand-derivable property: a $k\times k$ grid always tries exactly $k$ distinct values of each dimension and $k^2$ total evaluations — no floating-point tolerance needed, it's just what a grid *is*.
+
+<RunnableCode
+  code={`import numpy as np
+
+def grid_search_distinct_values(k):
+    """k x k grid over (A, B). Returns (distinct A values tried, total evaluations)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert grid_search_distinct_values(5) == (5, 25)
+assert grid_search_distinct_values(20) == (20, 400)
+assert grid_search_distinct_values(1) == (1, 1)
+assert grid_search_distinct_values(3)[1] == 3 ** 2`}
+/>
 
 <GoDeeper title="Go deeper: how many random draws until you're confident you've hit the good region?">
 
