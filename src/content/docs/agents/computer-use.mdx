@@ -1,0 +1,40 @@
+---
+title: "Computer-Use & GUI Agents"
+sidebar_position: 8
+---
+
+
+import ComputerUseLoopDiagram from '../../../viz/diagrams/ComputerUseLoopDiagram';
+
+# Computer-Use & GUI Agents
+
+Every agent pattern so far has assumed the agent's actions are scoped tool calls — a function with a name and a JSON schema. Computer-use agents don't call functions; they operate a screen the same way a person does: look at a screenshot, decide where to click or what to type, and look again. That's a fundamentally larger action space, and a fundamentally larger blast radius.
+
+## How the Loop Actually Works
+
+Anthropic's [computer-use tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool) is the concrete reference implementation for this pattern: the model receives the desktop as a screenshot (base64 PNG), and can act on it via a fixed set of primitive actions — `left_click`, `type`, `key`, `scroll`, `left_click_drag`, and others — each taking pixel coordinates in the screenshot's own coordinate space. There's no DOM, no accessibility tree, no structured page model here (that's the [browser-automation](/docs/agents/browser-automation) case) — just pixels in, coordinates out.
+
+The loop:
+
+<ComputerUseLoopDiagram />
+
+Two details worth being precise about, because they're easy to get wrong if you build this yourself: coordinates are always relative to the screenshot's *own* resolution, so if you downscale the image before sending it (Claude's vision limits cap long-edge pixels), you have to scale the model's returned coordinates back up before executing them — and multiple actions proposed in one turn execute in order, stopping at the first failure, since later actions usually depend on earlier ones having actually landed.
+
+## Why This Is Riskier Than a Scoped Tool Call
+
+A tool call like `send_notification(recipient, message)` has a fixed, auditable argument shape — you know exactly what it can and can't do before it runs. A `left_click(512, 300)` can do *anything a human sitting at that screen could do* — submit a payment, delete a file through a GUI, accept a legal agreement — because the action's meaning depends entirely on what happens to be under the cursor at that moment. The action primitive is generic; the risk is contextual and can't be fully bounded by the tool's schema the way it can for API-shaped tool calls.
+
+Anthropic's own documentation is explicit about this, recommending:
+
+1. **A dedicated VM or container with minimal privileges** — never point this at a real desktop with real credentials.
+2. **No access to sensitive data** (login info, etc.) — the sandbox should have nothing worth stealing.
+3. **An allowlist of reachable domains**, if the sandbox has internet access at all.
+4. **Human confirmation before consequential actions** — "tasks requiring affirmative consent, such as accepting cookies, completing financial transactions, or agreeing to terms of service."
+
+That fourth point is the direct analog of the tool-call policy engine pattern from [Agent Architectures](/docs/agents/agent-architectures): the model isn't trusted to self-police which of its own actions are consequential. The diagram above models exactly that — routine navigation clicks execute immediately, but a click that would complete a purchase pauses for explicit confirmation before the sandbox ever executes it, the same "the agent's decision alone is not authorization" boundary a [risk-tiered policy gateway](https://github.com/ravivarmapatturi/Agent_Security_Gateway) enforces for ordinary API tool calls. Anthropic also runs an automatic classifier over computer-use screenshots specifically to catch prompt-injection attempts hidden in on-screen content (a malicious instruction rendered as text on a webpage, for instance) and will force a confirmation prompt if one's detected — worth knowing about, but not a substitute for sandboxing: a classifier is a probabilistic filter, not a hard boundary the way "this action requires a human click" is.
+
+## When to Reach for This vs. Browser Automation
+
+If the task lives entirely inside a webpage, [browser-automation](/docs/agents/browser-automation) agents (structured DOM access, no pixels) are cheaper, faster, and more reliable — there's no coordinate math, no screenshot token cost, and far less ambiguity about what's clickable. Computer-use earns its much higher cost and risk specifically for tasks that cross application boundaries, touch non-web GUIs (a desktop app, a settings panel, a file manager), or need visual verification of a task's actual rendered result, not just its underlying data.
+
+Agents section complete. Next: [ML System Design](/docs/ml-system-design/roadmap) — how to turn any of this (models, RAG pipelines, agents) into a production system that scales.

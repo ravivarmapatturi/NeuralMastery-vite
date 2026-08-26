@@ -21,6 +21,20 @@
       "sidebarPosition": 3,
       "description": null
     },
+    "/docs/agents/browser-automation": {
+      "slug": "agents/browser-automation",
+      "section": "agents",
+      "title": "Browser Automation Agents",
+      "sidebarPosition": 7,
+      "description": null
+    },
+    "/docs/agents/computer-use": {
+      "slug": "agents/computer-use",
+      "section": "agents",
+      "title": "Computer-Use & GUI Agents",
+      "sidebarPosition": 8,
+      "description": null
+    },
     "/docs/agents/loops-and-graphs": {
       "slug": "agents/loops-and-graphs",
       "section": "agents",
@@ -47,6 +61,13 @@
       "section": "agents",
       "title": "Multi-Agent Systems",
       "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/agents/no-code-automation": {
+      "slug": "agents/no-code-automation",
+      "section": "agents",
+      "title": "No-Code Agent Automation",
+      "sidebarPosition": 6,
       "description": null
     },
     "/docs/agents/overview": {

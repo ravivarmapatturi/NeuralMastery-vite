@@ -1,0 +1,41 @@
+---
+title: "No-Code Agent Automation"
+sidebar_position: 6
+---
+
+
+import ClusterNodeAssemblyDiagram from '../../../viz/diagrams/ClusterNodeAssemblyDiagram';
+
+# No-Code Agent Automation
+
+Every agent pattern covered so far — [ReAct loops](/docs/agents/agent-fundamentals), [graphs](/docs/agents/loops-and-graphs), [multi-agent systems](/docs/agents/multi-agent-systems) — is something you write in code. [n8n](https://n8n.io) represents a genuinely different, and genuinely widely-used, way to build the same underlying pattern: a visual workflow canvas instead of a Python file.
+
+## How n8n's Agent Model Actually Works
+
+n8n's [AI Agent](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent) is what n8n calls a **cluster node**: one root node (the agent itself) that other nodes plug into as sub-nodes — a chat model, one or more tools, and optionally a memory store. The root node won't execute without its required sub-nodes attached:
+
+<ClusterNodeAssemblyDiagram />
+
+As of n8n 1.82.0, the separate agent *types* that used to exist (Conversational Agent, OpenAI Functions Agent, and others) were deprecated in favor of a single unified **Tools Agent** — the old per-type nodes are slated for removal in n8n 3.0. Tools themselves are typically other n8n nodes (an HTTP Request node, a database connector) exposed to the agent as callable tools, or — increasingly — tools proxied in directly from a remote [MCP server](/docs/agents/mcp/overview), the same protocol covered elsewhere in this section. Memory is genuinely modular too: Simple Memory (in-session, for testing) or a Postgres/Redis-backed node (for anything meant to survive past one workflow run).
+
+## What This Actually Buys You Over Code
+
+The honest case for this isn't "no-code is easier" in the abstract — it's specific:
+
+- **The tool surface is n8n's existing 400+ node integration catalog.** Wiring an agent to Slack, a CRM, a spreadsheet, or a dozen SaaS APIs is drag-and-drop instead of writing and maintaining API client code for each one.
+- **The whole pipeline — trigger, agent, tools, downstream steps — is one visual artifact** a non-engineer on a team can read, adjust a prompt in, or add a step to, without touching a code repository.
+- **Execution, retries, and scheduling are the platform's job**, not something you build (or reach for Celery/Airflow to build) yourself.
+
+## What It Costs You
+
+This is a real tradeoff, not a strictly worse option:
+
+- **Debugging an agent's actual reasoning is harder in a visual canvas than in code** — stepping through a LangGraph node with a debugger, or just reading the Python, is more precise than inspecting execution logs in a workflow UI.
+- **Version control and code review are second-class.** n8n workflows can be exported as JSON and put in git, but the diff-and-review workflow engineers expect isn't native the way it is for a Python file.
+- **Complex conditional logic and genuinely custom algorithms get awkward fast** — a bounded self-critique loop like the one in this account's [Finance_Agent](https://github.com/ravivarmapatturi/Finance_Agent) (LangGraph, a real conditional cycle gated on a revision counter) is natural to express in code and considerably more awkward to express as a chain of visual nodes.
+
+## When to Reach for Each
+
+No-code (n8n) fits business-process automation where the value is fast integration with existing tools and the logic is genuinely simple-to-moderate — "watch this inbox, classify the email with an LLM, route it to the right Slack channel." Code-first (LangGraph, or writing the loop yourself) fits anywhere the control flow itself is the hard part — cycles, multi-step self-correction, anything that needs to be unit-tested, or anything where reviewing a diff before it ships matters as much as the feature itself.
+
+Next: [Browser Automation Agents](/docs/agents/browser-automation) — a narrower kind of agent, purpose-built for one specific action space.
