@@ -10,6 +10,7 @@ A living directory of concrete problem statements across the domains most worth 
 
 - **Not started** — no dedicated content or project yet.
 - **Content only** — the concepts are covered somewhere on this site, but there's no dedicated deep-dive case study or a real built project for this *specific* problem statement yet.
+- **In progress** — an actual build has started but isn't finished/published yet; no link until it lands.
 - **Real project built** — an actual, deployed, documented system exists for it, linked below.
 
 This page gets updated as case studies and real projects land — it's the index, not the content itself. See [Case Studies](/docs/ml-system-design/case-studies) for the deep-dive write-ups (problem → requirements → scale estimation → architecture → SOTA comparison → failure modes → cost/latency tradeoffs) as they're built out, and [The Project Ladder](/docs/projects/the-project-ladder) for how a project's rigor scales by level.
@@ -77,6 +78,13 @@ This page gets updated as case studies and real projects land — it's the index
 |---|---|---|
 | Full CI/CD pipeline with automated retraining gate | Content only | [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd) |
 | Production churn model with canary deployment + drift monitoring | Content only | [The Full MLOps Architecture — Five Capstone Projects](/docs/mlops/mlops-architecture-and-roadmap#five-capstone-projects) |
+| Statistically-calibrated drift monitoring for a production classifier (empirical false-positive-rate validation against known, injected drift — not assumed correct) | Real project built | [`ml-drift-monitor`](https://github.com/ravivarmapatturi/ml-drift-monitor), [Monitoring & Drift — A Real, Proven Example](/docs/mlops/monitoring-and-drift#a-real-proven-example-psi-ks-test-actually-validated), [Case Study — Fraud Detection's Monitoring step](/docs/ml-system-design/case-studies#case-study-real-time-fraud-detection-at-100k-eventssec) |
+
+## Model Compression & Edge Deployment
+
+| Problem statement | Status | Related content |
+|---|---|---|
+| Model compression & edge-deployment benchmark suite (quantization/distillation/pruning compared on real accuracy-vs-latency-vs-size tradeoffs) | In progress | [Quantization](/docs/llms-genai/training-pipeline#quantization), [LLM Inference Optimization — Quantization](/docs/mlops/llm-inference-optimization#quantization) |
 
 ## AI Security (Prompt Injection / RAG Poisoning)
 
