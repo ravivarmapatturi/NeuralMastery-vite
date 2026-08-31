@@ -35,7 +35,7 @@ KNN is called a **lazy learner**: `fit()` does nothing but store the data. All t
 
 - **Euclidean distance**: $\sqrt{\sum_i (x_i - x_i')^2}$ — the default, straight-line distance (see [Linear Algebra — Norms](/docs/mathematics-for-ai/linear-algebra)).
 - **Manhattan distance**: $\sum_i |x_i - x_i'|$ — sum of absolute differences; more robust to outliers in individual features than Euclidean.
-- **Cosine similarity**: measures angle, not magnitude — the standard choice when comparing embeddings (see [RAG — Retrieve](/docs/llms-genai/rag#basic-architecture)), since direction carries the semantic meaning, not vector length.
+- **Cosine similarity**: measures angle, not magnitude — the standard choice when comparing embeddings (see [RAG — Retrieval](/docs/llms-genai/rag#the-rag-pipeline-end-to-end)), since direction carries the semantic meaning, not vector length.
 
 **Feature scaling matters enormously for KNN** — unlike [decision trees](/docs/machine-learning/decision-tree#strengths-and-weaknesses), which only compare a feature to a threshold, KNN's distance calculation is dominated by whichever feature happens to have the largest numeric range. A feature measured in the thousands will swamp a feature measured in single digits unless features are standardized first.
 

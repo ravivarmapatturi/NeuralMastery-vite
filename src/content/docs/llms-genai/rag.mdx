@@ -29,11 +29,19 @@ Everything below is how each piece of that "find the right pages, then use them 
 
 </ELI5>
 
-## Basic Architecture
+## The RAG Pipeline, End to End
 
-1. **Index**: split your documents into chunks, embed each chunk into a vector (see [Foundation Model Internals](/docs/llms-genai/foundation-model-internals)), and store them in a vector database (see [Databases](/docs/databases/roadmap)).
-2. **Retrieve**: embed the user's query the same way, find the most similar chunks (nearest-neighbor search by cosine similarity — see [Linear Algebra](/docs/mathematics-for-ai/linear-algebra)).
-3. **Generate**: feed the retrieved chunks into the LLM's context alongside the query, and let it generate an answer grounded in that retrieved content.
+Nine steps, in the order they actually run. Everything else on this page is one of these steps covered in real depth — worth seeing the whole shape once before diving into any single piece:
+
+1. **Ingestion**: pull in your raw source documents — PDFs, wikis, tickets, whatever your knowledge base actually is — and get them into clean, parseable text.
+2. **[Chunking](#chunking-strategies)**: split that text into retrievable units. The size and strategy chosen here shapes the quality of every step downstream.
+3. **[Embedding](#choosing-an-embedding-model)**: turn each chunk into a vector using an embedding model (see [Foundation Model Internals](/docs/llms-genai/foundation-model-internals)).
+4. **Indexing**: store those vectors in a structure built for fast similarity search at scale (see [RAG Optimization](#rag-optimization) for how that index is actually tuned in production, and [Databases](/docs/databases/roadmap) for the storage layer itself).
+5. **[Query Processing](#query-transformation)**: transform the user's raw question *before* searching with it — decompose it, rephrase it, or generate a hypothetical answer to search with instead.
+6. **[Retrieval](#dense-vs-sparse-retrieval-and-bm25)**: search the index — dense, sparse, or hybrid — using the (possibly transformed) query, and pull back the chunks most likely to be relevant.
+7. **[Reranking](#re-ranking-with-cross-encoders)**: re-score the retrieved candidates with a more precise, more expensive method before committing to a final set.
+8. **Generation**: feed the reranked chunks into the LLM's context alongside the query (see [Prompt Engineering](/docs/llms-genai/prompt-engineering) for how that context actually gets structured into a prompt), and let it generate an answer grounded in what it just read.
+9. **[Evaluation & Monitoring](#evaluating-rag)**: measure whether the whole pipeline actually produces faithful, relevant answers — both before shipping and continuously once it's live.
 
 Click any node below for what it does, then type a real question and watch retrieval actually run — real chunking, real cosine-similarity ranking, a real (if simplified) reranking pass:
 
@@ -41,10 +49,13 @@ Click any node below for what it does, then type a real question and watch retri
 
 ## Chunking Strategies
 
+**Pipeline step 2.** Once documents are ingested, this is the first real decision point — every later step operates on whatever units get produced here.
+
 - **Fixed-size chunking**: split every N tokens — simple, but can cut sentences/ideas in half.
 - **Semantic chunking**: split at natural boundaries (paragraphs, topic shifts) so each chunk is a coherent unit of meaning.
 - **Recursive chunking**: try splitting on large boundaries first (sections), fall back to smaller ones (sentences) only if a chunk is still too large.
 - **Parent-child chunking**: retrieve using small, precise child chunks, but pass the larger parent chunk (with more surrounding context) to the LLM — balances retrieval precision with generation context.
+- **Late chunking**: embed the *entire* document first with a long-context embedding model, then pool the resulting token embeddings *into* chunks only afterward — the reverse order of every strategy above. Because each chunk's embedding is derived from token representations that already attended to the full document, it carries whole-document context even for a chunk that, read in isolation, wouldn't obviously connect to it (a pronoun resolved only by an earlier paragraph, for instance). This solves a different problem than parent-child chunking: parent-child pairs a small retrieval unit with a larger *separate* context chunk passed to the LLM; late chunking bakes document-wide context directly into the retrieval embedding itself, before chunking ever happens.
 
 Chunk size is a real tradeoff: too small loses context; too large dilutes the embedding's specificity and wastes context window on irrelevant text.
 
@@ -52,15 +63,29 @@ Chunk size is a real tradeoff: too small loses context; too large dilutes the em
 
 ## Choosing an Embedding Model
 
-Different embedding models trade off quality, speed, cost, and domain fit (a model tuned on general web text may underperform on legal or medical documents). Dimensionality matters too — higher-dimensional embeddings usually capture more nuance but cost more to store and search at scale.
+**Pipeline step 3.** Whatever chunks step 2 produced now need to become vectors. Different embedding models trade off quality, speed, cost, and domain fit (a model tuned on general web text may underperform on legal or medical documents). Dimensionality matters too — higher-dimensional embeddings usually capture more nuance but cost more to store and search at scale.
 
 What retrieval above is actually doing under the hood — comparing vectors by cosine similarity in a learned space where meaning clusters geometrically — is exactly what the [Embedding Space Explorer](/docs/nlp/word-embeddings) makes clickable:
 
 <EmbeddingSpaceExplorer />
 
+## Query Transformation
+
+**Pipeline step 5.** Before searching at all, the raw user question can itself be transformed into something more retrievable:
+
+- **HyDE (Hypothetical Document Embeddings)**: have the LLM first generate a *hypothetical* answer to the query, then embed and search using *that* instead of the raw query — often more similar to real relevant documents than the terse original question.
+- **Query decomposition**: break a complex multi-part question into sub-questions, retrieve for each separately.
+- **Step-back prompting**: ask a more general question first to retrieve broader context, before answering the specific one.
+- **Multi-query retrieval**: have the LLM generate several *rephrasings* of the same query (different word choices, different framings), retrieve for each independently, and union the results — hedges against any single phrasing missing a relevant chunk purely due to vocabulary mismatch.
+- **RAG-Fusion**: multi-query retrieval's natural extension — generate multiple query variations, retrieve for each, then combine the *ranked* result lists via Reciprocal Rank Fusion (the same technique the Retrieval section below uses for hybrid search) rather than a simple union, so chunks ranked highly across *multiple* query variations surface to the top.
+
+<QueryTransformationDiagram />
+
+Whichever version of the query comes out of this step — rephrased, decomposed, or hypothetical — is what actually gets searched next.
+
 ## Dense vs. Sparse Retrieval, and BM25
 
-Two structurally different ways to find relevant chunks, worth distinguishing precisely rather than lumping together as "search":
+**Pipeline step 6.** Two structurally different ways to find relevant chunks, worth distinguishing precisely rather than lumping together as "search":
 
 - **Dense retrieval**: embed both the query and every chunk into the same continuous vector space (see [Foundation Model Internals](/docs/llms-genai/foundation-model-internals)), and retrieve by vector similarity — captures *semantic* similarity (a query about "canines" can retrieve a chunk about "dogs" even with zero shared words), at the cost of sometimes missing exact matches that matter (a specific product code, an exact legal term).
 - **Sparse retrieval**: represents text as a high-dimensional, mostly-zero vector over the vocabulary (which exact terms appear, and how often) — the classical information-retrieval approach, and still highly effective specifically because it *guarantees* exact term matches aren't missed.
@@ -105,21 +130,11 @@ where $\text{rank}_r(d)$ is $d$'s 1-indexed position in ranking $r$ (dense resul
 
 ## Re-ranking with Cross-Encoders
 
-The retrieval step above (dense, sparse, or hybrid) has to be fast enough to search potentially millions of chunks — it uses a **bi-encoder** architecture, embedding the query and each document *independently* so document embeddings can be precomputed and indexed once (see [Recommender Systems — Two-Tower Architecture](/docs/machine-learning/recommender-systems#embeddings-and-the-two-tower-architecture) for the identical architectural pattern). A **cross-encoder** re-ranker instead feeds the query *and* a candidate document into the model *together*, letting it directly attend across both — far more accurate at judging true relevance, but far too slow to run against the entire corpus, since nothing about it can be precomputed per-document. The standard pattern is exactly this two-stage shape: cheap bi-encoder retrieval narrows millions of chunks to a few dozen candidates, then an expensive cross-encoder re-ranks just those few dozen precisely — the same retrieval-then-rank funnel as [Recommender Systems](/docs/machine-learning/recommender-systems#the-two-stage-production-pipeline) and [Learning-to-Rank](/docs/machine-learning/learning-to-rank).
+**Pipeline step 7.** The retrieval step above (dense, sparse, or hybrid) has to be fast enough to search potentially millions of chunks — it uses a **bi-encoder** architecture, embedding the query and each document *independently* so document embeddings can be precomputed and indexed once (see [Recommender Systems — Two-Tower Architecture](/docs/machine-learning/recommender-systems#embeddings-and-the-two-tower-architecture) for the identical architectural pattern). A **cross-encoder** re-ranker instead feeds the query *and* a candidate document into the model *together*, letting it directly attend across both — far more accurate at judging true relevance, but far too slow to run against the entire corpus, since nothing about it can be precomputed per-document. The standard pattern is exactly this two-stage shape: cheap bi-encoder retrieval narrows millions of chunks to a few dozen candidates, then an expensive cross-encoder re-ranks just those few dozen precisely — the same retrieval-then-rank funnel as [Recommender Systems](/docs/machine-learning/recommender-systems#the-two-stage-production-pipeline) and [Learning-to-Rank](/docs/machine-learning/learning-to-rank).
 
 <BiEncoderVsCrossEncoderDiagram />
 
 A third architecture sits between these two: **late interaction** (ColBERT) keeps a *separate* embedding per token instead of pooling to one vector per document, and scores query-document pairs via **MaxSim** — for each query token, the single best-matching document token, summed. Document token embeddings stay precomputable and indexable, like a bi-encoder's, but nothing gets collapsed away, so it recovers much of a cross-encoder's precision without the joint forward pass. See [Retrieval & Reranking Architectures](/docs/llms-genai/retrieval-and-reranking-architectures) for the real MaxSim formula, a fully worked numeric example, and a three-way comparison of when production systems reach for each of the three.
-
-## Query Transformation
-
-- **HyDE (Hypothetical Document Embeddings)**: have the LLM first generate a *hypothetical* answer to the query, then embed and search using *that* instead of the raw query — often more similar to real relevant documents than the terse original question.
-- **Query decomposition**: break a complex multi-part question into sub-questions, retrieve for each separately.
-- **Step-back prompting**: ask a more general question first to retrieve broader context, before answering the specific one.
-- **Multi-query retrieval**: have the LLM generate several *rephrasings* of the same query (different word choices, different framings), retrieve for each independently, and union the results — hedges against any single phrasing missing a relevant chunk purely due to vocabulary mismatch.
-- **RAG-Fusion**: multi-query retrieval's natural extension — generate multiple query variations, retrieve for each, then combine the *ranked* result lists via Reciprocal Rank Fusion (the same technique from hybrid search above) rather than a simple union, so chunks ranked highly across *multiple* query variations surface to the top.
-
-<QueryTransformationDiagram />
 
 ## Advanced RAG Architectures
 
@@ -140,7 +155,26 @@ Standard RAG retrieves isolated chunks, which struggles with questions that requ
 
 <GraphRagDiagram />
 
+## RAG Optimization
+
+Everything above this section establishes *correctness* — this section is about making the same pipeline fast and cheap enough to actually run at real production query volume, without rebuilding any of it.
+
+**Index optimization.** Production vector search almost universally runs on **HNSW** (Hierarchical Navigable Small World) graphs rather than exact nearest-neighbor search, which stops scaling past a small corpus. Two parameters do most of the work:
+
+- `ef_construction`: how thoroughly the index explores candidate connections while it's *built* — higher values produce a higher-quality graph (better recall later) at the cost of slower, more expensive indexing, paid once.
+- `ef_search`: the equivalent knob at *query* time — how many candidates the search explores before returning results. This is the parameter actually tuned in production, live: push it up for better recall at higher per-query latency, pull it down for faster, cheaper queries at some recall cost. It's the single biggest recall/latency lever in a deployed vector index.
+
+**Quantization.** Storing every embedding at full float32 precision gets expensive at real corpus scale. **Scalar quantization** (e.g. float32 → int8) shrinks storage with modest accuracy loss; **Product Quantization (PQ)** goes further — splitting each vector into sub-vectors and replacing each sub-vector with the nearest entry in a small learned codebook, trading some retrieval accuracy for a much larger compression ratio than scalar quantization alone. The right choice is a direct function of how much accuracy loss the application can tolerate versus how much the index costs to store and search at the corpus's real size.
+
+**Semantic caching.** Real production query traffic repeats — not usually word-for-word, but *semantically*: many users ask close variants of the same handful of questions. Semantic caching embeds each incoming query and checks it against previously served queries by similarity (not exact string match); a close-enough hit reuses the cached retrieval (or even the cached final answer) instead of re-running the full pipeline. This is a genuine, increasingly standard production technique (tools like GPTCache implement it directly) — the tradeoff is the similarity threshold itself: too loose and semantically different queries get served a wrong cached answer; too tight and the cache rarely hits at all.
+
+**Embedding fine-tuning on domain data.** A general-purpose embedding model is trained on broad web text, not your specific domain's vocabulary and relevance judgments — fine-tuning it on domain query-document pairs (contrastive/triplet-loss training, pulling truly relevant pairs closer and irrelevant ones apart) can meaningfully close the gap between "generically similar" and "actually relevant for this specific corpus," at the cost of needing labeled or weakly-labeled domain relevance data to train on.
+
+**Latency/cost tuning, tied together**: `ef_search` trades recall for query latency directly; quantization trades accuracy for storage and search cost; semantic caching trades a small risk of a stale/mismatched answer for skipping the pipeline entirely on repeat traffic; and the reranker choice from [Reranking](#re-ranking-with-cross-encoders) trades accuracy for cost the same way — a smaller/faster reranker over more candidates, or a stronger/slower one over fewer. None of these are free wins; every optimization here is a real, explicit tradeoff against some other production metric, tuned to the specific system's actual latency and cost budget.
+
 ## Evaluating RAG
+
+**Pipeline step 9, and the last one** — none of the steps above matter if there's no way to tell whether the whole pipeline is actually working:
 
 - **Faithfulness / groundedness**: does the generated answer actually match what the retrieved context says (or does it hallucinate beyond it) — is every claim in the answer traceable back to the retrieved chunks?
 - **Answer relevance**: does the generated answer actually address the user's question (a faithful-to-context but off-topic answer still fails the user).
