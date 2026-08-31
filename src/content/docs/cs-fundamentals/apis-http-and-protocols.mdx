@@ -82,7 +82,34 @@ def call_with_backoff(payload: dict, max_attempts: int = 5) -> dict:
 
 <RestResourceModelDiagram />
 
-This is a convention, not a protocol enforced by anything — it's worth briefly contrasting with the alternatives it's usually chosen over: **RPC-style APIs** (`/createUser`, `/sendMessage`) model actions directly as function calls instead of resources, which can be more natural for operations that don't map cleanly to CRUD; **GraphQL** lets the client specify exactly which fields it needs in a single request instead of the server dictating a fixed response shape per endpoint, trading REST's simplicity for flexibility when clients have very different data needs. Most model-serving and AI-tooling APIs (including this site's own examples) are REST or REST-adjacent, which is why it's the focus here.
+This is a convention, not a protocol enforced by anything — it's worth briefly contrasting with the alternatives it's usually chosen over: **RPC-style APIs** (`/createUser`, `/sendMessage`) model actions directly as function calls instead of resources, which can be more natural for operations that don't map cleanly to CRUD. Most model-serving and AI-tooling APIs (including this site's own examples) are REST or REST-adjacent, which is why it's the focus here — but two real alternatives are common enough in production to be worth understanding precisely, not just by name.
+
+### REST vs. GraphQL vs. gRPC
+
+**GraphQL** exposes a single endpoint and lets the client specify exactly which fields it needs in one query, instead of the server dictating a fixed response shape per endpoint. This directly fixes two real REST failure modes: **over-fetching** (an endpoint returns a whole object when the client needed one field from it) and **under-fetching** (rendering one screen needs data from three separate REST endpoints, so the client pays three round trips). The cost isn't free: because every query can request an arbitrary shape, a naive resolver is prone to the **N+1 query problem** — fetching a list of $N$ items, then issuing one *additional* backend query per item to resolve a nested field, turning what looked like one request into $N{+}1$ real ones underneath (solved with request-scoped batching, e.g. the DataLoader pattern, but it's a real implementation burden REST's fixed-shape endpoints don't have). GraphQL also breaks HTTP-level caching cleanly, covered below.
+
+**gRPC** is the production-grade version of the RPC-style approach mentioned above: a strict, code-generated contract instead of a loose one. Services and message types are defined once in a `.proto` file, and the `protoc` compiler generates typed client and server code directly from it, so both sides agree on every call's exact shape before either is written. Messages serialize as **Protocol Buffers** — a compact binary format — rather than REST's typically-JSON text, meaning smaller payloads and cheaper (de)serialization at high request volume. Built on HTTP/2, gRPC supports four call shapes as first-class parts of the protocol itself: **unary** (one request, one response, like REST), **server streaming**, **client streaming**, and **bidirectional streaming** — real two-way streaming built in, not layered on top the way SSE/WebSockets sit on top of HTTP for REST. The real tradeoff: browsers can't natively speak gRPC (it needs a proxy layer, grpc-web, to be called from client-side JavaScript), so it's overwhelmingly used for internal service-to-service calls inside a backend, not a public API a browser calls directly — the opposite deployment target from REST and GraphQL, which both work natively with a browser's `fetch()`.
+
+| | REST | GraphQL | gRPC |
+|---|---|---|---|
+| Payload format | Usually JSON (text) | Usually JSON (text) | Protocol Buffers (binary) |
+| Contract | Loose — documented, not enforced | Schema-typed, one endpoint | Strict — `.proto`-generated code |
+| Fetch shape | Fixed per endpoint | Client-selected per query | Fixed per RPC method |
+| Native streaming | No — [SSE/WebSockets](#communication-patterns) layered on top | No | Yes — all four call types |
+| Browser-callable directly | Yes | Yes | No — needs a grpc-web proxy |
+| Typical use | Public APIs, LLM provider APIs | Client apps with varied data needs | Internal service-to-service calls |
+
+**REST caching, made concrete.** `GET` being cacheable (stated above) is a quantifiable performance lever, not just a nice property — the improvement comes from a simple weighted average. If a fraction $h$ of requests are served from a cache (a CDN/edge cache, or an in-process one) instead of reaching the origin server, average latency is:
+
+$$\bar{L} = h \cdot L_{\text{hit}} + (1-h) \cdot L_{\text{miss}}$$
+
+Plugging in illustrative but realistic numbers — an edge cache hit at $L_{\text{hit}} \approx 5\text{ms}$, versus a cache miss that reaches the origin and queries a database at $L_{\text{miss}} \approx 150\text{ms}$:
+
+- No caching ($h=0$): $\bar L = 150\text{ms}$.
+- A realistic hit ratio for read-heavy, mostly-stable data ($h=0.8$): $\bar L = 0.8(5) + 0.2(150) = 34\text{ms}$ — a **4.4×** reduction in average latency from caching alone.
+- Aggressive caching of very stable data ($h=0.95$): $\bar L = 0.95(5) + 0.05(150) = 12.25\text{ms}$ — over **12×** faster on average than serving every request uncached.
+
+This is exactly why REST's fixed, URL-identified resources (`GET /users/123`) are so cache-friendly: an HTTP cache (browser, CDN, reverse proxy) keys directly on the URL, and `Cache-Control`/`ETag` response headers tell it how long a cached copy stays valid and how to revalidate without re-fetching the whole body. GraphQL's single `POST /graphql` endpoint breaks this cleanly — every query is a distinct POST body, not a distinct cacheable URL — which is exactly why GraphQL clients (Apollo Client, Relay) need their own normalized client-side caching machinery instead of getting HTTP caching for free the way REST does.
 
 ## Authentication vs. Authorization
 
