@@ -14,10 +14,19 @@ import GgufSizeCalculatorDiagram from '../../../viz/diagrams/GgufSizeCalculatorD
 import ContinuousBatchingDiagram from '../../../viz/diagrams/ContinuousBatchingDiagram';
 import SpeculativeDecodingDiagram from '../../../viz/diagrams/SpeculativeDecodingDiagram';
 import FlashAttentionMemoryDiagram from '../../../viz/diagrams/FlashAttentionMemoryDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # LLM Inference Optimization
 
 The techniques that make the engines from [LLM Inference Engines](/docs/mlops/llm-inference-engines) fast. Almost all of them exist to solve one of two problems: autoregressive generation is memory-bandwidth-bound, or the KV cache is too big.
+
+<ELI5>
+
+Imagine a factory line building sentences one word at a time. Reading the customer's order (the prompt) is fast — you can look at the whole thing at once and get moving. But writing the response has to happen strictly in order, one word depending on the last, and for every single word you have to re-consult a truly enormous rulebook (the model's weights) just to decide what comes next — most of the wait isn't "thinking," it's flipping through that rulebook again and again. Everything on this page is a different trick for making that per-word rulebook-flipping cheaper: remember what you already looked up (KV cache), compress the rulebook itself (quantization), let a fast junior clerk guess several words ahead and only double-check them (speculative decoding), or serve many customers' orders at once so the expensive rulebook-flipping is shared across them (batching).
+
+Everything below makes each of those tricks exact.
+
+</ELI5>
 
 ## Prefill vs. Decode
 
@@ -25,6 +34,16 @@ Every LLM request has two distinct phases with opposite performance characterist
 
 - **Prefill**: processing the input prompt — all prompt tokens are known upfront, so this is done as one large, parallelizable matrix multiply. Prefill is **compute-bound**: it saturates the GPU's raw FLOPs, and its speed scales with prompt length and GPU compute throughput.
 - **Decode**: generating output tokens one at a time, autoregressively — each new token depends on the previous one, so this can't be parallelized across tokens the way prefill can. Decode is **memory-bandwidth-bound**: each step has to read the entire model's weights (and the growing KV cache) from GPU memory, and that memory traffic — not compute — is the bottleneck.
+
+<GoDeeper title="Go deeper: why exactly decode is memory-bound and prefill is compute-bound">
+
+The precise way to answer "is a workload compute-bound or memory-bound" is **arithmetic intensity** — how many floating-point operations get done per byte moved from memory. A GPU has a fixed FLOPs-per-second ceiling and a fixed bytes-per-second (memory bandwidth) ceiling; whichever ceiling you hit first determines the bottleneck. This is the standard **roofline model** (Williams, Waterman & Patterson, 2009) applied to a Transformer forward pass.
+
+**Prefill**, processing $n$ prompt tokens at once, reuses the *same* loaded weights for every one of those $n$ tokens' worth of matrix multiplication — the weights get read from memory once, but do $n\times$ the compute work per byte read. Arithmetic intensity scales up with $n$, so a long enough prompt saturates the GPU's compute ceiling before it saturates memory bandwidth: compute-bound.
+
+**Decode** processes exactly *one* new token per step (per sequence) — the model still has to read that *entire* set of weights from memory to produce that single token's output, then discards almost all of that reused computational opportunity before the next step re-reads the same weights again. One token's worth of FLOPs per full weight-matrix read is a far lower arithmetic intensity than prefill's — low enough that decode hits the memory-bandwidth ceiling long before it comes close to using the GPU's available compute. This is exactly why **batching** (below) helps decode specifically: batching several sequences' decode steps together means one weight read now produces output for every sequence in the batch simultaneously, raising decode's effective arithmetic intensity back toward prefill's — the entire mechanism behind why continuous batching is the single biggest throughput lever for decode-bound serving.
+
+</GoDeeper>
 
 <PrefillVsDecodeDiagram />
 
@@ -135,6 +154,20 @@ vllm serve TheBloke/Llama-3.1-8B-Instruct-AWQ \
 - **Speculative decoding**: a small, fast **draft model** proposes several tokens ahead; the large **target model** verifies them all in a single forward pass and accepts the prefix that matches what it would have generated itself — when the **acceptance rate** is high, this trades a small amount of extra compute for a meaningful drop in wall-clock latency, since verification is cheaper than autoregressive generation.
 
 <SpeculativeDecodingDiagram />
+
+<GoDeeper title="Go deeper: the actual speedup formula, from the original paper">
+
+"High acceptance rate helps" is quantifiable, not just directionally true. [Leviathan et al.'s speculative decoding paper](https://arxiv.org/abs/2211.17192) derives it precisely. Let $\alpha$ be the (per-token) probability the target model accepts a drafted token, and $\gamma$ the number of tokens speculated ahead per round. The expected number of tokens produced per verification round is:
+
+$$E[\text{tokens per round}] = \frac{1-\alpha^{\gamma+1}}{1-\alpha}$$
+
+— a geometric-series expectation: keep accepting drafted tokens as long as each one (independently, with probability $\alpha$) matches, and either the whole run of $\gamma$ gets accepted plus one bonus token from the target model, or acceptance stops early. Combined with $c$, the ratio of draft-model cost to target-model cost per step, the paper's Theorem 3.8 gives the full expected wall-time improvement factor:
+
+$$\text{speedup} = \frac{1-\alpha^{\gamma+1}}{(1-\alpha)(\gamma c + 1)}$$
+
+The paper's own worked examples (their Table 1, assuming a near-negligible-cost draft model, $c\approx 0$) make the acceptance-rate sensitivity concrete: $\alpha=0.8,\ \gamma=2$ gives a **1.63×** speedup; push acceptance up to $\alpha=0.9$ with $\gamma=10$ and it reaches **6.86×** — the same mechanism, just a better draft model and more tokens speculated per round. Low $\alpha$ doesn't just fail to help — since $\gamma$ tokens of draft-model compute get spent whether or not they're accepted, a draft model with low acceptance can make wall-time *worse* than plain autoregressive decoding, which is exactly why picking a well-matched draft model (typically ~100× smaller than the target, per the paper's own experiments) matters as much as the algorithm itself.
+
+</GoDeeper>
 
 - **Parallelism for serving**: tensor and pipeline parallelism (see [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training)) apply to inference too — splitting a model too large for one GPU across several, specifically to serve it, not just to train it.
 
