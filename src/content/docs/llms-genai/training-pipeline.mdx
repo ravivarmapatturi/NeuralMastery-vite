@@ -15,10 +15,19 @@ import LoraMechanicsDiagram from '../../../viz/diagrams/LoraMechanicsDiagram';
 import PeftMethodsComparisonDiagram from '../../../viz/diagrams/PeftMethodsComparisonDiagram';
 import DistillationDiagram from '../../../viz/diagrams/DistillationDiagram';
 import QuantizationBitDepthDiagram from '../../../viz/diagrams/QuantizationBitDepthDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Training Pipeline
 
 Going from a randomly-initialized Transformer to something like ChatGPT is a multi-stage pipeline, not a single training run.
+
+<ELI5>
+
+Think of it like educating a person from scratch. Pretraining is like reading an enormous amount of everything ever written — you come out knowing a huge amount, able to complete sentences fluently, but with no sense of how to actually be *helpful* to someone asking you something. Supervised fine-tuning is like an apprenticeship: watching a skilled person handle real requests and imitating the shape of a good answer. RLHF/DPO/GRPO are like getting ongoing feedback — "that answer was better than that one" — and adjusting your instincts based on which responses people actually preferred, not just copying examples anymore. Everything after that (PEFT, distillation, quantization) is about making an already-trained model cheaper or faster to specialize and run, without repeating the expensive parts.
+
+Everything below makes each of those stages exact — the real objectives, the real formulas, and why each one exists.
+
+</ELI5>
 
 ## Pretraining
 
@@ -58,6 +67,18 @@ The **Chinchilla** paper's specific, influential finding: for a fixed compute bu
 ### Compute, Batching, and Precision
 
 - **Compute budget**: total training compute is often approximated as $C \approx 6ND$ (a standard rule of thumb) where $N$ is parameter count and $D$ is training tokens — the "6" absorbing the forward and backward pass FLOPs per token per parameter — the quantity scaling laws are fit against.
+
+<GoDeeper title="Go deeper: where the 6 in 6ND actually comes from">
+
+Not an arbitrary constant — it's two real numbers added together, from [Kaplan et al.'s scaling-laws paper](https://arxiv.org/abs/2001.08361) (the source of this exact approximation, $C \approx 6NBS$ with $D = B \cdot S$).
+
+**Forward pass ≈ 2N FLOPs per token.** Every parameter in the model gets used in roughly one multiply-accumulate operation per token processed — one multiplication and one addition, which is exactly a matrix-multiply's basic unit of work. Two FLOPs per parameter, per token: $C_{\text{forward}} \approx 2N$ per token (the paper's own notation, ignoring a smaller attention-specific term that's subleading at real model sizes).
+
+**Backward pass ≈ 2× the forward pass.** Backpropagation has to compute *two* things the forward pass didn't: the gradient with respect to each layer's weights (needed to actually update them) and the gradient with respect to each layer's input activations (needed to keep propagating the gradient backward to earlier layers) — roughly the same amount of matrix-multiply work as the forward pass, done twice over instead of once. That puts the backward pass at approximately $4N$ FLOPs per token.
+
+**Add them up**: $2N$ (forward) $+ 4N$ (backward) $= 6N$ FLOPs per token. Multiply by $D$ tokens processed over the whole training run, and $C \approx 6ND$ — not a rule of thumb pulled from nowhere, just "one multiply-add per parameter per token, three times over" (once forward, twice backward) made explicit.
+
+</GoDeeper>
 - **Batch size and gradient accumulation, mixed precision, checkpointing**: covered in full in [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training) — pretraining is precisely the setting that infrastructure page's parallelism strategies (data/tensor/pipeline parallelism, FSDP, mixed precision) exists for, run continuously for weeks across thousands of GPUs.
 - **Pretraining evaluation**: tracked primarily via the training loss curve itself (see the [animated training-loss visual](/docs/deep-learning/training-deep-networks)) and **perplexity** on a held-out set (literally $e^{\text{cross-entropy loss}}$ — how "surprised" the model is by held-out text, lower is better), plus periodic evaluation against standard benchmarks to track emerging capabilities over the course of the run, not just at the end.
 
@@ -83,6 +104,18 @@ SFT alone isn't enough to capture nuanced preferences ("this response is *better
 A simpler alternative to RLHF: instead of training a separate reward model and running full RL, DPO reformulates the preference-learning objective so it can be optimized *directly* on preference pairs (chosen vs. rejected response) with a supervised-learning-style loss. Removes the complexity and instability of RL while achieving comparable results — widely adopted because it's simpler to implement and tune.
 
 <DpoVsRlhfDiagram />
+
+<GoDeeper title="Go deeper: the actual DPO loss, and what its gradient does">
+
+"Reformulates the objective" is precise enough to actually show. [Rafailov et al.'s DPO paper](https://arxiv.org/abs/2305.18290) starts from the same KL-constrained reward-maximization objective RLHF optimizes with PPO, and shows it has a closed-form optimal policy — which can be algebraically inverted to express the *reward* directly in terms of the *policy's* own log-probabilities relative to the reference model. Substituting that reparameterized reward into the Bradley-Terry preference model (the standard "probability response $y_w$ is preferred over $y_l$" formula) eliminates the reward function entirely, leaving a loss defined purely on the policy:
+
+$$\mathcal{L}_{\text{DPO}}(\pi_\theta;\pi_{\text{ref}}) = -\mathbb{E}_{(x,y_w,y_l)\sim D}\left[\log\sigma\left(\beta\log\frac{\pi_\theta(y_w\mid x)}{\pi_{\text{ref}}(y_w\mid x)} - \beta\log\frac{\pi_\theta(y_l\mid x)}{\pi_{\text{ref}}(y_l\mid x)}\right)\right]$$
+
+$y_w$ is the preferred ("winning") response, $y_l$ the dispreferred ("losing") one, and $\beta$ the same KL-strength hyperparameter that constrains RLHF away from the reference model — here it directly scales how sharply the loss reacts to a given policy/reference log-ratio gap. No reward model, no sampling, no RL training loop: $\mathcal{L}_{\text{DPO}}$ is a plain classification-style loss computable directly from $(x, y_w, y_l)$ triples and the two models' log-probabilities on them.
+
+The paper's own gradient analysis makes the mechanism concrete: $\nabla_\theta\mathcal{L}_{\text{DPO}}$ increases the model's likelihood of $y_w$ and decreases its likelihood of $y_l$, weighted by *how wrong the model's implicit reward estimate currently is* — examples where the (implicit) reward model still rates the dispreferred response too highly get a larger gradient push than ones it already orders correctly. That implicit weighting is exactly what a separate, explicitly-trained reward model provided in full RLHF — DPO just derives it in closed form instead of learning it as its own network.
+
+</GoDeeper>
 
 ## Group Relative Policy Optimization (GRPO)
 
