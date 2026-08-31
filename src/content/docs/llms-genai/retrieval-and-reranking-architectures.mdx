@@ -5,6 +5,8 @@ sidebar_position: 6.5
 
 import BiEncoderVsCrossEncoderDiagram from '../../../viz/diagrams/BiEncoderVsCrossEncoderDiagram';
 import MaxSimWorkedExample from '../../../viz/diagrams/MaxSimWorkedExample';
+import ThreeWayRetrievalArchitecturesDiagram from '../../../viz/diagrams/ThreeWayRetrievalArchitecturesDiagram';
+import RetrievalFunnelMissDiagram from '../../../viz/diagrams/RetrievalFunnelMissDiagram';
 import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Retrieval & Reranking Architectures: Bi-Encoder, Cross-Encoder, Late Interaction
@@ -18,6 +20,10 @@ Imagine judging how well a recipe matches a grocery list. A **bi-encoder** appro
 Everything below makes that exact: the real formula, and a real worked example with actual numbers.
 
 </ELI5>
+
+All three architectures, same visual grammar, side by side — click a panel:
+
+<ThreeWayRetrievalArchitecturesDiagram />
 
 ## Bi-Encoder: Independent Encoding, Pooled to One Vector
 
@@ -57,8 +63,30 @@ This is the real, unavoidable tradeoff behind late interaction's accuracy: more 
 | Precomputable? | Yes — fully | No | Yes — document side only |
 | Query-time cost | Cheapest — one ANN lookup | Highest — full forward pass per candidate | Middle — MaxSim over stored token vectors |
 | Index storage | Smallest | None to store | Largest — roughly one to two orders of magnitude more than a bi-encoder, per document |
-| Accuracy | Good, loses token-level detail to pooling | Best — full cross-attention between query and document | Strong — near cross-encoder quality on many benchmarks, without the joint forward pass |
+| Accuracy | Good, loses token-level detail to pooling | Best — full cross-attention between query and document | Strong — see the real reranking numbers below |
 | Practical scale | Millions of documents (first-pass retrieval) | Tens to low hundreds of candidates (final reranking) | Thousands to low millions, storage-budget permitting |
+
+<GoDeeper title="Go deeper: real numbers, from the ColBERT paper itself">
+
+"Near cross-encoder quality, much cheaper" is a checkable claim — [Khattab & Zaharia's ColBERT paper](https://arxiv.org/abs/2004.12832) (SIGIR 2020) reports exactly this comparison, reranking the same official BM25 top-1000 candidates on MS MARCO passage ranking (their Table 1, MRR@10 on the dev set, latency measured on one Tesla V100):
+
+| Method | MRR@10 | Reranking latency | FLOPs/query |
+|---|---|---|---|
+| BM25 (no reranking) | 16.7 | — | — |
+| BERT$_\text{base}$ cross-encoder | 36.0 | 10,700 ms | 97 trillion |
+| ColBERT (late interaction) | 34.9 | 61 ms | 7 billion |
+
+ColBERT lands at 34.9 MRR@10 against BERT$_\text{base}$'s 36.0 — a real gap, but only 1.1 points on this scale, while running **~175× faster** ($10{,}700 / 61 \approx 175$) and using **~13,900× fewer FLOPs per query** ($97\text{T} / 7\text{B} \approx 13{,}857$, matching the paper's own reported figure). The paper's own framing: ColBERT "performs no worse than the original adaptation of BERT$_\text{base}$ for ranking... and is only marginally less effective than BERT$_\text{large}$" while being orders of magnitude cheaper — precisely the accuracy-for-cost trade the comparison table above describes, now with the actual numbers behind it.
+
+</GoDeeper>
+
+## Reranking Can't Recover What Retrieval Missed
+
+A point the sections above don't state explicitly, and it matters in production: reranking can only reorder the candidates it's *given*. If the genuinely best-matching document never made it into the first-stage retriever's top-$k$, no reranker — however accurate — ever gets a chance to surface it, because it's never shown to them at all.
+
+<RetrievalFunnelMissDiagram />
+
+This is exactly why first-stage retrieval **recall** — the fraction of truly relevant documents that make it into the retrieved candidate set at all — is as important a production metric as reranking accuracy, not a secondary concern. A perfect cross-encoder reranking a bad top-100 still produces a bad final answer; a mediocre reranker over a top-100 that actually contains the right document has a real chance. It's also a direct argument for late interaction specifically: because MaxSim keeps token-level detail *at the retrieval stage itself* (not just at reranking), it can catch relevant documents a pooled bi-encoder vector would have missed in the first place — moving the "did we even find it" failure mode earlier, where it's cheaper to fix.
 
 ## Which One Production Teams Actually Reach For
 
