@@ -1,0 +1,69 @@
+---
+title: "Retrieval & Reranking Architectures: Bi-Encoder, Cross-Encoder, Late Interaction"
+sidebar_position: 6.5
+---
+
+import BiEncoderVsCrossEncoderDiagram from '../../../viz/diagrams/BiEncoderVsCrossEncoderDiagram';
+import MaxSimWorkedExample from '../../../viz/diagrams/MaxSimWorkedExample';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
+
+# Retrieval & Reranking Architectures: Bi-Encoder, Cross-Encoder, Late Interaction
+
+[RAG's Re-ranking section](/docs/llms-genai/rag#re-ranking-with-cross-encoders) introduces bi-encoders and cross-encoders as the two-stage retrieve-then-rank shape. There's a real third point on that spectrum — **late interaction**, best known via **ColBERT** — that's neither of the other two: it keeps a bi-encoder's precomputability *and* recovers much of a cross-encoder's token-level precision, by never pooling embeddings down to one vector per document in the first place.
+
+<ELI5>
+
+Imagine judging how well a recipe matches a grocery list. A **bi-encoder** approach: summarize the whole recipe into one sentence, summarize the whole list into one sentence, and compare the two summaries — fast, since you can pre-write every recipe's summary once, but you lose detail in the summarizing. A **cross-encoder** approach: read the recipe and the list side by side, very carefully, and judge the match directly — much more accurate, but you have to do this fresh, in full, for every single recipe you're checking, which doesn't scale to a warehouse of a million recipes. **Late interaction** is a third option: keep every individual ingredient's own note (not summarized away), and for each item on the grocery list, find its single best-matching ingredient note in the recipe — no full re-read needed at match time (the notes were already written), but far more precise than one blurry summary-to-summary comparison.
+
+Everything below makes that exact: the real formula, and a real worked example with actual numbers.
+
+</ELI5>
+
+## Bi-Encoder: Independent Encoding, Pooled to One Vector
+
+The query and each document are embedded **independently**, each collapsed (pooled) into a single vector, and compared by cosine similarity. Because documents never depend on the query, their embeddings can be computed once, offline, and indexed for fast approximate nearest-neighbor search across millions of chunks — this is what makes bi-encoders the only architecture of the three that scales to first-pass retrieval over a large corpus. The cost: pooling to one vector necessarily discards token-level detail — two documents that are similar "on average" but differ in one crucial specific term can become indistinguishable after pooling.
+
+## Cross-Encoder: Full Joint Attention, One Score at a Time
+
+The query and *one* candidate document are concatenated and fed through the model **together**, so every token in the query can directly attend to every token in the document (and vice versa) before producing a single relevance score. This is the most accurate of the three — genuine token-level cross-attention, not an after-the-fact comparison of two summaries — but nothing about it is precomputable: the score only exists once you have both the query *and* a specific document in hand, so it's only practical against a small candidate set (tens to low hundreds), never a full corpus.
+
+<BiEncoderVsCrossEncoderDiagram />
+
+## Late Interaction: Per-Token Embeddings, Scored by MaxSim
+
+**Late interaction** — the architecture behind **ColBERT** (Khattab & Zaharia, 2020) — keeps *every token's own embedding*, for both query and document, instead of pooling either down to one vector. Document token embeddings are still precomputed and indexed offline, exactly like a bi-encoder — but at query time, instead of one cosine similarity between two pooled vectors, the model computes **MaxSim**:
+
+$$\text{MaxSim}(Q, D) = \sum_{i=1}^{|Q|} \max_{j=1}^{|D|} \left(q_i \cdot d_j\right)$$
+
+For every query token embedding $q_i$, find the single document token embedding $d_j$ it matches best (the maximum similarity, not an average), then sum those best-matches across every query token. No document ever gets collapsed into one vector, so no fine-grained detail is lost to pooling — but because every document token embedding was already computed and indexed ahead of time, nothing at query time requires running the model on the document again.
+
+<MaxSimWorkedExample />
+
+The worked example above is worth reading closely for exactly the case a bi-encoder or a pure keyword match would miss: query token "sat" has no exact match anywhere in the document, but MaxSim still finds real signal by matching it against "was" — a genuine semantic near-match surfaced *because* the comparison happens per token, before anything gets pooled or reduced to exact-term matching.
+
+<GoDeeper title="Go deeper: why late interaction needs an index per token, not per document">
+
+The precomputability that makes late interaction fast comes with a direct storage cost, visible straight from the worked example's shapes. A bi-encoder indexes one vector per document, full stop — a corpus of a million documents needs a million stored vectors. Late interaction instead indexes one vector *per token* of every document: the 5-token toy document above alone needed 5 stored embeddings, not 1. At real scale, a corpus of a million documents averaging, say, 200 tokens each needs on the order of 200 million stored token embeddings — roughly two orders of magnitude more storage than a bi-encoder index of the same corpus.
+
+This is the real, unavoidable tradeoff behind late interaction's accuracy: more storage and more numbers to search through at query time (MaxSim has to scan every document's token embeddings, not one pooled vector), in exchange for keeping token-level detail alive. Production ColBERT systems (ColBERTv2, and the PLAID retrieval engine built on it) spend real engineering effort specifically compressing this index — residual compression and centroid-based quantization of token embeddings — precisely because the raw per-token index is otherwise too large to serve at web scale. **RAGatouille** is a widely used library that wraps ColBERT/PLAID for exactly this reason: making late-interaction retrieval practical to actually deploy, not just a research architecture.
+
+</GoDeeper>
+
+## Comparing the Three
+
+| | Bi-Encoder | Cross-Encoder | Late Interaction (ColBERT) |
+|---|---|---|---|
+| What's stored per document | One pooled vector | Nothing (scored fresh) | One vector *per token* |
+| Precomputable? | Yes — fully | No | Yes — document side only |
+| Query-time cost | Cheapest — one ANN lookup | Highest — full forward pass per candidate | Middle — MaxSim over stored token vectors |
+| Index storage | Smallest | None to store | Largest — roughly one to two orders of magnitude more than a bi-encoder, per document |
+| Accuracy | Good, loses token-level detail to pooling | Best — full cross-attention between query and document | Strong — near cross-encoder quality on many benchmarks, without the joint forward pass |
+| Practical scale | Millions of documents (first-pass retrieval) | Tens to low hundreds of candidates (final reranking) | Thousands to low millions, storage-budget permitting |
+
+## Which One Production Teams Actually Reach For
+
+- **Bi-encoder**: the default choice for first-pass retrieval at real scale — it's the only one of the three that can search millions of chunks directly, so it's almost always the first stage in any RAG pipeline, regardless of what runs after it.
+- **Cross-encoder**: the standard choice for a *final* reranking pass over a small candidate set a bi-encoder (or late interaction) has already narrowed down to tens or low hundreds — maximum accuracy exactly where it's affordable.
+- **Late interaction / ColBERT**: reached for either as a *middle-ground reranker* — more accurate than a bi-encoder's cosine similarity, cheaper than running a full cross-encoder over the same candidates — or, when the storage budget allows, as the **first-stage retriever itself** (PLAID-style deployments), when token-level precision matters enough at the retrieval stage to be worth the larger index.
+
+Next: back to [RAG](/docs/llms-genai/rag) for how retrieval and reranking fit into the full pipeline, or [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns) for embedding/reranker inference in production.

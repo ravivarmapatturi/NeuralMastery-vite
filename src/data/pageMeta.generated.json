@@ -784,6 +784,13 @@
       "sidebarPosition": 6,
       "description": null
     },
+    "/docs/llms-genai/retrieval-and-reranking-architectures": {
+      "slug": "llms-genai/retrieval-and-reranking-architectures",
+      "section": "llms-genai",
+      "title": "Retrieval & Reranking Architectures: Bi-Encoder, Cross-Encoder, Late Interaction",
+      "sidebarPosition": 6.5,
+      "description": null
+    },
     "/docs/llms-genai/roadmap": {
       "slug": "llms-genai/roadmap",
       "section": "llms-genai",

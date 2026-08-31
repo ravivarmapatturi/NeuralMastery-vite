@@ -109,6 +109,8 @@ The retrieval step above (dense, sparse, or hybrid) has to be fast enough to sea
 
 <BiEncoderVsCrossEncoderDiagram />
 
+A third architecture sits between these two: **late interaction** (ColBERT) keeps a *separate* embedding per token instead of pooling to one vector per document, and scores query-document pairs via **MaxSim** — for each query token, the single best-matching document token, summed. Document token embeddings stay precomputable and indexable, like a bi-encoder's, but nothing gets collapsed away, so it recovers much of a cross-encoder's precision without the joint forward pass. See [Retrieval & Reranking Architectures](/docs/llms-genai/retrieval-and-reranking-architectures) for the real MaxSim formula, a fully worked numeric example, and a three-way comparison of when production systems reach for each of the three.
+
 ## Query Transformation
 
 - **HyDE (Hypothetical Document Embeddings)**: have the LLM first generate a *hypothetical* answer to the query, then embed and search using *that* instead of the raw query — often more similar to real relevant documents than the terse original question.
