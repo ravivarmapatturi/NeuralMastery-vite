@@ -11,10 +11,19 @@ import RankSpanDiagram from '../../../viz/diagrams/RankSpanDiagram';
 import EigenvectorPowerIterationDiagram from '../../../viz/diagrams/EigenvectorPowerIterationDiagram';
 import SvdCompressionDiagram from '../../../viz/diagrams/SvdCompressionDiagram';
 import QuadraticFormContourDiagram from '../../../viz/diagrams/QuadraticFormContourDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 
 # Linear Algebra for AI
 
 Every number an AI model works with — a pixel, a word, a weight — is stored and manipulated as a vector or a matrix. Linear algebra is the language that makes that manipulation precise.
+
+<ELI5>
+
+Think of a vector as an arrow: it points somewhere and has a length. A matrix is a machine that takes an arrow in and spits a (possibly stretched, possibly rotated) arrow back out — matrix multiplication is just "run this arrow through the machine." Almost everything on this page is really one question, asked about that machine in different ways: does it stretch space, squash it flat, rotate it, or leave certain special directions completely alone (eigenvectors)? A neural network layer *is* one of these machines — an input vector goes in, a matrix multiplication (plus a nudge and a nonlinearity) transforms it, and out comes the next layer's input.
+
+Everything below makes that same idea exact: the real formulas, and why the special cases — eigenvectors, SVD, positive-definiteness — matter for anything you'll actually build.
+
+</ELI5>
 
 ## Intuition: Numbers, Directions, and Functions
 
@@ -64,6 +73,24 @@ For a square matrix $A$, an eigenvector $\mathbf{v}$ is a vector whose direction
 
 **Intuition**: eigenvectors are the "natural axes" of a transformation — the directions where the matrix acts like simple scaling instead of full rotation/shearing. This is the basis of PCA (Principal Component Analysis): the eigenvectors of a dataset's covariance matrix are the directions of maximum variance in the data. Power iteration, exactly as shown above, is also how real large-scale eigensolvers find a dominant eigenvector without ever forming a full eigendecomposition — the same core idea behind PageRank.
 
+<GoDeeper title="Go deeper: why power iteration actually converges">
+
+The diagram shows it happening; here's why it *must* happen. Assume $A$ has a unique dominant eigenvalue $\lambda_1$ (largest in magnitude) with eigenvectors $u_1,\ldots,u_n$ forming a basis — true for almost any real matrix worth running this on. Any starting vector $v_0$ can be written as a combination of those eigenvectors:
+
+$$v_0 = c_1 u_1 + c_2 u_2 + \cdots + c_n u_n$$
+
+Applying $A$ once multiplies each term by its own eigenvalue ($Au_i = \lambda_i u_i$), so applying $A$ $k$ times multiplies each term by $\lambda_i^k$:
+
+$$A^k v_0 = c_1 \lambda_1^k u_1 + c_2 \lambda_2^k u_2 + \cdots + c_n \lambda_n^k u_n$$
+
+Factor out $\lambda_1^k$ from every term:
+
+$$A^k v_0 = \lambda_1^k \left[c_1 u_1 + c_2\left(\frac{\lambda_2}{\lambda_1}\right)^{\!k} u_2 + \cdots + c_n\left(\frac{\lambda_n}{\lambda_1}\right)^{\!k} u_n\right]$$
+
+Since $\lambda_1$ is strictly the largest in magnitude, every ratio $|\lambda_i/\lambda_1| < 1$ for $i \neq 1$ — and anything less than 1 raised to an ever-larger power $k$ shrinks toward exactly 0. So as $k \to \infty$, every term except the first vanishes, and the bracketed expression converges to just $c_1 u_1$: pure dominant-eigenvector direction, nothing else left. The $\lambda_1^k$ factor out front is exactly why the algorithm renormalizes every single step — without it, that factor would overflow or underflow long before the direction finished converging. As a bonus, this derivation also explains *when* power iteration converges slowly: the rate is governed by $|\lambda_2/\lambda_1|$ — the closer the top two eigenvalues are to each other, the closer that ratio is to 1, and the more steps it takes for the second term to actually die out.
+
+</GoDeeper>
+
 ## Singular Value Decomposition (SVD)
 
 Any matrix $A$ (even non-square) can be decomposed as $A = U \Sigma V^T$, where $U$ and $V$ are orthogonal matrices and $\Sigma$ is diagonal with non-negative values (the singular values), sorted largest to smallest. A real, hand-verifiable decomposition — genuinely orthonormal $U$/$V$, three rank-1 terms with decreasing singular values — truncated live:
@@ -71,6 +98,22 @@ Any matrix $A$ (even non-square) can be decomposed as $A = U \Sigma V^T$, where 
 <SvdCompressionDiagram />
 
 If you understand SVD, you understand why "compressing" a matrix by keeping only the top-$k$ singular values loses the *least* information possible for that compression level (the Eckart-Young theorem, made concrete above) — this is exactly the intuition behind low-rank approximations used in efficient LLM fine-tuning (LoRA), recommender systems (matrix factorization: decomposing a user-item ratings matrix), and model compression.
+
+<GoDeeper title="Go deeper: what the Eckart-Young theorem actually says">
+
+"Loses the least information possible" is a precise, provable claim, not just a reassuring phrase — worth stating exactly. Sort the singular values descending, $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r > 0$, and build the rank-$k$ truncation by keeping only the top $k$ terms of the decomposition:
+
+$$A_k = \sum_{i=1}^{k} \sigma_i\, u_i v_i^T$$
+
+**Eckart-Young theorem**: among *every* possible rank-$k$ matrix $B$ (not just ones built from $A$'s own singular vectors), $A_k$ is the one that minimizes the reconstruction error $\|A - B\|_F$ (Frobenius norm — the square root of the sum of every squared entry in the difference). No other rank-$k$ matrix, however cleverly constructed, gets closer to $A$ than $A_k$ does.
+
+Even more useful: the *exact* error $A_k$ achieves is computable directly from the singular values you threw away, with nothing else needed:
+
+$$\|A - A_k\|_F = \sqrt{\sigma_{k+1}^2 + \sigma_{k+2}^2 + \cdots + \sigma_r^2}$$
+
+This is precisely why keeping the *largest* singular values and discarding the *smallest* ones is the right compression strategy, not an arbitrary convention: the reconstruction error is a direct, computable function of exactly which singular values got dropped, and since they're sorted descending, dropping the smallest ones minimizes that sum by construction. Truncating any other subset of $k$ singular values — keeping some small ones and dropping some large ones — would strictly increase this same formula's value.
+
+</GoDeeper>
 
 ## Quadratic Forms and Positive (Semi-)Definite Matrices
 
