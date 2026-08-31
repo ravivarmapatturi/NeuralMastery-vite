@@ -56,6 +56,19 @@ This distinction matters for the fix: data drift can sometimes be handled by ret
 
 <DataVsConceptDriftDiagram />
 
+## A Real, Proven Example: PSI + KS-Test, Actually Validated
+
+Everything above is the theory — real, but unverified until it's actually run against known ground truth. [`ml-drift-monitor`](https://github.com/ravivarmapatturi/ml-drift-monitor) implements the exact PSI formula from above, plus the KS-test, around a real XGBoost fraud model (trained on the real 284,807-transaction ULB credit-card-fraud dataset, AP 0.869 / ROC-AUC 0.975 on held-out data) — and then does the part most drift-detection writeups skip: proves the detector itself is correct, rather than just running it once and trusting the output.
+
+**The proof.** A static historical dataset never contains real *future* drift by definition — validating a detector needs a *known*, controlled amount of drift to check the detector's response against. Two things get measured against that known ground truth:
+
+- **False-positive rate, empirically measured, not assumed**: 50 independent 5,000-row samples of real, genuinely non-drifted data, scored across 29 features — 1,450 independent KS tests. 80 flagged, an empirical rate of 5.52% against KS's nominal 5% alpha. That's what "well-calibrated" actually looks like measured, not just claimed.
+- **Detection power as a function of injected severity**: sweeping a synthetic feature shift from 0 to a full standard deviation produces a PSI that increases *monotonically* on the shifted feature (0.0004 → 1.40) — and shifting exactly 8 of 29 features flags exactly those 8, with zero false spillover onto the other 21.
+
+**A finding worth knowing before you rely on either metric**: with real-world sample sizes (~57,000 rows here), the KS-test's p-value becomes extremely significant (p < 1e-79) at even a 10% injected shift — statistical significance stops meaning practical significance once N is large enough. PSI, which measures the *magnitude* of a distribution shift rather than the confidence that any shift occurred at all, correctly stays in "none"/"moderate" territory at that same severity. This is exactly why PSI is the practical-magnitude gate in production monitoring and a p-value-based test is at most a secondary, corroborating signal — not the reverse.
+
+**A real bug this caught**: the project's first drift-verdict logic flagged "any drift detected" whenever *either* PSI was significant *or* the KS-test fired. Given the measured 5.52% KS false-positive rate across ~29 monitored features, that meant the headline verdict was `True` on almost every real comparison, drifted or not — caught by actually reading the dashboard's rendered output rather than trusting a passing test suite, and fixed by making PSI (practical magnitude) the verdict signal, with KS demoted to a secondary per-feature diagnostic. The exact kind of gap between "the code runs" and "the code is right" that only shows up when you check what a detector actually outputs against a case you already know the answer to.
+
 ## Tools
 
 - **Evidently**: open-source, generates drift and data-quality reports/dashboards comparing a reference and current dataset — the most common starting point.
