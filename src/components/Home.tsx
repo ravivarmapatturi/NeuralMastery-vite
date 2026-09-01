@@ -5,17 +5,19 @@ import { getSidebar, getFlatPages } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
+import { DomainIcon } from './icons/DomainIcons';
 
-/** section id (e.g. "mlops") -> its parent group's icon/color, so each of
+/** section id (e.g. "mlops") -> its parent group's key/color, so each of
  * the 32 topic cards below can carry real visual identity without
  * changing which page it links to -- decoration only, same routes as
- * before. Falls back to a plain dot for any section not in a group. */
-function buildSectionAccent(): Record<string, { icon: string; color: string }> {
-  const accent: Record<string, { icon: string; color: string }> = {};
+ * before. Falls back to undefined for any section not in a group (none
+ * currently, but new content dirs can lag a SECTION_META update). */
+function buildSectionAccent(): Record<string, { groupKey: string; color: string }> {
+  const accent: Record<string, { groupKey: string; color: string }> = {};
   for (const key of SECTION_ORDER) {
     const meta = SECTION_META[key];
     for (const sub of meta.subsections) {
-      accent[sub.dir] = { icon: meta.icon, color: meta.color };
+      accent[sub.dir] = { groupKey: key, color: meta.color };
     }
   }
   return accent;
@@ -56,10 +58,11 @@ export default function Home() {
           }}
         >
         <h1
+          className="nm-display"
           style={{
-            fontSize: 'clamp(2rem, 4.5vw, 3rem)',
-            fontWeight: 800,
-            lineHeight: 1.15,
+            fontSize: 'clamp(1.7rem, 4vw, 2.6rem)',
+            fontWeight: 700,
+            lineHeight: 1.25,
             margin: '0 0 1rem',
             color: 'var(--nm-text-primary)',
           }}
@@ -127,10 +130,11 @@ export default function Home() {
       >
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem' }}>
         <h2
+          className="nm-display"
           style={{
-            fontSize: 13,
+            fontSize: 12,
             fontWeight: 700,
-            letterSpacing: '0.06em',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: 'var(--nm-text-muted)',
             marginBottom: '1.25rem',
@@ -158,20 +162,35 @@ export default function Home() {
                   padding: '1.25rem',
                   borderRadius: 12,
                   border: '1px solid var(--nm-border)',
-                  borderTop: a ? `3px solid ${a.color}` : '1px solid var(--nm-border)',
-                  background: 'var(--nm-surface)',
+                  borderTop: a ? `4px solid ${a.color}` : '1px solid var(--nm-border)',
+                  background: a ? `color-mix(in srgb, ${a.color} 5%, var(--nm-surface))` : 'var(--nm-surface)',
                   textDecoration: 'none',
                   transition: 'border-color 120ms ease, transform 120ms ease',
                 }}
                 className="nm-home-card"
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                  {a && <span style={{ fontSize: 15 }}>{a.icon}</span>}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  {a && (
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 28,
+                        height: 28,
+                        borderRadius: 8,
+                        flexShrink: 0,
+                        background: `color-mix(in srgb, ${a.color} 16%, transparent)`,
+                      }}
+                    >
+                      <DomainIcon groupKey={a.groupKey} color={a.color} size={16} />
+                    </span>
+                  )}
                   <span style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)' }}>
                     {section.label}
                   </span>
                 </div>
-                <div style={{ fontSize: 13, color: 'var(--nm-text-muted)' }}>
+                <div className="nm-display" style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>
                   {section.pages.length} page{section.pages.length === 1 ? '' : 's'}
                 </div>
               </Link>

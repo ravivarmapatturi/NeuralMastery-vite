@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { getSidebar } from '../../lib/contentTree';
+import { getGroupForSubsection } from '../../data/sectionMeta';
+import { DomainIcon } from '../icons/DomainIcons';
 
 const EXPANDED_KEY = 'neural-mastery-sidebar-expanded-sections';
 
@@ -71,6 +73,7 @@ export default function Sidebar({
       {sections.map((section) => {
         const sectionActive = section.id === activeSection?.id;
         const isOpen = section.id === openSectionId;
+        const group = getGroupForSubsection(section.id);
         return (
           <div key={section.id} style={{ marginBottom: '1.25rem' }}>
             <button
@@ -84,7 +87,8 @@ export default function Sidebar({
                 width: '100%',
                 background: 'transparent',
                 border: 'none',
-                padding: 0,
+                borderLeft: group ? `2.5px solid ${group.meta.color}` : 'none',
+                padding: group ? '0 0 0 6px' : 0,
                 cursor: 'pointer',
                 fontSize: 11,
                 fontWeight: 700,
@@ -106,6 +110,7 @@ export default function Sidebar({
               >
                 ▶
               </span>
+              {group && <DomainIcon groupKey={group.key} color={group.meta.color} size={13} />}
               <span style={{ flex: 1 }}>{section.label}</span>
             </button>
             {isOpen &&

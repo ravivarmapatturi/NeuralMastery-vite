@@ -99,7 +99,22 @@
   --color-accent-purple: var(--nm-accent-purple);
   --color-accent-teal: var(--nm-accent-teal);
 
-  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* UI chrome (nav, buttons, sidebar labels) -- deliberately a plain system
+     stack, not a loaded webfont. This is boring on purpose: it's not a
+     brand moment, and Inter was declared here before but never actually
+     loaded (no <link>, so every browser was silently already falling back
+     to this exact stack) -- making it explicit instead of aspirational. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Brand/display face: wordmark, section eyebrows, homepage hero headline,
+     big stat numbers, domain-card category labels. Distinctive and
+     technical -- deliberately not Inter/Space Grotesk, matching a platform
+     whose actual subject matter is code, math notation, and computation. */
+  --font-display: 'Space Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  /* Body/lesson-prose face: Literata is built specifically for long-form
+     reading (Google Play Books uses it) -- this site's pages are dense,
+     long-form technical reading, so readability-at-length matters more
+     here than for a typical product's marketing copy. */
+  --font-body: 'Literata', Georgia, 'Times New Roman', serif;
 }
 
 body {
@@ -133,6 +148,20 @@ body {
   max-width: 100%;
   line-height: 1.7;
   font-size: 16px;
+  font-family: var(--font-body);
+}
+/* Headings stay on the neutral UI face -- Literata's serif reads well for
+   paragraphs at length but gets heavy/decorative at heading weights; this
+   matches how Literata itself is typically paired (serif body, sans
+   headings) rather than serif everywhere. */
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: var(--font-sans);
+}
+/* Brand/display moments: wordmark, section eyebrows, big stat numbers,
+   homepage hero headline, domain-card category labels. Not for body text
+   or UI chrome -- see the --font-display definition above for why. */
+.nm-display {
+  font-family: var(--font-display);
 }
 .prose h1 { font-size: 2.25rem; font-weight: 800; margin: 0 0 1rem; letter-spacing: -0.02em; }
 .prose h2 { font-size: 1.5rem; font-weight: 700; margin: 2.25rem 0 0.75rem; letter-spacing: -0.01em; }

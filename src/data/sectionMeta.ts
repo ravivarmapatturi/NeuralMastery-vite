@@ -144,6 +144,17 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
 
 export const SECTION_ORDER: string[] = Object.keys(SECTION_META);
 
+/** Given a sidebar subsection's folder name (e.g. "deep-learning"), find
+ * its parent top-level group -- key + metadata -- the lookup the visual-
+ * identity system (sidebar section headers, homepage cards) uses to
+ * color/iconify each of the ~30 fine-grained subsections by its ONE
+ * parent domain color, rather than needing ~30 separate colors (illegible
+ * past a handful). */
+export function getGroupForSubsection(dir: string): { key: string; meta: SectionMetaEntry } | undefined {
+  const key = SECTION_ORDER.find((k) => SECTION_META[k].subsections.some((s) => s.dir === dir));
+  return key ? { key, meta: SECTION_META[key] } : undefined;
+}
+
 export const TOTAL_PAGES: number = SECTION_ORDER.reduce((sum, key) => sum + SECTION_META[key].pageCount, 0);
 
 /** "4-7 hrs (17 pages)" -- a 15-25 min/page range, not false precision. */
