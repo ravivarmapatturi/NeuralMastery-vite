@@ -135,7 +135,16 @@ export function getFlatPages(): DocPage[] {
 }
 
 export function getPageByRoute(route: string): DocPage | undefined {
-  return allPages.find((p) => p.route === route);
+  // GitHub Pages 301-redirects a bare directory path ("/docs/foo") to its
+  // trailing-slash form ("/docs/foo/") when a matching directory/index.html
+  // exists there (confirmed against production) -- which the static
+  // prerendering in scripts/prerender-for-pagefind.mjs now produces for
+  // every route. Stored routes never carry a trailing slash, so without
+  // normalizing here, landing on the redirected URL would show "Page Not
+  // Found" once this component takes over client-side, even though the
+  // pre-rendered HTML the browser just displayed was correct.
+  const normalized = route.length > 1 && route.endsWith('/') ? route.slice(0, -1) : route;
+  return allPages.find((p) => p.route === normalized);
 }
 
 export function getPrevNext(route: string): { prev?: DocPage; next?: DocPage } {

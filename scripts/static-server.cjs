@@ -70,6 +70,21 @@ const server = http.createServer((req, res) => {
     return send(res, 200, filePath);
   }
 
+  // Real GitHub Pages behavior, confirmed directly against production
+  // (curl -I on a bare directory path returns a real 301): a bare path with
+  // no trailing slash 301-redirects to the trailing-slash form when
+  // `<path>/index.html` exists on disk, before falling through to 404. This
+  // matters for testing the static-prerendered /docs/* pages locally --
+  // without reproducing it here, a passing local check wouldn't actually
+  // prove the deployed site behaves the same way.
+  if (!pathname.endsWith('/')) {
+    const asDir = path.join(DIST, rel, 'index.html');
+    if (asDir.startsWith(DIST) && fs.existsSync(asDir) && fs.statSync(asDir).isFile()) {
+      res.writeHead(301, { Location: `${pathname}/${url.search}` });
+      return res.end();
+    }
+  }
+
   // Real GitHub Pages behavior for any unmatched path: serve 404.html with
   // a 404 status (not 200, not a silent index.html rewrite).
   const notFound = path.join(DIST, '404.html');

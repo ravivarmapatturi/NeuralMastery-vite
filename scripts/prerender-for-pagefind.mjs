@@ -3,18 +3,32 @@
 // id="root">` until React renders, so running `pagefind --site dist`
 // directly indexes zero words (verified: it does, and fails the build).
 //
-// Fix, scoped to index generation only: boot the real production build
-// (via scripts/static-server.cjs, which reproduces GitHub Pages' base-path
-// + no-SPA-fallback behavior), visit every real /docs/* route in a headless
-// browser, and snapshot each route's fully-rendered HTML into a throwaway
-// directory. Pagefind then indexes THAT directory, and --output-path writes
-// the resulting index into dist/pagefind -- so the search bundle that ships
-// is generated from the actual rendered content of the actual production
-// build, without changing what's deployed (dist/ itself stays the plain SPA
-// shell + assets + 404.html; the prerender directory is scratch-only).
+// Fix: boot the real production build (via scripts/static-server.cjs,
+// which reproduces GitHub Pages' base-path + no-SPA-fallback behavior),
+// visit every real /docs/* route in a headless browser, and snapshot each
+// route's fully-rendered HTML. Pagefind indexes the snapshot written to
+// .pagefind-prerender/, and --output-path writes the resulting index into
+// dist/pagefind.
 //
-// This produces a real, usable search index as a CI/build artifact. Wiring
-// an actual search UI into the app is a separate, later concern (Phase 3).
+// This same rendering pass ALSO writes each snapshot into
+// dist/<route>/index.html -- a real, per-route static HTML file with real
+// rendered content, not just the generic SPA shell. This closes a real
+// crawlability bug: GitHub Pages has exactly one physical file
+// (dist/index.html) for a client-side-only SPA, so every /docs/* URL
+// previously 404'd (real HTTP 404 status, generic untitled body) for any
+// client that doesn't execute JS -- WebFetch, most crawlers, link-preview
+// bots -- even though a real browser renders it fine once React boots.
+// Confirmed directly: `curl -I` against the deployed site returned 404 for
+// a real content page. Writing a real file at each route's path means
+// GitHub Pages serves a genuine 200 with real content there instead; the
+// browser-facing behavior is unchanged, since the file still ships the
+// same JS bundle and React still boots and takes over the DOM normally.
+//
+// GitHub Pages 301-redirects a bare directory path ("/docs/foo") to its
+// trailing-slash form ("/docs/foo/") once dist/docs/foo/index.html exists
+// (confirmed against production) -- src/lib/contentTree.ts's
+// getPageByRoute() normalizes that trailing slash away so the client-side
+// router still matches correctly after the redirect lands.
 import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync, rmSync, readdirSync, statSync, existsSync } from 'node:fs';
@@ -22,6 +36,7 @@ import { join, relative, extname, dirname } from 'node:path';
 
 const ROOT = join(import.meta.dirname, '..');
 const CONTENT_ROOT = join(ROOT, 'src', 'content', 'docs');
+const DIST_DIR = join(ROOT, 'dist');
 const PRERENDER_DIR = join(ROOT, '.pagefind-prerender');
 const PORT = 4174;
 const BASE = '/NeuralMastery-vite';
@@ -91,15 +106,22 @@ async function main() {
         await page.goto(`http://localhost:${PORT}${BASE}${route}`, { waitUntil: 'domcontentloaded' });
         await page.waitForSelector('article.prose', { timeout: 10000 });
         const html = await page.content();
-        const outFile = join(PRERENDER_DIR, route.replace(/^\//, ''), 'index.html');
-        mkdirSync(dirname(outFile), { recursive: true });
-        writeFileSync(outFile, html);
+
+        const pagefindOutFile = join(PRERENDER_DIR, route.replace(/^\//, ''), 'index.html');
+        mkdirSync(dirname(pagefindOutFile), { recursive: true });
+        writeFileSync(pagefindOutFile, html);
+
+        // Real, crawlable static HTML at the route's own path in dist/ --
+        // see the file header for why this exists.
+        const distOutFile = join(DIST_DIR, route.replace(/^\//, ''), 'index.html');
+        mkdirSync(dirname(distOutFile), { recursive: true });
+        writeFileSync(distOutFile, html);
       }
       await page.close();
     }
     await Promise.all(Array.from({ length: CONCURRENCY }, worker));
     await browser.close();
-    console.log(`prerender-for-pagefind: wrote ${routes.length} rendered page(s) to ${relative(ROOT, PRERENDER_DIR)}/`);
+    console.log(`prerender-for-pagefind: wrote ${routes.length} rendered page(s) to ${relative(ROOT, PRERENDER_DIR)}/ and to ${relative(ROOT, DIST_DIR)}/<route>/`);
   } finally {
     server.kill();
   }

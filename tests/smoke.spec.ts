@@ -78,14 +78,21 @@ test.describe('Core application', () => {
     expect(errors.errors()).toEqual([]);
   });
 
-  test('directly opening a deep link works (GitHub Pages 404-fallback)', async ({ page }) => {
+  test('directly opening a deep link works (prerendered static page)', async ({ page }) => {
     // Simulates a user pasting/refreshing a deep URL rather than navigating
-    // via the app -- exactly the case scripts/copy-404.mjs exists for.
+    // via the app. scripts/prerender-for-pagefind.mjs now writes a real
+    // dist/<route>/index.html per route, so GitHub Pages serves a genuine
+    // 200 with real content here (confirmed: no bare-path/no-slash form
+    // exists as a literal file, so the server 301s to the trailing-slash
+    // form where the prerendered index.html actually lives -- Playwright's
+    // response, like a browser's, reflects the final response after
+    // following that redirect). This replaced the old GitHub Pages
+    // 404-fallback-then-client-render behavior, which real crawlers/bots
+    // that don't execute JS couldn't see past -- see the header comment on
+    // prerender-for-pagefind.mjs for the full story.
     const errors = collectConsoleErrors(page);
     const response = await page.goto('docs/deep-learning/attention-transformers');
-    // GitHub Pages genuinely serves this with a 404 status -- that's the
-    // fallback mechanism working as intended, not a failure.
-    expect(response?.status()).toBe(404);
+    expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toHaveText('Attention & Transformers');
     await page.reload();
     await expect(page.locator('h1')).toHaveText('Attention & Transformers');
