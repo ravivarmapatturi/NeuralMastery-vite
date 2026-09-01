@@ -104,7 +104,27 @@ async function main() {
       while (cursor < routes.length) {
         const route = routes[cursor++];
         await page.goto(`http://localhost:${PORT}${BASE}${route}`, { waitUntil: 'domcontentloaded' });
-        await page.waitForSelector('article.prose', { timeout: 10000 });
+        // article.prose is DocLayout's STATIC wrapper around a
+        // <Suspense fallback={<div>Loading…</div>}><Component /></Suspense> --
+        // it exists in the DOM the instant DocLayout mounts, well before the
+        // route's lazy-loaded MDX component (or any of ITS OWN lazily-loaded
+        // diagram components) has actually rendered. Waiting on it alone
+        // resolves almost immediately and told this script nothing real about
+        // render completeness -- verified the hard way: it silently produced
+        // truncated snapshots (missing ELI5/GoDeeper content, in some cases
+        // large fractions of the page) specifically under CI's slower/more
+        // contended environment, even though the same code appeared to work
+        // fine locally, purely because local hardware happened to finish
+        // loading everything before `page.content()` was called regardless.
+        // Wait for a real signal instead: an actual heading inside the prose
+        // article (only present once the lazy MDX component itself has
+        // rendered), then let the network go idle so any further lazily-
+        // loaded diagram chunks the MDX just triggered get a real chance to
+        // finish too, then one more short settle for React's paint to catch
+        // up with the network.
+        await page.waitForSelector('article.prose h1', { timeout: 15000 });
+        await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+        await page.waitForTimeout(300);
         const html = await page.content();
 
         const pagefindOutFile = join(PRERENDER_DIR, route.replace(/^\//, ''), 'index.html');
