@@ -1,0 +1,78 @@
+---
+title: "Big Data & Analytics"
+sidebar_position: 4.5
+---
+
+import { Remember } from '../../../components/content/Remember';
+
+# Big Data & Analytics
+
+[Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning) already covers *processing* data too large for one machine (PySpark, distributed transforms) and *versioning* it (Delta Lake, Iceberg). This page covers what happens next: where that processed data actually gets **stored for fast analytical querying**, how it gets **transformed into trustworthy, reusable tables**, and how it ultimately becomes **something a human can look at and decide something from**.
+
+## Cloud Data Warehouses
+
+**What is it?** A database purpose-built for **analytical** queries — aggregating and scanning huge volumes of historical data — as opposed to a transactional database ([relational databases](/docs/databases/relational/overview)) built for many small, fast reads and writes.
+
+**How does it work?** The key structural difference is **columnar storage**: a transactional database stores data row by row (fast to fetch one whole record), while a warehouse stores it column by column (fast to scan just the few columns an aggregation actually needs, across billions of rows, without reading columns the query doesn't touch). **Snowflake**, **BigQuery** (Google Cloud), and **Redshift** (AWS) are the standard managed cloud warehouses — all separate storage from compute, so query capacity can scale up independently of how much data is stored, and scale back down (or to zero) when nobody's querying.
+
+**Why is it useful?** Running a `GROUP BY` aggregation over years of event history on a warehouse takes seconds to minutes; the same query against a row-oriented transactional database, sized for that database's actual job (fast individual lookups), would be dramatically slower or simply infeasible at that data volume.
+
+**Limitation:** Columnar storage is a poor fit for exactly what row-oriented databases are good at — fetching or updating one full record quickly. A warehouse is not a replacement for a transactional database; it's a different tool for a different query shape, the same "different engines, different query shapes" principle [Databases Overview](/docs/databases/overview#three-different-questions-three-different-engines) makes about relational/vector/graph.
+
+<Remember>A warehouse's columnar layout is exactly why it's fast at "aggregate this column across a billion rows" and exactly why it's slow at "fetch this one record" — the opposite tradeoff a transactional database makes, on purpose.</Remember>
+
+## Real-Time Analytical Databases: ClickHouse
+
+**What is it?** A database built specifically for **low-latency analytical queries at high ingest volume** — a narrower, faster niche than a general-purpose warehouse.
+
+**How does it work?** Also columnar, like a warehouse, but optimized specifically for the case a warehouse handles less well: dashboards and monitoring systems that need sub-second aggregate query latency while data is still streaming in continuously, not batch-loaded periodically.
+
+**Why is it useful?** **ClickHouse** is the standard example — used where a warehouse's batch-oriented, minutes-scale query latency is too slow for the actual use case: real-time product analytics, live monitoring dashboards, and observability platforms all reach for this specifically because "aggregate the last five minutes of events, refreshed every second" is a different performance requirement than "aggregate five years of history, refreshed nightly."
+
+**Limitation:** That real-time-query specialization is a narrower fit than a general-purpose warehouse — less mature ecosystem tooling around it, and it's not the right default choice for the broad, ad hoc historical analysis a warehouse is built for.
+
+## Transformation Tooling: dbt
+
+**What is it?** A tool that turns "write SQL to transform raw data into clean, trustworthy tables" from a pile of ad hoc scripts into a version-controlled, testable, dependency-tracked project.
+
+**How does it work?** A dbt **model** is just a SQL `SELECT` statement in a `.sql` file — no boilerplate `CREATE TABLE` needed, dbt handles materializing it. Models reference each other via `{{ ref(...) }}`, and dbt automatically builds the dependency graph between them from those references:
+
+```sql
+-- models/clean_customers.sql
+select
+    id,
+    name,
+    created_at
+from {{ ref('raw_customers') }}
+where deleted_at is null
+```
+
+```bash
+dbt run    # executes the transformation graph, in dependency order
+dbt test   # runs data-quality tests against the resulting tables
+dbt build  # run + test together
+```
+
+**Why is it useful?** Every transformation is real SQL, in version control, with an explicit dependency graph dbt derives automatically from `ref()` calls — changing an upstream model and re-running propagates correctly to everything downstream, and `dbt test` catches a broken assumption (a null where there shouldn't be one, a duplicate key) before it silently corrupts a report or a downstream ML feature.
+
+**Limitation:** dbt transforms data that's already landed in the warehouse — it doesn't extract or load data itself (that's a separate ingestion tool's job), and it inherits whatever compute/query cost the warehouse charges for running its models.
+
+<Remember>dbt's actual innovation isn't SQL itself — it's making SQL transformations version-controlled, testable, and dependency-aware, the same rigor software engineering already expects and analytics work often didn't have before it.</Remember>
+
+## Business Intelligence: Tableau and Power BI
+
+**What is it?** The layer that turns a warehouse's query results into something a non-technical person can actually look at and act on — interactive dashboards and charts, not raw tables.
+
+**How does it work?** **Tableau** and **Power BI** connect directly to a warehouse (or a ClickHouse instance, or a transactional database), let an analyst build visualizations via a drag-and-drop interface rather than hand-writing charting code, and publish the result as a shareable, interactive dashboard.
+
+**Why is it useful?** Most people who need to make a decision from data aren't going to write SQL — a BI tool is the actual last-mile delivery mechanism that turns a well-built warehouse and a clean dbt model into something a product manager or executive can genuinely use.
+
+**Limitation:** A BI dashboard is only as trustworthy as the query and the underlying model feeding it — a beautiful dashboard built on an unvalidated dbt model (or no dbt model at all, just an ad hoc query) is exactly how a confidently wrong number ends up in a real decision.
+
+## Where This Fits in an AI/ML Pipeline
+
+- **Feature engineering at scale**: warehouse-stored historical data is frequently the actual source a [feature store](/docs/mlops/feature-stores-and-model-registry) computes offline features from.
+- **Training data curation**: PySpark processes and cleans raw data (see [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning)); the cleaned result frequently lands in a warehouse for further analysis before becoming a training set.
+- **Monitoring and evaluation dashboards**: [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) and [LLM Evaluation & RAGOps](/docs/mlops/llm-evaluation-and-ragops)'s metrics are frequently piped into exactly this stack — a warehouse or ClickHouse for storage, dbt for transformation, a BI tool for the dashboard a team actually watches day to day.
+
+Next: back to [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning) for how data gets processed and versioned before it lands here, or [MLOps Roadmap](/docs/mlops/roadmap) for the full path through this section.

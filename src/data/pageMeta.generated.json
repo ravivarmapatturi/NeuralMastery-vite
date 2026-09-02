@@ -1141,6 +1141,13 @@
       "sidebarPosition": 22.3,
       "description": null
     },
+    "/docs/mlops/big-data-and-analytics": {
+      "slug": "mlops/big-data-and-analytics",
+      "section": "mlops",
+      "title": "Big Data & Analytics",
+      "sidebarPosition": 4.5,
+      "description": null
+    },
     "/docs/mlops/cicd-and-ml-cicd": {
       "slug": "mlops/cicd-and-ml-cicd",
       "section": "mlops",

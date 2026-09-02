@@ -7,7 +7,7 @@ import EcosystemMapDiagram from '../../../viz/diagrams/EcosystemMapDiagram';
 
 # Technology Ecosystem Map
 
-Every real production system — AI-powered or not — is built from the same rough stack of layers, from a person clicking a button down to the infrastructure that keeps the whole thing running. This page is a map of that stack: what each layer is *for*, in plain English, and where the real depth already lives on this site. Most layers below link straight out to an existing deep-dive — this page's job is orientation and sequencing, not re-explaining what's already covered elsewhere (the same pattern [ML System Design Case Studies](/docs/ml-system-design/case-studies) uses for individual problems). A couple of layers are genuinely thin across the site today; those get a short, honest, inline explanation instead of a fake link to depth that doesn't exist yet.
+Every real production system — AI-powered or not — is built from the same rough stack of layers, from a person clicking a button down to the infrastructure that keeps the whole thing running. This page is a map of that stack: what each layer is *for*, in plain English, and where the real depth already lives on this site. Most layers below link straight out to an existing deep-dive — this page's job is orientation and sequencing, not re-explaining what's already covered elsewhere (the same pattern [ML System Design Case Studies](/docs/ml-system-design/case-studies) uses for individual problems). One layer is genuinely thin across the site today; it gets a short, honest, inline explanation instead of a fake link to depth that doesn't exist yet.
 
 <EcosystemMapDiagram layers={[
   { label: 'Frontend / Client Experience', desc: 'What a user actually sees and interacts with -- a website, a mobile app, a CLI. Thin on this site today (see below) -- intentionally, this platform is about AI/ML systems, not general frontend engineering.', covered: false },
@@ -16,7 +16,7 @@ Every real production system — AI-powered or not — is built from the same ro
   { label: 'API Layer', desc: 'The contract a backend exposes to the outside world -- REST, GraphQL, gRPC, WebSockets/SSE, and when to reach for each.', covered: true },
   { label: 'Backend & Messaging', desc: 'The application logic itself, plus how services communicate asynchronously -- message queues, pub/sub, event-driven processing.', covered: true },
   { label: 'Data Layer', desc: 'Where the system actually keeps its data -- relational, vector, graph, and NoSQL databases, and when each is the right tool.', covered: true },
-  { label: 'Big Data & Analytics', desc: 'Processing and querying data at a scale a single database was never built for -- Spark, warehouses, BI tooling. Thin on this site today (see below).', covered: false },
+  { label: 'Big Data & Analytics', desc: 'Processing and querying data at a scale a single database was never built for -- Spark, warehouses, BI tooling.', covered: true },
   { label: 'AI / ML Layer', desc: 'The models themselves -- classical ML, deep learning, LLMs/GenAI, agents -- and the pipelines that train and serve them.', covered: true },
   { label: 'Infrastructure', desc: 'What actually runs the system -- containers, orchestration, infrastructure-as-code, CI/CD, cloud platforms.', covered: true },
   { label: 'Security, Reliability & Operations', desc: 'Keeping the system safe, correct, and running -- security attack surfaces, observability, monitoring, deployment strategy.', covered: true },
@@ -58,9 +58,7 @@ Whatever the backend computes, it needs somewhere real to persist it.
 
 ## Big Data & Analytics
 
-**What is it, and why does it exist?** Processing and querying data at a scale where a single database instance was never designed to operate — distributed processing (Spark), cloud data warehouses (Snowflake, BigQuery), transformation tooling (dbt), and business-intelligence dashboards (Tableau, Power BI) that turn raw data into something a human can actually read.
-
-This is genuinely thin on this site today — touched only in passing inside [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning), never explained as a category of its own. A real, dedicated treatment of this layer (what each tool is actually for, and when a system has outgrown a single database) is a confirmed gap worth its own future page, not something to gloss over here.
+**What is it, and why does it exist?** Processing and querying data at a scale where a single database instance was never designed to operate. [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning) covers distributed *processing* (PySpark) and *versioning* (Delta Lake, Iceberg); [Big Data & Analytics](/docs/mlops/big-data-and-analytics) covers what happens next — cloud data warehouses (Snowflake, BigQuery, Redshift) and real-time analytical databases (ClickHouse) for fast querying at scale, transformation tooling (dbt) for turning raw data into trustworthy tables, and business-intelligence dashboards (Tableau, Power BI) that turn all of it into something a human can actually read and decide from.
 
 ## AI / ML Layer
 
