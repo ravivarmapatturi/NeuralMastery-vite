@@ -16,6 +16,31 @@ env:
   NODE_VERSION: '22'
 
 jobs:
+  unit-tests:
+    name: vitest unit tests
+    runs-on: ubuntu-latest
+    # Deliberately its own job, not a step tacked onto `ci` below: these are
+    # plain jsdom/node tests with no Playwright browser or MDX build
+    # involved, so a bare ubuntu-latest runner (no container image) is both
+    # correct and fast -- keeping it separate means it starts immediately in
+    # parallel with the heavier build+Playwright job instead of queuing
+    # behind it.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies (deterministic)
+        run: npm ci
+
+      - name: Vitest unit tests
+        run: npm run test:unit
+
   ci:
     name: typecheck, build, pagefind, link-check, smoke tests
     runs-on: ubuntu-latest

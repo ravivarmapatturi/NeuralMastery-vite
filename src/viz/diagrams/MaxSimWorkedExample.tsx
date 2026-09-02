@@ -2,32 +2,18 @@ import { useVizTokens } from '../../theme/vizTokens';
 import { VisualizationContainer, VisualizationHeader } from '../primitives';
 import DiagramMatrix from './DiagramMatrix';
 import { DIAGRAM_TYPE, getConceptColor } from './diagramSystem';
+import {
+  computeMaxSim,
+  MAXSIM_EXAMPLE_DIM_LABELS as DIM_LABELS,
+  MAXSIM_EXAMPLE_DOC_TOKENS as DOC_TOKENS,
+  MAXSIM_EXAMPLE_D as D,
+  MAXSIM_EXAMPLE_QUERY_TOKENS as QUERY_TOKENS,
+  MAXSIM_EXAMPLE_Q as Q,
+} from '../lib/maxsim';
 
-const QUERY_TOKENS = ['cat', 'sat', 'mat'];
-const DOC_TOKENS = ['the', 'cat', 'was', 'on', 'mat'];
-const DIM_LABELS = ['d1', 'd2', 'd3', 'd4'];
-
-// Toy per-token embeddings, small enough to verify by hand. Each row is
-// (loosely) one semantic axis so the story is visible in the raw numbers:
-// d1~animal, d2~action/verb, d3~furniture/object, d4~function-word.
-const Q = [
-  [1, 0, 0, 0], // cat
-  [0.2, 0.8, 0, 0], // sat -- mostly "action", a little "animal-agent"
-  [0, 0, 1, 0], // mat
-];
-const D = [
-  [0, 0, 0, 1], // the
-  [1, 0, 0, 0], // cat
-  [0, 1, 0, 0], // was
-  [0, 0, 0, 1], // on
-  [0, 0, 1, 0], // mat
-];
-
-// Real dot-product similarity, computed live -- not hardcoded.
-const SIM = Q.map((qRow) => D.map((dRow) => qRow.reduce((sum, qv, i) => sum + qv * dRow[i], 0)));
-const MAX_SIMS = SIM.map((row) => Math.max(...row));
-const MAX_INDICES = SIM.map((row) => row.indexOf(Math.max(...row)));
-const MAXSIM_SCORE = MAX_SIMS.reduce((a, b) => a + b, 0);
+// Real dot-product similarity, computed live -- not hardcoded. See
+// src/viz/lib/maxsim.ts for the computation and its unit tests.
+const { similarityMatrix: SIM, maxSims: MAX_SIMS, maxIndices: MAX_INDICES, score: MAXSIM_SCORE } = computeMaxSim(Q, D);
 
 /**
  * Late-interaction (ColBERT-style) scoring, worked out with real numbers:

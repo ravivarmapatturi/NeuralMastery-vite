@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { useVizTokens } from '../../theme/vizTokens';
 import { VisualizationContainer } from '../primitives';
 import { DIAGRAM_TYPE, getConceptColor } from './diagramSystem';
+import { RRF_DEFAULT_K as K, reciprocalRankFusion, rrfScoreForRank } from '../lib/rrf';
 
 const DENSE_RANKING = ['Doc B', 'Doc A', 'Doc D', 'Doc C'];
 const SPARSE_RANKING = ['Doc C', 'Doc B', 'Doc A', 'Doc D'];
-const K = 60; // standard RRF constant
 
 /** Reciprocal Rank Fusion combines two ranked lists using each result's
  * POSITION, not its raw (differently-scaled) score -- 1/(k+rank) per list,
- * summed. Hover a doc to see its two positions add up to its fused rank. */
+ * summed. Hover a doc to see its two positions add up to its fused rank.
+ * See src/viz/lib/rrf.ts for the computation and its unit tests. */
 export default function HybridSearchFusionDiagram() {
   const t = useVizTokens();
   const [hovered, setHovered] = useState<string | null>(null);
@@ -20,10 +21,9 @@ export default function HybridSearchFusionDiagram() {
   const rrfScore = (doc: string) => {
     const dRank = DENSE_RANKING.indexOf(doc) + 1;
     const sRank = SPARSE_RANKING.indexOf(doc) + 1;
-    return 1 / (K + dRank) + 1 / (K + sRank);
+    return rrfScoreForRank(dRank, K) + rrfScoreForRank(sRank, K);
   };
-  const docs = ['Doc A', 'Doc B', 'Doc C', 'Doc D'];
-  const fused = [...docs].sort((a, b) => rrfScore(b) - rrfScore(a));
+  const fused = reciprocalRankFusion([DENSE_RANKING, SPARSE_RANKING], K).map((r) => r.doc);
 
   function Column({ title, ranking, color }: { title: string; ranking: string[]; color: string }) {
     return (

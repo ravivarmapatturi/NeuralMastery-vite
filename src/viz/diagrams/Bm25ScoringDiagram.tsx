@@ -2,17 +2,17 @@ import { useState } from 'react';
 import { useVizTokens } from '../../theme/vizTokens';
 import { VisualizationContainer, Slider, VisualizationMath } from '../primitives';
 import { DIAGRAM_TYPE, getConceptColor } from './diagramSystem';
-
-const K1 = 1.5; // term-frequency saturation constant, standard default
+import { BM25_DEFAULT_K1 as K1, bm25TermFrequencySaturation } from '../lib/bm25';
 
 /** BM25's saturation curve, made draggable: raw term frequency keeps
  * climbing, but the (k1+1)*tf / (k1+tf) term it's wrapped in flattens out
- * fast -- the 5th occurrence barely moves the score above the 1st few. */
+ * fast -- the 5th occurrence barely moves the score above the 1st few.
+ * See src/viz/lib/bm25.ts for the computation and its unit tests. */
 export default function Bm25ScoringDiagram() {
   const t = useVizTokens();
   const [tf, setTf] = useState(5);
   const color = getConceptColor(t, 'attention');
-  const saturated = ((K1 + 1) * tf) / (K1 + tf);
+  const saturated = bm25TermFrequencySaturation(tf, K1);
   const maxSaturated = K1 + 1;
 
   const width = 560;
@@ -27,7 +27,7 @@ export default function Bm25ScoringDiagram() {
   const yForSat = (v: number) => chartBottom - (v / maxSaturated) * (chartBottom - chartTop);
 
   const rawPath = Array.from({ length: maxTf + 1 }, (_, i) => `${i === 0 ? 'M' : 'L'} ${xFor(i)},${yForRaw(i)}`).join(' ');
-  const satPath = Array.from({ length: maxTf + 1 }, (_, i) => `${i === 0 ? 'M' : 'L'} ${xFor(i)},${yForSat(((K1 + 1) * i) / (K1 + i))}`).join(' ');
+  const satPath = Array.from({ length: maxTf + 1 }, (_, i) => `${i === 0 ? 'M' : 'L'} ${xFor(i)},${yForSat(bm25TermFrequencySaturation(i, K1))}`).join(' ');
 
   return (
     <VisualizationContainer footer="Raw term frequency (dashed) keeps climbing linearly. BM25's saturated term (solid) flattens fast toward k1+1 -- exactly the correction that stops a document from scoring 10x higher just for repeating a word 10x.">
