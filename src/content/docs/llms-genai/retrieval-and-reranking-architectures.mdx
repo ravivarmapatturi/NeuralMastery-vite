@@ -38,6 +38,26 @@ All three architectures, same visual grammar, stepped through the same story —
 
 **Why is it useful?** Because a document's embedding never depends on the query, it can be computed once, offline, for every document in the corpus, and stored in a fast approximate-nearest-neighbor index. That precomputation is what lets a bi-encoder search millions of documents in milliseconds — no other architecture on this page can do that.
 
+In code, using the [`sentence-transformers`](https://sbert.net) library — the standard implementation of this pattern:
+
+```python
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
+# Document embeddings: computed once, offline -- this is what makes a
+# bi-encoder index-able. In production this runs once per document at
+# ingestion time, not on every query.
+doc_embeddings = model.encode([
+    "Gradient descent updates parameters by stepping opposite the loss gradient.",
+    "The KV cache stores previously computed Key/Value vectors during generation.",
+])
+
+# Query embedding: the only thing computed at query time.
+query_embedding = model.encode("how does attention caching work")
+similarities = model.similarity(query_embedding, doc_embeddings)
+```
+
 **Limitation:** Pooling to one vector necessarily throws away token-level detail. Two documents that are similar "on average" but differ in one crucial specific term can end up looking identical after pooling — the model simply never gets a chance to compare that one term directly against the query.
 
 <Remember>Bi-encoders are fast because they never let the query and document interact — that same independence is exactly what causes their accuracy ceiling.</Remember>
@@ -55,11 +75,63 @@ A bi-encoder's blind spot — losing detail to pooling — is precisely the gap 
 
 **Why is it useful?** Because the model reads query and document jointly, it can pick up on exactly the kind of fine-grained interaction a bi-encoder's separate pooling step throws away — genuine token-level comparison, not an after-the-fact distance between two summaries. This is the most accurate of the three architectures on this page.
 
+In code, same library, a different class:
+
+```python
+from sentence_transformers import CrossEncoder
+
+model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L6-v2")
+
+# Query and document fed through TOGETHER -- one score per pair, and
+# nothing here is reusable for the next query the way an embedding is.
+scores = model.predict([
+    ("how does attention caching work", "The KV cache stores previously computed Key/Value vectors during generation."),
+    ("how does attention caching work", "Gradient descent updates parameters by stepping opposite the loss gradient."),
+])
+```
+
 **Limitation:** Nothing about a cross-encoder's score is precomputable — it only exists once you have both the query *and* a specific document in hand, together, at the same time. Running it against a full corpus of millions would mean millions of full forward passes per query, which is why it's only practical against a small candidate set: tens to low hundreds of documents, not millions.
 
 <BiEncoderVsCrossEncoderDiagram />
 
 <Remember>A cross-encoder can only score documents it's handed — it's never the thing that searches the corpus, only ever the thing that re-ranks what a faster stage already found.</Remember>
+
+### Retrieve, Then Rerank: Both Stages Together in Code
+
+The two code snippets above aren't run in isolation in production — they're chained, in exactly the order their limitations dictate: the bi-encoder narrows a corpus no cross-encoder could touch directly, and the cross-encoder refines a shortlist too small for the bi-encoder to do accurately on its own.
+
+```python
+from sentence_transformers import SentenceTransformer, CrossEncoder
+
+corpus = [
+    "Linear regression fits a straight line by minimizing squared error.",
+    "Gradient descent updates parameters by stepping opposite the loss gradient.",
+    "Self-attention lets every token attend to every other token via Query, Key, Value projections.",
+    "The KV cache stores previously computed Key/Value vectors during autoregressive generation.",
+    "Retrieval-augmented generation grounds LLM answers in retrieved text chunks.",
+]
+query = "how does attention work in transformers"
+
+# Stage 1 -- bi-encoder: cheap enough to run over the whole corpus. In
+# production, corpus_embeddings would already be precomputed and indexed;
+# encoding them inline here just keeps this example self-contained.
+bi_encoder = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+corpus_embeddings = bi_encoder.encode(corpus)
+query_embedding = bi_encoder.encode(query)
+
+sims = bi_encoder.similarity(query_embedding, corpus_embeddings)[0]  # similarity to every doc
+top_k = sorted(range(len(corpus)), key=lambda i: -sims[i])[:3]
+shortlist = [corpus[i] for i in top_k]
+
+# Stage 2 -- cross-encoder: only reranks the shortlist, never the full corpus.
+cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L6-v2")
+ranked = cross_encoder.rank(query, shortlist)
+
+for r in ranked:
+    print(f"{r['score']:.2f}  {shortlist[r['corpus_id']]}")
+```
+
+This is real, current `sentence-transformers` API (verified directly against [sbert.net](https://sbert.net)'s own docs) — copy-pasteable in your own Python environment, not a browser demo: both models pull in PyTorch and download real weights on first use, too heavy to run inside this page the way the smaller [`RunnableCode`](/docs/deep-learning/attention-transformers) examples elsewhere on this site do.
 
 Cross-encoders buy accuracy by giving up precomputability entirely. Late interaction asks a different question: what if a document's tokens could stay precomputable *without* being pooled away into one vector at all?
 
