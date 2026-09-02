@@ -1,93 +1,112 @@
 import { useVizTokens } from '../../theme/vizTokens';
-import { VisualizationContainer, VisualizationStepController, useStepController } from '../primitives';
-import { DIAGRAM_TYPE, getConceptColor } from './diagramSystem';
+import { VisualizationContainer } from '../primitives';
+import { DIAGRAM_TYPE } from './diagramSystem';
+import { ArrowMarker, CircleNode, CylinderNode, FlowArrow, OutputNode, RectNode } from './architectureShapes';
 
-const STEP_LABELS = ['What goes in', 'What happens', "What's lost / gained", 'Why it matters'];
-const CAPTIONS = [
-  'A query, and a huge corpus of candidate documents -- far too many to run an expensive model against every single one.',
-  'Stage 1: a bi-encoder embeds query and each document SEPARATELY (document embeddings precomputed ahead of time) and ranks by cosine similarity, narrowing millions down to a shortlist. Stage 2: a cross-encoder takes over on just that shortlist.',
-  "Bi-encoder stage: LOST the ability to compare query and document directly (each is embedded alone), GAINED speed -- fast enough for millions. Cross-encoder stage: GAINS full query-document attention on the survivors, at the cost of nothing being precomputable.",
-  'This is exactly why production systems run both, in this order, not one alone: a bad reranker over a good shortlist still finds something reasonable; a great reranker over a bad shortlist never even sees the right answer.',
-];
-
-/** The two-stage retrieval funnel, revealed as a 4-step story: what goes in
- * (a query against a huge corpus) -> what happens (bi-encoder narrows,
- * cross-encoder refines) -> what's lost/gained at each stage -> why
- * production systems chain them in this order. Click a stage to see its
- * own explanation at any step. */
-export default function BiEncoderVsCrossEncoderDiagram() {
+/** Node-type -> color, matching a reference bi-encoder/cross-encoder
+ * architecture figure exactly: input=blue, model/encoding stage=green,
+ * stored representation (cylinder)=amber, scoring computation
+ * (circle)=red, final output box=purple. Reused identically across both
+ * architectures below (and by ThreeWayRetrievalArchitecturesDiagram) so
+ * the SAME color always means the SAME kind of node, everywhere. */
+function useArchColors() {
   const t = useVizTokens();
-  const controller = useStepController(STEP_LABELS.length, 1600);
-  const reveal = controller.step;
-  const biColor = getConceptColor(t, 'query');
-  const crossColor = getConceptColor(t, 'attention');
+  return {
+    t,
+    input: t.accentSecondary,
+    model: t.accentPrimary,
+    stored: t.accentWarn,
+    scoring: t.accentDanger,
+    output: t.accentPurple,
+  };
+}
 
-  const width = 580;
-  const height = 220;
+// Shared column x-positions -- both architecture rows place the same
+// KIND of node (input / model stage / stored representation / scoring /
+// output) at the same x, so the two flows visually line up stage-by-stage
+// even though they're stacked in separate rows, not side by side.
+const COL = { input: 10, model: 135, stored: 250, score: 315, output: 375 };
+const W = { input: 110, model: 100, stored: 50, score: 44, output: 120 };
+
+/** One clean, fully-visible linear flow per architecture, stacked top to
+ * bottom (matching the reference figure's own orientation) with generous
+ * spacing rather than hidden behind clicks or steps. A consistent
+ * shape-per-node-type grammar (rectangle = input/model stage, cylinder =
+ * stored representation, circle = scoring step, bordered box = final
+ * output) lets a reader pattern-match what kind of thing each node is at
+ * a glance, the same way in both flows. */
+export default function BiEncoderVsCrossEncoderDiagram() {
+  const { t, input, model, stored, scoring, output } = useArchColors();
+
+  const width = 520;
+  const height = 250;
 
   return (
-    <VisualizationContainer footer={`Step ${reveal + 1} of ${STEP_LABELS.length} · ${STEP_LABELS[reveal]} — ${CAPTIONS[reveal]}`}>
+    <VisualizationContainer footer="Bi-encoder: query and document are each encoded SEPARATELY, so their embeddings (amber) are precomputable and stored -- comparison at query time is just a dot product. Cross-encoder: query and document go through the model TOGETHER as one input -- nothing before the classifier is precomputable, but the model can compare them directly.">
       <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ display: 'block' }}>
         <defs>
-          <marker id="bce-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-            <path d="M0,0 L7,3.5 L0,7 Z" fill={t.textMuted} />
-          </marker>
+          <ArrowMarker id="bce-arrow" color={t.textMuted} />
         </defs>
 
-        {/* Bi-encoder stage */}
-        <g opacity={reveal >= 1 ? 1 : 0.45}>
-          <text x={20} y={20} fontSize={11} fontWeight={700} fill={biColor}>Bi-encoder (millions → dozens)</text>
-          <rect x={20} y={30} width={90} height={34} rx={6} fill={`${biColor}18`} stroke={biColor} strokeWidth={1.5} />
-          <text x={65} y={51} textAnchor="middle" fontSize={10} fill={biColor}>query</text>
-          <rect x={20} y={74} width={90} height={34} rx={6} fill={`${biColor}18`} stroke={biColor} strokeWidth={1.5} />
-          <text x={65} y={95} textAnchor="middle" fontSize={10} fill={biColor}>doc (precomputed)</text>
-          {reveal >= 1 && (
-            <>
-              <line x1={110} y1={47} x2={160} y2={47} stroke={biColor} strokeWidth={1.5} markerEnd="url(#bce-arrow)" />
-              <line x1={110} y1={91} x2={160} y2={91} stroke={biColor} strokeWidth={1.5} markerEnd="url(#bce-arrow)" />
-              <circle cx={180} cy={47} r={14} fill={t.surface} stroke={biColor} strokeWidth={2} />
-              <text x={180} y={51} textAnchor="middle" fontSize={9} fill={biColor}>vec</text>
-              <circle cx={180} cy={91} r={14} fill={t.surface} stroke={biColor} strokeWidth={2} />
-              <text x={180} y={95} textAnchor="middle" fontSize={9} fill={biColor}>vec</text>
-              <path d="M 180,60 L 180,78" stroke={biColor} strokeWidth={1.5} strokeDasharray="2 2" />
-            </>
-          )}
-          {reveal >= 2 && (
-            <text x={180} y={130} textAnchor="middle" fontSize={9} fill={t.textMuted}>fast, but query never sees doc directly</text>
-          )}
-        </g>
+        {/* --- Bi-Encoder --- */}
+        <text x={COL.input} y={14} fontSize={DIAGRAM_TYPE.label.size} fontWeight={700} fill={t.textPrimary}>
+          Bi-Encoder
+        </text>
 
-        {/* Cross-encoder stage */}
-        <g opacity={reveal >= 2 ? 1 : 0.45}>
-          <text x={320} y={20} fontSize={11} fontWeight={700} fill={crossColor}>Cross-encoder (dozens → ranked)</text>
-          <rect x={320} y={30} width={110} height={34} rx={6} fill={`${crossColor}18`} stroke={crossColor} strokeWidth={1.5} />
-          <text x={375} y={51} textAnchor="middle" fontSize={9} fill={crossColor}>[query; doc]</text>
-          {reveal >= 2 && (
-            <>
-              <line x1={430} y1={47} x2={470} y2={47} stroke={crossColor} strokeWidth={1.5} markerEnd="url(#bce-arrow)" />
-              <rect x={470} y={30} width={90} height={34} rx={6} fill={`${crossColor}30`} stroke={crossColor} strokeWidth={1.5} />
-              <text x={515} y={51} textAnchor="middle" fontSize={9} fill={crossColor}>joint attention</text>
-            </>
-          )}
-          {reveal >= 2 && (
-            <text x={320} y={100} fontSize={9} fill={t.textMuted}>full query-doc attention, but nothing here</text>
-          )}
-          {reveal >= 2 && (
-            <text x={320} y={114} fontSize={9} fill={t.textMuted}>is precomputable -- too slow at full scale.</text>
-          )}
-        </g>
+        <RectNode t={t} x={COL.input} y={26} width={W.input} height={26} label="Query" color={input} />
+        <RectNode t={t} x={COL.input} y={68} width={W.input} height={26} label="Document" color={input} />
+        <FlowArrow x1={COL.input + W.input} y1={39} x2={COL.model} y2={39} color={t.textMuted} markerId="bce-arrow" />
+        <FlowArrow x1={COL.input + W.input} y1={81} x2={COL.model} y2={81} color={t.textMuted} markerId="bce-arrow" />
 
-        {reveal >= 1 && (
-          <>
-            <line x1={220} y1={110} x2={300} y2={110} stroke={t.textMuted} strokeWidth={1.5} strokeDasharray="3 3" markerEnd="url(#bce-arrow)" />
-            <text x={260} y={102} textAnchor="middle" fontSize={8} fill={t.textMuted}>top ~50</text>
-          </>
-        )}
+        <RectNode t={t} x={COL.model} y={26} width={W.model} height={26} label="Embeddings" sublabel="Model" color={model} />
+        <RectNode t={t} x={COL.model} y={68} width={W.model} height={26} label="Embeddings" sublabel="Model" color={model} />
+        <FlowArrow x1={COL.model + W.model} y1={39} x2={COL.stored} y2={39} color={t.textMuted} markerId="bce-arrow" />
+        <FlowArrow x1={COL.model + W.model} y1={81} x2={COL.stored} y2={81} color={t.textMuted} markerId="bce-arrow" />
+
+        <CylinderNode x={COL.stored} y={20} width={W.stored} height={38} label="Embed. A" color={stored} />
+        <CylinderNode x={COL.stored} y={62} width={W.stored} height={38} label="Embed. B" color={stored} />
+        <FlowArrow x1={COL.stored + W.stored} y1={39} x2={COL.score} y2={52} color={t.textMuted} markerId="bce-arrow" />
+        <FlowArrow x1={COL.stored + W.stored} y1={81} x2={COL.score} y2={68} color={t.textMuted} markerId="bce-arrow" />
+
+        <CircleNode t={t} x={COL.score} y={38} width={W.score} label="dot()" color={scoring} />
+        <text x={COL.score + W.score / 2} y={28} textAnchor="middle" fontSize={7.5} fill={t.textMuted}>
+          Similarity Score
+        </text>
+        <text x={COL.score + W.score / 2} y={96} textAnchor="middle" fontSize={7.5} fill={t.textMuted}>
+          (Dot Product)
+        </text>
+        <FlowArrow x1={COL.score + W.score} y1={60} x2={COL.output} y2={60} color={t.textMuted} markerId="bce-arrow" />
+
+        <OutputNode x={COL.output} y={43} width={W.output} height={34} label="Similarity Score" color={output} />
+
+        {/* --- Cross-Encoder --- */}
+        <text x={COL.input} y={148} fontSize={DIAGRAM_TYPE.label.size} fontWeight={700} fill={t.textPrimary}>
+          Cross-Encoder
+        </text>
+
+        <RectNode t={t} x={COL.input} y={172} width={W.input} height={30} label="Query + Doc" color={input} />
+        <FlowArrow x1={COL.input + W.input} y1={187} x2={COL.model} y2={187} color={t.textMuted} markerId="bce-arrow" />
+
+        <RectNode t={t} x={COL.model} y={172} width={W.model} height={30} label="Reranker" sublabel="model" color={model} />
+        <FlowArrow x1={COL.model + W.model} y1={187} x2={COL.stored} y2={187} color={t.textMuted} markerId="bce-arrow" />
+
+        <CylinderNode x={COL.stored} y={165} width={W.stored} height={44} label="Tokens" color={stored} />
+        <text x={COL.stored + W.stored / 2} y={158} textAnchor="middle" fontSize={7.5} fill={t.textMuted}>
+          Token Output
+        </text>
+        <FlowArrow x1={COL.stored + W.stored} y1={187} x2={COL.score} y2={187} color={t.textMuted} markerId="bce-arrow" />
+
+        <CircleNode t={t} x={COL.score} y={165} width={W.score} label="cls()" color={scoring} />
+        <text x={COL.score + W.score / 2} y={226} textAnchor="middle" fontSize={7.5} fill={t.textMuted}>
+          Classifier
+        </text>
+        <FlowArrow x1={COL.score + W.score} y1={187} x2={COL.output} y2={187} color={t.textMuted} markerId="bce-arrow" />
+
+        <OutputNode x={COL.output} y={170} width={W.output} height={34} label="Relevance Score" color={output} />
       </svg>
-      <div style={{ textAlign: 'center', fontSize: DIAGRAM_TYPE.caption.size, color: t.textMuted, marginTop: 4 }}>
-        Same funnel shape as the two-tower / retrieve-then-rank pattern used across recommenders and learning-to-rank.
+      <div style={{ textAlign: 'center', fontSize: DIAGRAM_TYPE.caption.size, color: t.textMuted, marginTop: 8 }}>
+        Same shape, same meaning, in both flows: rectangle = input or model stage, cylinder = a stored representation, circle = a scoring step, bordered box = the final score.
       </div>
-      <VisualizationStepController controller={controller} totalSteps={STEP_LABELS.length} stepLabel={(s) => STEP_LABELS[s]} />
     </VisualizationContainer>
   );
 }

@@ -1,0 +1,119 @@
+// Shared shape grammar for the retrieval-architecture diagrams
+// (BiEncoderVsCrossEncoderDiagram, ThreeWayRetrievalArchitecturesDiagram):
+// a consistent shape-per-node-type vocabulary so a reader pattern-matches
+// what kind of thing a node is at a glance, the same way across every
+// architecture diagram on the site, rather than each one inventing its
+// own box styling. Modeled directly on a reference bi-encoder/
+// cross-encoder architecture figure the user shared: rectangle = input or
+// a model/encoding stage, cylinder = a stored intermediate representation
+// (an embedding), circle = a scoring/computation step, and a distinct
+// bordered output box = the final score -- never reused for anything else.
+import type { VizTokens } from '../../theme/vizTokens';
+
+export interface ShapeProps {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  label: string;
+  sublabel?: string;
+  color: string;
+  t: VizTokens;
+  strokeWidth?: number;
+}
+
+/** Rectangle: an INPUT (query/document) or a MODEL/ENCODING stage. */
+export function RectNode({ x, y, width, height, label, sublabel, color, t, strokeWidth = 1.5 }: ShapeProps) {
+  return (
+    <g>
+      <rect x={x} y={y} width={width} height={height} rx={6} fill={`${color}18`} stroke={color} strokeWidth={strokeWidth} />
+      <text x={x + width / 2} y={y + height / 2 + (sublabel ? -1 : 4)} textAnchor="middle" fontSize={10} fontWeight={600} fill={color}>
+        {label}
+      </text>
+      {sublabel && (
+        <text x={x + width / 2} y={y + height / 2 + 12} textAnchor="middle" fontSize={7.5} fill={t.textMuted}>
+          {sublabel}
+        </text>
+      )}
+    </g>
+  );
+}
+
+/** Cylinder: a STORED intermediate representation -- an embedding, a set
+ * of token vectors -- data that gets kept around, not a live computation. */
+export function CylinderNode({ x, y, width, height, label, color, strokeWidth = 1.5 }: Omit<ShapeProps, 't'>) {
+  const rx = width / 2;
+  const ry = Math.min(7, height * 0.22);
+  const cx = x + width / 2;
+  return (
+    <g>
+      <path
+        d={`M ${x},${y + ry} L ${x},${y + height - ry} A ${rx},${ry} 0 0 0 ${x + width},${y + height - ry} L ${x + width},${y + ry}`}
+        fill={`${color}18`}
+        stroke={color}
+        strokeWidth={strokeWidth}
+      />
+      <ellipse cx={cx} cy={y + height - ry} rx={rx} ry={ry} fill={`${color}12`} stroke={color} strokeWidth={strokeWidth} />
+      <ellipse cx={cx} cy={y + ry} rx={rx} ry={ry} fill={`${color}30`} stroke={color} strokeWidth={strokeWidth} />
+      <text x={cx} y={y + height / 2 + 8} textAnchor="middle" fontSize={8.5} fontWeight={600} fill={color}>
+        {label}
+      </text>
+    </g>
+  );
+}
+
+/** Circle: a SCORING / computation step -- something that produces a
+ * number from what came before it, not a stage that itself holds data. */
+export function CircleNode({ x, y, width, label, color, t, strokeWidth = 2 }: Omit<ShapeProps, 'height'>) {
+  const r = width / 2;
+  const cx = x + r;
+  const cy = y + r;
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={r} fill={t.surface} stroke={color} strokeWidth={strokeWidth} />
+      <text x={cx} y={cy + 3} textAnchor="middle" fontSize={8} fontWeight={700} fill={color}>
+        {label}
+      </text>
+    </g>
+  );
+}
+
+/** Distinct final-output box -- always this shape+treatment for "the
+ * number the whole pipeline was built to produce," never reused for an
+ * intermediate step. */
+export function OutputNode({ x, y, width, height, label, color, strokeWidth = 2.5 }: Omit<ShapeProps, 't'>) {
+  return (
+    <g>
+      <rect x={x} y={y} width={width} height={height} rx={6} fill={`${color}30`} stroke={color} strokeWidth={strokeWidth} />
+      <text x={x + width / 2} y={y + height / 2 + 4} textAnchor="middle" fontSize={9.5} fontWeight={700} fill={color}>
+        {label}
+      </text>
+    </g>
+  );
+}
+
+export function FlowArrow({
+  x1,
+  y1,
+  x2,
+  y2,
+  color,
+  markerId,
+}: {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  color: string;
+  markerId: string;
+}) {
+  return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={1.5} markerEnd={`url(#${markerId})`} />;
+}
+
+export function ArrowMarker({ id, color }: { id: string; color: string }) {
+  return (
+    <marker id={id} markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill={color} />
+    </marker>
+  );
+}
