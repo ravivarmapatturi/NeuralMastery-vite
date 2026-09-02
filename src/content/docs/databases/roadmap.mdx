@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # Databases — Roadmap
 
-Every AI system needs somewhere to put data — structured, vector, and graph.
+Every AI system needs somewhere to put data — structured, vector, graph, and NoSQL.
 
 ## 1. [Relational (MySQL, Postgres)](/docs/databases/relational/overview)
 - [ ] Relational model, normalization
@@ -28,6 +28,13 @@ Every AI system needs somewhere to put data — structured, vector, and graph.
 - [ ] Neo4j and Cypher query language basics
 - [ ] When a graph model beats relational (highly connected data, multi-hop queries)
 - [ ] GraphRAG — using a knowledge graph to ground LLM retrieval
+
+## 4. [NoSQL Databases](/docs/databases/nosql/overview)
+- [ ] Why NoSQL exists: relaxing the relational model's schema/joins/transactions for scale and flexibility
+- [ ] Document stores (MongoDB) — nested, variable-shape records
+- [ ] Key-value stores (Redis, DynamoDB) — fastest possible lookup by key, the standard caching layer
+- [ ] Wide-column stores (Cassandra) — massive, distributed write throughput
+- [ ] When to reach for NoSQL over relational, and the real tradeoff either way
 
 ## Common Problems & SOTA Solutions
 - [ ] **Vector search doesn't scale past X million vectors** → approximate indexing (HNSW/IVF), sharding

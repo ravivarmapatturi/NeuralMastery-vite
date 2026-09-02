@@ -1,0 +1,7 @@
+{
+  "label": "NoSQL Databases (MongoDB, Redis, DynamoDB, Cassandra)",
+  "position": 4,
+  "link": {
+    "type": "generated-index"
+  }
+}

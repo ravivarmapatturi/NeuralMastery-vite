@@ -413,6 +413,13 @@
       "sidebarPosition": 4,
       "description": null
     },
+    "/docs/databases/nosql/overview": {
+      "slug": "databases/nosql/overview",
+      "section": "databases",
+      "title": "NoSQL Databases",
+      "sidebarPosition": 1,
+      "description": null
+    },
     "/docs/databases/overview": {
       "slug": "databases/overview",
       "section": "databases",
@@ -1691,6 +1698,10 @@
     "databases/graph": {
       "label": "Graph Databases (Neo4j)",
       "position": 3
+    },
+    "databases/nosql": {
+      "label": "NoSQL Databases (MongoDB, Redis, DynamoDB, Cassandra)",
+      "position": 4
     },
     "databases/relational": {
       "label": "Relational (MySQL, Postgres)",

@@ -1,0 +1,64 @@
+---
+title: "NoSQL Databases"
+sidebar_position: 1
+---
+
+import { Remember } from '../../../../components/content/Remember';
+
+# NoSQL Databases
+
+The [Databases Overview](/docs/databases/overview) covers relational, vector, and graph engines — but there's a fourth real branch of the database landscape, and it's a big one: **NoSQL**, an umbrella term for engines that give up the relational model's strict schema and multi-table joins in exchange for horizontal scale and flexible, evolving data shapes. "NoSQL" isn't one database or one data model — it's three genuinely different families, each answering a different question well.
+
+## Why NoSQL Exists at All
+
+**What is it?** A response to a real limitation of relational databases: a strict, upfront schema and cross-table joins get expensive and awkward exactly when a system needs to scale horizontally across many machines or handle data whose shape changes often.
+
+**How does it work?** Each NoSQL family relaxes a different part of the relational model — document stores drop the fixed-columns requirement, key-value stores drop querying by anything other than a key, wide-column stores drop most cross-row operations — in exchange for data that's easier to shard across many machines and doesn't need a schema migration every time the data's shape changes.
+
+**Why is it useful?** At real scale (many terabytes, globally distributed, extremely high write volume), or when the data's structure is inherently irregular (nested, variable-shape JSON-like records), forcing everything into rigid rows and tables becomes the bottleneck rather than the safety net it is at smaller scale.
+
+**Limitation:** NoSQL's flexibility isn't free — you give up (to varying degrees, depending on which family) joins across tables, strict schema enforcement that catches bad data at write time, and multi-row ACID transactions that guarantee several writes all succeed or all fail together. The right call is workload-dependent, not "NoSQL is more modern, therefore better."
+
+<Remember>NoSQL isn't a single alternative to relational — it's three different families, each trading away a different piece of the relational model (joins, schema, or transactions) for a different kind of scale or flexibility. Picking "NoSQL" without picking which family is like picking "a vehicle" without picking a car, boat, or plane.</Remember>
+
+## Document Stores
+
+**What is it?** A database that stores each record as a self-contained, nested document — typically JSON-like — rather than a row that must match a fixed set of columns.
+
+**How does it work?** Every document in a collection can have a different shape: one user record might have a `phone` field and another might not, without needing a schema migration either way. Queries can reach into nested fields directly (`user.address.city`), and related data is often embedded directly inside a document instead of requiring a join.
+
+**Why is it useful?** It's a natural fit for data that's inherently nested and variable-shape — a product catalog where different product types have genuinely different attributes, a content-management system's articles, an application's evolving user-profile schema — without needing a migration every time a new field shows up.
+
+**Limitation:** Embedding related data inside documents means the same information can end up duplicated across many documents (denormalization), and there's no real cross-document join — reassembling relational-style data across documents has to happen in application code instead of the database.
+
+**Real software:** **MongoDB** is the standard example — the document database most engineers mean by default when they say "NoSQL."
+
+## Key-Value Stores
+
+**What is it?** The simplest possible database shape: a giant dictionary — look up a value by its exact key, nothing more structured than that.
+
+**How does it work?** No query language for filtering by field, no joins, no schema at all — a key maps directly to a value (which can itself be a string, a number, or a more complex structure like a hash or list, depending on the engine). That extreme simplicity is exactly what makes lookups extremely fast.
+
+**Why is it useful?** When the access pattern really is "fetch this exact thing by its ID, as fast as possible," a key-value store beats every more general-purpose database on raw speed — which is exactly why it's the standard choice for caching (see [Semantic Caching](/docs/llms-genai/rag#rag-optimization) for one AI-specific use of this pattern) and for session storage.
+
+**Limitation:** There's essentially no way to query by anything other than the key — "find all users signed up this week" isn't expressible at all in a pure key-value model; you'd need to already know the exact keys you want.
+
+**Real software:** **Redis** is the standard in-memory key-value store and the default caching layer across the industry; **DynamoDB** is AWS's managed, serverless-native key-value/document hybrid, built to scale horizontally with no capacity planning.
+
+## Wide-Column Stores
+
+**What is it?** A database built for a very specific shape of scale: enormous write throughput, spread across many machines, where each row can have a different set of columns (unlike a relational table, where every row shares the exact same columns).
+
+**How does it work?** Data is partitioned across many machines by a row key, and each partition can be written to independently and in parallel — the architecture is built around write scalability from the ground up, rather than optimized primarily for read flexibility or complex queries.
+
+**Why is it useful?** For workloads that are overwhelmingly write-heavy at massive scale — time-series sensor data, event logging, activity feeds with huge numbers of users all writing simultaneously — a wide-column store sustains write volume that would require heavy sharding effort in a relational database.
+
+**Limitation:** Query flexibility is deliberately limited — you generally need to know the row key (or a range of them) to query efficiently at all; ad hoc filtering across arbitrary columns the way SQL's `WHERE` clause allows isn't the model's strength.
+
+**Real software:** **Cassandra** is the standard example, built originally at Facebook specifically for exactly this kind of massive, distributed write load.
+
+## NoSQL vs. Relational: The Real Tradeoff
+
+<Remember>Choosing NoSQL over relational means deliberately giving up joins, strict schema validation, and multi-row transactions — in exchange for horizontal scale and a data shape that can evolve without a migration. That's a real, explicit tradeoff for a specific workload, not a strictly better default. Most real systems (per the polyglot-persistence pattern on the [Databases Overview](/docs/databases/overview#why-real-systems-run-all-three-at-once)) end up running relational AND one or more NoSQL stores side by side, each for the part of the data it actually fits.</Remember>
+
+Next: back to the [Databases Overview](/docs/databases/overview) for how this fits alongside relational, vector, and graph engines, or the [roadmap](/docs/databases/roadmap) for the full path through this section.

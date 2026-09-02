@@ -3,6 +3,6 @@
   "position": 7,
   "link": {
     "type": "generated-index",
-    "description": "SQL databases (MySQL, Postgres), vector databases (ChromaDB and others), and graph databases (Neo4j)."
+    "description": "SQL databases (MySQL, Postgres), vector databases (ChromaDB and others), graph databases (Neo4j), and NoSQL databases (MongoDB, Redis, DynamoDB, Cassandra)."
   }
 }

@@ -11,10 +11,23 @@ import ConsistencyVsApproximationDiagram from '../../../viz/diagrams/Consistency
 import ScaleCharacteristicsDiagram from '../../../viz/diagrams/ScaleCharacteristicsDiagram';
 import IndexingPhilosophyDiagram from '../../../viz/diagrams/IndexingPhilosophyDiagram';
 import DatabasesSectionMapDiagram from '../../../viz/diagrams/DatabasesSectionMapDiagram';
+import { Remember } from '../../../components/content/Remember';
 
 # Databases Overview
 
 Every AI system needs somewhere to put data — and the honest answer, for almost any real system, is *three different somewheres*, not one. A production RAG application typically runs a relational database for users, sessions, and experiment metadata; a vector database for the embeddings retrieval depends on; and increasingly a graph database for the relationships flat retrieval can't see. None of the three is a strictly better general-purpose database — each optimizes for a genuinely different query shape, and picking wrong doesn't just cost performance, it can make a query structurally impossible to express efficiently at all.
+
+## Database Fundamentals, in Plain English
+
+Before comparing engines, five terms worth being precise about — everything below this section uses them constantly, and they're easy to blur together:
+
+- **Database**: a collection of organized, related data — the actual information itself (a company's customers, a chat app's messages, a RAG pipeline's document chunks).
+- **DBMS (Database Management System)**: the *software* that manages a database for you — handles storing it on disk, retrieving it efficiently, letting multiple things read/write it at once safely, and keeping it durable if the power goes out. Postgres, MySQL, MongoDB, Neo4j, and every other engine on this page is a DBMS. The alternative — writing your own data to plain files by hand — technically works but forces you to reinvent concurrency control, crash recovery, and fast lookup yourself, which is exactly the hard, easy-to-get-wrong work a DBMS exists to do once, correctly, so nobody else has to.
+- **Schema**: the *structure* a database's data follows — which tables exist, what columns each one has, what type each column holds, which values are required or must be unique. A schema is the blueprint, not the data itself: it's the difference between "there's a `users` table with an `email` column that must be unique" (schema) and "the actual list of users and their actual email addresses" (data).
+- **Table**: a collection of records that all share the same structure — think a spreadsheet, where every row follows the same set of columns. A `users` table might have one row per person who signed up.
+- **Column**: one single typed field within a table's structure, present on every row — `email` (text), `signup_date` (a timestamp), `is_active` (true/false) would each be one column of a `users` table.
+
+<Remember>DBMS is the software; database is the data it manages; schema is the structure the data follows; table and column are that structure's actual building blocks. Get comfortable with this vocabulary once — every engine below (relational, vector, graph, and beyond) is still, underneath, a DBMS managing some database against some schema, even when the shape of "schema" looks very different from a spreadsheet.</Remember>
 
 ## Three Different Questions, Three Different Engines
 
@@ -62,8 +75,12 @@ Different as they are, all three engines lean on the same underlying idea — pr
 
 A relational B-tree index narrows an exact-match or range query from a full table scan to a logarithmic lookup. A vector index (HNSW, IVF) narrows a similarity search from comparing against every stored vector to a small, well-chosen candidate set. A graph engine's native adjacency storage means a "neighbors of this node" query never needs an index at all in the traditional sense — the relationships *are* the index. Same goal, three different structures, because "what makes two things close" means something different in each engine.
 
+## A Fourth Branch: NoSQL
+
+The three engines above are framed around a specific question — *which query shape does an AI system's data actually need?* — but they don't cover the full database landscape on their own. **[NoSQL databases](/docs/databases/nosql/overview)** are a real fourth branch: document stores (MongoDB), key-value stores (Redis, DynamoDB), and wide-column stores (Cassandra), each trading away part of the relational model (joins, strict schema, or multi-row transactions) for horizontal scale or a data shape that can evolve without a migration. Relevant to AI systems the same way relational is — application state, caching, session storage — just optimized for different scale and flexibility tradeoffs than any of the three engines above.
+
 ## Reading Path Through This Section
 
 <DatabasesSectionMapDiagram />
 
-Start with [Relational Databases](/docs/databases/relational/overview) for the model most ML metadata and application state still lives in, then its deep-dive companion [PostgreSQL](/docs/databases/relational/postgresql) for schemas, indexing, and Postgres-specific features like JSONB and pgvector. Move to [Vector Databases](/docs/databases/vector/overview) for the engine every RAG pipeline depends on, and finish with [Graph Databases](/docs/databases/graph/overview) for when relationships matter more than similarity. See the [roadmap](/docs/databases/roadmap) for the full checklist-style path through all four.
+Start with [Relational Databases](/docs/databases/relational/overview) for the model most ML metadata and application state still lives in, then its deep-dive companion [PostgreSQL](/docs/databases/relational/postgresql) for schemas, indexing, and Postgres-specific features like JSONB and pgvector. Move to [Vector Databases](/docs/databases/vector/overview) for the engine every RAG pipeline depends on, [Graph Databases](/docs/databases/graph/overview) for when relationships matter more than similarity, and [NoSQL Databases](/docs/databases/nosql/overview) for the document/key-value/wide-column branch outside all three. See the [roadmap](/docs/databases/roadmap) for the full checklist-style path through the section.
