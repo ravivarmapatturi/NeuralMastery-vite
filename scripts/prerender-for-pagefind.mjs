@@ -33,6 +33,7 @@ import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync, rmSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative, extname, dirname } from 'node:path';
+import { routeFromMdxPath, outputPathForRoute } from './lib/prerenderRoutes.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const CONTENT_ROOT = join(ROOT, 'src', 'content', 'docs');
@@ -52,7 +53,7 @@ function walk(dir) {
 }
 
 function routesFromContentTree() {
-  return walk(CONTENT_ROOT).map((f) => `/docs/${relative(CONTENT_ROOT, f).replace(/\.mdx$/, '').split('\\').join('/')}`);
+  return walk(CONTENT_ROOT).map((f) => routeFromMdxPath(f, CONTENT_ROOT));
 }
 
 async function waitForServer(url, timeoutMs = 15000) {
@@ -127,13 +128,13 @@ async function main() {
         await page.waitForTimeout(300);
         const html = await page.content();
 
-        const pagefindOutFile = join(PRERENDER_DIR, route.replace(/^\//, ''), 'index.html');
+        const pagefindOutFile = outputPathForRoute(route, PRERENDER_DIR);
         mkdirSync(dirname(pagefindOutFile), { recursive: true });
         writeFileSync(pagefindOutFile, html);
 
         // Real, crawlable static HTML at the route's own path in dist/ --
         // see the file header for why this exists.
-        const distOutFile = join(DIST_DIR, route.replace(/^\//, ''), 'index.html');
+        const distOutFile = outputPathForRoute(route, DIST_DIR);
         mkdirSync(dirname(distOutFile), { recursive: true });
         writeFileSync(distOutFile, html);
       }
