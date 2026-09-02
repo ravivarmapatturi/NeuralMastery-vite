@@ -15,6 +15,7 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const { resolveRelPath, isWithinRoot, redirectLocation } = require('./lib/staticServerPaths.cjs');
 
 const DIST = path.resolve(__dirname, '..', 'dist');
 const BASE = '/NeuralMastery-vite';
@@ -47,7 +48,8 @@ const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   let pathname = decodeURIComponent(url.pathname);
 
-  if (!pathname.startsWith(BASE)) {
+  const rel = resolveRelPath(pathname, BASE);
+  if (rel === null) {
     // Outside the configured base path -- GitHub Pages project sites don't
     // serve anything here either.
     const notFound = path.join(DIST, '404.html');
@@ -56,12 +58,9 @@ const server = http.createServer((req, res) => {
     return res.end('Not found');
   }
 
-  let rel = pathname.slice(BASE.length) || '/';
-  if (rel.endsWith('/')) rel += 'index.html';
-
   const filePath = path.join(DIST, rel);
   // Guard against escaping dist/ via '..' segments.
-  if (!filePath.startsWith(DIST)) {
+  if (!isWithinRoot(filePath, DIST)) {
     res.writeHead(400);
     return res.end('Bad request');
   }
@@ -79,8 +78,8 @@ const server = http.createServer((req, res) => {
   // prove the deployed site behaves the same way.
   if (!pathname.endsWith('/')) {
     const asDir = path.join(DIST, rel, 'index.html');
-    if (asDir.startsWith(DIST) && fs.existsSync(asDir) && fs.statSync(asDir).isFile()) {
-      res.writeHead(301, { Location: `${pathname}/${url.search}` });
+    if (isWithinRoot(asDir, DIST) && fs.existsSync(asDir) && fs.statSync(asDir).isFile()) {
+      res.writeHead(301, { Location: redirectLocation(pathname, url.search) });
       return res.end();
     }
   }

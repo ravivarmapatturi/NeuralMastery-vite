@@ -16,11 +16,11 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./tests/unit/setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.{mjs,cjs}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: ['src/viz/lib/**', 'src/data/**', 'scripts/**'],
+      include: ['src/viz/lib/**', 'src/data/**', 'scripts/lib/**'],
     },
   },
 })

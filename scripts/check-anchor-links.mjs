@@ -30,6 +30,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
 import matter from 'gray-matter';
+import { slugify, headingPlainText } from './lib/anchorSlug.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const CONTENT_ROOT = join(ROOT, 'src', 'content', 'docs');
@@ -43,31 +44,6 @@ function walk(dir, exts) {
     else if (exts.includes(extname(entry))) out.push(full);
   }
   return out;
-}
-
-// Identical to TableOfContents.tsx's scanHeadings() id algorithm.
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-');
-}
-
-// Best-effort markdown-heading-line -> rendered-plain-text reconstruction.
-function headingPlainText(raw) {
-  let hasInlineMath = false;
-  let text = raw
-    .replace(/\$([^$]*)\$/g, (_, inner) => {
-      hasInlineMath = true;
-      return inner;
-    })
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // [text](url) -> text
-    .replace(/`([^`]*)`/g, '$1') // `code` -> code
-    .replace(/\*\*([^*]*)\*\*/g, '$1') // **bold** -> bold
-    .replace(/\*([^*]*)\*/g, '$1') // *italic* -> italic
-    .replace(/(?<![\w])_([^_]+)_(?![\w])/g, '$1'); // _italic_ -> italic
-  return { text, hasInlineMath };
 }
 
 const mdxFiles = walk(CONTENT_ROOT, ['.mdx']);
