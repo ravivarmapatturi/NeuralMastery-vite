@@ -116,7 +116,7 @@ $$2 \times 32 \times 8 \times 128 \times 8192 \times 2 = 1{,}073{,}741{,}824 \te
 
 ## Architecture Families
 
-- **Encoder-only** (BERT-style): sees the full input at once (bidirectional attention) — good for understanding tasks (classification, embeddings), not for generation.
+- **Encoder-only** ([BERT](/docs/deep-learning/bert)-style): sees the full input at once (bidirectional attention) — good for understanding tasks (classification, embeddings), not for generation.
 - **Decoder-only** (GPT-style): only attends to earlier tokens (causal/masked attention) — the dominant architecture for modern LLMs, since next-token prediction naturally trains a model that can also generate.
 - **Encoder-decoder** (T5-style): separate encoder for the input and decoder for the output, connected via cross-attention — well-suited to translation/summarization where input and output are distinct sequences.
 

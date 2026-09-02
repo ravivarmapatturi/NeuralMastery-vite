@@ -62,7 +62,7 @@ Networks trained not to match a label, but to maximize a reward signal through i
 Learn useful representations from unlabeled data by constructing a supervised-*seeming* task out of the data itself — no human labels required.
 
 - **Contrastive SSL (SimCLR, MoCo)**: create two augmented views of the same image, train the network to pull their embeddings together while pushing apart embeddings of different images — directly reuses the contrastive/triplet-loss ideas above, applied at pretraining scale instead of for a specific similarity task.
-- **Masked prediction SSL (BERT for text, MAE for images)**: mask out part of the input and train the model to reconstruct or predict the missing part — BERT's masked language modeling (see [Attention & Transformers](/docs/deep-learning/attention-transformers)) and the **Masked Autoencoder (MAE)** for images are the same underlying principle applied to different modalities.
+- **Masked prediction SSL (BERT for text, MAE for images)**: mask out part of the input and train the model to reconstruct or predict the missing part — [BERT's masked language modeling](/docs/deep-learning/bert#masked-language-modeling-mlm) and the **Masked Autoencoder (MAE)** for images are the same underlying principle applied to different modalities.
 
 <SslMethodsDiagram />
 

@@ -483,6 +483,13 @@
       "sidebarPosition": 8.5,
       "description": null
     },
+    "/docs/deep-learning/bert": {
+      "slug": "deep-learning/bert",
+      "section": "deep-learning",
+      "title": "BERT: Bidirectional Encoder Representations from Transformers",
+      "sidebarPosition": 7.2,
+      "description": null
+    },
     "/docs/deep-learning/cnns": {
       "slug": "deep-learning/cnns",
       "section": "deep-learning",

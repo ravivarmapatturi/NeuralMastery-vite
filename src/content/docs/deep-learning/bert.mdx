@@ -1,0 +1,117 @@
+---
+title: "BERT: Bidirectional Encoder Representations from Transformers"
+sidebar_position: 7.2
+---
+
+import BertInputRepresentationDiagram from '../../../viz/diagrams/BertInputRepresentationDiagram';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
+import { Remember } from '../../../components/content/Remember';
+
+# BERT: Bidirectional Encoder Representations from Transformers
+
+[Attention & Transformers](/docs/deep-learning/attention-transformers#bert-roberta-deberta-and-sbert-encoder-only-representations) already introduces BERT as the canonical encoder-only Transformer — this page is that introduction made concrete: the real input representation, the real pretraining objectives, and real, runnable code.
+
+<ELI5>
+
+Imagine a fill-in-the-blank worksheet where you're allowed to read the *entire* sentence — words before and after the blank — before guessing what goes in it. That's BERT: it's trained by hiding random words in a sentence and learning to guess them using context from both directions at once, not just what came before (the way GPT-style models are forced to work). Reading both directions before answering produces a genuinely richer understanding of each word's meaning in context, which is exactly why BERT-family models became the standard for tasks where you already have the full input and need to *understand* it — classification, search, extracting an answer from a passage — rather than generate new text one word at a time.
+
+</ELI5>
+
+## Input Representation: Three Embeddings, Summed
+
+**What is it?** Before any attention happens, every token in BERT's input becomes a single vector built from three separate pieces of information, not just "which word is this."
+
+**How does it work?** Each token gets three embeddings looked up independently, then summed element-wise into one vector: a **token embedding** (which word/subword this is), a **segment embedding** (which of the two sentences — A or B — this token belongs to, relevant for sentence-pair tasks), and a **position embedding** (where in the sequence this token sits). A special **`[CLS]`** token is prepended to every input, and **`[SEP]`** separates the two sentences in a pair (or marks the end of a single input).
+
+<BertInputRepresentationDiagram />
+
+**Why is it useful?** Summing three embeddings — instead of using only token identity — lets the same word carry different information depending on its position and which sentence it's in, before a single attention layer even runs. `[CLS]`'s role is specifically deliberate: because every token can attend to it and it can attend to every token, its final hidden state ends up summarizing the whole input, which is why it becomes the standard pooled vector fed into a classification head.
+
+**Limitation:** All three embeddings are summed into a fixed-size vector — there's no way to recover which part of that vector "came from" token identity versus position versus segment after the fact, and this fixed setup is learned once at pretraining time, not adapted per task.
+
+<Remember>BERT's input isn't just "the word" — it's word + which sentence + where, summed into one vector before anything else happens. `[CLS]`'s final hidden state, not any other position, is what a classification head is trained to read.</Remember>
+
+Every token now carries identity, position, and segment information — the next question is what BERT is actually trained to *do* with that.
+
+## Masked Language Modeling (MLM)
+
+**What is it?** BERT's primary pretraining objective: hide some of the input, and train the model to predict exactly what's missing.
+
+**How does it work?** Roughly 15% of input tokens are replaced with `[MASK]` (or, in a fraction of cases, a random other token, or left unchanged, to keep the model from over-relying on literally seeing `[MASK]`), and the model predicts the original token at each masked position using the full bidirectional context — everything to the left *and* right of the mask. This is exactly the opposite constraint from decoder-only models: [GPT-style causal masking](/docs/deep-learning/attention-transformers#gpt-llama-mistral-and-claude-style-models-decoder-only-generation) forces token $t$ to only ever see tokens $\leq t$, precisely so it can be trained to predict the *next* token without leaking the answer — BERT has no next-token objective to protect, so it's free to look both directions at once.
+
+**Why is it useful?** Predicting a hidden token from its full surrounding context — not just what preceded it — forces every position's representation to encode genuine two-directional understanding, which is exactly the property that makes BERT's token vectors useful for tasks like NER or extractive QA where the answer's meaning depends on what comes after it, not only before.
+
+**Limitation:** Because 15% of tokens are masked, only a fraction of each training example contributes directly to the loss, and `[MASK]` never appears at inference time on real input — this train/inference mismatch is part of why the "80% `[MASK]`, 10% random token, 10% unchanged" masking recipe exists, to keep the model from learning to rely on a token it will never actually see outside of training.
+
+MLM alone isn't the whole pretraining story — BERT's original recipe paired it with a second objective aimed at a different kind of understanding: relationships *between* sentences, not just within one.
+
+## Next Sentence Prediction (NSP)
+
+**What is it?** BERT's original second pretraining objective: given two sentences A and B, predict whether B genuinely follows A in the source text, or is a random unrelated sentence.
+
+**How does it work?** Half the training pairs are real consecutive sentences (label: "IsNext"), half are B swapped for a random sentence from elsewhere in the corpus (label: "NotNext") — the `[CLS]` token's final representation is fed into a binary classifier trained on this label, using the `[SEP]`-separated two-sentence input the earlier embedding diagram shows.
+
+**Why is it useful?** The original motivation was giving BERT some notion of sentence-level relationships (useful for tasks like natural language inference or question-answering that depend on how two spans of text relate), on top of MLM's token-level understanding.
+
+**Limitation — a real, worth-stating nuance, not an unqualified win:** [RoBERTa](/docs/deep-learning/attention-transformers#bert-roberta-deberta-and-sbert-encoder-only-representations) — a later, more carefully-trained BERT variant — found that dropping NSP entirely and instead training longer, on more data, with dynamic masking improved downstream performance. That doesn't mean NSP was actively harmful in every setting, but it does mean NSP wasn't the load-bearing ingredient BERT's original paper implied — a good example of a plausible-sounding design choice that a later, more rigorous ablation didn't fully hold up.
+
+<Remember>NSP is part of BERT's original recipe, but RoBERTa's own ablation found dropping it — and just training harder on more data — worked better. Treat NSP as a real historical design choice with a real documented limitation, not a permanently-settled best practice.</Remember>
+
+## Fine-Tuning vs. Feature Extraction
+
+Pretraining (MLM + optionally NSP) produces a general-purpose encoder — the practical question is how to actually put it to work on a specific task.
+
+**What is it?** Two different ways to use a pretrained BERT for a downstream task, trading off how much of the model actually gets updated.
+
+**How does it work?** **Fine-tuning** adds a small task-specific head (for example, a linear classifier reading `[CLS]`'s final vector) on top of BERT, then trains the *entire* stack — head and BERT's own weights together — end-to-end on labeled task data. **Feature extraction** instead freezes BERT entirely and uses its output vectors as fixed input features to a separate downstream model — the same pattern earlier contextual-embedding methods like ELMo used, treating the encoder purely as a representation-producing black box.
+
+**Why is it useful?** Fine-tuning generally reaches higher task accuracy, since every one of BERT's weights can adapt to the specific task rather than staying fixed — this is why "pretrain then fine-tune" became the standard NLP recipe BERT is credited with popularizing. Feature extraction is cheaper and simpler when compute is limited, when the downstream model needs to stay small, or when the same frozen embeddings need to be reused across many different downstream tasks without retraining BERT itself for each one.
+
+**Limitation:** Fine-tuning needs enough labeled task data and compute to update a full-size model without overfitting, and produces one specialized copy of BERT per task; feature extraction leaves real accuracy on the table by never letting BERT's own representations adapt to what the downstream task actually needs.
+
+## Real Code: Masked-Token Prediction
+
+Real, current [`transformers`](https://huggingface.co/docs/transformers/en/model_doc/bert) API, verified directly against Hugging Face's own BERT docs — the simple case, via `pipeline`:
+
+```python
+from transformers import pipeline
+
+fill_mask = pipeline(task="fill-mask", model="google-bert/bert-base-uncased")
+fill_mask("Plants create [MASK] through a process known as photosynthesis.")
+```
+
+And the lower-level version — the same MLM objective described above, run explicitly:
+
+```python
+import torch
+from transformers import AutoModelForMaskedLM, AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-uncased")
+model = AutoModelForMaskedLM.from_pretrained("google-bert/bert-base-uncased")
+
+inputs = tokenizer("Plants create [MASK] through a process known as photosynthesis.", return_tensors="pt")
+
+with torch.no_grad():
+    outputs = model(**inputs)
+    predictions = outputs.logits
+
+masked_index = torch.where(inputs["input_ids"] == tokenizer.mask_token_id)[1]
+predicted_token_id = predictions[0, masked_index].argmax(dim=-1)
+predicted_token = tokenizer.decode(predicted_token_id)
+
+print(f"The predicted token is: {predicted_token}")  # "sugar" / "energy" / "glucose" -- a real MLM prediction
+```
+
+`torch.no_grad()` disables gradient tracking since this is inference, not training — the same distinction that matters anywhere a pretrained model is used without fine-tuning it further.
+
+<GoDeeper title="Go deeper: why SBERT exists, and why raw BERT embeddings aren't automatically good sentence vectors">
+
+A natural instinct is to grab `[CLS]`'s final vector (or an average of all token vectors) straight out of a pretrained BERT and use it as a sentence embedding for similarity search. In practice this works poorly — BERT's pretraining objective (MLM) never explicitly trains `[CLS]` to make semantically similar sentences land close together under cosine similarity; it only trains `[CLS]` to be *useful once a task-specific head is trained on top of it*. **[SBERT (Sentence-BERT)](/docs/deep-learning/attention-transformers#bert-roberta-deberta-and-sbert-encoder-only-representations)** exists specifically to fix this: it fine-tunes a BERT-family model with a contrastive/siamese objective that directly optimizes for "similar sentences → nearby vectors," which is exactly the property RAG's [bi-encoder retrieval](/docs/llms-genai/retrieval-and-reranking-architectures#bi-encoder-independent-encoding-pooled-to-one-vector) depends on. Reaching for a raw pretrained BERT checkpoint as a drop-in sentence encoder, without this additional fine-tuning step, is a common and avoidable mistake.
+
+</GoDeeper>
+
+## Where BERT Fits Today
+
+BERT itself — and its direct descendants (RoBERTa, DeBERTa) — remain a strong, efficient default anywhere the task is *understanding a complete input* rather than generating open-ended text: classification, named-entity recognition, extractive question answering, and — via SBERT-style fine-tuning specifically — the embedding models behind [dense retrieval in RAG](/docs/llms-genai/rag#choosing-an-embedding-model) and the [bi-encoder half of retrieval-and-reranking](/docs/llms-genai/retrieval-and-reranking-architectures#bi-encoder-independent-encoding-pooled-to-one-vector). For open-ended generation, decoder-only models (GPT, LLaMA, and the rest of the [decoder-only family](/docs/deep-learning/attention-transformers#gpt-llama-mistral-and-claude-style-models-decoder-only-generation)) are the right tool instead — the two families solve genuinely different problems, not competing versions of the same one.
+
+Next: back to [Attention & Transformers](/docs/deep-learning/attention-transformers) for the full architecture family comparison, or [Retrieval & Reranking Architectures](/docs/llms-genai/retrieval-and-reranking-architectures) for how BERT-descended encoders power modern retrieval.
