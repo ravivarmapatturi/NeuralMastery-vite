@@ -4,7 +4,7 @@ import { useVizTokens, RADIUS, SPACING } from '../../theme/vizTokens';
 type Depth = 'eli5' | 'deeper';
 
 const DEPTH_META: Record<Depth, { icon: string; label: string }> = {
-  eli5: { icon: '💡', label: 'ELI5' },
+  eli5: { icon: '💡', label: 'Simple Explanation' },
   deeper: { icon: '🔬', label: 'Go deeper' },
 };
 
