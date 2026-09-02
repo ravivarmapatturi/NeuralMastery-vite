@@ -1,0 +1,87 @@
+---
+title: "Technology Ecosystem Map"
+sidebar_position: 6
+---
+
+import EcosystemMapDiagram from '../../../viz/diagrams/EcosystemMapDiagram';
+
+# Technology Ecosystem Map
+
+Every real production system — AI-powered or not — is built from the same rough stack of layers, from a person clicking a button down to the infrastructure that keeps the whole thing running. This page is a map of that stack: what each layer is *for*, in plain English, and where the real depth already lives on this site. Most layers below link straight out to an existing deep-dive — this page's job is orientation and sequencing, not re-explaining what's already covered elsewhere (the same pattern [ML System Design Case Studies](/docs/ml-system-design/case-studies) uses for individual problems). A couple of layers are genuinely thin across the site today; those get a short, honest, inline explanation instead of a fake link to depth that doesn't exist yet.
+
+<EcosystemMapDiagram layers={[
+  { label: 'Frontend / Client Experience', desc: 'What a user actually sees and interacts with -- a website, a mobile app, a CLI. Thin on this site today (see below) -- intentionally, this platform is about AI/ML systems, not general frontend engineering.', covered: false },
+  { label: 'Network', desc: 'How a client and a server actually find each other and exchange bytes -- HTTP requests, status codes, the request/response cycle.', covered: true },
+  { label: 'Identity & Auth', desc: 'Proving who is making a request (authentication) and what they are allowed to do (authorization) -- API keys, OAuth 2.0, JWTs.', covered: true },
+  { label: 'API Layer', desc: 'The contract a backend exposes to the outside world -- REST, GraphQL, gRPC, WebSockets/SSE, and when to reach for each.', covered: true },
+  { label: 'Backend & Messaging', desc: 'The application logic itself, plus how services communicate asynchronously -- message queues, pub/sub, event-driven processing.', covered: true },
+  { label: 'Data Layer', desc: 'Where the system actually keeps its data -- relational, vector, graph, and NoSQL databases, and when each is the right tool.', covered: true },
+  { label: 'Big Data & Analytics', desc: 'Processing and querying data at a scale a single database was never built for -- Spark, warehouses, BI tooling. Thin on this site today (see below).', covered: false },
+  { label: 'AI / ML Layer', desc: 'The models themselves -- classical ML, deep learning, LLMs/GenAI, agents -- and the pipelines that train and serve them.', covered: true },
+  { label: 'Infrastructure', desc: 'What actually runs the system -- containers, orchestration, infrastructure-as-code, CI/CD, cloud platforms.', covered: true },
+  { label: 'Security, Reliability & Operations', desc: 'Keeping the system safe, correct, and running -- security attack surfaces, observability, monitoring, deployment strategy.', covered: true },
+]} />
+
+## Frontend / Client Experience
+
+**What is it, and why does it exist?** The layer a person actually sees and touches — a web app, a mobile app, a CLI, a voice interface. Every request everything below this page's stack ever handles started as someone interacting with something at this layer.
+
+This is genuinely thin coverage on this site today, and deliberately so: framework-by-framework comparison (React vs. Next.js vs. Vue vs. Svelte, mobile stacks, general software-architecture patterns like DDD or hexagonal architecture) is real, valuable knowledge — but it's general full-stack software engineering, not specific to AI/ML systems, which is this platform's actual focus. Where frontend matters *specifically* for AI products — streaming a token-by-token LLM response to a UI, for instance — that's covered where it comes up (see [Communication Patterns](/docs/cs-fundamentals/apis-http-and-protocols#communication-patterns) for streaming/SSE). A dedicated frontend-framework deep-dive is a real gap worth closing eventually, just not where this platform's depth is concentrated.
+
+## Network
+
+**What is it, and why does it exist?** Before an API contract or auth scheme means anything, a client and a server need to actually exchange bytes — [The Request/Response Cycle](/docs/cs-fundamentals/apis-http-and-protocols#the-requestresponse-cycle) covers the real mechanics: HTTP methods, status codes, what actually happens between a client sending a request and a server responding.
+
+Network fundamentals are the layer every other layer above it sits on — an API design or an auth scheme is meaningless without a working request/response cycle underneath it.
+
+## Identity & Auth
+
+**What is it, and why does it exist?** Two related but distinct questions every request has to answer: *who is this* (authentication) and *what are they allowed to do* (authorization). See [Authentication vs. Authorization](/docs/cs-fundamentals/apis-http-and-protocols#authentication-vs-authorization) for the real mechanics — API keys, [OAuth 2.0](/docs/cs-fundamentals/apis-http-and-protocols#api-keys-and-oauth-20), and [JWTs](/docs/cs-fundamentals/apis-http-and-protocols#jwts) — with real interactive diagrams walking through the OAuth flow and JWT structure token by token.
+
+Once a request is authenticated, it can finally reach the API contract it's actually trying to use.
+
+## API Layer
+
+**What is it, and why does it exist?** The actual contract a backend exposes — what a client can ask for, and in what shape. [REST vs. GraphQL vs. gRPC](/docs/cs-fundamentals/apis-http-and-protocols#rest-vs-graphql-vs-grpc) covers the real tradeoffs between the three dominant styles, and [Communication Patterns](/docs/cs-fundamentals/apis-http-and-protocols#communication-patterns) covers WebSockets and Server-Sent Events for anything that isn't a simple request/response — including the token-by-token streaming pattern every modern LLM product UI depends on.
+
+A single request usually isn't the whole story — real backends coordinate multiple services, often asynchronously.
+
+## Backend & Messaging
+
+**What is it, and why does it exist?** The application logic that actually handles a request, plus — critically, at any real scale — how separate services communicate without blocking on each other directly. See [Message Queues & Async Processing](/docs/mlops/message-queues-and-async-processing) for the real mechanics: pub/sub, queues, and why decoupling *when* work happens from *when a request arrives* is what keeps a system responsive under real load.
+
+Whatever the backend computes, it needs somewhere real to persist it.
+
+## Data Layer
+
+**What is it, and why does it exist?** Where a system actually keeps its data, long-term. [Databases Overview](/docs/databases/overview) covers the full real landscape: relational (structured records, transactions), vector (semantic similarity, the retrieval backbone of RAG), graph (relationship traversal), and [NoSQL](/docs/databases/nosql/overview) (document, key-value, and wide-column stores) — with the real, explicit tradeoff each one makes, and why most real systems run several of them at once ([polyglot persistence](/docs/databases/overview#why-real-systems-run-all-three-at-once)).
+
+## Big Data & Analytics
+
+**What is it, and why does it exist?** Processing and querying data at a scale where a single database instance was never designed to operate — distributed processing (Spark), cloud data warehouses (Snowflake, BigQuery), transformation tooling (dbt), and business-intelligence dashboards (Tableau, Power BI) that turn raw data into something a human can actually read.
+
+This is genuinely thin on this site today — touched only in passing inside [Data Engineering & Versioning](/docs/mlops/data-engineering-and-versioning), never explained as a category of its own. A real, dedicated treatment of this layer (what each tool is actually for, and when a system has outgrown a single database) is a confirmed gap worth its own future page, not something to gloss over here.
+
+## AI / ML Layer
+
+**What is it, and why does it exist?** The layer this entire platform is built around — the actual models, and the pipelines that train and serve them. [Machine Learning](/docs/machine-learning/overview) for the classical and deep-learning foundations, [LLMs & GenAI](/docs/llms-genai/overview) for modern language models, RAG, and retrieval architectures, and [Agents](/docs/agents/overview) for systems that plan, act, and use tools rather than just responding once.
+
+Every layer above this one exists to get a request *to* a model and a response *back* — everything below this one exists to actually run that model reliably, at scale, in production.
+
+## Infrastructure
+
+**What is it, and why does it exist?** What actually runs the system, physically or virtually — packaging an application so it runs the same way everywhere ([Containers](/docs/mlops/containers)), coordinating many containers across many machines ([Kubernetes](/docs/mlops/kubernetes)), defining that infrastructure as version-controlled code instead of manual clicks ([Infrastructure as Code](/docs/mlops/infrastructure-as-code)), automating the path from a code change to a running deployment ([CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd)), and the cloud platforms (AWS, GCP, Azure) all of the above typically runs on top of ([Cloud Computing](/docs/mlops/cloud-computing)). Real, hands-on command references exist too — [kubectl](/docs/cli-reference/kubectl-command-reference), [Terraform](/docs/cli-reference/terraform-command-reference), [Docker Compose](/docs/cli-reference/docker-and-compose), and [cloud CLIs](/docs/cli-reference/cloud-cli-aws-azure-gcp) across all three major providers.
+
+A system that runs is not the same as a system that runs *safely* and *stays* running — that's the final layer.
+
+## Security, Reliability & Operations
+
+**What is it, and why does it exist?** Keeping a running system safe from attack, correct under real-world conditions, and observable enough that a problem gets caught before a user reports it. [AI Security](/docs/ai-security/overview) covers the real, current attack surface specific to AI systems — see [OWASP LLM Top 10](/docs/ai-security/owasp-llm-top-10-and-prompt-attacks) and [AI Red Teaming](/docs/ai-security/ai-red-teaming) specifically. [Observability](/docs/mlops/observability) and [Monitoring & Drift Detection](/docs/mlops/monitoring-and-drift) cover knowing what a system is actually doing in production, and [Production Reliability](/docs/mlops/production-reliability) and [Deployment Strategies](/docs/mlops/deployment-strategies) cover shipping changes without breaking what's already running.
+
+One narrower, niche layer sits just past this one and is worth naming honestly rather than skipping silently: **platform engineering** — internal developer platforms (Backstage) and infrastructure abstraction layers (Crossplane) that let application teams self-serve infrastructure without needing deep infra expertise themselves. Real, and growing in adoption at larger organizations, but niche enough relative to this platform's core AI/ML focus that it isn't covered in depth here today.
+
+## Reading This Map
+
+Not every system needs every layer at real depth — a prototype RAG demo barely touches infrastructure-as-code or platform engineering; a startup's first product might not need a message queue yet. The point of this map isn't "learn all of it before building anything," it's the opposite: when a real constraint shows up (traffic that overwhelms a single service, data that no longer fits in one database, a launch that needs to not go down), this map is where to find *which* layer that constraint actually lives in, and the real page that covers it — the same problem-first spirit as [ML System Design Case Studies](/docs/ml-system-design/case-studies).
+
+Next: [ML System Design Case Studies](/docs/ml-system-design/case-studies) for real, worked systems that walk through several of these layers together, or [The 9-Step Framework](/docs/ml-system-design/the-9-step-framework) for a structured way to reason about designing one from scratch.

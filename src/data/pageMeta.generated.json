@@ -1120,6 +1120,13 @@
       "sidebarPosition": 2,
       "description": null
     },
+    "/docs/ml-system-design/technology-ecosystem-map": {
+      "slug": "ml-system-design/technology-ecosystem-map",
+      "section": "ml-system-design",
+      "title": "Technology Ecosystem Map",
+      "sidebarPosition": 6,
+      "description": null
+    },
     "/docs/ml-system-design/the-9-step-framework": {
       "slug": "ml-system-design/the-9-step-framework",
       "section": "ml-system-design",
