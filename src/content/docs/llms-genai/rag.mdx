@@ -16,6 +16,7 @@ import AdvancedRagArchitecturesDiagram from '../../../viz/diagrams/AdvancedRagAr
 import GraphRagDiagram from '../../../viz/diagrams/GraphRagDiagram';
 import RagEvalMetricsDiagram from '../../../viz/diagrams/RagEvalMetricsDiagram';
 import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
+import { Remember } from '../../../components/content/Remember';
 
 # Retrieval-Augmented Generation (RAG)
 
@@ -57,7 +58,7 @@ Click any node below for what it does, then type a real question and watch retri
 - **Parent-child chunking**: retrieve using small, precise child chunks, but pass the larger parent chunk (with more surrounding context) to the LLM — balances retrieval precision with generation context.
 - **Late chunking**: embed the *entire* document first with a long-context embedding model, then pool the resulting token embeddings *into* chunks only afterward — the reverse order of every strategy above. Because each chunk's embedding is derived from token representations that already attended to the full document, it carries whole-document context even for a chunk that, read in isolation, wouldn't obviously connect to it (a pronoun resolved only by an earlier paragraph, for instance). This solves a different problem than parent-child chunking: parent-child pairs a small retrieval unit with a larger *separate* context chunk passed to the LLM; late chunking bakes document-wide context directly into the retrieval embedding itself, before chunking ever happens.
 
-Chunk size is a real tradeoff: too small loses context; too large dilutes the embedding's specificity and wastes context window on irrelevant text.
+<Remember>Chunk size is a real tradeoff, not a "bigger is safer" default: too small loses context a chunk needs to make sense on its own; too large dilutes the embedding's specificity and wastes context window on irrelevant text.</Remember>
 
 Recursive chunking in code, via [LangChain's](https://python.langchain.com) `RecursiveCharacterTextSplitter` — the standard implementation of the "try large boundaries first, fall back to smaller ones" strategy described above:
 
@@ -110,14 +111,31 @@ Whichever version of the query comes out of this step — rephrased, decomposed,
 
 ## Dense vs. Sparse Retrieval, and BM25
 
-**Pipeline step 6.** Two structurally different ways to find relevant chunks, worth distinguishing precisely rather than lumping together as "search":
+**Pipeline step 6.** Two structurally different ways to find relevant chunks — worth distinguishing precisely rather than lumping together as "search," because they fail in genuinely different, complementary ways.
 
-- **Dense retrieval**: embed both the query and every chunk into the same continuous vector space (see [Foundation Model Internals](/docs/llms-genai/foundation-model-internals)), and retrieve by vector similarity — captures *semantic* similarity (a query about "canines" can retrieve a chunk about "dogs" even with zero shared words), at the cost of sometimes missing exact matches that matter (a specific product code, an exact legal term).
-- **Sparse retrieval**: represents text as a high-dimensional, mostly-zero vector over the vocabulary (which exact terms appear, and how often) — the classical information-retrieval approach, and still highly effective specifically because it *guarantees* exact term matches aren't missed.
+### Dense Retrieval
+
+**What is it?** Finding chunks by *meaning*, using the same embedding-space idea the rest of this page already relies on for chunk vectors.
+
+**How does it work?** Embed both the query and every chunk into the same continuous vector space (see [Foundation Model Internals](/docs/llms-genai/foundation-model-internals)), and retrieve by vector similarity — the same cosine-similarity comparison the Embedding step above computes.
+
+**Why is it useful?** It captures *semantic* similarity: a query about "canines" can retrieve a chunk about "dogs" even with zero shared words, because the embedding space clusters them near each other regardless of exact wording.
+
+**Limitation:** Because it's comparing meaning, not exact text, dense retrieval can miss exact matches that matter — a specific product code, an exact legal term, a precise error message — where the literal string is the point, not the general topic.
 
 <DenseVsSparseRetrievalDiagram />
 
-**BM25** is the standard modern sparse-retrieval scoring function, refining raw term-frequency matching with two corrections: it saturates the benefit of a term appearing many times in a document (the 5th occurrence of a word matters far less than the 1st), and it downweights matches on terms that are common across the whole corpus (matching "the" tells you nothing; matching a rare technical term tells you a lot) while upweighting matches on documents that are otherwise concise (a short document containing your query terms is more likely to be specifically about them than a long document that happens to mention them once).
+Dense retrieval's blind spot — missing exact term matches — is precisely what sparse retrieval, the classical information-retrieval approach, was built to guarantee.
+
+### Sparse Retrieval and BM25
+
+**What is it?** Finding chunks by *exact term overlap* with the query, the pre-embeddings approach to search that's still highly effective today.
+
+**How does it work?** Represent text as a high-dimensional, mostly-zero vector over the vocabulary — which exact terms appear, and how often — then score query-document overlap with **BM25**, the standard modern scoring function. BM25 refines raw term-frequency matching with two corrections: it saturates the benefit of a term appearing many times in a document (the 5th occurrence of a word matters far less than the 1st), and it downweights matches on terms that are common across the whole corpus (matching "the" tells you nothing; matching a rare technical term tells you a lot) while upweighting matches on documents that are otherwise concise (a short document containing your query terms is more likely to be specifically about them than a long document that happens to mention them once).
+
+**Why is it useful?** It *guarantees* exact term matches aren't missed — the opposite failure mode from dense retrieval — which is exactly why it still matters even in an embeddings-heavy pipeline.
+
+**Limitation:** Sparse retrieval has no concept of meaning — a query about "canines" simply won't match a chunk that only ever says "dogs," no matter how relevant that chunk actually is, because there's zero literal term overlap for BM25 to score.
 
 In code, via [`rank_bm25`](https://github.com/dorianbrown/rank_bm25), the standard Python implementation — it deliberately does no text preprocessing itself, so tokenizing (and lowercasing, stemming, etc. if wanted) is the caller's job:
 
@@ -149,7 +167,17 @@ $\text{IDF}(q_i)$ (commonly $\log\frac{N - n(q_i) + 0.5}{n(q_i) + 0.5}$, with $N
 
 </GoDeeper>
 
-- **Hybrid search**: combines both — run dense and sparse retrieval independently, then merge the two ranked result sets (commonly via **Reciprocal Rank Fusion**, which combines rankings based on each result's *position* in each list rather than trying to normalize and compare two differently-scaled similarity scores directly). Hybrid search is the practical default in production RAG precisely because dense and sparse retrieval fail in different, complementary ways.
+Dense misses exact matches; sparse misses meaning — two failures with no overlap, which is exactly what makes running both together, rather than picking one, worth the extra cost.
+
+### Hybrid Search
+
+**What is it?** Running dense and sparse retrieval independently, then merging their two ranked result sets into one — the practical default in production RAG, not a niche option.
+
+**How does it work?** Merge the two ranked lists via **Reciprocal Rank Fusion**, which combines rankings based on each result's *position* in each list rather than trying to normalize and compare two differently-scaled similarity scores directly.
+
+**Why is it useful?** It gets both failure-avoidance properties at once — a chunk can surface either because it's semantically close (dense) or because it shares exact terms with the query (sparse), covering each method's blind spot with the other.
+
+<Remember>Dense and sparse retrieval fail in different, complementary ways — dense misses exact matches, sparse misses meaning. Hybrid search isn't a compromise between the two; it's a way to get both failure-avoidance properties at once.</Remember>
 
 <GoDeeper title="Go deeper: why Reciprocal Rank Fusion uses positions, not scores">
 
@@ -207,7 +235,7 @@ Everything above this section establishes *correctness* — this section is abou
 
 **Embedding fine-tuning on domain data.** A general-purpose embedding model is trained on broad web text, not your specific domain's vocabulary and relevance judgments — fine-tuning it on domain query-document pairs (contrastive/triplet-loss training, pulling truly relevant pairs closer and irrelevant ones apart) can meaningfully close the gap between "generically similar" and "actually relevant for this specific corpus," at the cost of needing labeled or weakly-labeled domain relevance data to train on.
 
-**Latency/cost tuning, tied together**: `ef_search` trades recall for query latency directly; quantization trades accuracy for storage and search cost; semantic caching trades a small risk of a stale/mismatched answer for skipping the pipeline entirely on repeat traffic; and the reranker choice from [Reranking](#re-ranking-with-cross-encoders) trades accuracy for cost the same way — a smaller/faster reranker over more candidates, or a stronger/slower one over fewer. None of these are free wins; every optimization here is a real, explicit tradeoff against some other production metric, tuned to the specific system's actual latency and cost budget.
+<Remember>None of the optimizations above are free wins — every one is a real, explicit tradeoff against some other production metric: `ef_search` trades recall for query latency, quantization trades accuracy for storage and search cost, semantic caching trades a small risk of a stale answer for skipping the pipeline on repeat traffic, and reranker choice trades accuracy for cost the same way. Tune each one against the system's actual latency and cost budget, not a generic default.</Remember>
 
 ## Evaluating RAG
 
