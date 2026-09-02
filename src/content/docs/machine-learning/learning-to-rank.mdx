@@ -23,6 +23,21 @@ Predicting "will the user click this" per item (see [Recommender Systems — CTR
 - **Pairwise**: reframe the problem as *classification over pairs* — for two items $i$ and $j$ where $i$ is known to be more relevant, train the model to predict $i > j$. This directly optimizes for getting relative order right, which is much closer to what ranking quality actually means. **RankNet** is the canonical pairwise method: it turns the score difference between a pair into a probability via a sigmoid, and trains with cross-entropy on whether the "more relevant" item actually scored higher.
 - **Listwise**: optimize a ranking-quality metric (below) directly over the *entire list* at once, rather than decomposing into independent pairs. **LambdaMART** (gradient-boosted trees, see [Boosting](/docs/machine-learning/boosting), trained with "lambda gradients" that weight each pairwise comparison by how much swapping that pair would actually change the list's NDCG) is the most widely deployed listwise-style method in production search/ranking systems — it captures listwise ranking quality while still training with the well-understood, efficient machinery of gradient boosting.
 
+In code, via [LightGBM's](https://lightgbm.readthedocs.io) `LGBMRanker`, the standard implementation of LambdaMART:
+
+```python
+from lightgbm import LGBMRanker
+
+ranker = LGBMRanker(objective="lambdarank")
+
+# group tells the ranker where each query's results start/end within X, y --
+# e.g. group=[10, 20] means the first 10 rows are query 1's candidates,
+# the next 20 rows are query 2's, and so on. This is how a single flat
+# feature matrix encodes many separate ranking lists at once.
+ranker.fit(X_train, y_train, group=group_train)
+scores = ranker.predict(X_test)  # higher score = should rank higher
+```
+
 The general pattern — pointwise is simplest but optimizes the wrong thing, pairwise gets the relative-order objective right, listwise gets closest to the metric that's actually reported — is worth internalizing beyond just ranking: it recurs anywhere "get the order right" matters more than "get each individual score right."
 
 ## Ranking Evaluation Metrics
@@ -36,6 +51,19 @@ These are worth knowing precisely, since "which metric" materially changes what 
   - **NDCG**: DCG divided by the *ideal* DCG (the DCG of the best-possible ordering of the same result set) — normalizing to $[0, 1]$ so NDCG is comparable across queries with different numbers of relevant results, where raw DCG wouldn't be. Real DCG/NDCG, recomputed live as you reorder the list:
 
 <NdcgDiagram />
+
+In code, via `sklearn.metrics.ndcg_score` — takes graded relevance labels and predicted scores, handles the discounting and ideal-DCG normalization described above internally:
+
+```python
+import numpy as np
+from sklearn.metrics import ndcg_score
+
+true_relevance = np.asarray([[10, 0, 0, 1, 5]])  # graded relevance, one row per query
+scores = np.asarray([[.1, .2, .3, 4, 70]])        # this model's predicted scores
+
+ndcg_score(true_relevance, scores)        # 0.69 -- full list
+ndcg_score(true_relevance, scores, k=4)   # NDCG@4, truncated to the top 4
+```
 - **Choosing between them**: MRR when there's typically one right answer near the top; NDCG when relevance is graded and the quality of the *entire* top-$k$ ordering matters, not just whether one good result appeared somewhere in it — NDCG is the default in most modern search/ranking evaluation for exactly this completeness.
 
 ## Feature Engineering for Ranking
