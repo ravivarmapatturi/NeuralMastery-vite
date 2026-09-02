@@ -54,7 +54,7 @@ Whatever the backend computes, it needs somewhere real to persist it.
 
 ## Data Layer
 
-**What is it, and why does it exist?** Where a system actually keeps its data, long-term. [Databases Overview](/docs/databases/overview) covers the full real landscape: relational (structured records, transactions), vector (semantic similarity, the retrieval backbone of RAG), graph (relationship traversal), and [NoSQL](/docs/databases/nosql/overview) (document, key-value, and wide-column stores) — with the real, explicit tradeoff each one makes, and why most real systems run several of them at once ([polyglot persistence](/docs/databases/overview#why-real-systems-run-all-three-at-once)).
+**What is it, and why does it exist?** Where a system actually keeps its data, long-term. [Databases Overview](/docs/databases/overview) covers the full real landscape: relational (structured records, transactions), vector (semantic similarity, the retrieval backbone of RAG), graph (relationship traversal), [NoSQL](/docs/databases/nosql/overview) (document, key-value, and wide-column stores), and [search infrastructure](/docs/databases/overview#search-infrastructure-elasticsearch-and-opensearch) (Elasticsearch/OpenSearch — full-text relevance search, a genuinely different workload from both vector similarity and NoSQL lookup) — with the real, explicit tradeoff each one makes, and why most real systems run several of them at once ([polyglot persistence](/docs/databases/overview#why-real-systems-run-all-three-at-once)).
 
 ## Big Data & Analytics
 

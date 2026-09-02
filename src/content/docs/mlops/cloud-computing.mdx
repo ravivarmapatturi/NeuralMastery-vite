@@ -10,6 +10,7 @@ import RequestPathSecurityDiagram from '../../../viz/diagrams/RequestPathSecurit
 import CloudVocabularyMapDiagram from '../../../viz/diagrams/CloudVocabularyMapDiagram';
 import CloudDistinctiveFeaturesDiagram from '../../../viz/diagrams/CloudDistinctiveFeaturesDiagram';
 import CloudNeutralPortabilityDiagram from '../../../viz/diagrams/CloudNeutralPortabilityDiagram';
+import { Remember } from '../../../components/content/Remember';
 
 # Cloud Computing for ML
 
@@ -36,6 +37,16 @@ aws ec2 describe-instances --filters "Name=instance-type,Values=g5.xlarge" \
 ```
 
 ## Storage & Databases
+
+**What is object storage, actually?** Storage for whole files as opaque "objects" — not a mounted filesystem, and not a database table. Every object lives in a flat namespace addressed by a **bucket** (a top-level container) and a **key** (a string identifying the object within it) — the nested "folders" an S3 console shows are a display convention over key prefixes (`models/fraud-detector/v3/model.pkl` is one flat key, not three real nested directories), not an actual directory tree the way a real filesystem has one.
+
+**How does it work?** Every read/write is a full HTTP request against the object as a whole — `GET`/`PUT`/`DELETE` a complete object, not a random-access byte-offset seek/write the way a local disk or a mounted block volume works. There's no in-place partial edit: updating part of a file means uploading a full replacement object.
+
+**Why is it useful?** Virtually unlimited scale, very high durability (S3's standard tier: 11 nines), and decoupled from any single machine — many services can read the same object concurrently over the network, which is exactly why it's the default place datasets, model artifacts, and logs live in a real ML pipeline; nearly every tool in this section (DVC, MLflow, Airflow, Docker registries) can use it as a backend directly.
+
+**Limitation:** The HTTP-request-per-object model means meaningfully higher per-request latency than local or block storage, and no real random-access read/write within a file — a poor fit for a workload that needs low-latency, in-place reads and writes (that's exactly what block storage, below, or a real database is for).
+
+<Remember>Object storage isn't a filesystem with extra steps — it's a flat, key-addressed store of whole objects over HTTP. That's exactly why it scales to unlimited size and any number of readers, and exactly why it can't do the in-place random-access edits a real disk or database can.</Remember>
 
 - **S3**: object storage — the default place datasets, model artifacts, and logs live; nearly every tool in this section (DVC, MLflow, Airflow, Docker registries) can use S3 as a backend.
 - **EBS**: block storage attached to a single EC2 instance — used for a VM's own disk, not for data meant to be shared across services.
