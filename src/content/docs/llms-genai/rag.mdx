@@ -59,11 +59,36 @@ Click any node below for what it does, then type a real question and watch retri
 
 Chunk size is a real tradeoff: too small loses context; too large dilutes the embedding's specificity and wastes context window on irrelevant text.
 
+Recursive chunking in code, via [LangChain's](https://python.langchain.com) `RecursiveCharacterTextSplitter` — the standard implementation of the "try large boundaries first, fall back to smaller ones" strategy described above:
+
+```python
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# Tries splitting on paragraph breaks first, then sentences, then words --
+# only falls back to a smaller separator when a chunk is still too large.
+splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+chunks = splitter.split_text(document_text)
+```
+
+`chunk_overlap` repeats a small amount of text between consecutive chunks, so a sentence or idea split across a chunk boundary still appears in full in at least one of the two chunks.
+
 <ChunkingStrategiesDiagram />
 
 ## Choosing an Embedding Model
 
 **Pipeline step 3.** Whatever chunks step 2 produced now need to become vectors. Different embedding models trade off quality, speed, cost, and domain fit (a model tuned on general web text may underperform on legal or medical documents). Dimensionality matters too — higher-dimensional embeddings usually capture more nuance but cost more to store and search at scale.
+
+In code, via the standard [`sentence-transformers`](https://sbert.net) library (see [Retrieval & Reranking Architectures](/docs/llms-genai/retrieval-and-reranking-architectures#bi-encoder-independent-encoding-pooled-to-one-vector) for the bi-encoder architecture this implements):
+
+```python
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
+# Every chunk from the chunking step, embedded once and indexed --
+# this is the vector data that step 4 (indexing) stores.
+chunk_embeddings = model.encode(chunks)
+```
 
 What retrieval above is actually doing under the hood — comparing vectors by cosine similarity in a learned space where meaning clusters geometrically — is exactly what the [Embedding Space Explorer](/docs/nlp/word-embeddings) makes clickable:
 
@@ -93,6 +118,18 @@ Whichever version of the query comes out of this step — rephrased, decomposed,
 <DenseVsSparseRetrievalDiagram />
 
 **BM25** is the standard modern sparse-retrieval scoring function, refining raw term-frequency matching with two corrections: it saturates the benefit of a term appearing many times in a document (the 5th occurrence of a word matters far less than the 1st), and it downweights matches on terms that are common across the whole corpus (matching "the" tells you nothing; matching a rare technical term tells you a lot) while upweighting matches on documents that are otherwise concise (a short document containing your query terms is more likely to be specifically about them than a long document that happens to mention them once).
+
+In code, via [`rank_bm25`](https://github.com/dorianbrown/rank_bm25), the standard Python implementation — it deliberately does no text preprocessing itself, so tokenizing (and lowercasing, stemming, etc. if wanted) is the caller's job:
+
+```python
+from rank_bm25 import BM25Okapi
+
+tokenized_corpus = [chunk.lower().split() for chunk in chunks]
+bm25 = BM25Okapi(tokenized_corpus)
+
+tokenized_query = query.lower().split()
+top_chunks = bm25.get_top_n(tokenized_query, chunks, n=5)
+```
 
 <Bm25ScoringDiagram />
 
