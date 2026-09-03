@@ -1,12 +1,13 @@
 import { useState, type ReactNode } from 'react';
 import { useVizTokens, RADIUS, SPACING } from '../../theme/vizTokens';
 
-type Depth = 'eli5' | 'deeper' | 'solution';
+type Depth = 'eli5' | 'deeper' | 'solution' | 'qa';
 
 const DEPTH_META: Record<Depth, { icon: string; label: string }> = {
   eli5: { icon: '💡', label: 'Simple Explanation' },
   deeper: { icon: '🔬', label: 'Go deeper' },
   solution: { icon: '🔑', label: 'Show solution' },
+  qa: { icon: '❓', label: 'Question' },
 };
 
 /**
@@ -26,7 +27,7 @@ function ExpandableDepth({ kind, title, defaultOpen, children }: { kind: Depth; 
   const t = useVizTokens();
   const meta = DEPTH_META[kind];
   const [open, setOpen] = useState(defaultOpen ?? kind === 'eli5');
-  const color = kind === 'eli5' ? t.accentTeal : kind === 'solution' ? t.accentWarn : t.accentPurple;
+  const color = kind === 'eli5' ? t.accentTeal : kind === 'solution' ? t.accentWarn : kind === 'qa' ? t.accentSecondary : t.accentPurple;
 
   return (
     <div
@@ -104,6 +105,18 @@ export function GoDeeper({ title, children }: { title?: string; children: ReactN
 export function Solution({ title, children }: { title?: string; children: ReactNode }) {
   return (
     <ExpandableDepth kind="solution" title={title ?? 'Show solution'} defaultOpen={false}>
+      {children}
+    </ExpandableDepth>
+  );
+}
+
+/** One interview-cram-sheet question: the question itself is the always-
+ * visible header, the answer is hidden until clicked. Closed by default
+ * on purpose -- the point is to test recall against the question first,
+ * not read straight down a page of answers. */
+export function QA({ q, children }: { q: string; children: ReactNode }) {
+  return (
+    <ExpandableDepth kind="qa" title={q} defaultOpen={false}>
       {children}
     </ExpandableDepth>
   );

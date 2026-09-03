@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
-import { ELI5, GoDeeper, Solution } from './ExpandableDepth'
+import { ELI5, GoDeeper, QA, Solution } from './ExpandableDepth'
 import { renderWithTheme as render } from '../../../tests/unit/renderWithProviders'
 
 describe('ELI5', () => {
@@ -96,5 +96,24 @@ describe('Solution', () => {
     render(<Solution>Reference implementation.</Solution>)
     await user.click(screen.getByRole('button'))
     expect(screen.getByText('Reference implementation.')).toBeInTheDocument()
+  })
+})
+
+describe('QA', () => {
+  it('defaults CLOSED -- the answer is not in the DOM until clicked, so it actually tests recall', () => {
+    render(<QA q="What is a Transformer?">A neural network architecture built on self-attention.</QA>)
+    expect(screen.queryByText('A neural network architecture built on self-attention.')).not.toBeInTheDocument()
+  })
+
+  it('shows the question text as the always-visible header', () => {
+    render(<QA q="What is a Transformer?">content</QA>)
+    expect(screen.getByText('What is a Transformer?')).toBeInTheDocument()
+  })
+
+  it('expands on click, revealing the real answer', async () => {
+    const user = userEvent.setup()
+    render(<QA q="What is a Transformer?">A neural network architecture built on self-attention.</QA>)
+    await user.click(screen.getByRole('button'))
+    expect(screen.getByText('A neural network architecture built on self-attention.')).toBeInTheDocument()
   })
 })

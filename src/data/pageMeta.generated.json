@@ -735,6 +735,13 @@
       "sidebarPosition": 1,
       "description": null
     },
+    "/docs/interview-prep/qa-quick-reference": {
+      "slug": "interview-prep/qa-quick-reference",
+      "section": "interview-prep",
+      "title": "Interview Q&A Quick Reference",
+      "sidebarPosition": 5.2,
+      "description": null
+    },
     "/docs/interview-prep/roadmap": {
       "slug": "interview-prep/roadmap",
       "section": "interview-prep",

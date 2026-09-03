@@ -1,0 +1,168 @@
+---
+title: "Interview Q&A Quick Reference"
+sidebar_position: 5.2
+---
+
+import { QA } from '../../../components/content/ExpandableDepth';
+
+# Interview Q&A Quick Reference
+
+[ML/GenAI Knowledge Q&A](/docs/interview-prep/knowledge-qa-strategy) covers *how* to prepare for the rapid-fire breadth round. This page is the actual drill: real interview questions, click to reveal a concise answer, then check yourself against it. Each answer links to the full page if you need the real depth behind it — the point here is testing recall under a few seconds of pressure, not re-teaching the concept from scratch, so keep answers short and move on.
+
+Three categories to start (LLM fundamentals, RAG, and agents — the highest-traffic combination for AI engineering interviews right now).
+
+## LLM Fundamentals
+
+<QA q="What is a foundation model, and how is it different from a regular ML model?">
+A single large model pretrained on broad data at massive scale, general-purpose enough to be adapted (via prompting or fine-tuning) to many downstream tasks — instead of one model trained from scratch per task. See [Foundation Model Internals](/docs/llms-genai/foundation-model-internals).
+</QA>
+
+<QA q="What is a Large Language Model, and what is it actually trained to do?">
+A neural network (almost always a decoder-only Transformer) trained to predict the next token given everything before it. Nothing more exotic than that at the objective level — the wide range of downstream behavior (chat, code, reasoning) emerges from scale plus post-training on top of that one pretraining objective.
+</QA>
+
+<QA q="What is tokenization, and why can't LLMs just read raw text?">
+Splitting text into a fixed vocabulary of subword units (tokens) the model actually operates on — characters are too fine-grained (long sequences, no semantic unit), whole words are too coarse (unbounded vocabulary, can't handle unseen words). See [Foundation Model Internals — Tokenization](/docs/llms-genai/foundation-model-internals#tokenization).
+</QA>
+
+<QA q="What is Byte Pair Encoding (BPE)?">
+The algorithm most LLM tokenizers use to build that subword vocabulary: start from individual characters/bytes, and repeatedly merge the most frequent adjacent pair into a new token, until you hit a target vocabulary size. Frequent words end up as one token; rare words fall back to smaller subword pieces.
+</QA>
+
+<QA q="What are embeddings?">
+Dense numeric vectors representing tokens (or whole sentences/documents) such that semantic similarity corresponds to geometric closeness — the representation everything downstream (attention, retrieval) actually operates on. See [Word Embeddings](/docs/nlp/word-embeddings).
+</QA>
+
+<QA q="What is positional encoding, and why do Transformers need it?">
+Self-attention on its own is permutation-invariant — it has no notion of token order. Positional encoding injects order information into the input so the model can tell "dog bites man" from "man bites dog." See [Attention & Transformers — Positional Encoding](/docs/deep-learning/attention-transformers#positional-encoding).
+</QA>
+
+<QA q="What is self-attention?">
+The mechanism letting every token in a sequence look at every other token and weight how much each one matters for updating its own representation — computed from Query/Key/Value projections of the same input. See [Self-Attention: Query, Key, Value](/docs/deep-learning/attention-transformers#self-attention-query-key-value).
+</QA>
+
+<QA q="What are Query, Key, and Value in attention?">
+Three learned linear projections of the same input: Query represents "what am I looking for," Key represents "what do I offer" for every other position, and the Query·Key similarity produces attention weights that combine the Values into the output.
+</QA>
+
+<QA q="Why do we scale attention scores by the square root of the key dimension?">
+Without scaling, dot products grow large as the key dimension grows, pushing softmax into a region with near-zero gradients (it saturates toward one-hot). Dividing by √d_k keeps the scores in a range where softmax stays well-behaved. See [Why Scale by the Square Root of the Key Dimension](/docs/deep-learning/attention-transformers#why-scale-by-the-square-root-of-the-key-dimension).
+</QA>
+
+<QA q="What is multi-head attention, and why not just use one big attention head?">
+Running several smaller attention computations in parallel, each with its own learned projections, then concatenating the results — letting different heads specialize in different kinds of relationships (syntax, coreference, position) instead of one head averaging everything together. See [Multi-Head Attention](/docs/deep-learning/attention-transformers#multi-head-attention).
+</QA>
+
+<QA q="What's the difference between self-attention and cross-attention?">
+Self-attention: Query, Key, and Value all come from the same sequence. Cross-attention: Query comes from one sequence (e.g. a decoder), Key and Value come from a different one (e.g. an encoder's output) — how an encoder-decoder model lets its decoder attend to the source input. See [Cross-Attention](/docs/deep-learning/attention-transformers#cross-attention).
+</QA>
+
+<QA q="What is masking used for in a Transformer?">
+Causal masking blocks a position from attending to future positions, which is what makes autoregressive next-token generation well-defined — without it, predicting token *n* could see token *n+1*, which doesn't exist at inference time. See [Masking](/docs/deep-learning/attention-transformers#masking).
+</QA>
+
+<QA q="What is a KV cache, and why does it matter for serving?">
+Storing each generated token's Key/Value projections so they don't get recomputed on every subsequent step — without it, generating token *n* would redo the attention computation for all *n-1* prior tokens from scratch. It's also the dominant consumer of GPU memory during serving, which is why techniques like GQA/MQA exist to shrink it. See [KV Cache](/docs/llms-genai/foundation-model-internals#kv-cache).
+</QA>
+
+## Retrieval-Augmented Generation (RAG)
+
+<QA q="What is RAG, and why not just fine-tune the model on your data instead?">
+Retrieving relevant documents at query time and feeding them into the model's context alongside the question, rather than baking that knowledge into the weights. Fine-tuning is slow to update, doesn't cite sources, and doesn't scale to knowledge that changes daily — RAG updates by re-indexing, not retraining. See [RAG](/docs/llms-genai/rag).
+</QA>
+
+<QA q="What are the main stages of a RAG pipeline?">
+Chunk the source documents, embed each chunk, index the embeddings in a vector store, embed the incoming query, retrieve the nearest chunks, then feed those chunks plus the query into the LLM as context. See [The RAG Pipeline, End to End](/docs/llms-genai/rag#the-rag-pipeline-end-to-end).
+</QA>
+
+<QA q="What is chunking, and why does chunk size matter?">
+Splitting source documents into retrievable pieces. Too small and a chunk loses surrounding context needed to make sense of it; too large and irrelevant content dilutes the embedding, hurting retrieval precision, and wastes context budget once retrieved. See [Chunking Strategies](/docs/llms-genai/rag#chunking-strategies).
+</QA>
+
+<QA q="What's the difference between dense and sparse retrieval?">
+Dense retrieval compares learned embedding vectors by semantic similarity — catches paraphrases and synonyms, misses exact rare terms. Sparse retrieval (BM25) matches on literal term overlap — exact on keywords/IDs/jargon, blind to synonyms. See [Dense vs. Sparse Retrieval, and BM25](/docs/llms-genai/rag#dense-vs-sparse-retrieval-and-bm25).
+</QA>
+
+<QA q="What is BM25?">
+A classical sparse-retrieval ranking function scoring documents by term-frequency overlap with the query, with diminishing returns for repeated terms and normalization for document length — no learning, no embeddings, still a strong, fast baseline decades later.
+</QA>
+
+<QA q="What is hybrid search, and why combine dense and sparse retrieval?">
+Running both dense and sparse retrieval and merging the results (typically via a fusion method like reciprocal rank fusion) — because dense and sparse fail on different query types, so combining them covers more real queries than either alone. See [Hybrid Search](/docs/llms-genai/rag#hybrid-search).
+</QA>
+
+<QA q="What is re-ranking, and why is a second retrieval stage needed at all?">
+Retrieval optimizes for speed over a huge corpus (cheap bi-encoder similarity); re-ranking takes the retrieved shortlist and re-scores it with a much more accurate but expensive cross-encoder, since running that expensive model over the entire corpus wouldn't be feasible. See [Re-ranking with Cross-Encoders](/docs/llms-genai/rag#re-ranking-with-cross-encoders).
+</QA>
+
+<QA q="What's the difference between a bi-encoder and a cross-encoder?">
+A bi-encoder encodes the query and each document independently into vectors and compares them with a cheap similarity function — fast, works at corpus scale, used for retrieval. A cross-encoder feeds the query and document together through one model for full joint attention between them — much more accurate, much slower, used only on a shortlist. See [Bi-Encoder](/docs/llms-genai/retrieval-and-reranking-architectures#bi-encoder-independent-encoding-pooled-to-one-vector) vs. [Cross-Encoder](/docs/llms-genai/retrieval-and-reranking-architectures#cross-encoder-full-joint-attention-one-score-at-a-time).
+</QA>
+
+<QA q="What is GraphRAG, and when does plain chunk-based RAG fail that it fixes?">
+Building a knowledge graph of entities and relationships from the source documents, and retrieving by traversing that graph instead of (or alongside) chunk similarity — fixes multi-hop questions where the answer requires chaining facts across documents that a single similarity search would never connect. See [GraphRAG](/docs/llms-genai/rag#graphrag).
+</QA>
+
+<QA q="How do you evaluate a RAG system?">
+Faithfulness (does the answer actually follow from the retrieved context, or does the model hallucinate beyond it), relevance (do the retrieved chunks actually address the query), and context precision/recall (how much of what was retrieved was useful, and how much of what was useful got retrieved). See [Evaluating RAG](/docs/llms-genai/rag#evaluating-rag).
+</QA>
+
+<QA q="Why might increasing top-k retrieved chunks hurt instead of help?">
+More retrieved chunks means more context, and long contexts are exactly where "lost in the middle" recall degradation and context rot show up — past a point, irrelevant or redundant chunks dilute the model's attention on the ones that actually answer the query, rather than adding coverage.
+</QA>
+
+## AI Agents
+
+<QA q="What is an AI agent, and how is it different from a single LLM call?">
+A single LLM call takes input, produces output, and stops. An agent wraps the model in a loop where it can decide to call a tool, observe the result, and decide what to do next — potentially many times — before producing a final answer. See [Agent Fundamentals](/docs/agents/agent-fundamentals).
+</QA>
+
+<QA q="What is tool use / function calling?">
+The model recognizes when a task needs external information or action and emits a structured request (a function name plus arguments) instead of a plain-text answer; the calling application actually executes it and feeds the result back into context. See [Tool Use / Function Calling](/docs/agents/agent-fundamentals#tool-use-function-calling).
+</QA>
+
+<QA q="What is the ReAct pattern?">
+Interleaving reasoning steps with actions and observations — think, act (call a tool), observe the result, think again — the foundational loop behind most tool-using agents. See [ReAct](/docs/agents/agent-architectures#react-reasoning-acting).
+</QA>
+
+<QA q="What is Plan-and-Execute, and how does it differ from ReAct?">
+Produce a full multi-step plan upfront, then execute the steps (optionally re-planning if one fails), rather than deciding just the next single action at each turn like ReAct does. Better for tasks where seeing the whole shape of the problem upfront produces a more coherent plan than reasoning step-by-step in isolation. See [Plan-and-Execute](/docs/agents/agent-architectures#plan-and-execute).
+</QA>
+
+<QA q="What is reflection / self-critique in an agent?">
+Having the model (or a separate call) evaluate its own prior output against the task and revise it before finalizing — a real accuracy lever for tasks where a first pass is often subtly wrong in a findable way.
+</QA>
+
+<QA q="What's the difference between single-agent and multi-agent systems?">
+A single agent handles the whole task itself, with one growing context. Multi-agent systems split work across several agents (often with their own clean context windows), trading added coordination complexity for parallelism and per-subtask focus. See [Single-Agent vs. Multi-Agent](/docs/agents/agent-architectures#single-agent-vs-multi-agent).
+</QA>
+
+<QA q="What are the three multi-agent coordination topologies?">
+Hierarchical (one orchestrator delegates to sub-agents and combines results — easiest to debug), peer-to-peer (agents talk directly as equals — more flexible, harder to guarantee convergence), and blackboard (agents read/write shared state, never talking directly — useful when the set of contributors isn't fixed in advance). See [Multi-Agent Systems](/docs/agents/multi-agent-systems#coordination-patterns).
+</QA>
+
+<QA q="What is the supervisor / routing pattern?">
+A dynamic version of hierarchical delegation: a supervisor agent loops, re-routing between sub-agents based on intermediate results, instead of committing to one fixed delegation plan upfront like a static orchestrator would.
+</QA>
+
+<QA q="What is MCP (Model Context Protocol), and what problem does it actually solve?">
+A standardized protocol for connecting an AI application to external tools/data sources, so one client implementation works against any MCP-compatible server instead of every app needing bespoke integration code per tool. See [MCP](/docs/agents/mcp/overview#the-core-idea-client-and-server).
+</QA>
+
+<QA q="What are the agent memory types?">
+Short-term: whatever fits in the current context window (conversation so far, tool results). Long-term: information persisted outside context, across sessions, typically an external store the agent retrieves from — turning memory into a retrieval problem. See [Agent Memory](/docs/agents/agent-fundamentals#agent-memory).
+</QA>
+
+<QA q="What is context engineering, and how is it different from prompt engineering?">
+Prompt engineering is about writing and organizing instructions. Context engineering is the broader discipline of managing an agent's *entire* context state across a multi-turn task — conversation history, tool results, retrieved documents, memory, all of it — not just the instructions. See [Context Engineering](/docs/agents/context-engineering).
+</QA>
+
+<QA q="What is context rot?">
+As the number of tokens in context grows, a model's ability to accurately recall and use any specific piece of it degrades — not because of position (that's "lost in the middle" specifically), but because of sheer token volume spreading attention thinner. See [Context Engineering](/docs/agents/context-engineering).
+</QA>
+
+<QA q="What's a sub-agent architecture, and why give a sub-agent its own context window?">
+A specialized sub-agent handles a focused sub-task in its own clean context, then returns only a condensed summary (often 1,000–2,000 tokens) to the parent — keeping the parent's context from filling up with the sub-agent's entire working trace. See [Sub-Agents and Orchestrator Patterns](/docs/agents/agent-architectures#sub-agents-and-orchestrator-patterns).
+</QA>
+
+Next: [Technology Comparisons & Decision Trees](/docs/interview-prep/technology-comparisons) — the "why X over Y" tradeoff questions this same rapid-fire round often includes.
