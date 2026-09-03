@@ -1,0 +1,66 @@
+---
+title: "Practice: Detect a Cycle in a Directed Graph"
+sidebar_position: 27
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Detect a Cycle in a Directed Graph
+
+**Difficulty: Hard** · Pattern: Graph DFS · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+Given a **directed** graph as an adjacency list, determine whether it contains a cycle. This isn't just an academic question — a dependency graph (build systems, task scheduling, spreadsheet formulas) with a cycle means "these things depend on each other in a loop," which is exactly the condition that makes a valid execution order impossible to construct at all.
+
+In an *undirected* graph, "have I seen this node before during this DFS" is enough to detect a cycle. In a **directed** graph it isn't — DFS can perfectly legitimately revisit a node it already fully finished exploring via a completely different path, and that's not a cycle. The fix is tracking three states per node instead of two: **white** (untouched), **gray** (currently being explored, somewhere on the current DFS path), **black** (fully explored, done). A cycle exists exactly when DFS reaches a node that's currently **gray** — that's the signal you've looped back onto your own current path, not just revisited an already-finished branch.
+
+**Your task**: implement `has_cycle(graph)`, where `graph` is a dict mapping each node to a list of nodes it points to.
+
+<RunnableCode
+  code={`def has_cycle(graph):
+    """graph: dict[node, list[node]], directed. Return True if it
+    contains a cycle, False otherwise."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert has_cycle({"A": ["B"], "B": ["C"], "C": []}) == False
+assert has_cycle({"A": ["B"], "B": ["C"], "C": ["A"]}) == True
+assert has_cycle({"A": ["A"]}) == True
+assert has_cycle({"A": ["B"], "B": [], "C": ["D"], "D": []}) == False
+assert has_cycle({"A": ["B"], "B": [], "C": ["D"], "D": ["C"]}) == True`}
+/>
+
+<Solution>
+
+```python
+def has_cycle(graph):
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = {node: WHITE for node in graph}
+
+    def dfs(node):
+        color[node] = GRAY
+        for neighbor in graph.get(node, []):
+            if color.get(neighbor, WHITE) == GRAY:
+                return True  # back edge -- a node currently on our own path
+            if color.get(neighbor, WHITE) == WHITE:
+                if dfs(neighbor):
+                    return True
+        color[node] = BLACK
+        return False
+
+    for node in graph:
+        if color[node] == WHITE:
+            if dfs(node):
+                return True
+    return False
+```
+
+The outer `for node in graph` loop is what makes this correct on **disconnected** graphs (test 5: `C -> D -> C` is a separate cycle from `A -> B`) — a single DFS starting from one arbitrary node would never even visit the other component, so every still-`WHITE` node needs its own DFS attempt. Inside `dfs`, a node is marked `GRAY` the moment exploration of it *starts* and only flipped to `BLACK` once every one of its neighbors has been fully explored — so `GRAY` precisely means "currently an ancestor of wherever we are right now in the recursion," which is exactly what a **back edge** (an edge pointing to a node still on the current path) means, and a back edge is the textbook definition of a cycle in a directed graph. `A -> A` (test 3, a self-loop) is the simplest possible case of this: `dfs("A")` marks `A` gray, then immediately sees a neighbor (`A` itself) that's already gray.
+
+This white/gray/black coloring is the same mechanism behind detecting circular dependencies in a build system or package manager, and — run in reverse on a graph with no cycle — is also the basis for **topological sort**: the order nodes turn `BLACK` in, reversed, is a valid dependency order.
+
+</Solution>
+
+---
+
+More problems are being added continuously — see [Practice Problems overview](/docs/practice-problems/overview) for the full, current list.

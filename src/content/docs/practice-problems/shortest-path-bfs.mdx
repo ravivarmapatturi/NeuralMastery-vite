@@ -1,0 +1,65 @@
+---
+title: "Practice: Shortest Path in an Unweighted Graph"
+sidebar_position: 25
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Shortest Path in an Unweighted Graph
+
+**Difficulty: Medium** · Pattern: Graph BFS · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+Given a graph as an adjacency list and a start and end node, find the length of the shortest path between them — measured in number of edges, since the graph is unweighted (every edge costs the same).
+
+**DFS explores one path as deep as it can go before backing up — it can find *a* path, but not necessarily the shortest one.** **BFS** explores level by level, radiating outward from the start node one edge at a time — the first time it reaches the end node is *guaranteed* to be via the shortest path, because every node at distance $d$ is visited before any node at distance $d+1$.
+
+**Your task**: implement `shortest_path_length(graph, start, end)`, where `graph` is a dict mapping each node to a list of its neighbors. Return `-1` if `end` is unreachable from `start`.
+
+<RunnableCode
+  code={`from collections import deque
+
+def shortest_path_length(graph, start, end):
+    """graph: dict[node, list[node]]. Return the shortest-path edge count
+    from start to end, or -1 if end is unreachable."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert shortest_path_length({"A": ["B", "C"], "B": ["A", "D"], "C": ["A", "D"], "D": ["B", "C", "E"], "E": ["D"]}, "A", "E") == 3
+assert shortest_path_length({"A": ["B", "C"], "B": ["A", "D"], "C": ["A", "D"], "D": ["B", "C", "E"], "E": ["D"]}, "A", "A") == 0
+assert shortest_path_length({"A": ["B", "C"], "B": ["A", "D"], "C": ["A", "D"], "D": ["B", "C", "E"], "E": ["D"]}, "A", "D") == 2
+assert shortest_path_length({"A": ["B", "C"], "B": ["A", "D"], "C": ["A", "D"], "D": ["B", "C", "E"], "E": ["D"]}, "E", "A") == 3
+assert shortest_path_length({"X": ["Y"], "Y": ["X"], "Z": []}, "X", "Z") == -1`}
+/>
+
+<Solution>
+
+```python
+from collections import deque
+
+def shortest_path_length(graph, start, end):
+    if start == end:
+        return 0
+
+    visited = {start}
+    queue = deque([(start, 0)])
+    while queue:
+        node, dist = queue.popleft()
+        for neighbor in graph[node]:
+            if neighbor == end:
+                return dist + 1
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, dist + 1))
+    return -1
+```
+
+`deque` gives $O(1)$ pops from the front — using a plain list and `.pop(0)` would be $O(n)$ per pop, quietly turning the whole traversal from $O(V+E)$ into something much slower. Each queue entry carries its own distance alongside the node, so there's no need for a separate distance-tracking structure. Marking a node `visited` **the moment it's enqueued** (not when it's dequeued) is the detail that actually guarantees shortest paths: without it, the same node could be queued multiple times at different distances before any of them get processed, and there'd be no guarantee the first one dequeued is the shortest.
+
+Because BFS visits nodes in strict distance order, the very first time `end` is reached — checked before enqueueing, in this implementation — is provably via a shortest path; no other path found later could possibly be shorter. This same level-by-level exploration is exactly what an unweighted-graph pathfinding problem needs; the moment edges have different costs, BFS stops being correct and you need [Dijkstra's algorithm](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures) instead (which is, not coincidentally, BFS with a priority queue in place of a plain queue).
+
+</Solution>
+
+---
+
+Next: [Count Islands (Connected Components)](/docs/practice-problems/count-islands)

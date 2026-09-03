@@ -1421,11 +1421,25 @@
       "sidebarPosition": 19,
       "description": null
     },
+    "/docs/practice-problems/count-islands": {
+      "slug": "practice-problems/count-islands",
+      "section": "practice-problems",
+      "title": "Practice: Count Islands (Connected Components)",
+      "sidebarPosition": 26,
+      "description": null
+    },
     "/docs/practice-problems/design-min-stack": {
       "slug": "practice-problems/design-min-stack",
       "section": "practice-problems",
       "title": "Practice: Design a Min Stack",
       "sidebarPosition": 23,
+      "description": null
+    },
+    "/docs/practice-problems/detect-cycle-directed-graph": {
+      "slug": "practice-problems/detect-cycle-directed-graph",
+      "section": "practice-problems",
+      "title": "Practice: Detect a Cycle in a Directed Graph",
+      "sidebarPosition": 27,
       "description": null
     },
     "/docs/practice-problems/discounted-return": {
@@ -1545,6 +1559,13 @@
       "section": "practice-problems",
       "title": "Practice: Sample Mean and Variance From Scratch",
       "sidebarPosition": 16,
+      "description": null
+    },
+    "/docs/practice-problems/shortest-path-bfs": {
+      "slug": "practice-problems/shortest-path-bfs",
+      "section": "practice-problems",
+      "title": "Practice: Shortest Path in an Unweighted Graph",
+      "sidebarPosition": 25,
       "description": null
     },
     "/docs/practice-problems/sigmoid-activation": {
