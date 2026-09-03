@@ -58,6 +58,8 @@ A **system prompt** sets persistent context/behavior for the whole conversation 
 - **The "lost in the middle" problem**: models attend less reliably to information buried in the middle of a long context, even when it's technically within the context window — relevant to both prompting and RAG (see [RAG](/docs/llms-genai/rag)). The documented shape of this effect:
 
 <LostInTheMiddleDiagram />
+
+This is one specific symptom of a broader phenomenon — see [Context Engineering](/docs/agents/context-engineering) for **context rot**, the more general version of "more tokens in context, less reliable recall" that isn't just about position.
 - **Cost/latency optimization**: shorter prompts, caching repeated prefixes, and choosing the smallest model that reliably handles the task all reduce production cost.
 
 Next: [Retrieval-Augmented Generation (RAG)](/docs/llms-genai/rag) — giving a model access to knowledge beyond what's in its weights.

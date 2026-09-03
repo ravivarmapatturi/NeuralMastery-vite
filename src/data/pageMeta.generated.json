@@ -42,6 +42,13 @@
       "sidebarPosition": 8,
       "description": null
     },
+    "/docs/agents/context-engineering": {
+      "slug": "agents/context-engineering",
+      "section": "agents",
+      "title": "Context Engineering",
+      "sidebarPosition": 3.5,
+      "description": null
+    },
     "/docs/agents/loops-and-graphs": {
       "slug": "agents/loops-and-graphs",
       "section": "agents",

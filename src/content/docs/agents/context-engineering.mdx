@@ -1,0 +1,34 @@
+---
+title: "Context Engineering"
+sidebar_position: 3.5
+---
+
+import ContextEngineeringStrategiesDiagram from '../../../viz/diagrams/ContextEngineeringStrategiesDiagram';
+import { Remember } from '../../../components/content/Remember';
+
+# Context Engineering
+
+[Agent Fundamentals](/docs/agents/agent-fundamentals#agent-memory) left off with a real, unresolved problem: context windows are finite, but useful agent tasks span far more information than fits in one. **Context engineering** is the name the field has settled on for the discipline of actually solving that — not a single trick, but the whole practice of deciding what goes into an agent's context at every step.
+
+**What is it?** Anthropic's own definition: context engineering is "the set of strategies for curating and maintaining the optimal set of tokens (information) during LLM inference, including all the other information that may land there outside of the prompts." That's a deliberately broader scope than **prompt engineering** (see [Prompt Engineering](/docs/llms-genai/prompt-engineering)), which is about writing and organizing instructions — context engineering is about managing the *entire* context state a multi-turn agent accumulates: conversation history, tool results, retrieved documents, memory, everything.
+
+**Why is it its own discipline now, and not just "better prompting"?** Because of **context rot**: as the number of tokens in the context window grows, a model's ability to accurately recall and use any specific piece of it goes down — not linearly, but in a way that gets worse the longer the context runs. Two real mechanical reasons this happens: a transformer's self-attention creates *n²* pairwise relationships across *n* tokens, so attention gets spread thinner as context grows; and models simply have less training exposure to very-long-context dependencies than to short ones. This is a sharper, more general version of the "lost in the middle" effect you've already seen in [Prompt Engineering](/docs/llms-genai/prompt-engineering#failure-modes-and-debugging) — that was about *position* within a fixed context; context rot is about sheer *volume* degrading recall broadly, at any position.
+
+**How does it work?** LangChain's framing breaks the practice into four independent, composable strategies — not a sequence, a toolbox you draw from per situation:
+
+<ContextEngineeringStrategiesDiagram />
+
+A few of the concrete techniques underneath those four, real patterns from Anthropic's own agent-building practice:
+
+- **Compaction**: when a conversation gets close to the context limit, summarize the trajectory so far and reinitialize context from that summary — Claude Code does this automatically once usage crosses roughly 95%. The guidance that matters here: tune a compaction prompt for *recall* first (capture everything that might matter — architectural decisions, unresolved bugs, specific values), then tighten it for *precision* second (cut the redundant tool output and dead-end exploration) — never the other order, since a compaction pass that's precise but drops something real is much harder to notice or recover from than one that's momentarily too verbose.
+- **Structured note-taking**: an agent periodically writes notes to a persistent store *outside* the context window, then reads relevant notes back in at a later step — the same "write, then select" pair from the diagram above, made concrete. This is how long-horizon agents (Anthropic cites one playing Pokémon across thousands of game steps) stay coherent well past what any single context window could hold.
+- **Just-in-time retrieval vs. pre-loading**: instead of dumping everything potentially relevant into context up front, an agent can keep lightweight references (file paths, a stored query, a URL) and dynamically load the actual content only when a step needs it — mirroring how people use an index or a filing system instead of memorizing a whole document. Claude Code actually mixes both: a `CLAUDE.md` file is loaded up front unconditionally, while `grep`/`glob` tools let it pull in specific file contents just-in-time as the task requires them.
+- **Sub-agent isolation**: hand a focused sub-task to a sub-agent with its own clean context window (see [Multi-Agent Systems](/docs/agents/multi-agent-systems#coordination-patterns)), and let only a condensed result — often just 1,000-2,000 tokens — return to the parent's context, not the sub-agent's entire working trace.
+
+**Why does this matter in practice?** Every one of these techniques is answering the same underlying question, differently: *what's the smallest set of high-signal tokens that makes the desired outcome most likely?* Tool design matters here too — a bloated tool set with overlapping functionality burns context on ambiguous choices before the agent even gets to the real task; narrow, well-scoped tools (see [Agent Fundamentals](/docs/agents/agent-fundamentals#tool-use-function-calling)) keep that overhead down from the start.
+
+**What's the limitation?** There's no universal formula. Compress too aggressively and the agent silently loses information it needed three steps later — a failure mode that's hard to catch because nothing errors, the agent just gets quietly worse. Compress too little (or not at all) and context rot sets in anyway, plus you're paying for tokens that aren't earning their place. Anthropic's own stated approach is not a fixed rule but "start by testing a minimal prompt... then iterate based on failure modes found during testing" — this is an empirical, task-specific practice, not something you can get right purely on paper before running the agent for real.
+
+<Remember>Context engineering's whole job in one sentence: find the smallest set of high-signal tokens that makes the model's desired behavior most likely — everything else (compaction, sub-agents, just-in-time retrieval) is a specific technique for getting closer to that, not the goal itself.</Remember>
+
+Next: [Agent Architectures](/docs/agents/agent-architectures) — the concrete structural patterns (several of which, like sub-agent orchestration, are also context-engineering techniques wearing an architecture hat).
