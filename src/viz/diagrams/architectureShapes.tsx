@@ -126,3 +126,35 @@ export function ArrowMarker({ id, color }: { id: string; color: string }) {
     </marker>
   );
 }
+
+export interface Box {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/** The point where a straight line between two boxes' centers crosses THIS
+ * box's own perimeter, facing the other box -- never the box's own center,
+ * where the label text sits. Use for both ends of any connector between
+ * two shapes so a line can never be drawn starting or landing on top of a
+ * label, no matter how the boxes are arranged relative to each other. */
+export function edgePoint(box: Box, towardX: number, towardY: number): { x: number; y: number } {
+  const cx = box.x + box.w / 2;
+  const cy = box.y + box.h / 2;
+  const dx = towardX - cx;
+  const dy = towardY - cy;
+  if (dx === 0 && dy === 0) return { x: cx, y: cy };
+  const hw = box.w / 2;
+  const hh = box.h / 2;
+  const t = Math.min(dx !== 0 ? hw / Math.abs(dx) : Infinity, dy !== 0 ? hh / Math.abs(dy) : Infinity);
+  return { x: cx + dx * t, y: cy + dy * t };
+}
+
+/** The full segment between two boxes, clipped at both boxes' own
+ * perimeters so it never enters either one's interior. */
+export function edgeToEdge(a: Box, b: Box) {
+  const bCenter = { x: b.x + b.w / 2, y: b.y + b.h / 2 };
+  const aCenter = { x: a.x + a.w / 2, y: a.y + a.h / 2 };
+  return { from: edgePoint(a, bCenter.x, bCenter.y), to: edgePoint(b, aCenter.x, aCenter.y) };
+}

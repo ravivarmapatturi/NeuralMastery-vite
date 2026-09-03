@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useVizTokens } from '../../theme/vizTokens';
 import { VisualizationContainer } from '../primitives';
 import { DIAGRAM_TYPE } from './diagramSystem';
-import { ArrowMarker, FlowArrow, RectNode } from './architectureShapes';
+import { ArrowMarker, FlowArrow, RectNode, edgeToEdge, type Box } from './architectureShapes';
 
 // Modeled on kubernetes.io's own "Cluster Architecture" reference diagram
 // (Figure 1, kubernetes.io/docs/concepts/architecture/) -- not a copy of
@@ -31,33 +31,6 @@ const NODE_COMPONENT_DETAILS: Record<'kubelet' | 'runtime' | 'kube-proxy', strin
   runtime: "The software that actually runs containers on this node -- containerd or CRI-O, talking to runc underneath via the same OCI-standardized chain Docker uses (see Containers). kubelet talks to it through the Container Runtime Interface (CRI), not a runtime-specific API.",
   'kube-proxy': 'Maintains the network rules on this node that implement Service routing -- the reason a Service address reaches whichever Pod is actually behind it right now.',
 };
-
-type Box = { x: number; y: number; w: number; h: number };
-
-/** The point where a straight line between two boxes' centers crosses THIS
- * box's own perimeter, facing the other box -- never the box's own center,
- * where the label text sits. Used for both ends of every hub-and-spoke
- * arrow below so a line can never be drawn starting or landing on top of a
- * label, no matter how the boxes are arranged relative to each other. */
-function edgePoint(box: Box, towardX: number, towardY: number): { x: number; y: number } {
-  const cx = box.x + box.w / 2;
-  const cy = box.y + box.h / 2;
-  const dx = towardX - cx;
-  const dy = towardY - cy;
-  if (dx === 0 && dy === 0) return { x: cx, y: cy };
-  const hw = box.w / 2;
-  const hh = box.h / 2;
-  const t = Math.min(dx !== 0 ? hw / Math.abs(dx) : Infinity, dy !== 0 ? hh / Math.abs(dy) : Infinity);
-  return { x: cx + dx * t, y: cy + dy * t };
-}
-
-/** The full segment between two boxes, clipped at both boxes' own
- * perimeters so it never enters either one's interior. */
-function edgeToEdge(a: Box, b: Box) {
-  const bCenter = { x: b.x + b.w / 2, y: b.y + b.h / 2 };
-  const aCenter = { x: a.x + a.w / 2, y: a.y + a.h / 2 };
-  return { from: edgePoint(a, bCenter.x, bCenter.y), to: edgePoint(b, aCenter.x, aCenter.y) };
-}
 
 /** The real cluster topology: kube-apiserver as a hub every other
  * control-plane component and every node's kubelet connects through
