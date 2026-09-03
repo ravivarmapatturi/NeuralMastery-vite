@@ -1,0 +1,59 @@
+---
+title: "Practice: Sigmoid Derivative (Vectorized, Numerically Stable)"
+sidebar_position: 7.5
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Sigmoid Derivative (Vectorized, Numerically Stable)
+
+**Difficulty: Medium** · Concept: [Activation Functions — Historical / Saturating Functions](/docs/deep-learning/activation-functions#historical-saturating-functions)
+
+Backpropagation through a sigmoid layer needs $\sigma'(z)$, not just $\sigma(z)$. Sigmoid has an unusually clean derivative in terms of its own output: $\sigma'(z) = \sigma(z)\big(1 - \sigma(z)\big)$ — no separate derivation needed once you already have $\sigma(z)$.
+
+**Two things make this harder than [Sigmoid Activation From Scratch](/docs/practice-problems/sigmoid-activation)**: it operates on a **list** of values, not just one, and — unlike the original problem's moderate test range — it has to stay numerically correct at **extreme** magnitudes. [Sigmoid Activation's solution notes](/docs/practice-problems/sigmoid-activation) that `1 / (1 + math.exp(-z))` overflows for `z` below roughly `-709`, since that requires computing `math.exp(1e3)`-scale numbers. This problem actually requires fixing that, not just mentioning it.
+
+**Your task**: implement `sigmoid_derivative(z_list)`, returning $\sigma'(z)$ for every `z` in `z_list`. Must not raise `OverflowError` even for very large-magnitude inputs (e.g. `-1000` or `1000`).
+
+<RunnableCode
+  code={`import math
+
+def sigmoid_derivative(z_list):
+    """Return [sigmoid'(z) for z in z_list], numerically stable for any
+    magnitude of z (no OverflowError, even at z = +/-1000)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert abs(sigmoid_derivative([0])[0] - 0.25) < 1e-9
+assert abs(sigmoid_derivative([2])[0] - 0.8807970779778823 * (1 - 0.8807970779778823)) < 1e-9
+assert abs(sigmoid_derivative([-2])[0] - 0.11920292202211755 * (1 - 0.11920292202211755)) < 1e-9
+assert sigmoid_derivative([-1000, 1000])[0] < 1e-6
+assert sigmoid_derivative([-1000, 1000])[1] < 1e-6`}
+/>
+
+<Solution>
+
+```python
+import math
+
+def _stable_sigmoid(z):
+    if z >= 0:
+        return 1 / (1 + math.exp(-z))
+    else:
+        e = math.exp(z)  # z < 0, so this is always a safe, small exponent
+        return e / (1 + e)
+
+def sigmoid_derivative(z_list):
+    return [_stable_sigmoid(z) * (1 - _stable_sigmoid(z)) for z in z_list]
+```
+
+The stability fix is a **branch on the sign of `z`**, not a single formula: for `z >= 0`, `1 / (1 + math.exp(-z))` is always safe, since `-z <= 0` means `math.exp(-z)` is at most `1`. For `z < 0`, that same formula would need `math.exp(-z)` with a *large positive* exponent — exactly the overflow case. The algebraically equivalent rewrite `e^z / (1 + e^z)` sidesteps it: since `z < 0` on this branch, `math.exp(z)` is always a small, safe number close to `0`, never a huge one. Both branches compute the mathematically identical function — this is purely a numerical-stability fix, not a different sigmoid.
+
+`sigmoid_derivative([-1000, 1000])` is the test that actually forces this: at `z = -1000`, the naive one-branch formula computes `math.exp(1000)`, which raises `OverflowError` in plain Python floats — there's no tolerance-based workaround, the *unstable* implementation simply crashes on this input, so passing this test requires the stable version to genuinely be there, not an approximation of it. Both extreme results correctly land near `0`: sigmoid saturates to exactly `0` or `1` at large magnitudes, so $\sigma(1-\sigma) \to 0$ at both ends — the derivative vanishing at saturation is precisely the **vanishing gradient problem** [Activation Functions](/docs/deep-learning/activation-functions#the-core-tradeoffs-to-judge-any-activation-by) describes as sigmoid's core flaw in deep hidden layers, made numerically concrete rather than just asserted.
+
+</Solution>
+
+---
+
+Next: [Numerically Stable Softmax From Scratch](/docs/practice-problems/softmax)

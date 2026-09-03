@@ -1400,6 +1400,13 @@
       "sidebarPosition": 4,
       "description": null
     },
+    "/docs/practice-problems/batch-dot-product": {
+      "slug": "practice-problems/batch-dot-product",
+      "section": "practice-problems",
+      "title": "Practice: Batch Dot Product",
+      "sidebarPosition": 2.5,
+      "description": null
+    },
     "/docs/practice-problems/bayes-posterior": {
       "slug": "practice-problems/bayes-posterior",
       "section": "practice-problems",
@@ -1568,6 +1575,13 @@
       "sidebarPosition": 9,
       "description": null
     },
+    "/docs/practice-problems/returns-to-go": {
+      "slug": "practice-problems/returns-to-go",
+      "section": "practice-problems",
+      "title": "Practice: Full Return-to-Go Sequence",
+      "sidebarPosition": 22.5,
+      "description": null
+    },
     "/docs/practice-problems/sample-mean-variance": {
       "slug": "practice-problems/sample-mean-variance",
       "section": "practice-problems",
@@ -1589,11 +1603,25 @@
       "sidebarPosition": 7,
       "description": null
     },
+    "/docs/practice-problems/sigmoid-derivative": {
+      "slug": "practice-problems/sigmoid-derivative",
+      "section": "practice-problems",
+      "title": "Practice: Sigmoid Derivative (Vectorized, Numerically Stable)",
+      "sidebarPosition": 7.5,
+      "description": null
+    },
     "/docs/practice-problems/softmax": {
       "slug": "practice-problems/softmax",
       "section": "practice-problems",
       "title": "Practice: Numerically Stable Softmax From Scratch",
       "sidebarPosition": 8,
+      "description": null
+    },
+    "/docs/practice-problems/standardize-dataset": {
+      "slug": "practice-problems/standardize-dataset",
+      "section": "practice-problems",
+      "title": "Practice: Standardize a Dataset (Z-Score Normalization)",
+      "sidebarPosition": 16.5,
       "description": null
     },
     "/docs/practice-problems/tf-idf-weight": {

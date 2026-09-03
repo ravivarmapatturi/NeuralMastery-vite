@@ -1,0 +1,57 @@
+---
+title: "Practice: Batch Dot Product"
+sidebar_position: 2.5
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Batch Dot Product
+
+**Difficulty: Medium** · Concept: [Linear Algebra — Vectors](/docs/mathematics-for-ai/linear-algebra#vectors)
+
+A harder variant of [Dot Product From Scratch](/docs/practice-problems/dot-product): instead of one pair of vectors, you're given two equal-length **batches** of vectors, and need the dot product of each corresponding pair — exactly the shape of computation that shows up whenever a model scores many examples at once (a batch of query vectors against a batch of key vectors, a batch of embeddings against a batch of candidates) instead of one at a time.
+
+The added difficulty isn't the math — it's **validation with two different failure modes** to catch: the two batches might contain a different *number* of vectors, or an individual pair within the batch might have mismatched *dimensions* (a batch that's supposed to be uniform but isn't).
+
+**Your task**: implement `batch_dot_product(batch_a, batch_b)`. Both are lists of vectors (lists of numbers). Raise `ValueError` if the batches have different lengths, or if any corresponding pair of vectors has different lengths from each other.
+
+<RunnableCode
+  code={`def batch_dot_product(batch_a, batch_b):
+    """batch_a, batch_b: list of vectors (list of numbers), same length.
+    Return a list of per-pair dot products.
+    Raise ValueError on a batch-length or per-pair-dimension mismatch."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert batch_dot_product([[1, 2, 3], [4, 5, 6]], [[1, 0, 0], [0, 1, 0]]) == [1, 5]
+assert batch_dot_product([[1, 1]], [[2, 3]]) == [5]
+assert batch_dot_product([], []) == []
+assert batch_dot_product([[1, 2], [3, 4], [5, 6]], [[2, 2], [1, 1], [0, 0]]) == [6, 7, 0]
+assert batch_dot_product([[-1, 1]], [[1, -1]]) == [-2]`}
+/>
+
+<Solution>
+
+```python
+def batch_dot_product(batch_a, batch_b):
+    if len(batch_a) != len(batch_b):
+        raise ValueError("batches must contain the same number of vectors")
+
+    results = []
+    for a, b in zip(batch_a, batch_b):
+        if len(a) != len(b):
+            raise ValueError("vectors within a pair must be the same length")
+        results.append(sum(x * y for x, y in zip(a, b)))
+    return results
+```
+
+Two separate checks catch two genuinely different bugs: a batch-length mismatch usually means the caller mixed up which two batches belong together (e.g. accidentally comparing 5 queries against 4 candidates), while a per-pair dimension mismatch usually means the vectors themselves are the wrong shape (a 300-dim embedding accidentally paired against a 512-dim one). Catching both explicitly, rather than letting Python's `zip` silently truncate or a bare arithmetic error surface deep inside the loop, means a caller gets told *which* assumption broke.
+
+The inner computation per pair is exactly [Dot Product From Scratch](/docs/practice-problems/dot-product), run once per pair — the "batch" framing doesn't change the underlying math at all, only what has to be validated before trusting the input shape. In a real embedding-search or attention-scoring system, this per-pair loop is exactly what gets replaced by one vectorized matrix multiplication (`batch_a @ batch_b.T` in NumPy, when you want *every* pair rather than just corresponding ones) — the loop version here is for understanding the shape of the computation, not what production code runs at scale.
+
+</Solution>
+
+---
+
+Next: [Matrix Multiplication From Scratch](/docs/practice-problems/matrix-multiplication)
