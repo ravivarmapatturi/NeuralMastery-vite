@@ -1,0 +1,78 @@
+---
+title: "Practice: Rotting Oranges (Multi-Source BFS)"
+sidebar_position: 40
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Rotting Oranges (Multi-Source BFS)
+
+**Difficulty: Medium** · Pattern: Graph BFS · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+[Shortest Path in an Unweighted Graph](/docs/practice-problems/shortest-path-bfs) started BFS from a **single** node. This variant starts from **many nodes simultaneously**: a grid of oranges, where `2` = already rotten, `1` = fresh, `0` = empty. Every minute, rot spreads from every currently-rotten cell to its 4-directional fresh neighbors, all at once, in parallel. Find the minimum number of minutes until no fresh orange remains, or `-1` if some fresh orange can never be reached.
+
+**The technique**: seed the BFS queue with **every** rotten cell at time `0` up front, instead of one starting node — from there it's ordinary level-by-level BFS, and it correctly models simultaneous spreading because all the minute-0 sources get processed before any minute-1 cell does.
+
+**Your task**: implement `minutes_to_rot_all(grid)`. Do not mutate the input grid.
+
+<RunnableCode
+  code={`from collections import deque
+
+def minutes_to_rot_all(grid):
+    """grid: list of lists, values 0 (empty), 1 (fresh), 2 (rotten).
+    Return minutes until every fresh orange rots, or -1 if impossible.
+    Do not mutate grid."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert minutes_to_rot_all([[2, 1, 1], [1, 1, 0], [0, 1, 1]]) == 4
+assert minutes_to_rot_all([[2, 1, 1], [0, 1, 1], [1, 0, 1]]) == -1
+assert minutes_to_rot_all([[0, 2]]) == 0
+assert minutes_to_rot_all([[1]]) == -1`}
+/>
+
+<Solution>
+
+```python
+from collections import deque
+
+def minutes_to_rot_all(grid):
+    grid = [row[:] for row in grid]  # local copy -- don't mutate the caller's grid
+    rows, cols = len(grid), len(grid[0]) if grid else 0
+
+    queue = deque()
+    fresh = 0
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 2:
+                queue.append((r, c, 0))
+            elif grid[r][c] == 1:
+                fresh += 1
+
+    if fresh == 0:
+        return 0
+
+    max_time = 0
+    while queue:
+        r, c, t = queue.popleft()
+        for dr, dc in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
+                grid[nr][nc] = 2
+                fresh -= 1
+                max_time = max(max_time, t + 1)
+                queue.append((nr, nc, t + 1))
+
+    return max_time if fresh == 0 else -1
+```
+
+Seeding the queue with **every** rotten cell before the BFS loop even starts is what makes this "multi-source" rather than "run single-source BFS once per source": all the minute-`0` cells sit in the queue together, so the loop's very first several pops are all still at time `0`, spreading simultaneously — exactly matching the problem's "every minute, rot spreads from everywhere rotten at once" rule, with no extra bookkeeping needed beyond carrying each cell's own discovery time alongside it in the queue.
+
+`fresh == 0` after the loop is the correctness check that separates "every orange rotted" from "the BFS just ran out of places to go" — a fresh orange that's unreachable (sealed off by `0`s and the grid boundary, as in the second test case) never gets visited at all, so it's never subtracted from `fresh`, and the function correctly reports `-1` instead of returning whatever `max_time` happened to reach before the queue emptied. `max_time` itself is simply the largest discovery time ever assigned — the last, slowest-to-reach fresh orange sets the answer, which is exactly what "minutes until *every* orange rots" means.
+
+</Solution>
+
+---
+
+Next: [Right Side View of a Binary Tree](/docs/practice-problems/right-side-view)

@@ -1,0 +1,66 @@
+---
+title: "Practice: Search in a Rotated Sorted Array"
+sidebar_position: 33
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Search in a Rotated Sorted Array
+
+**Difficulty: Medium** · Pattern: Binary Search · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+[Find the Rotation Point](/docs/practice-problems/find-rotation-point) located the minimum in a rotated sorted array. This problem is genuinely harder, not a rename: find a **target value's index** directly, in one $O(\log n)$ binary search — without first finding the rotation point as a separate step.
+
+**The key insight**: at any `mid`, comparing `arr[mid]` to `arr[lo]` tells you which *half* is the normally-sorted one (the rotation point is only ever in one half or the other). Once you know which half is sorted, you can cleanly check whether the target falls inside that sorted half's range — and if it does, search there; if it doesn't, the target must be in the other half.
+
+**Your task**: implement `search_rotated(arr, target)`, returning the target's index, or `-1` if it isn't present. `arr` has no duplicates.
+
+<RunnableCode
+  code={`def search_rotated(arr, target):
+    """arr is sorted ascending then rotated some number of times (possibly
+    zero), no duplicates. Return target's index in O(log n), or -1."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert search_rotated([4, 5, 6, 7, 0, 1, 2], 0) == 4
+assert search_rotated([4, 5, 6, 7, 0, 1, 2], 5) == 1
+assert search_rotated([4, 5, 6, 7, 0, 1, 2], 3) == -1
+assert search_rotated([1], 1) == 0
+assert search_rotated([1], 0) == -1`}
+/>
+
+<Solution>
+
+```python
+def search_rotated(arr, target):
+    lo, hi = 0, len(arr) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if arr[mid] == target:
+            return mid
+
+        if arr[lo] <= arr[mid]:
+            # Left half [lo..mid] is normally sorted.
+            if arr[lo] <= target < arr[mid]:
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        else:
+            # Right half [mid..hi] is normally sorted instead.
+            if arr[mid] < target <= arr[hi]:
+                lo = mid + 1
+            else:
+                hi = mid - 1
+    return -1
+```
+
+`arr[lo] <= arr[mid]` is the branch that decides everything: if true, the left half can't contain a rotation (it's internally sorted low-to-high), so a target inside `[arr[lo], arr[mid])` is provably somewhere in that half — search there; otherwise the target, if present, must be in the right half. The mirror logic handles the other case. Either way, exactly one comparison per step eliminates half the remaining search space, preserving the $O(\log n)$ guarantee even though the array as a whole isn't sorted.
+
+This directly builds on [Find the Rotation Point's](/docs/practice-problems/find-rotation-point) core idea (compare against an endpoint, not a fixed target) but takes it further: that problem only needed to know *where* the rotation was; this one needs to combine that same structural fact with an actual target comparison at every step, which is why it earns a step up in difficulty despite reusing the same underlying observation about rotated arrays.
+
+</Solution>
+
+---
+
+Next: [Longest Increasing Subsequence](/docs/practice-problems/longest-increasing-subsequence)

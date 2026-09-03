@@ -1,0 +1,54 @@
+---
+title: "Practice: Daily Temperatures"
+sidebar_position: 37
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Daily Temperatures
+
+**Difficulty: Medium** · Pattern: Monotonic Stack · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+[Largest Rectangle in a Skyline](/docs/practice-problems/largest-rectangle-in-skyline) used a monotonic stack to compute an *area*. This problem applies the same stack discipline to a completely different question, the "next greater element" pattern: given a list of daily temperatures, for each day return how many days until a **strictly warmer** day, or `0` if none exists.
+
+**Your task**: implement `days_until_warmer(temps)` in $O(n)$ time. Return a list the same length as `temps`.
+
+<RunnableCode
+  code={`def days_until_warmer(temps):
+    """Return, for each day, the number of days until a strictly warmer
+    day, or 0 if none exists. O(n)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert days_until_warmer([73, 74, 75, 71, 69, 72, 76, 73]) == [1, 1, 4, 2, 1, 1, 0, 0]
+assert days_until_warmer([30, 40, 50, 60]) == [1, 1, 1, 0]
+assert days_until_warmer([60, 50, 40, 30]) == [0, 0, 0, 0]
+assert days_until_warmer([]) == []`}
+/>
+
+<Solution>
+
+```python
+def days_until_warmer(temps):
+    n = len(temps)
+    result = [0] * n
+    stack = []  # indices whose warmer day hasn't been found yet, decreasing temp order
+
+    for i, t in enumerate(temps):
+        while stack and temps[stack[-1]] < t:
+            prev_day = stack.pop()
+            result[prev_day] = i - prev_day
+        stack.append(i)
+    return result
+```
+
+The stack holds **indices still waiting for their answer**, kept in decreasing-temperature order from bottom to top. When today's temperature `t` beats the temperature at the index on top of the stack, that index has just found its answer — pop it, and `i - prev_day` is exactly how many days it waited. This can cascade: a single warm day can resolve *several* stacked-up colder days in a row (see `76` in the classic test case resolving both `72` and `75` in the same step), which is exactly why a `while` loop is needed here rather than a single `if`.
+
+The structural difference from [Largest Rectangle](/docs/practice-problems/largest-rectangle-in-skyline) is real, not superficial: that problem popped an index to compute a *width* (using what's now on top of the stack as a boundary), this one pops an index to compute a *wait time* (using the current index directly) — same "resolve stale entries the moment something invalidates them" discipline, applied to answer a structurally different question. Any index still on the stack when the array ends never gets a warmer day, which is exactly why `result` is pre-filled with `0` and only ever overwritten, never left unset.
+
+</Solution>
+
+---
+
+Next: [Design an LRU Cache](/docs/practice-problems/design-lru-cache)

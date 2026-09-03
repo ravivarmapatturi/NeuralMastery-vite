@@ -1442,6 +1442,20 @@
       "sidebarPosition": 26,
       "description": null
     },
+    "/docs/practice-problems/daily-temperatures": {
+      "slug": "practice-problems/daily-temperatures",
+      "section": "practice-problems",
+      "title": "Practice: Daily Temperatures",
+      "sidebarPosition": 37,
+      "description": null
+    },
+    "/docs/practice-problems/design-lru-cache": {
+      "slug": "practice-problems/design-lru-cache",
+      "section": "practice-problems",
+      "title": "Practice: Design an LRU Cache",
+      "sidebarPosition": 38,
+      "description": null
+    },
     "/docs/practice-problems/design-min-stack": {
       "slug": "practice-problems/design-min-stack",
       "section": "practice-problems",
@@ -1468,6 +1482,13 @@
       "section": "practice-problems",
       "title": "Practice: Dot Product From Scratch",
       "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/practice-problems/find-duplicates": {
+      "slug": "practice-problems/find-duplicates",
+      "section": "practice-problems",
+      "title": "Practice: Find All Duplicates in an Array",
+      "sidebarPosition": 36,
       "description": null
     },
     "/docs/practice-problems/find-rotation-point": {
@@ -1526,6 +1547,13 @@
       "sidebarPosition": 13,
       "description": null
     },
+    "/docs/practice-problems/longest-increasing-subsequence": {
+      "slug": "practice-problems/longest-increasing-subsequence",
+      "section": "practice-problems",
+      "title": "Practice: Longest Increasing Subsequence",
+      "sidebarPosition": 34,
+      "description": null
+    },
     "/docs/practice-problems/longest-unique-run": {
       "slug": "practice-problems/longest-unique-run",
       "section": "practice-problems",
@@ -1568,6 +1596,13 @@
       "sidebarPosition": 24,
       "description": null
     },
+    "/docs/practice-problems/min-window-substring": {
+      "slug": "practice-problems/min-window-substring",
+      "section": "practice-problems",
+      "title": "Practice: Minimum Window Substring",
+      "sidebarPosition": 32,
+      "description": null
+    },
     "/docs/practice-problems/numerical-gradient": {
       "slug": "practice-problems/numerical-gradient",
       "section": "practice-problems",
@@ -1596,11 +1631,32 @@
       "sidebarPosition": 22.5,
       "description": null
     },
+    "/docs/practice-problems/right-side-view": {
+      "slug": "practice-problems/right-side-view",
+      "section": "practice-problems",
+      "title": "Practice: Right Side View of a Binary Tree",
+      "sidebarPosition": 41,
+      "description": null
+    },
+    "/docs/practice-problems/rotting-oranges": {
+      "slug": "practice-problems/rotting-oranges",
+      "section": "practice-problems",
+      "title": "Practice: Rotting Oranges (Multi-Source BFS)",
+      "sidebarPosition": 40,
+      "description": null
+    },
     "/docs/practice-problems/sample-mean-variance": {
       "slug": "practice-problems/sample-mean-variance",
       "section": "practice-problems",
       "title": "Practice: Sample Mean and Variance From Scratch",
       "sidebarPosition": 16,
+      "description": null
+    },
+    "/docs/practice-problems/search-rotated-array": {
+      "slug": "practice-problems/search-rotated-array",
+      "section": "practice-problems",
+      "title": "Practice: Search in a Rotated Sorted Array",
+      "sidebarPosition": 33,
       "description": null
     },
     "/docs/practice-problems/shortest-path-bfs": {
@@ -1622,6 +1678,13 @@
       "section": "practice-problems",
       "title": "Practice: Sigmoid Derivative (Vectorized, Numerically Stable)",
       "sidebarPosition": 7.5,
+      "description": null
+    },
+    "/docs/practice-problems/smallest-range-k-lists": {
+      "slug": "practice-problems/smallest-range-k-lists",
+      "section": "practice-problems",
+      "title": "Practice: Smallest Range Covering Elements from K Lists",
+      "sidebarPosition": 39,
       "description": null
     },
     "/docs/practice-problems/softmax-gradient": {
@@ -1650,6 +1713,20 @@
       "section": "practice-problems",
       "title": "Practice: TF-IDF Weight From Scratch",
       "sidebarPosition": 20,
+      "description": null
+    },
+    "/docs/practice-problems/three-sum-zero": {
+      "slug": "practice-problems/three-sum-zero",
+      "section": "practice-problems",
+      "title": "Practice: Three Sum to Zero",
+      "sidebarPosition": 31,
+      "description": null
+    },
+    "/docs/practice-problems/two-lone-numbers": {
+      "slug": "practice-problems/two-lone-numbers",
+      "section": "practice-problems",
+      "title": "Practice: The Two Lone Numbers",
+      "sidebarPosition": 35,
       "description": null
     },
     "/docs/practice-problems/validate-bst": {

@@ -1,0 +1,73 @@
+---
+title: "Practice: Minimum Window Substring"
+sidebar_position: 32
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Minimum Window Substring
+
+**Difficulty: Hard** · Pattern: Sliding Window · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+A significantly harder variant of [Longest Run of Unique Characters](/docs/practice-problems/longest-unique-run): given a string `s` and a pattern `t`, find the **shortest substring of `s`** that contains every character of `t`, **with multiplicity** (if `t` has two `a`s, the window needs at least two `a`s too). Unlike the original problem's "no duplicates" condition, the window's validity here depends on a whole character-count budget being satisfied simultaneously.
+
+**Your task**: implement `min_window_substring(s, t)`. Return `""` if no valid window exists.
+
+<RunnableCode
+  code={`from collections import Counter
+
+def min_window_substring(s, t):
+    """Return the shortest substring of s containing every character of t
+    (with multiplicity), or "" if none exists."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert min_window_substring("ADOBECODEBANC", "ABC") == "BANC"
+assert min_window_substring("a", "a") == "a"
+assert min_window_substring("a", "aa") == ""
+assert min_window_substring("ab", "b") == "b"`}
+/>
+
+<Solution>
+
+```python
+from collections import Counter
+
+def min_window_substring(s, t):
+    if not t or not s:
+        return ""
+
+    need = Counter(t)
+    missing = len(t)  # total characters still needed, counting multiplicity
+    left = 0
+    best_left, best_right = 0, 0
+    found = False
+
+    for right, ch in enumerate(s, 1):
+        if need[ch] > 0:
+            missing -= 1
+        need[ch] -= 1
+
+        if missing == 0:
+            # Shrink from the left while it stays valid -- drop any
+            # character the window has more of than it strictly needs.
+            while left < right and need[s[left]] < 0:
+                need[s[left]] += 1
+                left += 1
+            if not found or right - left < best_right - best_left:
+                best_left, best_right = left, right
+                found = True
+
+    return s[best_left:best_right] if found else ""
+```
+
+`need` tracks, for every character, how many *more* of it the current window still owes (negative means the window has extra copies to spare). `missing` is the single number that says "is the window valid at all right now" — it only reaches `0` once every required character's count has been satisfied, and only then does the window attempt to shrink. The shrink loop is the key move: once a window is valid, greedily drop characters from the left as long as it *stays* valid (`need[s[left]] < 0` means that character is a spare, not a requirement) — this is what finds the *shortest* valid window ending at `right`, not just *a* valid one.
+
+`min_window_substring("a", "aa")` correctly returns `""` — `s` physically cannot contain two `a`s, so `missing` never reaches `0`, and `found` stays `False` the entire pass. This is the genuinely hard part of "Hard" here: the window's validity condition is a multiset match, not a simple boolean, and getting the shrink-while-valid logic right (rather than shrinking blindly) is what separates a correct $O(n)$ solution from either a wrong answer or an $O(n^2)$ re-check at every position.
+
+</Solution>
+
+---
+
+Next: [Search in a Rotated Sorted Array](/docs/practice-problems/search-rotated-array)

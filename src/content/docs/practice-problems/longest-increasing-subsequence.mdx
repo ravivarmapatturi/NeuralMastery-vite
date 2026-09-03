@@ -1,0 +1,60 @@
+---
+title: "Practice: Longest Increasing Subsequence"
+sidebar_position: 34
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Longest Increasing Subsequence
+
+**Difficulty: Hard** · Pattern: Dynamic Programming · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+Given a list of integers, find the length of the longest strictly increasing **subsequence** (elements don't need to be contiguous — just appear in increasing order and in their original relative positions).
+
+[Maximum Non-Adjacent Sum](/docs/practice-problems/max-non-adjacent-sum) needed only $O(1)$ state per step (include vs. exclude the previous element). This problem's naive DP needs $O(n)$ state per element (the best subsequence length *ending at each specific index*), giving $O(n^2)$ overall. There's a genuinely different, faster technique — **patience sorting**, using binary search — that gets it down to $O(n \log n)$, the same complexity class jump [K-Means's assignment step](/docs/practice-problems/kmeans-assignment-step) doesn't need but a real LIS implementation over large inputs does.
+
+**Your task**: implement `longest_increasing_subsequence(nums)` in $O(n \log n)$ time, returning the length (not the subsequence itself).
+
+<RunnableCode
+  code={`import bisect
+
+def longest_increasing_subsequence(nums):
+    """Return the length of the longest strictly increasing subsequence,
+    in O(n log n)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert longest_increasing_subsequence([10, 9, 2, 5, 3, 7, 101, 18]) == 4
+assert longest_increasing_subsequence([0, 1, 0, 3, 2, 3]) == 4
+assert longest_increasing_subsequence([7, 7, 7, 7]) == 1
+assert longest_increasing_subsequence([]) == 0
+assert longest_increasing_subsequence([1, 2, 3, 4, 5]) == 5`}
+/>
+
+<Solution>
+
+```python
+import bisect
+
+def longest_increasing_subsequence(nums):
+    tails = []  # tails[k] = smallest possible tail value of any increasing
+                # subsequence of length k+1 found so far
+    for num in nums:
+        idx = bisect.bisect_left(tails, num)
+        if idx == len(tails):
+            tails.append(num)       # num extends the longest subsequence so far
+        else:
+            tails[idx] = num        # num gives a smaller, more promising tail for that length
+    return len(tails)
+```
+
+`tails` is **not** an actual subsequence of `nums` by the end — it's a running record of "the best (smallest) possible ending value achievable for each subsequence length seen so far." A smaller tail is strictly better than a larger one for the same length, because it leaves more room for future numbers to extend it. `bisect_left` finds where `num` would slot into this sorted `tails` array: if it belongs past the end, `num` genuinely extends the longest run found so far (`tails.append`); otherwise, it can *replace* an existing tail with a smaller, more useful one for that same length, without changing how many lengths are currently achievable. `len(tails)` at the end is provably the true LIS length, even though `tails` itself was never a real subsequence — the invariant that makes this correct is exactly why patience sorting works, and it's a genuinely different proof technique than the plain "compare to the previous state" DP most of the other problems on this site use.
+
+Trace `[10, 9, 2, 5, 3, 7, 101, 18]`: `tails` evolves `[10] → [9] → [2] → [2,5] → [2,3] → [2,3,7] → [2,3,7,101] → [2,3,7,18]`, ending at length `4` — matching one real LIS in the data, `2, 3, 7, 18` (or `2, 3, 7, 101`), even though `tails`'s own final contents `[2,3,7,18]` happen to coincide with one of them here (that's not guaranteed in general — `tails` can drift away from any single real subsequence while its *length* stays exactly correct).
+
+</Solution>
+
+---
+
+Next: [The Two Lone Numbers](/docs/practice-problems/two-lone-numbers)

@@ -1,0 +1,60 @@
+---
+title: "Practice: The Two Lone Numbers"
+sidebar_position: 35
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# The Two Lone Numbers
+
+**Difficulty: Hard** · Pattern: Bit Manipulation · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+[The Lone Number](/docs/practice-problems/lone-number) found the one element appearing once when every other element appeared exactly twice — solved by XORing everything together, since duplicate pairs cancel. This variant is genuinely harder: **exactly two** elements each appear once, and everything else appears twice. Plain XOR of everything now only gives you `a ^ b` (the two lone numbers XORed together) — not either number individually, since both survive the cancellation.
+
+**The trick that separates them**: `a ^ b` is nonzero (since `a != b`), so it has at least one set bit — and at that specific bit position, `a` and `b` must differ (one has a `1` there, the other a `0`, since XOR only sets a bit when the two inputs disagree on it). That single differing bit is enough to **partition every number in the array into two groups**, each group containing exactly one lone number and all the duplicate pairs that share its value at that bit — collapsing back to two independent instances of the original Lone Number problem.
+
+**Your task**: implement `two_lone_numbers(nums)`, using only XOR and bitwise AND (no dictionary, no `set`). Return the two lone numbers as a sorted 2-element list.
+
+<RunnableCode
+  code={`def two_lone_numbers(nums):
+    """Every element appears twice except exactly two, which appear once.
+    Return those two elements, sorted, using bitwise operations only."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert two_lone_numbers([1, 2, 1, 3, 2, 5]) == [3, 5]
+assert two_lone_numbers([4, 1, 4, 2]) == [1, 2]
+assert two_lone_numbers([0, 1]) == [0, 1]
+assert two_lone_numbers([6, 6, 2, 9]) == [2, 9]`}
+/>
+
+<Solution>
+
+```python
+def two_lone_numbers(nums):
+    xor_all = 0
+    for n in nums:
+        xor_all ^= n
+    # xor_all == a ^ b (the two lone numbers XORed together).
+
+    diff_bit = xor_all & (-xor_all)  # isolates the lowest set bit of xor_all
+
+    a, b = 0, 0
+    for n in nums:
+        if n & diff_bit:
+            a ^= n
+        else:
+            b ^= n
+    return sorted([a, b])
+```
+
+`xor_all & (-xor_all)` is a standard bit trick for isolating a number's lowest set bit: in two's-complement, `-x` is `~x + 1`, which flips every bit below the lowest set bit of `x` and leaves everything above it the same — ANDing the two together zeroes out everything except that one bit. That bit is guaranteed to be one where `a` and `b` disagree, which is exactly the property the second pass exploits: every number in `nums` gets routed into group `a` or group `b` based on whether it has that bit set — and since duplicate pairs share their full value (including that bit), **both copies of any duplicate always land in the same group**, so they still cancel via XOR within that group, leaving exactly one lone number surviving in each.
+
+This is a genuine escalation from [The Lone Number](/docs/practice-problems/lone-number): a single XOR pass answers the one-lone-number version directly, but two lone numbers require this extra partitioning step — you can't just XOR everything and call it done, because the two lone values are still tangled together in `xor_all` and need to be actively separated before either can be recovered on its own.
+
+</Solution>
+
+---
+
+Next: [Find All Duplicates in an Array](/docs/practice-problems/find-duplicates)

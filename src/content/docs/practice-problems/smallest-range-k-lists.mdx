@@ -1,0 +1,71 @@
+---
+title: "Practice: Smallest Range Covering Elements from K Lists"
+sidebar_position: 39
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Smallest Range Covering Elements from K Lists
+
+**Difficulty: Hard** · Pattern: K-Way Merge · Concept: [Algorithms & Data Structures — Core Data Structures](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures)
+
+[Merge K Sorted Lists](/docs/practice-problems/merge-k-sorted-lists) used a min-heap to merge everything into one sorted output. This problem reuses the exact same heap mechanism — track the current smallest unconsumed element per list — to answer a genuinely different question: find the **smallest range** `[lo, hi]` that contains **at least one number from every one of the `k` lists**.
+
+**The added difficulty**: merging just needs the current minimum. This needs the minimum *and* a running **maximum** of everything currently "in play" across all `k` lists — every time the heap's minimum advances, the range's width might shrink, but only advancing the list that's currently behind can ever produce a *better* range (advancing anything else only risks losing coverage of some list entirely).
+
+**Your task**: implement `smallest_range(lists)`, where `lists` is `k` non-empty sorted lists. Return `[lo, hi]`.
+
+<RunnableCode
+  code={`import heapq
+
+def smallest_range(lists):
+    """lists: k non-empty sorted lists. Return [lo, hi], the smallest
+    range containing at least one element from every list."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert smallest_range([[4, 10, 15, 24, 26], [0, 9, 12, 20], [5, 18, 22, 30]]) == [20, 24]
+assert smallest_range([[1, 2, 3], [1, 2, 3], [1, 2, 3]]) == [1, 1]
+assert smallest_range([[1], [1], [1]]) == [1, 1]
+assert smallest_range([[1, 3], [2]]) == [1, 2]`}
+/>
+
+<Solution>
+
+```python
+import heapq
+
+def smallest_range(lists):
+    heap = []
+    current_max = float('-inf')
+    for i, lst in enumerate(lists):
+        heapq.heappush(heap, (lst[0], i, 0))
+        current_max = max(current_max, lst[0])
+
+    best_lo, best_hi = float('-inf'), float('inf')
+    while True:
+        val, i, j = heapq.heappop(heap)
+        if current_max - val < best_hi - best_lo:
+            best_lo, best_hi = val, current_max
+
+        if j + 1 == len(lists[i]):
+            break  # this list is exhausted -- can no longer cover all k lists
+        next_val = lists[i][j + 1]
+        heapq.heappush(heap, (next_val, i, j + 1))
+        current_max = max(current_max, next_val)
+
+    return [best_lo, best_hi]
+```
+
+At every step, `val` (the heap's minimum) and `current_max` (tracked separately, updated on every push) together define the tightest range that currently includes at least one element from every list — `[val, current_max]` is valid precisely because the heap always holds exactly one candidate per list. Popping the minimum and advancing *that specific list* is the only sound move: advancing any other list would abandon its own current representative without improving the low end, and the popped list's old value was the bottleneck holding the range wide, so replacing it (with its own next-smallest value) is the only way to potentially shrink things further.
+
+The loop terminates the moment any single list runs out — once one list has no more candidates, no future range can include an element from it, so no valid range is possible anymore and the best one already found is final. This is why the algorithm is safe to `break` immediately rather than needing any lookahead: exhausting a list is a hard stop, not a soft signal.
+
+Reusing the exact same `(value, list_index, position_in_list)` heap-of-tuples shape as [Merge K Sorted Lists](/docs/practice-problems/merge-k-sorted-lists) is deliberate, not incidental — the *representation* of "what am I comparing, and how do I advance it" is identical across both problems; only what gets tracked and compared *alongside* the heap (a running max here, nothing extra there) differs.
+
+</Solution>
+
+---
+
+Next: [Rotting Oranges](/docs/practice-problems/rotting-oranges)

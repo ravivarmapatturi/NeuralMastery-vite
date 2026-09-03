@@ -1,0 +1,73 @@
+---
+title: "Practice: Right Side View of a Binary Tree"
+sidebar_position: 41
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Right Side View of a Binary Tree
+
+**Difficulty: Medium** · Pattern: Tree BFS · Concept: [Algorithms & Data Structures — Core Data Structures](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures)
+
+[Level-Order Traversal](/docs/practice-problems/level-order-traversal) flattened an entire tree into one list, level by level. This variant needs BFS to be **level-aware**, not just level-*ordered*: imagine standing to the right of the tree — what's the sequence of nodes actually visible? For each level, that's exactly the *last* node BFS would visit at that depth, and the plain flat-queue approach from Level-Order Traversal has no notion of "where one level ends and the next begins" to make that possible.
+
+**Your task**: implement `right_side_view(root)`, returning a list of one value per level (the rightmost node's value), top to bottom.
+
+<RunnableCode
+  code={`from collections import deque
+
+class TreeNode:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def right_side_view(root):
+    """Return the value of the rightmost node at each level, top to
+    bottom. root may be None."""
+    # Your implementation here
+    pass
+
+tree_a = TreeNode(1, TreeNode(2, None, TreeNode(5)), TreeNode(3, None, TreeNode(4)))
+tree_b = TreeNode(1, TreeNode(2), TreeNode(3))
+tree_c = TreeNode(1)
+`}
+  tests={`assert right_side_view(tree_a) == [1, 3, 4]
+assert right_side_view(tree_b) == [1, 3]
+assert right_side_view(tree_c) == [1]
+assert right_side_view(None) == []`}
+/>
+
+<Solution>
+
+```python
+from collections import deque
+
+def right_side_view(root):
+    if root is None:
+        return []
+    result = []
+    queue = deque([root])
+    while queue:
+        level_size = len(queue)
+        for i in range(level_size):
+            node = queue.popleft()
+            if i == level_size - 1:
+                result.append(node.val)  # last node processed in this level
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+    return result
+```
+
+`level_size = len(queue)` **captured before the inner loop starts** is the entire trick: it freezes exactly how many nodes belong to the *current* level, before any of that level's children get appended and start mixing in. The inner `for i in range(level_size)` loop then processes precisely those nodes and no others — any child pushed during this pass joins the queue *after* them, so it can't accidentally get counted as part of the current level. The last index (`i == level_size - 1`) is, by construction, the rightmost node at this depth, because children are always pushed left-before-right, preserving left-to-right order within each level exactly like [Level-Order Traversal](/docs/practice-problems/level-order-traversal).
+
+`tree_a`'s answer, `[1, 3, 4]`, is worth tracing to see why this genuinely needs level-awareness rather than a flat scan: at depth 2, node `5` (a *left* child of `2`) gets visited before node `4` (a *right* child of `3`) — but `4` is still the correct rightmost-visible node, because it's `3`'s subtree, not `5`'s, that's on the tree's right side overall. A naive "just take the last node overall" without level boundaries would work by coincidence here but breaks the moment a deeper level has fewer nodes than a shallower one — the level-boundary bookkeeping is what makes the answer correct in general, not just on lucky inputs.
+
+</Solution>
+
+---
+
+More problems are being added continuously — see [Practice Problems overview](/docs/practice-problems/overview) for the full, current list.

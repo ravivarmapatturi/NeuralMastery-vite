@@ -1,0 +1,84 @@
+---
+title: "Practice: Design an LRU Cache"
+sidebar_position: 38
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Design an LRU Cache
+
+**Difficulty: Hard** · Pattern: Design · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+[Design a Min Stack](/docs/practice-problems/design-min-stack) needed one derived value kept in lockstep with a single structure. An **LRU (Least Recently Used) Cache** is harder in a different way: it has a fixed `capacity`, and needs two operations — `get(key)` and `put(key, value)` — where **every access reorders things**. A cache hit moves that key to "most recently used"; when a `put` would exceed capacity, whichever key is currently *least* recently used gets evicted to make room.
+
+**Your task**: implement a `LRUCache` class with `__init__(self, capacity)`, `get(self, key)` (return the value, or `-1` if not present — and count as a "use," moving that key to most-recently-used), and `put(self, key, value)` (insert or update; if this would exceed capacity, evict the least-recently-used key first).
+
+<RunnableCode
+  code={`class LRUCache:
+    def __init__(self, capacity):
+        """Your implementation here."""
+        pass
+
+    def get(self, key):
+        """Return the value for key, or -1 if absent. Counts as a use."""
+        pass
+
+    def put(self, key, value):
+        """Insert/update key. Evict the LRU key first if over capacity."""
+        pass
+
+
+lru = LRUCache(2)
+`}
+  tests={`assert lru.put(10, 100) is None
+assert lru.put(20, 200) is None
+assert lru.get(10) == 100
+assert lru.put(30, 300) is None
+assert lru.get(20) == -1
+assert lru.put(40, 400) is None
+assert lru.get(10) == -1
+assert lru.get(30) == 300
+assert lru.get(40) == 400`}
+/>
+
+<Solution>
+
+```python
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}          # key -> value
+        self.order = []          # keys, least-recently-used first
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.order.remove(key)
+        self.order.append(key)   # move to most-recently-used end
+        return self.cache[key]
+
+    def put(self, key, value):
+        if key in self.cache:
+            self.order.remove(key)
+        elif len(self.cache) >= self.capacity:
+            lru_key = self.order.pop(0)   # evict the least-recently-used key
+            del self.cache[lru_key]
+        self.cache[key] = value
+        self.order.append(key)
+
+
+lru = LRUCache(2)
+```
+
+`order` is the entire mechanism: it's a plain list where position encodes recency, oldest at the front. Every `get` on a present key, and every `put` on a key already present, **removes and re-appends** that key — pushing it to the fresh end and correctly implying every other key just became relatively "older" without touching them directly. When `put` needs room, `order.pop(0)` is by construction the least-recently-used key, since nothing older could still be at the front after every access keeps re-freshening whatever it touches.
+
+Trace the test sequence: with `capacity=2`, after `put(10)` and `put(20)`, `get(10)` moves `10` to the back (`order = [20, 10]`) — so when `put(30)` needs to evict, it's `20` that goes, *not* `10`, even though `10` was inserted first. That's the entire point of "least recently *used*," not "least recently inserted" — `get`ting a key protects it from eviction just as much as re-`put`ting it does.
+
+One real caveat worth knowing: `list.remove()` and `list.pop(0)` are both $O(n)$, so this implementation is correct but not the textbook $O(1)$-per-operation LRU cache — a true $O(1)$ version needs a doubly linked list (for $O(1)$ removal from the middle) paired with a hash map from key to that list node, so a key's position can be found and relocated without scanning. The eviction *policy* here is exactly right; the *data structure* backing `order` is the part a production implementation would swap out.
+
+</Solution>
+
+---
+
+Next: [Smallest Range Covering Elements from K Lists](/docs/practice-problems/smallest-range-k-lists)
