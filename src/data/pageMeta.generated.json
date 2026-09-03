@@ -1400,6 +1400,20 @@
       "sidebarPosition": 2,
       "description": null
     },
+    "/docs/practice-problems/find-rotation-point": {
+      "slug": "practice-problems/find-rotation-point",
+      "section": "practice-problems",
+      "title": "Practice: Find the Rotation Point",
+      "sidebarPosition": 11,
+      "description": null
+    },
+    "/docs/practice-problems/gap-in-the-sequence": {
+      "slug": "practice-problems/gap-in-the-sequence",
+      "section": "practice-problems",
+      "title": "Practice: The Gap in the Sequence",
+      "sidebarPosition": 14,
+      "description": null
+    },
     "/docs/practice-problems/gradient-descent-step": {
       "slug": "practice-problems/gradient-descent-step",
       "section": "practice-problems",
@@ -1414,11 +1428,39 @@
       "sidebarPosition": 6,
       "description": null
     },
+    "/docs/practice-problems/largest-rectangle-in-skyline": {
+      "slug": "practice-problems/largest-rectangle-in-skyline",
+      "section": "practice-problems",
+      "title": "Practice: Largest Rectangle in a Skyline",
+      "sidebarPosition": 15,
+      "description": null
+    },
+    "/docs/practice-problems/lone-number": {
+      "slug": "practice-problems/lone-number",
+      "section": "practice-problems",
+      "title": "Practice: The Lone Number",
+      "sidebarPosition": 13,
+      "description": null
+    },
+    "/docs/practice-problems/longest-unique-run": {
+      "slug": "practice-problems/longest-unique-run",
+      "section": "practice-problems",
+      "title": "Practice: Longest Run of Unique Characters",
+      "sidebarPosition": 10,
+      "description": null
+    },
     "/docs/practice-problems/matrix-multiplication": {
       "slug": "practice-problems/matrix-multiplication",
       "section": "practice-problems",
       "title": "Practice: Matrix Multiplication From Scratch",
       "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/practice-problems/max-non-adjacent-sum": {
+      "slug": "practice-problems/max-non-adjacent-sum",
+      "section": "practice-problems",
+      "title": "Practice: Maximum Non-Adjacent Sum",
+      "sidebarPosition": 12,
       "description": null
     },
     "/docs/practice-problems/mean-squared-error": {
@@ -1433,6 +1475,13 @@
       "section": "practice-problems",
       "title": "Practice Problems: Implement AI/ML From Scratch",
       "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/practice-problems/pair-with-target-sum": {
+      "slug": "practice-problems/pair-with-target-sum",
+      "section": "practice-problems",
+      "title": "Practice: Pair With Target Sum",
+      "sidebarPosition": 9,
       "description": null
     },
     "/docs/practice-problems/sigmoid-activation": {

@@ -1,0 +1,50 @@
+---
+title: "Practice: The Lone Number"
+sidebar_position: 13
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# The Lone Number
+
+**Difficulty: Easy** · Pattern: Bit Manipulation · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+Given a non-empty list of integers where **every** element appears exactly twice except for one, which appears exactly once, find that one element.
+
+A hash-map count gets there in $O(n)$ time and $O(n)$ space. Bit manipulation gets the same time complexity with **$O(1)$ space** — no auxiliary structure at all — by exploiting one property of XOR (`^`): $x \oplus x = 0$ for any $x$, and XOR is commutative and associative, so order doesn't matter.
+
+**Your task**: implement `lone_number(nums)` using only XOR — no dictionary, no `set`.
+
+<RunnableCode
+  code={`def lone_number(nums):
+    """Every element appears twice except one, which appears once.
+    Return that element, using XOR only."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert lone_number([4, 1, 2, 1, 2]) == 4
+assert lone_number([2, 2, 1]) == 1
+assert lone_number([7]) == 7
+assert lone_number([0, 1, 0]) == 1`}
+/>
+
+<Solution>
+
+```python
+def lone_number(nums):
+    result = 0
+    for num in nums:
+        result ^= num
+    return result
+```
+
+XOR every element together in one pass. Because XOR is commutative and associative, the order the numbers arrive in doesn't matter — it's as if you'd grouped every matching pair next to each other first. Each pair XORs to `0` (`x ^ x == 0`), and `0` XORed with anything leaves it unchanged (`0 ^ x == x`), so every duplicated pair cancels out completely, and whatever's left at the end is exactly the one element with no partner. `result = 0` as the starting value is what makes this work even for a single-element list — `0 ^ x == x`.
+
+This "XOR cancels pairs" trick generalizes: variants of this problem (every element appears *three* times except one, or *two* elements appear once each) need a different bit trick, but the same core idea — find an operation invariant that survives the "everything except the answer" part and cancels it out — is the reusable insight.
+
+</Solution>
+
+---
+
+Next: [The Gap in the Sequence](/docs/practice-problems/gap-in-the-sequence)

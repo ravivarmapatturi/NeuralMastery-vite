@@ -1,0 +1,49 @@
+---
+title: "Practice: The Gap in the Sequence"
+sidebar_position: 14
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# The Gap in the Sequence
+
+**Difficulty: Medium** · Pattern: Cyclic Sort / Array Math · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+You're given a list of `n` **distinct** integers, each drawn from the range `0` to `n` inclusive (that's `n + 1` possible values), with exactly one value missing. Find the missing one.
+
+The **cyclic sort** family of problems exploits a strong constraint most array problems don't have: when values are known to fall in a bounded, contiguous range tied to the array's own length, you can reason about "where should this value be" instead of searching or sorting generally. Here that constraint gives an even more direct route: a closed-form sum.
+
+**Your task**: implement `find_missing_number(nums)` in $O(n)$ time and $O(1)$ extra space (no `set`, no counting array).
+
+<RunnableCode
+  code={`def find_missing_number(nums):
+    """nums has n distinct values drawn from 0..n, one value missing.
+    Return the missing value in O(n) time, O(1) extra space."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert find_missing_number([3, 0, 1]) == 2
+assert find_missing_number([0, 1]) == 2
+assert find_missing_number([9, 6, 4, 2, 3, 5, 7, 0, 1]) == 8
+assert find_missing_number([0]) == 1`}
+/>
+
+<Solution>
+
+```python
+def find_missing_number(nums):
+    n = len(nums)
+    expected_sum = n * (n + 1) // 2  # sum of 0..n
+    return expected_sum - sum(nums)
+```
+
+If nothing were missing, `nums` would contain every integer from `0` to `n` — that's `n + 1` numbers — but the list only has `n` of them, so exactly one is absent. The sum of `0` through `n` has a closed form, $\frac{n(n+1)}{2}$ (the standard triangular-number identity). Subtract the array's *actual* sum from that expected total, and whatever's left over is precisely the value that never got included — every present number cancels out of the subtraction, leaving only the gap.
+
+This sum trick is $O(n)$ time, $O(1)$ space, and simpler than an explicit cyclic-sort pass (repeatedly swapping each value to its "home" index `nums[i] == i`) — but the cyclic-sort *technique* itself is worth knowing separately, since it generalizes to variants this sum trick can't solve directly, like finding *all* missing numbers when more than one is absent, or finding a *duplicate* instead of a gap.
+
+</Solution>
+
+---
+
+Next: [Largest Rectangle in a Skyline](/docs/practice-problems/largest-rectangle-in-skyline)

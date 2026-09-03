@@ -1,0 +1,55 @@
+---
+title: "Practice: Longest Run of Unique Characters"
+sidebar_position: 10
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Longest Run of Unique Characters
+
+**Difficulty: Medium** · Pattern: Sliding Window · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+Given a string `s`, find the length of the longest contiguous substring that contains no repeated characters.
+
+Checking every substring is $O(n^3)$ (or $O(n^2)$ with a smarter check). The **sliding window** pattern does it in one pass: grow a window from the right, and whenever a repeat shows up, shrink from the left just enough to remove it — never restart from scratch.
+
+**Your task**: implement `longest_unique_run(s)`, returning an integer length (0 for an empty string).
+
+<RunnableCode
+  code={`def longest_unique_run(s):
+    """Return the length of the longest substring of s with no repeated characters."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert longest_unique_run("abcabcbb") == 3
+assert longest_unique_run("bbbbb") == 1
+assert longest_unique_run("pwwkew") == 3
+assert longest_unique_run("") == 0
+assert longest_unique_run("dvdf") == 3`}
+/>
+
+<Solution>
+
+```python
+def longest_unique_run(s):
+    last_seen = {}
+    window_start = 0
+    best = 0
+    for i, ch in enumerate(s):
+        if ch in last_seen and last_seen[ch] >= window_start:
+            window_start = last_seen[ch] + 1
+        last_seen[ch] = i
+        best = max(best, i - window_start + 1)
+    return best
+```
+
+`last_seen` tracks the most recent index each character appeared at. Walking right with `i`: if the current character was already seen *inside the current window* (`last_seen[ch] >= window_start`), the window's left edge jumps to just past that earlier occurrence — every character before that point is now irrelevant, since the window can never validly include the duplicate again. Otherwise the window just keeps growing. `best` tracks the largest window size seen so far. Each index is visited once by the outer loop and each pointer only ever moves forward, so this is $O(n)$ time despite handling the shrink-and-grow logic, versus the brute force's repeated re-scanning.
+
+This same "grow right, shrink left based on a violated condition" shape solves most sliding-window problems — the specific condition (here: no duplicate in the window) is what changes between problems, not the overall structure.
+
+</Solution>
+
+---
+
+Next: [Find the Rotation Point](/docs/practice-problems/find-rotation-point)

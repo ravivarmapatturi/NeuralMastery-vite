@@ -1,0 +1,59 @@
+---
+title: "Practice: Find the Rotation Point"
+sidebar_position: 11
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Find the Rotation Point
+
+**Difficulty: Easy** · Pattern: Binary Search · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+A sorted array of distinct integers has been **rotated** some unknown number of times (e.g. `[1,2,3,4,5]` rotated twice becomes `[4,5,1,2,3]`). Find the index of the minimum element — the "rotation point" where the sequence wraps around. If the array wasn't rotated at all, that's index 0.
+
+Even though the array isn't globally sorted anymore, it's still sorted in two contiguous halves — which is the signal that **binary search** still applies, just with a different comparison than the textbook version.
+
+**Your task**: implement `find_rotation_point(arr)` in $O(\log n)$ time — a linear scan defeats the point.
+
+<RunnableCode
+  code={`def find_rotation_point(arr):
+    """arr is a sorted array rotated some number of times (possibly zero).
+    Return the index of the minimum element, in O(log n) time."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert find_rotation_point([4, 5, 6, 7, 0, 1, 2]) == 4
+assert find_rotation_point([1, 2, 3, 4, 5]) == 0
+assert find_rotation_point([3, 4, 5, 1, 2]) == 3
+assert find_rotation_point([2, 1]) == 1
+assert find_rotation_point([5, 1, 2, 3, 4]) == 1`}
+/>
+
+<Solution>
+
+```python
+def find_rotation_point(arr):
+    lo, hi = 0, len(arr) - 1
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if arr[mid] > arr[hi]:
+            # The minimum is strictly to the right of mid -- mid is still
+            # on the "high" side of the rotation.
+            lo = mid + 1
+        else:
+            # arr[mid] <= arr[hi] means the right half (mid..hi) is itself
+            # sorted, so the minimum is at mid or somewhere to its left.
+            hi = mid
+    return lo
+```
+
+The key comparison isn't `arr[mid]` against the target (there is no target here) — it's `arr[mid]` against `arr[hi]`. If `arr[mid] > arr[hi]`, the rotation point must be strictly between `mid` and `hi` (the array "wrapped" somewhere in that range), so everything from `lo` through `mid` can be discarded. Otherwise, `mid` through `hi` is already sorted with no wrap in it, so the minimum is at `mid` or to its left, and `mid` itself stays a candidate (hence `hi = mid`, not `mid - 1`). The loop halves the search space every iteration, same as standard binary search, converging when `lo == hi` — the answer.
+
+This same "compare to an endpoint instead of a fixed target" trick is the basis for the harder follow-up, actually searching for a *value* in a rotated sorted array — once you know where the rotation point is, you know which of the two sorted halves to binary-search normally.
+
+</Solution>
+
+---
+
+Next: [Maximum Non-Adjacent Sum](/docs/practice-problems/max-non-adjacent-sum)

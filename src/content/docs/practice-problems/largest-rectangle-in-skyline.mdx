@@ -1,0 +1,62 @@
+---
+title: "Practice: Largest Rectangle in a Skyline"
+sidebar_position: 15
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Largest Rectangle in a Skyline
+
+**Difficulty: Hard** · Pattern: Monotonic Stack · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+Given a list of non-negative integers representing bar heights in a histogram (each bar has width 1, standing side by side), find the area of the **largest rectangle** that can be formed using contiguous bars, where the rectangle's height is limited by the shortest bar it spans.
+
+The brute force checks every pair of left/right bounds and finds the minimum height in between — $O(n^2)$ or worse. The $O(n)$ trick: for every bar, its own height only matters if you can figure out, cheaply, how far it can extend left and right before hitting something shorter. A **monotonic stack** (indices kept in increasing-height order) computes exactly that in one pass.
+
+**Your task**: implement `largest_rectangle_area(heights)` in $O(n)$ time. Return 0 for an empty list.
+
+<RunnableCode
+  code={`def largest_rectangle_area(heights):
+    """heights: list of non-negative bar heights, each width 1.
+    Return the area of the largest rectangle spanning contiguous bars."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert largest_rectangle_area([2, 1, 5, 6, 2, 3]) == 10
+assert largest_rectangle_area([2, 4]) == 4
+assert largest_rectangle_area([1, 1, 1, 1]) == 4
+assert largest_rectangle_area([]) == 0
+assert largest_rectangle_area([5]) == 5`}
+/>
+
+<Solution>
+
+```python
+def largest_rectangle_area(heights):
+    stack = []  # indices into heights, kept in strictly increasing height order
+    max_area = 0
+    extended = list(heights) + [0]  # sentinel: forces every remaining bar to close out
+
+    for i, h in enumerate(extended):
+        while stack and heights[stack[-1]] >= h:
+            top = stack.pop()
+            height = heights[top]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        stack.append(i)
+
+    return max_area
+```
+
+The stack holds indices of bars whose heights are increasing bottom-to-top — the moment a shorter bar shows up at position `i`, every taller bar still on the stack has just found its **right boundary**: it can't extend past `i` because `heights[i]` is too short. Pop it, and its **left boundary** is whatever's now left on the stack (the nearest bar shorter than it) — or the very start of the array if the stack goes empty. `width = i - stack[-1] - 1` is exactly the span between those two boundaries (exclusive on both ends, since those bars are shorter). The trailing `0` sentinel guarantees every bar left on the stack at the end still gets popped and measured, instead of being silently skipped.
+
+Each index is pushed exactly once and popped at most once, so total work across the whole `while` loop, summed over every iteration of the `for` loop, is $O(n)$ — not $O(n^2)$, even though there's a loop inside a loop.
+
+This exact pattern — track candidates in a monotonic stack, resolve them the moment something on the other side invalidates them — also solves "daily temperatures" (next warmer day) and "trapping rain water" style problems; the invalidating condition changes, the stack discipline doesn't.
+
+</Solution>
+
+---
+
+More problems are being added continuously — see [Practice Problems overview](/docs/practice-problems/overview) for the full, current list.

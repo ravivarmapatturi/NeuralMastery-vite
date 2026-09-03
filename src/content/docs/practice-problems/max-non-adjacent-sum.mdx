@@ -1,0 +1,52 @@
+---
+title: "Practice: Maximum Non-Adjacent Sum"
+sidebar_position: 12
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Maximum Non-Adjacent Sum
+
+**Difficulty: Medium** · Pattern: Dynamic Programming · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
+
+Given a list of non-negative integers, find the maximum sum you can get by picking a subset of elements such that **no two chosen elements are adjacent** in the original list.
+
+This is a canonical DP problem: at each position, you face a binary choice (take it or skip it), and today's optimal choice depends only on a small, fixed amount of information about what came before — the two ingredients of "overlapping subproblems + optimal substructure" the [DSA prep page](/docs/interview-prep/dsa-coding#core-patterns-to-drill) calls the hardest pattern to get comfortable with.
+
+**Your task**: implement `max_non_adjacent_sum(nums)`. Return 0 for an empty list.
+
+<RunnableCode
+  code={`def max_non_adjacent_sum(nums):
+    """Max sum of a subset of nums with no two chosen elements adjacent."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert max_non_adjacent_sum([]) == 0
+assert max_non_adjacent_sum([5]) == 5
+assert max_non_adjacent_sum([2, 4, 6, 2, 5]) == 13
+assert max_non_adjacent_sum([3, 2]) == 3
+assert max_non_adjacent_sum([1, 2, 3, 1]) == 4`}
+/>
+
+<Solution>
+
+```python
+def max_non_adjacent_sum(nums):
+    incl, excl = 0, 0  # best sum ending here WITH / WITHOUT taking this element
+    for num in nums:
+        new_incl = excl + num   # take num -> must have excluded the previous one
+        new_excl = max(incl, excl)  # skip num -> carry forward the better of the two
+        incl, excl = new_incl, new_excl
+    return max(incl, excl)
+```
+
+Two running values are all the state this problem needs: `incl` is the best achievable sum where the *most recently considered* element is included, `excl` is the best where it isn't. At each new number, `new_incl` can only build on `excl` (you can't include two adjacent elements), while `new_excl` takes whichever of the previous two options was better, since skipping never adds a new adjacency constraint. This is $O(n)$ time and $O(1)$ space — no need for a full DP array indexed by position, because the recurrence only ever looks one step back.
+
+Trace `[2, 4, 6, 2, 5]` by hand: after `2`→`(2,0)`, after `4`→`(4,2)`, after `6`→`(8,4)`, after `2`→`(6,8)`, after `5`→`(13,8)` — the winning subset is `2 + 6 + 5 = 13`, skipping the `4` and the second `2` even though they're individually positive, because taking them would block a better neighbor.
+
+</Solution>
+
+---
+
+Next: [The Lone Number](/docs/practice-problems/lone-number)
