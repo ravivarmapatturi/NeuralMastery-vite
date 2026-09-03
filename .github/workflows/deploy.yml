@@ -1,18 +1,26 @@
 name: Deploy platform-vite to GitHub Pages
 
-# DELIBERATELY MANUAL-ONLY (workflow_dispatch), never on push to main.
+# Deploys on every push to main, plus workflow_dispatch for an ad-hoc
+# manual redeploy (e.g. a Pagefind-index-only refresh with no new commit).
 #
 # This repo (ravivarmapatturi/NeuralMastery-vite) is its own standalone
 # repository, separate from the existing Docusaurus production site's repo
 # (ravivarmapatturi/NeuralMastery) -- so each has its own independent
 # `github-pages` Actions environment, and deploying this one cannot collide
-# with or overwrite the other. The manual trigger is kept anyway during the
-# content-migration period: this site is deliberately re-deployed after
-# each verified batch of work, not automatically on every push, so a
-# broken/incomplete commit never becomes the live preview without a human
-# choosing that moment. Revisit once content migration + validation are
-# complete and continuous deploys are actually wanted.
+# with or overwrite the other.
+#
+# Previously gated behind a manual trigger only, during the content-migration
+# period: verification in practice has always happened against the live URL
+# AFTER deploying, not by inspecting a build before triggering it, so the
+# manual gate wasn't actually preventing broken content from going live --
+# it was just added latency. The real correctness gating is ci.yml (162 unit
+# tests, typecheck, link-checking) plus this workflow's own build job, which
+# independently re-runs typecheck + build + output-validation before ever
+# deploying, so removing the manual gate removes a redundant click, not a
+# safety check.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
