@@ -7,6 +7,8 @@ sidebar_position: 5
 import SelfConsistencyVotingDiagram from '../../../viz/diagrams/SelfConsistencyVotingDiagram';
 import LostInTheMiddleDiagram from '../../../viz/diagrams/LostInTheMiddleDiagram';
 import PromptInjectionFlowDiagram from '../../../viz/diagrams/PromptInjectionFlowDiagram';
+import TestTimeComputeScalingDiagram from '../../../viz/diagrams/TestTimeComputeScalingDiagram';
+import { Remember } from '../../../components/content/Remember';
 
 # Prompt Engineering
 
@@ -37,6 +39,22 @@ That extra inference-time compute is a real cost, not a free upgrade, which make
 - **Not worth it**: factual lookups, straightforward formatting, casual/subjective questions, or anything where a first response is already reliably good — the extra latency (sometimes minutes, not seconds) buys accuracy you didn't need.
 
 In production, this is usually a **routing** decision (see [Routing & Supervisor Pattern](/docs/agents/routing-and-supervisor)): classify or detect whether a request is the kind that benefits from extended reasoning, and only pay the latency/cost premium for the requests that actually need it, rather than defaulting every request to the most expensive mode available.
+
+### Test-Time Compute Scaling: a Second Scaling Axis
+
+**What is it?** Pretraining scale (more data, more parameters, more training compute — see [Training Pipeline — Scaling Laws](/docs/llms-genai/training-pipeline#scaling-laws-and-the-chinchilla-result)) was, for years, the only lever that reliably bought more capability. Reasoning models introduce a second, genuinely different one: **test-time (inference-time) compute** — spending more computation *per request*, after training is already finished, by letting the model think longer before answering.
+
+**How does it work?** In practice this is a **thinking budget**: a token limit on the model's internal reasoning, configurable per request (Anthropic's API calls this `budget_tokens` — a target the model reasons against, not a strict floor it has to fill, with a documented minimum around 1,024 tokens). Turn it up, and the model gets more room to backtrack, double-check an intermediate step, and try more than one approach before committing to a final answer.
+
+<TestTimeComputeScalingDiagram />
+
+**Why is it useful?** It decouples "make the model smarter" from "retrain the model" — the same trained model gets measurably more accurate on hard reasoning problems just by giving it a bigger budget at inference time, no fine-tuning required. That's the entire reason it's treated as a distinct scaling axis, not just a knob.
+
+**What's the limitation?** The relationship is **logarithmic, not linear**: Anthropic's own writeup states accuracy on math problems "improves logarithmically with the number of thinking tokens," and independent analysis of OpenAI's original o1 scaling chart found the same log-linear shape — exponentially more thinking compute buys roughly linear accuracy gains. Every one of those thinking tokens is also billed as real output, so past a point, a bigger budget mostly buys latency and cost, not correctness — the same routing discipline above applies here too, tuned per task rather than maxed out by default.
+
+A related mechanism worth knowing: **interleaved thinking** lets a reasoning model think *between* tool calls in an agentic loop — reasoning about a tool's actual result before deciding what to call next — rather than only thinking once, up front, before the first action (see [Agent Fundamentals — Tool Use](/docs/agents/agent-fundamentals#tool-use-function-calling)). This is what lets a reasoning model course-correct mid-task instead of committing to a plan before it has any real feedback.
+
+<Remember>Reasoning models add a genuinely new lever — spend more compute per request, at inference time, instead of only at training time — but it obeys diminishing returns like everything else: a bigger thinking budget is a routing decision with a real cost, not a free accuracy upgrade to max out by default.</Remember>
 
 ## ReAct (Reasoning + Acting)
 

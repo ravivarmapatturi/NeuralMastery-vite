@@ -43,6 +43,8 @@ An LLM system isn't done when it works once — it needs measurable evaluation a
 
 Production LLM systems constantly balance: model size (bigger = better quality, slower, more expensive), context length (longer = more cost, "lost in the middle" risk), and precision (quantization trades a small quality hit for large speed/cost wins). The right tradeoff depends entirely on the use case — a real-time chat assistant has very different latency tolerance than an overnight batch summarization job.
 
+**Reasoning models add a fourth axis**: the internal "thinking" tokens a reasoning model generates before its visible answer are real billed output tokens, not free — see [Prompt Engineering — Test-Time Compute Scaling](/docs/llms-genai/prompt-engineering#test-time-compute-scaling-a-second-scaling-axis). Evaluating one at scale costs meaningfully more per run than the visible response length suggests, since the hidden reasoning trace is often many times longer than the final answer.
+
 ## Guardrails
 
 Production systems typically layer safety on top of the model itself: input filtering (blocking known attack patterns before they reach the model), output filtering (scanning responses for policy violations before returning them to the user), and rate limiting/monitoring for abuse patterns — treating the model's own safety training as one layer of defense, not the only one.
