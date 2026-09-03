@@ -1,60 +1,73 @@
 import { useState } from 'react';
 import { useVizTokens } from '../../theme/vizTokens';
 import { VisualizationContainer } from '../primitives';
-import { DIAGRAM_TYPE, getConceptColor } from './diagramSystem';
+import { DIAGRAM_TYPE } from './diagramSystem';
+import { ArrowMarker, FlowArrow, OutputNode, RectNode } from './architectureShapes';
 
 const STAGES = [
-  { id: 'cli', label: 'docker CLI', desc: 'you run "docker run ..."', detail: 'The client -- sends your command to the daemon over the Docker REST API (a Unix socket locally, or a network interface for a remote daemon).' },
-  { id: 'dockerd', label: 'dockerd', desc: 'the Docker daemon', detail: 'Listens for API requests and manages Docker objects (images, containers, networks, volumes) -- but delegates the actual container lifecycle work to containerd.' },
-  { id: 'containerd', label: 'containerd', desc: 'container lifecycle manager', detail: 'A separate daemon (Docker is one of many adopters) that handles image pull/storage, container execution, and supervision -- the layer between dockerd\'s API surface and the low-level runtime.' },
-  { id: 'runc', label: 'runc', desc: 'the OCI runtime', detail: 'Does the actual kernel-level work of creating a container: sets up namespaces and cgroups, then execs your process inside them. Implements the OCI Runtime Spec -- swap runc for another OCI-compliant runtime and the container still runs the same way.' },
-  { id: 'kernel', label: 'Linux kernel', desc: 'namespaces + cgroups', detail: 'Namespaces isolate what a process can SEE (its own PIDs, network stack, filesystem mounts); cgroups limit what it can USE (CPU, memory, I/O). This is the real mechanism -- there is no separate "container" feature in the kernel, just these two primitives combined.' },
+  { id: 'cli', label: 'docker CLI', sublabel: 'docker run ...', detail: 'The client -- sends your command to the daemon over the Docker REST API (a Unix socket locally, or a network interface for a remote daemon).' },
+  { id: 'dockerd', label: 'dockerd', sublabel: 'the daemon', detail: 'Listens for API requests and manages Docker objects (images, containers, networks, volumes) -- but delegates the actual container lifecycle work to containerd.' },
+  { id: 'containerd', label: 'containerd', sublabel: 'lifecycle manager', detail: 'A separate daemon (Docker is one of many adopters) that handles image pull/storage, container execution, and supervision -- the layer between dockerd\'s API surface and the low-level runtime.' },
+  { id: 'runc', label: 'runc', sublabel: 'the OCI runtime', detail: 'Does the actual kernel-level work of creating a container: sets up namespaces and cgroups, then execs your process inside them. Implements the OCI Runtime Spec -- swap runc for another OCI-compliant runtime and the container still runs the same way.' },
+  { id: 'kernel', label: 'Linux kernel', sublabel: 'namespaces + cgroups', detail: 'Namespaces isolate what a process can SEE (its own PIDs, network stack, filesystem mounts); cgroups limit what it can USE (CPU, memory, I/O). This is the real mechanism -- there is no separate "container" feature in the kernel, just these two primitives combined.' },
 ];
 
-/** The real chain a `docker run` actually goes through, click through each
- * stage for what it does -- not a black box, five real components with
- * one job each. */
+const COL_X = 60;
+const COL_W = 220;
+const ROW_H = 62;
+const REGISTRY_X = 300;
+const REGISTRY_W = 130;
+
+/** The real chain a `docker run` actually goes through, as a real traced
+ * SVG flow (not floating boxes) -- click a stage for what it does. */
 export default function DockerArchitectureDiagram() {
   const t = useVizTokens();
   const [selected, setSelected] = useState(0);
-  const color = getConceptColor(t, 'attention');
-  const registryColor = getConceptColor(t, 'query');
+  const color = t.accentPrimary;
+  const registryColor = t.accentSecondary;
+  const outputColor = t.accentPurple;
+
+  const width = 460;
+  const height = STAGES.length * ROW_H + 90;
 
   return (
     <VisualizationContainer footer={STAGES[selected].detail}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-        <div style={{ padding: '0.4rem 0.9rem', borderRadius: 8, background: `${registryColor}14`, border: `1.5px dashed ${registryColor}`, fontSize: 10, color: registryColor, fontWeight: 700, marginBottom: 4 }}>
-          Registry (image pull/push, via containerd)
-        </div>
-        {STAGES.map((s, i) => (
-          <div key={s.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-            <button
-              type="button"
-              onClick={() => setSelected(i)}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                padding: '0.55rem 1.2rem',
-                borderRadius: 10,
-                background: selected === i ? `${color}22` : `${color}10`,
-                border: `${selected === i ? 2.5 : 1.5}px solid ${color}`,
-                cursor: 'pointer',
-                minWidth: 220,
-              }}
-            >
-              <span style={{ fontSize: 13, fontWeight: 700, color }}>{s.label}</span>
-              <span style={{ fontSize: 9.5, color: t.textMuted }}>{s.desc}</span>
-            </button>
-            {i < STAGES.length - 1 && <div style={{ width: 2, height: 16, background: t.textMuted }} />}
-          </div>
-        ))}
-        <div style={{ width: 2, height: 16, background: t.textMuted }} />
-        <div style={{ padding: '0.5rem 1rem', borderRadius: 8, background: `${color}30`, border: `2px solid ${color}`, fontSize: 11, fontWeight: 700, color }}>
-          Running container
-        </div>
-      </div>
-      <div style={{ textAlign: 'center', fontSize: DIAGRAM_TYPE.caption.size, color: t.textMuted, marginTop: 10 }}>
+      <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ display: 'block' }}>
+        <defs>
+          <ArrowMarker id="docker-arch-arrow" color={t.textMuted} />
+        </defs>
+
+        {/* Registry, branching into containerd -- a real diagonal FlowArrow, not a floating label */}
+        <RectNode t={t} x={REGISTRY_X} y={10} width={REGISTRY_W} height={30} label="Registry" sublabel="image pull/push" color={registryColor} strokeWidth={1.5} />
+
+        {STAGES.map((s, i) => {
+          const y = 60 + i * ROW_H;
+          const isSelected = selected === i;
+          return (
+            <g key={s.id} onClick={() => setSelected(i)} style={{ cursor: 'pointer' }}>
+              <RectNode t={t} x={COL_X} y={y} width={COL_W} height={34} label={s.label} sublabel={s.sublabel} color={color} strokeWidth={isSelected ? 2.5 : 1.5} />
+              {i < STAGES.length - 1 && (
+                <FlowArrow x1={COL_X + COL_W / 2} y1={y + 34} x2={COL_X + COL_W / 2} y2={y + ROW_H} color={t.textMuted} markerId="docker-arch-arrow" />
+              )}
+              {s.id === 'containerd' && (
+                <FlowArrow x1={REGISTRY_X + REGISTRY_W / 2} y1={40} x2={COL_X + COL_W - 10} y2={y + 10} color={registryColor} markerId="docker-arch-arrow" />
+              )}
+            </g>
+          );
+        })}
+
+        {/* Final: running container -- the real output of the chain */}
+        <FlowArrow
+          x1={COL_X + COL_W / 2}
+          y1={60 + STAGES.length * ROW_H - (ROW_H - 34)}
+          x2={COL_X + COL_W / 2}
+          y2={60 + STAGES.length * ROW_H}
+          color={t.textMuted}
+          markerId="docker-arch-arrow"
+        />
+        <OutputNode x={COL_X} y={60 + STAGES.length * ROW_H} width={COL_W} height={30} label="Running container" color={outputColor} />
+      </svg>
+      <div style={{ textAlign: 'center', fontSize: DIAGRAM_TYPE.caption.size, color: t.textMuted, marginTop: 8 }}>
         Click a stage. Same chain (containerd + runc) also runs under Kubernetes' kubelet via the Container Runtime Interface -- see Kubernetes below.
       </div>
     </VisualizationContainer>
