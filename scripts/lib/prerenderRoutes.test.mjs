@@ -58,4 +58,14 @@ describe('outputPathForRoute', () => {
     expect(prerenderPath.endsWith(path.join('docs/llms-genai/rag', 'index.html'))).toBe(true)
     expect(distPath.endsWith(path.join('docs/llms-genai/rag', 'index.html'))).toBe(true)
   })
+
+  it('the root route "/" (an app-level route, not a content-tree one) writes directly to <base>/index.html, not <base>//index.html', () => {
+    // The edge case that matters here: '/'.replace(/^\//, '') is '' (empty
+    // string), not '/' -- join(base, '', 'index.html') must collapse to
+    // join(base, 'index.html') and not produce a malformed doubled-slash
+    // path. This is the exact file the SPA shell already occupies, so
+    // prerendering '/' deliberately overwrites dist/index.html with real
+    // rendered homepage content instead of the empty <div id="root"> shell.
+    expect(outputPathForRoute('/', '/repo/dist')).toBe(path.join('/repo/dist', 'index.html'))
+  })
 })

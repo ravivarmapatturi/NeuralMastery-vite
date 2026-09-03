@@ -56,6 +56,17 @@ function routesFromContentTree() {
   return walk(CONTENT_ROOT).map((f) => routeFromMdxPath(f, CONTENT_ROOT));
 }
 
+// App.tsx's non-/docs/* routes -- these aren't in the content tree at all,
+// so routesFromContentTree() never sees them, and they were missing this
+// same crawlability fix entirely: confirmed live, '/' served a real 200 but
+// with the bare <div id="root"> shell (zero real content, since nothing
+// had rendered into it yet), and '/progress' served a genuine 404 (no
+// physical file exists at dist/progress/index.html for a client-side-only
+// route). Keep this in sync with App.tsx's <Route> list by hand -- it's
+// short and changes rarely enough that walking the router tree
+// programmatically isn't worth the complexity.
+const APP_ROUTES = ['/', '/progress'];
+
 async function waitForServer(url, timeoutMs = 15000) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
@@ -87,7 +98,7 @@ async function main() {
   try {
     await waitForServer(`http://localhost:${PORT}${BASE}/`);
 
-    const routes = routesFromContentTree();
+    const routes = [...APP_ROUTES, ...routesFromContentTree()];
     console.log(`prerender-for-pagefind: snapshotting ${routes.length} route(s)...`);
 
     // 208 routes taken one at a time (each waiting for full network-idle)
@@ -122,8 +133,13 @@ async function main() {
         // rendered), then let the network go idle so any further lazily-
         // loaded diagram chunks the MDX just triggered get a real chance to
         // finish too, then one more short settle for React's paint to catch
-        // up with the network.
-        await page.waitForSelector('article.prose h1', { timeout: 15000 });
+        // up with the network. App-level routes (Home, ProgressPage) are
+        // NOT lazy-loaded -- eagerly imported straight in App.tsx, no
+        // Suspense boundary to wait past -- so a plain top-level <h1> is
+        // just as real a readiness signal there as article.prose h1 is for
+        // a /docs/* MDX page.
+        const readySelector = route.startsWith('/docs/') ? 'article.prose h1' : 'h1';
+        await page.waitForSelector(readySelector, { timeout: 15000 });
         await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
         await page.waitForTimeout(300);
         const html = await page.content();
