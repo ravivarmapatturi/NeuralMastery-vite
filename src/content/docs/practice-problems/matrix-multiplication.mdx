@@ -1,0 +1,54 @@
+---
+title: "Practice: Matrix Multiplication From Scratch"
+sidebar_position: 3
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Matrix Multiplication From Scratch
+
+**Difficulty: Medium** · Concept: [Linear Algebra — Matrices](/docs/mathematics-for-ai/linear-algebra#matrices)
+
+For an $(m \times n)$ matrix $A$ and an $(n \times p)$ matrix $B$, the product $C = AB$ is $(m \times p)$, where each entry $C_{ij} = \sum_k A_{ik} B_{kj}$ — the dot product of $A$'s row $i$ with $B$'s column $j$. This is the single operation every linear layer in a neural network runs on every forward pass.
+
+**Your task**: implement `matmul(A, B)` for matrices represented as lists of lists of numbers (no NumPy). Raise a `ValueError` if the inner dimensions don't match (`A`'s number of columns must equal `B`'s number of rows).
+
+<RunnableCode
+  code={`def matmul(A, B):
+    """A, B: list of lists (rows). Return A @ B as a list of lists.
+    Raise ValueError if A's row length != B's row count."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert matmul([[1, 2], [3, 4]], [[5, 6], [7, 8]]) == [[19, 22], [43, 50]]
+assert matmul([[1, 0], [0, 1]], [[9, 8], [7, 6]]) == [[9, 8], [7, 6]]
+assert matmul([[1, 2, 3]], [[1], [1], [1]]) == [[6]]
+assert matmul([[2]], [[3]]) == [[6]]`}
+/>
+
+<Solution>
+
+```python
+def matmul(A, B):
+    rows_a, cols_a = len(A), len(A[0])
+    rows_b, cols_b = len(B), len(B[0])
+    if cols_a != rows_b:
+        raise ValueError(f"shape mismatch: {rows_a}x{cols_a} @ {rows_b}x{cols_b}")
+
+    result = [[0] * cols_b for _ in range(rows_a)]
+    for i in range(rows_a):
+        for j in range(cols_b):
+            result[i][j] = sum(A[i][k] * B[k][j] for k in range(cols_a))
+    return result
+```
+
+Three nested loops, directly matching $C_{ij} = \sum_k A_{ik} B_{kj}$: the outer two (`i`, `j`) walk every cell of the output, and the innermost `sum(...)` computes that cell as a dot product — literally [Dot Product From Scratch](/docs/practice-problems/dot-product) run once per output cell. The shape check happens before any work starts, since a silent shape mismatch (e.g. feeding a $(3\times4)$ activation into a $(3\times2)$ weight matrix) is exactly the class of bug that should fail loudly, not produce a wrong-shaped result.
+
+This is $O(m \cdot n \cdot p)$ — fine for small matrices, but real deep learning frameworks use BLAS-backed vectorized multiplication (`A @ B` in NumPy, or a GPU matmul kernel in PyTorch), which is orders of magnitude faster via cache-friendly memory access and hardware parallelism, not a different algorithm in principle.
+
+</Solution>
+
+---
+
+Next: [Mean Squared Error From Scratch](/docs/practice-problems/mean-squared-error)

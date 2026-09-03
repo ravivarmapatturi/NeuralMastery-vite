@@ -114,7 +114,7 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
     icon: '🔬',
     color: '#31C4D9',
     description: 'Reading the literature, and building real things — from scratch, and as full projects.',
-    pageCount: 24,
+    pageCount: 32,
     difficulty: 'Advanced',
     prerequisites: 'Safety & Evaluation',
     leadsTo: 'Career',
@@ -123,6 +123,7 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
       { dir: 'build-from-scratch', label: 'Build From Scratch' },
       { dir: 'projects', label: 'Projects' },
       { dir: 'visual-lab', label: 'Visual Lab' },
+      { dir: 'practice-problems', label: 'Practice Problems', landing: '/docs/practice-problems/overview' },
     ],
   },
   '/docs/category/career': {

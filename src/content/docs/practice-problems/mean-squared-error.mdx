@@ -1,0 +1,52 @@
+---
+title: "Practice: Mean Squared Error From Scratch"
+sidebar_position: 4
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Mean Squared Error From Scratch
+
+**Difficulty: Easy** · Concept: [Linear Regression — The Cost Function](/docs/machine-learning/linear-regression#2-the-cost-function-mean-squared-error)
+
+$$J = \frac{1}{n} \sum_{i=1}^{n} (\hat{y}^{(i)} - y^{(i)})^2$$
+
+MSE is the default regression loss: average the squared difference between each prediction and its true value. It's what [Linear Regression](/docs/machine-learning/linear-regression) minimizes, and it reappears as one term inside more complex losses throughout [Deep Learning](/docs/deep-learning/loss-functions).
+
+**Your task**: implement `mse(y_true, y_pred)` for two equal-length lists of numbers. Raise a `ValueError` if the lengths don't match, and a `ValueError` on an empty input (division by zero has no sensible answer here).
+
+<RunnableCode
+  code={`def mse(y_true, y_pred):
+    """Return the mean squared error between y_true and y_pred.
+    Raise ValueError if lengths differ or both are empty."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert mse([1, 2, 3], [1, 2, 3]) == 0
+assert mse([0, 0], [1, 1]) == 1
+assert mse([3, -0.5, 2, 7], [2.5, 0.0, 2, 8]) == 0.375
+assert mse([1], [3]) == 4`}
+/>
+
+<Solution>
+
+```python
+def mse(y_true, y_pred):
+    if len(y_true) != len(y_pred):
+        raise ValueError("y_true and y_pred must be the same length")
+    if len(y_true) == 0:
+        raise ValueError("mse is undefined for empty input")
+    squared_errors = [(yp - yt) ** 2 for yt, yp in zip(y_true, y_pred)]
+    return sum(squared_errors) / len(squared_errors)
+```
+
+A direct transcription: build the list of per-example squared errors $(\hat{y}^{(i)} - y^{(i)})^2$, then average it. The two guard clauses matter for the same reason as [Dot Product](/docs/practice-problems/dot-product)'s length check — `zip` truncating silently, or `sum([]) / 0` raising a confusing `ZeroDivisionError` deep inside a training loop instead of a clear message at the call site, are both worse failure modes than an explicit, early `ValueError`.
+
+In a real training loop this is computed on tensors (`((y_pred - y_true) ** 2).mean()` in NumPy/PyTorch) so it stays fully vectorized and differentiable — the loop version here is for understanding the mechanism, not what production code runs.
+
+</Solution>
+
+---
+
+Next: [One Gradient Descent Step for Linear Regression](/docs/practice-problems/gradient-descent-step)

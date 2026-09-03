@@ -1,0 +1,51 @@
+---
+title: "Practice: Sigmoid Activation From Scratch"
+sidebar_position: 7
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Sigmoid Activation From Scratch
+
+**Difficulty: Easy** · Concept: [Activation Functions — Historical / Saturating Functions](/docs/deep-learning/activation-functions#historical-saturating-functions)
+
+$$\sigma(z) = \frac{1}{1+e^{-z}}$$
+
+Sigmoid squashes any real number into $(0, 1)$ — rarely used in hidden layers today (see the concept page for why), but still standard for a binary classifier's output layer, where the output needs to read as a probability. It's also the same function [Logistic Regression](/docs/machine-learning/logistic-regression#the-sigmoid-function) is built on.
+
+**Your task**: implement `sigmoid(z)` for a single real number `z`, using `math.exp` (no NumPy).
+
+<RunnableCode
+  code={`import math
+
+def sigmoid(z):
+    """Return the sigmoid of z."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert abs(sigmoid(0) - 0.5) < 1e-9
+assert abs(sigmoid(2) - 0.8807970779778823) < 1e-9
+assert abs(sigmoid(-2) - 0.11920292202211755) < 1e-9
+assert 0 < sigmoid(20) < 1
+assert 0 < sigmoid(-20) < 1e-6`}
+/>
+
+<Solution>
+
+```python
+import math
+
+def sigmoid(z):
+    return 1 / (1 + math.exp(-z))
+```
+
+A direct transcription of the formula. The reason this is worth an explicit exercise despite being one line: notice it's exactly the shape you'd expect from the concept page's description — at `z = 0` it's exactly `0.5` (the function's midpoint), and it saturates toward 0 and 1 as `z` moves away from 0 in either direction, but never actually reaches them — which is precisely the saturation behavior that causes vanishing gradients in deep networks when sigmoid is used in hidden layers.
+
+One thing worth knowing even though it isn't tested here: for very large negative `z` (roughly below -709), `math.exp(-z)` overflows a Python float. A numerically robust version branches on the sign of `z` to always exponentiate a negative number — see [Numerically Stable Softmax](/docs/practice-problems/softmax) next for exactly that technique applied to the vector case.
+
+</Solution>
+
+---
+
+Next: [Numerically Stable Softmax From Scratch](/docs/practice-problems/softmax)

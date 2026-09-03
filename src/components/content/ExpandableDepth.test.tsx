@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
-import { ELI5, GoDeeper } from './ExpandableDepth'
+import { ELI5, GoDeeper, Solution } from './ExpandableDepth'
 import { renderWithTheme as render } from '../../../tests/unit/renderWithProviders'
 
 describe('ELI5', () => {
@@ -77,5 +77,24 @@ describe('GoDeeper', () => {
     expect(button).toHaveAttribute('aria-expanded', 'false')
     await user.click(button)
     expect(button).toHaveAttribute('aria-expanded', 'true')
+  })
+})
+
+describe('Solution', () => {
+  it('defaults CLOSED -- the answer is not in the DOM until the learner asks for it', () => {
+    render(<Solution>Reference implementation.</Solution>)
+    expect(screen.queryByText('Reference implementation.')).not.toBeInTheDocument()
+  })
+
+  it('shows the "Show solution" label by default', () => {
+    render(<Solution>content</Solution>)
+    expect(screen.getByText('Show solution')).toBeInTheDocument()
+  })
+
+  it('expands on click, revealing the real solution content', async () => {
+    const user = userEvent.setup()
+    render(<Solution>Reference implementation.</Solution>)
+    await user.click(screen.getByRole('button'))
+    expect(screen.getByText('Reference implementation.')).toBeInTheDocument()
   })
 })

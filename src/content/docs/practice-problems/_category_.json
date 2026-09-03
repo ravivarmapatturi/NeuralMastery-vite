@@ -1,0 +1,8 @@
+{
+  "label": "Practice Problems",
+  "position": 7.8,
+  "link": {
+    "type": "generated-index",
+    "description": "Short, focused coding problems across math, ML, and deep learning - implement it yourself against real test cases in an in-browser Python sandbox, then reveal a real reference solution. Original problems, original solutions, tied to the concept pages already on this site."
+  }
+}

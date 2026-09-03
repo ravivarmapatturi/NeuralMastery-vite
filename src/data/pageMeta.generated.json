@@ -1393,6 +1393,62 @@
       "sidebarPosition": 4,
       "description": null
     },
+    "/docs/practice-problems/dot-product": {
+      "slug": "practice-problems/dot-product",
+      "section": "practice-problems",
+      "title": "Practice: Dot Product From Scratch",
+      "sidebarPosition": 2,
+      "description": null
+    },
+    "/docs/practice-problems/gradient-descent-step": {
+      "slug": "practice-problems/gradient-descent-step",
+      "section": "practice-problems",
+      "title": "Practice: One Gradient Descent Step for Linear Regression",
+      "sidebarPosition": 5,
+      "description": null
+    },
+    "/docs/practice-problems/kmeans-assignment-step": {
+      "slug": "practice-problems/kmeans-assignment-step",
+      "section": "practice-problems",
+      "title": "Practice: K-Means, One Assignment Step",
+      "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/practice-problems/matrix-multiplication": {
+      "slug": "practice-problems/matrix-multiplication",
+      "section": "practice-problems",
+      "title": "Practice: Matrix Multiplication From Scratch",
+      "sidebarPosition": 3,
+      "description": null
+    },
+    "/docs/practice-problems/mean-squared-error": {
+      "slug": "practice-problems/mean-squared-error",
+      "section": "practice-problems",
+      "title": "Practice: Mean Squared Error From Scratch",
+      "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/practice-problems/overview": {
+      "slug": "practice-problems/overview",
+      "section": "practice-problems",
+      "title": "Practice Problems: Implement AI/ML From Scratch",
+      "sidebarPosition": 1,
+      "description": null
+    },
+    "/docs/practice-problems/sigmoid-activation": {
+      "slug": "practice-problems/sigmoid-activation",
+      "section": "practice-problems",
+      "title": "Practice: Sigmoid Activation From Scratch",
+      "sidebarPosition": 7,
+      "description": null
+    },
+    "/docs/practice-problems/softmax": {
+      "slug": "practice-problems/softmax",
+      "section": "practice-problems",
+      "title": "Practice: Numerically Stable Softmax From Scratch",
+      "sidebarPosition": 8,
+      "description": null
+    },
     "/docs/projects/overview": {
       "slug": "projects/overview",
       "section": "projects",
@@ -1786,6 +1842,10 @@
     "nlp": {
       "label": "NLP",
       "position": 3.6
+    },
+    "practice-problems": {
+      "label": "Practice Problems",
+      "position": 7.8
     },
     "projects": {
       "label": "Projects",

@@ -1,0 +1,47 @@
+---
+title: "Practice: Dot Product From Scratch"
+sidebar_position: 2
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Dot Product From Scratch
+
+**Difficulty: Easy** · Concept: [Linear Algebra — Vectors](/docs/mathematics-for-ai/linear-algebra#vectors)
+
+The dot product of two equal-length vectors $a$ and $b$ is $a \cdot b = \sum_i a_i b_i$ — a single number, not a vector. It's the operation underneath cosine similarity, every linear layer's weighted sum, and the "how aligned are these two directions" question that shows up everywhere from [attention scores](/docs/deep-learning/attention-transformers) to [word-embedding similarity](/docs/nlp/word-embeddings).
+
+**Your task**: implement `dot_product(a, b)` using plain Python — no NumPy. It should raise a `ValueError` if the two vectors have different lengths.
+
+<RunnableCode
+  code={`def dot_product(a, b):
+    """Return the dot product of two equal-length lists of numbers.
+    Raise ValueError if len(a) != len(b)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert dot_product([1, 2, 3], [4, 5, 6]) == 32
+assert dot_product([0, 0], [5, 5]) == 0
+assert dot_product([-1, 2], [3, -4]) == -11
+assert dot_product([2], [3]) == 6`}
+/>
+
+<Solution>
+
+```python
+def dot_product(a, b):
+    if len(a) != len(b):
+        raise ValueError("vectors must be the same length")
+    return sum(x * y for x, y in zip(a, b))
+```
+
+`zip(a, b)` pairs up corresponding elements, and the generator expression multiplies each pair before `sum` adds them all up — a direct transcription of $\sum_i a_i b_i$. The length check has to come first: `zip` silently truncates to the shorter input instead of erroring, which would hide a real bug (e.g. comparing a 3-dim query vector against a 4-dim embedding by mistake) rather than surfacing it.
+
+In practice you'd use `numpy.dot(a, b)` or `a @ b` — vectorized and orders of magnitude faster on real data — but the loop version is what's actually happening underneath.
+
+</Solution>
+
+---
+
+Next: [Matrix Multiplication From Scratch](/docs/practice-problems/matrix-multiplication)

@@ -1,11 +1,12 @@
 import { useState, type ReactNode } from 'react';
 import { useVizTokens, RADIUS, SPACING } from '../../theme/vizTokens';
 
-type Depth = 'eli5' | 'deeper';
+type Depth = 'eli5' | 'deeper' | 'solution';
 
 const DEPTH_META: Record<Depth, { icon: string; label: string }> = {
   eli5: { icon: '💡', label: 'Simple Explanation' },
   deeper: { icon: '🔬', label: 'Go deeper' },
+  solution: { icon: '🔑', label: 'Show solution' },
 };
 
 /**
@@ -25,7 +26,7 @@ function ExpandableDepth({ kind, title, defaultOpen, children }: { kind: Depth; 
   const t = useVizTokens();
   const meta = DEPTH_META[kind];
   const [open, setOpen] = useState(defaultOpen ?? kind === 'eli5');
-  const color = kind === 'eli5' ? t.accentTeal : t.accentPurple;
+  const color = kind === 'eli5' ? t.accentTeal : kind === 'solution' ? t.accentWarn : t.accentPurple;
 
   return (
     <div
@@ -91,6 +92,18 @@ export function ELI5({ title, children }: { title?: string; children: ReactNode 
 export function GoDeeper({ title, children }: { title?: string; children: ReactNode }) {
   return (
     <ExpandableDepth kind="deeper" title={title} defaultOpen={false}>
+      {children}
+    </ExpandableDepth>
+  );
+}
+
+/** A reference implementation + reasoning, hidden until the learner asks
+ * for it -- pairs with a `RunnableCode` block in `tests` mode above it.
+ * Closed by default: the point is to attempt the problem against real
+ * test cases first, not read the answer before trying. */
+export function Solution({ title, children }: { title?: string; children: ReactNode }) {
+  return (
+    <ExpandableDepth kind="solution" title={title ?? 'Show solution'} defaultOpen={false}>
       {children}
     </ExpandableDepth>
   );

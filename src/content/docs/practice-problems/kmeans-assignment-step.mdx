@@ -1,0 +1,52 @@
+---
+title: "Practice: K-Means, One Assignment Step"
+sidebar_position: 6
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# K-Means: One Assignment Step
+
+**Difficulty: Medium** · Concept: [K-Means & Hierarchical Clustering](/docs/machine-learning/kmeans-hierarchical-clustering#k-means)
+
+[K-Means](/docs/machine-learning/kmeans-hierarchical-clustering#k-means) alternates two steps until convergence: **assign** each point to its nearest centroid, then **update** each centroid to the mean of its assigned points. This problem is the assign step in isolation — the piece that decides cluster membership by plain Euclidean distance.
+
+**Your task**: implement `kmeans_assignment_step(points, centroids)`. `points` and `centroids` are lists of equal-length numeric coordinate lists (works for any number of dimensions, not just 2D). Return a list of integers — the index of the nearest centroid for each point, in the same order as `points`. On a tie, assign to the lowest-index centroid.
+
+<RunnableCode
+  code={`def kmeans_assignment_step(points, centroids):
+    """Return, for each point, the index of its nearest centroid
+    (ties go to the lowest index)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert kmeans_assignment_step([[0, 0], [0, 1], [5, 5], [5, 6]], [[0, 0], [5, 5]]) == [0, 0, 1, 1]
+assert kmeans_assignment_step([[2, 2]], [[0, 0], [10, 10]]) == [0]
+assert kmeans_assignment_step([[1, 0]], [[0, 0], [2, 0]]) == [0]
+assert kmeans_assignment_step([[1], [9]], [[0], [10]]) == [0, 1]`}
+/>
+
+<Solution>
+
+```python
+def kmeans_assignment_step(points, centroids):
+    assignments = []
+    for p in points:
+        distances = [
+            sum((pi - ci) ** 2 for pi, ci in zip(p, c))
+            for c in centroids
+        ]
+        assignments.append(distances.index(min(distances)))
+    return assignments
+```
+
+For each point, compute its squared distance to every centroid, then take the index of the smallest one. Squared distance rather than actual Euclidean distance is a deliberate choice, not a shortcut: since $\sqrt{\cdot}$ is monotonically increasing, comparing squared distances gives exactly the same ordering (and the same nearest centroid) as comparing real distances, while skipping $n \times k$ unnecessary `sqrt` calls per assignment step — real production K-Means implementations make this same optimization. `list.index(min(...))` naturally resolves ties to the first (lowest-index) match, which is what the spec asks for.
+
+Real K-Means calls this function every iteration, alternating it with a centroid-update step (recompute each centroid as the mean of its currently-assigned points) until no point's assignment changes — see the live version converging in real time in the [K-Means & Hierarchical Clustering](/docs/machine-learning/kmeans-hierarchical-clustering#k-means) page's interactive playground.
+
+</Solution>
+
+---
+
+Next: [Sigmoid Activation From Scratch](/docs/practice-problems/sigmoid-activation)

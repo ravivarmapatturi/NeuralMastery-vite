@@ -1,0 +1,61 @@
+---
+title: "Practice: One Gradient Descent Step for Linear Regression"
+sidebar_position: 5
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# One Gradient Descent Step for Linear Regression
+
+**Difficulty: Medium** · Concept: [Linear Regression — Gradient Descent](/docs/machine-learning/linear-regression#6-gradient-descent)
+
+For single-feature linear regression $\hat{y} = wx + b$, one step of gradient descent updates both parameters using the gradients derived in [Linear Regression, Section 3](/docs/machine-learning/linear-regression#3-deriving-the-gradient-step-by-step):
+
+$$\frac{\partial J}{\partial w} = \frac{2}{n} \sum_{i=1}^{n} (\hat{y}^{(i)} - y^{(i)}) x^{(i)} \qquad \frac{\partial J}{\partial b} = \frac{2}{n} \sum_{i=1}^{n} (\hat{y}^{(i)} - y^{(i)})$$
+
+$$w \leftarrow w - \alpha \frac{\partial J}{\partial w} \qquad b \leftarrow b - \alpha \frac{\partial J}{\partial b}$$
+
+**Your task**: implement `gradient_descent_step(x, y, w, b, alpha)` — given the current `w`, `b`, and learning rate `alpha`, compute one full-batch gradient step over the dataset `(x, y)` and return the **updated** `(w, b)` as a tuple. Don't mutate the inputs in place; return new values.
+
+<RunnableCode
+  code={`def gradient_descent_step(x, y, w, b, alpha):
+    """One full-batch gradient descent step for y_hat = w*x + b.
+    Returns (new_w, new_b)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert abs(gradient_descent_step([1, 2, 3], [2, 4, 6], 0, 0, 0.1)[0] - 1.8666666666666667) < 1e-6
+assert abs(gradient_descent_step([1, 2, 3], [2, 4, 6], 0, 0, 0.1)[1] - 0.8) < 1e-6
+assert abs(gradient_descent_step([1], [1], 0, 0, 0.5)[0] - 1.0) < 1e-6
+assert abs(gradient_descent_step([2, 4], [3, 5], 1, 0, 0.1)[0] - 1.6) < 1e-6
+assert abs(gradient_descent_step([2, 4], [3, 5], 1, 0, 0.1)[1] - 0.2) < 1e-6
+assert abs(gradient_descent_step([1, 2], [1, 2], 1, 0, 0.1)[0] - 1.0) < 1e-6
+assert abs(gradient_descent_step([1, 2], [1, 2], 1, 0, 0.1)[1] - 0.0) < 1e-6`}
+/>
+
+<Solution>
+
+```python
+def gradient_descent_step(x, y, w, b, alpha):
+    n = len(x)
+    y_hat = [w * xi + b for xi in x]
+    errors = [yh - yi for yh, yi in zip(y_hat, y)]
+
+    dw = (2 / n) * sum(e * xi for e, xi in zip(errors, x))
+    db = (2 / n) * sum(errors)
+
+    new_w = w - alpha * dw
+    new_b = b - alpha * db
+    return new_w, new_b
+```
+
+Three passes over the data, each a direct transcription of a formula above: `y_hat` computes the current predictions, `errors` is $\hat{y}^{(i)} - y^{(i)}$ for each example, and `dw`/`db` sum up the per-example gradient contributions — `dw` weights each error by its matching `x`, exactly as the "error times input" intuition on the concept page describes. The update itself is the two-line gradient descent rule, applied once. Returning a new tuple instead of mutating `w`/`b` in place matters once this gets called in a loop from outside — the caller controls whether/how state persists, the function doesn't have hidden side effects.
+
+The [Linear Regression page's Gradient Descent Lab](/docs/machine-learning/linear-regression#what-is-linear-regression) runs exactly this update, in a loop, live in your browser, with the descent path plotted on the loss surface — worth watching after this to see what many of these steps chained together actually looks like.
+
+</Solution>
+
+---
+
+Next: [K-Means: One Assignment Step](/docs/practice-problems/kmeans-assignment-step)
