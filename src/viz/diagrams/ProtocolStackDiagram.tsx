@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useVizTokens } from '../../theme/vizTokens';
 import { VisualizationContainer } from '../primitives';
 import { DIAGRAM_TYPE, getConceptColor } from './diagramSystem';
@@ -38,7 +39,7 @@ export default function ProtocolStackDiagram() {
         })}
       </div>
       <div style={{ textAlign: 'center', fontSize: DIAGRAM_TYPE.caption.size, color: t.textMuted, marginTop: 8 }}>
-        See <a href="/docs/agents/multi-agent-systems" style={{ color: t.accentSecondary }}>Multi-Agent Systems</a> for the coordination-pattern layer this protocol serves.
+        See <Link to="/docs/agents/multi-agent-systems" style={{ color: t.accentSecondary }}>Multi-Agent Systems</Link> for the coordination-pattern layer this protocol serves.
       </div>
     </VisualizationContainer>
   );

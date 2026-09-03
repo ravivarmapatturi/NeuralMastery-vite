@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useVizTokens } from '../../theme/vizTokens';
 import { VisualizationContainer } from '../primitives';
 import { DIAGRAM_TYPE, getConceptColor } from './diagramSystem';
@@ -57,7 +58,7 @@ export default function NineStepPipelineDiagram() {
         <text x={125} y={95} fontSize={8} fill={runColor}>■ run</text>
       </svg>
       <div style={{ textAlign: 'center', fontSize: DIAGRAM_TYPE.caption.size, color: t.textMuted, marginTop: 4 }}>
-        Click a step. Full depth on each lives in <a href="/docs/ml-system-design/the-9-step-framework" style={{ color: t.accentPrimary }}>the 9-Step Framework</a>.
+        Click a step. Full depth on each lives in <Link to="/docs/ml-system-design/the-9-step-framework" style={{ color: t.accentPrimary }}>the 9-Step Framework</Link>.
       </div>
     </VisualizationContainer>
   );
