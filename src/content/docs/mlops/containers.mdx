@@ -9,6 +9,8 @@ import VolumesAndNetworksDiagram from '../../../viz/diagrams/VolumesAndNetworksD
 import MultiStageBuildDiagram from '../../../viz/diagrams/MultiStageBuildDiagram';
 import ContainerSecurityChecklistDiagram from '../../../viz/diagrams/ContainerSecurityChecklistDiagram';
 import RegistryComparisonDiagram from '../../../viz/diagrams/RegistryComparisonDiagram';
+import DockerArchitectureDiagram from '../../../viz/diagrams/DockerArchitectureDiagram';
+import { Remember } from '../../../components/content/Remember';
 
 # Containers
 
@@ -52,6 +54,15 @@ docker exec -it model-api bash     # shell into the running container
 docker stop model-api && docker rm model-api
 ```
 
+**`ENTRYPOINT` vs. `CMD`** — a real, common point of confusion: `CMD` sets the *default, overridable* command — `docker run my-image echo hi` replaces it entirely. `ENTRYPOINT` sets the *fixed* executable that always runs — it can't be overridden by a plain trailing argument (only by `docker run --entrypoint`). The combined pattern used together is the most common real shape: `ENTRYPOINT` pins the executable, `CMD` supplies its default (but overridable) arguments —
+
+```dockerfile
+ENTRYPOINT ["uvicorn", "app:api"]
+CMD ["--host", "0.0.0.0", "--port", "8000"]
+```
+
+— `docker run my-image --port 9000` overrides just the args (`CMD`), while `uvicorn app:api` (the `ENTRYPOINT`) always runs regardless.
+
 A `docker-compose.yml` bringing the API up alongside Redis (e.g. for caching model responses), with one command instead of three separate `docker run`s:
 
 ```yaml
@@ -78,6 +89,58 @@ docker compose up -d
 docker compose logs -f api
 docker compose down
 ```
+
+**What Compose actually does — it isn't magic.** Compose is a client that reads the YAML and translates it into the exact same underlying `docker run`/`docker network create`/`docker volume create` calls you could run by hand — plus it sequences them using `depends_on` so, e.g., `cache` starts before `api`. Nothing here is a separate execution engine from plain Docker; it's an orchestration convenience over the same primitives.
+
+**Networking, and why `cache` is reachable by name.** Running `docker compose up` automatically creates a dedicated network (named `<project>_default`) and attaches every service to it — this is the piece that makes `redis://cache:6379` in the example above actually work: each service registers its name with that network's internal DNS, so containers reach each other by **service name**, not a hardcoded IP (container IPs are assigned dynamically and change on every restart — a name is the only stable way to address one). Beyond Compose's default, Docker networking has a few real modes: **bridge** (the default — NAT'd, isolated from the host), **host** (no isolation — the container shares the host's network stack directly, faster but exposes the container fully), and **none** (no networking at all).
+
+**Restart policies and healthchecks** — how a container recovers, and how anything downstream knows it's actually ready, not just running:
+
+```yaml
+services:
+  api:
+    build: .
+    restart: unless-stopped        # or on-failure, always, no (the default)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      cache:
+        condition: service_healthy # wait for cache's OWN healthcheck to pass, not just "started"
+  cache:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 3
+```
+
+`depends_on` without a `condition` only waits for the dependency to *start* — a database container can report "started" long before it's actually accepting connections. `condition: service_healthy` is the real fix: it waits for that service's own `HEALTHCHECK` to report success first, which is exactly the ordering bug ("my app crashed on startup because the database wasn't ready yet") this combination exists to prevent.
+
+## How Docker Actually Works
+
+Everything above treats `docker run` as a black box that "just works" — here's the real chain underneath it, and the two kernel primitives that make isolation possible at all.
+
+**What is it?** Docker isn't one monolithic program — it's a real client-server chain of separate components, each doing one job, handing off to the next.
+
+**How does it work?**
+- **`docker` (the CLI)** sends your command to the daemon over Docker's REST API — a Unix socket locally, or a network interface for a remote daemon.
+- **`dockerd` (the daemon)** listens for those API requests and manages Docker's own objects (images, containers, networks, volumes) — but doesn't do the low-level container work itself.
+- **`containerd`** is a separate daemon (Docker is one of several real adopters, alongside Kubernetes — see below) that actually manages the container lifecycle: pulling images from a registry, storage, execution, supervision.
+- **`runc`** does the real kernel-level work: given a container spec, it sets up namespaces and cgroups and execs your process inside them. It implements the **OCI (Open Container Initiative) Runtime Spec** — a standard, not a Docker-specific mechanism, which is exactly why an image built by Docker also runs correctly under `containerd`/CRI-O/Podman elsewhere, including inside Kubernetes (see below).
+
+<DockerArchitectureDiagram />
+
+**Why is it useful?** Splitting this into separate components (rather than one program doing everything) is what let `containerd` and `runc` become genuinely reusable outside Docker — Kubernetes' `kubelet` talks to a container runtime through the same OCI-standardized interface, not a Docker-specific one.
+
+**What actually isolates a container — two real Linux kernel mechanisms, not "magic":**
+- **Namespaces** control what a process can *see*, one process getting its own private view of something the kernel normally shares: **PID** (its own process-ID tree — process 1 inside the container isn't the host's real PID 1), **network** (its own network interfaces/routing table), **mount** (its own filesystem view), **UTS** (its own hostname), **IPC** (its own inter-process-communication namespace, isolated message queues/semaphores), and **user** (its own UID/GID mapping — root inside the container can be a genuinely unprivileged user outside it).
+- **cgroups (control groups)** control what a process can *use* — hard limits on CPU, memory, and I/O, enforced by the kernel, not just a request.
+- **A union/overlay filesystem** stacks an image's read-only layers with one thin writable layer per container on top — this is the real mechanism behind Dockerfile layer caching (below): an unchanged layer is reused as-is across builds and across every container started from the same image, and only a container's own writes ever touch its private writable layer.
+
+<Remember>A "container" isn't a real kernel object — it's the combination of namespaces (what a process can see) and cgroups (what it can use), wrapped by runc into something that behaves like an isolated environment. Understanding those two primitives demystifies both why containers are so much lighter than VMs, and why Docker, Kubernetes, and other tools can all share the exact same underlying runtime.</Remember>
 
 ## Multi-Stage Builds & Image Optimization
 

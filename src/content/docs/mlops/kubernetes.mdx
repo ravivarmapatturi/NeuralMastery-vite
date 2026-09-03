@@ -10,10 +10,26 @@ import HpaAutoscalingDiagram from '../../../viz/diagrams/HpaAutoscalingDiagram';
 import ResourceRequestsLimitsDiagram from '../../../viz/diagrams/ResourceRequestsLimitsDiagram';
 import RbacNetworkPolicyDiagram from '../../../viz/diagrams/RbacNetworkPolicyDiagram';
 import GpuSchedulingDiagram from '../../../viz/diagrams/GpuSchedulingDiagram';
+import ClusterArchitectureDiagram from '../../../viz/diagrams/ClusterArchitectureDiagram';
+import { Remember } from '../../../components/content/Remember';
 
 # Kubernetes
 
 Docker solves "run this container the same way everywhere." Kubernetes solves the next problem: running hundreds of containers across a fleet of machines, restarting the ones that crash, scaling them under load, and routing traffic to healthy instances — none of which one `docker run` command can do.
+
+## The Cluster Itself: Control Plane and Worker Nodes
+
+Before any object (Pod, Deployment, Service) makes sense, it helps to see the real machine topology those objects get scheduled onto — a Kubernetes cluster is two kinds of machine working together, each running a small, fixed set of components.
+
+**What is it?** A cluster is split into a **control plane** (the brain — decides what should run where) and any number of **worker nodes** (the muscle — actually run the containers).
+
+**How does it work?** Four control-plane components, each with one job: **`kube-apiserver`** is the front door every request goes through (including `kubectl` itself) — it handles auth and admission control, then reads and writes cluster state in **`etcd`**, the cluster's source-of-truth key-value store. **`kube-scheduler`** watches for Pods that don't have a node assigned yet and picks one. **`kube-controller-manager`** runs the reconciliation loops — the exact mechanism the diagram below (desired vs. actual replica count) visualizes; this is the component actually doing that work. Every worker node runs three components: **`kubelet`**, the node's own agent, watches the API server for Pods assigned to it and tells the **container runtime** (`containerd` or CRI-O — the same OCI-standardized chain [Docker](/docs/mlops/containers#how-docker-actually-works) uses, reached through the **Container Runtime Interface**, not a runtime-specific API) to start or stop them; **`kube-proxy`** maintains the network rules on that node that make Service routing actually work.
+
+<ClusterArchitectureDiagram />
+
+**Why is it useful?** This is the real, complete request flow behind every `kubectl apply`: the API server authenticates the request and writes the desired state to etcd → the scheduler notices an unscheduled Pod and picks a node → that node's kubelet starts the container through the runtime → kube-proxy updates routing so a Service can actually reach it. Every object described below is a *declaration* written to etcd through the API server — the control plane and worker-node components above are what actually turns that declaration into a running, reachable container.
+
+<Remember>Every Kubernetes object you write YAML for is really just a write to etcd through the API server. The scheduler, kubelet, and kube-proxy are what turn that declaration into an actual running, reachable container — the object model and the cluster's real machinery are two different layers.</Remember>
 
 ## Fundamentals
 
