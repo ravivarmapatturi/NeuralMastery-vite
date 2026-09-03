@@ -31,22 +31,24 @@ All three architectures, same visual grammar, stepped through the same story —
 
 **What is it?** A way to compare a query against a document by summarizing each one into a single number-list (a vector) *separately*, then measuring how close those two summaries are.
 
-**How does it work?**
-- The query gets fed through the model on its own, producing one embedding per token.
-- Each document, completely independently, gets fed through the same model the same way — the model never sees the query and the document together.
-- Every token's embedding on each side gets **pooled** (typically averaged) down into a single vector — one for the whole query, one for the whole document.
-- The two single vectors are compared with cosine similarity, a fast, cheap number-crunching step.
+**How does it work, concretely?** Take a real, widely-deployed bi-encoder: [BAAI/bge-large-en-v1.5](https://huggingface.co/BAAI/bge-large-en-v1.5) — BERT-large under the hood (24 transformer layers, hidden size 1024, 16 attention heads, verified directly against its real `config.json`, not a model-card summary).
+- The query gets fed through the model on its own, through all 24 layers, producing one contextual embedding per token.
+- Each document, completely independently, gets fed through **the exact same 24 layers — identical, shared weights** — the model never sees the query and the document together, and there is no cross-attention between them at any point.
+- Both sides get **pooled** down into a single vector. This specific model uses **CLS-token pooling** (the final hidden state of the `[CLS]` token stands in for the whole sequence) — worth calling out explicitly, since **mean pooling** (averaging every token's final embedding) is the more common choice among SBERT-style models generally; the two are different design choices, not interchangeable defaults.
+- The two single 1024-dim vectors are compared with cosine similarity, a fast, cheap number-crunching step.
+
+<BiEncoderVsCrossEncoderDiagram />
 
 **Why is it useful?** Because a document's embedding never depends on the query, it can be computed once, offline, for every document in the corpus, and stored in a fast approximate-nearest-neighbor index. That precomputation is what lets a bi-encoder search millions of documents in milliseconds — no other architecture on this page can do that.
 
-**What "the embedding model" actually is:** every bi-encoder on this page is an [SBERT (Sentence-BERT)](/docs/nlp/word-embeddings#from-contextual-tokens-to-a-single-sentence-vector-sentence-bert)-style model — a pretrained encoder with mean pooling, fine-tuned specifically so cosine similarity becomes meaningful. That's not an implementation detail; it's the entire reason bi-encoder embeddings work for retrieval at all.
+**What "the embedding model" actually is:** every bi-encoder on this page is an [SBERT (Sentence-BERT)](/docs/nlp/word-embeddings#from-contextual-tokens-to-a-single-sentence-vector-sentence-bert)-style model — a pretrained encoder fine-tuned specifically (contrastive learning against hard negatives, temperature 0.01 for BGE) so cosine similarity between pooled vectors becomes meaningful. That's not an implementation detail; it's the entire reason bi-encoder embeddings work for retrieval at all. One more real, practical detail: earlier BGE versions needed a special instruction prefix prepended to queries (e.g. "Represent this sentence for searching relevant passages:") to get good results — v1.5 specifically relaxed this, so it works well with no instruction at all, a small usability win over earlier versions.
 
 In code, using the [`sentence-transformers`](https://sbert.net) library — the standard implementation of this pattern:
 
 ```python
 from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+model = SentenceTransformer("BAAI/bge-large-en-v1.5")
 
 # Document embeddings: computed once, offline -- this is what makes a
 # bi-encoder index-able. In production this runs once per document at
@@ -71,12 +73,12 @@ A bi-encoder's blind spot — losing detail to pooling — is precisely the gap 
 
 **What is it?** A way to score a query against *one specific* document by feeding both through the model together, letting every part of one directly influence how the other gets read.
 
-**How does it work?**
-- The query and one candidate document are concatenated into a single input — not processed separately.
-- That combined input goes through the model together, so every query token can attend to every document token (and vice versa) before anything gets summarized.
-- The model outputs one relevance score for that specific (query, document) pair — not a reusable embedding for either side alone.
+**How does it work, concretely?** The reranker already used in the code above, [cross-encoder/ms-marco-MiniLM-L6-v2](https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2) — 6 transformer layers, hidden size 384, 12 attention heads (its own `config.json`, again — not the model card's own lineage description, which is genuinely misleading here: it references being distilled from a 12-layer MiniLM checkpoint, but the deployed model actually has 6 layers, matching the "L6" in its real name).
+- The query and one candidate document are concatenated into a **single sequence** — `[CLS] query [SEP] passage [SEP]` — and fed through the model together, not processed separately.
+- That combined sequence goes through all 6 layers as one pass, with real self-attention: every query token can attend to every passage token (and vice versa), including directly across the query/passage boundary, before anything gets summarized.
+- The final hidden state at the `[CLS]` position feeds a small classification head (384 → 1) that outputs one scalar relevance score for that specific (query, passage) pair — not a reusable embedding for either side alone.
 
-**Why is it useful?** Because the model reads query and document jointly, it can pick up on exactly the kind of fine-grained interaction a bi-encoder's separate pooling step throws away — genuine token-level comparison, not an after-the-fact distance between two summaries. This is the most accurate of the three architectures on this page.
+**Why is it useful?** Because the model reads query and document jointly, it can pick up on exactly the kind of fine-grained interaction a bi-encoder's separate pooling step throws away — genuine token-level comparison, not an after-the-fact distance between two summaries. This is the most accurate of the three architectures on this page: this specific model reports 39.01 MRR@10 on the MS MARCO Passage Ranking dev set and 74.30 NDCG@10 on TREC DL 2019, both real numbers from its own model card, verified against its listed benchmark table.
 
 In code, same library, a different class:
 
@@ -94,8 +96,6 @@ scores = model.predict([
 ```
 
 **Limitation:** Nothing about a cross-encoder's score is precomputable — it only exists once you have both the query *and* a specific document in hand, together, at the same time. Running it against a full corpus of millions would mean millions of full forward passes per query, which is why it's only practical against a small candidate set: tens to low hundreds of documents, not millions.
-
-<BiEncoderVsCrossEncoderDiagram />
 
 <Remember>A cross-encoder can only score documents it's handed — it's never the thing that searches the corpus, only ever the thing that re-ranks what a faster stage already found.</Remember>
 
