@@ -1,0 +1,71 @@
+---
+title: "Practice: Lowest Common Ancestor in a Binary Tree"
+sidebar_position: 30
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Lowest Common Ancestor in a Binary Tree
+
+**Difficulty: Hard** · Pattern: Tree DFS · Concept: [Algorithms & Data Structures — Core Data Structures](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures)
+
+Given a general binary tree (not necessarily a BST — no ordering to exploit) and the values of two nodes `p` and `q` known to exist in it, find their **lowest common ancestor**: the deepest node that has both `p` and `q` somewhere in its subtree (a node counts as its own ancestor, so if `p` is itself an ancestor of `q`, the LCA is `p`).
+
+**Your task**: implement `lowest_common_ancestor(root, p_val, q_val)`, returning the `TreeNode` (not just the value) that is the LCA. Assume all values in the tree are unique.
+
+<RunnableCode
+  code={`class TreeNode:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def lowest_common_ancestor(root, p_val, q_val):
+    """Return the TreeNode that is the lowest common ancestor of the
+    nodes with values p_val and q_val."""
+    # Your implementation here
+    pass
+
+#       1
+#      / \\
+#     2   3
+#    / \\   \\
+#   4   5   6
+#          /
+#         7
+tree = TreeNode(1, TreeNode(2, TreeNode(4), TreeNode(5)), TreeNode(3, None, TreeNode(6, TreeNode(7), None)))
+`}
+  tests={`assert lowest_common_ancestor(tree, 4, 5).val == 2
+assert lowest_common_ancestor(tree, 4, 3).val == 1
+assert lowest_common_ancestor(tree, 6, 7).val == 6
+assert lowest_common_ancestor(tree, 7, 3).val == 3
+assert lowest_common_ancestor(tree, 2, 6).val == 1`}
+/>
+
+<Solution>
+
+```python
+def lowest_common_ancestor(root, p_val, q_val):
+    if root is None:
+        return None
+    if root.val == p_val or root.val == q_val:
+        return root
+
+    left = lowest_common_ancestor(root.left, p_val, q_val)
+    right = lowest_common_ancestor(root.right, p_val, q_val)
+
+    if left and right:
+        return root      # p and q were found on opposite sides -- this node splits them
+    return left if left else right  # both (or the only one found) came from one side
+```
+
+Each recursive call answers one question about the subtree it's rooted at: "does `p` or `q` (or their LCA) live somewhere in here?" A node returns **itself immediately** the moment it matches `p_val` or `q_val`, without needing to look any further into its own children — which is exactly what makes `lowest_common_ancestor(tree, 6, 7)` correctly return `6`, not `7` or some deeper search: node `6` *is* `p`, so it returns itself the instant it's reached, even though `7` (the other target) sits directly inside its own subtree. That's the formal meaning of "a node is its own ancestor."
+
+Further up the tree, a parent combines what its two children reported: if **both** sides returned something non-`None`, that means `p` and `q` were found on genuinely opposite branches — so *this* node is the split point, the LCA, and it returns itself. If only one side found something, that result (which might itself already be the correct LCA, found deeper down) just passes straight up unchanged. This is why `lowest_common_ancestor(tree, 4, 3)` correctly returns the root (`1`): `4` is discovered under the left subtree, `3` is discovered under the right subtree, and root is the first node where those two search results actually meet.
+
+</Solution>
+
+---
+
+More problems are being added continuously — see [Practice Problems overview](/docs/practice-problems/overview) for the full, current list.

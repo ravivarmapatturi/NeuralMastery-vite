@@ -1,0 +1,65 @@
+---
+title: "Practice: Validate a Binary Search Tree"
+sidebar_position: 29
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Validate a Binary Search Tree
+
+**Difficulty: Medium** · Pattern: Tree DFS · Concept: [Algorithms & Data Structures — Core Data Structures](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures)
+
+A **binary search tree (BST)** requires, for *every* node: everything in its left subtree is strictly less than it, and everything in its right subtree is strictly greater — not just its immediate children, its *entire* subtree.
+
+**The classic mistake**: checking only `node.left.val < node.val < node.right.val` at each node. That's necessary but not sufficient — a tree can look locally fine at every parent-child pair and still be an invalid BST overall, if some deeper descendant violates a constraint from an *ancestor* further up, not its immediate parent.
+
+**Your task**: implement `is_valid_bst(root)`, returning `True`/`False`. An empty tree (`None`) counts as valid.
+
+<RunnableCode
+  code={`class TreeNode:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def is_valid_bst(root):
+    """Return True if root is a valid BST (strict: no duplicate values)."""
+    # Your implementation here
+    pass
+
+valid_tree = TreeNode(5, TreeNode(3, TreeNode(1), TreeNode(4)), TreeNode(8, TreeNode(7), TreeNode(9)))
+# The classic gotcha: locally every parent/child pair looks fine (8 > 5,
+# and 4 < 8), but 4 sits in the RIGHT subtree of 5 -- so it must be > 5,
+# and it isn't. Checking only immediate children misses this.
+sneaky_invalid_tree = TreeNode(5, TreeNode(3), TreeNode(8, TreeNode(4), TreeNode(9)))
+single_node = TreeNode(1)
+equal_values = TreeNode(2, TreeNode(2), None)
+`}
+  tests={`assert is_valid_bst(valid_tree) == True
+assert is_valid_bst(sneaky_invalid_tree) == False
+assert is_valid_bst(single_node) == True
+assert is_valid_bst(equal_values) == False
+assert is_valid_bst(None) == True`}
+/>
+
+<Solution>
+
+```python
+def is_valid_bst(root, low=float('-inf'), high=float('inf')):
+    if root is None:
+        return True
+    if not (low < root.val < high):
+        return False
+    return is_valid_bst(root.left, low, root.val) and is_valid_bst(root.right, root.val, high)
+```
+
+The fix is carrying a **valid range** down through the recursion, tightened at every step, instead of only ever comparing a node to its immediate children. The root starts with the widest possible range, $(-\infty, \infty)$. Descending left, the upper bound tightens to the parent's value (everything in a left subtree must stay below every ancestor it's a left descendant of, not just its direct parent); descending right, the lower bound tightens the same way. `sneaky_invalid_tree`'s `4` gets checked against the range `(5, \infty)` — not `(-\infty, 8)`, which is what a children-only check would effectively use — because by the time recursion reaches it, both the constraint from its immediate parent (`8`) *and* the inherited constraint from the root (`5`) are active simultaneously. That's exactly why it correctly fails: `4` violates the inherited lower bound of `5`, even though `4 < 8` (its immediate parent check) looks fine in isolation.
+
+`equal_values` (`TreeNode(2, TreeNode(2), None)`) tests the *strict* inequality — a real BST implementation choice worth being deliberate about: some definitions allow duplicates on one side, this one (matching `low < root.val < high` rather than `<=`) doesn't, and the test locks that choice in explicitly rather than leaving it ambiguous.
+
+</Solution>
+
+---
+
+Next: [Lowest Common Ancestor in a Binary Tree](/docs/practice-problems/lowest-common-ancestor)

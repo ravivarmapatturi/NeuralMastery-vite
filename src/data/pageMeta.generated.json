@@ -1491,6 +1491,13 @@
       "sidebarPosition": 15,
       "description": null
     },
+    "/docs/practice-problems/level-order-traversal": {
+      "slug": "practice-problems/level-order-traversal",
+      "section": "practice-problems",
+      "title": "Practice: Level-Order Traversal (BFS)",
+      "sidebarPosition": 28,
+      "description": null
+    },
     "/docs/practice-problems/lone-number": {
       "slug": "practice-problems/lone-number",
       "section": "practice-problems",
@@ -1503,6 +1510,13 @@
       "section": "practice-problems",
       "title": "Practice: Longest Run of Unique Characters",
       "sidebarPosition": 10,
+      "description": null
+    },
+    "/docs/practice-problems/lowest-common-ancestor": {
+      "slug": "practice-problems/lowest-common-ancestor",
+      "section": "practice-problems",
+      "title": "Practice: Lowest Common Ancestor in a Binary Tree",
+      "sidebarPosition": 30,
       "description": null
     },
     "/docs/practice-problems/matrix-multiplication": {
@@ -1587,6 +1601,13 @@
       "section": "practice-problems",
       "title": "Practice: TF-IDF Weight From Scratch",
       "sidebarPosition": 20,
+      "description": null
+    },
+    "/docs/practice-problems/validate-bst": {
+      "slug": "practice-problems/validate-bst",
+      "section": "practice-problems",
+      "title": "Practice: Validate a Binary Search Tree",
+      "sidebarPosition": 29,
       "description": null
     },
     "/docs/projects/overview": {
