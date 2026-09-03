@@ -168,8 +168,12 @@ export function timeEstimate(pageCount: number): string {
 /** Fraction (0..1) of a top-level group's pages marked understood --
  * matches a page's permalink against the group's folders/subsections, the
  * same "which pages count toward this group" logic LearningPathMap and
- * the progress dashboard both need. */
-export function completionFor(key: string, understood: Record<string, boolean>): number {
+ * the progress dashboard both need. Only ever reads the map's KEYS (which
+ * permalinks are present at all), never a value, so it accepts whatever
+ * shape ProgressContext's understood-map happens to use -- a plain
+ * `Record<string, boolean>` in tests, or the real `ProgressEntry` objects
+ * in the app -- without needing to know or care which. */
+export function completionFor(key: string, understood: Record<string, unknown>): number {
   const meta = SECTION_META[key];
   const done = Object.keys(understood).filter((permalink) =>
     meta.folders ? meta.folders.some((f) => permalink.includes(`/docs/${f}/`)) : meta.subsections.some((s) => permalink.includes(`/docs/${s.dir}/`)),

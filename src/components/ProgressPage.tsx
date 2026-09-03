@@ -7,6 +7,13 @@ import { useProgress } from '../contexts/ProgressContext';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 
+/** Best-effort title lookup for a permalink -- falls back to the raw path
+ * for the (should-be-rare) case a stored permalink no longer matches any
+ * current page, e.g. a page that was later renamed or removed. */
+function titleFor(route: string, flatPages: ReturnType<typeof getFlatPages>): string {
+  return flatPages.find((p) => p.route === route)?.title ?? route;
+}
+
 /**
  * The "your progress" surface ProgressContext never had. Two views of the
  * same understood-map: the 7 top-level groups (same completionFor math as
@@ -19,10 +26,11 @@ export default function ProgressPage() {
   useDocumentTitle('Your Progress');
   useDocumentMeta('Your Progress', 'Track which pages across Neural Mastery you have marked as understood -- tracked locally in your browser, no account required.');
 
-  const { understood, isUnderstood, toggle, countWithin, reset } = useProgress();
+  const { understood, isUnderstood, toggle, countWithin, reset, dueForReview, markReviewed } = useProgress();
   const sections = getSidebar();
-  const totalPages = getFlatPages().length;
-  const totalDone = countWithin(getFlatPages().map((p) => p.route));
+  const flatPages = getFlatPages();
+  const totalPages = flatPages.length;
+  const totalDone = countWithin(flatPages.map((p) => p.route));
   const overallPct = totalPages === 0 ? 0 : totalDone / totalPages;
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -47,6 +55,54 @@ export default function ProgressPage() {
           <div style={{ height: 8, borderRadius: 4, background: 'var(--nm-border)', overflow: 'hidden' }}>
             <div style={{ width: `${overallPct * 100}%`, height: '100%', background: 'var(--nm-accent-primary)', transition: 'width 200ms ease' }} />
           </div>
+        </div>
+
+        <h2 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: '0.9rem' }}>
+          Due for review
+        </h2>
+        <div style={{ borderRadius: 12, border: '1px solid var(--nm-border)', background: 'var(--nm-surface)', marginBottom: '2.5rem', overflow: 'hidden' }}>
+          {dueForReview.length === 0 ? (
+            <p style={{ margin: 0, padding: '1rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)', lineHeight: 1.6 }}>
+              Nothing due right now. Pages you mark understood get a simple spaced-repetition schedule (review reminders at 1, 3, 7, 14, and 30 days) —
+              they&rsquo;ll show up here once one comes due.
+            </p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {dueForReview.map((route, i) => (
+                <div
+                  key={route}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '0.65rem 1.25rem',
+                    borderTop: i === 0 ? 'none' : '1px solid var(--nm-border)',
+                  }}
+                >
+                  <Link to={route} style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: 'var(--nm-text-primary)', textDecoration: 'none' }}>
+                    {titleFor(route, flatPages)}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => markReviewed(route)}
+                    style={{
+                      flexShrink: 0,
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      color: 'var(--nm-accent-primary)',
+                      background: 'color-mix(in srgb, var(--nm-accent-primary) 12%, transparent)',
+                      border: `1px solid var(--nm-accent-primary)`,
+                      borderRadius: 8,
+                      padding: '0.35rem 0.7rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Reviewed
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <h2 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: '0.9rem' }}>
