@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import AttentionStepThrough from '../viz/AttentionStepThrough';
+import { QA } from './content/ExpandableDepth';
 import { getSidebar, getFlatPages } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -38,6 +39,8 @@ export default function Home() {
   const sections = getSidebar();
   const totalPages = getFlatPages().length;
   const accent = buildSectionAccent();
+  // -1 excludes the section's own overview page from the count of actual problems.
+  const practiceProblemCount = Math.max(0, (sections.find((s) => s.id === 'practice-problems')?.pages.length ?? 1) - 1);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
@@ -120,6 +123,81 @@ export default function Home() {
         </p>
         </section>
       </div>
+
+      <section style={{ padding: '0 0 2.5rem' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 1.5rem' }}>
+          <h2
+            className="nm-display"
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--nm-text-muted)',
+              marginBottom: '1.25rem',
+            }}
+          >
+            New
+          </h2>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '1.25rem',
+            }}
+          >
+            <div
+              style={{
+                padding: '1.25rem',
+                borderRadius: 12,
+                border: '1px solid var(--nm-border)',
+                background: 'var(--nm-surface)',
+              }}
+            >
+              <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)', marginBottom: 4 }}>
+                Test yourself
+              </div>
+              <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 0.75rem', lineHeight: 1.5 }}>
+                Real interview questions, click to reveal the answer — try one right here:
+              </p>
+              <QA q="What is a KV cache, and why does it matter for serving?">
+                Storing each generated token's Key/Value projections so they don't get recomputed on every
+                subsequent step — it's also the dominant consumer of GPU memory during serving.
+              </QA>
+              <Link
+                to="/docs/interview-prep/qa-quick-reference"
+                style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: 13, color: 'var(--nm-accent-primary)', textDecoration: 'none' }}
+              >
+                More real interview questions, across LLMs, RAG, and agents →
+              </Link>
+            </div>
+
+            <Link
+              to="/docs/practice-problems/overview"
+              className="nm-home-card"
+              style={{
+                display: 'block',
+                padding: '1.25rem',
+                borderRadius: 12,
+                border: '1px solid var(--nm-border)',
+                background: 'var(--nm-surface)',
+                textDecoration: 'none',
+              }}
+            >
+              <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)', marginBottom: 4 }}>
+                Write real code
+              </div>
+              <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 0.75rem', lineHeight: 1.5 }}>
+                Implement a function yourself in a real, in-browser Python sandbox — run it against real test
+                cases (pass/fail, no LLM grading), then reveal a reference solution.
+              </p>
+              <span style={{ fontSize: 13, color: 'var(--nm-accent-primary)' }}>
+                {practiceProblemCount}+ problems: linear algebra to RL →
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <section
         style={{
