@@ -2022,6 +2022,13 @@
       "title": "Visual Lab — Roadmap",
       "sidebarPosition": 2,
       "description": null
+    },
+    "/docs/visual-lab/two-pointers-sliding-window": {
+      "slug": "visual-lab/two-pointers-sliding-window",
+      "section": "visual-lab",
+      "title": "Two Pointers & Sliding Window, Step by Step",
+      "sidebarPosition": 14,
+      "description": null
     }
   },
   "categories": {

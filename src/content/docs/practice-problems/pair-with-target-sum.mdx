@@ -46,6 +46,8 @@ def pair_with_target_sum(arr, target):
 
 Start with the widest possible pair (both ends) and narrow in. If the current sum is too small, the *only* way to increase it is to move the left pointer right (every element to the right is $\geq$ the current one, since the array is sorted) — moving `right` left could only make the sum smaller or equal, never bigger, so it can never help. Symmetric logic applies when the sum is too big. Each step eliminates at least one index from consideration, so the pointers can cross at most $n$ times total — $O(n)$ instead of the brute force's $O(n^2)$, and $O(1)$ extra space instead of a hash map's $O(n)$.
 
+Want to actually watch L and R move instead of tracing it by hand? See [Two Pointers & Sliding Window, Step by Step](/docs/visual-lab/two-pointers-sliding-window) in the Visual Lab — same algorithm, live, editable.
+
 </Solution>
 
 ---
