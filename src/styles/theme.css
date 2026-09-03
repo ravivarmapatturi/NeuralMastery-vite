@@ -195,7 +195,12 @@ body {
 .prose pre {
   overflow-x: auto;
 }
-.prose > table { border-collapse: collapse; margin: 0 0 1.5rem; font-size: 14px; }
+/* A wide table (several columns of real content, e.g. a 4-way
+   architecture comparison) can render wider than the viewport on mobile,
+   same problem as long code lines above -- display:block turns the table
+   itself into a horizontally-scrollable region instead of blowing out
+   the page's layout width, without needing a wrapper element in the MDX. */
+.prose > table { display: block; overflow-x: auto; border-collapse: collapse; margin: 0 0 1.5rem; font-size: 14px; }
 .prose th, .prose td { border: 1px solid var(--nm-border); padding: 0.5rem 0.85rem; text-align: left; vertical-align: top; }
 .prose th { background: var(--nm-surface); font-weight: 700; color: var(--nm-text-primary); }
 .prose td { color: var(--nm-text-secondary); }
