@@ -1,0 +1,56 @@
+---
+title: "Practice: TF-IDF Weight From Scratch"
+sidebar_position: 20
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# TF-IDF Weight From Scratch
+
+**Difficulty: Medium** · Concept: [Word Embeddings — Count Vectorization and TF-IDF](/docs/nlp/word-embeddings#before-embeddings-count-vectorization-and-tf-idf)
+
+Raw word counts overweight common words that appear everywhere and carry little meaning ("the", "a"). **TF-IDF** fixes this by multiplying two signals: **term frequency** (how often the word appears in *this* document) and **inverse document frequency** (how rare the word is *across the whole corpus*):
+
+$$\text{tf}(t, d) = \frac{\text{count}(t, d)}{|d|} \qquad \text{idf}(t) = \log\left(\frac{N}{\text{df}(t)}\right) \qquad \text{tf-idf}(t, d) = \text{tf}(t, d) \times \text{idf}(t)$$
+
+where $N$ is the number of documents in the corpus and $\text{df}(t)$ is how many of them contain $t$ at least once.
+
+**Your task**: implement `tf_idf(term, document, corpus)`, where `document` is a list of tokens (assume it's one of the entries in `corpus`), and `corpus` is a list of token-lists.
+
+<RunnableCode
+  code={`import math
+
+def tf_idf(term, document, corpus):
+    """term: str. document: list[str] (one entry of corpus).
+    corpus: list[list[str]]. Return the TF-IDF weight of term in document."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert abs(tf_idf("cat", ["the", "cat", "sat"], [["the", "cat", "sat"], ["the", "dog", "ran"], ["the", "cat", "ran"]]) - 0.13515503603605478) < 1e-9
+assert abs(tf_idf("the", ["the", "cat", "sat"], [["the", "cat", "sat"], ["the", "dog", "ran"], ["the", "cat", "ran"]]) - 0.0) < 1e-9
+assert abs(tf_idf("dog", ["the", "dog", "ran"], [["the", "cat", "sat"], ["the", "dog", "ran"], ["the", "cat", "ran"]]) - 0.3662040962227032) < 1e-9
+assert abs(tf_idf("cat", ["cat", "cat", "mouse", "cat"], [["cat", "cat", "mouse", "cat"], ["dog", "mouse"], ["cat", "bird"]]) - 0.3040988310811233) < 1e-9`}
+/>
+
+<Solution>
+
+```python
+import math
+
+def tf_idf(term, document, corpus):
+    tf = document.count(term) / len(document)
+    df = sum(1 for doc in corpus if term in doc)
+    idf = math.log(len(corpus) / df)
+    return tf * idf
+```
+
+`tf` alone would rank "the" and "cat" the same way in a document where both appear once — `idf` is what tells them apart. Notice the second test: **"the" gets a TF-IDF weight of exactly `0.0`**, not just a small number — because it appears in every document in this corpus (`df == N`), `idf = log(N/N) = log(1) = 0`, and anything times zero is zero. That's not a bug or an edge case being special-cased; it's the formula correctly encoding "a word that appears in literally every document carries zero information about what makes *this* document distinctive." A word appearing in only one document out of three (`"dog"`) gets the largest `idf` of the three test terms, exactly the "rare terms matter more" behavior TF-IDF is built to produce.
+
+This is still a real, non-obsolete technique — sparse TF-IDF vectors remain a strong, cheap baseline for search and text classification, and are what BM25 (the classical ranking function still used in hybrid retrieval systems today) directly builds on.
+
+</Solution>
+
+---
+
+Next: [2D Convolution From Scratch](/docs/practice-problems/convolution-2d)

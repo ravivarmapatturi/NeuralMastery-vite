@@ -1,0 +1,59 @@
+---
+title: "Practice: 2D Convolution From Scratch"
+sidebar_position: 21
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# 2D Convolution From Scratch
+
+**Difficulty: Medium** · Concept: [Vision Fundamentals — Convolution as Classical Filtering](/docs/computer-vision/vision-fundamentals#convolution-as-classical-filtering)
+
+Slide a small kernel across an image, and at every position, compute the weighted sum of the pixels it currently covers. That's the entire mechanical operation — the same one a hand-designed Sobel edge filter runs, and the same one every [CNN's](/docs/deep-learning/cnns) convolutional layer runs, except a CNN *learns* the kernel values from data instead of a human choosing them.
+
+**Your task**: implement `convolve2d(image, kernel)` — "valid" convolution only (no padding), stride 1. `image` and `kernel` are lists of lists (rows) of numbers; assume the kernel is no larger than the image in either dimension. Output size: for an $(H \times W)$ image and $(k_h \times k_w)$ kernel, the output is $(H - k_h + 1) \times (W - k_w + 1)$.
+
+<RunnableCode
+  code={`def convolve2d(image, kernel):
+    """'Valid' 2D convolution (no padding), stride 1.
+    image, kernel: list of lists of numbers. Return the result as list of lists."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert convolve2d([[1, 2, 3], [4, 5, 6], [7, 8, 9]], [[1, 0], [0, 1]]) == [[6, 8], [12, 14]]
+assert convolve2d([[1, 1, 1], [1, 1, 1], [1, 1, 1]], [[1, 1], [1, 1]]) == [[4, 4], [4, 4]]
+assert convolve2d([[1, 2], [3, 4]], [[1]]) == [[1, 2], [3, 4]]
+assert convolve2d([[0, 0, 0], [0, 5, 0], [0, 0, 0]], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]) == [[5]]`}
+/>
+
+<Solution>
+
+```python
+def convolve2d(image, kernel):
+    img_h, img_w = len(image), len(image[0])
+    k_h, k_w = len(kernel), len(kernel[0])
+    out_h, out_w = img_h - k_h + 1, img_w - k_w + 1
+
+    result = [[0] * out_w for _ in range(out_h)]
+    for i in range(out_h):
+        for j in range(out_w):
+            total = 0
+            for ki in range(k_h):
+                for kj in range(k_w):
+                    total += image[i + ki][j + kj] * kernel[ki][kj]
+            result[i][j] = total
+    return result
+```
+
+Four nested loops: the outer two (`i`, `j`) walk every valid position the kernel's top-left corner can sit at — which is exactly why the output shrinks by `k_h - 1` and `k_w - 1` in each dimension, since the kernel can't hang off the edge of the image in a "valid" convolution. The inner two (`ki`, `kj`) compute one weighted sum: the kernel value at each offset times the image pixel it's currently sitting over. The diagonal-kernel test makes the mechanism visible directly — a `[[1,0,0],[0,1,0],[0,0,1]]` kernel only "looks at" the three diagonal positions of whatever it covers, ignoring the rest, and correctly picks out the `5` sitting at the center of that test image.
+
+Worth knowing: this is technically **cross-correlation**, not mathematical convolution (true convolution flips the kernel 180° before sliding it) — but every deep learning framework's "Conv2d" does exactly this un-flipped version, since a learned kernel doesn't care about the distinction (it would just learn the flipped weights instead). "Convolution" in a CNN context always means what's implemented here.
+
+Real CNN layers batch this over many channels and many kernels at once, and use highly optimized (often FFT-based, for large kernels) implementations rather than four naive nested loops — but the $(H-k_h+1)\times(W-k_w+1)$ output-shape arithmetic and the weighted-sum-per-position mechanism are exactly this.
+
+</Solution>
+
+---
+
+Next: [Discounted Return From Scratch](/docs/practice-problems/discounted-return)

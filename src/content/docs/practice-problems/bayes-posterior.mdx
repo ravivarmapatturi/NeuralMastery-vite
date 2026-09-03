@@ -1,0 +1,51 @@
+---
+title: "Practice: Bayes' Theorem, Posterior From Scratch"
+sidebar_position: 17
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Bayes' Theorem: Posterior From Scratch
+
+**Difficulty: Medium** · Concept: [Probability & Statistics — Bayes' Theorem](/docs/mathematics-for-ai/probability-statistics#bayes-theorem)
+
+The classic framing: a test for a rare condition has some prior probability of the condition (`prior`), a **sensitivity** (probability the test is positive *given* the condition is present), and a **false positive rate** (probability the test is positive *given* the condition is absent). Given a positive result, what's the actual probability the condition is present?
+
+$$P(\text{condition} \mid \text{positive}) = \frac{P(\text{positive} \mid \text{condition}) \, P(\text{condition})}{P(\text{positive} \mid \text{condition})P(\text{condition}) + P(\text{positive} \mid \neg\text{condition})P(\neg\text{condition})}$$
+
+This is the exact mechanism behind why a rare-disease test with a seemingly-impressive sensitivity can still have a low posterior probability of a positive result being real — one of the most consistently counter-intuitive real results in applied probability.
+
+**Your task**: implement `bayes_posterior(prior, sensitivity, false_positive_rate)`, returning $P(\text{condition} \mid \text{positive})$.
+
+<RunnableCode
+  code={`def bayes_posterior(prior, sensitivity, false_positive_rate):
+    """Return P(condition | positive test) via Bayes' theorem."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert abs(bayes_posterior(0.01, 0.99, 0.05) - 1 / 6) < 1e-9
+assert abs(bayes_posterior(0.5, 0.8, 0.1) - 8 / 9) < 1e-9
+assert abs(bayes_posterior(0.2, 0.9, 0.3) - 3 / 7) < 1e-9
+assert abs(bayes_posterior(0.01, 1.0, 0.0) - 1.0) < 1e-9`}
+/>
+
+<Solution>
+
+```python
+def bayes_posterior(prior, sensitivity, false_positive_rate):
+    p_positive_and_condition = sensitivity * prior
+    p_positive_and_not_condition = false_positive_rate * (1 - prior)
+    p_positive = p_positive_and_condition + p_positive_and_not_condition
+    return p_positive_and_condition / p_positive
+```
+
+The numerator, $P(\text{positive} \mid \text{condition}) \, P(\text{condition})$, is the joint probability of both being true. The denominator is $P(\text{positive})$ overall — by the law of total probability, that's the sum of "positive AND has the condition" plus "positive AND doesn't" (there's no third way to test positive). Dividing renormalizes so the two mutually-exclusive ways of testing positive add up to exactly 1.
+
+The first test case is the canonical counter-intuitive one: even with a highly sensitive test (`0.99`) for a rare condition (`1%` prior), a positive result is still only `1/6 ≈ 16.7%` likely to be real — because the condition is so rare that the `5%` false-positive rate, applied to the overwhelming `99%` of people who *don't* have it, generates more false positives in absolute terms than the rare true positives. This is exactly why screening-test results in practice are reported alongside prevalence, not sensitivity alone — a sensitivity number by itself doesn't tell you what you actually want to know.
+
+</Solution>
+
+---
+
+Next: [Numerical Gradient via Finite Differences](/docs/practice-problems/numerical-gradient)

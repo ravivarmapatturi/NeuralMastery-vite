@@ -114,7 +114,7 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
     icon: '🔬',
     color: '#31C4D9',
     description: 'Reading the literature, and building real things — from scratch, and as full projects.',
-    pageCount: 32,
+    pageCount: 48,
     difficulty: 'Advanced',
     prerequisites: 'Safety & Evaluation',
     leadsTo: 'Career',

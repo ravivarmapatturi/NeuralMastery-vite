@@ -1400,6 +1400,34 @@
       "sidebarPosition": 4,
       "description": null
     },
+    "/docs/practice-problems/bayes-posterior": {
+      "slug": "practice-problems/bayes-posterior",
+      "section": "practice-problems",
+      "title": "Practice: Bayes' Theorem, Posterior From Scratch",
+      "sidebarPosition": 17,
+      "description": null
+    },
+    "/docs/practice-problems/convolution-2d": {
+      "slug": "practice-problems/convolution-2d",
+      "section": "practice-problems",
+      "title": "Practice: 2D Convolution From Scratch",
+      "sidebarPosition": 21,
+      "description": null
+    },
+    "/docs/practice-problems/cosine-similarity": {
+      "slug": "practice-problems/cosine-similarity",
+      "section": "practice-problems",
+      "title": "Practice: Cosine Similarity From Scratch",
+      "sidebarPosition": 19,
+      "description": null
+    },
+    "/docs/practice-problems/discounted-return": {
+      "slug": "practice-problems/discounted-return",
+      "section": "practice-problems",
+      "title": "Practice: Discounted Return From Scratch",
+      "sidebarPosition": 22,
+      "description": null
+    },
     "/docs/practice-problems/dot-product": {
       "slug": "practice-problems/dot-product",
       "section": "practice-problems",
@@ -1477,6 +1505,13 @@
       "sidebarPosition": 4,
       "description": null
     },
+    "/docs/practice-problems/numerical-gradient": {
+      "slug": "practice-problems/numerical-gradient",
+      "section": "practice-problems",
+      "title": "Practice: Numerical Gradient via Finite Differences",
+      "sidebarPosition": 18,
+      "description": null
+    },
     "/docs/practice-problems/overview": {
       "slug": "practice-problems/overview",
       "section": "practice-problems",
@@ -1491,6 +1526,13 @@
       "sidebarPosition": 9,
       "description": null
     },
+    "/docs/practice-problems/sample-mean-variance": {
+      "slug": "practice-problems/sample-mean-variance",
+      "section": "practice-problems",
+      "title": "Practice: Sample Mean and Variance From Scratch",
+      "sidebarPosition": 16,
+      "description": null
+    },
     "/docs/practice-problems/sigmoid-activation": {
       "slug": "practice-problems/sigmoid-activation",
       "section": "practice-problems",
@@ -1503,6 +1545,13 @@
       "section": "practice-problems",
       "title": "Practice: Numerically Stable Softmax From Scratch",
       "sidebarPosition": 8,
+      "description": null
+    },
+    "/docs/practice-problems/tf-idf-weight": {
+      "slug": "practice-problems/tf-idf-weight",
+      "section": "practice-problems",
+      "title": "Practice: TF-IDF Weight From Scratch",
+      "sidebarPosition": 20,
       "description": null
     },
     "/docs/projects/overview": {
