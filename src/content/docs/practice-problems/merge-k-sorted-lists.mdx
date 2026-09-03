@@ -1,0 +1,63 @@
+---
+title: "Practice: Merge K Sorted Lists"
+sidebar_position: 24
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Merge K Sorted Lists
+
+**Difficulty: Hard** · Pattern: K-Way Merge · Concept: [Algorithms & Data Structures — Core Data Structures](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures)
+
+Given `k` already-sorted lists, merge them into a single sorted list containing every element.
+
+Merging two sorted lists is a familiar $O(n)$ operation. The naive extension to $k$ lists — concatenate everything and call `sorted()` — costs $O(N \log N)$ over all $N$ total elements, throwing away the fact that each individual list was already sorted. The **k-way merge** pattern does better: keep a **min-heap** holding just the current *smallest unconsumed* element from each of the $k$ lists. Repeatedly pop the overall smallest, then push in the next element from whichever list it came from — the same [heap/priority-queue](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures) idea beam search uses to track the top-$k$ candidates efficiently.
+
+**Your task**: implement `merge_k_sorted(lists)` in $O(N \log k)$ time using Python's `heapq`, where `lists` is a list of $k$ sorted lists (each may be empty).
+
+<RunnableCode
+  code={`import heapq
+
+def merge_k_sorted(lists):
+    """lists: list of k already-sorted lists (any may be empty).
+    Return one sorted list containing every element, in O(N log k)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert merge_k_sorted([[1, 4, 5], [1, 3, 4], [2, 6]]) == [1, 1, 2, 3, 4, 4, 5, 6]
+assert merge_k_sorted([[], []]) == []
+assert merge_k_sorted([[1, 2, 3]]) == [1, 2, 3]
+assert merge_k_sorted([[5], [1], [3], [2], [4]]) == [1, 2, 3, 4, 5]
+assert merge_k_sorted([[-3, -1, 2], [-2, 0, 5]]) == [-3, -2, -1, 0, 2, 5]`}
+/>
+
+<Solution>
+
+```python
+import heapq
+
+def merge_k_sorted(lists):
+    heap = []
+    for i, lst in enumerate(lists):
+        if lst:
+            heapq.heappush(heap, (lst[0], i, 0))  # (value, which list, index in that list)
+
+    result = []
+    while heap:
+        val, i, j = heapq.heappop(heap)
+        result.append(val)
+        if j + 1 < len(lists[i]):
+            heapq.heappush(heap, (lists[i][j + 1], i, j + 1))
+    return result
+```
+
+The heap never holds more than $k$ elements at once — exactly one "candidate" per still-nonempty list, its current smallest unconsumed element. Each `heappop` costs $O(\log k)$ and correctly returns the global minimum across all lists (a heap-min property), and each popped element triggers exactly one push of that same list's next element, so the heap size never grows unbounded. Across all $N$ total elements, that's $N$ pops and at most $N$ pushes, each $O(\log k)$ — $O(N \log k)$ total, strictly better than $O(N \log N)$ once $k \ll N$ (merging 1,000 short lists is far cheaper than sorting one list of the same combined size from scratch).
+
+The `(value, list_index, index_in_list)` tuple, not just `value`, is a deliberate detail: Python compares tuples element-by-element, so if two lists both currently offer the same value, the comparison falls through to `list_index` to break the tie — without that second element, Python would try to compare the *third* tuple field or, worse, raise `TypeError` if two elements themselves aren't orderable in a later variant of this problem (e.g. merging sorted lists of dictionaries). Including indices as tiebreakers is a general heap-of-tuples habit worth having, not specific to this problem.
+
+</Solution>
+
+---
+
+More problems are being added continuously — see [Practice Problems overview](/docs/practice-problems/overview) for the full, current list.

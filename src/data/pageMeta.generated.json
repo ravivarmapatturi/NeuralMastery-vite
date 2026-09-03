@@ -1421,6 +1421,13 @@
       "sidebarPosition": 19,
       "description": null
     },
+    "/docs/practice-problems/design-min-stack": {
+      "slug": "practice-problems/design-min-stack",
+      "section": "practice-problems",
+      "title": "Practice: Design a Min Stack",
+      "sidebarPosition": 23,
+      "description": null
+    },
     "/docs/practice-problems/discounted-return": {
       "slug": "practice-problems/discounted-return",
       "section": "practice-problems",
@@ -1503,6 +1510,13 @@
       "section": "practice-problems",
       "title": "Practice: Mean Squared Error From Scratch",
       "sidebarPosition": 4,
+      "description": null
+    },
+    "/docs/practice-problems/merge-k-sorted-lists": {
+      "slug": "practice-problems/merge-k-sorted-lists",
+      "section": "practice-problems",
+      "title": "Practice: Merge K Sorted Lists",
+      "sidebarPosition": 24,
       "description": null
     },
     "/docs/practice-problems/numerical-gradient": {
