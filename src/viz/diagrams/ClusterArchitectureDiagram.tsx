@@ -32,6 +32,33 @@ const NODE_COMPONENT_DETAILS: Record<'kubelet' | 'runtime' | 'kube-proxy', strin
   'kube-proxy': 'Maintains the network rules on this node that implement Service routing -- the reason a Service address reaches whichever Pod is actually behind it right now.',
 };
 
+type Box = { x: number; y: number; w: number; h: number };
+
+/** The point where a straight line between two boxes' centers crosses THIS
+ * box's own perimeter, facing the other box -- never the box's own center,
+ * where the label text sits. Used for both ends of every hub-and-spoke
+ * arrow below so a line can never be drawn starting or landing on top of a
+ * label, no matter how the boxes are arranged relative to each other. */
+function edgePoint(box: Box, towardX: number, towardY: number): { x: number; y: number } {
+  const cx = box.x + box.w / 2;
+  const cy = box.y + box.h / 2;
+  const dx = towardX - cx;
+  const dy = towardY - cy;
+  if (dx === 0 && dy === 0) return { x: cx, y: cy };
+  const hw = box.w / 2;
+  const hh = box.h / 2;
+  const t = Math.min(dx !== 0 ? hw / Math.abs(dx) : Infinity, dy !== 0 ? hh / Math.abs(dy) : Infinity);
+  return { x: cx + dx * t, y: cy + dy * t };
+}
+
+/** The full segment between two boxes, clipped at both boxes' own
+ * perimeters so it never enters either one's interior. */
+function edgeToEdge(a: Box, b: Box) {
+  const bCenter = { x: b.x + b.w / 2, y: b.y + b.h / 2 };
+  const aCenter = { x: a.x + a.w / 2, y: a.y + a.h / 2 };
+  return { from: edgePoint(a, bCenter.x, bCenter.y), to: edgePoint(b, aCenter.x, aCenter.y) };
+}
+
 /** The real cluster topology: kube-apiserver as a hub every other
  * control-plane component and every node's kubelet connects through
  * (never a left-to-right chain), a real 5th control-plane component
@@ -55,7 +82,7 @@ export default function ClusterArchitectureDiagram() {
 
   const width = 460;
   const height = NODE_Y + NODE_H + 30;
-  const apiserverCenter = { x: 165 + 130 / 2, y: 96 + 34 / 2 };
+  const apiserverBox = CONTROL[0];
 
   return (
     <VisualizationContainer footer={allDetails[selected]}>
@@ -76,11 +103,11 @@ export default function ClusterArchitectureDiagram() {
           Control Plane
         </text>
 
-        {/* Hub-and-spoke: apiserver <-> each of the other 4, real radiating lines */}
+        {/* Hub-and-spoke: apiserver <-> each of the other 4, real radiating lines,
+            each one clipped at both boxes' own edges so it never crosses either label */}
         {CONTROL.filter((c) => c.id !== 'apiserver').map((c) => {
-          const targetX = c.x + c.w / 2;
-          const targetY = c.y + c.h / 2;
-          return <FlowArrow key={c.id} x1={apiserverCenter.x} y1={apiserverCenter.y} x2={targetX} y2={targetY} color={t.textMuted} markerId="cluster-arrow" />;
+          const { from, to } = edgeToEdge(apiserverBox, c);
+          return <FlowArrow key={c.id} x1={from.x} y1={from.y} x2={to.x} y2={to.y} color={t.textMuted} markerId="cluster-arrow" />;
         })}
 
         {CONTROL.map((c) => (
@@ -97,8 +124,14 @@ export default function ClusterArchitectureDiagram() {
               Worker Node {ni + 1}
             </text>
 
-            {/* apiserver -> this node's kubelet */}
-            <FlowArrow x1={apiserverCenter.x} y1={130} x2={nx + NODE_W / 2} y2={NODE_Y + 42} color={t.textMuted} markerId="cluster-arrow" />
+            {/* apiserver -> this node's kubelet -- clipped at both boxes' own edges,
+                so the two arrows fan out toward their own node instead of crossing
+                in an X, and neither end draws through a label */}
+            {(() => {
+              const kubeletBox: Box = { x: nx + 15, y: NODE_Y + 42, w: NODE_W - 30, h: 26 };
+              const { from, to } = edgeToEdge(apiserverBox, kubeletBox);
+              return <FlowArrow x1={from.x} y1={from.y} x2={to.x} y2={to.y} color={t.textMuted} markerId="cluster-arrow" />;
+            })()}
 
             {/* Pods running on this node -- the actual point of the system */}
             <g onClick={() => setSelected('pod')} style={{ cursor: 'pointer' }}>

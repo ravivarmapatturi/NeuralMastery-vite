@@ -21,18 +21,25 @@ export default function FastApiRequestFlowDiagram() {
 
   return (
     <VisualizationContainer footer={info.desc}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-        {STAGES.map((s) => {
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {STAGES.map((s, i) => {
           const isActive = active === s.key;
           return (
-            <div
-              key={s.key}
-              onClick={() => setActive(s.key)}
-              onMouseEnter={() => setActive(s.key)}
-              style={{ cursor: 'pointer', padding: '0.5rem 0.7rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}
-            >
-              <div style={{ fontSize: 11.5, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textPrimary, marginBottom: 3 }}>{s.label}</div>
-              <div style={{ fontFamily: 'monospace', fontSize: 10.5, color: t.textMuted }}>{s.code}</div>
+            <div key={s.key}>
+              <div
+                onClick={() => setActive(s.key)}
+                onMouseEnter={() => setActive(s.key)}
+                style={{ cursor: 'pointer', padding: '0.5rem 0.7rem', borderRadius: 7, background: isActive ? `${color}18` : t.surfaceAlt, border: `1.5px solid ${isActive ? color : t.border}` }}
+              >
+                <div style={{ fontSize: 11.5, fontWeight: isActive ? 700 : 500, color: isActive ? color : t.textPrimary, marginBottom: 3 }}>{s.label}</div>
+                <div style={{ fontFamily: 'monospace', fontSize: 10.5, color: t.textMuted }}>{s.code}</div>
+              </div>
+              {i < STAGES.length - 1 && (
+                <svg width="100%" height="14" viewBox="0 0 20 14" style={{ display: 'block' }}>
+                  <line x1={10} y1={0} x2={10} y2={10} stroke={t.textMuted} strokeWidth={1.5} />
+                  <path d="M 5,8 L 10,14 L 15,8 Z" fill={t.textMuted} />
+                </svg>
+              )}
             </div>
           );
         })}
