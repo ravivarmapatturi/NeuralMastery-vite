@@ -1421,6 +1421,13 @@
       "sidebarPosition": 21,
       "description": null
     },
+    "/docs/practice-problems/cosine-similarity-matrix": {
+      "slug": "practice-problems/cosine-similarity-matrix",
+      "section": "practice-problems",
+      "title": "Practice: Pairwise Cosine Similarity Matrix",
+      "sidebarPosition": 19.5,
+      "description": null
+    },
     "/docs/practice-problems/cosine-similarity": {
       "slug": "practice-problems/cosine-similarity",
       "section": "practice-problems",
@@ -1489,6 +1496,13 @@
       "section": "practice-problems",
       "title": "Practice: K-Means, One Assignment Step",
       "sidebarPosition": 6,
+      "description": null
+    },
+    "/docs/practice-problems/kmeans-update-step": {
+      "slug": "practice-problems/kmeans-update-step",
+      "section": "practice-problems",
+      "title": "Practice: K-Means, Centroid Update Step",
+      "sidebarPosition": 6.5,
       "description": null
     },
     "/docs/practice-problems/largest-rectangle-in-skyline": {
@@ -1610,6 +1624,13 @@
       "sidebarPosition": 7.5,
       "description": null
     },
+    "/docs/practice-problems/softmax-gradient": {
+      "slug": "practice-problems/softmax-gradient",
+      "section": "practice-problems",
+      "title": "Practice: Softmax Gradient (Vector-Jacobian Product)",
+      "sidebarPosition": 8.5,
+      "description": null
+    },
     "/docs/practice-problems/softmax": {
       "slug": "practice-problems/softmax",
       "section": "practice-problems",
@@ -1636,6 +1657,13 @@
       "section": "practice-problems",
       "title": "Practice: Validate a Binary Search Tree",
       "sidebarPosition": 29,
+      "description": null
+    },
+    "/docs/practice-problems/weighted-rmse": {
+      "slug": "practice-problems/weighted-rmse",
+      "section": "practice-problems",
+      "title": "Practice: Weighted RMSE",
+      "sidebarPosition": 4.5,
       "description": null
     },
     "/docs/projects/overview": {

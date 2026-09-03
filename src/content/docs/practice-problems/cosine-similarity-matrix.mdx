@@ -1,0 +1,82 @@
+---
+title: "Practice: Pairwise Cosine Similarity Matrix"
+sidebar_position: 19.5
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Pairwise Cosine Similarity Matrix
+
+**Difficulty: Medium** · Concept: [Word Embeddings — The Distributional Hypothesis](/docs/nlp/word-embeddings#the-core-idea-the-distributional-hypothesis)
+
+[Cosine Similarity From Scratch](/docs/practice-problems/cosine-similarity) compared exactly two vectors. A real embedding search or clustering step needs **every pair at once**: given $n$ vectors, produce the full $n \times n$ matrix where entry $(i, j)$ is the cosine similarity between vector $i$ and vector $j$ — exactly the computation underneath comparing a batch of query embeddings against a batch of candidates, or building the similarity graph a [vector database](/docs/databases/roadmap) index is organized around.
+
+**The genuine edge case**: a vector with zero magnitude (all-zero) makes cosine similarity undefined for *every* pair it's involved in — $\frac{\cdot}{0}$ has no answer, so the whole computation has to fail loudly rather than silently produce a `nan`-filled row.
+
+**Your task**: implement `cosine_similarity_matrix(vectors)`, returning a list of lists (the matrix). Raise `ValueError` if any vector has zero magnitude.
+
+<RunnableCode
+  code={`import math
+
+def check_raises(exc_type, func, *args):
+    """Test helper: True if calling func(*args) raises exc_type, False otherwise."""
+    try:
+        func(*args)
+        return False
+    except exc_type:
+        return True
+
+
+def cosine_similarity_matrix(vectors):
+    """vectors: list of equal-length numeric vectors. Return the n x n
+    matrix of pairwise cosine similarities. Raise ValueError on a
+    zero-magnitude vector."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert cosine_similarity_matrix([[1, 0], [0, 1]]) == [[1.0, 0.0], [0.0, 1.0]]
+assert cosine_similarity_matrix([[1, 0], [1, 0], [0, 1]]) == [[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+assert cosine_similarity_matrix([[3, 4]]) == [[1.0]]
+assert check_raises(ValueError, cosine_similarity_matrix, [[0, 0], [1, 1]]) == True`}
+/>
+
+<Solution>
+
+```python
+import math
+
+def check_raises(exc_type, func, *args):
+    try:
+        func(*args)
+        return False
+    except exc_type:
+        return True
+
+
+def cosine_similarity_matrix(vectors):
+    norms = []
+    for v in vectors:
+        norm = math.sqrt(sum(x ** 2 for x in v))
+        if norm == 0:
+            raise ValueError("cannot compute cosine similarity for a zero-magnitude vector")
+        norms.append(norm)
+
+    n = len(vectors)
+    matrix = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            dot = sum(a * b for a, b in zip(vectors[i], vectors[j]))
+            matrix[i][j] = dot / (norms[i] * norms[j])
+    return matrix
+```
+
+Norms are computed once up front, not recomputed inside the double loop — the same $O(n)$ magnitudes get reused $n$ times each rather than recomputed $n^2$ times, a small but real efficiency habit once $n$ is large. The `[[3, 4]]` test case checks something worth being deliberate about: the **diagonal is always exactly `1.0`**, regardless of a vector's actual magnitude — a vector's cosine similarity with *itself* is $\frac{v \cdot v}{\|v\|\|v\|} = \frac{\|v\|^2}{\|v\|^2} = 1$ by construction, not something that needs separate special-casing in the loop (the general formula already produces it correctly for `i == j`).
+
+Worth knowing, even though it isn't exploited here for simplicity: this matrix is always **symmetric** ($\text{sim}(i,j) = \text{sim}(j,i)$), so a real optimized implementation only computes the upper triangle and mirrors it — roughly half the work for large $n$. At real scale (millions of vectors), computing the *full* dense matrix at all becomes infeasible, which is exactly why approximate-nearest-neighbor indexes exist — they avoid ever materializing most pairwise similarities in the first place, trading a small amount of recall for avoiding this $O(n^2)$ computation entirely.
+
+</Solution>
+
+---
+
+Next: [TF-IDF Weight From Scratch](/docs/practice-problems/tf-idf-weight)

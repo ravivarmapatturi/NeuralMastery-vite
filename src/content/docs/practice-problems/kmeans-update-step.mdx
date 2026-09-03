@@ -1,0 +1,64 @@
+---
+title: "Practice: K-Means, Centroid Update Step"
+sidebar_position: 6.5
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# K-Means: Centroid Update Step
+
+**Difficulty: Medium** · Concept: [K-Means & Hierarchical Clustering](/docs/machine-learning/kmeans-hierarchical-clustering#k-means)
+
+[K-Means: One Assignment Step](/docs/practice-problems/kmeans-assignment-step) implemented the **assign** half of Lloyd's algorithm — nearest-centroid lookup. This is the other half: **update** — given the current assignments, recompute each centroid as the mean of the points now assigned to it. Together, these two steps *are* the entire K-Means loop.
+
+**The genuine edge case a plain "average the points" implementation misses**: a cluster can end up with **zero points assigned to it** (a bad random initialization, or a centroid that got pushed somewhere no point is closer to). Averaging zero points is a division by zero — a real implementation has to decide what happens then, and the standard, sane choice is: **leave that centroid exactly where it was**, rather than crash or silently produce `nan`.
+
+**Your task**: implement `kmeans_update_step(points, assignments, k, old_centroids)`. `assignments[i]` is the cluster index (`0` to `k-1`) for `points[i]`. Return a list of `k` new centroid positions.
+
+<RunnableCode
+  code={`def kmeans_update_step(points, assignments, k, old_centroids):
+    """points: list of coordinate lists. assignments: list of cluster
+    indices, same length as points. k: number of clusters.
+    old_centroids: list of k current centroid positions (used to keep an
+    empty cluster's centroid unchanged). Return the k new centroids."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert kmeans_update_step([[0, 0], [2, 0], [4, 4], [6, 4]], [0, 0, 1, 1], 2, [[0, 0], [5, 5]]) == [[1.0, 0.0], [5.0, 4.0]]
+assert kmeans_update_step([[1, 1], [2, 2]], [0, 0], 2, [[0, 0], [9, 9]]) == [[1.5, 1.5], [9, 9]]
+assert kmeans_update_step([[3, 3], [7, 7]], [0, 1], 2, [[0, 0], [0, 0]]) == [[3.0, 3.0], [7.0, 7.0]]
+assert kmeans_update_step([[1], [3], [5]], [0, 0, 0], 1, [[0]]) == [[3.0]]`}
+/>
+
+<Solution>
+
+```python
+def kmeans_update_step(points, assignments, k, old_centroids):
+    dims = len(points[0])
+    sums = [[0.0] * dims for _ in range(k)]
+    counts = [0] * k
+
+    for point, cluster in zip(points, assignments):
+        counts[cluster] += 1
+        for d in range(dims):
+            sums[cluster][d] += point[d]
+
+    new_centroids = []
+    for j in range(k):
+        if counts[j] == 0:
+            new_centroids.append(old_centroids[j])  # empty cluster: don't move it
+        else:
+            new_centroids.append([total / counts[j] for total in sums[j]])
+    return new_centroids
+```
+
+One pass accumulates a running coordinate-wise sum and a count for each cluster; a second pass divides each cluster's sum by its count to get the mean — the direct definition of "new centroid = average position of its assigned points." The second test case is the one demonstrating the empty-cluster handling explicitly: cluster `1` gets zero points assigned in that test, so `counts[1] == 0` and the update correctly falls back to `old_centroids[1]` (`[9, 9]`) unchanged, rather than attempting `sums[1][d] / 0`.
+
+Run in a loop, this **assign → update → assign → update → …** alternation, repeated until assignments stop changing, is the entirety of [Lloyd's algorithm](/docs/machine-learning/kmeans-hierarchical-clustering#k-means) — nothing else is happening inside the K-Means playground on the concept page beyond exactly these two steps, applied over and over.
+
+</Solution>
+
+---
+
+Next: [Sigmoid Activation From Scratch](/docs/practice-problems/sigmoid-activation)

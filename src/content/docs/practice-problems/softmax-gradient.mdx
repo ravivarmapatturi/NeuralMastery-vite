@@ -1,0 +1,53 @@
+---
+title: "Practice: Softmax Gradient (Vector-Jacobian Product)"
+sidebar_position: 8.5
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Softmax Gradient (Vector-Jacobian Product)
+
+**Difficulty: Hard** · Concept: [Activation Functions — Auxiliary Functions](/docs/deep-learning/activation-functions#auxiliary-functions)
+
+[Sigmoid Derivative](/docs/practice-problems/sigmoid-derivative) was elementwise: each output only depends on its own input, so $\sigma'(z_i)$ is a single number per element. **Softmax is fundamentally different** — every output $s_i = \text{softmax}(z)_i$ depends on *all* of $z$ (through the shared normalizing sum), so its derivative isn't a list of numbers, it's a full $n \times n$ **Jacobian matrix**: $\frac{\partial s_i}{\partial z_j} = s_i(\delta_{ij} - s_j)$, where $\delta_{ij}$ is $1$ if $i=j$ else $0$.
+
+Explicitly building that $n \times n$ matrix during backprop would be wasteful — real deep learning frameworks never materialize it. Instead they compute the **vector-Jacobian product (VJP)** directly: given the upstream gradient $\frac{\partial L}{\partial s}$ (how loss changes with each softmax *output*), get $\frac{\partial L}{\partial z}$ (how loss changes with each softmax *input*) in one $O(n)$ pass, using an identity that falls out of the Jacobian formula above:
+
+$$\frac{\partial L}{\partial z_j} = s_j\left(\frac{\partial L}{\partial s_j} - \sum_i \frac{\partial L}{\partial s_i} s_i\right)$$
+
+**Your task**: implement `softmax_gradient(s, grad_output)`, where `s` is a softmax output (already computed, sums to 1) and `grad_output` is $\partial L/\partial s$. Return $\partial L/\partial z$, the same length as `s`.
+
+<RunnableCode
+  code={`def softmax_gradient(s, grad_output):
+    """s: a softmax output (list summing to 1). grad_output: dL/ds, same
+    length. Return dL/dz via the O(n) vector-Jacobian product -- do not
+    construct the full n x n Jacobian matrix."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert softmax_gradient([0.5, 0.5], [1, 0]) == [0.25, -0.25]
+assert softmax_gradient([1 / 3, 1 / 3, 1 / 3], [1, 1, 1]) == [0.0, 0.0, 0.0]
+assert all(abs(a - b) < 1e-9 for a, b in zip(softmax_gradient([0.7, 0.2, 0.1], [1, 0, 0]), [0.7 * (1 - 0.7), 0.2 * (0 - 0.7), 0.1 * (0 - 0.7)]))
+assert all(abs(a - b) < 1e-9 for a, b in zip(softmax_gradient([0.9, 0.1], [0, 1]), [-0.09, 0.09]))`}
+/>
+
+<Solution>
+
+```python
+def softmax_gradient(s, grad_output):
+    dot = sum(si * gi for si, gi in zip(s, grad_output))
+    return [si * (gi - dot) for si, gi in zip(s, grad_output)]
+```
+
+`dot` is $\sum_i \frac{\partial L}{\partial s_i} s_i$ — computed once, in a single pass over `s` and `grad_output` together, and reused for every output element. That single reused number is exactly what makes this $O(n)$ instead of the $O(n^2)$ a naive "build the Jacobian, then multiply by the upstream gradient" approach would cost — the full matrix is never constructed at all.
+
+The second test case is the one worth understanding, not just passing: a **uniform** upstream gradient (`[1, 1, 1]`, every output "wants" to increase equally) produces a **zero** downstream gradient. That's not a coincidence — it's softmax's core invariance showing up directly in its own derivative: adding the same constant to every logit doesn't change softmax's output at all (the normalization cancels it out), so a gradient signal that's "push every output up equally" carries zero information about how to move the *logits*, and the math correctly reports exactly that. This same identity is also why the result always sums to exactly zero regardless of input (`sum(s_i(g_i - \text{dot})) = \text{dot} - \text{dot}\cdot\sum s_i = \text{dot} - \text{dot} = 0`, since $\sum s_i = 1$) — a real invariant worth checking against your own output if you're ever debugging a from-scratch softmax backward pass.
+
+This exact VJP is what runs, unmentioned by name, every time backprop flows through a softmax layer — [Attention & Transformers'](/docs/deep-learning/attention-transformers) attention-weight softmax, and the output-layer softmax of any classifier trained with [cross-entropy loss](/docs/deep-learning/loss-functions), both use this same $O(n)$ computation during their backward pass, not a materialized Jacobian.
+
+</Solution>
+
+---
+
+More problems are being added continuously — see [Practice Problems overview](/docs/practice-problems/overview) for the full, current list.

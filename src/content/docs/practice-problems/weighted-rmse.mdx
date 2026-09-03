@@ -1,0 +1,73 @@
+---
+title: "Practice: Weighted RMSE"
+sidebar_position: 4.5
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Weighted RMSE
+
+**Difficulty: Medium** · Concept: [Linear Regression — The Cost Function](/docs/machine-learning/linear-regression#2-the-cost-function-mean-squared-error)
+
+A harder variant of [Mean Squared Error From Scratch](/docs/practice-problems/mean-squared-error): real training data is often not equally trustworthy — some examples might be known to be noisier, less representative, or more expensive to get wrong, and a per-example `weight` lets the loss reflect that directly. This also switches from MSE to **RMSE** (take the square root at the end) — same information, but back in the original units of the target, which is what makes an error number actually interpretable ("off by 2 degrees," not "off by 4 degrees-squared").
+
+$$\text{weighted RMSE} = \sqrt{\frac{\sum_i w_i (\hat{y}^{(i)} - y^{(i)})^2}{\sum_i w_i}}$$
+
+**The genuine edge case**: if every weight is `0` (or the weights list is otherwise degenerate), the denominator is `0` and the result is undefined — a real implementation needs to raise, not silently produce a `ZeroDivisionError` or a `nan`.
+
+**Your task**: implement `weighted_rmse(y_true, y_pred, weights)`. Raise `ValueError` if the three lists aren't the same length, or if the weights sum to `0`.
+
+<RunnableCode
+  code={`def check_raises(exc_type, func, *args):
+    """Test helper: True if calling func(*args) raises exc_type, False otherwise."""
+    try:
+        func(*args)
+        return False
+    except exc_type:
+        return True
+
+
+def weighted_rmse(y_true, y_pred, weights):
+    """Return the weight-averaged RMSE. Raise ValueError on a length
+    mismatch or if weights sum to 0."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert weighted_rmse([1, 2, 3], [1, 2, 3], [1, 1, 1]) == 0.0
+assert weighted_rmse([0, 0], [1, 1], [1, 1]) == 1.0
+assert abs(weighted_rmse([0, 0, 0], [2, 0, 0], [1, 1, 1]) - (4 / 3) ** 0.5) < 1e-9
+assert weighted_rmse([0, 0], [10, 0], [0, 1]) == 0.0
+assert check_raises(ValueError, weighted_rmse, [1, 2], [1, 2], [0, 0]) == True`}
+/>
+
+<Solution>
+
+```python
+def check_raises(exc_type, func, *args):
+    try:
+        func(*args)
+        return False
+    except exc_type:
+        return True
+
+
+def weighted_rmse(y_true, y_pred, weights):
+    if not (len(y_true) == len(y_pred) == len(weights)):
+        raise ValueError("y_true, y_pred, and weights must all be the same length")
+    total_weight = sum(weights)
+    if total_weight == 0:
+        raise ValueError("weights must not sum to zero")
+    weighted_sq_error = sum(w * (yp - yt) ** 2 for yt, yp, w in zip(y_true, y_pred, weights))
+    return (weighted_sq_error / total_weight) ** 0.5
+```
+
+The fourth test case is the one that actually demonstrates *why* weighting matters, not just how to compute it: `weighted_rmse([0, 0], [10, 0], [0, 1])` has a genuinely huge error at the first point (predicted `10`, true `0`) — but that point's weight is `0`, so it contributes nothing to the result, and the reported RMSE is a perfect `0.0` despite one wildly wrong prediction sitting right there in the input. That's not a bug; it's the entire point of per-example weighting — a weight of `0` means "don't hold the model accountable for this example at all," a real and intentional tool (e.g. downweighting known-mislabeled examples, or excluding a validation-only subset from a training-time metric).
+
+Plain, unweighted [MSE](/docs/practice-problems/mean-squared-error) is the special case where every weight equals `1` — the weighted formula collapses to exactly the original one, just with an extra $\sqrt{\cdot}$ at the end. The `check_raises` helper (same pattern as [Standardize a Dataset](/docs/practice-problems/standardize-dataset)) is what lets the zero-weight-sum failure actually be tested with a plain `assert`.
+
+</Solution>
+
+---
+
+Next: [One Gradient Descent Step for Linear Regression](/docs/practice-problems/gradient-descent-step)
