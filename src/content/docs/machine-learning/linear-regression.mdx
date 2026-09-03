@@ -105,6 +105,8 @@ Now look at what actually depends on $(w, b)$: the first term, $-\frac{n}{2}\log
 
 $J$ is convex in $(w, b)$ (see [Calculus & Optimization — Convexity](/docs/mathematics-for-ai/calculus-optimization#convexity)) — there's exactly one minimum, no false valleys to get stuck in. That's what makes everything below work cleanly.
 
+**Try it yourself:** [implement mean squared error from scratch](/docs/practice-problems/mean-squared-error), against real test cases.
+
 ## 3. Deriving the Gradient, Step by Step
 
 To minimize $J$, we need $\dfrac{\partial J}{\partial w}$ and $\dfrac{\partial J}{\partial b}$ — the direction that increases the loss fastest, so we can step in the *opposite* direction (see [Calculus & Optimization — Gradients](/docs/mathematics-for-ai/calculus-optimization)).
@@ -162,6 +164,8 @@ where $\alpha$ is the learning rate (see [Calculus & Optimization](/docs/mathema
 Because $J$ is convex, this loop is guaranteed to converge to the global minimum (not just *a* minimum) as long as $\alpha$ is small enough — no local-minima concerns here, unlike the non-convex loss surfaces in [Deep Learning](/docs/deep-learning/roadmap).
 
 Switch the [Studio](#what-is-linear-regression) above to **Gradient Descent Lab** mode to watch this loop run for real: real $\partial J/\partial w$ and $\partial J/\partial b$ computed every step, a live MSE surface with the descent path drawn on it, and a step log with the actual numbers. Push the learning rate slider too high and watch it diverge instead of converge — a direct, visceral answer to "why does the learning rate matter so much."
+
+**Try it yourself:** [implement one gradient descent step from scratch](/docs/practice-problems/gradient-descent-step), against real test cases.
 
 ## 7. Closed-Form vs. Gradient Descent
 

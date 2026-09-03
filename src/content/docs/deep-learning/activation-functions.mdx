@@ -27,6 +27,8 @@ import ActivationFunctionsDiagram from '../../../viz/diagrams/ActivationFunction
 
 **Tanh**: $\tanh(z) = \frac{e^z - e^{-z}}{e^z+e^{-z}}$, output in $(-1,1)$. Same saturation problem as sigmoid, but zero-centered — a real improvement, which made it the default hidden-layer activation before ReLU took over.
 
+**Try it yourself:** [implement the sigmoid activation from scratch](/docs/practice-problems/sigmoid-activation), against real test cases.
+
 ## The ReLU Family
 
 **ReLU** (Rectified Linear Unit): $f(z) = \max(0, z)$. The modern default: trivially cheap, doesn't saturate for $z>0$, and empirically trains faster than sigmoid/tanh in deep networks. Its flaw: the **dying ReLU problem** — if a neuron's weights drift so its input is always negative, its output and gradient are permanently 0, and it can never recover via gradient descent (the gradient through it is exactly 0, so no update ever fixes it).
@@ -56,6 +58,8 @@ import ActivationFunctionsDiagram from '../../../viz/diagrams/ActivationFunction
 **Identity**: $f(z) = z$ — used at a regression output layer (where you want the raw linear value, not squashed into a bounded range — see [Linear Regression](/docs/machine-learning/linear-regression)), and conceptually as the "no activation" baseline.
 
 **Softmax**: unlike every function above, softmax operates on a *whole vector* at once, not element-by-element: $\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_j e^{z_j}}$ — converts a vector of raw scores into a probability distribution that sums to 1. This is the standard output-layer activation for multi-class classification (see [Logistic Regression — Softmax Regression](/docs/machine-learning/logistic-regression#multi-class-softmax-regression)) and is exactly what turns an LLM's raw output scores into a probability distribution over the next token.
+
+**Try it yourself:** [implement a numerically stable softmax from scratch](/docs/practice-problems/softmax), against real test cases.
 
 ## Quick Reference
 
