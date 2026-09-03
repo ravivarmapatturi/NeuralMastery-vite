@@ -9,6 +9,7 @@ import ThreeWayRetrievalArchitecturesDiagram from '../../../viz/diagrams/ThreeWa
 import RetrievalFunnelMissDiagram from '../../../viz/diagrams/RetrievalFunnelMissDiagram';
 import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
 import { Remember } from '../../../components/content/Remember';
+import RunnableCode from '../../../components/content/RunnableCode';
 
 # Retrieval & Reranking Architectures: Bi-Encoder, Cross-Encoder, Late Interaction
 
@@ -37,6 +38,8 @@ All three architectures, same visual grammar, stepped through the same story —
 - The two single vectors are compared with cosine similarity, a fast, cheap number-crunching step.
 
 **Why is it useful?** Because a document's embedding never depends on the query, it can be computed once, offline, for every document in the corpus, and stored in a fast approximate-nearest-neighbor index. That precomputation is what lets a bi-encoder search millions of documents in milliseconds — no other architecture on this page can do that.
+
+**What "the embedding model" actually is:** every bi-encoder on this page is an [SBERT (Sentence-BERT)](/docs/nlp/word-embeddings#from-contextual-tokens-to-a-single-sentence-vector-sentence-bert)-style model — a pretrained encoder with mean pooling, fine-tuned specifically so cosine similarity becomes meaningful. That's not an implementation detail; it's the entire reason bi-encoder embeddings work for retrieval at all.
 
 In code, using the [`sentence-transformers`](https://sbert.net) library — the standard implementation of this pattern:
 
@@ -155,6 +158,44 @@ $$\text{MaxSim}(Q, D) = \sum_{i=1}^{|Q|} \max_{j=1}^{|D|} \left(q_i \cdot d_j\ri
 
 <Remember>MaxSim finds real signal a keyword match or a pooled vector would miss entirely: query token "sat" has no exact match anywhere in the document, yet it still scores 0.80 against "was" — a genuine semantic near-match, surfaced only because the comparison happens per token, before anything gets pooled.</Remember>
 
+Pure arithmetic — dot products, max, sum — so unlike the transformer models above, this runs for real, live, in your browser. The exact same query/doc token embeddings as the diagram above; edit them and re-run to see the score actually recompute:
+
+<RunnableCode code={`import numpy as np
+
+# The exact toy embeddings from the worked example above (d1~animal,
+# d2~action/verb, d3~furniture/object, d4~function-word).
+Q = np.array([
+    [1, 0, 0, 0],    # cat
+    [0.2, 0.8, 0, 0], # sat -- mostly "action", a little "animal-agent"
+    [0, 0, 1, 0],     # mat
+])
+D = np.array([
+    [0, 0, 0, 1],  # the
+    [1, 0, 0, 0],  # cat
+    [0, 1, 0, 0],  # was
+    [0, 0, 0, 1],  # on
+    [0, 0, 1, 0],  # mat
+])
+query_tokens = ["cat", "sat", "mat"]
+doc_tokens = ["the", "cat", "was", "on", "mat"]
+
+def maxsim(Q, D):
+    sim = Q @ D.T  # every query token dot every doc token, shape (|Q|, |D|)
+    best_doc_idx = sim.argmax(axis=1)
+    best_scores = sim.max(axis=1)
+    return best_scores.sum(), best_scores, best_doc_idx
+
+score, best_scores, best_idx = maxsim(Q, D)
+for i, q in enumerate(query_tokens):
+    print(f"{q!r:>6} -> best match {doc_tokens[best_idx[i]]!r:<6} (score {best_scores[i]:.2f})")
+print(f"\\nMaxSim(query, doc) = {score:.2f}")
+
+# Try it: change sat's row to [0, 0, 0, 0] (no signal at all) and re-run --
+# its best match drops to whichever doc token happens to score 0.00 too,
+# and the total score drops by exactly 0.80. Or add a 4th query token
+# identical to "cat" and watch the total increase by another 1.00.
+`} />
+
 **Limitation:** Keeping one vector per token instead of one per document is a real, unavoidable storage cost — see the numbers below.
 
 <GoDeeper title="Go deeper: why late interaction needs an index per token, not per document">
@@ -204,10 +245,22 @@ Every architecture above assumes the right document was at least *handed* to it 
 
 **Why it matters:** first-stage retrieval **recall** — the fraction of truly relevant documents that make it into the retrieved candidate set at all — is as important a production metric as reranking accuracy, not a secondary concern. It's also a direct argument for late interaction specifically: because MaxSim keeps token-level detail *at the retrieval stage itself* (not just at reranking), it can catch relevant documents a pooled bi-encoder vector would have missed in the first place — moving the "did we even find it" failure mode earlier, where it's cheaper to fix.
 
-## Which One Production Teams Actually Reach For
+## Use Cases: Which One, for What
 
-- **Bi-encoder**: the default choice for first-pass retrieval at real scale — it's the only one of the three that can search millions of chunks directly, so it's almost always the first stage in any RAG pipeline, regardless of what runs after it.
-- **Cross-encoder**: the standard choice for a *final* reranking pass over a small candidate set a bi-encoder (or late interaction) has already narrowed down to tens or low hundreds — maximum accuracy exactly where it's affordable.
-- **Late interaction / ColBERT**: reached for either as a *middle-ground reranker* — more accurate than a bi-encoder's cosine similarity, cheaper than running a full cross-encoder over the same candidates — or, when the storage budget allows, as the **first-stage retriever itself** (PLAID-style deployments), when token-level precision matters enough at the retrieval stage to be worth the larger index.
+Not a repeat of the architecture explanations above — the concrete jobs each one actually gets reached for in production, tied back to the real numbers already on this page.
+
+**Bi-encoder** — anywhere a candidate set has to be found from millions of options, fast, using only a precomputed index:
+- **First-stage retrieval** in any RAG pipeline — the only one of the three architectures that can search millions of chunks directly, so it's almost always the first stage regardless of what runs after it.
+- **Semantic search** generally — "find documents like this query" over a large corpus, the same core operation RAG retrieval is a special case of.
+- **Recommendation candidate generation** — embedding users and items into the same space so "find items similar to what this user likes" becomes the identical nearest-neighbor lookup (see [Recommender Systems — Two-Tower Architecture](/docs/machine-learning/recommender-systems#embeddings-and-the-two-tower-architecture) for the same bi-encoder shape applied to users/items instead of queries/documents).
+
+**Cross-encoder** — anywhere the candidate set is already small and the question is a precise pairwise judgment, not a search over millions:
+- **Final-stage reranking** over a bi-encoder's (or late interaction's) shortlist — maximum accuracy exactly where it's affordable, tens to low hundreds of candidates.
+- **Duplicate and paraphrase detection** — "are these two specific sentences saying the same thing," a direct pairwise-judgment task cross-encoders are built for, not a search problem.
+- **NLI-style pair classification** — entailment/contradiction/neutral judgments between a premise and hypothesis (the same NLI data [SBERT](/docs/nlp/word-embeddings#from-contextual-tokens-to-a-single-sentence-vector-sentence-bert) is fine-tuned on), where the model needs to read both sentences together, not compare precomputed vectors.
+
+**Late interaction / ColBERT** — the middle ground, reached for when a bi-encoder's accuracy ceiling matters enough to justify the storage cost:
+- As a **middle-ground reranker**: more accurate than a bi-encoder's cosine similarity, meaningfully cheaper than running a full cross-encoder over the same candidates — the ~175× latency / ~13,900× FLOPs gap from the ColBERT paper's own numbers above.
+- As the **first-stage retriever itself**, when the storage budget allows: **RAGatouille** (already mentioned above) wraps ColBERT/PLAID specifically to make this deployable, and **Vespa** — a production search engine — ships a native `colbert-embedder` with built-in MaxSim ranking and int8 document-vector compression (a real ~32× storage reduction) for exactly this use case, not a research-only pattern.
 
 Next: back to [RAG](/docs/llms-genai/rag) for how retrieval and reranking fit into the full pipeline, or [LLM Hosting & Serving Patterns](/docs/mlops/llm-hosting-and-serving-patterns) for embedding/reranker inference in production.

@@ -55,7 +55,16 @@ export function CylinderNode({ x, y, width, height, label, color, strokeWidth = 
       />
       <ellipse cx={cx} cy={y + height - ry} rx={rx} ry={ry} fill={`${color}12`} stroke={color} strokeWidth={strokeWidth} />
       <ellipse cx={cx} cy={y + ry} rx={rx} ry={ry} fill={`${color}30`} stroke={color} strokeWidth={strokeWidth} />
-      <text x={cx} y={y + height / 2 + 8} textAnchor="middle" fontSize={8.5} fontWeight={600} fill={color}>
+      {/* Label sits in the cylinder's straight-walled midsection, clear of
+          both ellipse arcs (each spans +/-ry from its center) -- placing it
+          at height/2 + a large offset previously put it inside the bottom
+          ellipse's own vertical extent, rendering as text crossed out by
+          the ellipse's stroke. +3 is a small optical-centering nudge for
+          the text baseline, not a collision risk: the straight section
+          alone (2*ry tall on each end excluded) is height - 4*ry, comfortably
+          bigger than the ~9px this text needs at every cylinder height used
+          on this site. */}
+      <text x={cx} y={y + height / 2 + 3} textAnchor="middle" fontSize={8.5} fontWeight={600} fill={color}>
         {label}
       </text>
     </g>

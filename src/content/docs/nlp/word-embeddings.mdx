@@ -6,10 +6,75 @@ sidebar_position: 4
 
 import EmbeddingSpaceExplorer from '../../../viz/EmbeddingSpaceExplorer';
 import NegativeSamplingCostDiagram from '../../../viz/diagrams/NegativeSamplingCostDiagram';
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Remember } from '../../../components/content/Remember';
 
 # Word Embeddings
 
 Before attention-based contextual embeddings ([Attention & Transformers](/docs/deep-learning/attention-transformers)), NLP's biggest representational leap was learning that words could be represented as dense vectors capturing *meaning* — not just an arbitrary ID or a one-hot vector with no relationship to any other word.
+
+## Before Embeddings: Count Vectorization and TF-IDF
+
+**What is it?** The classical, pre-neural way to turn text into numbers a model can use: represent every document as a vector of word *counts* over the vocabulary — no learning, no notion of meaning, just arithmetic on which words appear and how often.
+
+**How does it work?** A **Count Vectorizer** builds a fixed vocabulary from a corpus and represents each document as a vector where position $i$ holds how many times vocabulary word $i$ appears in that document — a vector as long as the entire vocabulary, almost entirely zeros for any real document. **TF-IDF** (Term Frequency–Inverse Document Frequency) refines raw counts with the same two corrections [BM25](/docs/llms-genai/rag#dense-vs-sparse-retrieval-and-bm25) is itself built on: term frequency (how often a word appears in *this* document) weighted down by how common that word is *across the whole corpus* — "the" appearing 10 times contributes almost nothing, a rare technical term appearing twice contributes a lot.
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+corpus = [
+    "This is the first document.",
+    "This document is the second document.",
+    "And this is the third one.",
+]
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(corpus)  # sparse matrix, shape (3, vocab_size)
+print(vectorizer.get_feature_names_out())  # the learned vocabulary
+```
+
+Real, from scratch — the same corpus, no library, so you can see exactly what "term frequency weighted by inverse document frequency" actually computes:
+
+<RunnableCode code={`import math
+
+corpus = [
+    "the cat sat on the mat",
+    "the dog sat on the log",
+    "the cats and dogs are pets",
+]
+
+# Vocabulary: every unique word across the corpus.
+vocab = sorted(set(word for doc in corpus for word in doc.split()))
+
+def term_frequency(word, doc):
+    words = doc.split()
+    return words.count(word) / len(words)
+
+def inverse_document_frequency(word, corpus):
+    n_containing = sum(1 for doc in corpus if word in doc.split())
+    return math.log(len(corpus) / n_containing)
+
+def tfidf_vector(doc, corpus, vocab):
+    return [term_frequency(w, doc) * inverse_document_frequency(w, corpus) for w in vocab]
+
+for doc in corpus:
+    vec = tfidf_vector(doc, corpus, vocab)
+    nonzero = {w: round(v, 3) for w, v in zip(vocab, vec) if v > 0}
+    print(f"{doc!r}: {nonzero}")
+
+# Try it: "the" appears in every document, so its IDF is log(3/3) = 0 --
+# it contributes NOTHING to any TF-IDF vector, no matter how often it's
+# repeated. Change "the" to a word that appears in only one document and
+# re-run: its weight jumps immediately, exactly the "rare terms matter
+# more" correction described above.
+`} />
+
+**Why is it useful?** It's simple, fast, needs no training, and works surprisingly well as a baseline for search and document classification — a real production keyword-search system (and [BM25](/docs/llms-genai/rag#dense-vs-sparse-retrieval-and-bm25) specifically) is a direct descendant of this exact idea.
+
+**Limitation:** Every vector is **sparse** (vocabulary-sized, almost all zeros) and carries **no semantic meaning** — "dog" and "puppy" get completely unrelated vectors despite being near-synonyms, because TF-IDF only knows which exact words appeared, never what they mean. Word order is thrown away entirely too (a "bag of words").
+
+<Remember>TF-IDF weights a word by how often it appears here versus everywhere — it's real, useful, and still powers BM25 in production search today, but it has zero notion of meaning: "dog" and "puppy" are just as unrelated to it as "dog" and "spreadsheet."</Remember>
+
+TF-IDF's core limitation — no notion of meaning, only exact word overlap — is exactly the gap dense word embeddings were built to close.
 
 ## The Core Idea: The Distributional Hypothesis
 
@@ -45,4 +110,18 @@ Every method above produces exactly **one fixed vector per word**, regardless of
 
 **Where static embeddings are still used**: extremely resource-constrained settings (a static embedding lookup is far cheaper than a Transformer forward pass), as a fast baseline, and as an interpretable/lightweight feature in classical ML pipelines (see [Machine Learning](/docs/machine-learning/roadmap)) where a full contextual model is unnecessary overhead for the task's actual difficulty.
 
-Next: [NLP Task Taxonomy](/docs/nlp/nlp-task-taxonomy) — the tasks these representations (static or contextual) actually get used for.
+BERT gives one contextual vector *per token* — the next real question is how that becomes the single vector *per sentence* that [dense retrieval](/docs/llms-genai/rag#dense-vs-sparse-retrieval-and-bm25) and [bi-encoders](/docs/llms-genai/retrieval-and-reranking-architectures#bi-encoder-independent-encoding-pooled-to-one-vector) actually need.
+
+## From Contextual Tokens to a Single Sentence Vector: Sentence-BERT
+
+**What is it?** **Sentence-BERT (SBERT)** ([Reimers & Gurevych, 2019](https://arxiv.org/abs/1908.10084)) — the fine-tuning recipe that turns a pretrained BERT-family encoder's per-token output into a single sentence vector that's actually *good* under cosine similarity. This is, concretely, the answer to "what embedding model is a bi-encoder actually using": every `sentence-transformers` model referenced on this site (`all-MiniLM-L6-v2` and similar, used in the [retrieval & reranking](/docs/llms-genai/retrieval-and-reranking-architectures) and [rag](/docs/llms-genai/rag) pages' real code) *is* an SBERT-style bi-encoder.
+
+**How does it work?** Take a pretrained encoder like [BERT](/docs/deep-learning/bert), add a **pooling** step over its per-token outputs — commonly **mean pooling** (averaging every token's vector into one) — to collapse the sequence down to a single fixed-size vector. Then **fine-tune** that whole setup with a **siamese/triplet network structure**: feed sentence pairs (or triplets) through the *same* encoder+pooling, and train on labeled sentence-pair data (natural language inference, semantic textual similarity, and large-scale question-answer/search-query pairs) so that genuinely similar sentences land close together under cosine similarity and dissimilar ones land far apart.
+
+**Why is it useful?** A pretrained BERT was never trained to make `[CLS]` (or an average of its token vectors) behave well under cosine similarity — that objective (masked language modeling) has nothing to do with sentence-level similarity, so raw BERT embeddings make poor sentence vectors (see the [BERT page's GoDeeper](/docs/deep-learning/bert#real-code-masked-token-prediction) on exactly this pitfall). SBERT's fine-tuning step fixes that specifically, and the payoff is dramatic: the original paper reports finding the most similar pair among 10,000 sentences drops from **~65 hours** with raw BERT (requiring a full cross-encoder-style forward pass per pair) to **~5 seconds** with SBERT (embed once, compare with cosine similarity) — while matching BERT's accuracy on the underlying task. That's the entire reason bi-encoder retrieval is fast enough to search millions of documents in the first place.
+
+**Limitation:** SBERT-style embeddings are only as good as their fine-tuning data — a model fine-tuned on general NLI/STS data can underperform on a narrow domain (legal, medical) with its own vocabulary and notion of similarity, the same domain-fit tradeoff [RAG's embedding-model section](/docs/llms-genai/rag#choosing-an-embedding-model) already flags.
+
+<Remember>"What embedding model does a bi-encoder use?" has a real, specific answer: an SBERT-style model — a pretrained encoder (usually BERT-family) with mean pooling, fine-tuned on sentence-pair data via a siamese/triplet objective specifically so cosine similarity becomes meaningful. That fine-tuning step is not optional detail — it's the entire reason a bi-encoder's embeddings work for retrieval at all.</Remember>
+
+Next: [NLP Task Taxonomy](/docs/nlp/nlp-task-taxonomy) — the tasks these representations (static, contextual, or sentence-level) actually get used for.
