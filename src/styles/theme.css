@@ -188,6 +188,13 @@ body {
   .nm-search-kbd-hint { display: none; }
 }
 .prose pre code { background: none; padding: 0; } /* fenced code blocks style the <pre>, not each inline <code> inside it */
+/* Long code lines (a long import statement, a chained call) can render wider
+   than the viewport on mobile -- scroll the block horizontally instead of
+   blowing out the page's layout width, same fix already applied to KaTeX
+   display math below. */
+.prose pre {
+  overflow-x: auto;
+}
 .prose > table { border-collapse: collapse; margin: 0 0 1.5rem; font-size: 14px; }
 .prose th, .prose td { border: 1px solid var(--nm-border); padding: 0.5rem 0.85rem; text-align: left; vertical-align: top; }
 .prose th { background: var(--nm-surface); font-weight: 700; color: var(--nm-text-primary); }
