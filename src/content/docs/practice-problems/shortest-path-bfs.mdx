@@ -58,6 +58,8 @@ def shortest_path_length(graph, start, end):
 
 Because BFS visits nodes in strict distance order, the very first time `end` is reached — checked before enqueueing, in this implementation — is provably via a shortest path; no other path found later could possibly be shorter. This same level-by-level exploration is exactly what an unweighted-graph pathfinding problem needs; the moment edges have different costs, BFS stops being correct and you need [Dijkstra's algorithm](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures) instead (which is, not coincidentally, BFS with a priority queue in place of a plain queue).
 
+Want to watch BFS actually expand outward instead of tracing it by hand? See [Graph & Tree Traversal, Step by Step](/docs/visual-lab/graph-tree-traversal) in the Visual Lab — same algorithm, live, editable.
+
 </Solution>
 
 ---

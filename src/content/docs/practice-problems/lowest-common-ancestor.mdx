@@ -64,6 +64,8 @@ Each recursive call answers one question about the subtree it's rooted at: "does
 
 Further up the tree, a parent combines what its two children reported: if **both** sides returned something non-`None`, that means `p` and `q` were found on genuinely opposite branches — so *this* node is the split point, the LCA, and it returns itself. If only one side found something, that result (which might itself already be the correct LCA, found deeper down) just passes straight up unchanged. This is why `lowest_common_ancestor(tree, 4, 3)` correctly returns the root (`1`): `4` is discovered under the left subtree, `3` is discovered under the right subtree, and root is the first node where those two search results actually meet.
 
+Want to watch this recursion happen node by node, on this exact tree, for any pair you pick? See [Graph & Tree Traversal, Step by Step](/docs/visual-lab/graph-tree-traversal) in the Visual Lab — pick `p` and `q` yourself and step through the real algorithm, including the ancestor-returns-itself-immediately case (`p=6, q=7`) where node `7` never even gets visited.
+
 </Solution>
 
 ---

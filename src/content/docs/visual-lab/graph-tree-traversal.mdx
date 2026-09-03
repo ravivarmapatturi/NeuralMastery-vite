@@ -1,0 +1,23 @@
+---
+title: "Graph &amp; Tree Traversal, Step by Step"
+sidebar_position: 15
+---
+
+
+import GraphTreeTraversalExplorer from '../../../viz/GraphTreeTraversalExplorer';
+
+# Graph & Tree Traversal, Step by Step
+
+Two real algorithms, stepped through one move at a time: **BFS vs. DFS** on an editable graph — the exact logic behind [Shortest Path in an Unweighted Graph](/docs/practice-problems/shortest-path-bfs), [Count Islands](/docs/practice-problems/count-islands), and [Detect a Cycle in a Directed Graph](/docs/practice-problems/detect-cycle-directed-graph) — and **finding the Lowest Common Ancestor** on a fixed binary tree, the exact recursive logic behind [Lowest Common Ancestor in a Binary Tree](/docs/practice-problems/lowest-common-ancestor).
+
+<GraphTreeTraversalExplorer />
+
+## What to Try
+
+- **Graph: BFS vs DFS** — leave the default graph and step through **BFS** from `A`: watch the visited order build up level by level (`A, B, C, D, E`), and notice the queue never contains a duplicate — BFS marks a node visited the moment it's *enqueued*.
+- **Graph: BFS vs DFS** — switch to **DFS** on the same graph and step through slowly. Watch the stack actually contain the *same node twice* at points (e.g. right after visiting `D`) — that's not a bug, it's the real behavior of a lazy-visited-check-on-pop stack, the exact same technique [Count Islands](/docs/practice-problems/count-islands) uses. The duplicate gets silently skipped the moment it's popped.
+- **Graph: BFS vs DFS** — edit the adjacency list yourself (try adding a node, or removing an edge) and watch both the layout and the traversal order recompute live.
+- **Tree: Find the LCA** — leave the default (`p=4`, `q=5`) and step through: watch both leaves get marked the instant they're reached (`match`, not `combine`), then watch their shared parent, node `2`, become highlighted as the LCA the moment both its children report back — then keep stepping and watch the recursion **keep going** afterward (visiting node `3`'s subtree, finding nothing there) before the final answer is confirmed at the very last step. The algorithm doesn't stop the instant it finds the answer deep in the tree; it still has to finish and propagate back to the root.
+- **Tree: Find the LCA** — set `p=6`, `q=7` (an ancestor and its own descendant) and step through. Node `7` is **never visited at all** — node `6` matches `p` immediately and returns itself without ever checking its own children, which is exactly why "a node is its own ancestor" is the correct behavior for this algorithm, not a special case bolted on.
+
+Back to [Visual Lab Overview](/docs/visual-lab/overview).

@@ -65,6 +65,8 @@ Using a separate `visited` set instead of mutating `grid` in place (a common sho
 
 The four-corners test case (`[[1,0,1],[0,0,0],[1,0,1]]` → 4) is the one that actually exercises the "diagonal doesn't count as connected" rule — each corner `1` has no horizontal/vertical `1` neighbor, so all four are separate islands despite sitting diagonally adjacent to each other.
 
+Want to watch the DFS stack itself, including the duplicate-entry behavior this exact style relies on? See [Graph & Tree Traversal, Step by Step](/docs/visual-lab/graph-tree-traversal) in the Visual Lab — same explicit-stack, lazy-visited-check technique, live and editable.
+
 </Solution>
 
 ---

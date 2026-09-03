@@ -59,6 +59,8 @@ The outer `for node in graph` loop is what makes this correct on **disconnected*
 
 This white/gray/black coloring is the same mechanism behind detecting circular dependencies in a build system or package manager, and — run in reverse on a graph with no cycle — is also the basis for **topological sort**: the order nodes turn `BLACK` in, reversed, is a valid dependency order.
 
+[Graph & Tree Traversal, Step by Step](/docs/visual-lab/graph-tree-traversal) in the Visual Lab doesn't simulate the coloring here specifically, but stepping through plain DFS there — watching exactly which nodes are "currently on the stack" at any moment — builds the same intuition this problem's `GRAY` state relies on.
+
 </Solution>
 
 ---

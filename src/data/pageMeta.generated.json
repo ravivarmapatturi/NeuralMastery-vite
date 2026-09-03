@@ -1960,6 +1960,13 @@
       "sidebarPosition": 3,
       "description": null
     },
+    "/docs/visual-lab/graph-tree-traversal": {
+      "slug": "visual-lab/graph-tree-traversal",
+      "section": "visual-lab",
+      "title": "Graph &amp; Tree Traversal, Step by Step",
+      "sidebarPosition": 15,
+      "description": null
+    },
     "/docs/visual-lab/inference-flow-visualizer": {
       "slug": "visual-lab/inference-flow-visualizer",
       "section": "visual-lab",
