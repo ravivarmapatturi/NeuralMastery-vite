@@ -29,9 +29,19 @@ Which metric to use is typically dictated by how the embedding model itself was 
 
 ## Indexing Algorithms
 
+- **Flat (brute-force / exact)**: no index at all — every query does a full linear scan comparing against every stored vector. Guarantees the mathematically correct nearest neighbors (100% recall) at the cost of scaling linearly with dataset size, which is exactly why it stops being viable past a few tens of thousands of vectors. Every ANN algorithm below exists specifically to avoid this scan while staying close to its accuracy — it's also the baseline every recall benchmark measures against, including the "exact scan" reference point in the tradeoff chart further down this page.
 - **HNSW (Hierarchical Navigable Small World)**: builds a multi-layer graph structure where search starts at a coarse top layer and progressively narrows down — the most widely used ANN algorithm today, offering an excellent speed/accuracy tradeoff.
 - **IVF (Inverted File Index)**: clusters vectors into buckets ("cells") ahead of time; at query time, only search the most relevant few buckets instead of the entire dataset.
-- **Product Quantization**: compresses vectors by splitting them into sub-vectors and quantizing each independently, trading some accuracy for a large reduction in memory footprint — often combined with IVF for very large-scale deployments (billions of vectors).
+- **Product Quantization (PQ)**: compresses vectors by splitting them into sub-vectors and quantizing each independently, trading some accuracy for a large reduction in memory footprint — often combined with IVF (as "IVF-PQ") for very large-scale deployments (billions of vectors).
+
+| Index | Recall | Query Speed | Memory | Build Time | Best For |
+| --- | --- | --- | --- | --- | --- |
+| Flat | 100% (exact) | Slowest — linear in dataset size | Lowest per vector (raw vectors only, no index structure) | None — nothing to build | Small datasets, or as the ground-truth baseline other indexes are measured against |
+| IVF | High, tunable via how many clusters are probed | Fast | Low-moderate | Fast — just clustering | Large datasets with reasonably well-clustered embeddings |
+| HNSW | Very high, tunable via search width | Fastest at a given high-recall target | Higher — graph edges add real overhead per vector | Slower — graph construction is the expensive step | Latency-sensitive production search at real scale |
+| IVF-PQ | Lower — quantization is itself lossy | Fast | Lowest — vectors are compressed, not just clustered | Moderate | Billion-scale datasets where memory, not latency, is the binding constraint |
+
+This is a genuine tradeoff table, not a "pick the best row" — Flat is the right choice below a few tens of thousands of vectors (an index adds complexity for no real benefit at that scale), and the ANN rows trade some of Flat's guaranteed correctness for the speed and memory headroom that make billion-vector search feasible at all.
 
 ### How HNSW Search Actually Works
 
