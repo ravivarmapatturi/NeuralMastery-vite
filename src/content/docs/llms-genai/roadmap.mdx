@@ -9,63 +9,63 @@ sidebar_position: 2
 This is where classical deep learning turns into ChatGPT-class systems. Assumes you've covered [Deep Learning](/docs/deep-learning/roadmap) first.
 
 ## 1. [Foundation Model & Transformer Internals](/docs/llms-genai/foundation-model-internals)
-- [ ] The full pipeline: text -> tokenizer -> embeddings -> positional encoding -> transformer blocks -> LM head -> logits -> sampling -> token
-- [ ] Tokenization: BPE, WordPiece, SentencePiece
-- [ ] Embeddings and the embedding table
-- [ ] Positional encoding: RoPE and ALiBi
-- [ ] KV cache — why it makes autoregressive decoding fast
-- [ ] Attention variants: MHA, GQA, MQA, MLA
-- [ ] Sparse and sliding-window attention
-- [ ] Encoder-only vs decoder-only vs encoder-decoder architectures
-- [ ] The MLP block: SwiGLU and gating
-- [ ] Mixture of Experts (MoE) — sparse vs dense models
-- [ ] Sampling: greedy, temperature, top-k, top-p/nucleus, repetition penalty
-- [ ] Context window limits and why they exist
+- [x] The full pipeline: text -> tokenizer -> embeddings -> positional encoding -> transformer blocks -> LM head -> logits -> sampling -> token
+- [x] Tokenization: BPE, WordPiece, SentencePiece
+- [x] Embeddings and the embedding table
+- [x] Positional encoding: RoPE and ALiBi
+- [x] KV cache — why it makes autoregressive decoding fast
+- [x] Attention variants: MHA, GQA, MQA, MLA
+- [x] Sparse and sliding-window attention
+- [x] Encoder-only vs decoder-only vs encoder-decoder architectures
+- [x] The MLP block: SwiGLU and gating
+- [x] Mixture of Experts (MoE) — sparse vs dense models
+- [x] Sampling: greedy, temperature, top-k, top-p/nucleus, repetition penalty
+- [x] Context window limits and why they exist
 
 ## 2. [Training Pipeline](/docs/llms-genai/training-pipeline)
-- [ ] Pretraining: next-token prediction at scale
-- [ ] The data pipeline: crawl -> clean -> dedupe -> filter -> tokenize -> pack
-- [ ] Scaling laws and the Chinchilla compute-optimal result
-- [ ] Supervised Fine-Tuning (SFT)
-- [ ] RLHF — Reinforcement Learning from Human Feedback
-- [ ] Direct Preference Optimization (DPO), IPO, KTO, ORPO, RLOO
-- [ ] Group Relative Policy Optimization (GRPO)
-- [ ] Parameter-efficient fine-tuning: LoRA, QLoRA, DoRA, adapters, IA3, prefix/prompt tuning
-- [ ] Knowledge distillation
-- [ ] Quantization (int8, int4, GPTQ, AWQ) for inference
+- [x] Pretraining: next-token prediction at scale
+- [x] The data pipeline: crawl -> clean -> dedupe -> filter -> tokenize -> pack
+- [x] Scaling laws and the Chinchilla compute-optimal result
+- [x] Supervised Fine-Tuning (SFT)
+- [x] RLHF — Reinforcement Learning from Human Feedback
+- [x] Direct Preference Optimization (DPO), IPO, KTO, ORPO, RLOO
+- [x] Group Relative Policy Optimization (GRPO)
+- [x] Parameter-efficient fine-tuning: LoRA, QLoRA, DoRA, adapters, IA3, prefix/prompt tuning
+- [x] Knowledge distillation
+- [x] Quantization (int8, int4, GPTQ, AWQ) for inference
 
 ## 3. [Prompt Engineering](/docs/llms-genai/prompt-engineering)
-- [ ] Zero-shot, one-shot, few-shot prompting
-- [ ] Chain-of-Thought and self-consistency
-- [ ] ReAct (reasoning + acting) prompting
-- [ ] Structured output (JSON/XML) prompting
-- [ ] Prompt injection and jailbreaking — attack and defense
+- [x] Zero-shot, one-shot, few-shot prompting
+- [x] Chain-of-Thought and self-consistency
+- [x] ReAct (reasoning + acting) prompting
+- [x] Structured output (JSON/XML) prompting
+- [x] Prompt injection and jailbreaking — attack and defense
 
 ## 4. [Retrieval-Augmented Generation (RAG)](/docs/llms-genai/rag)
-- [ ] RAG architecture: retriever + generator
-- [ ] Chunking strategies (fixed, semantic, recursive, parent-child)
-- [ ] Embedding model selection
-- [ ] Dense vs sparse retrieval, BM25, hybrid search + Reciprocal Rank Fusion
-- [ ] Re-ranking: bi-encoders vs cross-encoders
-- [ ] Query transformation: HyDE, decomposition, step-back, multi-query, RAG-Fusion
-- [ ] Advanced: Agentic RAG, Corrective RAG (CRAG), Self-RAG, GraphRAG
-- [ ] Multimodal RAG, SQL RAG, Code RAG
-- [ ] Evaluating RAG: faithfulness, groundedness, answer relevance, context precision/recall, MRR/NDCG
-- [ ] Failure modes: hallucination despite correct context, "lost in the middle," stale knowledge
+- [x] RAG architecture: retriever + generator
+- [x] Chunking strategies (fixed, semantic, recursive, parent-child)
+- [x] Embedding model selection
+- [x] Dense vs sparse retrieval, BM25, hybrid search + Reciprocal Rank Fusion
+- [x] Re-ranking: bi-encoders vs cross-encoders
+- [x] Query transformation: HyDE, decomposition, step-back, multi-query, RAG-Fusion
+- [x] Advanced: Agentic RAG, Corrective RAG (CRAG), Self-RAG, GraphRAG
+- [x] Multimodal RAG, SQL RAG, Code RAG
+- [x] Evaluating RAG: faithfulness, groundedness, answer relevance, context precision/recall, MRR/NDCG
+- [x] Failure modes: hallucination despite correct context, "lost in the middle," stale knowledge
 
 ## 5. [Evaluation](/docs/llms-genai/evaluation-and-serving)
-- [ ] Perplexity and other intrinsic metrics
-- [ ] LLM-as-judge evaluation
-- [ ] Benchmark suites (MMLU, HellaSwag, etc.) — what they do and don't tell you
-- [ ] Evaluating for hallucination, toxicity, bias
+- [x] Perplexity and other intrinsic metrics
+- [x] LLM-as-judge evaluation
+- [x] Benchmark suites (MMLU, HellaSwag, etc.) — what they do and don't tell you
+- [x] Evaluating for hallucination, toxicity, bias
 
 ## 6. [Multimodal & Generative Models](/docs/llms-genai/multimodal-generative-models)
-- [ ] Vision-Language Models (VLMs)
-- [ ] Vision-Language-Action models (VLAs)
-- [ ] Diffusion models vs autoregressive generation
-- [ ] Diffusion Language Models (DLMs)
+- [x] Vision-Language Models (VLMs)
+- [x] Vision-Language-Action models (VLAs)
+- [x] Diffusion models vs autoregressive generation
+- [x] Diffusion Language Models (DLMs)
 
 ## 7. [Serving & Production (LLMOps)](/docs/llms-genai/evaluation-and-serving#serving-inference-optimization)
-- [ ] Inference optimization: batching, speculative decoding, Paged Attention
-- [ ] Cost/latency tradeoffs at scale
-- [ ] Guardrails and safety filtering in production
+- [x] Inference optimization: batching, speculative decoding, Paged Attention
+- [x] Cost/latency tradeoffs at scale
+- [x] Guardrails and safety filtering in production

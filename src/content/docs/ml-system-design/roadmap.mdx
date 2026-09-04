@@ -15,35 +15,35 @@ How to take a model and turn it into a working, scalable production system. Fram
 
 <NineStepPipelineDiagram />
 
-1. [ ] **Problem formulation** — translate a business need into an ML problem
-2. [ ] **Metrics** — offline metrics (what you optimize in dev) vs online metrics (what you measure in production, e.g. CTR, retention)
-3. [ ] **Architectural components** — sketch the MVP: data → features → model → serving
-4. [ ] **Data collection & preparation** — sourcing, labeling, cleaning
-5. [ ] **Feature engineering** — what signals actually predict the target
-6. [ ] **Model development & offline evaluation** — pick a model class, validate offline
-7. [ ] **Prediction service** — batch vs online serving, latency budgets
-8. [ ] **Online testing & deployment** — A/B tests, shadow deployment, canary rollout
-9. [ ] **Scaling, monitoring, and updates** — drift detection, retraining cadence, rollback plans
+1. [x] **Problem formulation** — translate a business need into an ML problem
+2. [x] **Metrics** — offline metrics (what you optimize in dev) vs online metrics (what you measure in production, e.g. CTR, retention)
+3. [x] **Architectural components** — sketch the MVP: data → features → model → serving
+4. [x] **Data collection & preparation** — sourcing, labeling, cleaning
+5. [x] **Feature engineering** — what signals actually predict the target
+6. [x] **Model development & offline evaluation** — pick a model class, validate offline
+7. [x] **Prediction service** — batch vs online serving, latency budgets
+8. [x] **Online testing & deployment** — A/B tests, shadow deployment, canary rollout
+9. [x] **Scaling, monitoring, and updates** — drift detection, retraining cadence, rollback plans
 
 ## [Case Studies](/docs/ml-system-design/case-studies) to Work Through
-- [ ] **Recommendation systems** — candidate generation + ranking, cold start
-- [ ] **Search & ranking** — retrieval, learning-to-rank, relevance
-- [ ] **News feed / ads ranking**
-- [ ] **NLP systems** — classification, extraction pipelines at scale
-- [ ] **Computer vision systems** — detection/segmentation pipelines in production
-- [ ] **GenAI / LLM systems (2026-era)** — RAG pipeline design, agent system design, LLM serving infra
+- [x] **Recommendation systems** — candidate generation + ranking, cold start
+- [x] **Search & ranking** — retrieval, learning-to-rank, relevance
+- [x] **News feed / ads ranking**
+- [x] **NLP systems** — classification, extraction pipelines at scale
+- [x] **Computer vision systems** — detection/segmentation pipelines in production
+- [x] **GenAI / LLM systems (2026-era)** — RAG pipeline design, agent system design, LLM serving infra
 
 ## [Model Catalog & Benchmarking Framework](/docs/ml-system-design/model-catalog-and-benchmarking)
-- [ ] Model categories and where each is covered on this site
-- [ ] The model card attribute checklist (architecture, params, context, license, benchmarks, hardware, and more)
-- [ ] Benchmark dimensions by system type: inference, retrieval, general quality
+- [x] Model categories and where each is covered on this site
+- [x] The model card attribute checklist (architecture, params, context, license, benchmarks, hardware, and more)
+- [x] Benchmark dimensions by system type: inference, retrieval, general quality
 
 ## Common Problems & SOTA Solutions
 
 <ProblemSolutionMapDiagram />
 
-- [ ] **Training-serving skew** → shared feature pipelines, feature stores
-- [ ] **Cold start** (new users/items) → content-based fallback, exploration strategies
-- [ ] **Feedback loops biasing the model** → randomized exploration, counterfactual evaluation
-- [ ] **Model staleness / concept drift** → monitoring dashboards, scheduled retraining, online learning
-- [ ] **Scaling inference to millions of requests** → caching, batching, model distillation, horizontal scaling
+- [x] **Training-serving skew** → shared feature pipelines, feature stores
+- [x] **Cold start** (new users/items) → content-based fallback, exploration strategies
+- [x] **Feedback loops biasing the model** → randomized exploration, counterfactual evaluation
+- [x] **Model staleness / concept drift** → monitoring dashboards, scheduled retraining, online learning
+- [x] **Scaling inference to millions of requests** → caching, batching, model distillation, horizontal scaling
