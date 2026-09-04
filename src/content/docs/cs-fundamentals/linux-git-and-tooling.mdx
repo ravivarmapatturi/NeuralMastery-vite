@@ -113,6 +113,94 @@ git bisect reset
 git worktree add ../hotfix main           # a real second working copy, same repo, same .git
 ```
 
+## Linux & Git Essentials
+
+A handful of specific tools and conventions that come up constantly once you're actually operating servers and shipping code as a team, rather than just running scripts locally.
+
+- **SSH**: remote login to a Linux server (a training box, an inference server) over an encrypted connection. Key-based auth (a public/private keypair) replaces passwords — the server holds your public key, you prove ownership of the matching private key, no secret ever crosses the network. `~/.ssh/config` lets you name a host once instead of retyping its IP and key path every time, and `-L` port-forwarding tunnels a port on a remote box (say, a Jupyter server or TensorBoard bound to `localhost` on the GPU machine) to your own laptop as if it were running locally.
+
+```bash
+ssh-keygen -t ed25519 -C "you@example.com"        # generates ~/.ssh/id_ed25519 (private) and .pub (public)
+ssh-copy-id alice@gpu-box-1.internal               # installs your public key on the remote server
+
+# ~/.ssh/config -- name the host once
+# Host gpu-box-1
+#   HostName gpu-box-1.internal
+#   User alice
+#   IdentityFile ~/.ssh/id_ed25519
+
+ssh gpu-box-1                                       # now just this, instead of the full user@host every time
+ssh -L 8888:localhost:8888 gpu-box-1                # tunnel: remote Jupyter on :8888 becomes localhost:8888 for you
+```
+
+- **systemd**: Linux's standard init system and service manager — the thing that keeps a long-running process (an inference server, a background worker) alive across crashes and reboots, instead of it dying the moment an SSH session disconnects. A **unit file** declares how to start it, when to restart it, and what it depends on; `systemctl` controls it, `journalctl` reads its logs.
+
+```ini
+# /etc/systemd/system/inference-server.service
+[Unit]
+Description=Model inference server
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/app/serve.py
+Restart=on-failure          # auto-restart if the process crashes
+User=alice
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl enable --now inference-server   # start it now, and on every future boot
+sudo systemctl status inference-server         # is it running? when did it last restart?
+journalctl -u inference-server -f              # follow its logs live, same idea as `tail -f`
+```
+
+- **cron**: schedules a command to run automatically at fixed times — the standard way to run something like a nightly retraining job or log rotation without a human triggering it. `crontab -e` opens your personal schedule; each line is `minute hour day month weekday command`.
+
+```bash
+crontab -e
+# 0 2 * * *  /usr/bin/python3 /opt/app/retrain.py >> /var/log/retrain.log 2>&1
+# ^ runs retrain.py at 2:00 AM every day, appending both stdout and stderr to a log file
+```
+
+- **Environment variables**: key-value pairs available to every process in a shell session — the standard place for config and secrets that shouldn't be hardcoded (API keys, database URLs, which environment a service is running in). `export` sets one for the current shell and anything it launches; a `.env` file (loaded by a library like `python-dotenv`, or `docker run --env-file`) is the common way to keep a whole set of them out of source control.
+
+```bash
+export OPENAI_API_KEY="sk-..."          # available to this shell and any process it starts
+printenv OPENAI_API_KEY                  # check what a variable is currently set to
+echo 'export OPENAI_API_KEY="sk-..."' >> ~/.bashrc   # persist it across future shell sessions
+
+# .env (gitignored -- never commit real secrets)
+# DATABASE_URL=postgres://localhost/mydb
+# OPENAI_API_KEY=sk-...
+```
+
+- **Git hooks**: scripts Git runs automatically at specific points in the commit/push workflow — living in `.git/hooks/`, or managed more reliably across a team via the [pre-commit](https://pre-commit.com) framework, which turns them into a versioned config file everyone's clone actually uses (raw `.git/hooks/` scripts aren't tracked by Git itself, so they don't travel with a `git clone`). The most common use: block a commit or push that fails linting or tests, so broken code never reaches the shared history in the first place.
+
+```yaml
+# .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.8
+    hooks:
+      - id: ruff        # lints staged Python files before the commit is allowed to complete
+      - id: ruff-format
+```
+
+```bash
+pre-commit install              # wires the hooks into this clone's .git/hooks/
+git commit -m "add feature"     # ruff runs first -- the commit is blocked if it fails
+```
+
+- **Semantic versioning (SemVer)**: the `MAJOR.MINOR.PATCH` convention (`v2.4.1`) for naming releases so anyone depending on your package or API can tell at a glance what a version bump means — increment `PATCH` for a backward-compatible bug fix, `MINOR` for a backward-compatible new feature, `MAJOR` for a breaking change. A Git **tag** marks the exact commit a given version was cut from, and is what CI/CD pipelines (see [CI/CD & ML CI/CD](/docs/mlops/cicd-and-ml-cicd)) typically key a release build off of.
+
+```bash
+git tag -a v1.3.0 -m "Add batch inference endpoint"   # backward-compatible new feature -> MINOR bump
+git push origin v1.3.0                                 # pushes the tag, often triggering a release workflow
+git tag                                                 # list all tags in this repo
+```
+
 ## Compilers vs. Interpreters
 
 - **Compiled languages** (C++, Rust) translate source code into machine code *ahead of time*, producing a standalone executable — faster at runtime, but a build step is required before anything runs.
