@@ -9,40 +9,45 @@ sidebar_position: 2
 How LLMs go from answering questions to taking actions, using tools, and coordinating with each other.
 
 ## 1. [Agent Fundamentals](/docs/agents/agent-fundamentals)
-- [ ] What makes something an "agent" vs a single LLM call
-- [ ] Tool use / function calling — how models decide to call tools and parse results
-- [ ] Designing tools: naming, descriptions, argument schemas
-- [ ] Agent memory: short-term (context) vs long-term (persisted) memory
+- [x] What makes something an "agent" vs a single LLM call
+- [x] Tool use / function calling — how models decide to call tools and parse results
+- [x] Designing tools: naming, descriptions, argument schemas
+- [x] Agent memory: short-term (context) vs long-term (persisted) memory
 
-## 2. [Agent Architectures](/docs/agents/agent-architectures)
-- [ ] ReAct (Reasoning + Acting) loop
-- [ ] Plan-and-Execute pattern
-- [ ] Reflection / self-critique loops
-- [ ] Routing and the supervisor pattern
-- [ ] Single-agent vs multi-agent systems
-- [ ] Sub-agents and orchestrator patterns
-- [ ] Memory and state: short-term vs long-term, episodic vs semantic
-- [ ] Human-in-the-loop: approval gates, escalation, active correction
-- [ ] Durable execution: retries, checkpoints, long-running agents
-- [ ] Sandboxing for code/computer-use actions
-- [ ] Application patterns: browser agents, **[coding agents](/docs/agents/agentic-coding-assistants)**, computer-use agents, autonomous research agents
+## 2. [Context Engineering](/docs/agents/context-engineering)
+- [x] Context engineering vs. prompt engineering, and why it's its own discipline (context rot)
+- [x] The write/select/compress/isolate framework
+- [x] Compaction, structured note-taking, just-in-time retrieval, sub-agent isolation
 
-## 3. Protocols
-- [ ] **[MCP (Model Context Protocol)](/docs/agents/mcp/overview)** — standardizing how agents connect to tools and data sources
-  - [ ] MCP servers vs clients
-  - [ ] Resources, tools, and prompts in MCP
-  - [ ] **[Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive)** — transport (stdio/HTTP+SSE), sessions & lifecycle, tool discovery & JSON Schema, errors, auth/authz, security, enterprise deployment, building a server
-- [ ] **[A2A (Agent-to-Agent)](/docs/agents/a2a/overview)** — how independent agents discover and communicate with each other
-  - [ ] Agent cards / capability discovery
-  - [ ] Task delegation between agents
+## 3. [Agent Architectures](/docs/agents/agent-architectures)
+- [x] ReAct (Reasoning + Acting) loop
+- [x] Plan-and-Execute pattern
+- [x] Reflection / self-critique loops
+- [x] Routing and the supervisor pattern
+- [x] Single-agent vs multi-agent systems
+- [x] Sub-agents and orchestrator patterns
+- [x] Memory and state: short-term vs long-term, episodic vs semantic
+- [x] Human-in-the-loop: approval gates, escalation, active correction
+- [x] Durable execution: retries, checkpoints, long-running agents
+- [x] Sandboxing for code/computer-use actions
+- [x] Application patterns: browser agents, **[coding agents](/docs/agents/agentic-coding-assistants)**, computer-use agents, autonomous research agents
 
-## 4. [Multi-Agent Systems](/docs/agents/multi-agent-systems)
-- [ ] Coordination patterns: hierarchical, peer-to-peer, blackboard
-- [ ] Shared state and conflict resolution
-- [ ] When multi-agent actually beats a single well-prompted agent (and when it doesn't)
+## 4. Protocols
+- [x] **[MCP (Model Context Protocol)](/docs/agents/mcp/overview)** — standardizing how agents connect to tools and data sources
+  - [x] MCP servers vs clients
+  - [x] Resources, tools, and prompts in MCP
+  - [x] **[Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive)** — transport (stdio/HTTP+SSE), sessions & lifecycle, tool discovery & JSON Schema, errors, auth/authz, security, enterprise deployment, building a server
+- [x] **[A2A (Agent-to-Agent)](/docs/agents/a2a/overview)** — how independent agents discover and communicate with each other
+  - [x] Agent cards / capability discovery
+  - [x] Task delegation between agents
 
-## 5. Common Problems & SOTA Solutions
-- [ ] **Agent loses context over long tasks** → memory systems, summarization, external state stores
-- [ ] **Agent gets stuck in loops** → step limits, reflection checkpoints, human-in-the-loop escalation
-- [ ] **Tool-calling hallucination** (calling tools that don't exist, malformed args) → strict schemas, validation, retries
-- [ ] **Runaway cost/latency in multi-agent chains** → caching, cheaper models for sub-tasks, parallelization
+## 5. [Multi-Agent Systems](/docs/agents/multi-agent-systems)
+- [x] Coordination patterns: hierarchical, peer-to-peer, blackboard
+- [x] Shared state and conflict resolution
+- [x] When multi-agent actually beats a single well-prompted agent (and when it doesn't)
+
+## 6. Common Problems & SOTA Solutions
+- [x] **Agent loses context over long tasks** → memory systems, summarization, external state stores
+- [x] **Agent gets stuck in loops** → step limits, reflection checkpoints, human-in-the-loop escalation
+- [x] **Tool-calling hallucination** (calling tools that don't exist, malformed args) → strict schemas, validation, retries
+- [x] **Runaway cost/latency in multi-agent chains** → caching, cheaper models for sub-tasks, parallelization
