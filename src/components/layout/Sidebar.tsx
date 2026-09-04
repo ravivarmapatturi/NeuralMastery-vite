@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { getSidebar } from '../../lib/contentTree';
+import { getSidebar, normalizeRoute } from '../../lib/contentTree';
 import { getGroupForSubsection } from '../../data/sectionMeta';
 import { DomainIcon } from '../icons/DomainIcons';
 
@@ -44,7 +44,13 @@ export default function Sidebar({
   const isMobile = variant === 'mobile';
   const [openSectionId, setOpenSectionId] = useState<string | null>(readExpanded);
 
-  const activeSection = sections.find((s) => s.pages.some((p) => p.route === location.pathname));
+  // Reached via a bookmarked/direct URL, location.pathname carries the
+  // trailing slash GitHub Pages' redirect adds (see contentTree.ts's
+  // normalizeRoute) -- p.route never does, so without normalizing here
+  // the section containing the current page silently fails to match and
+  // never auto-expands, for anyone who didn't arrive via an in-app <Link>.
+  const currentRoute = normalizeRoute(location.pathname);
+  const activeSection = sections.find((s) => s.pages.some((p) => p.route === currentRoute));
 
   // Navigating into a section always makes it the one open section,
   // closing whatever else was open -- an accordion, not independently

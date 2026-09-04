@@ -44,6 +44,12 @@ describe('Sidebar', () => {
     expect(screen.getByText(activePage.title)).toBeInTheDocument()
   })
 
+  it('auto-expands correctly even with a trailing slash on the route (GitHub Pages redirects a direct/bookmarked URL to this form; stored routes never have one)', () => {
+    renderSidebar(`${REAL_ROUTE}/`)
+    const activePage = realSection.pages.find((p) => p.route === REAL_ROUTE)!
+    expect(screen.getByText(activePage.title)).toBeInTheDocument()
+  })
+
   it('is an accordion: opening a second section closes the first', async () => {
     const user = userEvent.setup()
     renderSidebar(REAL_ROUTE) // starts with realSection open

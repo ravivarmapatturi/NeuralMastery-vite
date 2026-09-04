@@ -134,16 +134,23 @@ export function getFlatPages(): DocPage[] {
   return sections.flatMap((s) => s.pages);
 }
 
+// GitHub Pages 301-redirects a bare directory path ("/docs/foo") to its
+// trailing-slash form ("/docs/foo/") when a matching directory/index.html
+// exists there (confirmed against production) -- which the static
+// prerendering in scripts/prerender-for-pagefind.mjs now produces for
+// every route. Stored routes never carry a trailing slash, so any code
+// reading `location.pathname` directly (not just route matching -- also
+// e.g. ProgressContext's permalink keys) needs this same normalization,
+// or the exact same logical page ends up tracked under two different
+// keys depending on whether a visitor arrived via a direct/bookmarked
+// URL (redirected, trailing slash) or an in-app <Link> click (not
+// redirected, no trailing slash).
+export function normalizeRoute(route: string): string {
+  return route.length > 1 && route.endsWith('/') ? route.slice(0, -1) : route;
+}
+
 export function getPageByRoute(route: string): DocPage | undefined {
-  // GitHub Pages 301-redirects a bare directory path ("/docs/foo") to its
-  // trailing-slash form ("/docs/foo/") when a matching directory/index.html
-  // exists there (confirmed against production) -- which the static
-  // prerendering in scripts/prerender-for-pagefind.mjs now produces for
-  // every route. Stored routes never carry a trailing slash, so without
-  // normalizing here, landing on the redirected URL would show "Page Not
-  // Found" once this component takes over client-side, even though the
-  // pre-rendered HTML the browser just displayed was correct.
-  const normalized = route.length > 1 && route.endsWith('/') ? route.slice(0, -1) : route;
+  const normalized = normalizeRoute(route);
   return allPages.find((p) => p.route === normalized);
 }
 
