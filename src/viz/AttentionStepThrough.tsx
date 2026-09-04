@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useVizTokens, SPACING, RADIUS, FONT_FAMILY } from '../theme/vizTokens';
-import { VisualizationContainer, VisualizationHeader, PillSelect } from './primitives';
+import VisualizationContainer from './primitives/VisualizationContainer';
+import VisualizationHeader from './primitives/VisualizationHeader';
+import { PillSelect } from './primitives/VisualizationControls';
 import { hexToRgb } from './lib/colorBlend';
 import { tokenize, makeHead, runAttention, type AttentionResult } from './lib/attention';
 
