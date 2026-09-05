@@ -1631,6 +1631,13 @@
       "sidebarPosition": 9,
       "description": "Find two numbers in a sorted array that sum to a target using the two-pointers pattern in O(n) time, instead of an O(n^2) brute-force pair check."
     },
+    "/docs/practice-problems/parallel-sum-reduction": {
+      "slug": "practice-problems/parallel-sum-reduction",
+      "section": "practice-problems",
+      "title": "Practice: Parallel Sum Reduction (WebGPU)",
+      "sidebarPosition": 42,
+      "description": "Write a real WGSL compute shader that sums an array using shared memory and a tree reduction -- runs on a real GPU in your browser, graded against real output."
+    },
     "/docs/practice-problems/returns-to-go": {
       "slug": "practice-problems/returns-to-go",
       "section": "practice-problems",

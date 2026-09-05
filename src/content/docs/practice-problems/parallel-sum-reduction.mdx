@@ -1,0 +1,102 @@
+---
+title: "Practice: Parallel Sum Reduction (WebGPU)"
+sidebar_position: 42
+description: "Write a real WGSL compute shader that sums an array using shared memory and a tree reduction -- runs on a real GPU in your browser, graded against real output."
+---
+
+import RunnableWebGPU from '../../../components/content/RunnableWebGPU';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Parallel Sum Reduction (WebGPU)
+
+**Difficulty: Medium** · Concept: [GPU/AI Infrastructure — The CUDA Programming Model](/docs/mlops/gpu-and-distributed-training#the-cuda-programming-model-sms-warps-blocks-kernels)
+
+Every other practice problem on this site runs Python. This one is different on purpose: you write a real **WGSL compute shader** — the browser-native equivalent of a CUDA kernel — and it runs on a real GPU (or a software fallback where no GPU is exposed to the browser), through [WebGPU](https://www.w3.org/TR/webgpu/), a real, standards-based browser API. Same idea as every other problem here — real execution, real pass/fail, no simulation — just a genuinely different kind of "real" this time: parallel hardware instead of a single CPU core.
+
+## Why This Isn't Just "Add the Numbers"
+
+Summing an array in Python is one line. Summing it *on a GPU*, where potentially hundreds of threads run at once, is a different problem entirely: if every thread just did `output[0] += input[thread_id]`, multiple threads would read-modify-write `output[0]` at the same instant and silently lose updates — a real race condition, not a hypothetical one. The standard fix is **shared memory** (see [the CUDA memory hierarchy](/docs/mlops/gpu-and-distributed-training#the-cuda-programming-model-sms-warps-blocks-kernels) — WGSL's `var<workgroup>` is the same concept, fast memory shared only within one thread block/workgroup) plus a **tree reduction**: every thread writes its own element into shared memory once, then threads repeatedly combine pairs in parallel, halving the number of active threads each round, until one value remains. `workgroupBarrier()` is what makes this safe — it forces every thread in the workgroup to reach that point before any of them proceeds, so no thread ever reads a shared-memory slot before another thread has finished writing to it.
+
+**Real constraint, stated honestly**: this problem is scoped to a **single workgroup** — your array has at most 256 elements. That's not a simplification hiding a harder "real" version; it's the actual boundary of what one workgroup's shared memory can hold. Reducing an array larger than one workgroup for real needs either multiple dispatch passes or atomics across workgroups — a genuinely harder follow-up problem, not covered here.
+
+**Your task**: complete the compute shader below so that after it runs, `output[0]` holds the sum of every element in `input`. The buffer bindings and workgroup size are already wired up — you're implementing the load-into-shared-memory step, the tree-reduction loop, and the final write.
+
+<RunnableWebGPU
+  code={`@group(0) @binding(0) var<storage, read> input: array<f32>;
+@group(0) @binding(1) var<storage, read_write> output: array<f32>;
+var<workgroup> shared_data: array<f32, 256>;
+
+@compute @workgroup_size(256)
+fn main(@builtin(local_invocation_id) local_id: vec3<u32>) {
+  let tid = local_id.x;
+
+  // Step 1: load this thread's element into shared memory. Threads past
+  // the end of a shorter-than-256 input must write 0, not garbage --
+  // arrayLength(&input) is the real length of THIS test case's array.
+  // Your implementation here
+
+  workgroupBarrier();
+
+  // Step 2: tree reduction. Starting with stride = 128, each round only
+  // the first \`stride\` threads combine shared_data[tid] with
+  // shared_data[tid + stride], then stride halves. A workgroupBarrier()
+  // between rounds is required -- without it, a thread could read a
+  // neighbor's slot before that neighbor has written this round's result.
+  // Your implementation here
+
+  // Step 3: thread 0 writes the final total.
+  // Your implementation here
+}
+`}
+  tests={[
+    { name: 'small array: [1,2,3,4,5] -> 15', input: [1, 2, 3, 4, 5], expected: 15 },
+    { name: 'negatives and decimals: [10,-5,3.5,2.5] -> 11', input: [10, -5, 3.5, 2.5], expected: 11 },
+    { name: 'all zeros -> 0', input: [0, 0, 0, 0], expected: 0 },
+    { name: 'single element -> itself', input: [42], expected: 42 },
+    { name: 'full 256-element workgroup boundary: 256 ones -> 256', input: Array(256).fill(1), expected: 256 },
+  ]}
+/>
+
+<Solution>
+
+```wgsl
+@group(0) @binding(0) var<storage, read> input: array<f32>;
+@group(0) @binding(1) var<storage, read_write> output: array<f32>;
+var<workgroup> shared_data: array<f32, 256>;
+
+@compute @workgroup_size(256)
+fn main(@builtin(local_invocation_id) local_id: vec3<u32>) {
+  let tid = local_id.x;
+
+  if (tid < arrayLength(&input)) {
+    shared_data[tid] = input[tid];
+  } else {
+    shared_data[tid] = 0.0;
+  }
+
+  workgroupBarrier();
+
+  var stride = 128u;
+  while (stride > 0u) {
+    if (tid < stride) {
+      shared_data[tid] = shared_data[tid] + shared_data[tid + stride];
+    }
+    workgroupBarrier();
+    stride = stride / 2u;
+  }
+
+  if (tid == 0u) {
+    output[0] = shared_data[0];
+  }
+}
+```
+
+**The bounds check matters as much as the reduction itself**: `shared_data` is always sized 256 (WGSL's `var<workgroup>` needs a compile-time-constant size), but a real test case's `input` can be shorter — the single-element test case is exactly this. Without the `tid < arrayLength(&input)` guard, 255 threads would read past the end of `input`, and whatever garbage (or a driver-dependent default) ends up in `shared_data` would silently corrupt the sum. Zeroing out-of-range slots is what makes `shared_data[0..255]` always sum to the correct total regardless of how many elements the real input actually has.
+
+**Why the loop halves `stride` instead of halving the thread count directly**: it's the same effect, expressed as "which threads are still active this round" rather than physically shrinking anything — `stride` starting at 128 (half of 256) and halving each round is what produces the classic reduction tree: round 1 combines pairs 128 apart, round 2 combines pairs 64 apart, and so on down to `stride = 1`, at which point `shared_data[0]` holds the total of everything. Each `workgroupBarrier()` is a genuine synchronization point, not decoration — remove any one of them and this becomes a real, silent race condition (some threads read a neighbor's shared-memory slot before that neighbor has written this round's value), the exact bug class real GPU code has to guard against that single-threaded Python code never encounters.
+
+</Solution>
+
+---
+
+Next: [GPU/AI Infrastructure & Distributed Training](/docs/mlops/gpu-and-distributed-training) for the full CUDA programming model this shader is a hands-on instance of.

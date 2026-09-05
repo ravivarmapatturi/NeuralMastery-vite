@@ -7,7 +7,7 @@ import { useVizTokens, RADIUS, SPACING } from '../../theme/vizTokens';
 // requested (blew several chunks past 500kB-800kB in testing, including
 // languages this site will never use). Only what's needed, code-split from
 // the main bundle via the dynamic import below, loaded once on first use.
-const LANGS = ['python', 'javascript', 'typescript', 'jsx', 'tsx', 'bash', 'json', 'yaml', 'sql', 'dockerfile', 'hcl', 'protobuf'] as const;
+const LANGS = ['python', 'javascript', 'typescript', 'jsx', 'tsx', 'bash', 'json', 'yaml', 'sql', 'dockerfile', 'hcl', 'protobuf', 'wgsl'] as const;
 type Lang = (typeof LANGS)[number];
 
 async function createSiteHighlighter() {
@@ -15,7 +15,7 @@ async function createSiteHighlighter() {
     import('shiki/core'),
     import('shiki/engine/javascript'),
   ]);
-  const [python, javascript, typescript, jsx, tsx, bash, json, yaml, sql, dockerfile, hcl, protobuf, githubDark, githubLight] = await Promise.all([
+  const [python, javascript, typescript, jsx, tsx, bash, json, yaml, sql, dockerfile, hcl, protobuf, wgsl, githubDark, githubLight] = await Promise.all([
     import('shiki/langs/python.mjs'),
     import('shiki/langs/javascript.mjs'),
     import('shiki/langs/typescript.mjs'),
@@ -28,11 +28,12 @@ async function createSiteHighlighter() {
     import('shiki/langs/dockerfile.mjs'),
     import('shiki/langs/hcl.mjs'),
     import('shiki/langs/protobuf.mjs'),
+    import('shiki/langs/wgsl.mjs'),
     import('shiki/themes/github-dark.mjs'),
     import('shiki/themes/github-light.mjs'),
   ]);
   return createHighlighterCore({
-    langs: [python.default, javascript.default, typescript.default, jsx.default, tsx.default, bash.default, json.default, yaml.default, sql.default, dockerfile.default, hcl.default, protobuf.default],
+    langs: [python.default, javascript.default, typescript.default, jsx.default, tsx.default, bash.default, json.default, yaml.default, sql.default, dockerfile.default, hcl.default, protobuf.default, wgsl.default],
     themes: [githubDark.default, githubLight.default],
     engine: createJavaScriptRegexEngine(),
   });

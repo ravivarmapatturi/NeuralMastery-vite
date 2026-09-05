@@ -62,6 +62,14 @@ Inspired by the format of sites like [deep-ml.com](https://www.deep-ml.com/probl
 | [Discounted Return From Scratch](/docs/practice-problems/discounted-return) | Easy | [RL Fundamentals — Markov Decision Processes (MDPs)](/docs/reinforcement-learning/rl-fundamentals#markov-decision-processes-mdps) |
 | [Full Return-to-Go Sequence](/docs/practice-problems/returns-to-go) | Medium | [RL Fundamentals — Markov Decision Processes (MDPs)](/docs/reinforcement-learning/rl-fundamentals#markov-decision-processes-mdps) |
 
+## GPU Programming
+
+Genuinely different from every other problem below: you write a real WGSL compute shader (WebGPU's kernel language, the browser-native equivalent of CUDA), not Python — it runs on a real GPU in your browser, or a software fallback, through [WebGPU](https://www.w3.org/TR/webgpu/), a real standards-based browser API, not a simulation.
+
+| Problem | Difficulty | Concept |
+| --- | --- | --- |
+| [Parallel Sum Reduction (WebGPU)](/docs/practice-problems/parallel-sum-reduction) | Medium | [GPU/AI Infrastructure — The CUDA Programming Model](/docs/mlops/gpu-and-distributed-training#the-cuda-programming-model-sms-warps-blocks-kernels) |
+
 ## DSA / Coding Interview Patterns
 
 Original problems covering the same patterns [General Coding (DSA)](/docs/interview-prep/dsa-coding) names as the ones to drill — that page covers the *strategy* (what patterns matter, how to practice), these are the worked problems it doesn't have.
@@ -98,7 +106,7 @@ Original problems covering the same patterns [General Coding (DSA)](/docs/interv
 ## How to use these
 
 1. Read the short problem statement — follow the concept link if you want the full derivation and intuition first.
-2. Write your implementation directly in the sandbox and click **Run**. Each assertion reports pass or fail individually.
+2. Write your implementation directly in the sandbox and click **Run**. Each assertion (or, for the WebGPU problem, each real GPU-executed test case) reports pass or fail individually.
 3. Once you've got it passing (or you're stuck), expand **Show solution** for a reference implementation and the reasoning behind it.
 
 More problems are being added continuously across both math/ML/DL topics and DSA/coding-interview patterns (design, k-way merge, and more).
