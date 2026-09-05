@@ -68,7 +68,7 @@
       "section": "agents",
       "title": "MCP Protocol Deep Dive",
       "sidebarPosition": 2,
-      "description": null
+      "description": "The real MCP spec (2025-06-18) underneath the conceptual overview -- JSON-RPC transport, stdio vs. remote, and how a server actually gets deployed safely."
     },
     "/docs/agents/multi-agent-systems": {
       "slug": "agents/multi-agent-systems",
@@ -369,14 +369,14 @@
       "section": "cs-fundamentals",
       "title": "APIs, HTTP & Communication Patterns",
       "sidebarPosition": 5,
-      "description": null
+      "description": "How HTTP, REST, and authentication actually work, plus FastAPI -- the foundation underneath every LLM API call, tool call, and model-serving endpoint."
     },
     "/docs/cs-fundamentals/linux-git-and-tooling": {
       "slug": "cs-fundamentals/linux-git-and-tooling",
       "section": "cs-fundamentals",
       "title": "Linux, Git & Developer Tooling",
       "sidebarPosition": 6,
-      "description": null
+      "description": "Real shell commands, Git internals (blobs, trees, rebase vs. merge), and SSH/systemd/cron essentials every AI engineering job assumes you already know."
     },
     "/docs/cs-fundamentals/networking-and-distributed-systems": {
       "slug": "cs-fundamentals/networking-and-distributed-systems",
@@ -446,7 +446,7 @@
       "section": "databases",
       "title": "PostgreSQL",
       "sidebarPosition": 2,
-      "description": null
+      "description": "PostgreSQL specifics beyond the relational model: schemas, indexes, JSONB, and pgvector -- why it's become the default choice for new ML-adjacent projects."
     },
     "/docs/databases/roadmap": {
       "slug": "databases/roadmap",
@@ -481,7 +481,7 @@
       "section": "deep-learning",
       "title": "Attention & Transformers",
       "sidebarPosition": 7,
-      "description": null
+      "description": "The architecture behind GPT, Claude, and LLaMA, worked through end to end with real numbers -- why attention exists, and every mechanism in the original paper."
     },
     "/docs/deep-learning/autoencoders": {
       "slug": "deep-learning/autoencoders",
@@ -565,7 +565,7 @@
       "section": "deep-learning",
       "title": "Sequence Models",
       "sidebarPosition": 6,
-      "description": null
+      "description": "RNNs, LSTMs, and GRUs derived from first principles, including the real math behind the vanishing-gradient problem Attention was built to solve."
     },
     "/docs/deep-learning/training-deep-networks": {
       "slug": "deep-learning/training-deep-networks",
@@ -782,7 +782,7 @@
       "section": "llms-genai",
       "title": "Foundation Model & Transformer Internals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Tokenization, embeddings, positional encoding, KV cache, and attention variants -- the engineering that runs a Transformer efficiently at billions of parameters."
     },
     "/docs/llms-genai/multimodal-generative-models": {
       "slug": "llms-genai/multimodal-generative-models",
@@ -810,14 +810,14 @@
       "section": "llms-genai",
       "title": "Retrieval-Augmented Generation (RAG)",
       "sidebarPosition": 6,
-      "description": null
+      "description": "The nine-step RAG pipeline end to end: chunking, embeddings, hybrid retrieval, reranking, generation, and evaluation, each covered in real depth."
     },
     "/docs/llms-genai/retrieval-and-reranking-architectures": {
       "slug": "llms-genai/retrieval-and-reranking-architectures",
       "section": "llms-genai",
       "title": "Retrieval & Reranking Architectures: Bi-Encoder, Cross-Encoder, Late Interaction",
       "sidebarPosition": 6.5,
-      "description": null
+      "description": "Bi-encoder, cross-encoder, and late interaction (ColBERT) compared with a real worked example -- the actual retrieval-architecture spectrum underneath RAG."
     },
     "/docs/llms-genai/roadmap": {
       "slug": "llms-genai/roadmap",
@@ -831,7 +831,7 @@
       "section": "llms-genai",
       "title": "Training Pipeline",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Pretraining, SFT, RLHF/DPO/GRPO, and PEFT/distillation/quantization -- the real multi-stage pipeline that turns a raw Transformer into something like ChatGPT."
     },
     "/docs/machine-learning/anomaly-detection": {
       "slug": "machine-learning/anomaly-detection",
@@ -929,14 +929,14 @@
       "section": "machine-learning",
       "title": "Linear Regression, In Full Depth",
       "sidebarPosition": 4.5,
-      "description": null
+      "description": "Linear regression derived properly: the cost function, the gradient step by step, and the closed-form solution -- where gradient descent itself comes from."
     },
     "/docs/machine-learning/logistic-regression": {
       "slug": "machine-learning/logistic-regression",
       "section": "machine-learning",
       "title": "Logistic Regression, In Full Depth",
       "sidebarPosition": 4.9,
-      "description": null
+      "description": "Why logistic regression predicts a probability, not a number -- the sigmoid, the real loss function that makes training work, and why it's the right one."
     },
     "/docs/machine-learning/ml-workflow-fundamentals": {
       "slug": "machine-learning/ml-workflow-fundamentals",
@@ -1076,14 +1076,14 @@
       "section": "mathematics-for-ai",
       "title": "Calculus & Optimization for AI",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Gradients, backpropagation, and Adam derived from scratch -- how a training run actually walks downhill through a model's high-dimensional loss landscape."
     },
     "/docs/mathematics-for-ai/linear-algebra": {
       "slug": "mathematics-for-ai/linear-algebra",
       "section": "mathematics-for-ai",
       "title": "Linear Algebra for AI",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Vectors, matrices, eigenvalues, and SVD made concrete -- the exact math underneath every embedding, weight matrix, and attention computation on this site."
     },
     "/docs/mathematics-for-ai/overview": {
       "slug": "mathematics-for-ai/overview",
@@ -1097,7 +1097,7 @@
       "section": "mathematics-for-ai",
       "title": "Probability & Statistics for AI",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Distributions, Bayes' theorem, and hypothesis testing -- what a model's probabilistic output actually means, and how to tell a real improvement from noise."
     },
     "/docs/mathematics-for-ai/roadmap": {
       "slug": "mathematics-for-ai/roadmap",
@@ -1111,7 +1111,7 @@
       "section": "ml-system-design",
       "title": "ML System Design Case Studies",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Four real system-design case studies -- RAG, fraud detection, a support agent, recommendations -- the 9-step framework applied to genuinely different problems."
     },
     "/docs/ml-system-design/model-catalog-and-benchmarking": {
       "slug": "ml-system-design/model-catalog-and-benchmarking",
@@ -1181,14 +1181,14 @@
       "section": "mlops",
       "title": "Deploying Models on AWS & Azure",
       "sidebarPosition": 9.5,
-      "description": null
+      "description": "Real, concrete methods for deploying a trained model on AWS and Azure specifically -- SageMaker endpoints, Bedrock, Azure ML, with real commands, not just names."
     },
     "/docs/mlops/containers": {
       "slug": "mlops/containers",
       "section": "mlops",
       "title": "Containers",
       "sidebarPosition": 7,
-      "description": null
+      "description": "Docker images, containers, and multi-stage builds explained mechanically, plus container security and registries -- the standard fix for 'works on my machine'."
     },
     "/docs/mlops/data-engineering-and-versioning": {
       "slug": "mlops/data-engineering-and-versioning",
@@ -1251,7 +1251,7 @@
       "section": "mlops",
       "title": "Kubernetes",
       "sidebarPosition": 10,
-      "description": null
+      "description": "Pods, Deployments, Services, and the control-plane/worker-node split explained mechanically -- running and scaling containers across a real cluster."
     },
     "/docs/mlops/legal-licensing-and-governance": {
       "slug": "mlops/legal-licensing-and-governance",
@@ -1286,7 +1286,7 @@
       "section": "mlops",
       "title": "LLM Inference Optimization",
       "sidebarPosition": 19,
-      "description": null
+      "description": "KV cache, quantization, speculative decoding, and batching -- every real technique that makes LLM inference cheaper, explained by the two bottlenecks they solve."
     },
     "/docs/mlops/message-queues-and-async-processing": {
       "slug": "mlops/message-queues-and-async-processing",
