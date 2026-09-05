@@ -8,6 +8,10 @@ import {
   totalPoints,
   mergeEvents,
   computeDisplayName,
+  totalXpForLevel,
+  levelForPoints,
+  topicBreakdown,
+  activityCounts,
   MARK_UNDERSTOOD_POINTS,
   PROBLEM_COMPLETED_POINTS,
   type AwardEvent,
@@ -151,5 +155,80 @@ describe('computeDisplayName', () => {
   it('handles a null/undefined user without throwing', () => {
     expect(computeDisplayName(null)).toBe('Learner_000000')
     expect(computeDisplayName(undefined)).toBe('Learner_000000')
+  })
+})
+
+describe('totalXpForLevel / levelForPoints', () => {
+  it('level 1 starts at 0 XP', () => {
+    expect(totalXpForLevel(1)).toBe(0)
+    expect(levelForPoints(0)).toEqual({ level: 1, xpIntoLevel: 0, xpForNextLevel: 50 })
+  })
+
+  it('the XP needed for the next level grows by a constant 100 each time (50, 150, 250, ...)', () => {
+    expect(totalXpForLevel(2)).toBe(50)
+    expect(totalXpForLevel(3)).toBe(200)
+    expect(totalXpForLevel(4)).toBe(450)
+    expect(totalXpForLevel(5)).toBe(800)
+  })
+
+  it('one point below a level threshold stays at the lower level', () => {
+    expect(levelForPoints(49)).toEqual({ level: 1, xpIntoLevel: 49, xpForNextLevel: 50 })
+  })
+
+  it('exactly at a level threshold advances to the new level with 0 XP into it', () => {
+    expect(levelForPoints(50)).toEqual({ level: 2, xpIntoLevel: 0, xpForNextLevel: 150 })
+    expect(levelForPoints(200)).toEqual({ level: 3, xpIntoLevel: 0, xpForNextLevel: 250 })
+  })
+
+  it('mid-level points report real progress toward the next level', () => {
+    // Level 3 spans [200, 450); 325 is exactly halfway through its 250-point span.
+    expect(levelForPoints(325)).toEqual({ level: 3, xpIntoLevel: 125, xpForNextLevel: 250 })
+  })
+})
+
+describe('topicBreakdown', () => {
+  it('is empty for no points earned yet, not a list of zeros', () => {
+    expect(topicBreakdown([])).toEqual([])
+  })
+
+  it('aggregates points by real top-level group and computes a real percentage of the total', () => {
+    const events: AwardEvent[] = [
+      { permalink: '/docs/deep-learning/attention-transformers', kind: 'mark', date: '2026-01-01', points: 10 },
+      { permalink: '/docs/deep-learning/sequence-models', kind: 'mark', date: '2026-01-01', points: 10 },
+      { permalink: '/docs/mlops/observability', kind: 'complete', date: '2026-01-01', points: 50 },
+    ]
+    const breakdown = topicBreakdown(events)
+    // 20 points from deep-learning (-> "Models" group), 50 from mlops (-> "Systems & Infrastructure"), 70 total.
+    const models = breakdown.find((b) => b.groupKey === '/docs/category/models')!
+    const systems = breakdown.find((b) => b.groupKey === '/docs/category/systems--infrastructure')!
+    expect(models.points).toBe(20)
+    expect(models.pct).toBeCloseTo(20 / 70)
+    expect(systems.points).toBe(50)
+    expect(systems.pct).toBeCloseTo(50 / 70)
+  })
+
+  it('sorts by points descending and omits groups with zero points', () => {
+    const events: AwardEvent[] = [
+      { permalink: '/docs/mlops/observability', kind: 'complete', date: '2026-01-01', points: 50 },
+      { permalink: '/docs/deep-learning/attention-transformers', kind: 'mark', date: '2026-01-01', points: 10 },
+    ]
+    const breakdown = topicBreakdown(events)
+    expect(breakdown[0].groupKey).toBe('/docs/category/systems--infrastructure') // 50 > 10
+    expect(breakdown).toHaveLength(2) // only groups with real points, not all 7
+  })
+})
+
+describe('activityCounts', () => {
+  it('counts events per local date, not points', () => {
+    const events: AwardEvent[] = [
+      { permalink: '/a', kind: 'mark', date: '2026-01-01', points: 10 },
+      { permalink: '/b', kind: 'mark', date: '2026-01-01', points: 10 },
+      { permalink: '/c', kind: 'complete', date: '2026-01-02', points: 50 },
+    ]
+    expect(activityCounts(events)).toEqual({ '2026-01-01': 2, '2026-01-02': 1 })
+  })
+
+  it('is an empty object for no activity', () => {
+    expect(activityCounts([])).toEqual({})
   })
 })

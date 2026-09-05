@@ -1,3 +1,5 @@
+import { SECTION_META, SECTION_ORDER, getGroupForSubsection } from '../data/sectionMeta';
+
 // Pure, React-free gamification logic -- points, streaks, and weekly totals
 // are all DERIVED from a real per-award event log, never independently
 // incremented/decremented counters. That's a deliberate correctness
@@ -127,4 +129,109 @@ export function mergeEvents(a: AwardEvent[], b: AwardEvent[]): AwardEvent[] {
 export function computeDisplayName(user: { displayName?: string | null; uid: string } | null | undefined): string {
   if (user?.displayName) return user.displayName;
   return `Learner_${user?.uid.slice(0, 6) ?? '000000'}`;
+}
+
+// --- Level curve ---
+//
+// A real, stated design choice, not hidden magic: total XP required to
+// REACH level N is 50 * (N-1)^2 -- level 1 starts at 0, level 2 at 50,
+// level 3 at 200, level 4 at 450, level 5 at 800, and so on. The XP
+// needed for the NEXT level grows by a constant 100 each time (50, 150,
+// 250, 350, ...), a gentle quadratic curve: early levels come fast (50
+// points is one practice problem, or five marked-understood pages), and
+// the climb lengthens gradually rather than exploding, so a genuinely
+// active user keeps leveling up over weeks/months instead of hitting a
+// wall after level 5.
+
+/** Total points needed to REACH a given level (level 1 = 0). */
+export function totalXpForLevel(level: number): number {
+  return 50 * (level - 1) ** 2;
+}
+
+export interface LevelInfo {
+  level: number;
+  /** Points earned since this level started. */
+  xpIntoLevel: number;
+  /** Total points this level requires (xpIntoLevel / xpForNextLevel is
+   * the real fraction to render as a progress bar). */
+  xpForNextLevel: number;
+}
+
+export function levelForPoints(points: number): LevelInfo {
+  const level = Math.floor(1 + Math.sqrt(points / 50));
+  const xpAtLevelStart = totalXpForLevel(level);
+  const xpAtNextLevel = totalXpForLevel(level + 1);
+  return {
+    level,
+    xpIntoLevel: points - xpAtLevelStart,
+    xpForNextLevel: xpAtNextLevel - xpAtLevelStart,
+  };
+}
+
+// --- Topic breakdown ---
+
+/** Extracts the top-level content folder from a permalink, e.g.
+ * "/docs/deep-learning/attention-transformers" -> "deep-learning". Null
+ * for a permalink that doesn't match this shape (not expected in
+ * practice -- every awarded permalink comes from a real
+ * /docs/<section>/<slug> route, but defensive rather than assumed). */
+function sectionDirFromPermalink(permalink: string): string | null {
+  const match = permalink.match(/^\/docs\/([^/]+)\//);
+  return match ? match[1] : null;
+}
+
+export interface TopicBreakdownEntry {
+  groupKey: string;
+  label: string;
+  color: string;
+  icon: string;
+  points: number;
+  /** 0..1 fraction of this user's total points. */
+  pct: number;
+}
+
+/** Real per-topic breakdown of WHERE a user's points came from -- reuses
+ * the exact same "which top-level group does this page belong to" match
+ * sectionMeta.ts's own completionFor() uses (subsection dir -> parent
+ * group), so this view and the progress dashboard's own per-group
+ * percentages can never disagree about which group a page counts toward.
+ * Sorted by points descending; a group with zero points is omitted
+ * entirely (nothing real to show), and the result is empty for a user
+ * with no points yet, not a list of zeros. */
+export function topicBreakdown(events: AwardEvent[]): TopicBreakdownEntry[] {
+  const total = totalPoints(events);
+  if (total === 0) return [];
+
+  const byGroup = new Map<string, number>();
+  for (const e of events) {
+    const dir = sectionDirFromPermalink(e.permalink);
+    if (!dir) continue;
+    const group = getGroupForSubsection(dir);
+    if (!group) continue;
+    byGroup.set(group.key, (byGroup.get(group.key) ?? 0) + e.points);
+  }
+
+  return SECTION_ORDER.filter((key) => byGroup.has(key))
+    .map((key) => {
+      const meta = SECTION_META[key];
+      const points = byGroup.get(key)!;
+      return { groupKey: key, label: meta.label, color: meta.color, icon: meta.icon, points, pct: points / total };
+    })
+    .sort((a, b) => b.points - a.points);
+}
+
+// --- Activity heatmap ---
+
+/** Count of award events per LOCAL calendar date -- the raw data a
+ * GitHub-style contribution calendar renders from. Deliberately counts
+ * EVENTS, not points, matching the convention every real contribution
+ * calendar uses (activity frequency that day, not a weighted value) --
+ * the calendar-GRID layout (which weeks/days to show) is a rendering
+ * concern, left to the component that reads this map. */
+export function activityCounts(events: AwardEvent[]): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const e of events) {
+    counts[e.date] = (counts[e.date] ?? 0) + 1;
+  }
+  return counts;
 }

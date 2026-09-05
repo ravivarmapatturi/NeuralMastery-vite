@@ -7,6 +7,7 @@ import { GamificationProvider } from './contexts/GamificationContext';
 import DocLayout from './components/layout/DocLayout';
 import Home from './components/Home';
 import ProgressPage from './components/ProgressPage';
+import ProfilePage from './components/ProfilePage';
 import ThemedImage from './components/ThemedImage';
 import MDXCodeBlock from './components/MDXCodeBlock';
 import MDXLink from './components/MDXLink';
@@ -38,6 +39,7 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/progress" element={<ProgressPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/docs/*" element={<DocLayout />} />
                 </Routes>
               </BrowserRouter>

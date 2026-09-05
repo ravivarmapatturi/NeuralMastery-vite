@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 /**
@@ -10,8 +11,9 @@ import { useAuth } from '../../contexts/AuthContext';
  * overflow check). Clicking it is the ONLY thing that ever triggers a
  * network call to Firebase Auth; nothing here runs unprompted. Signed-in
  * visitors see their Google avatar (initial-letter fallback if no photo)
- * in that same circular slot, which opens a small menu with just their
- * email and a sign-out action.
+ * in that same circular slot, which opens a small account menu (email,
+ * a View Profile link to /profile, sign-out) -- the same avatar-click-
+ * opens-a-menu pattern any real account UI uses.
  */
 export default function AuthButton() {
   const { user, loading, signInWithGoogle, signOutUser } = useAuth();
@@ -109,6 +111,20 @@ export default function AuthButton() {
             <div style={{ fontSize: 12.5, color: 'var(--nm-text-secondary)', padding: '0.2rem 0.3rem 0.6rem', wordBreak: 'break-all' }}>
               {user.email}
             </div>
+            <Link
+              to="/profile"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                display: 'block',
+                fontSize: 13,
+                color: 'var(--nm-text-primary)',
+                textDecoration: 'none',
+                borderRadius: 6,
+                padding: '0.4rem 0.3rem',
+              }}
+            >
+              View Profile
+            </Link>
             <button
               type="button"
               onClick={async () => {

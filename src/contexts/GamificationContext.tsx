@@ -22,6 +22,11 @@ interface GamificationContextValue {
   points: number;
   weeklyPoints: number;
   streak: number;
+  /** Real underlying award-event log -- exposed (not just the derived
+   * totals above) so pages that need a per-topic or per-day breakdown
+   * (topicBreakdown, activityCounts in lib/gamification.ts) can compute
+   * it themselves without a second, parallel data path. */
+  events: AwardEvent[];
   awardMarkUnderstood: (permalink: string) => void;
   awardProblemCompleted: (permalink: string) => void;
   awardSystemDesignCompleted: (permalink: string) => void;
@@ -180,6 +185,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       events.map((e) => e.date),
       now,
     ),
+    events,
     awardMarkUnderstood,
     awardProblemCompleted,
     awardSystemDesignCompleted,

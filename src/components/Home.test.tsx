@@ -5,6 +5,7 @@ import Home from './Home'
 import { ThemeProvider } from '../theme/ThemeProvider'
 import { AuthProvider } from '../contexts/AuthContext'
 import { ProgressProvider } from '../contexts/ProgressContext'
+import { GamificationProvider } from '../contexts/GamificationContext'
 import { getFlatPages } from '../lib/contentTree'
 import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta'
 
@@ -16,7 +17,9 @@ function renderHome() {
       <MemoryRouter>
         <AuthProvider>
           <ProgressProvider>
-            <Home />
+            <GamificationProvider>
+              <Home />
+            </GamificationProvider>
           </ProgressProvider>
         </AuthProvider>
       </MemoryRouter>
