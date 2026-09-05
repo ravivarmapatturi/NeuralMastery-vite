@@ -6,6 +6,7 @@ import TableOfContents from './TableOfContents';
 import MobileNavDrawer from './MobileNavDrawer';
 import PrevNext from './PrevNext';
 import MarkUnderstoodButton from './MarkUnderstoodButton';
+import RoadmapProgressBanner from './RoadmapProgressBanner';
 import PageFeedback from './PageFeedback';
 import ThemeSkinPicker from '../ThemeSkinPicker';
 import { getPageByRoute } from '../../lib/contentTree';
@@ -96,6 +97,7 @@ export default function DocLayout() {
         </div>
         <main className="nm-doc-main" style={{ flex: 1, padding: '2rem 3rem', minWidth: 0 }} ref={contentRef}>
           <article className="prose">
+            {page.route.endsWith('/roadmap') && <RoadmapProgressBanner section={page.section} />}
             <Suspense fallback={<div style={{ padding: '3rem 0', textAlign: 'center', color: 'var(--nm-text-muted)', fontSize: 14 }}>Loading…</div>}>
               <Component />
             </Suspense>

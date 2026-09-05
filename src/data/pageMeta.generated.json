@@ -518,6 +518,13 @@
       "sidebarPosition": 3.8,
       "description": null
     },
+    "/docs/deep-learning/linear-attention-and-state-space-models": {
+      "slug": "deep-learning/linear-attention-and-state-space-models",
+      "section": "deep-learning",
+      "title": "Linear Attention & State-Space Models (Mamba)",
+      "sidebarPosition": 7.3,
+      "description": "The real mechanism behind attention's quadratic-cost fix -- the kernel trick that makes linear attention linear, and Mamba's selective state-space recurrence -- verified against the original papers, not secondhand summaries."
+    },
     "/docs/deep-learning/loss-functions": {
       "slug": "deep-learning/loss-functions",
       "section": "deep-learning",
@@ -2036,13 +2043,6 @@
       "title": "Two Pointers & Sliding Window, Step by Step",
       "sidebarPosition": 14,
       "description": null
-    },
-    "/docs/deep-learning/linear-attention-and-state-space-models": {
-      "slug": "deep-learning/linear-attention-and-state-space-models",
-      "section": "deep-learning",
-      "title": "Linear Attention & State-Space Models (Mamba)",
-      "sidebarPosition": 7.3,
-      "description": "The real mechanism behind attention's quadratic-cost fix -- the kernel trick that makes linear attention linear, and Mamba's selective state-space recurrence -- verified against the original papers, not secondhand summaries."
     }
   },
   "categories": {
