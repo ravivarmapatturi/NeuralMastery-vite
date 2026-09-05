@@ -138,7 +138,7 @@
       "section": "ai-evaluation",
       "title": "Human & Adversarial Evaluation",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Human eval methodology and adversarial red-teaming -- two structurally different rigor gaps, one hiding as noise, the other invisible until attacked."
     },
     "/docs/ai-evaluation/llm-rag-agent-evaluation": {
       "slug": "ai-evaluation/llm-rag-agent-evaluation",
@@ -208,7 +208,7 @@
       "section": "ai-safety",
       "title": "Scalable Oversight & Frontier Safety",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Debate, process-based oversight, and staged deployment -- what happens once a model gets too capable for a human evaluator to directly verify its answers."
     },
     "/docs/ai-security/ai-red-teaming": {
       "slug": "ai-security/ai-red-teaming",
@@ -222,7 +222,7 @@
       "section": "ai-security",
       "title": "Model & Data Attacks",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Model extraction, membership inference, poisoning, backdoors, and supply-chain attacks -- targeting what a model learned, not what it's told at runtime."
     },
     "/docs/ai-security/overview": {
       "slug": "ai-security/overview",
@@ -236,7 +236,7 @@
       "section": "ai-security",
       "title": "OWASP LLM Top 10 & Prompt Attacks",
       "sidebarPosition": 3,
-      "description": null
+      "description": "The OWASP LLM Top 10 traced back to one structural gap: LLMs have no hard separation between trusted instructions and untrusted data, unlike SQL."
     },
     "/docs/ai-security/roadmap": {
       "slug": "ai-security/roadmap",
@@ -285,14 +285,14 @@
       "section": "cli-reference",
       "title": "Git Command Reference",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Interactive rebase, bisect, reflog, and worktrees -- the Git commands that actually save you once history needs reshaping or something's gone wrong."
     },
     "/docs/cli-reference/kubectl-command-reference": {
       "slug": "cli-reference/kubectl-command-reference",
       "section": "cli-reference",
       "title": "kubectl Command Reference",
       "sidebarPosition": 6,
-      "description": null
+      "description": "Real kubectl commands for operating a live cluster -- contexts, resources, logs, and debugging -- the command reference underneath Kubernetes' concepts."
     },
     "/docs/cli-reference/linux-and-shell-commands": {
       "slug": "cli-reference/linux-and-shell-commands",
@@ -411,7 +411,7 @@
       "section": "cs-fundamentals",
       "title": "Software Engineering Practice",
       "sidebarPosition": 7,
-      "description": null
+      "description": "Design patterns that actually show up in ML codebases (Strategy, Factory), testing philosophy, profiling, and debugging -- general engineering skill, not ML theory."
     },
     "/docs/databases/graph/overview": {
       "slug": "databases/graph/overview",
@@ -544,7 +544,7 @@
       "section": "deep-learning",
       "title": "NN Layers Reference",
       "sidebarPosition": 8.9,
-      "description": null
+      "description": "The reference catalog of every reusable layer type -- Dense, Embedding, and beyond -- that every architecture on this site is actually built from."
     },
     "/docs/deep-learning/optimizers": {
       "slug": "deep-learning/optimizers",
@@ -691,7 +691,7 @@
       "section": "interpretability",
       "title": "Deep Learning & LLM Interpretability",
       "sidebarPosition": 4,
-      "description": null
+      "description": "A rigor ladder from cheap correlational saliency maps up to verified causal circuits -- interpretability tools built for gradient-accessible networks."
     },
     "/docs/interpretability/overview": {
       "slug": "interpretability/overview",
@@ -810,7 +810,7 @@
       "section": "llms-genai",
       "title": "Prompt Engineering",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Zero-shot, few-shot, and Chain-of-Thought prompting -- the cheapest, fastest lever for improving an LLM's behavior, no training required."
     },
     "/docs/llms-genai/rag": {
       "slug": "llms-genai/rag",
@@ -985,7 +985,7 @@
       "section": "machine-learning",
       "title": "Random Forest & Extra Trees, In Full Depth",
       "sidebarPosition": 5.2,
-      "description": null
+      "description": "Bagging explained: why training many trees on bootstrap samples and averaging fixes a single decision tree's high variance -- Random Forest, derived."
     },
     "/docs/machine-learning/recommender-systems": {
       "slug": "machine-learning/recommender-systems",
@@ -1041,7 +1041,7 @@
       "section": "machine-learning",
       "title": "Time Series Forecasting: ARIMA, SARIMA & Prophet, In Full Depth",
       "sidebarPosition": 5.9,
-      "description": null
+      "description": "ARIMA, SARIMA, and Prophet -- decomposing a time series into its structural components once shuffling the rows destroys the one thing that matters: order."
     },
     "/docs/machine-learning/topic-modeling": {
       "slug": "machine-learning/topic-modeling",
@@ -1125,7 +1125,7 @@
       "section": "ml-system-design",
       "title": "Model Catalog & Benchmarking Framework",
       "sidebarPosition": 5,
-      "description": null
+      "description": "A durable framework for choosing a model -- categories, attributes, and benchmark dimensions that matter -- deliberately not a leaderboard that goes stale."
     },
     "/docs/ml-system-design/overview": {
       "slug": "ml-system-design/overview",
@@ -1146,14 +1146,14 @@
       "section": "ml-system-design",
       "title": "Technology Ecosystem Map",
       "sidebarPosition": 6,
-      "description": null
+      "description": "A map of every layer a real production system is built from -- frontend to infrastructure -- with honest notes on which layers this site covers in depth."
     },
     "/docs/ml-system-design/the-9-step-framework": {
       "slug": "ml-system-design/the-9-step-framework",
       "section": "ml-system-design",
       "title": "The 9-Step ML System Design Framework",
       "sidebarPosition": 3,
-      "description": null
+      "description": "The repeatable 9-step structure for any 'design an ML system for X' problem, from problem formulation through monitoring -- for interviews and real kickoffs."
     },
     "/docs/mlops/ai-cost-engineering": {
       "slug": "mlops/ai-cost-engineering",
@@ -1167,7 +1167,7 @@
       "section": "mlops",
       "title": "Big Data & Analytics",
       "sidebarPosition": 4.5,
-      "description": null
+      "description": "Cloud data warehouses, and turning processed data into trustworthy, queryable tables a human can actually look at and decide something from."
     },
     "/docs/mlops/cicd-and-ml-cicd": {
       "slug": "mlops/cicd-and-ml-cicd",
@@ -1433,7 +1433,7 @@
       "section": "practice-problems",
       "title": "Practice: Pairwise Cosine Similarity Matrix",
       "sidebarPosition": 19.5,
-      "description": null
+      "description": "Compute the full n-by-n pairwise cosine similarity matrix in a real Python sandbox -- the exact computation underneath embedding search and clustering."
     },
     "/docs/practice-problems/cosine-similarity": {
       "slug": "practice-problems/cosine-similarity",
@@ -1461,7 +1461,7 @@
       "section": "practice-problems",
       "title": "Practice: Design an LRU Cache",
       "sidebarPosition": 38,
-      "description": null
+      "description": "Implement an LRU cache from scratch in a real Python sandbox -- get/put in O(1), where every access reorders which key gets evicted next."
     },
     "/docs/practice-problems/design-min-stack": {
       "slug": "practice-problems/design-min-stack",
@@ -1650,7 +1650,7 @@
       "section": "practice-problems",
       "title": "Practice: Rotting Oranges (Multi-Source BFS)",
       "sidebarPosition": 40,
-      "description": null
+      "description": "Multi-source BFS in a real Python sandbox -- seed the queue with every rotten cell at once to correctly model rot spreading in parallel across a grid."
     },
     "/docs/practice-problems/sample-mean-variance": {
       "slug": "practice-problems/sample-mean-variance",
@@ -1790,7 +1790,7 @@
       "section": "python-engineering",
       "title": "Language Fundamentals: OOP, Functional & Modern Python",
       "sidebarPosition": 3,
-      "description": null
+      "description": "OOP, decorators, and magic methods explained through the PyTorch code that actually uses them -- nn.Module, Dataset, and why model(x) works at all."
     },
     "/docs/python-engineering/overview": {
       "slug": "python-engineering/overview",
