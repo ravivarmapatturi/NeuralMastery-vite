@@ -19,7 +19,7 @@
       "section": "agents",
       "title": "Agent Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "What actually makes an LLM an agent: the observe-act loop, tool/function calling, argument schema validation, and short vs long-term memory as retrieval."
     },
     "/docs/agents/agentic-coding-assistants": {
       "slug": "agents/agentic-coding-assistants",
@@ -103,7 +103,7 @@
       "section": "agents",
       "title": "Reflection / Self-Critique",
       "sidebarPosition": 4.3,
-      "description": null
+      "description": "The real Reflexion architecture (Shinn et al. 2023): Actor, Evaluator, and Self-Reflection as three distinct models -- verbal feedback in place of retraining."
     },
     "/docs/agents/roadmap": {
       "slug": "agents/roadmap",
@@ -565,7 +565,7 @@
       "section": "deep-learning",
       "title": "Deep Learning — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Neural networks from perceptrons to Transformers, diffusion, and GNNs -- CNNs, sequence models, attention, generative models, and every layer type in one map."
     },
     "/docs/deep-learning/sequence-models": {
       "slug": "deep-learning/sequence-models",
@@ -831,7 +831,7 @@
       "section": "llms-genai",
       "title": "LLMs & GenAI — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "How classical deep learning becomes ChatGPT-class systems: transformer internals, pretraining/RLHF/DPO, prompt engineering, RAG, evaluation, and serving."
     },
     "/docs/llms-genai/training-pipeline": {
       "slug": "llms-genai/training-pipeline",
@@ -950,7 +950,7 @@
       "section": "machine-learning",
       "title": "ML Workflow Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Most real-world model failures trace back to workflow mistakes, not bad algorithms -- learning types, train/val/test splits, data leakage, feature engineering."
     },
     "/docs/machine-learning/model-evaluation-metrics": {
       "slug": "machine-learning/model-evaluation-metrics",
@@ -1006,7 +1006,7 @@
       "section": "machine-learning",
       "title": "Machine Learning — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Classical ML end to end: workflow fundamentals, supervised/unsupervised algorithms, evaluation metrics, hyperparameter tuning, and conformal prediction."
     },
     "/docs/machine-learning/sgd-classifier-regressor": {
       "slug": "machine-learning/sgd-classifier-regressor",
@@ -1027,7 +1027,7 @@
       "section": "machine-learning",
       "title": "Support Vector Machines (SVM & SVR), In Full Depth",
       "sidebarPosition": 5.5,
-      "description": null
+      "description": "The maximum-margin classifier derived: support vectors, the optimization problem, soft margins, and the kernel trick for non-linearly-separable data."
     },
     "/docs/machine-learning/survival-analysis": {
       "slug": "machine-learning/survival-analysis",
@@ -1069,7 +1069,7 @@
       "section": "machine-learning",
       "title": "XGBoost, LightGBM & CatBoost, In Full Depth",
       "sidebarPosition": 5.4,
-      "description": null
+      "description": "Three real gradient boosting implementations compared: XGBoost's regularized second-order objective, LightGBM's speed tricks, CatBoost's categorical handling."
     },
     "/docs/mathematics-for-ai/algorithms-data-structures": {
       "slug": "mathematics-for-ai/algorithms-data-structures",
@@ -1265,7 +1265,7 @@
       "section": "mlops",
       "title": "Legal, Licensing & Governance",
       "sidebarPosition": 22.4,
-      "description": null
+      "description": "Whether a system is legally permissible to ship, not just whether it works -- model/dataset licenses, copyright, privacy law, governance, and model cards."
     },
     "/docs/mlops/llm-evaluation-and-ragops": {
       "slug": "mlops/llm-evaluation-and-ragops",
@@ -1517,7 +1517,7 @@
       "section": "practice-problems",
       "title": "Practice: One Gradient Descent Step for Linear Regression",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Implement one real full-batch gradient descent step for linear regression -- derive and apply the exact w/b update rule, not just call an optimizer."
     },
     "/docs/practice-problems/kmeans-assignment-step": {
       "slug": "practice-problems/kmeans-assignment-step",
@@ -1531,14 +1531,14 @@
       "section": "practice-problems",
       "title": "Practice: K-Means, Centroid Update Step",
       "sidebarPosition": 6.5,
-      "description": null
+      "description": "Implement K-Means' centroid update step in a real sandbox -- the genuine edge case a naive average-the-points solution misses: a cluster with zero points."
     },
     "/docs/practice-problems/largest-rectangle-in-skyline": {
       "slug": "practice-problems/largest-rectangle-in-skyline",
       "section": "practice-problems",
       "title": "Practice: Largest Rectangle in a Skyline",
       "sidebarPosition": 15,
-      "description": null
+      "description": "Implement largest_rectangle_area(heights) in real O(n) using a monotonic stack -- not the O(n^2) brute-force check of every left/right bound pair."
     },
     "/docs/practice-problems/level-order-traversal": {
       "slug": "practice-problems/level-order-traversal",
@@ -1559,7 +1559,7 @@
       "section": "practice-problems",
       "title": "Practice: Longest Increasing Subsequence",
       "sidebarPosition": 34,
-      "description": null
+      "description": "Implement longest_increasing_subsequence(nums) in real O(n log n) using patience sorting + binary search, not the O(n^2) per-index DP."
     },
     "/docs/practice-problems/longest-unique-run": {
       "slug": "practice-problems/longest-unique-run",
@@ -1601,7 +1601,7 @@
       "section": "practice-problems",
       "title": "Practice: Merge K Sorted Lists",
       "sidebarPosition": 24,
-      "description": null
+      "description": "Implement merge_k_sorted(lists) in real O(N log k) using heapq -- the min-heap k-way merge pattern, not the naive O(N log N) concatenate-and-sort."
     },
     "/docs/practice-problems/min-window-substring": {
       "slug": "practice-problems/min-window-substring",
@@ -1685,7 +1685,7 @@
       "section": "practice-problems",
       "title": "Practice: Sigmoid Derivative (Vectorized, Numerically Stable)",
       "sidebarPosition": 7.5,
-      "description": null
+      "description": "Implement sigmoid_derivative(z_list) that never OverflowErrors even at z=+/-1000 -- the vectorized, numerically-stable version, not the naive formula."
     },
     "/docs/practice-problems/smallest-range-k-lists": {
       "slug": "practice-problems/smallest-range-k-lists",
@@ -1734,14 +1734,14 @@
       "section": "practice-problems",
       "title": "Practice: The Two Lone Numbers",
       "sidebarPosition": 35,
-      "description": null
+      "description": "Implement two_lone_numbers(nums) using only XOR and bitwise AND -- the differing-bit trick that partitions the array back into two Lone Number problems."
     },
     "/docs/practice-problems/validate-bst": {
       "slug": "practice-problems/validate-bst",
       "section": "practice-problems",
       "title": "Practice: Validate a Binary Search Tree",
       "sidebarPosition": 29,
-      "description": null
+      "description": "Implement is_valid_bst(root) in a real sandbox -- the classic trap where local parent-child checks look fine but miss a deeper ancestor violation."
     },
     "/docs/practice-problems/weighted-rmse": {
       "slug": "practice-problems/weighted-rmse",
@@ -1853,7 +1853,7 @@
       "section": "research-engineering",
       "title": "How to Read AI Papers",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Why front-to-back linear reading is the slowest way to extract a paper's actual content -- a real structure for reading with intent, section by section."
     },
     "/docs/research-engineering/overview": {
       "slug": "research-engineering/overview",
@@ -1867,7 +1867,7 @@
       "section": "research-engineering",
       "title": "The Paper Timeline",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Every landmark architecture reconnected along the dimension category-based organization hides: time -- AlexNet to GPT-3 and what each idea was responding to."
     },
     "/docs/research-engineering/roadmap": {
       "slug": "research-engineering/roadmap",
@@ -1902,7 +1902,7 @@
       "section": "speech-audio",
       "title": "Audio Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "How raw audio becomes something a model can learn from: sampling/Nyquist, bit depth, the Fourier transform, STFT window tradeoffs, mel scale, and MFCCs."
     },
     "/docs/speech-audio/overview": {
       "slug": "speech-audio/overview",
