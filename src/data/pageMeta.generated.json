@@ -5,7 +5,7 @@
       "section": "agents",
       "title": "A2A (Agent-to-Agent)",
       "sidebarPosition": 1,
-      "description": null
+      "description": "A2A lets an AI agent delegate multi-step tasks to other agents, possibly owned by different organizations -- a different problem than MCP's tool access."
     },
     "/docs/agents/agent-architectures": {
       "slug": "agents/agent-architectures",
@@ -61,7 +61,7 @@
       "section": "agents",
       "title": "MCP (Model Context Protocol)",
       "sidebarPosition": 1,
-      "description": null
+      "description": "MCP standardizes how an AI agent connects to tools and data sources, turning an M-times-N integration problem into a linear M-plus-N one, like USB-C for AI."
     },
     "/docs/agents/mcp/protocol-deep-dive": {
       "slug": "agents/mcp/protocol-deep-dive",
@@ -89,7 +89,7 @@
       "section": "agents",
       "title": "Agents Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "What actually makes an AI system an agent rather than a chatbot: architectures, tool use, memory, and multi-agent coordination, from first principles."
     },
     "/docs/agents/plan-and-execute": {
       "slug": "agents/plan-and-execute",
@@ -152,7 +152,7 @@
       "section": "ai-evaluation",
       "title": "AI Evaluation — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Evaluation methodology as its own discipline: benchmark design, LLM-as-judge, agent evaluation, and human/adversarial evaluation, gathered in one place."
     },
     "/docs/ai-evaluation/roadmap": {
       "slug": "ai-evaluation/roadmap",
@@ -173,7 +173,7 @@
       "section": "ai-for-science",
       "title": "AI for Science — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "How graph neural networks, generative models, and transformers get applied to protein structure prediction, drug discovery, genomics, and physics simulation."
     },
     "/docs/ai-for-science/roadmap": {
       "slug": "ai-for-science/roadmap",
@@ -194,7 +194,7 @@
       "section": "ai-safety",
       "title": "AI Safety & Alignment — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Alignment and RLHF, reward hacking, and scalable oversight -- what can go wrong in a powerful model even with no adversary attacking it at all."
     },
     "/docs/ai-safety/roadmap": {
       "slug": "ai-safety/roadmap",
@@ -229,7 +229,7 @@
       "section": "ai-security",
       "title": "AI Security — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Real attack surfaces unique to AI systems: prompt injection, model extraction, data poisoning, and the OWASP LLM Top 10, with real red-teaming tools covered."
     },
     "/docs/ai-security/owasp-llm-top-10-and-prompt-attacks": {
       "slug": "ai-security/owasp-llm-top-10-and-prompt-attacks",
@@ -250,7 +250,7 @@
       "section": "build-from-scratch",
       "title": "Build From Scratch — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Fifteen from-scratch builds, ordered by dependency, for the specific insight that only comes from implementing attention, backprop, or a tokenizer yourself."
     },
     "/docs/build-from-scratch/roadmap": {
       "slug": "build-from-scratch/roadmap",
@@ -306,7 +306,7 @@
       "section": "cli-reference",
       "title": "CLI Reference Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Real commands, verified against each tool's own docs, for Linux/shell, Git, Docker, kubectl, Terraform, and cloud CLIs -- a lookup, not a tutorial to read."
     },
     "/docs/cli-reference/python-and-js-package-managers": {
       "slug": "cli-reference/python-and-js-package-managers",
@@ -341,7 +341,7 @@
       "section": "computer-vision",
       "title": "Computer Vision — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "What an image actually is to a computer, the full vision-task taxonomy beyond classification, and where the field is headed -- video, 3D, vision-language."
     },
     "/docs/computer-vision/roadmap": {
       "slug": "computer-vision/roadmap",
@@ -397,7 +397,7 @@
       "section": "cs-fundamentals",
       "title": "CS Fundamentals for AI Engineers — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "The operating systems, networking, and software-engineering fundamentals most ML curricula skip entirely, and most AI engineering jobs actually require."
     },
     "/docs/cs-fundamentals/roadmap": {
       "slug": "cs-fundamentals/roadmap",
@@ -418,28 +418,28 @@
       "section": "databases",
       "title": "Graph Databases (Neo4j)",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Modeling and querying a Neo4j property graph with Cypher -- for when the relationships between entities matter as much as the entities themselves do."
     },
     "/docs/databases/nosql/overview": {
       "slug": "databases/nosql/overview",
       "section": "databases",
       "title": "NoSQL Databases",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Document stores, key-value stores, and wide-column stores explained as three genuinely different answers to relational databases' own scaling limits."
     },
     "/docs/databases/overview": {
       "slug": "databases/overview",
       "section": "databases",
       "title": "Databases Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Why a real AI system needs three different databases at once -- relational, vector, and graph -- and how to pick the right one for a given query shape."
     },
     "/docs/databases/relational/overview": {
       "slug": "databases/relational/overview",
       "section": "databases",
       "title": "Relational Databases (MySQL, Postgres)",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Joins, normalization, indexing, and transactions in Postgres/MySQL -- still the right default storage layer for most of what an ML system needs to store."
     },
     "/docs/databases/relational/postgresql": {
       "slug": "databases/relational/postgresql",
@@ -460,7 +460,7 @@
       "section": "databases",
       "title": "Vector Databases",
       "sidebarPosition": 3,
-      "description": null
+      "description": "How a vector database indexes millions of embeddings for fast approximate nearest-neighbor search -- the mechanics underneath every RAG system's retrieval."
     },
     "/docs/deep-learning/activation-functions": {
       "slug": "deep-learning/activation-functions",
@@ -551,7 +551,7 @@
       "section": "deep-learning",
       "title": "Deep Learning Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "From the single perceptron to the architecture behind every modern LLM: why depth works, and the training mechanics that make a deep network trainable."
     },
     "/docs/deep-learning/roadmap": {
       "slug": "deep-learning/roadmap",
@@ -600,7 +600,7 @@
       "section": "domain-applications",
       "title": "Domain AI Applications — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "What changes when general-purpose AI techniques meet healthcare, finance, or manufacturing's own data, regulatory constraints, and real-world stakes."
     },
     "/docs/domain-applications/roadmap": {
       "slug": "domain-applications/roadmap",
@@ -628,7 +628,7 @@
       "section": "frameworks",
       "title": "Frameworks Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "The actual tools you'll type into a terminal: PyTorch and Hugging Face, LangChain and LangGraph, vLLM and Triton, and CI/CD pipelines built for ML."
     },
     "/docs/frameworks/roadmap": {
       "slug": "frameworks/roadmap",
@@ -663,7 +663,7 @@
       "section": "graph-ml",
       "title": "Graph ML — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "The graph-ML task taxonomy, embedding methods like node2vec, knowledge graphs, and Graph RAG -- the rest of the picture beyond GNN architectures alone."
     },
     "/docs/graph-ml/roadmap": {
       "slug": "graph-ml/roadmap",
@@ -691,7 +691,7 @@
       "section": "interpretability",
       "title": "Interpretability — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "SHAP and LIME for any black-box model, extended all the way to mechanistic interpretability -- sparse autoencoders, circuits, and reading an LLM's computation."
     },
     "/docs/interpretability/roadmap": {
       "slug": "interpretability/roadmap",
@@ -733,7 +733,7 @@
       "section": "interview-prep",
       "title": "Interview Prep Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "DSA coding, ML-from-scratch coding, breadth Q&A, system design, and behavioral prep -- the drills for the actual AI/ML engineering interview loop."
     },
     "/docs/interview-prep/qa-quick-reference": {
       "slug": "interview-prep/qa-quick-reference",
@@ -796,7 +796,7 @@
       "section": "llms-genai",
       "title": "LLMs & GenAI Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "How the Transformer becomes a system like GPT or Claude: pretraining, alignment, prompting, RAG, and efficient production serving, stage by stage."
     },
     "/docs/llms-genai/prompt-engineering": {
       "slug": "llms-genai/prompt-engineering",
@@ -964,7 +964,7 @@
       "section": "machine-learning",
       "title": "Machine Learning Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "The classical ML toolkit in full derivation depth -- when gradient-boosted trees still beat a neural net, and the evaluation discipline every model needs."
     },
     "/docs/machine-learning/pca-svd": {
       "slug": "machine-learning/pca-svd",
@@ -1090,7 +1090,7 @@
       "section": "mathematics-for-ai",
       "title": "Mathematics for AI Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Linear algebra, calculus, probability, and algorithms -- the math foundations every other section on this site actually builds on, not just sits alongside."
     },
     "/docs/mathematics-for-ai/probability-statistics": {
       "slug": "mathematics-for-ai/probability-statistics",
@@ -1125,7 +1125,7 @@
       "section": "ml-system-design",
       "title": "ML System Design Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Architecting a model into a production system: data flow, serving infrastructure, evaluation, and the tradeoffs that decide whether it actually works live."
     },
     "/docs/ml-system-design/roadmap": {
       "slug": "ml-system-design/roadmap",
@@ -1335,7 +1335,7 @@
       "section": "mlops",
       "title": "MLOps Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Turning a model that works in a notebook into a system that serves real traffic reliably, gets monitored for drift, and retrains itself when the world shifts."
     },
     "/docs/mlops/pipeline-orchestration": {
       "slug": "mlops/pipeline-orchestration",
@@ -1384,7 +1384,7 @@
       "section": "nlp",
       "title": "NLP — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "How text was understood before Transformers -- tokenization, POS tagging, NER, and the classical task taxonomy still running under modern LLM pipelines."
     },
     "/docs/nlp/roadmap": {
       "slug": "nlp/roadmap",
@@ -1615,7 +1615,7 @@
       "section": "practice-problems",
       "title": "Practice Problems: Implement AI/ML From Scratch",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Deep-ml.com-style coding problems: implement the function in a real in-browser Python sandbox, run it against real tests, then see a real reference solution."
     },
     "/docs/practice-problems/pair-with-target-sum": {
       "slug": "practice-problems/pair-with-target-sum",
@@ -1748,7 +1748,7 @@
       "section": "projects",
       "title": "Projects — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "A six-level project ladder from an afternoon build to a genuine capstone, plus a living atlas of concrete problem statements worth actually building."
     },
     "/docs/projects/problem-statement-atlas": {
       "slug": "projects/problem-statement-atlas",
@@ -1790,7 +1790,7 @@
       "section": "python-engineering",
       "title": "Python Engineering for AI — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "The Python engineering, not just syntax, that separates a one-off notebook cell from code a team can run in production for years -- concurrency, memory, tooling."
     },
     "/docs/python-engineering/packaging-testing-and-tooling": {
       "slug": "python-engineering/packaging-testing-and-tooling",
@@ -1825,7 +1825,7 @@
       "section": "reinforcement-learning",
       "title": "Reinforcement Learning — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "MDPs, the Bellman equations, Q-learning, and bandits from first principles -- the theory behind every RLHF, PPO, and DQN reference elsewhere on this site."
     },
     "/docs/reinforcement-learning/rl-fundamentals": {
       "slug": "reinforcement-learning/rl-fundamentals",
@@ -1853,7 +1853,7 @@
       "section": "research-engineering",
       "title": "Research Engineering — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "How to actually read an AI paper well, and how the field's landmark architectures connect across time -- the meta-skill underneath every technique here."
     },
     "/docs/research-engineering/paper-timeline": {
       "slug": "research-engineering/paper-timeline",
@@ -1881,7 +1881,7 @@
       "section": "roadmaps",
       "title": "The Neural Mastery Roadmap",
       "sidebarPosition": 1,
-      "description": null
+      "description": "One ordered path through every section on this site, from zero to job-ready -- plus shorter, goal-specific routes for ML, LLM, research, or infra roles."
     },
     "/docs/roadmaps/suggested-paths": {
       "slug": "roadmaps/suggested-paths",
@@ -1902,7 +1902,7 @@
       "section": "speech-audio",
       "title": "Speech & Audio AI — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Turning a continuous audio waveform into something a neural network can learn from -- Fourier transforms, spectrograms, MFCCs, and the tasks built on them."
     },
     "/docs/speech-audio/roadmap": {
       "slug": "speech-audio/roadmap",
@@ -2007,7 +2007,7 @@
       "section": "visual-lab",
       "title": "Visual Lab — Overview",
       "sidebarPosition": 1,
-      "description": null
+      "description": "Every visualization here is live -- set the parameters, click the canvas, and watch gradient descent or a neural network respond to your input in real time."
     },
     "/docs/visual-lab/rag-pipeline-simulator": {
       "slug": "visual-lab/rag-pipeline-simulator",
