@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
+import { normalizePracticeProblemPermalink } from '../lib/gamification';
 
 const STORAGE_KEY = 'neural-mastery-progress';
 
@@ -42,24 +43,50 @@ interface ProgressContextValue {
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
 
+/** Which of two entries for the SAME permalink represents further-along
+ * progress -- higher stage wins; a tie breaks on the more recent markedAt.
+ * Used to merge a browser's local progress into a signed-in user's
+ * existing Firestore progress on first sign-in (so signing in on a second
+ * device can never make a page look LESS understood than it already did on
+ * either side), and inside normalize() below for the rare case an old- and
+ * new-style practice-problem permalink collide on the same real page after
+ * normalization. */
+function moreAdvanced(a: ProgressEntry, b: ProgressEntry): ProgressEntry {
+  const aStage = a.stage ?? 0;
+  const bStage = b.stage ?? 0;
+  if (aStage !== bStage) return aStage > bStage ? a : b;
+  return (a.markedAt ?? 0) >= (b.markedAt ?? 0) ? a : b;
+}
+
 /** Old storage entries were a bare `true`; new ones are a ProgressEntry
  * object. Normalizes either into the current shape so every consumer only
  * ever deals with one shape, without forcing an eager localStorage rewrite
  * on every page load. Also the shape Firestore data is normalized through
  * (a signed-in user's very first sync writes local-format entries there
- * directly, so this same normalizer covers both sources). */
+ * directly, so this same normalizer covers both sources).
+ *
+ * Also rewrites any old-style /docs/practice-problems/<slug> permalink key
+ * to its real, current /practice/<slug> equivalent (see
+ * normalizePracticeProblemPermalink's comment in gamification.ts) so a
+ * page marked understood before the Learn/Practice IA split doesn't look
+ * un-marked once its canonical URL moved. moreAdvanced() resolves the rare
+ * case where an old- and new-style permalink both normalize to the same
+ * real page. */
 function normalize(raw: unknown): UnderstoodMap {
   if (!raw || typeof raw !== 'object') return {};
   const out: UnderstoodMap = {};
-  for (const [permalink, value] of Object.entries(raw as Record<string, unknown>)) {
+  for (const [rawPermalink, value] of Object.entries(raw as Record<string, unknown>)) {
+    const permalink = normalizePracticeProblemPermalink(rawPermalink);
+    let entry: ProgressEntry | undefined;
     if (value === true) {
-      out[permalink] = { understood: true };
+      entry = { understood: true };
     } else if (value && typeof value === 'object' && (value as ProgressEntry).understood) {
       const v = value as ProgressEntry;
-      out[permalink] = { understood: true, markedAt: v.markedAt, stage: v.stage };
+      entry = { understood: true, markedAt: v.markedAt, stage: v.stage };
     }
     // Anything else (false, malformed) is dropped -- toggle() never
     // persists a `false`/absent-but-present entry in the first place.
+    if (entry) out[permalink] = out[permalink] ? moreAdvanced(out[permalink], entry) : entry;
   }
   return out;
 }
@@ -88,19 +115,6 @@ function isDue(entry: ProgressEntry, now: number): boolean {
   const stage = entry.stage ?? 0;
   const intervalDays = REVIEW_INTERVALS_DAYS[Math.min(stage, REVIEW_INTERVALS_DAYS.length - 1)];
   return now - entry.markedAt >= intervalDays * DAY_MS;
-}
-
-/** Which of two entries for the SAME permalink represents further-along
- * progress -- higher stage wins; a tie breaks on the more recent markedAt.
- * Used only to merge a browser's local progress into a signed-in user's
- * existing Firestore progress on first sign-in, so signing in on a second
- * device can never make a page look LESS understood than it already did
- * on either side. */
-function moreAdvanced(a: ProgressEntry, b: ProgressEntry): ProgressEntry {
-  const aStage = a.stage ?? 0;
-  const bStage = b.stage ?? 0;
-  if (aStage !== bStage) return aStage > bStage ? a : b;
-  return (a.markedAt ?? 0) >= (b.markedAt ?? 0) ? a : b;
 }
 
 /** Union of two understood-maps, keeping the more-advanced entry per page

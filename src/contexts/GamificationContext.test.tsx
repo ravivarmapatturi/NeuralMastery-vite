@@ -155,6 +155,43 @@ describe('GamificationContext: signed-out (localStorage only)', () => {
   })
 })
 
+describe('GamificationContext: practice-problem permalink migration (old /docs/practice-problems/<slug> -> /practice/<slug>)', () => {
+  it('an old-style stored award is read under its real, current /practice/<slug> permalink -- re-completing the SAME problem at its new URL does not double-award it', async () => {
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify([{ permalink: '/docs/practice-problems/dot-product', kind: 'complete', date: '2026-09-01', points: 50 }]),
+    )
+
+    function MigrationHarness() {
+      const { points, awardProblemCompleted } = useGamification()
+      return (
+        <div>
+          <div data-testid="points">{points}</div>
+          <button onClick={() => awardProblemCompleted('/practice/dot-product')}>complete-again</button>
+        </div>
+      )
+    }
+
+    render(
+      <AuthProvider>
+        <GamificationProvider>
+          <MigrationHarness />
+        </GamificationProvider>
+      </AuthProvider>,
+    )
+
+    expect(await screen.findByTestId('points')).toHaveTextContent('50')
+    const user = userEvent.setup()
+    await user.click(screen.getByText('complete-again'))
+    // Still 50, not 100 -- hasAward() checked the ALREADY-migrated in-memory
+    // permalink and correctly recognized this as the same, already-earned
+    // problem, so no new event was ever committed (award() returns early --
+    // the on-disk old-style key is left as-is until a REAL write happens,
+    // which is fine: readStorage() re-normalizes it every load regardless).
+    expect(screen.getByTestId('points')).toHaveTextContent('50')
+  })
+})
+
 describe('GamificationContext: Firestore merge on sign-in', () => {
   const fakeUser = { uid: 'user-1' } as unknown as User
 

@@ -44,7 +44,7 @@ def mse(y_true, y_pred):
     return sum(squared_errors) / len(squared_errors)
 ```
 
-A direct transcription: build the list of per-example squared errors $(\hat{y}^{(i)} - y^{(i)})^2$, then average it. The two guard clauses matter for the same reason as [Dot Product](/docs/practice-problems/dot-product)'s length check — `zip` truncating silently, or `sum([]) / 0` raising a confusing `ZeroDivisionError` deep inside a training loop instead of a clear message at the call site, are both worse failure modes than an explicit, early `ValueError`.
+A direct transcription: build the list of per-example squared errors $(\hat{y}^{(i)} - y^{(i)})^2$, then average it. The two guard clauses matter for the same reason as [Dot Product](/practice/dot-product)'s length check — `zip` truncating silently, or `sum([]) / 0` raising a confusing `ZeroDivisionError` deep inside a training loop instead of a clear message at the call site, are both worse failure modes than an explicit, early `ValueError`.
 
 In a real training loop this is computed on tensors (`((y_pred - y_true) ** 2).mean()` in NumPy/PyTorch) so it stays fully vectorized and differentiable — the loop version here is for understanding the mechanism, not what production code runs.
 
@@ -52,4 +52,4 @@ In a real training loop this is computed on tensors (`((y_pred - y_true) ** 2).m
 
 ---
 
-Next: [Weighted RMSE](/docs/practice-problems/weighted-rmse) (a harder variant), or skip ahead to [One Gradient Descent Step for Linear Regression](/docs/practice-problems/gradient-descent-step)
+Next: [Weighted RMSE](/practice/weighted-rmse) (a harder variant), or skip ahead to [One Gradient Descent Step for Linear Regression](/practice/gradient-descent-step)

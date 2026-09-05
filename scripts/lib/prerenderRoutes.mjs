@@ -11,10 +11,18 @@ import { join, relative } from 'node:path';
  * against the content root (node:path's relative(), the same function the
  * real script uses -- not a manual string slice, so this stays exactly
  * equivalent across platforms), strip the .mdx extension, normalize
- * Windows backslashes to forward slashes, prefix with /docs/. */
+ * Windows backslashes to forward slashes, prefix with /docs/ -- EXCEPT a
+ * practice-problems file, which maps to its real, current /practice/<slug>
+ * route instead (see contentTree.ts's practiceRoute(), the same remap
+ * applied at runtime; overview.mdx no longer exists on disk, superseded by
+ * the real /practice list page, so it's never passed in here). */
 export function routeFromMdxPath(absoluteFilePath, contentRoot) {
   const relPath = relative(contentRoot, absoluteFilePath).replace(/\.mdx$/, '');
   const posixPath = relPath.split('\\').join('/');
+  const PRACTICE_PREFIX = 'practice-problems/';
+  if (posixPath.startsWith(PRACTICE_PREFIX)) {
+    return `/practice/${posixPath.slice(PRACTICE_PREFIX.length)}`;
+  }
   return `/docs/${posixPath}`;
 }
 

@@ -12,6 +12,7 @@ import {
   levelForPoints,
   topicBreakdown,
   activityCounts,
+  normalizePracticeProblemPermalink,
   MARK_UNDERSTOOD_POINTS,
   PROBLEM_COMPLETED_POINTS,
   type AwardEvent,
@@ -215,6 +216,31 @@ describe('topicBreakdown', () => {
     const breakdown = topicBreakdown(events)
     expect(breakdown[0].groupKey).toBe('/docs/category/systems--infrastructure') // 50 > 10
     expect(breakdown).toHaveLength(2) // only groups with real points, not all 7
+  })
+})
+
+describe('normalizePracticeProblemPermalink', () => {
+  it('rewrites an old-style practice-problem permalink to its real, current /practice/<slug> form', () => {
+    expect(normalizePracticeProblemPermalink('/docs/practice-problems/dot-product')).toBe('/practice/dot-product')
+  })
+
+  it('rewrites the old overview permalink to /practice (the real list page), not a slug-shaped path', () => {
+    expect(normalizePracticeProblemPermalink('/docs/practice-problems/overview')).toBe('/practice')
+  })
+
+  it('leaves every other permalink -- including one that already uses the new /practice/ prefix -- completely untouched', () => {
+    expect(normalizePracticeProblemPermalink('/docs/deep-learning/attention-transformers')).toBe('/docs/deep-learning/attention-transformers')
+    expect(normalizePracticeProblemPermalink('/practice/dot-product')).toBe('/practice/dot-product')
+  })
+})
+
+describe('topicBreakdown: practice-problem permalinks', () => {
+  it('a /practice/<slug> permalink (the real, current practice-problem URL) still buckets into a real group, not silently dropped', () => {
+    const events: AwardEvent[] = [{ permalink: '/practice/dot-product', kind: 'complete', date: '2026-01-01', points: 50 }]
+    const breakdown = topicBreakdown(events)
+    expect(breakdown).toHaveLength(1)
+    expect(breakdown[0].groupKey).toBe('/docs/category/research--build')
+    expect(breakdown[0].points).toBe(50)
   })
 })
 

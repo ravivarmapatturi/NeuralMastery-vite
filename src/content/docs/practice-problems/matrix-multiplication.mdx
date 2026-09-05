@@ -46,7 +46,7 @@ def matmul(A, B):
     return result
 ```
 
-Three nested loops, directly matching $C_{ij} = \sum_k A_{ik} B_{kj}$: the outer two (`i`, `j`) walk every cell of the output, and the innermost `sum(...)` computes that cell as a dot product — literally [Dot Product From Scratch](/docs/practice-problems/dot-product) run once per output cell. The shape check happens before any work starts, since a silent shape mismatch (e.g. feeding a $(3\times4)$ activation into a $(3\times2)$ weight matrix) is exactly the class of bug that should fail loudly, not produce a wrong-shaped result.
+Three nested loops, directly matching $C_{ij} = \sum_k A_{ik} B_{kj}$: the outer two (`i`, `j`) walk every cell of the output, and the innermost `sum(...)` computes that cell as a dot product — literally [Dot Product From Scratch](/practice/dot-product) run once per output cell. The shape check happens before any work starts, since a silent shape mismatch (e.g. feeding a $(3\times4)$ activation into a $(3\times2)$ weight matrix) is exactly the class of bug that should fail loudly, not produce a wrong-shaped result.
 
 This is $O(m \cdot n \cdot p)$ — fine for small matrices, but real deep learning frameworks use BLAS-backed vectorized multiplication (`A @ B` in NumPy, or a GPU matmul kernel in PyTorch), which is orders of magnitude faster via cache-friendly memory access and hardware parallelism, not a different algorithm in principle.
 
@@ -54,4 +54,4 @@ This is $O(m \cdot n \cdot p)$ — fine for small matrices, but real deep learni
 
 ---
 
-Next: [Mean Squared Error From Scratch](/docs/practice-problems/mean-squared-error)
+Next: [Mean Squared Error From Scratch](/practice/mean-squared-error)

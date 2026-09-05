@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Easy** · Concept: [Probability & Statistics — Expectation, Variance, Covariance](/docs/mathematics-for-ai/probability-statistics#expectation-variance-covariance)
 
-For a dataset $x_1, \dots, x_n$, the mean is $\bar{x} = \frac{1}{n}\sum_i x_i$, and the **population variance** is the average squared deviation from that mean: $\sigma^2 = \frac{1}{n}\sum_i (x_i - \bar{x})^2$. Every summary statistic on this site — standard deviation, standardization/z-scores, the Gaussian assumption behind [MSE](/docs/practice-problems/mean-squared-error) — builds on these two numbers.
+For a dataset $x_1, \dots, x_n$, the mean is $\bar{x} = \frac{1}{n}\sum_i x_i$, and the **population variance** is the average squared deviation from that mean: $\sigma^2 = \frac{1}{n}\sum_i (x_i - \bar{x})^2$. Every summary statistic on this site — standard deviation, standardization/z-scores, the Gaussian assumption behind [MSE](/practice/mean-squared-error) — builds on these two numbers.
 
 **Your task**: implement `sample_mean_and_variance(data)`, returning a `(mean, variance)` tuple. Use the population definition above (divide by $n$, not $n-1$).
 
@@ -47,4 +47,4 @@ One thing worth knowing even though it isn't tested here: NumPy's `np.var` also 
 
 ---
 
-Next: [Standardize a Dataset (Z-Score Normalization)](/docs/practice-problems/standardize-dataset) (a harder variant), or skip ahead to [Bayes' Theorem: Posterior From Scratch](/docs/practice-problems/bayes-posterior)
+Next: [Standardize a Dataset (Z-Score Normalization)](/practice/standardize-dataset) (a harder variant), or skip ahead to [Bayes' Theorem: Posterior From Scratch](/practice/bayes-posterior)

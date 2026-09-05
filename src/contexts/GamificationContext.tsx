@@ -13,6 +13,7 @@ import {
   mergeEvents,
   localDateString,
   computeDisplayName,
+  normalizePracticeProblemPermalink,
 } from '../lib/gamification';
 import type { User } from 'firebase/auth';
 
@@ -34,12 +35,30 @@ interface GamificationContextValue {
 
 const GamificationContext = createContext<GamificationContextValue | null>(null);
 
+/** Rewrites any old-style /docs/practice-problems/<slug> permalink to its
+ * real, current /practice/<slug> equivalent (see normalizePracticeProblemPermalink's
+ * own comment in gamification.ts for why), then dedupes by permalink+kind
+ * via mergeEvents -- covers the edge case where an old-style and a
+ * genuinely new-style event for the same problem+kind both ended up in one
+ * source (e.g. a pre-migration award plus a same-session re-award before
+ * this normalization existed). Applied to every raw AwardEvent[] the
+ * instant it's read (local storage AND both Firestore read points below)
+ * so `events` in React state is always already in current-URL form -- a
+ * later award() call's hasAward() check then naturally sees the migrated
+ * permalink and won't double-award it. */
+function normalizeEvents(events: AwardEvent[]): AwardEvent[] {
+  return mergeEvents(
+    [],
+    events.map((e) => ({ ...e, permalink: normalizePracticeProblemPermalink(e.permalink) })),
+  );
+}
+
 function readStorage(): AwardEvent[] {
   if (typeof window === 'undefined') return [];
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
+    return normalizeEvents(Array.isArray(parsed) ? parsed : []);
   } catch {
     return [];
   }
@@ -124,7 +143,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc, onSnapshot }) => {
       if (cancelled) return;
       const snap = await getDoc(progressRef);
-      const remoteEvents: AwardEvent[] = Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [];
+      const remoteEvents: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
       const merged = mergeEvents(remoteEvents, readStorage());
       if (cancelled) return;
       await Promise.all([
@@ -135,7 +154,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
       unsubscribe = onSnapshot(progressRef, (snap) => {
         if (cancelled) return;
-        const remote: AwardEvent[] = Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [];
+        const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
         setEvents(remote);
         writeStorage(remote);
       });

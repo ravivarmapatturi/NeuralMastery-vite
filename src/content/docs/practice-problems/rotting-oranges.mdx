@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Medium** · Pattern: Graph BFS · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
 
-[Shortest Path in an Unweighted Graph](/docs/practice-problems/shortest-path-bfs) started BFS from a **single** node. This variant starts from **many nodes simultaneously**: a grid of oranges, where `2` = already rotten, `1` = fresh, `0` = empty. Every minute, rot spreads from every currently-rotten cell to its 4-directional fresh neighbors, all at once, in parallel. Find the minimum number of minutes until no fresh orange remains, or `-1` if some fresh orange can never be reached.
+[Shortest Path in an Unweighted Graph](/practice/shortest-path-bfs) started BFS from a **single** node. This variant starts from **many nodes simultaneously**: a grid of oranges, where `2` = already rotten, `1` = fresh, `0` = empty. Every minute, rot spreads from every currently-rotten cell to its 4-directional fresh neighbors, all at once, in parallel. Find the minimum number of minutes until no fresh orange remains, or `-1` if some fresh orange can never be reached.
 
 **The technique**: seed the BFS queue with **every** rotten cell at time `0` up front, instead of one starting node — from there it's ordinary level-by-level BFS, and it correctly models simultaneous spreading because all the minute-0 sources get processed before any minute-1 cell does.
 
@@ -78,4 +78,4 @@ Seeding the queue with **every** rotten cell before the BFS loop even starts is 
 
 ---
 
-Next: [Right Side View of a Binary Tree](/docs/practice-problems/right-side-view)
+Next: [Right Side View of a Binary Tree](/practice/right-side-view)

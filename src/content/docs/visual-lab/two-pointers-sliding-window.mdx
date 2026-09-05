@@ -9,15 +9,15 @@ import TwoPointersSlidingWindowExplorer from '../../../viz/TwoPointersSlidingWin
 
 # Two Pointers & Sliding Window, Step by Step
 
-[General Coding (DSA)](/docs/interview-prep/dsa-coding#core-patterns-to-drill) calls two pointers and sliding window "the majority of easy/medium problems" — and both are patterns where watching the pointers actually move earns its place over reading code cold. Edit the array or string below and step through the real algorithm one move at a time — the exact logic behind [Pair With Target Sum](/docs/practice-problems/pair-with-target-sum) and [Longest Run of Unique Characters](/docs/practice-problems/longest-unique-run), computed live, not pre-rendered.
+[General Coding (DSA)](/docs/interview-prep/dsa-coding#core-patterns-to-drill) calls two pointers and sliding window "the majority of easy/medium problems" — and both are patterns where watching the pointers actually move earns its place over reading code cold. Edit the array or string below and step through the real algorithm one move at a time — the exact logic behind [Pair With Target Sum](/practice/pair-with-target-sum) and [Longest Run of Unique Characters](/practice/longest-unique-run), computed live, not pre-rendered.
 
 <TwoPointersSlidingWindowExplorer />
 
 ## What to Try
 
-- **Two Pointers**: leave the default array and target (`1, 2, 3, 4, 6` → target `6`), and step through — watch **L** and **R** narrow in from both ends, and read the comparison text at each step (`too small, move L right` / `too big, move R left`) until they land on the match. Then change the target to a value with no valid pair (like `100`) and watch the pointers cross with no match — the exact "exhausted" case [Pair With Target Sum's solution](/docs/practice-problems/pair-with-target-sum) raises `ValueError` on.
+- **Two Pointers**: leave the default array and target (`1, 2, 3, 4, 6` → target `6`), and step through — watch **L** and **R** narrow in from both ends, and read the comparison text at each step (`too small, move L right` / `too big, move R left`) until they land on the match. Then change the target to a value with no valid pair (like `100`) and watch the pointers cross with no match — the exact "exhausted" case [Pair With Target Sum's solution](/practice/pair-with-target-sum) raises `ValueError` on.
 - **Two Pointers**: try `-3, 0, 1, 2, 5` with target `2` — the match uses a negative number, a case worth seeing the pointers actually handle rather than just trusting the formula.
-- **Sliding Window**: leave the default string (`abcabcbb`) and step through slowly — watch the window grow character by character, then watch it **jump** the moment a repeat shows up (at the second `a`), and see the "best so far" tracker update in real time. This is exactly the mechanism behind [Longest Run of Unique Characters](/docs/practice-problems/longest-unique-run) and the much harder [Minimum Window Substring](/docs/practice-problems/min-window-substring).
+- **Sliding Window**: leave the default string (`abcabcbb`) and step through slowly — watch the window grow character by character, then watch it **jump** the moment a repeat shows up (at the second `a`), and see the "best so far" tracker update in real time. This is exactly the mechanism behind [Longest Run of Unique Characters](/practice/longest-unique-run) and the much harder [Minimum Window Substring](/practice/min-window-substring).
 - **Sliding Window**: try `pwwkew` — watch the window jump twice, once for each repeated `w`, and notice the best window found (`wke`, length 3) isn't the one still open when the string ends — exactly why the algorithm has to track "best so far" throughout, not just report the final window.
 
 Back to [Visual Lab Overview](/docs/visual-lab/overview).

@@ -64,8 +64,11 @@ function routesFromContentTree() {
 // physical file exists at dist/progress/index.html for a client-side-only
 // route). Keep this in sync with App.tsx's <Route> list by hand -- it's
 // short and changes rarely enough that walking the router tree
-// programmatically isn't worth the complexity.
-const APP_ROUTES = ['/', '/progress'];
+// programmatically isn't worth the complexity. '/practice' is the real
+// problem-LIST page (eagerly rendered, like '/' and '/progress' -- see the
+// readySelector split below); the individual /practice/<slug> problem
+// pages themselves come from routesFromContentTree()'s remap instead.
+const APP_ROUTES = ['/', '/learn', '/progress', '/practice'];
 
 async function waitForServer(url, timeoutMs = 15000) {
   const start = Date.now();
@@ -138,7 +141,13 @@ async function main() {
         // Suspense boundary to wait past -- so a plain top-level <h1> is
         // just as real a readiness signal there as article.prose h1 is for
         // a /docs/* MDX page.
-        const readySelector = route.startsWith('/docs/') ? 'article.prose h1' : 'h1';
+        // An individual /practice/<slug> problem page is the same
+        // lazy-loaded-MDX-inside-article.prose shape as a /docs/* page
+        // (see PracticeProblemLayout.tsx), so it needs the same wait --
+        // but the bare '/practice' list page itself is eagerly rendered
+        // like Home/ProgressPage, hence the explicit `!== '/practice'`.
+        const isLazyMdxRoute = route.startsWith('/docs/') || (route.startsWith('/practice/') && route !== '/practice');
+        const readySelector = isLazyMdxRoute ? 'article.prose h1' : 'h1';
         await page.waitForSelector(readySelector, { timeout: 15000 });
         await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
         await page.waitForTimeout(300);

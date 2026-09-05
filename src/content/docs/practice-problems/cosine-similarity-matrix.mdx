@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Medium** · Concept: [Word Embeddings — The Distributional Hypothesis](/docs/nlp/word-embeddings#the-core-idea-the-distributional-hypothesis)
 
-[Cosine Similarity From Scratch](/docs/practice-problems/cosine-similarity) compared exactly two vectors. A real embedding search or clustering step needs **every pair at once**: given $n$ vectors, produce the full $n \times n$ matrix where entry $(i, j)$ is the cosine similarity between vector $i$ and vector $j$ — exactly the computation underneath comparing a batch of query embeddings against a batch of candidates, or building the similarity graph a [vector database](/docs/databases/roadmap) index is organized around.
+[Cosine Similarity From Scratch](/practice/cosine-similarity) compared exactly two vectors. A real embedding search or clustering step needs **every pair at once**: given $n$ vectors, produce the full $n \times n$ matrix where entry $(i, j)$ is the cosine similarity between vector $i$ and vector $j$ — exactly the computation underneath comparing a batch of query embeddings against a batch of candidates, or building the similarity graph a [vector database](/docs/databases/roadmap) index is organized around.
 
 **The genuine edge case**: a vector with zero magnitude (all-zero) makes cosine similarity undefined for *every* pair it's involved in — $\frac{\cdot}{0}$ has no answer, so the whole computation has to fail loudly rather than silently produce a `nan`-filled row.
 
@@ -82,4 +82,4 @@ Worth knowing, even though it isn't exploited here for simplicity: this matrix i
 
 ---
 
-Next: [TF-IDF Weight From Scratch](/docs/practice-problems/tf-idf-weight)
+Next: [TF-IDF Weight From Scratch](/practice/tf-idf-weight)

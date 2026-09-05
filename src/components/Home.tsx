@@ -52,13 +52,17 @@ function buildSectionAccent(): Record<string, { groupKey: string; color: string 
 }
 
 /**
- * The landing page. Built around one idea: prove the site's differentiator
- * (real, computed, interactive visualizations -- not static diagrams)
- * directly in the hero, rather than describing it in marketing copy. No
- * skill-level segmentation (kids/beginner/expert) -- the topic-first
- * organization mirrors the sidebar, and the underlying intuition ->
- * visualization -> math -> code structure on every page already serves
- * every level without asking anyone to self-select.
+ * The Learn destination -- mounted at /learn, not the site root (see
+ * ChooserPage, the real root "/" now shows). Built around one idea: prove
+ * the site's differentiator (real, computed, interactive visualizations --
+ * not static diagrams) directly in the hero, rather than describing it in
+ * marketing copy. No skill-level segmentation (kids/beginner/expert) -- the
+ * topic-first organization mirrors the sidebar, and the underlying
+ * intuition -> visualization -> math -> code structure on every page
+ * already serves every level without asking anyone to self-select.
+ * Practice content deliberately isn't teased here anymore -- Practice is
+ * its own first-class destination now (see PracticeListPage), not an
+ * inline card on what's supposed to be a Learn-focused page.
  */
 export default function Home() {
   useDocumentTitle();
@@ -67,8 +71,6 @@ export default function Home() {
   const flatPages = getFlatPages();
   const totalPages = flatPages.length;
   const accent = buildSectionAccent();
-  // -1 excludes the section's own overview page from the count of actual problems.
-  const practiceProblemCount = Math.max(0, (sections.find((s) => s.id === 'practice-problems')?.pages.length ?? 1) - 1);
 
   const { understood, isUnderstood, countWithin, dueForReview } = useProgress();
   // Gated on real, currently-existing pages (not raw understood-map key
@@ -230,30 +232,6 @@ export default function Home() {
                 More real interview questions, across LLMs, RAG, and agents →
               </Link>
             </div>
-
-            <Link
-              to="/docs/practice-problems/overview"
-              className="nm-home-card"
-              style={{
-                display: 'block',
-                padding: '1.25rem',
-                borderRadius: 12,
-                border: '1px solid var(--nm-border)',
-                background: 'var(--nm-surface)',
-                textDecoration: 'none',
-              }}
-            >
-              <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)', marginBottom: 4 }}>
-                Write real code
-              </div>
-              <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 0.75rem', lineHeight: 1.5 }}>
-                Implement a function yourself in a real, in-browser Python sandbox — run it against real test
-                cases (pass/fail, no LLM grading), then reveal a reference solution.
-              </p>
-              <span style={{ fontSize: 13, color: 'var(--nm-accent-primary)' }}>
-                {practiceProblemCount}+ problems: linear algebra to RL →
-              </span>
-            </Link>
           </div>
         </div>
       </section>

@@ -46,7 +46,7 @@ def cosine_similarity(a, b):
     return dot / (norm_a * norm_b)
 ```
 
-The numerator is exactly [Dot Product](/docs/practice-problems/dot-product); the denominator normalizes by each vector's own length (its L2 norm), which is what strips magnitude out of the comparison entirely — `[3, 4]` and `[6, 8]` are the same direction scaled by 2, and both give a cosine similarity of exactly `1.0` despite one vector being twice as long as the other. `[1, 0]` vs `[0, 1]` (perpendicular) gives `0.0`, and `[1, 0]` vs `[-1, 0]` (opposite) gives `-1.0` — the three landmark values worth having memorized.
+The numerator is exactly [Dot Product](/practice/dot-product); the denominator normalizes by each vector's own length (its L2 norm), which is what strips magnitude out of the comparison entirely — `[3, 4]` and `[6, 8]` are the same direction scaled by 2, and both give a cosine similarity of exactly `1.0` despite one vector being twice as long as the other. `[1, 0]` vs `[0, 1]` (perpendicular) gives `0.0`, and `[1, 0]` vs `[-1, 0]` (opposite) gives `-1.0` — the three landmark values worth having memorized.
 
 In practice you'd use `numpy`'s vectorized dot/norm, or for embedding search at scale, an approximate-nearest-neighbor index (see [Vector Databases](/docs/databases/roadmap)) that never computes most pairwise similarities explicitly at all — but the definition here is exactly what those systems are optimizing around.
 
@@ -54,4 +54,4 @@ In practice you'd use `numpy`'s vectorized dot/norm, or for embedding search at 
 
 ---
 
-Next: [Pairwise Cosine Similarity Matrix](/docs/practice-problems/cosine-similarity-matrix) (a harder variant), or skip ahead to [TF-IDF Weight From Scratch](/docs/practice-problems/tf-idf-weight)
+Next: [Pairwise Cosine Similarity Matrix](/practice/cosine-similarity-matrix) (a harder variant), or skip ahead to [TF-IDF Weight From Scratch](/practice/tf-idf-weight)

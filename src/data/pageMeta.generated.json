@@ -5,2079 +5,2664 @@
       "section": "agents",
       "title": "A2A (Agent-to-Agent)",
       "sidebarPosition": 1,
-      "description": "A2A lets an AI agent delegate multi-step tasks to other agents, possibly owned by different organizations -- a different problem than MCP's tool access."
+      "description": "A2A lets an AI agent delegate multi-step tasks to other agents, possibly owned by different organizations -- a different problem than MCP's tool access.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/agent-architectures": {
       "slug": "agents/agent-architectures",
       "section": "agents",
       "title": "Agent Architectures",
       "sidebarPosition": 4,
-      "description": "The real evolution from a single prompt to a full agent graph -- ReAct, plan-and-execute, and every architecture's tradeoff between reliability and cost."
+      "description": "The real evolution from a single prompt to a full agent graph -- ReAct, plan-and-execute, and every architecture's tradeoff between reliability and cost.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/agent-fundamentals": {
       "slug": "agents/agent-fundamentals",
       "section": "agents",
       "title": "Agent Fundamentals",
       "sidebarPosition": 3,
-      "description": "What actually makes an LLM an agent: the observe-act loop, tool/function calling, argument schema validation, and short vs long-term memory as retrieval."
+      "description": "What actually makes an LLM an agent: the observe-act loop, tool/function calling, argument schema validation, and short vs long-term memory as retrieval.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/agentic-coding-assistants": {
       "slug": "agents/agentic-coding-assistants",
       "section": "agents",
       "title": "Agentic Coding Assistants",
       "sidebarPosition": 5.5,
-      "description": "Claude Code, Cursor, Gemini CLI, and Windsurf -- the named, real agent loop that reads a codebase, edits real files, and runs real commands, not a toy example."
+      "description": "Claude Code, Cursor, Gemini CLI, and Windsurf -- the named, real agent loop that reads a codebase, edits real files, and runs real commands, not a toy example.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/browser-automation": {
       "slug": "agents/browser-automation",
       "section": "agents",
       "title": "Browser Automation Agents",
       "sidebarPosition": 7,
-      "description": "How browser automation agents like browser-use act on a page's real DOM via indexed elements instead of screenshot coordinates, unlike computer-use."
+      "description": "How browser automation agents like browser-use act on a page's real DOM via indexed elements instead of screenshot coordinates, unlike computer-use.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/computer-use": {
       "slug": "agents/computer-use",
       "section": "agents",
       "title": "Computer-Use & GUI Agents",
       "sidebarPosition": 8,
-      "description": "How computer-use/GUI agents work: screenshot in, pixel-coordinate clicks out, Anthropic's real tool loop, and why the blast radius is larger than tool calls."
+      "description": "How computer-use/GUI agents work: screenshot in, pixel-coordinate clicks out, Anthropic's real tool loop, and why the blast radius is larger than tool calls.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/context-engineering": {
       "slug": "agents/context-engineering",
       "section": "agents",
       "title": "Context Engineering",
       "sidebarPosition": 3.5,
-      "description": "Why context windows need active management, not just better prompts -- context rot, and the four real strategies for curating an agent's context."
+      "description": "Why context windows need active management, not just better prompts -- context rot, and the four real strategies for curating an agent's context.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/loops-and-graphs": {
       "slug": "agents/loops-and-graphs",
       "section": "agents",
       "title": "Loops and Graphs: The Actual Anatomy",
       "sidebarPosition": 4.5,
-      "description": "What's actually inside a Loop vs. a Graph -- a real, checkable pass/fail condition, not a vibe, is what makes one unit of agent work correct at all."
+      "description": "What's actually inside a Loop vs. a Graph -- a real, checkable pass/fail condition, not a vibe, is what makes one unit of agent work correct at all.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/mcp/overview": {
       "slug": "agents/mcp/overview",
       "section": "agents",
       "title": "MCP (Model Context Protocol)",
       "sidebarPosition": 1,
-      "description": "MCP standardizes how an AI agent connects to tools and data sources, turning an M-times-N integration problem into a linear M-plus-N one, like USB-C for AI."
+      "description": "MCP standardizes how an AI agent connects to tools and data sources, turning an M-times-N integration problem into a linear M-plus-N one, like USB-C for AI.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/mcp/protocol-deep-dive": {
       "slug": "agents/mcp/protocol-deep-dive",
       "section": "agents",
       "title": "MCP Protocol Deep Dive",
       "sidebarPosition": 2,
-      "description": "The real MCP spec (2025-06-18) underneath the conceptual overview -- JSON-RPC transport, stdio vs. remote, and how a server actually gets deployed safely."
+      "description": "The real MCP spec (2025-06-18) underneath the conceptual overview -- JSON-RPC transport, stdio vs. remote, and how a server actually gets deployed safely.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/multi-agent-systems": {
       "slug": "agents/multi-agent-systems",
       "section": "agents",
       "title": "Multi-Agent Systems",
       "sidebarPosition": 5,
-      "description": "The three coordination topologies for when one agent isn't enough, drawn as actual graphs -- the real tradeoff between debuggability and flexibility."
+      "description": "The three coordination topologies for when one agent isn't enough, drawn as actual graphs -- the real tradeoff between debuggability and flexibility.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/no-code-automation": {
       "slug": "agents/no-code-automation",
       "section": "agents",
       "title": "No-Code Agent Automation",
       "sidebarPosition": 6,
-      "description": "How n8n's visual AI Agent actually works under the hood: cluster nodes, the unified Tools Agent, MCP-proxied tools, and modular memory backends."
+      "description": "How n8n's visual AI Agent actually works under the hood: cluster nodes, the unified Tools Agent, MCP-proxied tools, and modular memory backends.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/overview": {
       "slug": "agents/overview",
       "section": "agents",
       "title": "Agents Overview",
       "sidebarPosition": 1,
-      "description": "What actually makes an AI system an agent rather than a chatbot: architectures, tool use, memory, and multi-agent coordination, from first principles."
+      "description": "What actually makes an AI system an agent rather than a chatbot: architectures, tool use, memory, and multi-agent coordination, from first principles.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/plan-and-execute": {
       "slug": "agents/plan-and-execute",
       "section": "agents",
       "title": "Plan-and-Execute",
       "sidebarPosition": 4.2,
-      "description": "Plan the whole task before acting on any of it, then execute with far less per-step reasoning than ReAct -- and what a replanner does when reality diverges."
+      "description": "Plan the whole task before acting on any of it, then execute with far less per-step reasoning than ReAct -- and what a replanner does when reality diverges.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/reflection-self-critique": {
       "slug": "agents/reflection-self-critique",
       "section": "agents",
       "title": "Reflection / Self-Critique",
       "sidebarPosition": 4.3,
-      "description": "The real Reflexion architecture (Shinn et al. 2023): Actor, Evaluator, and Self-Reflection as three distinct models -- verbal feedback in place of retraining."
+      "description": "The real Reflexion architecture (Shinn et al. 2023): Actor, Evaluator, and Self-Reflection as three distinct models -- verbal feedback in place of retraining.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/roadmap": {
       "slug": "agents/roadmap",
       "section": "agents",
       "title": "Agents — Roadmap",
       "sidebarPosition": 2,
-      "description": "How LLMs go from answering questions to taking action: tool use, context engineering, agent architectures, MCP/A2A protocols, and multi-agent systems."
+      "description": "How LLMs go from answering questions to taking action: tool use, context engineering, agent architectures, MCP/A2A protocols, and multi-agent systems.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/routing-and-supervisor": {
       "slug": "agents/routing-and-supervisor",
       "section": "agents",
       "title": "Routing & Supervisor Pattern",
       "sidebarPosition": 4.6,
-      "description": "Routing decides which agent handles a task once, up front; a supervisor decides it again after every result -- two patterns for a different frequency."
+      "description": "Routing decides which agent handles a task once, up front; a supervisor decides it again after every result -- two patterns for a different frequency.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/agents/single-vs-multi-agent": {
       "slug": "agents/single-vs-multi-agent",
       "section": "agents",
       "title": "Single-Agent vs. Multi-Agent",
       "sidebarPosition": 4.7,
-      "description": "Why the default answer is don't split: the three real triggers (context overload, parallelism, tool access) that justify a multi-agent design."
+      "description": "Why the default answer is don't split: the three real triggers (context overload, parallelism, tool access) that justify a multi-agent design.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-evaluation/evaluation-fundamentals": {
       "slug": "ai-evaluation/evaluation-fundamentals",
       "section": "ai-evaluation",
       "title": "Evaluation Fundamentals",
       "sidebarPosition": 3,
-      "description": "Why a benchmark number isn't automatically a trustworthy measurement: construct validity, contamination, saturation, and stale golden datasets, made concrete."
+      "description": "Why a benchmark number isn't automatically a trustworthy measurement: construct validity, contamination, saturation, and stale golden datasets, made concrete.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-evaluation/human-and-adversarial-evaluation": {
       "slug": "ai-evaluation/human-and-adversarial-evaluation",
       "section": "ai-evaluation",
       "title": "Human & Adversarial Evaluation",
       "sidebarPosition": 5,
-      "description": "Human eval methodology and adversarial red-teaming -- two structurally different rigor gaps, one hiding as noise, the other invisible until attacked."
+      "description": "Human eval methodology and adversarial red-teaming -- two structurally different rigor gaps, one hiding as noise, the other invisible until attacked.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-evaluation/llm-rag-agent-evaluation": {
       "slug": "ai-evaluation/llm-rag-agent-evaluation",
       "section": "ai-evaluation",
       "title": "LLM, RAG & Agent Evaluation",
       "sidebarPosition": 4,
-      "description": "LLM-as-judge position/verbosity bias, judge validation, and agent trajectory evaluation -- why the thing doing the measuring needs its own evaluation too."
+      "description": "LLM-as-judge position/verbosity bias, judge validation, and agent trajectory evaluation -- why the thing doing the measuring needs its own evaluation too.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-evaluation/overview": {
       "slug": "ai-evaluation/overview",
       "section": "ai-evaluation",
       "title": "AI Evaluation — Overview",
       "sidebarPosition": 1,
-      "description": "Evaluation methodology as its own discipline: benchmark design, LLM-as-judge, agent evaluation, and human/adversarial evaluation, gathered in one place."
+      "description": "Evaluation methodology as its own discipline: benchmark design, LLM-as-judge, agent evaluation, and human/adversarial evaluation, gathered in one place.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-evaluation/roadmap": {
       "slug": "ai-evaluation/roadmap",
       "section": "ai-evaluation",
       "title": "AI Evaluation — Roadmap",
       "sidebarPosition": 2,
-      "description": "Evaluation fundamentals, LLM/RAG/agent evaluation, and human & adversarial testing -- three sections covering how to know whether an AI system is actually good."
+      "description": "Evaluation fundamentals, LLM/RAG/agent evaluation, and human & adversarial testing -- three sections covering how to know whether an AI system is actually good.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-for-science/ai-for-science-fundamentals": {
       "slug": "ai-for-science/ai-for-science-fundamentals",
       "section": "ai-for-science",
       "title": "AI for Science Fundamentals",
       "sidebarPosition": 3,
-      "description": "How ML accelerates science: drug discovery, protein structure prediction, genomics, materials science, physics-informed neural networks, and simulation."
+      "description": "How ML accelerates science: drug discovery, protein structure prediction, genomics, materials science, physics-informed neural networks, and simulation.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-for-science/overview": {
       "slug": "ai-for-science/overview",
       "section": "ai-for-science",
       "title": "AI for Science — Overview",
       "sidebarPosition": 1,
-      "description": "How graph neural networks, generative models, and transformers get applied to protein structure prediction, drug discovery, genomics, and physics simulation."
+      "description": "How graph neural networks, generative models, and transformers get applied to protein structure prediction, drug discovery, genomics, and physics simulation.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-for-science/roadmap": {
       "slug": "ai-for-science/roadmap",
       "section": "ai-for-science",
       "title": "AI for Science — Roadmap",
       "sidebarPosition": 2,
-      "description": "Drug discovery, protein structure prediction, genomics, materials science, physics-informed neural networks, and scientific foundation models in one roadmap."
+      "description": "Drug discovery, protein structure prediction, genomics, materials science, physics-informed neural networks, and scientific foundation models in one roadmap.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-safety/alignment-and-rlhf": {
       "slug": "ai-safety/alignment-and-rlhf",
       "section": "ai-safety",
       "title": "Alignment & RLHF",
       "sidebarPosition": 3,
-      "description": "Reward hacking, specification gaming, and deception -- one underlying phenomenon (an optimizer exploiting a proxy objective) at three increasing depths."
+      "description": "Reward hacking, specification gaming, and deception -- one underlying phenomenon (an optimizer exploiting a proxy objective) at three increasing depths.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-safety/overview": {
       "slug": "ai-safety/overview",
       "section": "ai-safety",
       "title": "AI Safety & Alignment — Overview",
       "sidebarPosition": 1,
-      "description": "Alignment and RLHF, reward hacking, and scalable oversight -- what can go wrong in a powerful model even with no adversary attacking it at all."
+      "description": "Alignment and RLHF, reward hacking, and scalable oversight -- what can go wrong in a powerful model even with no adversary attacking it at all.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-safety/roadmap": {
       "slug": "ai-safety/roadmap",
       "section": "ai-safety",
       "title": "AI Safety & Alignment — Roadmap",
       "sidebarPosition": 2,
-      "description": "Alignment and RLHF, reward hacking, scalable oversight, and frontier model safety practices -- two sections on keeping AI systems behaving as intended."
+      "description": "Alignment and RLHF, reward hacking, scalable oversight, and frontier model safety practices -- two sections on keeping AI systems behaving as intended.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-safety/scalable-oversight-and-frontier-safety": {
       "slug": "ai-safety/scalable-oversight-and-frontier-safety",
       "section": "ai-safety",
       "title": "Scalable Oversight & Frontier Safety",
       "sidebarPosition": 4,
-      "description": "Debate, process-based oversight, and staged deployment -- what happens once a model gets too capable for a human evaluator to directly verify its answers."
+      "description": "Debate, process-based oversight, and staged deployment -- what happens once a model gets too capable for a human evaluator to directly verify its answers.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-security/ai-red-teaming": {
       "slug": "ai-security/ai-red-teaming",
       "section": "ai-security",
       "title": "AI Red Teaming & Adversarial Testing",
       "sidebarPosition": 5,
-      "description": "Real adversarial tools (PyRIT, Promptfoo) for systematically testing whether your specific agent is vulnerable, instead of just reading a taxonomy and hoping."
+      "description": "Real adversarial tools (PyRIT, Promptfoo) for systematically testing whether your specific agent is vulnerable, instead of just reading a taxonomy and hoping.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-security/model-and-data-attacks": {
       "slug": "ai-security/model-and-data-attacks",
       "section": "ai-security",
       "title": "Model & Data Attacks",
       "sidebarPosition": 4,
-      "description": "Model extraction, membership inference, poisoning, backdoors, and supply-chain attacks -- targeting what a model learned, not what it's told at runtime."
+      "description": "Model extraction, membership inference, poisoning, backdoors, and supply-chain attacks -- targeting what a model learned, not what it's told at runtime.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-security/overview": {
       "slug": "ai-security/overview",
       "section": "ai-security",
       "title": "AI Security — Overview",
       "sidebarPosition": 1,
-      "description": "Real attack surfaces unique to AI systems: prompt injection, model extraction, data poisoning, and the OWASP LLM Top 10, with real red-teaming tools covered."
+      "description": "Real attack surfaces unique to AI systems: prompt injection, model extraction, data poisoning, and the OWASP LLM Top 10, with real red-teaming tools covered.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-security/owasp-llm-top-10-and-prompt-attacks": {
       "slug": "ai-security/owasp-llm-top-10-and-prompt-attacks",
       "section": "ai-security",
       "title": "OWASP LLM Top 10 & Prompt Attacks",
       "sidebarPosition": 3,
-      "description": "The OWASP LLM Top 10 traced back to one structural gap: LLMs have no hard separation between trusted instructions and untrusted data, unlike SQL."
+      "description": "The OWASP LLM Top 10 traced back to one structural gap: LLMs have no hard separation between trusted instructions and untrusted data, unlike SQL.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ai-security/roadmap": {
       "slug": "ai-security/roadmap",
       "section": "ai-security",
       "title": "AI Security — Roadmap",
       "sidebarPosition": 2,
-      "description": "OWASP LLM Top 10, model and data attacks, and real red-teaming tools (PyRIT, Promptfoo) mapped to MITRE ATLAS -- three sections on securing AI systems."
+      "description": "OWASP LLM Top 10, model and data attacks, and real red-teaming tools (PyRIT, Promptfoo) mapped to MITRE ATLAS -- three sections on securing AI systems.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/build-from-scratch/overview": {
       "slug": "build-from-scratch/overview",
       "section": "build-from-scratch",
       "title": "Build From Scratch — Overview",
       "sidebarPosition": 1,
-      "description": "Fifteen from-scratch builds, ordered by dependency, for the specific insight that only comes from implementing attention, backprop, or a tokenizer yourself."
+      "description": "Fifteen from-scratch builds, ordered by dependency, for the specific insight that only comes from implementing attention, backprop, or a tokenizer yourself.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/build-from-scratch/roadmap": {
       "slug": "build-from-scratch/roadmap",
       "section": "build-from-scratch",
       "title": "Build From Scratch — Roadmap",
       "sidebarPosition": 2,
-      "description": "Fourteen from-scratch builds, an autodiff engine to a distributed trainer -- a BPE tokenizer, GPT, LoRA, RAG pipeline, and agent, no framework shortcuts."
+      "description": "Fourteen from-scratch builds, an autodiff engine to a distributed trainer -- a BPE tokenizer, GPT, LoRA, RAG pipeline, and agent, no framework shortcuts.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/build-from-scratch/the-build-list": {
       "slug": "build-from-scratch/the-build-list",
       "section": "build-from-scratch",
       "title": "The Build List",
       "sidebarPosition": 3,
-      "description": "Fifteen from-scratch builds ordered by dependency, each with a concrete 'done when' target -- NumPy arrays, backprop, attention, and beyond, no framework."
+      "description": "Fifteen from-scratch builds ordered by dependency, each with a concrete 'done when' target -- NumPy arrays, backprop, attention, and beyond, no framework.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/cloud-cli-aws-azure-gcp": {
       "slug": "cli-reference/cloud-cli-aws-azure-gcp",
       "section": "cli-reference",
       "title": "Cloud CLIs: AWS, Azure, GCP",
       "sidebarPosition": 8,
-      "description": "AWS CLI, Azure CLI, and gcloud commands side by side for the same common tasks -- authentication, compute, storage, and managed Kubernetes."
+      "description": "AWS CLI, Azure CLI, and gcloud commands side by side for the same common tasks -- authentication, compute, storage, and managed Kubernetes.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/docker-and-compose": {
       "slug": "cli-reference/docker-and-compose",
       "section": "cli-reference",
       "title": "Docker & Compose",
       "sidebarPosition": 5,
-      "description": "Real docker build/run/exec/logs commands and Compose, for building, running, and debugging containers -- a lookup, not a theory page."
+      "description": "Real docker build/run/exec/logs commands and Compose, for building, running, and debugging containers -- a lookup, not a theory page.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/git-command-reference": {
       "slug": "cli-reference/git-command-reference",
       "section": "cli-reference",
       "title": "Git Command Reference",
       "sidebarPosition": 4,
-      "description": "Interactive rebase, bisect, reflog, and worktrees -- the Git commands that actually save you once history needs reshaping or something's gone wrong."
+      "description": "Interactive rebase, bisect, reflog, and worktrees -- the Git commands that actually save you once history needs reshaping or something's gone wrong.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/kubectl-command-reference": {
       "slug": "cli-reference/kubectl-command-reference",
       "section": "cli-reference",
       "title": "kubectl Command Reference",
       "sidebarPosition": 6,
-      "description": "Real kubectl commands for operating a live cluster -- contexts, resources, logs, and debugging -- the command reference underneath Kubernetes' concepts."
+      "description": "Real kubectl commands for operating a live cluster -- contexts, resources, logs, and debugging -- the command reference underneath Kubernetes' concepts.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/linux-and-shell-commands": {
       "slug": "cli-reference/linux-and-shell-commands",
       "section": "cli-reference",
       "title": "Linux & Shell Commands",
       "sidebarPosition": 3,
-      "description": "The real shell commands you'll actually type dozens of times a day debugging a live machine -- process inspection, file ops, and network diagnostics."
+      "description": "The real shell commands you'll actually type dozens of times a day debugging a live machine -- process inspection, file ops, and network diagnostics.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/overview": {
       "slug": "cli-reference/overview",
       "section": "cli-reference",
       "title": "CLI Reference Overview",
       "sidebarPosition": 1,
-      "description": "Real commands, verified against each tool's own docs, for Linux/shell, Git, Docker, kubectl, Terraform, and cloud CLIs -- a lookup, not a tutorial to read."
+      "description": "Real commands, verified against each tool's own docs, for Linux/shell, Git, Docker, kubectl, Terraform, and cloud CLIs -- a lookup, not a tutorial to read.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/python-and-js-package-managers": {
       "slug": "cli-reference/python-and-js-package-managers",
       "section": "cli-reference",
       "title": "Python & JS Package Managers",
       "sidebarPosition": 9,
-      "description": "The real pip, venv, Poetry, uv, and npm commands you'll actually type -- a command reference, not the packaging theory behind them."
+      "description": "The real pip, venv, Poetry, uv, and npm commands you'll actually type -- a command reference, not the packaging theory behind them.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/roadmap": {
       "slug": "cli-reference/roadmap",
       "section": "cli-reference",
       "title": "CLI Reference — Roadmap",
       "sidebarPosition": 2,
-      "description": "A command-line reference checklist: Linux/shell, Git, Docker, kubectl, Terraform, cloud CLIs, and package managers -- check off what you already know cold."
+      "description": "A command-line reference checklist: Linux/shell, Git, Docker, kubectl, Terraform, cloud CLIs, and package managers -- check off what you already know cold.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cli-reference/terraform-command-reference": {
       "slug": "cli-reference/terraform-command-reference",
       "section": "cli-reference",
       "title": "Terraform Command Reference",
       "sidebarPosition": 7,
-      "description": "Real terraform init/plan/apply commands, state surgery, and workspaces -- the command reference for actually driving declarative infrastructure."
+      "description": "Real terraform init/plan/apply commands, state surgery, and workspaces -- the command reference for actually driving declarative infrastructure.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/computer-vision/modern-vision-and-multimodal": {
       "slug": "computer-vision/modern-vision-and-multimodal",
       "section": "computer-vision",
       "title": "Modern Vision & Multimodal",
       "sidebarPosition": 5,
-      "description": "Where computer vision is heading: ViT vs CNN backbones in production, vision-language alignment, image/video generation, video understanding, and 3D vision."
+      "description": "Where computer vision is heading: ViT vs CNN backbones in production, vision-language alignment, image/video generation, video understanding, and 3D vision.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/computer-vision/overview": {
       "slug": "computer-vision/overview",
       "section": "computer-vision",
       "title": "Computer Vision — Overview",
       "sidebarPosition": 1,
-      "description": "What an image actually is to a computer, the full vision-task taxonomy beyond classification, and where the field is headed -- video, 3D, vision-language."
+      "description": "What an image actually is to a computer, the full vision-task taxonomy beyond classification, and where the field is headed -- video, 3D, vision-language.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/computer-vision/roadmap": {
       "slug": "computer-vision/roadmap",
       "section": "computer-vision",
       "title": "Computer Vision — Roadmap",
       "sidebarPosition": 2,
-      "description": "Vision fundamentals, tasks and models, and modern multimodal vision -- classical filtering through Vision Transformers, CLIP, and video generation."
+      "description": "Vision fundamentals, tasks and models, and modern multimodal vision -- classical filtering through Vision Transformers, CLIP, and video generation.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/computer-vision/vision-fundamentals": {
       "slug": "computer-vision/vision-fundamentals",
       "section": "computer-vision",
       "title": "Vision Fundamentals",
       "sidebarPosition": 3,
-      "description": "Pixels, channels, and color spaces -- the decades-old classical image-representation machinery still running underneath every modern vision pipeline."
+      "description": "Pixels, channels, and color spaces -- the decades-old classical image-representation machinery still running underneath every modern vision pipeline.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/computer-vision/vision-tasks-and-models": {
       "slug": "computer-vision/vision-tasks-and-models",
       "section": "computer-vision",
       "title": "Vision Tasks & Models",
       "sidebarPosition": 4,
-      "description": "The full computer-vision task taxonomy -- pose estimation, OCR, tracking, depth, optical flow -- beyond the classification/detection/segmentation core three."
+      "description": "The full computer-vision task taxonomy -- pose estimation, OCR, tracking, depth, optical flow -- beyond the classification/detection/segmentation core three.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cs-fundamentals/apis-http-and-protocols": {
       "slug": "cs-fundamentals/apis-http-and-protocols",
       "section": "cs-fundamentals",
       "title": "APIs, HTTP & Communication Patterns",
       "sidebarPosition": 5,
-      "description": "How HTTP, REST, and authentication actually work, plus FastAPI -- the foundation underneath every LLM API call, tool call, and model-serving endpoint."
+      "description": "How HTTP, REST, and authentication actually work, plus FastAPI -- the foundation underneath every LLM API call, tool call, and model-serving endpoint.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cs-fundamentals/linux-git-and-tooling": {
       "slug": "cs-fundamentals/linux-git-and-tooling",
       "section": "cs-fundamentals",
       "title": "Linux, Git & Developer Tooling",
       "sidebarPosition": 6,
-      "description": "Real shell commands, Git internals (blobs, trees, rebase vs. merge), and SSH/systemd/cron essentials every AI engineering job assumes you already know."
+      "description": "Real shell commands, Git internals (blobs, trees, rebase vs. merge), and SSH/systemd/cron essentials every AI engineering job assumes you already know.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cs-fundamentals/networking-and-distributed-systems": {
       "slug": "cs-fundamentals/networking-and-distributed-systems",
       "section": "cs-fundamentals",
       "title": "Networking & Distributed Systems",
       "sidebarPosition": 4,
-      "description": "HTTP, TCP/IP, DNS, and the CAP theorem -- how networks actually fail (partially, slowly, unpredictably) in ways a local function call never does."
+      "description": "HTTP, TCP/IP, DNS, and the CAP theorem -- how networks actually fail (partially, slowly, unpredictably) in ways a local function call never does.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cs-fundamentals/operating-systems-and-concurrency": {
       "slug": "cs-fundamentals/operating-systems-and-concurrency",
       "section": "cs-fundamentals",
       "title": "Operating Systems & Concurrency",
       "sidebarPosition": 3,
-      "description": "Processes vs. threads, the GIL, race conditions, and I/O patterns -- the OS fundamentals behind every 'why is my training script slow' question."
+      "description": "Processes vs. threads, the GIL, race conditions, and I/O patterns -- the OS fundamentals behind every 'why is my training script slow' question.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cs-fundamentals/overview": {
       "slug": "cs-fundamentals/overview",
       "section": "cs-fundamentals",
       "title": "CS Fundamentals for AI Engineers — Overview",
       "sidebarPosition": 1,
-      "description": "The operating systems, networking, and software-engineering fundamentals most ML curricula skip entirely, and most AI engineering jobs actually require."
+      "description": "The operating systems, networking, and software-engineering fundamentals most ML curricula skip entirely, and most AI engineering jobs actually require.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cs-fundamentals/roadmap": {
       "slug": "cs-fundamentals/roadmap",
       "section": "cs-fundamentals",
       "title": "CS Fundamentals for AI Engineers — Roadmap",
       "sidebarPosition": 2,
-      "description": "OS and concurrency, networking and distributed systems, APIs, and software engineering practice -- the systems foundations an AI engineer actually needs."
+      "description": "OS and concurrency, networking and distributed systems, APIs, and software engineering practice -- the systems foundations an AI engineer actually needs.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/cs-fundamentals/software-engineering-practices": {
       "slug": "cs-fundamentals/software-engineering-practices",
       "section": "cs-fundamentals",
       "title": "Software Engineering Practice",
       "sidebarPosition": 7,
-      "description": "Design patterns that actually show up in ML codebases (Strategy, Factory), testing philosophy, profiling, and debugging -- general engineering skill, not ML theory."
+      "description": "Design patterns that actually show up in ML codebases (Strategy, Factory), testing philosophy, profiling, and debugging -- general engineering skill, not ML theory.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/databases/graph/overview": {
       "slug": "databases/graph/overview",
       "section": "databases",
       "title": "Graph Databases (Neo4j)",
       "sidebarPosition": 4,
-      "description": "Modeling and querying a Neo4j property graph with Cypher -- for when the relationships between entities matter as much as the entities themselves do."
+      "description": "Modeling and querying a Neo4j property graph with Cypher -- for when the relationships between entities matter as much as the entities themselves do.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/databases/nosql/overview": {
       "slug": "databases/nosql/overview",
       "section": "databases",
       "title": "NoSQL Databases",
       "sidebarPosition": 1,
-      "description": "Document stores, key-value stores, and wide-column stores explained as three genuinely different answers to relational databases' own scaling limits."
+      "description": "Document stores, key-value stores, and wide-column stores explained as three genuinely different answers to relational databases' own scaling limits.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/databases/overview": {
       "slug": "databases/overview",
       "section": "databases",
       "title": "Databases Overview",
       "sidebarPosition": 1,
-      "description": "Why a real AI system needs three different databases at once -- relational, vector, and graph -- and how to pick the right one for a given query shape."
+      "description": "Why a real AI system needs three different databases at once -- relational, vector, and graph -- and how to pick the right one for a given query shape.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/databases/relational/overview": {
       "slug": "databases/relational/overview",
       "section": "databases",
       "title": "Relational Databases (MySQL, Postgres)",
       "sidebarPosition": 1,
-      "description": "Joins, normalization, indexing, and transactions in Postgres/MySQL -- still the right default storage layer for most of what an ML system needs to store."
+      "description": "Joins, normalization, indexing, and transactions in Postgres/MySQL -- still the right default storage layer for most of what an ML system needs to store.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/databases/relational/postgresql": {
       "slug": "databases/relational/postgresql",
       "section": "databases",
       "title": "PostgreSQL",
       "sidebarPosition": 2,
-      "description": "PostgreSQL specifics beyond the relational model: schemas, indexes, JSONB, and pgvector -- why it's become the default choice for new ML-adjacent projects."
+      "description": "PostgreSQL specifics beyond the relational model: schemas, indexes, JSONB, and pgvector -- why it's become the default choice for new ML-adjacent projects.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/databases/roadmap": {
       "slug": "databases/roadmap",
       "section": "databases",
       "title": "Databases — Roadmap",
       "sidebarPosition": 2,
-      "description": "Relational, vector, graph, and NoSQL databases -- indexing algorithms, distance metrics, GraphRAG, and when to reach for each data model."
+      "description": "Relational, vector, graph, and NoSQL databases -- indexing algorithms, distance metrics, GraphRAG, and when to reach for each data model.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/databases/vector/overview": {
       "slug": "databases/vector/overview",
       "section": "databases",
       "title": "Vector Databases",
       "sidebarPosition": 3,
-      "description": "How a vector database indexes millions of embeddings for fast approximate nearest-neighbor search -- the mechanics underneath every RAG system's retrieval."
+      "description": "How a vector database indexes millions of embeddings for fast approximate nearest-neighbor search -- the mechanics underneath every RAG system's retrieval.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/activation-functions": {
       "slug": "deep-learning/activation-functions",
       "section": "deep-learning",
       "title": "Activation Functions, In Full Depth",
       "sidebarPosition": 3.5,
-      "description": "ReLU, sigmoid, GELU, and the rest cataloged by real tradeoffs -- why the field's default activation choice has actually shifted over time, not just formulas."
+      "description": "ReLU, sigmoid, GELU, and the rest cataloged by real tradeoffs -- why the field's default activation choice has actually shifted over time, not just formulas.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/advanced-architectures": {
       "slug": "deep-learning/advanced-architectures",
       "section": "deep-learning",
       "title": "GNNs, RL Networks, Metric Learning, SSL & Multimodal Nets",
       "sidebarPosition": 8.8,
-      "description": "GNNs, RL networks, metric learning, self-supervised learning, and multimodal nets -- the architecture families beyond fixed-size supervised inputs."
+      "description": "GNNs, RL networks, metric learning, self-supervised learning, and multimodal nets -- the architecture families beyond fixed-size supervised inputs.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/attention-transformers": {
       "slug": "deep-learning/attention-transformers",
       "section": "deep-learning",
       "title": "Attention & Transformers",
       "sidebarPosition": 7,
-      "description": "The architecture behind GPT, Claude, and LLaMA, worked through end to end with real numbers -- why attention exists, and every mechanism in the original paper."
+      "description": "The architecture behind GPT, Claude, and LLaMA, worked through end to end with real numbers -- why attention exists, and every mechanism in the original paper.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/autoencoders": {
       "slug": "deep-learning/autoencoders",
       "section": "deep-learning",
       "title": "Autoencoders & Variational Autoencoders, In Full Depth",
       "sidebarPosition": 8.5,
-      "description": "Autoencoders and VAEs in full depth: why the latent bottleneck forces real compression, plus sparse, denoising, and VQ-VAE variants explained."
+      "description": "Autoencoders and VAEs in full depth: why the latent bottleneck forces real compression, plus sparse, denoising, and VQ-VAE variants explained.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/bert": {
       "slug": "deep-learning/bert",
       "section": "deep-learning",
       "title": "BERT: Bidirectional Encoder Representations from Transformers",
       "sidebarPosition": 7.2,
-      "description": "BERT's real pretraining objectives -- masked language modeling and next sentence prediction -- and why reading both directions beats GPT-style decoding."
+      "description": "BERT's real pretraining objectives -- masked language modeling and next sentence prediction -- and why reading both directions beats GPT-style decoding.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/cnns": {
       "slug": "deep-learning/cnns",
       "section": "deep-learning",
       "title": "Convolutional Neural Networks (CNNs)",
       "sidebarPosition": 5,
-      "description": "Convolution and pooling derived from the assumption that makes them work: nearby pixels are related, and patterns matter regardless of position."
+      "description": "Convolution and pooling derived from the assumption that makes them work: nearby pixels are related, and patterns matter regardless of position.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/generative-models": {
       "slug": "deep-learning/generative-models",
       "section": "deep-learning",
       "title": "Generative Models: GANs & Diffusion",
       "sidebarPosition": 8.7,
-      "description": "GANs and diffusion models -- adversarial training versus iterative denoising, and the real reason diffusion won out for image generation specifically."
+      "description": "GANs and diffusion models -- adversarial training versus iterative denoising, and the real reason diffusion won out for image generation specifically.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/initialization-regularization-scheduling": {
       "slug": "deep-learning/initialization-regularization-scheduling",
       "section": "deep-learning",
       "title": "Weight Initialization, Regularization & LR Scheduling",
       "sidebarPosition": 3.8,
-      "description": "Weight initialization (Xavier, He), regularization beyond dropout, and learning rate scheduling -- the last cluster of real training-loop decisions."
+      "description": "Weight initialization (Xavier, He), regularization beyond dropout, and learning rate scheduling -- the last cluster of real training-loop decisions.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/linear-attention-and-state-space-models": {
       "slug": "deep-learning/linear-attention-and-state-space-models",
       "section": "deep-learning",
       "title": "Linear Attention & State-Space Models (Mamba)",
       "sidebarPosition": 7.3,
-      "description": "The real mechanism behind attention's quadratic-cost fix -- the kernel trick that makes linear attention linear, and Mamba's selective state-space recurrence -- verified against the original papers, not secondhand summaries."
+      "description": "The real mechanism behind attention's quadratic-cost fix -- the kernel trick that makes linear attention linear, and Mamba's selective state-space recurrence -- verified against the original papers, not secondhand summaries.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/loss-functions": {
       "slug": "deep-learning/loss-functions",
       "section": "deep-learning",
       "title": "Loss Functions, In Full Depth",
       "sidebarPosition": 3.6,
-      "description": "Every regression and classification loss derived in full -- what 'training' actually optimizes, and how that choice shapes a model's entire behavior."
+      "description": "Every regression and classification loss derived in full -- what 'training' actually optimizes, and how that choice shapes a model's entire behavior.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/neural-network-fundamentals": {
       "slug": "deep-learning/neural-network-fundamentals",
       "section": "deep-learning",
       "title": "Neural Network Fundamentals",
       "sidebarPosition": 3,
-      "description": "Perceptrons to MLPs: activation functions, forward pass and backprop by hand, plus a live playground training a real network on toy 2D datasets."
+      "description": "Perceptrons to MLPs: activation functions, forward pass and backprop by hand, plus a live playground training a real network on toy 2D datasets.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/nn-layers-reference": {
       "slug": "deep-learning/nn-layers-reference",
       "section": "deep-learning",
       "title": "NN Layers Reference",
       "sidebarPosition": 8.9,
-      "description": "The reference catalog of every reusable layer type -- Dense, Embedding, and beyond -- that every architecture on this site is actually built from."
+      "description": "The reference catalog of every reusable layer type -- Dense, Embedding, and beyond -- that every architecture on this site is actually built from.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/optimizers": {
       "slug": "deep-learning/optimizers",
       "section": "deep-learning",
       "title": "Optimizers, In Full Depth",
       "sidebarPosition": 3.7,
-      "description": "SGD to Momentum to Adam, derived and visualized: why the field moved past plain gradient descent to today's adaptive-learning-rate defaults."
+      "description": "SGD to Momentum to Adam, derived and visualized: why the field moved past plain gradient descent to today's adaptive-learning-rate defaults.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/overview": {
       "slug": "deep-learning/overview",
       "section": "deep-learning",
       "title": "Deep Learning Overview",
       "sidebarPosition": 1,
-      "description": "From the single perceptron to the architecture behind every modern LLM: why depth works, and the training mechanics that make a deep network trainable."
+      "description": "From the single perceptron to the architecture behind every modern LLM: why depth works, and the training mechanics that make a deep network trainable.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/roadmap": {
       "slug": "deep-learning/roadmap",
       "section": "deep-learning",
       "title": "Deep Learning — Roadmap",
       "sidebarPosition": 2,
-      "description": "Neural networks from perceptrons to Transformers, diffusion, and GNNs -- CNNs, sequence models, attention, generative models, and every layer type in one map."
+      "description": "Neural networks from perceptrons to Transformers, diffusion, and GNNs -- CNNs, sequence models, attention, generative models, and every layer type in one map.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/sequence-models": {
       "slug": "deep-learning/sequence-models",
       "section": "deep-learning",
       "title": "Sequence Models",
       "sidebarPosition": 6,
-      "description": "RNNs, LSTMs, and GRUs derived from first principles, including the real math behind the vanishing-gradient problem Attention was built to solve."
+      "description": "RNNs, LSTMs, and GRUs derived from first principles, including the real math behind the vanishing-gradient problem Attention was built to solve.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/training-deep-networks": {
       "slug": "deep-learning/training-deep-networks",
       "section": "deep-learning",
       "title": "Training Deep Networks",
       "sidebarPosition": 4,
-      "description": "The techniques that make a genuinely deep network trainable at all -- normalization, residual connections, and the vanishing-gradient problem they fix."
+      "description": "The techniques that make a genuinely deep network trainable at all -- normalization, residual connections, and the vanishing-gradient problem they fix.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/deep-learning/vision-architectures": {
       "slug": "deep-learning/vision-architectures",
       "section": "deep-learning",
       "title": "Vision Architectures: Transformers, Detection & Segmentation",
       "sidebarPosition": 7.5,
-      "description": "Vision Transformer variants, plus detection and segmentation architectures built on attention instead of convolution -- what comes after image classification."
+      "description": "Vision Transformer variants, plus detection and segmentation architectures built on attention instead of convolution -- what comes after image classification.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/domain-applications/healthcare-ai": {
       "slug": "domain-applications/healthcare-ai",
       "section": "domain-applications",
       "title": "Healthcare AI",
       "sidebarPosition": 3,
-      "description": "Clinical NLP, medical imaging, EHR data, medical RAG, and clinical evaluation -- the AI toolkit applied where a hallucination can directly harm a patient."
+      "description": "Clinical NLP, medical imaging, EHR data, medical RAG, and clinical evaluation -- the AI toolkit applied where a hallucination can directly harm a patient.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/domain-applications/other-domain-applications": {
       "slug": "domain-applications/other-domain-applications",
       "section": "domain-applications",
       "title": "Other Domain Applications",
       "sidebarPosition": 4,
-      "description": "Finance, semiconductor, cybersecurity, robotics, and manufacturing -- fraud detection under class imbalance, and four more real domain-specific AI applications."
+      "description": "Finance, semiconductor, cybersecurity, robotics, and manufacturing -- fraud detection under class imbalance, and four more real domain-specific AI applications.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/domain-applications/overview": {
       "slug": "domain-applications/overview",
       "section": "domain-applications",
       "title": "Domain AI Applications — Overview",
       "sidebarPosition": 1,
-      "description": "What changes when general-purpose AI techniques meet healthcare, finance, or manufacturing's own data, regulatory constraints, and real-world stakes."
+      "description": "What changes when general-purpose AI techniques meet healthcare, finance, or manufacturing's own data, regulatory constraints, and real-world stakes.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/domain-applications/roadmap": {
       "slug": "domain-applications/roadmap",
       "section": "domain-applications",
       "title": "Domain AI Applications — Roadmap",
       "sidebarPosition": 2,
-      "description": "Healthcare AI plus five more applied domains: finance, semiconductor, cybersecurity, robotics, manufacturing -- the AI toolkit under real domain constraints."
+      "description": "Healthcare AI plus five more applied domains: finance, semiconductor, cybersecurity, robotics, manufacturing -- the AI toolkit under real domain constraints.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/frameworks/core-ml-dl-frameworks": {
       "slug": "frameworks/core-ml-dl-frameworks",
       "section": "frameworks",
       "title": "Core ML/DL Frameworks",
       "sidebarPosition": 3,
-      "description": "PyTorch's actual design, and the tools that turn deep learning theory into code you can run and train -- the frameworks underneath every model here."
+      "description": "PyTorch's actual design, and the tools that turn deep learning theory into code you can run and train -- the frameworks underneath every model here.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/frameworks/llm-agent-frameworks": {
       "slug": "frameworks/llm-agent-frameworks",
       "section": "frameworks",
       "title": "LLM / Agent Frameworks",
       "sidebarPosition": 4,
-      "description": "LangChain, LlamaIndex, and agent frameworks compared -- the real components (engine, tools, parser, memory) every framework wires up underneath."
+      "description": "LangChain, LlamaIndex, and agent frameworks compared -- the real components (engine, tools, parser, memory) every framework wires up underneath.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/frameworks/overview": {
       "slug": "frameworks/overview",
       "section": "frameworks",
       "title": "Frameworks Overview",
       "sidebarPosition": 1,
-      "description": "The actual tools you'll type into a terminal: PyTorch and Hugging Face, LangChain and LangGraph, vLLM and Triton, and CI/CD pipelines built for ML."
+      "description": "The actual tools you'll type into a terminal: PyTorch and Hugging Face, LangChain and LangGraph, vLLM and Triton, and CI/CD pipelines built for ML.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/frameworks/roadmap": {
       "slug": "frameworks/roadmap",
       "section": "frameworks",
       "title": "Frameworks — Roadmap",
       "sidebarPosition": 2,
-      "description": "The tools you'll actually type into a terminal: PyTorch, Hugging Face, LangChain, LangGraph, vLLM, Docker, and CI/CD for ML, in three sections."
+      "description": "The tools you'll actually type into a terminal: PyTorch, Hugging Face, LangChain, LangGraph, vLLM, Docker, and CI/CD for ML, in three sections.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/frameworks/serving-mlops": {
       "slug": "frameworks/serving-mlops",
       "section": "frameworks",
       "title": "Serving & MLOps / LLMOps",
       "sidebarPosition": 5,
-      "description": "vLLM, TorchServe, Triton, Docker, CI/CD for ML, and observability -- the tooling layer that turns a notebook model into a real production system."
+      "description": "vLLM, TorchServe, Triton, Docker, CI/CD for ML, and observability -- the tooling layer that turns a notebook model into a real production system.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/getting-started/intro": {
       "slug": "getting-started/intro",
       "section": "getting-started",
       "title": "How to Use This Site",
       "sidebarPosition": 1,
-      "description": "How this site is structured (intuition, visualization, math, code) and where to start based on your background -- new to ML, LLM-focused, or interview prep."
+      "description": "How this site is structured (intuition, visualization, math, code) and where to start based on your background -- new to ML, LLM-focused, or interview prep.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/graph-ml/graph-ml-fundamentals": {
       "slug": "graph-ml/graph-ml-fundamentals",
       "section": "graph-ml",
       "title": "Graph ML Fundamentals",
       "sidebarPosition": 3,
-      "description": "The graph-ML task taxonomy, GIN, node2vec-style embeddings, and knowledge graphs -- all shaped by graphs having no canonical node ordering at all."
+      "description": "The graph-ML task taxonomy, GIN, node2vec-style embeddings, and knowledge graphs -- all shaped by graphs having no canonical node ordering at all.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/graph-ml/overview": {
       "slug": "graph-ml/overview",
       "section": "graph-ml",
       "title": "Graph ML — Overview",
       "sidebarPosition": 1,
-      "description": "The graph-ML task taxonomy, embedding methods like node2vec, knowledge graphs, and Graph RAG -- the rest of the picture beyond GNN architectures alone."
+      "description": "The graph-ML task taxonomy, embedding methods like node2vec, knowledge graphs, and Graph RAG -- the rest of the picture beyond GNN architectures alone.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/graph-ml/roadmap": {
       "slug": "graph-ml/roadmap",
       "section": "graph-ml",
       "title": "Graph ML — Roadmap",
       "sidebarPosition": 2,
-      "description": "Graph representation, GCN/GraphSAGE/GAT/GIN, node2vec, knowledge graphs, and GraphRAG -- one section on machine learning over relational, graph-structured data."
+      "description": "Graph representation, GCN/GraphSAGE/GAT/GIN, node2vec, knowledge graphs, and GraphRAG -- one section on machine learning over relational, graph-structured data.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interpretability/classical-interpretability": {
       "slug": "interpretability/classical-interpretability",
       "section": "interpretability",
       "title": "Classical Interpretability: Feature Importance, SHAP & LIME",
       "sidebarPosition": 3,
-      "description": "SHAP, LIME, and tree feature importance -- global vs. local explanations, and model-agnostic vs. model-specific, for any classical ML model."
+      "description": "SHAP, LIME, and tree feature importance -- global vs. local explanations, and model-agnostic vs. model-specific, for any classical ML model.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interpretability/deep-learning-and-llm-interpretability": {
       "slug": "interpretability/deep-learning-and-llm-interpretability",
       "section": "interpretability",
       "title": "Deep Learning & LLM Interpretability",
       "sidebarPosition": 4,
-      "description": "A rigor ladder from cheap correlational saliency maps up to verified causal circuits -- interpretability tools built for gradient-accessible networks."
+      "description": "A rigor ladder from cheap correlational saliency maps up to verified causal circuits -- interpretability tools built for gradient-accessible networks.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interpretability/overview": {
       "slug": "interpretability/overview",
       "section": "interpretability",
       "title": "Interpretability — Overview",
       "sidebarPosition": 1,
-      "description": "SHAP and LIME for any black-box model, extended all the way to mechanistic interpretability -- sparse autoencoders, circuits, and reading an LLM's computation."
+      "description": "SHAP and LIME for any black-box model, extended all the way to mechanistic interpretability -- sparse autoencoders, circuits, and reading an LLM's computation.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interpretability/roadmap": {
       "slug": "interpretability/roadmap",
       "section": "interpretability",
       "title": "Interpretability — Roadmap",
       "sidebarPosition": 2,
-      "description": "Classical interpretability (SHAP, LIME) and deep learning/LLM interpretability -- saliency maps, sparse autoencoders, circuits, mechanistic interpretability."
+      "description": "Classical interpretability (SHAP, LIME) and deep learning/LLM interpretability -- saliency maps, sparse autoencoders, circuits, mechanistic interpretability.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/behavioral": {
       "slug": "interview-prep/behavioral",
       "section": "interview-prep",
       "title": "Behavioral",
       "sidebarPosition": 7,
-      "description": "The STAR method and which stories to have ready -- why behavioral rounds, not technical skill, are often what actually decides an offer."
+      "description": "The STAR method and which stories to have ready -- why behavioral rounds, not technical skill, are often what actually decides an offer.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/dsa-coding": {
       "slug": "interview-prep/dsa-coding",
       "section": "interview-prep",
       "title": "General Coding (DSA)",
       "sidebarPosition": 3,
-      "description": "The general software engineering coding round every AI/ML role still includes -- core DSA patterns to drill: two pointers, sliding window, and more."
+      "description": "The general software engineering coding round every AI/ML role still includes -- core DSA patterns to drill: two pointers, sliding window, and more.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/knowledge-qa-strategy": {
       "slug": "interview-prep/knowledge-qa-strategy",
       "section": "interview-prep",
       "title": "ML/GenAI Knowledge Q&A",
       "sidebarPosition": 5,
-      "description": "The breadth round: rapid-fire conceptual questions across classical ML, deep learning, and LLM/GenAI -- testing whether you can explain clearly under pressure."
+      "description": "The breadth round: rapid-fire conceptual questions across classical ML, deep learning, and LLM/GenAI -- testing whether you can explain clearly under pressure.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/ml-coding": {
       "slug": "interview-prep/ml-coding",
       "section": "interview-prep",
       "title": "ML Coding",
       "sidebarPosition": 4,
-      "description": "Where \"I understand gradient descent\" gets tested by actually implementing it from scratch, without a framework doing the hard part for you."
+      "description": "Where \"I understand gradient descent\" gets tested by actually implementing it from scratch, without a framework doing the hard part for you.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/overview": {
       "slug": "interview-prep/overview",
       "section": "interview-prep",
       "title": "Interview Prep Overview",
       "sidebarPosition": 1,
-      "description": "DSA coding, ML-from-scratch coding, breadth Q&A, system design, and behavioral prep -- the drills for the actual AI/ML engineering interview loop."
+      "description": "DSA coding, ML-from-scratch coding, breadth Q&A, system design, and behavioral prep -- the drills for the actual AI/ML engineering interview loop.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/qa-quick-reference": {
       "slug": "interview-prep/qa-quick-reference",
       "section": "interview-prep",
       "title": "Interview Q&A Quick Reference",
       "sidebarPosition": 5.2,
-      "description": "Real interview questions on LLM fundamentals, RAG, and agents -- click to reveal a concise answer, then check yourself against it under real time pressure."
+      "description": "Real interview questions on LLM fundamentals, RAG, and agents -- click to reveal a concise answer, then check yourself against it under real time pressure.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/roadmap": {
       "slug": "interview-prep/roadmap",
       "section": "interview-prep",
       "title": "Interview Prep — Roadmap",
       "sidebarPosition": 2,
-      "description": "The full FAANG-style AI/ML interview loop: DSA coding, ML coding from scratch, knowledge Q&A, system design practice, and behavioral prep."
+      "description": "The full FAANG-style AI/ML interview loop: DSA coding, ML coding from scratch, knowledge Q&A, system design practice, and behavioral prep.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/system-design-practice": {
       "slug": "interview-prep/system-design-practice",
       "section": "interview-prep",
       "title": "System Design Practice",
       "sidebarPosition": 6,
-      "description": "How to practice the 9-step ML system design framework deliberately, repeatedly -- the highest-leverage, most under-practiced interview round of them all."
+      "description": "How to practice the 9-step ML system design framework deliberately, repeatedly -- the highest-leverage, most under-practiced interview round of them all.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/interview-prep/technology-comparisons": {
       "slug": "interview-prep/technology-comparisons",
       "section": "interview-prep",
       "title": "Technology Comparisons & Decision Trees",
       "sidebarPosition": 5.5,
-      "description": "vLLM vs. SGLang, RAG vs. fine-tuning, and every other 'when would you use X instead of Y' comparison that actually comes up in senior-level interviews."
+      "description": "vLLM vs. SGLang, RAG vs. fine-tuning, and every other 'when would you use X instead of Y' comparison that actually comes up in senior-level interviews.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/learning-path": {
       "slug": "learning-path",
       "section": "general",
       "title": "Learning Path",
       "sidebarPosition": 0.5,
-      "description": "A clickable dependency graph and full curriculum breakdown across Neural Mastery's 200+ pages, 7 sections, and 28 sub-topics, plus a progress-aware view."
+      "description": "A clickable dependency graph and full curriculum breakdown across Neural Mastery's 200+ pages, 7 sections, and 28 sub-topics, plus a progress-aware view.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/evaluation-and-serving": {
       "slug": "llms-genai/evaluation-and-serving",
       "section": "llms-genai",
       "title": "Evaluation & Serving",
       "sidebarPosition": 7,
-      "description": "Evaluating LLMs beyond perplexity and benchmarks -- LLM-as-judge, position bias -- plus serving: continuous batching, speculative decoding, and cost tradeoffs."
+      "description": "Evaluating LLMs beyond perplexity and benchmarks -- LLM-as-judge, position bias -- plus serving: continuous batching, speculative decoding, and cost tradeoffs.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/foundation-model-internals": {
       "slug": "llms-genai/foundation-model-internals",
       "section": "llms-genai",
       "title": "Foundation Model & Transformer Internals",
       "sidebarPosition": 3,
-      "description": "Tokenization, embeddings, positional encoding, KV cache, and attention variants -- the engineering that runs a Transformer efficiently at billions of parameters."
+      "description": "Tokenization, embeddings, positional encoding, KV cache, and attention variants -- the engineering that runs a Transformer efficiently at billions of parameters.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/multimodal-generative-models": {
       "slug": "llms-genai/multimodal-generative-models",
       "section": "llms-genai",
       "title": "Multimodal & Generative Models",
       "sidebarPosition": 8,
-      "description": "Vision-language models, vision-language-action models for robotics, and diffusion models -- how attention and generation extend beyond text."
+      "description": "Vision-language models, vision-language-action models for robotics, and diffusion models -- how attention and generation extend beyond text.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/overview": {
       "slug": "llms-genai/overview",
       "section": "llms-genai",
       "title": "LLMs & GenAI Overview",
       "sidebarPosition": 1,
-      "description": "How the Transformer becomes a system like GPT or Claude: pretraining, alignment, prompting, RAG, and efficient production serving, stage by stage."
+      "description": "How the Transformer becomes a system like GPT or Claude: pretraining, alignment, prompting, RAG, and efficient production serving, stage by stage.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/prompt-engineering": {
       "slug": "llms-genai/prompt-engineering",
       "section": "llms-genai",
       "title": "Prompt Engineering",
       "sidebarPosition": 5,
-      "description": "Zero-shot, few-shot, and Chain-of-Thought prompting -- the cheapest, fastest lever for improving an LLM's behavior, no training required."
+      "description": "Zero-shot, few-shot, and Chain-of-Thought prompting -- the cheapest, fastest lever for improving an LLM's behavior, no training required.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/rag": {
       "slug": "llms-genai/rag",
       "section": "llms-genai",
       "title": "Retrieval-Augmented Generation (RAG)",
       "sidebarPosition": 6,
-      "description": "The nine-step RAG pipeline end to end: chunking, embeddings, hybrid retrieval, reranking, generation, and evaluation, each covered in real depth."
+      "description": "The nine-step RAG pipeline end to end: chunking, embeddings, hybrid retrieval, reranking, generation, and evaluation, each covered in real depth.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/retrieval-and-reranking-architectures": {
       "slug": "llms-genai/retrieval-and-reranking-architectures",
       "section": "llms-genai",
       "title": "Retrieval & Reranking Architectures: Bi-Encoder, Cross-Encoder, Late Interaction",
       "sidebarPosition": 6.5,
-      "description": "Bi-encoder, cross-encoder, and late interaction (ColBERT) compared with a real worked example -- the actual retrieval-architecture spectrum underneath RAG."
+      "description": "Bi-encoder, cross-encoder, and late interaction (ColBERT) compared with a real worked example -- the actual retrieval-architecture spectrum underneath RAG.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/roadmap": {
       "slug": "llms-genai/roadmap",
       "section": "llms-genai",
       "title": "LLMs & GenAI — Roadmap",
       "sidebarPosition": 2,
-      "description": "How classical deep learning becomes ChatGPT-class systems: transformer internals, pretraining/RLHF/DPO, prompt engineering, RAG, evaluation, and serving."
+      "description": "How classical deep learning becomes ChatGPT-class systems: transformer internals, pretraining/RLHF/DPO, prompt engineering, RAG, evaluation, and serving.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/llms-genai/training-pipeline": {
       "slug": "llms-genai/training-pipeline",
       "section": "llms-genai",
       "title": "Training Pipeline",
       "sidebarPosition": 4,
-      "description": "Pretraining, SFT, RLHF/DPO/GRPO, and PEFT/distillation/quantization -- the real multi-stage pipeline that turns a raw Transformer into something like ChatGPT."
+      "description": "Pretraining, SFT, RLHF/DPO/GRPO, and PEFT/distillation/quantization -- the real multi-stage pipeline that turns a raw Transformer into something like ChatGPT.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/anomaly-detection": {
       "slug": "machine-learning/anomaly-detection",
       "section": "machine-learning",
       "title": "Anomaly Detection: Isolation Forest, LOF & One-Class SVM, In Full Depth",
       "sidebarPosition": 6.7,
-      "description": "Anomaly detection in full depth: Isolation Forest, Local Outlier Factor, One-Class SVM, and autoencoder-based detection, plus how to choose among them."
+      "description": "Anomaly detection in full depth: Isolation Forest, Local Outlier Factor, One-Class SVM, and autoencoder-based detection, plus how to choose among them.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/association-rules": {
       "slug": "machine-learning/association-rules",
       "section": "machine-learning",
       "title": "Association Rule Mining: Apriori & FP-Growth, In Full Depth",
       "sidebarPosition": 6.6,
-      "description": "Apriori and FP-Growth for market-basket analysis: support, confidence, and lift metrics, worked through a real toy transaction database."
+      "description": "Apriori and FP-Growth for market-basket analysis: support, confidence, and lift metrics, worked through a real toy transaction database.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/boosting": {
       "slug": "machine-learning/boosting",
       "section": "machine-learning",
       "title": "Boosting: AdaBoost & Gradient Boosting, In Full Depth",
       "sidebarPosition": 5.3,
-      "description": "AdaBoost and Gradient Boosting derived: sequential trees correcting the ensemble's mistakes -- trading Random Forest's variance fix for a bias fix."
+      "description": "AdaBoost and Gradient Boosting derived: sequential trees correcting the ensemble's mistakes -- trading Random Forest's variance fix for a bias fix.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/dbscan-hdbscan": {
       "slug": "machine-learning/dbscan-hdbscan",
       "section": "machine-learning",
       "title": "DBSCAN & HDBSCAN, In Full Depth",
       "sidebarPosition": 6.2,
-      "description": "DBSCAN and HDBSCAN in full depth: density-based clustering that finds arbitrary-shaped clusters and explicitly labels noise, unlike K-Means."
+      "description": "DBSCAN and HDBSCAN in full depth: density-based clustering that finds arbitrary-shaped clusters and explicitly labels noise, unlike K-Means.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/decision-tree": {
       "slug": "machine-learning/decision-tree",
       "section": "machine-learning",
       "title": "Decision Trees, In Full Depth",
       "sidebarPosition": 5.1,
-      "description": "How a tree learns a nested sequence of yes/no splits instead of a boundary through feature space -- the real splitting criteria, derived, not just named."
+      "description": "How a tree learns a nested sequence of yes/no splits instead of a boundary through feature space -- the real splitting criteria, derived, not just named.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/elastic-net": {
       "slug": "machine-learning/elastic-net",
       "section": "machine-learning",
       "title": "Elastic Net, In Full Depth",
       "sidebarPosition": 4.8,
-      "description": "Elastic Net derived: combining Ridge's graceful handling of correlated features with Lasso's automatic feature selection in one penalty."
+      "description": "Elastic Net derived: combining Ridge's graceful handling of correlated features with Lasso's automatic feature selection in one penalty.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/gmm-spectral-clustering": {
       "slug": "machine-learning/gmm-spectral-clustering",
       "section": "machine-learning",
       "title": "Gaussian Mixture Models & Spectral Clustering, In Full Depth",
       "sidebarPosition": 6.3,
-      "description": "Gaussian Mixture Models and spectral clustering in full depth -- soft probabilistic cluster assignment via EM, plus when each clustering method actually wins."
+      "description": "Gaussian Mixture Models and spectral clustering in full depth -- soft probabilistic cluster assignment via EM, plus when each clustering method actually wins.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/hyperparameter-optimization": {
       "slug": "machine-learning/hyperparameter-optimization",
       "section": "machine-learning",
       "title": "Hyperparameter Optimization",
       "sidebarPosition": 6.05,
-      "description": "Grid vs. random search's real distinct-values argument, Bayesian optimization, and Hyperband -- the actual search problem underneath 'tune the hyperparameters'."
+      "description": "Grid vs. random search's real distinct-values argument, Bayesian optimization, and Hyperband -- the actual search problem underneath 'tune the hyperparameters'.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/ica-tsne-umap": {
       "slug": "machine-learning/ica-tsne-umap",
       "section": "machine-learning",
       "title": "ICA, t-SNE & UMAP, In Full Depth",
       "sidebarPosition": 6.5,
-      "description": "ICA, t-SNE, and UMAP -- the cocktail-party problem solved by statistical independence, and two methods optimizing purely for visualizability, not variance."
+      "description": "ICA, t-SNE, and UMAP -- the cocktail-party problem solved by statistical independence, and two methods optimizing purely for visualizability, not variance.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/k-nearest-neighbors": {
       "slug": "machine-learning/k-nearest-neighbors",
       "section": "machine-learning",
       "title": "K-Nearest Neighbors, In Full Depth",
       "sidebarPosition": 5.6,
-      "description": "KNN keeps the entire training set and makes a fresh decision per prediction -- the one classical model that learns nothing and memorizes everything."
+      "description": "KNN keeps the entire training set and makes a fresh decision per prediction -- the one classical model that learns nothing and memorizes everything.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/kmeans-hierarchical-clustering": {
       "slug": "machine-learning/kmeans-hierarchical-clustering",
       "section": "machine-learning",
       "title": "K-Means & Hierarchical Clustering, In Full Depth",
       "sidebarPosition": 6.1,
-      "description": "K-Means and hierarchical clustering derived in full -- discovering groups that already exist in unlabeled data, purely from how points relate to each other."
+      "description": "K-Means and hierarchical clustering derived in full -- discovering groups that already exist in unlabeled data, purely from how points relate to each other.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/lasso-regression": {
       "slug": "machine-learning/lasso-regression",
       "section": "machine-learning",
       "title": "Lasso Regression, In Full Depth",
       "sidebarPosition": 4.7,
-      "description": "Why Lasso's L1 penalty drives weights to exactly zero (automatic feature selection) while Ridge's L2 penalty never does -- the real geometric reason."
+      "description": "Why Lasso's L1 penalty drives weights to exactly zero (automatic feature selection) while Ridge's L2 penalty never does -- the real geometric reason.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/learning-to-rank": {
       "slug": "machine-learning/learning-to-rank",
       "section": "machine-learning",
       "title": "Learning-to-Rank, In Full Depth",
       "sidebarPosition": 6.91,
-      "description": "Why ranking isn't classification or regression -- pointwise, pairwise, and listwise losses, and the NDCG/MRR metrics that actually measure list order."
+      "description": "Why ranking isn't classification or regression -- pointwise, pairwise, and listwise losses, and the NDCG/MRR metrics that actually measure list order.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/linear-regression": {
       "slug": "machine-learning/linear-regression",
       "section": "machine-learning",
       "title": "Linear Regression, In Full Depth",
       "sidebarPosition": 4.5,
-      "description": "Linear regression derived properly: the cost function, the gradient step by step, and the closed-form solution -- where gradient descent itself comes from."
+      "description": "Linear regression derived properly: the cost function, the gradient step by step, and the closed-form solution -- where gradient descent itself comes from.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/logistic-regression": {
       "slug": "machine-learning/logistic-regression",
       "section": "machine-learning",
       "title": "Logistic Regression, In Full Depth",
       "sidebarPosition": 4.9,
-      "description": "Why logistic regression predicts a probability, not a number -- the sigmoid, the real loss function that makes training work, and why it's the right one."
+      "description": "Why logistic regression predicts a probability, not a number -- the sigmoid, the real loss function that makes training work, and why it's the right one.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/ml-workflow-fundamentals": {
       "slug": "machine-learning/ml-workflow-fundamentals",
       "section": "machine-learning",
       "title": "ML Workflow Fundamentals",
       "sidebarPosition": 3,
-      "description": "Most real-world model failures trace back to workflow mistakes, not bad algorithms -- learning types, train/val/test splits, data leakage, feature engineering."
+      "description": "Most real-world model failures trace back to workflow mistakes, not bad algorithms -- learning types, train/val/test splits, data leakage, feature engineering.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/model-evaluation-metrics": {
       "slug": "machine-learning/model-evaluation-metrics",
       "section": "machine-learning",
       "title": "Model Evaluation & Metrics",
       "sidebarPosition": 6,
-      "description": "Bias-variance tradeoff, classification/regression metrics, calibration, and threshold optimization -- why picking the wrong metric silently sinks ML projects."
+      "description": "Bias-variance tradeoff, classification/regression metrics, calibration, and threshold optimization -- why picking the wrong metric silently sinks ML projects.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/naive-bayes-lda-qda": {
       "slug": "machine-learning/naive-bayes-lda-qda",
       "section": "machine-learning",
       "title": "Naive Bayes, LDA & QDA, In Full Depth",
       "sidebarPosition": 5.7,
-      "description": "Generative classifiers explained: model each class's own distribution, then classify via Bayes' theorem -- the real alternative to a discriminative boundary."
+      "description": "Generative classifiers explained: model each class's own distribution, then classify via Bayes' theorem -- the real alternative to a discriminative boundary.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/overview": {
       "slug": "machine-learning/overview",
       "section": "machine-learning",
       "title": "Machine Learning Overview",
       "sidebarPosition": 1,
-      "description": "The classical ML toolkit in full derivation depth -- when gradient-boosted trees still beat a neural net, and the evaluation discipline every model needs."
+      "description": "The classical ML toolkit in full derivation depth -- when gradient-boosted trees still beat a neural net, and the evaluation discipline every model needs.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/pca-svd": {
       "slug": "machine-learning/pca-svd",
       "section": "machine-learning",
       "title": "PCA, Kernel PCA & Truncated SVD, In Full Depth",
       "sidebarPosition": 6.4,
-      "description": "PCA, Kernel PCA, and truncated SVD in full depth -- real eigendecomposition, scree plots for choosing k, and why PCA and SVD are the same computation."
+      "description": "PCA, Kernel PCA, and truncated SVD in full depth -- real eigendecomposition, scree plots for choosing k, and why PCA and SVD are the same computation.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/random-forest": {
       "slug": "machine-learning/random-forest",
       "section": "machine-learning",
       "title": "Random Forest & Extra Trees, In Full Depth",
       "sidebarPosition": 5.2,
-      "description": "Bagging explained: why training many trees on bootstrap samples and averaging fixes a single decision tree's high variance -- Random Forest, derived."
+      "description": "Bagging explained: why training many trees on bootstrap samples and averaging fixes a single decision tree's high variance -- Random Forest, derived.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/recommender-systems": {
       "slug": "machine-learning/recommender-systems",
       "section": "machine-learning",
       "title": "Recommender Systems, In Full Depth",
       "sidebarPosition": 6.9,
-      "description": "Matrix factorization, two-tower embeddings, and the two-stage production pipeline -- the most commercially valuable prediction problem in applied ML, derived."
+      "description": "Matrix factorization, two-tower embeddings, and the two-stage production pipeline -- the most commercially valuable prediction problem in applied ML, derived.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/ridge-regression": {
       "slug": "machine-learning/ridge-regression",
       "section": "machine-learning",
       "title": "Ridge Regression, In Full Depth",
       "sidebarPosition": 4.6,
-      "description": "Why correlated features break plain linear regression, and how penalizing large weights directly in the loss function fixes it -- L2 regularization derived."
+      "description": "Why correlated features break plain linear regression, and how penalizing large weights directly in the loss function fixes it -- L2 regularization derived.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/roadmap": {
       "slug": "machine-learning/roadmap",
       "section": "machine-learning",
       "title": "Machine Learning — Roadmap",
       "sidebarPosition": 2,
-      "description": "Classical ML end to end: workflow fundamentals, supervised/unsupervised algorithms, evaluation metrics, hyperparameter tuning, and conformal prediction."
+      "description": "Classical ML end to end: workflow fundamentals, supervised/unsupervised algorithms, evaluation metrics, hyperparameter tuning, and conformal prediction.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/sgd-classifier-regressor": {
       "slug": "machine-learning/sgd-classifier-regressor",
       "section": "machine-learning",
       "title": "SGD Classifier & Regressor, In Full Depth",
       "sidebarPosition": 5.8,
-      "description": "Linear Regression, Ridge, Lasso, and Logistic Regression unified as one framing: the same SGD engine, differing only by which loss and penalty you plug in."
+      "description": "Linear Regression, Ridge, Lasso, and Logistic Regression unified as one framing: the same SGD engine, differing only by which loss and penalty you plug in.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/supervised-learning": {
       "slug": "machine-learning/supervised-learning",
       "section": "machine-learning",
       "title": "Supervised Learning",
       "sidebarPosition": 4,
-      "description": "Classical supervised learning end to end: linear/logistic regression, regularized variants, tree-based methods, and how each maps inputs to known outputs."
+      "description": "Classical supervised learning end to end: linear/logistic regression, regularized variants, tree-based methods, and how each maps inputs to known outputs.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/support-vector-machines": {
       "slug": "machine-learning/support-vector-machines",
       "section": "machine-learning",
       "title": "Support Vector Machines (SVM & SVR), In Full Depth",
       "sidebarPosition": 5.5,
-      "description": "The maximum-margin classifier derived: support vectors, the optimization problem, soft margins, and the kernel trick for non-linearly-separable data."
+      "description": "The maximum-margin classifier derived: support vectors, the optimization problem, soft margins, and the kernel trick for non-linearly-separable data.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/survival-analysis": {
       "slug": "machine-learning/survival-analysis",
       "section": "machine-learning",
       "title": "Survival Analysis: Kaplan-Meier & Cox Proportional Hazards, In Full Depth",
       "sidebarPosition": 5.85,
-      "description": "Kaplan-Meier and Cox Proportional Hazards for 'how long until this happens' problems -- and why censored data breaks a naive regression framing."
+      "description": "Kaplan-Meier and Cox Proportional Hazards for 'how long until this happens' problems -- and why censored data breaks a naive regression framing.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/time-series-forecasting": {
       "slug": "machine-learning/time-series-forecasting",
       "section": "machine-learning",
       "title": "Time Series Forecasting: ARIMA, SARIMA & Prophet, In Full Depth",
       "sidebarPosition": 5.9,
-      "description": "ARIMA, SARIMA, and Prophet -- decomposing a time series into its structural components once shuffling the rows destroys the one thing that matters: order."
+      "description": "ARIMA, SARIMA, and Prophet -- decomposing a time series into its structural components once shuffling the rows destroys the one thing that matters: order.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/topic-modeling": {
       "slug": "machine-learning/topic-modeling",
       "section": "machine-learning",
       "title": "Topic Modeling: LDA & BERTopic, In Full Depth",
       "sidebarPosition": 6.8,
-      "description": "LDA and BERTopic derived -- discovering a document collection's themes with no labels, and the naming collision with the other, unrelated LDA."
+      "description": "LDA and BERTopic derived -- discovering a document collection's themes with no labels, and the naming collision with the other, unrelated LDA.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/uncertainty-estimation-and-conformal-prediction": {
       "slug": "machine-learning/uncertainty-estimation-and-conformal-prediction",
       "section": "machine-learning",
       "title": "Uncertainty Estimation & Conformal Prediction",
       "sidebarPosition": 6.06,
-      "description": "Conformal prediction's real coverage guarantee -- a prediction range built to contain the true answer as often as promised, regardless of model quality."
+      "description": "Conformal prediction's real coverage guarantee -- a prediction range built to contain the true answer as often as promised, regardless of model quality.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/unsupervised-learning": {
       "slug": "machine-learning/unsupervised-learning",
       "section": "machine-learning",
       "title": "Unsupervised Learning",
       "sidebarPosition": 5,
-      "description": "k-Means and hierarchical clustering -- discovering latent structure in unlabeled data, with no ground-truth labels to optimize against."
+      "description": "k-Means and hierarchical clustering -- discovering latent structure in unlabeled data, with no ground-truth labels to optimize against.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/machine-learning/xgboost-lightgbm-catboost": {
       "slug": "machine-learning/xgboost-lightgbm-catboost",
       "section": "machine-learning",
       "title": "XGBoost, LightGBM & CatBoost, In Full Depth",
       "sidebarPosition": 5.4,
-      "description": "Three real gradient boosting implementations compared: XGBoost's regularized second-order objective, LightGBM's speed tricks, CatBoost's categorical handling."
+      "description": "Three real gradient boosting implementations compared: XGBoost's regularized second-order objective, LightGBM's speed tricks, CatBoost's categorical handling.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mathematics-for-ai/algorithms-data-structures": {
       "slug": "mathematics-for-ai/algorithms-data-structures",
       "section": "mathematics-for-ai",
       "title": "Algorithms & Data Structures for AI",
       "sidebarPosition": 6,
-      "description": "Big-O as a real budget, not academic notation -- why O(n) vs O(n^2) is the difference between a system that scales and one that can't ship."
+      "description": "Big-O as a real budget, not academic notation -- why O(n) vs O(n^2) is the difference between a system that scales and one that can't ship.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mathematics-for-ai/calculus-optimization": {
       "slug": "mathematics-for-ai/calculus-optimization",
       "section": "mathematics-for-ai",
       "title": "Calculus & Optimization for AI",
       "sidebarPosition": 4,
-      "description": "Gradients, backpropagation, and Adam derived from scratch -- how a training run actually walks downhill through a model's high-dimensional loss landscape."
+      "description": "Gradients, backpropagation, and Adam derived from scratch -- how a training run actually walks downhill through a model's high-dimensional loss landscape.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mathematics-for-ai/linear-algebra": {
       "slug": "mathematics-for-ai/linear-algebra",
       "section": "mathematics-for-ai",
       "title": "Linear Algebra for AI",
       "sidebarPosition": 3,
-      "description": "Vectors, matrices, eigenvalues, and SVD made concrete -- the exact math underneath every embedding, weight matrix, and attention computation on this site."
+      "description": "Vectors, matrices, eigenvalues, and SVD made concrete -- the exact math underneath every embedding, weight matrix, and attention computation on this site.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mathematics-for-ai/overview": {
       "slug": "mathematics-for-ai/overview",
       "section": "mathematics-for-ai",
       "title": "Mathematics for AI Overview",
       "sidebarPosition": 1,
-      "description": "Linear algebra, calculus, probability, and algorithms -- the math foundations every other section on this site actually builds on, not just sits alongside."
+      "description": "Linear algebra, calculus, probability, and algorithms -- the math foundations every other section on this site actually builds on, not just sits alongside.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mathematics-for-ai/probability-statistics": {
       "slug": "mathematics-for-ai/probability-statistics",
       "section": "mathematics-for-ai",
       "title": "Probability & Statistics for AI",
       "sidebarPosition": 5,
-      "description": "Distributions, Bayes' theorem, and hypothesis testing -- what a model's probabilistic output actually means, and how to tell a real improvement from noise."
+      "description": "Distributions, Bayes' theorem, and hypothesis testing -- what a model's probabilistic output actually means, and how to tell a real improvement from noise.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mathematics-for-ai/roadmap": {
       "slug": "mathematics-for-ai/roadmap",
       "section": "mathematics-for-ai",
       "title": "Mathematics for AI — Roadmap",
       "sidebarPosition": 2,
-      "description": "The linear algebra, calculus, probability, and algorithms foundation every other section on this site builds on -- worked top to bottom."
+      "description": "The linear algebra, calculus, probability, and algorithms foundation every other section on this site builds on -- worked top to bottom.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ml-system-design/case-studies": {
       "slug": "ml-system-design/case-studies",
       "section": "ml-system-design",
       "title": "ML System Design Case Studies",
       "sidebarPosition": 4,
-      "description": "Four real system-design case studies -- RAG, fraud detection, a support agent, recommendations -- the 9-step framework applied to genuinely different problems."
+      "description": "Four real system-design case studies -- RAG, fraud detection, a support agent, recommendations -- the 9-step framework applied to genuinely different problems.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ml-system-design/model-catalog-and-benchmarking": {
       "slug": "ml-system-design/model-catalog-and-benchmarking",
       "section": "ml-system-design",
       "title": "Model Catalog & Benchmarking Framework",
       "sidebarPosition": 5,
-      "description": "A durable framework for choosing a model -- categories, attributes, and benchmark dimensions that matter -- deliberately not a leaderboard that goes stale."
+      "description": "A durable framework for choosing a model -- categories, attributes, and benchmark dimensions that matter -- deliberately not a leaderboard that goes stale.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ml-system-design/overview": {
       "slug": "ml-system-design/overview",
       "section": "ml-system-design",
       "title": "ML System Design Overview",
       "sidebarPosition": 1,
-      "description": "Architecting a model into a production system: data flow, serving infrastructure, evaluation, and the tradeoffs that decide whether it actually works live."
+      "description": "Architecting a model into a production system: data flow, serving infrastructure, evaluation, and the tradeoffs that decide whether it actually works live.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ml-system-design/roadmap": {
       "slug": "ml-system-design/roadmap",
       "section": "ml-system-design",
       "title": "ML System Design — Roadmap",
       "sidebarPosition": 2,
-      "description": "A repeatable 9-step framework for turning a model into a production system, plus real case studies: recommenders, search ranking, and RAG/agent infra."
+      "description": "A repeatable 9-step framework for turning a model into a production system, plus real case studies: recommenders, search ranking, and RAG/agent infra.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ml-system-design/technology-ecosystem-map": {
       "slug": "ml-system-design/technology-ecosystem-map",
       "section": "ml-system-design",
       "title": "Technology Ecosystem Map",
       "sidebarPosition": 6,
-      "description": "A map of every layer a real production system is built from -- frontend to infrastructure -- with honest notes on which layers this site covers in depth."
+      "description": "A map of every layer a real production system is built from -- frontend to infrastructure -- with honest notes on which layers this site covers in depth.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/ml-system-design/the-9-step-framework": {
       "slug": "ml-system-design/the-9-step-framework",
       "section": "ml-system-design",
       "title": "The 9-Step ML System Design Framework",
       "sidebarPosition": 3,
-      "description": "The repeatable 9-step structure for any 'design an ML system for X' problem, from problem formulation through monitoring -- for interviews and real kickoffs."
+      "description": "The repeatable 9-step structure for any 'design an ML system for X' problem, from problem formulation through monitoring -- for interviews and real kickoffs.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/ai-cost-engineering": {
       "slug": "mlops/ai-cost-engineering",
       "section": "mlops",
       "title": "AI Cost Engineering",
       "sidebarPosition": 22.3,
-      "description": "Every cost-optimization technique scattered across this site's model/serving/training pages, consolidated into one place with the tradeoff each one makes."
+      "description": "Every cost-optimization technique scattered across this site's model/serving/training pages, consolidated into one place with the tradeoff each one makes.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/big-data-and-analytics": {
       "slug": "mlops/big-data-and-analytics",
       "section": "mlops",
       "title": "Big Data & Analytics",
       "sidebarPosition": 4.5,
-      "description": "Cloud data warehouses, and turning processed data into trustworthy, queryable tables a human can actually look at and decide something from."
+      "description": "Cloud data warehouses, and turning processed data into trustworthy, queryable tables a human can actually look at and decide something from.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/cicd-and-ml-cicd": {
       "slug": "mlops/cicd-and-ml-cicd",
       "section": "mlops",
       "title": "CI/CD & ML CI/CD",
       "sidebarPosition": 12,
-      "description": "CI vs. CD, and why ML pipelines need drift checks and model regression tests on top of every ordinary code check -- syntactically fine can still be wrong."
+      "description": "CI vs. CD, and why ML pipelines need drift checks and model regression tests on top of every ordinary code check -- syntactically fine can still be wrong.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/cloud-computing": {
       "slug": "mlops/cloud-computing",
       "section": "mlops",
       "title": "Cloud Computing for ML",
       "sidebarPosition": 9,
-      "description": "EC2, ECS, EKS, SageMaker, and the rest of AWS mapped for ML -- go deep on one cloud, then treat GCP and Azure as the same concepts, different names."
+      "description": "EC2, ECS, EKS, SageMaker, and the rest of AWS mapped for ML -- go deep on one cloud, then treat GCP and Azure as the same concepts, different names.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/cloud-model-deployment": {
       "slug": "mlops/cloud-model-deployment",
       "section": "mlops",
       "title": "Deploying Models on AWS & Azure",
       "sidebarPosition": 9.5,
-      "description": "Real, concrete methods for deploying a trained model on AWS and Azure specifically -- SageMaker endpoints, Bedrock, Azure ML, with real commands, not just names."
+      "description": "Real, concrete methods for deploying a trained model on AWS and Azure specifically -- SageMaker endpoints, Bedrock, Azure ML, with real commands, not just names.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/containers": {
       "slug": "mlops/containers",
       "section": "mlops",
       "title": "Containers",
       "sidebarPosition": 7,
-      "description": "Docker images, containers, and multi-stage builds explained mechanically, plus container security and registries -- the standard fix for 'works on my machine'."
+      "description": "Docker images, containers, and multi-stage builds explained mechanically, plus container security and registries -- the standard fix for 'works on my machine'.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/data-engineering-and-versioning": {
       "slug": "mlops/data-engineering-and-versioning",
       "section": "mlops",
       "title": "Data Engineering & Versioning",
       "sidebarPosition": 4,
-      "description": "The real data pipeline from source to training set, plus DVC/LakeFS/Delta Lake for versioning -- because a bad dataset produces a precisely wrong model."
+      "description": "The real data pipeline from source to training set, plus DVC/LakeFS/Delta Lake for versioning -- because a bad dataset produces a precisely wrong model.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/deployment-strategies": {
       "slug": "mlops/deployment-strategies",
       "section": "mlops",
       "title": "Deployment Strategies",
       "sidebarPosition": 14,
-      "description": "Blue-Green, Canary, Shadow, and A/B deployment -- every real strategy for shrinking the blast radius of shipping a new model to production traffic."
+      "description": "Blue-Green, Canary, Shadow, and A/B deployment -- every real strategy for shrinking the blast radius of shipping a new model to production traffic.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/engineering-foundations": {
       "slug": "mlops/engineering-foundations",
       "section": "mlops",
       "title": "Engineering Foundations for ML",
       "sidebarPosition": 3,
-      "description": "The part of MLOps most ML courses skip -- clean code, testing, and config management, the actual difference between a notebook and a real system."
+      "description": "The part of MLOps most ML courses skip -- clean code, testing, and config management, the actual difference between a notebook and a real system.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/experiment-tracking": {
       "slug": "mlops/experiment-tracking",
       "section": "mlops",
       "title": "Experiment Tracking",
       "sidebarPosition": 5,
-      "description": "MLflow's Tracking, Projects, Models, and Registry -- what every experiment needs to answer (code, data, params, result) to be reproducible later."
+      "description": "MLflow's Tracking, Projects, Models, and Registry -- what every experiment needs to answer (code, data, params, result) to be reproducible later.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/feature-stores-and-model-registry": {
       "slug": "mlops/feature-stores-and-model-registry",
       "section": "mlops",
       "title": "Feature Stores & Model Registry",
       "sidebarPosition": 13,
-      "description": "Training-serving skew explained, then its fix: feature stores (offline/online, freshness) for data consistency, and model registries for version lineage."
+      "description": "Training-serving skew explained, then its fix: feature stores (offline/online, freshness) for data consistency, and model registries for version lineage.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/federated-learning": {
       "slug": "mlops/federated-learning",
       "section": "mlops",
       "title": "Federated Learning",
       "sidebarPosition": 17.5,
-      "description": "Training one shared model across data you can't centralize -- a hospital's records, a phone's keyboard -- without any raw data ever leaving its source."
+      "description": "Training one shared model across data you can't centralize -- a hospital's records, a phone's keyboard -- without any raw data ever leaving its source.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/gpu-and-distributed-training": {
       "slug": "mlops/gpu-and-distributed-training",
       "section": "mlops",
       "title": "GPU/AI Infrastructure & Distributed Training",
       "sidebarPosition": 17,
-      "description": "CUDA, VRAM, Tensor cores, and the parallelism strategies (data/model/pipeline/FSDP) that actually explain why a training job is slow and how to fix it."
+      "description": "CUDA, VRAM, Tensor cores, and the parallelism strategies (data/model/pipeline/FSDP) that actually explain why a training job is slow and how to fix it.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/infrastructure-as-code": {
       "slug": "mlops/infrastructure-as-code",
       "section": "mlops",
       "title": "Infrastructure as Code",
       "sidebarPosition": 11,
-      "description": "Terraform's real workflow -- providers, state, and modules -- for defining infrastructure in version-controlled files instead of clicking it together by hand."
+      "description": "Terraform's real workflow -- providers, state, and modules -- for defining infrastructure in version-controlled files instead of clicking it together by hand.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/kubernetes": {
       "slug": "mlops/kubernetes",
       "section": "mlops",
       "title": "Kubernetes",
       "sidebarPosition": 10,
-      "description": "Pods, Deployments, Services, and the control-plane/worker-node split explained mechanically -- running and scaling containers across a real cluster."
+      "description": "Pods, Deployments, Services, and the control-plane/worker-node split explained mechanically -- running and scaling containers across a real cluster.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/legal-licensing-and-governance": {
       "slug": "mlops/legal-licensing-and-governance",
       "section": "mlops",
       "title": "Legal, Licensing & Governance",
       "sidebarPosition": 22.4,
-      "description": "Whether a system is legally permissible to ship, not just whether it works -- model/dataset licenses, copyright, privacy law, governance, and model cards."
+      "description": "Whether a system is legally permissible to ship, not just whether it works -- model/dataset licenses, copyright, privacy law, governance, and model cards.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/llm-evaluation-and-ragops": {
       "slug": "mlops/llm-evaluation-and-ragops",
       "section": "mlops",
       "title": "LLM Evaluation & RAGOps",
       "sidebarPosition": 21,
-      "description": "BLEU/ROUGE vs. LLM-as-judge, plus RAG-specific monitoring -- chunk quality, retrieval latency, Recall@K/MRR/NDCG, and hallucination detection in production."
+      "description": "BLEU/ROUGE vs. LLM-as-judge, plus RAG-specific monitoring -- chunk quality, retrieval latency, Recall@K/MRR/NDCG, and hallucination detection in production.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/llm-hosting-and-serving-patterns": {
       "slug": "mlops/llm-hosting-and-serving-patterns",
       "section": "mlops",
       "title": "LLM Hosting, Serving Patterns & LLMOps Monitoring",
       "sidebarPosition": 20,
-      "description": "The real model-to-container-to-GPU-VM-to-API hosting stack, the fine-tuning-to-serving handoff, and the LLM-specific monitoring layer on top."
+      "description": "The real model-to-container-to-GPU-VM-to-API hosting stack, the fine-tuning-to-serving handoff, and the LLM-specific monitoring layer on top.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/llm-inference-engines": {
       "slug": "mlops/llm-inference-engines",
       "section": "mlops",
       "title": "LLM Inference Engines",
       "sidebarPosition": 18,
-      "description": "The real inference stack from API gateway to CUDA, and vLLM/SGLang/TensorRT-LLM/llama.cpp compared -- why serving an LLM is its own discipline."
+      "description": "The real inference stack from API gateway to CUDA, and vLLM/SGLang/TensorRT-LLM/llama.cpp compared -- why serving an LLM is its own discipline.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/llm-inference-optimization": {
       "slug": "mlops/llm-inference-optimization",
       "section": "mlops",
       "title": "LLM Inference Optimization",
       "sidebarPosition": 19,
-      "description": "KV cache, quantization, speculative decoding, and batching -- every real technique that makes LLM inference cheaper, explained by the two bottlenecks they solve."
+      "description": "KV cache, quantization, speculative decoding, and batching -- every real technique that makes LLM inference cheaper, explained by the two bottlenecks they solve.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/message-queues-and-async-processing": {
       "slug": "mlops/message-queues-and-async-processing",
       "section": "mlops",
       "title": "Message Queues & Async Processing",
       "sidebarPosition": 6.5,
-      "description": "What a message queue actually is and why Kafka and Celery show up everywhere -- the mechanism underneath async processing and event-driven architectures."
+      "description": "What a message queue actually is and why Kafka and Celery show up everywhere -- the mechanism underneath async processing and event-driven architectures.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/ml-and-llm-testing": {
       "slug": "mlops/ml-and-llm-testing",
       "section": "mlops",
       "title": "ML & LLM Testing",
       "sidebarPosition": 22.1,
-      "description": "Statistical and model tests for classical ML, plus LLM-specific test types -- prompt tests, golden datasets, hallucination and jailbreak regression tests."
+      "description": "Statistical and model tests for classical ML, plus LLM-specific test types -- prompt tests, golden datasets, hallucination and jailbreak regression tests.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/mlops-architecture-and-roadmap": {
       "slug": "mlops/mlops-architecture-and-roadmap",
       "section": "mlops",
       "title": "The Full MLOps Architecture, Priority Stack & Learning Path",
       "sidebarPosition": 23,
-      "description": "The complete end-to-end MLOps architecture assembled into one diagram, a prioritized tool stack, an 8-phase learning order, and 5 real capstone projects."
+      "description": "The complete end-to-end MLOps architecture assembled into one diagram, a prioritized tool stack, an 8-phase learning order, and 5 real capstone projects.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/model-serving": {
       "slug": "mlops/model-serving",
       "section": "mlops",
       "title": "APIs & Model Serving",
       "sidebarPosition": 8,
-      "description": "FastAPI, REST, auth, and batch/online/streaming inference architectures -- turning a trained model artifact into an endpoint that answers real traffic."
+      "description": "FastAPI, REST, auth, and batch/online/streaming inference architectures -- turning a trained model artifact into an endpoint that answers real traffic.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/monitoring-and-drift": {
       "slug": "mlops/monitoring-and-drift",
       "section": "mlops",
       "title": "Monitoring & Drift Detection",
       "sidebarPosition": 15,
-      "description": "Why deployed models fail silently, then the real drift math: PSI, KL/JS divergence, KS test, and Wasserstein distance for data vs. concept drift."
+      "description": "Why deployed models fail silently, then the real drift math: PSI, KL/JS divergence, KS test, and Wasserstein distance for data vs. concept drift.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/observability": {
       "slug": "mlops/observability",
       "section": "mlops",
       "title": "Observability",
       "sidebarPosition": 16,
-      "description": "Logs, metrics, and traces -- the three pillars that let you actually debug why a system misbehaved, not just get alerted that it did."
+      "description": "Logs, metrics, and traces -- the three pillars that let you actually debug why a system misbehaved, not just get alerted that it did.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/overview": {
       "slug": "mlops/overview",
       "section": "mlops",
       "title": "MLOps Overview",
       "sidebarPosition": 1,
-      "description": "Turning a model that works in a notebook into a system that serves real traffic reliably, gets monitored for drift, and retrains itself when the world shifts."
+      "description": "Turning a model that works in a notebook into a system that serves real traffic reliably, gets monitored for drift, and retrains itself when the world shifts.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/pipeline-orchestration": {
       "slug": "mlops/pipeline-orchestration",
       "section": "mlops",
       "title": "Pipeline Orchestration",
       "sidebarPosition": 6,
-      "description": "DAGs, tasks, retries, and Airflow's real architecture -- turning a trained model from one script into a pipeline that recovers cleanly at 3am."
+      "description": "DAGs, tasks, retries, and Airflow's real architecture -- turning a trained model from one script into a pipeline that recovers cleanly at 3am.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/production-reliability": {
       "slug": "mlops/production-reliability",
       "section": "mlops",
       "title": "Production Reliability",
       "sidebarPosition": 22.2,
-      "description": "Retries, timeouts, circuit breakers, and graceful degradation -- the difference between a demo that works and a system that survives real failures."
+      "description": "Retries, timeouts, circuit breakers, and graceful degradation -- the difference between a demo that works and a system that survives real failures.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/roadmap": {
       "slug": "mlops/roadmap",
       "section": "mlops",
       "title": "MLOps — Roadmap",
       "sidebarPosition": 2,
-      "description": "Everything between a notebook model and one that reliably serves production traffic -- data pipelines, containers, K8s, CI/CD, monitoring, LLM serving."
+      "description": "Everything between a notebook model and one that reliably serves production traffic -- data pipelines, containers, K8s, CI/CD, monitoring, LLM serving.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/mlops/security-and-reproducibility": {
       "slug": "mlops/security-and-reproducibility",
       "section": "mlops",
       "title": "Security & Reproducibility",
       "sidebarPosition": 22,
-      "description": "IAM, secrets management, and a real reproducibility checklist -- the cross-cutting requirements every layer of an ML pipeline has to satisfy at once."
+      "description": "IAM, secrets management, and a real reproducibility checklist -- the cross-cutting requirements every layer of an ML pipeline has to satisfy at once.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/nlp/classical-nlp": {
       "slug": "nlp/classical-nlp",
       "section": "nlp",
       "title": "Classical NLP: Tokenization, POS Tagging, NER & Parsing",
       "sidebarPosition": 3,
-      "description": "Tokenization, POS tagging, NER, and parsing -- the pre-Transformer linguistic-structure layer that still coexists alongside modern embedding-based NLP."
+      "description": "Tokenization, POS tagging, NER, and parsing -- the pre-Transformer linguistic-structure layer that still coexists alongside modern embedding-based NLP.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/nlp/nlp-task-taxonomy": {
       "slug": "nlp/nlp-task-taxonomy",
       "section": "nlp",
       "title": "NLP Task Taxonomy",
       "sidebarPosition": 5,
-      "description": "Every classical NLP task and its modern Transformer replacement, organized by one axis: constrained output (can't hallucinate) vs. open-ended generation."
+      "description": "Every classical NLP task and its modern Transformer replacement, organized by one axis: constrained output (can't hallucinate) vs. open-ended generation.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/nlp/overview": {
       "slug": "nlp/overview",
       "section": "nlp",
       "title": "NLP — Overview",
       "sidebarPosition": 1,
-      "description": "How text was understood before Transformers -- tokenization, POS tagging, NER, and the classical task taxonomy still running under modern LLM pipelines."
+      "description": "How text was understood before Transformers -- tokenization, POS tagging, NER, and the classical task taxonomy still running under modern LLM pipelines.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/nlp/roadmap": {
       "slug": "nlp/roadmap",
       "section": "nlp",
       "title": "NLP — Roadmap",
       "sidebarPosition": 2,
-      "description": "Classical NLP (tokenization, POS tagging, NER, parsing), word embeddings, and the NLP task taxonomy -- the pre-Transformer text-processing toolkit."
+      "description": "Classical NLP (tokenization, POS tagging, NER, parsing), word embeddings, and the NLP task taxonomy -- the pre-Transformer text-processing toolkit.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/nlp/word-embeddings": {
       "slug": "nlp/word-embeddings",
       "section": "nlp",
       "title": "Word Embeddings",
       "sidebarPosition": 4,
-      "description": "word2vec, GloVe, and fastText derived from first principles -- NLP's biggest pre-Transformer leap: representing a word's meaning as a dense vector."
+      "description": "word2vec, GloVe, and fastText derived from first principles -- NLP's biggest pre-Transformer leap: representing a word's meaning as a dense vector.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/practice-problems/batch-dot-product": {
       "slug": "practice-problems/batch-dot-product",
       "section": "practice-problems",
       "title": "Practice: Batch Dot Product",
       "sidebarPosition": 2.5,
-      "description": "Implement batch dot product across two batches of vectors, with real validation for mismatched batch sizes and mismatched per-vector dimensions."
+      "description": "Implement batch dot product across two batches of vectors, with real validation for mismatched batch sizes and mismatched per-vector dimensions.",
+      "difficulty": "medium",
+      "topic": "mathematics-for-ai"
     },
     "/docs/practice-problems/bayes-posterior": {
       "slug": "practice-problems/bayes-posterior",
       "section": "practice-problems",
       "title": "Practice: Bayes' Theorem, Posterior From Scratch",
       "sidebarPosition": 17,
-      "description": "Implement Bayes' theorem's posterior probability from scratch, using the classic rare-disease test example where a positive result is often wrong."
+      "description": "Implement Bayes' theorem's posterior probability from scratch, using the classic rare-disease test example where a positive result is often wrong.",
+      "difficulty": "medium",
+      "topic": "mathematics-for-ai"
     },
     "/docs/practice-problems/convolution-2d": {
       "slug": "practice-problems/convolution-2d",
       "section": "practice-problems",
       "title": "Practice: 2D Convolution From Scratch",
       "sidebarPosition": 21,
-      "description": "Implement 2D convolution from scratch -- slide a kernel across an image computing weighted sums, the exact operation every CNN convolutional layer runs."
+      "description": "Implement 2D convolution from scratch -- slide a kernel across an image computing weighted sums, the exact operation every CNN convolutional layer runs.",
+      "difficulty": "medium",
+      "topic": "computer-vision"
     },
     "/docs/practice-problems/cosine-similarity-matrix": {
       "slug": "practice-problems/cosine-similarity-matrix",
       "section": "practice-problems",
       "title": "Practice: Pairwise Cosine Similarity Matrix",
       "sidebarPosition": 19.5,
-      "description": "Compute the full n-by-n pairwise cosine similarity matrix in a real Python sandbox -- the exact computation underneath embedding search and clustering."
+      "description": "Compute the full n-by-n pairwise cosine similarity matrix in a real Python sandbox -- the exact computation underneath embedding search and clustering.",
+      "difficulty": "medium",
+      "topic": "nlp"
     },
     "/docs/practice-problems/cosine-similarity": {
       "slug": "practice-problems/cosine-similarity",
       "section": "practice-problems",
       "title": "Practice: Cosine Similarity From Scratch",
       "sidebarPosition": 19,
-      "description": "Implement cosine similarity from scratch -- the standard way every embedding and vector-search comparison on this site measures directional alignment."
+      "description": "Implement cosine similarity from scratch -- the standard way every embedding and vector-search comparison on this site measures directional alignment.",
+      "difficulty": "easy",
+      "topic": "nlp"
     },
     "/docs/practice-problems/count-islands": {
       "slug": "practice-problems/count-islands",
       "section": "practice-problems",
       "title": "Practice: Count Islands (Connected Components)",
       "sidebarPosition": 26,
-      "description": "Count connected components in a grid via DFS/BFS in a real Python sandbox -- land cells are nodes, adjacency is implicit, an island is one component."
+      "description": "Count connected components in a grid via DFS/BFS in a real Python sandbox -- land cells are nodes, adjacency is implicit, an island is one component.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/daily-temperatures": {
       "slug": "practice-problems/daily-temperatures",
       "section": "practice-problems",
       "title": "Practice: Daily Temperatures",
       "sidebarPosition": 37,
-      "description": "Solve Daily Temperatures with a monotonic stack in O(n) time -- the classic 'next greater element' pattern applied to a list of temperatures."
+      "description": "Solve Daily Temperatures with a monotonic stack in O(n) time -- the classic 'next greater element' pattern applied to a list of temperatures.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/design-challenge-fraud-detection": {
       "slug": "practice-problems/design-challenge-fraud-detection",
       "section": "practice-problems",
       "title": "Design Challenge: Real-Time Fraud Detection at 100K Events/Sec",
       "sidebarPosition": 44,
-      "description": "Design a real-time fraud detection system end to end at 100K events/sec with severe class imbalance -- then self-assess against a real rubric and walkthrough."
+      "description": "Design a real-time fraud detection system end to end at 100K events/sec with severe class imbalance -- then self-assess against a real rubric and walkthrough.",
+      "difficulty": null,
+      "topic": "ml-system-design"
     },
     "/docs/practice-problems/design-challenge-rag-system": {
       "slug": "practice-problems/design-challenge-rag-system",
       "section": "practice-problems",
       "title": "Design Challenge: A RAG System Over 100M Enterprise Documents",
       "sidebarPosition": 43,
-      "description": "Design a real RAG system end to end for 100M enterprise documents, sub-second latency, and answers that must be right -- then self-assess against a real rubric."
+      "description": "Design a real RAG system end to end for 100M enterprise documents, sub-second latency, and answers that must be right -- then self-assess against a real rubric.",
+      "difficulty": null,
+      "topic": "ml-system-design"
     },
     "/docs/practice-problems/design-challenge-recommendations": {
       "slug": "practice-problems/design-challenge-recommendations",
       "section": "practice-problems",
       "title": "Design Challenge: Personalized Recommendations for a 50M-Item Catalog",
       "sidebarPosition": 46,
-      "description": "Design a personalized recommender for 50M items, handling cold start and feedback-loop bias -- then self-assess your design against a real rubric and walkthrough."
+      "description": "Design a personalized recommender for 50M items, handling cold start and feedback-loop bias -- then self-assess your design against a real rubric and walkthrough.",
+      "difficulty": null,
+      "topic": "ml-system-design"
     },
     "/docs/practice-problems/design-challenge-support-agent": {
       "slug": "practice-problems/design-challenge-support-agent",
       "section": "practice-problems",
       "title": "Design Challenge: A Support Agent That Can Actually Take Actions",
       "sidebarPosition": 45,
-      "description": "Design an agent that can look up orders and issue refunds safely at 50K conversations/day -- then self-assess your trust and control design against a real rubric."
+      "description": "Design an agent that can look up orders and issue refunds safely at 50K conversations/day -- then self-assess your trust and control design against a real rubric.",
+      "difficulty": null,
+      "topic": "ml-system-design"
     },
     "/docs/practice-problems/design-lru-cache": {
       "slug": "practice-problems/design-lru-cache",
       "section": "practice-problems",
       "title": "Practice: Design an LRU Cache",
       "sidebarPosition": 38,
-      "description": "Implement an LRU cache from scratch in a real Python sandbox -- get/put in O(1), where every access reorders which key gets evicted next."
+      "description": "Implement an LRU cache from scratch in a real Python sandbox -- get/put in O(1), where every access reorders which key gets evicted next.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/design-min-stack": {
       "slug": "practice-problems/design-min-stack",
       "section": "practice-problems",
       "title": "Practice: Design a Min Stack",
       "sidebarPosition": 23,
-      "description": "Design a MinStack with O(1) push/pop/top/get_min -- the trick is maintaining a running minimum incrementally, not rescanning the stack each call."
+      "description": "Design a MinStack with O(1) push/pop/top/get_min -- the trick is maintaining a running minimum incrementally, not rescanning the stack each call.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/detect-cycle-directed-graph": {
       "slug": "practice-problems/detect-cycle-directed-graph",
       "section": "practice-problems",
       "title": "Practice: Detect a Cycle in a Directed Graph",
       "sidebarPosition": 27,
-      "description": "Detect a cycle in a directed graph via 3-color DFS in a real Python sandbox -- white/gray/black, where a cycle is DFS reaching an already-gray node."
+      "description": "Detect a cycle in a directed graph via 3-color DFS in a real Python sandbox -- white/gray/black, where a cycle is DFS reaching an already-gray node.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/discounted-return": {
       "slug": "practice-problems/discounted-return",
       "section": "practice-problems",
       "title": "Practice: Discounted Return From Scratch",
       "sidebarPosition": 22,
-      "description": "Implement an RL agent's discounted return from scratch -- the sum value functions are trained to predict, and the basis of the Bellman equations."
+      "description": "Implement an RL agent's discounted return from scratch -- the sum value functions are trained to predict, and the basis of the Bellman equations.",
+      "difficulty": "easy",
+      "topic": "reinforcement-learning"
     },
     "/docs/practice-problems/dot-product": {
       "slug": "practice-problems/dot-product",
       "section": "practice-problems",
       "title": "Practice: Dot Product From Scratch",
       "sidebarPosition": 2,
-      "description": "Implement dot_product(a, b) from scratch in plain Python, no NumPy -- the operation underneath cosine similarity and every attention score."
+      "description": "Implement dot_product(a, b) from scratch in plain Python, no NumPy -- the operation underneath cosine similarity and every attention score.",
+      "difficulty": "easy",
+      "topic": "mathematics-for-ai"
     },
     "/docs/practice-problems/find-duplicates": {
       "slug": "practice-problems/find-duplicates",
       "section": "practice-problems",
       "title": "Practice: Find All Duplicates in an Array",
       "sidebarPosition": 36,
-      "description": "Find all duplicates in a bounded-range array in O(n) time and O(1) extra space using the cyclic-sort sign-flipping technique, no set or counting array."
+      "description": "Find all duplicates in a bounded-range array in O(n) time and O(1) extra space using the cyclic-sort sign-flipping technique, no set or counting array.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/find-rotation-point": {
       "slug": "practice-problems/find-rotation-point",
       "section": "practice-problems",
       "title": "Practice: Find the Rotation Point",
       "sidebarPosition": 11,
-      "description": "Find the rotation point in a rotated sorted array in O(log n) time -- binary search comparing against the endpoint, not a fixed target, with real code."
+      "description": "Find the rotation point in a rotated sorted array in O(log n) time -- binary search comparing against the endpoint, not a fixed target, with real code.",
+      "difficulty": "easy",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/gap-in-the-sequence": {
       "slug": "practice-problems/gap-in-the-sequence",
       "section": "practice-problems",
       "title": "Practice: The Gap in the Sequence",
       "sidebarPosition": 14,
-      "description": "Find a missing number in a sequence of n distinct integers in O(n) time and O(1) space using a closed-form triangular-number sum trick."
+      "description": "Find a missing number in a sequence of n distinct integers in O(n) time and O(1) space using a closed-form triangular-number sum trick.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/gradient-descent-step": {
       "slug": "practice-problems/gradient-descent-step",
       "section": "practice-problems",
       "title": "Practice: One Gradient Descent Step for Linear Regression",
       "sidebarPosition": 5,
-      "description": "Implement one real full-batch gradient descent step for linear regression -- derive and apply the exact w/b update rule, not just call an optimizer."
+      "description": "Implement one real full-batch gradient descent step for linear regression -- derive and apply the exact w/b update rule, not just call an optimizer.",
+      "difficulty": "medium",
+      "topic": "machine-learning"
     },
     "/docs/practice-problems/kmeans-assignment-step": {
       "slug": "practice-problems/kmeans-assignment-step",
       "section": "practice-problems",
       "title": "Practice: K-Means, One Assignment Step",
       "sidebarPosition": 6,
-      "description": "Implement K-Means' assignment step from scratch: assign each point to its nearest centroid by squared Euclidean distance, ties to the lowest index."
+      "description": "Implement K-Means' assignment step from scratch: assign each point to its nearest centroid by squared Euclidean distance, ties to the lowest index.",
+      "difficulty": "medium",
+      "topic": "machine-learning"
     },
     "/docs/practice-problems/kmeans-update-step": {
       "slug": "practice-problems/kmeans-update-step",
       "section": "practice-problems",
       "title": "Practice: K-Means, Centroid Update Step",
       "sidebarPosition": 6.5,
-      "description": "Implement K-Means' centroid update step in a real sandbox -- the genuine edge case a naive average-the-points solution misses: a cluster with zero points."
+      "description": "Implement K-Means' centroid update step in a real sandbox -- the genuine edge case a naive average-the-points solution misses: a cluster with zero points.",
+      "difficulty": "medium",
+      "topic": "machine-learning"
     },
     "/docs/practice-problems/largest-rectangle-in-skyline": {
       "slug": "practice-problems/largest-rectangle-in-skyline",
       "section": "practice-problems",
       "title": "Practice: Largest Rectangle in a Skyline",
       "sidebarPosition": 15,
-      "description": "Implement largest_rectangle_area(heights) in real O(n) using a monotonic stack -- not the O(n^2) brute-force check of every left/right bound pair."
+      "description": "Implement largest_rectangle_area(heights) in real O(n) using a monotonic stack -- not the O(n^2) brute-force check of every left/right bound pair.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/level-order-traversal": {
       "slug": "practice-problems/level-order-traversal",
       "section": "practice-problems",
       "title": "Practice: Level-Order Traversal (BFS)",
       "sidebarPosition": 28,
-      "description": "BFS on a binary tree in a real Python sandbox -- visit every node top-to-bottom, left-to-right, exactly the order BFS naturally produces from the root."
+      "description": "BFS on a binary tree in a real Python sandbox -- visit every node top-to-bottom, left-to-right, exactly the order BFS naturally produces from the root.",
+      "difficulty": "easy",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/lone-number": {
       "slug": "practice-problems/lone-number",
       "section": "practice-problems",
       "title": "Practice: The Lone Number",
       "sidebarPosition": 13,
-      "description": "Find the one non-duplicated element in a list using only XOR, in O(1) space -- a classic bit-manipulation interview pattern, no hash map needed."
+      "description": "Find the one non-duplicated element in a list using only XOR, in O(1) space -- a classic bit-manipulation interview pattern, no hash map needed.",
+      "difficulty": "easy",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/longest-increasing-subsequence": {
       "slug": "practice-problems/longest-increasing-subsequence",
       "section": "practice-problems",
       "title": "Practice: Longest Increasing Subsequence",
       "sidebarPosition": 34,
-      "description": "Implement longest_increasing_subsequence(nums) in real O(n log n) using patience sorting + binary search, not the O(n^2) per-index DP."
+      "description": "Implement longest_increasing_subsequence(nums) in real O(n log n) using patience sorting + binary search, not the O(n^2) per-index DP.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/longest-unique-run": {
       "slug": "practice-problems/longest-unique-run",
       "section": "practice-problems",
       "title": "Practice: Longest Run of Unique Characters",
       "sidebarPosition": 10,
-      "description": "Find the longest run of unique characters in a string using the sliding-window pattern in one pass, instead of an O(n^2) or O(n^3) brute-force check."
+      "description": "Find the longest run of unique characters in a string using the sliding-window pattern in one pass, instead of an O(n^2) or O(n^3) brute-force check.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/lowest-common-ancestor": {
       "slug": "practice-problems/lowest-common-ancestor",
       "section": "practice-problems",
       "title": "Practice: Lowest Common Ancestor in a Binary Tree",
       "sidebarPosition": 30,
-      "description": "Find the lowest common ancestor in a general binary tree via DFS in a real Python sandbox -- no BST ordering to exploit, values assumed unique."
+      "description": "Find the lowest common ancestor in a general binary tree via DFS in a real Python sandbox -- no BST ordering to exploit, values assumed unique.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/matrix-multiplication": {
       "slug": "practice-problems/matrix-multiplication",
       "section": "practice-problems",
       "title": "Practice: Matrix Multiplication From Scratch",
       "sidebarPosition": 3,
-      "description": "Implement matrix multiplication from scratch, no NumPy -- the single operation every neural network linear layer runs on every forward pass."
+      "description": "Implement matrix multiplication from scratch, no NumPy -- the single operation every neural network linear layer runs on every forward pass.",
+      "difficulty": "medium",
+      "topic": "mathematics-for-ai"
     },
     "/docs/practice-problems/max-non-adjacent-sum": {
       "slug": "practice-problems/max-non-adjacent-sum",
       "section": "practice-problems",
       "title": "Practice: Maximum Non-Adjacent Sum",
       "sidebarPosition": 12,
-      "description": "A classic DP interview problem: find the maximum sum of non-adjacent elements in O(n) time and O(1) space using two running state values."
+      "description": "A classic DP interview problem: find the maximum sum of non-adjacent elements in O(n) time and O(1) space using two running state values.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/mean-squared-error": {
       "slug": "practice-problems/mean-squared-error",
       "section": "practice-problems",
       "title": "Practice: Mean Squared Error From Scratch",
       "sidebarPosition": 4,
-      "description": "Implement mean squared error from scratch -- the loss Linear Regression minimizes -- with real edge-case handling for mismatched or empty inputs."
+      "description": "Implement mean squared error from scratch -- the loss Linear Regression minimizes -- with real edge-case handling for mismatched or empty inputs.",
+      "difficulty": "easy",
+      "topic": "machine-learning"
     },
     "/docs/practice-problems/merge-k-sorted-lists": {
       "slug": "practice-problems/merge-k-sorted-lists",
       "section": "practice-problems",
       "title": "Practice: Merge K Sorted Lists",
       "sidebarPosition": 24,
-      "description": "Implement merge_k_sorted(lists) in real O(N log k) using heapq -- the min-heap k-way merge pattern, not the naive O(N log N) concatenate-and-sort."
+      "description": "Implement merge_k_sorted(lists) in real O(N log k) using heapq -- the min-heap k-way merge pattern, not the naive O(N log N) concatenate-and-sort.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/min-window-substring": {
       "slug": "practice-problems/min-window-substring",
       "section": "practice-problems",
       "title": "Practice: Minimum Window Substring",
       "sidebarPosition": 32,
-      "description": "The hardest sliding-window variant in a real Python sandbox -- find the shortest substring satisfying a full character-count budget, with multiplicity."
+      "description": "The hardest sliding-window variant in a real Python sandbox -- find the shortest substring satisfying a full character-count budget, with multiplicity.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/numerical-gradient": {
       "slug": "practice-problems/numerical-gradient",
       "section": "practice-problems",
       "title": "Practice: Numerical Gradient via Finite Differences",
       "sidebarPosition": 18,
-      "description": "Implement a numerical gradient via central-difference finite differences -- how you sanity-check a hand-derived analytic gradient, real runnable code."
-    },
-    "/docs/practice-problems/overview": {
-      "slug": "practice-problems/overview",
-      "section": "practice-problems",
-      "title": "Practice Problems: Implement AI/ML From Scratch",
-      "sidebarPosition": 1,
-      "description": "Deep-ml.com-style coding problems: implement the function in a real in-browser Python sandbox, run it against real tests, then see a real reference solution."
+      "description": "Implement a numerical gradient via central-difference finite differences -- how you sanity-check a hand-derived analytic gradient, real runnable code.",
+      "difficulty": "medium",
+      "topic": "mathematics-for-ai"
     },
     "/docs/practice-problems/pair-with-target-sum": {
       "slug": "practice-problems/pair-with-target-sum",
       "section": "practice-problems",
       "title": "Practice: Pair With Target Sum",
       "sidebarPosition": 9,
-      "description": "Find two numbers in a sorted array that sum to a target using the two-pointers pattern in O(n) time, instead of an O(n^2) brute-force pair check."
+      "description": "Find two numbers in a sorted array that sum to a target using the two-pointers pattern in O(n) time, instead of an O(n^2) brute-force pair check.",
+      "difficulty": "easy",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/parallel-sum-reduction": {
       "slug": "practice-problems/parallel-sum-reduction",
       "section": "practice-problems",
       "title": "Practice: Parallel Sum Reduction (WebGPU)",
       "sidebarPosition": 42,
-      "description": "Write a real WGSL compute shader that sums an array using shared memory and a tree reduction -- runs on a real GPU in your browser, graded against real output."
+      "description": "Write a real WGSL compute shader that sums an array using shared memory and a tree reduction -- runs on a real GPU in your browser, graded against real output.",
+      "difficulty": "medium",
+      "topic": "mlops"
     },
     "/docs/practice-problems/returns-to-go": {
       "slug": "practice-problems/returns-to-go",
       "section": "practice-problems",
       "title": "Practice: Full Return-to-Go Sequence",
       "sidebarPosition": 22.5,
-      "description": "Compute the full return-to-go sequence for an RL trajectory in O(n) time using the backward recursive identity, instead of re-summing from scratch each step."
+      "description": "Compute the full return-to-go sequence for an RL trajectory in O(n) time using the backward recursive identity, instead of re-summing from scratch each step.",
+      "difficulty": "medium",
+      "topic": "reinforcement-learning"
     },
     "/docs/practice-problems/right-side-view": {
       "slug": "practice-problems/right-side-view",
       "section": "practice-problems",
       "title": "Practice: Right Side View of a Binary Tree",
       "sidebarPosition": 41,
-      "description": "Level-aware BFS in a real Python sandbox -- find the rightmost visible node at every depth of a binary tree, not just a flat level-ordered list."
+      "description": "Level-aware BFS in a real Python sandbox -- find the rightmost visible node at every depth of a binary tree, not just a flat level-ordered list.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/rotting-oranges": {
       "slug": "practice-problems/rotting-oranges",
       "section": "practice-problems",
       "title": "Practice: Rotting Oranges (Multi-Source BFS)",
       "sidebarPosition": 40,
-      "description": "Multi-source BFS in a real Python sandbox -- seed the queue with every rotten cell at once to correctly model rot spreading in parallel across a grid."
+      "description": "Multi-source BFS in a real Python sandbox -- seed the queue with every rotten cell at once to correctly model rot spreading in parallel across a grid.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/sample-mean-variance": {
       "slug": "practice-problems/sample-mean-variance",
       "section": "practice-problems",
       "title": "Practice: Sample Mean and Variance From Scratch",
       "sidebarPosition": 16,
-      "description": "Implement sample_mean_and_variance(data) from scratch -- the population mean and variance every summary statistic on this site builds on."
+      "description": "Implement sample_mean_and_variance(data) from scratch -- the population mean and variance every summary statistic on this site builds on.",
+      "difficulty": "easy",
+      "topic": "mathematics-for-ai"
     },
     "/docs/practice-problems/search-rotated-array": {
       "slug": "practice-problems/search-rotated-array",
       "section": "practice-problems",
       "title": "Practice: Search in a Rotated Sorted Array",
       "sidebarPosition": 33,
-      "description": "Binary search a rotated sorted array directly for a target value in a real Python sandbox -- O(log n), without first finding the rotation point separately."
+      "description": "Binary search a rotated sorted array directly for a target value in a real Python sandbox -- O(log n), without first finding the rotation point separately.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/shortest-path-bfs": {
       "slug": "practice-problems/shortest-path-bfs",
       "section": "practice-problems",
       "title": "Practice: Shortest Path in an Unweighted Graph",
       "sidebarPosition": 25,
-      "description": "BFS on a general graph in a real Python sandbox -- why exploring level by level guarantees the first path found to any node is the shortest one."
+      "description": "BFS on a general graph in a real Python sandbox -- why exploring level by level guarantees the first path found to any node is the shortest one.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/sigmoid-activation": {
       "slug": "practice-problems/sigmoid-activation",
       "section": "practice-problems",
       "title": "Practice: Sigmoid Activation From Scratch",
       "sidebarPosition": 7,
-      "description": "Implement the sigmoid activation from scratch using math.exp -- the same function behind Logistic Regression's output and binary classifier heads."
+      "description": "Implement the sigmoid activation from scratch using math.exp -- the same function behind Logistic Regression's output and binary classifier heads.",
+      "difficulty": "easy",
+      "topic": "deep-learning"
     },
     "/docs/practice-problems/sigmoid-derivative": {
       "slug": "practice-problems/sigmoid-derivative",
       "section": "practice-problems",
       "title": "Practice: Sigmoid Derivative (Vectorized, Numerically Stable)",
       "sidebarPosition": 7.5,
-      "description": "Implement sigmoid_derivative(z_list) that never OverflowErrors even at z=+/-1000 -- the vectorized, numerically-stable version, not the naive formula."
+      "description": "Implement sigmoid_derivative(z_list) that never OverflowErrors even at z=+/-1000 -- the vectorized, numerically-stable version, not the naive formula.",
+      "difficulty": "medium",
+      "topic": "deep-learning"
     },
     "/docs/practice-problems/smallest-range-k-lists": {
       "slug": "practice-problems/smallest-range-k-lists",
       "section": "practice-problems",
       "title": "Practice: Smallest Range Covering Elements from K Lists",
       "sidebarPosition": 39,
-      "description": "K-way merge with a twist in a real Python sandbox -- find the smallest range covering at least one element from every one of k sorted lists."
+      "description": "K-way merge with a twist in a real Python sandbox -- find the smallest range covering at least one element from every one of k sorted lists.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/softmax-gradient": {
       "slug": "practice-problems/softmax-gradient",
       "section": "practice-problems",
       "title": "Practice: Softmax Gradient (Vector-Jacobian Product)",
       "sidebarPosition": 8.5,
-      "description": "Implement the softmax vector-Jacobian product for backprop -- an O(n) identity that avoids ever materializing softmax's full n x n Jacobian matrix."
+      "description": "Implement the softmax vector-Jacobian product for backprop -- an O(n) identity that avoids ever materializing softmax's full n x n Jacobian matrix.",
+      "difficulty": "hard",
+      "topic": "deep-learning"
     },
     "/docs/practice-problems/softmax": {
       "slug": "practice-problems/softmax",
       "section": "practice-problems",
       "title": "Practice: Numerically Stable Softmax From Scratch",
       "sidebarPosition": 8,
-      "description": "Implement a numerically stable softmax from scratch -- the standard multi-class output layer, and why the naive formula overflows on large inputs."
+      "description": "Implement a numerically stable softmax from scratch -- the standard multi-class output layer, and why the naive formula overflows on large inputs.",
+      "difficulty": "medium",
+      "topic": "deep-learning"
     },
     "/docs/practice-problems/standardize-dataset": {
       "slug": "practice-problems/standardize-dataset",
       "section": "practice-problems",
       "title": "Practice: Standardize a Dataset (Z-Score Normalization)",
       "sidebarPosition": 16.5,
-      "description": "Implement z-score normalization from scratch in a real Python sandbox -- the standard feature-scaling step before gradient descent or any distance-based method."
+      "description": "Implement z-score normalization from scratch in a real Python sandbox -- the standard feature-scaling step before gradient descent or any distance-based method.",
+      "difficulty": "medium",
+      "topic": "mathematics-for-ai"
     },
     "/docs/practice-problems/tf-idf-weight": {
       "slug": "practice-problems/tf-idf-weight",
       "section": "practice-problems",
       "title": "Practice: TF-IDF Weight From Scratch",
       "sidebarPosition": 20,
-      "description": "Implement TF-IDF from scratch -- term frequency times inverse document frequency, the classic fix for raw word counts overweighting common, low-meaning words."
+      "description": "Implement TF-IDF from scratch -- term frequency times inverse document frequency, the classic fix for raw word counts overweighting common, low-meaning words.",
+      "difficulty": "medium",
+      "topic": "nlp"
     },
     "/docs/practice-problems/three-sum-zero": {
       "slug": "practice-problems/three-sum-zero",
       "section": "practice-problems",
       "title": "Practice: Three Sum to Zero",
       "sidebarPosition": 31,
-      "description": "Find every unique triplet summing to zero in a real Python sandbox -- two pointers run once per anchor element, with duplicate triplets actively suppressed."
+      "description": "Find every unique triplet summing to zero in a real Python sandbox -- two pointers run once per anchor element, with duplicate triplets actively suppressed.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/two-lone-numbers": {
       "slug": "practice-problems/two-lone-numbers",
       "section": "practice-problems",
       "title": "Practice: The Two Lone Numbers",
       "sidebarPosition": 35,
-      "description": "Implement two_lone_numbers(nums) using only XOR and bitwise AND -- the differing-bit trick that partitions the array back into two Lone Number problems."
+      "description": "Implement two_lone_numbers(nums) using only XOR and bitwise AND -- the differing-bit trick that partitions the array back into two Lone Number problems.",
+      "difficulty": "hard",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/validate-bst": {
       "slug": "practice-problems/validate-bst",
       "section": "practice-problems",
       "title": "Practice: Validate a Binary Search Tree",
       "sidebarPosition": 29,
-      "description": "Implement is_valid_bst(root) in a real sandbox -- the classic trap where local parent-child checks look fine but miss a deeper ancestor violation."
+      "description": "Implement is_valid_bst(root) in a real sandbox -- the classic trap where local parent-child checks look fine but miss a deeper ancestor violation.",
+      "difficulty": "medium",
+      "topic": "interview-prep"
     },
     "/docs/practice-problems/weighted-rmse": {
       "slug": "practice-problems/weighted-rmse",
       "section": "practice-problems",
       "title": "Practice: Weighted RMSE",
       "sidebarPosition": 4.5,
-      "description": "Implement weighted RMSE from scratch in a real Python sandbox -- when some training examples are more trustworthy than others, and units must stay interpretable."
+      "description": "Implement weighted RMSE from scratch in a real Python sandbox -- when some training examples are more trustworthy than others, and units must stay interpretable.",
+      "difficulty": "medium",
+      "topic": "machine-learning"
     },
     "/docs/projects/overview": {
       "slug": "projects/overview",
       "section": "projects",
       "title": "Projects — Overview",
       "sidebarPosition": 1,
-      "description": "A six-level project ladder from an afternoon build to a genuine capstone, plus a living atlas of concrete problem statements worth actually building."
+      "description": "A six-level project ladder from an afternoon build to a genuine capstone, plus a living atlas of concrete problem statements worth actually building.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/projects/problem-statement-atlas": {
       "slug": "projects/problem-statement-atlas",
       "section": "projects",
       "title": "Problem Statement Atlas",
       "sidebarPosition": 4,
-      "description": "A living, status-tracked directory of concrete problem statements across every domain worth a real project -- not started, content-only, or actually built."
+      "description": "A living, status-tracked directory of concrete problem statements across every domain worth a real project -- not started, content-only, or actually built.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/projects/roadmap": {
       "slug": "projects/roadmap",
       "section": "projects",
       "title": "Projects — Roadmap",
       "sidebarPosition": 2,
-      "description": "The six-level project ladder and the problem statement atlas -- where to find real, scoped project ideas across production RAG, agents, and MLOps."
+      "description": "The six-level project ladder and the problem statement atlas -- where to find real, scoped project ideas across production RAG, agents, and MLOps.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/projects/the-project-ladder": {
       "slug": "projects/the-project-ladder",
       "section": "projects",
       "title": "The Project Ladder",
       "sidebarPosition": 3,
-      "description": "Six real project levels, from an afternoon-long tiny project to a frontier capstone -- pick by what you're currently learning, not strict order."
+      "description": "Six real project levels, from an afternoon-long tiny project to a frontier capstone -- pick by what you're currently learning, not strict order.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/python-engineering/concurrency-memory-and-performance": {
       "slug": "python-engineering/concurrency-memory-and-performance",
       "section": "python-engineering",
       "title": "Concurrency, Memory & Performance",
       "sidebarPosition": 4,
-      "description": "async/await, the GIL, and CPython's real memory model -- which concurrency tool to actually reach for, and where Python performance really goes in ML code."
+      "description": "async/await, the GIL, and CPython's real memory model -- which concurrency tool to actually reach for, and where Python performance really goes in ML code.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/python-engineering/language-fundamentals-and-oop": {
       "slug": "python-engineering/language-fundamentals-and-oop",
       "section": "python-engineering",
       "title": "Language Fundamentals: OOP, Functional & Modern Python",
       "sidebarPosition": 3,
-      "description": "OOP, decorators, and magic methods explained through the PyTorch code that actually uses them -- nn.Module, Dataset, and why model(x) works at all."
+      "description": "OOP, decorators, and magic methods explained through the PyTorch code that actually uses them -- nn.Module, Dataset, and why model(x) works at all.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/python-engineering/overview": {
       "slug": "python-engineering/overview",
       "section": "python-engineering",
       "title": "Python Engineering for AI — Overview",
       "sidebarPosition": 1,
-      "description": "The Python engineering, not just syntax, that separates a one-off notebook cell from code a team can run in production for years -- concurrency, memory, tooling."
+      "description": "The Python engineering, not just syntax, that separates a one-off notebook cell from code a team can run in production for years -- concurrency, memory, tooling.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/python-engineering/packaging-testing-and-tooling": {
       "slug": "python-engineering/packaging-testing-and-tooling",
       "section": "python-engineering",
       "title": "Packaging, Testing & Tooling",
       "sidebarPosition": 5,
-      "description": "pyproject.toml, dependency pinning, lockfiles, and pytest in practice -- the gap between 'runs on my machine' and 'runs anywhere, reliably'."
+      "description": "pyproject.toml, dependency pinning, lockfiles, and pytest in practice -- the gap between 'runs on my machine' and 'runs anywhere, reliably'.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/python-engineering/roadmap": {
       "slug": "python-engineering/roadmap",
       "section": "python-engineering",
       "title": "Python Engineering for AI — Roadmap",
       "sidebarPosition": 2,
-      "description": "Python OOP and functional patterns, concurrency and performance, and packaging/testing/tooling -- the engineering foundation an AI codebase actually runs on."
+      "description": "Python OOP and functional patterns, concurrency and performance, and packaging/testing/tooling -- the engineering foundation an AI codebase actually runs on.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/reinforcement-learning/advanced-rl": {
       "slug": "reinforcement-learning/advanced-rl",
       "section": "reinforcement-learning",
       "title": "Advanced RL",
       "sidebarPosition": 4,
-      "description": "DQN, policy gradients, and PPO -- what happens once a state space is too large for a lookup table or an action space becomes continuous."
+      "description": "DQN, policy gradients, and PPO -- what happens once a state space is too large for a lookup table or an action space becomes continuous.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/reinforcement-learning/bandits": {
       "slug": "reinforcement-learning/bandits",
       "section": "reinforcement-learning",
       "title": "Multi-Armed & Contextual Bandits",
       "sidebarPosition": 5,
-      "description": "Multi-armed and contextual bandits -- the real regret tradeoffs between epsilon-greedy, UCB1, and Thompson Sampling for the explore/exploit problem."
+      "description": "Multi-armed and contextual bandits -- the real regret tradeoffs between epsilon-greedy, UCB1, and Thompson Sampling for the explore/exploit problem.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/reinforcement-learning/overview": {
       "slug": "reinforcement-learning/overview",
       "section": "reinforcement-learning",
       "title": "Reinforcement Learning — Overview",
       "sidebarPosition": 1,
-      "description": "MDPs, the Bellman equations, Q-learning, and bandits from first principles -- the theory behind every RLHF, PPO, and DQN reference elsewhere on this site."
+      "description": "MDPs, the Bellman equations, Q-learning, and bandits from first principles -- the theory behind every RLHF, PPO, and DQN reference elsewhere on this site.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/reinforcement-learning/rl-fundamentals": {
       "slug": "reinforcement-learning/rl-fundamentals",
       "section": "reinforcement-learning",
       "title": "RL Fundamentals",
       "sidebarPosition": 3,
-      "description": "MDPs, the Bellman equations, and Q-learning derived from one repeating loop -- the formal problem every RL algorithm, from tabular to PPO, is solving."
+      "description": "MDPs, the Bellman equations, and Q-learning derived from one repeating loop -- the formal problem every RL algorithm, from tabular to PPO, is solving.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/reinforcement-learning/roadmap": {
       "slug": "reinforcement-learning/roadmap",
       "section": "reinforcement-learning",
       "title": "Reinforcement Learning — Roadmap",
       "sidebarPosition": 2,
-      "description": "RL fundamentals (MDPs, Q-learning, Bellman equations), advanced RL (DQN, PPO, RLHF), and multi-armed bandits -- three sections on sequential decision-making."
+      "description": "RL fundamentals (MDPs, Q-learning, Bellman equations), advanced RL (DQN, PPO, RLHF), and multi-armed bandits -- three sections on sequential decision-making.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/research-engineering/how-to-read-ai-papers": {
       "slug": "research-engineering/how-to-read-ai-papers",
       "section": "research-engineering",
       "title": "How to Read AI Papers",
       "sidebarPosition": 3,
-      "description": "Why front-to-back linear reading is the slowest way to extract a paper's actual content -- a real structure for reading with intent, section by section."
+      "description": "Why front-to-back linear reading is the slowest way to extract a paper's actual content -- a real structure for reading with intent, section by section.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/research-engineering/overview": {
       "slug": "research-engineering/overview",
       "section": "research-engineering",
       "title": "Research Engineering — Overview",
       "sidebarPosition": 1,
-      "description": "How to actually read an AI paper well, and how the field's landmark architectures connect across time -- the meta-skill underneath every technique here."
+      "description": "How to actually read an AI paper well, and how the field's landmark architectures connect across time -- the meta-skill underneath every technique here.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/research-engineering/paper-timeline": {
       "slug": "research-engineering/paper-timeline",
       "section": "research-engineering",
       "title": "The Paper Timeline",
       "sidebarPosition": 4,
-      "description": "Every landmark architecture reconnected along the dimension category-based organization hides: time -- AlexNet to GPT-3 and what each idea was responding to."
+      "description": "Every landmark architecture reconnected along the dimension category-based organization hides: time -- AlexNet to GPT-3 and what each idea was responding to.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/research-engineering/roadmap": {
       "slug": "research-engineering/roadmap",
       "section": "research-engineering",
       "title": "Research Engineering — Roadmap",
       "sidebarPosition": 2,
-      "description": "How to read AI papers structurally, plus the real paper lineage from AlexNet through modern LLMs -- turning research literacy into a testable skill."
+      "description": "How to read AI papers structurally, plus the real paper lineage from AlexNet through modern LLMs -- turning research literacy into a testable skill.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/resources/open-source-ai-resources": {
       "slug": "resources/open-source-ai-resources",
       "section": "resources",
       "title": "Open Source AI Resources",
       "sidebarPosition": 1,
-      "description": "A running list of free external resources: practice problem sets, interview-prep Q&A banks, and visual math-intuition explainers, updated as new ones are found."
+      "description": "A running list of free external resources: practice problem sets, interview-prep Q&A banks, and visual math-intuition explainers, updated as new ones are found.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/roadmaps/overview": {
       "slug": "roadmaps/overview",
       "section": "roadmaps",
       "title": "The Neural Mastery Roadmap",
       "sidebarPosition": 1,
-      "description": "One ordered path through every section on this site, from zero to job-ready -- plus shorter, goal-specific routes for ML, LLM, research, or infra roles."
+      "description": "One ordered path through every section on this site, from zero to job-ready -- plus shorter, goal-specific routes for ML, LLM, research, or infra roles.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/roadmaps/suggested-paths": {
       "slug": "roadmaps/suggested-paths",
       "section": "roadmaps",
       "title": "Suggested Paths",
       "sidebarPosition": 2,
-      "description": "Four goal-specific routes through this site's 26 sections -- ML Engineer, LLM/GenAI Engineer, and more -- trimmed and reordered around a real target role."
+      "description": "Four goal-specific routes through this site's 26 sections -- ML Engineer, LLM/GenAI Engineer, and more -- trimmed and reordered around a real target role.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/speech-audio/audio-fundamentals": {
       "slug": "speech-audio/audio-fundamentals",
       "section": "speech-audio",
       "title": "Audio Fundamentals",
       "sidebarPosition": 3,
-      "description": "How raw audio becomes something a model can learn from: sampling/Nyquist, bit depth, the Fourier transform, STFT window tradeoffs, mel scale, and MFCCs."
+      "description": "How raw audio becomes something a model can learn from: sampling/Nyquist, bit depth, the Fourier transform, STFT window tradeoffs, mel scale, and MFCCs.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/speech-audio/overview": {
       "slug": "speech-audio/overview",
       "section": "speech-audio",
       "title": "Speech & Audio AI — Overview",
       "sidebarPosition": 1,
-      "description": "Turning a continuous audio waveform into something a neural network can learn from -- Fourier transforms, spectrograms, MFCCs, and the tasks built on them."
+      "description": "Turning a continuous audio waveform into something a neural network can learn from -- Fourier transforms, spectrograms, MFCCs, and the tasks built on them.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/speech-audio/roadmap": {
       "slug": "speech-audio/roadmap",
       "section": "speech-audio",
       "title": "Speech & Audio AI — Roadmap",
       "sidebarPosition": 2,
-      "description": "Audio fundamentals (sampling, Fourier transforms, spectrograms) and speech/audio tasks -- ASR, TTS, speaker diarization, and audio-language models."
+      "description": "Audio fundamentals (sampling, Fourier transforms, spectrograms) and speech/audio tasks -- ASR, TTS, speaker diarization, and audio-language models.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/speech-audio/speech-audio-tasks": {
       "slug": "speech-audio/speech-audio-tasks",
       "section": "speech-audio",
       "title": "Speech & Audio Tasks",
       "sidebarPosition": 4,
-      "description": "ASR, TTS, and the full speech task taxonomy -- reusing the same sequence-modeling and attention machinery from text, applied to spectrogram-like audio."
+      "description": "ASR, TTS, and the full speech task taxonomy -- reusing the same sequence-modeling and attention machinery from text, applied to spectrogram-like audio.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/agent-execution-graph": {
       "slug": "visual-lab/agent-execution-graph",
       "section": "visual-lab",
       "title": "Agent Execution Graph",
       "sidebarPosition": 7,
-      "description": "Step through a scripted, clickable ReAct loop trace -- see exactly how an agent's reasoning, tool calls, and observations unfold turn by turn."
+      "description": "Step through a scripted, clickable ReAct loop trace -- see exactly how an agent's reasoning, tool calls, and observations unfold turn by turn.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/algorithm-selector": {
       "slug": "visual-lab/algorithm-selector",
       "section": "visual-lab",
       "title": "Algorithm Selector",
       "sidebarPosition": 15,
-      "description": "A real branching decision tool over this site's own ML pages -- answer a few questions, get pointed at the actual technique that fits your situation."
+      "description": "A real branching decision tool over this site's own ML pages -- answer a few questions, get pointed at the actual technique that fits your situation.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/attention-step-through": {
       "slug": "visual-lab/attention-step-through",
       "section": "visual-lab",
       "title": "Attention Step-Through",
       "sidebarPosition": 5,
-      "description": "A live QKV/softmax attention heatmap with per-token, multi-head breakdown -- type a sentence and watch real attention weights compute."
+      "description": "A live QKV/softmax attention heatmap with per-token, multi-head breakdown -- type a sentence and watch real attention weights compute.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/decision-boundary-playground": {
       "slug": "visual-lab/decision-boundary-playground",
       "section": "visual-lab",
       "title": "Decision Boundary Playground",
       "sidebarPosition": 9,
-      "description": "Click to add points and watch KNN, decision tree, and k-means decision boundaries update live -- the fastest way to build intuition for how each one works."
+      "description": "Click to add points and watch KNN, decision tree, and k-means decision boundaries update live -- the fastest way to build intuition for how each one works.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/embedding-space-explorer": {
       "slug": "visual-lab/embedding-space-explorer",
       "section": "visual-lab",
       "title": "Embedding Space Explorer",
       "sidebarPosition": 10,
-      "description": "A real from-scratch PCA projection, cosine-similarity nearest neighbors, and word-vector analogy, computed live over a hand-built 48-word demo vocabulary."
+      "description": "A real from-scratch PCA projection, cosine-similarity nearest neighbors, and word-vector analogy, computed live over a hand-built 48-word demo vocabulary.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/gradient-descent-explorer": {
       "slug": "visual-lab/gradient-descent-explorer",
       "section": "visual-lab",
       "title": "Gradient Descent Explorer",
       "sidebarPosition": 3,
-      "description": "Drive SGD, Momentum, and Adam yourself across a live, clickable loss surface -- the same elongated \"ravine\" shape from Optimizers, except you're driving."
+      "description": "Drive SGD, Momentum, and Adam yourself across a live, clickable loss surface -- the same elongated \"ravine\" shape from Optimizers, except you're driving.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/graph-tree-traversal": {
       "slug": "visual-lab/graph-tree-traversal",
       "section": "visual-lab",
       "title": "Graph &amp; Tree Traversal, Step by Step",
       "sidebarPosition": 15,
-      "description": "An editable graph with real BFS vs. DFS stepped through live, plus a fixed-tree Lowest Common Ancestor finder with a real recursive call-by-call trace."
+      "description": "An editable graph with real BFS vs. DFS stepped through live, plus a fixed-tree Lowest Common Ancestor finder with a real recursive call-by-call trace.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/inference-flow-visualizer": {
       "slug": "visual-lab/inference-flow-visualizer",
       "section": "visual-lab",
       "title": "LLM Inference Flow Visualizer",
       "sidebarPosition": 8,
-      "description": "A clickable tokenizer-to-sampling pipeline with a real, live sampling playground -- see temperature, top-k, and top-p actually change token selection."
+      "description": "A clickable tokenizer-to-sampling pipeline with a real, live sampling playground -- see temperature, top-k, and top-p actually change token selection.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/lasso-regression-studio": {
       "slug": "visual-lab/lasso-regression-studio",
       "section": "visual-lab",
       "title": "Lasso Regression Studio",
       "sidebarPosition": 14,
-      "description": "Real coordinate-descent soft-thresholding on the same dataset as Ridge Studio -- a directly comparable, live path showing exact feature elimination."
+      "description": "Real coordinate-descent soft-thresholding on the same dataset as Ridge Studio -- a directly comparable, live path showing exact feature elimination.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/linear-regression-studio": {
       "slug": "visual-lab/linear-regression-studio",
       "section": "visual-lab",
       "title": "Linear Regression Studio",
       "sidebarPosition": 11,
-      "description": "Drag-the-line fitting, an MSE/outlier experiment, and a real gradient descent lab with a live loss surface, all on one real dataset."
+      "description": "Drag-the-line fitting, an MSE/outlier experiment, and a real gradient descent lab with a live loss surface, all on one real dataset.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/logistic-regression-studio": {
       "slug": "visual-lab/logistic-regression-studio",
       "section": "visual-lab",
       "title": "Logistic Regression Studio",
       "sidebarPosition": 12,
-      "description": "Real sigmoid curve fitting plus a live cross-entropy vs. MSE-on-sigmoid convexity comparison -- see why the loss function choice actually matters."
+      "description": "Real sigmoid curve fitting plus a live cross-entropy vs. MSE-on-sigmoid convexity comparison -- see why the loss function choice actually matters.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/neural-network-playground": {
       "slug": "visual-lab/neural-network-playground",
       "section": "visual-lab",
       "title": "Neural Network Playground",
       "sidebarPosition": 4,
-      "description": "A configurable toy-dataset classifier, trained live in your browser -- pick the architecture and dataset, watch it actually learn in real time."
+      "description": "A configurable toy-dataset classifier, trained live in your browser -- pick the architecture and dataset, watch it actually learn in real time.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/overview": {
       "slug": "visual-lab/overview",
       "section": "visual-lab",
       "title": "Visual Lab — Overview",
       "sidebarPosition": 1,
-      "description": "Every visualization here is live -- set the parameters, click the canvas, and watch gradient descent or a neural network respond to your input in real time."
+      "description": "Every visualization here is live -- set the parameters, click the canvas, and watch gradient descent or a neural network respond to your input in real time.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/rag-pipeline-simulator": {
       "slug": "visual-lab/rag-pipeline-simulator",
       "section": "visual-lab",
       "title": "RAG Pipeline Simulator",
       "sidebarPosition": 6,
-      "description": "Adjustable chunking, top-k, and reranking with live retrieved-chunk results -- see exactly how each RAG pipeline knob changes what gets retrieved."
+      "description": "Adjustable chunking, top-k, and reranking with live retrieved-chunk results -- see exactly how each RAG pipeline knob changes what gets retrieved.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/ridge-regression-studio": {
       "slug": "visual-lab/ridge-regression-studio",
       "section": "visual-lab",
       "title": "Ridge Regression Studio",
       "sidebarPosition": 13,
-      "description": "A real closed-form ridge regression solve on a multicollinear dataset, with a live regularization path as you adjust the penalty strength."
+      "description": "A real closed-form ridge regression solve on a multicollinear dataset, with a live regularization path as you adjust the penalty strength.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/roadmap": {
       "slug": "visual-lab/roadmap",
       "section": "visual-lab",
       "title": "Visual Lab — Roadmap",
       "sidebarPosition": 2,
-      "description": "Every shipped interactive tool in one list: gradient descent, attention, RAG, regression studios, decision boundaries, and DSA algorithm walkthroughs, all live."
+      "description": "Every shipped interactive tool in one list: gradient descent, attention, RAG, regression studios, decision boundaries, and DSA algorithm walkthroughs, all live.",
+      "difficulty": null,
+      "topic": null
     },
     "/docs/visual-lab/two-pointers-sliding-window": {
       "slug": "visual-lab/two-pointers-sliding-window",
       "section": "visual-lab",
       "title": "Two Pointers & Sliding Window, Step by Step",
       "sidebarPosition": 14,
-      "description": "An editable array or string with real two-pointer and sliding-window algorithms stepped through one move at a time -- the first DSA piece in Visual Lab."
+      "description": "An editable array or string with real two-pointer and sliding-window algorithms stepped through one move at a time -- the first DSA piece in Visual Lab.",
+      "difficulty": null,
+      "topic": null
     }
   },
   "categories": {

@@ -1,17 +1,30 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
 import { ThemeProvider } from './theme/ThemeProvider';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 import { GamificationProvider } from './contexts/GamificationContext';
 import DocLayout from './components/layout/DocLayout';
+import PracticeProblemLayout from './components/layout/PracticeProblemLayout';
+import ChooserPage from './components/ChooserPage';
 import Home from './components/Home';
+import PracticeListPage from './components/PracticeListPage';
 import ProgressPage from './components/ProgressPage';
 import ProfilePage from './components/ProfilePage';
 import ThemedImage from './components/ThemedImage';
 import MDXCodeBlock from './components/MDXCodeBlock';
 import MDXLink from './components/MDXLink';
 import AnalyticsTracker from './components/AnalyticsTracker';
+
+/** Old /docs/practice-problems/<slug> URLs redirect to their real, current
+ * /practice/<slug> home -- see contentTree.ts's practiceRoute() for why the
+ * URL moved (content/location on disk never did) and
+ * normalizePracticeProblemPermalink() in gamification.ts for how a
+ * pre-migration award under the old URL still gets recognized. */
+function PracticeProblemRedirect() {
+  const { slug } = useParams();
+  return <Navigate to={`/practice/${slug}`} replace />;
+}
 
 // Components available to every .mdx file without an explicit import --
 // mirrors how Docusaurus makes <ThemedImage> globally available in MDX.
@@ -37,9 +50,14 @@ export default function App() {
               <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
                 <AnalyticsTracker />
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<ChooserPage />} />
+                  <Route path="/learn" element={<Home />} />
+                  <Route path="/practice" element={<PracticeListPage />} />
+                  <Route path="/practice/:slug" element={<PracticeProblemLayout />} />
                   <Route path="/progress" element={<ProgressPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/docs/practice-problems/overview" element={<Navigate to="/practice" replace />} />
+                  <Route path="/docs/practice-problems/:slug" element={<PracticeProblemRedirect />} />
                   <Route path="/docs/*" element={<DocLayout />} />
                 </Routes>
               </BrowserRouter>

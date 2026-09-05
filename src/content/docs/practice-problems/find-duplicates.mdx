@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Medium** · Pattern: Cyclic Sort / Array Math · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
 
-[The Gap in the Sequence](/docs/practice-problems/gap-in-the-sequence) exploited a bounded-range constraint with a closed-form sum. This problem has a similar-looking setup — `n` integers, each in `1..n` — but the sum trick doesn't apply here: some values appear **twice** instead of one being missing, and you need to identify *which* ones, not just detect that something's off.
+[The Gap in the Sequence](/practice/gap-in-the-sequence) exploited a bounded-range constraint with a closed-form sum. This problem has a similar-looking setup — `n` integers, each in `1..n` — but the sum trick doesn't apply here: some values appear **twice** instead of one being missing, and you need to identify *which* ones, not just detect that something's off.
 
 **The cyclic-sort-family technique that does work**: since every value is in `1..n`, value `v` "belongs" at index `v - 1`. Walk the array, and at each value `v` you encounter, go to index `|v| - 1` and **flip the sign** of whatever's stored there. The first time you visit a given index, its value goes from positive to negative. If you ever land on an index that's *already* negative, that means its corresponding value has been seen once already — you've found a duplicate.
 
@@ -50,10 +50,10 @@ def find_duplicates(nums):
 
 `abs(n)` at the top of the loop is what keeps this correct despite the array changing underneath the iteration: by the time the loop reaches a given position, the value stored *there* may have already been sign-flipped by an earlier step targeting that same index — but its magnitude (the actual number it represents) is untouched, only its sign carries the "have I been visited as a target" bookkeeping. So `abs(n) - 1` always recovers the correct index to check, regardless of whether `n` itself happens to already be negative when the loop gets to it.
 
-The check itself is simple once that's understood: `nums[idx] < 0` means *some* earlier value in the array already claimed index `idx` as its home (by flipping it negative) — and since values only range over `1..n` with each index correspondingly claimed by exactly one "first occurrence," a second claim on the same index can only mean the same value showed up again. This reuses the array itself as a hash set (each index doubling as a seen-flag for its corresponding value), the same "index positions carry information" idea [The Gap in the Sequence](/docs/practice-problems/gap-in-the-sequence) exploits with a sum instead — a different specific technique, same family of "bounded range lets the array be its own auxiliary structure" thinking.
+The check itself is simple once that's understood: `nums[idx] < 0` means *some* earlier value in the array already claimed index `idx` as its home (by flipping it negative) — and since values only range over `1..n` with each index correspondingly claimed by exactly one "first occurrence," a second claim on the same index can only mean the same value showed up again. This reuses the array itself as a hash set (each index doubling as a seen-flag for its corresponding value), the same "index positions carry information" idea [The Gap in the Sequence](/practice/gap-in-the-sequence) exploits with a sum instead — a different specific technique, same family of "bounded range lets the array be its own auxiliary structure" thinking.
 
 </Solution>
 
 ---
 
-Next: [Daily Temperatures](/docs/practice-problems/daily-temperatures)
+Next: [Daily Temperatures](/practice/daily-temperatures)

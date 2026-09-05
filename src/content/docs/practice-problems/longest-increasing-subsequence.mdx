@@ -15,7 +15,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 Given a list of integers, find the length of the longest strictly increasing **subsequence** (elements don't need to be contiguous — just appear in increasing order and in their original relative positions).
 
-[Maximum Non-Adjacent Sum](/docs/practice-problems/max-non-adjacent-sum) needed only $O(1)$ state per step (include vs. exclude the previous element). This problem's naive DP needs $O(n)$ state per element (the best subsequence length *ending at each specific index*), giving $O(n^2)$ overall. There's a genuinely different, faster technique — **patience sorting**, using binary search — that gets it down to $O(n \log n)$, the same complexity class jump [K-Means's assignment step](/docs/practice-problems/kmeans-assignment-step) doesn't need but a real LIS implementation over large inputs does.
+[Maximum Non-Adjacent Sum](/practice/max-non-adjacent-sum) needed only $O(1)$ state per step (include vs. exclude the previous element). This problem's naive DP needs $O(n)$ state per element (the best subsequence length *ending at each specific index*), giving $O(n^2)$ overall. There's a genuinely different, faster technique — **patience sorting**, using binary search — that gets it down to $O(n \log n)$, the same complexity class jump [K-Means's assignment step](/practice/kmeans-assignment-step) doesn't need but a real LIS implementation over large inputs does.
 
 **Your task**: implement `longest_increasing_subsequence(nums)` in $O(n \log n)$ time, returning the length (not the subsequence itself).
 
@@ -60,4 +60,4 @@ Trace `[10, 9, 2, 5, 3, 7, 101, 18]`: `tails` evolves `[10] → [9] → [2] → 
 
 ---
 
-Next: [The Two Lone Numbers](/docs/practice-problems/two-lone-numbers)
+Next: [The Two Lone Numbers](/practice/two-lone-numbers)

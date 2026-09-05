@@ -58,7 +58,7 @@ $$\hat{p} = \sigma(\mathbf{w}^T\mathbf{x} + b)$$
 
 $\hat{p}$ is interpreted as $P(y=1 \mid \mathbf{x})$. To get an actual class prediction, threshold it — conventionally $\hat{y} = 1$ if $\hat{p} \geq 0.5$, else $\hat{y} = 0$ (equivalently: predict class 1 whenever $z \geq 0$).
 
-**Try it yourself:** [implement the sigmoid activation from scratch](/docs/practice-problems/sigmoid-activation), against real test cases.
+**Try it yourself:** [implement the sigmoid activation from scratch](/practice/sigmoid-activation), against real test cases.
 
 ## Why Not Just Use MSE Loss?
 
@@ -143,7 +143,7 @@ Exactly like linear regression, logistic regression overfits with too many featu
 
 For more than two classes, the sigmoid generalizes to the **softmax function**, and binary cross-entropy generalizes to categorical cross-entropy — the exact loss used to train every classifier's output layer in [Deep Learning](/docs/deep-learning/roadmap), including next-token prediction in every LLM (see [Training Pipeline](/docs/llms-genai/training-pipeline)).
 
-**Try it yourself:** [implement a numerically stable softmax from scratch](/docs/practice-problems/softmax), against real test cases.
+**Try it yourself:** [implement a numerically stable softmax from scratch](/practice/softmax), against real test cases.
 
 ## Minimal Implementation
 

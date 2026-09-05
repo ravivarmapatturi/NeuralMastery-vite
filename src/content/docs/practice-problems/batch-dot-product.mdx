@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Medium** · Concept: [Linear Algebra — Vectors](/docs/mathematics-for-ai/linear-algebra#vectors)
 
-A harder variant of [Dot Product From Scratch](/docs/practice-problems/dot-product): instead of one pair of vectors, you're given two equal-length **batches** of vectors, and need the dot product of each corresponding pair — exactly the shape of computation that shows up whenever a model scores many examples at once (a batch of query vectors against a batch of key vectors, a batch of embeddings against a batch of candidates) instead of one at a time.
+A harder variant of [Dot Product From Scratch](/practice/dot-product): instead of one pair of vectors, you're given two equal-length **batches** of vectors, and need the dot product of each corresponding pair — exactly the shape of computation that shows up whenever a model scores many examples at once (a batch of query vectors against a batch of key vectors, a batch of embeddings against a batch of candidates) instead of one at a time.
 
 The added difficulty isn't the math — it's **validation with two different failure modes** to catch: the two batches might contain a different *number* of vectors, or an individual pair within the batch might have mismatched *dimensions* (a batch that's supposed to be uniform but isn't).
 
@@ -51,10 +51,10 @@ def batch_dot_product(batch_a, batch_b):
 
 Two separate checks catch two genuinely different bugs: a batch-length mismatch usually means the caller mixed up which two batches belong together (e.g. accidentally comparing 5 queries against 4 candidates), while a per-pair dimension mismatch usually means the vectors themselves are the wrong shape (a 300-dim embedding accidentally paired against a 512-dim one). Catching both explicitly, rather than letting Python's `zip` silently truncate or a bare arithmetic error surface deep inside the loop, means a caller gets told *which* assumption broke.
 
-The inner computation per pair is exactly [Dot Product From Scratch](/docs/practice-problems/dot-product), run once per pair — the "batch" framing doesn't change the underlying math at all, only what has to be validated before trusting the input shape. In a real embedding-search or attention-scoring system, this per-pair loop is exactly what gets replaced by one vectorized matrix multiplication (`batch_a @ batch_b.T` in NumPy, when you want *every* pair rather than just corresponding ones) — the loop version here is for understanding the shape of the computation, not what production code runs at scale.
+The inner computation per pair is exactly [Dot Product From Scratch](/practice/dot-product), run once per pair — the "batch" framing doesn't change the underlying math at all, only what has to be validated before trusting the input shape. In a real embedding-search or attention-scoring system, this per-pair loop is exactly what gets replaced by one vectorized matrix multiplication (`batch_a @ batch_b.T` in NumPy, when you want *every* pair rather than just corresponding ones) — the loop version here is for understanding the shape of the computation, not what production code runs at scale.
 
 </Solution>
 
 ---
 
-Next: [Matrix Multiplication From Scratch](/docs/practice-problems/matrix-multiplication)
+Next: [Matrix Multiplication From Scratch](/practice/matrix-multiplication)

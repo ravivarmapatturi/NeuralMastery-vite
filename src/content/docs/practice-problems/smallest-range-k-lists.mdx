@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Hard** · Pattern: K-Way Merge · Concept: [Algorithms & Data Structures — Core Data Structures](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures)
 
-[Merge K Sorted Lists](/docs/practice-problems/merge-k-sorted-lists) used a min-heap to merge everything into one sorted output. This problem reuses the exact same heap mechanism — track the current smallest unconsumed element per list — to answer a genuinely different question: find the **smallest range** `[lo, hi]` that contains **at least one number from every one of the `k` lists**.
+[Merge K Sorted Lists](/practice/merge-k-sorted-lists) used a min-heap to merge everything into one sorted output. This problem reuses the exact same heap mechanism — track the current smallest unconsumed element per list — to answer a genuinely different question: find the **smallest range** `[lo, hi]` that contains **at least one number from every one of the `k` lists**.
 
 **The added difficulty**: merging just needs the current minimum. This needs the minimum *and* a running **maximum** of everything currently "in play" across all `k` lists — every time the heap's minimum advances, the range's width might shrink, but only advancing the list that's currently behind can ever produce a *better* range (advancing anything else only risks losing coverage of some list entirely).
 
@@ -65,10 +65,10 @@ At every step, `val` (the heap's minimum) and `current_max` (tracked separately,
 
 The loop terminates the moment any single list runs out — once one list has no more candidates, no future range can include an element from it, so no valid range is possible anymore and the best one already found is final. This is why the algorithm is safe to `break` immediately rather than needing any lookahead: exhausting a list is a hard stop, not a soft signal.
 
-Reusing the exact same `(value, list_index, position_in_list)` heap-of-tuples shape as [Merge K Sorted Lists](/docs/practice-problems/merge-k-sorted-lists) is deliberate, not incidental — the *representation* of "what am I comparing, and how do I advance it" is identical across both problems; only what gets tracked and compared *alongside* the heap (a running max here, nothing extra there) differs.
+Reusing the exact same `(value, list_index, position_in_list)` heap-of-tuples shape as [Merge K Sorted Lists](/practice/merge-k-sorted-lists) is deliberate, not incidental — the *representation* of "what am I comparing, and how do I advance it" is identical across both problems; only what gets tracked and compared *alongside* the heap (a running max here, nothing extra there) differs.
 
 </Solution>
 
 ---
 
-Next: [Rotting Oranges](/docs/practice-problems/rotting-oranges)
+Next: [Rotting Oranges](/practice/rotting-oranges)

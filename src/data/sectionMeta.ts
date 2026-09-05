@@ -115,7 +115,13 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
     icon: '🔬',
     color: '#31C4D9',
     description: 'Reading the literature, and building real things — from scratch, and as full projects.',
-    pageCount: 77,
+    // 77 originally included Practice Problems' own page count; those 54
+    // pages moved to the real top-level /practice destination (see the
+    // Learn/Practice IA split) and are no longer part of this group's own
+    // docs-sidebar completion tracking -- see the pageCount note on the
+    // 'practice-problems' subsection below for why the dir itself stays
+    // listed here anyway.
+    pageCount: 23,
     difficulty: 'Advanced',
     prerequisites: 'Safety & Evaluation',
     leadsTo: 'Career',
@@ -124,7 +130,13 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
       { dir: 'build-from-scratch', label: 'Build From Scratch' },
       { dir: 'projects', label: 'Projects' },
       { dir: 'visual-lab', label: 'Visual Lab' },
-      { dir: 'practice-problems', label: 'Practice Problems', landing: '/docs/practice-problems/overview' },
+      // Deliberately still listed even though its pages no longer live in
+      // the docs sidebar (see contentTree.ts's getSidebar() exclusion and
+      // the matching allowlist in sectionMeta.test.ts) -- keeping the dir
+      // here lets topicBreakdown()/getGroupForSubsection() keep bucketing
+      // practice-problem points into a real group instead of silently
+      // dropping them once their permalinks moved to /practice/<slug>.
+      { dir: 'practice-problems', label: 'Practice Problems', landing: '/practice' },
     ],
   },
   '/docs/category/career': {

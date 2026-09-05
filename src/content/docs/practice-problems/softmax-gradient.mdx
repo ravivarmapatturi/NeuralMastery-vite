@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Hard** · Concept: [Activation Functions — Auxiliary Functions](/docs/deep-learning/activation-functions#auxiliary-functions)
 
-[Sigmoid Derivative](/docs/practice-problems/sigmoid-derivative) was elementwise: each output only depends on its own input, so $\sigma'(z_i)$ is a single number per element. **Softmax is fundamentally different** — every output $s_i = \text{softmax}(z)_i$ depends on *all* of $z$ (through the shared normalizing sum), so its derivative isn't a list of numbers, it's a full $n \times n$ **Jacobian matrix**: $\frac{\partial s_i}{\partial z_j} = s_i(\delta_{ij} - s_j)$, where $\delta_{ij}$ is $1$ if $i=j$ else $0$.
+[Sigmoid Derivative](/practice/sigmoid-derivative) was elementwise: each output only depends on its own input, so $\sigma'(z_i)$ is a single number per element. **Softmax is fundamentally different** — every output $s_i = \text{softmax}(z)_i$ depends on *all* of $z$ (through the shared normalizing sum), so its derivative isn't a list of numbers, it's a full $n \times n$ **Jacobian matrix**: $\frac{\partial s_i}{\partial z_j} = s_i(\delta_{ij} - s_j)$, where $\delta_{ij}$ is $1$ if $i=j$ else $0$.
 
 Explicitly building that $n \times n$ matrix during backprop would be wasteful — real deep learning frameworks never materialize it. Instead they compute the **vector-Jacobian product (VJP)** directly: given the upstream gradient $\frac{\partial L}{\partial s}$ (how loss changes with each softmax *output*), get $\frac{\partial L}{\partial z}$ (how loss changes with each softmax *input*) in one $O(n)$ pass, using an identity that falls out of the Jacobian formula above:
 
@@ -53,4 +53,4 @@ This exact VJP is what runs, unmentioned by name, every time backprop flows thro
 
 ---
 
-Next: [Sample Mean and Variance From Scratch](/docs/practice-problems/sample-mean-variance)
+Next: [Sample Mean and Variance From Scratch](/practice/sample-mean-variance)

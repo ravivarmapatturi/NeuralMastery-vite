@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Medium** · Pattern: Two Pointers · Concept: [General Coding (DSA) — Core Patterns to Drill](/docs/interview-prep/dsa-coding#core-patterns-to-drill)
 
-A harder variant of [Pair With Target Sum](/docs/practice-problems/pair-with-target-sum): instead of finding one pair that sums to a target, find **every unique triplet** in the array that sums to `0`. The two-pointer trick still does the inner work, but now it has to run once *per candidate anchor element*, and — since the input isn't guaranteed distinct — duplicate triplets have to be actively suppressed, not just tolerated.
+A harder variant of [Pair With Target Sum](/practice/pair-with-target-sum): instead of finding one pair that sums to a target, find **every unique triplet** in the array that sums to `0`. The two-pointer trick still does the inner work, but now it has to run once *per candidate anchor element*, and — since the input isn't guaranteed distinct — duplicate triplets have to be actively suppressed, not just tolerated.
 
 **Your task**: implement `three_sum_zero(nums)`, returning a list of triplets `[a, b, c]` with `a <= b <= c`, no duplicate triplets, in any order relative to each other.
 
@@ -58,7 +58,7 @@ def three_sum_zero(nums):
     return result
 ```
 
-Sorting first is what makes the two-pointer inner loop possible at all — for a fixed anchor `nums[i]`, the remaining problem is exactly [Pair With Target Sum](/docs/practice-problems/pair-with-target-sum) against target `-nums[i]`, run on the sorted remainder. The outer loop tries every possible anchor, so overall this is $O(n^2)$ — one $O(n)$ two-pointer sweep per anchor — a real step up from the original's plain $O(n)$.
+Sorting first is what makes the two-pointer inner loop possible at all — for a fixed anchor `nums[i]`, the remaining problem is exactly [Pair With Target Sum](/practice/pair-with-target-sum) against target `-nums[i]`, run on the sorted remainder. The outer loop tries every possible anchor, so overall this is $O(n^2)$ — one $O(n)$ two-pointer sweep per anchor — a real step up from the original's plain $O(n)$.
 
 Duplicate suppression happens at **two levels**, and both matter: `if i > 0 and nums[i] == nums[i-1]: continue` skips an anchor that's identical to the previous one (any triplet it could produce was already found when that earlier identical anchor ran); the two `while` loops after a match skip past any run of duplicate values at `left`/`right` before continuing the search, so the same triplet's values aren't matched again from an adjacent duplicate. Without both, `[-1, -1, 2]` would either get missed on the correct anchor or produced twice from the array's two `-1`s — this is the entire reason `three_sum_zero([0, 0, 0, 0])` correctly returns a single `[0, 0, 0]`, not four identical copies.
 
@@ -66,4 +66,4 @@ Duplicate suppression happens at **two levels**, and both matter: `if i > 0 and 
 
 ---
 
-Next: [Minimum Window Substring](/docs/practice-problems/min-window-substring)
+Next: [Minimum Window Substring](/practice/min-window-substring)

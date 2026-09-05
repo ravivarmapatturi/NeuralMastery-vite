@@ -171,13 +171,40 @@ export function levelForPoints(points: number): LevelInfo {
 // --- Topic breakdown ---
 
 /** Extracts the top-level content folder from a permalink, e.g.
- * "/docs/deep-learning/attention-transformers" -> "deep-learning". Null
- * for a permalink that doesn't match this shape (not expected in
- * practice -- every awarded permalink comes from a real
- * /docs/<section>/<slug> route, but defensive rather than assumed). */
+ * "/docs/deep-learning/attention-transformers" -> "deep-learning". A
+ * "/practice/<slug>" permalink (practice problems live at their own
+ * top-level route, not nested under /docs/ -- see the Learn/Practice IA
+ * split) maps to the fixed "practice-problems" dir directly, so points
+ * earned there keep bucketing into a real SECTION_META group (Research &
+ * Build) instead of silently disappearing from topicBreakdown(). Null for
+ * anything else that doesn't match either shape. */
 function sectionDirFromPermalink(permalink: string): string | null {
+  if (permalink.startsWith('/practice/')) return 'practice-problems';
   const match = permalink.match(/^\/docs\/([^/]+)\//);
   return match ? match[1] : null;
+}
+
+// --- Practice-problem permalink migration ---
+//
+// Practice problems used to render at /docs/practice-problems/<slug>;
+// they now render at /practice/<slug> (see the Learn/Practice IA split in
+// contentTree.ts). A NEW completion naturally gets the new-style permalink
+// for free (it's just wherever the browser's URL actually is when
+// RunnableCode/SystemDesignChallenge award it) -- but an award recorded
+// under the OLD URL before this migration, sitting in someone's
+// localStorage or Firestore doc, would otherwise look "not yet earned"
+// under the new permalink and let the same problem be re-awarded,
+// double-counting points for a real returning user. Rewriting old-style
+// permalinks to their new-style equivalent wherever an event log is READ
+// (see GamificationContext) is what prevents that -- the same
+// derived-never-mutated correctness property the rest of this file relies
+// on (see the module comment) extends naturally to a URL migration too.
+const OLD_PRACTICE_PROBLEMS_PREFIX = '/docs/practice-problems/';
+
+export function normalizePracticeProblemPermalink(permalink: string): string {
+  if (!permalink.startsWith(OLD_PRACTICE_PROBLEMS_PREFIX)) return permalink;
+  const slug = permalink.slice(OLD_PRACTICE_PROBLEMS_PREFIX.length);
+  return slug === 'overview' ? '/practice' : `/practice/${slug}`;
 }
 
 export interface TopicBreakdownEntry {

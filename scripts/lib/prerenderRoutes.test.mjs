@@ -22,6 +22,11 @@ describe('routeFromMdxPath', () => {
     expect(route).toBe('/docs/deep-learning/bert')
   })
 
+  it('remaps a practice-problems file to its real /practice/<slug> route, not /docs/practice-problems/<slug>', () => {
+    const file = path.join(CONTENT_ROOT, 'practice-problems', 'dot-product.mdx')
+    expect(routeFromMdxPath(file, CONTENT_ROOT)).toBe('/practice/dot-product')
+  })
+
   it('normalizes Windows backslash separators to forward slashes in the route', () => {
     // node:path's relative() returns backslash-separated paths on Windows
     // (exercised directly here via path.win32, regardless of host platform,

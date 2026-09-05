@@ -1,32 +1,45 @@
 import { describe, expect, it } from 'vitest'
-import { normalizeRoute, getPageByRoute, getFlatPages } from './contentTree'
+import { getSidebar, getPageByRoute, getPracticeProblems, getFlatPages } from './contentTree'
 
-describe('normalizeRoute', () => {
-  it('strips a single trailing slash', () => {
-    expect(normalizeRoute('/docs/foo/')).toBe('/docs/foo')
+describe('contentTree: practice-problems -> /practice IA split', () => {
+  it('a real practice-problem page resolves by its NEW /practice/<slug> route', () => {
+    const page = getPageByRoute('/practice/dot-product')
+    expect(page).toBeDefined()
+    expect(page!.route).toBe('/practice/dot-product')
+    expect(page!.section).toBe('practice-problems')
   })
 
-  it('leaves a route with no trailing slash unchanged', () => {
-    expect(normalizeRoute('/docs/foo')).toBe('/docs/foo')
+  it('the OLD /docs/practice-problems/<slug> route no longer resolves to anything -- the URL moved, not the content', () => {
+    expect(getPageByRoute('/docs/practice-problems/dot-product')).toBeUndefined()
   })
 
-  it('leaves the bare root "/" unchanged -- stripping it would produce an empty string, not a valid route', () => {
-    expect(normalizeRoute('/')).toBe('/')
+  it('overview.mdx is gone entirely -- neither its old nor a hypothetical new route resolves', () => {
+    expect(getPageByRoute('/docs/practice-problems/overview')).toBeUndefined()
+    expect(getPageByRoute('/practice/overview')).toBeUndefined()
   })
 
-  it('only strips one trailing slash, not a run of them', () => {
-    expect(normalizeRoute('/docs/foo//')).toBe('/docs/foo/')
-  })
-})
-
-describe('getPageByRoute: real content, trailing-slash equivalence', () => {
-  const realRoute = getFlatPages()[0].route
-
-  it('finds a real page by its exact stored route', () => {
-    expect(getPageByRoute(realRoute)?.route).toBe(realRoute)
+  it('getSidebar() excludes practice-problems -- it is a top-level destination now, not a docs sidebar section', () => {
+    const ids = getSidebar().map((s) => s.id)
+    expect(ids).not.toContain('practice-problems')
   })
 
-  it('finds the SAME real page when given the trailing-slash form GitHub Pages redirects a direct/bookmarked URL to', () => {
-    expect(getPageByRoute(`${realRoute}/`)?.route).toBe(realRoute)
+  it('getFlatPages() (derived from getSidebar()) also excludes practice-problems, so PrevNext/ProgressPage never see them', () => {
+    const routes = getFlatPages().map((p) => p.route)
+    expect(routes.some((r) => r.startsWith('/practice/'))).toBe(false)
+  })
+
+  it('getPracticeProblems() returns every real practice problem, independent of the docs sidebar', () => {
+    const problems = getPracticeProblems()
+    expect(problems.length).toBeGreaterThan(40) // real count is 53; a loose floor so unrelated content edits don't break this
+    expect(problems.every((p) => p.route.startsWith('/practice/'))).toBe(true)
+    expect(problems.some((p) => p.route === '/practice/overview')).toBe(false)
+  })
+
+  it('every real practice problem carries a topic, and all but the 4 design challenges carry a difficulty', () => {
+    const problems = getPracticeProblems()
+    const withTopic = problems.filter((p) => p.topic)
+    const withDifficulty = problems.filter((p) => p.difficulty)
+    expect(withTopic.length).toBe(problems.length)
+    expect(problems.length - withDifficulty.length).toBe(4)
   })
 })

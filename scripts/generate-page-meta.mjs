@@ -46,6 +46,11 @@ for (const file of mdxFiles) {
     title: data.title ?? null,
     sidebarPosition: typeof data.sidebar_position === 'number' ? data.sidebar_position : null,
     description: data.description ?? null,
+    // Practice-problem-only fields (real, structured tags -- see Phase 2 of
+    // the Learn/Practice split). null for every other page, which never
+    // had and never needs these.
+    difficulty: data.difficulty ?? null,
+    topic: data.topic ?? null,
   };
 }
 

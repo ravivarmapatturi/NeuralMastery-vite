@@ -23,9 +23,18 @@ function walk(dir) {
 const files = walk(docsDir);
 const urls = [
   { loc: `${SITE_URL}/`, lastmod: null },
+  { loc: `${SITE_URL}/learn`, lastmod: null },
+  { loc: `${SITE_URL}/practice`, lastmod: null },
   ...files.map((f) => {
     const rel = relative(docsDir, f).replace(/\.mdx$/, '').split('\\').join('/');
-    return { loc: `${SITE_URL}/docs/${rel}`, lastmod: statSync(f).mtime.toISOString().slice(0, 10) };
+    // Practice-problem pages live at /practice/<slug>, not /docs/<slug> --
+    // same remap contentTree.ts's practiceRoute() applies at runtime (see
+    // its comment). overview.mdx no longer exists on disk (superseded by
+    // the real /practice list page above), so it's never walked here.
+    const loc = rel.startsWith('practice-problems/')
+      ? `${SITE_URL}/practice/${rel.slice('practice-problems/'.length)}`
+      : `${SITE_URL}/docs/${rel}`;
+    return { loc, lastmod: statSync(f).mtime.toISOString().slice(0, 10) };
   }),
 ];
 

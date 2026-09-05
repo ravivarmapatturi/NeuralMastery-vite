@@ -77,6 +77,30 @@ function advanceTime(ms: number) {
   now += ms
 }
 
+describe('ProgressContext: practice-problem permalink migration (old /docs/practice-problems/<slug> -> /practice/<slug>)', () => {
+  it('reads an old-style stored key as understood under its real, current /practice/<slug> permalink', async () => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ '/docs/practice-problems/dot-product': true }))
+    const { refresh } = setup('/practice/dot-product')
+    expect(await screen.findByText('true')).toBeInTheDocument()
+    refresh()
+    expect(screen.getByTestId('understood')).toHaveTextContent('true')
+  })
+
+  it('the old overview.mdx permalink migrates to /practice (the real list page), not a slug-shaped path', async () => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ '/docs/practice-problems/overview': true }))
+    const { refresh } = setup('/practice')
+    expect(await screen.findByText('true')).toBeInTheDocument()
+    refresh()
+  })
+
+  it('a non-practice-problems permalink is left completely untouched by the migration', async () => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ '/docs/deep-learning/attention-transformers': true }))
+    const { refresh } = setup('/docs/deep-learning/attention-transformers')
+    expect(await screen.findByText('true')).toBeInTheDocument()
+    refresh()
+  })
+})
+
 describe('ProgressContext: legacy boolean-format migration', () => {
   it('reads an old bare-`true` entry as understood, with no review schedule and never due', async () => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ '/docs/foo': true }))

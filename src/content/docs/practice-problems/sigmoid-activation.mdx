@@ -45,10 +45,10 @@ def sigmoid(z):
 
 A direct transcription of the formula. The reason this is worth an explicit exercise despite being one line: notice it's exactly the shape you'd expect from the concept page's description — at `z = 0` it's exactly `0.5` (the function's midpoint), and it saturates toward 0 and 1 as `z` moves away from 0 in either direction, but never actually reaches them — which is precisely the saturation behavior that causes vanishing gradients in deep networks when sigmoid is used in hidden layers.
 
-One thing worth knowing even though it isn't tested here: for very large negative `z` (roughly below -709), `math.exp(-z)` overflows a Python float. A numerically robust version branches on the sign of `z` to always exponentiate a negative number — see [Numerically Stable Softmax](/docs/practice-problems/softmax) next for exactly that technique applied to the vector case.
+One thing worth knowing even though it isn't tested here: for very large negative `z` (roughly below -709), `math.exp(-z)` overflows a Python float. A numerically robust version branches on the sign of `z` to always exponentiate a negative number — see [Numerically Stable Softmax](/practice/softmax) next for exactly that technique applied to the vector case.
 
 </Solution>
 
 ---
 
-Next: [Sigmoid Derivative (Vectorized, Numerically Stable)](/docs/practice-problems/sigmoid-derivative) (a harder variant), or skip ahead to [Numerically Stable Softmax From Scratch](/docs/practice-problems/softmax)
+Next: [Sigmoid Derivative (Vectorized, Numerically Stable)](/practice/sigmoid-derivative) (a harder variant), or skip ahead to [Numerically Stable Softmax From Scratch](/practice/softmax)

@@ -77,8 +77,28 @@ export default function Navbar({
           </Link>
         </div>
         <nav className="nm-navbar-nav" style={{ display: 'flex', alignItems: 'center' }}>
-          <Link to="/docs/getting-started/intro" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
+          <Link to="/learn" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
             Learn
+          </Link>
+          <Link
+            to="/practice"
+            style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}
+          >
+            Practice
+            <span
+              style={{
+                fontSize: 9.5,
+                fontWeight: 800,
+                letterSpacing: '0.03em',
+                color: 'var(--nm-bg)',
+                background: 'var(--nm-accent-primary)',
+                borderRadius: 5,
+                padding: '0.1rem 0.32rem',
+                lineHeight: 1.4,
+              }}
+            >
+              NEW
+            </span>
           </Link>
           <Link to="/progress" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
             Progress

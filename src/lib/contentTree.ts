@@ -6,7 +6,16 @@ export interface DocFrontmatter {
   title?: string;
   sidebar_position?: number;
   description?: string;
+  /** Practice-problem-only fields (Phase 2 of the Learn/Practice split) --
+   * absent on every other page. */
+  difficulty?: 'easy' | 'medium' | 'hard';
+  topic?: string;
 }
+
+/** Real, top-level "difficulty" spelling for a practice problem -- 'easy' |
+ * 'medium' | 'hard', absent on the 4 system-design challenges (a
+ * free-text+rubric problem shape difficulty doesn't cleanly apply to). */
+export type PracticeDifficulty = 'easy' | 'medium' | 'hard';
 
 interface DocModule {
   default: ComponentType;
@@ -15,13 +24,22 @@ interface DocModule {
 
 export interface DocPage {
   slug: string; // e.g. "deep-learning/attention-demo"
-  route: string; // e.g. "/docs/deep-learning/attention-demo"
+  /** The page's real, canonical URL. For every page EXCEPT a practice
+   * problem this is "/docs/<slug>" (unchanged). Practice-problem pages are
+   * remapped to "/practice/<slug-without-the-practice-problems-prefix>" --
+   * they're a real top-level destination now (see PracticeListPage), not a
+   * docs subsection, and old /docs/practice-problems/* links redirect here
+   * (see App.tsx) rather than the file's content or location moving. */
+  route: string;
   title: string;
   description?: string;
   sidebarPosition: number;
   section: string; // top-level folder name, e.g. "deep-learning"
   Component: ComponentType;
   lastUpdated?: string; // ISO date of the most recent commit touching this page, from lastUpdated.generated.json
+  /** Practice-problem-only fields, undefined on every other page. */
+  difficulty?: PracticeDifficulty;
+  topic?: string;
 }
 
 export interface SidebarSection {
@@ -71,16 +89,32 @@ interface PageMetaEntry {
   title: string | null;
   sidebarPosition: number | null;
   description: string | null;
+  difficulty: PracticeDifficulty | null;
+  topic: string | null;
 }
+
+const PRACTICE_PROBLEMS_SECTION = 'practice-problems';
+const PRACTICE_PROBLEMS_PREFIX = `${PRACTICE_PROBLEMS_SECTION}/`;
 interface CategoryMetaEntry {
   label: string;
   position?: number;
 }
 const typedPageMeta = pageMeta as { pages: Record<string, PageMetaEntry>; categories: Record<string, CategoryMetaEntry> };
 
+/** A practice problem's real, top-level "/practice/<slug>" URL -- the
+ * file's own content/location never moves, only the URL it's reachable
+ * at. "overview" has no practice-problem equivalent (superseded by the
+ * real PracticeListPage at /practice itself), so it's excluded from
+ * allPages entirely rather than given a route -- see App.tsx for the
+ * redirect that sends its old URL to /practice. */
+function practiceRoute(slug: string): string | null {
+  const name = slug.slice(PRACTICE_PROBLEMS_PREFIX.length);
+  return name === 'overview' ? null : `/practice/${name}`;
+}
+
 function buildPages(): DocPage[] {
   const pages: DocPage[] = [];
-  for (const [route, meta] of Object.entries(typedPageMeta.pages)) {
+  for (const [docsRoute, meta] of Object.entries(typedPageMeta.pages)) {
     const modulePath = `/src/content/docs/${meta.slug}.mdx`;
     const loader = componentLoaders[modulePath];
     if (!loader) {
@@ -90,6 +124,14 @@ function buildPages(): DocPage[] {
       // rather than a page silently 404ing on click.
       throw new Error(`contentTree: no component module found for ${modulePath} -- try re-running \`node scripts/generate-page-meta.mjs\``);
     }
+
+    let route = docsRoute;
+    if (meta.section === PRACTICE_PROBLEMS_SECTION) {
+      const remapped = practiceRoute(meta.slug);
+      if (!remapped) continue; // overview.mdx -- see practiceRoute's comment
+      route = remapped;
+    }
+
     pages.push({
       slug: meta.slug,
       route,
@@ -97,8 +139,10 @@ function buildPages(): DocPage[] {
       description: meta.description ?? undefined,
       sidebarPosition: meta.sidebarPosition ?? 999,
       section: meta.section,
-      lastUpdated: (lastUpdatedMap as Record<string, string>)[route],
+      lastUpdated: (lastUpdatedMap as Record<string, string>)[docsRoute],
       Component: lazy(() => loader() as Promise<{ default: ComponentType }>),
+      difficulty: meta.difficulty ?? undefined,
+      topic: meta.topic ?? undefined,
     });
   }
   return pages;
@@ -106,9 +150,24 @@ function buildPages(): DocPage[] {
 
 const allPages = buildPages();
 
+/** Every real practice-problem page (excluding overview), independent of
+ * getSidebar() -- Practice is a separate top-level destination now, not a
+ * docs sidebar section (see getSidebar()'s own exclusion below), so
+ * PracticeListPage and Home's "N+ problems" count read from here instead. */
+export function getPracticeProblems(): DocPage[] {
+  return allPages.filter((p) => p.section === PRACTICE_PROBLEMS_SECTION).sort((a, b) => a.sidebarPosition - b.sidebarPosition);
+}
+
 export function getSidebar(): SidebarSection[] {
   const bySection = new Map<string, DocPage[]>();
   for (const page of allPages) {
+    // Practice problems live at /practice now, not under /docs -- they no
+    // longer belong in the Learn docs sidebar (see getPracticeProblems()
+    // for where they're read from instead). sectionMeta.ts still lists
+    // 'practice-problems' as a real subsection (so topicBreakdown can keep
+    // bucketing practice-problem points into a real group) -- see the
+    // matching exception in sectionMeta.test.ts.
+    if (page.section === PRACTICE_PROBLEMS_SECTION) continue;
     const list = bySection.get(page.section) ?? [];
     list.push(page);
     bySection.set(page.section, list);

@@ -32,18 +32,27 @@ function walk(dir) {
 
 const files = walk(CONTENT_ROOT);
 
-// Build the same route set contentTree.ts derives from the file tree.
-const validRoutes = new Set(
-  files.map((f) => {
-    const rel = relative(CONTENT_ROOT, f).replace(/\.mdx$/, '').split('\\').join('/');
-    return `/docs/${rel}`;
-  }),
-);
+// Build the same route set contentTree.ts derives from the file tree --
+// including its practice-problems remap (/docs/practice-problems/<slug> ->
+// /practice/<slug>, overview -> the real /practice list page, not a doc
+// route at all) so a prose link written against either the old or new URL
+// shape is checked against what the app will ACTUALLY render at, not just
+// "does a file exist at this literal path".
+const validRoutes = new Set(['/practice']);
+for (const f of files) {
+  const rel = relative(CONTENT_ROOT, f).replace(/\.mdx$/, '').split('\\').join('/');
+  if (rel.startsWith('practice-problems/')) {
+    const slug = rel.slice('practice-problems/'.length);
+    if (slug !== 'overview') validRoutes.add(`/practice/${slug}`);
+  } else {
+    validRoutes.add(`/docs/${rel}`);
+  }
+}
 
 const LINK_PATTERNS = [
-  /\[[^\]]*\]\((\/docs\/[^)#\s]+)/g, // markdown [text](/docs/...)
-  /\bhref=["'](\/docs\/[^"'#]+)["']/g, // JSX/HTML href="/docs/..."
-  /\bto=["'](\/docs\/[^"'#]+)["']/g, // react-router <Link to="/docs/...">
+  /\[[^\]]*\]\((\/docs\/[^)#\s]+|\/practice\/?[^)#\s]*)/g, // markdown [text](/docs/... or /practice...)
+  /\bhref=["'](\/docs\/[^"'#]+|\/practice\/?[^"'#]*)["']/g, // JSX/HTML href="..."
+  /\bto=["'](\/docs\/[^"'#]+|\/practice\/?[^"'#]*)["']/g, // react-router <Link to="...">
 ];
 
 let brokenCount = 0;

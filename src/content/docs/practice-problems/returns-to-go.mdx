@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Medium** · Concept: [RL Fundamentals — Markov Decision Processes (MDPs)](/docs/reinforcement-learning/rl-fundamentals#markov-decision-processes-mdps)
 
-[Discounted Return](/docs/practice-problems/discounted-return) computed a single number, $G_0$, from the start of an episode. But every value function needs $G_t$ for **every** timestep $t$ in a trajectory, not just the first — training a value estimator means comparing its prediction at each state against the *actual* return-to-go from that point onward.
+[Discounted Return](/practice/discounted-return) computed a single number, $G_0$, from the start of an episode. But every value function needs $G_t$ for **every** timestep $t$ in a trajectory, not just the first — training a value estimator means comparing its prediction at each state against the *actual* return-to-go from that point onward.
 
 **The naive approach re-runs the whole sum from scratch at every $t$** — $O(n)$ work per timestep, $O(n^2)$ total across the trajectory. There's a much cheaper way, using the same recursive identity noted at the end of the original problem: $G_t = r_t + \gamma G_{t+1}$. Compute **backward** from the end of the episode, and each $G_t$ costs $O(1)$ given $G_{t+1}$ — no re-summing.
 
@@ -46,12 +46,12 @@ def returns_to_go(rewards, gamma):
     return result
 ```
 
-Walking `t` **backward** from the last timestep is what makes the $O(1)$-per-step recurrence possible: by the time the loop reaches index `t`, `running` already holds $G_{t+1}$ (the value computed one iteration ago, for the timestep just after this one), so `rewards[t] + gamma * running` is exactly $G_t = r_t + \gamma G_{t+1}$ with no re-summation needed. The very last reward processed (index `0`, since we're walking backward) ends with `running` holding $G_0$ — and that value matches [Discounted Return's](/docs/practice-problems/discounted-return) single-number output exactly, by construction (`returns_to_go([1,1,1,1], 0.5)[0] == 1.875`, the same value `discounted_return([1,1,1,1], 0.5)` computes directly) — this backward pass isn't a different answer to a different question, it's the *same* answer for every prefix of the trajectory, computed all at once instead of one at a time.
+Walking `t` **backward** from the last timestep is what makes the $O(1)$-per-step recurrence possible: by the time the loop reaches index `t`, `running` already holds $G_{t+1}$ (the value computed one iteration ago, for the timestep just after this one), so `rewards[t] + gamma * running` is exactly $G_t = r_t + \gamma G_{t+1}$ with no re-summation needed. The very last reward processed (index `0`, since we're walking backward) ends with `running` holding $G_0$ — and that value matches [Discounted Return's](/practice/discounted-return) single-number output exactly, by construction (`returns_to_go([1,1,1,1], 0.5)[0] == 1.875`, the same value `discounted_return([1,1,1,1], 0.5)` computes directly) — this backward pass isn't a different answer to a different question, it's the *same* answer for every prefix of the trajectory, computed all at once instead of one at a time.
 
-This backward-recursion shape — express the answer at position `t` in terms of the answer at `t+1`, then walk backward reusing the previous result — is a genuinely different algorithmic tool than the forward-loop-with-running-sum pattern most of the other practice problems use, and it's the same shape [dynamic programming](/docs/practice-problems/max-non-adjacent-sum) problems take when the recurrence naturally runs in one direction rather than the other.
+This backward-recursion shape — express the answer at position `t` in terms of the answer at `t+1`, then walk backward reusing the previous result — is a genuinely different algorithmic tool than the forward-loop-with-running-sum pattern most of the other practice problems use, and it's the same shape [dynamic programming](/practice/max-non-adjacent-sum) problems take when the recurrence naturally runs in one direction rather than the other.
 
 </Solution>
 
 ---
 
-Next: [Design a Min Stack](/docs/practice-problems/design-min-stack)
+Next: [Design a Min Stack](/practice/design-min-stack)

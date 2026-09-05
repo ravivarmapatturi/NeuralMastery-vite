@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Easy** · Pattern: Tree BFS · Concept: [Algorithms & Data Structures — Core Data Structures](/docs/mathematics-for-ai/algorithms-data-structures#core-data-structures)
 
-A binary tree is just a graph where every node has at most two neighbors (`left`, `right`) and there's a single entry point (`root`) — everything about [BFS](/docs/practice-problems/shortest-path-bfs) and [DFS](/docs/practice-problems/count-islands) on general graphs applies directly, just with tree-specific vocabulary. **Level-order traversal** visits every node top-to-bottom, left-to-right within each level — exactly what BFS naturally produces, since it explores nodes in distance-from-root order.
+A binary tree is just a graph where every node has at most two neighbors (`left`, `right`) and there's a single entry point (`root`) — everything about [BFS](/practice/shortest-path-bfs) and [DFS](/practice/count-islands) on general graphs applies directly, just with tree-specific vocabulary. **Level-order traversal** visits every node top-to-bottom, left-to-right within each level — exactly what BFS naturally produces, since it explores nodes in distance-from-root order.
 
 **Your task**: implement `level_order(root)`, returning a flat list of values in level order. `root` may be `None` (an empty tree).
 
@@ -62,7 +62,7 @@ def level_order(root):
     return result
 ```
 
-Exactly [Shortest Path's](/docs/practice-problems/shortest-path-bfs) BFS loop, specialized to a tree: a node's "neighbors" are just its `left` and `right` children (never revisited, since a tree has no cycles — no `visited` set needed here, unlike general-graph BFS). Because nodes are enqueued in the order they're discovered, and every node at depth $d$ gets enqueued before any node at depth $d+1$, the queue naturally drains in level order — `tree_a`'s `[1, 2, 3, 4, 5]` reflects the root first, then both depth-1 children left-to-right, then both depth-2 children left-to-right, with no extra bookkeeping needed to track which level is "current."
+Exactly [Shortest Path's](/practice/shortest-path-bfs) BFS loop, specialized to a tree: a node's "neighbors" are just its `left` and `right` children (never revisited, since a tree has no cycles — no `visited` set needed here, unlike general-graph BFS). Because nodes are enqueued in the order they're discovered, and every node at depth $d$ gets enqueued before any node at depth $d+1$, the queue naturally drains in level order — `tree_a`'s `[1, 2, 3, 4, 5]` reflects the root first, then both depth-1 children left-to-right, then both depth-2 children left-to-right, with no extra bookkeeping needed to track which level is "current."
 
 A recursive **pre/in/post-order** traversal (DFS-shaped: visit node, then recurse into subtrees in some order) would produce a completely different sequence — those explore one branch all the way down before backing up, while level-order explicitly needs BFS's breadth-first character. Picking the right traversal for a tree problem is really "is this fundamentally a BFS question (shortest/shallowest/level-by-level) or a DFS question (does order along one path matter)" — the exact same judgment call as on general graphs.
 
@@ -70,4 +70,4 @@ A recursive **pre/in/post-order** traversal (DFS-shaped: visit node, then recurs
 
 ---
 
-Next: [Right Side View of a Binary Tree](/docs/practice-problems/right-side-view) (a harder BFS variant), or continue to [Validate a Binary Search Tree](/docs/practice-problems/validate-bst)
+Next: [Right Side View of a Binary Tree](/practice/right-side-view) (a harder BFS variant), or continue to [Validate a Binary Search Tree](/practice/validate-bst)

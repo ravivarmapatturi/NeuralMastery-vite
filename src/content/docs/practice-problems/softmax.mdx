@@ -15,7 +15,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 $$\text{softmax}(\mathbf{z})_i = \frac{e^{z_i}}{\sum_j e^{z_j}}$$
 
-Unlike [sigmoid](/docs/practice-problems/sigmoid-activation), softmax operates on a whole vector at once, turning raw scores ("logits") into a probability distribution that sums to 1 — the standard output layer for multi-class classification, and exactly what turns an LLM's raw next-token scores into a probability distribution over the vocabulary.
+Unlike [sigmoid](/practice/sigmoid-activation), softmax operates on a whole vector at once, turning raw scores ("logits") into a probability distribution that sums to 1 — the standard output layer for multi-class classification, and exactly what turns an LLM's raw next-token scores into a probability distribution over the vocabulary.
 
 **Your task**: implement `softmax(z)` for a list of real numbers. The naive formula above overflows for large inputs — `math.exp(1000)` raises `OverflowError` in plain Python — so your implementation needs to be numerically stable: it must return correct results even when every value in `z` is large.
 
@@ -55,4 +55,4 @@ This is not a toy edge case — real transformer attention logits and LLM output
 
 ---
 
-Next: [Softmax Gradient (Vector-Jacobian Product)](/docs/practice-problems/softmax-gradient) (a harder variant)
+Next: [Softmax Gradient (Vector-Jacobian Product)](/practice/softmax-gradient) (a harder variant)

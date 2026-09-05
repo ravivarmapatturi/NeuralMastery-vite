@@ -62,9 +62,9 @@ def count_islands(grid):
     return count
 ```
 
-The outer double loop scans every cell exactly once looking for an **unvisited** `1` — that's the start of a new island, since a `1` already in `visited` was already claimed by an island explored earlier. `explore_island` is DFS with an explicit stack rather than recursive calls (safer against Python's recursion limit on a large grid, and the same iterative-stack style [Largest Rectangle in a Skyline](/docs/practice-problems/largest-rectangle-in-skyline) used) — it floods outward from one land cell, marking every reachable land cell as visited, so by the time it returns, the *entire* island has been consumed and the outer loop's later cells belonging to that same island get correctly skipped.
+The outer double loop scans every cell exactly once looking for an **unvisited** `1` — that's the start of a new island, since a `1` already in `visited` was already claimed by an island explored earlier. `explore_island` is DFS with an explicit stack rather than recursive calls (safer against Python's recursion limit on a large grid, and the same iterative-stack style [Largest Rectangle in a Skyline](/practice/largest-rectangle-in-skyline) used) — it floods outward from one land cell, marking every reachable land cell as visited, so by the time it returns, the *entire* island has been consumed and the outer loop's later cells belonging to that same island get correctly skipped.
 
-Using a separate `visited` set instead of mutating `grid` in place (a common shortcut: set visited cells to `0` directly) matters for the same reason [Numerical Gradient](/docs/practice-problems/numerical-gradient) copies its input rather than mutating it — the caller's grid stays intact after the call, which matters the moment anything else needs to read the original grid afterward.
+Using a separate `visited` set instead of mutating `grid` in place (a common shortcut: set visited cells to `0` directly) matters for the same reason [Numerical Gradient](/practice/numerical-gradient) copies its input rather than mutating it — the caller's grid stays intact after the call, which matters the moment anything else needs to read the original grid afterward.
 
 The four-corners test case (`[[1,0,1],[0,0,0],[1,0,1]]` → 4) is the one that actually exercises the "diagonal doesn't count as connected" rule — each corner `1` has no horizontal/vertical `1` neighbor, so all four are separate islands despite sitting diagonally adjacent to each other.
 
@@ -74,4 +74,4 @@ Want to watch the DFS stack itself, including the duplicate-entry behavior this 
 
 ---
 
-Next: [Detect a Cycle in a Directed Graph](/docs/practice-problems/detect-cycle-directed-graph)
+Next: [Detect a Cycle in a Directed Graph](/practice/detect-cycle-directed-graph)

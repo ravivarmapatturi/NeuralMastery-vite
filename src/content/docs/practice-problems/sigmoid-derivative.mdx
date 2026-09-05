@@ -15,7 +15,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 Backpropagation through a sigmoid layer needs $\sigma'(z)$, not just $\sigma(z)$. Sigmoid has an unusually clean derivative in terms of its own output: $\sigma'(z) = \sigma(z)\big(1 - \sigma(z)\big)$ — no separate derivation needed once you already have $\sigma(z)$.
 
-**Two things make this harder than [Sigmoid Activation From Scratch](/docs/practice-problems/sigmoid-activation)**: it operates on a **list** of values, not just one, and — unlike the original problem's moderate test range — it has to stay numerically correct at **extreme** magnitudes. [Sigmoid Activation's solution notes](/docs/practice-problems/sigmoid-activation) that `1 / (1 + math.exp(-z))` overflows for `z` below roughly `-709`, since that requires computing `math.exp(1e3)`-scale numbers. This problem actually requires fixing that, not just mentioning it.
+**Two things make this harder than [Sigmoid Activation From Scratch](/practice/sigmoid-activation)**: it operates on a **list** of values, not just one, and — unlike the original problem's moderate test range — it has to stay numerically correct at **extreme** magnitudes. [Sigmoid Activation's solution notes](/practice/sigmoid-activation) that `1 / (1 + math.exp(-z))` overflows for `z` below roughly `-709`, since that requires computing `math.exp(1e3)`-scale numbers. This problem actually requires fixing that, not just mentioning it.
 
 **Your task**: implement `sigmoid_derivative(z_list)`, returning $\sigma'(z)$ for every `z` in `z_list`. Must not raise `OverflowError` even for very large-magnitude inputs (e.g. `-1000` or `1000`).
 
@@ -59,4 +59,4 @@ The stability fix is a **branch on the sign of `z`**, not a single formula: for 
 
 ---
 
-Next: [Numerically Stable Softmax From Scratch](/docs/practice-problems/softmax)
+Next: [Numerically Stable Softmax From Scratch](/practice/softmax)

@@ -16,6 +16,16 @@ import { DOMAIN_ICON_BY_GROUP_KEY } from '../components/icons/DomainIcons'
 // test should still catch -- this allowlist is deliberately narrow.
 const KNOWN_UNGROUPED_SECTIONS = new Set(['general', 'getting-started'])
 
+// The opposite direction: a subsection dir SECTION_META still lists (so
+// topicBreakdown()/getGroupForSubsection() keep bucketing its points into
+// a real group), but that deliberately no longer appears as a real docs
+// sidebar section. 'practice-problems' moved to the real top-level
+// /practice destination as part of the Learn/Practice IA split (see
+// contentTree.ts's getSidebar(), which now excludes it) -- its pages still
+// exist and are still real content, just reachable at /practice/<slug>
+// instead of nested under /docs/.
+const KNOWN_SUBSECTIONS_OUTSIDE_DOCS_SIDEBAR = new Set(['practice-problems'])
+
 describe('sectionMeta completeness against the real content tree', () => {
   it('every REAL sidebar section (excluding known top-level nav pages) resolves to a SECTION_META group -- the exact bug class this guards: a new content folder added without a sectionMeta update silently renders with no icon/color', () => {
     const realSectionIds = getSidebar()
@@ -25,12 +35,12 @@ describe('sectionMeta completeness against the real content tree', () => {
     expect(missing).toEqual([])
   })
 
-  it('every subsection dir listed in SECTION_META corresponds to a real, currently-existing sidebar section -- catches a stale/renamed folder entry left behind in sectionMeta.ts', () => {
+  it('every subsection dir listed in SECTION_META corresponds to a real, currently-existing sidebar section (or a documented exception) -- catches a stale/renamed folder entry left behind in sectionMeta.ts', () => {
     const realSectionIds = new Set(getSidebar().map((s) => s.id))
     const staleDirs: string[] = []
     for (const key of SECTION_ORDER) {
       for (const sub of SECTION_META[key].subsections) {
-        if (!realSectionIds.has(sub.dir)) staleDirs.push(`${key} -> ${sub.dir}`)
+        if (!realSectionIds.has(sub.dir) && !KNOWN_SUBSECTIONS_OUTSIDE_DOCS_SIDEBAR.has(sub.dir)) staleDirs.push(`${key} -> ${sub.dir}`)
       }
     }
     expect(staleDirs).toEqual([])

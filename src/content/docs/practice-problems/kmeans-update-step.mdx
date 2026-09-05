@@ -13,7 +13,7 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Difficulty: Medium** · Concept: [K-Means & Hierarchical Clustering](/docs/machine-learning/kmeans-hierarchical-clustering#k-means)
 
-[K-Means: One Assignment Step](/docs/practice-problems/kmeans-assignment-step) implemented the **assign** half of Lloyd's algorithm — nearest-centroid lookup. This is the other half: **update** — given the current assignments, recompute each centroid as the mean of the points now assigned to it. Together, these two steps *are* the entire K-Means loop.
+[K-Means: One Assignment Step](/practice/kmeans-assignment-step) implemented the **assign** half of Lloyd's algorithm — nearest-centroid lookup. This is the other half: **update** — given the current assignments, recompute each centroid as the mean of the points now assigned to it. Together, these two steps *are* the entire K-Means loop.
 
 **The genuine edge case a plain "average the points" implementation misses**: a cluster can end up with **zero points assigned to it** (a bad random initialization, or a centroid that got pushed somewhere no point is closer to). Averaging zero points is a division by zero — a real implementation has to decide what happens then, and the standard, sane choice is: **leave that centroid exactly where it was**, rather than crash or silently produce `nan`.
 
@@ -64,4 +64,4 @@ Run in a loop, this **assign → update → assign → update → …** alternat
 
 ---
 
-Next: [Sigmoid Activation From Scratch](/docs/practice-problems/sigmoid-activation)
+Next: [Sigmoid Activation From Scratch](/practice/sigmoid-activation)
