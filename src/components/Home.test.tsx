@@ -57,6 +57,29 @@ describe('Home', () => {
     expect(continueLink.textContent).not.toContain(firstPageInGroup.title)
   })
 
+  it('never recommends a roadmap.mdx checklist page as the "Continue" target', () => {
+    // Every subsection follows the same overview.mdx -> roadmap.mdx (right
+    // after it) convention across the site -- marking every real page up to
+    // (not including) a group's roadmap.mdx understood is the exact
+    // real-world setup that would otherwise surface the checklist page next.
+    const groupKey = SECTION_ORDER[0]
+    const meta = SECTION_META[groupKey]
+    const groupPages = getFlatPages().filter((p) => meta.subsections.some((s) => p.route.includes(`/docs/${s.dir}/`)))
+    const roadmapIndex = groupPages.findIndex((p) => p.route.endsWith('/roadmap'))
+    expect(roadmapIndex).toBeGreaterThan(-1) // sanity: this group really has one
+
+    const understood: Record<string, unknown> = {}
+    for (const p of groupPages.slice(0, roadmapIndex)) {
+      understood[p.route] = { understood: true, markedAt: Date.now(), stage: 0 }
+    }
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(understood))
+
+    renderHome()
+
+    const continueLink = screen.getByText(/^Continue: /).closest('a')!
+    expect(continueLink.getAttribute('href')).not.toMatch(/\/roadmap$/)
+  })
+
   it('surfaces a due-for-review count and links to the progress page once one exists', () => {
     const oldMarkedAt = Date.now() - 2 * 24 * 60 * 60 * 1000 // 2 days ago -> past the 1-day first interval
     const somePage = getFlatPages()[0]

@@ -20,11 +20,18 @@ function currentGroupKey(understood: Record<string, unknown>): string | undefine
 /** First page within that group, in sidebar order, not yet marked
  * understood -- same "which pages belong to this group" match
  * (`/docs/<subsection dir>/`) completionFor itself uses, so the two never
- * disagree about which group a page counts toward. */
+ * disagree about which group a page counts toward. Every subsection
+ * follows the same overview.mdx (position 1) -> roadmap.mdx (position 2)
+ * convention, and roadmap.mdx is a checklist/index of links back into the
+ * section, not real teaching content -- skipped here so marking just the
+ * overview page understood doesn't immediately recommend it as "next". */
 function nextUnstartedPage(groupKey: string, flatPages: DocPage[], isUnderstood: (route: string) => boolean): DocPage | undefined {
   const meta = SECTION_META[groupKey];
   return flatPages.find(
-    (p) => meta.subsections.some((s) => p.route.includes(`/docs/${s.dir}/`)) && !isUnderstood(p.route),
+    (p) =>
+      meta.subsections.some((s) => p.route.includes(`/docs/${s.dir}/`)) &&
+      !p.route.endsWith('/roadmap') &&
+      !isUnderstood(p.route),
   );
 }
 
