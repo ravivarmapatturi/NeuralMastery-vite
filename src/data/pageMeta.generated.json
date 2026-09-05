@@ -131,7 +131,7 @@
       "section": "ai-evaluation",
       "title": "Evaluation Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Why a benchmark number isn't automatically a trustworthy measurement: construct validity, contamination, saturation, and stale golden datasets, made concrete."
     },
     "/docs/ai-evaluation/human-and-adversarial-evaluation": {
       "slug": "ai-evaluation/human-and-adversarial-evaluation",
@@ -145,7 +145,7 @@
       "section": "ai-evaluation",
       "title": "LLM, RAG & Agent Evaluation",
       "sidebarPosition": 4,
-      "description": null
+      "description": "LLM-as-judge position/verbosity bias, judge validation, and agent trajectory evaluation -- why the thing doing the measuring needs its own evaluation too."
     },
     "/docs/ai-evaluation/overview": {
       "slug": "ai-evaluation/overview",
@@ -313,7 +313,7 @@
       "section": "cli-reference",
       "title": "Python & JS Package Managers",
       "sidebarPosition": 9,
-      "description": null
+      "description": "The real pip, venv, Poetry, uv, and npm commands you'll actually type -- a command reference, not the packaging theory behind them."
     },
     "/docs/cli-reference/roadmap": {
       "slug": "cli-reference/roadmap",
@@ -390,7 +390,7 @@
       "section": "cs-fundamentals",
       "title": "Operating Systems & Concurrency",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Processes vs. threads, the GIL, race conditions, and I/O patterns -- the OS fundamentals behind every 'why is my training script slow' question."
     },
     "/docs/cs-fundamentals/overview": {
       "slug": "cs-fundamentals/overview",
@@ -474,7 +474,7 @@
       "section": "deep-learning",
       "title": "GNNs, RL Networks, Metric Learning, SSL & Multimodal Nets",
       "sidebarPosition": 8.8,
-      "description": null
+      "description": "GNNs, RL networks, metric learning, self-supervised learning, and multimodal nets -- the architecture families beyond fixed-size supervised inputs."
     },
     "/docs/deep-learning/attention-transformers": {
       "slug": "deep-learning/attention-transformers",
@@ -551,7 +551,7 @@
       "section": "deep-learning",
       "title": "Optimizers, In Full Depth",
       "sidebarPosition": 3.7,
-      "description": null
+      "description": "SGD to Momentum to Adam, derived and visualized: why the field moved past plain gradient descent to today's adaptive-learning-rate defaults."
     },
     "/docs/deep-learning/overview": {
       "slug": "deep-learning/overview",
@@ -628,7 +628,7 @@
       "section": "frameworks",
       "title": "LLM / Agent Frameworks",
       "sidebarPosition": 4,
-      "description": null
+      "description": "LangChain, LlamaIndex, and agent frameworks compared -- the real components (engine, tools, parser, memory) every framework wires up underneath."
     },
     "/docs/frameworks/overview": {
       "slug": "frameworks/overview",
@@ -859,7 +859,7 @@
       "section": "machine-learning",
       "title": "Boosting: AdaBoost & Gradient Boosting, In Full Depth",
       "sidebarPosition": 5.3,
-      "description": null
+      "description": "AdaBoost and Gradient Boosting derived: sequential trees correcting the ensemble's mistakes -- trading Random Forest's variance fix for a bias fix."
     },
     "/docs/machine-learning/dbscan-hdbscan": {
       "slug": "machine-learning/dbscan-hdbscan",
@@ -922,7 +922,7 @@
       "section": "machine-learning",
       "title": "Lasso Regression, In Full Depth",
       "sidebarPosition": 4.7,
-      "description": null
+      "description": "Why Lasso's L1 penalty drives weights to exactly zero (automatic feature selection) while Ridge's L2 penalty never does -- the real geometric reason."
     },
     "/docs/machine-learning/learning-to-rank": {
       "slug": "machine-learning/learning-to-rank",
@@ -957,7 +957,7 @@
       "section": "machine-learning",
       "title": "Model Evaluation & Metrics",
       "sidebarPosition": 6,
-      "description": null
+      "description": "Bias-variance tradeoff, classification/regression metrics, calibration, and threshold optimization -- why picking the wrong metric silently sinks ML projects."
     },
     "/docs/machine-learning/naive-bayes-lda-qda": {
       "slug": "machine-learning/naive-bayes-lda-qda",
@@ -1034,7 +1034,7 @@
       "section": "machine-learning",
       "title": "Survival Analysis: Kaplan-Meier & Cox Proportional Hazards, In Full Depth",
       "sidebarPosition": 5.85,
-      "description": null
+      "description": "Kaplan-Meier and Cox Proportional Hazards for 'how long until this happens' problems -- and why censored data breaks a naive regression framing."
     },
     "/docs/machine-learning/time-series-forecasting": {
       "slug": "machine-learning/time-series-forecasting",
@@ -1076,7 +1076,7 @@
       "section": "mathematics-for-ai",
       "title": "Algorithms & Data Structures for AI",
       "sidebarPosition": 6,
-      "description": null
+      "description": "Big-O as a real budget, not academic notation -- why O(n) vs O(n^2) is the difference between a system that scales and one that can't ship."
     },
     "/docs/mathematics-for-ai/calculus-optimization": {
       "slug": "mathematics-for-ai/calculus-optimization",
@@ -1230,7 +1230,7 @@
       "section": "mlops",
       "title": "Feature Stores & Model Registry",
       "sidebarPosition": 13,
-      "description": null
+      "description": "Training-serving skew explained, then its fix: feature stores (offline/online, freshness) for data consistency, and model registries for version lineage."
     },
     "/docs/mlops/federated-learning": {
       "slug": "mlops/federated-learning",
@@ -1272,7 +1272,7 @@
       "section": "mlops",
       "title": "LLM Evaluation & RAGOps",
       "sidebarPosition": 21,
-      "description": null
+      "description": "BLEU/ROUGE vs. LLM-as-judge, plus RAG-specific monitoring -- chunk quality, retrieval latency, Recall@K/MRR/NDCG, and hallucination detection in production."
     },
     "/docs/mlops/llm-hosting-and-serving-patterns": {
       "slug": "mlops/llm-hosting-and-serving-patterns",
@@ -1307,14 +1307,14 @@
       "section": "mlops",
       "title": "ML & LLM Testing",
       "sidebarPosition": 22.1,
-      "description": null
+      "description": "Statistical and model tests for classical ML, plus LLM-specific test types -- prompt tests, golden datasets, hallucination and jailbreak regression tests."
     },
     "/docs/mlops/mlops-architecture-and-roadmap": {
       "slug": "mlops/mlops-architecture-and-roadmap",
       "section": "mlops",
       "title": "The Full MLOps Architecture, Priority Stack & Learning Path",
       "sidebarPosition": 23,
-      "description": null
+      "description": "The complete end-to-end MLOps architecture assembled into one diagram, a prioritized tool stack, an 8-phase learning order, and 5 real capstone projects."
     },
     "/docs/mlops/model-serving": {
       "slug": "mlops/model-serving",
@@ -1328,7 +1328,7 @@
       "section": "mlops",
       "title": "Monitoring & Drift Detection",
       "sidebarPosition": 15,
-      "description": null
+      "description": "Why deployed models fail silently, then the real drift math: PSI, KL/JS divergence, KS test, and Wasserstein distance for data vs. concept drift."
     },
     "/docs/mlops/observability": {
       "slug": "mlops/observability",
@@ -1363,7 +1363,7 @@
       "section": "mlops",
       "title": "MLOps — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Everything between a notebook model and one that reliably serves production traffic -- data pipelines, containers, K8s, CI/CD, monitoring, LLM serving."
     },
     "/docs/mlops/security-and-reproducibility": {
       "slug": "mlops/security-and-reproducibility",
@@ -1377,7 +1377,7 @@
       "section": "nlp",
       "title": "Classical NLP: Tokenization, POS Tagging, NER & Parsing",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Tokenization, POS tagging, NER, and parsing -- the pre-Transformer linguistic-structure layer that still coexists alongside modern embedding-based NLP."
     },
     "/docs/nlp/nlp-task-taxonomy": {
       "slug": "nlp/nlp-task-taxonomy",
@@ -1468,7 +1468,7 @@
       "section": "practice-problems",
       "title": "Practice: Design a Min Stack",
       "sidebarPosition": 23,
-      "description": null
+      "description": "Design a MinStack with O(1) push/pop/top/get_min -- the trick is maintaining a running minimum incrementally, not rescanning the stack each call."
     },
     "/docs/practice-problems/detect-cycle-directed-graph": {
       "slug": "practice-problems/detect-cycle-directed-graph",
