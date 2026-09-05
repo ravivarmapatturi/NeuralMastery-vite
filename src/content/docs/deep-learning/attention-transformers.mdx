@@ -378,7 +378,7 @@ Multimodal models then combine a vision encoder with a language model. A connect
 ## Common Problems & SOTA Solutions
 
 - **Vanishing gradients in deep stacks** → residual connections + normalization (inherited from [Training Deep Networks](/docs/deep-learning/training-deep-networks))
-- **Quadratic cost of self-attention** ($O(n^2)$ in sequence length, see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures)) → **Flash Attention** (a GPU-memory-aware exact implementation that avoids materializing the full attention matrix), sparse/linear attention variants for very long contexts
+- **Quadratic cost of self-attention** ($O(n^2)$ in sequence length, see [Algorithms & Data Structures](/docs/mathematics-for-ai/algorithms-data-structures)) → **Flash Attention** (a GPU-memory-aware exact implementation that avoids materializing the full attention matrix), or a genuinely different mechanism for very long contexts: [linear attention and Mamba-style state-space models](/docs/deep-learning/linear-attention-and-state-space-models)
 - **Growing KV cache during long generation** → Grouped-Query Attention, Paged Attention (memory-efficient KV cache management, covered further in [LLMs & GenAI](/docs/llms-genai/roadmap))
 - **Slow inference** → quantization, knowledge distillation, pruning
 - **Training instability at scale** → careful initialization, warmup schedules, gradient clipping, mixed precision
