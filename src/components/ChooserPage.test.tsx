@@ -5,15 +5,18 @@ import ChooserPage from './ChooserPage'
 import { ThemeProvider } from '../theme/ThemeProvider'
 import { AuthProvider } from '../contexts/AuthContext'
 import { GamificationProvider } from '../contexts/GamificationContext'
+import { ProgressProvider } from '../contexts/ProgressContext'
 
 function renderChooser() {
   return render(
     <ThemeProvider>
       <MemoryRouter>
         <AuthProvider>
-          <GamificationProvider>
-            <ChooserPage />
-          </GamificationProvider>
+          <ProgressProvider>
+            <GamificationProvider>
+              <ChooserPage />
+            </GamificationProvider>
+          </ProgressProvider>
         </AuthProvider>
       </MemoryRouter>
     </ThemeProvider>,
@@ -21,21 +24,25 @@ function renderChooser() {
 }
 
 describe('ChooserPage', () => {
-  it('renders two real, equally-weighted destinations -- Learn AI and Practice AI', () => {
+  it('introduces the product with its learning loop and routes to both real destinations', () => {
     renderChooser()
-    const learnLink = screen.getByRole('link', { name: /Learn AI/i })
-    const practiceLink = screen.getByRole('link', { name: /Practice AI/i })
+    expect(screen.getByRole('heading', { name: /See it/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /One concept. A complete learning loop/i })).toBeInTheDocument()
+    const learnLink = screen.getByRole('link', { name: /Explore the curriculum/i })
+    const practiceLink = screen.getByRole('link', { name: /Try a coding problem/i })
     expect(learnLink).toHaveAttribute('href', '/learn')
     expect(practiceLink).toHaveAttribute('href', '/practice')
   })
 
-  it('shows a real problem count on the Practice card, not a placeholder', () => {
+  it('uses verified page and problem counts as product proof', () => {
     renderChooser()
-    expect(screen.getByText(/\d+\+ real coding problems/i)).toBeInTheDocument()
+    expect(screen.getByText((_, el) => /^\d+\+learning pages$/i.test(el?.textContent ?? ''))).toBeInTheDocument()
+    expect(screen.getByText((_, el) => /^\d+\+coding problems$/i.test(el?.textContent ?? ''))).toBeInTheDocument()
   })
 
-  it('marks Practice as NEW (both on the card here and on the persistent Navbar link)', () => {
+  it('surfaces the actual curriculum domains rather than invented feature claims', () => {
     renderChooser()
-    expect(screen.getAllByText('NEW').length).toBeGreaterThanOrEqual(1)
+    expect(screen.getByRole('link', { name: /Foundations/i })).toHaveAttribute('href', '/docs/category/foundations')
+    expect(screen.getByRole('link', { name: /Systems & Infrastructure/i })).toHaveAttribute('href', '/docs/category/systems--infrastructure')
   })
 })

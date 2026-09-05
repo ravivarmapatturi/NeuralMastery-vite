@@ -189,13 +189,25 @@ body {
 }
 @media (max-width: 560px) {
   .nm-search-kbd-hint { display: none; }
-  /* At <=560px the navbar row (hamburger + logo + Learn + Progress +
-     search + theme toggle + the sign-in/account button) is tight enough
-     that the full 1.25rem gap between every item causes real horizontal
-     overflow -- confirmed via tests/smoke.spec.ts's mobile-viewport
-     overflow check. Shrinking the gap (not hiding any item -- every one
-     stays reachable) is enough to fit. */
-  .nm-navbar-nav { gap: 0.5rem; }
+  /* At <=560px the navbar row (hamburger + logo + Learn + Practice[NEW] +
+     Progress + search + theme toggle + the sign-in/account button) is
+     tight enough that the full 1.25rem gap between every item causes real
+     horizontal overflow -- confirmed via tests/smoke.spec.ts's
+     mobile-viewport overflow check. Shrinking the gap alone was enough
+     before Practice's own nav link + NEW badge were added (see git
+     history); it no longer is, so Progress -- a secondary, not one of the
+     two primary Learn/Practice destinations, and still reachable from the
+     Profile page's own cross-link -- drops from this persistent top row at
+     this width instead of every item fighting for the same shrinking
+     space. */
+  .nm-navbar-nav { gap: 0.3rem; }
+  .nm-navbar-progress-link { display: none; }
+  /* The NEW badge's own padding/gap (fine at desktop's roomier width) is
+     still the single widest item in the row even after the two fixes
+     above -- trims it further here rather than dropping it, since the
+     user specifically asked for Practice to read as new. */
+  .nm-practice-link { gap: 3px !important; }
+  .nm-practice-badge { padding: 0.05rem 0.22rem !important; }
 }
 .prose pre code { background: none; padding: 0; } /* fenced code blocks style the <pre>, not each inline <code> inside it */
 /* Long code lines (a long import statement, a chained call) can render wider
@@ -275,4 +287,79 @@ body {
 .nm-home-card:hover {
   border-color: var(--nm-accent-primary);
   transform: translateY(-2px);
+}
+
+/* Public product landing page. The restrained grid, borders and type keep
+   this intentionally closer to an engineering environment than a glossy AI
+   marketing site. */
+.nm-landing { min-height: 100vh; background: var(--nm-bg); }
+.nm-landing-shell { width: min(1180px, calc(100% - 3rem)); margin: 0 auto; }
+.nm-landing-hero {
+  overflow: hidden;
+  padding: clamp(3.5rem, 7vw, 7rem) 0 clamp(4rem, 8vw, 7rem);
+  background:
+    radial-gradient(800px 480px at 92% 10%, color-mix(in srgb, var(--nm-accent-secondary) 13%, transparent), transparent 72%),
+    radial-gradient(660px 420px at 12% 10%, color-mix(in srgb, var(--nm-accent-primary) 12%, transparent), transparent 74%);
+  border-bottom: 1px solid var(--nm-border);
+}
+.nm-hero-grid { display: grid; grid-template-columns: minmax(0, .86fr) minmax(480px, 1.14fr); align-items: center; gap: clamp(2.5rem, 6vw, 6rem); }
+.nm-eyebrow { margin: 0 0 .95rem; color: var(--nm-accent-primary); font: 700 11px/1.2 var(--font-display); letter-spacing: .1em; text-transform: uppercase; }
+.nm-hero-copy h1, .nm-section-intro h2, .nm-final-cta h2 { margin: 0; color: var(--nm-text-primary); letter-spacing: -.065em; font-family: var(--font-sans); font-weight: 800; }
+.nm-hero-copy h1 { font-size: clamp(3rem, 5.1vw, 5.25rem); line-height: .98; }
+.nm-hero-copy h1 em { color: var(--nm-accent-primary); font-style: normal; }
+.nm-hero-lede { max-width: 570px; margin: 1.5rem 0 2rem; color: var(--nm-text-secondary); font-size: clamp(1rem, 1.35vw, 1.17rem); line-height: 1.65; }
+.nm-hero-actions { display: flex; gap: .7rem; flex-wrap: wrap; }
+.nm-button { display: inline-flex; align-items: center; gap: .6rem; justify-content: center; min-height: 44px; padding: .65rem 1rem; border: 1px solid transparent; border-radius: 8px; font-size: .9rem; font-weight: 750; text-decoration: none; transition: transform .15s ease, border-color .15s ease, background-color .15s ease; }
+.nm-button:hover { transform: translateY(-1px); }
+.nm-button-primary { background: var(--nm-accent-primary); color: var(--nm-bg); }
+.nm-button-secondary { border-color: var(--nm-border); color: var(--nm-text-primary); background: color-mix(in srgb, var(--nm-surface) 82%, transparent); }
+.nm-proof-row { display: flex; gap: 0; margin-top: 2.7rem; }
+.nm-proof-row > div { display: grid; gap: .15rem; padding: 0 1.25rem; border-left: 1px solid var(--nm-border); }
+.nm-proof-row > div:first-child { padding-left: 0; border: 0; }
+.nm-proof-row strong { color: var(--nm-text-primary); font: 700 1.25rem/1 var(--font-display); }
+.nm-proof-row span { color: var(--nm-text-muted); font-size: .72rem; }
+.nm-hero-demo { position: relative; min-width: 0; }
+.nm-demo-caption { display: flex; align-items: center; gap: .45rem; margin: 0 0 .6rem; color: var(--nm-text-muted); font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.nm-demo-caption a { margin-left: auto; color: var(--nm-accent-primary); text-decoration: none; letter-spacing: 0; text-transform: none; }
+.nm-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--nm-accent-primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--nm-accent-primary) 15%, transparent); }
+.nm-hero-demo .viz-container { margin: 0; box-shadow: 0 22px 55px color-mix(in srgb, #000 14%, transparent); }
+.nm-landing-section { padding: clamp(4.5rem, 8vw, 7.5rem) 0; }
+.nm-loop-section { border-bottom: 1px solid var(--nm-border); }
+.nm-section-intro { max-width: 670px; }
+.nm-section-intro h2, .nm-final-cta h2 { font-size: clamp(2rem, 3.5vw, 3.35rem); line-height: 1.07; }
+.nm-section-intro > p:not(.nm-eyebrow), .nm-final-cta > div > p:not(.nm-eyebrow) { margin: 1.15rem 0 0; color: var(--nm-text-secondary); line-height: 1.7; font-size: 1rem; }
+.nm-mastery-loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; list-style: none; padding: 0; margin: 3rem 0 0; border: 1px solid var(--nm-border); border-radius: 12px; overflow: hidden; }
+.nm-mastery-loop li { display: grid; gap: 2rem; min-height: 190px; padding: 1.5rem; border-right: 1px solid var(--nm-border); background: var(--nm-surface); }
+.nm-mastery-loop li:last-child { border-right: 0; }
+.nm-mastery-loop li > span, .nm-curriculum-index { color: var(--nm-accent-primary); font: 700 .75rem var(--font-display); }
+.nm-mastery-loop h3, .nm-curriculum-card h3 { margin: 0; color: var(--nm-text-primary); font-size: 1rem; }
+.nm-mastery-loop p, .nm-curriculum-card p { margin: .55rem 0 0; color: var(--nm-text-muted); font-size: .83rem; line-height: 1.55; }
+.nm-curriculum-section { background: var(--nm-surface); border-bottom: 1px solid var(--nm-border); }
+.nm-section-heading-row { display: flex; justify-content: space-between; gap: 2rem; align-items: end; }
+.nm-text-link { flex: none; color: var(--nm-accent-primary); font-size: .88rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.nm-curriculum-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; margin-top: 3rem; }
+.nm-curriculum-card { position: relative; display: flex; flex-direction: column; min-height: 245px; padding: 1.25rem; overflow: hidden; border: 1px solid var(--nm-border); border-radius: 10px; background: var(--nm-bg); color: inherit; text-decoration: none; transition: transform .15s ease, border-color .15s ease; }
+.nm-curriculum-card::before { position: absolute; content: ''; inset: 0 auto 0 0; width: 3px; background: var(--section-color); }
+.nm-curriculum-card:hover { transform: translateY(-3px); border-color: var(--section-color); }
+.nm-curriculum-icon { display: block; margin: 1.5rem 0 1.1rem; font-size: 1.35rem; }
+.nm-curriculum-card p { max-width: 25ch; }
+.nm-card-foot { margin-top: auto; padding-top: 1rem; color: var(--nm-text-secondary); font: 700 .7rem var(--font-display); }
+.nm-practice-grid { display: grid; grid-template-columns: .82fr 1.18fr; align-items: center; gap: clamp(2rem, 7vw, 7rem); }
+.nm-practice-grid .nm-button { margin-top: 1.8rem; }
+.nm-problem-preview { display: block; overflow: hidden; border: 1px solid var(--nm-border); border-radius: 12px; background: #101417; color: #e5e9e8; text-decoration: none; box-shadow: 0 20px 46px color-mix(in srgb, #000 16%, transparent); transition: transform .15s ease; }
+.nm-problem-preview:hover { transform: translateY(-3px); }
+.nm-code-top { display: flex; justify-content: space-between; padding: .8rem 1rem; border-bottom: 1px solid #2e3437; color: #9ca7a5; font: .68rem var(--font-display); }
+.nm-code-status { color: #5ee6ad; }
+.nm-problem-preview pre { margin: 0; padding: 2.2rem 1.5rem; overflow: auto; font: .9rem/1.8 var(--font-display); }
+.nm-code-muted { color: #bc9aff; }.nm-code-name { color: #68d9b0; }
+.nm-test-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .55rem; padding: .85rem 1rem; border-top: 1px solid #2e3437; color: #aeb8b5; font-size: .75rem; }
+.nm-test-row strong { color: #f3f5f4; font-size: .7rem; }.nm-test-check { color: #5ee6ad; font-weight: 800; }
+.nm-final-cta { padding: clamp(5rem, 10vw, 9rem) 0; text-align: center; background: radial-gradient(700px 340px at 50% 100%, color-mix(in srgb, var(--nm-accent-primary) 14%, transparent), transparent 75%); }
+.nm-final-cta > div { max-width: 760px; }.nm-final-cta > div > p { max-width: 580px; margin-right: auto !important; margin-left: auto !important; }.nm-final-cta .nm-button { margin-top: 2rem; }
+
+@media (max-width: 1020px) {
+  .nm-hero-grid, .nm-practice-grid { grid-template-columns: 1fr; }.nm-hero-demo { max-width: 700px; }.nm-curriculum-grid { grid-template-columns: repeat(3, 1fr); }.nm-mastery-loop { grid-template-columns: repeat(2, 1fr); }.nm-mastery-loop li:nth-child(2) { border-right: 0; }.nm-mastery-loop li:nth-child(-n+2) { border-bottom: 1px solid var(--nm-border); }
+}
+@media (max-width: 640px) {
+  .nm-landing-shell { width: min(100% - 2rem, 1180px); }.nm-hero-copy h1 { font-size: clamp(2.8rem, 15vw, 4rem); }.nm-proof-row { justify-content: space-between; }.nm-proof-row > div { padding: 0 .65rem; }.nm-proof-row span { font-size: .64rem; }.nm-section-heading-row { display: block; }.nm-section-heading-row .nm-text-link { display: inline-block; margin-top: 1.4rem; }.nm-mastery-loop, .nm-curriculum-grid { grid-template-columns: 1fr; }.nm-mastery-loop li { min-height: 0; gap: 1.25rem; border-right: 0; border-bottom: 1px solid var(--nm-border); }.nm-mastery-loop li:last-child { border-bottom: 0; }.nm-curriculum-card { min-height: 185px; }.nm-curriculum-icon { margin: .8rem 0; }.nm-hero-demo .viz-container { font-size: 90%; }.nm-demo-caption { font-size: .62rem; }
 }

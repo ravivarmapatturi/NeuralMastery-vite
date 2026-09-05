@@ -1,138 +1,133 @@
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
+import AttentionStepThrough from '../viz/AttentionStepThrough';
 import { getFlatPages, getPracticeProblems } from '../lib/contentTree';
+import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { useProgress } from '../contexts/ProgressContext';
 
-/**
- * The real site root ("/") -- a two-way split, not the Learn content
- * directly. The first thing anyone sees is a choice between two clearly
- * distinct, equally-weighted destinations: "Learn AI" (the rich landing
- * page that used to live at "/", now at /learn -- see Home.tsx) and
- * "Practice AI" (the real LeetCode-style problem list at /practice). This
- * is a deliberate structural split, not a cosmetic one: Practice used to
- * be a single inline card teased on the Learn page ("Write real code");
- * now it's a first-class, equally-weighted destination of its own.
- */
+const loop = [
+  ['01', 'Understand', 'Read a precise explanation built from first principles.'],
+  ['02', 'Visualize', 'Change the inputs and watch the computation respond.'],
+  ['03', 'Implement', 'Turn the idea into working Python.'],
+  ['04', 'Practice', 'Run against real tests and earn the next concept.'],
+];
+
+function Arrow() {
+  return <span aria-hidden="true">→</span>;
+}
+
+/** The public product landing page. It keeps the two real destinations, but
+ * frames them as one learning loop instead of unrelated products. */
 export default function ChooserPage() {
-  useDocumentTitle();
-  useDocumentMeta(undefined);
+  useDocumentTitle('See it. Understand it. Build it.');
+  useDocumentMeta(
+    'Learn AI deeply',
+    'Learn AI from first principles through computed visualizations and executable practice, from mathematics to LLMs and agents.',
+  );
 
-  const learnPageCount = getFlatPages().length;
-  const practiceProblemCount = getPracticeProblems().length;
+  const pages = getFlatPages();
+  const problems = getPracticeProblems();
+  const { countWithin } = useProgress();
+  const completed = countWithin(pages.map((page) => page.route));
+  const featuredProblem = problems.find((problem) => problem.topic?.toLowerCase().includes('attention')) ?? problems[0];
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
+    <div className="nm-landing">
       <Navbar />
-
-      <div
-        style={{
-          minHeight: 'calc(100vh - 61px)',
-          display: 'flex',
-          alignItems: 'center',
-          background:
-            'radial-gradient(1200px 480px at 50% -120px, color-mix(in srgb, var(--nm-accent-primary) 14%, transparent), transparent 70%), radial-gradient(900px 420px at 85% 60px, color-mix(in srgb, var(--nm-accent-secondary) 10%, transparent), transparent 70%)',
-        }}
-      >
-        <section style={{ maxWidth: 1000, margin: '0 auto', padding: '3rem 1.5rem', width: '100%' }}>
-          <h1
-            className="nm-display"
-            style={{
-              fontSize: 'clamp(1.7rem, 4vw, 2.6rem)',
-              fontWeight: 700,
-              lineHeight: 1.25,
-              margin: '0 0 0.75rem',
-              textAlign: 'center',
-              color: 'var(--nm-text-primary)',
-            }}
-          >
-            Neural Mastery
-          </h1>
-          <p
-            style={{
-              fontSize: 'clamp(1rem, 1.6vw, 1.15rem)',
-              color: 'var(--nm-text-secondary)',
-              maxWidth: 620,
-              margin: '0 auto 3rem',
-              lineHeight: 1.6,
-              textAlign: 'center',
-            }}
-          >
-            One platform, two ways to build real AI/ML skill.
-          </p>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '1.5rem',
-            }}
-          >
-            <Link
-              to="/learn"
-              className="nm-home-card"
-              style={{
-                display: 'block',
-                padding: '2.25rem 2rem',
-                borderRadius: 16,
-                border: '1px solid var(--nm-border)',
-                background: 'var(--nm-surface)',
-                textDecoration: 'none',
-              }}
-            >
-              <div style={{ fontSize: 32, marginBottom: 12 }} aria-hidden="true">
-                📚
-              </div>
-              <div style={{ fontWeight: 800, fontSize: 22, color: 'var(--nm-text-primary)', marginBottom: 8 }}>Learn AI</div>
-              <p style={{ fontSize: 14, color: 'var(--nm-text-muted)', margin: '0 0 1rem', lineHeight: 1.6 }}>
-                CS fundamentals through modern LLMs and agents — {learnPageCount}+ pages built around real,
-                computed, interactive visualizations, not static diagrams.
+      <main>
+        <section className="nm-landing-hero">
+          <div className="nm-landing-shell nm-hero-grid">
+            <div className="nm-hero-copy">
+              <p className="nm-eyebrow">Interactive AI engineering curriculum</p>
+              <h1>See it.<br />Understand it.<br /><em>Build it.</em></h1>
+              <p className="nm-hero-lede">
+                Learn AI through real computation, interactive visualizations, and executable practice—from foundations to LLMs and agents.
               </p>
-              <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--nm-accent-primary)' }}>Start learning →</span>
-            </Link>
-
-            <Link
-              to="/practice"
-              className="nm-home-card"
-              style={{
-                display: 'block',
-                padding: '2.25rem 2rem',
-                borderRadius: 16,
-                border: '1px solid var(--nm-border)',
-                background: 'var(--nm-surface)',
-                textDecoration: 'none',
-                position: 'relative',
-              }}
-            >
-              <span
-                style={{
-                  position: 'absolute',
-                  top: 20,
-                  right: 20,
-                  fontSize: 11,
-                  fontWeight: 800,
-                  letterSpacing: '0.04em',
-                  color: 'var(--nm-bg)',
-                  background: 'var(--nm-accent-primary)',
-                  borderRadius: 6,
-                  padding: '0.2rem 0.5rem',
-                }}
-              >
-                NEW
-              </span>
-              <div style={{ fontSize: 32, marginBottom: 12 }} aria-hidden="true">
-                💻
+              <div className="nm-hero-actions">
+                <Link className="nm-button nm-button-primary" to={completed ? '/progress' : '/learn'}>
+                  {completed ? 'Continue learning' : 'Explore the curriculum'} <Arrow />
+                </Link>
+                <Link className="nm-button nm-button-secondary" to="/practice">Try a coding problem <Arrow /></Link>
               </div>
-              <div style={{ fontWeight: 800, fontSize: 22, color: 'var(--nm-text-primary)', marginBottom: 8 }}>Practice AI</div>
-              <p style={{ fontSize: 14, color: 'var(--nm-text-muted)', margin: '0 0 1rem', lineHeight: 1.6 }}>
-                {practiceProblemCount}+ real coding problems, linear algebra to RL, in an in-browser Python
-                sandbox — run against real tests, no LLM grading.
-              </p>
-              <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--nm-accent-primary)' }}>Start practicing →</span>
-            </Link>
+              <div className="nm-proof-row" aria-label="Platform coverage">
+                <div><strong>{pages.length}+</strong><span>learning pages</span></div>
+                <div><strong>{problems.length}+</strong><span>coding problems</span></div>
+                <div><strong>7</strong><span>AI disciplines</span></div>
+              </div>
+            </div>
+            <div className="nm-hero-demo">
+              <div className="nm-demo-caption"><span className="nm-live-dot" /> Live product preview <Link to="/docs/deep-learning/attention-transformers">Explore attention <Arrow /></Link></div>
+              <AttentionStepThrough />
+            </div>
           </div>
         </section>
-      </div>
+
+        <section className="nm-landing-section nm-loop-section" aria-labelledby="mastery-loop">
+          <div className="nm-landing-shell">
+            <div className="nm-section-intro">
+              <p className="nm-eyebrow">The Neural Mastery method</p>
+              <h2 id="mastery-loop">One concept. A complete learning loop.</h2>
+              <p>Static tutorials stop at explanation. Here, each idea can move from intuition to a result you can inspect and implement.</p>
+            </div>
+            <ol className="nm-mastery-loop">
+              {loop.map(([number, title, text]) => <li key={number}>
+                <span>{number}</span><div><h3>{title}</h3><p>{text}</p></div>
+              </li>)}
+            </ol>
+          </div>
+        </section>
+
+        <section className="nm-landing-section nm-curriculum-section" aria-labelledby="curriculum-heading">
+          <div className="nm-landing-shell">
+            <div className="nm-section-heading-row">
+              <div className="nm-section-intro">
+                <p className="nm-eyebrow">A curriculum with range</p>
+                <h2 id="curriculum-heading">Start with the layer you need. Keep going without leaving the platform.</h2>
+              </div>
+              <Link className="nm-text-link" to="/learn">Browse all topics <Arrow /></Link>
+            </div>
+            <div className="nm-curriculum-grid">
+              {SECTION_ORDER.map((key, index) => {
+                const section = SECTION_META[key];
+                return <Link className="nm-curriculum-card" to={key} key={key} style={{ '--section-color': section.color } as React.CSSProperties}>
+                  <span className="nm-curriculum-index">0{index + 1}</span>
+                  <span className="nm-curriculum-icon" aria-hidden="true">{section.icon}</span>
+                  <h3>{section.label}</h3>
+                  <p>{section.description}</p>
+                  <span className="nm-card-foot">{section.pageCount} pages <Arrow /></span>
+                </Link>;
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="nm-landing-section nm-practice-section" aria-labelledby="practice-heading">
+          <div className="nm-landing-shell nm-practice-grid">
+            <div className="nm-section-intro">
+              <p className="nm-eyebrow">Learn it. Then prove it.</p>
+              <h2 id="practice-heading">Practice the algorithms you just learned.</h2>
+              <p>Move from concepts to implementation in a browser-based Python environment with real test cases—no vague LLM grading.</p>
+              <Link className="nm-button nm-button-primary" to="/practice">Browse {problems.length} problems <Arrow /></Link>
+            </div>
+            {featuredProblem && <Link className="nm-problem-preview" to={featuredProblem.route}>
+              <div className="nm-code-top"><span>practice/{featuredProblem.slug.split('/').pop()}</span><span className="nm-code-status">tests ready</span></div>
+              <pre aria-label="Python coding problem preview"><code><span className="nm-code-muted">def</span> <span className="nm-code-name">solve</span>(inputs):{'\n'}  <span className="nm-code-muted"># implement the concept</span>{'\n'}  <span className="nm-code-muted">return</span> result</code></pre>
+              <div className="nm-test-row"><span className="nm-test-check">✓</span><span>Run against real test cases</span><strong>{featuredProblem.title} <Arrow /></strong></div>
+            </Link>}
+          </div>
+        </section>
+
+        <section className="nm-final-cta">
+          <div className="nm-landing-shell">
+            <p className="nm-eyebrow">Build durable intuition</p>
+            <h2>Understand the computation.<br />Then make it yours.</h2>
+            <p>Choose a starting point, explore the system, and build real AI/ML skill one concept at a time.</p>
+            <Link className="nm-button nm-button-primary" to="/learn">Start learning AI <Arrow /></Link>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
