@@ -9,7 +9,7 @@ import { AuthProvider } from './AuthContext'
 const STORAGE_KEY = 'neural-mastery-gamification'
 
 function Harness() {
-  const { points, weeklyPoints, streak, awardMarkUnderstood, awardProblemCompleted } = useGamification()
+  const { points, weeklyPoints, streak, awardMarkUnderstood, awardProblemCompleted, awardSystemDesignCompleted } = useGamification()
   return (
     <div>
       <div data-testid="points">{points}</div>
@@ -18,6 +18,7 @@ function Harness() {
       <button onClick={() => awardMarkUnderstood('/docs/foo')}>mark-foo</button>
       <button onClick={() => awardMarkUnderstood('/docs/bar')}>mark-bar</button>
       <button onClick={() => awardProblemCompleted('/docs/problem-1')}>complete-problem-1</button>
+      <button onClick={() => awardSystemDesignCompleted('/docs/practice-problems/design-challenge-rag-system')}>complete-design-challenge</button>
     </div>
   )
 }
@@ -78,6 +79,13 @@ describe('GamificationContext: signed-out (localStorage only)', () => {
     const user = userEvent.setup()
     await user.click(screen.getByText('complete-problem-1'))
     expect(screen.getByTestId('points')).toHaveTextContent('50')
+  })
+
+  it('awards the biggest point value for completing a system-design challenge', async () => {
+    setup()
+    const user = userEvent.setup()
+    await user.click(screen.getByText('complete-design-challenge'))
+    expect(screen.getByTestId('points')).toHaveTextContent('100')
   })
 
   it('never double-awards the same page for the same kind, even if clicked repeatedly', async () => {

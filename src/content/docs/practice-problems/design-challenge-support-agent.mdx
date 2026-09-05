@@ -1,0 +1,35 @@
+---
+title: "Design Challenge: A Support Agent That Can Actually Take Actions"
+sidebar_position: 45
+description: "Design an agent that can look up orders and issue refunds safely at 50K conversations/day -- then self-assess your trust and control design against a real rubric."
+---
+
+import SystemDesignChallenge from '../../../components/content/SystemDesignChallenge';
+
+# Design Challenge: A Support Agent That Can Actually Take Actions
+
+**Difficulty: Hard** · Concept: [The 9-Step Framework](/docs/ml-system-design/the-9-step-framework)
+
+Same no-auto-grading, self-assessment format as [the RAG design challenge](/docs/practice-problems/design-challenge-rag-system) — write a real end-to-end design in free text, then reveal a rubric and the site's own real walkthrough for this exact problem.
+
+**The problem**: a third shape again. You've been asked to design a system that lets a model *do* things — look up an order, issue a refund, escalate a case — safely, for 50,000 conversations a day, without either being uselessly restricted or dangerously unrestricted. This is where the hard part stops being about data or infrastructure and starts being about *trust*.
+
+Design it end to end — how does the agent actually reach real systems, how do you decide which of its actions need a human in the loop versus which can run on their own, and what stops it from being talked into using a capability (like a refund) it never should have used?
+
+<SystemDesignChallenge
+  rubric={[
+    'Tool Use — how the agent actually reaches a real order-lookup system, not just describes what looking one up would involve.',
+    'The Loop — how the agent reasons about what a tool call returned and decides what to do next, across multiple steps if needed.',
+    'Memory — how a multi-turn conversation keeps its context instead of forgetting what the customer said two messages ago.',
+    'Reversibility — how you treat looking up an order differently from issuing a refund, instead of applying one uniform policy to every action.',
+    'Excessive Agency — how you stop the agent from being talked into using real refund access for a request that never needed it.',
+    'Guardrails — what actually holds even when the prompt alone doesn\'t, since a well-written prompt is a suggestion, not a control.',
+    'Human-in-the-Loop — where you place approval gates on high-consequence actions without requiring manual review of everything.',
+    'Durability — how a conversation resumes correctly after being interrupted or retried hours later, without losing state.',
+    'Observability — how you see the agent\'s actual reasoning and tool calls, not just its final message, when it does the wrong thing.',
+    'Evaluation — how you check that the agent DID the right thing, not just that its response sounded right.',
+  ]}
+  caseStudyHref="/docs/ml-system-design/case-studies#case-study-a-support-agent-that-can-actually-take-actions"
+/>
+
+Next: [Design Challenge: Personalized Recommendations for a 50-Million-Item Catalog](/docs/practice-problems/design-challenge-recommendations) — a fourth shape, where the system trains on the consequences of its own past decisions.

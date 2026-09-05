@@ -10,7 +10,7 @@
 // histories is a plain, safe set union (see mergeEvents) instead of a
 // bespoke reconciliation for a mutable counter.
 
-export type AwardKind = 'mark' | 'complete';
+export type AwardKind = 'mark' | 'complete' | 'design';
 
 export interface AwardEvent {
   permalink: string;
@@ -35,6 +35,12 @@ export interface AwardEvent {
 // that metadata genuinely exists.
 export const MARK_UNDERSTOOD_POINTS = 10;
 export const PROBLEM_COMPLETED_POINTS = 50;
+// The biggest award in the system, deliberately -- a system-design
+// challenge (write a real end-to-end design for a real problem, then
+// self-assess against a rubric + the site's own real case-study
+// walkthrough) is the deepest engagement this site can currently measure,
+// genuinely more than a single practice problem's narrower scope.
+export const SYSTEM_DESIGN_CHALLENGE_POINTS = 100;
 
 /** Local (not UTC) calendar date as YYYY-MM-DD -- deliberately built from
  * Date's local getters, not toISOString() (which is UTC-based and would

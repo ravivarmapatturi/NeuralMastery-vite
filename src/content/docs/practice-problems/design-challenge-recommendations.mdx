@@ -1,0 +1,34 @@
+---
+title: "Design Challenge: Personalized Recommendations for a 50M-Item Catalog"
+sidebar_position: 46
+description: "Design a personalized recommender for 50M items, handling cold start and feedback-loop bias -- then self-assess your design against a real rubric and walkthrough."
+---
+
+import SystemDesignChallenge from '../../../components/content/SystemDesignChallenge';
+
+# Design Challenge: Personalized Recommendations for a 50-Million-Item Catalog
+
+**Difficulty: Hard** · Concept: [The 9-Step Framework](/docs/ml-system-design/the-9-step-framework)
+
+Same no-auto-grading, self-assessment format as [the RAG design challenge](/docs/practice-problems/design-challenge-rag-system) — write a real end-to-end design in free text, then reveal a rubric and the site's own real walkthrough for this exact problem.
+
+**The problem**: a fourth shape. You've been asked to design a system that ranks the right handful of items out of 50 million, differently for every single user, where the system's own past recommendations quietly shape the data it gets to learn from next — a feedback loop none of the other three case studies on this site have to contend with at all.
+
+Design it end to end — how do you go from 50 million items down to a personalized, ranked handful fast enough for every request, what happens for a brand-new user or item with no history yet, and how does the model avoid quietly reinforcing its own past mistakes?
+
+<SystemDesignChallenge
+  rubric={[
+    'Candidate Generation — how you narrow 50M items down to a few hundred plausible candidates cheaply, before anything expensive happens.',
+    'Embeddings — how user preference and item similarity become a cheap, precomputed numeric representation.',
+    'ANN Retrieval — how you compare a user\'s embedding against 50M item embeddings fast, without a full linear scan per request.',
+    'Ranking — how the retrieved shortlist gets ordered by actual predicted preference, not just approximate similarity.',
+    'Cold Start — what a brand-new user or item (with zero interaction history) gets shown instead.',
+    'Feedback Loop Bias — how you keep the model\'s own past recommendations from quietly reinforcing whatever it already believed.',
+    'Training-Serving Skew — how features like recency and session activity stay consistent between training and request time.',
+    'Evaluation — how you confirm an offline ranking-metric improvement actually translated into real engagement or revenue.',
+    'Scaling — how every one of millions of daily requests gets its own personalized, low-latency answer instead of one shared batch result.',
+  ]}
+  caseStudyHref="/docs/ml-system-design/case-studies#case-study-personalized-recommendations-for-a-50-million-item-catalog"
+/>
+
+System design challenges complete for now. Back to [Practice Problems](/docs/practice-problems/overview) for the rest of the catalog.

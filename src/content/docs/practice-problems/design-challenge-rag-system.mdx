@@ -1,0 +1,35 @@
+---
+title: "Design Challenge: A RAG System Over 100M Enterprise Documents"
+sidebar_position: 43
+description: "Design a real RAG system end to end for 100M enterprise documents, sub-second latency, and answers that must be right -- then self-assess against a real rubric."
+---
+
+import SystemDesignChallenge from '../../../components/content/SystemDesignChallenge';
+
+# Design Challenge: A RAG System Over 100M Enterprise Documents
+
+**Difficulty: Hard** · Concept: [The 9-Step Framework](/docs/ml-system-design/the-9-step-framework)
+
+Genuinely different from every other practice problem on this site: there's no single function to implement and no test suite that can check your answer. You're designing a real system end to end, in free text, then self-assessing against a real rubric — the same honest, no-auto-grading approach every "should we add LLM grading" question on this site runs into (there's no backend here beyond Firebase, and pretending otherwise wouldn't be honest).
+
+**The problem**: you've been asked to design a system that lets people ask questions and get answers grounded in an organization's own documents. The real numbers: 100 million documents, sub-second latency expected, and answers that have to be *right*, not just plausible-sounding, because a wrong answer in an enterprise setting has real consequences.
+
+Design it end to end — what would you actually build, in what order, and why? Think through chunking, retrieval, ranking, and everything downstream of getting an answer in front of a real user, including how you'd know it's actually working once it's live.
+
+<SystemDesignChallenge
+  rubric={[
+    'Chunking — how you split 100M documents so a chunk is retrievable on its own without losing the context that made it meaningful.',
+    'Embeddings — how chunks become searchable by meaning, not just exact keyword matches.',
+    'Vector DB — how you search 100M embedded chunks fast, without brute-force comparing against every one on every query.',
+    'Hybrid Search — how you catch what pure embedding search misses (an exact product code, a specific error string).',
+    'Reranking — how a fast, over-fetched shortlist gets narrowed down to the handful that actually go in the prompt.',
+    'Caching — what redundant work at real query volume you avoid repeating.',
+    'Eval — how you\'d actually measure "right and grounded," not just "produced an answer."',
+    'Observability — how you\'d tell a retrieval bug apart from a generation bug when an answer is wrong.',
+    'Security — how you\'d defend against a poisoned document being used for prompt injection.',
+    'Scaling — how embedding + reranking inference (a real, separate cost from the LLM call) holds up under uneven real traffic.',
+  ]}
+  caseStudyHref="/docs/ml-system-design/case-studies#case-study-a-rag-system-over-100m-enterprise-documents"
+/>
+
+Next: [Design Challenge: Real-Time Fraud Detection](/docs/practice-problems/design-challenge-fraud-detection) — a completely different shape of problem, same framework.

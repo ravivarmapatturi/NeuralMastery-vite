@@ -1456,6 +1456,34 @@
       "sidebarPosition": 37,
       "description": "Solve Daily Temperatures with a monotonic stack in O(n) time -- the classic 'next greater element' pattern applied to a list of temperatures."
     },
+    "/docs/practice-problems/design-challenge-fraud-detection": {
+      "slug": "practice-problems/design-challenge-fraud-detection",
+      "section": "practice-problems",
+      "title": "Design Challenge: Real-Time Fraud Detection at 100K Events/Sec",
+      "sidebarPosition": 44,
+      "description": "Design a real-time fraud detection system end to end at 100K events/sec with severe class imbalance -- then self-assess against a real rubric and walkthrough."
+    },
+    "/docs/practice-problems/design-challenge-rag-system": {
+      "slug": "practice-problems/design-challenge-rag-system",
+      "section": "practice-problems",
+      "title": "Design Challenge: A RAG System Over 100M Enterprise Documents",
+      "sidebarPosition": 43,
+      "description": "Design a real RAG system end to end for 100M enterprise documents, sub-second latency, and answers that must be right -- then self-assess against a real rubric."
+    },
+    "/docs/practice-problems/design-challenge-recommendations": {
+      "slug": "practice-problems/design-challenge-recommendations",
+      "section": "practice-problems",
+      "title": "Design Challenge: Personalized Recommendations for a 50M-Item Catalog",
+      "sidebarPosition": 46,
+      "description": "Design a personalized recommender for 50M items, handling cold start and feedback-loop bias -- then self-assess your design against a real rubric and walkthrough."
+    },
+    "/docs/practice-problems/design-challenge-support-agent": {
+      "slug": "practice-problems/design-challenge-support-agent",
+      "section": "practice-problems",
+      "title": "Design Challenge: A Support Agent That Can Actually Take Actions",
+      "sidebarPosition": 45,
+      "description": "Design an agent that can look up orders and issue refunds safely at 50K conversations/day -- then self-assess your trust and control design against a real rubric."
+    },
     "/docs/practice-problems/design-lru-cache": {
       "slug": "practice-problems/design-lru-cache",
       "section": "practice-problems",

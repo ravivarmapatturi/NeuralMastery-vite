@@ -1,0 +1,32 @@
+---
+title: "Design Challenge: Real-Time Fraud Detection at 100K Events/Sec"
+sidebar_position: 44
+description: "Design a real-time fraud detection system end to end at 100K events/sec with severe class imbalance -- then self-assess against a real rubric and walkthrough."
+---
+
+import SystemDesignChallenge from '../../../components/content/SystemDesignChallenge';
+
+# Design Challenge: Real-Time Fraud Detection at 100K Events/Sec
+
+**Difficulty: Hard** · Concept: [The 9-Step Framework](/docs/ml-system-design/the-9-step-framework)
+
+Same no-auto-grading, self-assessment format as [the RAG design challenge](/docs/practice-problems/design-challenge-rag-system) — write a real end-to-end design in free text, then reveal a rubric and the site's own real walkthrough for this exact problem.
+
+**The problem**: a completely different shape from a retrieval problem. You've been asked to design a system that decides, correctly, on every single transaction, in milliseconds, at a sustained 100,000 events per second — where fraud is rare (often well under 1% of transactions) and getting the decision wrong in either direction is genuinely expensive: a missed fraud case costs real money, a false alarm blocks a legitimate customer.
+
+Design it end to end — how does a transaction actually get scored in milliseconds, what happens to a rare-class model that could otherwise cheat its way to 99% accuracy by never flagging anything, and how do you know when the model has quietly stopped working?
+
+<SystemDesignChallenge
+  rubric={[
+    'Event Stream — how 100K events/sec arriving continuously gets handled as a stream, not a batch job.',
+    'Features — how a feature (spending velocity, merchant history) gets computed identically online and offline, so training and serving never quietly diverge.',
+    'Imbalance — how you keep a model from cheating its way to high accuracy by never flagging the rare positive class.',
+    'Serving — how a model actually scores a live transaction in milliseconds, not in a notebook.',
+    'Threshold — why the decision cutoff is almost never 0.5, given a missed fraud case costs far more than a false alarm.',
+    'Monitoring — how you catch fraud patterns actively adapting around whatever the current model catches, with no code change on your side.',
+    'Rollout — how a new model replaces the old one without a silent regression costing real money before anyone notices.',
+  ]}
+  caseStudyHref="/docs/ml-system-design/case-studies#case-study-real-time-fraud-detection-at-100k-eventssec"
+/>
+
+Next: [Design Challenge: A Support Agent That Can Actually Take Actions](/docs/practice-problems/design-challenge-support-agent) — where the hard part shifts from infrastructure to trust.

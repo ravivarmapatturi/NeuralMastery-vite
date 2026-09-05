@@ -4,6 +4,7 @@ import {
   type AwardEvent,
   MARK_UNDERSTOOD_POINTS,
   PROBLEM_COMPLETED_POINTS,
+  SYSTEM_DESIGN_CHALLENGE_POINTS,
   hasAward,
   totalPoints,
   weeklyPoints as computeWeeklyPoints,
@@ -23,6 +24,7 @@ interface GamificationContextValue {
   streak: number;
   awardMarkUnderstood: (permalink: string) => void;
   awardProblemCompleted: (permalink: string) => void;
+  awardSystemDesignCompleted: (permalink: string) => void;
 }
 
 const GamificationContext = createContext<GamificationContextValue | null>(null);
@@ -165,6 +167,10 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
   const awardMarkUnderstood = useCallback((permalink: string) => award(permalink, 'mark', MARK_UNDERSTOOD_POINTS), [award]);
   const awardProblemCompleted = useCallback((permalink: string) => award(permalink, 'complete', PROBLEM_COMPLETED_POINTS), [award]);
+  const awardSystemDesignCompleted = useCallback(
+    (permalink: string) => award(permalink, 'design', SYSTEM_DESIGN_CHALLENGE_POINTS),
+    [award],
+  );
 
   const now = new Date(Date.now());
   const value: GamificationContextValue = {
@@ -176,6 +182,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     ),
     awardMarkUnderstood,
     awardProblemCompleted,
+    awardSystemDesignCompleted,
   };
 
   return <GamificationContext.Provider value={value}>{children}</GamificationContext.Provider>;
