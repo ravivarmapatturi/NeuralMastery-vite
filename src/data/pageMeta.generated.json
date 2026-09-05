@@ -166,7 +166,7 @@
       "section": "ai-for-science",
       "title": "AI for Science Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "How ML accelerates science: drug discovery, protein structure prediction, genomics, materials science, physics-informed neural networks, and simulation."
     },
     "/docs/ai-for-science/overview": {
       "slug": "ai-for-science/overview",
@@ -334,7 +334,7 @@
       "section": "computer-vision",
       "title": "Modern Vision & Multimodal",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Where computer vision is heading: ViT vs CNN backbones in production, vision-language alignment, image/video generation, video understanding, and 3D vision."
     },
     "/docs/computer-vision/overview": {
       "slug": "computer-vision/overview",
@@ -516,7 +516,7 @@
       "section": "deep-learning",
       "title": "Weight Initialization, Regularization & LR Scheduling",
       "sidebarPosition": 3.8,
-      "description": null
+      "description": "Weight initialization (Xavier, He), regularization beyond dropout, and learning rate scheduling -- the last cluster of real training-loop decisions."
     },
     "/docs/deep-learning/linear-attention-and-state-space-models": {
       "slug": "deep-learning/linear-attention-and-state-space-models",
@@ -845,7 +845,7 @@
       "section": "machine-learning",
       "title": "Anomaly Detection: Isolation Forest, LOF & One-Class SVM, In Full Depth",
       "sidebarPosition": 6.7,
-      "description": null
+      "description": "Anomaly detection in full depth: Isolation Forest, Local Outlier Factor, One-Class SVM, and autoencoder-based detection, plus how to choose among them."
     },
     "/docs/machine-learning/association-rules": {
       "slug": "machine-learning/association-rules",
@@ -887,7 +887,7 @@
       "section": "machine-learning",
       "title": "Gaussian Mixture Models & Spectral Clustering, In Full Depth",
       "sidebarPosition": 6.3,
-      "description": null
+      "description": "Gaussian Mixture Models and spectral clustering in full depth -- soft probabilistic cluster assignment via EM, plus when each clustering method actually wins."
     },
     "/docs/machine-learning/hyperparameter-optimization": {
       "slug": "machine-learning/hyperparameter-optimization",
@@ -1020,7 +1020,7 @@
       "section": "machine-learning",
       "title": "Supervised Learning",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Classical supervised learning end to end: linear/logistic regression, regularized variants, tree-based methods, and how each maps inputs to known outputs."
     },
     "/docs/machine-learning/support-vector-machines": {
       "slug": "machine-learning/support-vector-machines",
@@ -1412,7 +1412,7 @@
       "section": "practice-problems",
       "title": "Practice: Batch Dot Product",
       "sidebarPosition": 2.5,
-      "description": null
+      "description": "Implement batch dot product across two batches of vectors, with real validation for mismatched batch sizes and mismatched per-vector dimensions."
     },
     "/docs/practice-problems/bayes-posterior": {
       "slug": "practice-problems/bayes-posterior",
@@ -1426,7 +1426,7 @@
       "section": "practice-problems",
       "title": "Practice: 2D Convolution From Scratch",
       "sidebarPosition": 21,
-      "description": null
+      "description": "Implement 2D convolution from scratch -- slide a kernel across an image computing weighted sums, the exact operation every CNN convolutional layer runs."
     },
     "/docs/practice-problems/cosine-similarity-matrix": {
       "slug": "practice-problems/cosine-similarity-matrix",
@@ -1440,7 +1440,7 @@
       "section": "practice-problems",
       "title": "Practice: Cosine Similarity From Scratch",
       "sidebarPosition": 19,
-      "description": null
+      "description": "Implement cosine similarity from scratch -- the standard way every embedding and vector-search comparison on this site measures directional alignment."
     },
     "/docs/practice-problems/count-islands": {
       "slug": "practice-problems/count-islands",
@@ -1454,7 +1454,7 @@
       "section": "practice-problems",
       "title": "Practice: Daily Temperatures",
       "sidebarPosition": 37,
-      "description": null
+      "description": "Solve Daily Temperatures with a monotonic stack in O(n) time -- the classic 'next greater element' pattern applied to a list of temperatures."
     },
     "/docs/practice-problems/design-lru-cache": {
       "slug": "practice-problems/design-lru-cache",
@@ -1496,14 +1496,14 @@
       "section": "practice-problems",
       "title": "Practice: Find All Duplicates in an Array",
       "sidebarPosition": 36,
-      "description": null
+      "description": "Find all duplicates in a bounded-range array in O(n) time and O(1) extra space using the cyclic-sort sign-flipping technique, no set or counting array."
     },
     "/docs/practice-problems/find-rotation-point": {
       "slug": "practice-problems/find-rotation-point",
       "section": "practice-problems",
       "title": "Practice: Find the Rotation Point",
       "sidebarPosition": 11,
-      "description": null
+      "description": "Find the rotation point in a rotated sorted array in O(log n) time -- binary search comparing against the endpoint, not a fixed target, with real code."
     },
     "/docs/practice-problems/gap-in-the-sequence": {
       "slug": "practice-problems/gap-in-the-sequence",
@@ -1566,7 +1566,7 @@
       "section": "practice-problems",
       "title": "Practice: Longest Run of Unique Characters",
       "sidebarPosition": 10,
-      "description": null
+      "description": "Find the longest run of unique characters in a string using the sliding-window pattern in one pass, instead of an O(n^2) or O(n^3) brute-force check."
     },
     "/docs/practice-problems/lowest-common-ancestor": {
       "slug": "practice-problems/lowest-common-ancestor",
@@ -1580,7 +1580,7 @@
       "section": "practice-problems",
       "title": "Practice: Matrix Multiplication From Scratch",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Implement matrix multiplication from scratch, no NumPy -- the single operation every neural network linear layer runs on every forward pass."
     },
     "/docs/practice-problems/max-non-adjacent-sum": {
       "slug": "practice-problems/max-non-adjacent-sum",
@@ -1615,7 +1615,7 @@
       "section": "practice-problems",
       "title": "Practice: Numerical Gradient via Finite Differences",
       "sidebarPosition": 18,
-      "description": null
+      "description": "Implement a numerical gradient via central-difference finite differences -- how you sanity-check a hand-derived analytic gradient, real runnable code."
     },
     "/docs/practice-problems/overview": {
       "slug": "practice-problems/overview",
@@ -1629,14 +1629,14 @@
       "section": "practice-problems",
       "title": "Practice: Pair With Target Sum",
       "sidebarPosition": 9,
-      "description": null
+      "description": "Find two numbers in a sorted array that sum to a target using the two-pointers pattern in O(n) time, instead of an O(n^2) brute-force pair check."
     },
     "/docs/practice-problems/returns-to-go": {
       "slug": "practice-problems/returns-to-go",
       "section": "practice-problems",
       "title": "Practice: Full Return-to-Go Sequence",
       "sidebarPosition": 22.5,
-      "description": null
+      "description": "Compute the full return-to-go sequence for an RL trajectory in O(n) time using the backward recursive identity, instead of re-summing from scratch each step."
     },
     "/docs/practice-problems/right-side-view": {
       "slug": "practice-problems/right-side-view",
@@ -1699,14 +1699,14 @@
       "section": "practice-problems",
       "title": "Practice: Softmax Gradient (Vector-Jacobian Product)",
       "sidebarPosition": 8.5,
-      "description": null
+      "description": "Implement the softmax vector-Jacobian product for backprop -- an O(n) identity that avoids ever materializing softmax's full n x n Jacobian matrix."
     },
     "/docs/practice-problems/softmax": {
       "slug": "practice-problems/softmax",
       "section": "practice-problems",
       "title": "Practice: Numerically Stable Softmax From Scratch",
       "sidebarPosition": 8,
-      "description": null
+      "description": "Implement a numerically stable softmax from scratch -- the standard multi-class output layer, and why the naive formula overflows on large inputs."
     },
     "/docs/practice-problems/standardize-dataset": {
       "slug": "practice-problems/standardize-dataset",
@@ -1720,7 +1720,7 @@
       "section": "practice-problems",
       "title": "Practice: TF-IDF Weight From Scratch",
       "sidebarPosition": 20,
-      "description": null
+      "description": "Implement TF-IDF from scratch -- term frequency times inverse document frequency, the classic fix for raw word counts overweighting common, low-meaning words."
     },
     "/docs/practice-problems/three-sum-zero": {
       "slug": "practice-problems/three-sum-zero",
