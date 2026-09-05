@@ -80,6 +80,21 @@ describe('Home', () => {
     expect(continueLink.getAttribute('href')).not.toMatch(/\/roadmap$/)
   })
 
+  it('falls back to the first-time hero when the only marked entry is for a page that no longer exists', () => {
+    // Mirrors ProgressPage's own titleFor comment: a stored permalink can
+    // stop matching any current page (renamed/removed content) -- that
+    // shouldn't read as "you've understood 0 pages".
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ '/docs/some-removed-section/gone-page': { understood: true, markedAt: Date.now(), stage: 0 } }),
+    )
+
+    renderHome()
+
+    expect(screen.getByText('A platform to learn AI structurally, through visualizations.')).toBeInTheDocument()
+    expect(screen.queryByText(/Welcome back/)).not.toBeInTheDocument()
+  })
+
   it('surfaces a due-for-review count and links to the progress page once one exists', () => {
     const oldMarkedAt = Date.now() - 2 * 24 * 60 * 60 * 1000 // 2 days ago -> past the 1-day first interval
     const somePage = getFlatPages()[0]

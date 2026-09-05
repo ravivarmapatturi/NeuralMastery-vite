@@ -71,8 +71,12 @@ export default function Home() {
   const practiceProblemCount = Math.max(0, (sections.find((s) => s.id === 'practice-problems')?.pages.length ?? 1) - 1);
 
   const { understood, isUnderstood, countWithin, dueForReview } = useProgress();
-  const hasProgress = Object.keys(understood).length > 0;
-  const totalDone = hasProgress ? countWithin(flatPages.map((p) => p.route)) : 0;
+  // Gated on real, currently-existing pages (not raw understood-map key
+  // count) -- a visitor whose only marked page was later renamed/removed
+  // (see ProgressPage's own titleFor fallback for that same case) should
+  // see the normal first-time pitch, not a "you've understood 0 pages" hero.
+  const totalDone = countWithin(flatPages.map((p) => p.route));
+  const hasProgress = totalDone > 0;
   const groupKey = hasProgress ? currentGroupKey(understood) : undefined;
   const nextPage = groupKey ? nextUnstartedPage(groupKey, flatPages, isUnderstood) : undefined;
 
