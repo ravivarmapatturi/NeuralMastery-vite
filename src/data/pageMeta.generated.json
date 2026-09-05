@@ -26,7 +26,7 @@
       "section": "agents",
       "title": "Agentic Coding Assistants",
       "sidebarPosition": 5.5,
-      "description": null
+      "description": "Claude Code, Cursor, Gemini CLI, and Windsurf -- the named, real agent loop that reads a codebase, edits real files, and runs real commands, not a toy example."
     },
     "/docs/agents/browser-automation": {
       "slug": "agents/browser-automation",
@@ -54,7 +54,7 @@
       "section": "agents",
       "title": "Loops and Graphs: The Actual Anatomy",
       "sidebarPosition": 4.5,
-      "description": null
+      "description": "What's actually inside a Loop vs. a Graph -- a real, checkable pass/fail condition, not a vibe, is what makes one unit of agent work correct at all."
     },
     "/docs/agents/mcp/overview": {
       "slug": "agents/mcp/overview",
@@ -75,7 +75,7 @@
       "section": "agents",
       "title": "Multi-Agent Systems",
       "sidebarPosition": 5,
-      "description": null
+      "description": "The three coordination topologies for when one agent isn't enough, drawn as actual graphs -- the real tradeoff between debuggability and flexibility."
     },
     "/docs/agents/no-code-automation": {
       "slug": "agents/no-code-automation",
@@ -215,7 +215,7 @@
       "section": "ai-security",
       "title": "AI Red Teaming & Adversarial Testing",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Real adversarial tools (PyRIT, Promptfoo) for systematically testing whether your specific agent is vulnerable, instead of just reading a taxonomy and hoping."
     },
     "/docs/ai-security/model-and-data-attacks": {
       "slug": "ai-security/model-and-data-attacks",
@@ -327,7 +327,7 @@
       "section": "cli-reference",
       "title": "Terraform Command Reference",
       "sidebarPosition": 7,
-      "description": null
+      "description": "Real terraform init/plan/apply commands, state surgery, and workspaces -- the command reference for actually driving declarative infrastructure."
     },
     "/docs/computer-vision/modern-vision-and-multimodal": {
       "slug": "computer-vision/modern-vision-and-multimodal",
@@ -509,7 +509,7 @@
       "section": "deep-learning",
       "title": "Generative Models: GANs & Diffusion",
       "sidebarPosition": 8.7,
-      "description": null
+      "description": "GANs and diffusion models -- adversarial training versus iterative denoising, and the real reason diffusion won out for image generation specifically."
     },
     "/docs/deep-learning/initialization-regularization-scheduling": {
       "slug": "deep-learning/initialization-regularization-scheduling",
@@ -579,7 +579,7 @@
       "section": "deep-learning",
       "title": "Training Deep Networks",
       "sidebarPosition": 4,
-      "description": null
+      "description": "The techniques that make a genuinely deep network trainable at all -- normalization, residual connections, and the vanishing-gradient problem they fix."
     },
     "/docs/deep-learning/vision-architectures": {
       "slug": "deep-learning/vision-architectures",
@@ -621,7 +621,7 @@
       "section": "frameworks",
       "title": "Core ML/DL Frameworks",
       "sidebarPosition": 3,
-      "description": null
+      "description": "PyTorch's actual design, and the tools that turn deep learning theory into code you can run and train -- the frameworks underneath every model here."
     },
     "/docs/frameworks/llm-agent-frameworks": {
       "slug": "frameworks/llm-agent-frameworks",
@@ -901,7 +901,7 @@
       "section": "machine-learning",
       "title": "ICA, t-SNE & UMAP, In Full Depth",
       "sidebarPosition": 6.5,
-      "description": null
+      "description": "ICA, t-SNE, and UMAP -- the cocktail-party problem solved by statistical independence, and two methods optimizing purely for visualizability, not variance."
     },
     "/docs/machine-learning/k-nearest-neighbors": {
       "slug": "machine-learning/k-nearest-neighbors",
@@ -992,7 +992,7 @@
       "section": "machine-learning",
       "title": "Recommender Systems, In Full Depth",
       "sidebarPosition": 6.9,
-      "description": null
+      "description": "Matrix factorization, two-tower embeddings, and the two-stage production pipeline -- the most commercially valuable prediction problem in applied ML, derived."
     },
     "/docs/machine-learning/ridge-regression": {
       "slug": "machine-learning/ridge-regression",
@@ -1048,7 +1048,7 @@
       "section": "machine-learning",
       "title": "Topic Modeling: LDA & BERTopic, In Full Depth",
       "sidebarPosition": 6.8,
-      "description": null
+      "description": "LDA and BERTopic derived -- discovering a document collection's themes with no labels, and the naming collision with the other, unrelated LDA."
     },
     "/docs/machine-learning/uncertainty-estimation-and-conformal-prediction": {
       "slug": "machine-learning/uncertainty-estimation-and-conformal-prediction",
@@ -1160,7 +1160,7 @@
       "section": "mlops",
       "title": "AI Cost Engineering",
       "sidebarPosition": 22.3,
-      "description": null
+      "description": "Every cost-optimization technique scattered across this site's model/serving/training pages, consolidated into one place with the tradeoff each one makes."
     },
     "/docs/mlops/big-data-and-analytics": {
       "slug": "mlops/big-data-and-analytics",
@@ -1475,7 +1475,7 @@
       "section": "practice-problems",
       "title": "Practice: Detect a Cycle in a Directed Graph",
       "sidebarPosition": 27,
-      "description": null
+      "description": "Detect a cycle in a directed graph via 3-color DFS in a real Python sandbox -- white/gray/black, where a cycle is DFS reaching an already-gray node."
     },
     "/docs/practice-problems/discounted-return": {
       "slug": "practice-problems/discounted-return",
@@ -1545,7 +1545,7 @@
       "section": "practice-problems",
       "title": "Practice: Level-Order Traversal (BFS)",
       "sidebarPosition": 28,
-      "description": null
+      "description": "BFS on a binary tree in a real Python sandbox -- visit every node top-to-bottom, left-to-right, exactly the order BFS naturally produces from the root."
     },
     "/docs/practice-problems/lone-number": {
       "slug": "practice-problems/lone-number",
@@ -1664,14 +1664,14 @@
       "section": "practice-problems",
       "title": "Practice: Search in a Rotated Sorted Array",
       "sidebarPosition": 33,
-      "description": null
+      "description": "Binary search a rotated sorted array directly for a target value in a real Python sandbox -- O(log n), without first finding the rotation point separately."
     },
     "/docs/practice-problems/shortest-path-bfs": {
       "slug": "practice-problems/shortest-path-bfs",
       "section": "practice-problems",
       "title": "Practice: Shortest Path in an Unweighted Graph",
       "sidebarPosition": 25,
-      "description": null
+      "description": "BFS on a general graph in a real Python sandbox -- why exploring level by level guarantees the first path found to any node is the shortest one."
     },
     "/docs/practice-problems/sigmoid-activation": {
       "slug": "practice-problems/sigmoid-activation",
@@ -1713,7 +1713,7 @@
       "section": "practice-problems",
       "title": "Practice: Standardize a Dataset (Z-Score Normalization)",
       "sidebarPosition": 16.5,
-      "description": null
+      "description": "Implement z-score normalization from scratch in a real Python sandbox -- the standard feature-scaling step before gradient descent or any distance-based method."
     },
     "/docs/practice-problems/tf-idf-weight": {
       "slug": "practice-problems/tf-idf-weight",
@@ -1727,7 +1727,7 @@
       "section": "practice-problems",
       "title": "Practice: Three Sum to Zero",
       "sidebarPosition": 31,
-      "description": null
+      "description": "Find every unique triplet summing to zero in a real Python sandbox -- two pointers run once per anchor element, with duplicate triplets actively suppressed."
     },
     "/docs/practice-problems/two-lone-numbers": {
       "slug": "practice-problems/two-lone-numbers",
@@ -1895,7 +1895,7 @@
       "section": "roadmaps",
       "title": "Suggested Paths",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Four goal-specific routes through this site's 26 sections -- ML Engineer, LLM/GenAI Engineer, and more -- trimmed and reordered around a real target role."
     },
     "/docs/speech-audio/audio-fundamentals": {
       "slug": "speech-audio/audio-fundamentals",
@@ -1923,7 +1923,7 @@
       "section": "speech-audio",
       "title": "Speech & Audio Tasks",
       "sidebarPosition": 4,
-      "description": null
+      "description": "ASR, TTS, and the full speech task taxonomy -- reusing the same sequence-modeling and attention machinery from text, applied to spectrogram-like audio."
     },
     "/docs/visual-lab/agent-execution-graph": {
       "slug": "visual-lab/agent-execution-graph",
