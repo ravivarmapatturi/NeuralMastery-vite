@@ -12,7 +12,7 @@
       "section": "agents",
       "title": "Agent Architectures",
       "sidebarPosition": 4,
-      "description": null
+      "description": "The real evolution from a single prompt to a full agent graph -- ReAct, plan-and-execute, and every architecture's tradeoff between reliability and cost."
     },
     "/docs/agents/agent-fundamentals": {
       "slug": "agents/agent-fundamentals",
@@ -96,7 +96,7 @@
       "section": "agents",
       "title": "Plan-and-Execute",
       "sidebarPosition": 4.2,
-      "description": null
+      "description": "Plan the whole task before acting on any of it, then execute with far less per-step reasoning than ReAct -- and what a replanner does when reality diverges."
     },
     "/docs/agents/reflection-self-critique": {
       "slug": "agents/reflection-self-critique",
@@ -271,7 +271,7 @@
       "section": "cli-reference",
       "title": "Cloud CLIs: AWS, Azure, GCP",
       "sidebarPosition": 8,
-      "description": null
+      "description": "AWS CLI, Azure CLI, and gcloud commands side by side for the same common tasks -- authentication, compute, storage, and managed Kubernetes."
     },
     "/docs/cli-reference/docker-and-compose": {
       "slug": "cli-reference/docker-and-compose",
@@ -495,7 +495,7 @@
       "section": "deep-learning",
       "title": "BERT: Bidirectional Encoder Representations from Transformers",
       "sidebarPosition": 7.2,
-      "description": null
+      "description": "BERT's real pretraining objectives -- masked language modeling and next sentence prediction -- and why reading both directions beats GPT-style decoding."
     },
     "/docs/deep-learning/cnns": {
       "slug": "deep-learning/cnns",
@@ -677,7 +677,7 @@
       "section": "interpretability",
       "title": "Classical Interpretability: Feature Importance, SHAP & LIME",
       "sidebarPosition": 3,
-      "description": null
+      "description": "SHAP, LIME, and tree feature importance -- global vs. local explanations, and model-agnostic vs. model-specific, for any classical ML model."
     },
     "/docs/interpretability/deep-learning-and-llm-interpretability": {
       "slug": "interpretability/deep-learning-and-llm-interpretability",
@@ -740,7 +740,7 @@
       "section": "interview-prep",
       "title": "Interview Q&A Quick Reference",
       "sidebarPosition": 5.2,
-      "description": null
+      "description": "Real interview questions on LLM fundamentals, RAG, and agents -- click to reveal a concise answer, then check yourself against it under real time pressure."
     },
     "/docs/interview-prep/roadmap": {
       "slug": "interview-prep/roadmap",
@@ -922,7 +922,7 @@
       "section": "machine-learning",
       "title": "Learning-to-Rank, In Full Depth",
       "sidebarPosition": 6.91,
-      "description": null
+      "description": "Why ranking isn't classification or regression -- pointwise, pairwise, and listwise losses, and the NDCG/MRR metrics that actually measure list order."
     },
     "/docs/machine-learning/linear-regression": {
       "slug": "machine-learning/linear-regression",
@@ -1048,7 +1048,7 @@
       "section": "machine-learning",
       "title": "Uncertainty Estimation & Conformal Prediction",
       "sidebarPosition": 6.06,
-      "description": null
+      "description": "Conformal prediction's real coverage guarantee -- a prediction range built to contain the true answer as often as promised, regardless of model quality."
     },
     "/docs/machine-learning/unsupervised-learning": {
       "slug": "machine-learning/unsupervised-learning",
@@ -1167,14 +1167,14 @@
       "section": "mlops",
       "title": "CI/CD & ML CI/CD",
       "sidebarPosition": 12,
-      "description": null
+      "description": "CI vs. CD, and why ML pipelines need drift checks and model regression tests on top of every ordinary code check -- syntactically fine can still be wrong."
     },
     "/docs/mlops/cloud-computing": {
       "slug": "mlops/cloud-computing",
       "section": "mlops",
       "title": "Cloud Computing for ML",
       "sidebarPosition": 9,
-      "description": null
+      "description": "EC2, ECS, EKS, SageMaker, and the rest of AWS mapped for ML -- go deep on one cloud, then treat GCP and Azure as the same concepts, different names."
     },
     "/docs/mlops/cloud-model-deployment": {
       "slug": "mlops/cloud-model-deployment",
@@ -1202,14 +1202,14 @@
       "section": "mlops",
       "title": "Deployment Strategies",
       "sidebarPosition": 14,
-      "description": null
+      "description": "Blue-Green, Canary, Shadow, and A/B deployment -- every real strategy for shrinking the blast radius of shipping a new model to production traffic."
     },
     "/docs/mlops/engineering-foundations": {
       "slug": "mlops/engineering-foundations",
       "section": "mlops",
       "title": "Engineering Foundations for ML",
       "sidebarPosition": 3,
-      "description": null
+      "description": "The part of MLOps most ML courses skip -- clean code, testing, and config management, the actual difference between a notebook and a real system."
     },
     "/docs/mlops/experiment-tracking": {
       "slug": "mlops/experiment-tracking",
@@ -1230,14 +1230,14 @@
       "section": "mlops",
       "title": "Federated Learning",
       "sidebarPosition": 17.5,
-      "description": null
+      "description": "Training one shared model across data you can't centralize -- a hospital's records, a phone's keyboard -- without any raw data ever leaving its source."
     },
     "/docs/mlops/gpu-and-distributed-training": {
       "slug": "mlops/gpu-and-distributed-training",
       "section": "mlops",
       "title": "GPU/AI Infrastructure & Distributed Training",
       "sidebarPosition": 17,
-      "description": null
+      "description": "CUDA, VRAM, Tensor cores, and the parallelism strategies (data/model/pipeline/FSDP) that actually explain why a training job is slow and how to fix it."
     },
     "/docs/mlops/infrastructure-as-code": {
       "slug": "mlops/infrastructure-as-code",
@@ -1272,7 +1272,7 @@
       "section": "mlops",
       "title": "LLM Hosting, Serving Patterns & LLMOps Monitoring",
       "sidebarPosition": 20,
-      "description": null
+      "description": "The real model-to-container-to-GPU-VM-to-API hosting stack, the fine-tuning-to-serving handoff, and the LLM-specific monitoring layer on top."
     },
     "/docs/mlops/llm-inference-engines": {
       "slug": "mlops/llm-inference-engines",
@@ -1293,7 +1293,7 @@
       "section": "mlops",
       "title": "Message Queues & Async Processing",
       "sidebarPosition": 6.5,
-      "description": null
+      "description": "What a message queue actually is and why Kafka and Celery show up everywhere -- the mechanism underneath async processing and event-driven architectures."
     },
     "/docs/mlops/ml-and-llm-testing": {
       "slug": "mlops/ml-and-llm-testing",
@@ -1342,7 +1342,7 @@
       "section": "mlops",
       "title": "Pipeline Orchestration",
       "sidebarPosition": 6,
-      "description": null
+      "description": "DAGs, tasks, retries, and Airflow's real architecture -- turning a trained model from one script into a pipeline that recovers cleanly at 3am."
     },
     "/docs/mlops/production-reliability": {
       "slug": "mlops/production-reliability",
@@ -1398,7 +1398,7 @@
       "section": "nlp",
       "title": "Word Embeddings",
       "sidebarPosition": 4,
-      "description": null
+      "description": "word2vec, GloVe, and fastText derived from first principles -- NLP's biggest pre-Transformer leap: representing a word's meaning as a dense vector."
     },
     "/docs/practice-problems/batch-dot-product": {
       "slug": "practice-problems/batch-dot-product",
@@ -1776,7 +1776,7 @@
       "section": "python-engineering",
       "title": "Concurrency, Memory & Performance",
       "sidebarPosition": 4,
-      "description": null
+      "description": "async/await, the GIL, and CPython's real memory model -- which concurrency tool to actually reach for, and where Python performance really goes in ML code."
     },
     "/docs/python-engineering/language-fundamentals-and-oop": {
       "slug": "python-engineering/language-fundamentals-and-oop",
@@ -1797,7 +1797,7 @@
       "section": "python-engineering",
       "title": "Packaging, Testing & Tooling",
       "sidebarPosition": 5,
-      "description": null
+      "description": "pyproject.toml, dependency pinning, lockfiles, and pytest in practice -- the gap between 'runs on my machine' and 'runs anywhere, reliably'."
     },
     "/docs/python-engineering/roadmap": {
       "slug": "python-engineering/roadmap",
