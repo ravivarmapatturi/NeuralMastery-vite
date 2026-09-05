@@ -40,14 +40,14 @@
       "section": "agents",
       "title": "Computer-Use & GUI Agents",
       "sidebarPosition": 8,
-      "description": null
+      "description": "How computer-use/GUI agents work: screenshot in, pixel-coordinate clicks out, Anthropic's real tool loop, and why the blast radius is larger than tool calls."
     },
     "/docs/agents/context-engineering": {
       "slug": "agents/context-engineering",
       "section": "agents",
       "title": "Context Engineering",
       "sidebarPosition": 3.5,
-      "description": null
+      "description": "Why context windows need active management, not just better prompts -- context rot, and the four real strategies for curating an agent's context."
     },
     "/docs/agents/loops-and-graphs": {
       "slug": "agents/loops-and-graphs",
@@ -82,7 +82,7 @@
       "section": "agents",
       "title": "No-Code Agent Automation",
       "sidebarPosition": 6,
-      "description": null
+      "description": "How n8n's visual AI Agent actually works under the hood: cluster nodes, the unified Tools Agent, MCP-proxied tools, and modular memory backends."
     },
     "/docs/agents/overview": {
       "slug": "agents/overview",
@@ -124,7 +124,7 @@
       "section": "agents",
       "title": "Single-Agent vs. Multi-Agent",
       "sidebarPosition": 4.7,
-      "description": null
+      "description": "Why the default answer is don't split: the three real triggers (context overload, parallelism, tool access) that justify a multi-agent design."
     },
     "/docs/ai-evaluation/evaluation-fundamentals": {
       "slug": "ai-evaluation/evaluation-fundamentals",
@@ -159,7 +159,7 @@
       "section": "ai-evaluation",
       "title": "AI Evaluation — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Evaluation fundamentals, LLM/RAG/agent evaluation, and human & adversarial testing -- three sections covering how to know whether an AI system is actually good."
     },
     "/docs/ai-for-science/ai-for-science-fundamentals": {
       "slug": "ai-for-science/ai-for-science-fundamentals",
@@ -180,7 +180,7 @@
       "section": "ai-for-science",
       "title": "AI for Science — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Drug discovery, protein structure prediction, genomics, materials science, physics-informed neural networks, and scientific foundation models in one roadmap."
     },
     "/docs/ai-safety/alignment-and-rlhf": {
       "slug": "ai-safety/alignment-and-rlhf",
@@ -201,7 +201,7 @@
       "section": "ai-safety",
       "title": "AI Safety & Alignment — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Alignment and RLHF, reward hacking, scalable oversight, and frontier model safety practices -- two sections on keeping AI systems behaving as intended."
     },
     "/docs/ai-safety/scalable-oversight-and-frontier-safety": {
       "slug": "ai-safety/scalable-oversight-and-frontier-safety",
@@ -243,7 +243,7 @@
       "section": "ai-security",
       "title": "AI Security — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "OWASP LLM Top 10, model and data attacks, and real red-teaming tools (PyRIT, Promptfoo) mapped to MITRE ATLAS -- three sections on securing AI systems."
     },
     "/docs/build-from-scratch/overview": {
       "slug": "build-from-scratch/overview",
@@ -257,7 +257,7 @@
       "section": "build-from-scratch",
       "title": "Build From Scratch — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Fourteen from-scratch builds, an autodiff engine to a distributed trainer -- a BPE tokenizer, GPT, LoRA, RAG pipeline, and agent, no framework shortcuts."
     },
     "/docs/build-from-scratch/the-build-list": {
       "slug": "build-from-scratch/the-build-list",
@@ -320,7 +320,7 @@
       "section": "cli-reference",
       "title": "CLI Reference — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "A command-line reference checklist: Linux/shell, Git, Docker, kubectl, Terraform, cloud CLIs, and package managers -- check off what you already know cold."
     },
     "/docs/cli-reference/terraform-command-reference": {
       "slug": "cli-reference/terraform-command-reference",
@@ -348,7 +348,7 @@
       "section": "computer-vision",
       "title": "Computer Vision — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Vision fundamentals, tasks and models, and modern multimodal vision -- classical filtering through Vision Transformers, CLIP, and video generation."
     },
     "/docs/computer-vision/vision-fundamentals": {
       "slug": "computer-vision/vision-fundamentals",
@@ -404,7 +404,7 @@
       "section": "cs-fundamentals",
       "title": "CS Fundamentals for AI Engineers — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "OS and concurrency, networking and distributed systems, APIs, and software engineering practice -- the systems foundations an AI engineer actually needs."
     },
     "/docs/cs-fundamentals/software-engineering-practices": {
       "slug": "cs-fundamentals/software-engineering-practices",
@@ -453,7 +453,7 @@
       "section": "databases",
       "title": "Databases — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Relational, vector, graph, and NoSQL databases -- indexing algorithms, distance metrics, GraphRAG, and when to reach for each data model."
     },
     "/docs/databases/vector/overview": {
       "slug": "databases/vector/overview",
@@ -593,14 +593,14 @@
       "section": "domain-applications",
       "title": "Healthcare AI",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Clinical NLP, medical imaging, EHR data, medical RAG, and clinical evaluation -- the AI toolkit applied where a hallucination can directly harm a patient."
     },
     "/docs/domain-applications/other-domain-applications": {
       "slug": "domain-applications/other-domain-applications",
       "section": "domain-applications",
       "title": "Other Domain Applications",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Finance, semiconductor, cybersecurity, robotics, and manufacturing -- fraud detection under class imbalance, and four more real domain-specific AI applications."
     },
     "/docs/domain-applications/overview": {
       "slug": "domain-applications/overview",
@@ -614,7 +614,7 @@
       "section": "domain-applications",
       "title": "Domain AI Applications — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Healthcare AI plus five more applied domains: finance, semiconductor, cybersecurity, robotics, manufacturing -- the AI toolkit under real domain constraints."
     },
     "/docs/frameworks/core-ml-dl-frameworks": {
       "slug": "frameworks/core-ml-dl-frameworks",
@@ -642,21 +642,21 @@
       "section": "frameworks",
       "title": "Frameworks — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "The tools you'll actually type into a terminal: PyTorch, Hugging Face, LangChain, LangGraph, vLLM, Docker, and CI/CD for ML, in three sections."
     },
     "/docs/frameworks/serving-mlops": {
       "slug": "frameworks/serving-mlops",
       "section": "frameworks",
       "title": "Serving & MLOps / LLMOps",
       "sidebarPosition": 5,
-      "description": null
+      "description": "vLLM, TorchServe, Triton, Docker, CI/CD for ML, and observability -- the tooling layer that turns a notebook model into a real production system."
     },
     "/docs/getting-started/intro": {
       "slug": "getting-started/intro",
       "section": "getting-started",
       "title": "How to Use This Site",
       "sidebarPosition": 1,
-      "description": null
+      "description": "How this site is structured (intuition, visualization, math, code) and where to start based on your background -- new to ML, LLM-focused, or interview prep."
     },
     "/docs/graph-ml/graph-ml-fundamentals": {
       "slug": "graph-ml/graph-ml-fundamentals",
@@ -677,7 +677,7 @@
       "section": "graph-ml",
       "title": "Graph ML — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Graph representation, GCN/GraphSAGE/GAT/GIN, node2vec, knowledge graphs, and GraphRAG -- one section on machine learning over relational, graph-structured data."
     },
     "/docs/interpretability/classical-interpretability": {
       "slug": "interpretability/classical-interpretability",
@@ -705,35 +705,35 @@
       "section": "interpretability",
       "title": "Interpretability — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Classical interpretability (SHAP, LIME) and deep learning/LLM interpretability -- saliency maps, sparse autoencoders, circuits, mechanistic interpretability."
     },
     "/docs/interview-prep/behavioral": {
       "slug": "interview-prep/behavioral",
       "section": "interview-prep",
       "title": "Behavioral",
       "sidebarPosition": 7,
-      "description": null
+      "description": "The STAR method and which stories to have ready -- why behavioral rounds, not technical skill, are often what actually decides an offer."
     },
     "/docs/interview-prep/dsa-coding": {
       "slug": "interview-prep/dsa-coding",
       "section": "interview-prep",
       "title": "General Coding (DSA)",
       "sidebarPosition": 3,
-      "description": null
+      "description": "The general software engineering coding round every AI/ML role still includes -- core DSA patterns to drill: two pointers, sliding window, and more."
     },
     "/docs/interview-prep/knowledge-qa-strategy": {
       "slug": "interview-prep/knowledge-qa-strategy",
       "section": "interview-prep",
       "title": "ML/GenAI Knowledge Q&A",
       "sidebarPosition": 5,
-      "description": null
+      "description": "The breadth round: rapid-fire conceptual questions across classical ML, deep learning, and LLM/GenAI -- testing whether you can explain clearly under pressure."
     },
     "/docs/interview-prep/ml-coding": {
       "slug": "interview-prep/ml-coding",
       "section": "interview-prep",
       "title": "ML Coding",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Where \"I understand gradient descent\" gets tested by actually implementing it from scratch, without a framework doing the hard part for you."
     },
     "/docs/interview-prep/overview": {
       "slug": "interview-prep/overview",
@@ -761,7 +761,7 @@
       "section": "interview-prep",
       "title": "System Design Practice",
       "sidebarPosition": 6,
-      "description": null
+      "description": "How to practice the 9-step ML system design framework deliberately, repeatedly -- the highest-leverage, most under-practiced interview round of them all."
     },
     "/docs/interview-prep/technology-comparisons": {
       "slug": "interview-prep/technology-comparisons",
@@ -775,7 +775,7 @@
       "section": "general",
       "title": "Learning Path",
       "sidebarPosition": 0.5,
-      "description": null
+      "description": "A clickable dependency graph and full curriculum breakdown across Neural Mastery's 200+ pages, 7 sections, and 28 sub-topics, plus a progress-aware view."
     },
     "/docs/llms-genai/evaluation-and-serving": {
       "slug": "llms-genai/evaluation-and-serving",
@@ -1013,7 +1013,7 @@
       "section": "machine-learning",
       "title": "SGD Classifier & Regressor, In Full Depth",
       "sidebarPosition": 5.8,
-      "description": null
+      "description": "Linear Regression, Ridge, Lasso, and Logistic Regression unified as one framing: the same SGD engine, differing only by which loss and penalty you plug in."
     },
     "/docs/machine-learning/supervised-learning": {
       "slug": "machine-learning/supervised-learning",
@@ -1062,7 +1062,7 @@
       "section": "machine-learning",
       "title": "Unsupervised Learning",
       "sidebarPosition": 5,
-      "description": null
+      "description": "k-Means and hierarchical clustering -- discovering latent structure in unlabeled data, with no ground-truth labels to optimize against."
     },
     "/docs/machine-learning/xgboost-lightgbm-catboost": {
       "slug": "machine-learning/xgboost-lightgbm-catboost",
@@ -1398,7 +1398,7 @@
       "section": "nlp",
       "title": "NLP — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Classical NLP (tokenization, POS tagging, NER, parsing), word embeddings, and the NLP task taxonomy -- the pre-Transformer text-processing toolkit."
     },
     "/docs/nlp/word-embeddings": {
       "slug": "nlp/word-embeddings",
@@ -1489,7 +1489,7 @@
       "section": "practice-problems",
       "title": "Practice: Dot Product From Scratch",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Implement dot_product(a, b) from scratch in plain Python, no NumPy -- the operation underneath cosine similarity and every attention score."
     },
     "/docs/practice-problems/find-duplicates": {
       "slug": "practice-problems/find-duplicates",
@@ -1657,7 +1657,7 @@
       "section": "practice-problems",
       "title": "Practice: Sample Mean and Variance From Scratch",
       "sidebarPosition": 16,
-      "description": null
+      "description": "Implement sample_mean_and_variance(data) from scratch -- the population mean and variance every summary statistic on this site builds on."
     },
     "/docs/practice-problems/search-rotated-array": {
       "slug": "practice-problems/search-rotated-array",
@@ -1769,14 +1769,14 @@
       "section": "projects",
       "title": "Projects — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "The six-level project ladder and the problem statement atlas -- where to find real, scoped project ideas across production RAG, agents, and MLOps."
     },
     "/docs/projects/the-project-ladder": {
       "slug": "projects/the-project-ladder",
       "section": "projects",
       "title": "The Project Ladder",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Six real project levels, from an afternoon-long tiny project to a frontier capstone -- pick by what you're currently learning, not strict order."
     },
     "/docs/python-engineering/concurrency-memory-and-performance": {
       "slug": "python-engineering/concurrency-memory-and-performance",
@@ -1811,7 +1811,7 @@
       "section": "python-engineering",
       "title": "Python Engineering for AI — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Python OOP and functional patterns, concurrency and performance, and packaging/testing/tooling -- the engineering foundation an AI codebase actually runs on."
     },
     "/docs/reinforcement-learning/advanced-rl": {
       "slug": "reinforcement-learning/advanced-rl",
@@ -1846,7 +1846,7 @@
       "section": "reinforcement-learning",
       "title": "Reinforcement Learning — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "RL fundamentals (MDPs, Q-learning, Bellman equations), advanced RL (DQN, PPO, RLHF), and multi-armed bandits -- three sections on sequential decision-making."
     },
     "/docs/research-engineering/how-to-read-ai-papers": {
       "slug": "research-engineering/how-to-read-ai-papers",
@@ -1874,14 +1874,14 @@
       "section": "research-engineering",
       "title": "Research Engineering — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "How to read AI papers structurally, plus the real paper lineage from AlexNet through modern LLMs -- turning research literacy into a testable skill."
     },
     "/docs/resources/open-source-ai-resources": {
       "slug": "resources/open-source-ai-resources",
       "section": "resources",
       "title": "Open Source AI Resources",
       "sidebarPosition": 1,
-      "description": null
+      "description": "A running list of free external resources: practice problem sets, interview-prep Q&A banks, and visual math-intuition explainers, updated as new ones are found."
     },
     "/docs/roadmaps/overview": {
       "slug": "roadmaps/overview",
@@ -1916,7 +1916,7 @@
       "section": "speech-audio",
       "title": "Speech & Audio AI — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Audio fundamentals (sampling, Fourier transforms, spectrograms) and speech/audio tasks -- ASR, TTS, speaker diarization, and audio-language models."
     },
     "/docs/speech-audio/speech-audio-tasks": {
       "slug": "speech-audio/speech-audio-tasks",
@@ -1930,84 +1930,84 @@
       "section": "visual-lab",
       "title": "Agent Execution Graph",
       "sidebarPosition": 7,
-      "description": null
+      "description": "Step through a scripted, clickable ReAct loop trace -- see exactly how an agent's reasoning, tool calls, and observations unfold turn by turn."
     },
     "/docs/visual-lab/algorithm-selector": {
       "slug": "visual-lab/algorithm-selector",
       "section": "visual-lab",
       "title": "Algorithm Selector",
       "sidebarPosition": 15,
-      "description": null
+      "description": "A real branching decision tool over this site's own ML pages -- answer a few questions, get pointed at the actual technique that fits your situation."
     },
     "/docs/visual-lab/attention-step-through": {
       "slug": "visual-lab/attention-step-through",
       "section": "visual-lab",
       "title": "Attention Step-Through",
       "sidebarPosition": 5,
-      "description": null
+      "description": "A live QKV/softmax attention heatmap with per-token, multi-head breakdown -- type a sentence and watch real attention weights compute."
     },
     "/docs/visual-lab/decision-boundary-playground": {
       "slug": "visual-lab/decision-boundary-playground",
       "section": "visual-lab",
       "title": "Decision Boundary Playground",
       "sidebarPosition": 9,
-      "description": null
+      "description": "Click to add points and watch KNN, decision tree, and k-means decision boundaries update live -- the fastest way to build intuition for how each one works."
     },
     "/docs/visual-lab/embedding-space-explorer": {
       "slug": "visual-lab/embedding-space-explorer",
       "section": "visual-lab",
       "title": "Embedding Space Explorer",
       "sidebarPosition": 10,
-      "description": null
+      "description": "A real from-scratch PCA projection, cosine-similarity nearest neighbors, and word-vector analogy, computed live over a hand-built 48-word demo vocabulary."
     },
     "/docs/visual-lab/gradient-descent-explorer": {
       "slug": "visual-lab/gradient-descent-explorer",
       "section": "visual-lab",
       "title": "Gradient Descent Explorer",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Drive SGD, Momentum, and Adam yourself across a live, clickable loss surface -- the same elongated \"ravine\" shape from Optimizers, except you're driving."
     },
     "/docs/visual-lab/graph-tree-traversal": {
       "slug": "visual-lab/graph-tree-traversal",
       "section": "visual-lab",
       "title": "Graph &amp; Tree Traversal, Step by Step",
       "sidebarPosition": 15,
-      "description": null
+      "description": "An editable graph with real BFS vs. DFS stepped through live, plus a fixed-tree Lowest Common Ancestor finder with a real recursive call-by-call trace."
     },
     "/docs/visual-lab/inference-flow-visualizer": {
       "slug": "visual-lab/inference-flow-visualizer",
       "section": "visual-lab",
       "title": "LLM Inference Flow Visualizer",
       "sidebarPosition": 8,
-      "description": null
+      "description": "A clickable tokenizer-to-sampling pipeline with a real, live sampling playground -- see temperature, top-k, and top-p actually change token selection."
     },
     "/docs/visual-lab/lasso-regression-studio": {
       "slug": "visual-lab/lasso-regression-studio",
       "section": "visual-lab",
       "title": "Lasso Regression Studio",
       "sidebarPosition": 14,
-      "description": null
+      "description": "Real coordinate-descent soft-thresholding on the same dataset as Ridge Studio -- a directly comparable, live path showing exact feature elimination."
     },
     "/docs/visual-lab/linear-regression-studio": {
       "slug": "visual-lab/linear-regression-studio",
       "section": "visual-lab",
       "title": "Linear Regression Studio",
       "sidebarPosition": 11,
-      "description": null
+      "description": "Drag-the-line fitting, an MSE/outlier experiment, and a real gradient descent lab with a live loss surface, all on one real dataset."
     },
     "/docs/visual-lab/logistic-regression-studio": {
       "slug": "visual-lab/logistic-regression-studio",
       "section": "visual-lab",
       "title": "Logistic Regression Studio",
       "sidebarPosition": 12,
-      "description": null
+      "description": "Real sigmoid curve fitting plus a live cross-entropy vs. MSE-on-sigmoid convexity comparison -- see why the loss function choice actually matters."
     },
     "/docs/visual-lab/neural-network-playground": {
       "slug": "visual-lab/neural-network-playground",
       "section": "visual-lab",
       "title": "Neural Network Playground",
       "sidebarPosition": 4,
-      "description": null
+      "description": "A configurable toy-dataset classifier, trained live in your browser -- pick the architecture and dataset, watch it actually learn in real time."
     },
     "/docs/visual-lab/overview": {
       "slug": "visual-lab/overview",
@@ -2021,28 +2021,28 @@
       "section": "visual-lab",
       "title": "RAG Pipeline Simulator",
       "sidebarPosition": 6,
-      "description": null
+      "description": "Adjustable chunking, top-k, and reranking with live retrieved-chunk results -- see exactly how each RAG pipeline knob changes what gets retrieved."
     },
     "/docs/visual-lab/ridge-regression-studio": {
       "slug": "visual-lab/ridge-regression-studio",
       "section": "visual-lab",
       "title": "Ridge Regression Studio",
       "sidebarPosition": 13,
-      "description": null
+      "description": "A real closed-form ridge regression solve on a multicollinear dataset, with a live regularization path as you adjust the penalty strength."
     },
     "/docs/visual-lab/roadmap": {
       "slug": "visual-lab/roadmap",
       "section": "visual-lab",
       "title": "Visual Lab — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "Every shipped interactive tool in one list: gradient descent, attention, RAG, regression studios, decision boundaries, and DSA algorithm walkthroughs, all live."
     },
     "/docs/visual-lab/two-pointers-sliding-window": {
       "slug": "visual-lab/two-pointers-sliding-window",
       "section": "visual-lab",
       "title": "Two Pointers & Sliding Window, Step by Step",
       "sidebarPosition": 14,
-      "description": null
+      "description": "An editable array or string with real two-pointer and sliding-window algorithms stepped through one move at a time -- the first DSA piece in Visual Lab."
     }
   },
   "categories": {
