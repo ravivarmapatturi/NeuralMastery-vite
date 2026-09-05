@@ -3,6 +3,7 @@ import { MDXProvider } from '@mdx-js/react';
 import { ThemeProvider } from './theme/ThemeProvider';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProgressProvider } from './contexts/ProgressContext';
+import { GamificationProvider } from './contexts/GamificationContext';
 import DocLayout from './components/layout/DocLayout';
 import Home from './components/Home';
 import ProgressPage from './components/ProgressPage';
@@ -24,15 +25,17 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <ProgressProvider>
-          <MDXProvider components={mdxComponents}>
-            <BrowserRouter basename="/NeuralMastery-vite">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/progress" element={<ProgressPage />} />
-                <Route path="/docs/*" element={<DocLayout />} />
-              </Routes>
-            </BrowserRouter>
-          </MDXProvider>
+          <GamificationProvider>
+            <MDXProvider components={mdxComponents}>
+              <BrowserRouter basename="/NeuralMastery-vite">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/progress" element={<ProgressPage />} />
+                  <Route path="/docs/*" element={<DocLayout />} />
+                </Routes>
+              </BrowserRouter>
+            </MDXProvider>
+          </GamificationProvider>
         </ProgressProvider>
       </AuthProvider>
     </ThemeProvider>

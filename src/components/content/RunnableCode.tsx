@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useVizTokens, RADIUS, SPACING, FONT_FAMILY } from '../../theme/vizTokens';
+import { useGamification } from '../../contexts/GamificationContext';
+import { normalizeRoute } from '../../lib/contentTree';
 
 interface TestResult {
   name: string;
@@ -39,6 +42,8 @@ export default function RunnableCode({
   language?: 'python';
 }) {
   const t = useVizTokens();
+  const { awardProblemCompleted } = useGamification();
+  const permalink = normalizeRoute(useLocation().pathname);
   void language; // reserved for a future non-Python runtime; Pyodide is Python-only today
   const [code, setCode] = useState(initialCode);
   const [status, setStatus] = useState<Status>('idle');
@@ -84,6 +89,9 @@ export default function RunnableCode({
       setStdout(msg.stdout ?? '');
       setError(msg.error ?? null);
       if (msg.testResults) setTestResults(msg.testResults);
+      if (msg.testResults?.length > 0 && msg.testResults.every((r: TestResult) => r.passed)) {
+        awardProblemCompleted(permalink); // no-op if this page already earned it once
+      }
       setStatus('done');
     };
 

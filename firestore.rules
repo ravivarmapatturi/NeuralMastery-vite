@@ -2,27 +2,44 @@ rules_version = '2';
 
 // Verified against a real local Firestore emulator (not just read for
 // plausibility) via @firebase/rules-unit-testing: confirmed a signed-in
-// user can read/write their own progress/{uid} document, is BLOCKED from
-// reading and from writing another user's document, an unauthenticated
-// client is blocked from both on every document, and a blocked write
-// never corrupts the target document. That verification tooling
+// user can read/write their own progress/{uid} and leaderboard/{uid}
+// documents, is BLOCKED from writing another user's document in either
+// collection, an unauthenticated client is blocked from both on every
+// document, a signed-in user CAN read any leaderboard/{uid} document
+// (that collection is deliberately public-readable -- see below) but
+// still cannot read another user's private progress/{uid}, and a blocked
+// write never corrupts the target document. That verification tooling
 // (firebase-tools + @firebase/rules-unit-testing) was intentionally not
 // left as a permanent devDependency -- to re-verify after a future rules
 // change: `npm install --save-dev firebase-tools @firebase/rules-unit-testing`,
 // run `npx firebase emulators:start --only firestore --project demo-neuralmastery`
 // (add `CHOKIDAR_USEPOLLING=true` if it fails with an inotify ENOSPC error
 // on a busy shared machine), then drive it with initializeTestEnvironment
-// + assertSucceeds/assertFails against the two same-user/cross-user/
-// unauthenticated cases above, then uninstall both packages again.
+// + assertSucceeds/assertFails against the cases named above, then
+// uninstall both packages again.
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Progress-sync data: exactly one document per signed-in user, keyed
-    // by their own Firebase Auth UID. A user may read or write ONLY their
-    // own document -- never another user's, signed in or not. Everything
-    // else in this database has no rule below, and Firestore denies by
-    // default, so no other collection is reachable at all.
+    // Progress-sync data (also holds the gamification event log as a
+    // sibling field -- see GamificationContext): exactly one document per
+    // signed-in user, keyed by their own Firebase Auth UID. A user may
+    // read or write ONLY their own document -- never another user's,
+    // signed in or not. Everything else in this database has no rule
+    // below, and Firestore denies by default, so no other collection is
+    // reachable at all.
     match /progress/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Public leaderboard snapshot: deliberately DIFFERENT read rule from
+    // progress/{uid} above -- any signed-in user may read ANY entry here
+    // (a ranking query needs to see every user's points), but a user may
+    // still only WRITE their own entry, exactly like progress/{uid}. This
+    // is the real reason a separate collection exists at all: a
+    // leaderboard genuinely cannot be computed against progress/{uid}'s
+    // rules without weakening that document's real privacy guarantee.
+    match /leaderboard/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }

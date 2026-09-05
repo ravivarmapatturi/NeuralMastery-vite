@@ -4,6 +4,9 @@ import Navbar from './layout/Navbar';
 import { getSidebar, getFlatPages } from '../lib/contentTree';
 import { SECTION_META, SECTION_ORDER, completionFor } from '../data/sectionMeta';
 import { useProgress } from '../contexts/ProgressContext';
+import { useGamification } from '../contexts/GamificationContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useLeaderboard } from '../lib/useLeaderboard';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 
@@ -27,6 +30,8 @@ export default function ProgressPage() {
   useDocumentMeta('Your Progress', 'Track which pages across Neural Mastery you have marked as understood -- tracked locally in your browser, no account required.');
 
   const { understood, isUnderstood, toggle, countWithin, reset, dueForReview, markReviewed } = useProgress();
+  const { points, streak } = useGamification();
+  const { user } = useAuth();
   const sections = getSidebar();
   const flatPages = getFlatPages();
   const totalPages = flatPages.length;
@@ -34,6 +39,8 @@ export default function ProgressPage() {
   const overallPct = totalPages === 0 ? 0 : totalDone / totalPages;
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [leaderboardTab, setLeaderboardTab] = useState<'allTime' | 'weekly'>('allTime');
+  const { entries: leaderboardEntries, loading: leaderboardLoading } = useLeaderboard(leaderboardTab);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
@@ -55,6 +62,89 @@ export default function ProgressPage() {
           <div style={{ height: 8, borderRadius: 4, background: 'var(--nm-border)', overflow: 'hidden' }}>
             <div style={{ width: `${overallPct * 100}%`, height: '100%', background: 'var(--nm-accent-primary)', transition: 'width 200ms ease' }} />
           </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '2rem' }}>
+          <div style={{ flex: 1, padding: '1rem 1.25rem', borderRadius: 12, border: '1px solid var(--nm-border)', background: 'var(--nm-surface)' }}>
+            <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginBottom: 4 }}>Points</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)' }}>{points}</div>
+          </div>
+          <div style={{ flex: 1, padding: '1rem 1.25rem', borderRadius: 12, border: '1px solid var(--nm-border)', background: 'var(--nm-surface)' }}>
+            <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginBottom: 4 }}>Streak</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)' }}>
+              {streak} day{streak === 1 ? '' : 's'}
+            </div>
+          </div>
+        </div>
+        {!user && (
+          <p style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', margin: '-1.25rem 0 2rem', lineHeight: 1.6 }}>
+            Points and streaks are tracked locally in this browser too, but only sync across devices — and only count toward the leaderboard below — once you sign in.
+          </p>
+        )}
+
+        <h2 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: '0.9rem' }}>
+          Leaderboard
+        </h2>
+        <div style={{ borderRadius: 12, border: '1px solid var(--nm-border)', background: 'var(--nm-surface)', marginBottom: '2.5rem', overflow: 'hidden' }}>
+          {!user ? (
+            <p style={{ margin: 0, padding: '1rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)', lineHeight: 1.6 }}>
+              Sign in to see how your points stack up against other learners.
+            </p>
+          ) : (
+            <>
+              <div style={{ display: 'flex', gap: 6, padding: '0.75rem 1.25rem 0' }}>
+                {(['allTime', 'weekly'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => setLeaderboardTab(tab)}
+                    style={{
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      padding: '0.35rem 0.75rem',
+                      borderRadius: 8,
+                      border: `1px solid ${leaderboardTab === tab ? 'var(--nm-accent-primary)' : 'var(--nm-border)'}`,
+                      background: leaderboardTab === tab ? 'color-mix(in srgb, var(--nm-accent-primary) 12%, transparent)' : 'transparent',
+                      color: leaderboardTab === tab ? 'var(--nm-accent-primary)' : 'var(--nm-text-secondary)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {tab === 'allTime' ? 'All-time' : 'This week'}
+                  </button>
+                ))}
+              </div>
+              <div style={{ padding: '0.5rem 0 0.25rem' }}>
+                {leaderboardLoading ? (
+                  <p style={{ margin: 0, padding: '0.75rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)' }}>Loading…</p>
+                ) : leaderboardEntries.length === 0 ? (
+                  <p style={{ margin: 0, padding: '0.75rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)' }}>
+                    {leaderboardTab === 'allTime' ? 'No points on the board yet -- be the first.' : 'No points this week yet -- be the first.'}
+                  </p>
+                ) : (
+                  leaderboardEntries.map((entry, i) => (
+                    <div
+                      key={entry.uid}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        padding: '0.5rem 1.25rem',
+                        borderTop: i === 0 ? 'none' : '1px solid var(--nm-border)',
+                        background: entry.uid === user.uid ? 'color-mix(in srgb, var(--nm-accent-primary) 6%, transparent)' : 'transparent',
+                      }}
+                    >
+                      <span style={{ width: 20, fontSize: 12.5, fontWeight: 700, color: 'var(--nm-text-muted)', flexShrink: 0 }}>{i + 1}</span>
+                      <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: 'var(--nm-text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {entry.displayName}
+                        {entry.uid === user.uid && <span style={{ color: 'var(--nm-text-muted)' }}> (you)</span>}
+                      </span>
+                      <span style={{ flexShrink: 0, fontSize: 13, fontWeight: 700, color: 'var(--nm-accent-primary)' }}>{entry.points} pts</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </>
+          )}
         </div>
 
         <h2 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: '0.9rem' }}>

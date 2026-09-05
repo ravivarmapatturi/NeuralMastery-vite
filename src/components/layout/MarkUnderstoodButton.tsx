@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useProgress } from '../../contexts/ProgressContext';
+import { useGamification } from '../../contexts/GamificationContext';
 import { normalizeRoute } from '../../lib/contentTree';
 
 /** The actual control that makes ProgressContext's "understood" state
@@ -19,12 +20,16 @@ export default function MarkUnderstoodButton() {
   const location = useLocation();
   const permalink = normalizeRoute(location.pathname);
   const { isUnderstood, toggle } = useProgress();
+  const { awardMarkUnderstood } = useGamification();
   const understood = isUnderstood(permalink);
 
   return (
     <button
       type="button"
-      onClick={() => toggle(permalink)}
+      onClick={() => {
+        if (!understood) awardMarkUnderstood(permalink); // only on the mark-as-understood transition, never on un-marking
+        toggle(permalink);
+      }}
       aria-pressed={understood}
       style={{
         display: 'flex',

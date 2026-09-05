@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useVizTokens, RADIUS, SPACING, FONT_FAMILY } from '../../theme/vizTokens';
+import { useGamification } from '../../contexts/GamificationContext';
+import { normalizeRoute } from '../../lib/contentTree';
 
 interface WebGPUTestCase {
   name: string;
@@ -47,6 +50,8 @@ type Status = 'idle' | 'running' | 'done';
  */
 export default function RunnableWebGPU({ code: initialCode, tests }: { code: string; tests: WebGPUTestCase[] }) {
   const t = useVizTokens();
+  const { awardProblemCompleted } = useGamification();
+  const permalink = normalizeRoute(useLocation().pathname);
   const [code, setCode] = useState(initialCode);
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -139,6 +144,9 @@ export default function RunnableWebGPU({ code: initialCode, tests }: { code: str
         results.push(await runOneCase(device, shaderModule, testCase));
       }
       setTestResults(results);
+      if (results.length > 0 && results.every((r) => r.passed)) {
+        awardProblemCompleted(permalink); // no-op if this page already earned it once
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       if (message.startsWith('UNSUPPORTED:')) {
