@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useAuth } from './AuthContext';
 
 const STORAGE_KEY = 'neural-mastery-progress';
 
@@ -44,7 +45,9 @@ const ProgressContext = createContext<ProgressContextValue | null>(null);
 /** Old storage entries were a bare `true`; new ones are a ProgressEntry
  * object. Normalizes either into the current shape so every consumer only
  * ever deals with one shape, without forcing an eager localStorage rewrite
- * on every page load. */
+ * on every page load. Also the shape Firestore data is normalized through
+ * (a signed-in user's very first sync writes local-format entries there
+ * directly, so this same normalizer covers both sources). */
 function normalize(raw: unknown): UnderstoodMap {
   if (!raw || typeof raw !== 'object') return {};
   const out: UnderstoodMap = {};
@@ -87,33 +90,140 @@ function isDue(entry: ProgressEntry, now: number): boolean {
   return now - entry.markedAt >= intervalDays * DAY_MS;
 }
 
+/** Which of two entries for the SAME permalink represents further-along
+ * progress -- higher stage wins; a tie breaks on the more recent markedAt.
+ * Used only to merge a browser's local progress into a signed-in user's
+ * existing Firestore progress on first sign-in, so signing in on a second
+ * device can never make a page look LESS understood than it already did
+ * on either side. */
+function moreAdvanced(a: ProgressEntry, b: ProgressEntry): ProgressEntry {
+  const aStage = a.stage ?? 0;
+  const bStage = b.stage ?? 0;
+  if (aStage !== bStage) return aStage > bStage ? a : b;
+  return (a.markedAt ?? 0) >= (b.markedAt ?? 0) ? a : b;
+}
+
+/** Union of two understood-maps, keeping the more-advanced entry per page
+ * where both sides have one. Never drops a page that exists on only one
+ * side -- this is the "merge, don't wipe" contract for first sign-in. */
+function mergeProgress(a: UnderstoodMap, b: UnderstoodMap): UnderstoodMap {
+  const merged: UnderstoodMap = { ...a };
+  for (const [permalink, entry] of Object.entries(b)) {
+    merged[permalink] = merged[permalink] ? moreAdvanced(merged[permalink], entry) : entry;
+  }
+  return merged;
+}
+
+/** Loads firebase/firestore (and the initialized app from ../lib/firebase)
+ * via a dynamic import, resolved only where this is actually called -- the
+ * Firestore-sync effect and commit() below, both of which only ever run
+ * for a signed-in user. A static top-level import here was confirmed (via
+ * a real production build) to bundle the whole Firestore SDK into every
+ * visitor's eager main chunk regardless of whether they ever sign in,
+ * growing it from ~437kB to over 1.1MB -- the same class of bug this app's
+ * katex dependency had, fixed the same way. */
+async function loadFirestoreFor(uid: string) {
+  const [{ db }, { doc, getDoc, setDoc, onSnapshot }] = await Promise.all([import('../lib/firebase'), import('firebase/firestore')]);
+  return { ref: doc(db, 'progress', uid), getDoc, setDoc, onSnapshot };
+}
+
 /**
  * Local-only (no account, nothing sent anywhere) "have I marked this page
- * understood" tracker, keyed by permalink. Mounted once at the app root so
- * every page shares the same state without prop drilling. Also drives a
- * simple spaced-repetition review schedule on top of the same mark data
- * (see REVIEW_INTERVALS_DAYS) -- a page you marked understood becomes
- * eligible for a "due for review" nudge once its current interval elapses.
+ * understood" tracker, keyed by permalink -- UNLESS the visitor is signed
+ * in (see AuthContext), in which case this same map syncs against
+ * Firestore instead, keyed by their UID, and becomes readable/writable
+ * from any device. Mounted once at the app root so every page shares the
+ * same state without prop drilling. Also drives a simple spaced-repetition
+ * review schedule on top of the same mark data (see REVIEW_INTERVALS_DAYS)
+ * -- a page you marked understood becomes eligible for a "due for review"
+ * nudge once its current interval elapses.
+ *
+ * Signed-out contract (must never regress): reads/writes go straight to
+ * localStorage, exactly as before Firebase existed here -- no network
+ * call is made, no sign-in wall, nothing changes for a visitor who never
+ * signs in.
+ *
+ * Signed-in contract: on the transition to signed-in, this browser's
+ * current localStorage map is merged (see mergeProgress, never a silent
+ * overwrite) into whatever's already in Firestore for that UID, the
+ * merged result is written back, and from that point on Firestore is the
+ * single source of truth -- every write goes to Firestore first, and a
+ * live onSnapshot subscription is what actually updates `understood`
+ * (never a direct local setState from a write), so every open tab/device
+ * for that user converges on the same state. localStorage is still kept
+ * mirrored while signed in purely as a fresh fallback for if/when they
+ * sign out on this browser.
  */
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
+  const { user, loading: authLoading } = useAuth();
   const [understood, setUnderstood] = useState<UnderstoodMap>({});
 
+  // Anonymous baseline -- always loaded once on mount, so there's an
+  // immediate, correct value before Firebase's own auth check resolves.
   useEffect(() => {
     setUnderstood(readStorage());
   }, []);
 
-  const toggle = useCallback((permalink: string) => {
-    setUnderstood((prev) => {
-      const next = { ...prev };
+  // Firestore sync -- only ever runs for a real signed-in user, which is
+  // also exactly when loadFirestoreFor's dynamic import actually resolves
+  // (never touched at all for the common signed-out case).
+  useEffect(() => {
+    if (authLoading || !user) return;
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
+
+    loadFirestoreFor(user.uid).then(async ({ ref, getDoc, setDoc, onSnapshot }) => {
+      if (cancelled) return;
+      const snap = await getDoc(ref);
+      const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
+      const merged = mergeProgress(remote, readStorage());
+      if (cancelled) return;
+      await setDoc(ref, { understood: merged }, { merge: true });
+      if (cancelled) return;
+
+      unsubscribe = onSnapshot(ref, (snap) => {
+        if (cancelled) return;
+        const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
+        setUnderstood(remote);
+        writeStorage(remote);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
+  }, [user, authLoading]);
+
+  const commit = useCallback(
+    (next: UnderstoodMap) => {
+      if (user) {
+        // No local setUnderstood here -- the onSnapshot listener above is
+        // the only thing allowed to update state while signed in, so every
+        // tab/device converges on exactly what Firestore has.
+        loadFirestoreFor(user.uid).then(({ ref, setDoc }) => {
+          void setDoc(ref, { understood: next });
+        });
+      } else {
+        setUnderstood(next);
+        writeStorage(next);
+      }
+    },
+    [user],
+  );
+
+  const toggle = useCallback(
+    (permalink: string) => {
+      const next = { ...understood };
       if (next[permalink]) {
         delete next[permalink];
       } else {
         next[permalink] = { understood: true, markedAt: Date.now(), stage: 0 };
       }
-      writeStorage(next);
-      return next;
-    });
-  }, []);
+      commit(next);
+    },
+    [understood, commit],
+  );
 
   const isUnderstood = useCallback((permalink: string) => !!understood[permalink]?.understood, [understood]);
 
@@ -123,20 +233,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   );
 
   const reset = useCallback(() => {
-    setUnderstood({});
-    writeStorage({});
-  }, []);
+    commit({});
+  }, [commit]);
 
-  const markReviewed = useCallback((permalink: string) => {
-    setUnderstood((prev) => {
-      const existing = prev[permalink];
-      if (!existing) return prev; // can't review a page that was never marked understood
+  const markReviewed = useCallback(
+    (permalink: string) => {
+      const existing = understood[permalink];
+      if (!existing) return; // can't review a page that was never marked understood
       const nextStage = Math.min((existing.stage ?? 0) + 1, REVIEW_INTERVALS_DAYS.length - 1);
-      const next = { ...prev, [permalink]: { understood: true, markedAt: Date.now(), stage: nextStage } };
-      writeStorage(next);
-      return next;
-    });
-  }, []);
+      commit({ ...understood, [permalink]: { understood: true, markedAt: Date.now(), stage: nextStage } });
+    },
+    [understood, commit],
+  );
 
   const dueForReview = Object.keys(understood).filter((p) => isDue(understood[p], Date.now()));
 

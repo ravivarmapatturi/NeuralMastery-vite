@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
 import { ThemeProvider } from './theme/ThemeProvider';
+import { AuthProvider } from './contexts/AuthContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 import DocLayout from './components/layout/DocLayout';
 import Home from './components/Home';
@@ -21,17 +22,19 @@ const mdxComponents = { ThemedImage, pre: MDXCodeBlock, a: MDXLink };
 export default function App() {
   return (
     <ThemeProvider>
-      <ProgressProvider>
-        <MDXProvider components={mdxComponents}>
-          <BrowserRouter basename="/NeuralMastery-vite">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/progress" element={<ProgressPage />} />
-              <Route path="/docs/*" element={<DocLayout />} />
-            </Routes>
-          </BrowserRouter>
-        </MDXProvider>
-      </ProgressProvider>
+      <AuthProvider>
+        <ProgressProvider>
+          <MDXProvider components={mdxComponents}>
+            <BrowserRouter basename="/NeuralMastery-vite">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/progress" element={<ProgressPage />} />
+                <Route path="/docs/*" element={<DocLayout />} />
+              </Routes>
+            </BrowserRouter>
+          </MDXProvider>
+        </ProgressProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, beforeEach } from 'vitest'
 import Home from './Home'
 import { ThemeProvider } from '../theme/ThemeProvider'
+import { AuthProvider } from '../contexts/AuthContext'
 import { ProgressProvider } from '../contexts/ProgressContext'
 import { getFlatPages } from '../lib/contentTree'
 import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta'
@@ -13,9 +14,11 @@ function renderHome() {
   return render(
     <ThemeProvider>
       <MemoryRouter>
-        <ProgressProvider>
-          <Home />
-        </ProgressProvider>
+        <AuthProvider>
+          <ProgressProvider>
+            <Home />
+          </ProgressProvider>
+        </AuthProvider>
       </MemoryRouter>
     </ThemeProvider>,
   )

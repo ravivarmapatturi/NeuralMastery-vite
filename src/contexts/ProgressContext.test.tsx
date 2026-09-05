@@ -1,7 +1,10 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { onAuthStateChanged, type User } from 'firebase/auth'
+import { getDoc, setDoc, onSnapshot } from 'firebase/firestore'
 import { ProgressProvider, useProgress, REVIEW_INTERVALS_DAYS } from './ProgressContext'
+import { AuthProvider } from './AuthContext'
 
 const STORAGE_KEY = 'neural-mastery-progress'
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -25,9 +28,11 @@ function Harness({ permalink = '/docs/foo' }: { permalink?: string }) {
 
 function setup(permalink?: string) {
   const { rerender, ...rest } = render(
-    <ProgressProvider>
-      <Harness permalink={permalink} />
-    </ProgressProvider>,
+    <AuthProvider>
+      <ProgressProvider>
+        <Harness permalink={permalink} />
+      </ProgressProvider>
+    </AuthProvider>,
   )
   // Re-render with an identical tree to force ProgressProvider's function
   // body (and its Date.now()-driven dueForReview computation) to re-run
@@ -36,9 +41,11 @@ function setup(permalink?: string) {
   // or resets `understood`, it just re-evaluates render-time values.
   const refresh = () =>
     rerender(
-      <ProgressProvider>
-        <Harness permalink={permalink} />
-      </ProgressProvider>,
+      <AuthProvider>
+        <ProgressProvider>
+          <Harness permalink={permalink} />
+        </ProgressProvider>
+      </AuthProvider>,
     )
   return { rerender, refresh, ...rest }
 }
@@ -48,6 +55,13 @@ let now = BASE_TIME
 beforeEach(() => {
   window.localStorage.clear()
   now = BASE_TIME
+  // The mocked firebase/auth + firebase/firestore functions (from
+  // tests/unit/setup.ts) are shared vi.fn() instances across every test in
+  // this file -- clear only their CALL HISTORY here (not their
+  // implementations, which individual tests below override on purpose),
+  // so a later test's "was this called" assertion never sees an earlier
+  // test's leftover calls.
+  vi.clearAllMocks()
   // Real timers throughout (userEvent + fake timers is a known, finicky
   // combination) -- only Date.now() itself is mocked, which is all this
   // code actually reads. advanceTime() below moves the mocked clock
@@ -82,10 +96,12 @@ describe('ProgressContext: legacy boolean-format migration', () => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ '/docs/legacy': true }))
     const user = userEvent.setup()
     render(
-      <ProgressProvider>
-        <Harness permalink="/docs/legacy" />
-        <Harness permalink="/docs/new" />
-      </ProgressProvider>,
+      <AuthProvider>
+        <ProgressProvider>
+          <Harness permalink="/docs/legacy" />
+          <Harness permalink="/docs/new" />
+        </ProgressProvider>
+      </AuthProvider>,
     )
     const toggleButtons = await screen.findAllByText('toggle')
     await user.click(toggleButtons[1]) // mark the NEW page, not the legacy one
@@ -175,5 +191,105 @@ describe('ProgressContext: spaced-repetition date math', () => {
       await user.click(screen.getByText('reviewed'))
     }
     expect(screen.getByTestId('stage')).toHaveTextContent(String(REVIEW_INTERVALS_DAYS.length - 1))
+  })
+})
+
+// Explicit per-test setup/teardown of the mocked Firebase functions here
+// (rather than relying on the file-level afterEach's vi.restoreAllMocks())
+// -- these tests need specific onAuthStateChanged/getDoc/onSnapshot
+// behavior, and every test below restores the exact signed-out defaults
+// from tests/unit/setup.ts afterward so no later test in this file (or
+// this describe block) can inherit a stale signed-in mock.
+describe('ProgressContext: Firestore sync for signed-in users', () => {
+  const fakeUser = { uid: 'user-1' } as unknown as User
+
+  function mockSignedIn(remoteData: unknown) {
+    vi.mocked(onAuthStateChanged).mockImplementation((_auth, callback) => {
+      ;(callback as (u: User) => void)(fakeUser)
+      return () => {}
+    })
+    vi.mocked(getDoc).mockResolvedValue({
+      exists: () => remoteData !== undefined,
+      data: () => remoteData,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+  }
+
+  afterEach(() => {
+    // Restore the exact signed-out defaults from tests/unit/setup.ts.
+    vi.mocked(onAuthStateChanged).mockImplementation((_auth, callback) => {
+      ;(callback as (u: null) => void)(null)
+      return () => {}
+    })
+    vi.mocked(getDoc).mockResolvedValue({ exists: () => false, data: () => undefined } as unknown as Awaited<ReturnType<typeof getDoc>>)
+    vi.mocked(setDoc).mockResolvedValue(undefined)
+    vi.mocked(onSnapshot).mockImplementation(() => () => {})
+  })
+
+  it('merges local progress into whatever is already in Firestore on sign-in, keeping the more-advanced entry per page where both sides have one', async () => {
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        '/docs/local-only': { understood: true, markedAt: BASE_TIME, stage: 0 },
+        '/docs/both': { understood: true, markedAt: BASE_TIME, stage: 0 }, // local is behind on this one
+      }),
+    )
+    mockSignedIn({
+      understood: {
+        '/docs/remote-only': { understood: true, markedAt: BASE_TIME, stage: 1 },
+        '/docs/both': { understood: true, markedAt: BASE_TIME + 1000, stage: 2 }, // remote is further along
+      },
+    })
+
+    setup()
+
+    await waitFor(() => expect(setDoc).toHaveBeenCalled())
+    const written = vi.mocked(setDoc).mock.calls[0][1] as { understood: Record<string, unknown> }
+    // Neither side's page disappears, and the higher-stage ("both") entry wins.
+    expect(written.understood['/docs/local-only']).toEqual({ understood: true, markedAt: BASE_TIME, stage: 0 })
+    expect(written.understood['/docs/remote-only']).toEqual({ understood: true, markedAt: BASE_TIME, stage: 1 })
+    expect(written.understood['/docs/both']).toEqual({ understood: true, markedAt: BASE_TIME + 1000, stage: 2 })
+  })
+
+  it('never loses the local side of a page that Firestore does not have yet on a brand-new account', async () => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ '/docs/only-local': { understood: true, markedAt: BASE_TIME, stage: 3 } }))
+    mockSignedIn(undefined) // no Firestore document exists yet for this uid
+
+    setup()
+
+    await waitFor(() => expect(setDoc).toHaveBeenCalled())
+    const written = vi.mocked(setDoc).mock.calls[0][1] as { understood: Record<string, unknown> }
+    expect(written.understood['/docs/only-local']).toEqual({ understood: true, markedAt: BASE_TIME, stage: 3 })
+  })
+
+  it('drives displayed state from the Firestore onSnapshot listener, never from a direct local write, while signed in', async () => {
+    mockSignedIn(undefined)
+    let deliverSnapshot: ((snap: unknown) => void) | undefined
+    vi.mocked(onSnapshot).mockImplementation((_ref, callback) => {
+      deliverSnapshot = callback as (snap: unknown) => void
+      return () => {}
+    })
+
+    setup('/docs/from-remote')
+    await waitFor(() => expect(deliverSnapshot).toBeDefined())
+
+    deliverSnapshot!({
+      exists: () => true,
+      data: () => ({ understood: { '/docs/from-remote': { understood: true, markedAt: BASE_TIME, stage: 0 } } }),
+    })
+
+    await waitFor(() => expect(screen.getByTestId('understood')).toHaveTextContent('true'))
+  })
+})
+
+describe('ProgressContext: signed-out visitors never touch Firestore', () => {
+  it('toggling a page while signed out never calls getDoc/setDoc/onSnapshot -- localStorage-only, no regression', async () => {
+    setup()
+    const user = userEvent.setup()
+    await user.click(screen.getByText('toggle'))
+    expect(getDoc).not.toHaveBeenCalled()
+    expect(setDoc).not.toHaveBeenCalled()
+    expect(onSnapshot).not.toHaveBeenCalled()
+    expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY)!)).toHaveProperty('/docs/foo')
   })
 })

@@ -1,0 +1,28 @@
+rules_version = '2';
+
+// Verified against a real local Firestore emulator (not just read for
+// plausibility) via @firebase/rules-unit-testing: confirmed a signed-in
+// user can read/write their own progress/{uid} document, is BLOCKED from
+// reading and from writing another user's document, an unauthenticated
+// client is blocked from both on every document, and a blocked write
+// never corrupts the target document. That verification tooling
+// (firebase-tools + @firebase/rules-unit-testing) was intentionally not
+// left as a permanent devDependency -- to re-verify after a future rules
+// change: `npm install --save-dev firebase-tools @firebase/rules-unit-testing`,
+// run `npx firebase emulators:start --only firestore --project demo-neuralmastery`
+// (add `CHOKIDAR_USEPOLLING=true` if it fails with an inotify ENOSPC error
+// on a busy shared machine), then drive it with initializeTestEnvironment
+// + assertSucceeds/assertFails against the two same-user/cross-user/
+// unauthenticated cases above, then uninstall both packages again.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Progress-sync data: exactly one document per signed-in user, keyed
+    // by their own Firebase Auth UID. A user may read or write ONLY their
+    // own document -- never another user's, signed in or not. Everything
+    // else in this database has no rule below, and Firestore denies by
+    // default, so no other collection is reachable at all.
+    match /progress/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

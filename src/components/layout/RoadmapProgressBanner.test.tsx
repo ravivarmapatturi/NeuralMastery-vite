@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, beforeEach } from 'vitest'
 import RoadmapProgressBanner from './RoadmapProgressBanner'
 import { ThemeProvider } from '../../theme/ThemeProvider'
+import { AuthProvider } from '../../contexts/AuthContext'
 import { ProgressProvider } from '../../contexts/ProgressContext'
 import { getSidebar } from '../../lib/contentTree'
 
@@ -16,9 +17,11 @@ function renderBanner(section = realSection.id) {
   return render(
     <ThemeProvider>
       <MemoryRouter>
-        <ProgressProvider>
-          <RoadmapProgressBanner section={section} />
-        </ProgressProvider>
+        <AuthProvider>
+          <ProgressProvider>
+            <RoadmapProgressBanner section={section} />
+          </ProgressProvider>
+        </AuthProvider>
       </MemoryRouter>
     </ThemeProvider>,
   )

@@ -2,6 +2,7 @@ import { useEffect, useState, type RefObject } from 'react';
 import { Link } from 'react-router-dom';
 import { useColorMode } from '../../theme/ThemeProvider';
 import SearchModal from './SearchModal';
+import AuthButton from './AuthButton';
 
 const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform ?? navigator.userAgent);
 
@@ -123,6 +124,7 @@ export default function Navbar({
           >
             {colorMode === 'dark' ? '☀' : '☾'}
           </button>
+          <AuthButton />
         </nav>
       </header>
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
