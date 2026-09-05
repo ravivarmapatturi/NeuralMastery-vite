@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 const SITE_NAME = 'Neural Mastery';
-export const SITE_URL = 'https://ravivarmapatturi.github.io/NeuralMastery-vite/';
+export const SITE_URL = 'https://neuralmasteryai.com/';
 export const DEFAULT_DESCRIPTION =
   'Learn AI and machine learning through real, computed, interactive visualizations, not static diagrams -- covering machine learning, deep learning, LLMs, and agents.';
 
@@ -40,7 +40,9 @@ export function useDocumentMeta(pageTitle: string | undefined, description?: str
   useEffect(() => {
     const desc = description ?? DEFAULT_DESCRIPTION;
     const fullTitle = pageTitle ? `${pageTitle} — ${SITE_NAME}` : SITE_NAME;
-    const canonical = SITE_URL.replace(/\/$/, '') + window.location.pathname.replace(/^\/NeuralMastery-vite/, '');
+    // No prefix to strip anymore -- the site serves from the domain's own
+    // root now, so location.pathname already matches the route directly.
+    const canonical = SITE_URL.replace(/\/$/, '') + window.location.pathname;
 
     upsertMeta('name', 'description', desc);
     upsertMeta('property', 'og:title', fullTitle);

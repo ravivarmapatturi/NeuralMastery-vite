@@ -6,7 +6,7 @@
 import { writeFileSync, statSync, readdirSync } from 'node:fs';
 import { resolve, relative, join } from 'node:path';
 
-const SITE_URL = 'https://ravivarmapatturi.github.io/NeuralMastery-vite';
+const SITE_URL = 'https://neuralmasteryai.com';
 const docsDir = resolve(import.meta.dirname, '..', 'src', 'content', 'docs');
 const dist = resolve(import.meta.dirname, '..', 'dist');
 

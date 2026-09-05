@@ -1,5 +1,5 @@
 const { chromium } = require('playwright');
-const LIVE = 'https://ravivarmapatturi.github.io/NeuralMastery-vite';
+const LIVE = 'https://neuralmasteryai.com';
 const results = [];
 function log(check, pass, detail) {
   results.push({ check, pass, detail });

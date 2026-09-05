@@ -3,7 +3,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 
-const BASE = 'http://localhost:5173/NeuralMastery-vite';
+const BASE = 'http://localhost:5173';
 const results = {}; // name -> { render, interaction, animation, theme, responsive, console, notes: [] }
 
 function rec(name) {
@@ -497,7 +497,7 @@ async function main() {
     const recommendation = await container.locator('text=Recommendation').count();
     const link = container.locator('a', { hasText: 'Read the full guide' });
     const href = (await link.count()) ? await link.getAttribute('href') : null;
-    const linkOk = href === '/NeuralMastery-vite/docs/machine-learning/linear-regression' || href === '/docs/machine-learning/linear-regression';
+    const linkOk = href === '/docs/machine-learning/linear-regression';
 
     // Back / Start Over
     const backBtn = container.getByRole('button', { name: '← Back' });

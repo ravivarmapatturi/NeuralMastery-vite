@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
  * element -- left alone, every internal doc-to-doc link (the vast majority
  * of links in migrated content) would do a full page reload instead of
  * client-side navigation, and worse, wouldn't get react-router's
- * `basename` prefix applied, so it would 404 on GitHub Pages (which serves
- * this app under /NeuralMastery-vite/, not /). Registered as MDXProvider's
+ * `basename` prefix applied -- would 404 if that basename is ever a real
+ * subpath again (it's "/" today, serving from the custom domain's own
+ * root). Registered as MDXProvider's
  * `a` override in App.tsx so this applies to every .mdx page automatically.
  * External/absolute links (http, https, mailto, #anchors) stay plain
  * anchors -- only same-origin app routes go through react-router's <Link>.

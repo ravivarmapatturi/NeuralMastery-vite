@@ -21,7 +21,7 @@ test.describe('Core application', () => {
     await page.goto('');
     // The homepage is real content now, not a redirect -- it stays at `/`
     // and renders its own hero + topic grid (see src/components/Home.tsx).
-    await expect(page).toHaveURL(/NeuralMastery-vite\/$/);
+    await expect(page).toHaveURL('http://localhost:4173/');
     await expect(page.locator('h1')).toBeVisible();
     const firstTopicLink = page.locator('section a').first();
     await firstTopicLink.click();

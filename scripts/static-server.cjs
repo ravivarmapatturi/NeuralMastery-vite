@@ -6,8 +6,12 @@
 //      (an SPA-friendly dev convenience). GitHub Pages does NOT do this --
 //      it serves dist/404.html (if present) with a real HTTP 404 status for
 //      any path that isn't a literal file on disk.
-//   2. GitHub Pages serves the built site under the repo's base path
-//      (/NeuralMastery-vite/), not at the domain root.
+//   2. (Historical) when this served from a GitHub Pages project-site
+//      subpath (/NeuralMastery-vite/) rather than the custom domain's own
+//      root, this also reproduced that base-path stripping. BASE is '' now
+//      that the site serves from the domain root -- kept as a real
+//      parameter (not deleted) since resolveRelPath is still exercised
+//      with a non-empty base in its own unit tests.
 // Used both for local `npm run serve:dist` verification and as Playwright's
 // CI webServer, so smoke tests exercise the exact production-shaped
 // behavior (base path + 404-fallback deep links), not the dev server's
@@ -18,7 +22,7 @@ const path = require('node:path');
 const { resolveRelPath, isWithinRoot, redirectLocation } = require('./lib/staticServerPaths.cjs');
 
 const DIST = path.resolve(__dirname, '..', 'dist');
-const BASE = '/NeuralMastery-vite';
+const BASE = '';
 const PORT = Number(process.env.PORT) || 4173;
 
 const CONTENT_TYPES = {

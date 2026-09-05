@@ -40,7 +40,7 @@ const CONTENT_ROOT = join(ROOT, 'src', 'content', 'docs');
 const DIST_DIR = join(ROOT, 'dist');
 const PRERENDER_DIR = join(ROOT, '.pagefind-prerender');
 const PORT = 4174;
-const BASE = '/NeuralMastery-vite';
+const BASE = ''; // served from the custom domain's own root now, no subpath prefix
 
 function walk(dir) {
   const out = [];

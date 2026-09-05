@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 (async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
-  const url = 'http://localhost:4177/NeuralMastery-vite/docs/deep-learning/attention-transformers';
+  const url = 'http://localhost:4177/docs/deep-learning/attention-transformers';
   await page.goto(url, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('article.prose');
   await page.waitForTimeout(400);

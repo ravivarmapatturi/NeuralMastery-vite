@@ -52,11 +52,12 @@ export async function searchDocs(query: string): Promise<PagefindResultData[]> {
 }
 
 /** Pagefind infers its site root from pagefind.js's own script URL, so
- * result.url already comes back BASE_URL-prefixed and directory-style (e.g.
- * "/NeuralMastery-vite/docs/foo/") -- strip that prefix before handing it to
- * react-router's basename-aware navigate()/Link, which would otherwise
- * prepend the same base a second time (.../NeuralMastery-vite/NeuralMastery-vite/...),
- * then strip the trailing slash to match how routes are written elsewhere. */
+ * result.url already comes back BASE_URL-prefixed and directory-style
+ * (e.g. "/docs/foo/", or with a real subpath prefix if BASE_URL ever has
+ * one again) -- strip that prefix before handing it to react-router's
+ * basename-aware navigate()/Link, which would otherwise prepend the same
+ * base a second time, then strip the trailing slash to match how routes
+ * are written elsewhere. */
 export function toRoute(pagefindUrl: string): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   let path = pagefindUrl;

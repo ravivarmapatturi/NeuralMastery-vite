@@ -10,7 +10,10 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/NeuralMastery-vite/',
+  // Served from the custom domain's own root (neuralmasteryai.com), not a
+  // GitHub Pages project-site subpath -- was '/NeuralMastery-vite/' before
+  // the custom domain went live (see public/CNAME).
+  base: '/',
   plugins: [
     // MDX must run before the React plugin's JSX transform sees .mdx files
     mdx({

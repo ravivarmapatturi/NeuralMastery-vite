@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
   const page = await browser.newPage({ viewport: { width: 1400, height: 1100 } });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
-  await page.goto('http://localhost:4177/NeuralMastery-vite/docs/machine-learning/linear-regression', { waitUntil: 'domcontentloaded' });
+  await page.goto('http://localhost:4177/docs/machine-learning/linear-regression', { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('article.prose');
   await page.waitForTimeout(500);
   console.log('svg count:', await page.locator('article.prose svg').count());

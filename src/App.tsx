@@ -27,7 +27,12 @@ export default function App() {
         <ProgressProvider>
           <GamificationProvider>
             <MDXProvider components={mdxComponents}>
-              <BrowserRouter basename="/NeuralMastery-vite">
+              {/* Reads Vite's own BASE_URL (derived from vite.config.ts's
+                  `base`) instead of a second hardcoded copy of the same
+                  path -- the two drifting out of sync silently 404s every
+                  in-app link, exactly the kind of bug a single source of
+                  truth prevents outright. */}
+              <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/progress" element={<ProgressPage />} />

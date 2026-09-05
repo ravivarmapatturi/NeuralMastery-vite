@@ -4,7 +4,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 
-const BASE = 'http://localhost:5173/NeuralMastery-vite';
+const BASE = 'http://localhost:5173';
 const results = [];
 
 function log(check, pass, detail) {
