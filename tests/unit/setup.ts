@@ -90,3 +90,21 @@ if (!window.matchMedia) {
     dispatchEvent: () => false,
   }) as MediaQueryList
 }
+
+// jsdom has no real layout engine, so Range.getClientRects()/getBoundingClientRect()
+// don't exist at all -- CodeMirror 6 (CodeEditor.tsx) calls these on every
+// measure pass to lay out text, and throws without them. Real zero-rects
+// (not real geometry, since jsdom can't produce that) are enough for CM6 to
+// render and accept input in tests; a well-known, widely-used workaround for
+// testing CM6/ProseMirror-style editors under jsdom, not specific to this repo.
+if (!Range.prototype.getClientRects) {
+  Range.prototype.getClientRects = () => ({
+    item: () => null,
+    length: 0,
+    [Symbol.iterator]: function* () {},
+  }) as unknown as DOMRectList
+}
+if (!Range.prototype.getBoundingClientRect) {
+  Range.prototype.getBoundingClientRect = () =>
+    ({ x: 0, y: 0, top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0, toJSON: () => '' }) as DOMRect
+}
