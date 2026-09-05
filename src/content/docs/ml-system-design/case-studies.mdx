@@ -103,19 +103,41 @@ A third shape again: not "retrieve accurately" or "decide fast on a stream," but
 9. **Observability** — when an agent does the wrong thing, you need to see the actual reasoning and tool calls that led there, not just the final message the customer saw. See [Observability](/docs/mlops/observability) for tracing what actually happened, not just logging outcomes.
 10. **Evaluation** — "the response sounds right" is not the same claim as "the agent did the right thing," and conflating them hides real failures behind plausible-sounding text. See [Evaluation](/docs/llms-genai/evaluation-and-serving#evaluation) for checking agent behavior specifically, not just output fluency.
 
-Three case studies, three genuinely different technology stacks — retrieval-heavy, streaming-and-decision-heavy, trust-and-control-heavy — from applying the exact same [9-step framework](/docs/ml-system-design/the-9-step-framework) to three differently-shaped problems. That's the actual claim this page is making: the framework is constant, the stack is downstream of the problem.
+## Case Study: Personalized Recommendations for a 50-Million-Item Catalog
 
-## Recommendation Systems
+A fourth shape: not "retrieve accurately," "decide fast on a stream," or "act safely," but "rank the right handful of items out of tens of millions, differently for every single user, where the system's own past choices quietly shape the data it gets to learn from next." Walk it the same way:
 
-Almost always built as a **two-stage pipeline**:
-1. **Candidate generation**: cheaply narrow millions of items down to a few hundred plausible candidates (e.g. via collaborative filtering / matrix factorization — see [SVD](/docs/mathematics-for-ai/linear-algebra) — or approximate nearest-neighbor search over embeddings, see [Databases — Vector](/docs/databases/roadmap)).
-2. **Ranking**: apply a more expensive, more accurate model to rank just those few hundred candidates precisely, since running a heavy model over the *entire* catalog for every request would be far too slow.
+<DiscoverySequenceDiagram steps={[
+  { name: 'Candidate Generation', constraint: "Scoring all 50M items for every user request in real time is computationally impossible." },
+  { name: 'Embeddings', constraint: 'Candidate generation needs a cheap, precomputed way to represent user preference and item similarity numerically.' },
+  { name: 'ANN Retrieval', constraint: "Comparing a user's embedding against 50M item embeddings one at a time, per request, is still too slow." },
+  { name: 'Ranking', constraint: "A few hundred retrieved candidates aren't yet ordered by actual predicted preference -- approximate similarity isn't the same as a precise, learned order." },
+  { name: 'Cold Start', constraint: 'Brand-new users and items have no interaction history for factorization or embeddings to have learned anything from yet.' },
+  { name: 'Feedback Loop Bias', constraint: "The model's own past recommendations shape what future training data even looks like, quietly reinforcing whatever it already believed." },
+  { name: 'Training-Serving Skew', constraint: 'Features like recency and session activity computed differently in training than at request time silently corrupt what the model learned.' },
+  { name: 'Evaluation', constraint: "An offline ranking metric improving doesn't prove real engagement or revenue actually went up." },
+  { name: 'Scaling', constraint: 'Every one of millions of daily requests needs a personalized, low-latency answer, not one shared batch computed for everyone.' },
+]} />
+
+1. **Candidate Generation** — the first wall: scoring all 50 million items for every user request in real time is computationally impossible, so the system has to cheaply narrow the catalog down to a few hundred plausible candidates before anything expensive happens. See [The Two-Stage Production Pipeline](/docs/machine-learning/recommender-systems#the-two-stage-production-pipeline) for why this split (cheap-and-broad, then expensive-and-narrow) is the standard shape almost every large-scale recommender takes.
 
 <TwoStagePipelinePatternDiagram />
 
-**Cold start**: new users or items have no interaction history to base recommendations on. Addressed with content-based fallbacks (recommend based on item attributes, not behavior) and exploration strategies (deliberately show some uncertain-but-promising items to gather signal).
+2. **Embeddings** — candidate generation needs a cheap, precomputed way to represent user preference and item similarity numerically, rather than comparing raw interaction history at request time. See [Matrix Factorization](/docs/machine-learning/recommender-systems#matrix-factorization) for the classical latent-factor version of this, and [Embeddings and the Two-Tower Architecture](/docs/machine-learning/recommender-systems#embeddings-and-the-two-tower-architecture) for the modern, feature-rich neural version that also partially addresses cold start below.
+3. **ANN Retrieval** — comparing a user's embedding against 50 million item embeddings one at a time, per request, is still too slow even once both sides are just vectors. See [Indexing Algorithms](/docs/databases/vector/overview#indexing-algorithms) for the approximate nearest-neighbor index (the same HNSW-style structure a RAG system's vector DB uses) that makes this lookup fast at real catalog scale.
+4. **Ranking** — the few hundred retrieved candidates aren't yet ordered by actual predicted preference; approximate embedding similarity got you a plausible shortlist, not a precise one. See [Three Formulations](/docs/machine-learning/learning-to-rank#three-formulations) for pointwise/pairwise/listwise ranking losses, and [CTR Prediction](/docs/machine-learning/recommender-systems#ctr-prediction) for the concrete binary-classification framing most production ranking-stage models actually train against.
+5. **Cold Start** — brand-new users and items have no interaction history for matrix factorization or embeddings to have learned anything from yet, and the two-stage pipeline above quietly assumes that history exists. Addressed with content-based fallbacks (rank by item attributes instead of behavior) and deliberate exploration (show some uncertain-but-promising items specifically to gather signal, not because the model is already confident in them):
 
 <ColdStartDiagram />
+
+6. **Feedback Loop Bias** — the model's own past recommendations shape what a user even gets the chance to click on, which becomes tomorrow's training data — quietly reinforcing whatever the model already believed instead of correcting it. See [The Explore/Exploit Problem, Stripped to Its Purest Form](/docs/reinforcement-learning/bandits#the-exploreexploit-problem-stripped-to-its-purest-form) for why pure exploitation (always show the current-best guess) actively poisons future training data, and [Contextual Bandits](/docs/reinforcement-learning/bandits#contextual-bandits-when-which-arm-depends-on-whos-asking) for the framework that treats "which item to show" as a decision made under genuine uncertainty, not a settled fact.
+7. **Training-Serving Skew** — features like recency, session activity, and inventory state computed differently in the training pipeline than at request time silently corrupt what the model actually learned, the same failure mode a streaming fraud system hits for the same underlying reason. See [The Training-Serving Skew Problem](/docs/mlops/feature-stores-and-model-registry#the-training-serving-skew-problem) and [Feature Stores](/docs/mlops/feature-stores-and-model-registry#feature-stores) for the shared pipeline that keeps both sides honest.
+8. **Evaluation** — an offline ranking metric improving doesn't prove real engagement or revenue actually went up; the two can and do diverge. See [Ranking Evaluation Metrics](/docs/machine-learning/learning-to-rank#ranking-evaluation-metrics) for NDCG/MRR as the offline signal, and [Statistical Significance of Improvements](/docs/machine-learning/model-evaluation-metrics#statistical-significance-of-improvements) for confirming an online lift is real before rolling a new ranker out to 100% of traffic.
+9. **Scaling** — every one of millions of daily requests needs its own personalized, low-latency answer, not a shared batch result computed once and served to everyone. See [Batch, Online, and Streaming Inference](/docs/mlops/model-serving#batch-online-and-streaming-inference) for why this specific problem shape forces the online-inference path, not the batch one a less personalized system could get away with.
+
+Notice the shape difference again: RAG's constraints were about retrieval quality, fraud's about streaming infrastructure and decision cost, the agent's about trust and reversibility — this one's constraints are almost entirely about a system that trains on the consequences of its own past decisions, which none of the other three problems have to contend with at all.
+
+Four case studies, four genuinely different technology stacks — retrieval-heavy, streaming-and-decision-heavy, trust-and-control-heavy, feedback-loop-heavy — from applying the exact same [9-step framework](/docs/ml-system-design/the-9-step-framework) to four differently-shaped problems. That's the actual claim this page is making: the framework is constant, the stack is downstream of the problem.
 
 ## Search & Ranking
 
