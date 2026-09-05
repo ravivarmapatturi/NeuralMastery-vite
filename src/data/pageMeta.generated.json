@@ -278,7 +278,7 @@
       "section": "cli-reference",
       "title": "Docker & Compose",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Real docker build/run/exec/logs commands and Compose, for building, running, and debugging containers -- a lookup, not a theory page."
     },
     "/docs/cli-reference/git-command-reference": {
       "slug": "cli-reference/git-command-reference",
@@ -299,7 +299,7 @@
       "section": "cli-reference",
       "title": "Linux & Shell Commands",
       "sidebarPosition": 3,
-      "description": null
+      "description": "The real shell commands you'll actually type dozens of times a day debugging a live machine -- process inspection, file ops, and network diagnostics."
     },
     "/docs/cli-reference/overview": {
       "slug": "cli-reference/overview",
@@ -383,7 +383,7 @@
       "section": "cs-fundamentals",
       "title": "Networking & Distributed Systems",
       "sidebarPosition": 4,
-      "description": null
+      "description": "HTTP, TCP/IP, DNS, and the CAP theorem -- how networks actually fail (partially, slowly, unpredictably) in ways a local function call never does."
     },
     "/docs/cs-fundamentals/operating-systems-and-concurrency": {
       "slug": "cs-fundamentals/operating-systems-and-concurrency",
@@ -656,7 +656,7 @@
       "section": "graph-ml",
       "title": "Graph ML Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "The graph-ML task taxonomy, GIN, node2vec-style embeddings, and knowledge graphs -- all shaped by graphs having no canonical node ordering at all."
     },
     "/docs/graph-ml/overview": {
       "slug": "graph-ml/overview",
@@ -866,7 +866,7 @@
       "section": "machine-learning",
       "title": "Decision Trees, In Full Depth",
       "sidebarPosition": 5.1,
-      "description": null
+      "description": "How a tree learns a nested sequence of yes/no splits instead of a boundary through feature space -- the real splitting criteria, derived, not just named."
     },
     "/docs/machine-learning/elastic-net": {
       "slug": "machine-learning/elastic-net",
@@ -887,7 +887,7 @@
       "section": "machine-learning",
       "title": "Hyperparameter Optimization",
       "sidebarPosition": 6.05,
-      "description": null
+      "description": "Grid vs. random search's real distinct-values argument, Bayesian optimization, and Hyperband -- the actual search problem underneath 'tune the hyperparameters'."
     },
     "/docs/machine-learning/ica-tsne-umap": {
       "slug": "machine-learning/ica-tsne-umap",
@@ -901,7 +901,7 @@
       "section": "machine-learning",
       "title": "K-Nearest Neighbors, In Full Depth",
       "sidebarPosition": 5.6,
-      "description": null
+      "description": "KNN keeps the entire training set and makes a fresh decision per prediction -- the one classical model that learns nothing and memorizes everything."
     },
     "/docs/machine-learning/kmeans-hierarchical-clustering": {
       "slug": "machine-learning/kmeans-hierarchical-clustering",
@@ -957,7 +957,7 @@
       "section": "machine-learning",
       "title": "Naive Bayes, LDA & QDA, In Full Depth",
       "sidebarPosition": 5.7,
-      "description": null
+      "description": "Generative classifiers explained: model each class's own distribution, then classify via Bayes' theorem -- the real alternative to a discriminative boundary."
     },
     "/docs/machine-learning/overview": {
       "slug": "machine-learning/overview",
@@ -992,7 +992,7 @@
       "section": "machine-learning",
       "title": "Ridge Regression, In Full Depth",
       "sidebarPosition": 4.6,
-      "description": null
+      "description": "Why correlated features break plain linear regression, and how penalizing large weights directly in the loss function fixes it -- L2 regularization derived."
     },
     "/docs/machine-learning/roadmap": {
       "slug": "machine-learning/roadmap",
@@ -1195,7 +1195,7 @@
       "section": "mlops",
       "title": "Data Engineering & Versioning",
       "sidebarPosition": 4,
-      "description": null
+      "description": "The real data pipeline from source to training set, plus DVC/LakeFS/Delta Lake for versioning -- because a bad dataset produces a precisely wrong model."
     },
     "/docs/mlops/deployment-strategies": {
       "slug": "mlops/deployment-strategies",
@@ -1216,7 +1216,7 @@
       "section": "mlops",
       "title": "Experiment Tracking",
       "sidebarPosition": 5,
-      "description": null
+      "description": "MLflow's Tracking, Projects, Models, and Registry -- what every experiment needs to answer (code, data, params, result) to be reproducible later."
     },
     "/docs/mlops/feature-stores-and-model-registry": {
       "slug": "mlops/feature-stores-and-model-registry",
@@ -1244,7 +1244,7 @@
       "section": "mlops",
       "title": "Infrastructure as Code",
       "sidebarPosition": 11,
-      "description": null
+      "description": "Terraform's real workflow -- providers, state, and modules -- for defining infrastructure in version-controlled files instead of clicking it together by hand."
     },
     "/docs/mlops/kubernetes": {
       "slug": "mlops/kubernetes",
@@ -1279,7 +1279,7 @@
       "section": "mlops",
       "title": "LLM Inference Engines",
       "sidebarPosition": 18,
-      "description": null
+      "description": "The real inference stack from API gateway to CUDA, and vLLM/SGLang/TensorRT-LLM/llama.cpp compared -- why serving an LLM is its own discipline."
     },
     "/docs/mlops/llm-inference-optimization": {
       "slug": "mlops/llm-inference-optimization",
@@ -1314,7 +1314,7 @@
       "section": "mlops",
       "title": "APIs & Model Serving",
       "sidebarPosition": 8,
-      "description": null
+      "description": "FastAPI, REST, auth, and batch/online/streaming inference architectures -- turning a trained model artifact into an endpoint that answers real traffic."
     },
     "/docs/mlops/monitoring-and-drift": {
       "slug": "mlops/monitoring-and-drift",
@@ -1328,7 +1328,7 @@
       "section": "mlops",
       "title": "Observability",
       "sidebarPosition": 16,
-      "description": null
+      "description": "Logs, metrics, and traces -- the three pillars that let you actually debug why a system misbehaved, not just get alerted that it did."
     },
     "/docs/mlops/overview": {
       "slug": "mlops/overview",
@@ -1349,7 +1349,7 @@
       "section": "mlops",
       "title": "Production Reliability",
       "sidebarPosition": 22.2,
-      "description": null
+      "description": "Retries, timeouts, circuit breakers, and graceful degradation -- the difference between a demo that works and a system that survives real failures."
     },
     "/docs/mlops/roadmap": {
       "slug": "mlops/roadmap",
@@ -1363,7 +1363,7 @@
       "section": "mlops",
       "title": "Security & Reproducibility",
       "sidebarPosition": 22,
-      "description": null
+      "description": "IAM, secrets management, and a real reproducibility checklist -- the cross-cutting requirements every layer of an ML pipeline has to satisfy at once."
     },
     "/docs/nlp/classical-nlp": {
       "slug": "nlp/classical-nlp",
@@ -1755,7 +1755,7 @@
       "section": "projects",
       "title": "Problem Statement Atlas",
       "sidebarPosition": 4,
-      "description": null
+      "description": "A living, status-tracked directory of concrete problem statements across every domain worth a real project -- not started, content-only, or actually built."
     },
     "/docs/projects/roadmap": {
       "slug": "projects/roadmap",
@@ -1811,7 +1811,7 @@
       "section": "reinforcement-learning",
       "title": "Advanced RL",
       "sidebarPosition": 4,
-      "description": null
+      "description": "DQN, policy gradients, and PPO -- what happens once a state space is too large for a lookup table or an action space becomes continuous."
     },
     "/docs/reinforcement-learning/bandits": {
       "slug": "reinforcement-learning/bandits",
@@ -1832,7 +1832,7 @@
       "section": "reinforcement-learning",
       "title": "RL Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "MDPs, the Bellman equations, and Q-learning derived from one repeating loop -- the formal problem every RL algorithm, from tabular to PPO, is solving."
     },
     "/docs/reinforcement-learning/roadmap": {
       "slug": "reinforcement-learning/roadmap",
