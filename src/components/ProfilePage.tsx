@@ -99,6 +99,13 @@ export default function ProfilePage() {
             <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)' }}>
               {streak} day{streak === 1 ? '' : 's'}
             </div>
+            {streak === 0 && (
+              <div style={{ fontSize: 11.5, color: 'var(--nm-text-muted)', marginTop: 3, lineHeight: 1.4 }}>
+                {events.length === 0
+                  ? 'Mark a page understood or solve a practice problem to start your streak.'
+                  : 'Streak reset — do that again today to start a new one.'}
+              </div>
+            )}
           </div>
         </div>
         <p style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', margin: '-0.5rem 0 2rem', lineHeight: 1.6 }}>
