@@ -10,6 +10,7 @@ import ProgressPage from './components/ProgressPage';
 import ThemedImage from './components/ThemedImage';
 import MDXCodeBlock from './components/MDXCodeBlock';
 import MDXLink from './components/MDXLink';
+import AnalyticsTracker from './components/AnalyticsTracker';
 
 // Components available to every .mdx file without an explicit import --
 // mirrors how Docusaurus makes <ThemedImage> globally available in MDX.
@@ -33,6 +34,7 @@ export default function App() {
                   in-app link, exactly the kind of bug a single source of
                   truth prevents outright. */}
               <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
+                <AnalyticsTracker />
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/progress" element={<ProgressPage />} />

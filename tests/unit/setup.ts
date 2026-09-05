@@ -35,6 +35,17 @@ vi.mock('firebase/firestore', () => ({
   setDoc: vi.fn().mockResolvedValue(undefined),
   onSnapshot: vi.fn(() => () => {}),
 }))
+// isSupported() defaults to false here -- jsdom has no real IndexedDB, so
+// this matches what the real check would conclude in this environment
+// anyway, and keeps trackPageView's analyticsPromise resolving to null
+// (a real no-op) rather than a test depending on a fully-mocked Analytics
+// instance it doesn't actually need.
+vi.mock('firebase/analytics', () => ({
+  getAnalytics: vi.fn(() => ({})),
+  isSupported: vi.fn().mockResolvedValue(false),
+  setConsent: vi.fn(),
+  logEvent: vi.fn(),
+}))
 
 // @testing-library/react auto-registers afterEach(cleanup) for Jest, but
 // not for Vitest -- without this, each test's rendered DOM accumulates in
