@@ -117,7 +117,7 @@
       "section": "agents",
       "title": "Routing & Supervisor Pattern",
       "sidebarPosition": 4.6,
-      "description": null
+      "description": "Routing decides which agent handles a task once, up front; a supervisor decides it again after every result -- two patterns for a different frequency."
     },
     "/docs/agents/single-vs-multi-agent": {
       "slug": "agents/single-vs-multi-agent",
@@ -187,7 +187,7 @@
       "section": "ai-safety",
       "title": "Alignment & RLHF",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Reward hacking, specification gaming, and deception -- one underlying phenomenon (an optimizer exploiting a proxy objective) at three increasing depths."
     },
     "/docs/ai-safety/overview": {
       "slug": "ai-safety/overview",
@@ -264,7 +264,7 @@
       "section": "build-from-scratch",
       "title": "The Build List",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Fifteen from-scratch builds ordered by dependency, each with a concrete 'done when' target -- NumPy arrays, backprop, attention, and beyond, no framework."
     },
     "/docs/cli-reference/cloud-cli-aws-azure-gcp": {
       "slug": "cli-reference/cloud-cli-aws-azure-gcp",
@@ -355,14 +355,14 @@
       "section": "computer-vision",
       "title": "Vision Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Pixels, channels, and color spaces -- the decades-old classical image-representation machinery still running underneath every modern vision pipeline."
     },
     "/docs/computer-vision/vision-tasks-and-models": {
       "slug": "computer-vision/vision-tasks-and-models",
       "section": "computer-vision",
       "title": "Vision Tasks & Models",
       "sidebarPosition": 4,
-      "description": null
+      "description": "The full computer-vision task taxonomy -- pose estimation, OCR, tracking, depth, optical flow -- beyond the classification/detection/segmentation core three."
     },
     "/docs/cs-fundamentals/apis-http-and-protocols": {
       "slug": "cs-fundamentals/apis-http-and-protocols",
@@ -467,7 +467,7 @@
       "section": "deep-learning",
       "title": "Activation Functions, In Full Depth",
       "sidebarPosition": 3.5,
-      "description": null
+      "description": "ReLU, sigmoid, GELU, and the rest cataloged by real tradeoffs -- why the field's default activation choice has actually shifted over time, not just formulas."
     },
     "/docs/deep-learning/advanced-architectures": {
       "slug": "deep-learning/advanced-architectures",
@@ -502,7 +502,7 @@
       "section": "deep-learning",
       "title": "Convolutional Neural Networks (CNNs)",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Convolution and pooling derived from the assumption that makes them work: nearby pixels are related, and patterns matter regardless of position."
     },
     "/docs/deep-learning/generative-models": {
       "slug": "deep-learning/generative-models",
@@ -530,7 +530,7 @@
       "section": "deep-learning",
       "title": "Loss Functions, In Full Depth",
       "sidebarPosition": 3.6,
-      "description": null
+      "description": "Every regression and classification loss derived in full -- what 'training' actually optimizes, and how that choice shapes a model's entire behavior."
     },
     "/docs/deep-learning/neural-network-fundamentals": {
       "slug": "deep-learning/neural-network-fundamentals",
@@ -586,7 +586,7 @@
       "section": "deep-learning",
       "title": "Vision Architectures: Transformers, Detection & Segmentation",
       "sidebarPosition": 7.5,
-      "description": null
+      "description": "Vision Transformer variants, plus detection and segmentation architectures built on attention instead of convolution -- what comes after image classification."
     },
     "/docs/domain-applications/healthcare-ai": {
       "slug": "domain-applications/healthcare-ai",
@@ -768,7 +768,7 @@
       "section": "interview-prep",
       "title": "Technology Comparisons & Decision Trees",
       "sidebarPosition": 5.5,
-      "description": null
+      "description": "vLLM vs. SGLang, RAG vs. fine-tuning, and every other 'when would you use X instead of Y' comparison that actually comes up in senior-level interviews."
     },
     "/docs/learning-path": {
       "slug": "learning-path",
@@ -880,7 +880,7 @@
       "section": "machine-learning",
       "title": "Elastic Net, In Full Depth",
       "sidebarPosition": 4.8,
-      "description": null
+      "description": "Elastic Net derived: combining Ridge's graceful handling of correlated features with Lasso's automatic feature selection in one penalty."
     },
     "/docs/machine-learning/gmm-spectral-clustering": {
       "slug": "machine-learning/gmm-spectral-clustering",
@@ -915,7 +915,7 @@
       "section": "machine-learning",
       "title": "K-Means & Hierarchical Clustering, In Full Depth",
       "sidebarPosition": 6.1,
-      "description": null
+      "description": "K-Means and hierarchical clustering derived in full -- discovering groups that already exist in unlabeled data, purely from how points relate to each other."
     },
     "/docs/machine-learning/lasso-regression": {
       "slug": "machine-learning/lasso-regression",
@@ -1384,7 +1384,7 @@
       "section": "nlp",
       "title": "NLP Task Taxonomy",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Every classical NLP task and its modern Transformer replacement, organized by one axis: constrained output (can't hallucinate) vs. open-ended generation."
     },
     "/docs/nlp/overview": {
       "slug": "nlp/overview",
@@ -1447,7 +1447,7 @@
       "section": "practice-problems",
       "title": "Practice: Count Islands (Connected Components)",
       "sidebarPosition": 26,
-      "description": null
+      "description": "Count connected components in a grid via DFS/BFS in a real Python sandbox -- land cells are nodes, adjacency is implicit, an island is one component."
     },
     "/docs/practice-problems/daily-temperatures": {
       "slug": "practice-problems/daily-temperatures",
@@ -1573,7 +1573,7 @@
       "section": "practice-problems",
       "title": "Practice: Lowest Common Ancestor in a Binary Tree",
       "sidebarPosition": 30,
-      "description": null
+      "description": "Find the lowest common ancestor in a general binary tree via DFS in a real Python sandbox -- no BST ordering to exploit, values assumed unique."
     },
     "/docs/practice-problems/matrix-multiplication": {
       "slug": "practice-problems/matrix-multiplication",
@@ -1608,7 +1608,7 @@
       "section": "practice-problems",
       "title": "Practice: Minimum Window Substring",
       "sidebarPosition": 32,
-      "description": null
+      "description": "The hardest sliding-window variant in a real Python sandbox -- find the shortest substring satisfying a full character-count budget, with multiplicity."
     },
     "/docs/practice-problems/numerical-gradient": {
       "slug": "practice-problems/numerical-gradient",
@@ -1643,7 +1643,7 @@
       "section": "practice-problems",
       "title": "Practice: Right Side View of a Binary Tree",
       "sidebarPosition": 41,
-      "description": null
+      "description": "Level-aware BFS in a real Python sandbox -- find the rightmost visible node at every depth of a binary tree, not just a flat level-ordered list."
     },
     "/docs/practice-problems/rotting-oranges": {
       "slug": "practice-problems/rotting-oranges",
@@ -1692,7 +1692,7 @@
       "section": "practice-problems",
       "title": "Practice: Smallest Range Covering Elements from K Lists",
       "sidebarPosition": 39,
-      "description": null
+      "description": "K-way merge with a twist in a real Python sandbox -- find the smallest range covering at least one element from every one of k sorted lists."
     },
     "/docs/practice-problems/softmax-gradient": {
       "slug": "practice-problems/softmax-gradient",
@@ -1748,7 +1748,7 @@
       "section": "practice-problems",
       "title": "Practice: Weighted RMSE",
       "sidebarPosition": 4.5,
-      "description": null
+      "description": "Implement weighted RMSE from scratch in a real Python sandbox -- when some training examples are more trustworthy than others, and units must stay interpretable."
     },
     "/docs/projects/overview": {
       "slug": "projects/overview",
@@ -1825,7 +1825,7 @@
       "section": "reinforcement-learning",
       "title": "Multi-Armed & Contextual Bandits",
       "sidebarPosition": 5,
-      "description": null
+      "description": "Multi-armed and contextual bandits -- the real regret tradeoffs between epsilon-greedy, UCB1, and Thompson Sampling for the explore/exploit problem."
     },
     "/docs/reinforcement-learning/overview": {
       "slug": "reinforcement-learning/overview",
