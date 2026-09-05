@@ -1,0 +1,75 @@
+import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import { describe, expect, it, beforeEach } from 'vitest'
+import Home from './Home'
+import { ThemeProvider } from '../theme/ThemeProvider'
+import { ProgressProvider } from '../contexts/ProgressContext'
+import { getFlatPages } from '../lib/contentTree'
+import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta'
+
+const STORAGE_KEY = 'neural-mastery-progress'
+
+function renderHome() {
+  return render(
+    <ThemeProvider>
+      <MemoryRouter>
+        <ProgressProvider>
+          <Home />
+        </ProgressProvider>
+      </MemoryRouter>
+    </ThemeProvider>,
+  )
+}
+
+describe('Home', () => {
+  beforeEach(() => {
+    window.localStorage.clear()
+  })
+
+  it('shows the first-time-visitor hero when nothing is marked understood', () => {
+    renderHome()
+    expect(screen.getByText('A platform to learn AI structurally, through visualizations.')).toBeInTheDocument()
+    expect(screen.getByText('Start Learning →')).toBeInTheDocument()
+    expect(screen.queryByText(/Welcome back/)).not.toBeInTheDocument()
+  })
+
+  it('swaps to a "welcome back" hero with a real continue link once a page is marked understood', () => {
+    // A real page from the first (in SECTION_ORDER) group's first subsection,
+    // so it's guaranteed to be the group nextUnstartedPage should skip past.
+    const firstGroupKey = SECTION_ORDER[0]
+    const firstDir = SECTION_META[firstGroupKey].subsections[0].dir
+    const firstPageInGroup = getFlatPages().find((p) => p.route.includes(`/docs/${firstDir}/`))!
+
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ [firstPageInGroup.route]: { understood: true, markedAt: Date.now(), stage: 0 } }),
+    )
+
+    renderHome()
+
+    expect(screen.getByText(/Welcome back — you've understood 1 page\./)).toBeInTheDocument()
+    expect(screen.queryByText('A platform to learn AI structurally, through visualizations.')).not.toBeInTheDocument()
+
+    // The continue CTA should point at some other real page in the same
+    // group, not back at the one already marked understood.
+    const continueLink = screen.getByText(/^Continue: /)
+    expect(continueLink).toBeInTheDocument()
+    expect(continueLink.textContent).not.toContain(firstPageInGroup.title)
+  })
+
+  it('surfaces a due-for-review count and links to the progress page once one exists', () => {
+    const oldMarkedAt = Date.now() - 2 * 24 * 60 * 60 * 1000 // 2 days ago -> past the 1-day first interval
+    const somePage = getFlatPages()[0]
+
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ [somePage.route]: { understood: true, markedAt: oldMarkedAt, stage: 0 } }),
+    )
+
+    renderHome()
+
+    expect(screen.getByText(/1 page is due for review/)).toBeInTheDocument()
+    const reviewLink = screen.getByText('Review 1 due page →')
+    expect(reviewLink.closest('a')).toHaveAttribute('href', '/progress')
+  })
+})

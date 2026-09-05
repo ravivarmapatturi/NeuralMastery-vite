@@ -2,11 +2,31 @@ import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import AttentionStepThrough from '../viz/AttentionStepThrough';
 import { QA } from './content/ExpandableDepth';
-import { getSidebar, getFlatPages } from '../lib/contentTree';
+import { getSidebar, getFlatPages, type DocPage } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
-import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
+import { SECTION_META, SECTION_ORDER, completionFor } from '../data/sectionMeta';
 import { DomainIcon } from './icons/DomainIcons';
+import { useProgress } from '../contexts/ProgressContext';
+
+/** The first top-level group (in SECTION_ORDER) the visitor hasn't fully
+ * finished yet -- "current group" for a "continue where you left off" CTA.
+ * Undefined only in the (practically unreachable) case every group is
+ * already 100% complete. */
+function currentGroupKey(understood: Record<string, unknown>): string | undefined {
+  return SECTION_ORDER.find((key) => completionFor(key, understood) < 1);
+}
+
+/** First page within that group, in sidebar order, not yet marked
+ * understood -- same "which pages belong to this group" match
+ * (`/docs/<subsection dir>/`) completionFor itself uses, so the two never
+ * disagree about which group a page counts toward. */
+function nextUnstartedPage(groupKey: string, flatPages: DocPage[], isUnderstood: (route: string) => boolean): DocPage | undefined {
+  const meta = SECTION_META[groupKey];
+  return flatPages.find(
+    (p) => meta.subsections.some((s) => p.route.includes(`/docs/${s.dir}/`)) && !isUnderstood(p.route),
+  );
+}
 
 /** section id (e.g. "mlops") -> its parent group's key/color, so each of
  * the 32 topic cards below can carry real visual identity without
@@ -37,10 +57,17 @@ export default function Home() {
   useDocumentTitle();
   useDocumentMeta(undefined);
   const sections = getSidebar();
-  const totalPages = getFlatPages().length;
+  const flatPages = getFlatPages();
+  const totalPages = flatPages.length;
   const accent = buildSectionAccent();
   // -1 excludes the section's own overview page from the count of actual problems.
   const practiceProblemCount = Math.max(0, (sections.find((s) => s.id === 'practice-problems')?.pages.length ?? 1) - 1);
+
+  const { understood, isUnderstood, countWithin, dueForReview } = useProgress();
+  const hasProgress = Object.keys(understood).length > 0;
+  const totalDone = hasProgress ? countWithin(flatPages.map((p) => p.route)) : 0;
+  const groupKey = hasProgress ? currentGroupKey(understood) : undefined;
+  const nextPage = groupKey ? nextUnstartedPage(groupKey, flatPages, isUnderstood) : undefined;
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
@@ -70,7 +97,9 @@ export default function Home() {
             color: 'var(--nm-text-primary)',
           }}
         >
-          A platform to learn AI structurally, through visualizations.
+          {hasProgress
+            ? `Welcome back — you've understood ${totalDone} page${totalDone === 1 ? '' : 's'}.`
+            : 'A platform to learn AI structurally, through visualizations.'}
         </h1>
         <p
           style={{
@@ -81,13 +110,26 @@ export default function Home() {
             lineHeight: 1.6,
           }}
         >
-          Learn from the fundamentals up — CS, math, machine learning, deep learning, agents, loops and
-          graphs, and the latest research — all {totalPages}+ pages built around real, computed,
-          interactive visualizations, not static diagrams.
+          {hasProgress ? (
+            dueForReview.length > 0 ? (
+              <>
+                {dueForReview.length} page{dueForReview.length === 1 ? ' is' : 's are'} due for review —
+                pick that back up, or keep moving forward.
+              </>
+            ) : (
+              <>Nothing due for review right now — pick up where you left off.</>
+            )
+          ) : (
+            <>
+              Learn from the fundamentals up — CS, math, machine learning, deep learning, agents, loops and
+              graphs, and the latest research — all {totalPages}+ pages built around real, computed,
+              interactive visualizations, not static diagrams.
+            </>
+          )}
         </p>
 
         <Link
-          to="/docs/learning-path"
+          to={hasProgress && nextPage ? nextPage.route : '/docs/learning-path'}
           className="nm-home-cta"
           style={{
             display: 'inline-block',
@@ -100,15 +142,21 @@ export default function Home() {
             textDecoration: 'none',
           }}
         >
-          Start Learning →
+          {hasProgress && nextPage ? `Continue: ${nextPage.title} →` : 'Start Learning →'}
         </Link>
         <div style={{ marginTop: '0.75rem', marginBottom: '2.5rem' }}>
-          <Link
-            to="/docs/ml-system-design/case-studies"
-            style={{ fontSize: 13.5, color: 'var(--nm-text-muted)', textDecoration: 'none' }}
-          >
-            or start from a real problem instead →
-          </Link>
+          {hasProgress ? (
+            <Link to="/progress" style={{ fontSize: 13.5, color: 'var(--nm-text-muted)', textDecoration: 'none' }}>
+              {dueForReview.length > 0 ? `Review ${dueForReview.length} due page${dueForReview.length === 1 ? '' : 's'} →` : 'View full progress →'}
+            </Link>
+          ) : (
+            <Link
+              to="/docs/ml-system-design/case-studies"
+              style={{ fontSize: 13.5, color: 'var(--nm-text-muted)', textDecoration: 'none' }}
+            >
+              or start from a real problem instead →
+            </Link>
+          )}
         </div>
 
         <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'left' }}>
