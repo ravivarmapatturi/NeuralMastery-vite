@@ -33,7 +33,7 @@
       "section": "agents",
       "title": "Browser Automation Agents",
       "sidebarPosition": 7,
-      "description": null
+      "description": "How browser automation agents like browser-use act on a page's real DOM via indexed elements instead of screenshot coordinates, unlike computer-use."
     },
     "/docs/agents/computer-use": {
       "slug": "agents/computer-use",
@@ -110,7 +110,7 @@
       "section": "agents",
       "title": "Agents — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "How LLMs go from answering questions to taking action: tool use, context engineering, agent architectures, MCP/A2A protocols, and multi-agent systems."
     },
     "/docs/agents/routing-and-supervisor": {
       "slug": "agents/routing-and-supervisor",
@@ -488,7 +488,7 @@
       "section": "deep-learning",
       "title": "Autoencoders & Variational Autoencoders, In Full Depth",
       "sidebarPosition": 8.5,
-      "description": null
+      "description": "Autoencoders and VAEs in full depth: why the latent bottleneck forces real compression, plus sparse, denoising, and VQ-VAE variants explained."
     },
     "/docs/deep-learning/bert": {
       "slug": "deep-learning/bert",
@@ -537,7 +537,7 @@
       "section": "deep-learning",
       "title": "Neural Network Fundamentals",
       "sidebarPosition": 3,
-      "description": null
+      "description": "Perceptrons to MLPs: activation functions, forward pass and backprop by hand, plus a live playground training a real network on toy 2D datasets."
     },
     "/docs/deep-learning/nn-layers-reference": {
       "slug": "deep-learning/nn-layers-reference",
@@ -754,7 +754,7 @@
       "section": "interview-prep",
       "title": "Interview Prep — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "The full FAANG-style AI/ML interview loop: DSA coding, ML coding from scratch, knowledge Q&A, system design practice, and behavioral prep."
     },
     "/docs/interview-prep/system-design-practice": {
       "slug": "interview-prep/system-design-practice",
@@ -782,7 +782,7 @@
       "section": "llms-genai",
       "title": "Evaluation & Serving",
       "sidebarPosition": 7,
-      "description": null
+      "description": "Evaluating LLMs beyond perplexity and benchmarks -- LLM-as-judge, position bias -- plus serving: continuous batching, speculative decoding, and cost tradeoffs."
     },
     "/docs/llms-genai/foundation-model-internals": {
       "slug": "llms-genai/foundation-model-internals",
@@ -796,7 +796,7 @@
       "section": "llms-genai",
       "title": "Multimodal & Generative Models",
       "sidebarPosition": 8,
-      "description": null
+      "description": "Vision-language models, vision-language-action models for robotics, and diffusion models -- how attention and generation extend beyond text."
     },
     "/docs/llms-genai/overview": {
       "slug": "llms-genai/overview",
@@ -852,7 +852,7 @@
       "section": "machine-learning",
       "title": "Association Rule Mining: Apriori & FP-Growth, In Full Depth",
       "sidebarPosition": 6.6,
-      "description": null
+      "description": "Apriori and FP-Growth for market-basket analysis: support, confidence, and lift metrics, worked through a real toy transaction database."
     },
     "/docs/machine-learning/boosting": {
       "slug": "machine-learning/boosting",
@@ -866,7 +866,7 @@
       "section": "machine-learning",
       "title": "DBSCAN & HDBSCAN, In Full Depth",
       "sidebarPosition": 6.2,
-      "description": null
+      "description": "DBSCAN and HDBSCAN in full depth: density-based clustering that finds arbitrary-shaped clusters and explicitly labels noise, unlike K-Means."
     },
     "/docs/machine-learning/decision-tree": {
       "slug": "machine-learning/decision-tree",
@@ -978,7 +978,7 @@
       "section": "machine-learning",
       "title": "PCA, Kernel PCA & Truncated SVD, In Full Depth",
       "sidebarPosition": 6.4,
-      "description": null
+      "description": "PCA, Kernel PCA, and truncated SVD in full depth -- real eigendecomposition, scree plots for choosing k, and why PCA and SVD are the same computation."
     },
     "/docs/machine-learning/random-forest": {
       "slug": "machine-learning/random-forest",
@@ -1111,7 +1111,7 @@
       "section": "mathematics-for-ai",
       "title": "Mathematics for AI — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "The linear algebra, calculus, probability, and algorithms foundation every other section on this site builds on -- worked top to bottom."
     },
     "/docs/ml-system-design/case-studies": {
       "slug": "ml-system-design/case-studies",
@@ -1139,7 +1139,7 @@
       "section": "ml-system-design",
       "title": "ML System Design — Roadmap",
       "sidebarPosition": 2,
-      "description": null
+      "description": "A repeatable 9-step framework for turning a model into a production system, plus real case studies: recommenders, search ranking, and RAG/agent infra."
     },
     "/docs/ml-system-design/technology-ecosystem-map": {
       "slug": "ml-system-design/technology-ecosystem-map",
@@ -1419,7 +1419,7 @@
       "section": "practice-problems",
       "title": "Practice: Bayes' Theorem, Posterior From Scratch",
       "sidebarPosition": 17,
-      "description": null
+      "description": "Implement Bayes' theorem's posterior probability from scratch, using the classic rare-disease test example where a positive result is often wrong."
     },
     "/docs/practice-problems/convolution-2d": {
       "slug": "practice-problems/convolution-2d",
@@ -1482,7 +1482,7 @@
       "section": "practice-problems",
       "title": "Practice: Discounted Return From Scratch",
       "sidebarPosition": 22,
-      "description": null
+      "description": "Implement an RL agent's discounted return from scratch -- the sum value functions are trained to predict, and the basis of the Bellman equations."
     },
     "/docs/practice-problems/dot-product": {
       "slug": "practice-problems/dot-product",
@@ -1510,7 +1510,7 @@
       "section": "practice-problems",
       "title": "Practice: The Gap in the Sequence",
       "sidebarPosition": 14,
-      "description": null
+      "description": "Find a missing number in a sequence of n distinct integers in O(n) time and O(1) space using a closed-form triangular-number sum trick."
     },
     "/docs/practice-problems/gradient-descent-step": {
       "slug": "practice-problems/gradient-descent-step",
@@ -1524,7 +1524,7 @@
       "section": "practice-problems",
       "title": "Practice: K-Means, One Assignment Step",
       "sidebarPosition": 6,
-      "description": null
+      "description": "Implement K-Means' assignment step from scratch: assign each point to its nearest centroid by squared Euclidean distance, ties to the lowest index."
     },
     "/docs/practice-problems/kmeans-update-step": {
       "slug": "practice-problems/kmeans-update-step",
@@ -1552,7 +1552,7 @@
       "section": "practice-problems",
       "title": "Practice: The Lone Number",
       "sidebarPosition": 13,
-      "description": null
+      "description": "Find the one non-duplicated element in a list using only XOR, in O(1) space -- a classic bit-manipulation interview pattern, no hash map needed."
     },
     "/docs/practice-problems/longest-increasing-subsequence": {
       "slug": "practice-problems/longest-increasing-subsequence",
@@ -1587,14 +1587,14 @@
       "section": "practice-problems",
       "title": "Practice: Maximum Non-Adjacent Sum",
       "sidebarPosition": 12,
-      "description": null
+      "description": "A classic DP interview problem: find the maximum sum of non-adjacent elements in O(n) time and O(1) space using two running state values."
     },
     "/docs/practice-problems/mean-squared-error": {
       "slug": "practice-problems/mean-squared-error",
       "section": "practice-problems",
       "title": "Practice: Mean Squared Error From Scratch",
       "sidebarPosition": 4,
-      "description": null
+      "description": "Implement mean squared error from scratch -- the loss Linear Regression minimizes -- with real edge-case handling for mismatched or empty inputs."
     },
     "/docs/practice-problems/merge-k-sorted-lists": {
       "slug": "practice-problems/merge-k-sorted-lists",
@@ -1678,7 +1678,7 @@
       "section": "practice-problems",
       "title": "Practice: Sigmoid Activation From Scratch",
       "sidebarPosition": 7,
-      "description": null
+      "description": "Implement the sigmoid activation from scratch using math.exp -- the same function behind Logistic Regression's output and binary classifier heads."
     },
     "/docs/practice-problems/sigmoid-derivative": {
       "slug": "practice-problems/sigmoid-derivative",
