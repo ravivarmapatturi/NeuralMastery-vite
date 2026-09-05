@@ -75,7 +75,7 @@ export default function Navbar({
             Neural Mastery
           </Link>
         </div>
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+        <nav className="nm-navbar-nav" style={{ display: 'flex', alignItems: 'center' }}>
           <Link to="/docs/getting-started/intro" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
             Learn
           </Link>

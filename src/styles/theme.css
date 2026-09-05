@@ -184,8 +184,18 @@ body {
   border-radius: 2px;
   padding: 0 1px;
 }
+.nm-navbar-nav {
+  gap: 1.25rem;
+}
 @media (max-width: 560px) {
   .nm-search-kbd-hint { display: none; }
+  /* At <=560px the navbar row (hamburger + logo + Learn + Progress +
+     search + theme toggle + the sign-in/account button) is tight enough
+     that the full 1.25rem gap between every item causes real horizontal
+     overflow -- confirmed via tests/smoke.spec.ts's mobile-viewport
+     overflow check. Shrinking the gap (not hiding any item -- every one
+     stays reachable) is enough to fit. */
+  .nm-navbar-nav { gap: 0.5rem; }
 }
 .prose pre code { background: none; padding: 0; } /* fenced code blocks style the <pre>, not each inline <code> inside it */
 /* Long code lines (a long import statement, a chained call) can render wider

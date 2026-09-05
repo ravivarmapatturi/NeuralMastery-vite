@@ -2,11 +2,16 @@ import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 /**
- * Sign-in/sign-out control for the navbar. Signed-out visitors see a plain
- * "Sign in" button -- clicking it is the ONLY thing that ever triggers a
+ * Sign-in/sign-out control for the navbar. Signed-out visitors see a
+ * circular icon button -- same 32px footprint as the theme toggle right
+ * next to it, deliberately NOT a wider "Sign in" text pill (an earlier
+ * version used one and it pushed the mobile navbar past the viewport
+ * width, caught by tests/smoke.spec.ts's "mobile navigation works"
+ * overflow check). Clicking it is the ONLY thing that ever triggers a
  * network call to Firebase Auth; nothing here runs unprompted. Signed-in
- * visitors see their Google avatar (initial-letter fallback if no photo),
- * which opens a small menu with just their email and a sign-out action.
+ * visitors see their Google avatar (initial-letter fallback if no photo)
+ * in that same circular slot, which opens a small menu with just their
+ * email and a sign-out action.
  */
 export default function AuthButton() {
   const { user, loading, signInWithGoogle, signOutUser } = useAuth();
@@ -31,19 +36,25 @@ export default function AuthButton() {
           }
         }}
         disabled={busy}
+        aria-label={busy ? 'Signing in…' : 'Sign in'}
+        title={busy ? 'Signing in…' : 'Sign in'}
         style={{
-          fontSize: 13,
-          fontWeight: 600,
+          width: 32,
+          height: 32,
+          borderRadius: '50%',
+          fontSize: 15,
           color: 'var(--nm-text-primary)',
           background: 'transparent',
           border: '1px solid var(--nm-border)',
-          borderRadius: 8,
-          padding: '0.4rem 0.75rem',
           cursor: busy ? 'default' : 'pointer',
           opacity: busy ? 0.6 : 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 0,
         }}
       >
-        {busy ? 'Signing in…' : 'Sign in'}
+        {busy ? '…' : '👤'}
       </button>
     );
   }
