@@ -182,6 +182,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   }, []);
 
   useEffect(() => {
+    console.log('[NM-TRACE] gamification effect fired, user=', user?.uid, 'authLoading=', authLoading);
     if (authLoading) return;
 
     if (!user) {
@@ -193,12 +194,15 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     let unsubscribe: (() => void) | undefined;
 
     loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc, onSnapshot }) => {
+      console.log('[NM-TRACE] loadFirestoreFor resolved, cancelled=', cancelled);
       if (cancelled) return;
       const snap = await withRetry(() => getDoc(progressRef));
+      console.log('[NM-TRACE] getDoc resolved, exists=', snap.exists(), 'data=', JSON.stringify(snap.data()));
       const remoteEvents: AwardEvent[] = snap.exists()
         ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
         : [];
       const merged = mergeEvents(remoteEvents, readStorage());
+      console.log('[NM-TRACE] merged=', JSON.stringify(merged), 'cancelled=', cancelled);
       if (cancelled) return;
 
       await withRetry(() =>
@@ -207,17 +211,21 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
           setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true }),
         ]),
       );
+      console.log('[NM-TRACE] setDoc resolved, cancelled=', cancelled, 'about to setEvents with', merged.length, 'events');
       if (cancelled) return;
 
       setEvents(merged);
       writeStorage(merged);
+      console.log('[NM-TRACE] setEvents called with', merged.length, 'events');
 
       unsubscribe = onSnapshot(
         progressRef,
         (snap) => {
+          console.log('[NM-TRACE] onSnapshot fired, cancelled=', cancelled, 'exists=', snap.exists(), 'data=', JSON.stringify(snap.data()));
           if (cancelled) return;
           const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
           const currentMerged = mergeEvents(remote, readStorage());
+          console.log('[NM-TRACE] onSnapshot setting', currentMerged.length, 'events (from', remote.length, 'remote +', readStorage().length, 'local)');
           setEvents(currentMerged);
           writeStorage(currentMerged);
         },
@@ -244,6 +252,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     });
 
     return () => {
+      console.log('[NM-TRACE] cleanup running for user=', user?.uid);
       cancelled = true;
       unsubscribe?.();
     };
