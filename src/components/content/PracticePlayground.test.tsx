@@ -35,8 +35,10 @@ describe('PracticePlayground', () => {
     expect(screen.getByText('{"a":[0,0],"b":[5,5]}')).toBeInTheDocument()
     expect(screen.getByText('{"a":[-1,2],"b":[3,-4]}')).toBeInTheDocument()
     expect(screen.getByText('{"a":[2],"b":[3]}')).toBeInTheDocument()
-    expect(screen.getByText('Case 1 — Basic case')).toBeInTheDocument()
-    expect(screen.getByText('Case 4 — Single element')).toBeInTheDocument()
+    expect(screen.getByText('Case 1 — Basic Case')).toBeInTheDocument()
+
+    expect(screen.getByText('Case 4 — Single Element')).toBeInTheDocument()
+
   })
 
   it('has real Run, Submit, and Reset controls', async () => {

@@ -23,6 +23,7 @@ export interface CaseExecutionResult {
   actualOutput: unknown;
   /** Raw Python traceback, present only when this specific case raised. */
   error: string | null;
+  executionTimeMs?: number;
 }
 
 export interface ExecutionResult {
@@ -35,7 +36,9 @@ export interface ExecutionResult {
    * distinct from a single case's own `error`, which is scoped to that
    * one call. Null on success. */
   errorMessage: string | null;
+  totalExecutionTimeMs?: number;
 }
+
 
 export interface ExecutionRequest {
   code: string;

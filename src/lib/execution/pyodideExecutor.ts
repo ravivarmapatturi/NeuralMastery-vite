@@ -5,7 +5,9 @@ interface WorkerCaseResult {
   passed: boolean;
   actualOutput: unknown;
   error: string | null;
+  executionTimeMs?: number;
 }
+
 
 interface WorkerOutMessage {
   id: number;
@@ -81,7 +83,10 @@ export class PyodideExecutor implements CodeExecutor {
           passed: c.passed,
           actualOutput: c.actualOutput,
           error: c.error,
+          executionTimeMs: c.executionTimeMs,
         }));
+
+        const totalExecutionTimeMs = caseResults.reduce((acc, c) => acc + (c.executionTimeMs ?? 0), 0);
 
         resolve({
           status: statusFor(caseResults, msg.error ?? null),
@@ -89,6 +94,7 @@ export class PyodideExecutor implements CodeExecutor {
           stdout: msg.stdout ?? '',
           caseResults,
           errorMessage: msg.error ?? null,
+          totalExecutionTimeMs,
         });
       };
 
@@ -101,8 +107,10 @@ export class PyodideExecutor implements CodeExecutor {
           functionName: request.functionName,
           input: tc.input,
           expectedOutput: tc.expectedOutput,
+          expectError: tc.expectError,
         })),
       });
+
     });
   }
 

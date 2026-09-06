@@ -70,7 +70,13 @@ type RunTestsMessage = { id: number; type: 'run-tests'; code: string; tests: str
 // starting with the literal string "assert ") -- there is no free-text
 // Python to parse here at all, only real, structured data in and a real,
 // structured result out.
-type CaseSpec = { id: string; functionName: string; input: Record<string, unknown>; expectedOutput: unknown };
+type CaseSpec = {
+  id: string;
+  functionName: string;
+  input: Record<string, unknown>;
+  expectedOutput: unknown;
+  expectError?: string;
+};
 type RunCasesMessage = { id: number; type: 'run-cases'; code: string; cases: CaseSpec[] };
 type InMessage = RunMessage | RunTestsMessage | RunCasesMessage;
 
@@ -85,7 +91,9 @@ interface CaseResult {
   passed: boolean;
   actualOutput: unknown;
   error: string | null;
+  executionTimeMs?: number;
 }
+
 
 interface OutMessage {
   id: number;
@@ -236,28 +244,44 @@ self.onmessage = async (event: MessageEvent<InMessage>) => {
       for (const testCase of msg.cases) {
         const kwargs = toPythonLiteral(testCase.input);
         const expectedLiteral = toPythonLiteral(testCase.expectedOutput);
+        const expectErr = testCase.expectError ? JSON.stringify(testCase.expectError) : 'None';
         const caseSource = [
           '_case_actual = None',
           '_run_error = None',
+          '_error_type = None',
           'try:',
           `    _case_actual = ${testCase.functionName}(**${kwargs})`,
-          `    _case_passed = _case_actual == ${expectedLiteral}`,
-          'except Exception:',
-          '    _case_passed = False',
-          '    _run_error = traceback.format_exc()',
+          `    if ${expectErr} != None:`,
+          '        _case_passed = False',
+          '    else:',
+          `        _case_passed = _case_actual == ${expectedLiteral}`,
+          'except Exception as _e:',
+          '    _error_type = type(_e).__name__',
+          `    if ${expectErr} != None and _error_type == ${expectErr}:`,
+          '        _case_passed = True',
+          '    else:',
+          '        _case_passed = False',
+          '        _run_error = traceback.format_exc()',
         ].join('\n');
+
+        const t0 = performance.now();
         await pyodide.runPythonAsync(caseSource);
+        const t1 = performance.now();
+
         const caseError: string | null = pyodide.globals.get('_run_error');
         const casePassed: boolean = pyodide.globals.get('_case_passed');
         const rawActual = pyodide.globals.get('_case_actual');
-        // Plain values (numbers/strings/bool/None) come back as JS
-        // primitives already; containers (list/dict) come back as a
-        // PyProxy that needs an explicit conversion to a plain JS
-        // value/array before it can be postMessage'd or displayed.
         const actualOutput = rawActual && typeof rawActual.toJs === 'function' ? rawActual.toJs({ dict_converter: Object.fromEntries }) : rawActual;
-        caseResults.push({ id: testCase.id, passed: casePassed, actualOutput, error: caseError });
+        caseResults.push({
+          id: testCase.id,
+          passed: casePassed,
+          actualOutput,
+          error: caseError,
+          executionTimeMs: Math.round(t1 - t0),
+        });
       }
     }
+
 
     const stdout: string = pyodide.globals.get('_captured_stdout').getvalue();
     const out: OutMessage = {
