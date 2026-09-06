@@ -11,6 +11,7 @@ export interface Badge {
     pagesUnderstood: number;
     problemsSolved: number;
     systemDesignSolved: number;
+    isSignedIn: boolean;
   }) => boolean;
 }
 
@@ -97,6 +98,15 @@ export const BADGES: Badge[] = [
     checkUnlocked: (s) => s.problemsSolved >= 5,
   },
   {
+    id: 'welcome',
+    title: 'Welcome Aboard',
+    icon: '👋',
+    description: 'Signed in for the first time and unlocked the welcome badge.',
+    category: 'milestone',
+    requirementText: 'Sign in for the first time',
+    checkUnlocked: (s) => s.isSignedIn,
+  },
+  {
     id: 'system-architect',
     title: 'System Architect',
     icon: '🏗️',
@@ -113,6 +123,7 @@ export function getUnlockedBadges(stats: {
   pagesUnderstood: number;
   problemsSolved: number;
   systemDesignSolved: number;
+  isSignedIn: boolean;
 }): Badge[] {
   return BADGES.filter((b) => b.checkUnlocked(stats));
 }

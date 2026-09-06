@@ -19,6 +19,7 @@ describe('BADGES definition & unlock logic', () => {
       pagesUnderstood: 0,
       problemsSolved: 0,
       systemDesignSolved: 0,
+      isSignedIn: false,
     });
     expect(unlocked).toHaveLength(0);
   });
@@ -30,6 +31,7 @@ describe('BADGES definition & unlock logic', () => {
       pagesUnderstood: 1,
       problemsSolved: 0,
       systemDesignSolved: 0,
+      isSignedIn: false,
     });
     expect(unlocked.some((b) => b.id === 'first-step')).toBe(true);
   });
@@ -41,6 +43,7 @@ describe('BADGES definition & unlock logic', () => {
       pagesUnderstood: 12,
       problemsSolved: 5,
       systemDesignSolved: 1,
+      isSignedIn: false,
     });
 
     const unlockedIds = unlocked.map((b) => b.id);

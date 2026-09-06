@@ -13,12 +13,15 @@ export default function BadgeShowcase() {
   const problemsSolved = events.filter((e) => e.kind === 'complete').length;
   const systemDesignSolved = events.filter((e) => e.kind === 'design').length;
 
+  const { user } = useAuth();
+  const isSignedIn = Boolean(user);
   const stats = {
     totalXP,
     streak,
     pagesUnderstood,
     problemsSolved,
     systemDesignSolved,
+    isSignedIn,
   };
 
   const unlockedCount = BADGES.filter((b) => b.checkUnlocked(stats)).length;
