@@ -19,6 +19,8 @@ import MDXCodeBlock from './components/MDXCodeBlock';
 import MDXLink from './components/MDXLink';
 import AnalyticsTracker from './components/AnalyticsTracker';
 import Footer from './components/layout/Footer';
+import { ConfettiCanvas } from './components/ui/Confetti';
+
 
 /** Old /docs/practice-problems/<slug> URLs redirect to their real, current
  * /practice/<slug> home -- see contentTree.ts's practiceRoute() for why the
@@ -45,7 +47,9 @@ export default function App() {
       <AuthProvider>
         <ProgressProvider>
           <GamificationProvider>
+            <ConfettiCanvas />
             <MDXProvider components={mdxComponents}>
+
               {/* Reads Vite's own BASE_URL (derived from vite.config.ts's
                   `base`) instead of a second hardcoded copy of the same
                   path -- the two drifting out of sync silently 404s every

@@ -291,3 +291,53 @@ export function activityCounts(events: AwardEvent[]): Record<string, number> {
   }
   return counts;
 }
+
+// --- RL Discounted Return Valuation Model ---
+
+export interface RLValuation {
+  /** Immediate reward R_{t+1} for the current action (XP) */
+  immediateReward: number;
+  /** Estimated long-term value V(s') of milestone progress */
+  futureValue: number;
+  /** Discount factor gamma (0.85) */
+  gamma: number;
+  /** Total discounted return G_t = R_immediate + gamma * V_future */
+  discountedReturn: number;
+  /** Streak bonus multiplier (1.0 + 0.1 * min(streak, 7)) */
+  streakBonus: number;
+}
+
+/** Computes RL Discounted Return G_t = R_t + gamma * V(s_{t+1}) for human reward weighting */
+export function computeRLValuation(
+  actionKind: AwardKind,
+  difficulty: string | undefined,
+  currentEvents: AwardEvent[],
+  activeDates: string[],
+): RLValuation {
+  let immediateReward = MARK_UNDERSTOOD_POINTS;
+  if (actionKind === 'complete') immediateReward = pointsForDifficulty(difficulty);
+  else if (actionKind === 'design') immediateReward = SYSTEM_DESIGN_CHALLENGE_POINTS;
+  else if (actionKind === 'flashcard') immediateReward = FLASHCARD_REVEAL_POINTS;
+
+  const streak = computeStreak(activeDates);
+  const streakBonus = 1.0 + 0.1 * Math.min(streak, 7);
+
+  const points = totalPoints(currentEvents);
+  const lvlInfo = levelForPoints(points);
+  
+  const levelProgressPct = lvlInfo.xpForNextLevel > 0 ? lvlInfo.xpIntoLevel / lvlInfo.xpForNextLevel : 0;
+  const estimatedNextLevelReward = 100;
+  
+  const futureValue = (1 - levelProgressPct) * estimatedNextLevelReward * streakBonus;
+  const gamma = 0.85;
+  const discountedReturn = immediateReward + gamma * futureValue;
+
+  return {
+    immediateReward,
+    futureValue: Math.round(futureValue * 10) / 10,
+    gamma,
+    discountedReturn: Math.round(discountedReturn * 10) / 10,
+    streakBonus: Math.round(streakBonus * 100) / 100,
+  };
+}
+

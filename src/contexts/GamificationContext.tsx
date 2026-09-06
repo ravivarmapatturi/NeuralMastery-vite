@@ -17,6 +17,9 @@ import {
   normalizePracticeProblemPermalink,
 } from '../lib/gamification';
 import type { User } from 'firebase/auth';
+import { showRewardToast } from '../components/ui/Confetti';
+import { BADGES } from '../lib/badges';
+
 
 const STORAGE_KEY = 'neural-mastery-gamification';
 
@@ -200,12 +203,61 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   );
 
   const award = useCallback(
+
     (permalink: string, kind: AwardEvent['kind'], points: number) => {
       if (hasAward(events, permalink, kind)) return; // already awarded once, ever -- no double-counting on repeat marks/reruns
-      commit([...events, { permalink, kind, date: localDateString(new Date(Date.now())), points }]);
+      const now = new Date(Date.now());
+      const nextEvents = [...events, { permalink, kind, date: localDateString(now), points }];
+
+      const oldStats = {
+        totalXP: totalPoints(events),
+        streak: computeStreak(events.map((e) => e.date), now),
+        pagesUnderstood: events.filter((e) => e.kind === 'mark').length,
+        problemsSolved: events.filter((e) => e.kind === 'complete').length,
+        systemDesignSolved: events.filter((e) => e.kind === 'design').length,
+      };
+
+      const newStats = {
+        totalXP: totalPoints(nextEvents),
+        streak: computeStreak(nextEvents.map((e) => e.date), now),
+        pagesUnderstood: nextEvents.filter((e) => e.kind === 'mark').length,
+        problemsSolved: nextEvents.filter((e) => e.kind === 'complete').length,
+        systemDesignSolved: nextEvents.filter((e) => e.kind === 'design').length,
+      };
+
+      // Celebratory Tada Confetti & Toast Notification
+      showRewardToast({
+        title:
+          kind === 'complete'
+            ? 'Problem Solved!'
+            : kind === 'design'
+              ? 'Design Completed!'
+              : kind === 'mark'
+                ? 'Page Understood!'
+                : 'Flashcard Revealed!',
+        subtitle: `Great work! Earned +${points} XP`,
+        xp: points,
+        icon: kind === 'complete' ? '🎉' : kind === 'design' ? '🏗️' : kind === 'mark' ? '📖' : '💡',
+      });
+
+      // Check newly unlocked checkpoint badges
+      const newlyUnlocked = BADGES.filter((b) => !b.checkUnlocked(oldStats) && b.checkUnlocked(newStats));
+      for (const b of newlyUnlocked) {
+        setTimeout(() => {
+          showRewardToast({
+            title: `Badge Unlocked: ${b.title}`,
+            subtitle: b.description,
+            icon: b.icon,
+            type: 'badge',
+          });
+        }, 600);
+      }
+
+      commit(nextEvents);
     },
     [events, commit],
   );
+
 
   const awardMarkUnderstood = useCallback((permalink: string) => award(permalink, 'mark', MARK_UNDERSTOOD_POINTS), [award]);
   const awardProblemCompleted = useCallback(

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
+import BadgeShowcase from './layout/BadgeShowcase';
 import { getSidebar, getFlatPages } from '../lib/contentTree';
+
 import { SECTION_META, SECTION_ORDER, completionFor } from '../data/sectionMeta';
 import { useProgress } from '../contexts/ProgressContext';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
@@ -56,6 +58,10 @@ export default function ProgressPage() {
             <div style={{ width: `${overallPct * 100}%`, height: '100%', background: 'var(--nm-accent-primary)', transition: 'width 200ms ease' }} />
           </div>
         </div>
+
+        {/* Checkpoint Badges Showcase & RL Reward Engine */}
+        <BadgeShowcase />
+
 
         <Link
           to="/profile"

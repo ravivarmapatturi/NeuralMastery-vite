@@ -19,8 +19,10 @@ import {
   PROBLEM_COMPLETED_POINTS_HARD,
   PROBLEM_COMPLETED_POINTS_DEFAULT,
   pointsForDifficulty,
+  computeRLValuation,
   type AwardEvent,
 } from './gamification'
+
 
 describe('localDateString', () => {
   it('formats as local YYYY-MM-DD, zero-padded', () => {
@@ -279,3 +281,22 @@ describe('activityCounts', () => {
     expect(activityCounts([])).toEqual({})
   })
 })
+
+describe('computeRLValuation', () => {
+  it('calculates discounted return G_t with gamma=0.85 and streak multipliers', () => {
+    const valuation = computeRLValuation('complete', 'medium', [], ['2026-09-06'])
+    expect(valuation.immediateReward).toBe(50)
+    expect(valuation.gamma).toBe(0.85)
+    expect(valuation.streakBonus).toBe(1.1)
+    expect(valuation.discountedReturn).toBeGreaterThan(valuation.immediateReward)
+  })
+
+  it('handles easy and hard problem difficulty scaling in RL valuation', () => {
+    const easyVal = computeRLValuation('complete', 'easy', [], [])
+    const hardVal = computeRLValuation('complete', 'hard', [], [])
+    expect(easyVal.immediateReward).toBe(25)
+    expect(hardVal.immediateReward).toBe(100)
+    expect(hardVal.discountedReturn).toBeGreaterThan(easyVal.discountedReturn)
+  })
+})
+
