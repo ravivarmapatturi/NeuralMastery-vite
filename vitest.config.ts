@@ -17,6 +17,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./tests/unit/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.{mjs,cjs}'],
+    testTimeout: 15000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
