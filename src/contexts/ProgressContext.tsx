@@ -198,8 +198,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       unsubscribe = onSnapshot(ref, (snap) => {
         if (cancelled) return;
         const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
-        setUnderstood(remote);
-        writeStorage(remote);
+        const currentMerged = mergeProgress(remote, readStorage());
+        setUnderstood(currentMerged);
+        writeStorage(currentMerged);
       });
     });
 
@@ -215,8 +216,14 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       writeStorage(next);
 
       if (user) {
-        loadFirestoreFor(user.uid).then(({ ref, setDoc }) => {
-          void setDoc(ref, { understood: next }, { merge: true });
+        loadFirestoreFor(user.uid).then(async ({ ref, getDoc, setDoc }) => {
+          const snap = await getDoc(ref).catch(() => null);
+          const remoteMap = snap?.exists() ? normalize(snap.data()?.understood) : {};
+          const merged = mergeProgress(remoteMap, next);
+          setUnderstood(merged);
+          writeStorage(merged);
+
+          void setDoc(ref, { understood: merged }, { merge: true });
         });
       }
     },

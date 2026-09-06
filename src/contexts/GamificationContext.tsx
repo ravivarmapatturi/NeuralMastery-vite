@@ -170,8 +170,9 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       unsubscribe = onSnapshot(progressRef, (snap) => {
         if (cancelled) return;
         const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
-        setEvents(remote);
-        writeStorage(remote);
+        const currentMerged = mergeEvents(remote, readStorage());
+        setEvents(currentMerged);
+        writeStorage(currentMerged);
       });
     });
 
@@ -188,9 +189,17 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       writeStorage(normalized);
 
       if (user) {
-        loadFirestoreFor(user.uid).then(({ progressRef, leaderboardRef, setDoc }) => {
-          void setDoc(progressRef, { gamificationEvents: normalized }, { merge: true });
-          void setDoc(leaderboardRef, leaderboardFields(user, normalized, Date.now()), { merge: true });
+        loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc }) => {
+          const snap = await getDoc(progressRef).catch(() => null);
+          const remoteEvents: AwardEvent[] = snap?.exists()
+            ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
+            : [];
+          const merged = mergeEvents(remoteEvents, normalized);
+          setEvents(merged);
+          writeStorage(merged);
+
+          void setDoc(progressRef, { gamificationEvents: merged }, { merge: true });
+          void setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true });
         });
       }
     },

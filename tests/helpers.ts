@@ -31,6 +31,10 @@ export function collectConsoleErrors(page: Page) {
 
   page.on('response', (response) => {
     if (response.status() < 400) return;
+    const url = response.url();
+    // Ignore external third-party network failures (Firebase, Analytics, fonts)
+    if (!url.includes('localhost') && !url.includes('127.0.0.1')) return;
+
     if (response.request().resourceType() === 'document') {
       documentFailureCount++;
     } else {
@@ -47,14 +51,18 @@ export function collectConsoleErrors(page: Page) {
 
   return {
     errors(): string[] {
+      const filtered = rawErrors.filter((text) => {
+        if (/ERR_INTERNET_DISCONNECTED|app-offline|Installations: Could not process request|firebaseinstallations/i.test(text)) {
+          return false;
+        }
+        return true;
+      });
+
       if (otherResourceFailureCount > 0 || documentFailureCount === 0) {
-        return rawErrors;
+        return filtered;
       }
-      // Drop up to `documentFailureCount` generic resource-load-failure
-      // console entries -- the expected deep-link 404 fallback, and nothing
-      // else, given otherResourceFailureCount is confirmed zero above.
       let toDrop = documentFailureCount;
-      return rawErrors.filter((text) => {
+      return filtered.filter((text) => {
         if (toDrop > 0 && /Failed to load resource/i.test(text)) {
           toDrop--;
           return false;

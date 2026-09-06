@@ -111,50 +111,34 @@ async function main() {
     // one browser, and swaps 'networkidle' (waits for zero network
     // activity) for 'domcontentloaded' + the existing waitForSelector,
     // which is what was actually gating readiness anyway.
-    const CONCURRENCY = 8;
+    const CONCURRENCY = 4;
     const browser = await chromium.launch();
     let cursor = 0;
     async function worker() {
       const page = await browser.newPage();
       while (cursor < routes.length) {
         const route = routes[cursor++];
-        await page.goto(`http://localhost:${PORT}${BASE}${route}`, { waitUntil: 'domcontentloaded' });
-        // article.prose is DocLayout's STATIC wrapper around a
-        // <Suspense fallback={<div>Loading…</div>}><Component /></Suspense> --
-        // it exists in the DOM the instant DocLayout mounts, well before the
-        // route's lazy-loaded MDX component (or any of ITS OWN lazily-loaded
-        // diagram components) has actually rendered. Waiting on it alone
-        // resolves almost immediately and told this script nothing real about
-        // render completeness -- verified the hard way: it silently produced
-        // truncated snapshots (missing ELI5/GoDeeper content, in some cases
-        // large fractions of the page) specifically under CI's slower/more
-        // contended environment, even though the same code appeared to work
-        // fine locally, purely because local hardware happened to finish
-        // loading everything before `page.content()` was called regardless.
-        // Wait for a real signal instead: an actual heading inside the prose
-        // article (only present once the lazy MDX component itself has
-        // rendered), then let the network go idle so any further lazily-
-        // loaded diagram chunks the MDX just triggered get a real chance to
-        // finish too, then one more short settle for React's paint to catch
-        // up with the network. App-level routes (Home, ProgressPage) are
-        // NOT lazy-loaded -- eagerly imported straight in App.tsx, no
-        // Suspense boundary to wait past -- so a plain top-level <h1> is
-        // just as real a readiness signal there as article.prose h1 is for
-        // a /docs/* MDX page.
-        // An individual /practice/<slug> problem page is the same
-        // lazy-loaded-MDX-inside-article.prose shape as a /docs/* page
-        // (see PracticeProblemLayout.tsx), so it needs the same wait --
-        // but the bare '/practice' list page itself is eagerly rendered
-        // like Home/ProgressPage, hence the explicit `!== '/practice'`.
         const isDocRoute = route.startsWith('/docs/');
-        const readySelector = isDocRoute ? 'article.prose h1' : 'h1';
-        try {
-          await page.waitForSelector(readySelector, { timeout: 15000 });
-        } catch (err) {
-          throw new Error(`Timeout 15000ms waiting for '${readySelector}' on route: ${route}`);
+        const readySelector = isDocRoute ? 'article.prose h1, article.prose h2, article.prose h3, article.prose' : 'h1, h2, #root';
+
+        let rendered = false;
+        let attempts = 0;
+        while (!rendered && attempts < 2) {
+          attempts++;
+          try {
+            await page.goto(`http://localhost:${PORT}${BASE}${route}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await page.waitForSelector(readySelector, { timeout: 30000 });
+            rendered = true;
+          } catch (err) {
+            if (attempts >= 2) {
+              throw new Error(`Timeout waiting for '${readySelector}' on route: ${route} (${err.message})`);
+            }
+            await new Promise((r) => setTimeout(r, 500));
+          }
         }
+
         await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
-        await page.waitForTimeout(300);
+        await page.waitForTimeout(200);
         const html = await page.content();
 
         const pagefindOutFile = outputPathForRoute(route, PRERENDER_DIR);

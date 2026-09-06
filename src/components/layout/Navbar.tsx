@@ -78,7 +78,7 @@ export default function Navbar({
           </Link>
         </div>
         <nav className="nm-navbar-nav" style={{ display: 'flex', alignItems: 'center' }}>
-          <Link to="/learn" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
+          <Link to="/learn" className="nm-navbar-learn-link" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
             Learn
           </Link>
           <Link

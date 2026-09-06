@@ -202,6 +202,8 @@ body {
      space. */
   .nm-navbar-nav { gap: 0.15rem; }
   .nm-navbar-progress-link { display: none; }
+  .nm-navbar-leaderboard-link { display: none; }
+  .nm-navbar-learn-link { display: none; }
   /* The NEW badge's own padding/gap (fine at desktop's roomier width) is
      still the single widest item in the row even after the two fixes
      above -- trims it further here rather than dropping it, since the
