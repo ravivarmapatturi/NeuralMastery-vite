@@ -208,8 +208,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       unsubscribe = onSnapshot(ref, (snap) => {
         if (cancelled) return;
         const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
-        setUnderstood(remote);
-        writeStorage(remote);
+        const currentMerged = mergeProgress(remote, readStorage());
+        setUnderstood(currentMerged);
+        writeStorage(currentMerged);
       });
     });
 

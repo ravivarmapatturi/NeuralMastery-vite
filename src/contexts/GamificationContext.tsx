@@ -182,8 +182,9 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       unsubscribe = onSnapshot(progressRef, (snap) => {
         if (cancelled) return;
         const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
-        setEvents(remote);
-        writeStorage(remote);
+        const currentMerged = mergeEvents(remote, readStorage());
+        setEvents(currentMerged);
+        writeStorage(currentMerged);
       });
     });
 
