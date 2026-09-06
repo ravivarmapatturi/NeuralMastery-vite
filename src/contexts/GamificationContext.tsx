@@ -211,13 +211,20 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
         const merged = mergeEvents(remoteEvents, readStorage());
         if (cancelled) return;
 
-        await withRetry(() =>
-          Promise.all([
-            setDoc(progressRef, { gamificationEvents: merged }, { merge: true }),
-            setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true }),
-          ]),
-        );
+        // The progress write and the leaderboard write are deliberately
+        // NOT bundled in a single Promise.all -- confirmed live that the
+        // leaderboard write can fail (permission-denied) independently of
+        // the progress write succeeding, and Promise.all rejecting on
+        // EITHER promise was blocking `setEvents(merged)` below from ever
+        // running even when the real, correct progress data had already
+        // been written successfully. A leaderboard failure should never
+        // prevent a signed-in user's own progress from loading -- this
+        // matches commit()'s already-correct independent-write pattern.
+        await withRetry(() => setDoc(progressRef, { gamificationEvents: merged }, { merge: true }));
         if (cancelled) return;
+        void withRetry(() => setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true })).catch((err) =>
+          console.error('Failed to sync leaderboard entry to the server after retrying:', err),
+        );
 
         setEvents(merged);
         writeStorage(merged);
