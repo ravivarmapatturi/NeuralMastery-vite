@@ -141,6 +141,32 @@ async function loadFirestoreFor(uid: string) {
   return { ref: doc(db, 'progress', uid), getDoc, setDoc, onSnapshot };
 }
 
+/** A read or write issued immediately after sign-in/sign-up can hit a
+ * real, documented Firebase race: the Firestore SDK's internal credential
+ * listener can lag a tick behind `auth.currentUser` actually updating, so
+ * the request goes out unauthenticated and fails with
+ * "Missing or insufficient permissions" even though the user genuinely is
+ * signed in -- confirmed live via a real repro (a fresh sign-up followed
+ * immediately by a mark-understood award threw exactly that error, on
+ * GamificationContext's sibling write to the same document). With no
+ * retry, that either silently drops a single write (commit()) or aborts
+ * the entire sign-in sync effect before it ever sets up the onSnapshot
+ * subscription -- the real cause behind "my progress is gone after
+ * signing back in" for a just-created or just-signed-in account. A short
+ * retry clears the race in practice. */
+async function withRetry<T>(fn: () => Promise<T>, attempts = 4): Promise<T> {
+  let lastErr: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 300 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 /**
  * Local-only (no account, nothing sent anywhere) "have I marked this page
  * understood" tracker, keyed by permalink -- UNLESS the visitor is signed
@@ -194,12 +220,12 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
     loadFirestoreFor(user.uid).then(async ({ ref, getDoc, setDoc, onSnapshot }) => {
       if (cancelled) return;
-      const snap = await getDoc(ref);
+      const snap = await withRetry(() => getDoc(ref));
       const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
       const merged = mergeProgress(remote, readStorage());
       if (cancelled) return;
 
-      await setDoc(ref, { understood: merged }, { merge: true });
+      await withRetry(() => setDoc(ref, { understood: merged }, { merge: true }));
       if (cancelled) return;
 
       setUnderstood(merged);
@@ -227,13 +253,15 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
       if (user) {
         loadFirestoreFor(user.uid).then(async ({ ref, getDoc, setDoc }) => {
-          const snap = await getDoc(ref).catch(() => null);
+          const snap = await withRetry(() => getDoc(ref)).catch(() => null);
           const remoteMap = snap?.exists() ? normalize(snap.data()?.understood) : {};
           const merged = mergeProgress(remoteMap, next);
           setUnderstood(merged);
           writeStorage(merged);
 
-          void setDoc(ref, { understood: merged }, { merge: true });
+          void withRetry(() => setDoc(ref, { understood: merged }, { merge: true })).catch((err) =>
+            console.error('Failed to sync progress to the server after retrying:', err),
+          );
         });
       }
     },

@@ -100,6 +100,31 @@ async function loadFirestoreFor(uid: string) {
   return { progressRef: doc(db, 'progress', uid), leaderboardRef: doc(db, 'leaderboard', uid), getDoc, setDoc, onSnapshot };
 }
 
+/** A read or write issued immediately after sign-in/sign-up can hit a
+ * real, documented Firebase race: the Firestore SDK's internal credential
+ * listener can lag a tick behind `auth.currentUser` actually updating, so
+ * the request goes out unauthenticated and fails with
+ * "Missing or insufficient permissions" even though the user genuinely is
+ * signed in -- confirmed live via a real repro (a fresh sign-up followed
+ * immediately by a mark-understood award threw exactly that error). With
+ * no retry, that either silently dropped a single award (commit()) or
+ * aborted the entire sign-in sync effect before it ever set up the
+ * onSnapshot subscription -- the real cause behind "my progress is gone
+ * after signing back in" for a just-created or just-signed-in account. A
+ * short retry clears the race in practice. */
+async function withRetry<T>(fn: () => Promise<T>, attempts = 4): Promise<T> {
+  let lastErr: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 300 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 /** Builds the public leaderboard document's fields from a real event log --
  * co-located with (not a separate reactive effect off of) every place the
  * private progress doc's gamificationEvents actually get written, so the
@@ -163,17 +188,19 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
     loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc, onSnapshot }) => {
       if (cancelled) return;
-      const snap = await getDoc(progressRef);
+      const snap = await withRetry(() => getDoc(progressRef));
       const remoteEvents: AwardEvent[] = snap.exists()
         ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
         : [];
       const merged = mergeEvents(remoteEvents, readStorage());
       if (cancelled) return;
 
-      await Promise.all([
-        setDoc(progressRef, { gamificationEvents: merged }, { merge: true }),
-        setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true }),
-      ]);
+      await withRetry(() =>
+        Promise.all([
+          setDoc(progressRef, { gamificationEvents: merged }, { merge: true }),
+          setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true }),
+        ]),
+      );
       if (cancelled) return;
 
       setEvents(merged);
@@ -202,7 +229,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
       if (user) {
         loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc }) => {
-          const snap = await getDoc(progressRef).catch(() => null);
+          const snap = await withRetry(() => getDoc(progressRef)).catch(() => null);
           const remoteEvents: AwardEvent[] = snap?.exists()
             ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
             : [];
@@ -210,8 +237,12 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
           setEvents(merged);
           writeStorage(merged);
 
-          void setDoc(progressRef, { gamificationEvents: merged }, { merge: true });
-          void setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true });
+          void withRetry(() => setDoc(progressRef, { gamificationEvents: merged }, { merge: true })).catch((err) =>
+            console.error('Failed to sync gamification progress to the server after retrying:', err),
+          );
+          void withRetry(() => setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true })).catch((err) =>
+            console.error('Failed to sync leaderboard entry to the server after retrying:', err),
+          );
         });
       }
     },
