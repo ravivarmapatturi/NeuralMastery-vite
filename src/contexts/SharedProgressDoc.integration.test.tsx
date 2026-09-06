@@ -41,8 +41,9 @@ vi.mocked(setDoc).mockImplementation(async (ref: unknown, data: Record<string, u
   const path = (ref as { path: string }).path
   store[path] = opts?.merge ? { ...(store[path] ?? {}), ...data } : data // real Firestore: no merge = full document replace
 })
-vi.mocked(onSnapshot).mockImplementation((ref: unknown, cb: (snap: unknown) => void) => {
-  const path = (ref as { path: string }).path
+vi.mocked(onSnapshot).mockImplementation((_ref, callback) => {
+  const cb = callback as (snap: unknown) => void
+  const path = (_ref as unknown as { path: string }).path
   cb({ exists: () => store[path] !== undefined, data: () => store[path] })
   return () => {}
 })
