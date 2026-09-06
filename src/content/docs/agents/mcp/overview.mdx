@@ -17,63 +17,71 @@ import McpLifecycleSequenceDiagram from '../../../../viz/diagrams/McpLifecycleSe
 import CommunicationPatternSequenceDiagram from '../../../../viz/diagrams/CommunicationPatternSequenceDiagram';
 import TransportComparisonDiagram from '../../../../viz/diagrams/TransportComparisonDiagram';
 
-# Model Context Protocol (MCP) — Overview & Masterclass
+# Model Context Protocol (MCP) — Masterclass & Overview
 
-The **Model Context Protocol (MCP)** is an open specification introduced by Anthropic that standardizes how AI models (LLMs and Autonomous Agents) interact with external software systems, databases, APIs, and local development environments. 
+The **Model Context Protocol (MCP)** is an open specification originally introduced by Anthropic that standardizes how AI models (LLMs and Autonomous Agents) connect with external tools, databases, APIs, local development environments, and data sources.
 
-MCP is often called **"The USB-C for AI Applications."** Just as USB-C replaced dozens of proprietary, custom charging and peripheral cables with a single standardized physical and logical interface, MCP provides a universal protocol connecting any AI application to any data source or tool.
+MCP is universally described as **"The USB-C for AI Applications."** Just as USB-C replaced dozens of proprietary, custom charging and peripheral cables with a single standardized physical and logical interface, MCP provides a universal protocol linking any AI application to any data source or tool.
 
 ---
 
 ## 1. What is Model Context Protocol?
 
-Before MCP, connecting an AI model to an external system required custom, ad-hoc glue code. If you built an AI code editor, you had to write custom API clients for Git, PostgreSQL, Jira, and Slack. If another team built a chat assistant, they had to re-implement custom glue code for those exact same integrations from scratch.
+### The Core Problem
+Large Language Models (LLMs) are extraordinarily capable at reasoning, writing code, and analyzing patterns. However, they are inherently isolated:
+- They are constrained by static training cutoffs.
+- They lack direct access to real-time information (e.g., live databases, current news, web APIs).
+- They cannot natively interact with local filesystems, execute shell commands, or trigger external workflows without custom integrations.
 
-MCP solves this fragmentation by defining a standardized **JSON-RPC 2.0** protocol. With MCP:
+### The Solution
+MCP bridges this gap by providing an open **JSON-RPC 2.0** messaging standard between AI applications and external software services. 
 
-- **AI Hosts & Clients** (such as Claude Desktop, Cursor, smolagents, or custom agent runtimes) implement the client side **once**.
-- **Tool & Data Providers** (such as PostgreSQL, GitHub, Notion, or local file systems) implement an MCP server **once**.
-- Any MCP Client can instantly discover and use any MCP Server without writing a single line of application-specific integration code.
+With MCP:
+- **AI Hosts & Clients** (such as Claude Desktop, Cursor IDE, LangChain, or smolagents) implement the client side **once**.
+- **Tool & Data Providers** (such as PostgreSQL, GitHub, Notion, text-processing tools, or local filesystems) implement an MCP server **once**.
+- Any MCP Client can instantly discover and execute capabilities on any MCP Server with zero additional glue code.
 
 ---
 
-## 2. Integration Challenges: The $M \times N$ Problem
+## 2. The Integration Challenge: $M \times N$ vs. $M + N$
 
-To appreciate why MCP is crucial for modern AI infrastructure, consider the **$M \times N$ Integration Problem**.
+To understand why MCP is essential for modern AI architecture, consider the **$M \times N$ Integration Problem**.
 
 ### Without MCP: $M \times N$ Custom Glue Code
-If $M$ AI applications want to connect to $N$ data sources or tools, developers must write and maintain $M \times N$ separate custom integrations.
+Without a standard protocol, connecting $M$ AI applications to $N$ external tools requires writing and maintaining **$M \times N$** custom integrations.
 
 <MxNIntegrationProblemDiagram />
 
-Each integration requires bespoke authentication, unique schema mapping, custom error handling, and manual prompt maintenance. Adding 1 new tool means updating all $M$ applications; building 1 new AI application means writing $N$ new integrations.
+Each integration requires bespoke authentication, unique schema mapping, custom error handling, and manual prompt maintenance. Adding 1 new tool forces developers to update all $M$ applications; creating 1 new AI application requires re-implementing $N$ integrations from scratch.
 
-### With MCP: $M + N$ Standardized Ecosystem
-MCP converts the combinatorial nightmare into a linear **$M + N$** solution:
+### With MCP: $M + N$ Standardized Solution
+MCP transforms this combinatorial nightmare into a linear **$M + N$** standard:
 
-- Application developers write **1 MCP Client**.
-- Tool developers build **1 MCP Server**.
-
-The result is instant interoperability across the entire AI ecosystem.
+| Metric | Without MCP ($M \times N$) | With MCP ($M + N$) |
+| :--- | :--- | :--- |
+| **Integrations for 5 Apps & 10 Tools** | $5 \times 10 = 50$ custom implementations | $5 + 10 = 15$ standard implementations |
+| **Maintenance Burden** | Extremely High (Bespoke APIs everywhere) | Low (Single protocol standard) |
+| **Adding a New Tool** | Update all 5 AI applications | Build 1 MCP Server (All apps auto-connect) |
+| **Ecosystem Interoperability** | Fragmented & siloed | Instant & universal |
 
 ---
 
-## 3. Key Concepts & Terminology
+## 3. Key Concepts & Core Terminology
 
-Understanding standard MCP terminology is essential when architecting AI agents and tools.
+Using clear, standardized terminology is crucial when building MCP applications.
 
-> [!NOTE]
-> **Terminology Rule**: Standardize your vocabulary around **Host**, **Client**, and **Server**. A Host application contains an MCP Client that connects 1:1 with an external MCP Server.
+> [!WARNING]
+> **Host vs. Client**: Many articles use *Host* and *Client* interchangeably, but technically:
+> - **Host**: The overall user-facing application (e.g. Claude Desktop, Cursor IDE, custom python script).
+> - **Client**: The internal component within the Host that manages a 1:1 connection with a specific MCP Server.
 
 <ClientServerRolesDiagram />
 
-### Core Entities
+### The 3 Architectural Entities
 
-| Term | Definition | Examples / Role |
-| :--- | :--- | :--- |
-| **Host** | The overall user-facing application that orchestrates the user interaction, LLM inference, and UI rendering. | Claude Desktop, Cursor IDE, LangChain agent app, smolagents script. |
-| **Client** | A protocol component inside the Host that maintains a direct 1:1 connection with a specific MCP Server. Handles JSON-RPC transport and messaging. | Internal MCP connection manager. |
-| **Server** | An independent executable process or web service that exposes capabilities (Tools, Resources, Prompts) via the MCP standard. | Local Postgres server, GitHub MCP server, Filesystem MCP server. |
+1. **Host**: The user-facing AI application end-users interact with directly. Hosts manage user permissions, UI rendering, and overall LLM orchestration.
+2. **Client**: A component running inside the Host application that maintains a dedicated 1:1 connection with a specific MCP Server, handling JSON-RPC protocol messages.
+3. **Server**: An external process or remote web service exposing capabilities (Tools, Resources, Prompts) via the MCP standard format.
 
 <McpArchitectureDiagram />
 
@@ -81,164 +89,204 @@ Understanding standard MCP terminology is essential when architecting AI agents 
 
 ## 4. MCP Capabilities: Tools, Resources, Prompts & Sampling
 
-An MCP Server exposes three primary capabilities to the Host, plus optional **Sampling** capabilities for recursive model feedback.
+An MCP Server can expose four distinct capabilities. An application's total value is the sum of the capabilities it provides.
 
 <McpCapabilityTypesDiagram />
 
-### Summary of Capabilities
+### Capabilities Breakdown
 
-| Capability | Direction & Control | Purpose | Example |
+| Capability | Control & Trigger | Description | Real-World Example |
 | :--- | :--- | :--- | :--- |
-| **Tools** | Invoked by LLM (with user consent) | Executable functions with side effects or computed operations. | `execute_sql_query`, `create_github_issue`, `calculate_matrix_inverse`. |
-| **Resources** | Read-only context pulled by Host | Passive data feeds (files, schemas, logs) exposed via URI schemes (`file://`, `postgres://`). | `file:///project/src/main.py`, `postgres://db/schema`. |
-| **Prompts** | Triggered by User / Host | Pre-configured prompt templates and workflows with custom parameters. | `explain_code_bug`, `generate_postmortem`, `summarize_incident`. |
-| **Sampling** | Server $\rightarrow$ Host request | Allows the Server to request an LLM completion back from the Host during an execution. | Server asks host LLM to summarize intermediate logs. |
+| **Tools** | Invoked by LLM (with user consent) | Executable functions that perform computational actions or retrieve dynamic data. | `execute_python_code`, `query_postgres_db`, `post_slack_message`. |
+| **Resources** | Read-only pulled by Host | Passive data feeds (files, schemas, logs) exposed via URI schemes (`file://`, `postgres://`). | `file:///project/src/main.py`, `postgres://analytics/users_table`. |
+| **Prompts** | Triggered by User / Host | Pre-defined templates or workflows guiding model-user interactions. | `code_review_style`, `generate_postmortem_template`. |
+| **Sampling** | Server $\rightarrow$ Host request | Server-initiated requests asking the Host's LLM to generate completions for recursive evaluation. | Server asks LLM to review generated code before returning result. |
+
+### Capability Application Matrix (e.g., AI Coding Agent)
+
+| Entity | Capability Name | Purpose in Agent Workflow |
+| :--- | :--- | :--- |
+| **Tool** | Code Interpreter | Executes Python scripts generated by the LLM in a sandbox. |
+| **Resource** | API Documentation | Provides read-only access to framework docs and schema files. |
+| **Prompt** | Code Style Guide | Enforces company linting rules and docstring standards. |
+| **Sampling** | Code Self-Review | Server asks Host LLM to verify unit test coverage recursively. |
 
 ---
 
 ## 5. Architectural Components & Communication Flow
 
-MCP operates on a clean request-response and notification pattern built over JSON-RPC 2.0.
+MCP operates on a structured request-response and notification pattern encoded over JSON-RPC 2.0.
 
-### The 7-Step Lifecycle Sequence
+### The 7-Step Communication Sequence
 
 <CommunicationPatternSequenceDiagram />
 
-1. **User Request**: The user submits a prompt or task to the **Host** application.
-2. **Host & LLM Processing**: The Host passes context to the LLM. The LLM determines it requires external information or actions.
-3. **Client Connection & Handshake**: The Host's **MCP Client** initiates a session with the designated **MCP Server** using an `initialize` JSON-RPC request.
-4. **Capability Discovery**: The Client queries `tools/list`, `resources/list`, or `prompts/list` to retrieve exact JSON Schema definitions.
-5. **Tool Invocation**: The Host formats an LLM tool-call request into a `tools/call` JSON-RPC message containing named arguments.
-6. **Server Execution**: The **MCP Server** validates arguments against the input schema, executes the internal python/TS function, and captures the result.
-7. **Result Delivery & Integration**: The Server returns a standard `content` array payload. The Client feeds the output back into the LLM context to generate the final response.
+<McpLifecycleSequenceDiagram />
+
+1. **User Interaction**: User asks a query or submits a task to the **Host** application.
+2. **Host & LLM Processing**: The Host passes context to the LLM. The LLM determines an external tool call is required.
+3. **Client Connection**: The Host's **MCP Client** establishes a channel to the appropriate **MCP Server**.
+4. **Initialization Handshake**: Client sends an `initialize` JSON-RPC request containing client version and capabilities; Server responds with protocol negotiation.
+5. **Capability Discovery**: Client requests `tools/list` or `resources/list` to retrieve exact JSON Schema specifications.
+6. **Tool Execution**: Client sends `tools/call` with argument payload. The Server executes the underlying function safely.
+7. **Result Delivery**: Server returns result in a standard `content` array format `{"content": [{"type": "text", "text": "..."}]}`.
 
 ---
 
 ## 6. Transports: Local (`stdio`) vs Remote (`Streamable HTTP / SSE`)
 
-MCP separates protocol messaging from transport mechanics. Messages are identical regardless of how bytes travel:
+MCP decouples protocol semantics from byte transport mechanics:
 
 <McpLocalVsRemoteDiagram />
 
 <TransportComparisonDiagram />
 
-- **`stdio` (Local Subprocess)**: The Host spawns the MCP Server as a child process. Requests move over `stdin`, responses over `stdout`, and logs over `stderr`. Ideal for local IDEs and CLI tools.
-- **Streamable HTTP / SSE (Remote Service)**: Client sends HTTP POST requests to an endpoint (e.g. `https://api.example.com/mcp`) with optional Server-Sent Events (SSE) for streaming updates. Ideal for remote SaaS tools and cloud microservices.
+- **`stdio` (Local Subprocess)**: The Host launches the MCP Server as a local subprocess. Requests pass over `stdin`, responses over `stdout`, and logging over `stderr`. Ideal for local IDEs and local dev tools.
+- **Streamable HTTP / SSE (Remote Service)**: The Server exposes a web endpoint (e.g., `http://localhost:7860/gradio_api/mcp/sse` or `https://api.example.com/mcp`). Client issues POST requests and listens over Server-Sent Events (SSE). Ideal for cloud services and microservices.
 
 ---
 
 ## 7. Step-by-Step Guide: How to Build an MCP Server
 
-Building an MCP Server is fast and straightforward using official SDKs like **FastMCP** (Python) or **TypeScript MCP SDK**.
+Building an MCP Server can be accomplished using **FastMCP (Python)**, **Gradio (Python)**, or **TypeScript MCP SDK**.
 
 <McpServerBuildStepsDiagram />
 
-### Option A: Building an MCP Server in Python (FastMCP)
+### Option A: Python FastMCP Server
 
-Install the official Python SDK:
 ```bash
 pip install mcp
 ```
 
 Create `server.py`:
 ```python
-from mcp.server.fastmcp import FastMCP, Context
+from mcp.server.fastmcp import FastMCP
 
 # 1. Initialize FastMCP Server
-mcp = FastMCP("Database & Analytics Server")
+mcp = FastMCP("Analytics Server")
 
-# 2. Register an Executable Tool
+# 2. Define an Executable Tool
 @mcp.tool()
-def calculate_dataset_stats(numbers: list[float]) -> dict:
-    """Calculates mean, min, and max for a list of numerical data."""
-    if not numbers:
-        return {"error": "Empty dataset"}
+def analyze_sentiment(text: str) -> dict:
+    """Analyzes text sentiment polarity and returns structured assessment."""
+    text_lower = text.lower()
+    score = 0.8 if "great" in text_lower or "love" in text_lower else -0.8 if "bad" in text_lower else 0.0
     
     return {
-        "count": len(numbers),
-        "mean": sum(numbers) / len(numbers),
-        "min": min(numbers),
-        "max": max(numbers)
+        "text": text,
+        "score": score,
+        "assessment": "positive" if score > 0 else "negative" if score < 0 else "neutral"
     }
 
-# 3. Register a Read-Only Resource
+# 3. Define a Read-Only Resource
 @mcp.resource("config://app-settings")
 def get_config() -> str:
-    """Returns application environment configuration string."""
-    return "ENVIRONMENT=production\nLOG_LEVEL=debug\nMAX_WORKERS=8"
+    """Exposes system configuration string."""
+    return "ENVIRONMENT=production\nLOG_LEVEL=info"
 
-# 4. Register a Prompt Template
+# 4. Define a Prompt Template
 @mcp.prompt()
-def review_sql_query(query: str) -> str:
-    """Generates a prompt asking the model to optimize an SQL query."""
-    return f"Please analyze and optimize the following SQL query for performance:\n\n```sql\n{query}\n```"
+def summarize_report(topic: str) -> str:
+    """Generates a prompt template for executive summarization."""
+    return f"Please provide a 3-bullet executive summary of the latest reports regarding '{topic}'."
 
 if __name__ == "__main__":
-    # Runs the server using standard I/O transport
     mcp.run(transport="stdio")
 ```
 
-### Option B: Building an MCP Server in TypeScript
+### Option B: Gradio MCP Server (Web UI + MCP Endpoint + HF Spaces)
 
-Install `@modelcontextprotocol/sdk`:
+Gradio allows turning any Python function into both a Web UI and an MCP Server automatically with `mcp_server=True`.
+
+```bash
+pip install "gradio[mcp]" textblob
+```
+
+Create `app.py`:
+```python
+import json
+import gradio as gr
+from textblob import TextBlob
+
+def sentiment_analysis(text: str) -> str:
+    """
+    Analyzes sentiment of text.
+    
+    Args:
+        text (str): Input text string
+    Returns:
+        str: JSON formatted string containing polarity and assessment
+    """
+    blob = TextBlob(text)
+    sentiment = blob.sentiment
+    
+    result = {
+        "polarity": round(sentiment.polarity, 2),
+        "subjectivity": round(sentiment.subjectivity, 2),
+        "assessment": "positive" if sentiment.polarity > 0 else "negative" if sentiment.polarity < 0 else "neutral"
+    }
+    return json.dumps(result)
+
+demo = gr.Interface(
+    fn=sentiment_analysis,
+    inputs=gr.Textbox(placeholder="Enter text..."),
+    outputs=gr.Textbox(),
+    title="Text Sentiment Analysis MCP Server"
+)
+
+if __name__ == "__main__":
+    # Enables both Web UI at http://localhost:7860 and MCP SSE at /gradio_api/mcp/sse
+    demo.launch(mcp_server=True)
+```
+
+### Option C: TypeScript MCP Server
+
 ```bash
 npm install @modelcontextprotocol/sdk
 ```
 
-Create `server.ts`:
 ```typescript
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema
-} from "@modelcontextprotocol/sdk/types.js";
+import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 
 const server = new Server(
-  { name: "calculator-server", version: "1.0.0" },
+  { name: "ts-calculator", version: "1.0.0" },
   { capabilities: { tools: {} } }
 );
 
-// Register tool discovery handler
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
     {
-      name: "add_numbers",
-      description: "Adds two numbers together",
+      name: "add",
+      description: "Adds two numbers",
       inputSchema: {
         type: "object",
-        properties: {
-          a: { type: "number" },
-          b: { type: "number" }
-        },
+        properties: { a: { type: "number" }, b: { type: "number" } },
         required: ["a", "b"]
       }
     }
   ]
 }));
 
-// Register tool execution handler
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  if (request.params.name === "add_numbers") {
+  if (request.params.name === "add") {
     const { a, b } = request.params.arguments as { a: number; b: number };
-    return {
-      content: [{ type: "text", text: String(a + b) }]
-    };
+    return { content: [{ type: "text", text: String(a + b) }] };
   }
-  throw new Error(`Tool not found: ${request.params.name}`);
+  throw new Error("Tool not found");
 });
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
+await server.connect(new StdioServerTransport());
 ```
 
 ---
 
 ## 8. Step-by-Step Guide: How to Build an MCP Client
 
-An MCP Client connects to a server, initiates the handshake, lists capabilities, and executes tool calls.
+An MCP Client connects to a server process, initializes protocol negotiation, retrieves available tool definitions, and executes tool calls.
 
-### Complete Python Client Implementation
+### Python Client Session (`mcp.ClientSession`)
 
 ```python
 import asyncio
@@ -246,80 +294,91 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 async def main():
-    # 1. Define server process parameters
+    # 1. Define server command & args
     server_params = StdioServerParameters(
         command="python",
-        args=["server.py"],
-        env=None
+        args=["server.py"]
     )
 
-    # 2. Establish stdio transport channel
+    # 2. Open stdio channel
     async with stdio_client(server_params) as (read, write):
-        # 3. Create MCP Client Session
+        # 3. Create client session
         async with ClientSession(read, write) as session:
-            # 4. Perform Protocol Handshake Initialization
+            # 4. Handshake initialization
             await session.initialize()
-            print("✓ MCP Client Session Initialized!")
+            print("✓ MCP Session initialized!")
 
-            # 5. Discover Available Tools
-            tools_response = await session.list_tools()
-            print("\nAvailable Tools on Server:")
-            for tool in tools_response.tools:
-                print(f" - {tool.name}: {tool.description}")
+            # 5. List available tools
+            tools = await session.list_tools()
+            print("Server Tools:", [t.name for t in tools.tools])
 
-            # 6. Invoke a Tool Call
+            # 6. Execute tool call
             result = await session.call_tool(
-                "calculate_dataset_stats",
-                arguments={"numbers": [10.5, 20.0, 30.5, 40.0]}
+                "analyze_sentiment",
+                arguments={"text": "Neural Mastery is an amazing platform!"}
             )
             
-            print("\nTool Call Result:")
             for content in result.content:
                 if content.type == "text":
-                    print(content.text)
+                    print("Tool Result:", content.text)
 
 if __name__ == "__main__":
     asyncio.run(main())
+```
+
+### Remote Server Proxy (`mcp-remote`)
+If an MCP Client app only supports local `stdio` subprocesses, you can bridge it to a remote SSE server (such as a Hugging Face Space) using `mcp-remote`:
+
+```json
+{
+  "mcpServers": {
+    "hf-sentiment": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://YOUR_USERNAME-mcp-sentiment.hf.space/gradio_api/mcp/sse"
+      ]
+    }
+  }
+}
 ```
 
 ---
 
 ## 9. Hands-On Practice Problems
 
-Master MCP protocol mechanics, server tool routing, and client session initialization in our interactive, test-driven Python execution environment:
+Master MCP protocol mechanics, JSON-RPC message routers, and client initialization sequences in our live test-driven execution environment:
 
 1. ⚡ **[MCP Protocol JSON-RPC Tool Router](/practice/mcp-protocol-router)**  
-   *Difficulty: Medium* · Implement an MCP server JSON-RPC 2.0 message parser and tool validator that dispatches `tools/list` and `tools/call`.
+   *Difficulty: Medium* · Implement an MCP server JSON-RPC 2.0 message parser and validator supporting `tools/list` and `tools/call`.
 
 2. 🛠️ **[MCP Server Tool Handler](/practice/mcp-server-tool-handler)**  
-   *Difficulty: Medium* · Build a server-side tool execution handler with parameter validation against schemas and standard MCP output packaging.
+   *Difficulty: Medium* · Build a server-side tool execution handler with parameter schema validation and standard MCP content packaging.
 
 3. 🔑 **[MCP Client Session Handshake](/practice/mcp-client-session)**  
-   *Difficulty: Medium* · Construct the client-side MCP `initialize` request and parse server responses to negotiate capabilities.
+   *Difficulty: Medium* · Construct client-side `initialize` JSON-RPC requests and negotiate server capabilities.
 
 ---
 
-## 10. Real-World MCP Ecosystem & Best Practices
+## 10. Ecosystem & Architectural Scope
 
 <RealWorldMcpServersDiagram />
 
-### Modern Agent Architecture Integration
+### MCP in the Agentic Architecture Loop
 
 <McpInAgentLoopDiagram />
 
-In a production agentic system, MCP standardizes how tools are connected into the core **Perceive $\rightarrow$ Reason $\rightarrow$ Act** loop. The agent relies on MCP for secure, structured access to file systems, databases, cloud clusters, and web APIs.
+In modern AI agent architectures, MCP standardizes how tools are integrated into the core **Perceive $\rightarrow$ Reason $\rightarrow$ Act** execution loop.
 
 <McpVsA2aScopeDiagram />
 
-- **MCP (Agent-to-Tool)**: Optimized for fast, deterministic, structured tool execution and resource retrieval between an agent and a software system.
-- **A2A (Agent-to-Agent)**: Optimized for multi-agent delegation, collaborative planning, and stateful cross-organization negotiation.
+- **MCP (Agent-to-Tool)**: Standardizes agent connectivity to software capabilities, filesystems, and databases in structured, single-turn interactions.
+- **A2A (Agent-to-Agent)**: Standardizes multi-agent coordination, long-running stateful workflows, and cross-organization delegation.
 
 ---
 
 ## What's Next
 
-Continue your mastery of Agent infrastructure with detailed transport wire protocols, security authentication, and production deployment patterns:
-
-- Next: **[MCP Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive)** — Transport specs, JSON-RPC schema details, security isolation, and OAuth authorization.
-- Related: **[Agent Fundamentals](/docs/agents/agent-fundamentals)** — Tool calling, reasoning loops, and planning algorithms.
-- Related: **[Agent-to-Agent (A2A) Protocols](/docs/agents/a2a/overview)** — Inter-agent communication protocols.
+- Next: **[MCP Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive)** — Wire-level JSON-RPC schemas, authentication headers, security sandboxing, and OAuth session tokens.
+- Related: **[Agent Fundamentals](/docs/agents/agent-fundamentals)** — Tool calling reasoning loops and planning strategies.
+- Related: **[Agent-to-Agent (A2A) Protocols](/docs/agents/a2a/overview)** — Multi-agent communication standards.
