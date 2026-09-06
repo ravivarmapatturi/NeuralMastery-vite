@@ -37,6 +37,9 @@ export interface PracticeProblem {
   taskDescription: string;
   constraints: string[];
   testCases: PracticeTestCase[];
+  libraryPolicyText?: string;
+  bonusPoints?: number;
+  bonusDescription?: string;
   hints?: {
     small: string;
     strong: string;
@@ -62,9 +65,13 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     pass
 `,
     mission: 'Implement the dot product from scratch, understand exactly what every multiplication and addition is doing, then connect the operation to the computations inside modern AI systems.',
-    taskDescription: 'Implement `dot_product(a, b)` using plain Python — no NumPy. Raise a `ValueError` if `len(a) != len(b)`.',
+    taskDescription: 'Implement `dot_product(a, b)` using plain Python or NumPy. Libraries are allowed, but implementing using Pure Python earns +10 Bonus XP!',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
     constraints: [
-      'Must use plain Python loops / list comprehensions (no numpy or third-party libraries).',
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python (no NumPy) earns +10 Bonus XP!',
       'Must raise ValueError if len(a) != len(b).',
       'Must handle floating-point values and negative numbers correctly.',
     ],
@@ -87,7 +94,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
       { id: 'floats', label: 'Floating Point Numbers', input: { a: [0.5, 1.5], b: [2.0, 4.0] }, expectedOutput: 7.0, hidden: true, description: '0.5*2.0 + 1.5*4.0 = 7.0' },
       { id: 'larger', label: 'Larger Vector (Dim 5)', input: { a: [1, 2, 3, 4, 5], b: [5, 4, 3, 2, 1] }, expectedOutput: 35, hidden: true, description: '5 + 8 + 9 + 8 + 5 = 35' },
     ],
-    runtime: { language: 'python', capabilities: ['python'] },
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
   },
   'matrix-multiplication': {
     id: 'matrix-multiplication',
@@ -105,8 +112,12 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
 `,
     mission: 'Implement 2D matrix multiplication using dot products of rows and columns, laying the foundation for dense neural network layers.',
     taskDescription: 'Implement `matmul(A, B)` for 2D matrices represented as nested lists. Raise `ValueError` if inner dimensions do not match.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +15 bonus XP',
+    bonusPoints: 15,
+    bonusDescription: 'Pure Python implementation',
     constraints: [
-      'No NumPy or external libraries allowed.',
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python (no NumPy) earns +15 Bonus XP!',
       'Must check inner dimension compatibility (cols of A == rows of B).',
       'Return 2D list of numbers.',
     ],
@@ -122,7 +133,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
       { id: 'scalar', label: '1x1 matrices', input: { A: [[2]], B: [[3]] }, expectedOutput: [[6]], hidden: false },
       { id: 'mismatched', label: 'Dimension Mismatch', input: { A: [[1, 2, 3]], B: [[1, 2], [3, 4]] }, expectError: 'ValueError', hidden: true },
     ],
-    runtime: { language: 'python', capabilities: ['python'] },
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
   },
 };
 

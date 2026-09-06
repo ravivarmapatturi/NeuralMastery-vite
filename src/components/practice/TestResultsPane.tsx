@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { PracticeTestCase } from '../../lib/practiceProblem';
 import type { ExecutionResult } from '../../lib/execution/types';
 import type { SubmissionRecord } from '../../lib/practicePersistence';
@@ -34,6 +34,13 @@ export default function TestResultsPane({
   const visibleTestCases = testCases.filter((tc) => !tc.hidden);
   const passedCount = result?.caseResults.filter((c) => c.passed).length ?? 0;
   const totalCount = result?.caseResults.length ?? 0;
+
+  // Immediately make results visible upon execution/submission
+  useEffect(() => {
+    if (result) {
+      setActiveTab('console');
+    }
+  }, [result]);
 
   function handleCreateCustomTest() {
     try {
@@ -105,9 +112,12 @@ export default function TestResultsPane({
         </div>
 
         {result && (
-          <div style={{ fontSize: 12, fontWeight: 700 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
             {result.status === 'success' ? (
-              <span style={{ color: '#34d399' }}>✓ {lastAction === 'submit' ? 'Submitted & Passed' : 'All Passed'}</span>
+              <span style={{ color: '#34d399' }}>
+                ✓ {lastAction === 'submit' ? 'Submitted & Passed' : 'All Passed'}
+                {result.bonusEarned && ' 🏆 (+Bonus)'}
+              </span>
             ) : result.status === 'syntax_error' ? (
               <span style={{ color: '#ef4444' }}>⚠ Syntax Error</span>
             ) : result.status === 'runtime_error' ? (
@@ -371,6 +381,27 @@ export default function TestResultsPane({
                     Tests Passed: {passedCount} / {totalCount}
                     {result.totalExecutionTimeMs !== undefined && ` · Total Runtime: ${result.totalExecutionTimeMs}ms`}
                   </div>
+
+                  {result.bonusMessage && (
+                    <div
+                      style={{
+                        marginTop: 8,
+                        padding: '6px 10px',
+                        borderRadius: 6,
+                        background: result.bonusEarned ? 'rgba(251, 191, 36, 0.15)' : 'rgba(99, 102, 241, 0.15)',
+                        border: `1px solid ${result.bonusEarned ? 'rgba(251, 191, 36, 0.4)' : 'rgba(99, 102, 241, 0.4)'}`,
+                        color: result.bonusEarned ? '#fbbf24' : '#818cf8',
+                        fontWeight: 700,
+                        fontSize: 12,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                      }}
+                    >
+                      <span>{result.bonusEarned ? '🏆' : 'ℹ️'}</span>
+                      <span>{result.bonusMessage}</span>
+                    </div>
+                  )}
 
                   {result.errorMessage && (
                     <pre style={{ marginTop: 8, padding: 8, borderRadius: 4, background: '#020617', color: '#f87171', fontSize: 12, whiteSpace: 'pre-wrap' }}>

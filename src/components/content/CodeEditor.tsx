@@ -28,7 +28,7 @@ import type { VizTokens } from '../../theme/vizTokens';
 export default function CodeEditor({
   value,
   onChange,
-  tokens,
+  tokens: _tokens,
 }: {
   value: string;
   onChange: (next: string) => void;
@@ -49,16 +49,59 @@ export default function CodeEditor({
           python(),
           indentUnit.of('    '), // real 4-space Python indent, not CM6's 2-space default
           Prec.highest(keymap.of([indentWithTab])), // Tab inserts indent -- a Python-only tool needs this more than the a11y default of tabbing focus away
-          EditorView.theme({
-            '&': { backgroundColor: tokens.surface, color: tokens.textPrimary, fontSize: '13px' },
-            '.cm-content': { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', minHeight: '96px', padding: '8px 0' },
-            '.cm-gutters': { backgroundColor: tokens.surface, color: tokens.textMuted, border: 'none' },
-            '.cm-activeLine': { backgroundColor: tokens.surfaceAlt },
-            '.cm-activeLineGutter': { backgroundColor: tokens.surfaceAlt },
-            '&.cm-focused': { outline: 'none' },
-            '.cm-cursor': { borderLeftColor: tokens.textPrimary },
-            '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': { backgroundColor: `${tokens.accentTeal}33` },
-          }),
+          EditorView.theme(
+            {
+              '&': {
+                backgroundColor: '#020617',
+                color: '#f8fafc',
+                fontSize: '13px',
+                height: '100%',
+              },
+              '.cm-scroller': {
+                backgroundColor: '#020617',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+                minHeight: '100%',
+                overflow: 'auto',
+              },
+              '.cm-content': {
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+                minHeight: '96px',
+                padding: '10px 0',
+                backgroundColor: '#020617',
+                caretColor: '#38bdf8',
+              },
+              '.cm-gutters': {
+                backgroundColor: '#0f172a',
+                color: '#64748b',
+                borderRight: '1px solid rgba(255,255,255,0.08)',
+              },
+              '.cm-gutterElement': {
+                padding: '0 8px 0 12px',
+              },
+              '.cm-line': {
+                padding: '0 12px',
+                color: '#f8fafc',
+              },
+              '.cm-activeLine': {
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              },
+              '.cm-activeLineGutter': {
+                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                color: '#cbd5e1',
+              },
+              '&.cm-focused': {
+                outline: 'none',
+              },
+              '.cm-cursor': {
+                borderLeftColor: '#38bdf8',
+                borderLeftWidth: '2px',
+              },
+              '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': {
+                backgroundColor: 'rgba(99, 102, 241, 0.35) !important',
+              },
+            },
+            { dark: true },
+          ),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) onChangeRef.current(update.state.doc.toString());
           }),
@@ -89,5 +132,5 @@ export default function CodeEditor({
     }
   }, [value]);
 
-  return <div ref={containerRef} />;
+  return <div ref={containerRef} style={{ height: '100%', background: '#020617' }} />;
 }

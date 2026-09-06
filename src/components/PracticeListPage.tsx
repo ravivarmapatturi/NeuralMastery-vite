@@ -76,7 +76,7 @@ export default function PracticeListPage() {
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
       <Navbar />
 
-      <section style={{ maxWidth: 1000, margin: '0 auto', padding: '3rem 1.5rem 4rem' }}>
+      <section style={{ maxWidth: 1350, margin: '0 auto', padding: '2.5rem 2rem 4rem' }}>
         <h1 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: '0 0 0.5rem' }}>
           Practice AI
         </h1>

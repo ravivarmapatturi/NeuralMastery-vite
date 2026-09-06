@@ -37,7 +37,7 @@ interface GamificationContextValue {
    * 'medium' | 'hard' | undefined) -- see pointsForDifficulty in
    * lib/gamification.ts for why this scales the award instead of every
    * problem paying out the same flat value. */
-  awardProblemCompleted: (permalink: string, difficulty: string | undefined) => void;
+  awardProblemCompleted: (permalink: string, difficulty: string | undefined, bonusPoints?: number) => void;
   awardSystemDesignCompleted: (permalink: string) => void;
   /** id: a stable, synthetic (non-URL) identifier for one flashcard --
    * e.g. "flashcard:home-kv-cache" -- not a real page permalink, so it's
@@ -256,7 +256,8 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
   const awardMarkUnderstood = useCallback((permalink: string) => award(permalink, 'mark', MARK_UNDERSTOOD_POINTS), [award]);
   const awardProblemCompleted = useCallback(
-    (permalink: string, difficulty: string | undefined) => award(permalink, 'complete', pointsForDifficulty(difficulty)),
+    (permalink: string, difficulty: string | undefined, bonusPoints: number = 0) =>
+      award(permalink, 'complete', pointsForDifficulty(difficulty) + bonusPoints),
     [award],
   );
   const awardFlashcardRevealed = useCallback((id: string) => award(id, 'flashcard', FLASHCARD_REVEAL_POINTS), [award]);

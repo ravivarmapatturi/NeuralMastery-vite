@@ -37,6 +37,10 @@ export interface ExecutionResult {
    * one call. Null on success. */
   errorMessage: string | null;
   totalExecutionTimeMs?: number;
+  usesLibrary?: boolean;
+  bonusEarned?: boolean;
+  bonusPoints?: number;
+  bonusMessage?: string;
 }
 
 

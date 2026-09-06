@@ -50,7 +50,7 @@ export default function ProfilePage() {
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
       <Navbar />
 
-      <section style={{ maxWidth: 900, margin: '0 auto', padding: '3rem 1.5rem 1.5rem' }}>
+      <section style={{ maxWidth: 1320, margin: '0 auto', padding: '2.5rem 2rem 3rem' }}>
         {/* --- Identity header --- */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: '1.75rem' }}>
           <div
@@ -172,65 +172,79 @@ export default function ProfilePage() {
           Leaderboard
         </h2>
         <div style={{ borderRadius: 12, border: '1px solid var(--nm-border)', background: 'var(--nm-surface)', marginBottom: '2rem', overflow: 'hidden' }}>
-          {!user ? (
-            <p style={{ margin: 0, padding: '1rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)', lineHeight: 1.6 }}>
-              Sign in to see how your points stack up against other learners.
-            </p>
-          ) : (
-            <>
-              <div style={{ display: 'flex', gap: 6, padding: '0.75rem 1.25rem 0' }}>
-                {(['allTime', 'weekly'] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    type="button"
-                    onClick={() => setLeaderboardTab(tab)}
-                    style={{
-                      fontSize: 12.5,
-                      fontWeight: 600,
-                      padding: '0.35rem 0.75rem',
-                      borderRadius: 8,
-                      border: `1px solid ${leaderboardTab === tab ? 'var(--nm-accent-primary)' : 'var(--nm-border)'}`,
-                      background: leaderboardTab === tab ? 'color-mix(in srgb, var(--nm-accent-primary) 12%, transparent)' : 'transparent',
-                      color: leaderboardTab === tab ? 'var(--nm-accent-primary)' : 'var(--nm-text-secondary)',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {tab === 'allTime' ? 'All-time' : 'This week'}
-                  </button>
-                ))}
-              </div>
-              <div style={{ padding: '0.5rem 0 0.25rem' }}>
-                {leaderboardLoading ? (
-                  <p style={{ margin: 0, padding: '0.75rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)' }}>Loading…</p>
-                ) : leaderboardEntries.length === 0 ? (
-                  <p style={{ margin: 0, padding: '0.75rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)' }}>
-                    {leaderboardTab === 'allTime' ? 'No points on the board yet -- be the first.' : 'No points this week yet -- be the first.'}
-                  </p>
-                ) : (
-                  leaderboardEntries.map((entry, i) => (
-                    <div
-                      key={entry.uid}
+          {(() => {
+            let entries = [...leaderboardEntries];
+            const currentPts = leaderboardTab === 'allTime' ? points : (leaderboardEntries.find(e => e.uid === user?.uid)?.points ?? points);
+            const userUid = user?.uid ?? 'local-visitor';
+            const userInEntries = entries.some((e) => e.uid === userUid || (user && e.displayName === displayName));
+            if (!userInEntries && currentPts > 0) {
+              entries.push({
+                uid: userUid,
+                displayName,
+                points: currentPts,
+              });
+              entries.sort((a, b) => b.points - a.points);
+            }
+
+            return (
+              <>
+                <div style={{ display: 'flex', gap: 6, padding: '0.75rem 1.25rem 0' }}>
+                  {(['allTime', 'weekly'] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => setLeaderboardTab(tab)}
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                        padding: '0.5rem 1.25rem',
-                        borderTop: i === 0 ? 'none' : '1px solid var(--nm-border)',
-                        background: entry.uid === user.uid ? 'color-mix(in srgb, var(--nm-accent-primary) 6%, transparent)' : 'transparent',
+                        fontSize: 12.5,
+                        fontWeight: 600,
+                        padding: '0.35rem 0.75rem',
+                        borderRadius: 8,
+                        border: `1px solid ${leaderboardTab === tab ? 'var(--nm-accent-primary)' : 'var(--nm-border)'}`,
+                        background: leaderboardTab === tab ? 'color-mix(in srgb, var(--nm-accent-primary) 12%, transparent)' : 'transparent',
+                        color: leaderboardTab === tab ? 'var(--nm-accent-primary)' : 'var(--nm-text-secondary)',
+                        cursor: 'pointer',
                       }}
                     >
-                      <span style={{ width: 20, fontSize: 12.5, fontWeight: 700, color: 'var(--nm-text-muted)', flexShrink: 0 }}>{i + 1}</span>
-                      <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: 'var(--nm-text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {entry.displayName}
-                        {entry.uid === user.uid && <span style={{ color: 'var(--nm-text-muted)' }}> (you)</span>}
-                      </span>
-                      <span style={{ flexShrink: 0, fontSize: 13, fontWeight: 700, color: 'var(--nm-accent-primary)' }}>{entry.points} pts</span>
-                    </div>
-                  ))
-                )}
-              </div>
-            </>
-          )}
+                      {tab === 'allTime' ? 'All-time' : 'This week'}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ padding: '0.5rem 0 0.25rem' }}>
+                  {leaderboardLoading ? (
+                    <p style={{ margin: 0, padding: '0.75rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)' }}>Loading…</p>
+                  ) : entries.length === 0 ? (
+                    <p style={{ margin: 0, padding: '0.75rem 1.25rem', fontSize: 13, color: 'var(--nm-text-muted)' }}>
+                      {leaderboardTab === 'allTime' ? 'No points on the board yet -- be the first.' : 'No points this week yet -- be the first.'}
+                    </p>
+                  ) : (
+                    entries.map((entry, i) => {
+                      const isSelf = entry.uid === userUid || (user && entry.displayName === displayName);
+                      return (
+                        <div
+                          key={entry.uid || i}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 10,
+                            padding: '0.5rem 1.25rem',
+                            borderTop: i === 0 ? 'none' : '1px solid var(--nm-border)',
+                            background: isSelf ? 'color-mix(in srgb, var(--nm-accent-primary) 8%, transparent)' : 'transparent',
+                          }}
+                        >
+                          <span style={{ width: 20, fontSize: 12.5, fontWeight: 700, color: 'var(--nm-text-muted)', flexShrink: 0 }}>{i + 1}</span>
+                          <span style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: isSelf ? 'var(--nm-accent-primary)' : 'var(--nm-text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: isSelf ? 700 : 400 }}>
+                            {entry.displayName}
+                            {isSelf && <span style={{ color: 'var(--nm-accent-primary)', fontSize: 12 }}> (you)</span>}
+                          </span>
+                          <span style={{ flexShrink: 0, fontSize: 13, fontWeight: 700, color: 'var(--nm-accent-primary)' }}>{entry.points} pts</span>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </>
+            );
+          })()}
         </div>
       </section>
     </div>

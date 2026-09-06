@@ -122,6 +122,22 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
       testCases: cases,
     });
 
+    const usesLibrary = /\b(import\s+numpy|from\s+numpy|import\s+scipy|import\s+torch|import\s+tensorflow|np\.)\b/.test(code);
+    res.usesLibrary = usesLibrary;
+
+    if (res.status === 'success') {
+      const bonusAvailable = problem?.bonusPoints ?? 0;
+      if (!usesLibrary && bonusAvailable > 0) {
+        res.bonusEarned = true;
+        res.bonusPoints = bonusAvailable;
+        res.bonusMessage = `+${bonusAvailable} Bonus — ${problem?.bonusDescription ?? 'Pure Python implementation'}`;
+      } else {
+        res.bonusEarned = false;
+        res.bonusPoints = 0;
+        res.bonusMessage = usesLibrary ? 'Accepted — Library-assisted solution' : undefined;
+      }
+    }
+
     setResult(res);
     setStatus('idle');
 
@@ -137,11 +153,11 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
         totalExecutionTimeMs: res.totalExecutionTimeMs,
       });
 
-
       setSubmissions(loadSubmissions(problemId));
 
       if (res.status === 'success') {
-        awardProblemCompleted(permalink, problem.difficulty);
+        const bonusToAward = res.bonusEarned ? (res.bonusPoints ?? 0) : 0;
+        awardProblemCompleted(permalink, problem.difficulty, bonusToAward);
       }
     }
   }

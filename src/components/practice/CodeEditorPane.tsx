@@ -152,7 +152,7 @@ export default function CodeEditorPane({
       </div>
 
       {/* CodeMirror Code Editor Area */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'auto', background: t.surface }}>
+      <div style={{ flex: 1, position: 'relative', overflow: 'auto', background: '#020617' }}>
         <Suspense
           fallback={
             <textarea
@@ -165,8 +165,8 @@ export default function CodeEditorPane({
                 height: '100%',
                 boxSizing: 'border-box',
                 padding: SPACING.sm,
-                background: t.surface,
-                color: t.textPrimary,
+                background: '#020617',
+                color: '#f8fafc',
                 border: 'none',
                 outline: 'none',
                 resize: 'none',

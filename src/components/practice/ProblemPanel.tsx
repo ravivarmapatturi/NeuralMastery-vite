@@ -190,6 +190,26 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                   </span>
                 )}
               </div>
+
+              {problem.libraryPolicyText && (
+                <div
+                  style={{
+                    marginTop: 10,
+                    padding: '8px 12px',
+                    borderRadius: 6,
+                    background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
+                    border: '1px solid rgba(16, 185, 129, 0.35)',
+                    color: '#34d399',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                  }}
+                >
+                  <span>⚡</span> {problem.libraryPolicyText}
+                </div>
+              )}
             </div>
 
             {/* Mission Box */}

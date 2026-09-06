@@ -46,7 +46,7 @@ export default function LeaderboardPage() {
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg, #090d16)', color: 'var(--nm-text-primary, #f8fafc)' }}>
       <Navbar />
 
-      <main style={{ maxWidth: 960, margin: '0 auto', padding: '2.5rem 1.5rem 3rem' }}>
+      <main style={{ maxWidth: 1350, margin: '0 auto', padding: '2.5rem 2rem 3rem' }}>
         {/* --- Hero Header --- */}
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <div
