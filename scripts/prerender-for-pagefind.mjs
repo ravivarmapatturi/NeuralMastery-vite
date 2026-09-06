@@ -31,7 +31,7 @@
 // router still matches correctly after the redirect lands.
 import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
-import { mkdirSync, writeFileSync, rmSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { mkdirSync, writeFileSync, rmSync, readdirSync, statSync, existsSync, readFileSync } from 'node:fs';
 import { join, relative, extname, dirname } from 'node:path';
 import { routeFromMdxPath, outputPathForRoute } from './lib/prerenderRoutes.mjs';
 
@@ -52,8 +52,28 @@ function walk(dir) {
   return out;
 }
 
+// A `placeholder: true` frontmatter flag marks a page as templated
+// filler with no real content yet (currently ~1,470 mechanically
+// generated practice-problem stubs) -- prerendering and indexing those
+// was the dominant cost in this step (each one needs a real headless
+// browser render), ballooning CI/deploy time from ~2-3 minutes to ~10
+// once the page count went from ~309 to ~1,792. Skipping them here
+// means they're reachable through the SPA like any other route, just
+// without a static prerendered file or a Pagefind search entry -- which
+// is the right tradeoff for content that's not real yet anyway (no
+// value indexing near-duplicate template text, and no value having
+// search engines crawl it). Remove the frontmatter flag once a given
+// problem gets real content and it rejoins prerendering/indexing
+// automatically, no code change needed here.
+function isPlaceholder(mdxPath) {
+  const head = readFileSync(mdxPath, 'utf8').slice(0, 200);
+  return /^placeholder:\s*true\s*$/m.test(head);
+}
+
 function routesFromContentTree() {
-  return walk(CONTENT_ROOT).map((f) => routeFromMdxPath(f, CONTENT_ROOT));
+  return walk(CONTENT_ROOT)
+    .filter((f) => !isPlaceholder(f))
+    .map((f) => routeFromMdxPath(f, CONTENT_ROOT));
 }
 
 // App.tsx's non-/docs/* routes -- these aren't in the content tree at all,
