@@ -12,7 +12,7 @@ import { SECTION_META, SECTION_ORDER, getGroupForSubsection } from '../data/sect
 // histories is a plain, safe set union (see mergeEvents) instead of a
 // bespoke reconciliation for a mutable counter.
 
-export type AwardKind = 'mark' | 'complete' | 'design' | 'flashcard' | 'signin';
+export type AwardKind = 'mark' | 'complete' | 'design' | 'flashcard' | 'signin' | 'review' | 'depth';
 
 export interface AwardEvent {
   permalink: string;
@@ -84,6 +84,28 @@ export const FLASHCARD_REVEAL_POINTS = 1;
  * `signin:<date>` permalink), not a second, parallel date-boundary
  * implementation. */
 export const DAILY_SIGNIN_POINTS = 15;
+
+/** Real reward-gap audit finding: completing a scheduled spaced-repetition
+ * review (ProgressContext's markReviewed) previously earned nothing, even
+ * though it's a genuine, real learning action -- and unlike most awards,
+ * it's naturally time-gated already (a page only becomes due again after
+ * its real interval elapses, see REVIEW_INTERVALS_DAYS), so there's no
+ * risk of spamming this for free points. Awarded per real stage
+ * transition (see awardReviewCompleted's synthetic `review:<permalink>:
+ * <stage>` permalink), so a page's full review lifecycle (up to
+ * REVIEW_INTERVALS_DAYS.length transitions) can earn this multiple real
+ * times, never more than once per actual transition. */
+export const REVIEW_COMPLETED_POINTS = 10;
+
+/** Real reward-gap audit finding: expanding an ELI5/Deep-Dive block
+ * (ExpandableDepth.tsx) is a genuine extra-effort action (a reader
+ * choosing to go deeper on a concept) that previously earned nothing.
+ * Kept at the same modest scale as FLASHCARD_REVEAL_POINTS (one click,
+ * no recall effort -- an even lighter action than revealing a flashcard
+ * answer) rather than a real practice/mark award's scale.
+ * First-expansion-only per block, same no-double-award contract as every
+ * other award kind. */
+export const DEPTH_REVEAL_POINTS = 2;
 
 /** Local (not UTC) calendar date as YYYY-MM-DD -- deliberately built from
  * Date's local getters, not toISOString() (which is UTC-based and would

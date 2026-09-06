@@ -1,5 +1,7 @@
 import { useState, type ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useVizTokens, RADIUS, SPACING } from '../../theme/vizTokens';
+import { useGamification } from '../../contexts/GamificationContext';
 
 type Depth = 'eli5' | 'deeper' | 'solution' | 'qa';
 
@@ -99,12 +101,33 @@ function ExpandableDepth({
   );
 }
 
+/** Real reward-gap audit finding: expanding an ELI5/Deep-Dive block is a
+ * genuine extra-effort action that previously earned nothing (see
+ * DEPTH_REVEAL_POINTS in lib/gamification.ts). Builds a synthetic,
+ * page-scoped id from the current route + block kind + title -- not a
+ * per-block database id (none exists; these are plain MDX content, not
+ * a managed collection), so two untitled blocks of the SAME kind on the
+ * SAME page collide onto one shared id (only the first ever earns the
+ * reward) -- an accepted, low-stakes trade-off for a small reward,
+ * rather than building real per-block identity machinery no other part
+ * of this content system has. award()'s own hasAward de-dupe (see
+ * GamificationContext) is what actually makes this first-reveal-only;
+ * ExpandableDepth's onReveal itself fires on every open, by design (see
+ * QA's own identical contract). */
+function useDepthRevealHandler(kind: 'eli5' | 'deeper', title: string | undefined) {
+  const { pathname } = useLocation();
+  const { awardDepthRevealed } = useGamification();
+  const id = `depth:${pathname}:${kind}:${title ?? 'untitled'}`;
+  return () => awardDepthRevealed(id);
+}
+
 /** A short, plain-language on-ramp before the standard explanation gets
  * technical -- open by default, collapsible for anyone who wants to skip
  * straight to the real content. */
 export function ELI5({ title, children }: { title?: string; children: ReactNode }) {
+  const onReveal = useDepthRevealHandler('eli5', title);
   return (
-    <ExpandableDepth kind="eli5" title={title}>
+    <ExpandableDepth kind="eli5" title={title} onReveal={onReveal}>
       {children}
     </ExpandableDepth>
   );
@@ -114,8 +137,9 @@ export function ELI5({ title, children }: { title?: string; children: ReactNode 
  * an edge case, formal detail. Closed by default: opt-in depth, not
  * something every reader has to scroll past. */
 export function GoDeeper({ title, children }: { title?: string; children: ReactNode }) {
+  const onReveal = useDepthRevealHandler('deeper', title);
   return (
-    <ExpandableDepth kind="deeper" title={title} defaultOpen={false}>
+    <ExpandableDepth kind="deeper" title={title} defaultOpen={false} onReveal={onReveal}>
       {children}
     </ExpandableDepth>
   );

@@ -1,8 +1,31 @@
-import { screen } from '@testing-library/react'
+import { render as rtlRender, screen, type RenderResult } from '@testing-library/react'
+import type { ReactElement, ReactNode } from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { ELI5, GoDeeper, QA, Solution } from './ExpandableDepth'
-import { renderWithTheme as render } from '../../../tests/unit/renderWithProviders'
+import { ThemeProvider } from '../../theme/ThemeProvider'
+import { AuthProvider } from '../../contexts/AuthContext'
+import { GamificationProvider, useGamification } from '../../contexts/GamificationContext'
+import { DEPTH_REVEAL_POINTS } from '../../lib/gamification'
+
+// ELI5/GoDeeper now award real, first-reveal-only points on open (see
+// useDepthRevealHandler in ExpandableDepth.tsx), which needs a real route
+// (useLocation) and GamificationProvider -- ThemeProvider alone (this
+// file's previous wrapper) is no longer enough. Local to this file rather
+// than widening the shared renderWithTheme helper, which many other,
+// unrelated tests use and don't need this heavier tree for.
+function render(ui: ReactElement): RenderResult {
+  return rtlRender(
+    <ThemeProvider>
+      <MemoryRouter>
+        <AuthProvider>
+          <GamificationProvider>{ui}</GamificationProvider>
+        </AuthProvider>
+      </MemoryRouter>
+    </ThemeProvider>,
+  )
+}
 
 describe('ELI5', () => {
   it('defaults open -- content is in the DOM without any interaction', () => {
@@ -148,5 +171,66 @@ describe('QA', () => {
       </QA>,
     )
     expect(onReveal).not.toHaveBeenCalled()
+  })
+})
+
+function PointsHarness({ children }: { children: ReactNode }) {
+  const { points } = useGamification()
+  return (
+    <div>
+      <div data-testid="points">{points}</div>
+      {children}
+    </div>
+  )
+}
+
+describe('ELI5/GoDeeper: real reward-gap fix -- opening one earns real points', () => {
+  beforeEach(() => {
+    window.localStorage.clear()
+  })
+
+  it('re-opening a closed ELI5 block (a genuine reveal, since it starts open) earns DEPTH_REVEAL_POINTS', async () => {
+    const user = userEvent.setup()
+    render(
+      <PointsHarness>
+        <ELI5 title="A real on-ramp">Plain-English text.</ELI5>
+      </PointsHarness>,
+    )
+    expect(screen.getByTestId('points')).toHaveTextContent('0')
+    const button = screen.getByRole('button')
+    await user.click(button) // close (it starts open)
+    await user.click(button) // re-open -- the real reveal transition
+    expect(screen.getByTestId('points')).toHaveTextContent(String(DEPTH_REVEAL_POINTS))
+  })
+
+  it('opening a GoDeeper block earns DEPTH_REVEAL_POINTS, and re-opening it again does not double-award', async () => {
+    const user = userEvent.setup()
+    render(
+      <PointsHarness>
+        <GoDeeper title="A real deep-dive">Advanced detail.</GoDeeper>
+      </PointsHarness>,
+    )
+    expect(screen.getByTestId('points')).toHaveTextContent('0')
+    const button = screen.getByRole('button')
+    await user.click(button) // open -- first reveal
+    expect(screen.getByTestId('points')).toHaveTextContent(String(DEPTH_REVEAL_POINTS))
+    await user.click(button) // close
+    await user.click(button) // re-open -- onReveal fires again, but award() itself is idempotent
+    expect(screen.getByTestId('points')).toHaveTextContent(String(DEPTH_REVEAL_POINTS)) // unchanged, not doubled
+  })
+
+  it('two GoDeeper blocks with different titles on the same page each earn their own real reward', async () => {
+    const user = userEvent.setup()
+    render(
+      <PointsHarness>
+        <GoDeeper title="First deep-dive">First.</GoDeeper>
+        <GoDeeper title="Second deep-dive">Second.</GoDeeper>
+      </PointsHarness>,
+    )
+    const [firstButton, secondButton] = screen.getAllByRole('button')
+    await user.click(firstButton)
+    expect(screen.getByTestId('points')).toHaveTextContent(String(DEPTH_REVEAL_POINTS))
+    await user.click(secondButton)
+    expect(screen.getByTestId('points')).toHaveTextContent(String(DEPTH_REVEAL_POINTS * 2))
   })
 })

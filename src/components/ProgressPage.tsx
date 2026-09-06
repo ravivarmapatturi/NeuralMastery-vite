@@ -5,7 +5,7 @@ import BadgeShowcase from './layout/BadgeShowcase';
 import { getSidebar, getFlatPages } from '../lib/contentTree';
 
 import { SECTION_META, SECTION_ORDER, completionFor } from '../data/sectionMeta';
-import { useProgress } from '../contexts/ProgressContext';
+import { useProgress, REVIEW_INTERVALS_DAYS } from '../contexts/ProgressContext';
 import { useGamification } from '../contexts/GamificationContext';
 import { levelForPoints } from '../lib/gamification';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
@@ -32,7 +32,7 @@ export default function ProgressPage() {
   useDocumentMeta('Your Progress', 'Track which pages across Neural Mastery you have marked as understood -- tracked locally in your browser, no account required.');
 
   const { understood, isUnderstood, toggle, countWithin, reset, dueForReview, markReviewed } = useProgress();
-  const { points } = useGamification();
+  const { points, awardReviewCompleted } = useGamification();
   const { level } = levelForPoints(points);
   const sections = getSidebar();
   const flatPages = getFlatPages();
@@ -118,7 +118,16 @@ export default function ProgressPage() {
                   </Link>
                   <button
                     type="button"
-                    onClick={() => markReviewed(route)}
+                    onClick={() => {
+                      // Real reached stage, same computation markReviewed
+                      // itself does internally -- used only to build the
+                      // award's synthetic per-transition permalink (see
+                      // awardReviewCompleted), never to duplicate
+                      // markReviewed's own progress-tracking logic.
+                      const nextStage = Math.min((understood[route]?.stage ?? 0) + 1, REVIEW_INTERVALS_DAYS.length - 1);
+                      markReviewed(route);
+                      awardReviewCompleted(route, nextStage);
+                    }}
                     style={{
                       flexShrink: 0,
                       fontSize: 12.5,

@@ -7,6 +7,8 @@ import {
   SYSTEM_DESIGN_CHALLENGE_POINTS,
   FLASHCARD_REVEAL_POINTS,
   DAILY_SIGNIN_POINTS,
+  REVIEW_COMPLETED_POINTS,
+  DEPTH_REVEAL_POINTS,
   hasAward,
   totalPoints,
   weeklyPoints as computeWeeklyPoints,
@@ -54,6 +56,17 @@ interface GamificationContextValue {
    * DAILY_SIGNIN_POINTS for why the de-dupe needs no separate
    * date-boundary logic of its own. */
   awardDailySignIn: () => void;
+  /** stage: the review stage just REACHED (post-increment), not the one
+   * before -- see ProgressContext's REVIEW_INTERVALS_DAYS. Awarded per
+   * real stage transition (synthetic `review:<permalink>:<stage>`
+   * permalink), so a page's full spaced-repetition lifecycle can earn
+   * this multiple real times, never more than once per actual
+   * transition -- see lib/gamification.ts's REVIEW_COMPLETED_POINTS. */
+  awardReviewCompleted: (permalink: string, stage: number) => void;
+  /** id: a stable, synthetic identifier for one ELI5/Deep-Dive block
+   * (see ExpandableDepth.tsx) -- same first-reveal-only contract as
+   * awardFlashcardRevealed. */
+  awardDepthRevealed: (id: string) => void;
 }
 
 const GamificationContext = createContext<GamificationContextValue | null>(null);
@@ -346,20 +359,21 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       };
 
       // Celebratory Tada Confetti & Toast Notification
+      const TOAST_BY_KIND: Record<AwardEvent['kind'], { title: string; icon: string }> = {
+        complete: { title: 'Problem Solved!', icon: '🎉' },
+        design: { title: 'Design Completed!', icon: '🏗️' },
+        mark: { title: 'Page Understood!', icon: '📖' },
+        signin: { title: 'Welcome Back!', icon: '👋' },
+        review: { title: 'Review Complete!', icon: '🔁' },
+        depth: { title: 'Went Deeper!', icon: '🔍' },
+        flashcard: { title: 'Flashcard Revealed!', icon: '💡' },
+      };
+      const toastMeta = TOAST_BY_KIND[kind];
       showRewardToast({
-        title:
-          kind === 'complete'
-            ? 'Problem Solved!'
-            : kind === 'design'
-              ? 'Design Completed!'
-              : kind === 'mark'
-                ? 'Page Understood!'
-                : kind === 'signin'
-                  ? 'Welcome Back!'
-                  : 'Flashcard Revealed!',
+        title: toastMeta.title,
         subtitle: `Great work! Earned +${points} XP`,
         xp: points,
-        icon: kind === 'complete' ? '🎉' : kind === 'design' ? '🏗️' : kind === 'mark' ? '📖' : kind === 'signin' ? '👋' : '💡',
+        icon: toastMeta.icon,
       });
 
       // Check newly unlocked checkpoint badges
@@ -388,6 +402,11 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     [award],
   );
   const awardFlashcardRevealed = useCallback((id: string) => award(id, 'flashcard', FLASHCARD_REVEAL_POINTS), [award]);
+  const awardReviewCompleted = useCallback(
+    (permalink: string, stage: number) => award(`review:${permalink}:${stage}`, 'review', REVIEW_COMPLETED_POINTS),
+    [award],
+  );
+  const awardDepthRevealed = useCallback((id: string) => award(id, 'depth', DEPTH_REVEAL_POINTS), [award]);
   const awardSystemDesignCompleted = useCallback(
     (permalink: string) => award(permalink, 'design', SYSTEM_DESIGN_CHALLENGE_POINTS),
     [award],
@@ -419,6 +438,8 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     awardFlashcardRevealed,
     awardSystemDesignCompleted,
     awardDailySignIn,
+    awardReviewCompleted,
+    awardDepthRevealed,
   };
 
   return <GamificationContext.Provider value={value}>{children}</GamificationContext.Provider>;
