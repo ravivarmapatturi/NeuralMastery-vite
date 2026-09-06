@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { getSidebar } from '../lib/contentTree'
-import { completionFor, getGroupForSubsection, SECTION_META, SECTION_ORDER, timeEstimate, TOTAL_PAGES } from './sectionMeta'
+import { completionFor, getGroupForSubsection, groupLandingRoute, SECTION_META, SECTION_ORDER, timeEstimate, TOTAL_PAGES } from './sectionMeta'
+import { getPageByRoute } from '../lib/contentTree'
 import { DOMAIN_ICON_BY_GROUP_KEY } from '../components/icons/DomainIcons'
 
 // Sections that are intentionally outside the 7-domain taxonomy --
@@ -71,6 +72,16 @@ describe('sectionMeta completeness against the real content tree', () => {
     const validKeys = new Set(SECTION_ORDER)
     const orphaned = Object.keys(DOMAIN_ICON_BY_GROUP_KEY).filter((k) => !validKeys.has(k))
     expect(orphaned).toEqual([])
+  })
+})
+
+describe('groupLandingRoute', () => {
+  it('every real top-level group resolves to an ACTUAL, currently-existing page -- not the bare SECTION_META key, which is a Record identifier, not a route, and 404s', () => {
+    for (const key of SECTION_ORDER) {
+      const route = groupLandingRoute(key)
+      expect(route).not.toBe(key) // the exact bug this guards: `to={key}` used directly as a route
+      expect(getPageByRoute(route)).toBeDefined()
+    }
   })
 })
 

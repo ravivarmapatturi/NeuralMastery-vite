@@ -36,7 +36,10 @@ export const SECTION_META: Record<string, SectionMetaEntry> = {
     prerequisites: 'None — this is the entry point.',
     leadsTo: 'Models',
     subsections: [
-      { dir: 'getting-started', label: 'Getting Started' },
+      // Real, explicit landing page -- unlike every other subsection here,
+      // this folder has no roadmap.mdx (just intro.mdx), so the usual
+      // `landing || /docs/<dir>/roadmap` fallback 404s without this.
+      { dir: 'getting-started', label: 'Getting Started', landing: '/docs/getting-started/intro' },
       { dir: 'cs-fundamentals', label: 'CS Fundamentals for AI Engineers' },
       { dir: 'python-engineering', label: 'Python Engineering for AI' },
       { dir: 'mathematics-for-ai', label: 'Mathematics for AI' },
@@ -167,6 +170,19 @@ export const SECTION_ORDER: string[] = Object.keys(SECTION_META);
 export function getGroupForSubsection(dir: string): { key: string; meta: SectionMetaEntry } | undefined {
   const key = SECTION_ORDER.find((k) => SECTION_META[k].subsections.some((s) => s.dir === dir));
   return key ? { key, meta: SECTION_META[key] } : undefined;
+}
+
+/** A real, clickable URL for a top-level group -- SECTION_META's own keys
+ * (e.g. "/docs/category/foundations") are Record identifiers, not real
+ * routes; no page is ever generated at that literal path (confirmed: it
+ * 404s). Real landing target is the group's first subsection's own
+ * `landing` page if it declares one, else that subsection's roadmap --
+ * the same fallback CurriculumBreakdown's per-subsection links already use
+ * (`s.landing || /docs/${s.dir}/roadmap`), just applied once for the whole
+ * group via its first subsection. */
+export function groupLandingRoute(key: string): string {
+  const first = SECTION_META[key].subsections[0];
+  return first.landing ?? `/docs/${first.dir}/roadmap`;
 }
 
 export const TOTAL_PAGES: number = SECTION_ORDER.reduce((sum, key) => sum + SECTION_META[key].pageCount, 0);

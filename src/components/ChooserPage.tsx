@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
-import AttentionStepThrough from '../viz/AttentionStepThrough';
+import LiveComputation from './home/LiveComputation';
 import { getFlatPages, getPracticeProblems } from '../lib/contentTree';
-import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
+import { SECTION_META, SECTION_ORDER, groupLandingRoute } from '../data/sectionMeta';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useProgress } from '../contexts/ProgressContext';
@@ -57,10 +57,7 @@ export default function ChooserPage() {
                 <div><strong>7</strong><span>AI disciplines</span></div>
               </div>
             </div>
-            <div className="nm-hero-demo">
-              <div className="nm-demo-caption"><span className="nm-live-dot" /> Live product preview <Link to="/docs/deep-learning/attention-transformers">Explore attention <Arrow /></Link></div>
-              <AttentionStepThrough />
-            </div>
+            <div className="nm-hero-demo"><LiveComputation /></div>
           </div>
         </section>
 
@@ -91,7 +88,7 @@ export default function ChooserPage() {
             <div className="nm-curriculum-grid">
               {SECTION_ORDER.map((key, index) => {
                 const section = SECTION_META[key];
-                return <Link className="nm-curriculum-card" to={key} key={key} style={{ '--section-color': section.color } as React.CSSProperties}>
+                return <Link className="nm-curriculum-card" to={groupLandingRoute(key)} key={key} style={{ '--section-color': section.color } as React.CSSProperties}>
                   <span className="nm-curriculum-index">0{index + 1}</span>
                   <span className="nm-curriculum-icon" aria-hidden="true">{section.icon}</span>
                   <h3>{section.label}</h3>

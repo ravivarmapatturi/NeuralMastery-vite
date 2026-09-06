@@ -9,6 +9,10 @@ import { useLeaderboard } from '../lib/useLeaderboard';
 import { levelForPoints, computeDisplayName } from '../lib/gamification';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { getFlatPages, getPracticeProblems } from '../lib/contentTree';
+import { useProgress } from '../contexts/ProgressContext';
+import { SECTION_META, SECTION_ORDER, completionFor } from '../data/sectionMeta';
+import { nextLesson, practiceStats, recommendedProblem, cleanPracticeTitle } from '../lib/mastery';
 
 /**
  * The site's one real "this is you" identity page -- avatar, display name,
@@ -27,6 +31,7 @@ export default function ProfilePage() {
 
   const { user } = useAuth();
   const { points, streak, events } = useGamification();
+  const { understood, countWithin } = useProgress();
   const [leaderboardTab, setLeaderboardTab] = useState<'allTime' | 'weekly'>('allTime');
   const { entries: leaderboardEntries, loading: leaderboardLoading } = useLeaderboard(leaderboardTab);
 
@@ -34,6 +39,12 @@ export default function ProfilePage() {
   const initial = (user?.displayName ?? user?.email ?? '?').charAt(0).toUpperCase();
   const { level, xpIntoLevel, xpForNextLevel } = levelForPoints(points);
   const levelPct = xpForNextLevel === 0 ? 1 : xpIntoLevel / xpForNextLevel;
+  const learnPages = getFlatPages();
+  const problems = getPracticeProblems();
+  const lessonsCompleted = countWithin(learnPages.map((page) => page.route));
+  const stats = practiceStats(problems, events);
+  const next = nextLesson(learnPages, understood);
+  const nextProblem = recommendedProblem(problems, events, next);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
@@ -112,6 +123,33 @@ export default function ProfilePage() {
           Want the detailed page-by-page checklist and spaced-repetition review queue? That still lives on{' '}
           <Link to="/progress" style={{ color: 'var(--nm-accent-primary)' }}>your Progress page</Link>.
         </p>
+
+        <section className="nm-profile-mastery" aria-labelledby="mastery-overview">
+          <div className="nm-profile-section-heading"><p className="nm-eyebrow">Your AI engineering system</p><h2 id="mastery-overview">Mastery overview</h2></div>
+          <div className="nm-mastery-metrics">
+            <div><strong>{lessonsCompleted}</strong><span>lessons understood</span></div>
+            <div><strong>{stats.solved}</strong><span>problems solved</span></div>
+            <div><strong>{Math.round((lessonsCompleted + stats.solved) / Math.max(1, learnPages.length + problems.length) * 100)}%</strong><span>measured completion</span></div>
+          </div>
+          <div className="nm-next-action">
+            <div><p className="nm-eyebrow">Your next best step</p><h3>{next?.title ?? 'Continue expanding your practice'}</h3><p>{next ? 'The first unfinished lesson in your real curriculum sequence.' : 'You have completed the currently tracked lessons.'}</p></div>
+            <div className="nm-next-action-links">
+              {next && <Link className="nm-button nm-button-primary" to={next.route}>Continue lesson →</Link>}
+              {nextProblem && <Link className="nm-button nm-button-secondary" to={nextProblem.route}>Practice: {cleanPracticeTitle(nextProblem.title)} →</Link>}
+            </div>
+          </div>
+        </section>
+
+        <section className="nm-profile-mastery" aria-labelledby="skill-map">
+          <div className="nm-profile-section-heading"><p className="nm-eyebrow">Skill map</p><h2 id="skill-map">Where your learning has depth.</h2><p>Calculated from lessons you have actually marked understood; unstarted domains stay visible so the map shows your route forward.</p></div>
+          <div className="nm-skill-map">
+            {SECTION_ORDER.map((key) => {
+              const meta = SECTION_META[key];
+              const pct = completionFor(key, understood);
+              return <div key={key} className="nm-skill-row"><span>{meta.icon} {meta.label}</span><div aria-label={`${meta.label}: ${Math.round(pct * 100)}% complete`}><i style={{ width: `${pct * 100}%`, background: meta.color }} /></div><strong>{Math.round(pct * 100)}%</strong></div>;
+            })}
+          </div>
+        </section>
 
         {/* --- Activity heatmap --- */}
         <h2 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: '0.9rem' }}>

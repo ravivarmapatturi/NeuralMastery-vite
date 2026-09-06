@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import AttentionStepThrough from '../viz/AttentionStepThrough';
 import { QA } from './content/ExpandableDepth';
-import { getSidebar, getFlatPages, type DocPage } from '../lib/contentTree';
+import { getSidebar, getFlatPages, getPracticeProblems, type DocPage } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { SECTION_META, SECTION_ORDER, completionFor } from '../data/sectionMeta';
 import { DomainIcon } from './icons/DomainIcons';
 import { useProgress } from '../contexts/ProgressContext';
+import { useGamification } from '../contexts/GamificationContext';
+import { recommendedProblem, cleanPracticeTitle } from '../lib/mastery';
 
 /** The first top-level group (in SECTION_ORDER) the visitor hasn't fully
  * finished yet -- "current group" for a "continue where you left off" CTA.
@@ -73,6 +75,7 @@ export default function Home() {
   const accent = buildSectionAccent();
 
   const { understood, isUnderstood, countWithin, dueForReview } = useProgress();
+  const { events } = useGamification();
   // Gated on real, currently-existing pages (not raw understood-map key
   // count) -- a visitor whose only marked page was later renamed/removed
   // (see ProgressPage's own titleFor fallback for that same case) should
@@ -81,6 +84,7 @@ export default function Home() {
   const hasProgress = totalDone > 0;
   const groupKey = hasProgress ? currentGroupKey(understood) : undefined;
   const nextPage = groupKey ? nextUnstartedPage(groupKey, flatPages, isUnderstood) : undefined;
+  const recommendedPractice = recommendedProblem(getPracticeProblems(), events, nextPage);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
@@ -184,6 +188,23 @@ export default function Home() {
         </p>
         </section>
       </div>
+
+      <section className="nm-learn-orientation" aria-labelledby="learn-orientation-heading">
+        <div className="nm-learn-shell">
+          <div className="nm-section-intro">
+            <p className="nm-eyebrow">Find your route</p>
+            <h2 id="learn-orientation-heading">The curriculum is broad. Your next move should be clear.</h2>
+            <p>Start from foundations, enter a model family directly, or use your real progress to continue the sequence.</p>
+          </div>
+          <div className="nm-learn-route-grid">
+            <Link to={nextPage?.route ?? '/docs/learning-path'} className="nm-learn-route nm-learn-route-primary"><span>{hasProgress ? 'Continue your path' : 'Start from the beginning'}</span><strong>{nextPage?.title ?? 'AI foundations'}</strong><small>{hasProgress ? `${totalDone} lessons understood so far` : 'CS, Python, and mathematics for AI'}</small><b>Open lesson →</b></Link>
+            <Link to="/docs/llms-genai/overview" className="nm-learn-route"><span>Modern AI</span><strong>Learn LLMs &amp; GenAI</strong><small>Models, RAG, inference, and evaluation.</small><b>Explore →</b></Link>
+            <Link to="/docs/agents/overview" className="nm-learn-route"><span>Build systems</span><strong>Learn Agentic AI</strong><small>Agent patterns and real applications.</small><b>Explore →</b></Link>
+            <Link to="/docs/interview-prep/overview" className="nm-learn-route"><span>Prepare</span><strong>Interview preparation</strong><small>Technical reference, systems, and practice.</small><b>Explore →</b></Link>
+          </div>
+          {recommendedPractice && <div className="nm-learn-practice-handoff"><div><span>Ready to implement?</span><strong>{cleanPracticeTitle(recommendedPractice.title)}</strong><p>A real unsolved problem selected from the same live curriculum.</p></div><Link className="nm-button nm-button-secondary" to={recommendedPractice.route}>Practice this concept →</Link></div>}
+        </div>
+      </section>
 
       <section style={{ padding: '0 0 2.5rem' }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 1.5rem' }}>

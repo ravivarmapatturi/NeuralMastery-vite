@@ -6,6 +6,7 @@ import PracticeListPage from './PracticeListPage'
 import { ThemeProvider } from '../theme/ThemeProvider'
 import { AuthProvider } from '../contexts/AuthContext'
 import { GamificationProvider } from '../contexts/GamificationContext'
+import { ProgressProvider } from '../contexts/ProgressContext'
 
 const STORAGE_KEY = 'neural-mastery-gamification'
 
@@ -14,9 +15,11 @@ function renderList() {
     <ThemeProvider>
       <MemoryRouter>
         <AuthProvider>
-          <GamificationProvider>
-            <PracticeListPage />
-          </GamificationProvider>
+          <ProgressProvider>
+            <GamificationProvider>
+              <PracticeListPage />
+            </GamificationProvider>
+          </ProgressProvider>
         </AuthProvider>
       </MemoryRouter>
     </ThemeProvider>,

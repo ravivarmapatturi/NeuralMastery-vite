@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { SECTION_META, SECTION_ORDER, timeEstimate, TOTAL_PAGES } from '../data/sectionMeta';
+import { SECTION_META, SECTION_ORDER, groupLandingRoute, timeEstimate, TOTAL_PAGES } from '../data/sectionMeta';
 
 const STATS = [
   { value: SECTION_ORDER.length, label: 'sections' },
@@ -36,7 +36,7 @@ export default function CurriculumBreakdown() {
                 background: 'var(--nm-surface)',
               }}
             >
-              <Link to={key} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Link to={groupLandingRoute(key)} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                   <span style={{ fontSize: 22 }}>{meta.icon}</span>
                   <span style={{ fontSize: 17, fontWeight: 700 }}>{meta.label}</span>

@@ -4,7 +4,7 @@ import { ReactFlow, Background, Controls, type Node, type Edge } from '@xyflow/r
 import '@xyflow/react/dist/style.css';
 import { useVizTokens, RADIUS, FONT_FAMILY, type VizTokens } from '../theme/vizTokens';
 import { VisualizationContainer, VisualizationHeader } from './primitives';
-import { SECTION_META, SECTION_ORDER, timeEstimate, completionFor, type SectionMetaEntry } from '../data/sectionMeta';
+import { SECTION_META, SECTION_ORDER, groupLandingRoute, timeEstimate, completionFor, type SectionMetaEntry } from '../data/sectionMeta';
 import { useProgress } from '../contexts/ProgressContext';
 
 // The 7 top-level content groups, laid out as ONE single linear path -- there
@@ -86,7 +86,7 @@ export default function LearningPathMap() {
           proOptions={{ hideAttribution: true }}
           nodesDraggable={false}
           nodesConnectable={false}
-          onNodeClick={(_, node) => navigate(node.id)}
+          onNodeClick={(_, node) => navigate(groupLandingRoute(node.id))}
         >
           <Background color={t.border} gap={20} />
           <Controls showInteractive={false} />
@@ -96,7 +96,7 @@ export default function LearningPathMap() {
         {SECTION_ORDER.map((key) => {
           const meta = SECTION_META[key];
           return (
-            <Link key={key} to={key} style={{ color: meta.color, fontWeight: 600, textDecoration: 'none' }}>
+            <Link key={key} to={groupLandingRoute(key)} style={{ color: meta.color, fontWeight: 600, textDecoration: 'none' }}>
               {meta.icon} {meta.label}
             </Link>
           );

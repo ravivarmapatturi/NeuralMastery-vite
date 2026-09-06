@@ -19,12 +19,17 @@ test.describe('Core application', () => {
   test('homepage loads with real content and a working topic link', async ({ page }) => {
     const errors = collectConsoleErrors(page);
     await page.goto('');
-    // The homepage is real content now, not a redirect -- it stays at `/`
-    // and renders its own hero + topic grid (see src/components/Home.tsx).
+    // The homepage ("/") is a real Learn/Practice chooser now, not the Learn
+    // content directly (see src/components/ChooserPage.tsx) -- Learn's own
+    // rich hero + topic grid moved to /learn (src/components/Home.tsx).
+    // Targets a real docs link by its href PREFIX rather than position/copy
+    // -- the homepage's exact layout/copy is expected to keep evolving
+    // (see git history), but "some real link into /docs/ content actually
+    // works" is the durable invariant this test should keep checking.
     await expect(page).toHaveURL('http://localhost:4173/');
     await expect(page.locator('h1')).toBeVisible();
-    const firstTopicLink = page.locator('section a').first();
-    await firstTopicLink.click();
+    const firstDocsLink = page.locator('a[href^="/docs/"]').first();
+    await firstDocsLink.click();
     await expect(page).toHaveURL(/\/docs\//);
     await expect(page.locator('article.prose h1').first()).toBeVisible();
     expect(errors.errors()).toEqual([]);

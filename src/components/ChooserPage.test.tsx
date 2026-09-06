@@ -6,6 +6,7 @@ import { ThemeProvider } from '../theme/ThemeProvider'
 import { AuthProvider } from '../contexts/AuthContext'
 import { GamificationProvider } from '../contexts/GamificationContext'
 import { ProgressProvider } from '../contexts/ProgressContext'
+import { groupLandingRoute } from '../data/sectionMeta'
 
 function renderChooser() {
   return render(
@@ -40,9 +41,12 @@ describe('ChooserPage', () => {
     expect(screen.getByText((_, el) => /^\d+\+coding problems$/i.test(el?.textContent ?? ''))).toBeInTheDocument()
   })
 
-  it('surfaces the actual curriculum domains rather than invented feature claims', () => {
+  it('surfaces the actual curriculum domains rather than invented feature claims, linking to a REAL page -- not the bare SECTION_META key, which 404s', () => {
     renderChooser()
-    expect(screen.getByRole('link', { name: /Foundations/i })).toHaveAttribute('href', '/docs/category/foundations')
-    expect(screen.getByRole('link', { name: /Systems & Infrastructure/i })).toHaveAttribute('href', '/docs/category/systems--infrastructure')
+    expect(screen.getByRole('link', { name: /Foundations/i })).toHaveAttribute('href', groupLandingRoute('/docs/category/foundations'))
+    expect(screen.getByRole('link', { name: /Systems & Infrastructure/i })).toHaveAttribute(
+      'href',
+      groupLandingRoute('/docs/category/systems--infrastructure'),
+    )
   })
 })

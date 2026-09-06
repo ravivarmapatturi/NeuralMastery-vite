@@ -82,10 +82,12 @@ export default function Navbar({
           </Link>
           <Link
             to="/practice"
+            className="nm-practice-link"
             style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}
           >
             Practice
             <span
+              className="nm-practice-badge"
               style={{
                 fontSize: 9.5,
                 fontWeight: 800,
@@ -100,7 +102,11 @@ export default function Navbar({
               NEW
             </span>
           </Link>
-          <Link to="/progress" style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}>
+          <Link
+            to="/progress"
+            className="nm-navbar-progress-link"
+            style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}
+          >
             Progress
           </Link>
           <button

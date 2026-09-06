@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
-import { getPracticeProblems, type DocPage, type PracticeDifficulty } from '../lib/contentTree';
+import { getFlatPages, getPracticeProblems, type DocPage, type PracticeDifficulty } from '../lib/contentTree';
 import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
 import { useGamification } from '../contexts/GamificationContext';
 import { hasAward, PROBLEM_COMPLETED_POINTS, SYSTEM_DESIGN_CHALLENGE_POINTS } from '../lib/gamification';
+import { useProgress } from '../contexts/ProgressContext';
+import { cleanPracticeTitle, nextLesson, practicePaths, practiceStats, recommendedProblem, relatedLesson } from '../lib/mastery';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 
@@ -44,6 +46,8 @@ export default function PracticeListPage() {
   const problems = useMemo(() => getPracticeProblems(), []);
   const topicLabels = useMemo(buildTopicLabels, []);
   const { events } = useGamification();
+  const { understood } = useProgress();
+  const learnPages = useMemo(() => getFlatPages(), []);
 
   const [search, setSearch] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState<'all' | PracticeDifficulty | 'design'>('all');
@@ -55,6 +59,10 @@ export default function PracticeListPage() {
   }, [problems, topicLabels]);
 
   const solvedCount = problems.filter((p) => hasAward(events, p.route, isDesignChallenge(p) ? 'design' : 'complete')).length;
+  const stats = practiceStats(problems, events);
+  const next = nextLesson(learnPages, understood);
+  const recommended = recommendedProblem(problems, events, next);
+  const paths = practicePaths(problems);
 
   const filtered = problems.filter((p) => {
     if (search && !p.title.toLowerCase().includes(search.toLowerCase())) return false;
@@ -75,15 +83,54 @@ export default function PracticeListPage() {
         <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.5rem', lineHeight: 1.6, maxWidth: 680 }}>
           Short, focused coding problems — implement the function yourself in a real, in-browser Python
           sandbox, run it against real test cases (pass/fail, no LLM grading), then reveal a reference
-          solution with the reasoning behind it. Inspired by the format of{' '}
-          <a href="https://www.deep-ml.com/problems" target="_blank" rel="noreferrer" style={{ color: 'var(--nm-accent-primary)' }}>
-            deep-ml.com
-          </a>{' '}
-          — original problems, tied to the concept pages already on this site.
+          solution with the reasoning behind it. Original problems, tied to the concept pages already
+          on this site.
         </p>
         <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 2rem' }}>
           {solvedCount} / {problems.length} solved
         </p>
+
+        <div className="nm-mastery-metrics" aria-label="Practice progress">
+          <div><strong>{stats.solved}</strong><span>problems solved</span></div>
+          <div><strong>{stats.total - stats.solved}</strong><span>ready to solve</span></div>
+          <div><strong>{stats.easySolved}/{stats.mediumSolved}/{stats.hardSolved}</strong><span>easy / medium / hard</span></div>
+        </div>
+
+        <div className="nm-practice-guidance">
+          <div>
+            <p className="nm-eyebrow">Recommended next</p>
+            {recommended ? <>
+              <h2>{cleanPracticeTitle(recommended.title)}</h2>
+              <p>
+                {next ? `Your next lesson is ${next.title}. This is the nearest unsolved practice problem in the current curriculum.` : 'Your first unsolved practice problem, selected from the real catalogue.'}
+              </p>
+              <div className="nm-guidance-actions">
+                <Link className="nm-button nm-button-primary" to={recommended.route}>Start problem →</Link>
+                {relatedLesson(recommended, learnPages) && <Link className="nm-button nm-button-secondary" to={relatedLesson(recommended, learnPages)!.route}>Learn the concept →</Link>}
+              </div>
+            </> : <>
+              <h2>Practice complete</h2><p>You have solved every currently available problem. Continue exploring the curriculum while new practice arrives.</p>
+              <Link className="nm-button nm-button-primary" to="/learn">Continue learning →</Link>
+            </>}
+          </div>
+          <div className="nm-practice-guidance-side">
+            <span>Connected loop</span>
+            <strong>Learn → visualize → implement</strong>
+            <p>Every recommendation is drawn from your actual lesson progress and the problem catalogue—not a generic playlist.</p>
+          </div>
+        </div>
+
+        <section className="nm-practice-paths" aria-labelledby="practice-paths-heading">
+          <div className="nm-inline-heading"><div><p className="nm-eyebrow">Practice paths</p><h2 id="practice-paths-heading">Train by discipline, not only by difficulty.</h2></div></div>
+          <div className="nm-practice-path-grid">
+            {paths.map((path) => {
+              const solved = path.problems.filter((problem) => hasAward(events, problem.route, problem.difficulty ? 'complete' : 'design')).length;
+              return <div key={path.key} className="nm-practice-path" style={{ '--path-color': path.color } as React.CSSProperties}>
+                <span>{path.label}</span><strong>{solved} / {path.problems.length}</strong><small>{path.problems.map((problem) => cleanPracticeTitle(problem.title)).slice(0, 3).join(' · ')}</small>
+              </div>;
+            })}
+          </div>
+        </section>
 
         <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           <input

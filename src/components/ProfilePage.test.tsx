@@ -5,6 +5,7 @@ import ProfilePage from './ProfilePage'
 import { ThemeProvider } from '../theme/ThemeProvider'
 import { AuthProvider } from '../contexts/AuthContext'
 import { GamificationProvider } from '../contexts/GamificationContext'
+import { ProgressProvider } from '../contexts/ProgressContext'
 
 const STORAGE_KEY = 'neural-mastery-gamification'
 
@@ -13,9 +14,11 @@ function renderProfile() {
     <ThemeProvider>
       <MemoryRouter>
         <AuthProvider>
-          <GamificationProvider>
-            <ProfilePage />
-          </GamificationProvider>
+          <ProgressProvider>
+            <GamificationProvider>
+              <ProfilePage />
+            </GamificationProvider>
+          </ProgressProvider>
         </AuthProvider>
       </MemoryRouter>
     </ThemeProvider>,
@@ -32,7 +35,7 @@ describe('ProfilePage', () => {
     renderProfile()
     expect(screen.getByRole('heading', { name: /Learner_000000/i })).toBeInTheDocument()
     expect(screen.getByText(/^Level 1$/)).toBeInTheDocument()
-    expect(screen.getByText('0')).toBeInTheDocument() // points stat
+    expect(screen.getAllByText('0').length).toBeGreaterThan(0) // points and measured mastery start at zero
     expect(screen.getByText(/sign in to sync/i)).toBeInTheDocument()
     // Real user report this guards against: a signed-in visitor sees a bare
     // "0 days" with no explanation and assumes it's a bug. A visitor who has
