@@ -46,6 +46,15 @@ describe('PracticePlayground', () => {
     expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
   })
 
+  it('the SAME engine, unmodified, renders a real SECOND problem with a genuinely different data shape (nested-array input/output, not dot-product\'s scalars) -- proves reusability, not a dot-product special case', async () => {
+    const { container } = renderPlayground('matrix-multiplication')
+    await waitFor(() => expect(container.querySelector('[contenteditable="true"]')).toBeTruthy())
+    expect(screen.getByText('{"A":[[1,2],[3,4]],"B":[[5,6],[7,8]]}')).toBeInTheDocument()
+    expect(screen.getByText('[[19,22],[43,50]]')).toBeInTheDocument()
+    expect(screen.getByText('Case 1 — 2x2 basic case')).toBeInTheDocument()
+    expect(screen.getByText('Case 4 — 1x1 matrices')).toBeInTheDocument()
+  })
+
   it('renders nothing (a real signal, not a silent blank pane) for a problem id with no registered data', () => {
     const { container } = renderPlayground('not-a-real-problem')
     // DEV mode shows a loud red notice; production returns null -- either

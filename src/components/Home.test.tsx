@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, beforeEach } from 'vitest'
 import Home from './Home'
@@ -10,6 +11,7 @@ import { getFlatPages } from '../lib/contentTree'
 import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta'
 
 const STORAGE_KEY = 'neural-mastery-progress'
+const GAMIFICATION_STORAGE_KEY = 'neural-mastery-gamification'
 
 function renderHome() {
   return render(
@@ -115,5 +117,26 @@ describe('Home', () => {
     expect(screen.getByText(/1 page is due for review/)).toBeInTheDocument()
     const reviewLink = screen.getByText('Review 1 due page →')
     expect(reviewLink.closest('a')).toHaveAttribute('href', '/progress')
+  })
+
+  it('awards a real point for revealing the homepage "Test yourself" flashcard, once, on real first reveal', async () => {
+    const user = userEvent.setup()
+    renderHome()
+
+    const question = screen.getByText('What is a KV cache, and why does it matter for serving?')
+    await user.click(question)
+    expect(screen.getByText(/Storing each generated token's Key\/Value projections/)).toBeInTheDocument()
+
+    const stored = JSON.parse(window.localStorage.getItem(GAMIFICATION_STORAGE_KEY) ?? '[]')
+    expect(stored).toHaveLength(1)
+    expect(stored[0]).toMatchObject({ permalink: 'flashcard:home-kv-cache', kind: 'flashcard', points: 1 })
+
+    // Real de-duplication check: collapse and re-reveal the SAME card --
+    // no second event, no extra point (the underlying award()/hasAward()
+    // no-double-award contract, exercised through the real component here).
+    await user.click(question)
+    await user.click(question)
+    const storedAfterReReveal = JSON.parse(window.localStorage.getItem(GAMIFICATION_STORAGE_KEY) ?? '[]')
+    expect(storedAfterReReveal).toHaveLength(1)
   })
 })

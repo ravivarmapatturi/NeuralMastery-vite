@@ -23,11 +23,34 @@ const DEPTH_META: Record<Depth, { icon: string; label: string }> = {
  * support comes for free -- no custom role/tabIndex wiring needed here,
  * unlike the SVG-based diagram controls elsewhere on this site.
  */
-function ExpandableDepth({ kind, title, defaultOpen, children }: { kind: Depth; title?: string; defaultOpen?: boolean; children: ReactNode }) {
+function ExpandableDepth({
+  kind,
+  title,
+  defaultOpen,
+  onReveal,
+  children,
+}: {
+  kind: Depth;
+  title?: string;
+  defaultOpen?: boolean;
+  /** Fires once, only on the first closed->open transition -- never on
+   * re-opening after collapsing again, and never on mount for a
+   * defaultOpen block. Optional; only QA currently passes one (see
+   * QA below), so ELI5/GoDeeper/Solution are unaffected. */
+  onReveal?: () => void;
+  children: ReactNode;
+}) {
   const t = useVizTokens();
   const meta = DEPTH_META[kind];
   const [open, setOpen] = useState(defaultOpen ?? kind === 'eli5');
   const color = kind === 'eli5' ? t.accentTeal : kind === 'solution' ? t.accentWarn : kind === 'qa' ? t.accentSecondary : t.accentPurple;
+
+  function toggle() {
+    setOpen((wasOpen) => {
+      if (!wasOpen) onReveal?.();
+      return !wasOpen;
+    });
+  }
 
   return (
     <div
@@ -41,7 +64,7 @@ function ExpandableDepth({ kind, title, defaultOpen, children }: { kind: Depth; 
     >
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={toggle}
         aria-expanded={open}
         style={{
           display: 'flex',
@@ -114,9 +137,9 @@ export function Solution({ title, children }: { title?: string; children: ReactN
  * visible header, the answer is hidden until clicked. Closed by default
  * on purpose -- the point is to test recall against the question first,
  * not read straight down a page of answers. */
-export function QA({ q, children }: { q: string; children: ReactNode }) {
+export function QA({ q, children, onReveal }: { q: string; children: ReactNode; onReveal?: () => void }) {
   return (
-    <ExpandableDepth kind="qa" title={q} defaultOpen={false}>
+    <ExpandableDepth kind="qa" title={q} defaultOpen={false} onReveal={onReveal}>
       {children}
     </ExpandableDepth>
   );
