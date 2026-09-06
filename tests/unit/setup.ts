@@ -38,6 +38,8 @@ vi.mock('firebase/firestore', () => ({
   getDoc: vi.fn().mockResolvedValue({ exists: () => false, data: () => undefined }),
   setDoc: vi.fn().mockResolvedValue(undefined),
   onSnapshot: vi.fn(() => () => {}),
+  enableNetwork: vi.fn().mockResolvedValue(undefined),
+  disableNetwork: vi.fn().mockResolvedValue(undefined),
 }))
 // isSupported() defaults to false here -- jsdom has no real IndexedDB, so
 // this matches what the real check would conclude in this environment

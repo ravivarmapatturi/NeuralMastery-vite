@@ -101,7 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOutUser = useCallback(async () => {
-    const [{ auth, db }, { signOut }, { disableNetwork, enableNetwork }] = await Promise.all([
+    const [{ auth, db }, { signOut }, { disableNetwork }] = await Promise.all([
       import('../lib/firebase'),
       import('firebase/auth'),
       import('firebase/firestore'),
@@ -111,20 +111,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       window.localStorage.removeItem('neural-mastery-gamification');
       window.localStorage.removeItem('neural-mastery-progress');
     }
-    // Force Firestore to drop and cleanly re-establish its underlying
-    // streaming connection on sign-out, rather than letting it keep
-    // reusing a connection that was live under the OLD credentials.
-    // Confirmed live (via a real production repro) that without this,
-    // signing back in soon after can leave Firestore reads/writes
-    // throwing "Missing or insufficient permissions" for several seconds
-    // -- a documented Firebase SDK behavior where its internal connection
-    // doesn't always cleanly adopt a new auth session mid-tab, especially
-    // with multiple active onSnapshot listeners (this app has three:
-    // GamificationContext, ProgressContext, useLeaderboard). Disabling
-    // then re-enabling the network forces a genuinely fresh connection
-    // instead of hoping the stale one recovers on its own.
+    // Drop Firestore's underlying streaming connection on sign-out --
+    // but deliberately do NOT re-enable it here. Confirmed live (via a
+    // real, direct A/B repro: a raw-SDK script with no disableNetwork/
+    // enableNetwork call succeeded cleanly on this exact sign-out/sign-in
+    // sequence, while the app -- which called enableNetwork() here,
+    // immediately after sign-out, before anyone was signed back in --
+    // consistently failed with "Missing or insufficient permissions" on
+    // every retry) that re-enabling the network at THIS point reopens a
+    // connection with no signed-in user yet, which then has to race
+    // adopting the NEW credentials once sign-in happens moments later --
+    // the same class of race this was meant to fix, just relocated.
+    // GamificationContext's and ProgressContext's sign-in effects now
+    // call enableNetwork() themselves, only once a real signed-in user
+    // is confirmed, so the connection is never reopened blind.
     await disableNetwork(db).catch(() => {});
-    await enableNetwork(db).catch(() => {});
   }, []);
 
   const value = useMemo(
