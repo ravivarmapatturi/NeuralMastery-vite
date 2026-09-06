@@ -18,7 +18,7 @@
 // build (pyodide.mjs) -- NOT importScripts(), which classic workers use
 // but module workers (required here, since pyodide.asm.mjs is itself an
 // ES module) do not support.
-const PYODIDE_VERSION = 'v314.0.5';
+const PYODIDE_VERSION = 'v0.27.2';
 const PYODIDE_INDEX_URL = `https://cdn.jsdelivr.net/pyodide/${PYODIDE_VERSION}/full/`;
 
 // Real, measured cold load is ~8.7MB / 17-22s (core wasm + stdlib + numpy),
@@ -235,6 +235,41 @@ self.onmessage = async (event: MessageEvent<InMessage>) => {
     // toPythonLiteral() above for how `input`/`expectedOutput` become
     // real Python source.
     await pyodide.loadPackagesFromImports(msg.code);
+
+    const setupHelperCode = `
+import json, math, sys, io, traceback
+
+class _NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if hasattr(obj, 'tolist'):
+            return obj.tolist()
+        if hasattr(obj, 'item'):
+            return obj.item()
+        return super().default(obj)
+
+def _safe_eq(actual, expected):
+    if actual is expected:
+        return True
+    if hasattr(actual, 'tolist'):
+        actual = actual.tolist()
+    if hasattr(expected, 'tolist'):
+        expected = expected.tolist()
+    if isinstance(actual, (int, float)) and isinstance(expected, (int, float)):
+        return abs(float(actual) - float(expected)) < 1e-5
+    if isinstance(actual, (list, tuple)) and isinstance(expected, (list, tuple)):
+        if len(actual) != len(expected):
+            return False
+        return all(_safe_eq(a, e) for a, e in zip(actual, expected))
+    return actual == expected
+
+def _to_json_str(val):
+    try:
+        return json.dumps(val, cls=_NumpyEncoder)
+    except Exception:
+        return json.dumps(str(val))
+`;
+    await pyodide.runPythonAsync(setupHelperCode);
+
     const setup = CAPTURE_PREAMBLE + indent(msg.code) + CAPTURE_POSTAMBLE;
     await pyodide.runPythonAsync(setup);
     const setupError: string | null = pyodide.globals.get('_run_error');
@@ -247,14 +282,17 @@ self.onmessage = async (event: MessageEvent<InMessage>) => {
         const expectErr = testCase.expectError ? JSON.stringify(testCase.expectError) : 'None';
         const caseSource = [
           '_case_actual = None',
+          '_case_actual_json = "null"',
           '_run_error = None',
           '_error_type = None',
+          '_case_passed = False',
           'try:',
           `    _case_actual = ${testCase.functionName}(**${kwargs})`,
+          '    _case_actual_json = _to_json_str(_case_actual)',
           `    if ${expectErr} != None:`,
           '        _case_passed = False',
           '    else:',
-          `        _case_passed = _case_actual == ${expectedLiteral}`,
+          `        _case_passed = _safe_eq(_case_actual, ${expectedLiteral})`,
           'except Exception as _e:',
           '    _error_type = type(_e).__name__',
           `    if ${expectErr} != None and _error_type == ${expectErr}:`,
@@ -270,8 +308,14 @@ self.onmessage = async (event: MessageEvent<InMessage>) => {
 
         const caseError: string | null = pyodide.globals.get('_run_error');
         const casePassed: boolean = pyodide.globals.get('_case_passed');
-        const rawActual = pyodide.globals.get('_case_actual');
-        const actualOutput = rawActual && typeof rawActual.toJs === 'function' ? rawActual.toJs({ dict_converter: Object.fromEntries }) : rawActual;
+        const rawActualJson: string = pyodide.globals.get('_case_actual_json') ?? 'null';
+        let actualOutput: unknown = null;
+        try {
+          actualOutput = JSON.parse(rawActualJson);
+        } catch {
+          actualOutput = rawActualJson;
+        }
+
         caseResults.push({
           id: testCase.id,
           passed: casePassed,
@@ -281,7 +325,6 @@ self.onmessage = async (event: MessageEvent<InMessage>) => {
         });
       }
     }
-
 
     const stdout: string = pyodide.globals.get('_captured_stdout').getvalue();
     const out: OutMessage = {
