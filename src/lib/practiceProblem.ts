@@ -58,6 +58,28 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'matrix-multiplication': {
+    id: 'matrix-multiplication',
+    functionName: 'matmul',
+    starterCode: `def matmul(A, B):
+    """A, B: list of lists (rows). Return A @ B as a list of lists.
+    Raise ValueError if A's row length != B's row count."""
+    # Your implementation here
+    pass
+`,
+    // Deliberately the second problem migrated to this engine specifically
+    // because its shape is genuinely different from dot-product's (nested
+    // list input AND nested list output, not scalars) -- this validates
+    // toPythonLiteral()'s recursive array handling and the UI's JSON
+    // display for a real 2D structure, not just a copy of the same shape.
+    testCases: [
+      { id: 'basic', label: '2x2 basic case', input: { A: [[1, 2], [3, 4]], B: [[5, 6], [7, 8]] }, expectedOutput: [[19, 22], [43, 50]] },
+      { id: 'identity', label: 'Identity matrix', input: { A: [[1, 0], [0, 1]], B: [[9, 8], [7, 6]] }, expectedOutput: [[9, 8], [7, 6]] },
+      { id: 'row-times-col', label: 'Row vector × column vector', input: { A: [[1, 2, 3]], B: [[1], [1], [1]] }, expectedOutput: [[6]] },
+      { id: 'scalar', label: '1x1 matrices', input: { A: [[2]], B: [[3]] }, expectedOutput: [[6]] },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 export function getPracticeProblem(problemId: string): PracticeProblem | undefined {

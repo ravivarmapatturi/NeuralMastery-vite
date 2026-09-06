@@ -12,7 +12,7 @@ import { SECTION_META, SECTION_ORDER, getGroupForSubsection } from '../data/sect
 // histories is a plain, safe set union (see mergeEvents) instead of a
 // bespoke reconciliation for a mutable counter.
 
-export type AwardKind = 'mark' | 'complete' | 'design';
+export type AwardKind = 'mark' | 'complete' | 'design' | 'flashcard';
 
 export interface AwardEvent {
   permalink: string;
@@ -28,21 +28,50 @@ export interface AwardEvent {
   points: number;
 }
 
-// Flat values, not scaled by problem difficulty -- difficulty is only
-// ever prose ("Difficulty: Medium") in each practice-problem's MDX, not a
-// structured, queryable field anywhere in the content pipeline. Scaling
-// by it would mean either adding that structured metadata sitewide (a
-// real, separate initiative) or faking a scale from unstructured text --
-// a flat, honest value for "solved a problem" is the correct choice until
-// that metadata genuinely exists.
 export const MARK_UNDERSTOOD_POINTS = 10;
-export const PROBLEM_COMPLETED_POINTS = 50;
+// Real, per-problem difficulty is now a structured frontmatter field (see
+// contentTree.ts's DocPage.difficulty), not just prose -- these scale a
+// solved problem's award by how hard it actually was, instead of every
+// problem (a 5-line easy warmup or a real GQA/RoPE implementation) paying
+// out the same flat value. `easy`/`hard` deliberately widen away from
+// PROBLEM_COMPLETED_POINTS_DEFAULT (the old flat value) rather than
+// splitting the difference narrowly, so the scaling is a real signal, not
+// a token gesture. Kept as three named constants (not a formula) so the
+// exact values stay easy to see and tune without touching call sites.
+export const PROBLEM_COMPLETED_POINTS_EASY = 25;
+export const PROBLEM_COMPLETED_POINTS_MEDIUM = 50;
+export const PROBLEM_COMPLETED_POINTS_HARD = 100;
+// Fallback for the handful of problems with no difficulty frontmatter at
+// all (there shouldn't be any among real practice problems -- this exists
+// so an award never silently computes NaN/undefined points if one is ever
+// missing) -- same value as the medium tier, a reasonable, non-punitive default.
+export const PROBLEM_COMPLETED_POINTS_DEFAULT = PROBLEM_COMPLETED_POINTS_MEDIUM;
+
+/** Real difficulty-scaled point value for completing a practice problem.
+ * Not used for system-design challenges -- those keep their own separate,
+ * larger flat value (SYSTEM_DESIGN_CHALLENGE_POINTS below), since their
+ * frontmatter deliberately has no difficulty field at all (see
+ * meta_descriptions/Phase 2 frontmatter tagging -- a design challenge
+ * isn't easy/medium/hard the way a coding problem is). */
+export function pointsForDifficulty(difficulty: string | undefined): number {
+  if (difficulty === 'easy') return PROBLEM_COMPLETED_POINTS_EASY;
+  if (difficulty === 'hard') return PROBLEM_COMPLETED_POINTS_HARD;
+  if (difficulty === 'medium') return PROBLEM_COMPLETED_POINTS_MEDIUM;
+  return PROBLEM_COMPLETED_POINTS_DEFAULT;
+}
+
 // The biggest award in the system, deliberately -- a system-design
 // challenge (write a real end-to-end design for a real problem, then
 // self-assess against a rubric + the site's own real case-study
 // walkthrough) is the deepest engagement this site can currently measure,
 // genuinely more than a single practice problem's narrower scope.
 export const SYSTEM_DESIGN_CHALLENGE_POINTS = 100;
+
+/** Tiny, first-reveal-only award for the homepage's "Test yourself"
+ * interview-question flashcards (see Home.tsx) -- deliberately much
+ * smaller than a real solved practice problem, since revealing an answer
+ * is a much lighter action than writing and passing real code. */
+export const FLASHCARD_REVEAL_POINTS = 1;
 
 /** Local (not UTC) calendar date as YYYY-MM-DD -- deliberately built from
  * Date's local getters, not toISOString() (which is UTC-based and would

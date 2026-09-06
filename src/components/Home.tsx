@@ -75,7 +75,7 @@ export default function Home() {
   const accent = buildSectionAccent();
 
   const { understood, isUnderstood, countWithin, dueForReview } = useProgress();
-  const { events } = useGamification();
+  const { events, awardFlashcardRevealed } = useGamification();
   // Gated on real, currently-existing pages (not raw understood-map key
   // count) -- a visitor whose only marked page was later renamed/removed
   // (see ProgressPage's own titleFor fallback for that same case) should
@@ -242,7 +242,10 @@ export default function Home() {
               <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 0.75rem', lineHeight: 1.5 }}>
                 Real interview questions, click to reveal the answer — try one right here:
               </p>
-              <QA q="What is a KV cache, and why does it matter for serving?">
+              <QA
+                q="What is a KV cache, and why does it matter for serving?"
+                onReveal={() => awardFlashcardRevealed('flashcard:home-kv-cache')}
+              >
                 Storing each generated token's Key/Value projections so they don't get recomputed on every
                 subsequent step — it's also the dominant consumer of GPU memory during serving.
               </QA>

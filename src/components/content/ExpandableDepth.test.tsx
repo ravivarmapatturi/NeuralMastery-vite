@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { ELI5, GoDeeper, QA, Solution } from './ExpandableDepth'
 import { renderWithTheme as render } from '../../../tests/unit/renderWithProviders'
 
@@ -115,5 +115,38 @@ describe('QA', () => {
     render(<QA q="What is a Transformer?">A neural network architecture built on self-attention.</QA>)
     await user.click(screen.getByRole('button'))
     expect(screen.getByText('A neural network architecture built on self-attention.')).toBeInTheDocument()
+  })
+
+  it('fires onReveal on every closed->open transition, never on the open->closed transition itself', async () => {
+    // The component fires on every reveal, by design -- real once-ever
+    // "first reveal only" de-duplication happens one layer up, in
+    // GamificationContext's award() (hasAward() check), the same
+    // no-double-award contract every other award kind uses. This test
+    // only covers what THIS component is responsible for: never firing
+    // on close, and firing again on a genuine re-open.
+    const user = userEvent.setup()
+    const onReveal = vi.fn()
+    render(
+      <QA q="What is a Transformer?" onReveal={onReveal}>
+        content
+      </QA>,
+    )
+    const button = screen.getByRole('button')
+    await user.click(button) // open (first reveal)
+    expect(onReveal).toHaveBeenCalledTimes(1)
+    await user.click(button) // close
+    expect(onReveal).toHaveBeenCalledTimes(1) // not called again on collapse
+    await user.click(button) // re-open
+    expect(onReveal).toHaveBeenCalledTimes(2) // real component behavior: fires again on a genuine re-open
+  })
+
+  it('never calls onReveal at all if the card is never opened', () => {
+    const onReveal = vi.fn()
+    render(
+      <QA q="What is a Transformer?" onReveal={onReveal}>
+        content
+      </QA>,
+    )
+    expect(onReveal).not.toHaveBeenCalled()
   })
 })

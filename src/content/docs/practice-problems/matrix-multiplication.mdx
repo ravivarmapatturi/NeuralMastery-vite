@@ -6,7 +6,7 @@ difficulty: medium
 topic: mathematics-for-ai
 ---
 
-import RunnableCode from '../../../components/content/RunnableCode';
+import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Matrix Multiplication From Scratch
@@ -17,18 +17,7 @@ For an $(m \times n)$ matrix $A$ and an $(n \times p)$ matrix $B$, the product $
 
 **Your task**: implement `matmul(A, B)` for matrices represented as lists of lists of numbers (no NumPy). Raise a `ValueError` if the inner dimensions don't match (`A`'s number of columns must equal `B`'s number of rows).
 
-<RunnableCode
-  code={`def matmul(A, B):
-    """A, B: list of lists (rows). Return A @ B as a list of lists.
-    Raise ValueError if A's row length != B's row count."""
-    # Your implementation here
-    pass
-`}
-  tests={`assert matmul([[1, 2], [3, 4]], [[5, 6], [7, 8]]) == [[19, 22], [43, 50]]
-assert matmul([[1, 0], [0, 1]], [[9, 8], [7, 6]]) == [[9, 8], [7, 6]]
-assert matmul([[1, 2, 3]], [[1], [1], [1]]) == [[6]]
-assert matmul([[2]], [[3]]) == [[6]]`}
-/>
+<PracticePlayground problemId="matrix-multiplication" />
 
 <Solution>
 

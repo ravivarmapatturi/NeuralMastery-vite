@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useVizTokens, RADIUS, SPACING, FONT_FAMILY } from '../../theme/vizTokens';
 import { useGamification } from '../../contexts/GamificationContext';
-import { normalizeRoute } from '../../lib/contentTree';
+import { normalizeRoute, getPageByRoute } from '../../lib/contentTree';
 
 interface WebGPUTestCase {
   name: string;
@@ -52,6 +52,7 @@ export default function RunnableWebGPU({ code: initialCode, tests }: { code: str
   const t = useVizTokens();
   const { awardProblemCompleted } = useGamification();
   const permalink = normalizeRoute(useLocation().pathname);
+  const difficulty = getPageByRoute(permalink)?.difficulty;
   const [code, setCode] = useState(initialCode);
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -145,7 +146,7 @@ export default function RunnableWebGPU({ code: initialCode, tests }: { code: str
       }
       setTestResults(results);
       if (results.length > 0 && results.every((r) => r.passed)) {
-        awardProblemCompleted(permalink); // no-op if this page already earned it once
+        awardProblemCompleted(permalink, difficulty); // no-op if this page already earned it once
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);

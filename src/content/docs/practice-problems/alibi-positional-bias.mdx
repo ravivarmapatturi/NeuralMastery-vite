@@ -1,0 +1,60 @@
+---
+title: "Practice: ALiBi (Attention with Linear Biases) From Scratch"
+sidebar_position: 53
+description: "Implement ALiBi from scratch with NumPy -- a fixed, non-learned distance penalty added to attention scores, designed for strong length extrapolation."
+difficulty: medium
+topic: llms-genai
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# ALiBi (Attention with Linear Biases) From Scratch
+
+**Difficulty: Medium** · Concept: [Foundation Model Internals — Positional Encoding](/docs/llms-genai/foundation-model-internals#positional-encoding)
+
+$$\text{bias}_{h,i,j} = -m_h \cdot (i - j), \quad m_h = 2^{-8h/H} \ \text{for } j \le i$$
+
+Unlike [RoPE](/practice/rotary-positional-embedding), which rotates the Q/K vectors themselves, ALiBi doesn't touch Q/K at all — it adds a fixed, non-learned penalty directly to the raw attention scores, proportional to the distance between the two token positions (before the softmax). Each attention head gets its own fixed "slope" $m_h$ (a geometric sequence across heads, so different heads penalize distance at different rates), which is simpler than RoPE and was specifically designed for strong length extrapolation — performing well at sequence lengths longer than anything seen in training.
+
+**Your task**: implement `alibi_bias(num_heads, seq_len)`, returning a `(num_heads, seq_len, seq_len)` array of the causal ALiBi bias — `bias[h, i, j] = -slope_h * (i - j)` for `j <= i` (looking backward or at itself), and `0` for `j > i` (future positions get masked out separately by causal masking anyway, so their bias value doesn't matter for correctness, but should not be a large positive number).
+
+<RunnableCode
+  code={`import numpy as np
+
+def alibi_bias(num_heads, seq_len):
+    """Return a (num_heads, seq_len, seq_len) array where
+    bias[h, i, j] = -slope_h * (i - j) for j <= i, else 0.
+    slope_h = 2 ** (-8 * (h + 1) / num_heads) for h = 0, 1, ..., num_heads - 1."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert alibi_bias(4, 5).shape == (4, 5, 5)
+assert np.allclose(np.diagonal(alibi_bias(4, 5), axis1=1, axis2=2), 0.0)
+assert alibi_bias(4, 5)[0, 4, 0] < alibi_bias(4, 5)[0, 4, 3]
+assert abs(alibi_bias(4, 5)[0, 4, 0]) > abs(alibi_bias(4, 5)[3, 4, 0])
+assert alibi_bias(4, 5)[0, 2, 4] == 0`}
+/>
+
+<Solution>
+
+```python
+import numpy as np
+
+def alibi_bias(num_heads, seq_len):
+    slopes = np.array([2 ** (-8 * (h + 1) / num_heads) for h in range(num_heads)])
+    i = np.arange(seq_len).reshape(-1, 1)
+    j = np.arange(seq_len).reshape(1, -1)
+    rel = np.minimum(-(i - j), 0)  # 0 for j >= i (self and future), negative for j < i
+    return slopes.reshape(-1, 1, 1) * rel.reshape(1, seq_len, seq_len)
+```
+
+`slopes` is the geometric sequence from the original ALiBi paper: head 0 gets the steepest slope (largest penalty per unit distance), and each subsequent head's slope is a fixed fraction of the previous one, so across enough heads the model gets a genuine range from "barely look at distance at all" to "only look at very recent tokens" without learning any of it. `i - j` for a backward-looking pair (`j <= i`, i.e. `j` is at or before the current position `i`) is `>= 0`, so `-(i - j)` is `<= 0` — exactly the negative-or-zero penalty ALiBi wants, growing more negative the farther back `j` is from `i`. `np.minimum(..., 0)` clips the *future* case (`j > i`, where `-(i-j)` would be positive) down to 0 rather than leaving a bonus for attending to the future — real causal masking handles making future positions actually unreachable elsewhere in a full attention implementation, but this keeps ALiBi's own bias term from accidentally rewarding it.
+
+The broadcasting at the end (`slopes.reshape(-1, 1, 1) * rel.reshape(1, seq_len, seq_len)`) is what turns one `(seq_len, seq_len)` distance-penalty pattern into `num_heads` differently-scaled copies in a single multiply — every head shares the exact same relative-distance shape, only the steepness differs.
+
+</Solution>
+
+---
+
+Next: [Grouped Query Attention (GQA) From Scratch](/practice/grouped-query-attention)

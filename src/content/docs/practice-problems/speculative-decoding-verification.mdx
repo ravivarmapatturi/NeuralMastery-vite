@@ -1,0 +1,48 @@
+---
+title: "Practice: Speculative Decoding Verification Step From Scratch"
+sidebar_position: 59
+description: "Implement speculative decoding's per-token accept/reject verification step from scratch with NumPy -- the modified rejection sampling that guarantees an exact match to the target model's own distribution."
+difficulty: hard
+topic: mlops
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Speculative Decoding Verification Step From Scratch
+
+**Difficulty: Hard** · Concept: [LLM Inference Optimization — Other Core Optimizations](/docs/mlops/llm-inference-optimization#other-core-optimizations)
+
+Speculative decoding uses a small, fast **draft model** to propose several tokens ahead, then the large **target model** verifies them all in a single forward pass. The verification for each proposed token isn't a simple "does the target model agree" check — it's a specific rejection-sampling rule (from [Leviathan et al.](https://arxiv.org/abs/2211.17192)) that accepts a drafted token with probability $\min(1, p_{\text{target}}/p_{\text{draft}})$, which is what makes the *overall* output distribution provably identical to sampling from the target model alone, not just "close enough."
+
+**Your task**: implement `speculative_verify(draft_prob, target_prob, r)` for the probability the draft and target models each assign to the *same* proposed token, and a pre-drawn random value `r` (uniform on `[0, 1)`, passed in rather than sampled internally so the function is deterministic and testable). Return `(accepted, accept_prob)`: `accepted` is `True` if `r <= accept_prob`, where `accept_prob = min(1, target_prob / draft_prob)`.
+
+<RunnableCode
+  code={`def speculative_verify(draft_prob, target_prob, r):
+    """draft_prob, target_prob: probability each model assigns to the
+    SAME proposed token. r: a pre-drawn uniform(0,1) value. Return
+    (accepted, accept_prob), where accept_prob = min(1, target_prob/draft_prob)
+    and accepted = (r <= accept_prob)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert speculative_verify(0.5, 0.9, 0.3)[0] is True and abs(speculative_verify(0.5, 0.9, 0.3)[1] - 1.0) < 1e-9
+assert speculative_verify(0.9, 0.3, 0.5)[0] is False and abs(speculative_verify(0.9, 0.3, 0.5)[1] - (0.3/0.9)) < 1e-9
+assert speculative_verify(0.9, 0.3, 0.1)[0] is True
+assert speculative_verify(0.4, 0.4, 0.99)[0] is True and abs(speculative_verify(0.4, 0.4, 0.99)[1] - 1.0) < 1e-9`}
+/>
+
+<Solution>
+
+```python
+def speculative_verify(draft_prob, target_prob, r):
+    accept_prob = min(1.0, target_prob / draft_prob)
+    accepted = r <= accept_prob
+    return accepted, accept_prob
+```
+
+The core insight this rule encodes: if the target model likes a drafted token *at least as much* as the draft model did (`target_prob >= draft_prob`), `accept_prob` is `1.0` and the token is always accepted — there's no reason to reject something the more-trusted target model would have generated with at least this much probability itself. If the target model likes it *less*, `accept_prob` drops below `1.0`, and whether it's actually accepted for a specific draw becomes a coin flip weighted by exactly how much less the target model liked it — a token the target model considers only 1/3 as likely as the draft model did gets accepted only 1/3 of the time, matching the target's own lower confidence rather than blindly trusting the draft.
+
+Taking `r` as a plain argument, instead of drawing it internally with `np.random`, is what makes each of these four test cases meaningful and repeatable: real speculative decoding would draw a fresh `r` per token from the actual random stream, but the *decision rule* itself — given some `r`, is the token accepted — is a pure, deterministic function worth testing directly, the same reasoning behind not hard-coding randomness into any of the other functions in this practice set. When a token is rejected, the real algorithm doesn't just fall back to the draft model's proposal — it resamples from the *residual* distribution `max(0, target - draft)` renormalized, which is what makes the overall scheme mathematically exact rather than an approximation; this function only covers the accept/reject decision itself, the piece [LLM Inference Optimization](/docs/mlops/llm-inference-optimization#other-core-optimizations)'s own worked example (a 1.63× to 6.86× speedup depending on acceptance rate) is built on.
+
+</Solution>

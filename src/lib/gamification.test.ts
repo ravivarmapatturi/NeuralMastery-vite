@@ -14,7 +14,11 @@ import {
   activityCounts,
   normalizePracticeProblemPermalink,
   MARK_UNDERSTOOD_POINTS,
-  PROBLEM_COMPLETED_POINTS,
+  PROBLEM_COMPLETED_POINTS_MEDIUM,
+  PROBLEM_COMPLETED_POINTS_EASY,
+  PROBLEM_COMPLETED_POINTS_HARD,
+  PROBLEM_COMPLETED_POINTS_DEFAULT,
+  pointsForDifficulty,
   type AwardEvent,
 } from './gamification'
 
@@ -111,9 +115,26 @@ describe('hasAward / totalPoints', () => {
   it('totalPoints sums every event\'s recorded points', () => {
     const events: AwardEvent[] = [
       { permalink: '/a', kind: 'mark', date: '2026-01-01', points: MARK_UNDERSTOOD_POINTS },
-      { permalink: '/b', kind: 'complete', date: '2026-01-01', points: PROBLEM_COMPLETED_POINTS },
+      { permalink: '/b', kind: 'complete', date: '2026-01-01', points: PROBLEM_COMPLETED_POINTS_MEDIUM },
     ]
-    expect(totalPoints(events)).toBe(MARK_UNDERSTOOD_POINTS + PROBLEM_COMPLETED_POINTS)
+    expect(totalPoints(events)).toBe(MARK_UNDERSTOOD_POINTS + PROBLEM_COMPLETED_POINTS_MEDIUM)
+  })
+})
+
+describe('pointsForDifficulty', () => {
+  it('scales the award by real problem difficulty, not one flat value', () => {
+    expect(pointsForDifficulty('easy')).toBe(PROBLEM_COMPLETED_POINTS_EASY)
+    expect(pointsForDifficulty('medium')).toBe(PROBLEM_COMPLETED_POINTS_MEDIUM)
+    expect(pointsForDifficulty('hard')).toBe(PROBLEM_COMPLETED_POINTS_HARD)
+  })
+
+  it('falls back to the default (medium-equivalent) value for a problem with no difficulty frontmatter', () => {
+    expect(pointsForDifficulty(undefined)).toBe(PROBLEM_COMPLETED_POINTS_DEFAULT)
+  })
+
+  it('the three real tiers are genuinely different values, not a token gesture', () => {
+    expect(PROBLEM_COMPLETED_POINTS_EASY).toBeLessThan(PROBLEM_COMPLETED_POINTS_MEDIUM)
+    expect(PROBLEM_COMPLETED_POINTS_MEDIUM).toBeLessThan(PROBLEM_COMPLETED_POINTS_HARD)
   })
 })
 
