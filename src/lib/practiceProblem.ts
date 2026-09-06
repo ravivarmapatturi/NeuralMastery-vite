@@ -51,6 +51,10 @@ export interface PracticeProblem {
   runtime: RuntimeCapabilities;
   /** Controls judging engine: 'local' (Pyodide in-browser), 'server' (Sandboxed server), or 'hybrid' (Server with Pyodide fallback) */
   judgeMode?: 'local' | 'server' | 'hybrid';
+  prerequisite?: string | null;
+  stage?: string;
+  stageNumber?: number;
+  points?: number;
 }
 
 export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
@@ -727,6 +731,30 @@ def knn_predict(X_train, y_train, x_test, k):
   },
 };
 
+import curriculum500Data from '../data/curriculum500.json';
+
+export interface CurriculumProblemItem {
+  rank: number;
+  id: string;
+  title: string;
+  category: string;
+  stage: string;
+  stageNumber: number;
+  topic: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  points: number;
+  prerequisite: string | null;
+  functionName: string;
+  functionSignature: string;
+  starterCode: string;
+  testCases: PracticeTestCase[];
+}
+
+const CURRICULUM_MAP = new Map<string, CurriculumProblemItem>();
+for (const item of curriculum500Data as CurriculumProblemItem[]) {
+  CURRICULUM_MAP.set(item.id, item);
+}
+
 /**
  * Dynamic problem builder for any un-configured practice problem.
  * Ensures EVERY practice problem in the platform automatically renders in
@@ -740,6 +768,43 @@ function createFallbackProblem(
   topic?: string,
 ): PracticeProblem {
   const cleanId = problemId.replace(/\/$/, '').replace(/^\/practice\//, '');
+
+  if (CURRICULUM_MAP.has(cleanId)) {
+    const item = CURRICULUM_MAP.get(cleanId)!;
+    return {
+      id: item.id,
+      title: item.title,
+      difficulty: item.difficulty,
+      topic: item.topic,
+      estimatedTime: item.difficulty === 'easy' ? '10–15 min' : item.difficulty === 'medium' ? '15–20 min' : '25–30 min',
+      functionName: item.functionName,
+      functionSignature: item.functionSignature,
+      starterCode: item.starterCode,
+      mission: `Implement ${item.title} to master core AI engineering concepts in ${item.topic}.`,
+      taskDescription: `Implement \`${item.functionName}\` in Python. Test cases verify edge cases and functional requirements.`,
+      libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+      bonusPoints: 10,
+      bonusDescription: 'Pure Python implementation',
+      constraints: [
+        'Libraries (NumPy, PyTorch, SciPy) are allowed and accepted normally.',
+        'Pure Python (no external libraries) earns +10 Bonus XP!',
+        'Must handle edge cases cleanly.',
+      ],
+      hints: {
+        small: `Focus on the core algorithm for ${item.topic}.`,
+        strong: `Start with base/edge cases then implement the main mathematical logic.`,
+        concept: `This problem builds core mastery in ${item.category} (${item.stage}).`,
+      },
+      testCases: item.testCases,
+      runtime: { language: 'python', capabilities: ['python', 'numpy', 'pytorch'] },
+      judgeMode: 'hybrid',
+      prerequisite: item.prerequisite,
+      stage: item.stage,
+      stageNumber: item.stageNumber,
+      points: item.points,
+    };
+  }
+
   const displayTitle =
     title ??
     cleanId
@@ -793,6 +858,10 @@ export function getPracticeProblem(problemId: string): PracticeProblem | undefin
     return PRACTICE_PROBLEMS[cleanId];
   }
 
+  if (CURRICULUM_MAP.has(cleanId)) {
+    return createFallbackProblem(cleanId);
+  }
+
   // Check if cleanId matches a real practice problem in contentTree
   const allPractice = getAllDocPracticeProblems();
   const matchedPage = allPractice.find(
@@ -810,3 +879,4 @@ export function getPracticeProblem(problemId: string): PracticeProblem | undefin
 
   return undefined;
 }
+

@@ -39,9 +39,20 @@ function isDesignChallenge(page: DocPage): boolean {
   return !page.difficulty;
 }
 
+const STAGES = [
+  { id: 'stage-1', num: 1, title: 'Stage 1: AI Foundations & Python Programming', range: 'Rank 1–50' },
+  { id: 'stage-2', num: 2, title: 'Stage 2: Data Structures & Algorithmic Foundations', range: 'Rank 51–110' },
+  { id: 'stage-3', num: 3, title: 'Stage 3: Mathematics & Numerical Computing', range: 'Rank 111–160' },
+  { id: 'stage-4', num: 4, title: 'Stage 4: NumPy & Data Processing (Pandas)', range: 'Rank 161–220' },
+  { id: 'stage-5', num: 5, title: 'Stage 5: Classical ML & Recommender Systems', range: 'Rank 221–285' },
+  { id: 'stage-6', num: 6, title: 'Stage 6: Deep Learning & Computer Vision', range: 'Rank 286–355' },
+  { id: 'stage-7', num: 7, title: 'Stage 7: NLP, Embeddings & Transformer LLM Internals', range: 'Rank 356–425' },
+  { id: 'stage-8', num: 8, title: 'Stage 8: RAG, Agents, MCP & Distributed AI Systems', range: 'Rank 426–500' },
+];
+
 export default function PracticeListPage() {
-  useDocumentTitle('Practice AI');
-  useDocumentMeta('Practice AI', 'Real coding problems, linear algebra to RL -- implement it yourself in an in-browser Python sandbox, run against real tests, no LLM grading.');
+  useDocumentTitle('Practice AI — 500 Problem Curriculum');
+  useDocumentMeta('Practice AI', '500-problem structured AI Engineering curriculum across 26 areas from Python foundations to Distributed AI Systems and MCP.');
 
   const problems = useMemo(() => getPracticeProblems(), []);
   const topicLabels = useMemo(buildTopicLabels, []);
@@ -52,6 +63,8 @@ export default function PracticeListPage() {
   const [search, setSearch] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState<'all' | PracticeDifficulty | 'design'>('all');
   const [topicFilter, setTopicFilter] = useState<'all' | string>('all');
+  const [stageFilter, setStageFilter] = useState<'all' | number>('all');
+  const [viewMode, setViewMode] = useState<'roadmap' | 'table'>('roadmap');
 
   const topics = useMemo(() => {
     const set = new Set(problems.map((p) => p.topic).filter((t): t is string => !!t));
@@ -64,6 +77,8 @@ export default function PracticeListPage() {
   const recommended = recommendedProblem(problems, events, next);
   const paths = practicePaths(problems);
 
+  const [visibleCount, setVisibleCount] = useState(100);
+
   const filtered = problems.filter((p) => {
     if (search && !p.title.toLowerCase().includes(search.toLowerCase())) return false;
     if (topicFilter !== 'all' && p.topic !== topicFilter) return false;
@@ -72,28 +87,98 @@ export default function PracticeListPage() {
     return true;
   });
 
+  const displayedProblems = filtered.slice(0, visibleCount);
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
       <Navbar />
 
       <section style={{ maxWidth: 1350, margin: '0 auto', padding: '2.5rem 2rem 4rem' }}>
-        <h1 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: '0 0 0.5rem' }}>
-          Practice AI
-        </h1>
-        <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.5rem', lineHeight: 1.6, maxWidth: 680 }}>
-          Short, focused coding problems — implement the function yourself in a real, in-browser Python
-          sandbox, run it against real test cases (pass/fail, no LLM grading), then reveal a reference
-          solution with the reasoning behind it. Original problems, tied to the concept pages already
-          on this site.
-        </p>
-        <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 2rem' }}>
-          {solvedCount} / {problems.length} solved
-        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.5rem' }}>
+          <div>
+            <h1 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: '0 0 0.5rem' }}>
+              Practice AI — 500-Problem AI Engineering Curriculum
+            </h1>
+            <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.5rem', lineHeight: 1.6, maxWidth: 780 }}>
+              A structured 500-problem progression across 26 AI Engineering disciplines — from Python &amp; Data Structures to NumPy, Deep Learning, Transformers, RAG, Agents, MCP, and Distributed AI Systems. Every problem runs in a real in-browser Python IDE with instant verification.
+            </p>
+            <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 1.5rem' }}>
+              {solvedCount} / {problems.length} solved
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--nm-surface)', padding: 4, borderRadius: 10, border: '1px solid var(--nm-border)' }}>
+            <button
+              onClick={() => setViewMode('roadmap')}
+              style={{
+                padding: '0.4rem 0.8rem',
+                borderRadius: 8,
+                fontSize: 12,
+                fontWeight: 700,
+                border: 'none',
+                cursor: 'pointer',
+                background: viewMode === 'roadmap' ? 'var(--nm-accent-primary)' : 'transparent',
+                color: viewMode === 'roadmap' ? '#fff' : 'var(--nm-text-muted)',
+              }}
+            >
+              Curriculum Roadmap
+            </button>
+            <button
+              onClick={() => setViewMode('table')}
+              style={{
+                padding: '0.4rem 0.8rem',
+                borderRadius: 8,
+                fontSize: 12,
+                fontWeight: 700,
+                border: 'none',
+                cursor: 'pointer',
+                background: viewMode === 'table' ? 'var(--nm-accent-primary)' : 'transparent',
+                color: viewMode === 'table' ? '#fff' : 'var(--nm-text-muted)',
+              }}
+            >
+              All Catalogue ({problems.length})
+            </button>
+          </div>
+        </div>
 
         <div className="nm-mastery-metrics" aria-label="Practice progress">
           <div><strong>{stats.solved}</strong><span>problems solved</span></div>
           <div><strong>{stats.total - stats.solved}</strong><span>ready to solve</span></div>
           <div><strong>{stats.easySolved}/{stats.mediumSolved}/{stats.hardSolved}</strong><span>easy / medium / hard</span></div>
+        </div>
+
+        {/* 8-Stage Progression Stepper */}
+        <div style={{ margin: '2rem 0', background: 'var(--nm-surface)', borderRadius: 12, border: '1px solid var(--nm-border)', padding: '1.2rem' }}>
+          <p className="nm-eyebrow" style={{ margin: '0 0 0.4rem' }}>Curriculum Progression</p>
+          <h3 style={{ margin: '0 0 1rem', fontSize: 16, color: 'var(--nm-text-primary)' }}>8-Stage AI Engineering Master Path</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.8rem' }}>
+            {STAGES.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => {
+                  setStageFilter(stageFilter === s.num ? 'all' : s.num);
+                  setViewMode('roadmap');
+                }}
+                style={{
+                  textAlign: 'left',
+                  padding: '0.8rem 1rem',
+                  borderRadius: 10,
+                  border: stageFilter === s.num ? '2px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
+                  background: stageFilter === s.num ? 'color-mix(in srgb, var(--nm-accent-primary) 10%, transparent)' : 'var(--nm-bg)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 700, color: 'var(--nm-accent-primary)', marginBottom: 4 }}>
+                  <span>STAGE {s.num}</span>
+                  <span>{s.range}</span>
+                </div>
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>
+                  {s.title.replace(/^Stage \d+: /, '')}
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="nm-practice-guidance">
@@ -132,12 +217,16 @@ export default function PracticeListPage() {
           </div>
         </section>
 
+        {/* Filter Toolbar */}
         <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search problems…"
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setVisibleCount(100);
+            }}
+            placeholder="Search practice problems..."
             aria-label="Search practice problems by title"
             style={{
               flex: '1 1 220px',
@@ -151,7 +240,10 @@ export default function PracticeListPage() {
           />
           <select
             value={difficultyFilter}
-            onChange={(e) => setDifficultyFilter(e.target.value as typeof difficultyFilter)}
+            onChange={(e) => {
+              setDifficultyFilter(e.target.value as typeof difficultyFilter);
+              setVisibleCount(100);
+            }}
             aria-label="Filter by difficulty"
             style={{
               padding: '0.5rem 0.6rem',
@@ -170,7 +262,10 @@ export default function PracticeListPage() {
           </select>
           <select
             value={topicFilter}
-            onChange={(e) => setTopicFilter(e.target.value)}
+            onChange={(e) => {
+              setTopicFilter(e.target.value);
+              setVisibleCount(100);
+            }}
             aria-label="Filter by topic"
             style={{
               padding: '0.5rem 0.6rem',
@@ -190,6 +285,7 @@ export default function PracticeListPage() {
           </select>
         </div>
 
+        {/* Catalogue Table */}
         <div style={{ borderRadius: 12, border: '1px solid var(--nm-border)', overflow: 'hidden' }}>
           <div
             style={{
@@ -213,12 +309,12 @@ export default function PracticeListPage() {
             <span>Points</span>
           </div>
 
-          {filtered.length === 0 ? (
+          {displayedProblems.length === 0 ? (
             <p style={{ margin: 0, padding: '1.5rem 1rem', fontSize: 13, color: 'var(--nm-text-muted)', textAlign: 'center' }}>
               No problems match these filters.
             </p>
           ) : (
-            filtered.map((p, i) => {
+            displayedProblems.map((p, i) => {
               const design = isDesignChallenge(p);
               const solved = hasAward(events, p.route, design ? 'design' : 'complete');
               const points = design ? SYSTEM_DESIGN_CHALLENGE_POINTS : pointsForDifficulty(p.difficulty);
@@ -269,7 +365,29 @@ export default function PracticeListPage() {
             })
           )}
         </div>
+
+        {filtered.length > visibleCount && (
+          <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 100)}
+              style={{
+                padding: '0.6rem 1.5rem',
+                borderRadius: 8,
+                fontSize: 13,
+                fontWeight: 700,
+                border: '1px solid var(--nm-border)',
+                background: 'var(--nm-surface)',
+                color: 'var(--nm-text-primary)',
+                cursor: 'pointer',
+              }}
+            >
+              Load More Problems ({filtered.length - visibleCount} remaining)
+            </button>
+          </div>
+        )}
+
       </section>
     </div>
   );
 }
+

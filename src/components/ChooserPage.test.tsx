@@ -43,7 +43,7 @@ describe('ChooserPage', () => {
 
   it('surfaces the actual curriculum domains rather than invented feature claims, linking to a REAL page -- not the bare SECTION_META key, which 404s', () => {
     renderChooser()
-    expect(screen.getByRole('link', { name: /Foundations/i })).toHaveAttribute('href', groupLandingRoute('/docs/category/foundations'))
+    expect(screen.getAllByRole('link', { name: /Foundations/i })[0]).toHaveAttribute('href', groupLandingRoute('/docs/category/foundations'))
     expect(screen.getByRole('link', { name: /Systems & Infrastructure/i })).toHaveAttribute(
       'href',
       groupLandingRoute('/docs/category/systems--infrastructure'),
