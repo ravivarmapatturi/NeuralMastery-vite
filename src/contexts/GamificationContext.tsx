@@ -112,14 +112,20 @@ async function loadFirestoreFor(uid: string) {
  * onSnapshot subscription -- the real cause behind "my progress is gone
  * after signing back in" for a just-created or just-signed-in account. A
  * short retry clears the race in practice. */
-async function withRetry<T>(fn: () => Promise<T>, attempts = 4): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, attempts = 7): Promise<T> {
   let lastErr: unknown;
   for (let i = 0; i < attempts; i++) {
     try {
       return await fn();
     } catch (err) {
       lastErr = err;
-      if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 300 * (i + 1)));
+      // Real exponential backoff (400ms, 800ms, ... up to ~12.8s), not a
+      // short fixed budget -- confirmed live that this race can outlast a
+      // couple of seconds when multiple onSnapshot listeners are also
+      // reconnecting around the same auth transition (see AuthContext's
+      // signOutUser, which also forces a clean network reset on sign-out
+      // to shrink how often this path is needed at all).
+      if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 400 * 2 ** i));
     }
   }
   throw lastErr;
@@ -206,13 +212,35 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       setEvents(merged);
       writeStorage(merged);
 
-      unsubscribe = onSnapshot(progressRef, (snap) => {
-        if (cancelled) return;
-        const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
-        const currentMerged = mergeEvents(remote, readStorage());
-        setEvents(currentMerged);
-        writeStorage(currentMerged);
-      });
+      unsubscribe = onSnapshot(
+        progressRef,
+        (snap) => {
+          if (cancelled) return;
+          const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
+          const currentMerged = mergeEvents(remote, readStorage());
+          setEvents(currentMerged);
+          writeStorage(currentMerged);
+        },
+        // Without this, a transient listener error (the same auth-token
+        // race withRetry above guards against, but on the LIVE
+        // subscription rather than a one-shot call) surfaces as an
+        // uncaught "Missing or insufficient permissions" -- confirmed
+        // live this was still happening even after the getDoc/setDoc
+        // calls above were made retry-safe. Never mutate `events` from
+        // here: the last-known-good state (from the retried getDoc/setDoc
+        // right above) stays in place until the listener recovers on its
+        // own, which the SDK does automatically once its connection is
+        // healthy again.
+        (err) => {
+          console.error('Gamification live sync listener error (local state unaffected):', err);
+        },
+      );
+    }).catch((err) => {
+      // Belt-and-suspenders: withRetry above already gives this many
+      // chances to recover from the same auth-token race, but if it's
+      // still exhausted, fail loudly (console) instead of as a silent,
+      // stackless unhandled rejection.
+      console.error('Gamification sign-in sync failed after retrying:', err);
     });
 
     return () => {

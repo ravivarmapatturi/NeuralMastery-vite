@@ -154,14 +154,20 @@ async function loadFirestoreFor(uid: string) {
  * subscription -- the real cause behind "my progress is gone after
  * signing back in" for a just-created or just-signed-in account. A short
  * retry clears the race in practice. */
-async function withRetry<T>(fn: () => Promise<T>, attempts = 4): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, attempts = 7): Promise<T> {
   let lastErr: unknown;
   for (let i = 0; i < attempts; i++) {
     try {
       return await fn();
     } catch (err) {
       lastErr = err;
-      if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 300 * (i + 1)));
+      // Real exponential backoff (400ms, 800ms, ... up to ~12.8s), not a
+      // short fixed budget -- confirmed live that this race can outlast a
+      // couple of seconds when multiple onSnapshot listeners are also
+      // reconnecting around the same auth transition (see AuthContext's
+      // signOutUser, which also forces a clean network reset on sign-out
+      // to shrink how often this path is needed at all).
+      if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 400 * 2 ** i));
     }
   }
   throw lastErr;
@@ -231,13 +237,28 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       setUnderstood(merged);
       writeStorage(merged);
 
-      unsubscribe = onSnapshot(ref, (snap) => {
-        if (cancelled) return;
-        const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
-        const currentMerged = mergeProgress(remote, readStorage());
-        setUnderstood(currentMerged);
-        writeStorage(currentMerged);
-      });
+      unsubscribe = onSnapshot(
+        ref,
+        (snap) => {
+          if (cancelled) return;
+          const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
+          const currentMerged = mergeProgress(remote, readStorage());
+          setUnderstood(currentMerged);
+          writeStorage(currentMerged);
+        },
+        // See GamificationContext's identical onSnapshot error handler
+        // for why this exists -- a transient listener error must never
+        // mutate `understood` away from its last-known-good state.
+        (err) => {
+          console.error('Progress live sync listener error (local state unaffected):', err);
+        },
+      );
+    }).catch((err) => {
+      // Belt-and-suspenders: withRetry above already gives this many
+      // chances to recover from the same auth-token race, but if it's
+      // still exhausted, fail loudly (console) instead of as a silent,
+      // stackless unhandled rejection.
+      console.error('Progress sign-in sync failed after retrying:', err);
     });
 
     return () => {

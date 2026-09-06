@@ -1,7 +1,7 @@
 ---
-title: "MCP (Model Context Protocol)"
+title: "MCP (Model Context Protocol) — The Open Standard for AI Tool & Context Connectivity"
 sidebar_position: 1
-description: "MCP standardizes how an AI agent connects to tools and data sources, turning an M-times-N integration problem into a linear M-plus-N one, like USB-C for AI."
+description: "Model Context Protocol (MCP) standardizes how AI applications connect to external tools, databases, and APIs — turning an M-by-N integration nightmare into a seamless M-plus-N standard, like USB-C for AI."
 ---
 
 import MxNIntegrationProblemDiagram from '../../../../viz/diagrams/MxNIntegrationProblemDiagram';
@@ -12,70 +12,314 @@ import RealWorldMcpServersDiagram from '../../../../viz/diagrams/RealWorldMcpSer
 import McpLocalVsRemoteDiagram from '../../../../viz/diagrams/McpLocalVsRemoteDiagram';
 import McpInAgentLoopDiagram from '../../../../viz/diagrams/McpInAgentLoopDiagram';
 import McpVsA2aScopeDiagram from '../../../../viz/diagrams/McpVsA2aScopeDiagram';
+import McpServerBuildStepsDiagram from '../../../../viz/diagrams/McpServerBuildStepsDiagram';
+import McpLifecycleSequenceDiagram from '../../../../viz/diagrams/McpLifecycleSequenceDiagram';
+import CommunicationPatternSequenceDiagram from '../../../../viz/diagrams/CommunicationPatternSequenceDiagram';
+import TransportComparisonDiagram from '../../../../viz/diagrams/TransportComparisonDiagram';
 
-# MCP (Model Context Protocol)
+# Model Context Protocol (MCP) — Overview & Masterclass
 
-Before MCP, every AI application that wanted to connect an LLM to a tool (a database, a file system, a SaaS API) had to write custom integration code for that specific tool, for that specific application. MCP standardizes the interface so tools and applications can be built independently and still work together.
+The **Model Context Protocol (MCP)** is an open specification introduced by Anthropic that standardizes how AI models (LLMs and Autonomous Agents) interact with external software systems, databases, APIs, and local development environments. 
 
-## The Problem: Every App × Every Tool
+MCP is often called **"The USB-C for AI Applications."** Just as USB-C replaced dozens of proprietary, custom charging and peripheral cables with a single standardized physical and logical interface, MCP provides a universal protocol connecting any AI application to any data source or tool.
 
-Without a shared standard, connecting $M$ AI applications to $N$ tools means writing and maintaining $M \times N$ separate integrations — every app's own bespoke client code for every tool's own bespoke API. Adding one more tool means every app has to add support for it; adding one more app means it has to re-implement integration code for every tool that already exists.
+---
+
+## 1. What is Model Context Protocol?
+
+Before MCP, connecting an AI model to an external system required custom, ad-hoc glue code. If you built an AI code editor, you had to write custom API clients for Git, PostgreSQL, Jira, and Slack. If another team built a chat assistant, they had to re-implement custom glue code for those exact same integrations from scratch.
+
+MCP solves this fragmentation by defining a standardized **JSON-RPC 2.0** protocol. With MCP:
+
+- **AI Hosts & Clients** (such as Claude Desktop, Cursor, smolagents, or custom agent runtimes) implement the client side **once**.
+- **Tool & Data Providers** (such as PostgreSQL, GitHub, Notion, or local file systems) implement an MCP server **once**.
+- Any MCP Client can instantly discover and use any MCP Server without writing a single line of application-specific integration code.
+
+---
+
+## 2. Integration Challenges: The $M \times N$ Problem
+
+To appreciate why MCP is crucial for modern AI infrastructure, consider the **$M \times N$ Integration Problem**.
+
+### Without MCP: $M \times N$ Custom Glue Code
+If $M$ AI applications want to connect to $N$ data sources or tools, developers must write and maintain $M \times N$ separate custom integrations.
 
 <MxNIntegrationProblemDiagram />
 
-MCP collapses this to an $M + N$ problem: every application implements MCP once (becoming a client), and every tool exposes an MCP server once — after that, any MCP client can use any MCP server, with zero additional integration code on either side. This is the same shape as what USB-C did for device connectors, or what LSP (Language Server Protocol) did for code editors and language tooling: a shared interface that turns a combinatorial integration problem into a linear one.
+Each integration requires bespoke authentication, unique schema mapping, custom error handling, and manual prompt maintenance. Adding 1 new tool means updating all $M$ applications; building 1 new AI application means writing $N$ new integrations.
 
-## The Core Idea: Client and Server
+### With MCP: $M + N$ Standardized Ecosystem
+MCP converts the combinatorial nightmare into a linear **$M + N$** solution:
 
-MCP defines a standard protocol between two roles:
+- Application developers write **1 MCP Client**.
+- Tool developers build **1 MCP Server**.
 
-- **MCP servers** expose capabilities — tools the model can call, resources (data) it can read, and prompt templates — over a standard interface.
-- **MCP clients** (typically the AI application itself, e.g. an IDE or agent framework) connect to one or more MCP servers and make their capabilities available to the LLM, without needing custom code per server.
+The result is instant interoperability across the entire AI ecosystem.
 
-<McpArchitectureDiagram />
+---
 
-A single client application commonly connects to *several* servers at once — a coding agent might have a filesystem server, a GitHub server, and a database server all connected simultaneously, each exposing a different slice of capability, with the client responsible for presenting all of it to the LLM as one combined toolset.
+## 3. Key Concepts & Terminology
 
-## Resources, Tools, and Prompts
+Understanding standard MCP terminology is essential when architecting AI agents and tools.
 
-An MCP server can expose three distinct kinds of capability, and the distinction matters for how each one gets used:
-
-<McpCapabilityTypesDiagram />
-
-Tools are the ones with side effects and the ones an LLM decides to invoke on its own; resources are inert, pulled-in data with no side effects; prompts are reusable templates a *user* (not the model) typically selects. A server doesn't have to expose all three — a read-only data server might offer only resources, while a pure-action server might offer only tools.
-
-## Who Builds the Client, Who Builds the Server
+> [!NOTE]
+> **Terminology Rule**: Standardize your vocabulary around **Host**, **Client**, and **Server**. A Host application contains an MCP Client that connects 1:1 with an external MCP Server.
 
 <ClientServerRolesDiagram />
 
-In practice, the split is: whoever builds the AI application (an IDE, an agent framework, a chat product) implements the client side once, using an official SDK; whoever owns a tool or data source implements the server side once, and it becomes usable by every MCP client that exists, including ones built after the server was published — a real decoupling between "who builds the AI experience" and "who exposes the underlying capability."
+### Core Entities
 
-## The MCP Ecosystem
+| Term | Definition | Examples / Role |
+| :--- | :--- | :--- |
+| **Host** | The overall user-facing application that orchestrates the user interaction, LLM inference, and UI rendering. | Claude Desktop, Cursor IDE, LangChain agent app, smolagents script. |
+| **Client** | A protocol component inside the Host that maintains a direct 1:1 connection with a specific MCP Server. Handles JSON-RPC transport and messaging. | Internal MCP connection manager. |
+| **Server** | An independent executable process or web service that exposes capabilities (Tools, Resources, Prompts) via the MCP standard. | Local Postgres server, GitHub MCP server, Filesystem MCP server. |
 
-Because the protocol overhead of building a server is deliberately small, a wide range of MCP servers already exist for common tools and data sources:
+<McpArchitectureDiagram />
 
-<RealWorldMcpServersDiagram />
+---
 
-This is also why the ecosystem grew quickly — a server author doesn't need to know or care which AI application will eventually connect to their server, and an application author doesn't need bespoke code for each one of these.
+## 4. MCP Capabilities: Tools, Resources, Prompts & Sampling
 
-## Local vs. Remote Servers
+An MCP Server exposes three primary capabilities to the Host, plus optional **Sampling** capabilities for recursive model feedback.
+
+<McpCapabilityTypesDiagram />
+
+### Summary of Capabilities
+
+| Capability | Direction & Control | Purpose | Example |
+| :--- | :--- | :--- | :--- |
+| **Tools** | Invoked by LLM (with user consent) | Executable functions with side effects or computed operations. | `execute_sql_query`, `create_github_issue`, `calculate_matrix_inverse`. |
+| **Resources** | Read-only context pulled by Host | Passive data feeds (files, schemas, logs) exposed via URI schemes (`file://`, `postgres://`). | `file:///project/src/main.py`, `postgres://db/schema`. |
+| **Prompts** | Triggered by User / Host | Pre-configured prompt templates and workflows with custom parameters. | `explain_code_bug`, `generate_postmortem`, `summarize_incident`. |
+| **Sampling** | Server $\rightarrow$ Host request | Allows the Server to request an LLM completion back from the Host during an execution. | Server asks host LLM to summarize intermediate logs. |
+
+---
+
+## 5. Architectural Components & Communication Flow
+
+MCP operates on a clean request-response and notification pattern built over JSON-RPC 2.0.
+
+### The 7-Step Lifecycle Sequence
+
+<CommunicationPatternSequenceDiagram />
+
+1. **User Request**: The user submits a prompt or task to the **Host** application.
+2. **Host & LLM Processing**: The Host passes context to the LLM. The LLM determines it requires external information or actions.
+3. **Client Connection & Handshake**: The Host's **MCP Client** initiates a session with the designated **MCP Server** using an `initialize` JSON-RPC request.
+4. **Capability Discovery**: The Client queries `tools/list`, `resources/list`, or `prompts/list` to retrieve exact JSON Schema definitions.
+5. **Tool Invocation**: The Host formats an LLM tool-call request into a `tools/call` JSON-RPC message containing named arguments.
+6. **Server Execution**: The **MCP Server** validates arguments against the input schema, executes the internal python/TS function, and captures the result.
+7. **Result Delivery & Integration**: The Server returns a standard `content` array payload. The Client feeds the output back into the LLM context to generate the final response.
+
+---
+
+## 6. Transports: Local (`stdio`) vs Remote (`Streamable HTTP / SSE`)
+
+MCP separates protocol messaging from transport mechanics. Messages are identical regardless of how bytes travel:
 
 <McpLocalVsRemoteDiagram />
 
-Both shapes speak the exact same protocol underneath — a client written to work with one works with the other unmodified. [MCP Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive) covers the full wire-level detail of both transports, the connection lifecycle, tool schemas, authorization, and how to build a server.
+<TransportComparisonDiagram />
 
-## Why This Matters for the Rest of the Agents Section
+- **`stdio` (Local Subprocess)**: The Host spawns the MCP Server as a child process. Requests move over `stdin`, responses over `stdout`, and logs over `stderr`. Ideal for local IDEs and CLI tools.
+- **Streamable HTTP / SSE (Remote Service)**: Client sends HTTP POST requests to an endpoint (e.g. `https://api.example.com/mcp`) with optional Server-Sent Events (SSE) for streaming updates. Ideal for remote SaaS tools and cloud microservices.
 
-[Agent Fundamentals](/docs/agents/agent-fundamentals) covered *how* an agent decides to call a tool and processes the result — the reasoning side of the loop. MCP is the standardized transport for the other half: actually reaching the tool, regardless of what it is or who built it.
+---
+
+## 7. Step-by-Step Guide: How to Build an MCP Server
+
+Building an MCP Server is fast and straightforward using official SDKs like **FastMCP** (Python) or **TypeScript MCP SDK**.
+
+<McpServerBuildStepsDiagram />
+
+### Option A: Building an MCP Server in Python (FastMCP)
+
+Install the official Python SDK:
+```bash
+pip install mcp
+```
+
+Create `server.py`:
+```python
+from mcp.server.fastmcp import FastMCP, Context
+
+# 1. Initialize FastMCP Server
+mcp = FastMCP("Database & Analytics Server")
+
+# 2. Register an Executable Tool
+@mcp.tool()
+def calculate_dataset_stats(numbers: list[float]) -> dict:
+    """Calculates mean, min, and max for a list of numerical data."""
+    if not numbers:
+        return {"error": "Empty dataset"}
+    
+    return {
+        "count": len(numbers),
+        "mean": sum(numbers) / len(numbers),
+        "min": min(numbers),
+        "max": max(numbers)
+    }
+
+# 3. Register a Read-Only Resource
+@mcp.resource("config://app-settings")
+def get_config() -> str:
+    """Returns application environment configuration string."""
+    return "ENVIRONMENT=production\nLOG_LEVEL=debug\nMAX_WORKERS=8"
+
+# 4. Register a Prompt Template
+@mcp.prompt()
+def review_sql_query(query: str) -> str:
+    """Generates a prompt asking the model to optimize an SQL query."""
+    return f"Please analyze and optimize the following SQL query for performance:\n\n```sql\n{query}\n```"
+
+if __name__ == "__main__":
+    # Runs the server using standard I/O transport
+    mcp.run(transport="stdio")
+```
+
+### Option B: Building an MCP Server in TypeScript
+
+Install `@modelcontextprotocol/sdk`:
+```bash
+npm install @modelcontextprotocol/sdk
+```
+
+Create `server.ts`:
+```typescript
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema
+} from "@modelcontextprotocol/sdk/types.js";
+
+const server = new Server(
+  { name: "calculator-server", version: "1.0.0" },
+  { capabilities: { tools: {} } }
+);
+
+// Register tool discovery handler
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [
+    {
+      name: "add_numbers",
+      description: "Adds two numbers together",
+      inputSchema: {
+        type: "object",
+        properties: {
+          a: { type: "number" },
+          b: { type: "number" }
+        },
+        required: ["a", "b"]
+      }
+    }
+  ]
+}));
+
+// Register tool execution handler
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  if (request.params.name === "add_numbers") {
+    const { a, b } = request.params.arguments as { a: number; b: number };
+    return {
+      content: [{ type: "text", text: String(a + b) }]
+    };
+  }
+  throw new Error(`Tool not found: ${request.params.name}`);
+});
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+```
+
+---
+
+## 8. Step-by-Step Guide: How to Build an MCP Client
+
+An MCP Client connects to a server, initiates the handshake, lists capabilities, and executes tool calls.
+
+### Complete Python Client Implementation
+
+```python
+import asyncio
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+async def main():
+    # 1. Define server process parameters
+    server_params = StdioServerParameters(
+        command="python",
+        args=["server.py"],
+        env=None
+    )
+
+    # 2. Establish stdio transport channel
+    async with stdio_client(server_params) as (read, write):
+        # 3. Create MCP Client Session
+        async with ClientSession(read, write) as session:
+            # 4. Perform Protocol Handshake Initialization
+            await session.initialize()
+            print("✓ MCP Client Session Initialized!")
+
+            # 5. Discover Available Tools
+            tools_response = await session.list_tools()
+            print("\nAvailable Tools on Server:")
+            for tool in tools_response.tools:
+                print(f" - {tool.name}: {tool.description}")
+
+            # 6. Invoke a Tool Call
+            result = await session.call_tool(
+                "calculate_dataset_stats",
+                arguments={"numbers": [10.5, 20.0, 30.5, 40.0]}
+            )
+            
+            print("\nTool Call Result:")
+            for content in result.content:
+                if content.type == "text":
+                    print(content.text)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+---
+
+## 9. Hands-On Practice Problems
+
+Master MCP protocol mechanics, server tool routing, and client session initialization in our interactive, test-driven Python execution environment:
+
+1. ⚡ **[MCP Protocol JSON-RPC Tool Router](/practice/mcp-protocol-router)**  
+   *Difficulty: Medium* · Implement an MCP server JSON-RPC 2.0 message parser and tool validator that dispatches `tools/list` and `tools/call`.
+
+2. 🛠️ **[MCP Server Tool Handler](/practice/mcp-server-tool-handler)**  
+   *Difficulty: Medium* · Build a server-side tool execution handler with parameter validation against schemas and standard MCP output packaging.
+
+3. 🔑 **[MCP Client Session Handshake](/practice/mcp-client-session)**  
+   *Difficulty: Medium* · Construct the client-side MCP `initialize` request and parse server responses to negotiate capabilities.
+
+---
+
+## 10. Real-World MCP Ecosystem & Best Practices
+
+<RealWorldMcpServersDiagram />
+
+### Modern Agent Architecture Integration
 
 <McpInAgentLoopDiagram />
 
-This is why many modern AI coding tools expose their own capabilities via MCP servers, and why agent frameworks increasingly treat "connect to an MCP server" as a first-class primitive rather than something requiring custom glue code per integration.
-
-## What's Next
+In a production agentic system, MCP standardizes how tools are connected into the core **Perceive $\rightarrow$ Reason $\rightarrow$ Act** loop. The agent relies on MCP for secure, structured access to file systems, databases, cloud clusters, and web APIs.
 
 <McpVsA2aScopeDiagram />
 
-MCP standardizes agent-to-*tool* connections specifically. [A2A (Agent-to-Agent)](/docs/agents/a2a/overview) is the complementary protocol for the other kind of connection — agents talking to *other agents*, which needs to support longer-running, stateful, potentially cross-organization interactions that a simple tool call doesn't fit.
+- **MCP (Agent-to-Tool)**: Optimized for fast, deterministic, structured tool execution and resource retrieval between an agent and a software system.
+- **A2A (Agent-to-Agent)**: Optimized for multi-agent delegation, collaborative planning, and stateful cross-organization negotiation.
 
-Next: [MCP Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive) — transport, sessions, tool schemas, auth, security, and building a real MCP server.
+---
+
+## What's Next
+
+Continue your mastery of Agent infrastructure with detailed transport wire protocols, security authentication, and production deployment patterns:
+
+- Next: **[MCP Protocol Deep Dive](/docs/agents/mcp/protocol-deep-dive)** — Transport specs, JSON-RPC schema details, security isolation, and OAuth authorization.
+- Related: **[Agent Fundamentals](/docs/agents/agent-fundamentals)** — Tool calling, reasoning loops, and planning algorithms.
+- Related: **[Agent-to-Agent (A2A) Protocols](/docs/agents/a2a/overview)** — Inter-agent communication protocols.

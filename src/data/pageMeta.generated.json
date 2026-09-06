@@ -75,9 +75,9 @@
     "/docs/agents/mcp/overview": {
       "slug": "agents/mcp/overview",
       "section": "agents",
-      "title": "MCP (Model Context Protocol)",
+      "title": "MCP (Model Context Protocol) — The Open Standard for AI Tool & Context Connectivity",
       "sidebarPosition": 1,
-      "description": "MCP standardizes how an AI agent connects to tools and data sources, turning an M-times-N integration problem into a linear M-plus-N one, like USB-C for AI.",
+      "description": "Model Context Protocol (MCP) standardizes how AI applications connect to external tools, databases, and APIs — turning an M-by-N integration nightmare into a seamless M-plus-N standard, like USB-C for AI.",
       "difficulty": null,
       "topic": null
     },
@@ -1809,6 +1809,15 @@
       "difficulty": null,
       "topic": null
     },
+    "/docs/practice-problems/adamw-optimizer": {
+      "slug": "practice-problems/adamw-optimizer",
+      "section": "practice-problems",
+      "title": "Practice: AdamW Optimizer Step From Scratch",
+      "sidebarPosition": 70,
+      "description": "Implement AdamW optimizer updates with first-moment, second-moment bias correction, and decoupled weight decay.",
+      "difficulty": "medium",
+      "topic": "deep-learning"
+    },
     "/docs/practice-problems/alibi-positional-bias": {
       "slug": "practice-problems/alibi-positional-bias",
       "section": "practice-problems",
@@ -1980,6 +1989,15 @@
       "difficulty": "easy",
       "topic": "mathematics-for-ai"
     },
+    "/docs/practice-problems/dpo-loss": {
+      "slug": "practice-problems/dpo-loss",
+      "section": "practice-problems",
+      "title": "Practice: Direct Preference Optimization (DPO) Loss",
+      "sidebarPosition": 72,
+      "description": "Implement Direct Preference Optimization (DPO) loss for LLM preference alignment from scratch.",
+      "difficulty": "medium",
+      "topic": "llms-genai"
+    },
     "/docs/practice-problems/find-duplicates": {
       "slug": "practice-problems/find-duplicates",
       "section": "practice-problems",
@@ -2142,6 +2160,33 @@
       "difficulty": "medium",
       "topic": "interview-prep"
     },
+    "/docs/practice-problems/mcp-client-session": {
+      "slug": "practice-problems/mcp-client-session",
+      "section": "practice-problems",
+      "title": "Practice: MCP Client Handshake & Initialization",
+      "sidebarPosition": 75,
+      "description": "Implement the client-side MCP initialization sequence and server capability negotiation parser.",
+      "difficulty": "medium",
+      "topic": "agents"
+    },
+    "/docs/practice-problems/mcp-protocol-router": {
+      "slug": "practice-problems/mcp-protocol-router",
+      "section": "practice-problems",
+      "title": "Practice: MCP Protocol JSON-RPC Tool Router",
+      "sidebarPosition": 73,
+      "description": "Implement a Model Context Protocol (MCP) JSON-RPC 2.0 message handler and tool validator.",
+      "difficulty": "medium",
+      "topic": "agents"
+    },
+    "/docs/practice-problems/mcp-server-tool-handler": {
+      "slug": "practice-problems/mcp-server-tool-handler",
+      "section": "practice-problems",
+      "title": "Practice: MCP Server Tool Handler",
+      "sidebarPosition": 74,
+      "description": "Build an MCP Server tool execution handler with parameter validation and structured result output.",
+      "difficulty": "medium",
+      "topic": "agents"
+    },
     "/docs/practice-problems/mean-squared-error": {
       "slug": "practice-problems/mean-squared-error",
       "section": "practice-problems",
@@ -2160,6 +2205,15 @@
       "difficulty": "hard",
       "topic": "interview-prep"
     },
+    "/docs/practice-problems/micro-autograd": {
+      "slug": "practice-problems/micro-autograd",
+      "section": "practice-problems",
+      "title": "Practice: Micro-Autograd Computational Graph Engine",
+      "sidebarPosition": 69,
+      "description": "Implement a micro automatic differentiation engine that computes gradients along a scalar computation graph.",
+      "difficulty": "hard",
+      "topic": "deep-learning"
+    },
     "/docs/practice-problems/min-window-substring": {
       "slug": "practice-problems/min-window-substring",
       "section": "practice-problems",
@@ -2177,6 +2231,15 @@
       "description": "Implement Mixture-of-Experts top-K gating from scratch with NumPy -- the routing step that picks which experts process each token and how much each contributes.",
       "difficulty": "medium",
       "topic": "llms-genai"
+    },
+    "/docs/practice-problems/multi-head-attention": {
+      "slug": "practice-problems/multi-head-attention",
+      "section": "practice-problems",
+      "title": "Practice: Multi-Head Self-Attention From Scratch",
+      "sidebarPosition": 68,
+      "description": "Implement multi-head self-attention projections, scaled dot-product matrix multiplication, and output concatenation in pure NumPy.",
+      "difficulty": "hard",
+      "topic": "deep-learning"
     },
     "/docs/practice-problems/numerical-gradient": {
       "slug": "practice-problems/numerical-gradient",
@@ -2204,6 +2267,15 @@
       "description": "Write a real WGSL compute shader that sums an array using shared memory and a tree reduction -- runs on a real GPU in your browser, graded against real output.",
       "difficulty": "medium",
       "topic": "mlops"
+    },
+    "/docs/practice-problems/react-agent-loop": {
+      "slug": "practice-problems/react-agent-loop",
+      "section": "practice-problems",
+      "title": "Practice: ReAct Agent Execution Loop",
+      "sidebarPosition": 71,
+      "description": "Implement a ReAct (Reason + Act) agent loop parsing thoughts, actions, tool execution, and observations.",
+      "difficulty": "hard",
+      "topic": "agents"
     },
     "/docs/practice-problems/returns-to-go": {
       "slug": "practice-problems/returns-to-go",

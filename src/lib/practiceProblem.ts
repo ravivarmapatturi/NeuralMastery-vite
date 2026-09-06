@@ -483,6 +483,78 @@ def mcp_router(jsonrpc_request, registered_tools):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'mcp-server-tool-handler': {
+    id: 'mcp-server-tool-handler',
+    judgeMode: 'hybrid',
+    title: 'MCP Server Tool Handler',
+    difficulty: 'medium',
+    topic: 'Agents & Applications',
+    estimatedTime: '15 min',
+    functionName: 'handle_tool_call',
+    functionSignature: 'handle_tool_call(tool_name: str, arguments: dict, registered_tools: dict) -> dict',
+    starterCode: `def handle_tool_call(tool_name, arguments, registered_tools):
+    """
+    Executes registered MCP server tool and returns standard MCP content response dictionary.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement an MCP Server tool execution handler with parameter validation and structured result output.',
+    taskDescription: 'Implement `handle_tool_call` to execute registered functions and return standard MCP `{"content": [...], "isError": bool}` format.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Return {"content": [{"type": "text", "text": str(res)}], "isError": False} on success.',
+      'Return {"content": [{"type": "text", "text": "error message"}], "isError": True} on missing parameters or exceptions.',
+    ],
+    hints: {
+      small: 'Check if tool_name is in registered_tools. Verify required parameters.',
+      strong: 'Invoke tool["function"](**arguments) and wrap output in content array.',
+      concept: 'MCP Servers encapsulate tool execution logic safely and output standardized content responses.',
+    },
+    testCases: [
+      { id: 'success_exec', label: 'Valid Execution', input: { tool_name: 'add', arguments: { 'a': 5, 'b': 3 }, registered_tools: { 'add': { 'required': ['a', 'b'], 'function': (a: number, b: number) => a + b } } }, expectedOutput: { content: [{ type: 'text', text: '8' }], isError: false }, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'mcp-client-session': {
+    id: 'mcp-client-session',
+    judgeMode: 'hybrid',
+    title: 'MCP Client Handshake & Initialization',
+    difficulty: 'medium',
+    topic: 'Agents & Applications',
+    estimatedTime: '15 min',
+    functionName: 'mcp_client_initialize',
+    functionSignature: 'mcp_client_initialize(client_info: dict, protocol_version: str) -> str',
+    starterCode: `import json
+
+def mcp_client_initialize(client_info, protocol_version="2024-11-05"):
+    """
+    Constructs standard MCP initialize JSON-RPC request.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the MCP client handshake request generator for session initialization.',
+    taskDescription: 'Implement `mcp_client_initialize` returning JSON-RPC 2.0 initialize request string.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Return valid JSON-RPC 2.0 payload with method "initialize".',
+      'Include protocolVersion, clientInfo, and capabilities in params.',
+    ],
+    hints: {
+      small: 'Construct a dictionary with jsonrpc "2.0", id 1, method "initialize", and params.',
+      strong: 'Use json.dumps to format dictionary as JSON string.',
+      concept: 'The initialize request negotiates protocol version and capabilities between MCP Client and Server.',
+    },
+    testCases: [
+      { id: 'init_req', label: 'Initialize Payload', input: { client_info: { 'name': 'ClaudeDesktop', 'version': '1.0' }, protocol_version: '2024-11-05' }, expectedOutput: '{"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05", "capabilities": {"roots": {"listChanged": true}, "sampling": {}}, "clientInfo": {"name": "ClaudeDesktop", "version": "1.0"}}}', hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 /**

@@ -101,12 +101,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOutUser = useCallback(async () => {
-    const [{ auth }, { signOut }] = await Promise.all([import('../lib/firebase'), import('firebase/auth')]);
+    const [{ auth, db }, { signOut }, { disableNetwork, enableNetwork }] = await Promise.all([
+      import('../lib/firebase'),
+      import('firebase/auth'),
+      import('firebase/firestore'),
+    ]);
     await signOut(auth);
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem('neural-mastery-gamification');
       window.localStorage.removeItem('neural-mastery-progress');
     }
+    // Force Firestore to drop and cleanly re-establish its underlying
+    // streaming connection on sign-out, rather than letting it keep
+    // reusing a connection that was live under the OLD credentials.
+    // Confirmed live (via a real production repro) that without this,
+    // signing back in soon after can leave Firestore reads/writes
+    // throwing "Missing or insufficient permissions" for several seconds
+    // -- a documented Firebase SDK behavior where its internal connection
+    // doesn't always cleanly adopt a new auth session mid-tab, especially
+    // with multiple active onSnapshot listeners (this app has three:
+    // GamificationContext, ProgressContext, useLeaderboard). Disabling
+    // then re-enabling the network forces a genuinely fresh connection
+    // instead of hoping the stale one recovers on its own.
+    await disableNetwork(db).catch(() => {});
+    await enableNetwork(db).catch(() => {});
   }, []);
 
   const value = useMemo(
