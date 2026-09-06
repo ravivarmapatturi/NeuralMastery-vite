@@ -1,3 +1,5 @@
+import { getPracticeProblems as getAllDocPracticeProblems } from './contentTree';
+
 /**
  * The structured execution and learning metadata behind practice problems --
  * separate from MDX content on purpose.
@@ -96,6 +98,50 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     ],
     runtime: { language: 'python', capabilities: ['python', 'numpy'] },
   },
+  'batch-dot-product': {
+    id: 'batch-dot-product',
+    title: 'Batch Dot Product',
+    difficulty: 'medium',
+    topic: 'Linear Algebra',
+    estimatedTime: '12–15 min',
+    functionName: 'batch_dot_product',
+    functionSignature: 'batch_dot_product(batch_a: list[list[float]], batch_b: list[list[float]]) -> list[float]',
+    starterCode: `def batch_dot_product(batch_a, batch_b):
+    """batch_a, batch_b: list of vectors (list of numbers), same length.
+    Return a list of per-pair dot products.
+    Raise ValueError on a batch-length or per-pair-dimension mismatch."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement batch dot product across two batches of vectors, handling real validation for mismatched batch sizes and mismatched per-vector dimensions.',
+    taskDescription: 'Implement `batch_dot_product(batch_a, batch_b)` using plain Python or NumPy. Libraries are allowed, but Pure Python earns +10 Bonus XP!',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Raise ValueError if len(batch_a) != len(batch_b).',
+      'Raise ValueError if any corresponding vector pair has len(a) != len(b).',
+    ],
+    hints: {
+      small: 'Check len(batch_a) != len(batch_b) first. Iterate through zip(batch_a, batch_b) and validate vector lengths.',
+      strong: 'For each pair (a, b), if len(a) != len(b) raise ValueError. Compute sum(x * y for x, y in zip(a, b)) and collect results.',
+      concept: 'Batch dot product is the core building block of batched matrix operations in batched linear layers and attention scoring.',
+    },
+    conceptConnections: [
+      { title: 'Linear Algebra — Vectors', route: '/docs/mathematics-for-ai/linear-algebra#vectors', description: 'Vector space arithmetic' },
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Batched query-key matrix multiplication' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Basic Batch Case', input: { batch_a: [[1, 2, 3], [4, 5, 6]], batch_b: [[1, 0, 0], [0, 1, 0]] }, expectedOutput: [1, 5], hidden: false },
+      { id: 'single-pair', label: 'Single Pair', input: { batch_a: [[1, 1]], batch_b: [[2, 3]] }, expectedOutput: [5], hidden: false },
+      { id: 'empty', label: 'Empty Batches', input: { batch_a: [], batch_b: [] }, expectedOutput: [], hidden: false },
+      { id: 'mismatched-batch', label: 'Mismatched Batch Count', input: { batch_a: [[1, 2]], batch_b: [] }, expectError: 'ValueError', hidden: true },
+      { id: 'mismatched-dim', label: 'Mismatched Vector Dim', input: { batch_a: [[1, 2]], batch_b: [[1]] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
   'matrix-multiplication': {
     id: 'matrix-multiplication',
     title: 'Matrix Multiplication From Scratch',
@@ -135,9 +181,161 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     ],
     runtime: { language: 'python', capabilities: ['python', 'numpy'] },
   },
+  'softmax': {
+    id: 'softmax',
+    title: 'Softmax Activation',
+    difficulty: 'easy',
+    topic: 'Neural Networks',
+    estimatedTime: '10–15 min',
+    functionName: 'softmax',
+    functionSignature: 'softmax(logits: list[float]) -> list[float]',
+    starterCode: `import math
+
+def softmax(logits):
+    """Return probability distribution over logits.
+    Use numeric stabilization by subtracting max(logits)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the Softmax function with numerical stability trick to prevent overflow during exponentiation.',
+    taskDescription: 'Implement `softmax(logits)` using standard Python or NumPy. Pure Python implementation earns +10 Bonus XP!',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy, PyTorch) are allowed.',
+      'Pure Python earns +10 Bonus XP!',
+      'Must handle numerical stability by subtracting max(logits) before exp().',
+      'Return probability distribution summing to 1.0.',
+    ],
+    hints: {
+      small: 'Subtract max(logits) from each logit before applying math.exp().',
+      strong: 'm = max(logits); exps = [math.exp(x - m) for x in logits]; s = sum(exps); return [e / s for e in exps].',
+      concept: 'Softmax turns raw logit scores into valid probabilities summing to 1.',
+    },
+    testCases: [
+      { id: 'basic', label: 'Equal Logits', input: { logits: [1.0, 1.0, 1.0] }, expectedOutput: [1/3, 1/3, 1/3], hidden: false },
+      { id: 'zeros', label: 'Zero Logits', input: { logits: [0.0, 0.0] }, expectedOutput: [0.5, 0.5], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'sigmoid-activation': {
+    id: 'sigmoid-activation',
+    title: 'Sigmoid Activation Function',
+    difficulty: 'easy',
+    topic: 'Neural Networks',
+    estimatedTime: '10–15 min',
+    functionName: 'sigmoid',
+    functionSignature: 'sigmoid(x: float) -> float',
+    starterCode: `import math
+
+def sigmoid(x):
+    """Return 1 / (1 + exp(-x))."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the Logistic Sigmoid activation function mapping real numbers into the range (0, 1).',
+    taskDescription: 'Implement `sigmoid(x)` using standard Python or NumPy.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed.',
+      'Pure Python earns +10 Bonus XP!',
+      'Return float in range (0, 1).',
+    ],
+    hints: {
+      small: 'Use 1 / (1 + math.exp(-x)).',
+      strong: 'Check if x is very negative to prevent overflow in math.exp(-x).',
+      concept: 'Sigmoid bounds linear output values to a binary probability range (0, 1).',
+    },
+    testCases: [
+      { id: 'zero', label: 'Sigmoid of 0', input: { x: 0.0 }, expectedOutput: 0.5, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
 };
 
+/**
+ * Dynamic problem builder for any un-configured practice problem.
+ * Ensures EVERY practice problem in the platform automatically renders in
+ * the full-screen interactive AI/ML IDE workspace (PracticeWorkspace) rather
+ * than falling back to an unmigrated MDX page layout.
+ */
+function createFallbackProblem(
+  problemId: string,
+  title?: string,
+  difficulty?: 'easy' | 'medium' | 'hard',
+  topic?: string,
+): PracticeProblem {
+  const cleanId = problemId.replace(/\/$/, '').replace(/^\/practice\//, '');
+  const displayTitle =
+    title ??
+    cleanId
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+
+  const functionName = cleanId.replace(/-/g, '_');
+  const isDesign = cleanId.startsWith('design-challenge');
+
+  return {
+    id: cleanId,
+    title: isDesign ? `System Design: ${displayTitle.replace('Design Challenge ', '')}` : displayTitle,
+    difficulty: difficulty ?? (isDesign ? 'hard' : 'medium'),
+    topic: topic ?? (isDesign ? 'System Design' : 'AI Systems & Algorithmic Foundations'),
+    estimatedTime: isDesign ? '20–30 min' : '15–20 min',
+    functionName,
+    functionSignature: `${functionName}(*args, **kwargs)`,
+    starterCode: `def ${functionName}(*args, **kwargs):
+    """Implement ${displayTitle}.
+    
+    Return the expected output according to the problem specification below."""
+    # Your implementation here
+    pass
+`,
+    mission: `Implement ${displayTitle} and verify your implementation in the interactive AI/ML IDE workspace.`,
+    taskDescription: `Implement \`${functionName}\`. Libraries (NumPy, PyTorch, SciPy) are allowed, but Pure Python implementations earn bonus XP!`,
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy, PyTorch, SciPy) are allowed and accepted normally.',
+      'Pure Python (no external libraries) earns +10 Bonus XP!',
+      'Must handle edge cases (empty inputs, invalid shapes, boundary conditions) correctly.',
+    ],
+    hints: {
+      small: 'Read the mathematical intuition and problem formulation in the Worked Intuition section below.',
+      strong: 'Check edge cases first (empty inputs, shape mismatches), then compute the core formula.',
+      concept: 'This core operation forms a key building block in modern AI systems and engineering architectures.',
+    },
+    testCases: [
+      { id: 'smoke-test', label: 'Smoke Test', input: {}, expectedOutput: undefined, hidden: false, description: 'Executes your function against default test inputs.' },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy', 'pytorch'] },
+  };
+}
+
 export function getPracticeProblem(problemId: string): PracticeProblem | undefined {
-  const cleanId = problemId.replace(/\/$/, '');
-  return PRACTICE_PROBLEMS[cleanId];
+  const cleanId = problemId.replace(/\/$/, '').replace(/^\/practice\//, '');
+  if (PRACTICE_PROBLEMS[cleanId]) {
+    return PRACTICE_PROBLEMS[cleanId];
+  }
+
+  // Check if cleanId matches a real practice problem in contentTree
+  const allPractice = getAllDocPracticeProblems();
+  const matchedPage = allPractice.find(
+    (p) => p.slug.split('/').pop() === cleanId || p.route.endsWith(`/${cleanId}`),
+  );
+
+  if (matchedPage) {
+    return createFallbackProblem(
+      cleanId,
+      matchedPage.title,
+      matchedPage.difficulty as 'easy' | 'medium' | 'hard' | undefined,
+      matchedPage.topic,
+    );
+  }
+
+  return undefined;
 }
