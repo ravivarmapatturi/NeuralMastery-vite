@@ -262,6 +262,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
         pagesUnderstood: events.filter((e) => e.kind === 'mark').length,
         problemsSolved: events.filter((e) => e.kind === 'complete').length,
         systemDesignSolved: events.filter((e) => e.kind === 'design').length,
+        isSignedIn: Boolean(user),
       };
 
       const newStats = {
@@ -270,6 +271,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
         pagesUnderstood: nextEvents.filter((e) => e.kind === 'mark').length,
         problemsSolved: nextEvents.filter((e) => e.kind === 'complete').length,
         systemDesignSolved: nextEvents.filter((e) => e.kind === 'design').length,
+        isSignedIn: Boolean(user),
       };
 
       // Celebratory Tada Confetti & Toast Notification
@@ -302,7 +304,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
       commit(nextEvents);
     },
-    [events, commit],
+    [events, commit, user],
   );
 
 

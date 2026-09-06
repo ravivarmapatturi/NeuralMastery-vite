@@ -1,3 +1,4 @@
+import { useAuth } from '../../contexts/AuthContext';
 import { useGamification } from '../../contexts/GamificationContext';
 import { BADGES } from '../../lib/badges';
 import { computeRLValuation } from '../../lib/gamification';
