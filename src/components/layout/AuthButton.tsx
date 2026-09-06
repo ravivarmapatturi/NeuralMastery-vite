@@ -25,6 +25,12 @@ function messageForAuthError(err: unknown): string {
       return 'Incorrect email or password.';
     case 'auth/too-many-requests':
       return 'Too many attempts -- please wait a moment and try again.';
+    case 'auth/operation-not-allowed':
+      // Real, external config gap: Firebase Console -> Authentication ->
+      // Sign-in method -> Email/Password is not enabled for this project.
+      // No client-side code can fix this -- it needs a project owner with
+      // console access to flip that one toggle.
+      return 'Email sign-in isn\'t enabled yet -- please use "Continue with Google" for now.';
     default:
       return 'Something went wrong. Please try again.';
   }

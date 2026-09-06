@@ -78,6 +78,20 @@ describe('AuthButton: signed-out sign-in panel', () => {
     expect(createUserWithEmailAndPassword).not.toHaveBeenCalled()
   })
 
+  it('shows a real, human-readable message pointing to Google sign-in when the Email/Password provider itself is disabled in the Firebase console (auth/operation-not-allowed) -- a real config gap this repo hit, not a hypothetical', async () => {
+    vi.mocked(createUserWithEmailAndPassword).mockRejectedValueOnce(
+      Object.assign(new Error('not allowed'), { code: 'auth/operation-not-allowed' }),
+    )
+    renderButton()
+    const user = userEvent.setup()
+    await user.click(await screen.findByRole('button', { name: 'Sign in' }))
+    await user.click(screen.getByText(/New here\? Create an account/i))
+    await user.type(screen.getByPlaceholderText('Email'), 'someone@example.com')
+    await user.type(screen.getByPlaceholderText('Password'), 'realpassword123')
+    await user.click(screen.getByRole('button', { name: 'Create account' }))
+    expect(await screen.findByText(/isn't enabled yet/i)).toBeInTheDocument()
+  })
+
   it('shows a real, human-readable message (not a bare error code) and points to Google sign-in on an email-already-in-use collision', async () => {
     vi.mocked(createUserWithEmailAndPassword).mockRejectedValueOnce(
       Object.assign(new Error('in use'), { code: 'auth/email-already-in-use' }),
