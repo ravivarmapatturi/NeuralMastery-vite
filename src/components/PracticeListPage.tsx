@@ -39,26 +39,50 @@ function isDesignChallenge(page: DocPage): boolean {
   return !page.difficulty;
 }
 
+/** icon + accentVar give each stage a real, distinct visual identity (see
+ * feedback_visual_design memory: per-item color/icon, not generic boxes)
+ * -- only 6 real theme accent tokens exist (see index.css), so stages
+ * cycle through them paired with a unique icon each, rather than
+ * inventing a bespoke 12-color palette that wouldn't adapt across
+ * light/dark theme the way these CSS vars already do. min/max are the
+ * REAL numeric rank boundaries (not just the display string) -- see
+ * `stageStats` below, which buckets every problem's own real "#NNN."
+ * rank (parsed from its title) into these ranges for a genuinely
+ * computed per-stage count and solved-count, not a static label. */
 const STAGES = [
-  { id: 'stage-1', num: 1, title: 'Stage 1: Transformer & LLM Fundamentals', range: 'Rank 1–84' },
-  { id: 'stage-2', num: 2, title: 'Stage 2: LLM Application & Decoding Engineering', range: 'Rank 85–168' },
-  { id: 'stage-3', num: 3, title: 'Stage 3: Context & Memory Architecture', range: 'Rank 169–252' },
-  { id: 'stage-4', num: 4, title: 'Stage 4: RAG & Information Retrieval Systems', range: 'Rank 253–336' },
-  { id: 'stage-5', num: 5, title: 'Stage 5: Agent Loops & Tool Execution', range: 'Rank 337–420' },
-  { id: 'stage-6', num: 6, title: 'Stage 6: Graph Engineering & MCP Integration', range: 'Rank 421–504' },
-  { id: 'stage-7', num: 7, title: 'Stage 7: Multi-Agent Systems & Knowledge Graphs', range: 'Rank 505–588' },
-  { id: 'stage-8', num: 8, title: 'Stage 8: Agent Security & Reliability', range: 'Rank 589–672' },
-  { id: 'stage-9', num: 9, title: 'Stage 9: Python & Algorithmic Foundations for AI', range: 'Rank 673–756' },
-  { id: 'stage-10', num: 10, title: 'Stage 10: Mathematics, NumPy & Data Pipelines', range: 'Rank 757–840' },
-  { id: 'stage-11', num: 11, title: 'Stage 11: Classical ML, Deep Learning & Vision', range: 'Rank 841–924' },
-  { id: 'stage-12', num: 12, title: 'Stage 12: MLOps, Distributed Systems & Production Agent Deployment', range: 'Rank 925–1000' },
+  { id: 'stage-1', num: 1, title: 'Stage 1: Transformer & LLM Fundamentals', min: 1, max: 84, icon: '🧠', accentVar: '--nm-accent-primary' },
+  { id: 'stage-2', num: 2, title: 'Stage 2: LLM Application & Decoding Engineering', min: 85, max: 168, icon: '💬', accentVar: '--nm-accent-teal' },
+  { id: 'stage-3', num: 3, title: 'Stage 3: Context & Memory Architecture', min: 169, max: 252, icon: '🧵', accentVar: '--nm-accent-purple' },
+  { id: 'stage-4', num: 4, title: 'Stage 4: RAG & Information Retrieval Systems', min: 253, max: 336, icon: '🔍', accentVar: '--nm-accent-secondary' },
+  { id: 'stage-5', num: 5, title: 'Stage 5: Agent Loops & Tool Execution', min: 337, max: 420, icon: '🤖', accentVar: '--nm-accent-warn' },
+  { id: 'stage-6', num: 6, title: 'Stage 6: Graph Engineering & MCP Integration', min: 421, max: 504, icon: '🕸️', accentVar: '--nm-accent-danger' },
+  { id: 'stage-7', num: 7, title: 'Stage 7: Multi-Agent Systems & Knowledge Graphs', min: 505, max: 588, icon: '🌐', accentVar: '--nm-accent-primary' },
+  { id: 'stage-8', num: 8, title: 'Stage 8: Agent Security & Reliability', min: 589, max: 672, icon: '🛡️', accentVar: '--nm-accent-teal' },
+  { id: 'stage-9', num: 9, title: 'Stage 9: Python & Algorithmic Foundations for AI', min: 673, max: 756, icon: '🐍', accentVar: '--nm-accent-purple' },
+  { id: 'stage-10', num: 10, title: 'Stage 10: Mathematics, NumPy & Data Pipelines', min: 757, max: 840, icon: '📐', accentVar: '--nm-accent-secondary' },
+  { id: 'stage-11', num: 11, title: 'Stage 11: Classical ML, Deep Learning & Vision', min: 841, max: 924, icon: '🧮', accentVar: '--nm-accent-warn' },
+  { id: 'stage-12', num: 12, title: 'Stage 12: MLOps, Distributed Systems & Production Agent Deployment', min: 925, max: 1000, icon: '🚀', accentVar: '--nm-accent-danger' },
 ];
 
-export default function PracticeListPage() {
-  useDocumentTitle('Practice AI — 1,000+ AI Engineering Curriculum');
-  useDocumentMeta('Practice AI', '1,000+ problem non-duplicate AI Engineering curriculum covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.');
+/** Extracts the real "#NNN." curriculum rank a problem's title carries
+ * (only the newer 1000+ ranked curriculum has one -- the original 48
+ * hand-authored problems and the 4 system-design challenges don't, and
+ * are correctly excluded from stage bucketing rather than miscounted
+ * into Stage 1). */
+function rankOf(title: string): number | null {
+  const m = title.match(/#(\d+)\./);
+  return m ? Number(m[1]) : null;
+}
 
+export default function PracticeListPage() {
   const problems = useMemo(() => getPracticeProblems(), []);
+
+  // Real, current count -- never hardcoded. A stale hardcoded number here
+  // is exactly how this page previously ended up claiming "1,072" long
+  // after the real file count had grown well past it.
+  useDocumentTitle(`Practice AI — ${problems.length}+ AI Engineering Problems`);
+  useDocumentMeta('Practice AI', `A growing AI Engineering practice curriculum (${problems.length} problems and counting) covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.`);
+
   const topicLabels = useMemo(buildTopicLabels, []);
   const { events } = useGamification();
   const { understood } = useProgress();
@@ -94,6 +118,22 @@ export default function PracticeListPage() {
     return counts;
   }, [problems]);
 
+  /** Real per-stage totals + solved counts, bucketed from each problem's
+   * own actual "#NNN." rank -- not a static/guessed number. */
+  const stageStats = useMemo(() => {
+    const stats: Record<number, { total: number; solved: number }> = {};
+    for (const s of STAGES) stats[s.num] = { total: 0, solved: 0 };
+    for (const p of problems) {
+      const rank = rankOf(p.title);
+      if (rank === null) continue;
+      const stage = STAGES.find((s) => rank >= s.min && rank <= s.max);
+      if (!stage) continue;
+      stats[stage.num].total += 1;
+      if (hasAward(events, p.route, isDesignChallenge(p) ? 'design' : 'complete')) stats[stage.num].solved += 1;
+    }
+    return stats;
+  }, [problems, events]);
+
   const sortedTopics = useMemo(() => {
     return Object.keys(topicCounts).sort((a, b) => (topicCounts[b] || 0) - (topicCounts[a] || 0));
   }, [topicCounts]);
@@ -123,10 +163,10 @@ export default function PracticeListPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.5rem' }}>
           <div>
             <h1 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: '0 0 0.5rem' }}>
-              Practice AI — 1,000+ AI Engineering Curriculum
+              Practice AI — {problems.length}+ AI Engineering Problems
             </h1>
             <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.5rem', lineHeight: 1.6, maxWidth: 780 }}>
-              A comprehensive 1,072-problem curriculum with zero duplicate titles across 34 specialized tracks — spanning Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems) as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems). Every problem is uniquely numbered (#001–#1072).
+              A growing AI Engineering practice curriculum spanning Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems) as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems). New problems are added and fleshed out with real, IDE-graded solutions on an ongoing basis.
             </p>
             <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 1.5rem' }}>
               {solvedCount} / {problems.length} solved
@@ -173,37 +213,62 @@ export default function PracticeListPage() {
           <div><strong>{stats.easySolved}/{stats.mediumSolved}/{stats.hardSolved}</strong><span>easy / medium / hard</span></div>
         </div>
 
-        {/* 12-Stage Progression Stepper */}
-        <div style={{ margin: '2rem 0', background: 'var(--nm-surface)', borderRadius: 12, border: '1px solid var(--nm-border)', padding: '1.2rem' }}>
-          <p className="nm-eyebrow" style={{ margin: '0 0 0.4rem' }}>Curriculum Progression</p>
-          <h3 style={{ margin: '0 0 1rem', fontSize: 16, color: 'var(--nm-text-primary)' }}>12-Stage AI Engineering Master Path</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.8rem' }}>
-            {STAGES.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => {
-                  setStageFilter(stageFilter === s.num ? 'all' : s.num);
-                  setViewMode('roadmap');
-                }}
-                style={{
-                  textAlign: 'left',
-                  padding: '0.8rem 1rem',
-                  borderRadius: 10,
-                  border: stageFilter === s.num ? '2px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
-                  background: stageFilter === s.num ? 'color-mix(in srgb, var(--nm-accent-primary) 10%, transparent)' : 'var(--nm-bg)',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 700, color: 'var(--nm-accent-primary)', marginBottom: 4 }}>
-                  <span>STAGE {s.num}</span>
-                  <span>{s.range}</span>
-                </div>
-                <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>
-                  {s.title.replace(/^Stage \d+: /, '')}
-                </div>
-              </button>
-            ))}
+        {/* 12-Stage Progression -- "The Ascent" */}
+        <div style={{ margin: '2rem 0' }}>
+          <p className="nm-eyebrow" style={{ margin: '0 0 0.3rem' }}>Curriculum Progression</p>
+          <h3 style={{ margin: '0 0 0.3rem', fontSize: 20, fontWeight: 800, color: 'var(--nm-text-primary)' }}>The Ascent</h3>
+          <p style={{ margin: '0 0 1rem', fontSize: 13, color: 'var(--nm-text-secondary)' }}>
+            12 stages, zero fluff — from transformer fundamentals to shipping a production agent.
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.9rem',
+              overflowX: 'auto',
+              paddingBottom: 10,
+              scrollSnapType: 'x proximity',
+            }}
+          >
+            {STAGES.map((s) => {
+              const stat = stageStats[s.num];
+              const active = stageFilter === s.num;
+              const pct = stat.total > 0 ? stat.solved / stat.total : 0;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => {
+                    setStageFilter(stageFilter === s.num ? 'all' : s.num);
+                    setViewMode('roadmap');
+                  }}
+                  style={{
+                    scrollSnapAlign: 'start',
+                    flex: '0 0 220px',
+                    textAlign: 'left',
+                    padding: '1rem 1.1rem',
+                    borderRadius: 14,
+                    border: active ? `2px solid var(${s.accentVar})` : '1px solid var(--nm-border)',
+                    background: `color-mix(in srgb, var(${s.accentVar}) ${active ? 16 : 9}%, var(--nm-surface))`,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    boxShadow: active ? `0 4px 16px color-mix(in srgb, var(${s.accentVar}) 25%, transparent)` : 'none',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <span style={{ fontSize: 24, lineHeight: 1 }}>{s.icon}</span>
+                    <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.04em', color: `var(${s.accentVar})` }}>STAGE {s.num}</span>
+                  </div>
+                  <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--nm-text-primary)', lineHeight: 1.3, minHeight: 36, marginBottom: 8 }}>
+                    {s.title.replace(/^Stage \d+: /, '')}
+                  </div>
+                  <div style={{ height: 5, borderRadius: 3, background: 'var(--nm-border)', overflow: 'hidden', marginBottom: 6 }}>
+                    <div style={{ width: `${pct * 100}%`, height: '100%', background: `var(${s.accentVar})`, transition: 'width 200ms ease' }} />
+                  </div>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--nm-text-muted)' }}>
+                    {stat.solved} of {stat.total} cleared
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
 
