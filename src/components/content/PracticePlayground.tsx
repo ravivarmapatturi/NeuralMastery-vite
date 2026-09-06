@@ -7,6 +7,7 @@ import { usePracticeSplitPanes } from '../../contexts/PracticeSplitPaneContext';
 import { normalizeRoute } from '../../lib/contentTree';
 import { getPracticeProblem, type PracticeTestCase } from '../../lib/practiceProblem';
 import { PyodideExecutor } from '../../lib/execution/pyodideExecutor';
+import { ServerExecutor } from '../../lib/execution/serverExecutor';
 import type { CodeExecutor, ExecutionResult } from '../../lib/execution/types';
 
 // Same bundle-size reasoning as RunnableCode.tsx: CodeMirror stays out of
@@ -69,7 +70,13 @@ export default function PracticePlayground({ problemId }: { problemId: string })
   }
 
   function ensureExecutor(): CodeExecutor {
-    if (!executorRef.current) executorRef.current = new PyodideExecutor();
+    if (!executorRef.current) {
+      if (problem?.judgeMode === 'server' || problem?.judgeMode === 'hybrid') {
+        executorRef.current = new ServerExecutor({ enableFallback: true });
+      } else {
+        executorRef.current = new PyodideExecutor();
+      }
+    }
     return executorRef.current;
   }
 

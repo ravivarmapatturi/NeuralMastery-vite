@@ -49,12 +49,15 @@ export interface PracticeProblem {
   };
   conceptConnections?: ConceptConnection[];
   runtime: RuntimeCapabilities;
+  /** Controls judging engine: 'local' (Pyodide in-browser), 'server' (Sandboxed server), or 'hybrid' (Server with Pyodide fallback) */
+  judgeMode?: 'local' | 'server' | 'hybrid';
 }
 
 export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
   'dot-product': {
     id: 'dot-product',
     title: 'Dot Product From Scratch',
+    judgeMode: 'hybrid',
     difficulty: 'easy',
     topic: 'Linear Algebra',
     estimatedTime: '10–15 min',
@@ -100,6 +103,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
   },
   'batch-dot-product': {
     id: 'batch-dot-product',
+    judgeMode: 'hybrid',
     title: 'Batch Dot Product',
     difficulty: 'medium',
     topic: 'Linear Algebra',

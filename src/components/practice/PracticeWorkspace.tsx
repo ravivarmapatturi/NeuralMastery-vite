@@ -16,6 +16,7 @@ import {
   type SubmissionRecord,
 } from '../../lib/practicePersistence';
 import { PyodideExecutor } from '../../lib/execution/pyodideExecutor';
+import { ServerExecutor } from '../../lib/execution/serverExecutor';
 import type { CodeExecutor, ExecutionResult } from '../../lib/execution/types';
 import AuthButton from '../layout/AuthButton';
 import StreakBadge from '../layout/StreakBadge';
@@ -107,7 +108,13 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
   const nextProb = recommendedProblem(allPractice.filter((p) => p.route !== permalink), events, concept);
 
   function ensureExecutor(): CodeExecutor {
-    if (!executorRef.current) executorRef.current = new PyodideExecutor();
+    if (!executorRef.current) {
+      if (problem?.judgeMode === 'server' || problem?.judgeMode === 'hybrid') {
+        executorRef.current = new ServerExecutor({ enableFallback: true });
+      } else {
+        executorRef.current = new PyodideExecutor();
+      }
+    }
     return executorRef.current;
   }
 
