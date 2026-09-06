@@ -82,9 +82,13 @@ describe('onSnapshot listeners: a remote update must merge, never overwrite, loc
       </AuthProvider>,
     )
     await waitFor(() => expect(store['progress/user-cross-device']).toBeDefined())
+    // Signing in already earned today's real automatic daily sign-in
+    // award (see GamificationContext's sign-in effect) -- 1 event before
+    // this test's own click, not 0.
+    await waitFor(() => expect(getByTestId('events-count').textContent).toBe('1'))
 
     await user.click(getByText('earn local points'))
-    await waitFor(() => expect(getByTestId('events-count').textContent).toBe('1'))
+    await waitFor(() => expect(getByTestId('events-count').textContent).toBe('2'))
 
     // Simulate a snapshot delivery reflecting server state that doesn't
     // yet include this device's own latest local-only event -- the real
@@ -94,7 +98,7 @@ describe('onSnapshot listeners: a remote update must merge, never overwrite, loc
       snapshotCallback?.({ exists: () => true, data: () => ({ gamificationEvents: [] }) })
     })
 
-    await waitFor(() => expect(getByTestId('events-count').textContent).toBe('1'))
+    await waitFor(() => expect(getByTestId('events-count').textContent).toBe('2'))
   })
 
   it('ProgressContext: a stale/empty snapshot does not wipe this device\'s own just-marked page', async () => {

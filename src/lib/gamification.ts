@@ -12,7 +12,7 @@ import { SECTION_META, SECTION_ORDER, getGroupForSubsection } from '../data/sect
 // histories is a plain, safe set union (see mergeEvents) instead of a
 // bespoke reconciliation for a mutable counter.
 
-export type AwardKind = 'mark' | 'complete' | 'design' | 'flashcard';
+export type AwardKind = 'mark' | 'complete' | 'design' | 'flashcard' | 'signin';
 
 export interface AwardEvent {
   permalink: string;
@@ -72,6 +72,18 @@ export const SYSTEM_DESIGN_CHALLENGE_POINTS = 100;
  * smaller than a real solved practice problem, since revealing an answer
  * is a much lighter action than writing and passing real code. */
 export const FLASHCARD_REVEAL_POINTS = 1;
+
+/** A small, once-per-real-calendar-day reward just for showing up
+ * signed in -- a real, well-known retention mechanic (see
+ * GamificationContext's awardDailySignIn). Deliberately modest: this
+ * complements the streak mechanic (computeStreak below), it doesn't
+ * compete with or replace it -- a learner who does real work every day
+ * still earns far more from marking pages/solving problems than from
+ * this alone. Gating uses the SAME `hasAward` de-dupe every other award
+ * kind already relies on (see awardDailySignIn's synthetic
+ * `signin:<date>` permalink), not a second, parallel date-boundary
+ * implementation. */
+export const DAILY_SIGNIN_POINTS = 15;
 
 /** Local (not UTC) calendar date as YYYY-MM-DD -- deliberately built from
  * Date's local getters, not toISOString() (which is UTC-based and would

@@ -6,8 +6,11 @@ import { getSidebar, getFlatPages } from '../lib/contentTree';
 
 import { SECTION_META, SECTION_ORDER, completionFor } from '../data/sectionMeta';
 import { useProgress } from '../contexts/ProgressContext';
+import { useGamification } from '../contexts/GamificationContext';
+import { levelForPoints } from '../lib/gamification';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
+import RankLadder from './RankLadder';
 
 /** Best-effort title lookup for a permalink -- falls back to the raw path
  * for the (should-be-rare) case a stored permalink no longer matches any
@@ -29,6 +32,8 @@ export default function ProgressPage() {
   useDocumentMeta('Your Progress', 'Track which pages across Neural Mastery you have marked as understood -- tracked locally in your browser, no account required.');
 
   const { understood, isUnderstood, toggle, countWithin, reset, dueForReview, markReviewed } = useProgress();
+  const { points } = useGamification();
+  const { level } = levelForPoints(points);
   const sections = getSidebar();
   const flatPages = getFlatPages();
   const totalPages = flatPages.length;
@@ -78,6 +83,13 @@ export default function ProgressPage() {
           <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--nm-text-primary)' }}>Points, streak, level &amp; leaderboard →</div>
           <div style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', marginTop: 2 }}>Now live on your Profile page</div>
         </Link>
+
+        <h2 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: '0.9rem' }}>
+          Rank ladder
+        </h2>
+        <div style={{ marginBottom: '2.5rem' }}>
+          <RankLadder level={level} />
+        </div>
 
         <h2 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: '0.9rem' }}>
           Due for review

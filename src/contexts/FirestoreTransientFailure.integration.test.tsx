@@ -93,14 +93,18 @@ describe('a transient "Missing or insufficient permissions" error right after si
       </AuthProvider>,
     )
     await waitFor(() => expect(store['progress/user-transient-failure']).toBeDefined())
+    // Signing in already earned today's real automatic daily sign-in
+    // award (see GamificationContext's sign-in effect) -- 1 event before
+    // this test's own click, not 0.
+    await waitFor(() => expect(getByTestId('events-count').textContent).toBe('1'))
 
     setDocFailuresRemaining = 1 // the very next setDoc call throws once, then succeeds
     await user.click(getByText('earn points'))
-    await waitFor(() => expect(getByTestId('events-count').textContent).toBe('1'))
+    await waitFor(() => expect(getByTestId('events-count').textContent).toBe('2'))
 
     // The real regression: without a retry, this write is silently lost --
     // the Firestore document never actually gets the event.
-    await waitFor(() => expect(store['progress/user-transient-failure']?.gamificationEvents).toHaveLength(1))
+    await waitFor(() => expect(store['progress/user-transient-failure']?.gamificationEvents).toHaveLength(2))
   })
 
   it('ProgressContext: the sign-in sync effect retries instead of aborting when getDoc throws once', async () => {

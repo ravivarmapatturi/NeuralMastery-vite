@@ -90,12 +90,16 @@ describe('withRetry survives a Firestore call that hangs forever (never resolves
         </AuthProvider>,
       )
       await waitFor(() => expect(store['progress/user-hanging-call']).toBeDefined())
+      // Signing in already earned today's real automatic daily sign-in
+      // award (see GamificationContext's sign-in effect) -- 1 event
+      // before this test's own click, not 0.
+      await waitFor(() => expect(getByTestId('events-count').textContent).toBe('1'))
 
       hangFirstCall = true
       await user.click(getByText('earn points'))
 
-      await waitFor(() => expect(getByTestId('events-count').textContent).toBe('1'), { timeout: 12000 })
-      await waitFor(() => expect(store['progress/user-hanging-call']?.gamificationEvents).toHaveLength(1), { timeout: 12000 })
+      await waitFor(() => expect(getByTestId('events-count').textContent).toBe('2'), { timeout: 12000 })
+      await waitFor(() => expect(store['progress/user-hanging-call']?.gamificationEvents).toHaveLength(2), { timeout: 12000 })
     },
     15000,
   )

@@ -6,6 +6,7 @@ import {
   pointsForDifficulty,
   SYSTEM_DESIGN_CHALLENGE_POINTS,
   FLASHCARD_REVEAL_POINTS,
+  DAILY_SIGNIN_POINTS,
   hasAward,
   totalPoints,
   weeklyPoints as computeWeeklyPoints,
@@ -46,6 +47,13 @@ interface GamificationContextValue {
    * toward total points, level, and streak. First-reveal-only, same
    * no-double-award contract as every other award kind (see `award`). */
   awardFlashcardRevealed: (id: string) => void;
+  /** Small once-per-real-calendar-day reward for a real sign-in --
+   * complements (never replaces) the streak mechanic. Idempotent, same
+   * as every other award kind: safe to call on every sign-in, every
+   * page load while signed in -- see lib/gamification.ts's
+   * DAILY_SIGNIN_POINTS for why the de-dupe needs no separate
+   * date-boundary logic of its own. */
+  awardDailySignIn: () => void;
 }
 
 const GamificationContext = createContext<GamificationContextValue | null>(null);
@@ -208,7 +216,20 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
         const remoteEvents: AwardEvent[] = snap.exists()
           ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
           : [];
-        const merged = mergeEvents(remoteEvents, readStorage());
+        let merged = mergeEvents(remoteEvents, readStorage());
+        // Daily sign-in reward folded directly into this same merge, not
+        // a separate award()/commit() call -- an earlier version fired it
+        // from its own independent effect, which raced this same
+        // read-merge-write cycle (two uncoordinated Firestore round trips
+        // both computing "the real events" from their own separate
+        // getDoc snapshot, each writing back independently) -- the exact
+        // class of bug fixed elsewhere in this file today. Computing it
+        // here means there's only ever one read-merge-write per sign-in.
+        const todaySignInKey = `signin:${localDateString(new Date(Date.now()))}`;
+        if (!hasAward(merged, todaySignInKey, 'signin')) {
+          merged = [...merged, { permalink: todaySignInKey, kind: 'signin', date: localDateString(new Date(Date.now())), points: DAILY_SIGNIN_POINTS }];
+          showRewardToast({ title: 'Welcome Back!', subtitle: `Great work! Earned +${DAILY_SIGNIN_POINTS} XP`, xp: DAILY_SIGNIN_POINTS, icon: '👋' });
+        }
         if (cancelled) return;
 
         // The progress write and the leaderboard write are deliberately
@@ -333,10 +354,12 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
               ? 'Design Completed!'
               : kind === 'mark'
                 ? 'Page Understood!'
-                : 'Flashcard Revealed!',
+                : kind === 'signin'
+                  ? 'Welcome Back!'
+                  : 'Flashcard Revealed!',
         subtitle: `Great work! Earned +${points} XP`,
         xp: points,
-        icon: kind === 'complete' ? '🎉' : kind === 'design' ? '🏗️' : kind === 'mark' ? '📖' : '💡',
+        icon: kind === 'complete' ? '🎉' : kind === 'design' ? '🏗️' : kind === 'mark' ? '📖' : kind === 'signin' ? '👋' : '💡',
       });
 
       // Check newly unlocked checkpoint badges
@@ -369,6 +392,18 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     (permalink: string) => award(permalink, 'design', SYSTEM_DESIGN_CHALLENGE_POINTS),
     [award],
   );
+  // Synthetic, non-URL permalink encoding today's real local date -- the
+  // same `hasAward` de-dupe every other award kind already uses makes
+  // this naturally once-per-real-calendar-day with no separate gating
+  // logic: calling it again today is a no-op, and it fires fresh again
+  // once tomorrow's local date rolls over. The automatic on-sign-in
+  // award is folded directly into the sign-in sync effect's own merge
+  // above (not fired from here) -- see that effect's comment for why a
+  // separate, independently-racing effect calling this on every sign-in
+  // was the wrong design. This stays exposed for a signed-in user acting
+  // within the same session (award()'s own local-state path handles that
+  // case correctly, since there's no competing read-merge-write then).
+  const awardDailySignIn = useCallback(() => award(`signin:${localDateString(new Date(Date.now()))}`, 'signin', DAILY_SIGNIN_POINTS), [award]);
 
   const now = new Date(Date.now());
   const value: GamificationContextValue = {
@@ -383,6 +418,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     awardProblemCompleted,
     awardFlashcardRevealed,
     awardSystemDesignCompleted,
+    awardDailySignIn,
   };
 
   return <GamificationContext.Provider value={value}>{children}</GamificationContext.Provider>;
