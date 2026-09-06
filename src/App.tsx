@@ -11,6 +11,7 @@ import Home from './components/Home';
 import PracticeListPage from './components/PracticeListPage';
 import ProgressPage from './components/ProgressPage';
 import ProfilePage from './components/ProfilePage';
+import LeaderboardPage from './components/LeaderboardPage';
 import AboutPage from './components/AboutPage';
 import PrivacyPolicyPage from './components/PrivacyPolicyPage';
 import TermsOfServicePage from './components/TermsOfServicePage';
@@ -69,6 +70,7 @@ export default function App() {
                       <Route path="/practice/:slug" element={<PracticeProblemLayout />} />
                       <Route path="/progress" element={<ProgressPage />} />
                       <Route path="/profile" element={<ProfilePage />} />
+                      <Route path="/leaderboard" element={<LeaderboardPage />} />
                       <Route path="/about" element={<AboutPage />} />
                       <Route path="/privacy" element={<PrivacyPolicyPage />} />
                       <Route path="/terms" element={<TermsOfServicePage />} />

@@ -17,6 +17,8 @@ import {
 } from '../../lib/practicePersistence';
 import { PyodideExecutor } from '../../lib/execution/pyodideExecutor';
 import type { CodeExecutor, ExecutionResult } from '../../lib/execution/types';
+import AuthButton from '../layout/AuthButton';
+import StreakBadge from '../layout/StreakBadge';
 import { useGamification } from '../../contexts/GamificationContext';
 import { normalizeRoute, getFlatPages, getPageByRoute, getPracticeProblems } from '../../lib/contentTree';
 import { isSolved, recommendedProblem, relatedLesson } from '../../lib/mastery';
@@ -248,7 +250,6 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-
           padding: '8px 16px',
           background: '#0f172a',
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
@@ -257,7 +258,24 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           flexShrink: 0,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <Link
+            to="/"
+            style={{
+              fontSize: 14,
+              fontWeight: 800,
+              color: '#f8fafc',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+            }}
+          >
+            Neural Mastery
+          </Link>
+
+          <div style={{ height: 16, width: 1, background: 'rgba(255,255,255,0.15)' }} />
+
           <Link
             to="/practice"
             style={{
@@ -275,7 +293,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
 
           <div style={{ height: 16, width: 1, background: 'rgba(255,255,255,0.15)' }} />
 
-          <span style={{ fontSize: 14, fontWeight: 700, color: '#f8fafc' }}>{problem.title}</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: '#f8fafc' }}>{problem.title}</span>
 
           <span
             style={{
@@ -292,7 +310,22 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <Link to="/learn" style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8', textDecoration: 'none' }}>
+            Learn
+          </Link>
+
+          <Link to="/practice" style={{ fontSize: 13, fontWeight: 600, color: '#818cf8', textDecoration: 'none' }}>
+            Practice
+          </Link>
+
+          <Link to="/leaderboard" style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8', textDecoration: 'none' }}>
+            Leaderboard
+          </Link>
+
+          <StreakBadge />
+          <AuthButton />
+
           {nextProb && (
             <Link
               to={nextProb.route}
@@ -307,7 +340,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
                 border: '1px solid rgba(99, 102, 241, 0.3)',
               }}
             >
-              Next Problem →
+              Next →
             </Link>
           )}
         </div>

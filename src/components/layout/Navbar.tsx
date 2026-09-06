@@ -104,6 +104,13 @@ export default function Navbar({
             </span>
           </Link>
           <Link
+            to="/leaderboard"
+            className="nm-navbar-leaderboard-link"
+            style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}
+          >
+            Leaderboard
+          </Link>
+          <Link
             to="/progress"
             className="nm-navbar-progress-link"
             style={{ color: 'var(--nm-text-primary)', textDecoration: 'none', fontSize: 14 }}

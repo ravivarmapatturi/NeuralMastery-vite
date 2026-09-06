@@ -211,23 +211,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   const commit = useCallback(
     (next: UnderstoodMap) => {
+      setUnderstood(next);
+      writeStorage(next);
+
       if (user) {
-        // No local setUnderstood here -- the onSnapshot listener above is
-        // the only thing allowed to update state while signed in, so every
-        // tab/device converges on exactly what Firestore has.
         loadFirestoreFor(user.uid).then(({ ref, setDoc }) => {
-          // merge: true is load-bearing, not stylistic -- GamificationContext
-          // writes its own `gamificationEvents` field to this SAME
-          // progress/{uid} document (see its own commit()), and a bare
-          // setDoc here would fully replace the document, silently
-          // deleting `gamificationEvents` every time a page gets marked
-          // understood (the real, reproduced cause of streak/points
-          // appearing to reset for active signed-in users).
           void setDoc(ref, { understood: next }, { merge: true });
         });
-      } else {
-        setUnderstood(next);
-        writeStorage(next);
       }
     },
     [user],

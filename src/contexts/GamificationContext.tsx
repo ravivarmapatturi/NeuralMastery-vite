@@ -183,20 +183,15 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
   const commit = useCallback(
     (next: AwardEvent[]) => {
+      const normalized = normalizeEvents(next);
+      setEvents(normalized);
+      writeStorage(normalized);
+
       if (user) {
         loadFirestoreFor(user.uid).then(({ progressRef, leaderboardRef, setDoc }) => {
-          // merge: true is load-bearing, not stylistic -- ProgressContext
-          // writes its own `understood` field to this SAME progress/{uid}
-          // document (see its own commit()), and a bare setDoc here would
-          // fully replace the document, silently deleting `understood`
-          // every time a gamification award fires (a real bug this
-          // comment exists to prevent from coming back).
-          void setDoc(progressRef, { gamificationEvents: next }, { merge: true });
-          void setDoc(leaderboardRef, leaderboardFields(user, next, Date.now()), { merge: true });
+          void setDoc(progressRef, { gamificationEvents: normalized }, { merge: true });
+          void setDoc(leaderboardRef, leaderboardFields(user, normalized, Date.now()), { merge: true });
         });
-      } else {
-        setEvents(next);
-        writeStorage(next);
       }
     },
     [user],
