@@ -81,7 +81,7 @@ export default function PracticePlayground({ problemId }: { problemId: string })
     setResult(res);
     setStatus('idle');
     if (action === 'submit' && res.status === 'success') {
-      awardProblemCompleted(permalink); // no-op if this page already earned it once
+      awardProblemCompleted(permalink, undefined); // no-op if this page already earned it once -- structured PracticeProblem has no difficulty field yet
     }
   }
 

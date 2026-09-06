@@ -4,7 +4,7 @@ import Navbar from './layout/Navbar';
 import { getFlatPages, getPracticeProblems, type DocPage, type PracticeDifficulty } from '../lib/contentTree';
 import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
 import { useGamification } from '../contexts/GamificationContext';
-import { hasAward, PROBLEM_COMPLETED_POINTS, SYSTEM_DESIGN_CHALLENGE_POINTS } from '../lib/gamification';
+import { hasAward, pointsForDifficulty, SYSTEM_DESIGN_CHALLENGE_POINTS } from '../lib/gamification';
 import { useProgress } from '../contexts/ProgressContext';
 import { cleanPracticeTitle, nextLesson, practicePaths, practiceStats, recommendedProblem, relatedLesson } from '../lib/mastery';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
@@ -221,7 +221,7 @@ export default function PracticeListPage() {
             filtered.map((p, i) => {
               const design = isDesignChallenge(p);
               const solved = hasAward(events, p.route, design ? 'design' : 'complete');
-              const points = design ? SYSTEM_DESIGN_CHALLENGE_POINTS : PROBLEM_COMPLETED_POINTS;
+              const points = design ? SYSTEM_DESIGN_CHALLENGE_POINTS : pointsForDifficulty(p.difficulty);
               return (
                 <Link
                   key={p.route}

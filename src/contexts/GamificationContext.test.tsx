@@ -9,7 +9,7 @@ import { AuthProvider } from './AuthContext'
 const STORAGE_KEY = 'neural-mastery-gamification'
 
 function Harness() {
-  const { points, weeklyPoints, streak, awardMarkUnderstood, awardProblemCompleted, awardSystemDesignCompleted } = useGamification()
+  const { points, weeklyPoints, streak, awardMarkUnderstood, awardProblemCompleted, awardSystemDesignCompleted, awardFlashcardRevealed } = useGamification()
   return (
     <div>
       <div data-testid="points">{points}</div>
@@ -17,8 +17,13 @@ function Harness() {
       <div data-testid="streak">{streak}</div>
       <button onClick={() => awardMarkUnderstood('/docs/foo')}>mark-foo</button>
       <button onClick={() => awardMarkUnderstood('/docs/bar')}>mark-bar</button>
-      <button onClick={() => awardProblemCompleted('/docs/problem-1')}>complete-problem-1</button>
+      <button onClick={() => awardProblemCompleted('/docs/problem-1', 'medium')}>complete-problem-1</button>
+      <button onClick={() => awardProblemCompleted('/practice/easy-one', 'easy')}>complete-easy</button>
+      <button onClick={() => awardProblemCompleted('/practice/hard-one', 'hard')}>complete-hard</button>
+      <button onClick={() => awardProblemCompleted('/practice/no-difficulty', undefined)}>complete-no-difficulty</button>
       <button onClick={() => awardSystemDesignCompleted('/docs/practice-problems/design-challenge-rag-system')}>complete-design-challenge</button>
+      <button onClick={() => awardFlashcardRevealed('flashcard:home-kv-cache')}>reveal-flashcard</button>
+      <button onClick={() => awardFlashcardRevealed('flashcard:other-card')}>reveal-other-flashcard</button>
     </div>
   )
 }
@@ -79,6 +84,39 @@ describe('GamificationContext: signed-out (localStorage only)', () => {
     const user = userEvent.setup()
     await user.click(screen.getByText('complete-problem-1'))
     expect(screen.getByTestId('points')).toHaveTextContent('50')
+  })
+
+  it('scales the award by real difficulty -- easy < medium < hard, not one flat value', async () => {
+    setup()
+    const user = userEvent.setup()
+    await user.click(screen.getByText('complete-easy'))
+    expect(screen.getByTestId('points')).toHaveTextContent('25')
+    await user.click(screen.getByText('complete-hard'))
+    expect(screen.getByTestId('points')).toHaveTextContent(String(25 + 100))
+  })
+
+  it('falls back to the default (medium-equivalent) value when a problem has no difficulty frontmatter', async () => {
+    setup()
+    const user = userEvent.setup()
+    await user.click(screen.getByText('complete-no-difficulty'))
+    expect(screen.getByTestId('points')).toHaveTextContent('50')
+  })
+
+  it('awards a small point value for the first flashcard reveal, and never re-awards the SAME card again', async () => {
+    setup()
+    const user = userEvent.setup()
+    await user.click(screen.getByText('reveal-flashcard'))
+    expect(screen.getByTestId('points')).toHaveTextContent('1')
+    await user.click(screen.getByText('reveal-flashcard')) // re-reveal the same card
+    expect(screen.getByTestId('points')).toHaveTextContent('1') // still 1, not 2 -- no double-award
+  })
+
+  it('does award again for a genuinely DIFFERENT flashcard', async () => {
+    setup()
+    const user = userEvent.setup()
+    await user.click(screen.getByText('reveal-flashcard'))
+    await user.click(screen.getByText('reveal-other-flashcard'))
+    expect(screen.getByTestId('points')).toHaveTextContent('2')
   })
 
   it('awards the biggest point value for completing a system-design challenge', async () => {
@@ -167,7 +205,7 @@ describe('GamificationContext: practice-problem permalink migration (old /docs/p
       return (
         <div>
           <div data-testid="points">{points}</div>
-          <button onClick={() => awardProblemCompleted('/practice/dot-product')}>complete-again</button>
+          <button onClick={() => awardProblemCompleted('/practice/dot-product', 'medium')}>complete-again</button>
         </div>
       )
     }

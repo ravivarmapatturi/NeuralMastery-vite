@@ -1,0 +1,58 @@
+---
+title: "Practice: Layer Normalization From Scratch"
+sidebar_position: 48
+description: "Implement Layer Normalization from scratch with NumPy for a 2D batch -- the batch-size-independent normalization that's the default in Transformers."
+difficulty: easy
+topic: deep-learning
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Layer Normalization From Scratch
+
+**Difficulty: Easy** · Concept: [NN Layers Reference — Normalization Layers](/docs/deep-learning/nn-layers-reference#normalization-layers)
+
+$$\text{LayerNorm}(x)_i = \frac{x_i - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma_i + \beta_i, \quad \mu = \text{mean}(x), \ \sigma^2 = \text{var}(x)$$
+
+Unlike [RMSNorm](/practice/rms-normalization), LayerNorm both re-centers (subtracts the mean) and rescales (divides by the standard deviation) — and unlike BatchNorm, it normalizes across a single example's *own* features rather than across the batch, which is exactly why it's batch-size-independent and became the default in Transformers (which often process variable-length sequences one token at a time, where batch statistics are awkward at best).
+
+**Your task**: implement `layer_norm(x, gamma, beta, eps=1e-5)` for a 2D NumPy array `x` of shape `(batch, features)`, normalizing each row independently over its own features.
+
+<RunnableCode
+  code={`import numpy as np
+
+def layer_norm(x, gamma, beta, eps=1e-5):
+    """x: (batch, features). gamma, beta: (features,). Normalize each
+    row over its own features (axis=-1), then scale and shift."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert abs(np.mean(layer_norm(np.array([[1.0, 2.0, 3.0], [4.0, 4.0, 4.0]]), np.ones(3), np.zeros(3))[0])) < 1e-6
+assert abs(np.var(layer_norm(np.array([[1.0, 2.0, 3.0], [4.0, 4.0, 4.0]]), np.ones(3), np.zeros(3))[0]) - 1.0) < 1e-3
+assert np.allclose(layer_norm(np.array([[1.0, 2.0, 3.0], [4.0, 4.0, 4.0]]), np.ones(3), np.zeros(3))[1], 0.0, atol=1e-3)
+assert np.allclose(layer_norm(np.array([[1.0, 2.0, 3.0], [4.0, 4.0, 4.0]]), np.array([2.0, 2.0, 2.0]), np.array([1.0, 1.0, 1.0])), layer_norm(np.array([[1.0, 2.0, 3.0], [4.0, 4.0, 4.0]]), np.ones(3), np.zeros(3)) * 2 + 1)
+assert layer_norm(np.array([[1.0, 2.0, 3.0], [4.0, 4.0, 4.0]]), np.ones(3), np.zeros(3)).shape == (2, 3)`}
+/>
+
+<Solution>
+
+```python
+import numpy as np
+
+def layer_norm(x, gamma, beta, eps=1e-5):
+    mean = np.mean(x, axis=-1, keepdims=True)
+    var = np.var(x, axis=-1, keepdims=True)
+    x_norm = (x - mean) / np.sqrt(var + eps)
+    return x_norm * gamma + beta
+```
+
+`axis=-1, keepdims=True` is the whole trick: computing mean/variance over the *last* axis (features) rather than `axis=0` (which would be BatchNorm's job instead) means each row gets its own mean and variance, completely independent of every other row in the batch — feed it a batch of one example, or a batch of a million, and row 0's output is identical either way. `keepdims=True` keeps `mean`/`var` as `(batch, 1)` rather than `(batch,)`, so the subtraction and division broadcast correctly against the full `(batch, features)` array instead of raising a shape error.
+
+The constant-row case (`[4, 4, 4]`) is a real edge case worth having a test for: variance is exactly 0, and without `eps` the division would be `0/0`. With `eps=1e-5` it instead cleanly resolves to a real, if slightly-scaled-down, `0` output — no NaN.
+
+</Solution>
+
+---
+
+Next: [Batch Normalization From Scratch](/practice/batch-normalization)

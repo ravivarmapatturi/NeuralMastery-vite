@@ -1,0 +1,57 @@
+---
+title: "Practice: LoRA Linear Layer Forward Pass From Scratch"
+sidebar_position: 56
+description: "Implement a LoRA-adapted linear layer's forward pass from scratch with NumPy -- the low-rank adapter behind most efficient LLM fine-tuning today."
+difficulty: medium
+topic: llms-genai
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# LoRA Linear Layer Forward Pass From Scratch
+
+**Difficulty: Medium** · Concept: [Training Pipeline — Parameter-Efficient Fine-Tuning (PEFT)](/docs/llms-genai/training-pipeline#parameter-efficient-fine-tuning-peft)
+
+$$y = xW_0^\top + \frac{\alpha}{r}\,(xA^\top)B^\top$$
+
+Full fine-tuning updates every weight in a pretrained model — expensive in both compute and storage (a full copy of every weight per fine-tuned variant). LoRA instead freezes the original weight matrix $W_0$ entirely and learns a much smaller *low-rank* update: two small matrices $A$ (rank $r$) and $B$, where $r$ is far smaller than the original dimensions, added back in at inference time as $\frac{\alpha}{r}\,(xA^\top)B^\top$. Only $A$ and $B$ need training and storage — often under 1% of the original parameter count — which is exactly why LoRA is the standard way most LLM fine-tuning happens today.
+
+**Your task**: implement `lora_linear(x, W0, A, B, alpha, r)` where `x` is `(batch, in_features)`, `W0` is `(out_features, in_features)` (the frozen base weight), `A` is `(r, in_features)`, and `B` is `(out_features, r)`.
+
+<RunnableCode
+  code={`import numpy as np
+
+def lora_linear(x, W0, A, B, alpha, r):
+    """x: (batch, in). W0: (out, in). A: (r, in). B: (out, r).
+    Return x @ W0.T + (alpha/r) * (x @ A.T) @ B.T."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert np.allclose(lora_linear(np.random.RandomState(2).randn(3, 4), np.random.RandomState(9).randn(6, 4), np.random.RandomState(8).randn(2, 4), np.zeros((6, 2)), 4, 2), np.random.RandomState(2).randn(3, 4) @ np.random.RandomState(9).randn(6, 4).T)
+assert np.allclose(lora_linear(np.random.RandomState(2).randn(3, 4), np.random.RandomState(9).randn(6, 4), np.random.RandomState(8).randn(2, 4), np.random.RandomState(7).randn(6, 2), 4, 2), np.random.RandomState(2).randn(3, 4) @ np.random.RandomState(9).randn(6, 4).T + (np.random.RandomState(2).randn(3, 4) @ np.random.RandomState(8).randn(2, 4).T) @ np.random.RandomState(7).randn(6, 2).T * 2.0)
+assert lora_linear(np.random.RandomState(2).randn(3, 4), np.random.RandomState(9).randn(6, 4), np.random.RandomState(8).randn(2, 4), np.random.RandomState(7).randn(6, 2), 4, 2).shape == (3, 6)
+assert np.allclose(lora_linear(np.random.RandomState(2).randn(3, 4), np.random.RandomState(9).randn(6, 4), np.random.RandomState(8).randn(2, 4), np.random.RandomState(7).randn(6, 2), 8, 2) - (np.random.RandomState(2).randn(3, 4) @ np.random.RandomState(9).randn(6, 4).T), 2 * (lora_linear(np.random.RandomState(2).randn(3, 4), np.random.RandomState(9).randn(6, 4), np.random.RandomState(8).randn(2, 4), np.random.RandomState(7).randn(6, 2), 4, 2) - (np.random.RandomState(2).randn(3, 4) @ np.random.RandomState(9).randn(6, 4).T)))`}
+/>
+
+<Solution>
+
+```python
+import numpy as np
+
+def lora_linear(x, W0, A, B, alpha, r):
+    scaling = alpha / r
+    base = x @ W0.T
+    delta = (x @ A.T) @ B.T * scaling
+    return base + delta
+```
+
+The frozen base term `x @ W0.T` is just an ordinary linear layer — nothing about LoRA changes it. The adapter term factors what *would* be a full `(out, in)` update matrix into two much smaller pieces multiplied together: `x @ A.T` projects the input down to the small rank-`r` space (`(batch, r)`), and `@ B.T` projects it back up to the output dimension. A full-rank update matrix would need `out * in` parameters; `A` and `B` together need only `r*(in + out)` — with `r` far smaller than either dimension, that's a huge reduction, and it's the entire reason LoRA is *parameter-efficient*.
+
+`B` starting at all zeros (the first test) is not an arbitrary choice — real LoRA training initializes `B` to zero specifically so that, before any adapter training happens, `delta` is exactly zero and the adapted model behaves identically to the frozen base model. `alpha/r` is a fixed scaling factor decoupled from `r` itself, which is why doubling `alpha` (last test) doubles the adapter's contribution directly rather than needing to also change `r` — in practice this lets you tune how strongly the adapter influences the output independently of how large you made it.
+
+</Solution>
+
+---
+
+Next: [INT8 Weight Quantization From Scratch](/practice/int8-quantization)

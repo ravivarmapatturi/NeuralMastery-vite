@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useVizTokens, RADIUS, SPACING, FONT_FAMILY } from '../../theme/vizTokens';
 import { useGamification } from '../../contexts/GamificationContext';
 import { usePracticeCodePane } from '../../contexts/PracticeSplitPaneContext';
-import { normalizeRoute } from '../../lib/contentTree';
+import { normalizeRoute, getPageByRoute } from '../../lib/contentTree';
 
 // Lazy so CodeMirror's real ~155KB (min+gzip, measured via `npm run build`) stays out of the main bundle --
 // every page that isn't a practice problem (the vast majority of the
@@ -56,6 +56,13 @@ export default function RunnableCode({
   const t = useVizTokens();
   const { awardProblemCompleted } = useGamification();
   const permalink = normalizeRoute(useLocation().pathname);
+  // Real frontmatter difficulty for the CURRENT page, looked up once here
+  // rather than threaded as a prop through every one of the 66 practice-
+  // problem MDX files' own <RunnableCode> call -- pointsForDifficulty
+  // (see lib/gamification.ts) falls back sanely to the old flat value if
+  // this is undefined (a page with no difficulty frontmatter, or not a
+  // real practice-problem route at all).
+  const difficulty = getPageByRoute(permalink)?.difficulty;
   void language; // reserved for a future non-Python runtime; Pyodide is Python-only today
   const [code, setCode] = useState(initialCode);
   const [status, setStatus] = useState<Status>('idle');
@@ -102,7 +109,7 @@ export default function RunnableCode({
       setError(msg.error ?? null);
       if (msg.testResults) setTestResults(msg.testResults);
       if (msg.testResults?.length > 0 && msg.testResults.every((r: TestResult) => r.passed)) {
-        awardProblemCompleted(permalink); // no-op if this page already earned it once
+        awardProblemCompleted(permalink, difficulty); // no-op if this page already earned it once
       }
       setStatus('done');
     };

@@ -1,0 +1,58 @@
+---
+title: "Practice: Batch Normalization From Scratch"
+sidebar_position: 49
+description: "Implement Batch Normalization from scratch with NumPy -- normalizing each feature across the mini-batch, the standard stabilizer for deep CNNs."
+difficulty: easy
+topic: deep-learning
+---
+
+import RunnableCode from '../../../components/content/RunnableCode';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Batch Normalization From Scratch
+
+**Difficulty: Easy** · Concept: [NN Layers Reference — Normalization Layers](/docs/deep-learning/nn-layers-reference#normalization-layers)
+
+$$\text{BatchNorm}(x)_{:,j} = \frac{x_{:,j} - \mu_j}{\sqrt{\sigma_j^2 + \epsilon}} \cdot \gamma_j + \beta_j$$
+
+BatchNorm normalizes each *feature* across the current mini-batch — the opposite axis from [LayerNorm](/practice/layer-normalization), which normalizes each *example* across its own features. That makes BatchNorm dependent on batch size and statistics (a poor fit for variable-length sequence models processed one token at a time), but it's still the standard, stabilizing choice in the CNN lineage.
+
+**Your task**: implement `batch_norm(x, gamma, beta, eps=1e-5)` for a 2D NumPy array `x` of shape `(batch, features)`, normalizing each column (feature) independently over the batch dimension.
+
+<RunnableCode
+  code={`import numpy as np
+
+def batch_norm(x, gamma, beta, eps=1e-5):
+    """x: (batch, features). gamma, beta: (features,). Normalize each
+    COLUMN over the batch dimension (axis=0)."""
+    # Your implementation here
+    pass
+`}
+  tests={`assert np.allclose(np.mean(batch_norm(np.array([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]]), np.ones(2), np.zeros(2)), axis=0), 0.0, atol=1e-6)
+assert np.allclose(np.var(batch_norm(np.array([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]]), np.ones(2), np.zeros(2)), axis=0), 1.0, atol=1e-3)
+assert batch_norm(np.array([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]]), np.ones(2), np.zeros(2)).shape == (3, 2)
+assert np.allclose(batch_norm(np.array([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]]), np.array([3.0, 1.0]), np.array([0.0, -2.0]))[:, 0], batch_norm(np.array([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]]), np.ones(2), np.zeros(2))[:, 0] * 3.0)
+assert np.allclose(batch_norm(np.array([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]]), np.array([3.0, 1.0]), np.array([0.0, -2.0]))[:, 1], batch_norm(np.array([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]]), np.ones(2), np.zeros(2))[:, 1] - 2.0)`}
+/>
+
+<Solution>
+
+```python
+import numpy as np
+
+def batch_norm(x, gamma, beta, eps=1e-5):
+    mean = np.mean(x, axis=0, keepdims=True)
+    var = np.var(x, axis=0, keepdims=True)
+    x_norm = (x - mean) / np.sqrt(var + eps)
+    return x_norm * gamma + beta
+```
+
+The only real difference from [LayerNorm's implementation](/practice/layer-normalization) is `axis=0` instead of `axis=-1` — mean and variance get computed per-*column* (each feature, across every row in the batch) instead of per-row. That single axis flip is the entire conceptual difference between the two: same formula, different statistic-sharing group. It's also exactly why BatchNorm gets unstable with very small batches (a batch of 1 has zero variance to normalize by, same failure mode as LayerNorm's constant-row case) and why it needs running statistics tracked separately for inference, when there may be no real "batch" at all (a single request being served).
+
+[NN Layers Reference](/docs/deep-learning/nn-layers-reference#normalization-layers) covers all four normalization variants (Batch/Layer/RMS/Group) side by side — worth comparing directly against [RMSNorm](/practice/rms-normalization) and [LayerNorm](/practice/layer-normalization) now that you've implemented all three.
+
+</Solution>
+
+---
+
+Next: [Categorical Cross-Entropy Loss From Scratch](/practice/categorical-cross-entropy)

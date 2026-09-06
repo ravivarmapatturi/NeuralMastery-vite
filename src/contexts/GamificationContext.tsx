@@ -3,8 +3,9 @@ import { useAuth } from './AuthContext';
 import {
   type AwardEvent,
   MARK_UNDERSTOOD_POINTS,
-  PROBLEM_COMPLETED_POINTS,
+  pointsForDifficulty,
   SYSTEM_DESIGN_CHALLENGE_POINTS,
+  FLASHCARD_REVEAL_POINTS,
   hasAward,
   totalPoints,
   weeklyPoints as computeWeeklyPoints,
@@ -29,8 +30,19 @@ interface GamificationContextValue {
    * it themselves without a second, parallel data path. */
   events: AwardEvent[];
   awardMarkUnderstood: (permalink: string) => void;
-  awardProblemCompleted: (permalink: string) => void;
+  /** difficulty: the problem's real frontmatter difficulty ('easy' |
+   * 'medium' | 'hard' | undefined) -- see pointsForDifficulty in
+   * lib/gamification.ts for why this scales the award instead of every
+   * problem paying out the same flat value. */
+  awardProblemCompleted: (permalink: string, difficulty: string | undefined) => void;
   awardSystemDesignCompleted: (permalink: string) => void;
+  /** id: a stable, synthetic (non-URL) identifier for one flashcard --
+   * e.g. "flashcard:home-kv-cache" -- not a real page permalink, so it's
+   * deliberately excluded from topicBreakdown's by-topic pie (which only
+   * recognizes real /docs or /practice permalinks) while still counting
+   * toward total points, level, and streak. First-reveal-only, same
+   * no-double-award contract as every other award kind (see `award`). */
+  awardFlashcardRevealed: (id: string) => void;
 }
 
 const GamificationContext = createContext<GamificationContextValue | null>(null);
@@ -196,7 +208,11 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   );
 
   const awardMarkUnderstood = useCallback((permalink: string) => award(permalink, 'mark', MARK_UNDERSTOOD_POINTS), [award]);
-  const awardProblemCompleted = useCallback((permalink: string) => award(permalink, 'complete', PROBLEM_COMPLETED_POINTS), [award]);
+  const awardProblemCompleted = useCallback(
+    (permalink: string, difficulty: string | undefined) => award(permalink, 'complete', pointsForDifficulty(difficulty)),
+    [award],
+  );
+  const awardFlashcardRevealed = useCallback((id: string) => award(id, 'flashcard', FLASHCARD_REVEAL_POINTS), [award]);
   const awardSystemDesignCompleted = useCallback(
     (permalink: string) => award(permalink, 'design', SYSTEM_DESIGN_CHALLENGE_POINTS),
     [award],
@@ -213,6 +229,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     events,
     awardMarkUnderstood,
     awardProblemCompleted,
+    awardFlashcardRevealed,
     awardSystemDesignCompleted,
   };
 
