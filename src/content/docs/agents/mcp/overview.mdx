@@ -17,9 +17,14 @@ import McpLifecycleSequenceDiagram from '../../../../viz/diagrams/McpLifecycleSe
 import CommunicationPatternSequenceDiagram from '../../../../viz/diagrams/CommunicationPatternSequenceDiagram';
 import TransportComparisonDiagram from '../../../../viz/diagrams/TransportComparisonDiagram';
 
+import McpMxNInteractiveSimulator from '../../../../viz/McpMxNInteractiveSimulator';
+import McpCapabilityMatrixWidget from '../../../../viz/McpCapabilityMatrixWidget';
+import McpProtocolMessageInspector from '../../../../viz/McpProtocolMessageInspector';
+import McpGradioServerSimulator from '../../../../viz/McpGradioServerSimulator';
+
 # Model Context Protocol (MCP) — Masterclass & Overview
 
-The **Model Context Protocol (MCP)** is an open specification originally introduced by Anthropic that standardizes how AI models (LLMs and Autonomous Agents) connect with external tools, databases, APIs, local development environments, and data sources.
+The **Model Context Protocol (MCP)** is an open specification originally introduced by Anthropic (and expanded by Hugging Face and the open-source AI community) that standardizes how AI models (LLMs and Autonomous Agents) connect with external tools, databases, APIs, local development environments, and data sources.
 
 MCP is universally described as **"The USB-C for AI Applications."** Just as USB-C replaced dozens of proprietary, custom charging and peripheral cables with a single standardized physical and logical interface, MCP provides a universal protocol linking any AI application to any data source or tool.
 
@@ -53,6 +58,11 @@ Without a standard protocol, connecting $M$ AI applications to $N$ external tool
 <MxNIntegrationProblemDiagram />
 
 Each integration requires bespoke authentication, unique schema mapping, custom error handling, and manual prompt maintenance. Adding 1 new tool forces developers to update all $M$ applications; creating 1 new AI application requires re-implementing $N$ integrations from scratch.
+
+### Interactive Architecture Simulator
+Test how scaling AI Applications ($M$) and External Tools ($N$) impacts total integration count in real time:
+
+<McpMxNInteractiveSimulator />
 
 ### With MCP: $M + N$ Standardized Solution
 MCP transforms this combinatorial nightmare into a linear **$M + N$** standard:
@@ -100,7 +110,12 @@ An MCP Server can expose four distinct capabilities. An application's total valu
 | **Tools** | Invoked by LLM (with user consent) | Executable functions that perform computational actions or retrieve dynamic data. | `execute_python_code`, `query_postgres_db`, `post_slack_message`. |
 | **Resources** | Read-only pulled by Host | Passive data feeds (files, schemas, logs) exposed via URI schemes (`file://`, `postgres://`). | `file:///project/src/main.py`, `postgres://analytics/users_table`. |
 | **Prompts** | Triggered by User / Host | Pre-defined templates or workflows guiding model-user interactions. | `code_review_style`, `generate_postmortem_template`. |
-| **Sampling** | Server $\rightarrow$ Host request | Server-initiated requests asking the Host's LLM to generate completions for recursive evaluation. | Server asks LLM to review generated code before returning result. |
+| **Sampling** | Server $\rightarrow$ Host request | Server-initiated requests asking the Host's LLM to generate completions for recursive evaluation. | Server asks Host LLM to review generated code before returning result. |
+
+### Interactive Capability & JSON Payload Inspector
+Explore how Tools, Resources, Prompts, and Sampling format arguments and JSON-RPC wire payloads:
+
+<McpCapabilityMatrixWidget />
 
 ### Capability Application Matrix (e.g., AI Coding Agent)
 
@@ -116,6 +131,11 @@ An MCP Server can expose four distinct capabilities. An application's total valu
 ## 5. Architectural Components & Communication Flow
 
 MCP operates on a structured request-response and notification pattern encoded over JSON-RPC 2.0.
+
+### Interactive 7-Step Protocol Inspector
+Step through the 7 stages of an MCP tool call request and inspect live wire JSON-RPC frames:
+
+<McpProtocolMessageInspector />
 
 ### The 7-Step Communication Sequence
 
@@ -151,6 +171,11 @@ MCP decouples protocol semantics from byte transport mechanics:
 Building an MCP Server can be accomplished using **FastMCP (Python)**, **Gradio (Python)**, or **TypeScript MCP SDK**.
 
 <McpServerBuildStepsDiagram />
+
+### Interactive Server Execution Sandbox
+Test live Python function tool calls and preview generated MCP response content:
+
+<McpGradioServerSimulator />
 
 ### Option A: Python FastMCP Server
 
