@@ -39,41 +39,6 @@ function isDesignChallenge(page: DocPage): boolean {
   return !page.difficulty;
 }
 
-/** icon + accentVar give each stage a real, distinct visual identity (see
- * feedback_visual_design memory: per-item color/icon, not generic boxes)
- * -- only 6 real theme accent tokens exist (see index.css), so stages
- * cycle through them paired with a unique icon each, rather than
- * inventing a bespoke 12-color palette that wouldn't adapt across
- * light/dark theme the way these CSS vars already do. min/max are the
- * REAL numeric rank boundaries (not just the display string) -- see
- * `stageStats` below, which buckets every problem's own real "#NNN."
- * rank (parsed from its title) into these ranges for a genuinely
- * computed per-stage count and solved-count, not a static label. */
-const STAGES = [
-  { id: 'stage-1', num: 1, title: 'Stage 1: Transformer & LLM Fundamentals', min: 1, max: 84, icon: '🧠', accentVar: '--nm-accent-primary' },
-  { id: 'stage-2', num: 2, title: 'Stage 2: LLM Application & Decoding Engineering', min: 85, max: 168, icon: '💬', accentVar: '--nm-accent-teal' },
-  { id: 'stage-3', num: 3, title: 'Stage 3: Context & Memory Architecture', min: 169, max: 252, icon: '🧵', accentVar: '--nm-accent-purple' },
-  { id: 'stage-4', num: 4, title: 'Stage 4: RAG & Information Retrieval Systems', min: 253, max: 336, icon: '🔍', accentVar: '--nm-accent-secondary' },
-  { id: 'stage-5', num: 5, title: 'Stage 5: Agent Loops & Tool Execution', min: 337, max: 420, icon: '🤖', accentVar: '--nm-accent-warn' },
-  { id: 'stage-6', num: 6, title: 'Stage 6: Graph Engineering & MCP Integration', min: 421, max: 504, icon: '🕸️', accentVar: '--nm-accent-danger' },
-  { id: 'stage-7', num: 7, title: 'Stage 7: Multi-Agent Systems & Knowledge Graphs', min: 505, max: 588, icon: '🌐', accentVar: '--nm-accent-primary' },
-  { id: 'stage-8', num: 8, title: 'Stage 8: Agent Security & Reliability', min: 589, max: 672, icon: '🛡️', accentVar: '--nm-accent-teal' },
-  { id: 'stage-9', num: 9, title: 'Stage 9: Python & Algorithmic Foundations for AI', min: 673, max: 756, icon: '🐍', accentVar: '--nm-accent-purple' },
-  { id: 'stage-10', num: 10, title: 'Stage 10: Mathematics, NumPy & Data Pipelines', min: 757, max: 840, icon: '📐', accentVar: '--nm-accent-secondary' },
-  { id: 'stage-11', num: 11, title: 'Stage 11: Classical ML, Deep Learning & Vision', min: 841, max: 924, icon: '🧮', accentVar: '--nm-accent-warn' },
-  { id: 'stage-12', num: 12, title: 'Stage 12: MLOps, Distributed Systems & Production Agent Deployment', min: 925, max: 1000, icon: '🚀', accentVar: '--nm-accent-danger' },
-];
-
-/** Extracts the real "#NNN." curriculum rank a problem's title carries
- * (only the newer 1000+ ranked curriculum has one -- the original 48
- * hand-authored problems and the 4 system-design challenges don't, and
- * are correctly excluded from stage bucketing rather than miscounted
- * into Stage 1). */
-function rankOf(title: string): number | null {
-  const m = title.match(/#(\d+)\./);
-  return m ? Number(m[1]) : null;
-}
-
 export default function PracticeListPage() {
   const problems = useMemo(() => getPracticeProblems(), []);
 
@@ -91,7 +56,6 @@ export default function PracticeListPage() {
   const [search, setSearch] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState<'all' | PracticeDifficulty | 'design'>('all');
   const [topicFilter, setTopicFilter] = useState<'all' | string>('all');
-  const [stageFilter, setStageFilter] = useState<'all' | number>('all');
   const [viewMode, setViewMode] = useState<'roadmap' | 'table'>('roadmap');
 
   const topics = useMemo(() => {
@@ -117,22 +81,6 @@ export default function PracticeListPage() {
     }
     return counts;
   }, [problems]);
-
-  /** Real per-stage totals + solved counts, bucketed from each problem's
-   * own actual "#NNN." rank -- not a static/guessed number. */
-  const stageStats = useMemo(() => {
-    const stats: Record<number, { total: number; solved: number }> = {};
-    for (const s of STAGES) stats[s.num] = { total: 0, solved: 0 };
-    for (const p of problems) {
-      const rank = rankOf(p.title);
-      if (rank === null) continue;
-      const stage = STAGES.find((s) => rank >= s.min && rank <= s.max);
-      if (!stage) continue;
-      stats[stage.num].total += 1;
-      if (hasAward(events, p.route, isDesignChallenge(p) ? 'design' : 'complete')) stats[stage.num].solved += 1;
-    }
-    return stats;
-  }, [problems, events]);
 
   const sortedTopics = useMemo(() => {
     return Object.keys(topicCounts).sort((a, b) => (topicCounts[b] || 0) - (topicCounts[a] || 0));
@@ -207,133 +155,19 @@ export default function PracticeListPage() {
           </div>
         </div>
 
-        <div className="nm-mastery-metrics" aria-label="Practice progress">
-          <div><strong>{stats.solved}</strong><span>problems solved</span></div>
-          <div><strong>{stats.total - stats.solved}</strong><span>ready to solve</span></div>
-          <div><strong>{stats.easySolved}/{stats.mediumSolved}/{stats.hardSolved}</strong><span>easy / medium / hard</span></div>
-        </div>
+        {/* Main content (left) + Explore by Track & Tag (right, sticky cards) --
+            the topic sidebar starts immediately below the header on every
+            screen size, and sits to the right of the main column once
+            there's room; on narrow viewports it wraps below instead. */}
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <div style={{ flex: '1 1 640px', minWidth: 0 }}>
+            <div className="nm-mastery-metrics" aria-label="Practice progress">
+              <div><strong>{stats.solved}</strong><span>problems solved</span></div>
+              <div><strong>{stats.total - stats.solved}</strong><span>ready to solve</span></div>
+              <div><strong>{stats.easySolved}/{stats.mediumSolved}/{stats.hardSolved}</strong><span>easy / medium / hard</span></div>
+            </div>
 
-        {/* 12-Stage Progression -- "The Ascent" */}
-        <div style={{ margin: '2rem 0' }}>
-          <p className="nm-eyebrow" style={{ margin: '0 0 0.3rem' }}>Curriculum Progression</p>
-          <h3 style={{ margin: '0 0 0.3rem', fontSize: 20, fontWeight: 800, color: 'var(--nm-text-primary)' }}>The Ascent</h3>
-          <p style={{ margin: '0 0 1rem', fontSize: 13, color: 'var(--nm-text-secondary)' }}>
-            12 stages, zero fluff — from transformer fundamentals to shipping a production agent.
-          </p>
-          <div
-            style={{
-              display: 'flex',
-              gap: '0.9rem',
-              overflowX: 'auto',
-              paddingBottom: 10,
-              scrollSnapType: 'x proximity',
-            }}
-          >
-            {STAGES.map((s) => {
-              const stat = stageStats[s.num];
-              const active = stageFilter === s.num;
-              const pct = stat.total > 0 ? stat.solved / stat.total : 0;
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => {
-                    setStageFilter(stageFilter === s.num ? 'all' : s.num);
-                    setViewMode('roadmap');
-                  }}
-                  style={{
-                    scrollSnapAlign: 'start',
-                    flex: '0 0 220px',
-                    textAlign: 'left',
-                    padding: '1rem 1.1rem',
-                    borderRadius: 14,
-                    border: active ? `2px solid var(${s.accentVar})` : '1px solid var(--nm-border)',
-                    background: `color-mix(in srgb, var(${s.accentVar}) ${active ? 16 : 9}%, var(--nm-surface))`,
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    boxShadow: active ? `0 4px 16px color-mix(in srgb, var(${s.accentVar}) 25%, transparent)` : 'none',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <span style={{ fontSize: 24, lineHeight: 1 }}>{s.icon}</span>
-                    <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '0.04em', color: `var(${s.accentVar})` }}>STAGE {s.num}</span>
-                  </div>
-                  <div style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--nm-text-primary)', lineHeight: 1.3, minHeight: 36, marginBottom: 8 }}>
-                    {s.title.replace(/^Stage \d+: /, '')}
-                  </div>
-                  <div style={{ height: 5, borderRadius: 3, background: 'var(--nm-border)', overflow: 'hidden', marginBottom: 6 }}>
-                    <div style={{ width: `${pct * 100}%`, height: '100%', background: `var(${s.accentVar})`, transition: 'width 200ms ease' }} />
-                  </div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--nm-text-muted)' }}>
-                    {stat.solved} of {stat.total} cleared
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* LeetCode-Style Tag Pills */}
-        <div style={{ margin: '2rem 0', background: 'var(--nm-surface)', borderRadius: 12, border: '1px solid var(--nm-border)', padding: '1.2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-            <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
-              Explore by Track &amp; Tag
-            </h3>
-            {topicFilter !== 'all' && (
-              <button
-                onClick={() => setTopicFilter('all')}
-                style={{ background: 'none', border: 'none', color: 'var(--nm-accent-primary)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
-              >
-                Clear Tag Filter (Showing All {problems.length})
-              </button>
-            )}
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', maxHeight: 220, overflowY: 'auto', paddingRight: 4 }}>
-            {sortedTopics.map((topic) => {
-              const label = topicLabels[topic] ?? topic;
-              const count = topicCounts[topic];
-              const isActive = topicFilter === topic;
-              return (
-                <button
-                  key={topic}
-                  onClick={() => {
-                    setTopicFilter(isActive ? 'all' : topic);
-                    setCurrentPage(1);
-                  }}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '0.3rem 0.65rem',
-                    borderRadius: 20,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    border: isActive ? '1.5px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
-                    background: isActive ? 'color-mix(in srgb, var(--nm-accent-primary) 15%, transparent)' : 'var(--nm-bg)',
-                    color: isActive ? 'var(--nm-accent-primary)' : 'var(--nm-text-primary)',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  <span>{label}</span>
-                  <span
-                    style={{
-                      fontSize: 10.5,
-                      fontWeight: 800,
-                      padding: '0.05rem 0.35rem',
-                      borderRadius: 10,
-                      background: isActive ? 'var(--nm-accent-primary)' : 'var(--nm-surface)',
-                      color: isActive ? '#fff' : 'var(--nm-text-muted)',
-                    }}
-                  >
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="nm-practice-guidance">
+            <div className="nm-practice-guidance">
           <div>
             <p className="nm-eyebrow">Recommended next</p>
             {recommended ? <>
@@ -438,7 +272,7 @@ export default function PracticeListPage() {
         </div>
 
         {/* Catalogue Table */}
-        <div style={{ borderRadius: 12, border: '1px solid var(--nm-border)', overflow: 'hidden' }}>
+        <div id="practice-catalogue" style={{ borderRadius: 12, border: '1px solid var(--nm-border)', overflow: 'hidden', scrollMarginTop: 90 }}>
           <div
             style={{
               display: 'grid',
@@ -600,6 +434,76 @@ export default function PracticeListPage() {
             </div>
           </div>
         )}
+          </div>
+
+          {/* Explore by Track & Tag -- topic cards, sticky on the right */}
+          <aside style={{ flex: '0 1 300px', minWidth: 260, position: 'sticky', top: 90 }}>
+            <div style={{ background: 'var(--nm-surface)', borderRadius: 12, border: '1px solid var(--nm-border)', padding: '1.2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem', gap: 8 }}>
+                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
+                  Explore by Track &amp; Tag
+                </h3>
+                {topicFilter !== 'all' && (
+                  <button
+                    onClick={() => setTopicFilter('all')}
+                    style={{ background: 'none', border: 'none', color: 'var(--nm-accent-primary)', fontSize: 11.5, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: 560, overflowY: 'auto', paddingRight: 2 }}>
+                {sortedTopics.map((topic) => {
+                  const label = topicLabels[topic] ?? topic;
+                  const count = topicCounts[topic];
+                  const isActive = topicFilter === topic;
+                  return (
+                    <button
+                      key={topic}
+                      onClick={() => {
+                        const next = isActive ? 'all' : topic;
+                        setTopicFilter(next);
+                        setCurrentPage(1);
+                        setViewMode('table');
+                        document.getElementById('practice-catalogue')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '0.6rem 0.8rem',
+                        borderRadius: 10,
+                        fontSize: 12.5,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        border: isActive ? '1.5px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
+                        background: isActive ? 'color-mix(in srgb, var(--nm-accent-primary) 12%, var(--nm-surface))' : 'var(--nm-bg)',
+                        color: isActive ? 'var(--nm-accent-primary)' : 'var(--nm-text-primary)',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      <span>{label}</span>
+                      <span
+                        style={{
+                          fontSize: 10.5,
+                          fontWeight: 800,
+                          padding: '0.1rem 0.45rem',
+                          borderRadius: 10,
+                          background: isActive ? 'var(--nm-accent-primary)' : 'var(--nm-surface)',
+                          color: isActive ? '#fff' : 'var(--nm-text-muted)',
+                        }}
+                      >
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </aside>
+        </div>
 
       </section>
     </div>
