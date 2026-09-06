@@ -10,6 +10,18 @@ interface AuthContextValue {
    * (a persisted session, restored from IndexedDB) is known. */
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  /** Real Firebase email/password sign-up. Deliberately does NOT pre-check
+   * fetchSignInMethodsForEmail before calling this -- Firebase's own
+   * "one account per email address" project setting (the default, and
+   * left untouched here) already rejects createUserWithEmailAndPassword
+   * with `auth/email-already-in-use` for an email that's registered under
+   * ANY provider, including an existing Google sign-in -- that's the real
+   * mechanism that keeps one person from ending up with two disconnected
+   * identities, not a client-side check that could race or be bypassed.
+   * Callers should catch that error code and point the visitor at Google
+   * sign-in instead, never silently retry as a fresh account. */
+  signUpWithEmail: (email: string, password: string) => Promise<void>;
+  signInWithEmail: (email: string, password: string) => Promise<void>;
   signOutUser: () => Promise<void>;
 }
 
@@ -78,6 +90,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const signUpWithEmail = useCallback(async (email: string, password: string) => {
+    const [{ auth }, { createUserWithEmailAndPassword }] = await Promise.all([import('../lib/firebase'), import('firebase/auth')]);
+    await createUserWithEmailAndPassword(auth, email, password);
+  }, []);
+
+  const signInWithEmail = useCallback(async (email: string, password: string) => {
+    const [{ auth }, { signInWithEmailAndPassword }] = await Promise.all([import('../lib/firebase'), import('firebase/auth')]);
+    await signInWithEmailAndPassword(auth, email, password);
+  }, []);
+
   const signOutUser = useCallback(async () => {
     const [{ auth }, { signOut }] = await Promise.all([import('../lib/firebase'), import('firebase/auth')]);
     await signOut(auth);
@@ -87,7 +109,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const value = useMemo(() => ({ user, loading, signInWithGoogle, signOutUser }), [user, loading, signInWithGoogle, signOutUser]);
+  const value = useMemo(
+    () => ({ user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, signOutUser }),
+    [user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, signOutUser],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -28,6 +28,8 @@ vi.mock('firebase/auth', () => ({
   signInWithRedirect: vi.fn().mockResolvedValue(undefined),
   getRedirectResult: vi.fn().mockResolvedValue(null),
   signOut: vi.fn().mockResolvedValue(undefined),
+  createUserWithEmailAndPassword: vi.fn().mockResolvedValue({ user: null }),
+  signInWithEmailAndPassword: vi.fn().mockResolvedValue({ user: null }),
 }))
 vi.mock('firebase/firestore', () => ({
   getFirestore: vi.fn(() => ({})),
