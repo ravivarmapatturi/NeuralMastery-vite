@@ -27,7 +27,7 @@ function renderChooser() {
 describe('ChooserPage', () => {
   it('introduces the product with its learning loop and routes to both real destinations', () => {
     renderChooser()
-    expect(screen.getByRole('heading', { name: /See it/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Learn it/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /One concept. A complete learning loop/i })).toBeInTheDocument()
     const learnLink = screen.getByRole('link', { name: /Explore the curriculum/i })
     const practiceLink = screen.getByRole('link', { name: /Try a coding problem/i })

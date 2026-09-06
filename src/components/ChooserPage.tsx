@@ -21,7 +21,7 @@ function Arrow() {
 /** The public product landing page. It keeps the two real destinations, but
  * frames them as one learning loop instead of unrelated products. */
 export default function ChooserPage() {
-  useDocumentTitle('See it. Understand it. Build it.');
+  useDocumentTitle('Learn it. Practice it. Achieve Mastery.');
   useDocumentMeta(
     'Learn AI deeply',
     'Learn AI from first principles through computed visualizations and executable practice, from mathematics to LLMs and agents.',
@@ -41,9 +41,9 @@ export default function ChooserPage() {
           <div className="nm-landing-shell nm-hero-grid">
             <div className="nm-hero-copy">
               <p className="nm-eyebrow">Interactive AI engineering curriculum</p>
-              <h1>See it.<br />Understand it.<br /><em>Build it.</em></h1>
+              <h1>Learn it.<br />Practice it.<br /><em>Achieve Mastery.</em></h1>
               <p className="nm-hero-lede">
-                Learn AI through real computation, interactive visualizations, and executable practice—from foundations to LLMs and agents.
+                Master AI through real computation, interactive visualizations, and executable practice—from foundations to LLMs and agents.
               </p>
               <div className="nm-hero-actions">
                 <Link className="nm-button nm-button-primary" to={completed ? '/progress' : '/learn'}>
