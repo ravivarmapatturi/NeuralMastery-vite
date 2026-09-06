@@ -34,6 +34,7 @@ export default function Navbar({
   return (
     <>
       <header
+        className="nm-navbar-header"
         style={{
           position: 'sticky',
           top: 0,
@@ -114,6 +115,7 @@ export default function Navbar({
             onClick={() => setSearchOpen(true)}
             aria-label="Search documentation"
             title={`Search (${isMac ? 'Cmd' : 'Ctrl'}+K)`}
+            className="nm-navbar-search-btn"
             style={{
               display: 'flex',
               alignItems: 'center',
