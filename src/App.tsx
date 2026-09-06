@@ -11,10 +11,14 @@ import Home from './components/Home';
 import PracticeListPage from './components/PracticeListPage';
 import ProgressPage from './components/ProgressPage';
 import ProfilePage from './components/ProfilePage';
+import AboutPage from './components/AboutPage';
+import PrivacyPolicyPage from './components/PrivacyPolicyPage';
+import TermsOfServicePage from './components/TermsOfServicePage';
 import ThemedImage from './components/ThemedImage';
 import MDXCodeBlock from './components/MDXCodeBlock';
 import MDXLink from './components/MDXLink';
 import AnalyticsTracker from './components/AnalyticsTracker';
+import Footer from './components/layout/Footer';
 
 /** Old /docs/practice-problems/<slug> URLs redirect to their real, current
  * /practice/<slug> home -- see contentTree.ts's practiceRoute() for why the
@@ -49,17 +53,28 @@ export default function App() {
                   truth prevents outright. */}
               <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
                 <AnalyticsTracker />
-                <Routes>
-                  <Route path="/" element={<ChooserPage />} />
-                  <Route path="/learn" element={<Home />} />
-                  <Route path="/practice" element={<PracticeListPage />} />
-                  <Route path="/practice/:slug" element={<PracticeProblemLayout />} />
-                  <Route path="/progress" element={<ProgressPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/docs/practice-problems/overview" element={<Navigate to="/practice" replace />} />
-                  <Route path="/docs/practice-problems/:slug" element={<PracticeProblemRedirect />} />
-                  <Route path="/docs/*" element={<DocLayout />} />
-                </Routes>
+                {/* Footer renders once here, after whatever route matched,
+                    so every page gets it without each page component
+                    needing to render it itself -- see Footer.tsx. */}
+                <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <div style={{ flex: 1 }}>
+                    <Routes>
+                      <Route path="/" element={<ChooserPage />} />
+                      <Route path="/learn" element={<Home />} />
+                      <Route path="/practice" element={<PracticeListPage />} />
+                      <Route path="/practice/:slug" element={<PracticeProblemLayout />} />
+                      <Route path="/progress" element={<ProgressPage />} />
+                      <Route path="/profile" element={<ProfilePage />} />
+                      <Route path="/about" element={<AboutPage />} />
+                      <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                      <Route path="/terms" element={<TermsOfServicePage />} />
+                      <Route path="/docs/practice-problems/overview" element={<Navigate to="/practice" replace />} />
+                      <Route path="/docs/practice-problems/:slug" element={<PracticeProblemRedirect />} />
+                      <Route path="/docs/*" element={<DocLayout />} />
+                    </Routes>
+                  </div>
+                  <Footer />
+                </div>
               </BrowserRouter>
             </MDXProvider>
           </GamificationProvider>
