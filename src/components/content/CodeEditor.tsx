@@ -5,6 +5,7 @@ import { indentUnit } from '@codemirror/language';
 import { indentWithTab } from '@codemirror/commands';
 import { keymap } from '@codemirror/view';
 import { python } from '@codemirror/lang-python';
+import { oneDark } from '@codemirror/theme-one-dark';
 import type { VizTokens } from '../../theme/vizTokens';
 
 /**
@@ -49,59 +50,25 @@ export default function CodeEditor({
           python(),
           indentUnit.of('    '), // real 4-space Python indent, not CM6's 2-space default
           Prec.highest(keymap.of([indentWithTab])), // Tab inserts indent -- a Python-only tool needs this more than the a11y default of tabbing focus away
-          EditorView.theme(
-            {
-              '&': {
-                backgroundColor: '#020617',
-                color: '#f8fafc',
-                fontSize: '13px',
-                height: '100%',
-              },
-              '.cm-scroller': {
-                backgroundColor: '#020617',
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-                minHeight: '100%',
-                overflow: 'auto',
-              },
-              '.cm-content': {
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-                minHeight: '96px',
-                padding: '10px 0',
-                backgroundColor: '#020617',
-                caretColor: '#38bdf8',
-              },
-              '.cm-gutters': {
-                backgroundColor: '#0f172a',
-                color: '#64748b',
-                borderRight: '1px solid rgba(255,255,255,0.08)',
-              },
-              '.cm-gutterElement': {
-                padding: '0 8px 0 12px',
-              },
-              '.cm-line': {
-                padding: '0 12px',
-                color: '#f8fafc',
-              },
-              '.cm-activeLine': {
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              },
-              '.cm-activeLineGutter': {
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                color: '#cbd5e1',
-              },
-              '&.cm-focused': {
-                outline: 'none',
-              },
-              '.cm-cursor': {
-                borderLeftColor: '#38bdf8',
-                borderLeftWidth: '2px',
-              },
-              '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': {
-                backgroundColor: 'rgba(99, 102, 241, 0.35) !important',
-              },
-            },
-            { dark: true },
-          ),
+          // Real bug this fixes: the previous hand-rolled EditorView.theme()
+          // only styled editor CHROME (background/gutter/cursor/selection)
+          // -- it never supplied a matching syntax HighlightStyle for
+          // actual code tokens (keywords, strings, identifiers, comments),
+          // so basicSetup's own default highlight style (tuned for a LIGHT
+          // background) rendered several token colors with poor-to-no
+          // contrast against this editor's dark background. Chrome theme
+          // and syntax highlight style are two separate CM6 systems that
+          // must be matched -- oneDark is a real, widely-used dark theme
+          // that ships both halves as one correctly-paired extension,
+          // rather than another from-scratch palette guess.
+          oneDark,
+          EditorView.theme({
+            '&': { fontSize: '13px', height: '100%' },
+            '.cm-scroller': { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', minHeight: '100%', overflow: 'auto' },
+            '.cm-content': { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', minHeight: '96px', padding: '10px 0' },
+            '.cm-gutterElement': { padding: '0 8px 0 12px' },
+            '.cm-line': { padding: '0 12px' },
+          }),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) onChangeRef.current(update.state.doc.toString());
           }),
@@ -132,5 +99,8 @@ export default function CodeEditor({
     }
   }, [value]);
 
-  return <div ref={containerRef} style={{ height: '100%', background: '#020617' }} />;
+  // #282c34 matches oneDark's own real background (Atom One Dark) --
+  // only used here as the pre-mount placeholder color so there's no
+  // flash of a different background before CodeMirror itself paints.
+  return <div ref={containerRef} style={{ height: '100%', background: '#282c34' }} />;
 }

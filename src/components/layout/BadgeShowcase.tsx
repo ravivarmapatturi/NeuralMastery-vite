@@ -34,20 +34,27 @@ export default function BadgeShowcase() {
   return (
     <div
       style={{
-        background: 'var(--nm-surface, #1e293b)',
+        background: 'var(--nm-surface)',
         borderRadius: 16,
         padding: 24,
-        border: '1px solid var(--nm-border, rgba(255,255,255,0.1))',
+        border: '1px solid var(--nm-border)',
         margin: '24px 0',
       }}
     >
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div>
-          <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: 'var(--nm-text-heading, #f8fafc)', display: 'flex', alignItems: 'center', gap: 8 }}>
+          {/* Real bug this fixes: --nm-text-heading was never a real
+             defined CSS variable anywhere in the theme -- it always fell
+             through to the hardcoded #f8fafc fallback, which is a
+             near-white color correct only in dark mode. Using the real
+             --nm-text-primary token here (as every other component in
+             the codebase does) is what actually makes this switch with
+             the real theme. */}
+          <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: 'var(--nm-text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}>
             <span>🏆</span> Checkpoint Badges & Milestones
           </h2>
-          <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--nm-text-muted, #94a3b8)' }}>
+          <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--nm-text-muted)' }}>
             Unlocked {unlockedCount} of {BADGES.length} checkpoint badges
           </p>
         </div>
@@ -55,13 +62,13 @@ export default function BadgeShowcase() {
         {/* Progress pill */}
         <div
           style={{
-            background: 'rgba(99, 102, 241, 0.15)',
-            border: '1px solid rgba(99, 102, 241, 0.3)',
+            background: 'color-mix(in srgb, var(--nm-accent-secondary) 15%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--nm-accent-secondary) 30%, transparent)',
             borderRadius: 20,
             padding: '6px 14px',
             fontSize: 13,
             fontWeight: 600,
-            color: '#818cf8',
+            color: 'var(--nm-accent-secondary)',
           }}
         >
           {Math.round((unlockedCount / BADGES.length) * 100)}% Completed
@@ -71,8 +78,9 @@ export default function BadgeShowcase() {
       {/* RL Reward Engine Banner */}
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)',
-          border: '1px solid rgba(99, 102, 241, 0.25)',
+          background:
+            'linear-gradient(135deg, color-mix(in srgb, var(--nm-accent-secondary) 10%, transparent) 0%, color-mix(in srgb, var(--nm-accent-purple) 10%, transparent) 100%)',
+          border: '1px solid color-mix(in srgb, var(--nm-accent-secondary) 25%, transparent)',
           borderRadius: 12,
           padding: 16,
           marginBottom: 24,
@@ -82,37 +90,37 @@ export default function BadgeShowcase() {
         }}
       >
         <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#818cf8', fontWeight: 600 }}>
+          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--nm-accent-secondary)', fontWeight: 600 }}>
             RL Reward Model G_t
           </div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: '#f3f4f6', marginTop: 4 }}>
-            {rlValuation.discountedReturn} <span style={{ fontSize: 13, fontWeight: 500, color: '#9ca3af' }}>G_t</span>
+          <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)', marginTop: 4 }}>
+            {rlValuation.discountedReturn} <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--nm-text-secondary)' }}>G_t</span>
           </div>
-          <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>
+          <div style={{ fontSize: 12, color: 'var(--nm-text-secondary)', marginTop: 2 }}>
             Short-term ({rlValuation.immediateReward} XP) + Long-term ({rlValuation.futureValue} V)
           </div>
         </div>
 
         <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a855f7', fontWeight: 600 }}>
+          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--nm-accent-purple)', fontWeight: 600 }}>
             Discount Factor (γ)
           </div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: '#f3f4f6', marginTop: 4 }}>
+          <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)', marginTop: 4 }}>
             {rlValuation.gamma}
           </div>
-          <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>
+          <div style={{ fontSize: 12, color: 'var(--nm-text-secondary)', marginTop: 2 }}>
             Balances immediate dopamine vs milestone horizon
           </div>
         </div>
 
         <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10b981', fontWeight: 600 }}>
+          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--nm-accent-primary)', fontWeight: 600 }}>
             Streak Multiplier
           </div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: '#f3f4f6', marginTop: 4 }}>
+          <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)', marginTop: 4 }}>
             {rlValuation.streakBonus}x
           </div>
-          <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>
+          <div style={{ fontSize: 12, color: 'var(--nm-text-secondary)', marginTop: 2 }}>
             {streak > 0 ? `${streak}-day active streak bonus` : 'Complete daily tasks to boost'}
           </div>
         </div>
@@ -133,8 +141,19 @@ export default function BadgeShowcase() {
             <div
               key={badge.id}
               style={{
-                background: unlocked ? 'rgba(30, 41, 59, 0.8)' : 'rgba(15, 23, 42, 0.4)',
-                border: unlocked ? '1px solid rgba(99, 102, 241, 0.4)' : '1px dashed rgba(255, 255, 255, 0.1)',
+                // Real bug this fixes: these were hardcoded to a fixed
+                // DARK, high-opacity background regardless of theme --
+                // combined with the text colors above (also hardcoded
+                // near-white, or falling through a fake --nm-text-heading
+                // var to the same near-white), that only ever worked in
+                // dark mode. color-mix against the real, theme-adaptive
+                // --nm-surface-alt/--nm-border tokens makes both the card
+                // background AND its text stay correctly paired in
+                // either theme.
+                background: unlocked
+                  ? 'color-mix(in srgb, var(--nm-accent-secondary) 8%, var(--nm-surface-alt))'
+                  : 'color-mix(in srgb, var(--nm-surface-alt) 60%, transparent)',
+                border: unlocked ? '1px solid color-mix(in srgb, var(--nm-accent-secondary) 40%, transparent)' : '1px dashed var(--nm-border)',
                 borderRadius: 12,
                 padding: 16,
                 display: 'flex',
@@ -142,7 +161,7 @@ export default function BadgeShowcase() {
                 alignItems: 'flex-start',
                 opacity: unlocked ? 1 : 0.65,
                 transition: 'all 0.2s ease',
-                boxShadow: unlocked ? '0 4px 20px -2px rgba(99, 102, 241, 0.15)' : 'none',
+                boxShadow: unlocked ? '0 4px 20px -2px color-mix(in srgb, var(--nm-accent-secondary) 15%, transparent)' : 'none',
               }}
             >
               <div
@@ -157,21 +176,38 @@ export default function BadgeShowcase() {
 
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontWeight: 700, fontSize: 14, color: unlocked ? 'var(--nm-text-heading, #f8fafc)' : 'var(--nm-text-muted, #94a3b8)' }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: unlocked ? 'var(--nm-text-primary)' : 'var(--nm-text-muted)' }}>
                     {badge.title}
                   </div>
                   {unlocked ? (
-                    <span style={{ fontSize: 10, background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', padding: '2px 6px', borderRadius: 4, fontWeight: 600 }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        background: 'color-mix(in srgb, var(--nm-accent-primary) 20%, transparent)',
+                        color: 'var(--nm-accent-primary)',
+                        padding: '2px 6px',
+                        borderRadius: 4,
+                        fontWeight: 600,
+                      }}
+                    >
                       UNLOCKED
                     </span>
                   ) : (
-                    <span style={{ fontSize: 10, background: 'rgba(255, 255, 255, 0.05)', color: '#6b7280', padding: '2px 6px', borderRadius: 4 }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        background: 'color-mix(in srgb, var(--nm-text-muted) 12%, transparent)',
+                        color: 'var(--nm-text-muted)',
+                        padding: '2px 6px',
+                        borderRadius: 4,
+                      }}
+                    >
                       LOCKED
                     </span>
                   )}
                 </div>
 
-                <div style={{ fontSize: 12, color: 'var(--nm-text-muted, #94a3b8)', marginTop: 4, lineHeight: 1.4 }}>
+                <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginTop: 4, lineHeight: 1.4 }}>
                   {badge.description}
                 </div>
 

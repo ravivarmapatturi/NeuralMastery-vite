@@ -11,14 +11,24 @@ interface ProblemPanelProps {
   isFocused?: boolean;
 }
 
+// Real difficulty accent tokens -- same easy/medium/hard mapping
+// PracticeListPage.tsx's DIFFICULTY_COLOR already uses (accent-primary /
+// accent-warn / accent-danger), so this panel stays consistent with the
+// rest of the app instead of a separate hardcoded hex-per-difficulty scale
+// that only ever looked right in dark mode.
+const DIFFICULTY_ACCENT: Record<string, string> = {
+  easy: 'var(--nm-accent-primary)',
+  medium: 'var(--nm-accent-warn)',
+  hard: 'var(--nm-accent-danger)',
+};
+
 export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocus, isFocused }: ProblemPanelProps) {
   const t = useVizTokens();
   const [hintLevel, setHintLevel] = useState<number>(0);
   const [showAiDrawer, setShowAiDrawer] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'problem' | 'intuition'>('problem');
 
-  const difficultyColor =
-    problem.difficulty === 'easy' ? '#10b981' : problem.difficulty === 'medium' ? '#f59e0b' : '#ef4444';
+  const difficultyColor = DIFFICULTY_ACCENT[problem.difficulty] ?? 'var(--nm-accent-danger)';
 
   return (
     <div
@@ -26,8 +36,8 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        background: 'var(--nm-surface, #0f172a)',
-        color: 'var(--nm-text-primary, #f8fafc)',
+        background: 'var(--nm-surface)',
+        color: 'var(--nm-text-primary)',
         overflow: 'hidden',
       }}
     >
@@ -39,8 +49,8 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
           justifyContent: 'space-between',
 
           padding: '10px 16px',
-          borderBottom: '1px solid var(--nm-border, rgba(255,255,255,0.1))',
-          background: 'rgba(15, 23, 42, 0.6)',
+          borderBottom: '1px solid var(--nm-border)',
+          background: 'color-mix(in srgb, var(--nm-surface-alt) 60%, transparent)',
         }}
       >
         <div style={{ display: 'flex', gap: 6 }}>
@@ -48,13 +58,13 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
             type="button"
             onClick={() => setActiveTab('problem')}
             style={{
-              background: activeTab === 'problem' ? 'rgba(99, 102, 241, 0.2)' : 'transparent',
-              border: `1px solid ${activeTab === 'problem' ? 'rgba(99, 102, 241, 0.4)' : 'transparent'}`,
+              background: activeTab === 'problem' ? 'color-mix(in srgb, var(--nm-accent-secondary) 20%, transparent)' : 'transparent',
+              border: `1px solid ${activeTab === 'problem' ? 'color-mix(in srgb, var(--nm-accent-secondary) 40%, transparent)' : 'transparent'}`,
               borderRadius: 6,
               padding: '4px 10px',
               fontSize: 12,
               fontWeight: 600,
-              color: activeTab === 'problem' ? '#818cf8' : 'var(--nm-text-muted, #94a3b8)',
+              color: activeTab === 'problem' ? 'var(--nm-accent-secondary)' : 'var(--nm-text-muted)',
               cursor: 'pointer',
             }}
           >
@@ -64,13 +74,13 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
             type="button"
             onClick={() => setActiveTab('intuition')}
             style={{
-              background: activeTab === 'intuition' ? 'rgba(99, 102, 241, 0.2)' : 'transparent',
-              border: `1px solid ${activeTab === 'intuition' ? 'rgba(99, 102, 241, 0.4)' : 'transparent'}`,
+              background: activeTab === 'intuition' ? 'color-mix(in srgb, var(--nm-accent-secondary) 20%, transparent)' : 'transparent',
+              border: `1px solid ${activeTab === 'intuition' ? 'color-mix(in srgb, var(--nm-accent-secondary) 40%, transparent)' : 'transparent'}`,
               borderRadius: 6,
               padding: '4px 10px',
               fontSize: 12,
               fontWeight: 600,
-              color: activeTab === 'intuition' ? '#818cf8' : 'var(--nm-text-muted, #94a3b8)',
+              color: activeTab === 'intuition' ? 'var(--nm-accent-secondary)' : 'var(--nm-text-muted)',
               cursor: 'pointer',
             }}
           >
@@ -83,13 +93,13 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
             type="button"
             onClick={() => setShowAiDrawer(!showAiDrawer)}
             style={{
-              background: 'rgba(168, 85, 247, 0.15)',
-              border: '1px solid rgba(168, 85, 247, 0.3)',
+              background: 'color-mix(in srgb, var(--nm-accent-purple) 15%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--nm-accent-purple) 30%, transparent)',
               borderRadius: 6,
               padding: '4px 10px',
               fontSize: 12,
               fontWeight: 600,
-              color: '#c084fc',
+              color: 'var(--nm-accent-purple)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -106,7 +116,7 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
               title={isFocused ? 'Restore Workspace Layout' : 'Focus Reading Mode'}
               style={{
                 background: 'transparent',
-                border: '1px solid var(--nm-border, rgba(255,255,255,0.15))',
+                border: '1px solid var(--nm-border)',
                 borderRadius: 6,
                 padding: '4px 8px',
                 fontSize: 12,
@@ -126,7 +136,11 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
           <div>
             {/* Title & Metadata Badges */}
             <div style={{ marginBottom: 16 }}>
-              <h1 style={{ margin: '0 0 10px', fontSize: 22, fontWeight: 800, color: 'var(--nm-text-heading, #f8fafc)' }}>
+              {/* Real bug this fixes: --nm-text-heading was never a real
+                 defined CSS variable anywhere in theme.css -- it always
+                 fell through to the hardcoded #f8fafc fallback, a
+                 near-white color that's correct only in dark mode. */}
+              <h1 style={{ margin: '0 0 10px', fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)' }}>
                 {problem.title}
               </h1>
 
@@ -138,9 +152,9 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                     textTransform: 'uppercase',
                     padding: '3px 8px',
                     borderRadius: 4,
-                    background: `${difficultyColor}20`,
+                    background: `color-mix(in srgb, ${difficultyColor} 20%, transparent)`,
                     color: difficultyColor,
-                    border: `1px solid ${difficultyColor}40`,
+                    border: `1px solid color-mix(in srgb, ${difficultyColor} 40%, transparent)`,
                   }}
                 >
                   {problem.difficulty}
@@ -152,9 +166,9 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                     fontWeight: 600,
                     padding: '3px 8px',
                     borderRadius: 4,
-                    background: 'rgba(99, 102, 241, 0.15)',
-                    color: '#818cf8',
-                    border: '1px solid rgba(99, 102, 241, 0.3)',
+                    background: 'color-mix(in srgb, var(--nm-accent-secondary) 15%, transparent)',
+                    color: 'var(--nm-accent-secondary)',
+                    border: '1px solid color-mix(in srgb, var(--nm-accent-secondary) 30%, transparent)',
                   }}
                 >
                   {problem.topic}
@@ -166,9 +180,9 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                     fontWeight: 500,
                     padding: '3px 8px',
                     borderRadius: 4,
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    color: 'var(--nm-text-muted, #94a3b8)',
-                    border: '1px solid var(--nm-border, rgba(255,255,255,0.1))',
+                    background: 'color-mix(in srgb, var(--nm-text-muted) 10%, transparent)',
+                    color: 'var(--nm-text-muted)',
+                    border: '1px solid var(--nm-border)',
                   }}
                 >
                   ⏱ {problem.estimatedTime}
@@ -181,9 +195,9 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                       fontWeight: 700,
                       padding: '3px 8px',
                       borderRadius: 4,
-                      background: 'rgba(16, 185, 129, 0.2)',
-                      color: '#34d399',
-                      border: '1px solid rgba(16, 185, 129, 0.4)',
+                      background: 'color-mix(in srgb, var(--nm-accent-primary) 20%, transparent)',
+                      color: 'var(--nm-accent-primary)',
+                      border: '1px solid color-mix(in srgb, var(--nm-accent-primary) 40%, transparent)',
                     }}
                   >
                     ✓ Solved
@@ -197,9 +211,10 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                     marginTop: 10,
                     padding: '8px 12px',
                     borderRadius: 6,
-                    background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
-                    border: '1px solid rgba(16, 185, 129, 0.35)',
-                    color: '#34d399',
+                    background:
+                      'linear-gradient(90deg, color-mix(in srgb, var(--nm-accent-primary) 15%, transparent) 0%, color-mix(in srgb, var(--nm-accent-secondary) 15%, transparent) 100%)',
+                    border: '1px solid color-mix(in srgb, var(--nm-accent-primary) 35%, transparent)',
+                    color: 'var(--nm-accent-primary)',
                     fontSize: 12,
                     fontWeight: 700,
                     display: 'flex',
@@ -215,30 +230,31 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
             {/* Mission Box */}
             <div
               style={{
-                background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)',
-                borderLeft: '4px solid #6366f1',
+                background:
+                  'linear-gradient(135deg, color-mix(in srgb, var(--nm-accent-secondary) 10%, transparent) 0%, color-mix(in srgb, var(--nm-accent-secondary) 5%, transparent) 100%)',
+                borderLeft: '4px solid var(--nm-accent-secondary)',
                 borderRadius: '0 8px 8px 0',
                 padding: '12px 16px',
                 marginBottom: 20,
               }}
             >
-              <div style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#818cf8', marginBottom: 4 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--nm-accent-secondary)', marginBottom: 4 }}>
                 🎯 Mission
               </div>
-              <div style={{ fontSize: 13.5, lineHeight: 1.5, color: '#e2e8f0' }}>{problem.mission}</div>
+              <div style={{ fontSize: 13.5, lineHeight: 1.5, color: 'var(--nm-text-primary)' }}>{problem.mission}</div>
             </div>
 
             {/* Task Description */}
             <div style={{ marginBottom: 20 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 700, color: '#94a3b8', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--nm-text-secondary)', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Task
               </h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, margin: 0, color: '#cbd5e1' }}>{problem.taskDescription}</p>
+              <p style={{ fontSize: 14, lineHeight: 1.6, margin: 0, color: 'var(--nm-text-primary)' }}>{problem.taskDescription}</p>
             </div>
 
             {/* Expected Function Signature */}
             <div style={{ marginBottom: 20 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 700, color: '#94a3b8', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--nm-text-secondary)', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Function Signature
               </h3>
               <pre
@@ -246,11 +262,11 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                   margin: 0,
                   padding: '10px 14px',
                   borderRadius: 6,
-                  background: '#020617',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'var(--nm-surface-alt)',
+                  border: '1px solid var(--nm-border)',
                   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
                   fontSize: 13,
-                  color: '#38bdf8',
+                  color: 'var(--nm-accent-secondary)',
                 }}
               >
                 {problem.functionSignature}
@@ -259,7 +275,7 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
 
             {/* Examples Preview */}
             <div style={{ marginBottom: 20 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 700, color: '#94a3b8', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--nm-text-secondary)', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Examples
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -271,25 +287,25 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                       style={{
                         padding: 12,
                         borderRadius: 8,
-                        background: '#020617',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        background: 'var(--nm-surface-alt)',
+                        border: '1px solid var(--nm-border)',
                         fontSize: 13,
                         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
                       }}
                     >
-                      <div style={{ fontWeight: 700, color: '#94a3b8', marginBottom: 6, fontFamily: 'inherit' }}>
+                      <div style={{ fontWeight: 700, color: 'var(--nm-text-secondary)', marginBottom: 6, fontFamily: 'inherit' }}>
                         Example {idx + 1}: {tc.label}
                       </div>
-                      <div style={{ color: '#cbd5e1' }}>
-                        <span style={{ color: '#64748b' }}>Input: </span>
+                      <div style={{ color: 'var(--nm-text-primary)' }}>
+                        <span style={{ color: 'var(--nm-text-muted)' }}>Input: </span>
                         {JSON.stringify(tc.input)}
                       </div>
-                      <div style={{ color: '#34d399', marginTop: 4 }}>
-                        <span style={{ color: '#64748b' }}>Output: </span>
+                      <div style={{ color: 'var(--nm-accent-primary)', marginTop: 4 }}>
+                        <span style={{ color: 'var(--nm-text-muted)' }}>Output: </span>
                         {tc.expectError ? `Raises ${tc.expectError}` : JSON.stringify(tc.expectedOutput)}
                       </div>
                       {tc.description && (
-                        <div style={{ color: '#94a3b8', fontSize: 12, marginTop: 4, fontStyle: 'italic', fontFamily: 'sans-serif' }}>
+                        <div style={{ color: 'var(--nm-text-secondary)', fontSize: 12, marginTop: 4, fontStyle: 'italic', fontFamily: 'sans-serif' }}>
                           Explanation: {tc.description}
                         </div>
                       )}
@@ -300,10 +316,10 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
 
             {/* Constraints */}
             <div style={{ marginBottom: 24 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 700, color: '#94a3b8', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--nm-text-secondary)', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Constraints
               </h3>
-              <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13.5, lineHeight: 1.6, color: '#cbd5e1' }}>
+              <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13.5, lineHeight: 1.6, color: 'var(--nm-text-primary)' }}>
                 {problem.constraints.map((c, i) => (
                   <li key={i}>{c}</li>
                 ))}
@@ -316,8 +332,8 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                 style={{
                   padding: 16,
                   borderRadius: 10,
-                  background: 'rgba(30, 41, 59, 0.5)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'color-mix(in srgb, var(--nm-surface-alt) 50%, transparent)',
+                  border: '1px solid var(--nm-border)',
                   marginTop: 20,
                 }}
               >
@@ -328,19 +344,19 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                   {problem.conceptConnections.map((conn, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: '#f8fafc' }}>{conn.title}</div>
-                        <div style={{ fontSize: 12, color: '#94a3b8' }}>{conn.description}</div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-primary)' }}>{conn.title}</div>
+                        <div style={{ fontSize: 12, color: 'var(--nm-text-secondary)' }}>{conn.description}</div>
                       </div>
                       <Link
                         to={conn.route}
                         style={{
                           fontSize: 12,
-                          color: '#818cf8',
+                          color: 'var(--nm-accent-secondary)',
                           textDecoration: 'none',
                           fontWeight: 600,
                           padding: '4px 8px',
                           borderRadius: 4,
-                          background: 'rgba(99, 102, 241, 0.1)',
+                          background: 'color-mix(in srgb, var(--nm-accent-secondary) 10%, transparent)',
                         }}
                       >
                         Read →
@@ -357,7 +373,7 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
             {mdxContent ? (
               mdxContent
             ) : (
-              <div style={{ lineHeight: 1.6, color: '#cbd5e1', fontSize: 14 }}>
+              <div style={{ lineHeight: 1.6, color: 'var(--nm-text-primary)', fontSize: 14 }}>
                 <h3>Mathematical Intuition</h3>
                 <p>
                   For vectors $a$ and $b$, the dot product computes $a \cdot b = \sum_i a_i b_i$. It pairs corresponding coordinates, multiplies them, and sums the total.
@@ -376,20 +392,20 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
       {showAiDrawer && problem.hints && (
         <div
           style={{
-            borderTop: '1px solid rgba(168, 85, 247, 0.3)',
-            background: 'rgba(15, 23, 42, 0.95)',
+            borderTop: '1px solid color-mix(in srgb, var(--nm-accent-purple) 30%, transparent)',
+            background: 'color-mix(in srgb, var(--nm-surface) 95%, transparent)',
             padding: 16,
             backdropFilter: 'blur(8px)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <span style={{ fontWeight: 700, fontSize: 13, color: '#c084fc', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--nm-accent-purple)', display: 'flex', alignItems: 'center', gap: 6 }}>
               <span>✨</span> AI Progressive Guidance
             </span>
             <button
               type="button"
               onClick={() => setShowAiDrawer(false)}
-              style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: 14 }}
+              style={{ background: 'transparent', border: 'none', color: 'var(--nm-text-muted)', cursor: 'pointer', fontSize: 14 }}
             >
               ✕
             </button>
@@ -403,9 +419,9 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                 fontSize: 12,
                 padding: '4px 8px',
                 borderRadius: 4,
-                border: '1px solid rgba(168, 85, 247, 0.4)',
-                background: hintLevel >= 1 ? 'rgba(168, 85, 247, 0.2)' : 'transparent',
-                color: '#e9d5ff',
+                border: '1px solid color-mix(in srgb, var(--nm-accent-purple) 40%, transparent)',
+                background: hintLevel >= 1 ? 'color-mix(in srgb, var(--nm-accent-purple) 20%, transparent)' : 'transparent',
+                color: 'var(--nm-text-primary)',
                 cursor: 'pointer',
               }}
             >
@@ -418,9 +434,9 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                 fontSize: 12,
                 padding: '4px 8px',
                 borderRadius: 4,
-                border: '1px solid rgba(168, 85, 247, 0.4)',
-                background: hintLevel >= 2 ? 'rgba(168, 85, 247, 0.2)' : 'transparent',
-                color: '#e9d5ff',
+                border: '1px solid color-mix(in srgb, var(--nm-accent-purple) 40%, transparent)',
+                background: hintLevel >= 2 ? 'color-mix(in srgb, var(--nm-accent-purple) 20%, transparent)' : 'transparent',
+                color: 'var(--nm-text-primary)',
                 cursor: 'pointer',
               }}
             >
@@ -433,9 +449,9 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
                 fontSize: 12,
                 padding: '4px 8px',
                 borderRadius: 4,
-                border: '1px solid rgba(168, 85, 247, 0.4)',
-                background: hintLevel >= 3 ? 'rgba(168, 85, 247, 0.2)' : 'transparent',
-                color: '#e9d5ff',
+                border: '1px solid color-mix(in srgb, var(--nm-accent-purple) 40%, transparent)',
+                background: hintLevel >= 3 ? 'color-mix(in srgb, var(--nm-accent-purple) 20%, transparent)' : 'transparent',
+                color: 'var(--nm-text-primary)',
                 cursor: 'pointer',
               }}
             >
@@ -443,10 +459,10 @@ export default function ProblemPanel({ problem, mdxContent, solved, onExpandFocu
             </button>
           </div>
 
-          {hintLevel === 0 && <div style={{ fontSize: 12.5, color: '#94a3b8' }}>Select a hint level above to receive progressive guidance without spoiling the answer.</div>}
-          {hintLevel >= 1 && <div style={{ fontSize: 13, color: '#f3e8ff', marginBottom: 8 }}>💡 <strong>Hint 1:</strong> {problem.hints.small}</div>}
-          {hintLevel >= 2 && <div style={{ fontSize: 13, color: '#f3e8ff', marginBottom: 8 }}>🚀 <strong>Hint 2:</strong> {problem.hints.strong}</div>}
-          {hintLevel >= 3 && <div style={{ fontSize: 13, color: '#f3e8ff' }}>🎓 <strong>Concept:</strong> {problem.hints.concept}</div>}
+          {hintLevel === 0 && <div style={{ fontSize: 12.5, color: 'var(--nm-text-secondary)' }}>Select a hint level above to receive progressive guidance without spoiling the answer.</div>}
+          {hintLevel >= 1 && <div style={{ fontSize: 13, color: 'var(--nm-text-primary)', marginBottom: 8 }}>💡 <strong>Hint 1:</strong> {problem.hints.small}</div>}
+          {hintLevel >= 2 && <div style={{ fontSize: 13, color: 'var(--nm-text-primary)', marginBottom: 8 }}>🚀 <strong>Hint 2:</strong> {problem.hints.strong}</div>}
+          {hintLevel >= 3 && <div style={{ fontSize: 13, color: 'var(--nm-text-primary)' }}>🎓 <strong>Concept:</strong> {problem.hints.concept}</div>}
         </div>
       )}
     </div>
