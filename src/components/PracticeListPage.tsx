@@ -81,7 +81,22 @@ export default function PracticeListPage() {
   const recommended = recommendedProblem(problems, events, next);
   const paths = practicePaths(problems);
 
-  const [visibleCount, setVisibleCount] = useState(100);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 100;
+
+  const topicCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const p of problems) {
+      if (p.topic) {
+        counts[p.topic] = (counts[p.topic] || 0) + 1;
+      }
+    }
+    return counts;
+  }, [problems]);
+
+  const sortedTopics = useMemo(() => {
+    return Object.keys(topicCounts).sort((a, b) => (topicCounts[b] || 0) - (topicCounts[a] || 0));
+  }, [topicCounts]);
 
   const filtered = problems.filter((p) => {
     if (search && !p.title.toLowerCase().includes(search.toLowerCase())) return false;
@@ -91,7 +106,14 @@ export default function PracticeListPage() {
     return true;
   });
 
-  const displayedProblems = filtered.slice(0, visibleCount);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const activePage = Math.min(currentPage, totalPages);
+  const displayedProblems = filtered.slice((activePage - 1) * pageSize, activePage * pageSize);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    window.scrollTo({ top: 400, behavior: 'smooth' });
+  };
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
@@ -104,7 +126,7 @@ export default function PracticeListPage() {
               Practice AI — 1,000+ AI Engineering Curriculum
             </h1>
             <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.5rem', lineHeight: 1.6, maxWidth: 780 }}>
-              A comprehensive 1,072-problem curriculum with zero duplicate titles across 34 specialized tracks — spanning Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems) as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems).
+              A comprehensive 1,072-problem curriculum with zero duplicate titles across 34 specialized tracks — spanning Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems) as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems). Every problem is uniquely numbered (#001–#1072).
             </p>
             <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 1.5rem' }}>
               {solvedCount} / {problems.length} solved
@@ -151,10 +173,10 @@ export default function PracticeListPage() {
           <div><strong>{stats.easySolved}/{stats.mediumSolved}/{stats.hardSolved}</strong><span>easy / medium / hard</span></div>
         </div>
 
-        {/* 8-Stage Progression Stepper */}
+        {/* 12-Stage Progression Stepper */}
         <div style={{ margin: '2rem 0', background: 'var(--nm-surface)', borderRadius: 12, border: '1px solid var(--nm-border)', padding: '1.2rem' }}>
           <p className="nm-eyebrow" style={{ margin: '0 0 0.4rem' }}>Curriculum Progression</p>
-          <h3 style={{ margin: '0 0 1rem', fontSize: 16, color: 'var(--nm-text-primary)' }}>8-Stage AI Engineering Master Path</h3>
+          <h3 style={{ margin: '0 0 1rem', fontSize: 16, color: 'var(--nm-text-primary)' }}>12-Stage AI Engineering Master Path</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.8rem' }}>
             {STAGES.map((s) => (
               <button
@@ -182,6 +204,67 @@ export default function PracticeListPage() {
                 </div>
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* LeetCode-Style Tag Pills */}
+        <div style={{ margin: '2rem 0', background: 'var(--nm-surface)', borderRadius: 12, border: '1px solid var(--nm-border)', padding: '1.2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+            <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
+              Explore by Track &amp; Tag
+            </h3>
+            {topicFilter !== 'all' && (
+              <button
+                onClick={() => setTopicFilter('all')}
+                style={{ background: 'none', border: 'none', color: 'var(--nm-accent-primary)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
+              >
+                Clear Tag Filter (Showing All {problems.length})
+              </button>
+            )}
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', maxHeight: 220, overflowY: 'auto', paddingRight: 4 }}>
+            {sortedTopics.map((topic) => {
+              const label = topicLabels[topic] ?? topic;
+              const count = topicCounts[topic];
+              const isActive = topicFilter === topic;
+              return (
+                <button
+                  key={topic}
+                  onClick={() => {
+                    setTopicFilter(isActive ? 'all' : topic);
+                    setCurrentPage(1);
+                  }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    padding: '0.3rem 0.65rem',
+                    borderRadius: 20,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: isActive ? '1.5px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
+                    background: isActive ? 'color-mix(in srgb, var(--nm-accent-primary) 15%, transparent)' : 'var(--nm-bg)',
+                    color: isActive ? 'var(--nm-accent-primary)' : 'var(--nm-text-primary)',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <span>{label}</span>
+                  <span
+                    style={{
+                      fontSize: 10.5,
+                      fontWeight: 800,
+                      padding: '0.05rem 0.35rem',
+                      borderRadius: 10,
+                      background: isActive ? 'var(--nm-accent-primary)' : 'var(--nm-surface)',
+                      color: isActive ? '#fff' : 'var(--nm-text-muted)',
+                    }}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -228,7 +311,7 @@ export default function PracticeListPage() {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-              setVisibleCount(100);
+              setCurrentPage(1);
             }}
             placeholder="Search practice problems..."
             aria-label="Search practice problems by title"
@@ -246,7 +329,7 @@ export default function PracticeListPage() {
             value={difficultyFilter}
             onChange={(e) => {
               setDifficultyFilter(e.target.value as typeof difficultyFilter);
-              setVisibleCount(100);
+              setCurrentPage(1);
             }}
             aria-label="Filter by difficulty"
             style={{
@@ -268,7 +351,7 @@ export default function PracticeListPage() {
             value={topicFilter}
             onChange={(e) => {
               setTopicFilter(e.target.value);
-              setVisibleCount(100);
+              setCurrentPage(1);
             }}
             aria-label="Filter by topic"
             style={{
@@ -283,7 +366,7 @@ export default function PracticeListPage() {
             <option value="all">All topics</option>
             {topics.map((t) => (
               <option key={t} value={t}>
-                {topicLabels[t] ?? t}
+                {topicLabels[t] ?? t} ({topicCounts[t] ?? 0})
               </option>
             ))}
           </select>
@@ -370,23 +453,86 @@ export default function PracticeListPage() {
           )}
         </div>
 
-        {filtered.length > visibleCount && (
-          <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-            <button
-              onClick={() => setVisibleCount((prev) => prev + 100)}
-              style={{
-                padding: '0.6rem 1.5rem',
-                borderRadius: 8,
-                fontSize: 13,
-                fontWeight: 700,
-                border: '1px solid var(--nm-border)',
-                background: 'var(--nm-surface)',
-                color: 'var(--nm-text-primary)',
-                cursor: 'pointer',
-              }}
-            >
-              Load More Problems ({filtered.length - visibleCount} remaining)
-            </button>
+        {/* 100-per-Page Pagination Controls */}
+        {totalPages > 1 && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem' }}>
+            <span style={{ fontSize: 13, color: 'var(--nm-text-muted)' }}>
+              Showing {((activePage - 1) * pageSize) + 1}–{Math.min(activePage * pageSize, filtered.length)} of {filtered.length} problems (Page {activePage} of {totalPages})
+            </span>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <button
+                disabled={activePage === 1}
+                onClick={() => handlePageChange(activePage - 1)}
+                style={{
+                  padding: '0.45rem 0.85rem',
+                  borderRadius: 8,
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  border: '1px solid var(--nm-border)',
+                  background: activePage === 1 ? 'transparent' : 'var(--nm-surface)',
+                  color: activePage === 1 ? 'var(--nm-text-muted)' : 'var(--nm-text-primary)',
+                  cursor: activePage === 1 ? 'not-allowed' : 'pointer',
+                  opacity: activePage === 1 ? 0.5 : 1,
+                }}
+              >
+                ← Previous
+              </button>
+
+              {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pageNum) => {
+                // Show first, last, current, and surrounding 1 page
+                if (
+                  pageNum === 1 ||
+                  pageNum === totalPages ||
+                  (pageNum >= activePage - 1 && pageNum <= activePage + 1)
+                ) {
+                  const isCurrent = pageNum === activePage;
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => handlePageChange(pageNum)}
+                      style={{
+                        minWidth: 34,
+                        padding: '0.45rem 0.6rem',
+                        borderRadius: 8,
+                        fontSize: 12.5,
+                        fontWeight: 700,
+                        border: isCurrent ? '1.5px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
+                        background: isCurrent ? 'var(--nm-accent-primary)' : 'var(--nm-surface)',
+                        color: isCurrent ? '#fff' : 'var(--nm-text-primary)',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                } else if (
+                  (pageNum === 2 && activePage > 3) ||
+                  (pageNum === totalPages - 1 && activePage < totalPages - 2)
+                ) {
+                  return <span key={pageNum} style={{ fontSize: 12, color: 'var(--nm-text-muted)', padding: '0 2px' }}>…</span>;
+                }
+                return null;
+              })}
+
+              <button
+                disabled={activePage === totalPages}
+                onClick={() => handlePageChange(activePage + 1)}
+                style={{
+                  padding: '0.45rem 0.85rem',
+                  borderRadius: 8,
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  border: '1px solid var(--nm-border)',
+                  background: activePage === totalPages ? 'transparent' : 'var(--nm-surface)',
+                  color: activePage === totalPages ? 'var(--nm-text-muted)' : 'var(--nm-text-primary)',
+                  cursor: activePage === totalPages ? 'not-allowed' : 'pointer',
+                  opacity: activePage === totalPages ? 0.5 : 1,
+                }}
+              >
+                Next →
+              </button>
+            </div>
           </div>
         )}
 
@@ -394,4 +540,5 @@ export default function PracticeListPage() {
     </div>
   );
 }
+
 

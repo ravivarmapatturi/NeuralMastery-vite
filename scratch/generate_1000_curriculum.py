@@ -120,7 +120,7 @@ SPECIFIC_TOPICS = {
 }
 
 def clean_slug(text):
-    return text.lower().replace("&", "and").replace("/", "-").replace("(", "").replace(")", "").replace(" ", "-").replace(":", "").replace(",", "")
+    return text.lower().replace("&", "and").replace("/", "-").replace("(", "").replace(")", "").replace(" ", "-").replace(":", "").replace(",", "").replace(".", "").replace("#", "")
 
 def generate_curriculum():
     output_json_path = "src/data/curriculum500.json"
@@ -147,12 +147,14 @@ def generate_curriculum():
             else:
                 raw_title = f"{track_name} Module {((i - 1) // 5) + 1}: Problem {i}"
 
-            title = raw_title
-            if title in seen_titles:
-                title = f"{raw_title} ({track_name})"
-            seen_titles.add(title)
+            base_title = raw_title
+            if base_title in seen_titles:
+                base_title = f"{raw_title} ({track_name})"
+            seen_titles.add(base_title)
 
-            # Assign stage number (1 to 12)
+            # Unique Numbered Title: e.g. "#001. Minimal Agent Loop"
+            numbered_title = f"#{global_rank:03d}. {base_title}"
+
             stage_num = min(12, ((global_rank - 1) // 84) + 1)
             stage_names = [
                 "Stage 1: Transformer & LLM Fundamentals",
@@ -172,17 +174,17 @@ def generate_curriculum():
 
             difficulty = "easy" if i <= count * 0.35 else ("medium" if i <= count * 0.75 else "hard")
             points = 40 if difficulty == "easy" else (60 if difficulty == "medium" else 90)
-            if title == "BUILD A PRODUCTION AGENT":
+            if base_title == "BUILD A PRODUCTION AGENT":
                 difficulty = "hard"
                 points = 200
 
             prereq = f"{prefix}-prob-{i-1}" if i > 1 else (problems[-1]["id"] if len(problems) > 0 else None)
-            fn_name = clean_slug(title).replace("-", "_")
+            fn_name = clean_slug(base_title).replace("-", "_")
 
             starter_code = f"""def {fn_name}(*args, **kwargs):
     \"\"\"
-    {track_name} - Problem {i}: {title}
-    Implement solution for {title} in the Neural Mastery AI Engineering curriculum.
+    {track_name} - Problem #{global_rank:03d}: {base_title}
+    Implement solution for {base_title} in the Neural Mastery AI Engineering curriculum.
     \"\"\"
     # Implement core solution logic here
     pass
@@ -195,7 +197,7 @@ def generate_curriculum():
                     "input": {},
                     "expectedOutput": True,
                     "hidden": False,
-                    "description": f"Verifies core execution for {title}."
+                    "description": f"Verifies core execution for #{global_rank:03d}. {base_title}."
                 },
                 {
                     "id": "tc2",
@@ -210,7 +212,7 @@ def generate_curriculum():
             problem = {
                 "rank": global_rank,
                 "id": prob_id,
-                "title": title,
+                "title": numbered_title,
                 "category": track_name,
                 "stage": stage_title,
                 "stageNumber": stage_num,
@@ -226,23 +228,22 @@ def generate_curriculum():
 
             problems.append(problem)
 
-            # Generate MDX file
             mdx_content = f"""---
-title: "Practice: {title}"
-description: "Master {title} in the {track_name} track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: {numbered_title}"
+description: "Master {numbered_title} in the {track_name} track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "{difficulty}"
 topic: "{track_name}"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# {title}
+# {numbered_title}
 
-**Track**: {track_name} | **Rank**: #{global_rank} of {len(TRACKS)*30} | **Points**: {points} XP
+**Track**: {track_name} | **Rank**: #{global_rank} of 1072 | **Points**: {points} XP
 
 ## Overview
 
-Implement `{title}` to advance your mastery in **{track_name}**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `{numbered_title}` to advance your mastery in **{track_name}**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
 
 ## Task
 
@@ -260,7 +261,7 @@ Implement the function `{fn_name}`. Your solution must handle core execution sem
     with open(output_json_path, "w", encoding="utf-8") as f:
         json.dump(problems, f, indent=2)
 
-    print(f"Generated {len(problems)} curriculum problems.")
+    print(f"Generated {len(problems)} curriculum problems with unique sequential numbers (#001–#{len(problems)}).")
     print(f"Saved {output_json_path}")
     print(f"Created {len(problems)} MDX practice problem files.")
 
