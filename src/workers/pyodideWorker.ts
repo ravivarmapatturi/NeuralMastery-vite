@@ -61,12 +61,30 @@ async function installCachingFetch(): Promise<void> {
 
 type RunMessage = { id: number; type: 'run'; code: string };
 type RunTestsMessage = { id: number; type: 'run-tests'; code: string; tests: string };
-type InMessage = RunMessage | RunTestsMessage;
+// Structured test cases (see src/lib/practiceProblem.ts) -- `functionName`
+// + real, named-argument `input` data, called and compared against
+// `expectedOutput` using Python's own `==`, never a hand-written call
+// string or a line-parsed assert. This is what removes the legacy
+// 'run-tests' message's fragility (silently dropping any multi-line
+// assert or setup line between assertions, since it just filters lines
+// starting with the literal string "assert ") -- there is no free-text
+// Python to parse here at all, only real, structured data in and a real,
+// structured result out.
+type CaseSpec = { id: string; functionName: string; input: Record<string, unknown>; expectedOutput: unknown };
+type RunCasesMessage = { id: number; type: 'run-cases'; code: string; cases: CaseSpec[] };
+type InMessage = RunMessage | RunTestsMessage | RunCasesMessage;
 
 interface TestResult {
   name: string;
   passed: boolean;
   detail: string;
+}
+
+interface CaseResult {
+  id: string;
+  passed: boolean;
+  actualOutput: unknown;
+  error: string | null;
 }
 
 interface OutMessage {
@@ -75,7 +93,26 @@ interface OutMessage {
   stdout?: string;
   error?: string | null;
   testResults?: TestResult[];
+  caseResults?: CaseResult[];
   loadErrorDetail?: string;
+}
+
+/** Converts a JS value (the only shapes practice-problem test data ever
+ * uses -- numbers, strings, booleans, null, arrays, and plain objects of
+ * those) into the equivalent Python LITERAL source text, so it can be
+ * embedded directly in generated Python code as real data, not a string
+ * to `eval`. JSON.stringify already produces valid Python syntax for
+ * numbers/strings/arrays/objects; only True/False/None spell differently. */
+export function toPythonLiteral(value: unknown): string {
+  if (value === null || value === undefined) return 'None';
+  if (typeof value === 'boolean') return value ? 'True' : 'False';
+  if (Array.isArray(value)) return `[${value.map(toPythonLiteral).join(', ')}]`;
+  if (typeof value === 'object') {
+    return `{${Object.entries(value as Record<string, unknown>)
+      .map(([k, v]) => `${JSON.stringify(k)}: ${toPythonLiteral(v)}`)
+      .join(', ')}}`;
+  }
+  return JSON.stringify(value); // numbers and strings both serialize to valid Python literals this way
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -177,6 +214,58 @@ self.onmessage = async (event: MessageEvent<InMessage>) => {
       stdout,
       error: setupError,
       testResults: setupError ? [] : testResults,
+    };
+    (self as unknown as Worker).postMessage(out);
+    return;
+  }
+
+  if (msg.type === 'run-cases') {
+    // Run the learner's implementation once, then each structured test
+    // case as a real function call built from real data (functionName +
+    // named-argument input), compared with Python's own `==` -- never a
+    // hand-written call string, never line-parsed prose. See
+    // toPythonLiteral() above for how `input`/`expectedOutput` become
+    // real Python source.
+    await pyodide.loadPackagesFromImports(msg.code);
+    const setup = CAPTURE_PREAMBLE + indent(msg.code) + CAPTURE_POSTAMBLE;
+    await pyodide.runPythonAsync(setup);
+    const setupError: string | null = pyodide.globals.get('_run_error');
+
+    const caseResults: CaseResult[] = [];
+    if (!setupError) {
+      for (const testCase of msg.cases) {
+        const kwargs = toPythonLiteral(testCase.input);
+        const expectedLiteral = toPythonLiteral(testCase.expectedOutput);
+        const caseSource = [
+          '_case_actual = None',
+          '_run_error = None',
+          'try:',
+          `    _case_actual = ${testCase.functionName}(**${kwargs})`,
+          `    _case_passed = _case_actual == ${expectedLiteral}`,
+          'except Exception:',
+          '    _case_passed = False',
+          '    _run_error = traceback.format_exc()',
+        ].join('\n');
+        await pyodide.runPythonAsync(caseSource);
+        const caseError: string | null = pyodide.globals.get('_run_error');
+        const casePassed: boolean = pyodide.globals.get('_case_passed');
+        const rawActual = pyodide.globals.get('_case_actual');
+        // Plain values (numbers/strings/bool/None) come back as JS
+        // primitives already; containers (list/dict) come back as a
+        // PyProxy that needs an explicit conversion to a plain JS
+        // value/array before it can be postMessage'd or displayed.
+        const actualOutput = rawActual && typeof rawActual.toJs === 'function' ? rawActual.toJs({ dict_converter: Object.fromEntries }) : rawActual;
+        caseResults.push({ id: testCase.id, passed: casePassed, actualOutput, error: caseError });
+      }
+    }
+
+    const stdout: string = pyodide.globals.get('_captured_stdout').getvalue();
+    const out: OutMessage = {
+      id: msg.id,
+      type: 'result',
+      stdout,
+      error: setupError,
+      caseResults: setupError ? [] : caseResults,
     };
     (self as unknown as Worker).postMessage(out);
   }

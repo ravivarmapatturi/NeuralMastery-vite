@@ -400,27 +400,46 @@ body {
 @media (prefers-reduced-motion: reduce) { .nm-live-pipeline > div, .nm-loss-track b, .nm-live-bars b { transition: none; } }
 @media (max-width: 640px) { .nm-live-body { padding: .9rem; }.nm-live-pipeline > div { min-width: 70px; }.nm-live-pipeline { overflow-x: auto; grid-template-columns: repeat(4, minmax(70px, 1fr)); }.nm-live-heading h2 { font-size: 1.08rem; }.nm-live-heading a { display: none; }.nm-live-output { min-height: 148px; }.nm-live-bars > div { grid-template-columns: 68px 1fr 26px; } }
 
-/* Practice-problem split pane: description scrolls on the left, the
-   editor/Run/test-results panel (portaled in from RunnableCode, see
-   PracticeSplitPaneContext.tsx) stays sticky on the right on desktop.
-   Below 900px they stack -- description first, editor below -- rather
-   than forcing a side-by-side that would crush either column. */
+/* Practice-problem split layout: description scrolls on the left (40%
+   by default, real drag-to-resize via .nm-practice-divider -- see
+   PracticeProblemLayout.tsx); the right column stacks a code editor over
+   a per-testcase results panel, both portaled in from the problem's own
+   runnable component (see PracticeSplitPaneContext.tsx). Below 900px
+   everything stacks in reading order -- description, then editor, then
+   testcases -- rather than forcing a cramped side-by-side. */
 .nm-practice-shell { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-.nm-practice-split { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+.nm-practice-split { display: grid; gap: 1.5rem; }
 .nm-practice-desc-pane { min-width: 0; }
-.nm-practice-code-pane { min-width: 0; }
-.nm-practice-code-pane-inner:empty { display: none; }
+.nm-practice-divider { display: none; }
+.nm-practice-code-pane { min-width: 0; display: flex; flex-direction: column; gap: 1rem; }
+.nm-practice-editor-pane-inner:empty, .nm-practice-testcase-pane-inner:empty { display: none; }
+/* grid-template-columns is set inline on .nm-practice-split (the live
+   left/right ratio from drag-resize) -- forced to a single column below
+   900px regardless of that inline value, real estate is too tight for a
+   side-by-side split there. */
+@media (max-width: 899px) {
+  .nm-practice-split { grid-template-columns: 1fr !important; }
+}
 @media (min-width: 900px) {
-  .nm-practice-shell { max-width: 1360px; }
-  .nm-practice-split { grid-template-columns: 1fr 1fr; align-items: start; gap: 2rem; }
-  .nm-practice-code-pane { position: sticky; top: 84px; max-height: calc(100vh - 104px); overflow-y: auto; }
+  .nm-practice-shell { max-width: 1600px; }
+  .nm-practice-split { align-items: start; gap: 0; }
+  .nm-practice-divider { display: block; cursor: col-resize; background: var(--nm-border); border-radius: 3px; align-self: stretch; }
+  .nm-practice-divider:hover, .nm-practice-divider:active { background: var(--nm-accent-primary); }
+  .nm-practice-code-pane { position: sticky; top: 84px; height: calc(100vh - 104px); padding-left: 1.5rem; }
+  .nm-practice-editor-pane-inner { flex: 1; min-height: 0; overflow-y: auto; }
+  .nm-practice-testcase-pane-inner { flex: 1; min-height: 0; overflow-y: auto; }
+  /* Legacy RunnableCode (any practice problem not yet migrated to
+     PracticePlayground) portals its single self-contained block into
+     the editor pane alone and leaves the testcase pane empty -- give it
+     the FULL right-column height instead of splitting 50/50 against a
+     permanently blank second half. */
+  .nm-practice-code-pane:has(.nm-practice-testcase-pane-inner:empty) .nm-practice-editor-pane-inner { flex: 1 1 100%; }
   /* The 4 system-design challenges and the WebGPU problem use
-     SystemDesignChallenge/RunnableWebGPU, not RunnableCode -- neither
-     portals into the code pane (see PracticeSplitPaneContext.tsx), so it
-     stays genuinely empty for those 5 pages. Collapse back to a single,
-     full-width column rather than reserving a permanently blank half of
-     the screen for them. */
-  .nm-practice-shell:has(.nm-practice-code-pane-inner:empty) { max-width: 820px; }
-  .nm-practice-split:has(.nm-practice-code-pane-inner:empty) { grid-template-columns: 1fr; }
-  .nm-practice-split:has(.nm-practice-code-pane-inner:empty) .nm-practice-code-pane { display: none; }
+     SystemDesignChallenge/RunnableWebGPU, which don't portal into either
+     pane at all -- collapse back to a single, full-width column rather
+     than reserving a permanently blank right column for those 5 pages. */
+  .nm-practice-shell:has(.nm-practice-editor-pane-inner:empty):has(.nm-practice-testcase-pane-inner:empty) { max-width: 820px; }
+  .nm-practice-split:has(.nm-practice-editor-pane-inner:empty):has(.nm-practice-testcase-pane-inner:empty) { grid-template-columns: 1fr !important; }
+  .nm-practice-split:has(.nm-practice-editor-pane-inner:empty):has(.nm-practice-testcase-pane-inner:empty) .nm-practice-code-pane,
+  .nm-practice-split:has(.nm-practice-editor-pane-inner:empty):has(.nm-practice-testcase-pane-inner:empty) .nm-practice-divider { display: none; }
 }

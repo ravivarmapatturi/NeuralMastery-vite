@@ -6,7 +6,7 @@ difficulty: easy
 topic: mathematics-for-ai
 ---
 
-import RunnableCode from '../../../components/content/RunnableCode';
+import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Dot Product From Scratch
@@ -68,18 +68,7 @@ The dot product pairs corresponding values:
 
 **Your task**: implement `dot_product(a, b)` using plain Python — no NumPy. It should raise a `ValueError` if the two vectors have different lengths.
 
-<RunnableCode
-  code={`def dot_product(a, b):
-    """Return the dot product of two equal-length lists of numbers.
-    Raise ValueError if len(a) != len(b)."""
-    # Your implementation here
-    pass
-`}
-  tests={`assert dot_product([1, 2, 3], [4, 5, 6]) == 32
-assert dot_product([0, 0], [5, 5]) == 0
-assert dot_product([-1, 2], [3, -4]) == -11
-assert dot_product([2], [3]) == 6`}
-/>
+<PracticePlayground problemId="dot-product" />
 
 <Solution>
 

@@ -73,7 +73,7 @@ describe('RunnableCode: split-pane portal (see PracticeSplitPaneContext)', () =>
         <MemoryRouter>
           <AuthProvider>
             <GamificationProvider>
-              <PracticeSplitPaneProvider codePaneEl={codePaneEl}>
+              <PracticeSplitPaneProvider panes={{ editorPaneEl: codePaneEl, testcasePaneEl: null }}>
                 <div data-testid="mdx-flow-position">
                   <RunnableCode code={'def add(a, b):\n    return a + b'} />
                 </div>

@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useCallback, useRef, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import PageFeedback from './PageFeedback';
@@ -10,28 +10,50 @@ import { useGamification } from '../../contexts/GamificationContext';
 import { PracticeSplitPaneProvider } from '../../contexts/PracticeSplitPaneContext';
 import { cleanPracticeTitle, isSolved, relatedLesson, recommendedProblem } from '../../lib/mastery';
 
+const DEFAULT_LEFT_WIDTH_PCT = 40;
+const MIN_PANE_PCT = 25;
+
 /**
  * The real /practice/:slug problem-detail shell -- a LeetCode-style split
- * pane: the problem description (mission, checklist, worked intuition,
- * MDX prose) scrolls in the left column; a real code editor + Run +
- * per-test pass/fail results stays visible in the right column, sticky
- * on desktop, stacked below the description on mobile (see the
- * .nm-practice-split rules in theme.css).
+ * layout: the problem description (mission, checklist, worked intuition,
+ * MDX prose) scrolls in a left column (40% by default, real drag-to-
+ * resize on desktop); the right column stacks a code editor on top of a
+ * per-testcase results panel, each with its own real pass/fail, not one
+ * aggregate. Below 900px everything stacks in reading order instead of
+ * forcing a cramped side-by-side.
  *
  * The split is achieved via a portal (see PracticeSplitPaneContext +
- * RunnableCode.tsx), not by restructuring the MDX content itself:
- * RunnableCode is still declared inline in each problem's MDX (same as
- * every other page that embeds it), but when a code-pane DOM node is
- * provided here, it renders its editor/Run/results panel there instead
- * of inline. This means all 53 existing MDX files work with this layout
- * unchanged -- their content never moves, only where the editor visually
- * lands.
+ * PracticePlayground.tsx / RunnableCode.tsx), not by restructuring MDX
+ * content: a problem's runnable component is still declared inline in
+ * its MDX exactly as always, it just renders into the DOM nodes this
+ * layout provides instead of inline. Every existing MDX file works with
+ * this layout unchanged.
  */
 export default function PracticeProblemLayout() {
   const location = useLocation();
   const page = getPageByRoute(location.pathname);
   const { events } = useGamification();
-  const [codePaneEl, setCodePaneEl] = useState<HTMLDivElement | null>(null);
+  const [editorPaneEl, setEditorPaneEl] = useState<HTMLDivElement | null>(null);
+  const [testcasePaneEl, setTestcasePaneEl] = useState<HTMLDivElement | null>(null);
+  const [leftWidthPct, setLeftWidthPct] = useState(DEFAULT_LEFT_WIDTH_PCT);
+  const splitRef = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef(false);
+
+  const onDividerPointerDown = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    draggingRef.current = true;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, []);
+  const onDividerPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!draggingRef.current || !splitRef.current) return;
+    const rect = splitRef.current.getBoundingClientRect();
+    const pct = ((e.clientX - rect.left) / rect.width) * 100;
+    setLeftWidthPct(Math.min(100 - MIN_PANE_PCT, Math.max(MIN_PANE_PCT, pct)));
+  }, []);
+  const onDividerPointerUp = useCallback((e: React.PointerEvent) => {
+    draggingRef.current = false;
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+  }, []);
 
   useDocumentTitle(page ? page.title : 'Page Not Found');
   useDocumentMeta(page?.title, page?.description);
@@ -73,8 +95,8 @@ export default function PracticeProblemLayout() {
           </aside>
         )}
 
-        <PracticeSplitPaneProvider codePaneEl={codePaneEl}>
-          <div className="nm-practice-split">
+        <PracticeSplitPaneProvider panes={{ editorPaneEl, testcasePaneEl }}>
+          <div ref={splitRef} className="nm-practice-split" style={{ gridTemplateColumns: `${leftWidthPct}% 6px 1fr` }}>
             <div className="nm-practice-desc-pane">
               <article className="prose">
                 <Suspense fallback={<div style={{ padding: '3rem 0', textAlign: 'center', color: 'var(--nm-text-muted)', fontSize: 14 }}>Loading…</div>}>
@@ -84,12 +106,26 @@ export default function PracticeProblemLayout() {
               <PageFeedback page={page} />
               <MarkUnderstoodButton />
             </div>
+
+            <div
+              className="nm-practice-divider"
+              role="separator"
+              aria-orientation="vertical"
+              aria-label="Resize description and code panes"
+              onPointerDown={onDividerPointerDown}
+              onPointerMove={onDividerPointerMove}
+              onPointerUp={onDividerPointerUp}
+            />
+
             <div className="nm-practice-code-pane">
-              {/* RunnableCode (declared inside the MDX above) portals its
-                  editor/Run/results panel into this node -- see
-                  PracticeSplitPaneContext.tsx. Empty until the MDX
-                  component mounts and finds it. */}
-              <div ref={setCodePaneEl} className="nm-practice-code-pane-inner" />
+              {/* The problem's runnable component (declared inside the
+                  MDX above) portals into these -- see
+                  PracticeSplitPaneContext.tsx. PracticePlayground uses
+                  both (editor on top, per-case results below); the
+                  legacy RunnableCode uses editorPaneEl alone and leaves
+                  testcasePaneEl empty, which CSS collapses. */}
+              <div ref={setEditorPaneEl} className="nm-practice-editor-pane-inner" />
+              <div ref={setTestcasePaneEl} className="nm-practice-testcase-pane-inner" />
             </div>
           </div>
         </PracticeSplitPaneProvider>
