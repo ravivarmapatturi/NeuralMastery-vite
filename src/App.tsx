@@ -30,7 +30,8 @@ import { ConfettiCanvas } from './components/ui/Confetti';
  * pre-migration award under the old URL still gets recognized. */
 function PracticeProblemRedirect() {
   const { slug } = useParams();
-  return <Navigate to={`/practice/${slug}`} replace />;
+  const cleanSlug = slug?.replace(/\/$/, '');
+  return <Navigate to={`/practice/${cleanSlug}`} replace />;
 }
 
 // Components available to every .mdx file without an explicit import --

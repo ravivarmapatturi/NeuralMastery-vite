@@ -127,5 +127,6 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
 };
 
 export function getPracticeProblem(problemId: string): PracticeProblem | undefined {
-  return PRACTICE_PROBLEMS[problemId];
+  const cleanId = problemId.replace(/\/$/, '');
+  return PRACTICE_PROBLEMS[cleanId];
 }
