@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #983. Vector Search & Index Optimization Module 2: Problem 8"
 description: "Master #983. Vector Search & Index Optimization Module 2: Problem 8 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#983. Vector Search & Index Optimization Module 2: Problem 8` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `cosine_similarity_matrix(vectors)`, the pairwise similarity matrix used to build the candidate graph for graph-based ANN indexes like HNSW, and for offline semantic deduplication of an embedding collection before indexing.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `cosine_similarity_matrix(vectors)`, returning the n x n matrix where entry `[i][j]` is the cosine similarity between `vectors[i]` and `vectors[j]`. The diagonal must be exactly `1.0`. Raise `ValueError` if any vector has zero magnitude.
 
 <PracticePlayground problemId="vec-search-prob-8" />

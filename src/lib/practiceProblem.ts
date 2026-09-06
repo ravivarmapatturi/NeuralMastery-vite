@@ -729,6 +729,525 @@ def knn_predict(X_train, y_train, x_test, k):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'vec-search-prob-1': {
+    id: 'vec-search-prob-1',
+    title: 'Euclidean Distance Between Vectors',
+    difficulty: 'easy',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '10–15 min',
+    functionName: 'euclidean_distance',
+    functionSignature: 'euclidean_distance(a: list[float], b: list[float]) -> float',
+    starterCode: `import math
+
+def euclidean_distance(a, b):
+    """Return the Euclidean (L2) distance between two equal-length vectors.
+    Raise ValueError if len(a) != len(b)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the Euclidean distance metric that flat (brute-force) vector indexes and FAISS/pgvector\'s L2 index type use to rank candidate vectors against a query embedding.',
+    taskDescription: 'Implement `euclidean_distance(a, b)` returning sqrt(sum((a_i - b_i)^2)). Libraries (NumPy) are allowed, but Pure Python earns +10 Bonus XP!',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Must raise ValueError if len(a) != len(b).',
+      'Must return a non-negative float.',
+    ],
+    hints: {
+      small: 'Subtract corresponding elements, square each difference, sum them, then take the square root.',
+      strong: 'Check len(a) != len(b) first and raise ValueError. Then return math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b))).',
+      concept: 'Euclidean distance is the straight-line distance between two points in vector space -- the default metric for flat (brute-force) vector indexes and the L2 index type in FAISS/pgvector.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'How vector indexes rank candidates by distance metric' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Basic 3-4-5 Case', input: { a: [0, 0], b: [3, 4] }, expectedOutput: 5.0, hidden: false, description: 'sqrt(3^2 + 4^2) = 5' },
+      { id: 'identical', label: 'Identical Vectors', input: { a: [1, 2, 3], b: [1, 2, 3] }, expectedOutput: 0.0, hidden: false, description: 'Distance to self is 0' },
+      { id: 'negatives', label: 'Negative Coordinates', input: { a: [-1, -1], b: [2, 3] }, expectedOutput: 5.0, hidden: true, description: 'sqrt(3^2 + 4^2) = 5' },
+      { id: 'floats', label: 'Floating Point Vectors', input: { a: [1.5, 2.5], b: [0.0, 0.0] }, expectedOutput: 2.9154759474226504, hidden: true },
+      { id: 'mismatched', label: 'Dimension Mismatch', input: { a: [1, 2], b: [1] }, expectError: 'ValueError', hidden: true, description: 'Must raise ValueError when lengths differ' },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'vec-search-prob-2': {
+    id: 'vec-search-prob-2',
+    title: 'Manhattan Distance Between Vectors',
+    difficulty: 'easy',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '10–15 min',
+    functionName: 'manhattan_distance',
+    functionSignature: 'manhattan_distance(a: list[float], b: list[float]) -> float',
+    starterCode: `def manhattan_distance(a, b):
+    """Return the Manhattan (L1) distance between two equal-length vectors.
+    Raise ValueError if len(a) != len(b)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the Manhattan (L1) distance metric, the axis-aligned alternative to Euclidean distance that some vector indexes expose for sparse or grid-like embeddings.',
+    taskDescription: 'Implement `manhattan_distance(a, b)` returning sum(|a_i - b_i|). Libraries (NumPy) are allowed, but Pure Python earns +10 Bonus XP!',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Must raise ValueError if len(a) != len(b).',
+      'Must return a non-negative float or int.',
+    ],
+    hints: {
+      small: 'Take the absolute difference of each corresponding pair of elements, then sum them.',
+      strong: 'Check len(a) != len(b) first and raise ValueError. Then return sum(abs(x - y) for x, y in zip(a, b)).',
+      concept: 'Manhattan distance sums absolute per-axis differences instead of squaring them -- it is less sensitive to a single large-magnitude axis than Euclidean distance.',
+    },
+    testCases: [
+      { id: 'basic', label: 'Basic Case', input: { a: [0, 0], b: [3, 4] }, expectedOutput: 7, hidden: false, description: '|3| + |4| = 7' },
+      { id: 'mixed', label: 'Mixed Differences', input: { a: [1, 2, 3], b: [4, 0, 3] }, expectedOutput: 5, hidden: false, description: '3 + 2 + 0 = 5' },
+      { id: 'negatives', label: 'Negative Coordinates', input: { a: [-1, -1], b: [2, 3] }, expectedOutput: 7, hidden: true, description: '3 + 4 = 7' },
+      { id: 'floats', label: 'Floating Point Vectors', input: { a: [2.5, 1.5], b: [0, 0] }, expectedOutput: 4.0, hidden: true },
+      { id: 'mismatched', label: 'Dimension Mismatch', input: { a: [1, 2], b: [1] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'vec-search-prob-3': {
+    id: 'vec-search-prob-3',
+    title: 'Cosine Similarity Between Vectors',
+    difficulty: 'easy',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '10–15 min',
+    functionName: 'cosine_similarity',
+    functionSignature: 'cosine_similarity(a: list[float], b: list[float]) -> float',
+    starterCode: `import math
+
+def cosine_similarity(a, b):
+    """Return the cosine similarity between two equal-length vectors, in [-1, 1].
+    Raise ValueError if len(a) != len(b), or if either vector has zero magnitude."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement cosine similarity, the default relevance metric embedding-based semantic search and RAG retrieval use because it measures directional alignment, ignoring magnitude.',
+    taskDescription: 'Implement `cosine_similarity(a, b)` returning (a . b) / (||a|| * ||b||). Libraries (NumPy) are allowed, but Pure Python earns +10 Bonus XP!',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Must raise ValueError if len(a) != len(b).',
+      'Must raise ValueError if either vector has zero magnitude (undefined direction).',
+    ],
+    hints: {
+      small: 'Compute the dot product, then divide by the product of the two vector magnitudes.',
+      strong: 'dot = sum(x*y for x, y in zip(a, b)); na = sqrt(sum(x*x for x in a)); nb = sqrt(sum(y*y for y in b)). Raise ValueError if na == 0 or nb == 0, else return dot / (na * nb).',
+      concept: 'Cosine similarity is scale-invariant: scaling a vector by any positive constant does not change its cosine similarity to another vector, only Euclidean distance would change.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval-Augmented Generation (RAG)', route: '/docs/llms-genai/rag', description: 'Cosine similarity ranks retrieved chunks against a query embedding' },
+      { title: 'Word Embeddings', route: '/docs/nlp/word-embeddings', description: 'Semantic vector alignment in high dimensions' },
+    ],
+    testCases: [
+      { id: 'orthogonal', label: 'Orthogonal Vectors', input: { a: [1, 0], b: [0, 1] }, expectedOutput: 0.0, hidden: false, description: 'Perpendicular vectors have similarity 0' },
+      { id: 'identical', label: 'Identical Direction', input: { a: [1, 1], b: [1, 1] }, expectedOutput: 1.0, hidden: false },
+      { id: 'opposite', label: 'Opposite Direction', input: { a: [1, 0], b: [-1, 0] }, expectedOutput: -1.0, hidden: false },
+      { id: 'scale-invariant', label: 'Scale Invariance', input: { a: [3, 4], b: [6, 8] }, expectedOutput: 1.0, hidden: true, description: 'Same direction regardless of magnitude' },
+      { id: 'zero-vector', label: 'Zero-Magnitude Vector', input: { a: [0, 0], b: [1, 1] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'vec-search-prob-4': {
+    id: 'vec-search-prob-4',
+    title: 'Normalize a Vector to Unit Length',
+    difficulty: 'easy',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '10–15 min',
+    functionName: 'normalize_vector',
+    functionSignature: 'normalize_vector(v: list[float]) -> list[float]',
+    starterCode: `import math
+
+def normalize_vector(v):
+    """Return v scaled to unit (L2) length.
+    Raise ValueError if v is the zero vector."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement L2 normalization, the preprocessing step embedding-based vector indexes apply so that an inner-product (dot-product) search behaves identically to a cosine-similarity search.',
+    taskDescription: 'Implement `normalize_vector(v)` returning [x / ||v|| for x in v]. Libraries (NumPy) are allowed, but Pure Python earns +10 Bonus XP!',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Must raise ValueError if v is the zero vector.',
+      'The returned vector must have L2 norm 1.0 (within floating-point tolerance).',
+    ],
+    hints: {
+      small: 'Compute the L2 norm (magnitude) of v first, then divide every element by it.',
+      strong: 'n = math.sqrt(sum(x*x for x in v)). Raise ValueError if n == 0. Otherwise return [x / n for x in v].',
+      concept: 'Once every vector in an index is L2-normalized, dot(a, b) == cosine_similarity(a, b) -- many ANN libraries (e.g. FAISS IndexFlatIP) rely on this to turn cosine search into a cheaper inner-product search.',
+    },
+    testCases: [
+      { id: 'basic', label: 'Basic 3-4-5 Vector', input: { v: [3, 4] }, expectedOutput: [0.6, 0.8], hidden: false, description: 'Magnitude 5 -> [3/5, 4/5]' },
+      { id: 'already-unit', label: 'Already Unit Vector', input: { v: [1, 0, 0] }, expectedOutput: [1.0, 0.0, 0.0], hidden: false },
+      { id: 'equal-components', label: 'Equal Components', input: { v: [2, 2, 2, 2] }, expectedOutput: [0.5, 0.5, 0.5, 0.5], hidden: true },
+      { id: 'single-element', label: 'Single Element', input: { v: [5] }, expectedOutput: [1.0], hidden: true },
+      { id: 'zero-vector', label: 'Zero Vector', input: { v: [0, 0, 0] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'vec-search-prob-5': {
+    id: 'vec-search-prob-5',
+    title: 'Vector Magnitude (L2 Norm)',
+    difficulty: 'easy',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '10–15 min',
+    functionName: 'vector_magnitude',
+    functionSignature: 'vector_magnitude(v: list[float]) -> float',
+    starterCode: `import math
+
+def vector_magnitude(v):
+    """Return the L2 norm (Euclidean length) of v."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the L2 norm computation that underlies normalization, cosine similarity, and Euclidean distance -- the single most reused primitive in a vector search stack.',
+    taskDescription: 'Implement `vector_magnitude(v)` returning sqrt(sum(x_i^2)). Libraries (NumPy) are allowed, but Pure Python earns +10 Bonus XP!',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Must return a non-negative float.',
+      'The zero vector has magnitude 0.0 (not an error).',
+    ],
+    hints: {
+      small: 'Square every element, sum the squares, then take the square root of the total.',
+      strong: 'return math.sqrt(sum(x * x for x in v)).',
+      concept: 'Vector magnitude (L2 norm) measures a vector\'s length independent of direction -- it is the denominator in both cosine similarity and L2 normalization.',
+    },
+    testCases: [
+      { id: 'basic', label: 'Basic 3-4-5 Case', input: { v: [3, 4] }, expectedOutput: 5.0, hidden: false },
+      { id: 'ones', label: 'Ones Vector', input: { v: [1, 1, 1, 1] }, expectedOutput: 2.0, hidden: false, description: 'sqrt(4) = 2' },
+      { id: 'zero', label: 'Zero Vector', input: { v: [0, 0, 0] }, expectedOutput: 0.0, hidden: true },
+      { id: 'negatives', label: 'Negative Components', input: { v: [-6, 8] }, expectedOutput: 10.0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'vec-search-prob-6': {
+    id: 'vec-search-prob-6',
+    title: 'Brute-Force K-Nearest-Neighbor Search',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    functionName: 'brute_force_knn',
+    functionSignature: 'brute_force_knn(query: list[float], vectors: list[list[float]], k: int) -> list[int]',
+    starterCode: `import math
+
+def brute_force_knn(query, vectors, k):
+    """Return the indices (into vectors) of the k vectors closest to query
+    by Euclidean distance, ordered nearest-first. Ties broken by index
+    ascending. Raise ValueError if k <= 0 or k > len(vectors)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the exact ("flat") k-NN search every ANN index (HNSW, IVF, LSH) is an approximation of -- the ground-truth baseline used to measure the recall of every faster index structure.',
+    taskDescription: 'Implement `brute_force_knn(query, vectors, k)`: compute the Euclidean distance from `query` to every row in `vectors`, and return the indices of the k nearest, sorted nearest-first (ties broken by ascending index).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Raise ValueError if k <= 0 or k > len(vectors).',
+      'Ties in distance must be broken by ascending original index.',
+    ],
+    hints: {
+      small: 'Compute the Euclidean distance from query to every vector, then sort by (distance, index) and take the first k indices.',
+      strong: 'dists = [(euclidean_distance(query, v), i) for i, v in enumerate(vectors)]; dists.sort(); return [i for _, i in dists[:k]] -- sorting tuples already breaks ties by the second element (index) since Python compares tuples lexicographically.',
+      concept: 'Brute-force k-NN is O(n*d) per query -- exact but too slow at scale, which is exactly why approximate structures like HNSW and IVF trade a small amount of recall for sub-linear query time.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Exact k-NN is the recall baseline every ANN index is measured against' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'k=3 Nearest', input: { query: [0, 0], vectors: [[0, 0], [1, 0], [5, 5], [0.5, 0.5], [10, 10]], k: 3 }, expectedOutput: [0, 3, 1], hidden: false },
+      { id: 'k2', label: 'k=2 Nearest', input: { query: [0, 0], vectors: [[1, 1], [2, 2], [3, 3], [10, 10]], k: 2 }, expectedOutput: [0, 1], hidden: false },
+      { id: 'tie-break', label: 'Tied Distances', input: { query: [1, 1], vectors: [[1, 1], [1, 1], [5, 5]], k: 2 }, expectedOutput: [0, 1], hidden: true, description: 'Two vectors at distance 0 -- resolved by ascending index' },
+      { id: 'k-too-large', label: 'k Exceeds Vector Count', input: { query: [0, 0], vectors: [[1, 1]], k: 5 }, expectError: 'ValueError', hidden: true },
+      { id: 'k-zero', label: 'k is Zero', input: { query: [0, 0], vectors: [[1, 1], [2, 2]], k: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'vec-search-prob-7': {
+    id: 'vec-search-prob-7',
+    title: 'Build an Inverted Index',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    functionName: 'build_inverted_index',
+    functionSignature: 'build_inverted_index(documents: list[list[str]]) -> dict[str, list[int]]',
+    starterCode: `def build_inverted_index(documents):
+    """documents: a list of tokenized documents (each a list of string tokens).
+    Return a dict mapping each unique token to the sorted list of document
+    indices that contain it (each index appears at most once per token,
+    even if the token repeats within a document)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the inverted index -- the classic sparse-retrieval data structure (used by BM25, Elasticsearch, and hybrid search systems) that every dense vector index is typically paired with in production RAG.',
+    taskDescription: 'Implement `build_inverted_index(documents)`: for every unique token across all documents, list every document index (deduplicated, ascending) in which it appears.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (standard library only -- collections, etc.) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Each document index must appear at most once per token, even if the token repeats within that document.',
+      'Document indices for each token must be sorted ascending.',
+      'An empty `documents` list, or documents with no tokens, should produce an empty dict for terms that never occur.',
+    ],
+    hints: {
+      small: 'For each document, get its unique tokens first (e.g. with set()), then record that document\'s index under each of those tokens.',
+      strong: 'index = {}; for doc_id, tokens in enumerate(documents): for term in set(tokens): index.setdefault(term, []).append(doc_id). Sort each list before returning.',
+      concept: 'An inverted index flips a term-per-document view into a document-list-per-term view -- turning "which words are in doc 5?" into an O(1) lookup for "which docs contain \'transformer\'?", the core operation behind keyword/BM25 search.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval & Reranking Architectures', route: '/docs/llms-genai/retrieval-and-reranking-architectures', description: 'Sparse (inverted-index/BM25) retrieval as a hybrid-search component alongside dense vector search' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three Short Documents', input: { documents: [['the', 'cat', 'sat'], ['the', 'dog', 'ran'], ['cat', 'and', 'dog']] }, expectedOutput: { the: [0, 1], cat: [0, 2], sat: [0], dog: [1, 2], ran: [1], and: [2] }, hidden: false },
+      { id: 'dedup-within-doc', label: 'Repeated Token in One Document', input: { documents: [['a', 'a', 'b'], ['b', 'c']] }, expectedOutput: { a: [0], b: [0, 1], c: [1] }, hidden: false, description: 'Repeating "a" in doc 0 still yields a single entry [0]' },
+      { id: 'empty-doc', label: 'Single Empty Document', input: { documents: [[]] }, expectedOutput: {}, hidden: true },
+      { id: 'single-doc', label: 'Single Document', input: { documents: [['x', 'y']] }, expectedOutput: { x: [0], y: [0] }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'vec-search-prob-8': {
+    id: 'vec-search-prob-8',
+    title: 'Pairwise Cosine Similarity Matrix',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    functionName: 'cosine_similarity_matrix',
+    functionSignature: 'cosine_similarity_matrix(vectors: list[list[float]]) -> list[list[float]]',
+    starterCode: `import math
+
+def cosine_similarity_matrix(vectors):
+    """Return the n x n matrix of pairwise cosine similarities between the
+    n vectors in 'vectors' (matrix[i][j] = cosine similarity of vectors[i]
+    and vectors[j]; the diagonal is always 1.0). Raise ValueError if any
+    vector has zero magnitude."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the pairwise similarity matrix used to build the candidate graph for graph-based ANN indexes (like HNSW) and for offline semantic deduplication of an embedding collection.',
+    taskDescription: 'Implement `cosine_similarity_matrix(vectors)`, returning an n x n matrix where entry [i][j] is the cosine similarity between vectors[i] and vectors[j].',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'The diagonal of the returned matrix must be exactly 1.0.',
+      'The matrix must be symmetric: matrix[i][j] == matrix[j][i].',
+      'Raise ValueError if any input vector has zero magnitude.',
+    ],
+    hints: {
+      small: 'Loop over every pair (i, j) of vectors and compute their cosine similarity, storing it at matrix[i][j].',
+      strong: 'For i == j, the similarity with itself is always 1.0 -- skip the (redundant) computation there. Reuse a cosine_similarity(a, b) helper for i != j.',
+      concept: 'This matrix is exactly what graph-based ANN indexes like HNSW build (approximately, via greedy search) to decide which nodes to connect -- and what an offline "find near-duplicate embeddings" pass would scan directly.',
+    },
+    testCases: [
+      { id: 'basic', label: '3 Vectors (2D)', input: { vectors: [[1, 0], [0, 1], [1, 1]] }, expectedOutput: [[1.0, 0.0, 0.7071067811865475], [0.0, 1.0, 0.7071067811865475], [0.7071067811865475, 0.7071067811865475, 1.0]], hidden: false },
+      { id: 'parallel', label: 'Parallel Vectors (Different Magnitude)', input: { vectors: [[1, 0], [2, 0]] }, expectedOutput: [[1.0, 1.0], [1.0, 1.0]], hidden: false, description: 'Cosine similarity is scale-invariant' },
+      { id: 'single', label: 'Single Vector', input: { vectors: [[3, 4]] }, expectedOutput: [[1.0]], hidden: true },
+      { id: 'zero-vector', label: 'Zero-Magnitude Vector Present', input: { vectors: [[1, 0], [0, 0]] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'vec-search-prob-9': {
+    id: 'vec-search-prob-9',
+    title: 'Scalar Quantize a Vector',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    functionName: 'scalar_quantize',
+    functionSignature: 'scalar_quantize(vector: list[float], num_bits: int) -> list[int]',
+    starterCode: `def scalar_quantize(vector, num_bits):
+    """Uniformly quantize each element of 'vector' to an integer code in
+    [0, 2**num_bits - 1] using min-max scalar quantization. Raise
+    ValueError if num_bits <= 0. If every element is identical (a zero
+    range), return all-zero codes instead of dividing by zero."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement scalar quantization, the memory-compression technique real vector databases (Qdrant, Milvus, FAISS\'s ScalarQuantizer) use to shrink float32 embeddings down to 8-bit (or fewer) integer codes so billions of vectors fit in RAM.',
+    taskDescription: 'Implement `scalar_quantize(vector, num_bits)`: map each float in `vector` linearly from [min(vector), max(vector)] onto integer codes in [0, 2**num_bits - 1], rounding to the nearest code.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Raise ValueError if num_bits <= 0.',
+      'Each returned code must be an integer in [0, 2**num_bits - 1] inclusive.',
+      'If min(vector) == max(vector) (zero range), return a list of all zeros instead of dividing by zero.',
+    ],
+    hints: {
+      small: 'Find lo = min(vector) and hi = max(vector). Each code is (x - lo) / (hi - lo) scaled up to the number of available levels, then rounded.',
+      strong: 'levels = 2**num_bits - 1; if hi == lo: return [0]*len(vector); return [round((x - lo) / (hi - lo) * levels) for x in vector].',
+      concept: 'Scalar quantization trades a small amount of precision (a handful of bits per dimension) for a 4x-32x memory reduction -- the same lo/hi range must be stored alongside the codes so a query vector can be quantized/compared the same way at search time.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Quantization is how production vector indexes fit billions of embeddings in memory' },
+    ],
+    testCases: [
+      { id: 'basic-8bit', label: '8-bit Quantization', input: { vector: [0.0, 0.25, 1.0], num_bits: 8 }, expectedOutput: [0, 64, 255], hidden: false, description: '0.25 of the [0,1] range maps to round(0.25 * 255) = 64' },
+      { id: 'negatives-2bit', label: '2-bit Quantization With Negatives', input: { vector: [-1.0, -0.2, 1.0], num_bits: 2 }, expectedOutput: [0, 1, 3], hidden: false },
+      { id: 'constant', label: 'Constant Vector (Zero Range)', input: { vector: [5, 5, 5], num_bits: 4 }, expectedOutput: [0, 0, 0], hidden: true },
+      { id: '1bit', label: '1-bit Quantization', input: { vector: [0, 10], num_bits: 1 }, expectedOutput: [0, 1], hidden: true },
+      { id: 'invalid-bits', label: 'Invalid num_bits', input: { vector: [1, 2, 3], num_bits: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'vec-search-prob-10': {
+    id: 'vec-search-prob-10',
+    title: 'Reciprocal Rank Fusion',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    functionName: 'reciprocal_rank_fusion',
+    functionSignature: 'reciprocal_rank_fusion(rankings: list[list[int]], k: int = 60) -> list[int]',
+    starterCode: `def reciprocal_rank_fusion(rankings, k=60):
+    """rankings: a list of ranked result lists (each a list of document
+    IDs, best-first, 1-indexed rank = position + 1). Return a single
+    fused ranking (list of document IDs) sorted by descending combined
+    RRF score = sum over lists containing the doc of 1 / (k + rank).
+    Ties broken by ascending document ID."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Reciprocal Rank Fusion (RRF), the standard technique production hybrid-search systems use to merge a dense vector-search ranking with a sparse BM25/keyword-search ranking into one final ranking.',
+    taskDescription: 'Implement `reciprocal_rank_fusion(rankings, k=60)`: for every document, sum 1/(k + rank) across every input ranking it appears in (rank is 1-indexed), then return document IDs sorted by descending total score, ties broken by ascending ID.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (standard library only) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Rank is 1-indexed: the first element of each ranking list has rank 1.',
+      'A document missing from a given ranking contributes 0 from that ranking.',
+      'Ties in total score must be broken by ascending document ID.',
+      '`k` defaults to 60, the conventional RRF constant from the original paper.',
+    ],
+    hints: {
+      small: 'Give every document a running score. For each input ranking, walk it in order and add 1/(k + rank) to that document\'s score.',
+      strong: 'scores = {}; for ranking in rankings: for rank, doc_id in enumerate(ranking, start=1): scores[doc_id] = scores.get(doc_id, 0.0) + 1.0/(k+rank). Then return sorted(scores, key=lambda d: (-scores[d], d)).',
+      concept: 'RRF only needs rank positions, not raw similarity scores or BM25 scores -- which is exactly why it works to combine two rankings from completely different scoring scales (cosine similarity vs. BM25) without any score normalization step.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval & Reranking Architectures', route: '/docs/llms-genai/retrieval-and-reranking-architectures', description: 'RRF is the standard way to fuse dense and sparse retrieval rankings in hybrid search' },
+    ],
+    testCases: [
+      { id: 'default-k', label: 'Default k, Overlapping Lists', input: { rankings: [[1, 2, 3], [2, 1, 4]] }, expectedOutput: [1, 2, 3, 4], hidden: false, description: 'Docs 1 and 2 rank highest in both lists' },
+      { id: 'small-k-ties', label: 'Small k, No Overlap (Ties)', input: { rankings: [[1, 2], [3, 4]], k: 1 }, expectedOutput: [1, 3, 2, 4], hidden: false, description: 'Rank-1 docs (1 and 3) tie and are ordered by ascending ID' },
+      { id: 'single-list', label: 'Single Ranking Passthrough', input: { rankings: [[10, 20, 30]], k: 60 }, expectedOutput: [10, 20, 30], hidden: true, description: 'Fusing one list preserves its order' },
+      { id: 'symmetric-swap', label: 'Two Lists in Reversed Order', input: { rankings: [[5, 6, 7], [7, 6, 5]], k: 60 }, expectedOutput: [5, 7, 6], hidden: true, description: 'Docs 5 and 7 tie (rank 1 in one list, rank 3 in the other) and are ordered by ascending ID; doc 6 (rank 2 in both) scores strictly lower' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'vec-search-prob-11': {
+    id: 'vec-search-prob-11',
+    title: 'Radius (Range) Query Over Vectors',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    functionName: 'range_query',
+    functionSignature: 'range_query(query: list[float], vectors: list[list[float]], radius: float) -> list[int]',
+    starterCode: `import math
+
+def range_query(query, vectors, radius):
+    """Return the indices (into vectors) of every vector within Euclidean
+    distance <= radius of query, ordered nearest-first (ties broken by
+    ascending index). Return an empty list if none qualify."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement radius (range) search, the "find everything within distance r" query mode vector databases expose alongside top-k search -- used for near-duplicate detection and density-based clustering (e.g. DBSCAN).',
+    taskDescription: 'Implement `range_query(query, vectors, radius)`: return the indices of every vector whose Euclidean distance to `query` is <= radius, sorted nearest-first.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'A vector at distance exactly equal to radius must be included.',
+      'Results must be ordered by ascending distance, ties broken by ascending index.',
+      'Return an empty list if no vector is within radius.',
+    ],
+    hints: {
+      small: 'Compute the distance from query to every vector, keep only the ones within radius, then sort the survivors by distance.',
+      strong: 'candidates = [(euclidean_distance(query, v), i) for i, v in enumerate(vectors) if euclidean_distance(query, v) <= radius]; candidates.sort(); return [i for _, i in candidates].',
+      concept: 'Unlike top-k search (always returns exactly k results), radius search returns a variable-size result set -- the query itself defines "relevant," not a fixed count, which is why it is the query mode DBSCAN-style clustering relies on.',
+    },
+    testCases: [
+      { id: 'basic', label: 'Radius 1.5', input: { query: [0, 0], vectors: [[0, 0], [1, 0], [2, 0], [5, 5]], radius: 1.5 }, expectedOutput: [0, 1], hidden: false },
+      { id: 'small-radius', label: 'Tight Radius', input: { query: [0, 0], vectors: [[0, 0], [1, 0], [2, 0], [5, 5]], radius: 0.5 }, expectedOutput: [0], hidden: false },
+      { id: 'large-radius', label: 'Radius Covers Everything', input: { query: [0, 0], vectors: [[0, 0], [1, 0], [2, 0], [5, 5]], radius: 100 }, expectedOutput: [0, 1, 2, 3], hidden: true },
+      { id: 'none-in-range', label: 'Nothing Within Radius', input: { query: [100, 100], vectors: [[0, 0], [1, 0]], radius: 1 }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'vec-search-prob-12': {
+    id: 'vec-search-prob-12',
+    title: 'Deduplicate Near-Duplicate Embeddings',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    functionName: 'deduplicate_near_duplicates',
+    functionSignature: 'deduplicate_near_duplicates(vectors: list[list[float]], threshold: float) -> list[int]',
+    starterCode: `import math
+
+def deduplicate_near_duplicates(vectors, threshold):
+    """Process vectors in order. Keep a vector's index unless its cosine
+    similarity to some already-kept vector is >= threshold, in which case
+    treat it as a near-duplicate and skip it. Return the kept indices in
+    their original order."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement semantic near-duplicate removal, the offline index-optimization pass real embedding pipelines run before indexing to keep a vector database from wasting memory (and search recall) on redundant near-identical chunks.',
+    taskDescription: 'Implement `deduplicate_near_duplicates(vectors, threshold)`: walk `vectors` in order, keeping the index of any vector whose cosine similarity to every already-kept vector is below `threshold`; skip it otherwise.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'Process vectors in their original order; a later vector is compared only against already-kept earlier vectors, never against ones already skipped.',
+      'A vector is a duplicate if its cosine similarity to ANY already-kept vector is >= threshold (not just the most recent one).',
+      'Return kept indices in their original relative order.',
+    ],
+    hints: {
+      small: 'Keep a running list of indices you have decided to keep. For each new vector, compare it against every already-kept vector using cosine similarity.',
+      strong: 'kept = []; for i, v in enumerate(vectors): if not any(cosine_similarity(v, vectors[j]) >= threshold for j in kept): kept.append(i). Return kept.',
+      concept: 'This is a greedy O(n^2) dedup pass -- production systems approximate it at scale with locality-sensitive hashing (LSH) or by querying the index-so-far for near neighbors instead of comparing against every kept vector directly.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Near-duplicate removal keeps an index compact and improves retrieval diversity' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Two Near-Duplicate Pairs', input: { vectors: [[1, 0], [1, 0.01], [0, 1], [0.99, 0.02]], threshold: 0.999 }, expectedOutput: [0, 2], hidden: false, description: 'Vectors 1 and 3 are near-duplicates of vector 0' },
+      { id: 'loose-threshold', label: 'Loose Threshold Keeps All', input: { vectors: [[1, 0], [0, 1], [-1, 0]], threshold: 0.5 }, expectedOutput: [0, 1, 2], hidden: false, description: 'No pair reaches 0.5 cosine similarity' },
+      { id: 'all-duplicates', label: 'All Identical Vectors', input: { vectors: [[1, 0], [1, 0], [1, 0]], threshold: 0.999 }, expectedOutput: [0], hidden: true },
+      { id: 'strict-threshold', label: 'Threshold of Exactly 1.0', input: { vectors: [[1, 0], [1, 0]], threshold: 1.0 }, expectedOutput: [0], hidden: true, description: 'Identical vectors have cosine similarity exactly 1.0, which meets the >= 1.0 threshold' },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #986. Vector Search & Index Optimization Module 3: Problem 11"
 description: "Master #986. Vector Search & Index Optimization Module 3: Problem 11 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#986. Vector Search & Index Optimization Module 3: Problem 11` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `range_query(query, vectors, radius)`, the 'find everything within distance r' query mode vector databases expose alongside top-k search -- used for near-duplicate detection and density-based clustering algorithms like DBSCAN.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `range_query(query, vectors, radius)`: return the indices of every vector whose Euclidean distance to `query` is `<= radius`, ordered nearest-first with ties broken by ascending index. Return an empty list if none qualify.
 
 <PracticePlayground problemId="vec-search-prob-11" />

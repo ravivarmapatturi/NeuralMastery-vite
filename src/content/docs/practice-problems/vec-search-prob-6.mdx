@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #981. Vector Search & Index Optimization Module 2: Problem 6"
 description: "Master #981. Vector Search & Index Optimization Module 2: Problem 6 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#981. Vector Search & Index Optimization Module 2: Problem 6` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `brute_force_knn(query, vectors, k)`, the exact ('flat') k-nearest-neighbor search that every approximate nearest-neighbor (ANN) index -- HNSW, IVF, LSH -- is an approximation of. It's the ground-truth baseline used to measure the recall of every faster index structure.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `brute_force_knn(query, vectors, k)`: compute the Euclidean distance from `query` to every row in `vectors`, and return the indices of the `k` nearest, ordered nearest-first with ties broken by ascending index. Raise `ValueError` if `k <= 0` or `k > len(vectors)`.
 
 <PracticePlayground problemId="vec-search-prob-6" />

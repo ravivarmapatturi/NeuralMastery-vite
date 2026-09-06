@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #979. Vector Search & Index Optimization Module 1: Problem 4"
 description: "Master #979. Vector Search & Index Optimization Module 1: Problem 4 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#979. Vector Search & Index Optimization Module 1: Problem 4` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `normalize_vector(v)`, L2 normalization -- the preprocessing step that lets an inner-product (dot-product) vector index behave identically to a cosine-similarity search, which is exactly why libraries like FAISS's `IndexFlatIP` expect pre-normalized vectors.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `normalize_vector(v)`, returning `[x / ||v|| for x in v]` where `||v||` is the L2 norm of `v`. Raise `ValueError` if `v` is the zero vector.
 
 <PracticePlayground problemId="vec-search-prob-4" />

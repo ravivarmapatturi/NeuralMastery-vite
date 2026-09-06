@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #984. Vector Search & Index Optimization Module 2: Problem 9"
 description: "Master #984. Vector Search & Index Optimization Module 2: Problem 9 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#984. Vector Search & Index Optimization Module 2: Problem 9` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `scalar_quantize(vector, num_bits)`, the memory-compression technique real vector databases (Qdrant, Milvus, FAISS's `ScalarQuantizer`) use to shrink float32 embeddings down to 8-bit (or fewer) integer codes so billions of vectors fit in RAM.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `scalar_quantize(vector, num_bits)`: linearly map each float in `vector` from `[min(vector), max(vector)]` onto integer codes in `[0, 2**num_bits - 1]`, rounding to the nearest code. Raise `ValueError` if `num_bits <= 0`. If every element is identical (zero range), return all-zero codes instead of dividing by zero.
 
 <PracticePlayground problemId="vec-search-prob-9" />
