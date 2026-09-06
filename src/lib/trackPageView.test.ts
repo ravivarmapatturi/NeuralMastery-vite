@@ -42,3 +42,26 @@ describe('trackPageView (analytics supported)', () => {
     })
   })
 })
+
+describe('trackFeatureEvent (analytics supported)', () => {
+  it('logs a real, named custom event with its real params -- the shared primitive every feature event (learn_page_view, practice_problem_attempt/solve, daily_signin_reward) goes through', async () => {
+    const { trackFeatureEvent } = await import('./firebase')
+    const { logEvent } = await import('firebase/analytics')
+
+    await trackFeatureEvent('practice_problem_solve', { problem_id: 'two-sum' })
+
+    const call = vi.mocked(logEvent).mock.calls.find(([, name]) => name === 'practice_problem_solve')
+    expect(call).toBeDefined()
+    expect(call?.[2]).toMatchObject({ problem_id: 'two-sum' })
+  })
+
+  it('logs an event with no params fine (params is optional)', async () => {
+    const { trackFeatureEvent } = await import('./firebase')
+    const { logEvent } = await import('firebase/analytics')
+
+    await trackFeatureEvent('daily_signin_reward')
+
+    const call = vi.mocked(logEvent).mock.calls.find(([, name]) => name === 'daily_signin_reward')
+    expect(call).toBeDefined()
+  })
+})

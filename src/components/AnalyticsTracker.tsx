@@ -25,8 +25,21 @@ export default function AnalyticsTracker() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      import('../lib/firebase').then(({ trackPageView }) => {
+      import('../lib/firebase').then(({ trackPageView, trackFeatureEvent }) => {
         trackPageView(location.pathname, document.title);
+        // Real per-feature engagement events, distinct from the generic
+        // page_view above -- GA4's own real acquisition/engagement
+        // reports can't segment "Learn vs Practice vs Playground usage"
+        // out of a single page_view event type on its own; a named,
+        // distinct event per feature area is what actually makes that
+        // possible. Playground has no single top-level route of its own
+        // (it's embedded per-page, not a route) -- see PracticeWorkspace
+        // for its own attempt/solve events instead.
+        if (location.pathname.startsWith('/docs/')) {
+          trackFeatureEvent('learn_page_view', { page_path: location.pathname });
+        } else if (location.pathname.startsWith('/practice')) {
+          trackFeatureEvent('practice_page_view', { page_path: location.pathname });
+        }
       });
     }, 100);
     return () => clearTimeout(timer);

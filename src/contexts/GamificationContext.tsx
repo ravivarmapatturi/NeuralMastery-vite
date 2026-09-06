@@ -242,6 +242,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
         if (!hasAward(merged, todaySignInKey, 'signin')) {
           merged = [...merged, { permalink: todaySignInKey, kind: 'signin', date: localDateString(new Date(Date.now())), points: DAILY_SIGNIN_POINTS }];
           showRewardToast({ title: 'Welcome Back!', subtitle: `Great work! Earned +${DAILY_SIGNIN_POINTS} XP`, xp: DAILY_SIGNIN_POINTS, icon: '👋' });
+          void import('../lib/firebase').then(({ trackFeatureEvent }) => trackFeatureEvent('daily_signin_reward', { points: DAILY_SIGNIN_POINTS }));
         }
         if (cancelled) return;
 

@@ -50,15 +50,28 @@ setConsent({
 // guard, not defensive boilerplate copied from an example.
 export const analyticsPromise: Promise<Analytics | null> = isSupported().then((supported) => (supported ? getAnalytics(firebaseApp) : null));
 
+/** Fires a real, named GA4 custom event -- the one place a feature-level
+ * event actually reaches GA4, so every caller (AnalyticsTracker's
+ * learn_page_view, PracticeWorkspace's practice_problem_attempt/solve,
+ * GamificationContext's daily_signin_reward) goes through the same
+ * consent-gated analyticsPromise as trackPageView below, never a
+ * separate/parallel analytics path. Resolves to a real no-op if
+ * analytics isn't supported/loaded or consent hasn't been granted (see
+ * analyticsPromise and setConsent above) -- callers never need their own
+ * guard. */
+export async function trackFeatureEvent(eventName: string, params?: Record<string, string | number | boolean>): Promise<void> {
+  const analytics = await analyticsPromise;
+  if (!analytics) return;
+  logEvent(analytics, eventName, params);
+}
+
 /** Fires a real GA4 page_view event -- needed because Firebase Analytics
  * only auto-logs one page_view on initial load; it has no way to know
  * this is a client-side-routed SPA where most navigation never reloads
  * the page. Called from AnalyticsTracker on every route change. Resolves
  * to a no-op if analytics isn't supported/loaded (see analyticsPromise). */
 export async function trackPageView(path: string, title: string): Promise<void> {
-  const analytics = await analyticsPromise;
-  if (!analytics) return;
-  logEvent(analytics, 'page_view', { page_path: path, page_title: title, page_location: window.location.href });
+  await trackFeatureEvent('page_view', { page_path: path, page_title: title, page_location: window.location.href });
 }
 
 // Emulator connection is opt-in and dev-only (VITE_USE_FIREBASE_EMULATOR=true

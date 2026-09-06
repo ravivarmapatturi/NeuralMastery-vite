@@ -122,6 +122,10 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
     setStatus(action === 'run' ? 'running' : 'submitting');
     setLastAction(action);
 
+    if (action === 'run') {
+      void import('../../lib/firebase').then(({ trackFeatureEvent }) => trackFeatureEvent('practice_problem_attempt', { problem_id: problemId }));
+    }
+
     const executor = ensureExecutor();
     const res = await executor.execute({
       code,
@@ -165,6 +169,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
       if (res.status === 'success') {
         const bonusToAward = res.bonusEarned ? (res.bonusPoints ?? 0) : 0;
         awardProblemCompleted(permalink, problem.difficulty, bonusToAward);
+        void import('../../lib/firebase').then(({ trackFeatureEvent }) => trackFeatureEvent('practice_problem_solve', { problem_id: problemId }));
       }
     }
   }
