@@ -146,9 +146,13 @@ async function main() {
         // (see PracticeProblemLayout.tsx), so it needs the same wait --
         // but the bare '/practice' list page itself is eagerly rendered
         // like Home/ProgressPage, hence the explicit `!== '/practice'`.
-        const isLazyMdxRoute = route.startsWith('/docs/') || (route.startsWith('/practice/') && route !== '/practice');
-        const readySelector = isLazyMdxRoute ? 'article.prose h1' : 'h1';
-        await page.waitForSelector(readySelector, { timeout: 15000 });
+        const isDocRoute = route.startsWith('/docs/');
+        const readySelector = isDocRoute ? 'article.prose h1' : 'h1';
+        try {
+          await page.waitForSelector(readySelector, { timeout: 15000 });
+        } catch (err) {
+          throw new Error(`Timeout 15000ms waiting for '${readySelector}' on route: ${route}`);
+        }
         await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
         await page.waitForTimeout(300);
         const html = await page.content();
