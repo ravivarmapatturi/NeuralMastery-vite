@@ -146,27 +146,26 @@ async function loadFirestoreFor(uid: string) {
  * listener can lag a tick behind `auth.currentUser` actually updating, so
  * the request goes out unauthenticated and fails with
  * "Missing or insufficient permissions" even though the user genuinely is
- * signed in -- confirmed live via a real repro (a fresh sign-up followed
- * immediately by a mark-understood award threw exactly that error, on
- * GamificationContext's sibling write to the same document). With no
- * retry, that either silently drops a single write (commit()) or aborts
- * the entire sign-in sync effect before it ever sets up the onSnapshot
- * subscription -- the real cause behind "my progress is gone after
- * signing back in" for a just-created or just-signed-in account. A short
- * retry clears the race in practice. */
-async function withRetry<T>(fn: () => Promise<T>, attempts = 7): Promise<T> {
+ * signed in. Confirmed live via direct trace logging (in
+ * GamificationContext's sibling write to the same document) that the
+ * FAILURE MODE isn't always a rejection: a setDoc() call was observed to
+ * never resolve OR reject at all for over 40 real seconds (the Firestore
+ * doc itself, verified via a direct SDK read, had the correct data the
+ * whole time -- this is a client-side hang, never real data loss). A bare
+ * retry loop that only reacts to rejection waits forever on a hung first
+ * attempt and never even reaches a second one -- so each attempt here is
+ * raced against its own timeout, which is what actually lets the retry
+ * loop make progress. */
+async function withRetry<T>(fn: () => Promise<T>, attempts = 7, attemptTimeoutMs = 6000): Promise<T> {
   let lastErr: unknown;
   for (let i = 0; i < attempts; i++) {
     try {
-      return await fn();
+      return await Promise.race([
+        fn(),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('withRetry: attempt timed out')), attemptTimeoutMs)),
+      ]);
     } catch (err) {
       lastErr = err;
-      // Real exponential backoff (400ms, 800ms, ... up to ~12.8s), not a
-      // short fixed budget -- confirmed live that this race can outlast a
-      // couple of seconds when multiple onSnapshot listeners are also
-      // reconnecting around the same auth transition (see AuthContext's
-      // signOutUser, which also forces a clean network reset on sign-out
-      // to shrink how often this path is needed at all).
       if (i < attempts - 1) await new Promise((resolve) => setTimeout(resolve, 400 * 2 ** i));
     }
   }
