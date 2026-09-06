@@ -225,7 +225,7 @@ describe('ProgressContext: spaced-repetition date math', () => {
 // from tests/unit/setup.ts afterward so no later test in this file (or
 // this describe block) can inherit a stale signed-in mock.
 describe('ProgressContext: Firestore sync for signed-in users', () => {
-  const fakeUser = { uid: 'user-1' } as unknown as User
+  const fakeUser = { uid: 'user-1', getIdToken: vi.fn().mockResolvedValue('fake-token') } as unknown as User
 
   function mockSignedIn(remoteData: unknown) {
     vi.mocked(onAuthStateChanged).mockImplementation((_auth, callback) => {

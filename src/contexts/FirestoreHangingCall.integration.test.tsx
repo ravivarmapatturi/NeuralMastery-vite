@@ -46,7 +46,7 @@ vi.mocked(onSnapshot).mockImplementation((ref, callback) => {
   return () => {}
 })
 
-const fakeUser = { uid: 'user-hanging-call' } as unknown as User
+const fakeUser = { uid: 'user-hanging-call', getIdToken: vi.fn().mockResolvedValue('fake-token') } as unknown as User
 
 function GamificationTestApp() {
   const { awardMarkUnderstood, events } = useGamification()

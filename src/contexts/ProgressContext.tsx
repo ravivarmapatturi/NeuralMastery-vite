@@ -223,41 +223,49 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     let cancelled = false;
     let unsubscribe: (() => void) | undefined;
 
-    loadFirestoreFor(user.uid).then(async ({ ref, getDoc, setDoc, onSnapshot }) => {
+    // See GamificationContext's identical call for why this is here --
+    // `onAuthStateChanged` firing does not guarantee Firestore's own
+    // internal credentials listener has picked up the new token yet.
+    user.getIdToken(true).then(() => {
       if (cancelled) return;
-      const snap = await withRetry(() => getDoc(ref));
-      const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
-      const merged = mergeProgress(remote, readStorage());
-      if (cancelled) return;
+      loadFirestoreFor(user.uid).then(async ({ ref, getDoc, setDoc, onSnapshot }) => {
+        if (cancelled) return;
+        const snap = await withRetry(() => getDoc(ref));
+        const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
+        const merged = mergeProgress(remote, readStorage());
+        if (cancelled) return;
 
-      await withRetry(() => setDoc(ref, { understood: merged }, { merge: true }));
-      if (cancelled) return;
+        await withRetry(() => setDoc(ref, { understood: merged }, { merge: true }));
+        if (cancelled) return;
 
-      setUnderstood(merged);
-      writeStorage(merged);
+        setUnderstood(merged);
+        writeStorage(merged);
 
-      unsubscribe = onSnapshot(
-        ref,
-        (snap) => {
-          if (cancelled) return;
-          const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
-          const currentMerged = mergeProgress(remote, readStorage());
-          setUnderstood(currentMerged);
-          writeStorage(currentMerged);
-        },
-        // See GamificationContext's identical onSnapshot error handler
-        // for why this exists -- a transient listener error must never
-        // mutate `understood` away from its last-known-good state.
-        (err) => {
-          console.error('Progress live sync listener error (local state unaffected):', err);
-        },
-      );
+        unsubscribe = onSnapshot(
+          ref,
+          (snap) => {
+            if (cancelled) return;
+            const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
+            const currentMerged = mergeProgress(remote, readStorage());
+            setUnderstood(currentMerged);
+            writeStorage(currentMerged);
+          },
+          // See GamificationContext's identical onSnapshot error handler
+          // for why this exists -- a transient listener error must never
+          // mutate `understood` away from its last-known-good state.
+          (err) => {
+            console.error('Progress live sync listener error (local state unaffected):', err);
+          },
+        );
+      }).catch((err) => {
+        // Belt-and-suspenders: withRetry above already gives this many
+        // chances to recover from the same auth-token race, but if it's
+        // still exhausted, fail loudly (console) instead of as a silent,
+        // stackless unhandled rejection.
+        console.error('Progress sign-in sync failed after retrying:', err);
+      });
     }).catch((err) => {
-      // Belt-and-suspenders: withRetry above already gives this many
-      // chances to recover from the same auth-token race, but if it's
-      // still exhausted, fail loudly (console) instead of as a silent,
-      // stackless unhandled rejection.
-      console.error('Progress sign-in sync failed after retrying:', err);
+      console.error('Progress: forced ID token refresh failed:', err);
     });
 
     return () => {
@@ -272,16 +280,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       writeStorage(next);
 
       if (user) {
-        loadFirestoreFor(user.uid).then(async ({ ref, getDoc, setDoc }) => {
-          const snap = await withRetry(() => getDoc(ref)).catch(() => null);
-          const remoteMap = snap?.exists() ? normalize(snap.data()?.understood) : {};
-          const merged = mergeProgress(remoteMap, next);
-          setUnderstood(merged);
-          writeStorage(merged);
+        user.getIdToken(true).then(() => {
+          loadFirestoreFor(user.uid).then(async ({ ref, getDoc, setDoc }) => {
+            const snap = await withRetry(() => getDoc(ref)).catch(() => null);
+            const remoteMap = snap?.exists() ? normalize(snap.data()?.understood) : {};
+            const merged = mergeProgress(remoteMap, next);
+            setUnderstood(merged);
+            writeStorage(merged);
 
-          void withRetry(() => setDoc(ref, { understood: merged }, { merge: true })).catch((err) =>
-            console.error('Failed to sync progress to the server after retrying:', err),
-          );
+            void withRetry(() => setDoc(ref, { understood: merged }, { merge: true })).catch((err) =>
+              console.error('Failed to sync progress to the server after retrying:', err),
+            );
+          });
         });
       }
     },

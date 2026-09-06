@@ -231,7 +231,7 @@ describe('GamificationContext: practice-problem permalink migration (old /docs/p
 })
 
 describe('GamificationContext: Firestore merge on sign-in', () => {
-  const fakeUser = { uid: 'user-1' } as unknown as User
+  const fakeUser = { uid: 'user-1', getIdToken: vi.fn().mockResolvedValue('fake-token') } as unknown as User
 
   it('merges local events into Firestore without double-counting an award that exists on both sides', async () => {
     window.localStorage.setItem(

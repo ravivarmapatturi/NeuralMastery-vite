@@ -48,7 +48,7 @@ vi.mocked(onSnapshot).mockImplementation((_ref, callback) => {
   return () => {}
 })
 
-const fakeUser = { uid: 'user-shared-doc' } as unknown as User
+const fakeUser = { uid: 'user-shared-doc', getIdToken: vi.fn().mockResolvedValue('fake-token') } as unknown as User
 
 function TestApp() {
   const { toggle } = useProgress()

@@ -191,55 +191,69 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     let cancelled = false;
     let unsubscribe: (() => void) | undefined;
 
-    loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc, onSnapshot }) => {
+    // Force a fresh ID token before any Firestore call. `onAuthStateChanged`
+    // firing in this app does not guarantee Firestore's own internal
+    // credentials listener (a separate subscriber on the same Auth
+    // instance) has picked up the new token yet -- it can lag by a tick,
+    // and issuing a Firestore call before it catches up is a documented
+    // source of "Missing or insufficient permissions" even though the
+    // user genuinely is signed in. Awaiting a forced refresh here blocks
+    // until that listener is caught up before the first Firestore call
+    // ever goes out.
+    user.getIdToken(true).then(() => {
       if (cancelled) return;
-      const snap = await withRetry(() => getDoc(progressRef));
-      const remoteEvents: AwardEvent[] = snap.exists()
-        ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
-        : [];
-      const merged = mergeEvents(remoteEvents, readStorage());
-      if (cancelled) return;
+      loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc, onSnapshot }) => {
+        if (cancelled) return;
+        const snap = await withRetry(() => getDoc(progressRef));
+        const remoteEvents: AwardEvent[] = snap.exists()
+          ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
+          : [];
+        const merged = mergeEvents(remoteEvents, readStorage());
+        if (cancelled) return;
 
-      await withRetry(() =>
-        Promise.all([
-          setDoc(progressRef, { gamificationEvents: merged }, { merge: true }),
-          setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true }),
-        ]),
-      );
-      if (cancelled) return;
+        await withRetry(() =>
+          Promise.all([
+            setDoc(progressRef, { gamificationEvents: merged }, { merge: true }),
+            setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true }),
+          ]),
+        );
+        if (cancelled) return;
 
-      setEvents(merged);
-      writeStorage(merged);
+        setEvents(merged);
+        writeStorage(merged);
 
-      unsubscribe = onSnapshot(
-        progressRef,
-        (snap) => {
-          if (cancelled) return;
-          const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
-          const currentMerged = mergeEvents(remote, readStorage());
-          setEvents(currentMerged);
-          writeStorage(currentMerged);
-        },
-        // Without this, a transient listener error (the same auth-token
-        // race withRetry above guards against, but on the LIVE
-        // subscription rather than a one-shot call) surfaces as an
-        // uncaught "Missing or insufficient permissions" -- confirmed
-        // live this was still happening even after the getDoc/setDoc
-        // calls above were made retry-safe. Never mutate `events` from
-        // here: the last-known-good state (from the retried getDoc/setDoc
-        // right above) stays in place until the listener recovers on its
-        // own, which the SDK does automatically once its connection is
-        // healthy again.
-        (err) => {
-          console.error('Gamification live sync listener error (local state unaffected):', err);
-        },
-      );
+        unsubscribe = onSnapshot(
+          progressRef,
+          (snap) => {
+            if (cancelled) return;
+            const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
+            const currentMerged = mergeEvents(remote, readStorage());
+            setEvents(currentMerged);
+            writeStorage(currentMerged);
+          },
+          // Without this, a transient listener error (the same auth-token
+          // race withRetry above guards against, but on the LIVE
+          // subscription rather than a one-shot call) surfaces as an
+          // uncaught "Missing or insufficient permissions" -- confirmed
+          // live this was still happening even after the getDoc/setDoc
+          // calls above were made retry-safe. Never mutate `events` from
+          // here: the last-known-good state (from the retried getDoc/setDoc
+          // right above) stays in place until the listener recovers on its
+          // own, which the SDK does automatically once its connection is
+          // healthy again.
+          (err) => {
+            console.error('Gamification live sync listener error (local state unaffected):', err);
+          },
+        );
+      }).catch((err) => {
+        // Belt-and-suspenders: withRetry above already gives this many
+        // chances to recover from the same auth-token race, but if it's
+        // still exhausted, fail loudly (console) instead of as a silent,
+        // stackless unhandled rejection.
+        console.error('Gamification sign-in sync failed after retrying:', err);
+      });
     }).catch((err) => {
-      // Belt-and-suspenders: withRetry above already gives this many
-      // chances to recover from the same auth-token race, but if it's
-      // still exhausted, fail loudly (console) instead of as a silent,
-      // stackless unhandled rejection.
-      console.error('Gamification sign-in sync failed after retrying:', err);
+      console.error('Gamification: forced ID token refresh failed:', err);
     });
 
     return () => {
@@ -255,21 +269,23 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       writeStorage(normalized);
 
       if (user) {
-        loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc }) => {
-          const snap = await withRetry(() => getDoc(progressRef)).catch(() => null);
-          const remoteEvents: AwardEvent[] = snap?.exists()
-            ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
-            : [];
-          const merged = mergeEvents(remoteEvents, normalized);
-          setEvents(merged);
-          writeStorage(merged);
+        user.getIdToken(true).then(() => {
+          loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc }) => {
+            const snap = await withRetry(() => getDoc(progressRef)).catch(() => null);
+            const remoteEvents: AwardEvent[] = snap?.exists()
+              ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
+              : [];
+            const merged = mergeEvents(remoteEvents, normalized);
+            setEvents(merged);
+            writeStorage(merged);
 
-          void withRetry(() => setDoc(progressRef, { gamificationEvents: merged }, { merge: true })).catch((err) =>
-            console.error('Failed to sync gamification progress to the server after retrying:', err),
-          );
-          void withRetry(() => setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true })).catch((err) =>
-            console.error('Failed to sync leaderboard entry to the server after retrying:', err),
-          );
+            void withRetry(() => setDoc(progressRef, { gamificationEvents: merged }, { merge: true })).catch((err) =>
+              console.error('Failed to sync gamification progress to the server after retrying:', err),
+            );
+            void withRetry(() => setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true })).catch((err) =>
+              console.error('Failed to sync leaderboard entry to the server after retrying:', err),
+            );
+          });
         });
       }
     },
