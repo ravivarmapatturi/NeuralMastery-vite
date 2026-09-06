@@ -414,4 +414,13 @@ body {
   .nm-practice-shell { max-width: 1360px; }
   .nm-practice-split { grid-template-columns: 1fr 1fr; align-items: start; gap: 2rem; }
   .nm-practice-code-pane { position: sticky; top: 84px; max-height: calc(100vh - 104px); overflow-y: auto; }
+  /* The 4 system-design challenges and the WebGPU problem use
+     SystemDesignChallenge/RunnableWebGPU, not RunnableCode -- neither
+     portals into the code pane (see PracticeSplitPaneContext.tsx), so it
+     stays genuinely empty for those 5 pages. Collapse back to a single,
+     full-width column rather than reserving a permanently blank half of
+     the screen for them. */
+  .nm-practice-shell:has(.nm-practice-code-pane-inner:empty) { max-width: 820px; }
+  .nm-practice-split:has(.nm-practice-code-pane-inner:empty) { grid-template-columns: 1fr; }
+  .nm-practice-split:has(.nm-practice-code-pane-inner:empty) .nm-practice-code-pane { display: none; }
 }
