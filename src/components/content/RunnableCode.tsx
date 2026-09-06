@@ -1,7 +1,9 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import { useVizTokens, RADIUS, SPACING, FONT_FAMILY } from '../../theme/vizTokens';
 import { useGamification } from '../../contexts/GamificationContext';
+import { usePracticeCodePane } from '../../contexts/PracticeSplitPaneContext';
 import { normalizeRoute } from '../../lib/contentTree';
 
 // Lazy so CodeMirror's real ~155KB (min+gzip, measured via `npm run build`) stays out of the main bundle --
@@ -120,8 +122,9 @@ export default function RunnableCode({
   }
 
   const isBusy = status === 'loading' || status === 'running';
+  const codePane = usePracticeCodePane();
 
-  return (
+  const content = (
     <div style={{ border: `1px solid ${t.border}`, borderRadius: RADIUS.md, margin: `${SPACING.sm}px 0`, background: t.surfaceAlt, fontFamily: FONT_FAMILY, overflow: 'hidden' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `${SPACING.xs}px ${SPACING.sm}px`, borderBottom: `1px solid ${t.border}` }}>
         <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', color: t.accentTeal }}>
@@ -234,6 +237,15 @@ export default function RunnableCode({
       )}
     </div>
   );
+
+  // On a split-pane practice-problem page (see PracticeProblemLayout.tsx),
+  // this teleports the editor/Run/results panel into the right-hand code
+  // pane via a portal -- the component still logically renders at its
+  // normal position in the MDX tree (so its React state/effects/Worker
+  // lifecycle are completely unaffected), it just visually appears
+  // elsewhere. Every other page that embeds RunnableCode (no split-pane
+  // context provided) renders it inline exactly as before.
+  return codePane ? createPortal(content, codePane) : content;
 }
 
 function btnStyle(t: ReturnType<typeof useVizTokens>, variant: 'primary' | 'secondary', disabled = false) {

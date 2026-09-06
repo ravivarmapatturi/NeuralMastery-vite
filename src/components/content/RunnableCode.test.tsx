@@ -6,6 +6,7 @@ import RunnableCode from './RunnableCode'
 import { ThemeProvider } from '../../theme/ThemeProvider'
 import { GamificationProvider } from '../../contexts/GamificationContext'
 import { AuthProvider } from '../../contexts/AuthContext'
+import { PracticeSplitPaneProvider } from '../../contexts/PracticeSplitPaneContext'
 
 function renderRunnable(props: ComponentProps<typeof RunnableCode>) {
   return render(
@@ -51,6 +52,46 @@ describe('RunnableCode: CodeMirror editor swap', () => {
       expect(container.querySelector('[contenteditable="true"][data-language="python"]')).toBeTruthy()
     })
     expect(await findByText(/assert double\(2\) == 4/)).toBeInTheDocument()
+  })
+})
+
+describe('RunnableCode: split-pane portal (see PracticeSplitPaneContext)', () => {
+  it('renders inline (not via a portal) when no split-pane code pane is provided -- every non-practice-problem page that embeds it', async () => {
+    const { container } = renderRunnable({ code: 'def add(a, b):\n    return a + b' })
+    await waitFor(() => expect(container.querySelector('[contenteditable="true"]')).toBeTruthy())
+    // The editor renders inside RunnableCode's own rendered container in
+    // the test's normal render tree -- not portaled anywhere external.
+    expect(container.querySelector('[contenteditable="true"]')).toBeTruthy()
+  })
+
+  it('portals its editor into the provided code-pane DOM node when a split-pane context IS provided, instead of rendering it in place', async () => {
+    const codePaneEl = document.createElement('div')
+    document.body.appendChild(codePaneEl)
+
+    const { container } = render(
+      <ThemeProvider>
+        <MemoryRouter>
+          <AuthProvider>
+            <GamificationProvider>
+              <PracticeSplitPaneProvider codePaneEl={codePaneEl}>
+                <div data-testid="mdx-flow-position">
+                  <RunnableCode code={'def add(a, b):\n    return a + b'} />
+                </div>
+              </PracticeSplitPaneProvider>
+            </GamificationProvider>
+          </AuthProvider>
+        </MemoryRouter>
+      </ThemeProvider>,
+    )
+
+    await waitFor(() => expect(codePaneEl.querySelector('[contenteditable="true"]')).toBeTruthy())
+    // The editor landed in the external code pane...
+    expect(codePaneEl.querySelector('[contenteditable="true"]')).toBeTruthy()
+    // ...and NOT at RunnableCode's own position in the render tree (the
+    // whole point of the portal -- the MDX flow position stays empty).
+    expect(container.querySelector('[data-testid="mdx-flow-position"] [contenteditable="true"]')).toBeNull()
+
+    document.body.removeChild(codePaneEl)
   })
 })
 
