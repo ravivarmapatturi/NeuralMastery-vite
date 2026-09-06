@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { getSidebar, getPageByRoute, getPracticeProblems, getFlatPages } from './contentTree'
+import { getPracticeProblem } from './practiceProblem'
 
 describe('contentTree: practice-problems -> /practice IA split', () => {
   it('a real practice-problem page resolves by its NEW /practice/<slug> route', () => {
@@ -41,5 +42,21 @@ describe('contentTree: practice-problems -> /practice IA split', () => {
     const withDifficulty = problems.filter((p) => p.difficulty)
     expect(withTopic.length).toBe(problems.length)
     expect(problems.length - withDifficulty.length).toBe(4)
+  })
+
+  it('every single practice problem in the platform resolves to a valid structured PracticeProblem definition for the IDE workspace', () => {
+    const problems = getPracticeProblems()
+    expect(problems.length).toBeGreaterThan(60)
+    for (const prob of problems) {
+      const slug = prob.route.replace(/^\/practice\//, '')
+      const structured = getPracticeProblem(slug)
+      expect(structured).toBeDefined()
+      expect(structured!.id).toBe(slug)
+      expect(structured!.title).toBeTruthy()
+      expect(structured!.functionName).toBeTruthy()
+      expect(structured!.starterCode).toContain('def ')
+      expect(structured!.libraryPolicyText).toContain('Libraries allowed')
+      expect(structured!.bonusPoints).toBeGreaterThan(0)
+    }
   })
 })
