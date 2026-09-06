@@ -101,31 +101,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOutUser = useCallback(async () => {
-    const [{ auth, db }, { signOut }, { disableNetwork }] = await Promise.all([
-      import('../lib/firebase'),
-      import('firebase/auth'),
-      import('firebase/firestore'),
-    ]);
+    const [{ auth }, { signOut }] = await Promise.all([import('../lib/firebase'), import('firebase/auth')]);
     await signOut(auth);
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem('neural-mastery-gamification');
       window.localStorage.removeItem('neural-mastery-progress');
     }
-    // Drop Firestore's underlying streaming connection on sign-out --
-    // but deliberately do NOT re-enable it here. Confirmed live (via a
-    // real, direct A/B repro: a raw-SDK script with no disableNetwork/
-    // enableNetwork call succeeded cleanly on this exact sign-out/sign-in
-    // sequence, while the app -- which called enableNetwork() here,
-    // immediately after sign-out, before anyone was signed back in --
-    // consistently failed with "Missing or insufficient permissions" on
-    // every retry) that re-enabling the network at THIS point reopens a
-    // connection with no signed-in user yet, which then has to race
-    // adopting the NEW credentials once sign-in happens moments later --
-    // the same class of race this was meant to fix, just relocated.
-    // GamificationContext's and ProgressContext's sign-in effects now
-    // call enableNetwork() themselves, only once a real signed-in user
-    // is confirmed, so the connection is never reopened blind.
-    await disableNetwork(db).catch(() => {});
+    // Deliberately does NOT call disableNetwork/enableNetwork -- an
+    // earlier attempt to force a clean Firestore connection reset here
+    // (in either order) was confirmed live to make no difference to a
+    // real, reproducible "Missing or insufficient permissions" failure
+    // on sign-in (isolated via a raw-SDK A/B repro with no app code:
+    // that succeeds every time, with or without touching the network
+    // state at all). See withRetry in GamificationContext/ProgressContext
+    // for the actual mitigation.
   }, []);
 
   const value = useMemo(

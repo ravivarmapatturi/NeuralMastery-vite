@@ -96,15 +96,7 @@ function writeStorage(events: AwardEvent[]) {
  * their Firestore-loading internals together for a few duplicated lines
  * isn't worth the cross-context dependency. */
 async function loadFirestoreFor(uid: string) {
-  const [{ db }, { doc, getDoc, setDoc, onSnapshot, enableNetwork }] = await Promise.all([import('../lib/firebase'), import('firebase/firestore')]);
-  // Re-establish Firestore's network connection here, now that a real
-  // signed-in user is confirmed -- see AuthContext's signOutUser for why
-  // this moved out of sign-out itself (reopening the connection there,
-  // before anyone was signed back in, raced adopting the new credentials
-  // the same way a stale connection used to). A no-op if the connection
-  // was never disabled (the common case -- this only matters right after
-  // a sign-out).
-  await enableNetwork(db).catch(() => {});
+  const [{ db }, { doc, getDoc, setDoc, onSnapshot }] = await Promise.all([import('../lib/firebase'), import('firebase/firestore')]);
   return { progressRef: doc(db, 'progress', uid), leaderboardRef: doc(db, 'leaderboard', uid), getDoc, setDoc, onSnapshot };
 }
 

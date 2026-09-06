@@ -137,10 +137,7 @@ function mergeProgress(a: UnderstoodMap, b: UnderstoodMap): UnderstoodMap {
  * growing it from ~437kB to over 1.1MB -- the same class of bug this app's
  * katex dependency had, fixed the same way. */
 async function loadFirestoreFor(uid: string) {
-  const [{ db }, { doc, getDoc, setDoc, onSnapshot, enableNetwork }] = await Promise.all([import('../lib/firebase'), import('firebase/firestore')]);
-  // See GamificationContext's identical call for why this lives here now
-  // instead of in AuthContext's signOutUser.
-  await enableNetwork(db).catch(() => {});
+  const [{ db }, { doc, getDoc, setDoc, onSnapshot }] = await Promise.all([import('../lib/firebase'), import('firebase/firestore')]);
   return { ref: doc(db, 'progress', uid), getDoc, setDoc, onSnapshot };
 }
 
