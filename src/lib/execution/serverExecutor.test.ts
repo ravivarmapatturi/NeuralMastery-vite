@@ -2,14 +2,14 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { ServerExecutor } from './serverExecutor';
 
 describe('ServerExecutor', () => {
-  const originalFetch = global.fetch;
+  const originalFetch = globalThis.fetch;
 
   beforeEach(() => {
     vi.restoreAllMocks();
   });
 
   afterEach(() => {
-    global.fetch = originalFetch;
+    globalThis.fetch = originalFetch;
   });
 
   it('instantiates with server mode', () => {
@@ -29,7 +29,7 @@ describe('ServerExecutor', () => {
       totalExecutionTimeMs: 1.5,
     };
 
-    global.fetch = vi.fn().mockResolvedValue({
+    globalThis.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => mockResult,
     } as Response);
@@ -41,7 +41,7 @@ describe('ServerExecutor', () => {
       testCases: [{ id: 'tc1', label: 'case 1', input: { a: [1, 2], b: [3, 4] }, expectedOutput: 11 }],
     });
 
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
     expect(result.status).toBe('success');
     expect(result.mode).toBe('server');
     expect(result.stdout).toBe('Hello World\n');
@@ -49,7 +49,7 @@ describe('ServerExecutor', () => {
   });
 
   it('gracefully falls back to Pyodide when server endpoint is unreachable', async () => {
-    global.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
+    globalThis.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
 
     const executor = new ServerExecutor({ endpointUrl: 'http://invalid-endpoint-999', enableFallback: true });
     const result = await executor.execute({

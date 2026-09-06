@@ -1,5 +1,5 @@
 import type { CodeExecutor, ExecutionRequest, ExecutionResult, CaseExecutionResult, ExecutionStatus } from './types';
-import { PyodideExecutor, statusFor } from './pyodideExecutor';
+import { PyodideExecutor } from './pyodideExecutor';
 
 export interface ServerExecutorOptions {
   /** Target server execution API endpoint URL. Defaults to environment variable
