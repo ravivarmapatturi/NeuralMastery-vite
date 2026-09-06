@@ -68,6 +68,24 @@ describe('ProfilePage', () => {
     expect(screen.getByText(/50 pts · 100%/)).toBeInTheDocument() // sole topic group gets 100% of the pie
   })
 
+  it('shows the real current rank prominently for a brand-new learner -- real Bronze, not "unranked"', () => {
+    renderProfile()
+    expect(screen.getByText('Rank')).toBeInTheDocument()
+    expect(screen.getByText('Bronze')).toBeInTheDocument()
+    expect(screen.getByText(/levels? to/i)).toBeInTheDocument()
+    expect(screen.getByText('Silver')).toBeInTheDocument() // the real next tier shown
+  })
+
+  it('rank updates to the real next tier once level actually crosses that tier\'s boundary', () => {
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      // Level for 20000 points: floor(1 + sqrt(20000/50)) = floor(1+20) = 21 -- real Diamond tier (minLevel 20).
+      JSON.stringify([{ permalink: '/docs/deep-learning/attention-transformers', kind: 'complete', date: '2026-09-10', points: 20000 }]),
+    )
+    renderProfile()
+    expect(screen.getByText('Diamond')).toBeInTheDocument()
+  })
+
   it('cross-links to /progress instead of duplicating the page-by-page checklist', () => {
     renderProfile()
     const link = screen.getByRole('link', { name: /your Progress page/i })

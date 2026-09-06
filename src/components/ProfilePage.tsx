@@ -13,6 +13,8 @@ import { getFlatPages, getPracticeProblems } from '../lib/contentTree';
 import { useProgress } from '../contexts/ProgressContext';
 import { SECTION_META, SECTION_ORDER, completionFor } from '../data/sectionMeta';
 import { nextLesson, practiceStats, recommendedProblem, cleanPracticeTitle } from '../lib/mastery';
+import RankBadge from './RankBadge';
+import { rankForLevel, nextRankTier } from '../lib/rankTiers';
 
 /**
  * The site's one real "this is you" identity page -- avatar, display name,
@@ -38,6 +40,8 @@ export default function ProfilePage() {
   const displayName = computeDisplayName(user);
   const initial = (user?.displayName ?? user?.email ?? '?').charAt(0).toUpperCase();
   const { level, xpIntoLevel, xpForNextLevel } = levelForPoints(points);
+  const rank = rankForLevel(level);
+  const nextRank = nextRankTier(rank);
   const levelPct = xpForNextLevel === 0 ? 1 : xpIntoLevel / xpForNextLevel;
   const learnPages = getFlatPages();
   const problems = getPracticeProblems();
@@ -84,6 +88,33 @@ export default function ProfilePage() {
               {user ? `Synced across your devices (${user.email ?? 'Signed in'})` : 'Guest Mode (Signed Out) -- Tracked locally in this browser. Sign in to sync across devices.'}
             </p>
           </div>
+        </div>
+
+        {/* --- Rank --- */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
+            padding: '1.1rem 1.5rem',
+            borderRadius: 12,
+            border: `1px solid color-mix(in srgb, ${rank.color} 40%, var(--nm-border))`,
+            background: `color-mix(in srgb, ${rank.color} 8%, var(--nm-surface))`,
+            marginBottom: '1.25rem',
+          }}
+        >
+          <RankBadge tier={rank} size={48} />
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--nm-text-muted)' }}>Rank</div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: rank.color }}>{rank.label}</div>
+          </div>
+          {nextRank && (
+            <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', textAlign: 'right', flexShrink: 0 }}>
+              {Math.max(0, nextRank.minLevel - level)} level{nextRank.minLevel - level === 1 ? '' : 's'} to
+              <br />
+              <span style={{ fontWeight: 700, color: nextRank.color }}>{nextRank.label}</span>
+            </div>
+          )}
         </div>
 
         {/* --- Level / XP --- */}
