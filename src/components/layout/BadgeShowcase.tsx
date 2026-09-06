@@ -5,7 +5,8 @@ import { useVizTokens } from '../../theme/vizTokens';
 
 export default function BadgeShowcase() {
   const t = useVizTokens();
-  const { events, totalXP, streak, activeDates } = useGamification();
+  const { events, points: totalXP, streak } = useGamification();
+  const activeDates = events.map((e) => e.date);
 
   // Compute breakdown stats for badge unlocks
   const pagesUnderstood = events.filter((e) => e.kind === 'mark').length;
@@ -24,6 +25,7 @@ export default function BadgeShowcase() {
 
   // Sample RL valuation for solving a medium problem
   const rlValuation = computeRLValuation('complete', 'medium', events, activeDates);
+
 
   return (
     <div
@@ -76,7 +78,7 @@ export default function BadgeShowcase() {
         }}
       >
         <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', tracking: '0.05em', color: '#818cf8', fontWeight: 600 }}>
+          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#818cf8', fontWeight: 600 }}>
             RL Reward Model G_t
           </div>
           <div style={{ fontSize: 22, fontWeight: 800, color: '#f3f4f6', marginTop: 4 }}>
@@ -88,7 +90,7 @@ export default function BadgeShowcase() {
         </div>
 
         <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', tracking: '0.05em', color: '#a855f7', fontWeight: 600 }}>
+          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a855f7', fontWeight: 600 }}>
             Discount Factor (γ)
           </div>
           <div style={{ fontSize: 22, fontWeight: 800, color: '#f3f4f6', marginTop: 4 }}>
@@ -100,7 +102,7 @@ export default function BadgeShowcase() {
         </div>
 
         <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', tracking: '0.05em', color: '#10b981', fontWeight: 600 }}>
+          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10b981', fontWeight: 600 }}>
             Streak Multiplier
           </div>
           <div style={{ fontSize: 22, fontWeight: 800, color: '#f3f4f6', marginTop: 4 }}>
