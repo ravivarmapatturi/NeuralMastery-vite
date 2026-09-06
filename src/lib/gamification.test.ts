@@ -172,13 +172,17 @@ describe('computeDisplayName', () => {
     expect(computeDisplayName({ displayName: 'Ravi Varma', uid: 'abc123def456' })).toBe('Ravi Varma')
   })
 
-  it('falls back to a generic Learner_<id> when no display name is set', () => {
-    expect(computeDisplayName({ displayName: null, uid: 'abc123def456' })).toBe('Learner_abc123')
+  it('uses email handle when display name is null', () => {
+    expect(computeDisplayName({ displayName: null, email: 'ravivarma@gmail.com', uid: 'abc123def456' })).toBe('ravivarma')
   })
 
-  it('handles a null/undefined user without throwing', () => {
-    expect(computeDisplayName(null)).toBe('Learner_000000')
-    expect(computeDisplayName(undefined)).toBe('Learner_000000')
+  it('falls back to a generic Learner_<id> when no display name or email is set', () => {
+    expect(computeDisplayName({ displayName: null, email: null, uid: 'abc123def456' })).toBe('Learner_abc123')
+  })
+
+  it('handles a null/undefined user returning Guest Learner', () => {
+    expect(computeDisplayName(null)).toBe('Guest Learner')
+    expect(computeDisplayName(undefined)).toBe('Guest Learner')
   })
 })
 

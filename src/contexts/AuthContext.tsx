@@ -38,13 +38,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let unsubscribe: (() => void) | undefined;
     let cancelled = false;
 
-    Promise.all([import('../lib/firebase'), import('firebase/auth')]).then(([{ auth }, { onAuthStateChanged }]) => {
-      if (cancelled) return;
-      unsubscribe = onAuthStateChanged(auth, (u) => {
-        setUser(u);
-        setLoading(false);
-      });
-    });
+    Promise.all([import('../lib/firebase'), import('firebase/auth')]).then(
+      ([{ auth }, { onAuthStateChanged, getRedirectResult }]) => {
+        if (cancelled) return;
+        getRedirectResult(auth).catch(() => {});
+
+        unsubscribe = onAuthStateChanged(auth, (u) => {
+          setUser(u);
+          setLoading(false);
+        });
+      },
+    );
 
     return () => {
       cancelled = true;
@@ -53,8 +57,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signInWithGoogle = useCallback(async () => {
-    const [{ auth }, { GoogleAuthProvider, signInWithPopup }] = await Promise.all([import('../lib/firebase'), import('firebase/auth')]);
-    await signInWithPopup(auth, new GoogleAuthProvider());
+    const [{ auth }, { GoogleAuthProvider, signInWithPopup, signInWithRedirect }] = await Promise.all([
+      import('../lib/firebase'),
+      import('firebase/auth'),
+    ]);
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err: unknown) {
+      const error = err as { code?: string };
+      if (
+        error?.code === 'auth/popup-blocked' ||
+        error?.code === 'auth/popup-closed-by-user' ||
+        /iPhone|iPad|iPod|Android/i.test(typeof navigator !== 'undefined' ? navigator.userAgent : '')
+      ) {
+        await signInWithRedirect(auth, provider);
+      } else {
+        throw err;
+      }
+    }
   }, []);
 
   const signOutUser = useCallback(async () => {

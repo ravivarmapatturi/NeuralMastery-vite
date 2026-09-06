@@ -33,7 +33,7 @@ describe('ProfilePage', () => {
 
   it('renders a real identity, level 1, and 0 points/streak for a brand-new signed-out visitor', () => {
     renderProfile()
-    expect(screen.getByRole('heading', { name: /Learner_000000/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Guest Learner/i })).toBeInTheDocument()
     expect(screen.getByText(/^Level 1$/)).toBeInTheDocument()
     expect(screen.getAllByText('0').length).toBeGreaterThan(0) // points and measured mastery start at zero
     expect(screen.getByText(/sign in to sync/i)).toBeInTheDocument()

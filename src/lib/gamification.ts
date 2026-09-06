@@ -155,9 +155,16 @@ export function mergeEvents(a: AwardEvent[], b: AwardEvent[]): AwardEvent[] {
 /** The one place a future leaderboard-identity decision (real name vs.
  * an anonymized handle) gets swapped in -- everything else reads a
  * display name through this function, never `user.displayName` directly. */
-export function computeDisplayName(user: { displayName?: string | null; uid: string } | null | undefined): string {
+export function computeDisplayName(
+  user: { displayName?: string | null; email?: string | null; uid?: string } | null | undefined,
+): string {
   if (user?.displayName) return user.displayName;
-  return `Learner_${user?.uid.slice(0, 6) ?? '000000'}`;
+  if (user?.email) {
+    const handle = user.email.split('@')[0];
+    if (handle) return handle;
+  }
+  if (user?.uid) return `Learner_${user.uid.slice(0, 6)}`;
+  return 'Guest Learner';
 }
 
 // --- Level curve ---

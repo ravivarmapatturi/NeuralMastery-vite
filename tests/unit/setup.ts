@@ -25,6 +25,8 @@ vi.mock('firebase/auth', () => ({
     return () => {}
   }),
   signInWithPopup: vi.fn().mockResolvedValue({ user: null }),
+  signInWithRedirect: vi.fn().mockResolvedValue(undefined),
+  getRedirectResult: vi.fn().mockResolvedValue(null),
   signOut: vi.fn().mockResolvedValue(undefined),
 }))
 vi.mock('firebase/firestore', () => ({

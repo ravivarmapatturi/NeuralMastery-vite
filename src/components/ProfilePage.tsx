@@ -81,7 +81,7 @@ export default function ProfilePage() {
               {displayName}
             </h1>
             <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '2px 0 0' }}>
-              {user ? 'Synced across your devices' : 'Tracked locally in this browser -- sign in to sync and appear on the leaderboard'}
+              {user ? `Synced across your devices (${user.email ?? 'Signed in'})` : 'Guest Mode (Signed Out) -- Tracked locally in this browser. Sign in to sync across devices.'}
             </p>
           </div>
         </div>
