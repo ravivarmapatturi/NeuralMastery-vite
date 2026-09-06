@@ -40,19 +40,23 @@ function isDesignChallenge(page: DocPage): boolean {
 }
 
 const STAGES = [
-  { id: 'stage-1', num: 1, title: 'Stage 1: Transformer & LLM Fundamentals', range: 'Rank 1–60' },
-  { id: 'stage-2', num: 2, title: 'Stage 2: LLM Application & Decoding Engineering', range: 'Rank 61–120' },
-  { id: 'stage-3', num: 3, title: 'Stage 3: Context & Memory Architecture', range: 'Rank 121–180' },
-  { id: 'stage-4', num: 4, title: 'Stage 4: RAG & Information Retrieval Systems', range: 'Rank 181–240' },
-  { id: 'stage-5', num: 5, title: 'Stage 5: Agent Loops & Tool Execution', range: 'Rank 241–300' },
-  { id: 'stage-6', num: 6, title: 'Stage 6: Graph Engineering & MCP Integration', range: 'Rank 301–360' },
-  { id: 'stage-7', num: 7, title: 'Stage 7: Multi-Agent Systems & Knowledge Graphs', range: 'Rank 361–420' },
-  { id: 'stage-8', num: 8, title: 'Stage 8: Evaluation, Security & Production Deployment', range: 'Rank 421–500' },
+  { id: 'stage-1', num: 1, title: 'Stage 1: Transformer & LLM Fundamentals', range: 'Rank 1–84' },
+  { id: 'stage-2', num: 2, title: 'Stage 2: LLM Application & Decoding Engineering', range: 'Rank 85–168' },
+  { id: 'stage-3', num: 3, title: 'Stage 3: Context & Memory Architecture', range: 'Rank 169–252' },
+  { id: 'stage-4', num: 4, title: 'Stage 4: RAG & Information Retrieval Systems', range: 'Rank 253–336' },
+  { id: 'stage-5', num: 5, title: 'Stage 5: Agent Loops & Tool Execution', range: 'Rank 337–420' },
+  { id: 'stage-6', num: 6, title: 'Stage 6: Graph Engineering & MCP Integration', range: 'Rank 421–504' },
+  { id: 'stage-7', num: 7, title: 'Stage 7: Multi-Agent Systems & Knowledge Graphs', range: 'Rank 505–588' },
+  { id: 'stage-8', num: 8, title: 'Stage 8: Agent Security & Reliability', range: 'Rank 589–672' },
+  { id: 'stage-9', num: 9, title: 'Stage 9: Python & Algorithmic Foundations for AI', range: 'Rank 673–756' },
+  { id: 'stage-10', num: 10, title: 'Stage 10: Mathematics, NumPy & Data Pipelines', range: 'Rank 757–840' },
+  { id: 'stage-11', num: 11, title: 'Stage 11: Classical ML, Deep Learning & Vision', range: 'Rank 841–924' },
+  { id: 'stage-12', num: 12, title: 'Stage 12: MLOps, Distributed Systems & Production Agent Deployment', range: 'Rank 925–1000' },
 ];
 
 export default function PracticeListPage() {
-  useDocumentTitle('Practice AI — 500 Agentic AI Engineering Curriculum');
-  useDocumentMeta('Practice AI', '500-problem structured Agentic AI Engineering curriculum across 17 tracks from Transformer Internals and MCP to Multi-Agent Graphs and Production Deployment.');
+  useDocumentTitle('Practice AI — 1,000+ AI Engineering Curriculum');
+  useDocumentMeta('Practice AI', '1,000+ problem non-duplicate AI Engineering curriculum covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.');
 
   const problems = useMemo(() => getPracticeProblems(), []);
   const topicLabels = useMemo(buildTopicLabels, []);
@@ -97,10 +101,10 @@ export default function PracticeListPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.5rem' }}>
           <div>
             <h1 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: '0 0 0.5rem' }}>
-              Practice AI — 500 Agentic AI Engineering Curriculum
+              Practice AI — 1,000+ AI Engineering Curriculum
             </h1>
             <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.5rem', lineHeight: 1.6, maxWidth: 780 }}>
-              A dedicated 500-problem Agentic AI Engineering curriculum across 17 tracks — from Transformer Internals and Decoding to Context Engineering, Agentic RAG, MCP, Graph Engineering, Multi-Agent Swarms, and Production Reliability. Every problem progressively builds toward <strong>Problem 500: BUILD A PRODUCTION AGENT</strong>.
+              A comprehensive 1,072-problem curriculum with zero duplicate titles across 34 specialized tracks — spanning Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems) as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems).
             </p>
             <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 1.5rem' }}>
               {solvedCount} / {problems.length} solved
