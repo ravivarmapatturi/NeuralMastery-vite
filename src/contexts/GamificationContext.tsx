@@ -151,28 +151,39 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   }, []);
 
   useEffect(() => {
-    if (authLoading || !user) return;
+    if (authLoading) return;
+
+    if (!user) {
+      setEvents(readStorage());
+      return;
+    }
+
     let cancelled = false;
     let unsubscribe: (() => void) | undefined;
 
     loadFirestoreFor(user.uid).then(async ({ progressRef, leaderboardRef, getDoc, setDoc, onSnapshot }) => {
       if (cancelled) return;
       const snap = await getDoc(progressRef);
-      const remoteEvents: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
+      const remoteEvents: AwardEvent[] = snap.exists()
+        ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
+        : [];
       const merged = mergeEvents(remoteEvents, readStorage());
       if (cancelled) return;
+
       await Promise.all([
         setDoc(progressRef, { gamificationEvents: merged }, { merge: true }),
         setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true }),
       ]);
       if (cancelled) return;
 
+      setEvents(merged);
+      writeStorage(merged);
+
       unsubscribe = onSnapshot(progressRef, (snap) => {
         if (cancelled) return;
         const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
-        const currentMerged = mergeEvents(remote, readStorage());
-        setEvents(currentMerged);
-        writeStorage(currentMerged);
+        setEvents(remote);
+        writeStorage(remote);
       });
     });
 

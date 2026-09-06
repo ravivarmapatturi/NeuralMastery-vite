@@ -60,6 +60,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOutUser = useCallback(async () => {
     const [{ auth }, { signOut }] = await Promise.all([import('../lib/firebase'), import('firebase/auth')]);
     await signOut(auth);
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('neural-mastery-gamification');
+      window.localStorage.removeItem('neural-mastery-progress');
+    }
   }, []);
 
   const value = useMemo(() => ({ user, loading, signInWithGoogle, signOutUser }), [user, loading, signInWithGoogle, signOutUser]);

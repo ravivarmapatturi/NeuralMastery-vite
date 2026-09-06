@@ -182,7 +182,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   // also exactly when loadFirestoreFor's dynamic import actually resolves
   // (never touched at all for the common signed-out case).
   useEffect(() => {
-    if (authLoading || !user) return;
+    if (authLoading) return;
+
+    if (!user) {
+      setUnderstood(readStorage());
+      return;
+    }
+
     let cancelled = false;
     let unsubscribe: (() => void) | undefined;
 
@@ -192,15 +198,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
       const merged = mergeProgress(remote, readStorage());
       if (cancelled) return;
+
       await setDoc(ref, { understood: merged }, { merge: true });
       if (cancelled) return;
+
+      setUnderstood(merged);
+      writeStorage(merged);
 
       unsubscribe = onSnapshot(ref, (snap) => {
         if (cancelled) return;
         const remote = snap.exists() ? normalize(snap.data()?.understood) : {};
-        const currentMerged = mergeProgress(remote, readStorage());
-        setUnderstood(currentMerged);
-        writeStorage(currentMerged);
+        setUnderstood(remote);
+        writeStorage(remote);
       });
     });
 
