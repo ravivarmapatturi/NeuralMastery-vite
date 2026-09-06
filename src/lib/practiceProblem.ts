@@ -555,6 +555,176 @@ def mcp_client_initialize(client_info, protocol_version="2024-11-05"):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'swish-activation': {
+    id: 'swish-activation',
+    judgeMode: 'hybrid',
+    title: 'Swish Activation Function',
+    difficulty: 'easy',
+    topic: 'Deep Learning',
+    estimatedTime: '10 min',
+    functionName: 'swish',
+    functionSignature: 'swish(x: list[float], beta: float = 1.0) -> list[float]',
+    starterCode: `import math
+
+def swish(x, beta=1.0):
+    """
+    Computes Swish activation element-wise: f(x) = x / (1 + exp(-beta * x)).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Swish activation f(x) = x * sigmoid(beta * x) widely used in EfficientNet and LLaMA architectures.',
+    taskDescription: 'Implement `swish(x, beta=1.0)` returning a list of float activation values.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ['Compute element-wise x / (1 + exp(-beta * x)).'],
+    hints: {
+      small: 'Apply x / (1 + exp(-beta * x)) for each element in list x.',
+      strong: 'Use math.exp for calculating e^(-beta * x).',
+      concept: 'Swish is a smooth, non-monotonic activation function discovered via neural architecture search.',
+    },
+    testCases: [
+      { id: 't1', label: 'Zero & Positive Input', input: { x: [0.0, 1.0, 2.0], beta: 1.0 }, expectedOutput: [0.0, 0.7310585786300049, 1.7615941559557646], hidden: false },
+      { id: 't2', label: 'Negative Values', input: { x: [-1.0, -2.0], beta: 1.0 }, expectedOutput: [-0.2689414213699951, -0.23840584404423515], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'selu-activation': {
+    id: 'selu-activation',
+    judgeMode: 'hybrid',
+    title: 'SELU (Scaled Exponential Linear Unit)',
+    difficulty: 'medium',
+    topic: 'Deep Learning',
+    estimatedTime: '12 min',
+    functionName: 'selu',
+    functionSignature: 'selu(x: list[float], scale: float, alpha: float) -> list[float]',
+    starterCode: `import math
+
+def selu(x, scale=1.0507009873554805, alpha=1.6732632423543772):
+    """
+    Computes SELU activation: scale * x if x > 0 else scale * alpha * (exp(x) - 1).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement SELU activation function for self-normalizing neural networks.',
+    taskDescription: 'Implement `selu(x)` returning element-wise scaled exponential linear activation values.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ['If x > 0, return scale * x. Else return scale * alpha * (exp(x) - 1).'],
+    hints: {
+      small: 'Check condition for each element x in list.',
+      strong: 'Use math.exp for calculating e^x.',
+      concept: 'SELU enables self-normalizing neural networks where activations converge toward zero mean and unit variance.',
+    },
+    testCases: [
+      { id: 't1', label: 'Positive and Zero', input: { x: [0.0, 1.0, 2.0] }, expectedOutput: [0.0, 1.0507009873554805, 2.101401974710961], hidden: false },
+      { id: 't2', label: 'Negative Input', input: { x: [-1.0] }, expectedOutput: [-1.111330737812562], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'dropout-layer': {
+    id: 'dropout-layer',
+    judgeMode: 'hybrid',
+    title: 'Inverted Dropout Layer',
+    difficulty: 'medium',
+    topic: 'Deep Learning',
+    estimatedTime: '15 min',
+    functionName: 'dropout',
+    functionSignature: 'dropout(x: list[float], drop_prob: float, mask: list[int]) -> list[float]',
+    starterCode: `def dropout(x, drop_prob, mask):
+    """
+    Applies inverted dropout using a binary mask (1 keep, 0 drop).
+    Inverted dropout scales kept values by 1 / (1 - drop_prob).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Inverted Dropout where dropped elements are set to 0 and kept elements are scaled by 1 / (1 - p).',
+    taskDescription: 'Implement `dropout(x, drop_prob, mask)` returning scaled activation list.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ['Multiply kept values by 1 / (1 - drop_prob). Set dropped values to 0.0.'],
+    hints: {
+      small: 'Scale kept values by 1.0 / (1.0 - drop_prob).',
+      strong: 'Multiply x[i] * mask[i] * scale.',
+      concept: 'Inverted dropout preserves activation magnitude during training so inference requires zero modification.',
+    },
+    testCases: [
+      { id: 't1', label: 'Dropout p=0.5', input: { x: [2.0, 4.0, 6.0, 8.0], drop_prob: 0.5, mask: [1, 0, 1, 0] }, expectedOutput: [4.0, 0.0, 12.0, 0.0], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'k-nearest-neighbors': {
+    id: 'k-nearest-neighbors',
+    judgeMode: 'hybrid',
+    title: 'K-Nearest Neighbors (KNN) Classifier',
+    difficulty: 'medium',
+    topic: 'Machine Learning',
+    estimatedTime: '15 min',
+    functionName: 'knn_predict',
+    functionSignature: 'knn_predict(X_train: list[list[float]], y_train: list[int], x_test: list[float], k: int) -> int',
+    starterCode: `import math
+from collections import Counter
+
+def knn_predict(X_train, y_train, x_test, k):
+    """
+    Predicts majority class for x_test based on k nearest neighbors by Euclidean distance.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement K-Nearest Neighbors classifier by computing Euclidean distances to training samples.',
+    taskDescription: 'Implement `knn_predict(X_train, y_train, x_test, k)` returning predicted integer class label.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ['Compute Euclidean distance for each training sample. Select top k nearest labels.'],
+    hints: {
+      small: 'Compute sqrt(sum((a - b)^2)). Sort distances ascending.',
+      strong: 'Use Counter(k_labels).most_common(1)[0][0] to pick majority label.',
+      concept: 'KNN is a non-parametric instance-based algorithm that classifies data points based on spatial proximity.',
+    },
+    testCases: [
+      { id: 't1', label: '2D Classification k=3', input: { X_train: [[0,0], [0,1], [1,0], [5,5], [5,6]], y_train: [0, 0, 0, 1, 1], x_test: [0.5, 0.5], k: 3 }, expectedOutput: 0, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'bellman-value-iteration': {
+    id: 'bellman-value-iteration',
+    judgeMode: 'hybrid',
+    title: 'Bellman Equation for Value Iteration',
+    difficulty: 'medium',
+    topic: 'Reinforcement Learning',
+    estimatedTime: '15 min',
+    functionName: 'bellman_update',
+    functionSignature: 'bellman_update(state: int, transitions: dict, V: list[float], gamma: float) -> float',
+    starterCode: `def bellman_update(state, transitions, V, gamma):
+    """
+    Computes updated V(s) = max_a sum_{s'} P(s'|s,a) * [ R(s,a,s') + gamma * V(s') ].
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement state value update V*(s) = max_a sum_{s\'} P(s\'|s,a)[R + gamma * V(s\')].',
+    taskDescription: 'Implement `bellman_update(state, transitions, V, gamma)` returning updated float state value.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ['For each action, sum probability * (reward + gamma * V[next_s]). Return maximum over actions.'],
+    hints: {
+      small: 'Loop over actions in transitions[state]. Calculate expected return.',
+      strong: 'Return max(action_values).',
+      concept: 'Value Iteration applies the Bellman Optimality Operator iteratively until state values converge.',
+    },
+    testCases: [
+      { id: 't1', label: '2 Action MDP', input: { state: 0, transitions: { 0: { 'a1': [[0.8, 1, 10.0], [0.2, 0, 0.0]], 'a2': [[1.0, 0, 2.0]] } }, V: [0.0, 50.0], gamma: 0.9 }, expectedOutput: 44.0, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 /**

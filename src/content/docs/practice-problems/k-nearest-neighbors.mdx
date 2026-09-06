@@ -1,0 +1,38 @@
+---
+title: "Practice: K-Nearest Neighbors (KNN) Classifier"
+sidebar_position: 79
+description: "Implement KNN classification using Euclidean distance."
+difficulty: medium
+topic: machine-learning
+---
+
+import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# K-Nearest Neighbors (KNN) Classifier
+
+**Difficulty: Medium** · Topic: Machine Learning
+
+Implement KNN classification using Euclidean distance.
+
+<PracticePlayground problemId="k-nearest-neighbors" />
+
+<Solution>
+
+```python
+import math
+from collections import Counter
+
+def knn_predict(X_train, y_train, x_test, k):
+    distances = []
+    for i, x_tr in enumerate(X_train):
+        dist = math.sqrt(sum((a - b)**2 for a, b in zip(x_tr, x_test)))
+        distances.append((dist, y_train[i]))
+    distances.sort(key=lambda item: item[0])
+    k_labels = [label for _, label in distances[:k]]
+    return Counter(k_labels).most_common(1)[0][0]
+```
+
+KNN is a non-parametric instance-based learning algorithm that classifies new data points based on proximity in feature space.
+
+</Solution>

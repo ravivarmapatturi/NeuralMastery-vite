@@ -1,0 +1,31 @@
+---
+title: "Practice: Swish Activation Function"
+sidebar_position: 76
+description: "Implement the Swish activation function f(x) = x * sigmoid(beta * x)."
+difficulty: easy
+topic: deep-learning
+---
+
+import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
+
+# Swish Activation Function
+
+**Difficulty: Easy** · Topic: Deep Learning
+
+Implement the Swish activation function f(x) = x * sigmoid(beta * x).
+
+<PracticePlayground problemId="swish-activation" />
+
+<Solution>
+
+```python
+import math
+
+def swish(x, beta=1.0):
+    return [val / (1.0 + math.exp(-beta * val)) for val in x]
+```
+
+Swish is a smooth, non-monotonic activation function discovered via neural architecture search that outperforms ReLU in deep models.
+
+</Solution>
