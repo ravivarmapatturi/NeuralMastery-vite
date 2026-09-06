@@ -1248,6 +1248,541 @@ def deduplicate_near_duplicates(vectors, threshold):
     ],
     runtime: { language: 'python', capabilities: ['python', 'numpy'] },
   },
+  'class-ml-prob-1': {
+    id: 'class-ml-prob-1',
+    title: 'Precision, Recall & F1 From a Confusion Matrix',
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'precision_recall_f1',
+    functionSignature: 'precision_recall_f1(tp: int, fp: int, fn: int) -> dict',
+    starterCode: `def precision_recall_f1(tp, fp, fn):
+    """tp, fp, fn: true positive / false positive / false negative counts
+    for the positive class. Return {'precision': ..., 'recall': ...,
+    'f1': ...}. Define precision = 0.0 if tp+fp == 0, recall = 0.0 if
+    tp+fn == 0, and f1 = 0.0 if precision+recall == 0, instead of
+    dividing by zero."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the three classification metrics that matter far more than raw accuracy whenever classes are imbalanced -- the numbers behind every "high accuracy, useless model" cautionary tale in ML.',
+    taskDescription: "Implement `precision_recall_f1(tp, fp, fn)`, returning a dict with keys 'precision', 'recall', and 'f1', computed from the standard formulas with explicit zero-division guards.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (standard library only) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'precision = tp / (tp + fp), or 0.0 if tp + fp == 0.',
+      'recall = tp / (tp + fn), or 0.0 if tp + fn == 0.',
+      'f1 = 2 * precision * recall / (precision + recall), or 0.0 if precision + recall == 0.',
+    ],
+    hints: {
+      small: 'Precision asks "of everything I predicted positive, how much was right?" Recall asks "of everything actually positive, how much did I catch?"',
+      strong: "Guard each division separately: `precision = tp/(tp+fp) if (tp+fp) > 0 else 0.0`, same pattern for recall, then f1 from precision and recall.",
+      concept: 'F1 is the harmonic mean of precision and recall specifically because the harmonic mean punishes a large imbalance between the two far more than an arithmetic mean would -- a model with precision=1.0 and recall=0.01 gets an arithmetic mean of ~0.5 but an F1 of ~0.02, which is the far more honest summary of a nearly-useless model.',
+    },
+    conceptConnections: [
+      { title: 'Model Evaluation & Metrics', route: '/docs/machine-learning/model-evaluation-metrics', description: 'Precision, recall, and F1 as the standard classification metrics beyond raw accuracy' },
+    ],
+    testCases: [
+      { id: 'typical-case', label: 'Typical Confusion Matrix', input: { tp: 50, fp: 10, fn: 5 }, expectedOutput: { precision: 0.8333333333333334, recall: 0.9090909090909091, f1: 0.8695652173913043 }, hidden: false },
+      { id: 'no-predictions', label: 'No Positive Predictions At All', input: { tp: 0, fp: 0, fn: 5 }, expectedOutput: { precision: 0.0, recall: 0.0, f1: 0.0 }, hidden: false, description: 'tp+fp == 0 -- precision is defined as 0.0, not undefined' },
+      { id: 'no-actual-positives', label: 'No Actual Positives Missed or Found', input: { tp: 0, fp: 5, fn: 0 }, expectedOutput: { precision: 0.0, recall: 0.0, f1: 0.0 }, hidden: true, description: 'tp+fn == 0 -- recall is defined as 0.0' },
+      { id: 'perfect-classifier', label: 'Perfect Classifier', input: { tp: 20, fp: 0, fn: 0 }, expectedOutput: { precision: 1.0, recall: 1.0, f1: 1.0 }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-2': {
+    id: 'class-ml-prob-2',
+    title: 'L1/L2 Regularization Effect on a Loss Function',
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'regularized_loss',
+    functionSignature: 'regularized_loss(mse: float, weights: list[float], l1: float = 0.0, l2: float = 0.0) -> float',
+    starterCode: `def regularized_loss(mse, weights, l1=0.0, l2=0.0):
+    """mse: the model's unregularized data loss (already computed).
+    weights: the model's weight vector (bias/intercept excluded). l1, l2:
+    regularization strengths. Return mse + l1 * sum(|w|) + l2 * sum(w^2)
+    -- an elastic-net-style combined penalty (either term alone recovers
+    plain Lasso or plain Ridge)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the actual arithmetic Ridge (L2), Lasso (L1), and Elastic Net regularization add on top of a base loss -- the concrete mechanism behind "regularization shrinks weights," made computational rather than conceptual.',
+    taskDescription: 'Implement `regularized_loss(mse, weights, l1=0.0, l2=0.0)`, returning `mse + l1 * sum(abs(w) for w in weights) + l2 * sum(w**2 for w in weights)`.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (standard library only) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'The intercept/bias term is never regularized -- only pass the non-bias weights in.',
+      'l1=0.0 (the default) recovers plain Ridge behavior; l2=0.0 recovers plain Lasso behavior; both nonzero is Elastic Net.',
+      'l1 and l2 both default to 0.0, so calling with just `mse` and `weights` returns the unregularized mse unchanged.',
+    ],
+    hints: {
+      small: 'The L1 penalty is a strength times the sum of absolute weight values; the L2 penalty is a strength times the sum of squared weight values.',
+      strong: 'return mse + l1 * sum(abs(w) for w in weights) + l2 * sum(w * w for w in weights).',
+      concept: 'L1\'s penalty is proportional to |w| (constant gradient magnitude regardless of how large w already is), which is why Lasso can drive weights to EXACTLY zero (real feature selection); L2\'s penalty is proportional to w^2 (gradient shrinks as w approaches zero), which shrinks weights smoothly toward zero but essentially never all the way to it.',
+    },
+    conceptConnections: [
+      { title: 'Ridge Regression, In Full Depth', route: '/docs/machine-learning/ridge-regression', description: 'The L2 penalty term this problem adds to a base loss' },
+      { title: 'Lasso Regression, In Full Depth', route: '/docs/machine-learning/lasso-regression', description: 'The L1 penalty term this problem adds to a base loss' },
+    ],
+    testCases: [
+      { id: 'l1-only', label: 'L1 (Lasso) Only', input: { mse: 2.0, weights: [1.0, -2.0, 3.0], l1: 0.1, l2: 0.0 }, expectedOutput: 2.6, hidden: false, description: '0.1 * (1 + 2 + 3) = 0.6 added to the base loss' },
+      { id: 'l2-only', label: 'L2 (Ridge) Only', input: { mse: 2.0, weights: [1.0, -2.0, 3.0], l1: 0.0, l2: 0.1 }, expectedOutput: 3.4, hidden: false, description: '0.1 * (1 + 4 + 9) = 1.4 added to the base loss' },
+      { id: 'zero-weights', label: 'Zero Weights (No Penalty Regardless of Strength)', input: { mse: 1.5, weights: [0.0, 0.0], l1: 0.5, l2: 0.5 }, expectedOutput: 1.5, hidden: true },
+      { id: 'defaults', label: 'Default l1/l2 (Unregularized)', input: { mse: 4.2, weights: [10.0, -10.0] }, expectedOutput: 4.2, hidden: true, description: 'Omitting l1/l2 falls back to their 0.0 defaults' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-3': {
+    id: 'class-ml-prob-3',
+    title: 'Ensemble Majority-Vote Classifier',
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'majority_vote',
+    functionSignature: 'majority_vote(predictions: list[list[int]]) -> list[int]',
+    starterCode: `def majority_vote(predictions):
+    """predictions: a list of M models' predictions, each a list of the
+    same N class-label predictions (one per sample) -- predictions[m][s]
+    is model m's prediction for sample s. Return one list of N labels:
+    for each sample, the class label that received the most votes across
+    the M models. Break ties by the smaller class label."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement hard-voting ensemble aggregation -- the combination step that turns M independently-trained models (a bagging ensemble, a random forest\'s individual trees, or just M different classifiers) into one prediction per sample.',
+    taskDescription: 'Implement `majority_vote(predictions)`: for each sample (each column across the M prediction lists), tally how many models predicted each class label, and return the label with the most votes -- ties broken by the smaller label.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (standard library only) are allowed and accepted normally.',
+      'Pure Python earns +10 Bonus XP!',
+      'predictions is M lists of N predictions each (M models, N samples); predictions[m][s] is model m\'s vote for sample s.',
+      'Return exactly N labels, one per sample.',
+      'On a tie (multiple labels with the same top vote count for a sample), return the smallest tied label.',
+    ],
+    hints: {
+      small: 'For each sample index, collect that sample\'s prediction from every model, then find the most common one.',
+      strong: 'For sample s: votes = {}; for m in range(M): votes[predictions[m][s]] = votes.get(predictions[m][s], 0) + 1. Then pick the label with the max count, breaking ties by iterating candidate labels in sorted order and keeping the first one that reaches the max count.',
+      concept: 'Hard voting (majority of predicted labels) is what "bagging" ensembles like Random Forest use at prediction time -- each tree/model votes independently, and the ensemble\'s real advantage comes from the fact that uncorrelated individual errors tend to cancel out in the vote, not from any single model being better.',
+    },
+    conceptConnections: [
+      { title: 'Random Forest & Extra Trees, In Full Depth', route: '/docs/machine-learning/random-forest', description: 'Majority voting as the aggregation step every bagging ensemble uses at prediction time' },
+    ],
+    testCases: [
+      { id: 'clear-majority', label: 'Clear Majority Per Sample', input: { predictions: [[0, 1, 1], [1, 1, 0], [1, 1, 1]] }, expectedOutput: [1, 1, 1], hidden: false, description: 'Every sample has a 2-out-of-3 (or 3-out-of-3) majority' },
+      { id: 'two-model-tie', label: 'A Tied Sample (2 Models)', input: { predictions: [[0, 1], [0, 0]] }, expectedOutput: [0, 0], hidden: false, description: 'Sample 1 is a 1-1 tie between labels 0 and 1 -- resolved to the smaller label, 0' },
+      { id: 'five-models', label: 'Five Models, Three Samples', input: { predictions: [[2, 0, 1], [2, 1, 1], [0, 0, 1], [2, 0, 0], [2, 1, 1]] }, expectedOutput: [2, 0, 1], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-11': {
+    id: 'class-ml-prob-11',
+    title: 'Linear Regression via the Normal Equation',
+    difficulty: 'medium',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'linear_regression_normal_equation',
+    functionSignature: 'linear_regression_normal_equation(X: list[list[float]], y: list[float]) -> list[float]',
+    starterCode: `import numpy as np
+
+def linear_regression_normal_equation(X, y):
+    """X: list of feature rows (no bias column). y: list of targets.
+    Return the fitted weight vector [intercept, w1, w2, ...] solving
+    ordinary least squares via the closed-form normal equation
+    w = (X^T X)^-1 X^T y, after prepending a column of ones to X."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the closed-form (normal equation) solution to ordinary least squares -- the exact solution gradient descent only approximates iteratively, and the textbook baseline every regularized variant (Ridge, Lasso) is a variation of.',
+    taskDescription: 'Implement `linear_regression_normal_equation(X, y)`: prepend a column of ones to X (for the intercept), then return w = (X_aug^T X_aug)^-1 X_aug^T y as a plain Python list, ordered [intercept, w1, w2, ...].',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python (manual Gauss-Jordan matrix inversion) implementation',
+    constraints: [
+      'NumPy is allowed and recommended (np.linalg.inv or np.linalg.solve) -- the test matrices are small, but a pure-Python Gauss-Jordan inversion also works and earns the bonus.',
+      'The returned list\'s first element is the intercept (bias term); the rest are the per-feature weights in the same order as X\'s columns.',
+      'Assume X^T X is invertible (X has more rows than columns and no perfectly collinear features).',
+    ],
+    hints: {
+      small: 'Prepend a column of 1s to X first -- that column\'s learned weight becomes the intercept.',
+      strong: 'X_aug = np.hstack([np.ones((len(X), 1)), np.array(X)]); w = np.linalg.inv(X_aug.T @ X_aug) @ X_aug.T @ np.array(y); return w.tolist().',
+      concept: 'The normal equation comes from setting the gradient of the least-squares cost (1/2)||Xw - y||^2 to zero and solving directly -- no learning rate, no iterations, exact in one shot (at the cost of an O(d^3) matrix inversion, which is why gradient descent wins for very high-dimensional X).',
+    },
+    conceptConnections: [
+      { title: 'Linear Regression, In Full Depth', route: '/docs/machine-learning/linear-regression', description: 'The normal equation as the closed-form alternative to gradient descent' },
+    ],
+    testCases: [
+      { id: 'exact-1d-fit', label: 'Exact 1D Fit (y = 2x + 1)', input: { X: [[1], [2], [3], [4]], y: [3, 5, 7, 9] }, expectedOutput: [1.0, 2.0], hidden: false, description: 'Noise-free data recovers the exact generating weights' },
+      { id: 'constant-target', label: 'Constant Target', input: { X: [[0], [1], [2]], y: [1, 1, 1] }, expectedOutput: [1.0, 0.0], hidden: false, description: 'A flat target fits intercept = mean(y), slope = 0' },
+      { id: 'exact-2d-fit', label: 'Exact 2D Fit', input: { X: [[1, 1], [2, 1], [3, 2], [4, 3]], y: [4, 7, 9, 11] }, expectedOutput: [2.0, 3.0, -1.0], hidden: true, description: 'Data generated from w = [2, 3, -1] is recovered exactly' },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'class-ml-prob-12': {
+    id: 'class-ml-prob-12',
+    title: 'Logistic Regression: Forward Pass + Log Loss',
+    difficulty: 'medium',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'logistic_regression_loss',
+    functionSignature: 'logistic_regression_loss(X: list[list[float]], y: list[int], weights: list[float], bias: float) -> float',
+    starterCode: `import math
+
+def logistic_regression_loss(X, y, weights, bias):
+    """X: list of feature rows. y: list of 0/1 labels. weights, bias:
+    model parameters. Return the mean binary cross-entropy (log) loss
+    over the dataset: for each row, z = dot(x, weights) + bias, p =
+    sigmoid(z), loss_i = -(y*log(p) + (1-y)*log(1-p)). Clip p to
+    [1e-15, 1-1e-15] before taking a log, to avoid log(0)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement logistic regression\'s full forward pass and cost function -- the actual thing being minimized during training, distinct from just the sigmoid function itself.',
+    taskDescription: 'Implement `logistic_regression_loss(X, y, weights, bias)`: for every row, compute z = w.x + b, squash it with sigmoid, then average the binary cross-entropy loss -(y*log(p) + (1-y)*log(1-p)) across all rows.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (NumPy) are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Clip p into [1e-15, 1 - 1e-15] before calling log(), so a perfectly confident (and wrong) prediction never produces log(0).',
+      'Return the MEAN loss across all rows, not the sum.',
+    ],
+    hints: {
+      small: 'This is dot_product + sigmoid + the binary cross-entropy formula, chained together per row, then averaged.',
+      strong: 'z = sum(w*x for w, x in zip(weights, xi)) + bias; p = 1/(1+math.exp(-z)); p = min(max(p, 1e-15), 1-1e-15); loss_i = -(yi*math.log(p) + (1-yi)*math.log(1-p)).',
+      concept: 'Binary cross-entropy is the negative log-likelihood of the true label under the model\'s predicted probability -- it heavily penalizes confident-but-wrong predictions (as p -> 0 for a true label of 1, -log(p) -> infinity), which is exactly why it (not MSE) is the loss classification models train against.',
+    },
+    conceptConnections: [
+      { title: 'Logistic Regression, In Full Depth', route: '/docs/machine-learning/logistic-regression', description: 'The sigmoid + binary cross-entropy pipeline this problem implements end to end' },
+    ],
+    testCases: [
+      { id: 'zero-logit', label: 'Zero Logit (Maximum Uncertainty)', input: { X: [[0.0]], y: [1], weights: [0.0], bias: 0.0 }, expectedOutput: 0.6931471805599453, hidden: false, description: 'z=0 gives p=0.5; loss = -ln(0.5) = ln(2)' },
+      { id: 'symmetric-pair', label: 'Symmetric Confident Pair', input: { X: [[2.0], [-2.0]], y: [1, 0], weights: [1.0], bias: 0.0 }, expectedOutput: 0.12692801104297258, hidden: false, description: 'Both rows are equally (and correctly) confident by symmetry' },
+      { id: 'three-row-batch', label: 'Three-Row Batch, 2 Features', input: { X: [[1.0, 2.0], [2.0, 1.0], [-1.0, -2.0]], y: [1, 1, 0], weights: [0.5, 0.5], bias: 0.0 }, expectedOutput: 0.20141327798275248, hidden: true, description: 'All three rows land at the same |z|=1.5 by construction' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-13': {
+    id: 'class-ml-prob-13',
+    title: 'Decision Tree Split Quality: Gini & Information Gain',
+    difficulty: 'medium',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'information_gain',
+    functionSignature: "information_gain(parent: list, left: list, right: list, criterion: str = 'gini') -> float",
+    starterCode: `import math
+
+def information_gain(parent, left, right, criterion='gini'):
+    """parent: class labels at a node before splitting. left, right: the
+    class labels that land in each child after a candidate split.
+    criterion: 'gini' (Gini impurity) or 'entropy' (Shannon entropy, log
+    base 2). Return impurity(parent) minus the size-weighted average
+    impurity of the two children. Raise ValueError for any other
+    criterion."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the exact split-quality scoring a decision tree evaluates at every candidate split during training -- the single number CART/ID3-style tree builders use to greedily pick which feature and threshold to split on.',
+    taskDescription: "Implement `information_gain(parent, left, right, criterion='gini')`: compute the chosen impurity measure of `parent`, then subtract the weighted average of the same measure over `left` and `right` (weighted by how many of parent's samples landed in each child).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "criterion must be 'gini' (impurity = 1 - sum(p_c^2)) or 'entropy' (impurity = -sum(p_c * log2(p_c))); raise ValueError for anything else.",
+      'An empty parent list should return 0.0 rather than dividing by zero.',
+      'A perfectly pure child (all one class) has impurity exactly 0 under both criteria.',
+    ],
+    hints: {
+      small: 'Write one helper that computes impurity(labels, criterion) from class proportions, then call it three times (parent, left, right).',
+      strong: 'counts = per-class counts; gini = 1 - sum((c/n)**2 for c in counts.values()); entropy = -sum((c/n)*math.log2(c/n) for c in counts.values()). Weighted child impurity = (len(left)/n)*imp(left) + (len(right)/n)*imp(right).',
+      concept: 'A useless split (children have the same class distribution as the parent) always scores an information gain of exactly 0 -- a good sanity check for your implementation, since it means the split told the tree nothing new.',
+    },
+    conceptConnections: [
+      { title: 'Decision Trees, In Full Depth', route: '/docs/machine-learning/decision-tree', description: 'Gini impurity and information gain as the criteria CART/ID3 greedily maximize at every split' },
+    ],
+    testCases: [
+      { id: 'perfect-split-gini', label: 'Perfect Split (Gini)', input: { parent: [0, 0, 1, 1], left: [0, 0], right: [1, 1], criterion: 'gini' }, expectedOutput: 0.5, hidden: false, description: 'A perfectly pure split on a balanced parent gains the maximum possible Gini reduction' },
+      { id: 'perfect-split-entropy', label: 'Perfect Split (Entropy)', input: { parent: [0, 0, 1, 1], left: [0, 0], right: [1, 1], criterion: 'entropy' }, expectedOutput: 1.0, hidden: false, description: 'The same split under entropy gains a full 1 bit of information' },
+      { id: 'useless-split', label: 'Useless Split (No Gain)', input: { parent: [0, 0, 1, 1], left: [0, 1], right: [0, 1], criterion: 'gini' }, expectedOutput: 0.0, hidden: false, description: 'Both children mirror the parent\'s class distribution exactly' },
+      { id: 'balanced-perfect-entropy', label: 'Balanced 6-Sample Perfect Split', input: { parent: [0, 0, 0, 1, 1, 1], left: [0, 0, 0], right: [1, 1, 1], criterion: 'entropy' }, expectedOutput: 1.0, hidden: true },
+      { id: 'invalid-criterion', label: 'Invalid Criterion', input: { parent: [0, 1], left: [0], right: [1], criterion: 'invalid' }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-14': {
+    id: 'class-ml-prob-14',
+    title: 'Gaussian Naive Bayes Classifier',
+    difficulty: 'medium',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '20–25 min',
+    functionName: 'gaussian_naive_bayes_predict',
+    functionSignature: 'gaussian_naive_bayes_predict(X_train: list[list[float]], y_train: list[int], x_test: list[float]) -> int',
+    starterCode: `import math
+
+def gaussian_naive_bayes_predict(X_train, y_train, x_test):
+    """Fit a per-class, per-feature Gaussian on X_train/y_train (assuming
+    feature independence given the class -- the 'naive' assumption), then
+    return the class label that maximizes log(prior) + sum of per-feature
+    log Gaussian likelihoods for x_test. Add 1e-9 to every feature's
+    variance to avoid division by zero. Break ties by the smaller class
+    label."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Gaussian Naive Bayes end to end -- parameter estimation (per-class means/variances) AND MAP prediction (log-prior plus log-likelihood, maximized over classes) -- a genuinely different exercise from a single Bayes\'-theorem posterior calculation.',
+    taskDescription: 'Implement `gaussian_naive_bayes_predict(X_train, y_train, x_test)`: for each class, estimate its prior and a per-feature Gaussian (mean, variance) from the training rows of that class, then predict the class with the highest log(prior) + sum(log Gaussian pdf) for x_test.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Work in log-space (log-prior + sum of log-likelihoods) to avoid numerical underflow from multiplying many small probabilities.',
+      'Add 1e-9 to every estimated variance before using it, to avoid a divide-by-zero on a feature with zero within-class spread.',
+      'Break ties between classes by choosing the smaller class label.',
+    ],
+    hints: {
+      small: 'For each class, filter the training rows with that label, then compute each feature\'s mean and variance from just those rows.',
+      strong: 'log_score(class) = log(prior) + sum over features of [-0.5*log(2*pi*var) - (x-mean)**2/(2*var)]. Predict argmax over classes of log_score.',
+      concept: 'Naive Bayes is "naive" because it assumes every feature is conditionally independent given the class -- almost never exactly true, but the resulting per-feature Gaussian estimates are cheap to fit and the classifier is a genuinely strong, fast baseline in practice despite the wrong assumption.',
+    },
+    conceptConnections: [
+      { title: 'Naive Bayes, LDA & QDA, In Full Depth', route: '/docs/machine-learning/naive-bayes-lda-qda', description: 'The per-class Gaussian likelihood model this problem fits and predicts from' },
+    ],
+    testCases: [
+      { id: 'clearly-class-0', label: 'Clearly Class 0', input: { X_train: [[1.0], [1.2], [0.8], [5.0], [5.2], [4.8]], y_train: [0, 0, 0, 1, 1, 1], x_test: [0.5] }, expectedOutput: 0, hidden: false, description: 'x=0.5 sits well inside the class-0 cluster (mean 1.0)' },
+      { id: 'clearly-class-1', label: 'Clearly Class 1', input: { X_train: [[1.0], [1.2], [0.8], [5.0], [5.2], [4.8]], y_train: [0, 0, 0, 1, 1, 1], x_test: [4.5] }, expectedOutput: 1, hidden: false, description: 'x=4.5 sits well inside the class-1 cluster (mean 5.0)' },
+      { id: 'two-feature-case', label: 'Two Features', input: { X_train: [[0.0, 0.0], [0.2, -0.1], [-0.1, 0.1], [10.0, 10.0], [10.2, 9.8], [9.9, 10.1]], y_train: [0, 0, 0, 1, 1, 1], x_test: [9.8, 10.0] }, expectedOutput: 1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-15': {
+    id: 'class-ml-prob-15',
+    title: 'SVM Hinge Loss & Margin',
+    difficulty: 'medium',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'svm_hinge_loss',
+    functionSignature: 'svm_hinge_loss(X: list[list[float]], y: list[int], weights: list[float], bias: float, C: float = 1.0) -> float',
+    starterCode: `def svm_hinge_loss(X, y, weights, bias, C=1.0):
+    """X: feature rows. y: labels, each -1 or +1 (NOT 0/1). weights, bias,
+    C: model parameters. Return the soft-margin SVM primal objective:
+    0.5 * ||weights||^2 + C * mean_i(max(0, 1 - y_i * (w.x_i + b)))."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the soft-margin SVM objective directly -- the L2 margin-maximizing regularizer plus the hinge loss that only penalizes points inside (or on the wrong side of) the margin, distinct from every other loss function on this site because correctly-classified points beyond the margin contribute exactly zero.',
+    taskDescription: 'Implement `svm_hinge_loss(X, y, weights, bias, C=1.0)`: compute 0.5 * sum(w_j^2) (the margin-maximizing regularizer) plus C times the mean hinge loss max(0, 1 - y_i*(w.x_i + b)) across all rows. Labels are +1/-1, not 0/1.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Labels are +1 or -1 (the standard SVM convention), not 0/1.',
+      'The hinge term is 0 for any point already correctly classified with margin >= 1 -- only margin violations (including misclassifications) contribute.',
+      'Average the per-row hinge loss (divide by the number of rows) before multiplying by C.',
+    ],
+    hints: {
+      small: 'For each row, the "raw margin" is y_i * (w.x_i + b); the hinge loss for that row is max(0, 1 - raw_margin).',
+      strong: 'reg = 0.5 * sum(w*w for w in weights); margin_i = y_i * (dot(weights, X[i]) + bias); hinge_i = max(0, 1 - margin_i); return reg + C * mean(hinge_i).',
+      concept: 'Setting C=0 leaves only the regularizer (0.5*||w||^2) -- with no data term at all, an SVM trained this way would collapse to w=0, which is exactly why C controls the real tradeoff between a wide margin and correctly classifying every training point.',
+    },
+    conceptConnections: [
+      { title: 'Support Vector Machines (SVM & SVR), In Full Depth', route: '/docs/machine-learning/support-vector-machines', description: 'The margin + hinge-loss objective this problem computes directly' },
+    ],
+    testCases: [
+      { id: 'one-violation', label: 'One Correctly-Classified, One Violating', input: { X: [[1, 1], [2, 2]], y: [1, -1], weights: [1.0, 0.0], bias: 0.0, C: 1.0 }, expectedOutput: 2.0, hidden: false, description: 'Row 2 lands on the wrong side of the boundary and dominates the hinge term' },
+      { id: 'both-on-boundary-ish', label: 'Symmetric Violations', input: { X: [[1, 0], [-1, 0]], y: [1, -1], weights: [2.0, 0.0], bias: 0.0, C: 1.0 }, expectedOutput: 2.0, hidden: false },
+      { id: 'small-weight-violations', label: 'Small Weights, Both Violate', input: { X: [[3, 0], [-3, 0]], y: [1, -1], weights: [0.1, 0.0], bias: 0.0, C: 1.0 }, expectedOutput: 0.705, hidden: true },
+      { id: 'zero-C', label: 'C = 0 Ignores the Hinge Term Entirely', input: { X: [[1, 1]], y: [-1], weights: [1.0, 1.0], bias: 0.0, C: 0.0 }, expectedOutput: 1.0, hidden: true, description: 'With C=0, only the 0.5*||w||^2 regularizer remains, regardless of how badly the point is misclassified' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-16': {
+    id: 'class-ml-prob-16',
+    title: 'K-Fold Cross-Validation Split Generation',
+    difficulty: 'medium',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'k_fold_splits',
+    functionSignature: 'k_fold_splits(n_samples: int, k: int) -> list',
+    starterCode: `def k_fold_splits(n_samples, k):
+    """Return a list of k [train_indices, val_indices] pairs (both plain
+    lists of 0-indexed ints) splitting range(n_samples) into k
+    contiguous, near-equal folds (no shuffling). If n_samples doesn't
+    divide evenly by k, the first (n_samples % k) folds get one extra
+    sample. Raise ValueError if k <= 1 or k > n_samples."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the actual index bookkeeping behind k-fold cross-validation -- the fold-size arithmetic and train/validation partitioning every CV loop is built on top of, independent of whatever model gets trained on each fold.',
+    taskDescription: 'Implement `k_fold_splits(n_samples, k)`: partition range(n_samples) into k contiguous folds of size n_samples//k (the first n_samples % k folds get one extra sample), then return k [train_indices, val_indices] pairs, one per fold held out as validation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'No shuffling -- folds are contiguous blocks of range(n_samples), in order.',
+      'Fold sizes: n_samples // k for every fold, plus one extra sample for each of the first (n_samples % k) folds.',
+      'For each of the k pairs, val_indices is that one fold and train_indices is every index NOT in that fold (order within train_indices should follow the other folds\' natural order).',
+      'Raise ValueError if k <= 1 or k > n_samples.',
+    ],
+    hints: {
+      small: 'First compute how big each of the k folds should be, then slice range(n_samples) into that many contiguous chunks.',
+      strong: 'fold_sizes = [n//k + (1 if i < n%k else 0) for i in range(k)]; slice indices into folds using running offsets; for each i, val=folds[i], train=every index from every other fold.',
+      concept: 'This is exactly scikit-learn\'s `KFold(shuffle=False)` splitting rule -- contiguous blocks with the remainder distributed one-per-fold across the first folds, not padded onto the last fold, which keeps fold sizes as balanced as integer division allows.',
+    },
+    conceptConnections: [
+      { title: 'Hyperparameter Optimization', route: '/docs/machine-learning/hyperparameter-optimization', description: 'K-fold cross-validation as the standard way to evaluate a model/hyperparameter choice without a single lucky (or unlucky) train/test split' },
+    ],
+    testCases: [
+      { id: 'uneven-split', label: '10 Samples, 3 Folds (Uneven)', input: { n_samples: 10, k: 3 }, expectedOutput: [[[4, 5, 6, 7, 8, 9], [0, 1, 2, 3]], [[0, 1, 2, 3, 7, 8, 9], [4, 5, 6]], [[0, 1, 2, 3, 4, 5, 6], [7, 8, 9]]], hidden: false, description: '10 does not divide evenly by 3 -- the first fold gets 4 samples, the rest get 3' },
+      { id: 'leave-one-out', label: '5 Samples, 5 Folds (Leave-One-Out)', input: { n_samples: 5, k: 5 }, expectedOutput: [[[1, 2, 3, 4], [0]], [[0, 2, 3, 4], [1]], [[0, 1, 3, 4], [2]], [[0, 1, 2, 4], [3]], [[0, 1, 2, 3], [4]]], hidden: true, description: 'k == n_samples degenerates into leave-one-out CV' },
+      { id: 'k-too-large', label: 'k Exceeds n_samples', input: { n_samples: 3, k: 5 }, expectError: 'ValueError', hidden: true },
+      { id: 'k-too-small', label: 'k = 1 Is Not a Valid Split', input: { n_samples: 10, k: 1 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-23': {
+    id: 'class-ml-prob-23',
+    title: 'PCA: Explained Variance Ratio via Eigendecomposition',
+    difficulty: 'hard',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '20–25 min',
+    functionName: 'pca_explained_variance_ratio',
+    functionSignature: 'pca_explained_variance_ratio(X: list[list[float]], k: int) -> list[float]',
+    starterCode: `import numpy as np
+
+def pca_explained_variance_ratio(X, k):
+    """X: list of feature rows. k: number of top principal components.
+    Center X (subtract each column's mean), compute its covariance
+    matrix, eigendecompose it, and return the top-k eigenvalues each
+    divided by the sum of ALL eigenvalues -- the fraction of total
+    variance each of the top-k principal components explains, sorted
+    descending."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the real quantity behind every PCA "scree plot" and "how many components do I need to keep 95% of the variance?" decision -- computed from first principles via covariance-matrix eigendecomposition, the same route sklearn\'s PCA takes internally for dense data.',
+    taskDescription: 'Implement `pca_explained_variance_ratio(X, k)`: mean-center X, form its (d x d) covariance matrix, eigendecompose it with `np.linalg.eigh`, sort eigenvalues descending, and return the top-k eigenvalues divided by the sum of all eigenvalues.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python (closed-form 2x2 eigenvalue formula) implementation',
+    constraints: [
+      'NumPy is recommended for eigendecomposition (np.linalg.eigh, since the covariance matrix is always symmetric); every test case here is 2D, so a pure-Python closed-form 2x2 eigenvalue solution also works and earns the bonus.',
+      'Use the sample covariance (divide by n-1, matching np.cov\'s default and pandas/sklearn convention).',
+      'Deliberately returns variance RATIOS, not the transformed data -- this sidesteps eigenvector sign ambiguity (eigenvectors are only unique up to a sign flip) entirely, since eigenvalues carry no sign ambiguity.',
+    ],
+    hints: {
+      small: 'np.cov(X, rowvar=False) gives you the covariance matrix directly if you don\'t want to center X by hand.',
+      strong: 'Xc = X - X.mean(axis=0); cov = (Xc.T @ Xc) / (n - 1); eigvals = np.linalg.eigh(cov)[0]; sort descending; ratio = top_k / eigvals.sum().',
+      concept: 'The eigenvalues of the covariance matrix ARE the variances along each principal axis -- the eigenvector with the largest eigenvalue points along the direction of maximum spread in the data, which is precisely what "the first principal component" means.',
+    },
+    conceptConnections: [
+      { title: 'PCA, Kernel PCA & Truncated SVD, In Full Depth', route: '/docs/machine-learning/pca-svd', description: 'The covariance-eigendecomposition route to PCA this problem implements directly' },
+    ],
+    testCases: [
+      { id: 'perfectly-collinear', label: 'Perfectly Collinear Data', input: { X: [[1, 2], [3, 4], [5, 6], [7, 8]], k: 2 }, expectedOutput: [1.0, 0.0], hidden: false, description: 'All 4 points lie exactly on a line -- 100% of variance is along one direction' },
+      { id: 'classic-pca-example', label: 'Classic 2D PCA Textbook Dataset', input: { X: [[2.5, 2.4], [0.5, 0.7], [2.2, 2.9], [1.9, 2.2], [3.1, 3.0], [2.3, 2.7], [2.0, 1.6], [1.0, 1.1], [1.5, 1.6], [1.1, 0.9]], k: 1 }, expectedOutput: [0.9631813143], hidden: false, description: 'The first principal component alone captures ~96.3% of the variance in this well-known example' },
+      { id: 'both-components', label: 'Both Components Sum to 1.0', input: { X: [[2.5, 2.4], [0.5, 0.7], [2.2, 2.9], [1.9, 2.2], [3.1, 3.0], [2.3, 2.7], [2.0, 1.6], [1.0, 1.1], [1.5, 1.6], [1.1, 0.9]], k: 2 }, expectedOutput: [0.9631813143, 0.0368186857], hidden: true, description: 'Requesting every component must recover ratios that sum to exactly 1.0' },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'class-ml-prob-24': {
+    id: 'class-ml-prob-24',
+    title: 'ROC AUC From Scratch (Rank-Based)',
+    difficulty: 'hard',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '20–25 min',
+    functionName: 'compute_auc',
+    functionSignature: 'compute_auc(y_true: list[int], y_scores: list[float]) -> float',
+    starterCode: `def compute_auc(y_true, y_scores):
+    """y_true: 0/1 labels. y_scores: a predicted score per example (higher
+    = more likely positive). Return the ROC AUC using the Mann-Whitney
+    rank formula: AUC = (sum of ranks of the positive examples -
+    n_pos*(n_pos+1)/2) / (n_pos * n_neg), where ranks are 1-indexed over
+    y_scores sorted ascending, with tied scores given the AVERAGE rank of
+    their tied positions. Raise ValueError if y_true has only one class."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement ROC AUC via the exact rank-based (Mann-Whitney U) formula, which is mathematically identical to the trapezoidal-rule area under the ROC curve but needs no threshold sweep -- and is exactly what "AUC is the probability a random positive scores higher than a random negative" means, made computational.',
+    taskDescription: 'Implement `compute_auc(y_true, y_scores)`: rank all scores ascending (tied scores share the average of their tied rank positions), sum the ranks belonging to positive examples, then apply AUC = (sum_ranks_pos - n_pos*(n_pos+1)/2) / (n_pos*n_neg).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'y_true must contain both 0 and 1 -- raise ValueError otherwise (AUC is undefined for a single class).',
+      'Tied scores must share the AVERAGE of the rank positions they span (this is what correctly gives a tied pos/neg pair a "half win" instead of an arbitrary full win or loss).',
+      'Ranks are 1-indexed over the ascending-sorted scores.',
+    ],
+    hints: {
+      small: 'Sort (score, label) pairs by score ascending. Every distinct score value should get one shared "average rank" across all examples tied at that value.',
+      strong: 'Group equal-score examples together; assign each group the average of the 1-indexed positions it spans. Then AUC = (sum of ranks among label==1 examples - n_pos*(n_pos+1)/2) / (n_pos*n_neg).',
+      concept: 'AUC = 0.5 always means "no better than random" (a random scorer ties in expectation), which is why the Mann-Whitney interpretation -- the probability a randomly chosen positive outranks a randomly chosen negative -- is the single most useful intuition for reading an AUC number.',
+    },
+    conceptConnections: [
+      { title: 'Model Evaluation & Metrics', route: '/docs/machine-learning/model-evaluation-metrics', description: 'ROC AUC as a threshold-independent classifier quality metric' },
+    ],
+    testCases: [
+      { id: 'no-ties', label: 'No Ties, One Discordant Pair', input: { y_true: [0, 0, 1, 1], y_scores: [0.1, 0.4, 0.35, 0.8] }, expectedOutput: 0.75, hidden: false, description: '3 of 4 positive/negative pairs are correctly ordered' },
+      { id: 'reordered-labels', label: 'Interleaved Labels', input: { y_true: [1, 0, 1, 0], y_scores: [0.9, 0.8, 0.7, 0.6] }, expectedOutput: 0.75, hidden: false },
+      { id: 'all-ties', label: 'All Scores Tied in Pairs', input: { y_true: [0, 1, 0, 1], y_scores: [0.2, 0.2, 0.6, 0.6] }, expectedOutput: 0.5, hidden: true, description: 'Every positive/negative pair is a tie, each worth exactly 0.5' },
+      { id: 'single-class', label: 'Only One Class Present', input: { y_true: [1, 1, 1], y_scores: [0.1, 0.2, 0.3] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-25': {
+    id: 'class-ml-prob-25',
+    title: 'Silhouette Score for Cluster Quality',
+    difficulty: 'hard',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '20–25 min',
+    functionName: 'silhouette_score',
+    functionSignature: 'silhouette_score(X: list[list[float]], labels: list[int]) -> float',
+    starterCode: `import math
+
+def silhouette_score(X, labels):
+    """X: feature rows. labels: a cluster assignment per row. For each
+    point i: a(i) = mean Euclidean distance to other points in its own
+    cluster (0.0 if its cluster has no other members); b(i) = the
+    smallest mean Euclidean distance to any OTHER cluster's points;
+    s(i) = (b(i)-a(i)) / max(a(i), b(i)), or 0.0 if that max is 0, or 0.0
+    if i's own cluster has size 1. Return the mean of s(i) over all
+    points. Raise ValueError if fewer than 2 clusters are present."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the silhouette score -- the standard way to numerically evaluate a clustering (like K-Means\' output) WITHOUT ground-truth labels, by checking whether every point is closer to its own cluster than to the nearest other one.',
+    taskDescription: 'Implement `silhouette_score(X, labels)`: for every point, compute its mean in-cluster distance a(i) and its mean distance to the nearest other cluster b(i), combine them into s(i) = (b-a)/max(a,b), and return the mean s(i) across all points.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Use Euclidean distance between rows of X.',
+      'A point in a singleton cluster (no other members) gets s(i) = 0.0 by convention (this matches scikit-learn\'s own behavior).',
+      'Raise ValueError if labels contains fewer than 2 distinct clusters (silhouette is undefined for a single cluster).',
+      'The overall score is bounded in [-1, 1]: near +1 means well-separated clusters, near 0 means overlapping clusters, negative means points are likely in the wrong cluster.',
+    ],
+    hints: {
+      small: 'For point i, a(i) only looks at OTHER members of i\'s own cluster; b(i) looks at every OTHER cluster\'s full membership and takes the closest one.',
+      strong: 'a(i) = mean(dist(i,j) for j in same cluster, j != i); for every other cluster, compute mean(dist(i,j) for j in that cluster), and b(i) = the minimum of those means over all other clusters; s(i) = (b(i)-a(i))/max(a(i),b(i)).',
+      concept: 'This is exactly the metric you would use to numerically justify a choice of k in K-Means (as an alternative to the more subjective elbow method) -- compute the mean silhouette score for several values of k and pick the one that maximizes it.',
+    },
+    conceptConnections: [
+      { title: 'K-Means & Hierarchical Clustering, In Full Depth', route: '/docs/machine-learning/kmeans-hierarchical-clustering', description: 'Silhouette score as the standard way to numerically evaluate a clustering result' },
+    ],
+    testCases: [
+      { id: 'well-separated', label: 'Two Well-Separated Clusters', input: { X: [[1, 1], [1.5, 2], [8, 8], [8.5, 8.5]], labels: [0, 0, 1, 1] }, expectedOutput: 0.9059559942468866, hidden: false, description: 'Tight, far-apart clusters score close to the maximum of 1.0' },
+      { id: 'singleton-clusters', label: 'Two Singleton Clusters', input: { X: [[0, 0], [10, 10]], labels: [0, 1] }, expectedOutput: 0.0, hidden: true, description: 'Every point is alone in its own cluster, so every s(i) is 0.0 by convention' },
+      { id: 'single-cluster-error', label: 'Only One Cluster Present', input: { X: [[0, 0], [1, 1]], labels: [0, 0] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

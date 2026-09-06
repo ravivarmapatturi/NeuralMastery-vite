@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #824. Classical Machine Learning Module 5: Problem 24"
 description: "Master #824. Classical Machine Learning Module 5: Problem 24 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#824. Classical Machine Learning Module 5: Problem 24` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `compute_auc(y_true, y_scores)`, ROC AUC via the exact rank-based (Mann-Whitney U) formula -- mathematically identical to the trapezoidal-rule area under the ROC curve but needs no threshold sweep.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `compute_auc(y_true, y_scores)`: rank all scores ascending (tied scores share the average of their tied rank positions), sum the ranks belonging to positive examples, then apply AUC = (sum_ranks_pos - n_pos*(n_pos+1)/2) / (n_pos*n_neg). Raise `ValueError` if y_true has only one class.
 
 <PracticePlayground problemId="class-ml-prob-24" />

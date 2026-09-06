@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #815. Classical Machine Learning Module 3: Problem 15"
 description: "Master #815. Classical Machine Learning Module 3: Problem 15 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#815. Classical Machine Learning Module 3: Problem 15` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `svm_hinge_loss(X, y, weights, bias, C)`, the soft-margin SVM primal objective directly -- the L2 margin-maximizing regularizer plus the hinge loss that only penalizes points inside (or on the wrong side of) the margin.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `svm_hinge_loss(X, y, weights, bias, C=1.0)`: compute 0.5 * sum(w_j^2) (the margin-maximizing regularizer) plus C times the mean hinge loss max(0, 1 - y_i*(w.x_i + b)) across all rows. Labels are +1/-1, not 0/1.
 
 <PracticePlayground problemId="class-ml-prob-15" />

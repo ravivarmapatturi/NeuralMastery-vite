@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #803. Classical Machine Learning Module 1: Problem 3"
 description: "Master #803. Classical Machine Learning Module 1: Problem 3 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#803. Classical Machine Learning Module 1: Problem 3` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `majority_vote(predictions)`, hard-voting ensemble aggregation -- the combination step that turns M independently-trained models (a bagging ensemble, a random forest's individual trees, or just M different classifiers) into one prediction per sample.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `majority_vote(predictions)`: for each sample (each column across the M prediction lists), tally how many models predicted each class label, and return the label with the most votes -- ties broken by the smaller label.
 
 <PracticePlayground problemId="class-ml-prob-3" />

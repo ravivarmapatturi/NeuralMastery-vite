@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #801. Classical Machine Learning Module 1: Problem 1"
 description: "Master #801. Classical Machine Learning Module 1: Problem 1 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#801. Classical Machine Learning Module 1: Problem 1` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement `precision_recall_f1(tp, fp, fn)`, the three classification metrics that matter far more than raw accuracy whenever classes are imbalanced -- the numbers behind every "high accuracy, useless model" cautionary tale in ML.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_1_problem_1`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement the function `precision_recall_f1(tp, fp, fn)`, returning a dict with keys `precision`, `recall`, and `f1`, computed from the standard formulas. Define precision = 0.0 if tp+fp == 0, recall = 0.0 if tp+fn == 0, and f1 = 0.0 if precision+recall == 0, instead of dividing by zero.
 
 <PracticePlayground problemId="class-ml-prob-1" />
