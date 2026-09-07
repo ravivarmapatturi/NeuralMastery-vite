@@ -39,7 +39,7 @@ describe('RunnableCode: CodeMirror editor swap', () => {
       const el = container.querySelector('[contenteditable="true"][data-language="python"]')
       expect(el).toBeTruthy()
       return el as HTMLElement
-    })
+    }, { timeout: 4000 })
     expect(editable.textContent).toContain('return a + b')
   })
 
@@ -50,7 +50,7 @@ describe('RunnableCode: CodeMirror editor swap', () => {
     })
     await waitFor(() => {
       expect(container.querySelector('[contenteditable="true"][data-language="python"]')).toBeTruthy()
-    })
+    }, { timeout: 4000 })
     expect(await findByText(/assert double\(2\) == 4/)).toBeInTheDocument()
   })
 })

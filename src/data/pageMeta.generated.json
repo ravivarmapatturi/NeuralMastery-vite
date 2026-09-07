@@ -3531,9 +3531,9 @@
     "/docs/practice-problems/arr-hash-prob-10": {
       "slug": "practice-problems/arr-hash-prob-10",
       "section": "practice-problems",
-      "title": "Practice: #540. Arrays / Hashing / Two Pointers Module 2: Problem 10",
+      "title": "Practice: #540. Squares of a Sorted Array",
       "sidebarPosition": null,
-      "description": "Master #540. Arrays / Hashing / Two Pointers Module 2: Problem 10 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #540. Squares of a Sorted Array in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Arrays / Hashing / Two Pointers"
     },
@@ -3594,27 +3594,27 @@
     "/docs/practice-problems/arr-hash-prob-17": {
       "slug": "practice-problems/arr-hash-prob-17",
       "section": "practice-problems",
-      "title": "Practice: #547. Arrays / Hashing / Two Pointers Module 4: Problem 17",
+      "title": "Practice: #547. 3Sum",
       "sidebarPosition": null,
-      "description": "Master #547. Arrays / Hashing / Two Pointers Module 4: Problem 17 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #547. 3Sum in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-18": {
       "slug": "practice-problems/arr-hash-prob-18",
       "section": "practice-problems",
-      "title": "Practice: #548. Arrays / Hashing / Two Pointers Module 4: Problem 18",
+      "title": "Practice: #548. Top K Frequent Elements",
       "sidebarPosition": null,
-      "description": "Master #548. Arrays / Hashing / Two Pointers Module 4: Problem 18 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #548. Top K Frequent Elements in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-19": {
       "slug": "practice-problems/arr-hash-prob-19",
       "section": "practice-problems",
-      "title": "Practice: #549. Arrays / Hashing / Two Pointers Module 4: Problem 19",
+      "title": "Practice: #549. Longest Substring Without Repeating Characters",
       "sidebarPosition": null,
-      "description": "Master #549. Arrays / Hashing / Two Pointers Module 4: Problem 19 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #549. Longest Substring Without Repeating Characters in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Arrays / Hashing / Two Pointers"
     },
@@ -3630,9 +3630,9 @@
     "/docs/practice-problems/arr-hash-prob-20": {
       "slug": "practice-problems/arr-hash-prob-20",
       "section": "practice-problems",
-      "title": "Practice: #550. Arrays / Hashing / Two Pointers Module 4: Problem 20",
+      "title": "Practice: #550. Valid Sudoku",
       "sidebarPosition": null,
-      "description": "Master #550. Arrays / Hashing / Two Pointers Module 4: Problem 20 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #550. Valid Sudoku in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Arrays / Hashing / Two Pointers"
     },
@@ -3675,45 +3675,45 @@
     "/docs/practice-problems/arr-hash-prob-25": {
       "slug": "practice-problems/arr-hash-prob-25",
       "section": "practice-problems",
-      "title": "Practice: #555. Arrays / Hashing / Two Pointers Module 5: Problem 25",
+      "title": "Practice: #555. Minimum Window Substring",
       "sidebarPosition": null,
-      "description": "Master #555. Arrays / Hashing / Two Pointers Module 5: Problem 25 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #555. Minimum Window Substring in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-26": {
       "slug": "practice-problems/arr-hash-prob-26",
       "section": "practice-problems",
-      "title": "Practice: #556. Arrays / Hashing / Two Pointers Module 6: Problem 26",
+      "title": "Practice: #556. Sliding Window Maximum",
       "sidebarPosition": null,
-      "description": "Master #556. Arrays / Hashing / Two Pointers Module 6: Problem 26 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #556. Sliding Window Maximum in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-27": {
       "slug": "practice-problems/arr-hash-prob-27",
       "section": "practice-problems",
-      "title": "Practice: #557. Arrays / Hashing / Two Pointers Module 6: Problem 27",
+      "title": "Practice: #557. Find All Anagrams in a String",
       "sidebarPosition": null,
-      "description": "Master #557. Arrays / Hashing / Two Pointers Module 6: Problem 27 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #557. Find All Anagrams in a String in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-28": {
       "slug": "practice-problems/arr-hash-prob-28",
       "section": "practice-problems",
-      "title": "Practice: #558. Arrays / Hashing / Two Pointers Module 6: Problem 28",
+      "title": "Practice: #558. Subarrays with K Different Integers",
       "sidebarPosition": null,
-      "description": "Master #558. Arrays / Hashing / Two Pointers Module 6: Problem 28 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #558. Subarrays with K Different Integers in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-29": {
       "slug": "practice-problems/arr-hash-prob-29",
       "section": "practice-problems",
-      "title": "Practice: #559. Arrays / Hashing / Two Pointers Module 6: Problem 29",
+      "title": "Practice: #559. Smallest Range Covering Elements from K Lists",
       "sidebarPosition": null,
-      "description": "Master #559. Arrays / Hashing / Two Pointers Module 6: Problem 29 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #559. Smallest Range Covering Elements from K Lists in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Arrays / Hashing / Two Pointers"
     },
@@ -3729,9 +3729,9 @@
     "/docs/practice-problems/arr-hash-prob-30": {
       "slug": "practice-problems/arr-hash-prob-30",
       "section": "practice-problems",
-      "title": "Practice: #560. Arrays / Hashing / Two Pointers Module 6: Problem 30",
+      "title": "Practice: #560. Longest Substring with At Most K Distinct Characters",
       "sidebarPosition": null,
-      "description": "Master #560. Arrays / Hashing / Two Pointers Module 6: Problem 30 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #560. Longest Substring with At Most K Distinct Characters in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Arrays / Hashing / Two Pointers"
     },
@@ -3756,36 +3756,36 @@
     "/docs/practice-problems/arr-hash-prob-6": {
       "slug": "practice-problems/arr-hash-prob-6",
       "section": "practice-problems",
-      "title": "Practice: #536. Arrays / Hashing / Two Pointers Module 2: Problem 6",
+      "title": "Practice: #536. Valid Palindrome",
       "sidebarPosition": null,
-      "description": "Master #536. Arrays / Hashing / Two Pointers Module 2: Problem 6 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #536. Valid Palindrome in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-7": {
       "slug": "practice-problems/arr-hash-prob-7",
       "section": "practice-problems",
-      "title": "Practice: #537. Arrays / Hashing / Two Pointers Module 2: Problem 7",
+      "title": "Practice: #537. Majority Element",
       "sidebarPosition": null,
-      "description": "Master #537. Arrays / Hashing / Two Pointers Module 2: Problem 7 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #537. Majority Element in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-8": {
       "slug": "practice-problems/arr-hash-prob-8",
       "section": "practice-problems",
-      "title": "Practice: #538. Arrays / Hashing / Two Pointers Module 2: Problem 8",
+      "title": "Practice: #538. Two Sum II - Input Array Is Sorted",
       "sidebarPosition": null,
-      "description": "Master #538. Arrays / Hashing / Two Pointers Module 2: Problem 8 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #538. Two Sum II - Input Array Is Sorted in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Arrays / Hashing / Two Pointers"
     },
     "/docs/practice-problems/arr-hash-prob-9": {
       "slug": "practice-problems/arr-hash-prob-9",
       "section": "practice-problems",
-      "title": "Practice: #539. Arrays / Hashing / Two Pointers Module 2: Problem 9",
+      "title": "Practice: #539. Is Subsequence",
       "sidebarPosition": null,
-      "description": "Master #539. Arrays / Hashing / Two Pointers Module 2: Problem 9 in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #539. Is Subsequence in the Arrays / Hashing / Two Pointers track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Arrays / Hashing / Two Pointers"
     },
@@ -8886,63 +8886,63 @@
     "/docs/practice-problems/llm-internals-prob-1": {
       "slug": "practice-problems/llm-internals-prob-1",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 1: Problem 361",
+      "title": "Practice: Compute Scaled Dot-Product Attention Scores",
       "sidebarPosition": 361,
-      "description": "Curriculum Problem 361 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Compute scaled dot-product attention logits between a query vector and a sequence of key vectors -- the foundational similarity calculation in transformer attention layers.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
     "/docs/practice-problems/llm-internals-prob-10": {
       "slug": "practice-problems/llm-internals-prob-10",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 10: Problem 370",
+      "title": "Practice: Detect Prompt Injection Heuristics",
       "sidebarPosition": 370,
-      "description": "Curriculum Problem 370 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Build a rule-based safety classifier detecting adversarial prompt injections, system overrides, and jailbreak attempts in user inputs.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
     "/docs/practice-problems/llm-internals-prob-11": {
       "slug": "practice-problems/llm-internals-prob-11",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 11: Problem 371",
+      "title": "Practice: Calculate KV-Cache Memory Footprint",
       "sidebarPosition": 371,
-      "description": "Curriculum Problem 371 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Calculate the exact VRAM footprint in bytes required by an LLM KV-cache during multi-turn autoregressive serving.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
     "/docs/practice-problems/llm-internals-prob-12": {
       "slug": "practice-problems/llm-internals-prob-12",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 12: Problem 372",
+      "title": "Practice: Compute LLM Generation Latency Metrics",
       "sidebarPosition": 372,
-      "description": "Curriculum Problem 372 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Compute production LLM serving benchmarks: Time To First Token (TTFT), Inter-Token Latency (ITL), and throughput (Tokens Per Second).",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
     "/docs/practice-problems/llm-internals-prob-13": {
       "slug": "practice-problems/llm-internals-prob-13",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 13: Problem 373",
+      "title": "Practice: Top-K Logit Filtering",
       "sidebarPosition": 373,
-      "description": "Curriculum Problem 373 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Implement Top-K logit filtering -- pruning low-probability tail tokens from the candidate vocabulary during autoregressive generation.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
     "/docs/practice-problems/llm-internals-prob-14": {
       "slug": "practice-problems/llm-internals-prob-14",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 14: Problem 374",
+      "title": "Practice: Verify RAG Citations and Token Overlap",
       "sidebarPosition": 374,
-      "description": "Curriculum Problem 374 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Implement citation verification and lexical overlap scoring for evaluating hallucination rates in RAG generation systems.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
     "/docs/practice-problems/llm-internals-prob-15": {
       "slug": "practice-problems/llm-internals-prob-15",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 15: Problem 375",
+      "title": "Practice: Top-P (Nucleus) Token Selection",
       "sidebarPosition": 375,
-      "description": "Curriculum Problem 375 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Implement Top-P (Nucleus) sampling token selection -- dynamically sizing candidate token sets based on cumulative probability mass.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
@@ -8985,9 +8985,9 @@
     "/docs/practice-problems/llm-internals-prob-2": {
       "slug": "practice-problems/llm-internals-prob-2",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 2: Problem 362",
+      "title": "Practice: Compute Token-Level F1 for QA Evaluation",
       "sidebarPosition": 362,
-      "description": "Curriculum Problem 362 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Implement SQuAD-standard token-level Precision, Recall, and F1 evaluation metrics for extractive question answering and LLM response evaluation.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
@@ -9084,9 +9084,9 @@
     "/docs/practice-problems/llm-internals-prob-3": {
       "slug": "practice-problems/llm-internals-prob-3",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 3: Problem 363",
+      "title": "Practice: Construct Causal Attention Mask",
       "sidebarPosition": 363,
-      "description": "Curriculum Problem 363 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Build a causal (autoregressive) attention mask matrix preventing query positions from attending to future key positions during decoding.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
@@ -9183,9 +9183,9 @@
     "/docs/practice-problems/llm-internals-prob-4": {
       "slug": "practice-problems/llm-internals-prob-4",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 4: Problem 364",
+      "title": "Practice: Calculate Perplexity from Cross-Entropy Loss",
       "sidebarPosition": 364,
-      "description": "Curriculum Problem 364 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Compute language model perplexity from token-level cross-entropy loss values -- the gold-standard evaluation metric for generative language modeling.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
@@ -9282,9 +9282,9 @@
     "/docs/practice-problems/llm-internals-prob-5": {
       "slug": "practice-problems/llm-internals-prob-5",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 5: Problem 365",
+      "title": "Practice: Temperature-Scaled Softmax Distribution",
       "sidebarPosition": 365,
-      "description": "Curriculum Problem 365 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Implement temperature-scaled softmax probability computation with numerical stability for LLM sampling and decoding control.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
@@ -9381,9 +9381,9 @@
     "/docs/practice-problems/llm-internals-prob-6": {
       "slug": "practice-problems/llm-internals-prob-6",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 6: Problem 366",
+      "title": "Practice: Compute ROUGE-1 Summarization Score",
       "sidebarPosition": 366,
-      "description": "Curriculum Problem 366 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Compute the ROUGE-1 summarization evaluation metric measuring unigram recall and precision against a human reference summary.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
@@ -9480,9 +9480,9 @@
     "/docs/practice-problems/llm-internals-prob-7": {
       "slug": "practice-problems/llm-internals-prob-7",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 7: Problem 367",
+      "title": "Practice: Sinusoidal Positional Encoding",
       "sidebarPosition": 367,
-      "description": "Curriculum Problem 367 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Implement the classic Vaswani et al. (2017) sinusoidal positional encoding table inject position awareness into sequence embeddings.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
@@ -9498,18 +9498,18 @@
     "/docs/practice-problems/llm-internals-prob-8": {
       "slug": "practice-problems/llm-internals-prob-8",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 8: Problem 368",
+      "title": "Practice: Compute BLEU-1 Score with Brevity Penalty",
       "sidebarPosition": 368,
-      "description": "Curriculum Problem 368 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Implement unigram BLEU score with exponential Brevity Penalty to evaluate machine translation and generation conciseness.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
     "/docs/practice-problems/llm-internals-prob-9": {
       "slug": "practice-problems/llm-internals-prob-9",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 9: Problem 369",
+      "title": "Practice: Compute Rotary Position Embedding (RoPE) Angles",
       "sidebarPosition": 369,
-      "description": "Curriculum Problem 369 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Implement Rotary Position Embedding (RoPE) angle calculation -- the modern positional representation powering LLaMA, Mistral, and modern open-weights LLMs.",
       "difficulty": "easy",
       "topic": "transformers-llms"
     },
