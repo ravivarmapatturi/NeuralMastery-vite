@@ -1,31 +1,32 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 21: Problem 381"
+title: "Practice: Beam Search Length Penalty Score"
 sidebar_position: 381
-description: "Curriculum Problem 381 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: easy
+description: "Apply Google's Wu et al. length penalty to a beam search raw log-probability score to prevent length bias."
+difficulty: medium
 topic: transformers-llms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 21: Problem 381
+# Beam Search Length Penalty Score
 
-**Rank #381** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Rank #381** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-20`.
+Implement `length_penalty_score(raw_log_prob, length, alpha=0.6)` using the Wu et al. formula: `score = raw_log_prob / lp` where `lp = ((5 + length) ** alpha) / (6 ** alpha)`. This normalizes beam scores by sequence length to prevent the decoder from unfairly preferring short sequences whose shorter paths accumulate less log-probability. Return the score rounded to 4 decimal places. Prerequisite: `llm-internals-prob-20`.
 
 <PracticePlayground problemId="llm-internals-prob-21" />
 
 <Solution>
 
 ```python
-def llm_internals_p21(data):
-    # Reference implementation
-    return data
+def length_penalty_score(raw_log_prob, length, alpha=0.6):
+    if length <= 0:
+        raise ValueError("length must be a positive integer")
+    lp = ((5 + length) ** alpha) / (6 ** alpha)
+    return round(raw_log_prob / lp, 4)
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Without length normalization, beam search strongly favors short sequences since each additional token contributes a negative log-probability. The formula `((5+L)^alpha / 6^alpha)` approaches 1 at `L=1` (no penalty for a single token) and grows with length, effectively dividing away the length-induced bias. Alpha controls the aggressiveness: `alpha=0` disables normalization; `alpha=1` fully normalizes.
 
 </Solution>

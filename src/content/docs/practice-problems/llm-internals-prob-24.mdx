@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 24: Problem 384"
+title: "Practice: Flash Attention Block Count"
 sidebar_position: 384
-description: "Curriculum Problem 384 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
+description: "Compute the number of tile blocks processed in Flash Attention's block-sparse algorithm for a given sequence length and block size."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,25 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 24: Problem 384
+# Flash Attention Block Count
 
 **Rank #384** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-23`.
+Implement `flash_attention_blocks(seq_len, block_size)` that returns `ceil(seq_len / block_size)` -- the number of SRAM-fitting tile blocks Flash Attention divides the query sequence into. Flash Attention achieves O(N) memory by processing the full attention computation one block at a time rather than materializing the full N×N attention matrix. Prerequisite: `llm-internals-prob-23`.
 
 <PracticePlayground problemId="llm-internals-prob-24" />
 
 <Solution>
 
 ```python
-def llm_internals_p24(data):
-    # Reference implementation
-    return data
+import math
+
+def flash_attention_blocks(seq_len, block_size):
+    if seq_len <= 0 or block_size <= 0:
+        raise ValueError("seq_len and block_size must be positive integers")
+    return math.ceil(seq_len / block_size)
 ```
 
-This problem tests fundamental skills in LLM evaluation.
+Standard attention materializes an `N x N` matrix requiring O(N^2) memory. Flash Attention instead tiles the Q, K, V matrices into blocks that fit in on-chip SRAM. The algorithm computes the exact softmax attention output through numerically stable online updates, reducing HBM reads/writes to O(N) while producing the same mathematical result.
 
 </Solution>

@@ -1,31 +1,39 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 29: Problem 389"
+title: "Practice: Cross-Entropy Loss from Logits"
 sidebar_position: 389
-description: "Curriculum Problem 389 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
+description: "Compute the cross-entropy loss for a single-token prediction from raw logits and the true token index."
+difficulty: easy
 topic: transformers-llms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 29: Problem 389
+# Cross-Entropy Loss from Logits
 
-**Rank #389** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Rank #389** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-28`.
+Implement `cross_entropy_loss(logits, target_idx)` that computes the cross-entropy loss for a single classification step. Apply numerically stable softmax (subtract max before exp), then return `-log(softmax[target_idx])` rounded to 4 decimal places. This is the per-token loss during LLM next-token prediction training. Prerequisite: `llm-internals-prob-28`.
 
 <PracticePlayground problemId="llm-internals-prob-29" />
 
 <Solution>
 
 ```python
-def llm_internals_p29(data):
-    # Reference implementation
-    return data
+import math
+
+def cross_entropy_loss(logits, target_idx):
+    if not logits:
+        raise ValueError("logits must be non-empty")
+    if target_idx < 0 or target_idx >= len(logits):
+        raise IndexError("target_idx out of range")
+    max_l = max(logits)
+    exps = [math.exp(l - max_l) for l in logits]
+    total = sum(exps)
+    prob = exps[target_idx] / total
+    return round(-math.log(prob), 4)
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Cross-entropy loss is the negative log-likelihood of the true token: minimizing it maximizes the probability the model assigns to correct completions. Combined with the log-sum-exp trick for numerical stability, this single function is at the core of every LLM pretraining and fine-tuning loop.
 
 </Solution>

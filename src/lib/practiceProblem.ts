@@ -13394,6 +13394,671 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
 ],
     runtime: { language: 'python', capabilities: ['python', 'numpy'] },
   },
+
+  'llm-internals-prob-16': {
+    id: 'llm-internals-prob-16',
+    title: 'Transformer Attention Head Dimension',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '8–12 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'attention_head_dim',
+    functionSignature: 'attention_head_dim(d_model: int, num_heads: int) -> int',
+    starterCode: `def attention_head_dim(d_model, num_heads):
+    """Return d_model // num_heads -- the per-head key/query/value dimension in MHA.
+    Raise ValueError if inputs are non-positive or d_model is not divisible by num_heads."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Compute the per-head dimension d_k = d_model // num_heads used in multi-head attention.',
+    taskDescription: 'Implement `attention_head_dim(d_model, num_heads)`. Return `d_model // num_heads`. Raise `ValueError` if either input is non-positive, or if `d_model % num_heads != 0`.',
+    constraints: [
+      'd_model and num_heads are positive integers.',
+      'd_model must be exactly divisible by num_heads.',
+      'Return an integer.',
+    ],
+    hints: {
+      small: 'Use integer division `//`. Check divisibility with the modulo operator `%`.',
+      strong: 'Raise ValueError("d_model must be exactly divisible by num_heads") before dividing.',
+      concept: 'Each attention head independently attends over a d_k-dimensional subspace. The scaling factor 1/sqrt(d_k) in dot-product attention depends on this value.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Multi-head attention architecture and head dimension math' },
+    ],
+    testCases: [
+      { id: 'standard-bert', label: 'BERT-base: 768/12', input: { d_model: 768, num_heads: 12 }, expectedOutput: 64, hidden: false },
+      { id: 'standard-gpt2', label: 'GPT-2: 1024/16', input: { d_model: 1024, num_heads: 16 }, expectedOutput: 64, hidden: false },
+      { id: 'small-model', label: 'Small: 256/4', input: { d_model: 256, num_heads: 4 }, expectedOutput: 64, hidden: false },
+      { id: 'large-d', label: 'Large d: 2048/32', input: { d_model: 2048, num_heads: 32 }, expectedOutput: 64, hidden: false },
+      { id: 'single-head', label: 'Single head: 512/1', input: { d_model: 512, num_heads: 1 }, expectedOutput: 512, hidden: true },
+      { id: 'not-divisible', label: 'Not divisible raises ValueError', input: { d_model: 100, num_heads: 3 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-17': {
+    id: 'llm-internals-prob-17',
+    title: 'Layer Normalization Forward Pass',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'layer_norm',
+    functionSignature: 'layer_norm(x: list[float], eps: float = 1e-5) -> list[float]',
+    starterCode: `import math
+
+def layer_norm(x, eps=1e-5):
+    """Normalize x to zero mean and unit variance along the feature dimension.
+    Return empty list for empty input. Round each value to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the Layer Normalization forward pass: normalize each vector to zero mean and unit variance.',
+    taskDescription: 'Implement `layer_norm(x, eps=1e-5)`. Compute mean and variance across all elements of `x`, then return `[(xi - mean) / sqrt(var + eps) for xi in x]`, each rounded to 4 decimal places. Return `[]` for empty input.',
+    constraints: [
+      'x is a list of floats.',
+      'eps is a small positive float for numerical stability (default 1e-5).',
+      'Return [] for empty input.',
+      'Round each output value to 4 decimal places.',
+    ],
+    hints: {
+      small: 'Compute mean = sum(x)/len(x), then var = sum((xi-mean)^2 for xi in x)/len(x).',
+      strong: 'Use math.sqrt(var + eps) for the standard deviation to avoid division by zero.',
+      concept: 'Layer Norm computes statistics across the feature dimension (not batch), making it sequence-length and batch-size independent -- essential for autoregressive generation.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Layer normalization placement in transformer blocks' },
+    ],
+    testCases: [
+      { id: 'basic-increasing', label: 'Increasing [1,2,3,4]', input: { x: [1.0, 2.0, 3.0, 4.0] }, expectedOutput: [-1.3416, -0.4472, 0.4472, 1.3416], hidden: false },
+      { id: 'binary-split', label: 'Binary [0,0,1,1]', input: { x: [0.0, 0.0, 1.0, 1.0] }, expectedOutput: [-1.0, -1.0, 1.0, 1.0], hidden: false },
+      { id: 'single-val', label: 'Single element returns 0', input: { x: [5.0] }, expectedOutput: [0.0], hidden: false },
+      { id: 'empty', label: 'Empty input returns []', input: { x: [] }, expectedOutput: [], hidden: false },
+      { id: 'negatives', label: 'Negative values [-2,-1,0,1,2]', input: { x: [-2.0, -1.0, 0.0, 1.0, 2.0] }, expectedOutput: [-1.2649, -0.6325, 0.0, 0.6325, 1.2649], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-18': {
+    id: 'llm-internals-prob-18',
+    title: 'Numerically Stable Softmax',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '8–12 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'stable_softmax',
+    functionSignature: 'stable_softmax(logits: list[float]) -> list[float]',
+    starterCode: `import math
+
+def stable_softmax(logits):
+    """Apply numerically stable softmax by subtracting max before exp.
+    Return list of probabilities summing to 1.0, rounded to 4 decimal places.
+    Return [] for empty input."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement numerically stable softmax by subtracting the max logit before exponentiation.',
+    taskDescription: 'Implement `stable_softmax(logits)`. Subtract `max(logits)` from each logit before calling `exp`. Return `[round(e / total, 4) for e in exp_shifted]`. Return `[]` for empty input.',
+    constraints: [
+      'logits is a list of floats.',
+      'Return [] for empty input.',
+      'Round each output to 4 decimal places.',
+      'All outputs must sum to approximately 1.0.',
+    ],
+    hints: {
+      small: 'Compute max_val = max(logits), then exp_shifted = [math.exp(x - max_val) for x in logits].',
+      strong: 'total = sum(exp_shifted); return [round(e/total, 4) for e in exp_shifted].',
+      concept: 'Subtracting the max does not change softmax output (it cancels in numerator and denominator) but prevents exp overflow for logit values like 1000 or larger.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Softmax in scaled dot-product attention and output distributions' },
+    ],
+    testCases: [
+      { id: 'basic-three', label: 'Three logits [1,2,3]', input: { logits: [1.0, 2.0, 3.0] }, expectedOutput: [0.09, 0.2447, 0.6652], hidden: false },
+      { id: 'large-values', label: 'Large values [1000,1001,1002]', input: { logits: [1000.0, 1001.0, 1002.0] }, expectedOutput: [0.09, 0.2447, 0.6652], hidden: false },
+      { id: 'uniform', label: 'Uniform [0,0,0]', input: { logits: [0.0, 0.0, 0.0] }, expectedOutput: [0.3333, 0.3333, 0.3333], hidden: false },
+      { id: 'binary', label: 'Two logits [0,1]', input: { logits: [0.0, 1.0] }, expectedOutput: [0.2689, 0.7311], hidden: false },
+      { id: 'empty', label: 'Empty returns []', input: { logits: [] }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-19': {
+    id: 'llm-internals-prob-19',
+    title: 'Transformer FFN Inner Dimension',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '5–8 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'ffn_inner_dim',
+    functionSignature: 'ffn_inner_dim(d_model: int, expansion_factor: int = 4) -> int',
+    starterCode: `def ffn_inner_dim(d_model, expansion_factor=4):
+    """Return d_model * expansion_factor -- the inner dimension of the FFN sublayer.
+    Raise ValueError if either argument is non-positive."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Compute the inner hidden dimension of the position-wise feed-forward network in a transformer block.',
+    taskDescription: 'Implement `ffn_inner_dim(d_model, expansion_factor=4)`. Return `d_model * expansion_factor`. Raise `ValueError` if either argument is non-positive.',
+    constraints: [
+      'd_model and expansion_factor are positive integers.',
+      'Return an integer.',
+    ],
+    hints: {
+      small: 'Just return d_model * expansion_factor after validating inputs are > 0.',
+      strong: 'The default expansion_factor=4 comes from the original Transformer paper: d_model=512 gives d_ff=2048.',
+      concept: 'The expanded inner dimension gives the FFN capacity to store and recall factual knowledge. Some models use 8/3 * d_model with SwiGLU activation (e.g. LLaMA), or other ratios.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Position-wise FFN sublayer in transformer architecture' },
+    ],
+    testCases: [
+      { id: 'orig-transformer', label: 'Original Transformer: 512x4', input: { d_model: 512, expansion_factor: 4 }, expectedOutput: 2048, hidden: false },
+      { id: 'bert-base', label: 'BERT-base: 768x4', input: { d_model: 768, expansion_factor: 4 }, expectedOutput: 3072, hidden: false },
+      { id: 'llama-like', label: 'Custom: 4096x4', input: { d_model: 4096, expansion_factor: 4 }, expectedOutput: 16384, hidden: false },
+      { id: 'small', label: 'Small: 256x4', input: { d_model: 256, expansion_factor: 4 }, expectedOutput: 1024, hidden: false },
+      { id: 'factor-8', label: 'Factor 8: 512x8', input: { d_model: 512, expansion_factor: 8 }, expectedOutput: 4096, hidden: true },
+      { id: 'invalid', label: 'Zero d_model raises ValueError', input: { d_model: 0, expansion_factor: 4 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-20': {
+    id: 'llm-internals-prob-20',
+    title: 'Multi-Head Attention Parameter Count',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'count_mha_params',
+    functionSignature: 'count_mha_params(d_model: int, num_heads: int, include_bias: bool = False) -> int',
+    starterCode: `def count_mha_params(d_model, num_heads, include_bias=False):
+    """Count total trainable parameters in a multi-head attention module.
+    Four weight matrices (Q, K, V, O) each of shape (d_model, d_model).
+    If include_bias=True, add d_model bias terms for each of the four projections.
+    Raise ValueError if d_model or num_heads are non-positive, or if d_model % num_heads != 0."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Count the number of trainable parameters in a multi-head attention module.',
+    taskDescription: 'Implement `count_mha_params(d_model, num_heads, include_bias=False)`. Four projection matrices (W_Q, W_K, W_V, W_O), each `(d_model, d_model)`. When `include_bias=True`, add `4 * d_model` bias terms. Raise `ValueError` if inputs invalid.',
+    constraints: [
+      'd_model and num_heads must be positive, with d_model % num_heads == 0.',
+      'Return an integer.',
+    ],
+    hints: {
+      small: 'weight_params = 4 * d_model * d_model. If include_bias, add 4 * d_model.',
+      strong: 'Even though Q/K/V are internally split by num_heads, the full projection matrix is still d_model x d_model as one tensor.',
+      concept: 'Understanding MHA parameter count is foundational for model sizing. A BERT-base MHA layer: 4 * 768 * 768 = 2,359,296 parameters (about 9M per transformer block with FFN).',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Multi-head attention projection matrices and parameter budgeting' },
+    ],
+    testCases: [
+      { id: 'gpt2-no-bias', label: 'GPT-2 small: d=768, no bias', input: { d_model: 768, num_heads: 12, include_bias: false }, expectedOutput: 2359296, hidden: false },
+      { id: 'orig-no-bias', label: 'Original Transformer: d=512, no bias', input: { d_model: 512, num_heads: 8, include_bias: false }, expectedOutput: 1048576, hidden: false },
+      { id: 'with-bias', label: 'GPT-2 small: d=768, with bias', input: { d_model: 768, num_heads: 12, include_bias: true }, expectedOutput: 2362368, hidden: false },
+      { id: 'large', label: 'Large: d=1024, 16 heads', input: { d_model: 1024, num_heads: 16, include_bias: false }, expectedOutput: 4194304, hidden: true },
+      { id: 'invalid', label: 'Non-divisible raises ValueError', input: { d_model: 100, num_heads: 3, include_bias: false }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-21': {
+    id: 'llm-internals-prob-21',
+    title: 'Beam Search Length Penalty Score',
+    difficulty: 'medium',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '12–18 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'length_penalty_score',
+    functionSignature: 'length_penalty_score(raw_log_prob: float, length: int, alpha: float = 0.6) -> float',
+    starterCode: `def length_penalty_score(raw_log_prob, length, alpha=0.6):
+    """Apply Wu et al. length penalty to a raw beam log-probability score.
+    lp = ((5 + length) ** alpha) / (6 ** alpha)
+    score = raw_log_prob / lp
+    Return score rounded to 4 decimal places.
+    Raise ValueError if length <= 0."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Apply the Wu et al. length penalty to normalize beam search scores and prevent length bias.',
+    taskDescription: 'Implement `length_penalty_score(raw_log_prob, length, alpha=0.6)`. Compute `lp = ((5 + length) ** alpha) / (6 ** alpha)`, then return `round(raw_log_prob / lp, 4)`. Raise `ValueError` if `length <= 0`.',
+    constraints: [
+      'raw_log_prob is a negative float (log-probability).',
+      'length is a positive integer (number of tokens generated).',
+      'alpha controls penalty aggressiveness: 0 = no penalty, 1 = full normalization.',
+      'Return a float rounded to 4 decimal places.',
+    ],
+    hints: {
+      small: 'Compute lp = ((5 + length) ** alpha) / (6 ** alpha), then return round(raw_log_prob / lp, 4).',
+      strong: 'At length=1: lp = (6^alpha)/(6^alpha) = 1, so the score is unchanged. At larger lengths lp grows, dividing a more negative score.',
+      concept: 'Without length normalization, beam search strongly favors short outputs. This formula balances length vs quality; alpha=0.6 is empirically optimal for translation tasks.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Beam search decoding and sequence scoring in generation' },
+    ],
+    testCases: [
+      { id: 'length-five', label: 'Length 5, score -2.5', input: { raw_log_prob: -2.5, length: 5, alpha: 0.6 }, expectedOutput: -1.8401, hidden: false },
+      { id: 'length-ten', label: 'Length 10, score -5.0', input: { raw_log_prob: -5.0, length: 10, alpha: 0.6 }, expectedOutput: -2.8854, hidden: false },
+      { id: 'length-one', label: 'Length 1 (no penalty)', input: { raw_log_prob: -1.0, length: 1, alpha: 0.6 }, expectedOutput: -1.0, hidden: false },
+      { id: 'alpha-zero', label: 'Alpha 0 (no normalization)', input: { raw_log_prob: -3.0, length: 20, alpha: 0.0 }, expectedOutput: -3.0, hidden: true },
+      { id: 'invalid', label: 'Length 0 raises ValueError', input: { raw_log_prob: -1.0, length: 0, alpha: 0.6 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-22': {
+    id: 'llm-internals-prob-22',
+    title: 'Attention Distribution Entropy',
+    difficulty: 'medium',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'attention_entropy',
+    functionSignature: 'attention_entropy(attn_weights: list[float]) -> float',
+    starterCode: `import math
+
+def attention_entropy(attn_weights):
+    """Compute Shannon entropy H = -sum(p * log(p + eps)) over attention weights.
+    Use eps=1e-9 inside log to avoid log(0). Return abs(result) rounded to 4 decimal places.
+    Raise ValueError for empty input."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute Shannon entropy of an attention weight distribution to measure how focused vs. diffuse the attention pattern is.",
+    taskDescription: 'Implement `attention_entropy(attn_weights)`. Use `eps=1e-9` inside `math.log(p + eps)` to avoid `log(0)`. Return `round(abs(-sum(p * math.log(p + eps) for p in attn_weights)), 4)`. Raise `ValueError` for empty input.',
+    constraints: [
+      'attn_weights is a list of non-negative floats that sum to approximately 1.0.',
+      'Use eps=1e-9 to avoid log(0).',
+      'Return abs(result) to avoid negative zero output.',
+      'Round to 4 decimal places.',
+    ],
+    hints: {
+      small: 'H = -sum(p * math.log(p + eps) for p in attn_weights). Use abs() on the final result.',
+      strong: 'Uniform distribution [0.25, 0.25, 0.25, 0.25] should give log(4) ≈ 1.3863. All-concentrated [1,0,0,0] gives 0.',
+      concept: 'Low entropy = sharp/focused attention (e.g. attending to a specific token). High entropy = diffuse/global attention. Analyzing head entropy reveals syntactic vs semantic specialization.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Attention weight distributions and head interpretability' },
+    ],
+    testCases: [
+      { id: 'uniform-four', label: 'Uniform 4-way', input: { attn_weights: [0.25, 0.25, 0.25, 0.25] }, expectedOutput: 1.3863, hidden: false },
+      { id: 'concentrated', label: 'All-concentrated [1,0,0,0]', input: { attn_weights: [1.0, 0.0, 0.0, 0.0] }, expectedOutput: 0.0, hidden: false },
+      { id: 'skewed', label: 'Skewed [0.7,0.2,0.1]', input: { attn_weights: [0.7, 0.2, 0.1] }, expectedOutput: 0.8018, hidden: false },
+      { id: 'two-way', label: 'Binary 50/50', input: { attn_weights: [0.5, 0.5] }, expectedOutput: 0.6931, hidden: false },
+      { id: 'invalid', label: 'Empty raises ValueError', input: { attn_weights: [] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-23': {
+    id: 'llm-internals-prob-23',
+    title: 'LoRA Adapter Parameter Count',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '8–12 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'lora_param_count',
+    functionSignature: 'lora_param_count(d_in: int, d_out: int, rank: int) -> int',
+    starterCode: `def lora_param_count(d_in, d_out, rank):
+    """Count LoRA adapter parameters: A matrix (d_in x rank) + B matrix (rank x d_out).
+    Raise ValueError if any argument is non-positive or rank > min(d_in, d_out)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Count the number of trainable parameters introduced by a LoRA low-rank adapter.',
+    taskDescription: 'Implement `lora_param_count(d_in, d_out, rank)`. Return `d_in * rank + rank * d_out`. Raise `ValueError` if any argument is non-positive or `rank > min(d_in, d_out)`.',
+    constraints: [
+      'd_in, d_out, and rank are positive integers.',
+      'rank must not exceed min(d_in, d_out).',
+      'Return an integer.',
+    ],
+    hints: {
+      small: 'Matrix A has shape (d_in, rank) so d_in*rank params. Matrix B has shape (rank, d_out) so rank*d_out params.',
+      strong: 'Total = d_in * rank + rank * d_out. This replaces a full d_in x d_out weight update that would cost d_in*d_out params.',
+      concept: 'For a 768x768 matrix: LoRA r=8 needs 768*8 + 8*768 = 12,288 params vs 589,824 for the full matrix -- about 2% the cost, enabling GPU-feasible LLM fine-tuning.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'LoRA and parameter-efficient fine-tuning techniques' },
+    ],
+    testCases: [
+      { id: 'bert-rank8', label: 'BERT-base: 768x768 r=8', input: { d_in: 768, d_out: 768, rank: 8 }, expectedOutput: 12288, hidden: false },
+      { id: 'large-rank16', label: 'Large: 4096x4096 r=16', input: { d_in: 4096, d_out: 4096, rank: 16 }, expectedOutput: 131072, hidden: false },
+      { id: 'asymmetric', label: 'Asymmetric: 512x2048 r=4', input: { d_in: 512, d_out: 2048, rank: 4 }, expectedOutput: 10240, hidden: false },
+      { id: 'rank1', label: 'Rank 1: 256x256 r=1', input: { d_in: 256, d_out: 256, rank: 1 }, expectedOutput: 512, hidden: true },
+      { id: 'invalid', label: 'Rank too large raises ValueError', input: { d_in: 10, d_out: 10, rank: 11 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-24': {
+    id: 'llm-internals-prob-24',
+    title: 'Flash Attention Block Count',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '6–10 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'flash_attention_blocks',
+    functionSignature: 'flash_attention_blocks(seq_len: int, block_size: int) -> int',
+    starterCode: `import math
+
+def flash_attention_blocks(seq_len, block_size):
+    """Compute the number of SRAM-fitting tile blocks in Flash Attention.
+    Returns ceil(seq_len / block_size).
+    Raise ValueError if either argument is non-positive."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Compute the number of tile blocks Flash Attention divides the query sequence into.',
+    taskDescription: 'Implement `flash_attention_blocks(seq_len, block_size)`. Return `math.ceil(seq_len / block_size)`. Raise `ValueError` if either argument is non-positive.',
+    constraints: [
+      'seq_len and block_size are positive integers.',
+      'Return an integer.',
+    ],
+    hints: {
+      small: 'Use math.ceil(seq_len / block_size). Handle the case where seq_len is not divisible by block_size.',
+      strong: 'ceil(1000 / 64) = 16 because the last block holds only 1000 - 15*64 = 40 tokens.',
+      concept: 'Standard attention materializes an N x N matrix (O(N^2) memory). Flash Attention tiles Q into blocks of size B, never materializing the full matrix, achieving O(N) HBM memory.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Flash Attention memory-efficient tiled computation' },
+    ],
+    testCases: [
+      { id: 'divisible', label: 'seq=1024 block=64', input: { seq_len: 1024, block_size: 64 }, expectedOutput: 16, hidden: false },
+      { id: 'divisible-large', label: 'seq=2048 block=128', input: { seq_len: 2048, block_size: 128 }, expectedOutput: 16, hidden: false },
+      { id: 'not-divisible', label: 'seq=1000 block=64 (partial last block)', input: { seq_len: 1000, block_size: 64 }, expectedOutput: 16, hidden: false },
+      { id: 'single-block', label: 'seq=32 block=64 (fits in one)', input: { seq_len: 32, block_size: 64 }, expectedOutput: 1, hidden: false },
+      { id: 'invalid', label: 'Zero seq_len raises ValueError', input: { seq_len: 0, block_size: 64 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-25': {
+    id: 'llm-internals-prob-25',
+    title: 'Grouped Query Attention KV Head Count',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '8–12 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'gqa_kv_heads',
+    functionSignature: 'gqa_kv_heads(num_q_heads: int, num_groups: int) -> int',
+    starterCode: `def gqa_kv_heads(num_q_heads, num_groups):
+    """Compute number of KV heads in Grouped Query Attention.
+    Returns num_q_heads // num_groups.
+    Raise ValueError if inputs are non-positive or not divisible."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Compute the number of key/value heads in Grouped Query Attention (GQA).',
+    taskDescription: 'Implement `gqa_kv_heads(num_q_heads, num_groups)`. Return `num_q_heads // num_groups`. Raise `ValueError` if either is non-positive or `num_q_heads % num_groups != 0`.',
+    constraints: [
+      'num_q_heads and num_groups are positive integers.',
+      'num_q_heads must be divisible by num_groups.',
+      'Return an integer.',
+    ],
+    hints: {
+      small: 'Return num_q_heads // num_groups. Check that num_q_heads % num_groups == 0 first.',
+      strong: 'GQA groups query heads to share KV heads. MQA is the extreme case: num_groups = num_q_heads (1 KV head for all queries). MHA is the other extreme: num_groups = 1.',
+      concept: 'Llama-3-70B: 64 Q heads, 8 KV heads (num_groups=8). This reduces KV-cache by 8x vs MHA -- crucial for serving 70B models economically.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'GQA, MQA, and KV-cache memory optimization techniques' },
+    ],
+    testCases: [
+      { id: 'llama3-70b', label: 'Llama-3 70B pattern: 64/8', input: { num_q_heads: 64, num_groups: 8 }, expectedOutput: 8, hidden: false },
+      { id: 'group4', label: 'q=32 groups=4', input: { num_q_heads: 32, num_groups: 4 }, expectedOutput: 8, hidden: false },
+      { id: 'group2', label: 'q=16 groups=2', input: { num_q_heads: 16, num_groups: 2 }, expectedOutput: 8, hidden: false },
+      { id: 'mqa-like', label: 'MQA-like: q=40 groups=8', input: { num_q_heads: 40, num_groups: 8 }, expectedOutput: 5, hidden: true },
+      { id: 'invalid', label: 'Not divisible raises ValueError', input: { num_q_heads: 10, num_groups: 3 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-26': {
+    id: 'llm-internals-prob-26',
+    title: 'INT8 Quantization Error',
+    difficulty: 'medium',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'quantization_error',
+    functionSignature: 'quantization_error(x: float, scale: float, zero_point: int = 0, n_bits: int = 8) -> float',
+    starterCode: `def quantization_error(x, scale, zero_point=0, n_bits=8):
+    """Compute quantization error = |x - dequantize(quantize(x))|.
+    Quantize: q = clip(round(x / scale) + zero_point, -(2**(n_bits-1)), 2**(n_bits-1) - 1)
+    Dequantize: x_hat = (q - zero_point) * scale
+    Return round(abs(x - x_hat), 6).
+    Raise ValueError if scale <= 0."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Compute the absolute quantization error introduced by symmetric INT8 quantization.',
+    taskDescription: 'Implement `quantization_error(x, scale, zero_point=0, n_bits=8)`. Quantize, clip to `[-(2^(n_bits-1)), 2^(n_bits-1)-1]`, dequantize, then return `round(abs(x - x_hat), 6)`. Raise `ValueError` if `scale <= 0`.',
+    constraints: [
+      'scale must be positive.',
+      'n_bits defaults to 8 (INT8); supports other widths.',
+      'zero_point defaults to 0 (symmetric quantization).',
+      'Return a non-negative float rounded to 6 decimal places.',
+    ],
+    hints: {
+      small: 'q_min = -(2**(n_bits-1)), q_max = 2**(n_bits-1) - 1. Use max(q_min, min(q_max, round(x/scale) + zero_point)).',
+      strong: 'x_hat = (q - zero_point) * scale. Return round(abs(x - x_hat), 6).',
+      concept: 'Quantization error is bounded by scale/2 for values within the representable range. Minimizing this error while covering the weight distribution is the core challenge in PTQ calibration.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Quantization in LLM inference: INT8, INT4, and mixed-precision serving' },
+    ],
+    testCases: [
+      { id: 'basic', label: '3.14 scale=0.1', input: { x: 3.14, scale: 0.1, zero_point: 0, n_bits: 8 }, expectedOutput: 0.04, hidden: false },
+      { id: 'small-val', label: '1.57 scale=0.1', input: { x: 1.57, scale: 0.1, zero_point: 0, n_bits: 8 }, expectedOutput: 0.03, hidden: false },
+      { id: 'negative', label: '-0.25 scale=0.1', input: { x: -0.25, scale: 0.1, zero_point: 0, n_bits: 8 }, expectedOutput: 0.05, hidden: false },
+      { id: 'exact', label: '2.0 scale=0.1 (exact, no error)', input: { x: 2.0, scale: 0.1, zero_point: 0, n_bits: 8 }, expectedOutput: 0.0, hidden: false },
+      { id: 'invalid', label: 'scale=0 raises ValueError', input: { x: 1.0, scale: 0.0, zero_point: 0, n_bits: 8 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-27': {
+    id: 'llm-internals-prob-27',
+    title: 'GELU Activation Function',
+    difficulty: 'medium',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'gelu',
+    functionSignature: 'gelu(x: float) -> float',
+    starterCode: `import math
+
+def gelu(x):
+    """Compute GELU activation using the tanh approximation.
+    GELU(x) = 0.5 * x * (1 + tanh(sqrt(2/pi) * (x + 0.044715 * x**3)))
+    Return result rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the GELU activation function using the tanh approximation used in GPT-2 and BERT.',
+    taskDescription: 'Implement `gelu(x)`. Return `round(0.5 * x * (1 + math.tanh(math.sqrt(2.0/math.pi) * (x + 0.044715 * x**3))), 4)`.',
+    constraints: [
+      'x is a float.',
+      'Use the tanh approximation (not the exact erfc formula).',
+      'Return a float rounded to 4 decimal places.',
+    ],
+    hints: {
+      small: 'coeff = math.sqrt(2.0 / math.pi). Then: 0.5 * x * (1 + math.tanh(coeff * (x + 0.044715 * x**3))).',
+      strong: 'GELU(0) = 0.0. GELU(1) ≈ 0.8412. GELU(-1) ≈ -0.1588 (asymmetric due to Gaussian gating).',
+      concept: 'Unlike ReLU which hard-zeros negatives, GELU smoothly gates inputs proportional to their probability under a standard normal. This improves gradient flow and makes fine-tuned LLMs converge more reliably.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'GELU and SwiGLU activation variants in transformer FFN layers' },
+    ],
+    testCases: [
+      { id: 'zero', label: 'GELU(0)', input: { x: 0.0 }, expectedOutput: 0.0, hidden: false },
+      { id: 'one', label: 'GELU(1)', input: { x: 1.0 }, expectedOutput: 0.8412, hidden: false },
+      { id: 'neg-one', label: 'GELU(-1)', input: { x: -1.0 }, expectedOutput: -0.1588, hidden: false },
+      { id: 'two', label: 'GELU(2)', input: { x: 2.0 }, expectedOutput: 1.9546, hidden: false },
+      { id: 'half', label: 'GELU(0.5)', input: { x: 0.5 }, expectedOutput: 0.3457, hidden: true },
+      { id: 'neg-half', label: 'GELU(-0.5)', input: { x: -0.5 }, expectedOutput: -0.1543, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-28': {
+    id: 'llm-internals-prob-28',
+    title: 'RoPE Frequency Band Computation',
+    difficulty: 'medium',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '12–18 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'rope_frequencies',
+    functionSignature: 'rope_frequencies(d_head: int, base: float = 10000) -> list[float]',
+    starterCode: `def rope_frequencies(d_head, base=10000):
+    """Compute RoPE base frequencies: theta_i = base ** (-(2*i) / d_head) for i in range(d_head // 2).
+    Raise ValueError if d_head is not a positive even integer or base <= 0.
+    Round each frequency to 6 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Compute the Rotary Position Embedding (RoPE) base frequencies for each dimension pair in a transformer head.',
+    taskDescription: 'Implement `rope_frequencies(d_head, base=10000)`. Return `[round(base ** (-(2*i)/d_head), 6) for i in range(d_head // 2)]`. Raise `ValueError` if `d_head` is not a positive even integer or `base <= 0`.',
+    constraints: [
+      'd_head must be a positive even integer.',
+      'base must be positive (default 10000).',
+      'Return d_head // 2 frequencies, each rounded to 6 decimal places.',
+    ],
+    hints: {
+      small: 'For i=0: theta_0 = base**(0/d_head) = 1.0. For the last i=(d_head//2 - 1): theta is the smallest frequency.',
+      strong: 'Use a list comprehension: [round(base ** (-(2*i)/d_head), 6) for i in range(d_head//2)].',
+      concept: 'RoPE encodes position m by rotating dimension pair (i, i+d/2) by angle m*theta_i. Low-frequency dimensions (high i) capture long-range relationships; high-frequency ones (low i) encode local patterns.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Rotary Position Embeddings (RoPE) and relative position encoding' },
+    ],
+    testCases: [
+      { id: 'd4', label: 'd_head=4: 2 frequencies', input: { d_head: 4, base: 10000 }, expectedOutput: [1.0, 0.01], hidden: false },
+      { id: 'd8', label: 'd_head=8: 4 frequencies', input: { d_head: 8, base: 10000 }, expectedOutput: [1.0, 0.1, 0.01, 0.001], hidden: false },
+      { id: 'd2', label: 'd_head=2: 1 frequency', input: { d_head: 2, base: 10000 }, expectedOutput: [1.0], hidden: false },
+      { id: 'custom-base', label: 'd_head=4 base=100', input: { d_head: 4, base: 100 }, expectedOutput: [1.0, 0.1], hidden: true },
+      { id: 'invalid-odd', label: 'Odd d_head raises ValueError', input: { d_head: 5, base: 10000 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-29': {
+    id: 'llm-internals-prob-29',
+    title: 'Cross-Entropy Loss from Logits',
+    difficulty: 'easy',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'cross_entropy_loss',
+    functionSignature: 'cross_entropy_loss(logits: list[float], target_idx: int) -> float',
+    starterCode: `import math
+
+def cross_entropy_loss(logits, target_idx):
+    """Compute cross-entropy loss = -log(softmax(logits)[target_idx]).
+    Apply numerically stable softmax (subtract max before exp).
+    Raise ValueError for empty logits; raise IndexError if target_idx is out of range.
+    Return result rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Compute the cross-entropy loss for a single next-token prediction step.',
+    taskDescription: 'Implement `cross_entropy_loss(logits, target_idx)`. Apply stable softmax (subtract max), extract `prob = softmax[target_idx]`, return `round(-math.log(prob), 4)`. Raise `ValueError` for empty, `IndexError` for out-of-range target.',
+    constraints: [
+      'logits is a non-empty list of floats.',
+      'target_idx is a valid index into logits.',
+      'Use numerically stable softmax (subtract max before exp).',
+      'Return a non-negative float rounded to 4 decimal places.',
+    ],
+    hints: {
+      small: 'max_l = max(logits); exps = [math.exp(l - max_l) for l in logits]; total = sum(exps); prob = exps[target_idx] / total.',
+      strong: 'return round(-math.log(prob), 4). A perfectly correct prediction (prob=1) gives loss=0; a wrong prediction (prob~0) gives large loss.',
+      concept: 'This single function is the core of LLM next-token prediction training. Minimizing cross-entropy maximizes the log-likelihood of the training corpus.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Language model training objective: cross-entropy loss on next-token prediction' },
+    ],
+    testCases: [
+      { id: 'correct-class', label: 'Correct class [2,1,0.1] target=0', input: { logits: [2.0, 1.0, 0.1], target_idx: 0 }, expectedOutput: 0.417, hidden: false },
+      { id: 'wrong-class', label: 'Wrong class [2,1,0.1] target=1', input: { logits: [2.0, 1.0, 0.1], target_idx: 1 }, expectedOutput: 1.417, hidden: false },
+      { id: 'uniform-logits', label: 'Uniform logits [1,1,1] target=2', input: { logits: [1.0, 1.0, 1.0], target_idx: 2 }, expectedOutput: 1.0986, hidden: false },
+      { id: 'large-logits', label: 'Large logits: stable result', input: { logits: [1000.0, 1001.0, 1002.0], target_idx: 2 }, expectedOutput: 0.4076, hidden: true },
+      { id: 'invalid', label: 'Empty logits raises ValueError', input: { logits: [], target_idx: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'llm-internals-prob-30': {
+    id: 'llm-internals-prob-30',
+    title: 'ALiBi Position Bias',
+    difficulty: 'medium',
+    topic: 'Transformers & LLMs',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'alibi_bias',
+    functionSignature: 'alibi_bias(query_pos: int, key_pos: int, slope: float) -> float',
+    starterCode: `def alibi_bias(query_pos, key_pos, slope):
+    """Compute ALiBi attention bias = -slope * abs(query_pos - key_pos).
+    Raise ValueError if slope is negative.
+    Return result rounded to 4 decimal places (use abs() to avoid negative zero)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Compute the ALiBi attention bias added to attention logits to encode relative position without learned embeddings.',
+    taskDescription: 'Implement `alibi_bias(query_pos, key_pos, slope)`. Return `round(-slope * abs(query_pos - key_pos), 4)`. Raise `ValueError` if `slope < 0`. Use `abs()` on the final result to avoid returning `-0.0`.',
+    constraints: [
+      'query_pos and key_pos are non-negative integers.',
+      'slope is a non-negative float.',
+      'Return a float rounded to 4 decimal places.',
+    ],
+    hints: {
+      small: 'bias = -slope * abs(query_pos - key_pos). When positions are equal the bias is 0; when far apart the bias is a large negative number.',
+      strong: 'Use round(abs(result), 4) if needed for -0.0. The ALiBi slope per head is typically m = 2^(-8/H) for head index starting at 1.',
+      concept: 'ALiBi adds a linear position penalty directly to attention logits before softmax -- no embeddings in the input or learned params needed. This enables zero-shot length generalization beyond training context.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'ALiBi: Attention with Linear Biases for length extrapolation' },
+    ],
+    testCases: [
+      { id: 'distance-two', label: 'Query=5 Key=3 slope=0.25', input: { query_pos: 5, key_pos: 3, slope: 0.25 }, expectedOutput: -0.5, hidden: false },
+      { id: 'large-dist', label: 'Query=0 Key=7 slope=0.5', input: { query_pos: 0, key_pos: 7, slope: 0.5 }, expectedOutput: -3.5, hidden: false },
+      { id: 'same-pos', label: 'Same position (no bias)', input: { query_pos: 1, key_pos: 1, slope: 0.125 }, expectedOutput: 0.0, hidden: false },
+      { id: 'small-slope', label: 'Small slope: q=10 k=0 slope=0.125', input: { query_pos: 10, key_pos: 0, slope: 0.125 }, expectedOutput: -1.25, hidden: true },
+      { id: 'invalid', label: 'Negative slope raises ValueError', input: { query_pos: 1, key_pos: 0, slope: -0.5 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

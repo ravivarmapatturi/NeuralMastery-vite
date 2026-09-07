@@ -9943,42 +9943,42 @@
     "/docs/practice-problems/llm-internals-prob-16": {
       "slug": "practice-problems/llm-internals-prob-16",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 16: Problem 376",
+      "title": "Practice: Transformer Attention Head Dimension",
       "sidebarPosition": 376,
-      "description": "Curriculum Problem 376 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Compute the per-head key/query/value dimension in multi-head attention given d_model and num_heads.",
       "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-17": {
       "slug": "practice-problems/llm-internals-prob-17",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 17: Problem 377",
+      "title": "Practice: Layer Normalization Forward Pass",
       "sidebarPosition": 377,
-      "description": "Curriculum Problem 377 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Implement the Layer Normalization forward pass: normalize each vector to zero mean and unit variance along the feature dimension.",
       "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-18": {
       "slug": "practice-problems/llm-internals-prob-18",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 18: Problem 378",
+      "title": "Practice: Numerically Stable Softmax",
       "sidebarPosition": 378,
-      "description": "Curriculum Problem 378 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Implement numerically stable softmax by subtracting the max logit before exponentiation to prevent overflow.",
       "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-19": {
       "slug": "practice-problems/llm-internals-prob-19",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 19: Problem 379",
+      "title": "Practice: Transformer FFN Inner Dimension",
       "sidebarPosition": 379,
-      "description": "Curriculum Problem 379 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Compute the inner (hidden) dimension of the position-wise feed-forward network in a transformer block.",
       "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-2": {
       "slug": "practice-problems/llm-internals-prob-2",
@@ -9993,102 +9993,102 @@
     "/docs/practice-problems/llm-internals-prob-20": {
       "slug": "practice-problems/llm-internals-prob-20",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 20: Problem 380",
+      "title": "Practice: Multi-Head Attention Parameter Count",
       "sidebarPosition": 380,
-      "description": "Curriculum Problem 380 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Count the number of trainable weight parameters in a multi-head attention module (Q, K, V, and output projections).",
       "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-21": {
       "slug": "practice-problems/llm-internals-prob-21",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 21: Problem 381",
+      "title": "Practice: Beam Search Length Penalty Score",
       "sidebarPosition": 381,
-      "description": "Curriculum Problem 381 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "easy",
+      "description": "Apply Google's Wu et al. length penalty to a beam search raw log-probability score to prevent length bias.",
+      "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-22": {
       "slug": "practice-problems/llm-internals-prob-22",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 22: Problem 382",
+      "title": "Practice: Attention Distribution Entropy",
       "sidebarPosition": 382,
-      "description": "Curriculum Problem 382 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "easy",
+      "description": "Compute the Shannon entropy of an attention weight distribution to measure how focused vs. diffuse the attention pattern is.",
+      "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-23": {
       "slug": "practice-problems/llm-internals-prob-23",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 23: Problem 383",
+      "title": "Practice: LoRA Adapter Parameter Count",
       "sidebarPosition": 383,
-      "description": "Curriculum Problem 383 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Count the number of trainable parameters introduced by a LoRA low-rank adapter for a given weight matrix.",
       "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-24": {
       "slug": "practice-problems/llm-internals-prob-24",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 24: Problem 384",
+      "title": "Practice: Flash Attention Block Count",
       "sidebarPosition": 384,
-      "description": "Curriculum Problem 384 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Compute the number of tile blocks processed in Flash Attention's block-sparse algorithm for a given sequence length and block size.",
       "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-25": {
       "slug": "practice-problems/llm-internals-prob-25",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 25: Problem 385",
+      "title": "Practice: Grouped Query Attention KV Head Count",
       "sidebarPosition": 385,
-      "description": "Curriculum Problem 385 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "medium",
+      "description": "Compute the number of key/value heads in Grouped Query Attention (GQA) given the total query heads and number of groups.",
+      "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-26": {
       "slug": "practice-problems/llm-internals-prob-26",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 26: Problem 386",
+      "title": "Practice: INT8 Quantization Error",
       "sidebarPosition": 386,
-      "description": "Curriculum Problem 386 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Compute the quantization error introduced by symmetric INT8 quantization: the absolute difference between the original float and its dequantized approximation.",
       "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-27": {
       "slug": "practice-problems/llm-internals-prob-27",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 27: Problem 387",
+      "title": "Practice: GELU Activation Function",
       "sidebarPosition": 387,
-      "description": "Curriculum Problem 387 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "description": "Implement the GELU (Gaussian Error Linear Unit) activation using the tanh approximation -- the default non-linearity in GPT-2, BERT, and most modern LLMs.",
       "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-28": {
       "slug": "practice-problems/llm-internals-prob-28",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 28: Problem 388",
+      "title": "Practice: RoPE Frequency Band Computation",
       "sidebarPosition": 388,
-      "description": "Curriculum Problem 388 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Compute the Rotary Position Embedding (RoPE) base frequencies theta_i for each pair of dimensions in a transformer head.",
       "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-29": {
       "slug": "practice-problems/llm-internals-prob-29",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 29: Problem 389",
+      "title": "Practice: Cross-Entropy Loss from Logits",
       "sidebarPosition": 389,
-      "description": "Curriculum Problem 389 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "medium",
+      "description": "Compute the cross-entropy loss for a single-token prediction from raw logits and the true token index.",
+      "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-3": {
       "slug": "practice-problems/llm-internals-prob-3",
@@ -10103,12 +10103,12 @@
     "/docs/practice-problems/llm-internals-prob-30": {
       "slug": "practice-problems/llm-internals-prob-30",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 30: Problem 390",
+      "title": "Practice: ALiBi Position Bias",
       "sidebarPosition": 390,
-      "description": "Curriculum Problem 390 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "description": "Compute the ALiBi (Attention with Linear Biases) position bias added to attention logits before softmax.",
       "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-31": {
       "slug": "practice-problems/llm-internals-prob-31",

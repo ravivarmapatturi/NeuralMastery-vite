@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 27: Problem 387"
+title: "Practice: GELU Activation Function"
 sidebar_position: 387
-description: "Curriculum Problem 387 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
+description: "Implement the GELU (Gaussian Error Linear Unit) activation using the tanh approximation -- the default non-linearity in GPT-2, BERT, and most modern LLMs."
 difficulty: medium
 topic: transformers-llms
 ---
@@ -10,22 +9,24 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 27: Problem 387
+# GELU Activation Function
 
 **Rank #387** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-26`.
+Implement `gelu(x)` using the tanh approximation: `0.5 * x * (1 + tanh(sqrt(2/pi) * (x + 0.044715 * x**3)))`. Return the result rounded to 4 decimal places. This approximation, used in GPT-2 and BERT, closely matches the exact GELU which involves the Gaussian CDF. Prerequisite: `llm-internals-prob-26`.
 
 <PracticePlayground problemId="llm-internals-prob-27" />
 
 <Solution>
 
 ```python
-def llm_internals_p27(data):
-    # Reference implementation
-    return data
+import math
+
+def gelu(x):
+    coeff = math.sqrt(2.0 / math.pi)
+    return round(0.5 * x * (1.0 + math.tanh(coeff * (x + 0.044715 * x ** 3))), 4)
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+GELU multiplies the input by its own CDF under a standard normal distribution: `GELU(x) = x * Phi(x)`. Unlike ReLU which hard-zeros negative inputs, GELU smoothly attenuates them in proportion to how likely they are under the Gaussian distribution. This "probabilistic" gating improves gradient flow and is why GELU became the standard activation in transformer FFN layers.
 
 </Solution>

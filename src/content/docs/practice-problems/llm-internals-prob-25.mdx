@@ -1,31 +1,33 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 25: Problem 385"
+title: "Practice: Grouped Query Attention KV Head Count"
 sidebar_position: 385
-description: "Curriculum Problem 385 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
+description: "Compute the number of key/value heads in Grouped Query Attention (GQA) given the total query heads and number of groups."
+difficulty: easy
 topic: transformers-llms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 25: Problem 385
+# Grouped Query Attention KV Head Count
 
-**Rank #385** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Rank #385** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-24`.
+Implement `gqa_kv_heads(num_q_heads, num_groups)` that returns `num_q_heads // num_groups` -- the number of key/value heads in Grouped Query Attention. GQA groups `num_groups` query heads to share a single K/V head, reducing KV-cache memory by a factor of `num_groups`. Raise `ValueError` if `num_q_heads` is not divisible by `num_groups`. Prerequisite: `llm-internals-prob-24`.
 
 <PracticePlayground problemId="llm-internals-prob-25" />
 
 <Solution>
 
 ```python
-def llm_internals_p25(data):
-    # Reference implementation
-    return data
+def gqa_kv_heads(num_q_heads, num_groups):
+    if num_q_heads <= 0 or num_groups <= 0:
+        raise ValueError("num_q_heads and num_groups must be positive")
+    if num_q_heads % num_groups != 0:
+        raise ValueError("num_q_heads must be divisible by num_groups")
+    return num_q_heads // num_groups
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Multi-Head Attention (MHA) has equal Q/K/V heads; Multi-Query Attention (MQA) uses a single K/V head for all queries. GQA is the middle ground: Llama-3 70B uses 8 KV heads with 64 Q heads (8 groups of 8), cutting KV-cache by 8x vs MHA while retaining most of MHA's quality over MQA.
 
 </Solution>

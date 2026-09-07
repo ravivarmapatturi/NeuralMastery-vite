@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 28: Problem 388"
+title: "Practice: RoPE Frequency Band Computation"
 sidebar_position: 388
-description: "Curriculum Problem 388 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
+description: "Compute the Rotary Position Embedding (RoPE) base frequencies theta_i for each pair of dimensions in a transformer head."
 difficulty: medium
 topic: transformers-llms
 ---
@@ -10,22 +9,25 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 28: Problem 388
+# RoPE Frequency Band Computation
 
 **Rank #388** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-27`.
+Implement `rope_frequencies(d_head, base=10000)` that returns a list of `d_head // 2` frequencies: `theta_i = base ** (-(2*i) / d_head)` for `i = 0, 1, ..., d_head//2 - 1`. Each frequency is rounded to 6 decimal places. These are the base angular frequencies used to rotate query and key vectors in RoPE positional encoding. Prerequisite: `llm-internals-prob-27`.
 
 <PracticePlayground problemId="llm-internals-prob-28" />
 
 <Solution>
 
 ```python
-def llm_internals_p28(data):
-    # Reference implementation
-    return data
+def rope_frequencies(d_head, base=10000):
+    if d_head <= 0 or d_head % 2 != 0:
+        raise ValueError("d_head must be a positive even integer")
+    if base <= 0:
+        raise ValueError("base must be positive")
+    return [round(base ** (-(2 * i) / d_head), 6) for i in range(d_head // 2)]
 ```
 
-This problem tests fundamental skills in LLM evaluation.
+RoPE encodes position `m` by rotating each consecutive pair of dimensions by angle `m * theta_i`. Lower-index dimensions rotate faster (theta_0 = 1.0) and encode short-range position; higher-index dimensions rotate slower (theta_{d/2-1} ≈ 0) and encode long-range context. The base=10000 choice ensures the period is long enough for typical sequence lengths.
 
 </Solution>
