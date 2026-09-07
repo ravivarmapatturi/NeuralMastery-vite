@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Streaming systems Module 6: Problem 186"
+title: "Practice: Streaming Exponential Moving Average (EMA) Series"
 sidebar_position: 186
-description: "Curriculum Problem 186 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
+description: "Track real-time streaming series values with an online Exponential Moving Average filter."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,28 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Streaming systems Module 6: Problem 186
+# Streaming Exponential Moving Average (EMA) Series
 
 **Rank #186** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-5`.
+Track real-time streaming series values with an online Exponential Moving Average filter. Prerequisite: `numpy-pandas-prob-5`.
 
 <PracticePlayground problemId="numpy-pandas-prob-6" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p6(data):
-    # Reference implementation
-    return data
+def streaming_ema_series(stream, alpha):
+    if not stream:
+        return []
+    res = [stream[0]]
+    for x in stream[1:]:
+        s_prev = res[-1]
+        s_curr = alpha * x + (1.0 - alpha) * s_prev
+        res.append(s_curr)
+    return [round(float(x), 4) for x in res]
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Online EMA maintains recursive state with O(1) space per update, enabling bounded-memory low-latency trend tracking over unbounded data streams.
 
 </Solution>

@@ -10780,6 +10780,2620 @@ def compute_bleu_1(reference, candidate):
     runtime: { language: 'python', capabilities: ['python'] },
   },
 
+  'numpy-pandas-prob-1': {
+    id: 'numpy-pandas-prob-1',
+    title: "NumPy Vectorized Min-Max Feature Scaling",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'min_max_scale',
+    functionSignature: "min_max_scale(data: list[float]) -> list[float]",
+    starterCode: `import numpy as np
+
+def min_max_scale(data):
+    """Scale feature values into the range [0.0, 1.0] using vectorized min-max normalization.
+    Round each returned value to 4 decimal places.
+    If max == min or len(data) <= 1, return [0.0] * len(data).
+    If data is empty, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement vectorized min-max normalization in NumPy to scale numerical feature values into the range [0.0, 1.0].",
+    taskDescription: "Implement `min_max_scale(data)`. Given a 1D list of floats, scale elements to `[0.0, 1.0]` using `(x - min) / (max - min)`, rounded to 4 decimal places. Return `[0.0] * len(data)` when max == min.",
+    constraints: [
+      "data is a list of numerical floats or ints.",
+      "Must handle empty list returning [].",
+      "Must handle identical values or single elements by returning zeros.",
+      "Each float in the returned list must be rounded to 4 decimal places."
+],
+    hints: {
+      "small": "Use np.min(arr) and np.max(arr) on an np.array(data, dtype=float).",
+      "strong": "Check if max_val == min_val before dividing to prevent division by zero; return [0.0] * len(data) in that case.",
+      "concept": "Min-max normalization maps bounded features into [0, 1], preserving exact zero and distance ratios crucial for gradient descent and distance-based estimators."
+},
+    conceptConnections: [
+      {
+            "title": "Feature Engineering & Preprocessing",
+            "route": "/docs/machine-learning/feature-engineering",
+            "description": "Vectorized feature normalization and scale standardization"
+      }
+],
+    testCases: [
+      {
+            "id": "basic-integers",
+            "label": "Basic Range 10-50",
+            "input": {
+                  "data": [
+                        10.0,
+                        20.0,
+                        30.0,
+                        40.0,
+                        50.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.25,
+                  0.5,
+                  0.75,
+                  1.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "negatives",
+            "label": "Negative to Positive",
+            "input": {
+                  "data": [
+                        -10.0,
+                        0.0,
+                        10.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.5,
+                  1.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "uniform",
+            "label": "Identical Values",
+            "input": {
+                  "data": [
+                        5.0,
+                        5.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0,
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single",
+            "label": "Single Element",
+            "input": {
+                  "data": [
+                        42.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "floats-hidden",
+            "label": "Fractional Values",
+            "input": {
+                  "data": [
+                        1.5,
+                        3.0,
+                        4.5,
+                        6.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.3333,
+                  0.6667,
+                  1.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-2': {
+    id: 'numpy-pandas-prob-2',
+    title: "Pandas Missing Value Imputation Pipeline",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'impute_missing_values',
+    functionSignature: "impute_missing_values(records: list[dict], num_strategy: str = 'mean', cat_strategy: str = 'mode') -> list[dict]",
+    starterCode: `import pandas as pd
+import numpy as np
+
+def impute_missing_values(records, num_strategy="mean", cat_strategy="mode"):
+    """Impute missing (None/NaN) values in records using pandas.
+    For numeric columns: fill with mean or median (rounded to 2 decimal places).
+    For categorical columns: fill with mode or literal placeholder.
+    Return the cleaned records as list of dicts."""
+    # Your implementation here
+    pass
+`,
+    mission: "Impute missing values across numerical and categorical features in tabular records using Pandas.",
+    taskDescription: "Implement `impute_missing_values(records, num_strategy, cat_strategy)`. For numeric columns with missing values, fill with the column mean or median (rounded to 2 decimal places). For non-numeric columns, fill with the mode or string fallback.",
+    constraints: [
+      "records is a list of dictionary rows.",
+      "num_strategy is either 'mean' or 'median'.",
+      "cat_strategy is 'mode' or a string replacement.",
+      "Returns a list of dicts in identical row order with all missing values imputed."
+],
+    hints: {
+      "small": "Construct a pd.DataFrame(records) and check pd.api.types.is_numeric_dtype(df[col]).",
+      "strong": "Use df[col].fillna() with df[col].mean() or df[col].mode().iloc[0]. Convert back using df.to_dict(orient='records').",
+      "concept": "Handling missing data conditionally by column type ensures clean input vectors for estimators without corrupting categorical distributions."
+},
+    conceptConnections: [
+      {
+            "title": "Data Pipelines & ETL",
+            "route": "/docs/data-systems/pipelines",
+            "description": "Tabular imputation and feature cleaning in production workflows"
+      }
+],
+    testCases: [
+      {
+            "id": "num-mean-cat-mode",
+            "label": "Numeric Mean and Categorical Mode",
+            "input": {
+                  "records": [
+                        {
+                              "age": 20,
+                              "city": "NY"
+                        },
+                        {
+                              "age": 40,
+                              "city": "SF"
+                        },
+                        {
+                              "age": null,
+                              "city": "NY"
+                        },
+                        {
+                              "age": 30,
+                              "city": null
+                        }
+                  ],
+                  "num_strategy": "mean",
+                  "cat_strategy": "mode"
+            },
+            "expectedOutput": [
+                  {
+                        "age": 20.0,
+                        "city": "NY"
+                  },
+                  {
+                        "age": 40.0,
+                        "city": "SF"
+                  },
+                  {
+                        "age": 30.0,
+                        "city": "NY"
+                  },
+                  {
+                        "age": 30.0,
+                        "city": "NY"
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "num-median-cat-val",
+            "label": "Numeric Median and Categorical Constant",
+            "input": {
+                  "records": [
+                        {
+                              "score": 10,
+                              "grade": "A"
+                        },
+                        {
+                              "score": 20,
+                              "grade": null
+                        },
+                        {
+                              "score": 90,
+                              "grade": "B"
+                        }
+                  ],
+                  "num_strategy": "median",
+                  "cat_strategy": "missing"
+            },
+            "expectedOutput": [
+                  {
+                        "score": 10,
+                        "grade": "A"
+                  },
+                  {
+                        "score": 20,
+                        "grade": "missing"
+                  },
+                  {
+                        "score": 90,
+                        "grade": "B"
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "no-missing-hidden",
+            "label": "Complete Records Unchanged",
+            "input": {
+                  "records": [
+                        {
+                              "x": 1.0,
+                              "cat": "a"
+                        },
+                        {
+                              "x": 2.0,
+                              "cat": "b"
+                        }
+                  ],
+                  "num_strategy": "mean",
+                  "cat_strategy": "mode"
+            },
+            "expectedOutput": [
+                  {
+                        "x": 1.0,
+                        "cat": "a"
+                  },
+                  {
+                        "x": 2.0,
+                        "cat": "b"
+                  }
+            ],
+            "hidden": true
+      },
+      {
+            "id": "multiple-nulls-hidden",
+            "label": "Repeated Nulls Imputation",
+            "input": {
+                  "records": [
+                        {
+                              "v": 100,
+                              "t": null
+                        },
+                        {
+                              "v": null,
+                              "t": "fast"
+                        },
+                        {
+                              "v": 200,
+                              "t": "fast"
+                        }
+                  ],
+                  "num_strategy": "mean",
+                  "cat_strategy": "mode"
+            },
+            "expectedOutput": [
+                  {
+                        "v": 100.0,
+                        "t": "fast"
+                  },
+                  {
+                        "v": 150.0,
+                        "t": "fast"
+                  },
+                  {
+                        "v": 200.0,
+                        "t": "fast"
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-3': {
+    id: 'numpy-pandas-prob-3',
+    title: "Streaming Rolling Moving Average",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'rolling_moving_average',
+    functionSignature: "rolling_moving_average(values: list[float], window_size: int) -> list[float]",
+    starterCode: `import numpy as np
+
+def rolling_moving_average(values, window_size):
+    """Compute the rolling moving average across sliding windows of size window_size.
+    Round each window average to 4 decimal places.
+    If len(values) < window_size or window_size <= 0, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the rolling moving average across a sliding window of data stream values.",
+    taskDescription: "Implement `rolling_moving_average(values, window_size)`. Return a list of window averages rounded to 4 decimal places for every valid sliding window of size `window_size`. Return `[]` if `len(values) < window_size`.",
+    constraints: [
+      "values is a list of floats or ints.",
+      "window_size is an integer.",
+      "Returned list has length len(values) - window_size + 1.",
+      "Each float in output must be rounded to 4 decimal places."
+],
+    hints: {
+      "small": "NumPy's np.convolve with an array of ones / window_size and mode='valid' computes moving averages vectorially.",
+      "strong": "Alternatively use np.cumsum: calculate cumsum and subtract offset indices to get window sums in O(N).",
+      "concept": "Moving averages act as low-pass filters in streaming telemetry and model latency monitoring, smoothing high-frequency noise."
+},
+    conceptConnections: [
+      {
+            "title": "Time-Series & Telemetry Monitoring",
+            "route": "/docs/data-systems/time-series",
+            "description": "Sliding window aggregation and signal smoothing"
+      }
+],
+    testCases: [
+      {
+            "id": "window-3",
+            "label": "Window Size 3 on 5 Elements",
+            "input": {
+                  "values": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  2.0,
+                  3.0,
+                  4.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "window-2",
+            "label": "Window Size 2 on 3 Elements",
+            "input": {
+                  "values": [
+                        10.0,
+                        20.0,
+                        30.0
+                  ],
+                  "window_size": 2
+            },
+            "expectedOutput": [
+                  15.0,
+                  25.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "window-equal-len",
+            "label": "Window Size Equals Length",
+            "input": {
+                  "values": [
+                        2.0,
+                        4.0,
+                        6.0
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  4.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "noisy-series-hidden",
+            "label": "Sliding 4-Step Window",
+            "input": {
+                  "values": [
+                        1.5,
+                        2.5,
+                        3.5,
+                        4.5,
+                        5.5,
+                        6.5
+                  ],
+                  "window_size": 4
+            },
+            "expectedOutput": [
+                  3.0,
+                  4.0,
+                  5.0
+            ],
+            "hidden": true
+      },
+      {
+            "id": "alternating-hidden",
+            "label": "Alternating Values Window 2",
+            "input": {
+                  "values": [
+                        10.0,
+                        -10.0,
+                        20.0,
+                        -20.0
+                  ],
+                  "window_size": 2
+            },
+            "expectedOutput": [
+                  0.0,
+                  5.0,
+                  0.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-4': {
+    id: 'numpy-pandas-prob-4',
+    title: "NumPy Vectorized Z-Score Standardization",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'z_score_standardize',
+    functionSignature: "z_score_standardize(values: list[float]) -> list[float]",
+    starterCode: `import numpy as np
+
+def z_score_standardize(values):
+    """Standardize numerical values to zero mean and unit variance: (x - mean) / std.
+    Use population std (ddof=0). Round each value to 4 decimal places.
+    If std == 0 or len(values) <= 1, return [0.0] * len(values).
+    If values is empty, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Standardize feature distributions to zero mean and unit variance using vectorized NumPy operations.",
+    taskDescription: "Implement `z_score_standardize(values)`. Compute the population z-score `(x - mean) / std` for each element, rounded to 4 decimal places. Return zeros if variance is zero.",
+    constraints: [
+      "values is a list of numerical floats or ints.",
+      "Use population standard deviation (ddof=0).",
+      "Return [0.0] * len(values) if standard deviation is 0.0.",
+      "Return [] for empty input."
+],
+    hints: {
+      "small": "Use np.mean(arr) and np.std(arr, ddof=0).",
+      "strong": "Safeguard against division by zero when std is 0.0 before applying (arr - mean) / std.",
+      "concept": "Z-score standardization centers feature distributions at 0 with unit variance, preventing high-magnitude features from dominating Euclidean distances or weight gradients."
+},
+    conceptConnections: [
+      {
+            "title": "Feature Engineering & Preprocessing",
+            "route": "/docs/machine-learning/feature-engineering",
+            "description": "StandardScaler and gaussian normalization transforms"
+      }
+],
+    testCases: [
+      {
+            "id": "symmetric",
+            "label": "Simple 3-Element Series",
+            "input": {
+                  "values": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ]
+            },
+            "expectedOutput": [
+                  -1.2247,
+                  0.0,
+                  1.2247
+            ],
+            "hidden": false
+      },
+      {
+            "id": "uniform",
+            "label": "Zero Variance Series",
+            "input": {
+                  "values": [
+                        4.0,
+                        4.0,
+                        4.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0,
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "four-values",
+            "label": "Four Spread Elements",
+            "input": {
+                  "values": [
+                        10.0,
+                        20.0,
+                        30.0,
+                        40.0
+                  ]
+            },
+            "expectedOutput": [
+                  -1.3416,
+                  -0.4472,
+                  0.4472,
+                  1.3416
+            ],
+            "hidden": false
+      },
+      {
+            "id": "negatives-hidden",
+            "label": "Negative Range Series",
+            "input": {
+                  "values": [
+                        -5.0,
+                        0.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": [
+                  -1.2247,
+                  0.0,
+                  1.2247
+            ],
+            "hidden": true
+      },
+      {
+            "id": "single-hidden",
+            "label": "Single Value Edge Case",
+            "input": {
+                  "values": [
+                        7.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-5': {
+    id: 'numpy-pandas-prob-5',
+    title: "Pandas GroupBy Metric Aggregation",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'groupby_aggregate',
+    functionSignature: "groupby_aggregate(records: list[dict], group_col: str, val_col: str) -> dict",
+    starterCode: `import pandas as pd
+
+def groupby_aggregate(records, group_col, val_col):
+    """Group records by group_col and compute count, sum, and mean for val_col.
+    Round sum and mean to 2 decimal places.
+    Return a dictionary mapping each group name (str) to:
+    {'count': int, 'sum': float, 'mean': float}"""
+    # Your implementation here
+    pass
+`,
+    mission: "Group tabular records by category and compute aggregate metrics (count, sum, mean) using Pandas.",
+    taskDescription: "Implement `groupby_aggregate(records, group_col, val_col)`. Given tabular rows, group by `group_col` and compute for each group its count (int), sum (float rounded to 2 decimals), and mean (float rounded to 2 decimals). Return a dictionary mapping group names to their metric dict.",
+    constraints: [
+      "records is a list of dictionaries.",
+      "group_col and val_col exist in all records.",
+      "val_col values are numeric.",
+      "Returns empty dict {} for empty records."
+],
+    hints: {
+      "small": "Use df.groupby(group_col)[val_col] to aggregate across categories.",
+      "strong": "Iterate over the grouped object or use .agg(['count', 'sum', 'mean']) to extract metrics, converting group names to strings.",
+      "concept": "Split-Apply-Combine patterns form the backbone of analytical pipelines and dataset profiling in ML workflows."
+},
+    conceptConnections: [
+      {
+            "title": "Data Aggregation & Grouping",
+            "route": "/docs/data-systems/pipelines",
+            "description": "Split-apply-combine analytics in distributed data systems"
+      }
+],
+    testCases: [
+      {
+            "id": "sales-by-region",
+            "label": "Regional Sales Aggregation",
+            "input": {
+                  "records": [
+                        {
+                              "region": "East",
+                              "sales": 100.0
+                        },
+                        {
+                              "region": "West",
+                              "sales": 200.0
+                        },
+                        {
+                              "region": "East",
+                              "sales": 150.0
+                        }
+                  ],
+                  "group_col": "region",
+                  "val_col": "sales"
+            },
+            "expectedOutput": {
+                  "East": {
+                        "count": 2,
+                        "sum": 250.0,
+                        "mean": 125.0
+                  },
+                  "West": {
+                        "count": 1,
+                        "sum": 200.0,
+                        "mean": 200.0
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "users-by-role",
+            "label": "Logins by Role",
+            "input": {
+                  "records": [
+                        {
+                              "role": "admin",
+                              "logins": 5
+                        },
+                        {
+                              "role": "user",
+                              "logins": 2
+                        },
+                        {
+                              "role": "user",
+                              "logins": 4
+                        }
+                  ],
+                  "group_col": "role",
+                  "val_col": "logins"
+            },
+            "expectedOutput": {
+                  "admin": {
+                        "count": 1,
+                        "sum": 5.0,
+                        "mean": 5.0
+                  },
+                  "user": {
+                        "count": 2,
+                        "sum": 6.0,
+                        "mean": 3.0
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "single-group-hidden",
+            "label": "Single Department Records",
+            "input": {
+                  "records": [
+                        {
+                              "dept": "AI",
+                              "hours": 40.0
+                        },
+                        {
+                              "dept": "AI",
+                              "hours": 35.0
+                        },
+                        {
+                              "dept": "AI",
+                              "hours": 45.0
+                        }
+                  ],
+                  "group_col": "dept",
+                  "val_col": "hours"
+            },
+            "expectedOutput": {
+                  "AI": {
+                        "count": 3,
+                        "sum": 120.0,
+                        "mean": 40.0
+                  }
+            },
+            "hidden": true
+      },
+      {
+            "id": "multi-items-hidden",
+            "label": "Multiple Items Inventory Quantities",
+            "input": {
+                  "records": [
+                        {
+                              "item": "A",
+                              "qty": 10
+                        },
+                        {
+                              "item": "B",
+                              "qty": 20
+                        },
+                        {
+                              "item": "A",
+                              "qty": 30
+                        },
+                        {
+                              "item": "C",
+                              "qty": 15
+                        }
+                  ],
+                  "group_col": "item",
+                  "val_col": "qty"
+            },
+            "expectedOutput": {
+                  "A": {
+                        "count": 2,
+                        "sum": 40.0,
+                        "mean": 20.0
+                  },
+                  "B": {
+                        "count": 1,
+                        "sum": 20.0,
+                        "mean": 20.0
+                  },
+                  "C": {
+                        "count": 1,
+                        "sum": 15.0,
+                        "mean": 15.0
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-6': {
+    id: 'numpy-pandas-prob-6',
+    title: "Streaming Exponential Moving Average (EMA) Series",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'streaming_ema_series',
+    functionSignature: "streaming_ema_series(stream: list[float], alpha: float) -> list[float]",
+    starterCode: `def streaming_ema_series(stream, alpha):
+    """Compute the Exponential Moving Average series over a data stream:
+    S[0] = stream[0]
+    S[t] = alpha * stream[t] + (1 - alpha) * S[t-1]
+    Round each returned value to 4 decimal places.
+    If stream is empty, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Track real-time streaming series values with an online Exponential Moving Average filter.",
+    taskDescription: "Implement `streaming_ema_series(stream, alpha)`. Given stream values and smoothing factor $0 < \\alpha \\le 1$, compute $S_t = \\alpha x_t + (1 - \\alpha) S_{t-1}$ with $S_0 = x_0$. Return the series rounded to 4 decimal places.",
+    constraints: [
+      "stream is a list of numerical floats or ints.",
+      "alpha is a float strictly between 0.0 and 1.0 inclusive.",
+      "Each returned value must be rounded to 4 decimal places.",
+      "Returns [] for empty stream."
+],
+    hints: {
+      "small": "Initialize with the first value res = [stream[0]], then iterate through stream[1:].",
+      "strong": "Keep track of the previous smoothed state s_prev = res[-1] and update with alpha * x + (1 - alpha) * s_prev.",
+      "concept": "EMA weights recent observations exponentially higher than older observations, providing rapid responsiveness with minimal memory footprint."
+},
+    conceptConnections: [
+      {
+            "title": "Optimization & Momentum",
+            "route": "/docs/deep-learning/optimization",
+            "description": "Exponential moving averages in SGD with momentum and Adam optimizers"
+      }
+],
+    testCases: [
+      {
+            "id": "alpha-half",
+            "label": "Alpha 0.5 Linear Increase",
+            "input": {
+                  "stream": [
+                        10.0,
+                        20.0,
+                        30.0
+                  ],
+                  "alpha": 0.5
+            },
+            "expectedOutput": [
+                  10.0,
+                  15.0,
+                  22.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "alpha-one",
+            "label": "Alpha 1.0 Passthrough",
+            "input": {
+                  "stream": [
+                        5.0,
+                        10.0,
+                        15.0
+                  ],
+                  "alpha": 1.0
+            },
+            "expectedOutput": [
+                  5.0,
+                  10.0,
+                  15.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "step-change",
+            "label": "Step Response Alpha 0.2",
+            "input": {
+                  "stream": [
+                        0.0,
+                        10.0,
+                        10.0,
+                        10.0
+                  ],
+                  "alpha": 0.2
+            },
+            "expectedOutput": [
+                  0.0,
+                  2.0,
+                  3.6,
+                  4.88
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-hidden",
+            "label": "Single Value Stream",
+            "input": {
+                  "stream": [
+                        42.0
+                  ],
+                  "alpha": 0.3
+            },
+            "expectedOutput": [
+                  42.0
+            ],
+            "hidden": true
+      },
+      {
+            "id": "oscillating-hidden",
+            "label": "Oscillating Signal Alpha 0.4",
+            "input": {
+                  "stream": [
+                        1.0,
+                        5.0,
+                        2.0,
+                        6.0,
+                        3.0
+                  ],
+                  "alpha": 0.4
+            },
+            "expectedOutput": [
+                  1.0,
+                  2.6,
+                  2.36,
+                  3.816,
+                  3.4896
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-7': {
+    id: 'numpy-pandas-prob-7',
+    title: "NumPy Vectorized One-Hot Matrix Encoding",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'vectorized_one_hot',
+    functionSignature: "vectorized_one_hot(labels: list[int], num_classes: int) -> list[list[int]]",
+    starterCode: `import numpy as np
+
+def vectorized_one_hot(labels, num_classes):
+    """Convert 1D integer class labels into a 2D one-hot binary matrix using NumPy.
+    Shape of returned matrix: (len(labels), num_classes).
+    If labels is empty or num_classes <= 0, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Transform integer class label vectors into vectorized binary one-hot matrices using NumPy.",
+    taskDescription: "Implement `vectorized_one_hot(labels, num_classes)`. Given integer labels $0 \\le \\text{label} < \\text{num\\_classes}$, construct a 2D binary matrix of shape `(len(labels), num_classes)` where entry `[i][labels[i]] = 1` and all others are `0`. Return as a list of integer lists.",
+    constraints: [
+      "labels is a list of non-negative integers.",
+      "num_classes is an integer greater than max(labels).",
+      "Return 2D list of integers.",
+      "Return [] if labels is empty or num_classes <= 0."
+],
+    hints: {
+      "small": "Initialize np.zeros((len(labels), num_classes), dtype=int).",
+      "strong": "Use advanced integer indexing: one_hot[np.arange(len(labels)), arr] = 1.",
+      "concept": "One-hot representations convert nominal discrete categorical variables into orthogonal basis vectors suitable for neural network classification targets."
+},
+    conceptConnections: [
+      {
+            "title": "Classification & Loss Functions",
+            "route": "/docs/deep-learning/classification",
+            "description": "Target tensor preparation for cross-entropy loss"
+      }
+],
+    testCases: [
+      {
+            "id": "three-classes",
+            "label": "Three Classes Sequence",
+            "input": {
+                  "labels": [
+                        0,
+                        1,
+                        2,
+                        1
+                  ],
+                  "num_classes": 3
+            },
+            "expectedOutput": [
+                  [
+                        1,
+                        0,
+                        0
+                  ],
+                  [
+                        0,
+                        1,
+                        0
+                  ],
+                  [
+                        0,
+                        0,
+                        1
+                  ],
+                  [
+                        0,
+                        1,
+                        0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "binary-classes",
+            "label": "Binary Class Labels",
+            "input": {
+                  "labels": [
+                        1,
+                        0,
+                        1,
+                        1
+                  ],
+                  "num_classes": 2
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1
+                  ],
+                  [
+                        1,
+                        0
+                  ],
+                  [
+                        0,
+                        1
+                  ],
+                  [
+                        0,
+                        1
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-class",
+            "label": "Single Class Category",
+            "input": {
+                  "labels": [
+                        0,
+                        0,
+                        0
+                  ],
+                  "num_classes": 1
+            },
+            "expectedOutput": [
+                  [
+                        1
+                  ],
+                  [
+                        1
+                  ],
+                  [
+                        1
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "five-classes-hidden",
+            "label": "Permuted Five Classes",
+            "input": {
+                  "labels": [
+                        4,
+                        2,
+                        0,
+                        3,
+                        1
+                  ],
+                  "num_classes": 5
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        0,
+                        0,
+                        0,
+                        1
+                  ],
+                  [
+                        0,
+                        0,
+                        1,
+                        0,
+                        0
+                  ],
+                  [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0
+                  ],
+                  [
+                        0,
+                        0,
+                        0,
+                        1,
+                        0
+                  ],
+                  [
+                        0,
+                        1,
+                        0,
+                        0,
+                        0
+                  ]
+            ],
+            "hidden": true
+      },
+      {
+            "id": "repeated-hidden",
+            "label": "Repeated Class Index",
+            "input": {
+                  "labels": [
+                        2,
+                        2,
+                        2
+                  ],
+                  "num_classes": 4
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        0,
+                        1,
+                        0
+                  ],
+                  [
+                        0,
+                        0,
+                        1,
+                        0
+                  ],
+                  [
+                        0,
+                        0,
+                        1,
+                        0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-8': {
+    id: 'numpy-pandas-prob-8',
+    title: "Pandas Pivot Table Reshaping",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'pivot_sales_summary',
+    functionSignature: "pivot_sales_summary(records: list[dict], index_key: str, columns_key: str, values_key: str) -> dict",
+    starterCode: `import pandas as pd
+
+def pivot_sales_summary(records, index_key, columns_key, values_key):
+    """Pivot records into a cross-tabulated summary using pandas.
+    Sum values_key across index_key (rows) and columns_key (columns).
+    Fill missing intersections with 0.0. Round sums to 2 decimal places.
+    Return nested dict: {row_key: {col_key: sum_val}}"""
+    # Your implementation here
+    pass
+`,
+    mission: "Reshape relational records into a two-dimensional cross-tabulated pivot summary using Pandas.",
+    taskDescription: "Implement `pivot_sales_summary(records, index_key, columns_key, values_key)`. Sum values across rows indexed by `index_key` and columns headed by `columns_key`. Fill missing combinations with 0.0 and round sums to 2 decimal places. Return a nested dict sorted lexicographically by rows and columns.",
+    constraints: [
+      "records is a list of dicts containing index_key, columns_key, and numeric values_key.",
+      "Missing cells must be filled with 0.0.",
+      "All numbers in the nested dictionary must be rounded to 2 decimal places."
+],
+    hints: {
+      "small": "Use df.pivot_table(index=index_key, columns=columns_key, values=values_key, aggfunc='sum', fill_value=0.0).",
+      "strong": "Sort the index and columns: pivot.sort_index().reindex(columns=sorted(pivot.columns)) before exporting to dict.",
+      "concept": "Pivoting reorganizes relational long-format tuples into wide-format matrices suitable for comparative analysis and matrix decomposition."
+},
+    conceptConnections: [
+      {
+            "title": "Data Transformation & Pivoting",
+            "route": "/docs/data-systems/pipelines",
+            "description": "Relational reshaping and wide-to-long matrix conversions"
+      }
+],
+    testCases: [
+      {
+            "id": "store-departments",
+            "label": "Store Departments Sales",
+            "input": {
+                  "records": [
+                        {
+                              "store": "S1",
+                              "dept": "Electronics",
+                              "sales": 500
+                        },
+                        {
+                              "store": "S1",
+                              "dept": "Clothing",
+                              "sales": 200
+                        },
+                        {
+                              "store": "S2",
+                              "dept": "Electronics",
+                              "sales": 300
+                        }
+                  ],
+                  "index_key": "store",
+                  "columns_key": "dept",
+                  "values_key": "sales"
+            },
+            "expectedOutput": {
+                  "S1": {
+                        "Clothing": 200.0,
+                        "Electronics": 500.0
+                  },
+                  "S2": {
+                        "Clothing": 0.0,
+                        "Electronics": 300.0
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "quarters-products",
+            "label": "Quarterly Product Revenue",
+            "input": {
+                  "records": [
+                        {
+                              "qtr": "Q1",
+                              "prod": "A",
+                              "rev": 50.0
+                        },
+                        {
+                              "qtr": "Q2",
+                              "prod": "A",
+                              "rev": 60.0
+                        },
+                        {
+                              "qtr": "Q1",
+                              "prod": "B",
+                              "rev": 80.0
+                        }
+                  ],
+                  "index_key": "qtr",
+                  "columns_key": "prod",
+                  "values_key": "rev"
+            },
+            "expectedOutput": {
+                  "Q1": {
+                        "A": 50.0,
+                        "B": 80.0
+                  },
+                  "Q2": {
+                        "A": 60.0,
+                        "B": 0.0
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "full-grid-hidden",
+            "label": "Complete 2x2 Grid",
+            "input": {
+                  "records": [
+                        {
+                              "r": "r1",
+                              "c": "c1",
+                              "v": 10
+                        },
+                        {
+                              "r": "r1",
+                              "c": "c2",
+                              "v": 20
+                        },
+                        {
+                              "r": "r2",
+                              "c": "c1",
+                              "v": 30
+                        },
+                        {
+                              "r": "r2",
+                              "c": "c2",
+                              "v": 40
+                        }
+                  ],
+                  "index_key": "r",
+                  "columns_key": "c",
+                  "values_key": "v"
+            },
+            "expectedOutput": {
+                  "r1": {
+                        "c1": 10.0,
+                        "c2": 20.0
+                  },
+                  "r2": {
+                        "c1": 30.0,
+                        "c2": 40.0
+                  }
+            },
+            "hidden": true
+      },
+      {
+            "id": "duplicate-entries-hidden",
+            "label": "Duplicate Category Aggregation",
+            "input": {
+                  "records": [
+                        {
+                              "day": "Mon",
+                              "tag": "x",
+                              "val": 5
+                        },
+                        {
+                              "day": "Mon",
+                              "tag": "x",
+                              "val": 15
+                        }
+                  ],
+                  "index_key": "day",
+                  "columns_key": "tag",
+                  "values_key": "val"
+            },
+            "expectedOutput": {
+                  "Mon": {
+                        "x": 20.0
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-9': {
+    id: 'numpy-pandas-prob-9',
+    title: "Streaming Tumbling Window Aggregates",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'tumbling_window_aggregates',
+    functionSignature: "tumbling_window_aggregates(events: list[dict], window_duration: int) -> list[dict]",
+    starterCode: `def tumbling_window_aggregates(events, window_duration):
+    """Aggregate time-series events into non-overlapping tumbling windows.
+    Each event has {'timestamp': int, 'value': float}.
+    Return list of active windows:
+    [{'window_start': int, 'window_end': int, 'count': int, 'total': float}]
+    with total rounded to 2 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Partition time-series events into fixed-duration tumbling windows and calculate windowed metrics.",
+    taskDescription: "Implement `tumbling_window_aggregates(events, window_duration)`. Given timestamped events sorted by time, group into contiguous non-overlapping windows of `window_duration`. Return a list of summary dicts containing `window_start`, `window_end`, `count`, and `total` (rounded to 2 decimal places) for non-empty windows.",
+    constraints: [
+      "events is a list of dicts with 'timestamp' (int) and 'value' (float/int).",
+      "events are ordered chronologically by timestamp.",
+      "window_duration is an integer > 0.",
+      "Only return windows that contain at least 1 event."
+],
+    hints: {
+      "small": "Compute the window index using (ts - start_time) // window_duration.",
+      "strong": "Track the current window boundaries [curr_start, curr_start + window_duration). When an event exceeds curr_end, emit the existing window and reposition.",
+      "concept": "Tumbling windows provide non-overlapping, deterministic event bucketing essential for streaming rate limits, ingestion telemetry, and batching."
+},
+    conceptConnections: [
+      {
+            "title": "Streaming Architecture & Windows",
+            "route": "/docs/data-systems/streaming",
+            "description": "Tumbling, hopping, and session window patterns in event processing"
+      }
+],
+    testCases: [
+      {
+            "id": "three-events-10s",
+            "label": "Consecutive Windows Duration 10",
+            "input": {
+                  "events": [
+                        {
+                              "timestamp": 1000,
+                              "value": 10.0
+                        },
+                        {
+                              "timestamp": 1005,
+                              "value": 20.0
+                        },
+                        {
+                              "timestamp": 1012,
+                              "value": 30.0
+                        }
+                  ],
+                  "window_duration": 10
+            },
+            "expectedOutput": [
+                  {
+                        "window_start": 1000,
+                        "window_end": 1010,
+                        "count": 2,
+                        "total": 30.0
+                  },
+                  {
+                        "window_start": 1010,
+                        "window_end": 1020,
+                        "count": 1,
+                        "total": 30.0
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "skip-window",
+            "label": "Window Gap Between Events",
+            "input": {
+                  "events": [
+                        {
+                              "timestamp": 0,
+                              "value": 5.0
+                        },
+                        {
+                              "timestamp": 25,
+                              "value": 15.0
+                        }
+                  ],
+                  "window_duration": 10
+            },
+            "expectedOutput": [
+                  {
+                        "window_start": 0,
+                        "window_end": 10,
+                        "count": 1,
+                        "total": 5.0
+                  },
+                  {
+                        "window_start": 20,
+                        "window_end": 30,
+                        "count": 1,
+                        "total": 15.0
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-window-hidden",
+            "label": "All Events in Single Window",
+            "input": {
+                  "events": [
+                        {
+                              "timestamp": 50,
+                              "value": 2.5
+                        },
+                        {
+                              "timestamp": 52,
+                              "value": 3.5
+                        },
+                        {
+                              "timestamp": 54,
+                              "value": 4.0
+                        }
+                  ],
+                  "window_duration": 10
+            },
+            "expectedOutput": [
+                  {
+                        "window_start": 50,
+                        "window_end": 60,
+                        "count": 3,
+                        "total": 10.0
+                  }
+            ],
+            "hidden": true
+      },
+      {
+            "id": "dense-stream-hidden",
+            "label": "Dense Sequential Events Window 5",
+            "input": {
+                  "events": [
+                        {
+                              "timestamp": 100,
+                              "value": 1.0
+                        },
+                        {
+                              "timestamp": 101,
+                              "value": 2.0
+                        },
+                        {
+                              "timestamp": 102,
+                              "value": 3.0
+                        },
+                        {
+                              "timestamp": 103,
+                              "value": 4.0
+                        },
+                        {
+                              "timestamp": 104,
+                              "value": 5.0
+                        }
+                  ],
+                  "window_duration": 5
+            },
+            "expectedOutput": [
+                  {
+                        "window_start": 100,
+                        "window_end": 105,
+                        "count": 5,
+                        "total": 15.0
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-10': {
+    id: 'numpy-pandas-prob-10',
+    title: "NumPy IQR Outlier Detection & Winsorization",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'clip_outliers_iqr',
+    functionSignature: "clip_outliers_iqr(data: list[float], k: float = 1.5) -> list[float]",
+    starterCode: `import numpy as np
+
+def clip_outliers_iqr(data, k=1.5):
+    """Clip distribution outliers based on Interquartile Range (IQR).
+    Q1 = 25th percentile, Q3 = 75th percentile, IQR = Q3 - Q1.
+    Clip all values to [Q1 - k * IQR, Q3 + k * IQR] using np.clip.
+    Round returned values to 4 decimal places.
+    If data is empty, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Detect distribution outliers via Interquartile Range (IQR) and clip extreme values using vectorized NumPy operations.",
+    taskDescription: "Implement `clip_outliers_iqr(data, k)`. Compute the 25th ($Q_1$) and 75th ($Q_3$) percentiles of `data`. Clip values to $[Q_1 - k \\cdot \\text{IQR}, Q_3 + k \\cdot \\text{IQR}]$ using `np.clip`. Return the clipped numbers rounded to 4 decimal places.",
+    constraints: [
+      "data is a list of numerical floats or ints.",
+      "k is a positive float multiplier (default 1.5).",
+      "Returned list has the same length as data.",
+      "All values rounded to 4 decimal places."
+],
+    hints: {
+      "small": "Use np.percentile(arr, 25) and np.percentile(arr, 75) to calculate Q1, Q3, and IQR.",
+      "strong": "Apply np.clip(arr, lower, upper) where lower = q1 - k * iqr and upper = q3 + k * iqr.",
+      "concept": "Tukey's IQR method is a robust non-parametric outlier detection rule that does not assume normal distribution symmetry."
+},
+    conceptConnections: [
+      {
+            "title": "Exploratory Data Analysis & Outliers",
+            "route": "/docs/machine-learning/eda",
+            "description": "Robust statistics and distribution Winsorization"
+      }
+],
+    testCases: [
+      {
+            "id": "high-outlier",
+            "label": "Positive Extreme Outlier",
+            "input": {
+                  "data": [
+                        10.0,
+                        12.0,
+                        11.0,
+                        13.0,
+                        12.0,
+                        100.0
+                  ],
+                  "k": 1.5
+            },
+            "expectedOutput": [
+                  10.0,
+                  12.0,
+                  11.0,
+                  13.0,
+                  12.0,
+                  15.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "low-outlier",
+            "label": "Negative Extreme Outlier",
+            "input": {
+                  "data": [
+                        -100.0,
+                        10.0,
+                        11.0,
+                        12.0,
+                        13.0
+                  ],
+                  "k": 1.5
+            },
+            "expectedOutput": [
+                  7.0,
+                  10.0,
+                  11.0,
+                  12.0,
+                  13.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "clean-range",
+            "label": "Regular Range Without Outliers",
+            "input": {
+                  "data": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0
+                  ],
+                  "k": 1.5
+            },
+            "expectedOutput": [
+                  1.0,
+                  2.0,
+                  3.0,
+                  4.0,
+                  5.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tight-k-hidden",
+            "label": "Narrow Multiplier k 1.0",
+            "input": {
+                  "data": [
+                        5.0,
+                        10.0,
+                        15.0,
+                        20.0,
+                        50.0
+                  ],
+                  "k": 1.0
+            },
+            "expectedOutput": [
+                  5.0,
+                  10.0,
+                  15.0,
+                  20.0,
+                  30.0
+            ],
+            "hidden": true
+      },
+      {
+            "id": "uniform-hidden",
+            "label": "Uniform Constant Sequence",
+            "input": {
+                  "data": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                  ],
+                  "k": 1.5
+            },
+            "expectedOutput": [
+                  2.0,
+                  2.0,
+                  2.0,
+                  2.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-11': {
+    id: 'numpy-pandas-prob-11',
+    title: "Pandas Dataframe Join & Reconciliation",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'dataframe_reconcile_merge',
+    functionSignature: "dataframe_reconcile_merge(left_records: list[dict], right_records: list[dict], on_key: str, how: str = 'inner') -> list[dict]",
+    starterCode: `import pandas as pd
+
+def dataframe_reconcile_merge(left_records, right_records, on_key, how="inner"):
+    """Merge two sets of records on on_key using pandas.
+    Replace any missing/null values with 'N/A'.
+    Sort the resulting merged records by on_key.
+    Return list of dicts."""
+    # Your implementation here
+    pass
+`,
+    mission: "Reconcile and join separate tabular records across foreign keys using Pandas merge operations.",
+    taskDescription: "Implement `dataframe_reconcile_merge(left_records, right_records, on_key, how)`. Merge left and right records on `on_key` with strategy `how` ('inner', 'left', 'outer'). Replace nulls with 'N/A' and sort rows by `on_key`.",
+    constraints: [
+      "left_records and right_records are lists of dicts.",
+      "on_key is present in both schemas.",
+      "how is one of 'inner', 'left', or 'outer'.",
+      "Missing merged values replaced with 'N/A'."
+],
+    hints: {
+      "small": "Use pd.merge(pd.DataFrame(left_records), pd.DataFrame(right_records), on=on_key, how=how).",
+      "strong": "Call .sort_values(by=on_key) and .fillna('N/A') before converting to records via .to_dict(orient='records').",
+      "concept": "Relational merges align disparate feature tables across common entity keys in feature store pipelines."
+},
+    conceptConnections: [
+      {
+            "title": "Feature Stores & Data Warehouses",
+            "route": "/docs/data-systems/feature-stores",
+            "description": "Entity joins and point-in-time table reconciliation"
+      }
+],
+    testCases: [
+      {
+            "id": "inner-join",
+            "label": "Inner Join on ID",
+            "input": {
+                  "left_records": [
+                        {
+                              "id": 1,
+                              "name": "Alice"
+                        },
+                        {
+                              "id": 2,
+                              "name": "Bob"
+                        }
+                  ],
+                  "right_records": [
+                        {
+                              "id": 1,
+                              "score": 95
+                        },
+                        {
+                              "id": 3,
+                              "score": 80
+                        }
+                  ],
+                  "on_key": "id",
+                  "how": "inner"
+            },
+            "expectedOutput": [
+                  {
+                        "id": 1,
+                        "name": "Alice",
+                        "score": 95
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "left-join",
+            "label": "Left Join with Unmatched Right",
+            "input": {
+                  "left_records": [
+                        {
+                              "id": 1,
+                              "name": "Alice"
+                        },
+                        {
+                              "id": 2,
+                              "name": "Bob"
+                        }
+                  ],
+                  "right_records": [
+                        {
+                              "id": 1,
+                              "score": 95
+                        }
+                  ],
+                  "on_key": "id",
+                  "how": "left"
+            },
+            "expectedOutput": [
+                  {
+                        "id": 1,
+                        "name": "Alice",
+                        "score": 95.0
+                  },
+                  {
+                        "id": 2,
+                        "name": "Bob",
+                        "score": "N/A"
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "outer-join-hidden",
+            "label": "Full Outer Join with Disjoint Keys",
+            "input": {
+                  "left_records": [
+                        {
+                              "id": 10,
+                              "city": "Paris"
+                        }
+                  ],
+                  "right_records": [
+                        {
+                              "id": 20,
+                              "country": "Japan"
+                        }
+                  ],
+                  "on_key": "id",
+                  "how": "outer"
+            },
+            "expectedOutput": [
+                  {
+                        "id": 10,
+                        "city": "Paris",
+                        "country": "N/A"
+                  },
+                  {
+                        "id": 20,
+                        "city": "N/A",
+                        "country": "Japan"
+                  }
+            ],
+            "hidden": true
+      },
+      {
+            "id": "matched-multi-cols-hidden",
+            "label": "Complete Overlap Join",
+            "input": {
+                  "left_records": [
+                        {
+                              "id": "u1",
+                              "dept": "ML"
+                        },
+                        {
+                              "id": "u2",
+                              "dept": "Ops"
+                        }
+                  ],
+                  "right_records": [
+                        {
+                              "id": "u1",
+                              "tier": "gold"
+                        },
+                        {
+                              "id": "u2",
+                              "tier": "silver"
+                        }
+                  ],
+                  "on_key": "id",
+                  "how": "inner"
+            },
+            "expectedOutput": [
+                  {
+                        "id": "u1",
+                        "dept": "ML",
+                        "tier": "gold"
+                  },
+                  {
+                        "id": "u2",
+                        "dept": "Ops",
+                        "tier": "silver"
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-12': {
+    id: 'numpy-pandas-prob-12',
+    title: "Streaming Sliding Window Maximum",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'streaming_sliding_max',
+    functionSignature: "streaming_sliding_max(stream: list[float], window_size: int) -> list[float]",
+    starterCode: `def streaming_sliding_max(stream, window_size):
+    """Compute running maximum over a sliding window of capacity window_size.
+    For each arrival in stream, return max of all elements currently in window.
+    If stream is empty or window_size <= 0, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the running maximum over a bounded sliding capacity window on a streaming signal.",
+    taskDescription: "Implement `streaming_sliding_max(stream, window_size)`. Maintain an online sliding window of capacity `window_size` over incoming values and return the maximum value in the active window after each element arrives.",
+    constraints: [
+      "stream is a list of numerical floats or ints.",
+      "window_size is an integer > 0.",
+      "Returned list has the exact same length as stream.",
+      "Initial window contains all elements received so far until window_size is reached."
+],
+    hints: {
+      "small": "A monotonic deque storing indices in decreasing order of value yields O(1) amortized max lookups.",
+      "strong": "Before pushing index i, pop all dq elements <= i - window_size from the front, and pop smaller elements from the back.",
+      "concept": "Tracking extreme values in online sliding windows is crucial for anomaly detection, peak traffic monitoring, and buffer sizing."
+},
+    conceptConnections: [
+      {
+            "title": "Streaming Window Algorithms",
+            "route": "/docs/data-systems/streaming",
+            "description": "Monotonic queues and sliding window state retention"
+      }
+],
+    testCases: [
+      {
+            "id": "window-3-classic",
+            "label": "Window Size 3 Classic Sequence",
+            "input": {
+                  "stream": [
+                        1.0,
+                        3.0,
+                        -1.0,
+                        -3.0,
+                        5.0,
+                        3.0,
+                        6.0,
+                        7.0
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  1.0,
+                  3.0,
+                  3.0,
+                  3.0,
+                  5.0,
+                  5.0,
+                  6.0,
+                  7.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "decreasing-series",
+            "label": "Strictly Decreasing Series",
+            "input": {
+                  "stream": [
+                        5.0,
+                        4.0,
+                        3.0,
+                        2.0,
+                        1.0
+                  ],
+                  "window_size": 2
+            },
+            "expectedOutput": [
+                  5.0,
+                  5.0,
+                  4.0,
+                  3.0,
+                  2.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "window-1-identity",
+            "label": "Window Size 1 Identity",
+            "input": {
+                  "stream": [
+                        10.0,
+                        20.0,
+                        15.0
+                  ],
+                  "window_size": 1
+            },
+            "expectedOutput": [
+                  10.0,
+                  20.0,
+                  15.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "all-negatives-hidden",
+            "label": "Negative Fluctuating Values",
+            "input": {
+                  "stream": [
+                        -10.0,
+                        -5.0,
+                        -8.0,
+                        -2.0
+                  ],
+                  "window_size": 2
+            },
+            "expectedOutput": [
+                  -10.0,
+                  -5.0,
+                  -5.0,
+                  -2.0
+            ],
+            "hidden": true
+      },
+      {
+            "id": "large-window-hidden",
+            "label": "Window Larger than Stream",
+            "input": {
+                  "stream": [
+                        4.0,
+                        8.0,
+                        2.0,
+                        10.0
+                  ],
+                  "window_size": 10
+            },
+            "expectedOutput": [
+                  4.0,
+                  8.0,
+                  8.0,
+                  10.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-13': {
+    id: 'numpy-pandas-prob-13',
+    title: "NumPy Vectorized Confusion Matrix",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'vectorized_confusion_matrix',
+    functionSignature: "vectorized_confusion_matrix(y_true: list[int], y_pred: list[int], num_classes: int) -> list[list[int]]",
+    starterCode: `import numpy as np
+
+def vectorized_confusion_matrix(y_true, y_pred, num_classes):
+    """Construct a (num_classes, num_classes) confusion matrix using vectorized NumPy.
+    matrix[i][j] is the count of samples with true class i and predicted class j.
+    If inputs are empty or mismatch, return zero matrix of shape (num_classes, num_classes)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Construct a multi-class confusion matrix from ground-truth and predicted labels using vectorized NumPy operations.",
+    taskDescription: "Implement `vectorized_confusion_matrix(y_true, y_pred, num_classes)`. For labels in $0 \\dots C-1$, generate the $C \\times C$ contingency table where row $i$ is the actual class and column $j$ is the predicted class. Return a 2D list of integers.",
+    constraints: [
+      "y_true and y_pred are lists of integers in range [0, num_classes - 1].",
+      "num_classes is an integer > 0.",
+      "Returns a (num_classes x num_classes) 2D list of integers."
+],
+    hints: {
+      "small": "Compute a 1D flat linear index: flat_idx = y_true * num_classes + y_pred.",
+      "strong": "Use np.bincount(flat_idx, minlength=num_classes**2).reshape((num_classes, num_classes)).",
+      "concept": "Vectorized bincount calculates 2D cross-tabulation without quadratic nested loops or Python object overhead."
+},
+    conceptConnections: [
+      {
+            "title": "Evaluation Metrics & Classification",
+            "route": "/docs/machine-learning/classification-metrics",
+            "description": "Confusion matrices, precision, recall, and multi-class diagnosis"
+      }
+],
+    testCases: [
+      {
+            "id": "binary-balanced",
+            "label": "Binary Classification Balanced",
+            "input": {
+                  "y_true": [
+                        0,
+                        1,
+                        0,
+                        1,
+                        0,
+                        1
+                  ],
+                  "y_pred": [
+                        0,
+                        1,
+                        1,
+                        1,
+                        0,
+                        0
+                  ],
+                  "num_classes": 2
+            },
+            "expectedOutput": [
+                  [
+                        2,
+                        1
+                  ],
+                  [
+                        1,
+                        2
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "three-class-perfect",
+            "label": "3-Class Perfect Diagonal",
+            "input": {
+                  "y_true": [
+                        0,
+                        1,
+                        2,
+                        0,
+                        1,
+                        2
+                  ],
+                  "y_pred": [
+                        0,
+                        1,
+                        2,
+                        0,
+                        1,
+                        2
+                  ],
+                  "num_classes": 3
+            },
+            "expectedOutput": [
+                  [
+                        2,
+                        0,
+                        0
+                  ],
+                  [
+                        0,
+                        2,
+                        0
+                  ],
+                  [
+                        0,
+                        0,
+                        2
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "collapse-to-zero",
+            "label": "All Predictions Class 0",
+            "input": {
+                  "y_true": [
+                        0,
+                        1,
+                        2
+                  ],
+                  "y_pred": [
+                        0,
+                        0,
+                        0
+                  ],
+                  "num_classes": 3
+            },
+            "expectedOutput": [
+                  [
+                        1,
+                        0,
+                        0
+                  ],
+                  [
+                        1,
+                        0,
+                        0
+                  ],
+                  [
+                        1,
+                        0,
+                        0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-sample-hidden",
+            "label": "Single Instance Matrix",
+            "input": {
+                  "y_true": [
+                        1
+                  ],
+                  "y_pred": [
+                        1
+                  ],
+                  "num_classes": 2
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        0
+                  ],
+                  [
+                        0,
+                        1
+                  ]
+            ],
+            "hidden": true
+      },
+      {
+            "id": "four-class-hidden",
+            "label": "4-Class Mixed Predictions",
+            "input": {
+                  "y_true": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        0,
+                        3
+                  ],
+                  "y_pred": [
+                        0,
+                        1,
+                        1,
+                        3,
+                        2,
+                        3
+                  ],
+                  "num_classes": 4
+            },
+            "expectedOutput": [
+                  [
+                        1,
+                        0,
+                        1,
+                        0
+                  ],
+                  [
+                        0,
+                        1,
+                        0,
+                        0
+                  ],
+                  [
+                        0,
+                        1,
+                        0,
+                        0
+                  ],
+                  [
+                        0,
+                        0,
+                        0,
+                        2
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-14': {
+    id: 'numpy-pandas-prob-14',
+    title: "Pandas Time-Series Resampling & Missing Gap Fill",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'resample_interpolate_timeseries',
+    functionSignature: "resample_interpolate_timeseries(records: list[dict], freq: str = '1h', method: str = 'ffill') -> list[dict]",
+    starterCode: `import pandas as pd
+
+def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
+    """Resample irregular timestamped records to a fixed frequency using pandas.
+    Aggregate duplicates by mean. Fill missing gaps with method ('ffill', 'bfill', or 'zero').
+    Return list of dicts with 'timestamp' formatted as 'YYYY-MM-DD HH:MM:SS'
+    and 'value' rounded to 2 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Standardize irregular sensor timestamps onto regular frequency intervals and fill gaps using Pandas.",
+    taskDescription: "Implement `resample_interpolate_timeseries(records, freq, method)`. Parse timestamps, resample to frequency `freq` computing the mean of duplicate points, and fill missing intervals using `method` ('ffill', 'bfill', or 'zero'). Return formatted records.",
+    constraints: [
+      "records is a list of dicts with 'timestamp' (string) and 'value' (numeric).",
+      "freq is a valid pandas offset string (e.g. '1h').",
+      "method is one of 'ffill', 'bfill', 'zero'.",
+      "Values rounded to 2 decimal places."
+],
+    hints: {
+      "small": "Convert with pd.to_datetime(df['timestamp']) and set as DatetimeIndex.",
+      "strong": "Apply df.resample(freq).mean() followed by .ffill().bfill() or .fillna(0.0). Format timestamp using ts.strftime('%Y-%m-%d %H:%M:%S').",
+      "concept": "Downsampling and frequency standardization prepare irregular event-stream signals for time-series forecasting models and LSTM/Transformer sequence tokenizers."
+},
+    conceptConnections: [
+      {
+            "title": "Time Series Forecasting & Preprocessing",
+            "route": "/docs/data-systems/time-series",
+            "description": "Resampling, gap filling, and temporal feature alignment"
+      }
+],
+    testCases: [
+      {
+            "id": "hourly-ffill",
+            "label": "Hourly Forward Fill Gap",
+            "input": {
+                  "records": [
+                        {
+                              "timestamp": "2026-01-01 00:00:00",
+                              "value": 10.0
+                        },
+                        {
+                              "timestamp": "2026-01-01 02:00:00",
+                              "value": 30.0
+                        }
+                  ],
+                  "freq": "1h",
+                  "method": "ffill"
+            },
+            "expectedOutput": [
+                  {
+                        "timestamp": "2026-01-01 00:00:00",
+                        "value": 10.0
+                  },
+                  {
+                        "timestamp": "2026-01-01 01:00:00",
+                        "value": 10.0
+                  },
+                  {
+                        "timestamp": "2026-01-01 02:00:00",
+                        "value": 30.0
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "hourly-bfill",
+            "label": "Hourly Backward Fill Gap",
+            "input": {
+                  "records": [
+                        {
+                              "timestamp": "2026-01-01 10:00:00",
+                              "value": 50.0
+                        },
+                        {
+                              "timestamp": "2026-01-01 12:00:00",
+                              "value": 70.0
+                        }
+                  ],
+                  "freq": "1h",
+                  "method": "bfill"
+            },
+            "expectedOutput": [
+                  {
+                        "timestamp": "2026-01-01 10:00:00",
+                        "value": 50.0
+                  },
+                  {
+                        "timestamp": "2026-01-01 11:00:00",
+                        "value": 70.0
+                  },
+                  {
+                        "timestamp": "2026-01-01 12:00:00",
+                        "value": 70.0
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "consecutive-hours",
+            "label": "Consecutive Complete Hours",
+            "input": {
+                  "records": [
+                        {
+                              "timestamp": "2026-01-01 05:00:00",
+                              "value": 12.0
+                        },
+                        {
+                              "timestamp": "2026-01-01 06:00:00",
+                              "value": 18.0
+                        }
+                  ],
+                  "freq": "1h",
+                  "method": "ffill"
+            },
+            "expectedOutput": [
+                  {
+                        "timestamp": "2026-01-01 05:00:00",
+                        "value": 12.0
+                  },
+                  {
+                        "timestamp": "2026-01-01 06:00:00",
+                        "value": 18.0
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "duplicates-averaged-hidden",
+            "label": "Duplicate Timestamps Averaged",
+            "input": {
+                  "records": [
+                        {
+                              "timestamp": "2026-01-01 00:00:00",
+                              "value": 10.0
+                        },
+                        {
+                              "timestamp": "2026-01-01 00:00:00",
+                              "value": 20.0
+                        },
+                        {
+                              "timestamp": "2026-01-01 01:00:00",
+                              "value": 30.0
+                        }
+                  ],
+                  "freq": "1h",
+                  "method": "ffill"
+            },
+            "expectedOutput": [
+                  {
+                        "timestamp": "2026-01-01 00:00:00",
+                        "value": 15.0
+                  },
+                  {
+                        "timestamp": "2026-01-01 01:00:00",
+                        "value": 30.0
+                  }
+            ],
+            "hidden": true
+      },
+      {
+            "id": "fill-zero-hidden",
+            "label": "Zero Filling Strategy",
+            "input": {
+                  "records": [
+                        {
+                              "timestamp": "2026-01-01 01:00:00",
+                              "value": 100.0
+                        },
+                        {
+                              "timestamp": "2026-01-01 03:00:00",
+                              "value": 200.0
+                        }
+                  ],
+                  "freq": "1h",
+                  "method": "zero"
+            },
+            "expectedOutput": [
+                  {
+                        "timestamp": "2026-01-01 01:00:00",
+                        "value": 100.0
+                  },
+                  {
+                        "timestamp": "2026-01-01 02:00:00",
+                        "value": 0.0
+                  },
+                  {
+                        "timestamp": "2026-01-01 03:00:00",
+                        "value": 200.0
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'numpy-pandas-prob-15': {
+    id: 'numpy-pandas-prob-15',
+    title: "Streaming Deduplication with Sliding TTL",
+    difficulty: 'easy',
+    topic: 'NumPy & Pandas',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'sliding_window_dedupe',
+    functionSignature: "sliding_window_dedupe(events: list[dict], ttl: int) -> list[str]",
+    starterCode: `def sliding_window_dedupe(events, ttl):
+    """Deduplicate streaming events within a sliding TTL window.
+    Each event has {'id': str, 'timestamp': int}.
+    Accept event if its id was not seen within the last ttl seconds
+    (i.e. if current timestamp - last_seen > ttl).
+    Return list of accepted event IDs in processed order."""
+    # Your implementation here
+    pass
+`,
+    mission: "Filter duplicate streaming event IDs within a sliding time-to-live expiration window.",
+    taskDescription: "Implement `sliding_window_dedupe(events, ttl)`. For streaming events with `id` and `timestamp`, accept an event if its ID was not observed in the last `ttl` seconds ($t - t_{\\text{last}} > \\text{ttl}$). Return the list of accepted IDs in arrival order.",
+    constraints: [
+      "events is a list of dicts with 'id' (str) and 'timestamp' (int).",
+      "events are ordered chronologically by timestamp.",
+      "ttl is a positive integer.",
+      "Returns [] for empty events or ttl <= 0."
+],
+    hints: {
+      "small": "Keep a dictionary last_seen[event_id] = timestamp to track the most recent timestamp.",
+      "strong": "Accept event if id not in last_seen or (ts - last_seen[id]) > ttl, and update last_seen[id] = ts.",
+      "concept": "Sliding TTL deduplication filters message bus replays and at-least-once delivery duplicates without unbounded history storage."
+},
+    conceptConnections: [
+      {
+            "title": "Event Streaming & Idempotency",
+            "route": "/docs/data-systems/streaming",
+            "description": "Deduplication and exactly-once processing guarantees"
+      }
+],
+    testCases: [
+      {
+            "id": "basic-dedupe",
+            "label": "Duplicate Rejection and Expiry",
+            "input": {
+                  "events": [
+                        {
+                              "id": "A",
+                              "timestamp": 10
+                        },
+                        {
+                              "id": "A",
+                              "timestamp": 15
+                        },
+                        {
+                              "id": "A",
+                              "timestamp": 25
+                        }
+                  ],
+                  "ttl": 10
+            },
+            "expectedOutput": [
+                  "A",
+                  "A"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "distinct-events",
+            "label": "All Distinct Event IDs",
+            "input": {
+                  "events": [
+                        {
+                              "id": "X",
+                              "timestamp": 1
+                        },
+                        {
+                              "id": "Y",
+                              "timestamp": 2
+                        },
+                        {
+                              "id": "Z",
+                              "timestamp": 3
+                        }
+                  ],
+                  "ttl": 5
+            },
+            "expectedOutput": [
+                  "X",
+                  "Y",
+                  "Z"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "ttl-boundary",
+            "label": "Exact TTL Boundary Test",
+            "input": {
+                  "events": [
+                        {
+                              "id": "E",
+                              "timestamp": 100
+                        },
+                        {
+                              "id": "E",
+                              "timestamp": 110
+                        },
+                        {
+                              "id": "E",
+                              "timestamp": 111
+                        }
+                  ],
+                  "ttl": 10
+            },
+            "expectedOutput": [
+                  "E",
+                  "E"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "interleaved-hidden",
+            "label": "Interleaved Event IDs",
+            "input": {
+                  "events": [
+                        {
+                              "id": "A",
+                              "timestamp": 10
+                        },
+                        {
+                              "id": "B",
+                              "timestamp": 12
+                        },
+                        {
+                              "id": "A",
+                              "timestamp": 18
+                        },
+                        {
+                              "id": "B",
+                              "timestamp": 25
+                        }
+                  ],
+                  "ttl": 10
+            },
+            "expectedOutput": [
+                  "A",
+                  "B",
+                  "B"
+            ],
+            "hidden": true
+      },
+      {
+            "id": "burst-hidden",
+            "label": "Immediate Same-Timestamp Burst",
+            "input": {
+                  "events": [
+                        {
+                              "id": "msg",
+                              "timestamp": 50
+                        },
+                        {
+                              "id": "msg",
+                              "timestamp": 50
+                        },
+                        {
+                              "id": "msg",
+                              "timestamp": 50
+                        }
+                  ],
+                  "ttl": 5
+            },
+            "expectedOutput": [
+                  "msg"
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

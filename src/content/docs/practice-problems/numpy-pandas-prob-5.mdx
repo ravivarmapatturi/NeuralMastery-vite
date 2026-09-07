@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Pandas Module 5: Problem 185"
+title: "Practice: Pandas GroupBy Metric Aggregation"
 sidebar_position: 185
-description: "Curriculum Problem 185 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
+description: "Group tabular records by category and compute aggregate metrics (count, sum, mean) using Pandas."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,34 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Pandas Module 5: Problem 185
+# Pandas GroupBy Metric Aggregation
 
 **Rank #185** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-4`.
+Group tabular records by category and compute aggregate metrics (count, sum, mean) using Pandas. Prerequisite: `numpy-pandas-prob-4`.
 
 <PracticePlayground problemId="numpy-pandas-prob-5" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p5(data):
-    # Reference implementation
-    return data
+import pandas as pd
+
+def groupby_aggregate(records, group_col, val_col):
+    if not records:
+        return {}
+    df = pd.DataFrame(records)
+    grouped = df.groupby(group_col)[val_col]
+    res = {}
+    for name, grp in grouped:
+        res[str(name)] = {
+            "count": int(grp.count()),
+            "sum": round(float(grp.sum()), 2),
+            "mean": round(float(grp.mean()), 2)
+        }
+    return res
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Pandas groupby partitions index row subsets into hash buckets, enabling vectorized multi-metric reduction over column slices without iterating row by row.
 
 </Solution>

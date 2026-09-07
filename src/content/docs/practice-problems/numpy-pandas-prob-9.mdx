@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Streaming systems Module 9: Problem 189"
+title: "Practice: Streaming Tumbling Window Aggregates"
 sidebar_position: 189
-description: "Curriculum Problem 189 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
+description: "Partition time-series events into fixed-duration tumbling windows and calculate windowed metrics."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,56 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Streaming systems Module 9: Problem 189
+# Streaming Tumbling Window Aggregates
 
 **Rank #189** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-8`.
+Partition time-series events into fixed-duration tumbling windows and calculate windowed metrics. Prerequisite: `numpy-pandas-prob-8`.
 
 <PracticePlayground problemId="numpy-pandas-prob-9" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p9(data):
-    # Reference implementation
-    return data
+def tumbling_window_aggregates(events, window_duration):
+    if not events or window_duration <= 0:
+        return []
+    start_time = events[0]["timestamp"]
+    windows = []
+    curr_start = start_time
+    curr_end = curr_start + window_duration
+    curr_count = 0
+    curr_total = 0.0
+
+    for ev in events:
+        ts = ev["timestamp"]
+        val = ev["value"]
+        if ts < curr_end:
+            curr_count += 1
+            curr_total += val
+        else:
+            if curr_count > 0:
+                windows.append({
+                    "window_start": curr_start,
+                    "window_end": curr_end,
+                    "count": curr_count,
+                    "total": round(float(curr_total), 2)
+                })
+            step = (ts - start_time) // window_duration
+            curr_start = start_time + step * window_duration
+            curr_end = curr_start + window_duration
+            curr_count = 1
+            curr_total = val
+    if curr_count > 0:
+        windows.append({
+            "window_start": curr_start,
+            "window_end": curr_end,
+            "count": curr_count,
+            "total": round(float(curr_total), 2)
+        })
+    return windows
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Tumbling windows bucket streaming events into fixed-width disjoint epochs based on event-time timestamps, tracking counts and totals without retaining fine-grained individual logs.
 
 </Solution>

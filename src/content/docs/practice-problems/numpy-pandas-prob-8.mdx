@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Pandas Module 8: Problem 188"
+title: "Practice: Pandas Pivot Table Reshaping"
 sidebar_position: 188
-description: "Curriculum Problem 188 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
+description: "Reshape relational records into a two-dimensional cross-tabulated pivot summary using Pandas."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,31 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Pandas Module 8: Problem 188
+# Pandas Pivot Table Reshaping
 
 **Rank #188** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-7`.
+Reshape relational records into a two-dimensional cross-tabulated pivot summary using Pandas. Prerequisite: `numpy-pandas-prob-7`.
 
 <PracticePlayground problemId="numpy-pandas-prob-8" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p8(data):
-    # Reference implementation
-    return data
+import pandas as pd
+
+def pivot_sales_summary(records, index_key, columns_key, values_key):
+    if not records:
+        return {}
+    df = pd.DataFrame(records)
+    pivot = df.pivot_table(index=index_key, columns=columns_key, values=values_key, aggfunc='sum', fill_value=0.0)
+    pivot = pivot.sort_index().reindex(columns=sorted(pivot.columns))
+    res = {}
+    for idx in pivot.index:
+        res[str(idx)] = {str(col): round(float(pivot.loc[idx, col]), 2) for col in pivot.columns}
+    return res
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Pandas pivot_table re-indexes categorical coordinate pairs onto a 2D dense grid, aggregating duplicate observations with vector sum and filling structural zeros.
 
 </Solution>

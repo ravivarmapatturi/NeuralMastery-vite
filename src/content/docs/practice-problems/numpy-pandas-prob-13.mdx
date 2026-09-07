@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: NumPy Module 13: Problem 193"
+title: "Practice: NumPy Vectorized Confusion Matrix"
 sidebar_position: 193
-description: "Curriculum Problem 193 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
+description: "Construct a multi-class confusion matrix from ground-truth and predicted labels using vectorized NumPy operations."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,32 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NumPy Module 13: Problem 193
+# NumPy Vectorized Confusion Matrix
 
 **Rank #193** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-12`.
+Construct a multi-class confusion matrix from ground-truth and predicted labels using vectorized NumPy operations. Prerequisite: `numpy-pandas-prob-12`.
 
 <PracticePlayground problemId="numpy-pandas-prob-13" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p13(data):
-    # Reference implementation
-    return data
+import numpy as np
+
+def vectorized_confusion_matrix(y_true, y_pred, num_classes):
+    if num_classes <= 0:
+        return []
+    if not y_true or not y_pred or len(y_true) != len(y_pred):
+        return np.zeros((num_classes, num_classes), dtype=int).tolist()
+    yt = np.array(y_true, dtype=int)
+    yp = np.array(y_pred, dtype=int)
+    flat_indices = yt * num_classes + yp
+    counts = np.bincount(flat_indices, minlength=num_classes * num_classes)
+    matrix = counts.reshape((num_classes, num_classes))
+    return matrix.tolist()
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Linear indexing combines row and column coordinates into flat 1D addresses, enabling np.bincount to tally all bin frequencies in optimized C in a single linear pass.
 
 </Solution>

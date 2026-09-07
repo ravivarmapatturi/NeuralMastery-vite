@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: NumPy Module 7: Problem 187"
+title: "Practice: NumPy Vectorized One-Hot Matrix Encoding"
 sidebar_position: 187
-description: "Curriculum Problem 187 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
+description: "Transform integer class label vectors into vectorized binary one-hot matrices using NumPy."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,28 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NumPy Module 7: Problem 187
+# NumPy Vectorized One-Hot Matrix Encoding
 
 **Rank #187** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-6`.
+Transform integer class label vectors into vectorized binary one-hot matrices using NumPy. Prerequisite: `numpy-pandas-prob-6`.
 
 <PracticePlayground problemId="numpy-pandas-prob-7" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p7(data):
-    # Reference implementation
-    return data
+import numpy as np
+
+def vectorized_one_hot(labels, num_classes):
+    if not labels or num_classes <= 0:
+        return []
+    arr = np.array(labels, dtype=int)
+    one_hot = np.zeros((len(labels), num_classes), dtype=int)
+    one_hot[np.arange(len(labels)), arr] = 1
+    return one_hot.tolist()
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Advanced fancy indexing in NumPy allows scattering 1s across coordinate pairs (row, class) in a single vectorized memory write operation.
 
 </Solution>

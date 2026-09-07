@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Streaming systems Module 3: Problem 183"
+title: "Practice: Streaming Rolling Moving Average"
 sidebar_position: 183
-description: "Curriculum Problem 183 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
+description: "Compute the rolling moving average across a sliding window of data stream values."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,28 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Streaming systems Module 3: Problem 183
+# Streaming Rolling Moving Average
 
 **Rank #183** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-2`.
+Compute the rolling moving average across a sliding window of data stream values. Prerequisite: `numpy-pandas-prob-2`.
 
 <PracticePlayground problemId="numpy-pandas-prob-3" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p3(data):
-    # Reference implementation
-    return data
+import numpy as np
+
+def rolling_moving_average(values, window_size):
+    if not values or window_size <= 0 or len(values) < window_size:
+        return []
+    arr = np.array(values, dtype=float)
+    weights = np.ones(window_size) / window_size
+    sma = np.convolve(arr, weights, mode='valid')
+    return [round(float(x), 4) for x in sma]
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Convolution of the input signal with a uniform boxcar kernel computes the exact unweighted moving average for all valid overlapping positions in a single vectorized pass.
 
 </Solution>

@@ -12813,72 +12813,72 @@
     "/docs/practice-problems/numpy-pandas-prob-1": {
       "slug": "practice-problems/numpy-pandas-prob-1",
       "section": "practice-problems",
-      "title": "Practice: NumPy Module 1: Problem 181",
+      "title": "Practice: NumPy Vectorized Min-Max Feature Scaling",
       "sidebarPosition": 181,
-      "description": "Curriculum Problem 181 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
+      "description": "Implement vectorized min-max normalization in NumPy to scale numerical feature values into the range [0.0, 1.0].",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-10": {
       "slug": "practice-problems/numpy-pandas-prob-10",
       "section": "practice-problems",
-      "title": "Practice: NumPy Module 10: Problem 190",
+      "title": "Practice: NumPy IQR Outlier Detection & Winsorization",
       "sidebarPosition": 190,
-      "description": "Curriculum Problem 190 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
+      "description": "Detect distribution outliers via Interquartile Range (IQR) and clip extreme values using vectorized NumPy operations.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-11": {
       "slug": "practice-problems/numpy-pandas-prob-11",
       "section": "practice-problems",
-      "title": "Practice: Pandas Module 11: Problem 191",
+      "title": "Practice: Pandas Dataframe Join & Reconciliation",
       "sidebarPosition": 191,
-      "description": "Curriculum Problem 191 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
+      "description": "Reconcile and join separate tabular records across foreign keys using Pandas merge operations.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-12": {
       "slug": "practice-problems/numpy-pandas-prob-12",
       "section": "practice-problems",
-      "title": "Practice: Streaming systems Module 12: Problem 192",
+      "title": "Practice: Streaming Sliding Window Maximum",
       "sidebarPosition": 192,
-      "description": "Curriculum Problem 192 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
+      "description": "Compute the running maximum over a bounded sliding capacity window on a streaming signal.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-13": {
       "slug": "practice-problems/numpy-pandas-prob-13",
       "section": "practice-problems",
-      "title": "Practice: NumPy Module 13: Problem 193",
+      "title": "Practice: NumPy Vectorized Confusion Matrix",
       "sidebarPosition": 193,
-      "description": "Curriculum Problem 193 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
+      "description": "Construct a multi-class confusion matrix from ground-truth and predicted labels using vectorized NumPy operations.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-14": {
       "slug": "practice-problems/numpy-pandas-prob-14",
       "section": "practice-problems",
-      "title": "Practice: Pandas Module 14: Problem 194",
+      "title": "Practice: Pandas Time-Series Resampling & Missing Gap Fill",
       "sidebarPosition": 194,
-      "description": "Curriculum Problem 194 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
+      "description": "Standardize irregular sensor timestamps onto regular frequency intervals and fill gaps using Pandas.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-15": {
       "slug": "practice-problems/numpy-pandas-prob-15",
       "section": "practice-problems",
-      "title": "Practice: Streaming systems Module 15: Problem 195",
+      "title": "Practice: Streaming Deduplication with Sliding TTL",
       "sidebarPosition": 195,
-      "description": "Curriculum Problem 195 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
+      "description": "Filter duplicate streaming event IDs within a sliding time-to-live expiration window.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-16": {
       "slug": "practice-problems/numpy-pandas-prob-16",
@@ -12923,12 +12923,12 @@
     "/docs/practice-problems/numpy-pandas-prob-2": {
       "slug": "practice-problems/numpy-pandas-prob-2",
       "section": "practice-problems",
-      "title": "Practice: Pandas Module 2: Problem 182",
+      "title": "Practice: Pandas Missing Value Imputation Pipeline",
       "sidebarPosition": 182,
-      "description": "Curriculum Problem 182 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
+      "description": "Impute missing values across numerical and categorical features in tabular records using Pandas.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-20": {
       "slug": "practice-problems/numpy-pandas-prob-20",
@@ -13033,12 +13033,12 @@
     "/docs/practice-problems/numpy-pandas-prob-3": {
       "slug": "practice-problems/numpy-pandas-prob-3",
       "section": "practice-problems",
-      "title": "Practice: Streaming systems Module 3: Problem 183",
+      "title": "Practice: Streaming Rolling Moving Average",
       "sidebarPosition": 183,
-      "description": "Curriculum Problem 183 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
+      "description": "Compute the rolling moving average across a sliding window of data stream values.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-30": {
       "slug": "practice-problems/numpy-pandas-prob-30",
@@ -13143,12 +13143,12 @@
     "/docs/practice-problems/numpy-pandas-prob-4": {
       "slug": "practice-problems/numpy-pandas-prob-4",
       "section": "practice-problems",
-      "title": "Practice: NumPy Module 4: Problem 184",
+      "title": "Practice: NumPy Vectorized Z-Score Standardization",
       "sidebarPosition": 184,
-      "description": "Curriculum Problem 184 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
+      "description": "Standardize feature distributions to zero mean and unit variance using vectorized NumPy operations.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-40": {
       "slug": "practice-problems/numpy-pandas-prob-40",
@@ -13253,12 +13253,12 @@
     "/docs/practice-problems/numpy-pandas-prob-5": {
       "slug": "practice-problems/numpy-pandas-prob-5",
       "section": "practice-problems",
-      "title": "Practice: Pandas Module 5: Problem 185",
+      "title": "Practice: Pandas GroupBy Metric Aggregation",
       "sidebarPosition": 185,
-      "description": "Curriculum Problem 185 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
+      "description": "Group tabular records by category and compute aggregate metrics (count, sum, mean) using Pandas.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-50": {
       "slug": "practice-problems/numpy-pandas-prob-50",
@@ -13363,12 +13363,12 @@
     "/docs/practice-problems/numpy-pandas-prob-6": {
       "slug": "practice-problems/numpy-pandas-prob-6",
       "section": "practice-problems",
-      "title": "Practice: Streaming systems Module 6: Problem 186",
+      "title": "Practice: Streaming Exponential Moving Average (EMA) Series",
       "sidebarPosition": 186,
-      "description": "Curriculum Problem 186 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
+      "description": "Track real-time streaming series values with an online Exponential Moving Average filter.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-60": {
       "slug": "practice-problems/numpy-pandas-prob-60",
@@ -13383,32 +13383,32 @@
     "/docs/practice-problems/numpy-pandas-prob-7": {
       "slug": "practice-problems/numpy-pandas-prob-7",
       "section": "practice-problems",
-      "title": "Practice: NumPy Module 7: Problem 187",
+      "title": "Practice: NumPy Vectorized One-Hot Matrix Encoding",
       "sidebarPosition": 187,
-      "description": "Curriculum Problem 187 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
+      "description": "Transform integer class label vectors into vectorized binary one-hot matrices using NumPy.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-8": {
       "slug": "practice-problems/numpy-pandas-prob-8",
       "section": "practice-problems",
-      "title": "Practice: Pandas Module 8: Problem 188",
+      "title": "Practice: Pandas Pivot Table Reshaping",
       "sidebarPosition": 188,
-      "description": "Curriculum Problem 188 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
+      "description": "Reshape relational records into a two-dimensional cross-tabulated pivot summary using Pandas.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-9": {
       "slug": "practice-problems/numpy-pandas-prob-9",
       "section": "practice-problems",
-      "title": "Practice: Streaming systems Module 9: Problem 189",
+      "title": "Practice: Streaming Tumbling Window Aggregates",
       "sidebarPosition": 189,
-      "description": "Curriculum Problem 189 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
+      "description": "Partition time-series events into fixed-duration tumbling windows and calculate windowed metrics.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-vec-prob-1": {
       "slug": "practice-problems/numpy-vec-prob-1",

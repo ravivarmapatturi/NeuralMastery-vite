@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Pandas Module 2: Problem 182"
+title: "Practice: Pandas Missing Value Imputation Pipeline"
 sidebar_position: 182
-description: "Curriculum Problem 182 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
+description: "Impute missing values across numerical and categorical features in tabular records using Pandas."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,49 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Pandas Module 2: Problem 182
+# Pandas Missing Value Imputation Pipeline
 
 **Rank #182** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-1`.
+Impute missing values across numerical and categorical features in tabular records using Pandas. Prerequisite: `numpy-pandas-prob-1`.
 
 <PracticePlayground problemId="numpy-pandas-prob-2" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p2(data):
-    # Reference implementation
-    return data
+import pandas as pd
+import numpy as np
+
+def impute_missing_values(records, num_strategy="mean", cat_strategy="mode"):
+    if not records:
+        return []
+    df = pd.DataFrame(records)
+    for col in df.columns:
+        if pd.api.types.is_numeric_dtype(df[col]):
+            if df[col].isna().any():
+                fill_val = df[col].mean() if num_strategy == "mean" else df[col].median()
+                df[col] = df[col].fillna(round(float(fill_val), 2))
+        else:
+            if df[col].isna().any():
+                if cat_strategy == "mode":
+                    mode_vals = df[col].mode()
+                    fill_val = mode_vals.iloc[0] if not mode_vals.empty else "Unknown"
+                else:
+                    fill_val = cat_strategy
+                df[col] = df[col].fillna(fill_val)
+    out = []
+    for r in df.to_dict(orient="records"):
+        clean_r = {}
+        for k, v in r.items():
+            if isinstance(v, (int, float)) and np.isnan(v):
+                clean_r[k] = None
+            else:
+                clean_r[k] = v
+        out.append(clean_r)
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Column-type-aware imputation distinguishes quantitative continuous features (suitable for mean/median replacement) from discrete categorical labels (requiring mode or sentinel token replacement).
 
 </Solution>

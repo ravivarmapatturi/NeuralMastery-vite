@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: NumPy Module 4: Problem 184"
+title: "Practice: NumPy Vectorized Z-Score Standardization"
 sidebar_position: 184
-description: "Curriculum Problem 184 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
+description: "Standardize feature distributions to zero mean and unit variance using vectorized NumPy operations."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,31 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NumPy Module 4: Problem 184
+# NumPy Vectorized Z-Score Standardization
 
 **Rank #184** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-3`.
+Standardize feature distributions to zero mean and unit variance using vectorized NumPy operations. Prerequisite: `numpy-pandas-prob-3`.
 
 <PracticePlayground problemId="numpy-pandas-prob-4" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p4(data):
-    # Reference implementation
-    return data
+import numpy as np
+
+def z_score_standardize(values):
+    if not values:
+        return []
+    arr = np.array(values, dtype=float)
+    mean = float(np.mean(arr))
+    std = float(np.std(arr, ddof=0))
+    if std == 0.0:
+        return [0.0] * len(values)
+    z = (arr - mean) / std
+    return [round(float(x), 4) for x in z]
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Z-score transformation normalizes feature scales across heterogeneous metrics, allowing gradient optimizers to converge along symmetric contours.
 
 </Solution>

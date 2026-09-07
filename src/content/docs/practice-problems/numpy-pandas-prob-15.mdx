@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Streaming systems Module 15: Problem 195"
+title: "Practice: Streaming Deduplication with Sliding TTL"
 sidebar_position: 195
-description: "Curriculum Problem 195 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
+description: "Filter duplicate streaming event IDs within a sliding time-to-live expiration window."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,31 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Streaming systems Module 15: Problem 195
+# Streaming Deduplication with Sliding TTL
 
 **Rank #195** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-14`.
+Filter duplicate streaming event IDs within a sliding time-to-live expiration window. Prerequisite: `numpy-pandas-prob-14`.
 
 <PracticePlayground problemId="numpy-pandas-prob-15" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p15(data):
-    # Reference implementation
-    return data
+def sliding_window_dedupe(events, ttl):
+    if not events or ttl <= 0:
+        return []
+    last_seen = {}
+    accepted = []
+    for ev in events:
+        eid = ev["id"]
+        ts = ev["timestamp"]
+        if eid not in last_seen or (ts - last_seen[eid]) > ttl:
+            accepted.append(eid)
+            last_seen[eid] = ts
+    return accepted
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Sliding TTL tracking maintains event liveness in an eviction hash map, dropping duplicate messages arriving within the retry envelope while permitting legitimate recurrences after timeout.
 
 </Solution>

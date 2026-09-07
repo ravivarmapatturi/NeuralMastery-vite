@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Pandas Module 14: Problem 194"
+title: "Practice: Pandas Time-Series Resampling & Missing Gap Fill"
 sidebar_position: 194
-description: "Curriculum Problem 194 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
+description: "Standardize irregular sensor timestamps onto regular frequency intervals and fill gaps using Pandas."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,41 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Pandas Module 14: Problem 194
+# Pandas Time-Series Resampling & Missing Gap Fill
 
 **Rank #194** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-13`.
+Standardize irregular sensor timestamps onto regular frequency intervals and fill gaps using Pandas. Prerequisite: `numpy-pandas-prob-13`.
 
 <PracticePlayground problemId="numpy-pandas-prob-14" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p14(data):
-    # Reference implementation
-    return data
+import pandas as pd
+
+def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
+    if not records:
+        return []
+    df = pd.DataFrame(records)
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+    df = df.set_index("timestamp").sort_index()
+    resampled = df.resample(freq).mean()
+    if method == "ffill":
+        resampled = resampled.ffill().bfill()
+    elif method == "bfill":
+        resampled = resampled.bfill().ffill()
+    else:
+        resampled = resampled.fillna(0.0)
+    res = []
+    for ts, row in resampled.iterrows():
+        res.append({
+            "timestamp": ts.strftime("%Y-%m-%d %H:%M:%S"),
+            "value": round(float(row["value"]), 2)
+        })
+    return res
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Pandas DatetimeIndex resampling aligns irregular asynchronous sensor measurements to equispaced grid intervals, imputing missing gaps via temporal forward/backward propagation.
 
 </Solution>

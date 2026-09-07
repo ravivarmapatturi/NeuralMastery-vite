@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: NumPy Module 10: Problem 190"
+title: "Practice: NumPy IQR Outlier Detection & Winsorization"
 sidebar_position: 190
-description: "Curriculum Problem 190 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
+description: "Detect distribution outliers via Interquartile Range (IQR) and clip extreme values using vectorized NumPy operations."
 difficulty: easy
 topic: numpy-pandas
 ---
@@ -10,22 +9,32 @@ topic: numpy-pandas
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NumPy Module 10: Problem 190
+# NumPy IQR Outlier Detection & Winsorization
 
 **Rank #190** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-9`.
+Detect distribution outliers via Interquartile Range (IQR) and clip extreme values using vectorized NumPy operations. Prerequisite: `numpy-pandas-prob-9`.
 
 <PracticePlayground problemId="numpy-pandas-prob-10" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p10(data):
-    # Reference implementation
-    return data
+import numpy as np
+
+def clip_outliers_iqr(data, k=1.5):
+    if not data:
+        return []
+    arr = np.array(data, dtype=float)
+    q1 = float(np.percentile(arr, 25))
+    q3 = float(np.percentile(arr, 75))
+    iqr = q3 - q1
+    lower = q1 - k * iqr
+    upper = q3 + k * iqr
+    clipped = np.clip(arr, lower, upper)
+    return [round(float(x), 4) for x in clipped]
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Winsorizing extreme observations with IQR-derived percentile boundaries stabilizes downstream loss functions and tree split metrics against leverage points.
 
 </Solution>
