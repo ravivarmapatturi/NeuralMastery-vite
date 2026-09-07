@@ -1,7 +1,6 @@
 import type { DocPage } from './contentTree';
 import type { AwardEvent } from './gamification';
 import { hasAward } from './gamification';
-import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
 
 export interface PracticeStats {
   solved: number;
@@ -53,11 +52,4 @@ export function recommendedProblem(problems: DocPage[], events: AwardEvent[], ne
   return unsolved.find((p) => p.topic === next?.section) ?? unsolved[0];
 }
 
-export function practicePaths(problems: DocPage[]): Array<{ key: string; label: string; color: string; problems: DocPage[] }> {
-  return SECTION_ORDER.flatMap((key) => {
-    const meta = SECTION_META[key];
-    const sectionProblems = problems.filter((problem) => meta.subsections.some((sub) => sub.dir === problem.topic));
-    return sectionProblems.length ? [{ key, label: meta.label, color: meta.color, problems: sectionProblems }] : [];
-  });
-}
 

@@ -6,7 +6,7 @@ import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
 import { useGamification } from '../contexts/GamificationContext';
 import { hasAward, pointsForDifficulty, SYSTEM_DESIGN_CHALLENGE_POINTS } from '../lib/gamification';
 import { useProgress } from '../contexts/ProgressContext';
-import { cleanPracticeTitle, nextLesson, practicePaths, practiceStats, recommendedProblem, relatedLesson } from '../lib/mastery';
+import { cleanPracticeTitle, nextLesson, practiceStats, recommendedProblem, relatedLesson } from '../lib/mastery';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 
@@ -67,7 +67,6 @@ export default function PracticeListPage() {
   const stats = practiceStats(problems, events);
   const next = nextLesson(learnPages, understood);
   const recommended = recommendedProblem(problems, events, next);
-  const paths = practicePaths(problems);
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 100;
@@ -190,18 +189,6 @@ export default function PracticeListPage() {
             <p>Every recommendation is drawn from your actual lesson progress and the problem catalogue—not a generic playlist.</p>
           </div>
         </div>
-
-        <section className="nm-practice-paths" aria-labelledby="practice-paths-heading">
-          <div className="nm-inline-heading"><div><p className="nm-eyebrow">Practice paths</p><h2 id="practice-paths-heading">Train by discipline, not only by difficulty.</h2></div></div>
-          <div className="nm-practice-path-grid">
-            {paths.map((path) => {
-              const solved = path.problems.filter((problem) => hasAward(events, problem.route, problem.difficulty ? 'complete' : 'design')).length;
-              return <div key={path.key} className="nm-practice-path" style={{ '--path-color': path.color } as React.CSSProperties}>
-                <span>{path.label}</span><strong>{solved} / {path.problems.length}</strong><small>{path.problems.map((problem) => cleanPracticeTitle(problem.title)).slice(0, 3).join(' · ')}</small>
-              </div>;
-            })}
-          </div>
-        </section>
 
         {/* Filter Toolbar */}
         <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
