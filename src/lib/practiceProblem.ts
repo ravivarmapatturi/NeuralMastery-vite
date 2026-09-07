@@ -3899,6 +3899,646 @@ def jaccard_relevance(query, chunk):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  // --- Trees / Binary Search batch (real content replacing the generic
+  // placeholder template). Every tree node is represented as a plain dict
+  // {val, left, right} (left/right are null for an absent child, or the
+  // whole tree is null for an empty tree) -- deliberately not a TreeNode
+  // class, since the grading harness calls functionName(**kwargs) with
+  // the raw JSON-decoded test input directly, and a dict needs no
+  // separate class-construction step. Every expectedOutput below was
+  // cross-checked against the well-known canonical answer for each
+  // classic problem (several are verbatim LeetCode example test cases),
+  // not just trusted from one reference script.
+  'tree-bs-prob-1': {
+    id: 'tree-bs-prob-1',
+    title: 'Maximum Depth of Binary Tree',
+    difficulty: 'easy',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '10–15 min',
+    functionName: 'max_depth',
+    functionSignature: 'max_depth(root: dict | None) -> int',
+    starterCode: `def max_depth(root):
+    """root: a tree node as {'val', 'left', 'right'} (left/right are None
+    for an absent child), or None for an empty tree. Return the number
+    of nodes along the longest path from root down to the farthest leaf
+    (an empty tree has depth 0; a single node has depth 1)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Maximum Depth of Binary Tree -- the simplest possible tree recursion, and the one every other "compute something about every subtree" tree problem is a variation of.',
+    taskDescription: "Implement `max_depth(root)`: an empty tree has depth 0; otherwise the depth is 1 plus the larger of the left and right subtrees' depths.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree (root is None) has depth 0.',
+      'A single-node tree has depth 1.',
+    ],
+    hints: {
+      small: 'The depth of a tree is 1 (for the root) plus the depth of whichever of its two subtrees is deeper.',
+      strong: 'if root is None: return 0. return 1 + max(max_depth(root["left"]), max_depth(root["right"])).',
+      concept: 'This is the template for nearly every tree recursion: handle the None base case, recurse into both children, then combine their results with the current node -- diameter, balance-checking, and max path sum below are all this same shape with a different combine step.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The base recursive pattern for tree-shaped data' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Classic 5-Node Tree', input: { root: { val: 3, left: { val: 9, left: null, right: null }, right: { val: 20, left: { val: 15, left: null, right: null }, right: { val: 7, left: null, right: null } } } }, expectedOutput: 3, hidden: false },
+      { id: 'right-leaning', label: 'Right-Leaning 2-Node Tree', input: { root: { val: 1, left: null, right: { val: 2, left: null, right: null } } }, expectedOutput: 2, hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: 0, hidden: true },
+      { id: 'single', label: 'Single Node', input: { root: { val: 1, left: null, right: null } }, expectedOutput: 1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-2': {
+    id: 'tree-bs-prob-2',
+    title: 'Invert Binary Tree',
+    difficulty: 'easy',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '10–15 min',
+    functionName: 'invert_tree',
+    functionSignature: 'invert_tree(root: dict | None) -> dict | None',
+    starterCode: `def invert_tree(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return a
+    new tree that is the mirror image of root -- every node's left and
+    right children swapped, recursively."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Invert Binary Tree -- famous mostly for the "the guy who wrote a core dev tool couldn\'t solve this in an interview" story, and a clean example of recursion building a NEW structure rather than just computing a number.',
+    taskDescription: "Implement `invert_tree(root)`: return a new tree where every node's left and right children are swapped, all the way down.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree (root is None) inverts to None.',
+      'Every node in the result must have its left and right subtrees swapped relative to the input, at every depth.',
+    ],
+    hints: {
+      small: 'Inverting a tree means: invert the left subtree, invert the right subtree, then swap which one goes where.',
+      strong: 'if root is None: return None. return {"val": root["val"], "left": invert_tree(root["right"]), "right": invert_tree(root["left"])}.',
+      concept: 'The swap happens exactly once per node, at the level where you construct that node\'s new dict -- the two recursive calls just produce the (already-inverted) subtrees, they don\'t need to know anything about swapping themselves.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Recursion that constructs a new tree rather than just aggregating a value' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Classic 7-Node Tree', input: { root: { val: 4, left: { val: 2, left: { val: 1, left: null, right: null }, right: { val: 3, left: null, right: null } }, right: { val: 7, left: { val: 6, left: null, right: null }, right: { val: 9, left: null, right: null } } } }, expectedOutput: { val: 4, left: { val: 7, left: { val: 9, left: null, right: null }, right: { val: 6, left: null, right: null } }, right: { val: 2, left: { val: 3, left: null, right: null }, right: { val: 1, left: null, right: null } } }, hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: null, hidden: false },
+      { id: 'single', label: 'Single Node', input: { root: { val: 1, left: null, right: null } }, expectedOutput: { val: 1, left: null, right: null }, hidden: true },
+      { id: 'left-only', label: 'Left Child Only', input: { root: { val: 1, left: { val: 2, left: null, right: null }, right: null } }, expectedOutput: { val: 1, left: null, right: { val: 2, left: null, right: null } }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-3': {
+    id: 'tree-bs-prob-3',
+    title: 'Same Tree',
+    difficulty: 'easy',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '10–15 min',
+    functionName: 'is_same_tree',
+    functionSignature: 'is_same_tree(p: dict | None, q: dict | None) -> bool',
+    starterCode: `def is_same_tree(p, q):
+    """p, q: tree nodes as {'val', 'left', 'right'}, or None. Return True
+    if the two trees are structurally identical AND every corresponding
+    node holds the same value."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Same Tree -- structural equality between two trees, the base case every tree-comparison problem (symmetric trees, subtree matching) builds on.',
+    taskDescription: 'Implement `is_same_tree(p, q)`: two empty trees are equal; a tree and an empty tree are never equal; two non-empty trees are equal exactly when their values match AND both pairs of children are (recursively) equal.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Two None trees are equal (both empty).',
+      'A None tree and a non-None tree are never equal, regardless of the non-None tree\'s shape.',
+    ],
+    hints: {
+      small: 'Handle the None/None and None/non-None cases first, then compare values and recurse into both pairs of children.',
+      strong: 'if p is None and q is None: return True. if p is None or q is None: return False. return p["val"]==q["val"] and is_same_tree(p["left"],q["left"]) and is_same_tree(p["right"],q["right"]).',
+      concept: 'This is the same recursive shape as Symmetric Tree below, just comparing two independent trees node-by-node instead of comparing one tree against its own mirror.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Paired tree recursion as the base pattern for tree-equality questions' },
+    ],
+    testCases: [
+      { id: 'identical', label: 'Identical Trees', input: { p: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: null, right: null } }, q: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: null, right: null } } }, expectedOutput: true, hidden: false },
+      { id: 'different-structure', label: 'Different Structure, Same Values', input: { p: { val: 1, left: { val: 2, left: null, right: null }, right: null }, q: { val: 1, left: null, right: { val: 2, left: null, right: null } } }, expectedOutput: false, hidden: false },
+      { id: 'both-empty', label: 'Both Empty', input: { p: null, q: null }, expectedOutput: true, hidden: true },
+      { id: 'one-empty', label: 'One Empty, One Not', input: { p: { val: 1, left: null, right: null }, q: null }, expectedOutput: false, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-4': {
+    id: 'tree-bs-prob-4',
+    title: 'Binary Search',
+    difficulty: 'easy',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '10–15 min',
+    functionName: 'binary_search',
+    functionSignature: 'binary_search(nums: list[int], target: int) -> int',
+    starterCode: `def binary_search(nums, target):
+    """nums: a list sorted in ascending order, all distinct values.
+    Return the index of target in nums, or -1 if it is not present.
+    Must run in O(log n) time."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement classic binary search from scratch -- the O(log n) algorithm every tree-height-bounded search, and half of this track\'s own name, is built on.',
+    taskDescription: 'Implement `binary_search(nums, target)`: maintain a shrinking [lo, hi] window; at each step compare target to the midpoint and discard the half that cannot contain it.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (e.g. the bisect module) are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'nums is sorted ascending with all distinct values.',
+      'Must run in O(log n) time -- a linear scan does not satisfy the intended solution, even though it would give a correct answer.',
+      'Return -1 if target is not present.',
+    ],
+    hints: {
+      small: 'Keep a low and high boundary. Look at the middle element: if it is too small, the answer (if any) is to the right; if too big, to the left.',
+      strong: 'lo, hi = 0, len(nums)-1. While lo <= hi: mid = (lo+hi)//2. If nums[mid]==target: return mid. elif nums[mid] < target: lo = mid+1. else: hi = mid-1. Return -1.',
+      concept: 'The invariant "the answer, if it exists, is always within [lo, hi]" is what makes binary search correct -- every iteration either finds the target or provably shrinks that window by at least half, guaranteeing O(log n) iterations.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Classic binary search as the O(log n) foundation for sorted-array and BST algorithms alike' },
+    ],
+    testCases: [
+      { id: 'found', label: 'Target Present', input: { nums: [-1, 0, 3, 5, 9, 12], target: 9 }, expectedOutput: 4, hidden: false },
+      { id: 'not-found', label: 'Target Absent', input: { nums: [-1, 0, 3, 5, 9, 12], target: 2 }, expectedOutput: -1, hidden: false },
+      { id: 'single-element-found', label: 'Single-Element List, Found', input: { nums: [5], target: 5 }, expectedOutput: 0, hidden: true },
+      { id: 'empty', label: 'Empty List', input: { nums: [], target: 1 }, expectedOutput: -1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-5': {
+    id: 'tree-bs-prob-5',
+    title: 'Binary Tree Inorder Traversal (Iterative)',
+    difficulty: 'easy',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '10–15 min',
+    functionName: 'inorder_traversal',
+    functionSignature: 'inorder_traversal(root: dict | None) -> list[int]',
+    starterCode: `def inorder_traversal(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return the
+    node values in inorder (left, root, right) order, using an explicit
+    stack -- NOT recursion."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement inorder traversal iteratively with an explicit stack -- the real interview follow-up to "now do it without recursion," and the traversal order that visits a BST\'s values in sorted order.',
+    taskDescription: 'Implement `inorder_traversal(root)`: push every left-child chain onto a stack, then each time you pop a node, record its value and move to its right child (repeating the left-chain push from there).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must use an explicit stack, not recursion (the recursive version is easy -- this exercise is specifically about the iterative one).',
+      'An empty tree produces an empty list.',
+    ],
+    hints: {
+      small: 'Keep pushing left children onto a stack until you hit None; then pop one, record it, and switch to exploring its right child the same way.',
+      strong: 'stack = []; cur = root; result = []. While cur is not None or stack: while cur is not None: stack.append(cur); cur = cur["left"]. cur = stack.pop(); result.append(cur["val"]); cur = cur["right"].',
+      concept: 'This iterative pattern (push left-chain, pop-and-go-right) is the standard translation of ANY tree recursion into an explicit-stack loop -- the stack is doing exactly what the call stack would have done for you automatically in the recursive version.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Explicit-stack simulation of recursive tree traversal' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Right-Leaning With a Left Grandchild', input: { root: { val: 1, left: null, right: { val: 2, left: { val: 3, left: null, right: null }, right: null } } }, expectedOutput: [1, 3, 2], hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: [], hidden: false },
+      { id: 'full-small-tree', label: 'Full 5-Node Tree', input: { root: { val: 1, left: { val: 2, left: { val: 4, left: null, right: null }, right: { val: 5, left: null, right: null } }, right: { val: 3, left: null, right: null } } }, expectedOutput: [4, 2, 5, 1, 3], hidden: true },
+      { id: 'single', label: 'Single Node', input: { root: { val: 7, left: null, right: null } }, expectedOutput: [7], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-11': {
+    id: 'tree-bs-prob-11',
+    title: 'Symmetric Tree',
+    difficulty: 'medium',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '15–20 min',
+    functionName: 'is_symmetric',
+    functionSignature: 'is_symmetric(root: dict | None) -> bool',
+    starterCode: `def is_symmetric(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return
+    True if the tree is a mirror image of itself around its center
+    (root's left subtree is a mirror of its right subtree)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Symmetric Tree -- comparing a tree against its OWN mirror, via a paired recursion that walks two subtrees in opposite directions simultaneously.',
+    taskDescription: "Implement `is_symmetric(root)`: an empty tree is trivially symmetric. Otherwise, check whether root's left and right subtrees are mirror images of each other -- a helper comparing two subtrees where you recurse left-vs-right AND right-vs-left.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree is symmetric.',
+      'Two nodes are mirror-matched only if their values are equal AND (left of one mirrors right of the other) AND (right of one mirrors left of the other).',
+    ],
+    hints: {
+      small: 'Write a helper that checks whether two subtrees are mirror images of EACH OTHER (not whether they are equal to each other) -- it recurses a\'s left against b\'s right, and a\'s right against b\'s left.',
+      strong: 'def mirror(a, b): if a is None and b is None: return True. if a is None or b is None: return False. return a["val"]==b["val"] and mirror(a["left"],b["right"]) and mirror(a["right"],b["left"]). Then is_symmetric(root) = root is None or mirror(root["left"], root["right"]).',
+      concept: 'The key difference from Same Tree is which children get compared to which: Same Tree compares left-to-left and right-to-right (identical structure), while mirror-checking compares left-to-right and right-to-left (reflected structure).',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Paired, cross-wired recursion for mirror/reflection structural checks' },
+    ],
+    testCases: [
+      { id: 'symmetric', label: 'Symmetric Tree', input: { root: { val: 1, left: { val: 2, left: { val: 3, left: null, right: null }, right: { val: 4, left: null, right: null } }, right: { val: 2, left: { val: 4, left: null, right: null }, right: { val: 3, left: null, right: null } } } }, expectedOutput: true, hidden: false },
+      { id: 'not-symmetric', label: 'Not Symmetric', input: { root: { val: 1, left: { val: 2, left: null, right: { val: 3, left: null, right: null } }, right: { val: 2, left: null, right: { val: 3, left: null, right: null } } } }, expectedOutput: false, hidden: false, description: 'Both 3s are on the same (right) side -- not a mirror' },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: true, hidden: true },
+      { id: 'single', label: 'Single Node', input: { root: { val: 1, left: null, right: null } }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-12': {
+    id: 'tree-bs-prob-12',
+    title: 'Kth Smallest Element in a BST',
+    difficulty: 'medium',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '15–20 min',
+    functionName: 'kth_smallest_in_bst',
+    functionSignature: 'kth_smallest_in_bst(root: dict | None, k: int) -> int',
+    starterCode: `def kth_smallest_in_bst(root, k):
+    """root: the root of a valid BST, as {'val', 'left', 'right'}. k: a
+    1-indexed rank (k=1 means the smallest value). Return the kth
+    smallest value in the tree. Raise ValueError if k exceeds the number
+    of nodes."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Kth Smallest Element in a BST by exploiting the single most useful BST property: an inorder traversal visits every value in ascending sorted order, for free.',
+    taskDescription: 'Implement `kth_smallest_in_bst(root, k)`: run an inorder traversal (iterative, with an early stop once you have counted k values), and return the kth value visited.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'k is 1-indexed: k=1 is the smallest value in the tree.',
+      'Raise ValueError if k is larger than the number of nodes in the tree.',
+      'Stop the traversal as soon as the kth value is found -- do not needlessly visit the rest of the tree.',
+    ],
+    hints: {
+      small: 'An inorder traversal of a BST visits values in sorted order -- you just need to count as you go and stop at the kth one.',
+      strong: 'Use the iterative inorder stack pattern; each time you pop a node, increment a counter and return its value the moment the counter reaches k.',
+      concept: 'This is exactly why the BST invariant (left < node < right, everywhere) is valuable -- it turns "find the kth smallest" from a full-tree sort into a single early-terminating traversal.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The BST inorder-traversal-is-sorted-order property applied to rank queries' },
+    ],
+    testCases: [
+      { id: 'smallest', label: 'k=1 (Smallest)', input: { root: { val: 3, left: { val: 1, left: null, right: { val: 2, left: null, right: null } }, right: { val: 4, left: null, right: null } }, k: 1 }, expectedOutput: 1, hidden: false },
+      { id: 'largest', label: 'k=3 (Largest of 3-Node Left Subtree)', input: { root: { val: 3, left: { val: 1, left: null, right: { val: 2, left: null, right: null } }, right: { val: 4, left: null, right: null } }, k: 3 }, expectedOutput: 3, hidden: false },
+      { id: 'k-too-large', label: 'k Exceeds Node Count', input: { root: { val: 1, left: null, right: null }, k: 2 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-13': {
+    id: 'tree-bs-prob-13',
+    title: 'Search Insert Position',
+    difficulty: 'medium',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '15–20 min',
+    functionName: 'search_insert',
+    functionSignature: 'search_insert(nums: list[int], target: int) -> int',
+    starterCode: `def search_insert(nums, target):
+    """nums: sorted ascending, distinct values. Return the index of
+    target if it is present; otherwise return the index where it would
+    be inserted to keep nums sorted. Must run in O(log n) time."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Search Insert Position -- a small but important variant of binary search, where "not found" means something (the exact insertion point) instead of just -1.',
+    taskDescription: 'Implement `search_insert(nums, target)`: binary search for the leftmost index where target could be inserted without breaking sort order (equivalently, the first index whose value is >= target).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (e.g. bisect.bisect_left) are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(log n) time.',
+      'If target already exists in nums, return its index.',
+      'If target is larger than every element, the correct answer is len(nums).',
+    ],
+    hints: {
+      small: 'You are looking for the first position where a value >= target could sit -- binary search on that condition directly, rather than searching for an exact match first.',
+      strong: 'lo, hi = 0, len(nums). While lo < hi: mid = (lo+hi)//2. If nums[mid] < target: lo = mid+1. else: hi = mid. Return lo.',
+      concept: 'This "binary search for the boundary of a condition" template (searching a half-open [lo, hi) range that shrinks to a single answer) is more broadly useful than search-for-an-exact-value binary search -- Search Range below uses the exact same template twice.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Binary search for a boundary/insertion point, not just an exact match' },
+    ],
+    testCases: [
+      { id: 'present', label: 'Target Present', input: { nums: [1, 3, 5, 6], target: 5 }, expectedOutput: 2, hidden: false },
+      { id: 'insert-middle', label: 'Insert in the Middle', input: { nums: [1, 3, 5, 6], target: 2 }, expectedOutput: 1, hidden: false },
+      { id: 'insert-end', label: 'Insert at the End', input: { nums: [1, 3, 5, 6], target: 7 }, expectedOutput: 4, hidden: true },
+      { id: 'insert-start', label: 'Insert at the Start', input: { nums: [1, 3, 5, 6], target: 0 }, expectedOutput: 0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-14': {
+    id: 'tree-bs-prob-14',
+    title: 'Find First and Last Position of Element in Sorted Array',
+    difficulty: 'medium',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '15–20 min',
+    functionName: 'search_range',
+    functionSignature: 'search_range(nums: list[int], target: int) -> list[int]',
+    starterCode: `def search_range(nums, target):
+    """nums: sorted ascending, may contain duplicates. Return [first,
+    last] -- the indices of target's first and last occurrence -- or
+    [-1, -1] if target is not present. Must run in O(log n) time."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Find First and Last Position -- two binary searches for two different boundaries (the leftmost and rightmost occurrence of a repeated value), the classic real use case for duplicate-tolerant binary search.',
+    taskDescription: 'Implement `search_range(nums, target)`: run one binary search biased to keep shrinking left after finding a match (to find the FIRST occurrence), and a second biased to keep shrinking right (to find the LAST occurrence).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (e.g. bisect) are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(log n) time -- a linear scan through duplicates does not satisfy the intended solution.',
+      'Return [-1, -1] if target does not appear anywhere in nums.',
+    ],
+    hints: {
+      small: 'Write one binary search helper that finds a boundary, parameterized by "keep searching left after a match" vs "keep searching right after a match" -- call it twice.',
+      strong: 'For the first-occurrence search: on a match, record the index and continue searching the LEFT half (hi = mid-1). For the last-occurrence search: on a match, record the index and continue searching the RIGHT half (lo = mid+1).',
+      concept: 'A single "found a match, but keep searching for a BETTER match on one specific side" binary search is the general template for boundary-finding problems -- Search Insert Position above is the special case where the boundary is defined by "value >= target" rather than "value == target."',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Two-directional boundary binary search for the range of a repeated value' },
+    ],
+    testCases: [
+      { id: 'found-range', label: 'Multiple Occurrences', input: { nums: [5, 7, 7, 8, 8, 10], target: 8 }, expectedOutput: [3, 4], hidden: false },
+      { id: 'not-found', label: 'Target Absent', input: { nums: [5, 7, 7, 8, 8, 10], target: 6 }, expectedOutput: [-1, -1], hidden: false },
+      { id: 'empty', label: 'Empty Array', input: { nums: [], target: 0 }, expectedOutput: [-1, -1], hidden: true },
+      { id: 'single-occurrence', label: 'Exactly One Occurrence', input: { nums: [1, 2, 3], target: 2 }, expectedOutput: [1, 1], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-15': {
+    id: 'tree-bs-prob-15',
+    title: 'Path Sum',
+    difficulty: 'medium',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '15–20 min',
+    functionName: 'has_path_sum',
+    functionSignature: 'has_path_sum(root: dict | None, target_sum: int) -> bool',
+    starterCode: `def has_path_sum(root, target_sum):
+    """root: a tree node as {'val', 'left', 'right'}, or None.
+    target_sum: an integer. Return True if some ROOT-TO-LEAF path exists
+    whose node values sum to exactly target_sum. An empty tree has no
+    such path (always False, even if target_sum is 0)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Path Sum -- a root-to-leaf-only search (not any path between any two nodes, which is the much harder Maximum Path Sum problem below) that carries a shrinking "remaining budget" down the recursion.',
+    taskDescription: 'Implement `has_path_sum(root, target_sum)`: at a leaf, check whether its value equals whatever sum is still needed; at an internal node, subtract its value from the target and recurse into whichever child(ren) exist.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'A path must run from the root all the way down to a LEAF (a node with no children) -- stopping partway does not count.',
+      'An empty tree always returns False, even if target_sum happens to be 0.',
+    ],
+    hints: {
+      small: 'Carry the "remaining amount needed" down the recursion, subtracting the current node\'s value at each step; check the remaining amount against the leaf\'s own value once you reach one.',
+      strong: 'if root is None: return False. if root["left"] is None and root["right"] is None: return root["val"] == target_sum. remaining = target_sum - root["val"]. return has_path_sum(root["left"], remaining) or has_path_sum(root["right"], remaining).',
+      concept: 'The leaf check must come before the general recursive case -- without it, a leaf would incorrectly recurse into two None children and (per the empty-tree rule) return False or True depending on which OR-branch happens to short-circuit, rather than correctly checking whether ITS OWN value completes the path.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Root-to-leaf accumulator recursion, threading state down instead of aggregating up' },
+    ],
+    testCases: [
+      { id: 'has-path', label: 'A Matching Root-to-Leaf Path Exists', input: { root: { val: 5, left: { val: 4, left: { val: 11, left: { val: 7, left: null, right: null }, right: { val: 2, left: null, right: null } }, right: null }, right: { val: 8, left: { val: 13, left: null, right: null }, right: { val: 4, left: null, right: { val: 1, left: null, right: null } } } }, target_sum: 22 }, expectedOutput: true, hidden: false, description: 'Path 5 -> 4 -> 11 -> 2 sums to 22' },
+      { id: 'no-path', label: 'No Path Matches', input: { root: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: null, right: null } }, target_sum: 5 }, expectedOutput: false, hidden: false },
+      { id: 'empty-tree', label: 'Empty Tree', input: { root: null, target_sum: 0 }, expectedOutput: false, hidden: true, description: 'An empty tree has no root-to-leaf path at all, even for target 0' },
+      { id: 'single-node-match', label: 'Single Node That Matches', input: { root: { val: 7, left: null, right: null }, target_sum: 7 }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-16': {
+    id: 'tree-bs-prob-16',
+    title: 'Diameter of Binary Tree',
+    difficulty: 'medium',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '15–20 min',
+    functionName: 'diameter_of_binary_tree',
+    functionSignature: 'diameter_of_binary_tree(root: dict | None) -> int',
+    starterCode: `def diameter_of_binary_tree(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return
+    the length (number of EDGES, not nodes) of the longest path between
+    any two nodes in the tree -- this path may or may not pass through
+    the root."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Diameter of Binary Tree -- the classic "compute a global answer while also computing a per-node height" problem, solved in one pass by updating a running best as a side effect of the height recursion.',
+    taskDescription: 'Implement `diameter_of_binary_tree(root)`: while computing each node\'s height (for the return value), also update a running "best diameter seen so far" using that node\'s left-height + right-height (the longest path THROUGH this node).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'The diameter is measured in EDGES, not nodes -- a 2-node tree has diameter 1, not 2.',
+      'The longest path does not need to pass through the root -- it could be entirely within one subtree.',
+      'Must run in O(n) time (a naive "recompute height from scratch at every node" approach is O(n^2)).',
+    ],
+    hints: {
+      small: 'At every node, the longest path passing THROUGH that node is (height of its left subtree) + (height of its right subtree) -- track the best of these across all nodes as you compute heights.',
+      strong: 'best = [0]; def height(node): if node is None: return 0; lh = height(node["left"]); rh = height(node["right"]); best[0] = max(best[0], lh+rh); return 1+max(lh,rh). Call height(root) once, return best[0].',
+      concept: 'Computing height and diameter in the SAME single pass (rather than a separate O(n) height computation at every one of the n nodes) is what keeps this O(n) instead of O(n^2) -- the height recursion you need anyway is repurposed to also update the diameter as a side effect.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Single-pass height computation with a side-effect running maximum' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Classic 5-Node Tree', input: { root: { val: 1, left: { val: 2, left: { val: 4, left: null, right: null }, right: { val: 5, left: null, right: null } }, right: { val: 3, left: null, right: null } } }, expectedOutput: 3, hidden: false, description: 'Longest path 4-2-1-3 or 5-2-1-3, 3 edges' },
+      { id: 'two-node', label: 'Two-Node Tree', input: { root: { val: 1, left: { val: 2, left: null, right: null }, right: null } }, expectedOutput: 1, hidden: false },
+      { id: 'single-node', label: 'Single Node', input: { root: { val: 1, left: null, right: null } }, expectedOutput: 0, hidden: true },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: 0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-21': {
+    id: 'tree-bs-prob-21',
+    title: 'Balanced Binary Tree',
+    difficulty: 'hard',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '20–25 min',
+    functionName: 'is_balanced',
+    functionSignature: 'is_balanced(root: dict | None) -> bool',
+    starterCode: `def is_balanced(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return
+    True if the tree is height-balanced: for EVERY node, the heights of
+    its left and right subtrees differ by at most 1. Must run in O(n)
+    time (not O(n^2))."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Balanced Binary Tree with a single O(n) pass that short-circuits on the first imbalance found, rather than the naive O(n^2) approach of separately computing height at every node.',
+    taskDescription: 'Implement `is_balanced(root)`: write a helper that returns a subtree\'s height as normal, but returns a sentinel value (e.g. -1) the moment ANY imbalance is detected anywhere below -- and propagate that sentinel straight up without doing any more work.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Balance is a GLOBAL property: every single node in the tree must satisfy the height-difference-at-most-1 rule, not just the root.',
+      'Must run in O(n) time -- computing height fresh at every node (O(n) work times n nodes) does not satisfy the intended solution.',
+      'An empty tree is trivially balanced.',
+    ],
+    hints: {
+      small: 'Instead of computing height and checking balance as two separate passes, make your height-computing function also detect and report imbalance as it goes -- e.g. by returning -1 as a "found an imbalance, stop everything" signal.',
+      strong: 'def check(node): if node is None: return 0. lh = check(node["left"]); if lh == -1: return -1. rh = check(node["right"]); if rh == -1: return -1. if abs(lh-rh) > 1: return -1. return 1+max(lh,rh). is_balanced(root) = check(root) != -1.',
+      concept: 'Once ANY subtree reports -1, every ancestor above it just passes that -1 straight up without doing any further comparison work -- this early-exit propagation is what keeps the whole check at O(n) instead of O(n^2), since no node ever has its height recomputed by an ancestor.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Sentinel-value early-exit propagation for an O(n) global tree property check' },
+    ],
+    testCases: [
+      { id: 'balanced', label: 'Balanced Tree', input: { root: { val: 3, left: { val: 9, left: null, right: null }, right: { val: 20, left: { val: 15, left: null, right: null }, right: { val: 7, left: null, right: null } } } }, expectedOutput: true, hidden: false },
+      { id: 'unbalanced', label: 'Unbalanced Tree', input: { root: { val: 1, left: { val: 2, left: { val: 3, left: { val: 4, left: null, right: null }, right: { val: 4, left: null, right: null } }, right: { val: 3, left: null, right: null } }, right: { val: 2, left: null, right: null } } }, expectedOutput: false, hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: true, hidden: true },
+      { id: 'single', label: 'Single Node', input: { root: { val: 1, left: null, right: null } }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-22': {
+    id: 'tree-bs-prob-22',
+    title: 'Construct Binary Tree from Preorder and Inorder Traversal',
+    difficulty: 'hard',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '20–25 min',
+    functionName: 'build_tree_from_traversals',
+    functionSignature: 'build_tree_from_traversals(preorder: list[int], inorder: list[int]) -> dict | None',
+    starterCode: `def build_tree_from_traversals(preorder, inorder):
+    """preorder, inorder: the preorder and inorder traversals of the SAME
+    binary tree (all values distinct). Reconstruct and return the tree
+    as {'val', 'left', 'right'} nodes (None for an absent child, or for
+    an empty tree)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement tree reconstruction from preorder + inorder traversals -- using the fact that preorder always names the current subtree\'s root FIRST, and inorder then tells you exactly how many of the remaining values belong to the left vs. right subtree.',
+    taskDescription: 'Implement `build_tree_from_traversals(preorder, inorder)`: the first unused value in preorder is always the current subtree\'s root; find that value\'s position in the current inorder slice to know how many values go left (everything before it) and how many go right (everything after), then recurse.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'All node values are distinct (no duplicate values to disambiguate).',
+      'Precompute a value -> inorder-index lookup map before recursing, so each root lookup is O(1) instead of an O(n) scan (keeping the whole reconstruction O(n) instead of O(n^2)).',
+    ],
+    hints: {
+      small: 'preorder\'s very next unused value is always the root of whatever subtree you are currently building -- everything is about figuring out where that value splits the current inorder range into "left subtree values" and "right subtree values."',
+      strong: 'Build inorder_index = {val: i for i, val in enumerate(inorder)}. Use an iterator over preorder. Recursive build(in_left, in_right): if in_left > in_right: return None. root_val = next(preorder_iter). idx = inorder_index[root_val]. Build left from (in_left, idx-1), then right from (idx+1, in_right) -- left MUST be built before right, since they share one preorder iterator consumed in that exact order.',
+      concept: 'The order of the two recursive calls matters here in a way it usually does not: preorder visits root, then ALL of the left subtree, then ALL of the right subtree -- so the shared preorder iterator must be advanced through the entire left subtree\'s construction before the right subtree\'s root is even read.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Reconstructing a tree from two of its traversal orders via a hash-map index' },
+    ],
+    testCases: [
+      { id: 'classic', label: 'Classic 5-Node Example', input: { preorder: [3, 9, 20, 15, 7], inorder: [9, 3, 15, 20, 7] }, expectedOutput: { val: 3, left: { val: 9, left: null, right: null }, right: { val: 20, left: { val: 15, left: null, right: null }, right: { val: 7, left: null, right: null } } }, hidden: false },
+      { id: 'single-node', label: 'Single Node', input: { preorder: [1], inorder: [1] }, expectedOutput: { val: 1, left: null, right: null }, hidden: false },
+      { id: 'left-only-chain', label: 'Entirely Left-Leaning Chain', input: { preorder: [3, 2, 1], inorder: [1, 2, 3] }, expectedOutput: { val: 3, left: { val: 2, left: { val: 1, left: null, right: null }, right: null }, right: null }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-23': {
+    id: 'tree-bs-prob-23',
+    title: 'Serialize a Binary Tree (Preorder Encoding)',
+    difficulty: 'hard',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '20–25 min',
+    functionName: 'serialize_tree',
+    functionSignature: 'serialize_tree(root: dict | None) -> str',
+    starterCode: `def serialize_tree(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return a
+    single comma-separated string encoding of the tree, built from a
+    PREORDER traversal where every None child is written as the literal
+    string '#' (so the shape of the tree is fully recoverable from the
+    string alone, not just its values)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the preorder-with-null-markers encoding scheme behind LeetCode\'s classic "Serialize and Deserialize Binary Tree" -- the same trick real systems use to flatten a tree into a string/byte stream that unambiguously reconstructs the exact original shape.',
+    taskDescription: "Implement `serialize_tree(root)`: perform a preorder (root, left, right) traversal, appending each node's value as a string, and appending the literal string '#' wherever a child is None. Join everything with commas.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      "Traversal order is preorder: current node's value first, then its ENTIRE left subtree's encoding, then its ENTIRE right subtree's encoding.",
+      "Every None child must be written as the literal string '#' -- omitting nulls would make the shape ambiguous (a value with no right child would be indistinguishable from one with no left child).",
+      'An empty tree (root is None) encodes as just the string "#".',
+    ],
+    hints: {
+      small: "Walk the tree exactly like a normal preorder traversal, but every time you would recurse into a None child, write the placeholder '#' into your output instead of skipping it.",
+      strong: 'parts = []; def dfs(node): if node is None: parts.append("#"); return. parts.append(str(node["val"])); dfs(node["left"]); dfs(node["right"]). Call dfs(root), then return ",".join(parts).',
+      concept: 'Explicitly recording every null (rather than just the values that exist) is what makes this reversible: without the null markers, a preorder value sequence like [1, 2, 3] could describe several different tree SHAPES with those same three values, not just one.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Preorder-with-null-markers as a canonical, reversible tree-to-string encoding' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Small Tree With a Right Subtree', input: { root: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: { val: 4, left: null, right: null }, right: { val: 5, left: null, right: null } } } }, expectedOutput: '1,2,#,#,3,4,#,#,5,#,#', hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: '#', hidden: false },
+      { id: 'single', label: 'Single Node', input: { root: { val: 1, left: null, right: null } }, expectedOutput: '1,#,#', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-24': {
+    id: 'tree-bs-prob-24',
+    title: 'Binary Tree Maximum Path Sum',
+    difficulty: 'hard',
+    topic: 'Trees / Binary Search',
+    estimatedTime: '25–30 min',
+    functionName: 'max_path_sum',
+    functionSignature: 'max_path_sum(root: dict) -> int',
+    starterCode: `def max_path_sum(root):
+    """root: a non-empty tree node as {'val', 'left', 'right'}. A path
+    is any sequence of nodes connected by edges, and does NOT need to
+    pass through the root or end at a leaf -- it may start and end at
+    any two nodes (or be a single node). Return the maximum possible
+    sum of node values along any such path. Node values may be
+    negative."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Binary Tree Maximum Path Sum -- one of the most-cited "hard" tree problems, requiring you to track two DIFFERENT quantities at each node: the best path usable by an ancestor (one-sided) vs. the best path THROUGH this node (both sides, only valid as a final answer here).',
+    taskDescription: 'Implement `max_path_sum(root)`: for each node, compute the best "downward" gain from each child (clamped to 0, since a negative-sum branch should just be excluded rather than dragging the total down), use both children\'s gains together to update a global best (a path bending through this node), but RETURN to the caller only this node\'s value plus the better of its two one-sided child gains (since a path continuing upward through an ancestor can only use one branch, not both).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'A path does not need to pass through the root, and does not need to end at a leaf -- any two nodes (or a single node) qualify.',
+      'Node values may be negative -- clamp a child\'s contribution to 0 rather than including a net-negative branch.',
+      'The tree is never empty for this problem.',
+    ],
+    hints: {
+      small: "Separate two ideas clearly: (1) the best score achievable by continuing a path UPWARD through this node into its parent (can only use ONE child branch, or neither), vs. (2) the best score of a path that BENDS at this node, using BOTH children (only valid as a global answer, never returned upward).",
+      strong: 'best = [-inf]; def gain(node): if node is None: return 0. lg = max(gain(node["left"]), 0); rg = max(gain(node["right"]), 0); best[0] = max(best[0], node["val"]+lg+rg); return node["val"] + max(lg, rg). Call gain(root), return best[0].',
+      concept: 'The function\'s RETURN value and the GLOBAL best being tracked are answering two different questions -- conflating them (e.g. returning node["val"]+lg+rg instead of node["val"]+max(lg,rg)) would let an ancestor illegally use both of this node\'s branches as if they were a single continuous path.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Tracking a one-sided return value separately from a global best via a side-channel accumulator' },
+    ],
+    testCases: [
+      { id: 'simple-positive', label: 'Small All-Positive Tree', input: { root: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: null, right: null } } }, expectedOutput: 6, hidden: false, description: 'Path 2 -> 1 -> 3' },
+      { id: 'with-negative-root', label: 'Negative Root, Path Excludes It', input: { root: { val: -10, left: { val: 9, left: null, right: null }, right: { val: 20, left: { val: 15, left: null, right: null }, right: { val: 7, left: null, right: null } } } }, expectedOutput: 42, hidden: false, description: 'Path 15 -> 20 -> 7, entirely avoiding the negative root' },
+      { id: 'single-negative-node', label: 'Single Negative Node', input: { root: { val: -3, left: null, right: null } }, expectedOutput: -3, hidden: true, description: 'With only one node, the best path is that node itself, even though it is negative' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
