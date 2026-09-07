@@ -49,4 +49,10 @@ describe('ChooserPage', () => {
       groupLandingRoute('/docs/category/systems--infrastructure'),
     )
   })
+
+  it('renders a real, working in-browser Python playground on the actual homescreen -- not just a static code preview', () => {
+    renderChooser()
+    expect(screen.getByRole('heading', { name: /Practice the algorithms you just learned/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Run/i })).toBeInTheDocument()
+  })
 })

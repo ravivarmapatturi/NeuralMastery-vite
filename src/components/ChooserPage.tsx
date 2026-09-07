@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import LiveComputation from './home/LiveComputation';
+import PracticePlayground from './content/PracticePlayground';
 import { getFlatPages, getPracticeProblems } from '../lib/contentTree';
 import { SECTION_META, SECTION_ORDER, groupLandingRoute } from '../data/sectionMeta';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
@@ -31,7 +32,6 @@ export default function ChooserPage() {
   const problems = getPracticeProblems();
   const { countWithin } = useProgress();
   const completed = countWithin(pages.map((page) => page.route));
-  const featuredProblem = problems.find((problem) => problem.topic?.toLowerCase().includes('attention')) ?? problems[0];
 
   return (
     <div className="nm-landing">
@@ -101,18 +101,18 @@ export default function ChooserPage() {
         </section>
 
         <section className="nm-landing-section nm-practice-section" aria-labelledby="practice-heading">
-          <div className="nm-landing-shell nm-practice-grid">
-            <div className="nm-section-intro">
+          <div className="nm-landing-shell">
+            <div className="nm-section-intro nm-practice-intro">
               <p className="nm-eyebrow">Learn it. Then prove it.</p>
               <h2 id="practice-heading">Practice the algorithms you just learned.</h2>
-              <p>Move from concepts to implementation in a browser-based Python environment with real test cases—no vague LLM grading.</p>
+              <p>No sign-up or installation—hit <strong>▶ Run</strong> to execute real Python in your browser (via Pyodide/WebAssembly) and check it against real test cases, no vague LLM grading.</p>
+            </div>
+            <div className="nm-practice-live">
+              <PracticePlayground problemId="fizz-buzz" celebrateOnSuccess />
+            </div>
+            <div className="nm-practice-live-foot">
               <Link className="nm-button nm-button-primary" to="/practice">Browse {problems.length} problems <Arrow /></Link>
             </div>
-            {featuredProblem && <Link className="nm-problem-preview" to={featuredProblem.route}>
-              <div className="nm-code-top"><span>practice/{featuredProblem.slug.split('/').pop()}</span><span className="nm-code-status">tests ready</span></div>
-              <pre aria-label="Python coding problem preview"><code><span className="nm-code-muted">def</span> <span className="nm-code-name">solve</span>(inputs):{'\n'}  <span className="nm-code-muted"># implement the concept</span>{'\n'}  <span className="nm-code-muted">return</span> result</code></pre>
-              <div className="nm-test-row"><span className="nm-test-check">✓</span><span>Run against real test cases</span><strong>{featuredProblem.title} <Arrow /></strong></div>
-            </Link>}
           </div>
         </section>
 

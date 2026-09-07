@@ -3718,7 +3718,7 @@
       "description": "Accurately compute image tile grids and token consumption for vision-language models to prevent context window exhaustion and manage API billing.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-57": {
       "slug": "practice-problems/agents-mcp-systems-prob-57",
@@ -3728,7 +3728,7 @@
       "description": "Build the parent-document contextual retrieval pipeline that indexes small granular chunks for precise vector search but retrieves larger parent passages to preserve full context for the LLM.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-58": {
       "slug": "practice-problems/agents-mcp-systems-prob-58",
@@ -3738,7 +3738,7 @@
       "description": "Build the dynamic schema generator that converts agent tool specifications into standard JSON Schema function signatures accepted by frontier LLM tool-calling APIs.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-59": {
       "slug": "practice-problems/agents-mcp-systems-prob-59",
@@ -3748,7 +3748,7 @@
       "description": "Implement the Server-Sent Events (SSE) transport parser for remote Model Context Protocol (MCP) clients connecting to server endpoints over HTTP.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-6": {
       "slug": "practice-problems/agents-mcp-systems-prob-6",
@@ -3768,7 +3768,7 @@
       "description": "Implement streaming histogram percentile approximation for LLM inference latency observability (P95/P99) without storing millions of individual request durations in memory.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-61": {
       "slug": "practice-problems/agents-mcp-systems-prob-61",
@@ -3778,7 +3778,7 @@
       "description": "Implement decentralized node failure detection using heartbeat gossip protocols to dynamically maintain GPU worker membership in distributed training clusters.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-62": {
       "slug": "practice-problems/agents-mcp-systems-prob-62",
@@ -3788,7 +3788,7 @@
       "description": "Implement Asymmetric Distance Computation (ADC) used by Faiss and modern vector databases to scan millions of compressed vector codes in milliseconds without decompressing them.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-63": {
       "slug": "practice-problems/agents-mcp-systems-prob-63",
@@ -3798,7 +3798,7 @@
       "description": "Implement cross-modal attention masking for vision-language models (like Flamingo and LLaVA) where text can attend to images, but vision patches attend only within their respective image.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-64": {
       "slug": "practice-problems/agents-mcp-systems-prob-64",
@@ -3808,7 +3808,7 @@
       "description": "Implement ColBERT's late interaction MaxSim operator, the state-of-the-art retrieval scoring mechanism that preserves token-level embeddings without collapsing documents into a single lossy vector.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-65": {
       "slug": "practice-problems/agents-mcp-systems-prob-65",
@@ -3818,7 +3818,7 @@
       "description": "Parse unstructured agent thought-action-observation scratchpads into structured execution traces for observability, replay debugging, and trajectory evaluation.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-66": {
       "slug": "practice-problems/agents-mcp-systems-prob-66",
@@ -3828,7 +3828,7 @@
       "description": "Track asynchronous background MCP tool operations using the Model Context Protocol notifications/progress specification to give users real-time execution feedback.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-67": {
       "slug": "practice-problems/agents-mcp-systems-prob-67",
@@ -3838,7 +3838,7 @@
       "description": "Implement the core memory management mechanism behind vLLM's PagedAttention, which treats the GPU Key-Value cache as virtual pages to eliminate fragmentation and boost serving throughput.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-68": {
       "slug": "practice-problems/agents-mcp-systems-prob-68",
@@ -3848,7 +3848,7 @@
       "description": "Implement weighted consistent hashing with virtual nodes to distribute inference prompts and embedding shards across heterogeneous GPU servers in proportion to their compute capacity.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-69": {
       "slug": "practice-problems/agents-mcp-systems-prob-69",
@@ -3858,7 +3858,7 @@
       "description": "Implement the Inverted Multi-Index (IMI) coarse quantization search algorithm, which creates a fine-grained grid of $K^2$ inverted lists using only $2K$ centroids for billion-scale vector indexing.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-7": {
       "slug": "practice-problems/agents-mcp-systems-prob-7",
@@ -3878,7 +3878,7 @@
       "description": "Implement OpenAI CLIP's signature symmetric contrastive loss function, the foundational objective powering zero-shot classification, multimodal vector search, and vision-language pretraining across modern AI.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-8": {
       "slug": "practice-problems/agents-mcp-systems-prob-8",
@@ -4568,7 +4568,7 @@
       "description": "Curriculum Problem 241 (Stage 5: Classical Machine Learning & Optimization): Master Mean Squared Error.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-10": {
       "slug": "practice-problems/classical-ml-prob-10",
@@ -4578,7 +4578,7 @@
       "description": "Curriculum Problem 250 (Stage 5: Classical Machine Learning & Optimization): Master Item-Based Collaborative Filtering Score.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-11": {
       "slug": "practice-problems/classical-ml-prob-11",
@@ -4588,7 +4588,7 @@
       "description": "Curriculum Problem 251 (Stage 5: Classical Machine Learning & Optimization): Master Linear Regression Gradient Descent Step.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-12": {
       "slug": "practice-problems/classical-ml-prob-12",
@@ -4598,7 +4598,7 @@
       "description": "Curriculum Problem 252 (Stage 5: Classical Machine Learning & Optimization): Master Hierarchical Clustering Single-Linkage Distance.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-13": {
       "slug": "practice-problems/classical-ml-prob-13",
@@ -4608,7 +4608,7 @@
       "description": "Curriculum Problem 253 (Stage 5: Classical Machine Learning & Optimization): Master R-Squared (Coefficient of Determination).",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-14": {
       "slug": "practice-problems/classical-ml-prob-14",
@@ -4618,7 +4618,7 @@
       "description": "Curriculum Problem 254 (Stage 5: Classical Machine Learning & Optimization): Master DBSCAN Epsilon Neighborhood Query.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-15": {
       "slug": "practice-problems/classical-ml-prob-15",
@@ -4628,7 +4628,7 @@
       "description": "Curriculum Problem 255 (Stage 5: Classical Machine Learning & Optimization): Master One-Hot Feature Encoding.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-16": {
       "slug": "practice-problems/classical-ml-prob-16",
@@ -4678,7 +4678,7 @@
       "description": "Curriculum Problem 242 (Stage 5: Classical Machine Learning & Optimization): Master K-Means Cluster Assignment.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-20": {
       "slug": "practice-problems/classical-ml-prob-20",
@@ -4788,7 +4788,7 @@
       "description": "Curriculum Problem 243 (Stage 5: Classical Machine Learning & Optimization): Master Binary Cross-Entropy Loss.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-30": {
       "slug": "practice-problems/classical-ml-prob-30",
@@ -4898,7 +4898,7 @@
       "description": "Curriculum Problem 244 (Stage 5: Classical Machine Learning & Optimization): Master K-Means Centroid Update.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-40": {
       "slug": "practice-problems/classical-ml-prob-40",
@@ -5008,7 +5008,7 @@
       "description": "Curriculum Problem 245 (Stage 5: Classical Machine Learning & Optimization): Master Z-Score Feature Standardization.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-50": {
       "slug": "practice-problems/classical-ml-prob-50",
@@ -5118,7 +5118,7 @@
       "description": "Curriculum Problem 246 (Stage 5: Classical Machine Learning & Optimization): Master Within-Cluster Sum of Squares (Inertia).",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-60": {
       "slug": "practice-problems/classical-ml-prob-60",
@@ -5138,7 +5138,7 @@
       "description": "Curriculum Problem 247 (Stage 5: Classical Machine Learning & Optimization): Master Min-Max Feature Normalization.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-8": {
       "slug": "practice-problems/classical-ml-prob-8",
@@ -5148,7 +5148,7 @@
       "description": "Curriculum Problem 248 (Stage 5: Classical Machine Learning & Optimization): Master User-Item Jaccard Similarity.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-9": {
       "slug": "practice-problems/classical-ml-prob-9",
@@ -5158,7 +5158,7 @@
       "description": "Curriculum Problem 249 (Stage 5: Classical Machine Learning & Optimization): Master Polynomial Feature Expansion.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cluster-rec-prob-1": {
       "slug": "practice-problems/cluster-rec-prob-1",

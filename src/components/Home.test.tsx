@@ -117,15 +117,11 @@ describe('Home', () => {
     expect(reviewLink.closest('a')).toHaveAttribute('href', '/progress')
   })
 
-  it('renders the interactive Python playground demo section and does not render the removed Test Yourself section', () => {
+  it('does not render the removed Test Yourself section', () => {
     renderHome()
 
     // "Test yourself" QA section removed
     expect(screen.queryByText('Test yourself')).not.toBeInTheDocument()
     expect(screen.queryByText(/What is a KV cache/)).not.toBeInTheDocument()
-
-    // Working Python playground section rendered
-    expect(screen.getByRole('heading', { name: /In-Browser Python Playground/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Run/i })).toBeInTheDocument()
   })
 })

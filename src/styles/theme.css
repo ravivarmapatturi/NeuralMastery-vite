@@ -357,21 +357,14 @@ body {
 .nm-curriculum-icon { display: block; margin: 1.5rem 0 1.1rem; font-size: 1.35rem; }
 .nm-curriculum-card p { max-width: 25ch; }
 .nm-card-foot { margin-top: auto; padding-top: 1rem; color: var(--nm-text-secondary); font: 700 .7rem var(--font-display); }
-.nm-practice-grid { display: grid; grid-template-columns: .82fr 1.18fr; align-items: center; gap: clamp(2rem, 7vw, 7rem); }
-.nm-practice-grid .nm-button { margin-top: 1.8rem; }
-.nm-problem-preview { display: block; overflow: hidden; border: 1px solid var(--nm-border); border-radius: 12px; background: #101417; color: #e5e9e8; text-decoration: none; box-shadow: 0 20px 46px color-mix(in srgb, #000 16%, transparent); transition: transform .15s ease; }
-.nm-problem-preview:hover { transform: translateY(-3px); }
-.nm-code-top { display: flex; justify-content: space-between; padding: .8rem 1rem; border-bottom: 1px solid #2e3437; color: #9ca7a5; font: .68rem var(--font-display); }
-.nm-code-status { color: #5ee6ad; }
-.nm-problem-preview pre { margin: 0; padding: 2.2rem 1.5rem; overflow: auto; font: .9rem/1.8 var(--font-display); }
-.nm-code-muted { color: #bc9aff; }.nm-code-name { color: #68d9b0; }
-.nm-test-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .55rem; padding: .85rem 1rem; border-top: 1px solid #2e3437; color: #aeb8b5; font-size: .75rem; }
-.nm-test-row strong { color: #f3f5f4; font-size: .7rem; }.nm-test-check { color: #5ee6ad; font-weight: 800; }
+.nm-practice-intro { max-width: 640px; margin: 0 auto; text-align: center; }
+.nm-practice-live { max-width: 900px; margin: 2.5rem auto 0; }
+.nm-practice-live-foot { margin-top: 1.75rem; text-align: center; }
 .nm-final-cta { padding: clamp(5rem, 10vw, 9rem) 0; text-align: center; background: radial-gradient(700px 340px at 50% 100%, color-mix(in srgb, var(--nm-accent-primary) 14%, transparent), transparent 75%); }
 .nm-final-cta > div { max-width: 760px; }.nm-final-cta > div > p { max-width: 580px; margin-right: auto !important; margin-left: auto !important; }.nm-final-cta .nm-button { margin-top: 2rem; }
 
 @media (max-width: 1020px) {
-  .nm-hero-grid, .nm-practice-grid { grid-template-columns: 1fr; }.nm-hero-demo { max-width: 700px; }.nm-curriculum-grid { grid-template-columns: repeat(3, 1fr); }.nm-mastery-loop { grid-template-columns: repeat(2, 1fr); }.nm-mastery-loop li:nth-child(2) { border-right: 0; }.nm-mastery-loop li:nth-child(-n+2) { border-bottom: 1px solid var(--nm-border); }
+  .nm-hero-grid { grid-template-columns: 1fr; }.nm-hero-demo { max-width: 700px; }.nm-curriculum-grid { grid-template-columns: repeat(3, 1fr); }.nm-mastery-loop { grid-template-columns: repeat(2, 1fr); }.nm-mastery-loop li:nth-child(2) { border-right: 0; }.nm-mastery-loop li:nth-child(-n+2) { border-bottom: 1px solid var(--nm-border); }
 }
 @media (max-width: 640px) {
   .nm-landing-shell { width: min(100% - 2rem, 1180px); }.nm-hero-copy h1 { font-size: clamp(2.8rem, 15vw, 4rem); }.nm-proof-row { justify-content: space-between; }.nm-proof-row > div { padding: 0 .65rem; }.nm-proof-row span { font-size: .64rem; }.nm-section-heading-row { display: block; }.nm-section-heading-row .nm-text-link { display: inline-block; margin-top: 1.4rem; }.nm-mastery-loop, .nm-curriculum-grid { grid-template-columns: 1fr; }.nm-mastery-loop li { min-height: 0; gap: 1.25rem; border-right: 0; border-bottom: 1px solid var(--nm-border); }.nm-mastery-loop li:last-child { border-bottom: 0; }.nm-curriculum-card { min-height: 185px; }.nm-curriculum-icon { margin: .8rem 0; }.nm-hero-demo .viz-container { font-size: 90%; }.nm-demo-caption { font-size: .62rem; }

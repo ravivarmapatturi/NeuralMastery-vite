@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import AttentionStepThrough from '../viz/AttentionStepThrough';
-import PracticePlayground from './content/PracticePlayground';
 import { getSidebar, getFlatPages, getPracticeProblems, type DocPage } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -203,64 +202,6 @@ export default function Home() {
             <Link to="/docs/interview-prep/overview" className="nm-learn-route"><span>Prepare</span><strong>Interview preparation</strong><small>Technical reference, systems, and practice.</small><b>Explore →</b></Link>
           </div>
           {recommendedPractice && <div className="nm-learn-practice-handoff"><div><span>Ready to implement?</span><strong>{cleanPracticeTitle(recommendedPractice.title)}</strong><p>A real unsolved problem selected from the same live curriculum.</p></div><Link className="nm-button nm-button-secondary" to={recommendedPractice.route}>Practice this concept →</Link></div>}
-        </div>
-      </section>
-
-      <section
-        className="nm-home-playground-section"
-        aria-labelledby="home-playground-heading"
-        style={{
-          padding: '2.5rem 0 3.5rem',
-          borderTop: '1px solid var(--nm-border)',
-        }}
-      >
-        <div style={{ maxWidth: 880, margin: '0 auto', padding: '0 1.5rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-            <p
-              className="nm-eyebrow"
-              style={{
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: 'var(--nm-accent-primary)',
-                marginBottom: 6,
-              }}
-            >
-              Interactive In-Browser Execution
-            </p>
-            <h2
-              id="home-playground-heading"
-              className="nm-display"
-              style={{
-                fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)',
-                fontWeight: 800,
-                color: 'var(--nm-text-primary)',
-                margin: '0 0 0.5rem',
-              }}
-            >
-              Try It Live — In-Browser Python Playground
-            </h2>
-            <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', maxWidth: 640, margin: '0 auto', lineHeight: 1.6 }}>
-              No sign-up or installation required. Hit <strong>▶ Run</strong> to execute Python directly in your browser using Pyodide (WebAssembly) and test against instant verification cases.
-            </p>
-          </div>
-
-          <PracticePlayground problemId="fizz-buzz" celebrateOnSuccess />
-
-          <div style={{ textAlign: 'center', marginTop: '1.25rem' }}>
-            <Link
-              to="/practice"
-              style={{
-                fontSize: 13.5,
-                fontWeight: 600,
-                color: 'var(--nm-accent-primary)',
-                textDecoration: 'none',
-              }}
-            >
-              Explore 1,500+ AI Engineering practice problems →
-            </Link>
-          </div>
         </div>
       </section>
 
