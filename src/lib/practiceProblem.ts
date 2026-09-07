@@ -5249,6 +5249,647 @@ def groundedness_score(answer, source_chunks):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  // --- Linked Lists / Stacks / Queues batch (real content replacing the
+  // generic placeholder template). Every linked-list node is a plain dict
+  // {val, next} (None terminates the list), for the same reason tree
+  // nodes are plain dicts -- the grading harness calls
+  // functionName(**kwargs) with the raw JSON-decoded test input directly.
+  // Every expectedOutput below was cross-checked against the well-known
+  // canonical answer for each classic problem (several are verbatim
+  // official LeetCode example test cases), not just trusted from one
+  // reference script.
+  'll-queue-prob-1': {
+    id: 'll-queue-prob-1',
+    title: 'Reverse a Singly Linked List',
+    difficulty: 'easy',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '10–15 min',
+    functionName: 'reverse_list',
+    functionSignature: 'reverse_list(head: dict | None) -> dict | None',
+    starterCode: `def reverse_list(head):
+    """head: a linked-list node as {'val', 'next'} (None terminates the
+    list, or represents an empty list). Return the head of the REVERSED
+    list."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement iterative linked-list reversal -- the single most-repeated linked-list pattern, and the building block half of the other linked-list problems in this track quietly depend on.',
+    taskDescription: 'Implement `reverse_list(head)`: walk the list once, at each node redirecting its `next` pointer to point BACKWARD (to the previous node) instead of forward, using three tracking pointers (previous, current, next).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(n) time and O(1) extra space (iterative, not building a new list).',
+      'An empty list (head is None) reverses to itself (still None).',
+    ],
+    hints: {
+      small: 'Before you overwrite a node\'s "next" pointer, you must have already saved where it USED to point -- otherwise you lose the rest of the list.',
+      strong: 'prev = None; cur = head. While cur is not None: nxt = cur["next"]; cur["next"] = prev; prev = cur; cur = nxt. Return prev.',
+      concept: 'At the end of the loop, `prev` is the new head (the old tail) and `cur` is None (having walked off the end) -- the loop invariant is that everything from the original head up to (but not including) `cur` has already been correctly re-pointed backward.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The three-pointer iterative reversal pattern for singly linked lists' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Five-Node List', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } } }, expectedOutput: { val: 5, next: { val: 4, next: { val: 3, next: { val: 2, next: { val: 1, next: null } } } } }, hidden: false },
+      { id: 'empty', label: 'Empty List', input: { head: null }, expectedOutput: null, hidden: false },
+      { id: 'single', label: 'Single Node', input: { head: { val: 1, next: null } }, expectedOutput: { val: 1, next: null }, hidden: true },
+      { id: 'two-nodes', label: 'Two Nodes', input: { head: { val: 1, next: { val: 2, next: null } } }, expectedOutput: { val: 2, next: { val: 1, next: null } }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-2': {
+    id: 'll-queue-prob-2',
+    title: 'Valid Parentheses',
+    difficulty: 'easy',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '10–15 min',
+    functionName: 'is_valid_parentheses',
+    functionSignature: "is_valid_parentheses(s: str) -> bool",
+    starterCode: `def is_valid_parentheses(s):
+    """s: a string containing only the characters '(', ')', '{', '}',
+    '[', ']'. Return True if every bracket is properly closed in the
+    correct order (matched AND correctly nested)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Valid Parentheses, the canonical "does this need a stack?" tell -- correct nesting is exactly what a stack (last-opened, first-closed) is built to verify.',
+    taskDescription: 'Implement `is_valid_parentheses(s)`: push every opening bracket onto a stack; on a closing bracket, it must match the type on top of the stack (and the stack must not be empty) -- pop it. The string is valid exactly when the stack is empty at the end.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'A closing bracket with an empty stack (nothing open to match) is invalid.',
+      'A non-empty stack at the end (an opening bracket never closed) is invalid.',
+      'Bracket TYPE must match, not just count -- "(]" is invalid even though it has one of each.',
+    ],
+    hints: {
+      small: 'Every opening bracket goes onto a stack. Every closing bracket must match whatever is currently on TOP of the stack.',
+      strong: 'pairs = {")":"(", "]":"[", "}":"{"}. stack = []. For each char: if it\'s an opener, push it. If it\'s a closer: if the stack is empty or stack.pop() != pairs[char]: return False. At the end, return len(stack) == 0.',
+      concept: 'The stack naturally enforces correct NESTING (not just matching counts) because it always exposes the most-recently-opened, still-unclosed bracket at the top -- exactly the one any new closing bracket is required to match.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Stack-based matching as the standard technique for nested/paired-symbol validation' },
+    ],
+    testCases: [
+      { id: 'all-types-valid', label: 'All Three Types, Valid', input: { s: '()[]{}' }, expectedOutput: true, hidden: false },
+      { id: 'wrong-type', label: 'Wrong Closing Type', input: { s: '(]' }, expectedOutput: false, hidden: false },
+      { id: 'interleaved', label: 'Interleaved (Invalid Nesting)', input: { s: '([)]' }, expectedOutput: false, hidden: true },
+      { id: 'nested-valid', label: 'Properly Nested', input: { s: '{[]}' }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-3': {
+    id: 'll-queue-prob-3',
+    title: 'Merge Two Sorted Lists',
+    difficulty: 'easy',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '10–15 min',
+    functionName: 'merge_two_lists',
+    functionSignature: 'merge_two_lists(l1: dict | None, l2: dict | None) -> dict | None',
+    starterCode: `def merge_two_lists(l1, l2):
+    """l1, l2: linked-list nodes as {'val', 'next'} (each already sorted
+    ascending), or None for an empty list. Return the head of a single
+    sorted list splicing together every node from both (reusing the
+    existing nodes, not creating new ones)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Merge Two Sorted Lists via a dummy-head + tail-pointer pattern -- the building block the K-way merge-lists problem (already covered elsewhere) repeatedly applies.',
+    taskDescription: 'Implement `merge_two_lists(l1, l2)`: maintain a dummy head and a running tail pointer; at each step, splice whichever of l1/l2\'s current node has the smaller value onto the tail, then advance that list.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Reuse the existing nodes from l1/l2 (splice them together) rather than creating brand-new nodes.',
+      'Once one list is exhausted, splice the ENTIRE remainder of the other list on directly (not node by node).',
+    ],
+    hints: {
+      small: 'A "dummy" placeholder node before the real head avoids needing special-case logic for "what is the very first node of the result."',
+      strong: 'dummy = {"val":0,"next":None}; tail=dummy. While l1 and l2: compare l1["val"] and l2["val"], splice the smaller onto tail["next"], advance both tail and that list. When the loop ends, tail["next"] = whichever of l1/l2 is not yet exhausted.',
+      concept: 'Splicing the entire remaining tail of whichever list survives (rather than looping node-by-node until both are empty) is a small but real optimization -- there is nothing left to compare once one list runs out, so the rest can just be attached directly.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Dummy-head + tail-pointer construction, the standard pattern for building a new/merged linked list' },
+    ],
+    testCases: [
+      { id: 'interleaved', label: 'Interleaved Values', input: { l1: { val: 1, next: { val: 2, next: { val: 4, next: null } } }, l2: { val: 1, next: { val: 3, next: { val: 4, next: null } } } }, expectedOutput: { val: 1, next: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 4, next: null } } } } } }, hidden: false },
+      { id: 'both-empty', label: 'Both Empty', input: { l1: null, l2: null }, expectedOutput: null, hidden: false },
+      { id: 'one-empty', label: 'One List Empty', input: { l1: null, l2: { val: 0, next: null } }, expectedOutput: { val: 0, next: null }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-4': {
+    id: 'll-queue-prob-4',
+    title: 'Linked List Cycle Detection',
+    difficulty: 'easy',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '10–15 min',
+    functionName: 'has_cycle',
+    functionSignature: 'has_cycle(values: list[int], pos: int) -> bool',
+    starterCode: `def has_cycle(values, pos):
+    """values: the node values, in list order. pos: the 0-indexed
+    position the LAST node's next pointer connects back to (creating a
+    cycle), or -1 for no cycle. First build the described linked list
+    (wiring the cycle if pos != -1), then use Floyd's slow/fast pointer
+    technique to detect whether it contains a cycle. Must run in O(1)
+    extra space (not a set of visited node ids)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Floyd's Tortoise and Hare cycle detection -- two pointers moving at different speeds are GUARANTEED to meet inside any cycle, using O(1) extra space instead of an O(n)-space visited-set.",
+    taskDescription: 'Implement `has_cycle(values, pos)`: build the linked list from `values`, wiring the last node\'s `next` to index `pos` if `pos != -1`. Then walk a slow pointer one step at a time and a fast pointer two steps at a time; if they ever point to the exact same node, a cycle exists.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(1) extra space -- a set of visited node ids works but does not satisfy the intended solution.',
+      'pos = -1 means no cycle; otherwise pos is a valid 0-indexed position in `values`.',
+    ],
+    hints: {
+      small: 'If a fast pointer (2 steps at a time) and a slow pointer (1 step at a time) are both looping around a cycle, the fast one is gradually "lapping" the slow one and is guaranteed to eventually land on exactly the same node.',
+      strong: 'Build the dict-chain from values, then if pos != -1, walk to node at index pos and set the last node\'s "next" to it. slow = fast = head. While fast and fast["next"]: slow = slow["next"]; fast = fast["next"]["next"]; if slow is fast: return True. Return False.',
+      concept: 'A cycle with no shared start (fast merely revisiting old ground) can never make slow and fast literally the SAME object unless they are genuinely looping through a cycle together -- this identity check (not a value check) is what makes the algorithm correct even with duplicate values in the list.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: "Floyd's two-speed-pointer technique for O(1)-space cycle detection" },
+    ],
+    testCases: [
+      { id: 'cycle-middle', label: 'Cycle Back to Index 1', input: { values: [3, 2, 0, -4], pos: 1 }, expectedOutput: true, hidden: false },
+      { id: 'cycle-to-head', label: 'Two-Node Cycle to Head', input: { values: [1, 2], pos: 0 }, expectedOutput: true, hidden: false },
+      { id: 'no-cycle', label: 'No Cycle', input: { values: [1], pos: -1 }, expectedOutput: false, hidden: true },
+      { id: 'no-cycle-longer', label: 'Longer List, No Cycle', input: { values: [1, 2, 3, 4], pos: -1 }, expectedOutput: false, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-5': {
+    id: 'll-queue-prob-5',
+    title: 'Implement a Queue Using Two Stacks',
+    difficulty: 'easy',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '10–15 min',
+    functionName: 'run_queue_ops',
+    functionSignature: "run_queue_ops(ops: list[str], args: list[list[int]]) -> list",
+    starterCode: `def run_queue_ops(ops, args):
+    """Simulate a FIFO queue built from two LIFO stacks (an 'in' stack
+    and an 'out' stack), processing ops in order (args[i] is the
+    argument list for ops[i], e.g. [5] for a push, [] for a pop/peek).
+    ops are 'push', 'pop', or 'peek'. Return a list with one entry per
+    op: None for 'push', or the returned value for 'pop'/'peek'."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement a FIFO queue using only two LIFO stacks -- reversing a reversal gives back the original order, which is exactly what moving elements from an "in" stack to an "out" stack (only when the "out" stack runs dry) accomplishes.',
+    taskDescription: "Implement `run_queue_ops(ops, args)`: maintain an 'in' stack (pushes always go here) and an 'out' stack (pops/peeks come from here). Whenever the 'out' stack is empty and a pop/peek is requested, move every element from 'in' to 'out' first (which reverses their order back to FIFO), then serve from 'out'.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      "Only ever transfer elements from 'in' to 'out' when 'out' is empty -- transferring more often breaks the FIFO order.",
+      "'push' contributes None to the results list; 'pop' and 'peek' contribute the value they return.",
+    ],
+    hints: {
+      small: 'A single stack reverses order once. Popping everything off one stack and pushing it onto a second stack reverses it AGAIN -- back to the original order.',
+      strong: 'push(x): in_stack.append(x). pop()/peek(): if out_stack is empty: while in_stack: out_stack.append(in_stack.pop()). Then pop() does out_stack.pop(); peek() reads out_stack[-1] without removing it.',
+      concept: 'Each element only ever gets moved from "in" to "out" ONCE in its lifetime, no matter how many pops happen later -- this is what makes the amortized cost of every operation O(1), even though a single pop can occasionally trigger an O(n) transfer.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The two-stack FIFO-from-LIFO construction, and amortized-cost analysis' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Push, Push, Peek, Pop, Pop', input: { ops: ['push', 'push', 'peek', 'pop', 'pop'], args: [[1], [2], [], [], []] }, expectedOutput: [null, null, 1, 1, 2], hidden: false, description: 'FIFO order: 1 comes out before 2, even though 2 was pushed onto the same underlying stack more recently' },
+      { id: 'interleaved', label: 'Interleaved Pushes and Pops', input: { ops: ['push', 'pop', 'push', 'push', 'pop', 'pop'], args: [[1], [], [2], [3], [], []] }, expectedOutput: [null, 1, null, null, 2, 3], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-11': {
+    id: 'll-queue-prob-11',
+    title: 'Remove Nth Node From End of List',
+    difficulty: 'medium',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '15–20 min',
+    functionName: 'remove_nth_from_end',
+    functionSignature: 'remove_nth_from_end(head: dict | None, n: int) -> dict | None',
+    starterCode: `def remove_nth_from_end(head, n):
+    """head: a linked-list node as {'val', 'next'}. n: a positive
+    integer, guaranteed <= the list's length. Remove the nth node from
+    the END of the list (1-indexed: n=1 is the last node) and return
+    the (possibly new) head. Must be done in a SINGLE pass."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Remove Nth Node From End with a two-pointer gap technique -- finding "n from the end" without ever knowing the list\'s total length, in a single pass.',
+    taskDescription: 'Implement `remove_nth_from_end(head, n)`: use a dummy head to simplify removing the real head itself. Advance a "fast" pointer n steps ahead first, then move both fast and slow together until fast reaches the end -- slow now sits exactly before the node to remove.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must be done in a single pass (not two passes: one to count length, one to remove).',
+      'Use a dummy head so removing the true first node needs no special-case branch.',
+      'n is guaranteed valid (1 <= n <= list length).',
+    ],
+    hints: {
+      small: 'If you advance one pointer n steps ahead of a second pointer, then move both forward together at the same speed, the gap between them stays exactly n the whole time -- so when the lead pointer falls off the end, the trailing one is exactly n from the end.',
+      strong: 'dummy = {"val":0,"next":head}. fast = dummy. Advance fast n times. slow = dummy. While fast["next"] is not None: advance both fast and slow by one. Now slow["next"] is the node to remove: slow["next"] = slow["next"]["next"]. Return dummy["next"].',
+      concept: 'The dummy head is what makes "remove the very first node" (n equals the list\'s full length) require no special-case code -- slow legitimately starts AT the dummy in that case, and slow["next"] = slow["next"]["next"] correctly detaches the real head.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Two-pointer fixed-gap technique for single-pass "kth from the end" problems' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Remove Middle Node', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } }, n: 2 }, expectedOutput: { val: 1, next: { val: 2, next: { val: 3, next: { val: 5, next: null } } } }, hidden: false },
+      { id: 'single-node', label: 'Remove the Only Node', input: { head: { val: 1, next: null }, n: 1 }, expectedOutput: null, hidden: false },
+      { id: 'remove-head', label: 'Remove the Head', input: { head: { val: 1, next: { val: 2, next: null } }, n: 2 }, expectedOutput: { val: 2, next: null }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-12': {
+    id: 'll-queue-prob-12',
+    title: 'Palindrome Linked List',
+    difficulty: 'medium',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '15–20 min',
+    functionName: 'is_palindrome_list',
+    functionSignature: 'is_palindrome_list(head: dict | None) -> bool',
+    starterCode: `def is_palindrome_list(head):
+    """head: a linked-list node as {'val', 'next'}, or None for an empty
+    list. Return True if the sequence of values reads the same forward
+    and backward."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Palindrome Linked List -- a natural setup for the classic O(n)-time, O(1)-space technique (find the middle, reverse the second half, compare), even though a value-list comparison is the simpler starting solution.',
+    taskDescription: 'Implement `is_palindrome_list(head)`: collect the node values into a list, then compare that list to its own reverse.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty list is trivially a palindrome.',
+    ],
+    hints: {
+      small: 'Walk the list once, collecting every value into a plain Python list -- then a palindrome check on a list is a one-liner.',
+      strong: 'vals = []; cur = head; while cur: vals.append(cur["val"]); cur = cur["next"]. Return vals == vals[::-1].',
+      concept: 'The genuinely O(1)-space version of this problem (find the middle with slow/fast pointers, reverse the second half in place, compare halves, then restore the list) is a real follow-up worth knowing -- this O(n)-space value-list version is the correct starting point for building that intuition.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Value-list extraction as a straightforward baseline before optimizing to O(1) space' },
+    ],
+    testCases: [
+      { id: 'palindrome', label: 'Is a Palindrome', input: { head: { val: 1, next: { val: 2, next: { val: 2, next: { val: 1, next: null } } } } }, expectedOutput: true, hidden: false },
+      { id: 'not-palindrome', label: 'Not a Palindrome', input: { head: { val: 1, next: { val: 2, next: null } } }, expectedOutput: false, hidden: false },
+      { id: 'empty', label: 'Empty List', input: { head: null }, expectedOutput: true, hidden: true },
+      { id: 'single', label: 'Single Node', input: { head: { val: 7, next: null } }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-13': {
+    id: 'll-queue-prob-13',
+    title: 'Evaluate Reverse Polish Notation',
+    difficulty: 'medium',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '15–20 min',
+    functionName: 'eval_rpn',
+    functionSignature: "eval_rpn(tokens: list[str]) -> int",
+    starterCode: `def eval_rpn(tokens):
+    """tokens: a list of strings, each either an integer literal or one
+    of '+', '-', '*', '/'. Evaluate the Reverse Polish (postfix)
+    expression and return the integer result. Division between two
+    integers truncates toward zero (matches Python's int(a / b))."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement an RPN (postfix) calculator with a stack -- the representation that needs no parentheses and no operator precedence rules at all, because the OPERAND ORDER already encodes evaluation order.",
+    taskDescription: "Implement `eval_rpn(tokens)`: push every number onto a stack; on encountering an operator, pop the top two values (in the correct order: second-popped is the LEFT operand), apply the operator, and push the result back.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Division truncates toward zero (use int(a / b), not the // floor-division operator, which rounds toward negative infinity for negative results).',
+      'The final answer is the single value left on the stack after processing every token.',
+    ],
+    hints: {
+      small: 'When you see an operator, the two most-recently-pushed numbers are its operands -- pop them in the right order (the SECOND one you pop is the left-hand operand).',
+      strong: 'stack = []. For tok in tokens: if tok in "+-*/": b = stack.pop(); a = stack.pop(); stack.append(apply(a, tok, b)). else: stack.append(int(tok)). Return stack[-1].',
+      concept: 'Getting operand order right matters for non-commutative operators (subtraction, division): the value popped SECOND was pushed FIRST, so it is the left-hand operand -- popping them in the wrong order silently computes b-a instead of a-b.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Stack-based evaluation of postfix expressions, needing no operator-precedence logic' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Simple Expression', input: { tokens: ['2', '1', '+', '3', '*'] }, expectedOutput: 9, hidden: false, description: '(2 + 1) * 3 = 9' },
+      { id: 'with-division', label: 'Includes Division', input: { tokens: ['4', '13', '5', '/', '+'] }, expectedOutput: 6, hidden: false, description: '4 + (13 / 5 truncated to 2) = 6' },
+      { id: 'longer', label: 'Longer Expression', input: { tokens: ['10', '6', '9', '3', '+', '-11', '*', '/', '*', '17', '+', '5', '+'] }, expectedOutput: 22, hidden: true },
+      { id: 'negative-division', label: 'Division Truncates Toward Zero', input: { tokens: ['-7', '2', '/'] }, expectedOutput: -3, hidden: true, description: '-7/2 = -3.5, truncated toward zero is -3 (not floor-divided to -4)' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-14': {
+    id: 'll-queue-prob-14',
+    title: 'Add Two Numbers (Linked List Digits)',
+    difficulty: 'medium',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '15–20 min',
+    functionName: 'add_two_numbers',
+    functionSignature: 'add_two_numbers(l1: dict | None, l2: dict | None) -> dict | None',
+    starterCode: `def add_two_numbers(l1, l2):
+    """l1, l2: linked-list nodes as {'val', 'next'}, each representing a
+    non-negative integer with its digits stored in REVERSE order (the
+    1s digit is the head). Return the sum, as a new linked list in the
+    same reverse-digit-order format."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Add Two Numbers -- simulating grade-school column addition (rightmost digit first, carry the overflow) directly on linked lists, which is exactly why the digits are stored in reverse order in the first place.',
+    taskDescription: 'Implement `add_two_numbers(l1, l2)`: walk both lists together (treating a missing node as digit 0), adding corresponding digits plus any carry from the previous step, emitting one new digit node per step, and continuing until both lists AND any remaining carry are exhausted.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Digits are stored least-significant-first (reverse order) in both the input and the output.',
+      'The two input lists may have different lengths.',
+      'A final carry (e.g. 5+5=10) must produce one more digit node, not be silently dropped.',
+    ],
+    hints: {
+      small: 'This is exactly manual column addition: add the two current digits plus any carry-in, the new digit is that sum mod 10, and the new carry is that sum divided by 10.',
+      strong: 'dummy = {"val":0,"next":None}; tail=dummy; carry=0. While l1 or l2 or carry: v1 = l1["val"] if l1 else 0; v2 = l2["val"] if l2 else 0; total = v1+v2+carry; carry = total // 10; tail["next"] = {"val": total % 10, "next": None}; tail = tail["next"]; advance l1/l2 if not None.',
+      concept: 'The loop condition `while l1 or l2 or carry` (not just "while both lists have nodes") is what correctly handles a final trailing carry after both lists run out -- e.g. 5 + 5 needs one more digit node (1) that neither input list has anything left to contribute to.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Digit-by-digit carry propagation, simulated directly on a linked-list representation' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Classic 3-Digit Example', input: { l1: { val: 2, next: { val: 4, next: { val: 3, next: null } } }, l2: { val: 5, next: { val: 6, next: { val: 4, next: null } } } }, expectedOutput: { val: 7, next: { val: 0, next: { val: 8, next: null } } }, hidden: false, description: '342 + 465 = 807' },
+      { id: 'both-zero', label: 'Both Are Zero', input: { l1: { val: 0, next: null }, l2: { val: 0, next: null } }, expectedOutput: { val: 0, next: null }, hidden: false },
+      { id: 'carry-extends-length', label: 'Final Carry Extends the Result', input: { l1: { val: 9, next: { val: 9, next: null } }, l2: { val: 1, next: null } }, expectedOutput: { val: 0, next: { val: 0, next: { val: 1, next: null } } }, hidden: true, description: '99 + 1 = 100' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-15': {
+    id: 'll-queue-prob-15',
+    title: 'Intersection of Two Linked Lists',
+    difficulty: 'medium',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '15–20 min',
+    functionName: 'get_intersection_node',
+    functionSignature: 'get_intersection_node(listA: list[int], listB: list[int], skipA: int, skipB: int) -> int | None',
+    starterCode: `def get_intersection_node(listA, listB, skipA, skipB):
+    """listA, listB: the full value sequences as seen from each list's
+    own head. skipA, skipB: how many nodes at the FRONT of each list are
+    NOT shared with the other list -- when the lists genuinely
+    intersect, listA[skipA:] == listB[skipB:] (the shared tail). Build
+    both linked lists (reusing the SAME node objects for the shared
+    tail), then find the intersection node using the classic two-pointer
+    switch-heads technique. Return the intersection node's value, or
+    None if skipA == len(listA) (no intersection)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the classic two-pointer "switch heads" technique for finding where two linked lists merge -- an O(1)-space alternative to a hash set of visited nodes, using the fact that swapping heads equalizes the total distance each pointer travels before reaching the intersection.',
+    taskDescription: 'Implement `get_intersection_node(listA, listB, skipA, skipB)`: after constructing the two lists so their tails genuinely share the same node objects (when skipA < len(listA)), walk two pointers -- one starting at each head -- and whenever a pointer reaches the end, redirect it to the OTHER list\'s head. The two pointers meet at the intersection node (or both become None together, if there is none).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'skipA == len(listA) signals no intersection at all -- return None in that case.',
+      'When an intersection exists, the shared tail must be built from the SAME node objects reused in both lists (not just equal values) -- the two-pointer technique relies on real identity, not value comparison.',
+    ],
+    hints: {
+      small: "If pointer A walks A's unique part then all of the shared part then switches to walk B's unique part, and pointer B does the mirror image, both pointers have traveled the exact same total distance by the time they reach the intersection -- so they arrive there simultaneously.",
+      strong: 'a, b = headA, headB. While a is not b: a = a["next"] if a is not None else headB; b = b["next"] if b is not None else headA. Return a["val"] if a is not None else None.',
+      concept: "Swapping to the other list's head (rather than just stopping) is what equalizes total path length: pointer A travels lenA + lenB total steps by the time it would otherwise run out a second time, and so does pointer B -- guaranteeing they meet exactly at the intersection (or both hit None together if there is none).",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The two-pointer head-swap technique for O(1)-space shared-node detection' },
+    ],
+    testCases: [
+      { id: 'intersects-early', label: 'Intersection Near the Front of the Shared Tail', input: { listA: [4, 1, 8, 4, 5], listB: [5, 6, 1, 8, 4, 5], skipA: 2, skipB: 3 }, expectedOutput: 8, hidden: false },
+      { id: 'intersects-later', label: 'Shorter Shared Tail', input: { listA: [1, 9, 1, 2, 4], listB: [3, 2, 4], skipA: 3, skipB: 1 }, expectedOutput: 2, hidden: false },
+      { id: 'no-intersection', label: 'No Intersection', input: { listA: [2, 6, 4], listB: [1, 5], skipA: 3, skipB: 2 }, expectedOutput: null, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-16': {
+    id: 'll-queue-prob-16',
+    title: 'Next Greater Element I',
+    difficulty: 'medium',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '15–20 min',
+    functionName: 'next_greater_element',
+    functionSignature: 'next_greater_element(nums1: list[int], nums2: list[int]) -> list[int]',
+    starterCode: `def next_greater_element(nums1, nums2):
+    """nums1: a list of distinct values, each of which also appears
+    somewhere in nums2 (nums2's values are all distinct too). For each
+    value in nums1, find the first value to its RIGHT in nums2 that is
+    strictly greater -- or -1 if none exists. Return the results in the
+    same order as nums1."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Next Greater Element with a monotonic (decreasing) stack -- computing "next greater to the right" for every element of nums2 in a single O(n) pass, rather than an O(n^2) scan per element.',
+    taskDescription: 'Implement `next_greater_element(nums1, nums2)`: scan nums2 once, maintaining a stack of values still waiting for their "next greater." Whenever the current value beats the stack\'s top, that top value\'s answer has just been found -- pop it and record the match. Look up each nums1 value in the resulting map at the end.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Every value in nums1 is guaranteed to also appear in nums2.',
+      'A value with no greater element anywhere to its right in nums2 maps to -1.',
+      'Must run in O(len(nums1) + len(nums2)) time overall, not O(len(nums1) * len(nums2)).',
+    ],
+    hints: {
+      small: 'Keep a stack of values that are still "waiting" for a bigger number to show up later. The moment a new number beats the stack\'s top, that resolves the top\'s answer.',
+      strong: 'next_greater = {}; stack = []. For x in nums2: while stack and stack[-1] < x: next_greater[stack.pop()] = x. stack.append(x). Return [next_greater.get(x, -1) for x in nums1].',
+      concept: 'Any value still on the stack once the scan of nums2 finishes never found a next-greater element at all -- which is exactly why the final lookup defaults to -1 for anything the map never recorded.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Monotonic stacks as the standard O(n) technique for "next greater/smaller element" questions' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Classic Example', input: { nums1: [4, 1, 2], nums2: [1, 3, 4, 2] }, expectedOutput: [-1, 3, -1], hidden: false },
+      { id: 'increasing', label: 'Strictly Increasing nums2', input: { nums1: [2, 4], nums2: [1, 2, 3, 4] }, expectedOutput: [3, -1], hidden: false },
+      { id: 'single-element', label: 'Single-Element Query', input: { nums1: [1], nums2: [1] }, expectedOutput: [-1], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-23': {
+    id: 'll-queue-prob-23',
+    title: 'Reorder List',
+    difficulty: 'hard',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '20–25 min',
+    functionName: 'reorder_list',
+    functionSignature: 'reorder_list(head: dict | None) -> dict | None',
+    starterCode: `def reorder_list(head):
+    """head: a linked-list node as {'val', 'next'}. Reorder it in place
+    (conceptually) from L0 -> L1 -> ... -> Ln-1 -> Ln into
+    L0 -> Ln -> L1 -> Ln-1 -> L2 -> Ln-2 -> ... (alternating from the
+    front and back), and return the new head. You may build the result
+    as a new chain rather than literally reusing node objects."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Reorder List -- \"weave\" the list's first half with its second half REVERSED, alternating front-back-front-back, the real algorithm behind this needs: find the middle, reverse the second half, then merge the two halves alternately.",
+    taskDescription: 'Implement `reorder_list(head)`: extract the values into a plain list, then interleave them by alternately taking from the front and the back of that list, and rebuild a linked list from the interleaved order.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'The new order is: first element, last element, second element, second-to-last element, third element, ... alternating inward from both ends.',
+      'For an odd-length list, the true middle element appears once, in its natural mid-sequence position (not duplicated).',
+    ],
+    hints: {
+      small: 'Collect every value into a plain list first. The desired order alternates between "the next unused value from the front" and "the next unused value from the back."',
+      strong: 'vals = to_list(head). lo, hi = 0, len(vals)-1. result = []. For i in range(len(vals)): if i % 2 == 0: result.append(vals[lo]); lo += 1. else: result.append(vals[hi]); hi -= 1. Rebuild a linked list from result.',
+      concept: 'The genuinely O(1)-extra-space version of this algorithm (find the middle with slow/fast pointers, reverse the second half in place, then splice the two halves together one node at a time) reuses three patterns already covered elsewhere in this track -- this value-list version is the correct place to first nail the interleaving ORDER before tackling the in-place pointer surgery.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Front/back interleaving as the core idea behind an in-place list-reordering algorithm' },
+    ],
+    testCases: [
+      { id: 'even-length', label: 'Four-Node List', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: null } } } } }, expectedOutput: { val: 1, next: { val: 4, next: { val: 2, next: { val: 3, next: null } } } }, hidden: false },
+      { id: 'odd-length', label: 'Five-Node List', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } } }, expectedOutput: { val: 1, next: { val: 5, next: { val: 2, next: { val: 4, next: { val: 3, next: null } } } } }, hidden: false },
+      { id: 'single-node', label: 'Single Node', input: { head: { val: 1, next: null } }, expectedOutput: { val: 1, next: null }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-24': {
+    id: 'll-queue-prob-24',
+    title: 'Design a Circular Queue',
+    difficulty: 'hard',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '20–25 min',
+    functionName: 'run_circular_queue_ops',
+    functionSignature: 'run_circular_queue_ops(capacity: int, ops: list[str], args: list[list[int]]) -> list',
+    starterCode: `def run_circular_queue_ops(capacity, ops, args):
+    """Simulate a fixed-CAPACITY circular queue backed by a single
+    preallocated buffer of size capacity (a real ring buffer -- no
+    resizing, no shifting elements on dequeue). ops are 'enqueue' (arg
+    [v]), 'dequeue', 'front', 'rear', 'isEmpty', or 'isFull' (all with
+    arg []). Return one result per op: bool for enqueue/dequeue/isEmpty/
+    isFull, int (or -1 if empty) for front/rear."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real ring-buffer circular queue -- a fixed-size array where the logical 'front' and 'rear' positions wrap around via modular arithmetic, so enqueue/dequeue are O(1) with zero shifting and zero resizing, unlike a plain Python list used naively as a queue.",
+    taskDescription: 'Implement `run_circular_queue_ops(capacity, ops, args)`: track a fixed buffer of size `capacity`, a `head` index, and a current `size`. `enqueue` writes to `(head + size) % capacity` and increments size (or fails if full); `dequeue` advances `head` by one (mod capacity) and decrements size (or fails if empty); `front`/`rear` read the buffer at the current head/tail position.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'The buffer size is FIXED at `capacity` -- never resize or reallocate it.',
+      'enqueue on a full queue fails (returns False) without modifying state; dequeue/front/rear on an empty queue fail appropriately (False for dequeue, -1 for front/rear).',
+      'Track queue contents via a (head index, size) pair and modular arithmetic -- do not physically shift elements on dequeue.',
+    ],
+    hints: {
+      small: 'A circular queue never moves its existing elements around in memory -- only two small integers (where the queue currently starts, and how many elements it holds) change on every operation.',
+      strong: 'enqueue(v): if size == capacity: return False. buf[(head+size) % capacity] = v; size += 1; return True. dequeue(): if size == 0: return False. head = (head+1) % capacity; size -= 1; return True. front/rear read buf[head] / buf[(head+size-1) % capacity] (or -1 if size == 0).',
+      concept: 'The modulo operation is what makes this a real "ring": once (head + size) would run past the end of the fixed buffer, `% capacity` wraps the index back to the beginning, reusing the slots freed up by earlier dequeues instead of ever needing more memory.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Ring-buffer index arithmetic as the standard fixed-capacity queue implementation' },
+    ],
+    testCases: [
+      { id: 'classic', label: 'Classic Fill-Then-Cycle Example', input: { capacity: 3, ops: ['enqueue', 'enqueue', 'enqueue', 'enqueue', 'rear', 'isFull', 'dequeue', 'enqueue', 'rear'], args: [[1], [2], [3], [4], [], [], [], [4], []] }, expectedOutput: [true, true, true, false, 3, true, true, true, 4], hidden: false, description: 'A 4th enqueue fails on a full capacity-3 queue; after one dequeue there is room again' },
+      { id: 'empty-queries', label: 'Queries on an Empty Queue', input: { capacity: 2, ops: ['isEmpty', 'front', 'rear', 'dequeue'], args: [[], [], [], []] }, expectedOutput: [true, -1, -1, false], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-25': {
+    id: 'll-queue-prob-25',
+    title: 'Sort a Linked List',
+    difficulty: 'hard',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '20–25 min',
+    functionName: 'sort_list',
+    functionSignature: 'sort_list(head: dict | None) -> dict | None',
+    starterCode: `def sort_list(head):
+    """head: a linked-list node as {'val', 'next'}, in arbitrary order.
+    Return the head of the list sorted in ascending order, in
+    O(n log n) time."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement O(n log n) linked-list sorting -- the real reason merge sort (not quicksort) is the classic choice for linked lists: merging two sorted linked lists is naturally O(1)-extra-space (unlike array partitioning, which wants random access).',
+    taskDescription: 'Implement `sort_list(head)`: extract the values, sort them, and rebuild the list in that order (a real O(n log n) linked-list-native merge sort -- split at the middle via slow/fast pointers, recursively sort each half, then merge -- is the more advanced follow-up worth knowing).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (Python\'s built-in sort, which is O(n log n)) are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(n log n) time overall.',
+      'An empty list sorts to itself (still None).',
+    ],
+    hints: {
+      small: 'Collecting values into a plain list, sorting that list, and rebuilding the chain is a completely valid O(n log n) solution -- it just is not the O(1)-extra-space in-place merge sort real interviewers sometimes ask as a follow-up.',
+      strong: 'vals = to_list(head); vals.sort(); return from_list(vals).',
+      concept: 'The follow-up "now do it with O(1) extra space" is answered by top-down merge sort directly on the list: find the middle with slow/fast pointers, cut the list there, recursively sort each half, then merge them with the same dummy-head+tail-pointer pattern as Merge Two Sorted Lists -- no array ever needs to exist.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Why merge sort (not quicksort) is the natural O(n log n) sort for linked lists' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Unsorted Small List', input: { head: { val: 4, next: { val: 2, next: { val: 1, next: { val: 3, next: null } } } } }, expectedOutput: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: null } } } }, hidden: false },
+      { id: 'with-negatives', label: 'Includes Negative Values', input: { head: { val: -1, next: { val: 5, next: { val: 3, next: { val: 4, next: { val: 0, next: null } } } } } }, expectedOutput: { val: -1, next: { val: 0, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } }, hidden: false },
+      { id: 'empty', label: 'Empty List', input: { head: null }, expectedOutput: null, hidden: true },
+      { id: 'already-sorted', label: 'Already Sorted', input: { head: { val: 1, next: { val: 2, next: null } } }, expectedOutput: { val: 1, next: { val: 2, next: null } }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-26': {
+    id: 'll-queue-prob-26',
+    title: 'Basic Calculator',
+    difficulty: 'hard',
+    topic: 'Linked Lists / Stacks / Queues',
+    estimatedTime: '25–30 min',
+    functionName: 'calculate',
+    functionSignature: "calculate(s: str) -> int",
+    starterCode: `def calculate(s):
+    """s: a string expression containing non-negative integers, '+',
+    '-', parentheses, and spaces (no '*' or '/'). Evaluate it and
+    return the integer result, respecting parentheses grouping."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement a stack-based expression evaluator handling nested parentheses -- pushing "everything computed so far, plus the sign to apply to the upcoming parenthesized group" onto a stack every time a "(" is opened, and popping it back to resume the outer context on ")".',
+    taskDescription: 'Implement `calculate(s)`: track a running result, the current number being built digit by digit, and the sign to apply to it. On "(", push the result-so-far and the pending sign, then reset both to start the inner group fresh. On ")", finish the inner group\'s result and combine it back into the popped outer context using the popped sign.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      "Only '+', '-', digits, parentheses, and spaces appear -- no '*' or '/' to worry about (no operator precedence beyond parentheses grouping).",
+      'Spaces may appear anywhere and must be ignored.',
+      'Multi-digit numbers must be parsed as a single number, not digit by digit.',
+    ],
+    hints: {
+      small: "Build up the current number digit by digit as you scan. Whenever you hit '+', '-', or a closing paren, that is the signal that the number you were building is complete and needs to be applied.",
+      strong: 'stack=[]; result=0; number=0; sign=1. For each char: digit -> number = number*10+digit. "+"/"-" -> result += sign*number; number=0; sign = 1 or -1. "(" -> stack.append(result); stack.append(sign); result=0; sign=1. ")" -> result += sign*number; number=0; prev_sign=stack.pop(); prev_result=stack.pop(); result = prev_result + prev_sign*result. After the loop: result += sign*number.',
+      concept: 'Pushing the sign ALONGSIDE the outer result (not just the result alone) is what correctly handles a minus sign applied to an entire parenthesized group, e.g. "1-(2+3)" -- the inner group\'s total gets multiplied by -1 (the popped sign) before being added back into the outer result.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Stack-based context save/restore for evaluating nested-parenthesis expressions' },
+    ],
+    testCases: [
+      { id: 'simple-addition', label: 'Simple Addition', input: { s: '1 + 1' }, expectedOutput: 2, hidden: false },
+      { id: 'with-spaces', label: 'Mixed Spacing', input: { s: ' 2-1 + 2 ' }, expectedOutput: 3, hidden: false },
+      { id: 'nested-parens', label: 'Nested Parentheses', input: { s: '(1+(4+5+2)-3)+(6+8)' }, expectedOutput: 23, hidden: true, description: '(1+11-3)+(14) = 9+14 = 23' },
+      { id: 'leading-negative-group', label: 'Negative Sign on a Group', input: { s: '2-(5-6)' }, expectedOutput: 3, hidden: true, description: '2 - (5-6) = 2 - (-1) = 3' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
