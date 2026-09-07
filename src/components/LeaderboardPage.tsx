@@ -4,7 +4,7 @@ import Navbar from './layout/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
 import { useLeaderboard, type LeaderboardEntry } from '../lib/useLeaderboard';
-import { levelForPoints, computeDisplayName } from '../lib/gamification';
+import { levelForPoints } from '../lib/gamification';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 
@@ -16,11 +16,10 @@ export default function LeaderboardPage() {
   );
 
   const { user, signInWithGoogle } = useAuth();
-  const { points, weeklyPoints } = useGamification();
+  const { points, weeklyPoints, displayName: userDisplayName } = useGamification();
   const [tab, setTab] = useState<'allTime' | 'weekly'>('allTime');
   const { entries: remoteEntries, loading } = useLeaderboard(tab, 50);
 
-  const userDisplayName = computeDisplayName(user);
   const currentPoints = tab === 'allTime' ? points : weeklyPoints;
   const userUid = user?.uid ?? 'local-visitor';
 

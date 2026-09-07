@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import ActivityHeatmap from './ActivityHeatmap';
 import TopicBreakdownBars from './TopicBreakdownBars';
+import BadgeShowcase from './layout/BadgeShowcase';
 import { useAuth } from '../contexts/AuthContext';
 import { useGamification } from '../contexts/GamificationContext';
 import { useLeaderboard } from '../lib/useLeaderboard';
-import { levelForPoints, computeDisplayName } from '../lib/gamification';
+import { levelForPoints } from '../lib/gamification';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { getFlatPages, getPracticeProblems } from '../lib/contentTree';
@@ -32,12 +33,14 @@ export default function ProfilePage() {
   useDocumentMeta('Your Profile', 'Your Neural Mastery identity -- level, XP, streak, topic breakdown, activity calendar, and the leaderboard.');
 
   const { user } = useAuth();
-  const { points, streak, events } = useGamification();
+  const { points, streak, events, displayName, updateDisplayName } = useGamification();
   const { understood, countWithin } = useProgress();
   const [leaderboardTab, setLeaderboardTab] = useState<'allTime' | 'weekly'>('allTime');
   const { entries: leaderboardEntries, loading: leaderboardLoading } = useLeaderboard(leaderboardTab);
 
-  const displayName = computeDisplayName(user);
+  const [editingName, setEditingName] = useState(false);
+  const [nameDraft, setNameDraft] = useState(displayName);
+
   const initial = (user?.displayName ?? user?.email ?? '?').charAt(0).toUpperCase();
   const { level, xpIntoLevel, xpForNextLevel } = levelForPoints(points);
   const rank = rankForLevel(level);
@@ -80,13 +83,93 @@ export default function ProfilePage() {
               initial
             )}
           </div>
-          <div style={{ minWidth: 0 }}>
-            <h1 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.9rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: 0 }}>
-              {displayName}
-            </h1>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            {editingName ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const trimmed = nameDraft.trim();
+                  if (trimmed) updateDisplayName(trimmed);
+                  setEditingName(false);
+                }}
+                style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}
+              >
+                <input
+                  autoFocus
+                  value={nameDraft}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  maxLength={40}
+                  aria-label="Display name"
+                  style={{
+                    fontSize: 'clamp(1.2rem, 2.6vw, 1.6rem)',
+                    fontWeight: 800,
+                    color: 'var(--nm-text-primary)',
+                    background: 'var(--nm-surface)',
+                    border: '1.5px solid var(--nm-accent-primary)',
+                    borderRadius: 8,
+                    padding: '0.15rem 0.5rem',
+                    minWidth: 0,
+                    flex: '1 1 220px',
+                  }}
+                />
+                <button
+                  type="submit"
+                  className="nm-button nm-button-primary"
+                  style={{ padding: '0.35rem 0.9rem', fontSize: 12.5 }}
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNameDraft(displayName);
+                    setEditingName(false);
+                  }}
+                  className="nm-button nm-button-secondary"
+                  style={{ padding: '0.35rem 0.9rem', fontSize: 12.5 }}
+                >
+                  Cancel
+                </button>
+              </form>
+            ) : (
+              <h1 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.9rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: 10 }}>
+                {displayName}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNameDraft(displayName);
+                    setEditingName(true);
+                  }}
+                  aria-label="Edit display name"
+                  title="Edit display name"
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: 'var(--nm-text-muted)',
+                    background: 'var(--nm-surface)',
+                    border: '1px solid var(--nm-border)',
+                    borderRadius: 6,
+                    padding: '0.15rem 0.5rem',
+                    cursor: 'pointer',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  ✎ Edit
+                </button>
+              </h1>
+            )}
             <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '2px 0 0' }}>
-              {user ? `Synced across your devices (${user.email ?? 'Signed in'})` : 'Guest Mode (Signed Out) -- Tracked locally in this browser. Sign in to sync across devices.'}
+              {user
+                ? `Synced across your devices (${user.email ?? 'Signed in'})`
+                : 'Guest Mode (Signed Out) -- Tracked locally in this browser. Sign in to sync across devices.'}
             </p>
+            {!editingName && (
+              <p style={{ fontSize: 11.5, color: 'var(--nm-text-muted)', margin: '2px 0 0' }}>
+                {user
+                  ? "This is the name shown on the leaderboard -- click Edit to change it; it's linked to your account and syncs everywhere you sign in."
+                  : "This is the name shown on the leaderboard for this browser. Sign in to link a custom name to your account."}
+              </p>
+            )}
           </div>
         </div>
 
@@ -150,10 +233,13 @@ export default function ProfilePage() {
             )}
           </div>
         </div>
-        <p style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', margin: '-0.5rem 0 2rem', lineHeight: 1.6 }}>
+        <p style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', margin: '-0.5rem 0 1.5rem', lineHeight: 1.6 }}>
           Want the detailed page-by-page checklist and spaced-repetition review queue? That still lives on{' '}
           <Link to="/progress" style={{ color: 'var(--nm-accent-primary)' }}>your Progress page</Link>.
         </p>
+
+        {/* --- Badges --- */}
+        <BadgeShowcase />
 
         <section className="nm-profile-mastery" aria-labelledby="mastery-overview">
           <div className="nm-profile-section-heading"><p className="nm-eyebrow">Your AI engineering system</p><h2 id="mastery-overview">Mastery overview</h2></div>

@@ -13,11 +13,13 @@ export interface LeaderboardEntry {
  * one's security rules correctly block cross-user reads, so a ranking
  * query genuinely cannot run against it).
  *
- * Signed-in only, by design: leaderboard ranking is inherently a
- * signed-in feature (a signed-out visitor has no persistent identity to
- * rank in the first place, same reasoning as points/streaks themselves).
- * Returns an empty, non-loading result for a signed-out visitor rather
- * than attempting a query the security rules would reject anyway.
+ * Public, by design -- no auth check here at all: firestore.rules grants
+ * `allow read: if true` on this collection specifically so a browsing,
+ * not-yet-signed-in visitor can see the leaderboard too (only WRITES
+ * stay restricted to a signed-in user's own entry). A signed-out
+ * visitor's own points aren't tracked here (they have no persistent
+ * identity to rank), but every existing signed-in user's public entry is
+ * visible regardless of the viewer's own auth state.
  */
 export function useLeaderboard(sortBy: 'allTime' | 'weekly', limitN = 25): { entries: LeaderboardEntry[]; loading: boolean } {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);

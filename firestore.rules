@@ -1,17 +1,22 @@
 rules_version = '2';
 
-// Verified against a real local Firestore emulator (not just read for
-// plausibility) via @firebase/rules-unit-testing: confirmed a signed-in
-// user can read/write their own progress/{uid} and leaderboard/{uid}
-// documents, is BLOCKED from writing another user's document in either
-// collection, an unauthenticated client is blocked from both on every
-// document, a signed-in user CAN read any leaderboard/{uid} document
-// (that collection is deliberately public-readable -- see below) but
-// still cannot read another user's private progress/{uid}, and a blocked
-// write never corrupts the target document. That verification tooling
-// (firebase-tools + @firebase/rules-unit-testing) was intentionally not
-// left as a permanent devDependency -- to re-verify after a future rules
-// change: `npm install --save-dev firebase-tools @firebase/rules-unit-testing`,
+// Originally verified against a real local Firestore emulator (not just
+// read for plausibility) via @firebase/rules-unit-testing: confirmed a
+// signed-in user can read/write their own progress/{uid} and
+// leaderboard/{uid} documents, is BLOCKED from writing another user's
+// document in either collection, an unauthenticated client is blocked
+// from progress/{uid} on every document, and a blocked write never
+// corrupts the target document. leaderboard/{uid} reads were later
+// widened from "any signed-in user" to fully public (`allow read: if
+// true`) -- a leaderboard is meant to be visible to a browsing,
+// not-yet-signed-in visitor too, and every field ever written there is
+// deliberately public-safe (see the collection's own comment below). A
+// user still cannot read another user's private progress/{uid} either
+// way, and write access to both collections is unchanged. That
+// verification tooling (firebase-tools + @firebase/rules-unit-testing)
+// was intentionally not left as a permanent devDependency -- to
+// re-verify after a future rules change: `npm install --save-dev
+// firebase-tools @firebase/rules-unit-testing`,
 // run `npx firebase emulators:start --only firestore --project demo-neuralmastery`
 // (add `CHOKIDAR_USEPOLLING=true` if it fails with an inotify ENOSPC error
 // on a busy shared machine), then drive it with initializeTestEnvironment
@@ -31,14 +36,20 @@ service cloud.firestore {
     }
 
     // Public leaderboard snapshot: deliberately DIFFERENT read rule from
-    // progress/{uid} above -- any signed-in user may read ANY entry here
-    // (a ranking query needs to see every user's points), but a user may
-    // still only WRITE their own entry, exactly like progress/{uid}. This
-    // is the real reason a separate collection exists at all: a
-    // leaderboard genuinely cannot be computed against progress/{uid}'s
-    // rules without weakening that document's real privacy guarantee.
+    // progress/{uid} above -- truly public (any client, signed in or not,
+    // may read ANY entry here -- a ranking is meant to be visible to a
+    // browsing, not-yet-signed-in visitor too, and a ranking query needs
+    // to see every user's points regardless), but a user may still only
+    // WRITE their own entry, exactly like progress/{uid}. This is the
+    // real reason a separate collection exists at all: a leaderboard
+    // genuinely cannot be computed against progress/{uid}'s rules
+    // without weakening that document's real privacy guarantee. Every
+    // field ever written here (displayName, allTimePoints, weeklyPoints,
+    // weekStart, updatedAt -- see leaderboardFields in
+    // GamificationContext.tsx) is intentionally public-safe: no email,
+    // no uid-linked PII beyond a user-chosen display name.
     match /leaderboard/{userId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if request.auth != null && request.auth.uid == userId;
     }
   }

@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useAuth } from './AuthContext';
 import {
   type AwardEvent,
@@ -25,6 +25,31 @@ import { BADGES } from '../lib/badges';
 
 
 const STORAGE_KEY = 'neural-mastery-gamification';
+/** A user-chosen display name override -- e.g. "neuralmastery" instead of
+ * the Firebase Auth-derived "ravivarmapatturi" (email handle) or Google
+ * account name. Stored locally for guests; for a signed-in user it's also
+ * persisted to progress/{uid}.displayNameOverride (synced across devices,
+ * linked to their account) AND mirrored onto leaderboard/{uid}.displayName
+ * so the leaderboard shows the same chosen name, not the raw account one. */
+const DISPLAY_NAME_KEY = 'neural-mastery-display-name-override';
+
+function readDisplayNameOverride(): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    return window.localStorage.getItem(DISPLAY_NAME_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeDisplayNameOverride(name: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(DISPLAY_NAME_KEY, name);
+  } catch {
+    // localStorage unavailable -- fail silently, same contract as writeStorage.
+  }
+}
 
 interface GamificationContextValue {
   points: number;
@@ -35,6 +60,18 @@ interface GamificationContextValue {
    * (topicBreakdown, activityCounts in lib/gamification.ts) can compute
    * it themselves without a second, parallel data path. */
   events: AwardEvent[];
+  /** The resolved display name to show anywhere a user's identity appears
+   * (profile header, leaderboard) -- a user-chosen override if one has
+   * been set (see updateDisplayName), otherwise computeDisplayName's
+   * Firebase Auth-derived default. Every page should read this instead of
+   * calling computeDisplayName(user) directly, so an override is honored
+   * everywhere consistently. */
+  displayName: string;
+  /** Sets a user-chosen display name, persisted to this account (and
+   * mirrored onto the public leaderboard entry) for a signed-in user, or
+   * to this browser only for a signed-out guest. See its own comment
+   * above for the full sync contract. */
+  updateDisplayName: (name: string) => void;
   awardMarkUnderstood: (permalink: string) => void;
   /** difficulty: the problem's real frontmatter difficulty ('easy' |
    * 'medium' | 'hard' | undefined) -- see pointsForDifficulty in
@@ -157,9 +194,9 @@ async function withRetry<T>(fn: () => Promise<T>, attempts = 7, attemptTimeoutMs
  * two are always written together, in the same async call, using the SAME
  * `events` value -- no separate effect racing against its own stale
  * closure of `events` from a prior render. */
-function leaderboardFields(user: User, events: AwardEvent[], now: number) {
+function leaderboardFields(user: User, events: AwardEvent[], now: number, displayNameOverride?: string | null) {
   return {
-    displayName: computeDisplayName(user),
+    displayName: displayNameOverride || computeDisplayName(user),
     allTimePoints: totalPoints(events),
     weeklyPoints: computeWeeklyPoints(events, new Date(now)),
     weekStart: weekStartDateString(new Date(now)),
@@ -196,9 +233,20 @@ function leaderboardFields(user: User, events: AwardEvent[], now: number) {
 export function GamificationProvider({ children }: { children: React.ReactNode }) {
   const { user, loading: authLoading } = useAuth();
   const [events, setEvents] = useState<AwardEvent[]>([]);
+  const [displayNameOverride, setDisplayNameOverride] = useState<string | null>(null);
+  // Read via a ref (not the state closure) inside commit()/the sign-in
+  // effect below -- those callbacks are created once per `user` change and
+  // otherwise capture a stale `displayNameOverride` from whenever they were
+  // last recreated, which would silently re-overwrite a freshly-changed
+  // name back to an older value on the very next award.
+  const displayNameOverrideRef = useRef<string | null>(null);
+  useEffect(() => {
+    displayNameOverrideRef.current = displayNameOverride;
+  }, [displayNameOverride]);
 
   useEffect(() => {
     setEvents(readStorage());
+    setDisplayNameOverride(readDisplayNameOverride());
   }, []);
 
   useEffect(() => {
@@ -230,6 +278,19 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
           ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
           : [];
         let merged = mergeEvents(remoteEvents, readStorage());
+
+        // Reconcile a display-name override the same way events merge:
+        // Firestore wins if it already has one (another device's edit, or
+        // this account's own prior choice); otherwise a name chosen while
+        // this browser was still signed out carries over onto the account
+        // instead of being silently dropped at sign-in.
+        const remoteOverride = typeof snap.data()?.displayNameOverride === 'string' ? (snap.data()!.displayNameOverride as string) : null;
+        const resolvedOverride = remoteOverride ?? readDisplayNameOverride();
+        if (resolvedOverride) {
+          setDisplayNameOverride(resolvedOverride);
+          displayNameOverrideRef.current = resolvedOverride;
+          writeDisplayNameOverride(resolvedOverride);
+        }
         // Daily sign-in reward folded directly into this same merge, not
         // a separate award()/commit() call -- an earlier version fired it
         // from its own independent effect, which raced this same
@@ -255,9 +316,11 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
         // been written successfully. A leaderboard failure should never
         // prevent a signed-in user's own progress from loading -- this
         // matches commit()'s already-correct independent-write pattern.
-        await withRetry(() => setDoc(progressRef, { gamificationEvents: merged }, { merge: true }));
+        await withRetry(() =>
+          setDoc(progressRef, { gamificationEvents: merged, ...(resolvedOverride ? { displayNameOverride: resolvedOverride } : {}) }, { merge: true }),
+        );
         if (cancelled) return;
-        void withRetry(() => setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true })).catch((err) =>
+        void withRetry(() => setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now(), resolvedOverride), { merge: true })).catch((err) =>
           console.error('Failed to sync leaderboard entry to the server after retrying:', err),
         );
 
@@ -272,6 +335,13 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
             const currentMerged = mergeEvents(remote, readStorage());
             setEvents(currentMerged);
             writeStorage(currentMerged);
+
+            const liveOverride = typeof snap.data()?.displayNameOverride === 'string' ? (snap.data()!.displayNameOverride as string) : null;
+            if (liveOverride && liveOverride !== displayNameOverrideRef.current) {
+              setDisplayNameOverride(liveOverride);
+              displayNameOverrideRef.current = liveOverride;
+              writeDisplayNameOverride(liveOverride);
+            }
           },
           // Without this, a transient listener error (the same auth-token
           // race withRetry above guards against, but on the LIVE
@@ -324,7 +394,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
             void withRetry(() => setDoc(progressRef, { gamificationEvents: merged }, { merge: true })).catch((err) =>
               console.error('Failed to sync gamification progress to the server after retrying:', err),
             );
-            void withRetry(() => setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now()), { merge: true })).catch((err) =>
+            void withRetry(() => setDoc(leaderboardRef, leaderboardFields(user, merged, Date.now(), displayNameOverrideRef.current), { merge: true })).catch((err) =>
               console.error('Failed to sync leaderboard entry to the server after retrying:', err),
             );
           });
@@ -425,6 +495,37 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   // case correctly, since there's no competing read-merge-write then).
   const awardDailySignIn = useCallback(() => award(`signin:${localDateString(new Date(Date.now()))}`, 'signin', DAILY_SIGNIN_POINTS), [award]);
 
+  /** Sets a user-chosen display name, overriding the Firebase Auth-derived
+   * default (see computeDisplayName). Updates local state immediately
+   * (works instantly for a signed-out guest, browser-local); for a
+   * signed-in user it's additionally persisted to progress/{uid} (synced
+   * across devices, linked to their account) and mirrored onto
+   * leaderboard/{uid}.displayName so the leaderboard reflects the same
+   * chosen name rather than their raw account name/email handle. */
+  const updateDisplayName = useCallback(
+    (name: string) => {
+      const trimmed = name.trim().slice(0, 40);
+      if (!trimmed) return;
+      setDisplayNameOverride(trimmed);
+      displayNameOverrideRef.current = trimmed;
+      writeDisplayNameOverride(trimmed);
+
+      if (user) {
+        void user
+          .getIdToken(true)
+          .then(() => loadFirestoreFor(user.uid))
+          .then(({ progressRef, leaderboardRef, setDoc }) =>
+            Promise.all([
+              withRetry(() => setDoc(progressRef, { displayNameOverride: trimmed }, { merge: true })),
+              withRetry(() => setDoc(leaderboardRef, { displayName: trimmed }, { merge: true })),
+            ]),
+          )
+          .catch((err) => console.error('Failed to save display name to the server after retrying:', err));
+      }
+    },
+    [user],
+  );
+
   const now = new Date(Date.now());
   const value: GamificationContextValue = {
     points: totalPoints(events),
@@ -434,6 +535,8 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       now,
     ),
     events,
+    displayName: displayNameOverride || computeDisplayName(user),
+    updateDisplayName,
     awardMarkUnderstood,
     awardProblemCompleted,
     awardFlashcardRevealed,
