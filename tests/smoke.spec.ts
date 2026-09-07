@@ -179,4 +179,24 @@ test.describe('Visualization', () => {
     await expect(page.locator('pre span[style*="color"]').first()).toBeVisible();
     expect(errors.errors()).toEqual([]);
   });
+
+  test('home page playground demo executes Python and fires celebration', async ({ page }) => {
+    test.setTimeout(60000);
+    const errors = collectConsoleErrors(page);
+    await page.goto('learn');
+    await expect(page.locator('h1')).toBeVisible();
+
+    const playgroundSection = page.locator('.nm-home-playground-section');
+    await playgroundSection.scrollIntoViewIfNeeded();
+    await expect(playgroundSection).toBeVisible();
+
+    const runButton = playgroundSection.getByRole('button', { name: /Run/i });
+    await expect(runButton).toBeVisible();
+    await runButton.click();
+
+    // Pyodide loads and executes; verification cases pass and celebration toast fires
+    await expect(page.locator('text=Code Executed Successfully!')).toBeVisible({ timeout: 45000 });
+    await expect(page.locator('text=/All 3 test cases passed/i')).toBeVisible();
+    expect(errors.errors()).toEqual([]);
+  });
 });

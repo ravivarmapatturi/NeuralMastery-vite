@@ -9,6 +9,7 @@ import { getPracticeProblem, type PracticeTestCase } from '../../lib/practicePro
 import { PyodideExecutor } from '../../lib/execution/pyodideExecutor';
 import { ServerExecutor } from '../../lib/execution/serverExecutor';
 import type { CodeExecutor, ExecutionResult } from '../../lib/execution/types';
+import { showRewardToast } from '../ui/Confetti';
 
 // Same bundle-size reasoning as RunnableCode.tsx: CodeMirror stays out of
 // every page that doesn't need it.
@@ -43,7 +44,13 @@ type RunStatus = 'idle' | 'running' | 'submitting';
  * submission history, no hints, no notes. Those are separate, later
  * increments on top of this same engine.
  */
-export default function PracticePlayground({ problemId }: { problemId: string }) {
+export interface PracticePlaygroundProps {
+  problemId: string;
+  celebrateOnSuccess?: boolean;
+  onRunSuccess?: (result: ExecutionResult) => void;
+}
+
+export default function PracticePlayground({ problemId, celebrateOnSuccess = false, onRunSuccess }: PracticePlaygroundProps) {
   const problem = getPracticeProblem(problemId);
   const t = useVizTokens();
   const { awardProblemCompleted } = useGamification();
@@ -87,8 +94,19 @@ export default function PracticePlayground({ problemId }: { problemId: string })
     const res = await executor.execute({ code, functionName: problem!.functionName, testCases });
     setResult(res);
     setStatus('idle');
-    if (action === 'submit' && res.status === 'success') {
-      awardProblemCompleted(permalink, undefined); // no-op if this page already earned it once -- structured PracticeProblem has no difficulty field yet
+    if (res.status === 'success') {
+      if (action === 'submit') {
+        awardProblemCompleted(permalink, undefined); // no-op if this page already earned it once -- structured PracticeProblem has no difficulty field yet
+      }
+      if (celebrateOnSuccess) {
+        showRewardToast({
+          title: 'Code Executed Successfully!',
+          subtitle: `All ${res.caseResults.length} test cases passed in browser runtime`,
+          icon: '⚡',
+          type: 'celebration',
+        });
+      }
+      onRunSuccess?.(res);
     }
   }
 

@@ -40,6 +40,7 @@ export interface DocPage {
   /** Practice-problem-only fields, undefined on every other page. */
   difficulty?: PracticeDifficulty;
   topic?: string;
+  placeholder?: boolean;
 }
 
 export interface SidebarSection {
@@ -91,6 +92,7 @@ interface PageMetaEntry {
   description: string | null;
   difficulty: PracticeDifficulty | null;
   topic: string | null;
+  placeholder?: boolean | null;
 }
 
 const PRACTICE_PROBLEMS_SECTION = 'practice-problems';
@@ -143,6 +145,7 @@ function buildPages(): DocPage[] {
       Component: lazy(() => loader() as Promise<{ default: ComponentType }>),
       difficulty: meta.difficulty ?? undefined,
       topic: meta.topic ?? undefined,
+      placeholder: meta.placeholder ?? false,
     });
   }
   return pages;

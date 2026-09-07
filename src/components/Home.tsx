@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import AttentionStepThrough from '../viz/AttentionStepThrough';
-import { QA } from './content/ExpandableDepth';
+import PracticePlayground from './content/PracticePlayground';
 import { getSidebar, getFlatPages, getPracticeProblems, type DocPage } from '../lib/contentTree';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -75,7 +75,7 @@ export default function Home() {
   const accent = buildSectionAccent();
 
   const { understood, isUnderstood, countWithin, dueForReview } = useProgress();
-  const { events, awardFlashcardRevealed } = useGamification();
+  const { events } = useGamification();
   // Gated on real, currently-existing pages (not raw understood-map key
   // count) -- a visitor whose only marked page was later renamed/removed
   // (see ProgressPage's own titleFor fallback for that same case) should
@@ -206,56 +206,60 @@ export default function Home() {
         </div>
       </section>
 
-      <section style={{ padding: '0 0 2.5rem' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 1.5rem' }}>
-          <h2
-            className="nm-display"
-            style={{
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--nm-text-muted)',
-              marginBottom: '1.25rem',
-            }}
-          >
-            New
-          </h2>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '1.25rem',
-            }}
-          >
-            <div
+      <section
+        className="nm-home-playground-section"
+        aria-labelledby="home-playground-heading"
+        style={{
+          padding: '2.5rem 0 3.5rem',
+          borderTop: '1px solid var(--nm-border)',
+        }}
+      >
+        <div style={{ maxWidth: 880, margin: '0 auto', padding: '0 1.5rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <p
+              className="nm-eyebrow"
               style={{
-                padding: '1.25rem',
-                borderRadius: 12,
-                border: '1px solid var(--nm-border)',
-                background: 'var(--nm-surface)',
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'var(--nm-accent-primary)',
+                marginBottom: 6,
               }}
             >
-              <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--nm-text-primary)', marginBottom: 4 }}>
-                Test yourself
-              </div>
-              <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 0.75rem', lineHeight: 1.5 }}>
-                Real interview questions, click to reveal the answer — try one right here:
-              </p>
-              <QA
-                q="What is a KV cache, and why does it matter for serving?"
-                onReveal={() => awardFlashcardRevealed('flashcard:home-kv-cache')}
-              >
-                Storing each generated token's Key/Value projections so they don't get recomputed on every
-                subsequent step — it's also the dominant consumer of GPU memory during serving.
-              </QA>
-              <Link
-                to="/docs/interview-prep/qa-quick-reference"
-                style={{ display: 'inline-block', marginTop: '0.75rem', fontSize: 13, color: 'var(--nm-accent-primary)', textDecoration: 'none' }}
-              >
-                More real interview questions, across LLMs, RAG, and agents →
-              </Link>
-            </div>
+              Interactive In-Browser Execution
+            </p>
+            <h2
+              id="home-playground-heading"
+              className="nm-display"
+              style={{
+                fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)',
+                fontWeight: 800,
+                color: 'var(--nm-text-primary)',
+                margin: '0 0 0.5rem',
+              }}
+            >
+              Try It Live — In-Browser Python Playground
+            </h2>
+            <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', maxWidth: 640, margin: '0 auto', lineHeight: 1.6 }}>
+              No sign-up or installation required. Hit <strong>▶ Run</strong> to execute Python directly in your browser using Pyodide (WebAssembly) and test against instant verification cases.
+            </p>
+          </div>
+
+          <PracticePlayground problemId="fizz-buzz" celebrateOnSuccess />
+
+          <div style={{ textAlign: 'center', marginTop: '1.25rem' }}>
+            <Link
+              to="/practice"
+              style={{
+                fontSize: 13.5,
+                fontWeight: 600,
+                color: 'var(--nm-accent-primary)',
+                textDecoration: 'none',
+              }}
+            >
+              Explore 1,500+ AI Engineering practice problems →
+            </Link>
           </div>
         </div>
       </section>

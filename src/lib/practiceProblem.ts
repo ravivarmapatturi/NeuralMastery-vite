@@ -58,6 +58,70 @@ export interface PracticeProblem {
 }
 
 export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
+  'calculate-average': {
+    id: 'calculate-average',
+    title: 'Calculate Average',
+    judgeMode: 'local',
+    difficulty: 'easy',
+    topic: 'Python Foundations',
+    estimatedTime: '3 min',
+    functionName: 'calculate_average',
+    functionSignature: 'calculate_average(nums: list[float]) -> float',
+    starterCode: `def calculate_average(nums):
+    """Calculate and return the average of a list of numbers.
+    Return 0.0 if the list is empty."""
+    if not nums:
+        return 0.0
+    return sum(nums) / len(nums)
+`,
+    mission: 'Compute the average of a numerical sequence with empty-list handling.',
+    taskDescription: 'Implement `calculate_average(nums)`: return the arithmetic mean of `nums`. Return `0.0` if `nums` is empty.',
+    constraints: ['nums can contain integers and floats', 'Empty list must return 0.0'],
+    testCases: [
+      { id: 'c1', label: 'Positive numbers [1, 2, 3, 4, 5]', input: { nums: [1, 2, 3, 4, 5] }, expectedOutput: 3.0, hidden: false },
+      { id: 'c2', label: 'Single element [42]', input: { nums: [42] }, expectedOutput: 42.0, hidden: false },
+      { id: 'c3', label: 'Mixed values [10, 20, 30]', input: { nums: [10, 20, 30] }, expectedOutput: 20.0, hidden: false },
+      { id: 'c4', label: 'Empty list []', input: { nums: [] }, expectedOutput: 0.0, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'fizz-buzz': {
+    id: 'fizz-buzz',
+    title: 'FizzBuzz',
+    judgeMode: 'local',
+    difficulty: 'easy',
+    topic: 'Python Foundations',
+    estimatedTime: '3 min',
+    functionName: 'fizz_buzz',
+    functionSignature: 'fizz_buzz(n: int) -> list[str]',
+    starterCode: `def fizz_buzz(n):
+    """Return FizzBuzz sequence from 1 to n:
+    - 'FizzBuzz' if divisible by 3 and 5
+    - 'Fizz' if divisible by 3
+    - 'Buzz' if divisible by 5
+    - The number as string otherwise"""
+    result = []
+    for i in range(1, n + 1):
+        if i % 15 == 0:
+            result.append("FizzBuzz")
+        elif i % 3 == 0:
+            result.append("Fizz")
+        elif i % 5 == 0:
+            result.append("Buzz")
+        else:
+            result.append(str(i))
+    return result
+`,
+    mission: 'Execute classic FizzBuzz directly in your browser with Pyodide.',
+    taskDescription: 'Generate the sequence from 1 to n with classic Fizz/Buzz/FizzBuzz rules.',
+    constraints: ['1 <= n <= 100'],
+    testCases: [
+      { id: 'c1', label: 'n = 5', input: { n: 5 }, expectedOutput: ['1', '2', 'Fizz', '4', 'Buzz'], hidden: false },
+      { id: 'c2', label: 'n = 15', input: { n: 15 }, expectedOutput: ['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', '7', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', '14', 'FizzBuzz'], hidden: false },
+      { id: 'c3', label: 'n = 3', input: { n: 3 }, expectedOutput: ['1', '2', 'Fizz'], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
   'dot-product': {
     id: 'dot-product',
     title: 'Dot Product From Scratch',

@@ -42,17 +42,12 @@ describe('PracticeListPage', () => {
     expect(screen.getByText(/^0 \/ \d+ solved$/)).toBeInTheDocument()
   })
 
-  it('the H1 and the "N / total solved" line report the SAME real problem count, never a stale hardcoded number', () => {
-    // Real regression this guards against: the page used to hardcode
-    // "1,072" in the title/H1/description while the real file count
-    // had already grown past it. Both real counts in the page (H1 and
-    // the solved-count line) must derive from the same problems.length,
-    // so they can never drift from each other or from reality again.
+  it('the H1 leads with the real, hands-on problem count and notes placeholders being added, while the solved count reports total catalogue', () => {
     renderList()
     const solvedText = screen.getByText(/^\d+ \/ \d+ solved$/).textContent!
     const total = Number(solvedText.split('/')[1].trim().split(' ')[0])
     expect(total).toBeGreaterThan(0)
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(`Practice AI — ${total}+ AI Engineering Problems`)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Practice AI — \d+ Real, Hands-On Problems \(\d+ more being added\)/)
   })
 
   it('reflects a real completed problem as Solved, and increments the header count', () => {

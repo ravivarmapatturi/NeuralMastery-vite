@@ -25,7 +25,8 @@ export default function BadgeShowcase() {
     isSignedIn,
   };
 
-  const unlockedCount = BADGES.filter((b) => b.checkUnlocked(stats)).length;
+  const unlockedBadges = BADGES.filter((b) => b.checkUnlocked(stats));
+  const unlockedCount = unlockedBadges.length;
 
   // Sample RL valuation for solving a medium problem
   const rlValuation = computeRLValuation('complete', 'medium', events, activeDates);
@@ -134,41 +135,40 @@ export default function BadgeShowcase() {
           gap: 16,
         }}
       >
-        {BADGES.map((badge) => {
-          const unlocked = badge.checkUnlocked(stats);
-
-          return (
+        {unlockedBadges.length === 0 ? (
+          <div
+            style={{
+              gridColumn: '1 / -1',
+              textAlign: 'center',
+              padding: '32px 16px',
+              color: 'var(--nm-text-muted)',
+              fontSize: 14,
+            }}
+          >
+            No checkpoint badges earned yet. Mark lessons understood, maintain your streak, and solve practice problems to unlock badges!
+          </div>
+        ) : (
+          unlockedBadges.map((badge) => (
             <div
               key={badge.id}
               style={{
-                // Real bug this fixes: these were hardcoded to a fixed
-                // DARK, high-opacity background regardless of theme --
-                // combined with the text colors above (also hardcoded
-                // near-white, or falling through a fake --nm-text-heading
-                // var to the same near-white), that only ever worked in
-                // dark mode. color-mix against the real, theme-adaptive
-                // --nm-surface-alt/--nm-border tokens makes both the card
-                // background AND its text stay correctly paired in
-                // either theme.
-                background: unlocked
-                  ? 'color-mix(in srgb, var(--nm-accent-secondary) 8%, var(--nm-surface-alt))'
-                  : 'color-mix(in srgb, var(--nm-surface-alt) 60%, transparent)',
-                border: unlocked ? '1px solid color-mix(in srgb, var(--nm-accent-secondary) 40%, transparent)' : '1px dashed var(--nm-border)',
+                background: 'color-mix(in srgb, var(--nm-accent-secondary) 8%, var(--nm-surface-alt))',
+                border: '1px solid color-mix(in srgb, var(--nm-accent-secondary) 40%, transparent)',
                 borderRadius: 12,
                 padding: 16,
                 display: 'flex',
                 gap: 14,
                 alignItems: 'flex-start',
-                opacity: unlocked ? 1 : 0.65,
+                opacity: 1,
                 transition: 'all 0.2s ease',
-                boxShadow: unlocked ? '0 4px 20px -2px color-mix(in srgb, var(--nm-accent-secondary) 15%, transparent)' : 'none',
+                boxShadow: '0 4px 20px -2px color-mix(in srgb, var(--nm-accent-secondary) 15%, transparent)',
               }}
             >
               <div
                 style={{
                   fontSize: 32,
                   lineHeight: 1,
-                  filter: unlocked ? 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.4))' : 'grayscale(1)',
+                  filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.4))',
                 }}
               >
                 {badge.icon}
@@ -176,35 +176,21 @@ export default function BadgeShowcase() {
 
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontWeight: 700, fontSize: 14, color: unlocked ? 'var(--nm-text-primary)' : 'var(--nm-text-muted)' }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--nm-text-primary)' }}>
                     {badge.title}
                   </div>
-                  {unlocked ? (
-                    <span
-                      style={{
-                        fontSize: 10,
-                        background: 'color-mix(in srgb, var(--nm-accent-primary) 20%, transparent)',
-                        color: 'var(--nm-accent-primary)',
-                        padding: '2px 6px',
-                        borderRadius: 4,
-                        fontWeight: 600,
-                      }}
-                    >
-                      UNLOCKED
-                    </span>
-                  ) : (
-                    <span
-                      style={{
-                        fontSize: 10,
-                        background: 'color-mix(in srgb, var(--nm-text-muted) 12%, transparent)',
-                        color: 'var(--nm-text-muted)',
-                        padding: '2px 6px',
-                        borderRadius: 4,
-                      }}
-                    >
-                      LOCKED
-                    </span>
-                  )}
+                  <span
+                    style={{
+                      fontSize: 10,
+                      background: 'color-mix(in srgb, var(--nm-accent-primary) 20%, transparent)',
+                      color: 'var(--nm-accent-primary)',
+                      padding: '2px 6px',
+                      borderRadius: 4,
+                      fontWeight: 600,
+                    }}
+                  >
+                    UNLOCKED
+                  </span>
                 </div>
 
                 <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginTop: 4, lineHeight: 1.4 }}>
@@ -216,8 +202,8 @@ export default function BadgeShowcase() {
                 </div>
               </div>
             </div>
-          );
-        })}
+          ))
+        )}
       </div>
     </div>
   );

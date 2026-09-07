@@ -41,12 +41,12 @@ function isDesignChallenge(page: DocPage): boolean {
 
 export default function PracticeListPage() {
   const problems = useMemo(() => getPracticeProblems(), []);
+  const placeholderCount = useMemo(() => problems.filter((p) => p.placeholder).length, [problems]);
+  const realCount = problems.length - placeholderCount;
 
-  // Real, current count -- never hardcoded. A stale hardcoded number here
-  // is exactly how this page previously ended up claiming "1,072" long
-  // after the real file count had grown well past it.
-  useDocumentTitle(`Practice AI — ${problems.length}+ AI Engineering Problems`);
-  useDocumentMeta('Practice AI', `A growing AI Engineering practice curriculum (${problems.length} problems and counting) covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.`);
+  // Real, verified count leading first -- never inflated with placeholders.
+  useDocumentTitle(`Practice AI — ${realCount} Real, Hands-On Problems (${placeholderCount} more being added)`);
+  useDocumentMeta('Practice AI', `A growing AI Engineering practice curriculum with ${realCount} real, hands-on problems (${placeholderCount} more being added) covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.`);
 
   const topicLabels = useMemo(buildTopicLabels, []);
   const { events } = useGamification();
@@ -110,10 +110,10 @@ export default function PracticeListPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.5rem' }}>
           <div>
             <h1 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: '0 0 0.5rem' }}>
-              Practice AI — {problems.length}+ AI Engineering Problems
+              Practice AI — {realCount} Real, Hands-On Problems ({placeholderCount} more being added)
             </h1>
             <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.5rem', lineHeight: 1.6, maxWidth: 780 }}>
-              A growing AI Engineering practice curriculum spanning Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems) as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems). New problems are added and fleshed out with real, IDE-graded solutions on an ongoing basis.
+              {realCount} real AI engineering problems with working test suites and instant browser-based execution, covering the Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems) as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems). {placeholderCount} additional problem templates across the full catalogue are actively being populated with verified challenges.
             </p>
             <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 1.5rem' }}>
               {solvedCount} / {problems.length} solved

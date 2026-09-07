@@ -51,6 +51,7 @@ for (const file of mdxFiles) {
     // had and never needs these.
     difficulty: data.difficulty ?? null,
     topic: data.topic ?? null,
+    placeholder: data.placeholder === true,
   };
 }
 
