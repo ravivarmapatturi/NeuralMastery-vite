@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Distributed systems Module 68: Problem 498"
+title: "Practice: Weighted Consistent Hashing Virtual Node Ring"
 sidebar_position: 498
-description: "Curriculum Problem 498 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems."
+description: "Implement weighted consistent hashing with virtual nodes to distribute inference prompts and embedding shards across heterogeneous GPU servers in proportion to their compute capacity."
 difficulty: hard
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,51 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Distributed systems Module 68: Problem 498
+# Weighted Consistent Hashing Virtual Node Ring
 
 **Rank #498** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-67`.
+Implement `weighted_consistent_hash(nodes, keys, base_vnodes=3)`. Distributed AI serving clusters feature mixed hardware (e.g. 80GB H100s with weight 4 vs 24GB L4s with weight 1). Consistent hashing with virtual nodes distributes workload smoothly in proportion to capacity. Given a dictionary `nodes` mapping physical node names to positive integer weights, and a list of `keys` to partition: (1) For each node with weight $W$, generate $W \times \text{base\_vnodes}$ virtual nodes labeled `f"{node}#vnode{i}"` for $i \in [0, W \times \text{base\_vnodes} - 1]$; (2) Hash each virtual node label using `int(hashlib.md5(label.encode()).hexdigest(), 16) % (2**32)` and insert `(hash_val, node)` onto the ring; (3) Sort the ring by hash value ascending; (4) For each key in `keys`, hash it similarly and assign it to the first virtual node with `ring_hash >= key_hash` (wrapping around to `ring[0]` if `key_hash > max(ring_hashes)`); (5) Count the total keys assigned to each physical node. Return `{node: count}` sorted alphabetically by node name. Raise `ValueError` if `nodes` is empty or `base_vnodes <= 0`. Prerequisite: `agents-mcp-systems-prob-67`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-68" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p68(data):
-    # Reference implementation
-    return data
+def weighted_consistent_hash(nodes, keys, base_vnodes=3):
+    if not nodes or base_vnodes <= 0:
+        raise ValueError("nodes must be non-empty and base_vnodes > 0")
+    
+    ring = []
+    for node, weight in nodes.items():
+        num_vnodes = weight * base_vnodes
+        for i in range(num_vnodes):
+            v_key = f"{node}#vnode{i}"
+            h = int(hashlib.md5(v_key.encode()).hexdigest(), 16) % (2**32)
+            ring.append((h, node))
+            
+    ring.sort(key=lambda x: x[0])
+    ring_hashes = [r[0] for r in ring]
+    
+    distribution = {n: 0 for n in sorted(nodes.keys())}
+    for k in keys:
+        kh = int(hashlib.md5(k.encode()).hexdigest(), 16) % (2**32)
+        idx = bisect.bisect_right(ring_hashes, kh)
+        if idx >= len(ring):
+            idx = 0
+        assigned_node = ring[idx][1]
+        distribution[assigned_node] += 1
+        
+    return distribution
 ```
 
-This problem tests fundamental skills in Distributed systems.
+### Key Concept: Virtual nodes prevent hot spots in consistent hashing rings and allow seamless weighted load balancing proportional to physical machine memory.
+
+**Constraints**:
+- nodes is a non-empty dict of `{node_name: weight}` with weight > 0.
+- base_vnodes > 0.
+- Hash function: int(hashlib.md5(s.encode()).hexdigest(), 16) % (2**32).
+- Clockwise ring assignment: first vnode with hash >= key_hash, with wrap-around.
+- Returned dictionary keys must be sorted alphabetically.
 
 </Solution>

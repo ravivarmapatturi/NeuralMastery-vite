@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Vector search Module 69: Problem 499"
+title: "Practice: Inverted Multi-Index Quantization Coarse Search"
 sidebar_position: 499
-description: "Curriculum Problem 499 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search."
+description: "Implement the Inverted Multi-Index (IMI) coarse quantization search algorithm, which creates a fine-grained grid of $K^2$ inverted lists using only $2K$ centroids for billion-scale vector indexing."
 difficulty: hard
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,55 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Vector search Module 69: Problem 499
+# Inverted Multi-Index Quantization Coarse Search
 
 **Rank #499** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-68`.
+Implement `imi_quantize_vector(query, codebook_1, codebook_2, top_m)`. Standard Inverted File (IVF) indexes use $K$ centroids to partition vector space. The Inverted Multi-Index (IMI) decomposes a $D$-dimensional space into two orthogonal sub-spaces of dimension $D/2$. Codebook 1 has $K_1$ centroids in sub-space 1, and Codebook 2 has $K_2$ centroids in sub-space 2. Together, they define $K_1 \times K_2$ multi-index cells where cell $(i, j)$ has distance $d(q^{(1)}, C_1[i])^2 + d(q^{(2)}, C_2[j])^2$ to the query. Given an even-dimensional `query` vector, `codebook_1`, `codebook_2`, and integer `top_m`, compute the squared distance to all pairs $(i, j)$ and return the top `top_m` closest cells sorted by distance ascending (tie-breaker: index $i$, then index $j$). Return a list of dicts `[{"indices": [i, j], "squared_distance": round(d, 4)}, ...]`. Raise `ValueError` if query dimension is odd or codebook dimensions do not match $D/2$. Prerequisite: `agents-mcp-systems-prob-68`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-69" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p69(data):
-    # Reference implementation
-    return data
+def imi_quantize_vector(query, codebook_1, codebook_2, top_m):
+    D = len(query)
+    if D % 2 != 0:
+        raise ValueError("query dimension must be even")
+    sub_d = D // 2
+    for c in codebook_1:
+        if len(c) != sub_d:
+            raise ValueError("codebook_1 dimension mismatch")
+    for c in codebook_2:
+        if len(c) != sub_d:
+            raise ValueError("codebook_2 dimension mismatch")
+            
+    q1 = query[:sub_d]
+    q2 = query[sub_d:]
+    
+    d1 = [sum((q1[k] - c[k])**2 for k in range(sub_d)) for c in codebook_1]
+    d2 = [sum((q2[k] - c[k])**2 for k in range(sub_d)) for c in codebook_2]
+    
+    candidates = []
+    for i in range(len(codebook_1)):
+        for j in range(len(codebook_2)):
+            candidates.append(((d1[i] + d2[j]), i, j))
+            
+    candidates.sort(key=lambda x: (x[0], x[1], x[2]))
+    selected = candidates[:top_m]
+    return [
+        {"indices": [item[1], item[2]], "squared_distance": round(item[0], 4)}
+        for item in selected
+    ]
 ```
 
-This problem tests fundamental skills in Vector search.
+### Key Concept: IMI provides quadratic resolution ($K^2$ cells) with linear training and lookup cost ($2K$ distances), vastly improving recall at high speedups.
+
+**Constraints**:
+- len(query) must be even and positive.
+- codebook_1 centroids must have dimension len(query) // 2.
+- codebook_2 centroids must have dimension len(query) // 2.
+- `top_m > 0 and <= len(codebook_1) * len(codebook_2)`.
+- Return list of dicts with keys: indices ([i, j]) and squared_distance rounded to 4 decimals.
 
 </Solution>

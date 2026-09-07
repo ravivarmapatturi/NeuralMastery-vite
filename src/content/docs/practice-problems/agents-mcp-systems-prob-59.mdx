@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 59: Problem 489"
+title: "Practice: Parse MCP Server-Sent Events Transport Stream"
 sidebar_position: 489
-description: "Curriculum Problem 489 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
+description: "Implement the Server-Sent Events (SSE) transport parser for remote Model Context Protocol (MCP) clients connecting to server endpoints over HTTP."
 difficulty: hard
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,70 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 59: Problem 489
+# Parse MCP Server-Sent Events Transport Stream
 
 **Rank #489** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-58`.
+Implement `parse_sse_events(raw_chunks)`. MCP clients and servers often communicate over an SSE HTTP stream. Data arriving over network sockets can be split arbitrarily across multiple chunks. Given a list of string chunks, concatenate and stream-parse them according to the SSE standard: lines beginning with `:` are comments (ignore them); `event: <name>` sets the event type (defaults to `'message'` if not specified); `data: <payload>` sets the message data (multiple data lines in one event are joined by `\n`); optional `id: <id>` sets the event ID. An empty line marks the end of an event. Emit a dictionary `{"event": event, "data": data, ... (id if set)}` for each completed event with non-empty data. Return the list of event dictionaries in arrival sequence. Prerequisite: `agents-mcp-systems-prob-58`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-59" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p59(data):
-    # Reference implementation
-    return data
+def parse_sse_events(raw_chunks):
+    full_text = "".join(raw_chunks)
+    lines = full_text.splitlines()
+    events = []
+    
+    current_event = "message"
+    current_data = []
+    current_id = None
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            if current_data:
+                ev = {
+                    "event": current_event,
+                    "data": "\n".join(current_data)
+                }
+                if current_id is not None:
+                    ev["id"] = current_id
+                events.append(ev)
+            current_event = "message"
+            current_data = []
+            current_id = None
+            continue
+            
+        if line.startswith(":"):
+            continue
+        if line.startswith("event:"):
+            current_event = line[len("event:"):].strip()
+        elif line.startswith("data:"):
+            current_data.append(line[len("data:"):].strip())
+        elif line.startswith("id:"):
+            current_id = line[len("id:"):].strip()
+
+    if current_data:
+        ev = {
+            "event": current_event,
+            "data": "\n".join(current_data)
+        }
+        if current_id is not None:
+            ev["id"] = current_id
+        events.append(ev)
+        
+    return events
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+### Key Concept: SSE provides a lightweight, unidirectional streaming transport for MCP tool invocations and server notifications without requiring full bidirectional WebSocket overhead.
+
+**Constraints**:
+- Chunks may be fragmented across arbitrary character boundaries.
+- Empty line marks event dispatch.
+- Default event type is 'message' if event: is omitted.
+- Multiple data: lines within the same event are joined with newline '\n'.
+- Lines starting with ':' must be ignored as comments.
 
 </Solution>

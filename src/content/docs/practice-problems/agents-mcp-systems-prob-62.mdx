@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Vector search Module 62: Problem 492"
+title: "Practice: Product Quantization Asymmetric Distance Table"
 sidebar_position: 492
-description: "Curriculum Problem 492 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search."
+description: "Implement Asymmetric Distance Computation (ADC) used by Faiss and modern vector databases to scan millions of compressed vector codes in milliseconds without decompressing them."
 difficulty: hard
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,39 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Vector search Module 62: Problem 492
+# Product Quantization Asymmetric Distance Table
 
 **Rank #492** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-61`.
+Implement `pq_asymmetric_distance(distance_table, encoded_vectors)`. In Product Quantization (PQ), an uncompressed query vector is compared against billions of compressed database vectors using a precomputed lookup table. Given `distance_table` of shape $M \times K$ (where row $m$ lists the squared Euclidean distances from query sub-vector $m$ to all $K$ centroids of sub-quantizer $m$), and a list of `encoded_vectors` (each an $M$-element list of integer centroid indices), compute the total approximated squared distance for each encoded vector as $\sum_{m=0}^{M-1} \text{distance\_table}[m][\text{vec}[m]]$. Return the list of distances rounded to 4 decimal places. Raise `ValueError` if the table is empty or any encoded vector length does not equal $M$. Prerequisite: `agents-mcp-systems-prob-61`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-62" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p62(data):
-    # Reference implementation
-    return data
+def pq_asymmetric_distance(distance_table, encoded_vectors):
+    if not distance_table or not encoded_vectors:
+        raise ValueError("table and vectors cannot be empty")
+    M = len(distance_table)
+    results = []
+    for vec in encoded_vectors:
+        if len(vec) != M:
+            raise ValueError("vector dimension mismatch with sub-quantizers")
+        dist = 0.0
+        for m in range(M):
+            centroid_idx = vec[m]
+            dist += distance_table[m][centroid_idx]
+        results.append(round(dist, 4))
+    return results
 ```
 
-This problem tests fundamental skills in Vector search.
+### Key Concept: ADC eliminates vector decompression during search: scanning a database vector becomes M table lookups and M-1 floating point additions.
+
+**Constraints**:
+- distance_table shape is M x K with M > 0, K > 0.
+- All encoded vectors must have length M.
+- All centroid indices must be valid column indices in [0, K-1].
+- Return list of floats rounded to 4 decimal places.
 
 </Solution>

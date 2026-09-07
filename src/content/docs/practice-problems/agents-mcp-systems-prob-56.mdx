@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Multimodal AI Module 56: Problem 486"
+title: "Practice: Calculate Multimodal Image Tile Token Cost"
 sidebar_position: 486
-description: "Curriculum Problem 486 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI."
+description: "Accurately compute image tile grids and token consumption for vision-language models to prevent context window exhaustion and manage API billing."
 difficulty: medium
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,51 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Multimodal AI Module 56: Problem 486
+# Calculate Multimodal Image Tile Token Cost
 
 **Rank #486** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-55`.
+Implement `calculate_image_token_cost(width, height, tile_size=512, base_tokens=85, tokens_per_tile=170)`. High-resolution images are scaled and tiled by multimodal vision models (such as GPT-4o or Claude 3.5 Sonnet). Apply two-pass aspect-ratio scaling: first scale down so `max(w, h) <= 2048`, then scale down so `min(w, h) <= 768`. Round both dimensions to the nearest integer. Then compute the number of tiles along each dimension as `ceil(dimension / tile_size)`. Return a dictionary with keys `scaled_width`, `scaled_height`, `num_tiles`, and `total_tokens`. Raise `ValueError` for non-positive dimensions or tile sizes, or negative token values. Prerequisite: `agents-mcp-systems-prob-55`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-56" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p56(data):
-    # Reference implementation
-    return data
+def calculate_image_token_cost(width, height, tile_size=512, base_tokens=85, tokens_per_tile=170):
+    if width <= 0 or height <= 0 or tile_size <= 0 or base_tokens < 0 or tokens_per_tile < 0:
+        raise ValueError("Invalid dimensions or token parameters")
+    w = float(width)
+    h = float(height)
+    if max(w, h) > 2048:
+        scale = 2048.0 / max(w, h)
+        w = w * scale
+        h = h * scale
+    if min(w, h) > 768:
+        scale2 = 768.0 / min(w, h)
+        w = w * scale2
+        h = h * scale2
+    final_w = int(round(w))
+    final_h = int(round(h))
+    tiles_x = math.ceil(final_w / tile_size)
+    tiles_y = math.ceil(final_h / tile_size)
+    num_tiles = tiles_x * tiles_y
+    total_tokens = base_tokens + num_tiles * tokens_per_tile
+    return {
+        "scaled_width": final_w,
+        "scaled_height": final_h,
+        "num_tiles": num_tiles,
+        "total_tokens": total_tokens
+    }
 ```
 
-This problem tests fundamental skills in Multimodal AI.
+### Key Concept: Vision-language models chop high-resolution images into uniform square crops plus a low-res thumbnail, so token consumption scales with tile count rather than raw pixel count.
+
+**Constraints**:
+- width > 0, height > 0, tile_size > 0.
+- base_tokens >= 0, tokens_per_tile >= 0.
+- Round scaled dimensions to nearest integer using round().
+- Tiles along each axis are computed using ceil division.
+- Return dict with keys: scaled_width, scaled_height, num_tiles, total_tokens.
 
 </Solution>

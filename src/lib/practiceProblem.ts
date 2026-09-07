@@ -5250,6 +5250,984 @@ def groundedness_score(answer, source_chunks):
     runtime: { language: 'python', capabilities: ['python'] },
   },
 
+  // --- Agents / MCP / Systems Batch (prob-56 through prob-70) ---
+  'agents-mcp-systems-prob-56': {
+    id: 'agents-mcp-systems-prob-56',
+    title: "Calculate Multimodal Image Tile Token Cost",
+    difficulty: 'medium',
+    topic: "Multimodal AI",
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'calculate_image_token_cost',
+    functionSignature: 'calculate_image_token_cost(width: int, height: int, tile_size: int = 512, base_tokens: int = 85, tokens_per_tile: int = 170) -> dict',
+    starterCode: `def calculate_image_token_cost(width: int, height: int, tile_size: int = 512, base_tokens: int = 85, tokens_per_tile: int = 170) -> dict:
+    """Calculate multimodal image tile and token costs.
+    
+    1. If max(width, height) > 2048, scale down preserving aspect ratio so the max side is 2048.
+    2. Next, if min(scaled_w, scaled_h) > 768, scale down so the shortest side is 768.
+    3. Round scaled_w and scaled_h to the nearest integer.
+    4. Calculate tiles needed: ceil(scaled_w / tile_size) * ceil(scaled_h / tile_size).
+    5. Total tokens = base_tokens + num_tiles * tokens_per_tile.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Accurately compute image tile grids and token consumption for vision-language models to prevent context window exhaustion and manage API billing.",
+    taskDescription: "Implement `calculate_image_token_cost(width, height, tile_size=512, base_tokens=85, tokens_per_tile=170)`. High-resolution images are scaled and tiled by multimodal vision models (such as GPT-4o or Claude 3.5 Sonnet). Apply two-pass aspect-ratio scaling: first scale down so `max(w, h) <= 2048`, then scale down so `min(w, h) <= 768`. Round both dimensions to the nearest integer. Then compute the number of tiles along each dimension as `ceil(dimension / tile_size)`. Return a dictionary with keys `scaled_width`, `scaled_height`, `num_tiles`, and `total_tokens`. Raise `ValueError` for non-positive dimensions or tile sizes, or negative token values.",
+    constraints: [
+      "width > 0, height > 0, tile_size > 0.",
+      "base_tokens >= 0, tokens_per_tile >= 0.",
+      "Round scaled dimensions to nearest integer using round().",
+      "Tiles along each axis are computed using ceil division.",
+      "Return dict with keys: scaled_width, scaled_height, num_tiles, total_tokens.",
+    ],
+    hints: {
+      small: "Compute the scale factor as 2048 / max(w, h) if max(w, h) > 2048, then check if min(w, h) > 768 and scale again.",
+      strong: "Use math.ceil(final_w / tile_size) * math.ceil(final_h / tile_size) to get total tiles.",
+      concept: "Vision-language models chop high-resolution images into uniform square crops plus a low-res thumbnail, so token consumption scales with tile count rather than raw pixel count.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Small Image Within Limits",
+        input: {"width": 512, "height": 512, "tile_size": 512, "base_tokens": 85, "tokens_per_tile": 170},
+        expectedOutput: {"scaled_width": 512, "scaled_height": 512, "num_tiles": 1, "total_tokens": 255},
+        hidden: false,
+        description: "Image already fits within 768x768 and uses exactly 1 tile.",
+      },
+      {
+        id: 'tc2',
+        label: "High-Resolution Aspect Scale",
+        input: {"width": 4096, "height": 2048, "tile_size": 512, "base_tokens": 85, "tokens_per_tile": 170},
+        expectedOutput: {"scaled_width": 1536, "scaled_height": 768, "num_tiles": 6, "total_tokens": 1105},
+        hidden: false,
+        description: "Scales down to 2048x1024 then to 1536x768, requiring 3x2=6 tiles.",
+      },
+      {
+        id: 'tc3',
+        label: "Square High-Res Image",
+        input: {"width": 3000, "height": 3000, "tile_size": 512, "base_tokens": 85, "tokens_per_tile": 170},
+        expectedOutput: {"scaled_width": 768, "scaled_height": 768, "num_tiles": 4, "total_tokens": 765},
+        hidden: true,
+        description: "Square image scaled down to 768x768, requiring 2x2=4 tiles.",
+      },
+      {
+        id: 'tc4',
+        label: "Custom Tile Size and Custom Pricing",
+        input: {"width": 1024, "height": 768, "tile_size": 256, "base_tokens": 100, "tokens_per_tile": 50},
+        expectedOutput: {"scaled_width": 1024, "scaled_height": 768, "num_tiles": 12, "total_tokens": 700},
+        hidden: true,
+        description: "Custom tile size 256 yields 4x3=12 tiles with custom base and per-tile tokens.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-57': {
+    id: 'agents-mcp-systems-prob-57',
+    title: "Parent-Document Chunk Linker for Hierarchical RAG",
+    difficulty: 'hard',
+    topic: "RAG & Retrieval Systems",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'link_parent_child_chunks',
+    functionSignature: 'link_parent_child_chunks(child_chunks: list[dict], parent_documents: dict, token_budget: int) -> dict',
+    starterCode: `def link_parent_child_chunks(child_chunks: list[dict], parent_documents: dict, token_budget: int) -> dict:
+    """Group retrieved child chunks by parent_id and assemble parent context within token budget.
+    
+    1. Group children by parent_id. Find max child score and sorted child_ids for each parent.
+    2. Sort candidate parents by max_score descending, then parent_id ascending.
+    3. Greedily select parents whose token_count fits within token_budget.
+    4. Return dict with selected_parents, total_tokens, and remaining_budget.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Build the parent-document contextual retrieval pipeline that indexes small granular chunks for precise vector search but retrieves larger parent passages to preserve full context for the LLM.",
+    taskDescription: "Implement `link_parent_child_chunks(child_chunks, parent_documents, token_budget)`. In hierarchical RAG, search hits are fine-grained child chunks, but the generator needs full parent documents. Given a list of retrieved child chunks (each with `child_id`, `parent_id`, `score`), group them by `parent_id`. For each parent, compute its `max_score` (maximum score among its matched children, rounded to 4 decimals), collect all matching `child_ids` sorted lexicographically, and look up `token_count` from `parent_documents[pid]`. Sort candidate parents by `max_score` descending (tie-breaker: `parent_id` ascending), and greedily select parents that fit within `token_budget`. Return a dictionary with `selected_parents` (list of selected parent dicts), `total_tokens`, and `remaining_budget`. Raise `ValueError` if `token_budget <= 0`, or `KeyError` if any child references an unknown parent.",
+    constraints: [
+      "token_budget > 0.",
+      "child_ids within each parent summary must be sorted alphabetically.",
+      "Candidates sorted by (-max_score, parent_id).",
+      "Greedy selection stops when the next candidate exceeds remaining budget.",
+      "Raise KeyError if parent_id not in parent_documents.",
+    ],
+    hints: {
+      small: "Use a dictionary to group child chunks by parent_id before evaluating parent scores.",
+      strong: "Sort parent summaries using key=lambda x: (-x['max_score'], x['parent_id']) to break score ties deterministically.",
+      concept: "Parent-document retrieval decouples the embedding unit from the generation unit, solving the needle-in-a-haystack problem while avoiding fragmentary context.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Two Parents Within Budget",
+        input: {"child_chunks": [{"child_id": "c1", "parent_id": "p1", "score": 0.85}, {"child_id": "c2", "parent_id": "p2", "score": 0.95}, {"child_id": "c3", "parent_id": "p1", "score": 0.9}], "parent_documents": {"p1": {"text": "Parent 1 text...", "token_count": 150}, "p2": {"text": "Parent 2 text...", "token_count": 200}}, "token_budget": 500},
+        expectedOutput: {"selected_parents": [{"parent_id": "p2", "max_score": 0.95, "token_count": 200, "child_ids": ["c2"]}, {"parent_id": "p1", "max_score": 0.9, "token_count": 150, "child_ids": ["c1", "c3"]}], "total_tokens": 350, "remaining_budget": 150},
+        hidden: false,
+        description: "Both parents fit within 500 token budget; p2 selected first due to higher max score 0.95.",
+      },
+      {
+        id: 'tc2',
+        label: "Budget Constrained Selection",
+        input: {"child_chunks": [{"child_id": "c1", "parent_id": "p1", "score": 0.92}, {"child_id": "c2", "parent_id": "p2", "score": 0.88}], "parent_documents": {"p1": {"text": "Parent 1", "token_count": 300}, "p2": {"text": "Parent 2", "token_count": 250}}, "token_budget": 350},
+        expectedOutput: {"selected_parents": [{"parent_id": "p1", "max_score": 0.92, "token_count": 300, "child_ids": ["c1"]}], "total_tokens": 300, "remaining_budget": 50},
+        hidden: false,
+        description: "Only top parent fits within 350 budget; second parent requires 250 which exceeds remaining 50.",
+      },
+      {
+        id: 'tc3',
+        label: "Tie-Breaking on Equal Score",
+        input: {"child_chunks": [{"child_id": "c_b", "parent_id": "p_b", "score": 0.9}, {"child_id": "c_a", "parent_id": "p_a", "score": 0.9}], "parent_documents": {"p_a": {"text": "Doc A", "token_count": 100}, "p_b": {"text": "Doc B", "token_count": 100}}, "token_budget": 150},
+        expectedOutput: {"selected_parents": [{"parent_id": "p_a", "max_score": 0.9, "token_count": 100, "child_ids": ["c_a"]}], "total_tokens": 100, "remaining_budget": 50},
+        hidden: true,
+        description: "Equal score resolved by alphabetical parent_id ('p_a' before 'p_b').",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-58': {
+    id: 'agents-mcp-systems-prob-58',
+    title: "Generate Agent Function Calling Tool Schema",
+    difficulty: 'hard',
+    topic: "Agent System Design",
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'generate_tool_schema',
+    functionSignature: 'generate_tool_schema(name: str, description: str, parameters: dict) -> dict',
+    starterCode: `def generate_tool_schema(name: str, description: str, parameters: dict) -> dict:
+    """Generate OpenAI/Anthropic compliant JSON Schema tool declaration.
+    
+    1. Validate name is a valid Python identifier and description is non-empty.
+    2. Validate parameter types ('string', 'number', 'integer', 'boolean', 'array').
+    3. Construct schema object with properties (sorted by param name) and required list (sorted).
+    4. Wrap in standard function calling envelope: {"type": "function", "function": {...}}.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Build the dynamic schema generator that converts agent tool specifications into standard JSON Schema function signatures accepted by frontier LLM tool-calling APIs.",
+    taskDescription: "Implement `generate_tool_schema(name, description, parameters)`. LLM agents require tool descriptions formatted as structured JSON Schema objects. Given a tool `name`, human-readable `description`, and a dict of parameter specs (mapping parameter name to a dict with `type`, optional `description`, optional `required`, optional `default`, and optional `items` for arrays), construct the standard OpenAI/Anthropic function calling tool descriptor: `{\"type\": \"function\", \"function\": {\"name\": name, \"description\": description, \"parameters\": {\"type\": \"object\", \"properties\": {...}, \"required\": [...]}}}`. Properties must be ordered alphabetically by parameter name. `required` must be a list of parameter names where `required` is `True`, sorted alphabetically. Raise `ValueError` if `name` is not a valid Python identifier, `description` is blank, or any parameter type is not in `['string', 'number', 'integer', 'boolean', 'array']`.",
+    constraints: [
+      "name must be a valid Python identifier (name.isidentifier()).",
+      "description must be non-empty.",
+      "Supported types: string, number, integer, boolean, array.",
+      "If type is array and items is omitted, default items to {'type': 'string'}.",
+      "Properties dictionary and required list must be alphabetically sorted.",
+    ],
+    hints: {
+      small: "Use sorted(parameters.keys()) to populate properties in deterministic order.",
+      strong: "Check name.isidentifier() and validate type against {'string', 'number', 'integer', 'boolean', 'array'}.",
+      concept: "Tool schemas tell the model which parameters are mandatory versus optional, allowing it to emit syntactically valid JSON tool-call invocations.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Search Tool with Optional Filter",
+        input: {"name": "search_docs", "description": "Search the knowledge base.", "parameters": {"query": {"type": "string", "description": "The search query string", "required": true}, "top_k": {"type": "integer", "description": "Number of results", "required": false, "default": 5}}},
+        expectedOutput: {"type": "function", "function": {"name": "search_docs", "description": "Search the knowledge base.", "parameters": {"type": "object", "properties": {"query": {"type": "string", "description": "The search query string"}, "top_k": {"type": "integer", "description": "Number of results", "default": 5}}, "required": ["query"]}}},
+        hidden: false,
+        description: "Standard tool with one required string parameter and one optional integer default.",
+      },
+      {
+        id: 'tc2',
+        label: "Array Parameter with Default Items",
+        input: {"name": "batch_process", "description": "Batch process IDs", "parameters": {"ids": {"type": "array", "description": "List of record identifiers", "required": true}}},
+        expectedOutput: {"type": "function", "function": {"name": "batch_process", "description": "Batch process IDs", "parameters": {"type": "object", "properties": {"ids": {"type": "array", "description": "List of record identifiers", "items": {"type": "string"}}}, "required": ["ids"]}}},
+        hidden: false,
+        description: "Array parameter defaults to string items schema.",
+      },
+      {
+        id: 'tc3',
+        label: "Multiple Required Parameters Alphabetically Sorted",
+        input: {"name": "transfer_funds", "description": "Transfer funds between accounts", "parameters": {"to_account": {"type": "string", "description": "Destination account", "required": true}, "from_account": {"type": "string", "description": "Source account", "required": true}, "amount": {"type": "number", "description": "Amount in USD", "required": true}}},
+        expectedOutput: {"type": "function", "function": {"name": "transfer_funds", "description": "Transfer funds between accounts", "parameters": {"type": "object", "properties": {"amount": {"type": "number", "description": "Amount in USD"}, "from_account": {"type": "string", "description": "Source account"}, "to_account": {"type": "string", "description": "Destination account"}}, "required": ["amount", "from_account", "to_account"]}}},
+        hidden: true,
+        description: "Properties and required list sorted alphabetically: amount, from_account, to_account.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-59': {
+    id: 'agents-mcp-systems-prob-59',
+    title: "Parse MCP Server-Sent Events Transport Stream",
+    difficulty: 'hard',
+    topic: "Model Context Protocol",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'parse_sse_events',
+    functionSignature: 'parse_sse_events(raw_chunks: list[str]) -> list[dict]',
+    starterCode: `def parse_sse_events(raw_chunks: list[str]) -> list[dict]:
+    """Parse fragmented Server-Sent Events (SSE) stream into structured MCP event objects.
+    
+    1. Reassemble chunks into lines separated by \n.
+    2. Events are demarcated by empty lines (\n\n).
+    3. Ignore lines beginning with ':' (comments/heartbeats).
+    4. Support fields: 'event:', 'data:', and optional 'id:'.
+    5. Return list of dicts: {"event": ..., "data": ..., "id": ... (if set)}.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Server-Sent Events (SSE) transport parser for remote Model Context Protocol (MCP) clients connecting to server endpoints over HTTP.",
+    taskDescription: "Implement `parse_sse_events(raw_chunks)`. MCP clients and servers often communicate over an SSE HTTP stream. Data arriving over network sockets can be split arbitrarily across multiple chunks. Given a list of string chunks, concatenate and stream-parse them according to the SSE standard: lines beginning with `:` are comments (ignore them); `event: <name>` sets the event type (defaults to `'message'` if not specified); `data: <payload>` sets the message data (multiple data lines in one event are joined by `\\n`); optional `id: <id>` sets the event ID. An empty line marks the end of an event. Emit a dictionary `{\"event\": event, \"data\": data, ... (id if set)}` for each completed event with non-empty data. Return the list of event dictionaries in arrival sequence.",
+    constraints: [
+      "Chunks may be fragmented across arbitrary character boundaries.",
+      "Empty line marks event dispatch.",
+      "Default event type is 'message' if event: is omitted.",
+      "Multiple data: lines within the same event are joined with newline '\\n'.",
+      "Lines starting with ':' must be ignored as comments.",
+    ],
+    hints: {
+      small: "Join raw_chunks into one string, then splitlines() to process line by line.",
+      strong: "Reset event state when encountering an empty line, and only append an event if current_data is non-empty.",
+      concept: "SSE provides a lightweight, unidirectional streaming transport for MCP tool invocations and server notifications without requiring full bidirectional WebSocket overhead.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Single Standard Message",
+        input: {"raw_chunks": ["event: endpoint\ndata: https://api.mcp.io/message?sessionId=abc123\n\n"]},
+        expectedOutput: [{"event": "endpoint", "data": "https://api.mcp.io/message?sessionId=abc123"}],
+        hidden: false,
+        description: "Standard endpoint announcement event on MCP connection initialization.",
+      },
+      {
+        id: 'tc2',
+        label: "Fragmented Chunks with Comments and ID",
+        input: {"raw_chunks": [": ping heartbeat\nevent: message\n", "id: msg-1\ndata: {\"jsonrpc\": \"2.0\", \"method\": \"tools/list\"}\n\n", ": another comment\ndata: pong\n\n"]},
+        expectedOutput: [{"event": "message", "data": "{\"jsonrpc\": \"2.0\", \"method\": \"tools/list\"}", "id": "msg-1"}, {"event": "message", "data": "pong"}],
+        hidden: false,
+        description: "Reassembles fragmented chunks, skips comments, captures id and default event type.",
+      },
+      {
+        id: 'tc3',
+        label: "Multi-Line Data Block",
+        input: {"raw_chunks": ["event: notify\ndata: line 1\ndata: line 2\ndata: line 3\n\n"]},
+        expectedOutput: [{"event": "notify", "data": "line 1\nline 2\nline 3"}],
+        hidden: true,
+        description: "Multiple data lines within the same event are joined with newline.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-60': {
+    id: 'agents-mcp-systems-prob-60',
+    title: "Streaming Histogram Percentile Estimator",
+    difficulty: 'hard',
+    topic: "Distributed AI Systems",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'streaming_p99_latency',
+    functionSignature: 'streaming_p99_latency(bucket_boundaries: list[float], observations: list[float], percentile: float = 99.0) -> dict',
+    starterCode: `def streaming_p99_latency(bucket_boundaries: list[float], observations: list[float], percentile: float = 99.0) -> dict:
+    """Compute estimated latency percentile using Prometheus/OpenTelemetry histogram buckets.
+    
+    1. Populate bucket counts for each observation (first bucket where obs <= boundary).
+    2. Compute rank = (percentile / 100.0) * total_count.
+    3. Identify bucket containing the target rank and linearly interpolate the percentile value.
+    4. Return dict with total_count, bucket_counts, target_percentile, and estimated_value (rounded to 2 decimals).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement streaming histogram percentile approximation for LLM inference latency observability (P95/P99) without storing millions of individual request durations in memory.",
+    taskDescription: "Implement `streaming_p99_latency(bucket_boundaries, observations, percentile=99.0)`. In large-scale model serving clusters (Triton / vLLM), tracking tail latencies requires online histogram buckets. Given a strictly increasing list of bucket upper bounds (e.g. `[10.0, 50.0, 100.0, 500.0, float('inf')]`, where bucket 0 covers `(0, 10.0]`, bucket 1 covers `(10.0, 50.0]`, etc.) and a list of observed latency floats, tally counts into the first bucket whose upper bound is `>= observation`. Compute the target observation rank as `(percentile / 100.0) * N`. Find the bucket $B$ containing this rank, and compute the estimated percentile using linear interpolation: `lower + ((rank - prev_cum) / count) * (upper - lower)`. If $B$ is the infinite bucket, return `lower`. Return a dictionary with `total_count`, `bucket_counts`, `target_percentile`, and `estimated_value` rounded to 2 decimal places.",
+    constraints: [
+      "bucket_boundaries must be non-empty and strictly increasing.",
+      "observations must be non-empty.",
+      "0.0 <= percentile <= 100.0.",
+      "Lower bound of bucket 0 is 0.0.",
+      "Return estimated_value rounded to 2 decimals.",
+    ],
+    hints: {
+      small: "Count observations into buckets, then calculate cumulative sums until cumulative_count >= target_rank.",
+      strong: "For linear interpolation: fraction = (target_rank - prev_cum) / count, then lower + fraction * (upper - lower).",
+      concept: "Prometheus histogram quantile estimation assumes uniform distribution of samples within each bucket, allowing O(1) space and constant-time aggregation across cluster nodes.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Uniform Spread Across Buckets",
+        input: {"bucket_boundaries": [10.0, 50.0, 100.0, 200.0, Infinity], "observations": [5.0, 8.0, 25.0, 75.0, 150.0], "percentile": 80.0},
+        expectedOutput: {"total_count": 5, "bucket_counts": [2, 1, 1, 1, 0], "target_percentile": 80.0, "estimated_value": 100.0},
+        hidden: false,
+        description: "5 observations; 80th percentile is rank 4.0, exactly reaching bucket boundary at 100.0.",
+      },
+      {
+        id: 'tc2',
+        label: "P99 Tail Latency",
+        input: {"bucket_boundaries": [20.0, 50.0, 100.0, 500.0, Infinity], "observations": [15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 45.0, 45.0, 45.0, 45.0, 45.0, 80.0, 80.0, 80.0, 80.0, 450.0], "percentile": 99.0},
+        expectedOutput: {"total_count": 100, "bucket_counts": [90, 5, 4, 1, 0], "target_percentile": 99.0, "estimated_value": 100.0},
+        hidden: false,
+        description: "100 observations; 99th percentile falls at boundary between bucket 2 and 3.",
+      },
+      {
+        id: 'tc3',
+        label: "Interpolation Inside Middle Bucket",
+        input: {"bucket_boundaries": [50.0, 100.0, Infinity], "observations": [10.0, 20.0, 60.0, 80.0], "percentile": 75.0},
+        expectedOutput: {"total_count": 4, "bucket_counts": [2, 2, 0], "target_percentile": 75.0, "estimated_value": 75.0},
+        hidden: true,
+        description: "Rank 3.0 falls halfway between 50.0 and 100.0, interpolating to 75.0.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-61': {
+    id: 'agents-mcp-systems-prob-61',
+    title: "Gossip Protocol Heartbeat Failure Detector",
+    difficulty: 'hard',
+    topic: "Distributed AI Systems",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'gossip_failure_detector',
+    functionSignature: 'gossip_failure_detector(events: list[dict], suspect_timeout: int, dead_timeout: int) -> dict',
+    starterCode: `def gossip_failure_detector(events: list[dict], suspect_timeout: int, dead_timeout: int) -> dict:
+    """Determine peer node liveness in a distributed cluster from gossip heartbeat events.
+    
+    1. Maintain each node's highest observed heartbeat counter and the tick it was last updated.
+    2. At max_tick, compute elapsed time delta = max_tick - last_seen_tick for each known node.
+    3. If delta > dead_timeout: mark 'DEAD'.
+    4. Else if delta > suspect_timeout: mark 'SUSPECT'.
+    5. Else: mark 'ALIVE'.
+    6. Return dict sorted by node ID.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement decentralized node failure detection using heartbeat gossip protocols to dynamically maintain GPU worker membership in distributed training clusters.",
+    taskDescription: "Implement `gossip_failure_detector(events, suspect_timeout, dead_timeout)`. In decentralized AI clusters, worker nodes broadcast heartbeat counters to peers. Given a chronicle of gossip events (each with `tick` and a `heartbeats` dict mapping `node_id` to integer sequence numbers), maintain a state table of the highest heartbeat counter seen for each node and the `tick` at which that counter was updated. Once all events are processed, let `max_tick` be the maximum tick seen. For each node, compute `delta = max_tick - last_seen_tick`. If `delta > dead_timeout`, label the node `'DEAD'`; if `delta > suspect_timeout`, label it `'SUSPECT'`; otherwise label it `'ALIVE'`. Return a dictionary `{node_id: status}` sorted alphabetically by `node_id`. Raise `ValueError` if `suspect_timeout <= 0` or `dead_timeout <= suspect_timeout`.",
+    constraints: [
+      "suspect_timeout > 0.",
+      "dead_timeout > suspect_timeout.",
+      "Only strictly increasing heartbeats update last_seen_tick.",
+      "Returned dictionary keys must be sorted alphabetically.",
+      "Return empty dict if events is empty.",
+    ],
+    hints: {
+      small: "Track state[node] = {'heartbeat': hb, 'last_seen_tick': tick}. Only update when new hb > current hb.",
+      strong: "At max_tick, check delta against dead_timeout first, then suspect_timeout, else ALIVE.",
+      concept: "Gossip-based failure detection avoids single-point-of-failure coordinators (like ZooKeeper) by having nodes exchange partial views probabilistically.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "All Nodes Healthy",
+        input: {"events": [{"tick": 1, "heartbeats": {"node-1": 10, "node-2": 5}}, {"tick": 5, "heartbeats": {"node-1": 14, "node-2": 9}}], "suspect_timeout": 5, "dead_timeout": 10},
+        expectedOutput: {"node-1": "ALIVE", "node-2": "ALIVE"},
+        hidden: false,
+        description: "Both nodes updated at tick 5 (delta=0), well under suspect threshold.",
+      },
+      {
+        id: 'tc2',
+        label: "Suspect and Dead Nodes",
+        input: {"events": [{"tick": 0, "heartbeats": {"worker-a": 1, "worker-b": 1, "worker-c": 1}}, {"tick": 4, "heartbeats": {"worker-b": 5}}, {"tick": 12, "heartbeats": {"worker-c": 10}}], "suspect_timeout": 5, "dead_timeout": 10},
+        expectedOutput: {"worker-a": "DEAD", "worker-b": "SUSPECT", "worker-c": "ALIVE"},
+        hidden: false,
+        description: "At tick 12: worker-a delta=12 (>10 -> DEAD), worker-b delta=8 (>5 -> SUSPECT), worker-c delta=0 (ALIVE).",
+      },
+      {
+        id: 'tc3',
+        label: "Duplicate Stale Heartbeat Does Not Reset Tick",
+        input: {"events": [{"tick": 1, "heartbeats": {"gpu-0": 10}}, {"tick": 8, "heartbeats": {"gpu-0": 10}}, {"tick": 10, "heartbeats": {"gpu-1": 5}}], "suspect_timeout": 4, "dead_timeout": 8},
+        expectedOutput: {"gpu-0": "DEAD", "gpu-1": "ALIVE"},
+        hidden: true,
+        description: "Tick 8 had duplicate heartbeat 10 for gpu-0, which does not refresh last_seen_tick (delta = 10 - 1 = 9 > 8).",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-62': {
+    id: 'agents-mcp-systems-prob-62',
+    title: "Product Quantization Asymmetric Distance Table",
+    difficulty: 'hard',
+    topic: "Vector Search & Indexing",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'pq_asymmetric_distance',
+    functionSignature: 'pq_asymmetric_distance(distance_table: list[list[float]], encoded_vectors: list[list[int]]) -> list[float]',
+    starterCode: `def pq_asymmetric_distance(distance_table: list[list[float]], encoded_vectors: list[list[int]]) -> list[float]:
+    """Compute Asymmetric Distance Computation (ADC) for Product-Quantized vectors.
+    
+    1. distance_table is M x K: for each sub-quantizer m, squared distance to centroid k.
+    2. Each encoded vector is a list of M centroid indices [c_0, c_1, ..., c_{M-1}].
+    3. Approximate squared distance = sum(distance_table[m][c_m] for m in range(M)).
+    4. Return list of distances rounded to 4 decimals.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Asymmetric Distance Computation (ADC) used by Faiss and modern vector databases to scan millions of compressed vector codes in milliseconds without decompressing them.",
+    taskDescription: "Implement `pq_asymmetric_distance(distance_table, encoded_vectors)`. In Product Quantization (PQ), an uncompressed query vector is compared against billions of compressed database vectors using a precomputed lookup table. Given `distance_table` of shape $M \\times K$ (where row $m$ lists the squared Euclidean distances from query sub-vector $m$ to all $K$ centroids of sub-quantizer $m$), and a list of `encoded_vectors` (each an $M$-element list of integer centroid indices), compute the total approximated squared distance for each encoded vector as $\\sum_{m=0}^{M-1} \\text{distance\\_table}[m][\\text{vec}[m]]$. Return the list of distances rounded to 4 decimal places. Raise `ValueError` if the table is empty or any encoded vector length does not equal $M$.",
+    constraints: [
+      "distance_table shape is M x K with M > 0, K > 0.",
+      "All encoded vectors must have length M.",
+      "All centroid indices must be valid column indices in [0, K-1].",
+      "Return list of floats rounded to 4 decimal places.",
+    ],
+    hints: {
+      small: "For each vector, sum distance_table[m][vec[m]] across all sub-quantizers m in range(len(distance_table)).",
+      strong: "Asymmetric Distance Computation keeps the query unquantized and queries against quantized database centroids, yielding much lower distortion than symmetric PQ.",
+      concept: "ADC eliminates vector decompression during search: scanning a database vector becomes M table lookups and M-1 floating point additions.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Two Sub-quantizers Basic ADC",
+        input: {"distance_table": [[0.25, 1.44, 0.09], [1.0, 0.16, 0.81]], "encoded_vectors": [[0, 1], [2, 0]]},
+        expectedOutput: [0.41, 1.09],
+        hidden: false,
+        description: "Vec 0: table[0][0] + table[1][1] = 0.25 + 0.16 = 0.41. Vec 1: table[0][2] + table[1][0] = 0.09 + 1.00 = 1.09.",
+      },
+      {
+        id: 'tc2',
+        label: "Four Sub-quantizers Nearest Centroids",
+        input: {"distance_table": [[0.1, 0.5], [0.2, 0.4], [0.3, 0.1], [0.05, 0.9]], "encoded_vectors": [[0, 0, 1, 0], [1, 1, 0, 1]]},
+        expectedOutput: [0.45, 2.1],
+        hidden: false,
+        description: "Sum of distances across 4 sub-quantizers for optimal vs suboptimal code assignments.",
+      },
+      {
+        id: 'tc3',
+        label: "Zero Distance Exact Match",
+        input: {"distance_table": [[0.0, 1.2], [0.0, 3.4]], "encoded_vectors": [[0, 0]]},
+        expectedOutput: [0.0],
+        hidden: true,
+        description: "Exact centroid matches yield 0.0 distance.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-63': {
+    id: 'agents-mcp-systems-prob-63',
+    title: "Multimodal Vision-Language Attention Mask",
+    difficulty: 'hard',
+    topic: "Multimodal AI",
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'generate_multimodal_attention_mask',
+    functionSignature: 'generate_multimodal_attention_mask(token_types: list[str]) -> list[list[int]]',
+    starterCode: `def generate_multimodal_attention_mask(token_types: list[str]) -> list[list[int]]:
+    """Construct causal cross-attention mask matrix for interleaved vision-language sequences.
+    
+    1. Matrix size is N x N where N = len(token_types).
+    2. Causal ordering: token i can never attend to token j if j > i.
+    3. If token i is 'text', it attends to all preceding tokens (j <= i).
+    4. If token i is an image token ('image_K'), it ONLY attends to tokens with identical type ('image_K', j <= i).
+    5. Return N x N matrix of 1s (allowed) and 0s (masked).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement cross-modal attention masking for vision-language models (like Flamingo and LLaVA) where text can attend to images, but vision patches attend only within their respective image.",
+    taskDescription: "Implement `generate_multimodal_attention_mask(token_types)`. In interleaved multimodal architectures, visual representations and textual tokens are processed in a unified transformer backbone. Given a list of token type identifiers (e.g. `['image_0', 'image_0', 'text', 'image_1', 'text']`), construct an $N \\times N$ attention mask matrix `M` where `M[i][j] = 1` if token $i$ can attend to token $j$, and `0` otherwise. Enforce: (1) Causal autoregression: `j > i` is always masked (`0`); (2) Text tokens can attend to all prior tokens ($j \\le i$); (3) Image tokens of type `'image_K'` can only attend to prior tokens of the EXACT SAME type `'image_K'` (they cannot attend to text or other images). Return the $N \\times N$ matrix as a list of lists of integers.",
+    constraints: [
+      "token_types is a list of strings ('text' or 'image_<id>').",
+      "Return N x N list of lists where N = len(token_types).",
+      "Causal constraint: M[i][j] = 0 for all j > i.",
+      "Image patches cannot attend across image boundaries or to text.",
+      "Empty input returns [].",
+    ],
+    hints: {
+      small: "Initialize an N x N matrix of zeros. Loop i from 0 to N-1 and j from 0 to i.",
+      strong: "Check if token_types[i] == 'text' (set mask[i][j] = 1) or if token_types[i] == token_types[j] (set mask[i][j] = 1).",
+      concept: "Preventing visual tokens from attending to subsequent text preserves pre-trained vision representations and allows static visual caching across generation turns.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Image Followed by Text",
+        input: {"token_types": ["image_0", "image_0", "text", "text"]},
+        expectedOutput: [[1, 0, 0, 0], [1, 1, 0, 0], [1, 1, 1, 0], [1, 1, 1, 1]],
+        hidden: false,
+        description: "Image tokens attend only to themselves; text tokens attend causally to all prior image and text tokens.",
+      },
+      {
+        id: 'tc2',
+        label: "Two Distinct Images Interleaved with Text",
+        input: {"token_types": ["image_0", "text", "image_1", "text"]},
+        expectedOutput: [[1, 0, 0, 0], [1, 1, 0, 0], [0, 0, 1, 0], [1, 1, 1, 1]],
+        hidden: false,
+        description: "image_1 cannot attend to image_0 or preceding text; final text attends to all prior tokens.",
+      },
+      {
+        id: 'tc3',
+        label: "Pure Text Causal Triangle",
+        input: {"token_types": ["text", "text", "text"]},
+        expectedOutput: [[1, 0, 0], [1, 1, 0], [1, 1, 1]],
+        hidden: true,
+        description: "Pure text sequence reduces to classic causal lower-triangular attention mask.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-64': {
+    id: 'agents-mcp-systems-prob-64',
+    title: "ColBERT Late Interaction MaxSim Retrieval Score",
+    difficulty: 'hard',
+    topic: "RAG & Retrieval Systems",
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'colbert_maxsim_score',
+    functionSignature: 'colbert_maxsim_score(query_embeddings: list[list[float]], doc_embeddings: list[list[float]]) -> float',
+    starterCode: `def colbert_maxsim_score(query_embeddings: list[list[float]], doc_embeddings: list[list[float]]) -> float:
+    """Compute ColBERT late-interaction MaxSim similarity score between query and document.
+    
+    1. For each query token vector q_i, find the maximum dot product with any document token vector d_j:
+       max_sim(q_i) = max_{d_j in D} (q_i . d_j).
+    2. Sum these maximum similarities across all query tokens: sum_{i} max_sim(q_i).
+    3. Return total score rounded to 4 decimal places.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement ColBERT's late interaction MaxSim operator, the state-of-the-art retrieval scoring mechanism that preserves token-level embeddings without collapsing documents into a single lossy vector.",
+    taskDescription: "Implement `colbert_maxsim_score(query_embeddings, doc_embeddings)`. ColBERT replaces single-vector embeddings with multi-vector token representations. Given a query matrix $Q$ of shape $N_q \\times D$ and a document matrix $D$ of shape $N_d \\times D$, calculate the Late Interaction MaxSim score: for each query token vector $q_i$, compute its dot product with every document token vector $d_j$, determine the maximum dot product $\\max_j (q_i \\cdot d_j)$, and sum these maximums across all $N_q$ query tokens: $\\sum_{i=1}^{N_q} \\max_j (q_i \\cdot d_j)$. Return the total relevance score rounded to 4 decimal places. Raise `ValueError` if either matrix is empty or embedding dimensions do not match.",
+    constraints: [
+      "query_embeddings has shape N_q x D with N_q > 0, D > 0.",
+      "doc_embeddings has shape N_d x D with N_d > 0, D > 0.",
+      "All vectors must have identical dimension D.",
+      "Return float rounded to 4 decimal places.",
+    ],
+    hints: {
+      small: "For each query vector, loop through doc vectors to find max dot product.",
+      strong: "MaxSim ensures every query token finds its best matching document token regardless of document token position.",
+      concept: "Late interaction avoids early cross-attention while capturing fine-grained phrase alignments that single dense vectors lose.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "2x2 Token Dot Products",
+        input: {"query_embeddings": [[1.0, 0.0], [0.0, 1.0]], "doc_embeddings": [[0.8, 0.6], [0.2, 0.9]]},
+        expectedOutput: 1.7,
+        hidden: false,
+        description: "q0 max with doc tokens is dot([1,0],[0.8,0.6])=0.8; q1 max is dot([0,1],[0.2,0.9])=0.9. Total = 1.7.",
+      },
+      {
+        id: 'tc2',
+        label: "Single Query Vector Against Multiple Document Tokens",
+        input: {"query_embeddings": [[0.5, 0.5]], "doc_embeddings": [[0.1, 0.2], [0.8, 0.8], [0.3, 0.4]]},
+        expectedOutput: 0.8,
+        hidden: false,
+        description: "Single query token aligns best with second doc token: 0.5*0.8 + 0.5*0.8 = 0.8.",
+      },
+      {
+        id: 'tc3',
+        label: "Orthogonal Query and Document",
+        input: {"query_embeddings": [[1.0, 0.0, 0.0]], "doc_embeddings": [[0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]},
+        expectedOutput: 0.0,
+        hidden: true,
+        description: "Orthogonal vectors have dot products of 0.0, yielding max score of 0.0.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-65': {
+    id: 'agents-mcp-systems-prob-65',
+    title: "Extract Structured ReAct Trajectory Steps",
+    difficulty: 'hard',
+    topic: "Agent System Design",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'extract_react_steps',
+    functionSignature: 'extract_react_steps(scratchpad: str) -> dict',
+    starterCode: `def extract_react_steps(scratchpad: str) -> dict:
+    """Parse unstructured ReAct agent trace into structured step objects.
+    
+    1. Parse alternating Thought, Action: tool[input], and Observation blocks.
+    2. Extract step number, thought text, tool name, action input, and observation.
+    3. Detect optional 'Final Answer:' block.
+    4. Return dict with steps, num_steps, has_final_answer, and final_answer.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Parse unstructured agent thought-action-observation scratchpads into structured execution traces for observability, replay debugging, and trajectory evaluation.",
+    taskDescription: "Implement `extract_react_steps(scratchpad)`. Agent frameworks (LangChain, AutoGPT, ReAct) generate free-form text logs consisting of alternating steps. Given a multi-line `scratchpad` string, extract each completed tool-use step. A step begins with `Thought: <thought>`, followed by `Action: <tool>[<action_input>]`, followed by `Observation: <obs>`. Content spanning multiple lines should be joined with spaces and stripped. If the scratchpad concludes with `Final Answer: <answer>`, extract it. Return a dictionary with: `steps` (list of step dicts with keys `step` (1-indexed), `thought`, `tool`, `action_input`, `observation`), `num_steps`, `has_final_answer` (boolean), and `final_answer` (string or `None`). Raise `ValueError` if `scratchpad` is not a non-empty string.",
+    constraints: [
+      "scratchpad must be a non-empty string.",
+      "Steps are 1-indexed integers.",
+      "Multi-line thoughts/observations must be whitespace-trimmed and space-joined.",
+      "Action format is strictly Action: tool[input].",
+      "has_final_answer is True if Final Answer: is present, else False.",
+    ],
+    hints: {
+      small: "Use regular expressions to detect Action: tool[args] and Final Answer: prefixes.",
+      strong: "Accumulate lines for the current state (THOUGHT, ACTION, OBSERVATION) and flush when the next block header is encountered.",
+      concept: "Extracting structured steps turns unstructured text logs into queryable traces for agent evaluation benchmarks like SWE-bench and GAIA.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Two Step ReAct Trace with Final Answer",
+        input: {"scratchpad": "Thought: I need to check the weather.\nAction: weather[San Francisco]\nObservation: Sunny, 68F.\nThought: Now I can answer the user.\nFinal Answer: The weather in San Francisco is Sunny and 68F."},
+        expectedOutput: {"steps": [{"step": 1, "thought": "I need to check the weather.", "tool": "weather", "action_input": "San Francisco", "observation": "Sunny, 68F."}], "num_steps": 1, "has_final_answer": true, "final_answer": "The weather in San Francisco is Sunny and 68F."},
+        hidden: false,
+        description: "Standard 1-step tool invocation followed by final answer.",
+      },
+      {
+        id: 'tc2',
+        label: "Two Consecutive Tool Steps",
+        input: {"scratchpad": "Thought: Calculate 2+2.\nAction: calc[2 + 2]\nObservation: 4\nThought: Multiply by 10.\nAction: calc[4 * 10]\nObservation: 40\nFinal Answer: 40"},
+        expectedOutput: {"steps": [{"step": 1, "thought": "Calculate 2+2.", "tool": "calc", "action_input": "2 + 2", "observation": "4"}, {"step": 2, "thought": "Multiply by 10.", "tool": "calc", "action_input": "4 * 10", "observation": "40"}], "num_steps": 2, "has_final_answer": true, "final_answer": "40"},
+        hidden: false,
+        description: "Two distinct sequential tool calls correctly parsed into step 1 and step 2.",
+      },
+      {
+        id: 'tc3',
+        label: "Incomplete Trace Without Final Answer",
+        input: {"scratchpad": "Thought: Searching database...\nAction: sql_query[SELECT count(*) FROM users]\nObservation: 1420"},
+        expectedOutput: {"steps": [{"step": 1, "thought": "Searching database...", "tool": "sql_query", "action_input": "SELECT count(*) FROM users", "observation": "1420"}], "num_steps": 1, "has_final_answer": false, "final_answer": null},
+        hidden: true,
+        description: "Trace without final answer sets has_final_answer=False and final_answer=None.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-66': {
+    id: 'agents-mcp-systems-prob-66',
+    title: "Track MCP Asynchronous Request Progress",
+    difficulty: 'hard',
+    topic: "Model Context Protocol",
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'track_mcp_progress',
+    functionSignature: 'track_mcp_progress(initial_requests: dict, notifications: list[dict]) -> dict',
+    starterCode: `def track_mcp_progress(initial_requests: dict, notifications: list[dict]) -> dict:
+    """Track progress of long-running MCP tool executions via progress notifications.
+    
+    1. Map progress tokens to request IDs from initial_requests.
+    2. Process incoming notifications: update progress and optional total.
+    3. Calculate percentage: round((progress / total) * 100.0, 1).
+    4. Return status dictionary sorted by request ID.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Track asynchronous background MCP tool operations using the Model Context Protocol notifications/progress specification to give users real-time execution feedback.",
+    taskDescription: "Implement `track_mcp_progress(initial_requests, notifications)`. Long-running MCP tools (such as database migrations or batch indexing) emit `notifications/progress` events referencing a `progressToken`. Given `initial_requests` (mapping `request_id` to a dict with `token` and `total` expected units of work) and a chronological list of `notifications` (each with `token`, `progress`, and optional `total`), update each request's progress state. If a notification includes an updated `total`, adopt it. Clamp `progress` to never exceed `total`. Compute percentage complete as `round((progress / total) * 100.0, 1)` (or `100.0` if `total == 0`). Return a dictionary `{request_id: {\"progress\": p, \"total\": t, \"percent\": pct, \"completed\": (p >= t)}}` sorted by `request_id`.",
+    constraints: [
+      "initial_requests maps request_id to {'token': str, 'total': int}.",
+      "notifications contains {'token': str, 'progress': int, optional 'total': int}.",
+      "progress is clamped to [0, total].",
+      "percent is rounded to 1 decimal place.",
+      "Output dictionary keys must be sorted alphabetically.",
+    ],
+    hints: {
+      small: "Invert initial_requests to build a lookup map from token -> request_id.",
+      strong: "When notifications update total, update the request's total before computing percentage.",
+      concept: "MCP progress tokens decouple asynchronous operation tracking from synchronous request-response lifecycles, enabling cooperative cancellation and progress bars.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Two Active Requests with Incremental Progress",
+        input: {"initial_requests": {"req_1": {"token": "tok_a", "total": 100}, "req_2": {"token": "tok_b", "total": 50}}, "notifications": [{"token": "tok_a", "progress": 25}, {"token": "tok_b", "progress": 50}, {"token": "tok_a", "progress": 75}]},
+        expectedOutput: {"req_1": {"progress": 75, "total": 100, "percent": 75.0, "completed": false}, "req_2": {"progress": 50, "total": 50, "percent": 100.0, "completed": true}},
+        hidden: false,
+        description: "req_1 reaches 75%; req_2 reaches 100% and is marked completed.",
+      },
+      {
+        id: 'tc2',
+        label: "Dynamic Total Adjustment",
+        input: {"initial_requests": {"req_scan": {"token": "scan_token", "total": 10}}, "notifications": [{"token": "scan_token", "progress": 5}, {"token": "scan_token", "progress": 15, "total": 20}]},
+        expectedOutput: {"req_scan": {"progress": 15, "total": 20, "percent": 75.0, "completed": false}},
+        hidden: false,
+        description: "Server dynamically increased total work from 10 to 20; progress 15 gives 75.0%.",
+      },
+      {
+        id: 'tc3',
+        label: "Over-Progress Clamped to Total",
+        input: {"initial_requests": {"job": {"token": "t1", "total": 50}}, "notifications": [{"token": "t1", "progress": 60}]},
+        expectedOutput: {"job": {"progress": 50, "total": 50, "percent": 100.0, "completed": true}},
+        hidden: true,
+        description: "Progress 60 is clamped to total 50.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-67': {
+    id: 'agents-mcp-systems-prob-67',
+    title: "PagedAttention KV-Cache Block Allocator",
+    difficulty: 'hard',
+    topic: "Distributed AI Systems",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'allocate_paged_kv_cache',
+    functionSignature: 'allocate_paged_kv_cache(total_blocks: int, block_size: int, events: list[dict]) -> dict',
+    starterCode: `def allocate_paged_kv_cache(total_blocks: int, block_size: int, events: list[dict]) -> dict:
+    """Simulate vLLM PagedAttention virtual memory block allocation for KV cache.
+    
+    1. Maintain pool of available block IDs [0, 1, ..., total_blocks - 1].
+    2. For 'allocate': assign ceil(tokens / block_size) blocks from pool.
+    3. For 'append': calculate additional blocks needed and allocate them.
+    4. For 'free': return sequence's assigned blocks back to pool.
+    5. If insufficient blocks for any request, return {"status": "OOM", ...}.
+    6. Otherwise return {"status": "SUCCESS", "free_blocks": ..., "allocations": {...}}.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the core memory management mechanism behind vLLM's PagedAttention, which treats the GPU Key-Value cache as virtual pages to eliminate fragmentation and boost serving throughput.",
+    taskDescription: "Implement `allocate_paged_kv_cache(total_blocks, block_size, events)`. In high-throughput LLM serving, continuous batching dynamically manages KV cache memory in fixed-size blocks (e.g. 16 tokens/block). Given `total_blocks` (integer pool of available IDs `[0, 1, ..., total_blocks - 1]`), `block_size` (capacity per block in tokens), and a list of sequence events, process events in order: (1) `{'action': 'allocate', 'seq_id': id, 'tokens': N}`: allocates $\\lceil N / \\text{block\\_size} \\rceil$ blocks from the free pool in ascending ID order; (2) `{'action': 'append', 'seq_id': id, 'tokens': N}`: increases token count by $N$ and allocates any additional blocks needed; (3) `{'action': 'free', 'seq_id': id}`: releases all blocks allocated to `seq_id` back to the free pool. If an allocation or append cannot be satisfied due to lack of free blocks, immediately abort and return `{\"status\": \"OOM\", \"failed_seq\": seq_id, \"free_blocks\": len(free_pool)}`. If all events succeed, return `{\"status\": \"SUCCESS\", \"free_blocks\": len(free_pool), \"allocations\": {seq_id: [blocks]}}` with allocations sorted by sequence ID.",
+    constraints: [
+      "total_blocks > 0, block_size > 0.",
+      "Free blocks are drawn in ascending order of ID.",
+      "Freed blocks are returned to the pool in sorted order.",
+      "OOM immediately halts simulation and reports failure state.",
+      "Returned allocations dictionary sorted by seq_id.",
+    ],
+    hints: {
+      small: "Keep a list of free block IDs initialized to list(range(total_blocks)).",
+      strong: "Track both assigned block lists and total cumulative tokens per sequence so append can compute additional needed blocks.",
+      concept: "PagedAttention mirrors OS virtual memory: sequences store non-contiguous block pointers, reducing KV cache waste from 60-80% down to under 4%.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Sequential Allocation and Free",
+        input: {"total_blocks": 5, "block_size": 16, "events": [{"action": "allocate", "seq_id": "s1", "tokens": 20}, {"action": "allocate", "seq_id": "s2", "tokens": 16}, {"action": "free", "seq_id": "s1"}]},
+        expectedOutput: {"status": "SUCCESS", "free_blocks": 4, "allocations": {"s2": [2]}},
+        hidden: false,
+        description: "s1 takes blocks 0,1 (ceil(20/16)=2); s2 takes block 2. s1 is freed, leaving block 2 in s2 and 4 free blocks.",
+      },
+      {
+        id: 'tc2',
+        label: "Out of Memory on Append",
+        input: {"total_blocks": 3, "block_size": 16, "events": [{"action": "allocate", "seq_id": "s1", "tokens": 32}, {"action": "allocate", "seq_id": "s2", "tokens": 16}, {"action": "append", "seq_id": "s1", "tokens": 5}]},
+        expectedOutput: {"status": "OOM", "failed_seq": "s1", "free_blocks": 0},
+        hidden: false,
+        description: "All 3 blocks allocated (2 to s1, 1 to s2); append to s1 needs a 3rd block but pool is empty, triggering OOM.",
+      },
+      {
+        id: 'tc3',
+        label: "Append Within Existing Block Capacity",
+        input: {"total_blocks": 4, "block_size": 16, "events": [{"action": "allocate", "seq_id": "s1", "tokens": 10}, {"action": "append", "seq_id": "s1", "tokens": 4}]},
+        expectedOutput: {"status": "SUCCESS", "free_blocks": 3, "allocations": {"s1": [0]}},
+        hidden: true,
+        description: "10 + 4 = 14 tokens still fits within 16-token block capacity, requiring 0 extra blocks.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-68': {
+    id: 'agents-mcp-systems-prob-68',
+    title: "Weighted Consistent Hashing Virtual Node Ring",
+    difficulty: 'hard',
+    topic: "Distributed AI Systems",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'weighted_consistent_hash',
+    functionSignature: 'weighted_consistent_hash(nodes: dict, keys: list[str], base_vnodes: int = 3) -> dict',
+    starterCode: `def weighted_consistent_hash(nodes: dict, keys: list[str], base_vnodes: int = 3) -> dict:
+    """Distribute keys across heterogeneous physical nodes using weighted consistent hashing.
+    
+    1. For each node with weight W, place W * base_vnodes virtual nodes on a 2^32 ring.
+    2. Virtual node key: f"{node}#vnode{i}", hashed via MD5 modulo 2^32.
+    3. For each key, find the first virtual node clockwise (hash_val >= key_hash) or wrap around.
+    4. Return key count distribution dict {node: count} sorted by node name.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement weighted consistent hashing with virtual nodes to distribute inference prompts and embedding shards across heterogeneous GPU servers in proportion to their compute capacity.",
+    taskDescription: "Implement `weighted_consistent_hash(nodes, keys, base_vnodes=3)`. Distributed AI serving clusters feature mixed hardware (e.g. 80GB H100s with weight 4 vs 24GB L4s with weight 1). Consistent hashing with virtual nodes distributes workload smoothly in proportion to capacity. Given a dictionary `nodes` mapping physical node names to positive integer weights, and a list of `keys` to partition: (1) For each node with weight $W$, generate $W \\times \\text{base\\_vnodes}$ virtual nodes labeled `f\"{node}#vnode{i}\"` for $i \\in [0, W \\times \\text{base\\_vnodes} - 1]$; (2) Hash each virtual node label using `int(hashlib.md5(label.encode()).hexdigest(), 16) % (2**32)` and insert `(hash_val, node)` onto the ring; (3) Sort the ring by hash value ascending; (4) For each key in `keys`, hash it similarly and assign it to the first virtual node with `ring_hash >= key_hash` (wrapping around to `ring[0]` if `key_hash > max(ring_hashes)`); (5) Count the total keys assigned to each physical node. Return `{node: count}` sorted alphabetically by node name. Raise `ValueError` if `nodes` is empty or `base_vnodes <= 0`.",
+    constraints: [
+      "nodes is a non-empty dict of {node_name: weight} with weight > 0.",
+      "base_vnodes > 0.",
+      "Hash function: int(hashlib.md5(s.encode()).hexdigest(), 16) % (2**32).",
+      "Clockwise ring assignment: first vnode with hash >= key_hash, with wrap-around.",
+      "Returned dictionary keys must be sorted alphabetically.",
+    ],
+    hints: {
+      small: "Use bisect.bisect_right to quickly locate the clockwise node on the sorted hash list.",
+      strong: "If bisect index equals len(ring), wrap around to index 0.",
+      concept: "Virtual nodes prevent hot spots in consistent hashing rings and allow seamless weighted load balancing proportional to physical machine memory.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "Two Nodes Equal Weights",
+        input: {"nodes": {"node-a": 1, "node-b": 1}, "keys": ["user_101", "user_102", "user_103", "user_104"], "base_vnodes": 2},
+        expectedOutput: {"node-a": 0, "node-b": 4},
+        hidden: false,
+        description: "Virtual node MD5 ring mapping assigns all 4 keys clockwise to node-b vnodes.",
+      },
+      {
+        id: 'tc2',
+        label: "Heterogeneous Weighted Nodes",
+        input: {"nodes": {"large-gpu": 3, "small-gpu": 1}, "keys": ["prompt_alpha", "prompt_beta", "prompt_gamma", "prompt_delta", "prompt_epsilon"], "base_vnodes": 4},
+        expectedOutput: {"large-gpu": 4, "small-gpu": 1},
+        hidden: false,
+        description: "3:1 weight ratio causes large GPU to capture 4 of the 5 keys.",
+      },
+      {
+        id: 'tc3',
+        label: "Wrap Around Clockwise Ring Boundary",
+        input: {"nodes": {"server_1": 1}, "keys": ["key_x", "key_y"], "base_vnodes": 1},
+        expectedOutput: {"server_1": 2},
+        hidden: true,
+        description: "Single server captures all keys regardless of hash positions.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-69': {
+    id: 'agents-mcp-systems-prob-69',
+    title: "Inverted Multi-Index Quantization Coarse Search",
+    difficulty: 'hard',
+    topic: "Vector Search & Indexing",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'imi_quantize_vector',
+    functionSignature: 'imi_quantize_vector(query: list[float], codebook_1: list[list[float]], codebook_2: list[list[float]], top_m: int) -> list[dict]',
+    starterCode: `def imi_quantize_vector(query: list[float], codebook_1: list[list[float]], codebook_2: list[list[float]], top_m: int) -> list[dict]:
+    """Find top-M multi-cells for an Inverted Multi-Index (IMI) coarse vector quantizer.
+    
+    1. Split D-dimensional query into two halves: q1 = query[:D//2], q2 = query[D//2:].
+    2. Compute squared distances from q1 to codebook_1 centroids, and q2 to codebook_2 centroids.
+    3. Multi-cell distance for pair (i, j) = dist1[i] + dist2[j].
+    4. Rank all (i, j) pairs by total distance ascending (tie-breaker: i then j).
+    5. Return top_m pairs as list of dicts: {"indices": [i, j], "squared_distance": dist}.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Inverted Multi-Index (IMI) coarse quantization search algorithm, which creates a fine-grained grid of $K^2$ inverted lists using only $2K$ centroids for billion-scale vector indexing.",
+    taskDescription: "Implement `imi_quantize_vector(query, codebook_1, codebook_2, top_m)`. Standard Inverted File (IVF) indexes use $K$ centroids to partition vector space. The Inverted Multi-Index (IMI) decomposes a $D$-dimensional space into two orthogonal sub-spaces of dimension $D/2$. Codebook 1 has $K_1$ centroids in sub-space 1, and Codebook 2 has $K_2$ centroids in sub-space 2. Together, they define $K_1 \\times K_2$ multi-index cells where cell $(i, j)$ has distance $d(q^{(1)}, C_1[i])^2 + d(q^{(2)}, C_2[j])^2$ to the query. Given an even-dimensional `query` vector, `codebook_1`, `codebook_2`, and integer `top_m`, compute the squared distance to all pairs $(i, j)$ and return the top `top_m` closest cells sorted by distance ascending (tie-breaker: index $i$, then index $j$). Return a list of dicts `[{\"indices\": [i, j], \"squared_distance\": round(d, 4)}, ...]`. Raise `ValueError` if query dimension is odd or codebook dimensions do not match $D/2$.",
+    constraints: [
+      "len(query) must be even and positive.",
+      "codebook_1 centroids must have dimension len(query) // 2.",
+      "codebook_2 centroids must have dimension len(query) // 2.",
+      "top_m > 0 and <= len(codebook_1) * len(codebook_2).",
+      "Return list of dicts with keys: indices ([i, j]) and squared_distance rounded to 4 decimals.",
+    ],
+    hints: {
+      small: "Precompute all d1[i] and d2[j] independently, then sum them in a nested loop.",
+      strong: "Sort candidate tuples (dist, i, j) and take the first top_m elements.",
+      concept: "IMI provides quadratic resolution ($K^2$ cells) with linear training and lookup cost ($2K$ distances), vastly improving recall at high speedups.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "2D Subspaces 2x2 Codebooks",
+        input: {"query": [1.0, 1.0, 2.0, 2.0], "codebook_1": [[1.0, 1.0], [0.0, 0.0]], "codebook_2": [[2.0, 2.0], [3.0, 3.0]], "top_m": 2},
+        expectedOutput: [{"indices": [0, 0], "squared_distance": 0.0}, {"indices": [0, 1], "squared_distance": 2.0}],
+        hidden: false,
+        description: "q1 matches C1[0] exactly (dist=0); q2 matches C2[0] exactly (dist=0). Pair (0,0) has dist 0.0; pair (0,1) has dist 0+2=2.0.",
+      },
+      {
+        id: 'tc2',
+        label: "Top 3 Ranking with Sorting",
+        input: {"query": [0.0, 0.0], "codebook_1": [[1.0], [2.0]], "codebook_2": [[1.0], [3.0]], "top_m": 3},
+        expectedOutput: [{"indices": [0, 0], "squared_distance": 2.0}, {"indices": [1, 0], "squared_distance": 5.0}, {"indices": [0, 1], "squared_distance": 10.0}],
+        hidden: false,
+        description: "d1=[1, 4], d2=[1, 9]. Pairs: (0,0)->2, (1,0)->5, (0,1)->10, (1,1)->13.",
+      },
+      {
+        id: 'tc3',
+        label: "Tie-Breaking Deterministic Order",
+        input: {"query": [0.0, 0.0], "codebook_1": [[1.0], [2.0]], "codebook_2": [[2.0], [1.0]], "top_m": 2},
+        expectedOutput: [{"indices": [0, 1], "squared_distance": 2.0}, {"indices": [0, 0], "squared_distance": 5.0}],
+        hidden: true,
+        description: "d1=[1, 4], d2=[4, 1]. Best pair is (0,1) with dist 2, then (0,0) and (1,1) both have dist 5; tie broken by indices.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-70': {
+    id: 'agents-mcp-systems-prob-70',
+    title: "CLIP Symmetric Temperature-Scaled Cross-Entropy Loss",
+    difficulty: 'hard',
+    topic: "Multimodal AI",
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'clip_symmetric_cross_entropy',
+    functionSignature: 'clip_symmetric_cross_entropy(image_embeddings: list[list[float]], text_embeddings: list[list[float]], temperature: float = 1.0) -> float',
+    starterCode: `def clip_symmetric_cross_entropy(image_embeddings: list[list[float]], text_embeddings: list[list[float]], temperature: float = 1.0) -> float:
+    """Compute symmetric contrastive InfoNCE loss for a batch of image and text representations.
+    
+    1. L2-normalize all image vectors and text vectors to unit length.
+    2. Compute N x N cosine similarity matrix S = I @ T.T.
+    3. Compute logits = S / temperature.
+    4. Compute row-wise cross entropy (image-to-text) with target label i for row i.
+    5. Compute col-wise cross entropy (text-to-image) with target label j for col j.
+    6. Return symmetric loss: round((mean_row_loss + mean_col_loss) / 2.0, 4).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement OpenAI CLIP's signature symmetric contrastive loss function, the foundational objective powering zero-shot classification, multimodal vector search, and vision-language pretraining across modern AI.",
+    taskDescription: "Implement `clip_symmetric_cross_entropy(image_embeddings, text_embeddings, temperature=1.0)`. In CLIP (Contrastive Language-Image Pre-training), models align visual and textual modalities using contrastive learning on paired batches. Given $N$ image embeddings and $N$ text embeddings of dimension $D$, first $L_2$-normalize every vector to unit length (divide by its Euclidean norm). Next, compute the $N \\times N$ cosine similarity matrix $S$ where $S[i][j] = I_{\\text{norm}}[i] \\cdot T_{\\text{norm}}[j]$. Scale similarities by temperature: $\\text{logits}[i][j] = S[i][j] / \\tau$. Compute image-to-text loss as the mean cross-entropy across rows (where the ground truth for row $i$ is class $i$): $\\text{loss}_{i2t} = \\frac{1}{N} \\sum_{i=0}^{N-1} [-\\text{logits}[i][i] + \\log \\sum_{j=0}^{N-1} \\exp(\\text{logits}[i][j])]$. Compute text-to-image loss as the mean cross-entropy across columns (where ground truth for column $j$ is class $j$). Return the symmetric loss `round((mean_i2t + mean_t2i) / 2.0, 4)`. Raise `ValueError` for mismatched lengths, empty inputs, or `temperature <= 0`.",
+    constraints: [
+      "len(image_embeddings) == len(text_embeddings) > 0.",
+      "All vectors have identical dimension D > 0.",
+      "temperature > 0.0.",
+      "Use numerically stable log-sum-exp (subtract max before exp).",
+      "Return float rounded to 4 decimal places.",
+    ],
+    hints: {
+      small: "Normalize each vector by sqrt(sum(x*x)) before computing dot products.",
+      strong: "For log-sum-exp stability: m = max(row), lse = m + log(sum(exp(x - m) for x in row)).",
+      concept: "The symmetric loss maximizes diagonal similarities while pushing off-diagonal negative pairs apart in both embedding spaces simultaneously.",
+    },
+    testCases: [
+      {
+        id: 'tc1',
+        label: "2x2 Aligned Embeddings",
+        input: {"image_embeddings": [[1.0, 0.0], [0.0, 1.0]], "text_embeddings": [[1.0, 0.0], [0.0, 1.0]], "temperature": 1.0},
+        expectedOutput: 0.3133,
+        hidden: false,
+        description: "Identical orthogonal unit embeddings: logits are [[1, 0], [0, 1]]. Loss per row = log(e^1 + e^0) - 1 = log(e+1) - 1 \u2248 0.3133.",
+      },
+      {
+        id: 'tc2',
+        label: "Single Pair Batch Minimum Loss",
+        input: {"image_embeddings": [[3.0, 4.0]], "text_embeddings": [[3.0, 4.0]], "temperature": 0.5},
+        expectedOutput: 0.0,
+        hidden: false,
+        description: "Single pair batch has no negative distractors, so cross entropy loss is exactly 0.0.",
+      },
+      {
+        id: 'tc3',
+        label: "Temperature Scaling Effect",
+        input: {"image_embeddings": [[1.0, 0.0], [0.0, 1.0]], "text_embeddings": [[1.0, 0.0], [0.0, 1.0]], "temperature": 0.1},
+        expectedOutput: 0.0,
+        hidden: true,
+        description: "Sharper temperature (0.1) scales diagonal logits to 10.0, driving cross-entropy loss down near 0.",
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
   // --- Linked Lists / Stacks / Queues batch (real content replacing the
   // generic placeholder template). Every linked-list node is a plain dict
   // {val, next} (None terminates the list), for the same reason tree

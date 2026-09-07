@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 66: Problem 496"
+title: "Practice: Track MCP Asynchronous Request Progress"
 sidebar_position: 496
-description: "Curriculum Problem 496 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
+description: "Track asynchronous background MCP tool operations using the Model Context Protocol notifications/progress specification to give users real-time execution feedback."
 difficulty: hard
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,57 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 66: Problem 496
+# Track MCP Asynchronous Request Progress
 
 **Rank #496** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-65`.
+Implement `track_mcp_progress(initial_requests, notifications)`. Long-running MCP tools (such as database migrations or batch indexing) emit `notifications/progress` events referencing a `progressToken`. Given `initial_requests` (mapping `request_id` to a dict with `token` and `total` expected units of work) and a chronological list of `notifications` (each with `token`, `progress`, and optional `total`), update each request's progress state. If a notification includes an updated `total`, adopt it. Clamp `progress` to never exceed `total`. Compute percentage complete as `round((progress / total) * 100.0, 1)` (or `100.0` if `total == 0`). Return a dictionary `{request_id: {"progress": p, "total": t, "percent": pct, "completed": (p >= t)}}` sorted by `request_id`. Prerequisite: `agents-mcp-systems-prob-65`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-66" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p66(data):
-    # Reference implementation
-    return data
+def track_mcp_progress(initial_requests, notifications):
+    token_to_req = {}
+    state = {}
+    for req_id, info in initial_requests.items():
+        token = info["token"]
+        token_to_req[token] = req_id
+        state[req_id] = {
+            "progress": 0,
+            "total": info["total"]
+        }
+        
+    for n in notifications:
+        tok = n["token"]
+        if tok in token_to_req:
+            rid = token_to_req[tok]
+            if "total" in n and n["total"] is not None:
+                state[rid]["total"] = n["total"]
+            state[rid]["progress"] = min(n["progress"], state[rid]["total"])
+            
+    result = {}
+    for rid in sorted(state.keys()):
+        prog = state[rid]["progress"]
+        tot = state[rid]["total"]
+        pct = round((prog / tot) * 100.0, 1) if tot > 0 else 100.0
+        result[rid] = {
+            "progress": prog,
+            "total": tot,
+            "percent": pct,
+            "completed": prog >= tot
+        }
+    return result
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+### Key Concept: MCP progress tokens decouple asynchronous operation tracking from synchronous request-response lifecycles, enabling cooperative cancellation and progress bars.
+
+**Constraints**:
+- initial_requests maps request_id to `{'token': str, 'total': int}`.
+- notifications contains `{'token': str, 'progress': int, optional 'total': int}`.
+- progress is clamped to [0, total].
+- percent is rounded to 1 decimal place.
+- Output dictionary keys must be sorted alphabetically.
 
 </Solution>

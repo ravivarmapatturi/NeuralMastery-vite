@@ -3342,36 +3342,36 @@
     "/docs/practice-problems/agents-mcp-systems-prob-56": {
       "slug": "practice-problems/agents-mcp-systems-prob-56",
       "section": "practice-problems",
-      "title": "Practice: Multimodal AI Module 56: Problem 486",
+      "title": "Practice: Calculate Multimodal Image Tile Token Cost",
       "sidebarPosition": 486,
-      "description": "Curriculum Problem 486 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI.",
+      "description": "Accurately compute image tile grids and token consumption for vision-language models to prevent context window exhaustion and manage API billing.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-57": {
       "slug": "practice-problems/agents-mcp-systems-prob-57",
       "section": "practice-problems",
-      "title": "Practice: RAG Module 57: Problem 487",
+      "title": "Practice: Parent-Document Chunk Linker for Hierarchical RAG",
       "sidebarPosition": 487,
-      "description": "Curriculum Problem 487 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval.",
+      "description": "Build the parent-document contextual retrieval pipeline that indexes small granular chunks for precise vector search but retrieves larger parent passages to preserve full context for the LLM.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-58": {
       "slug": "practice-problems/agents-mcp-systems-prob-58",
       "section": "practice-problems",
-      "title": "Practice: Agents Module 58: Problem 488",
+      "title": "Practice: Generate Agent Function Calling Tool Schema",
       "sidebarPosition": 488,
-      "description": "Curriculum Problem 488 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use.",
+      "description": "Build the dynamic schema generator that converts agent tool specifications into standard JSON Schema function signatures accepted by frontier LLM tool-calling APIs.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-59": {
       "slug": "practice-problems/agents-mcp-systems-prob-59",
       "section": "practice-problems",
-      "title": "Practice: MCP Module 59: Problem 489",
+      "title": "Practice: Parse MCP Server-Sent Events Transport Stream",
       "sidebarPosition": 489,
-      "description": "Curriculum Problem 489 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols.",
+      "description": "Implement the Server-Sent Events (SSE) transport parser for remote Model Context Protocol (MCP) clients connecting to server endpoints over HTTP.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
@@ -3387,90 +3387,90 @@
     "/docs/practice-problems/agents-mcp-systems-prob-60": {
       "slug": "practice-problems/agents-mcp-systems-prob-60",
       "section": "practice-problems",
-      "title": "Practice: MLOps Module 60: Problem 490",
+      "title": "Practice: Streaming Histogram Percentile Estimator",
       "sidebarPosition": 490,
-      "description": "Curriculum Problem 490 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems.",
+      "description": "Implement streaming histogram percentile approximation for LLM inference latency observability (P95/P99) without storing millions of individual request durations in memory.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-61": {
       "slug": "practice-problems/agents-mcp-systems-prob-61",
       "section": "practice-problems",
-      "title": "Practice: Distributed systems Module 61: Problem 491",
+      "title": "Practice: Gossip Protocol Heartbeat Failure Detector",
       "sidebarPosition": 491,
-      "description": "Curriculum Problem 491 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems.",
+      "description": "Implement decentralized node failure detection using heartbeat gossip protocols to dynamically maintain GPU worker membership in distributed training clusters.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-62": {
       "slug": "practice-problems/agents-mcp-systems-prob-62",
       "section": "practice-problems",
-      "title": "Practice: Vector search Module 62: Problem 492",
+      "title": "Practice: Product Quantization Asymmetric Distance Table",
       "sidebarPosition": 492,
-      "description": "Curriculum Problem 492 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search.",
+      "description": "Implement Asymmetric Distance Computation (ADC) used by Faiss and modern vector databases to scan millions of compressed vector codes in milliseconds without decompressing them.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-63": {
       "slug": "practice-problems/agents-mcp-systems-prob-63",
       "section": "practice-problems",
-      "title": "Practice: Multimodal AI Module 63: Problem 493",
+      "title": "Practice: Multimodal Vision-Language Attention Mask",
       "sidebarPosition": 493,
-      "description": "Curriculum Problem 493 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI.",
+      "description": "Implement cross-modal attention masking for vision-language models (like Flamingo and LLaVA) where text can attend to images, but vision patches attend only within their respective image.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-64": {
       "slug": "practice-problems/agents-mcp-systems-prob-64",
       "section": "practice-problems",
-      "title": "Practice: RAG Module 64: Problem 494",
+      "title": "Practice: ColBERT Late Interaction MaxSim Retrieval Score",
       "sidebarPosition": 494,
-      "description": "Curriculum Problem 494 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval.",
+      "description": "Implement ColBERT's late interaction MaxSim operator, the state-of-the-art retrieval scoring mechanism that preserves token-level embeddings without collapsing documents into a single lossy vector.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-65": {
       "slug": "practice-problems/agents-mcp-systems-prob-65",
       "section": "practice-problems",
-      "title": "Practice: Agents Module 65: Problem 495",
+      "title": "Practice: Extract Structured ReAct Trajectory Steps",
       "sidebarPosition": 495,
-      "description": "Curriculum Problem 495 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use.",
+      "description": "Parse unstructured agent thought-action-observation scratchpads into structured execution traces for observability, replay debugging, and trajectory evaluation.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-66": {
       "slug": "practice-problems/agents-mcp-systems-prob-66",
       "section": "practice-problems",
-      "title": "Practice: MCP Module 66: Problem 496",
+      "title": "Practice: Track MCP Asynchronous Request Progress",
       "sidebarPosition": 496,
-      "description": "Curriculum Problem 496 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols.",
+      "description": "Track asynchronous background MCP tool operations using the Model Context Protocol notifications/progress specification to give users real-time execution feedback.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-67": {
       "slug": "practice-problems/agents-mcp-systems-prob-67",
       "section": "practice-problems",
-      "title": "Practice: MLOps Module 67: Problem 497",
+      "title": "Practice: PagedAttention KV-Cache Block Allocator",
       "sidebarPosition": 497,
-      "description": "Curriculum Problem 497 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems.",
+      "description": "Implement the core memory management mechanism behind vLLM's PagedAttention, which treats the GPU Key-Value cache as virtual pages to eliminate fragmentation and boost serving throughput.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-68": {
       "slug": "practice-problems/agents-mcp-systems-prob-68",
       "section": "practice-problems",
-      "title": "Practice: Distributed systems Module 68: Problem 498",
+      "title": "Practice: Weighted Consistent Hashing Virtual Node Ring",
       "sidebarPosition": 498,
-      "description": "Curriculum Problem 498 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems.",
+      "description": "Implement weighted consistent hashing with virtual nodes to distribute inference prompts and embedding shards across heterogeneous GPU servers in proportion to their compute capacity.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-69": {
       "slug": "practice-problems/agents-mcp-systems-prob-69",
       "section": "practice-problems",
-      "title": "Practice: Vector search Module 69: Problem 499",
+      "title": "Practice: Inverted Multi-Index Quantization Coarse Search",
       "sidebarPosition": 499,
-      "description": "Curriculum Problem 499 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search.",
+      "description": "Implement the Inverted Multi-Index (IMI) coarse quantization search algorithm, which creates a fine-grained grid of $K^2$ inverted lists using only $2K$ centroids for billion-scale vector indexing.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
@@ -3486,9 +3486,9 @@
     "/docs/practice-problems/agents-mcp-systems-prob-70": {
       "slug": "practice-problems/agents-mcp-systems-prob-70",
       "section": "practice-problems",
-      "title": "Practice: Multimodal AI Module 70: Problem 500",
+      "title": "Practice: CLIP Symmetric Temperature-Scaled Cross-Entropy Loss",
       "sidebarPosition": 500,
-      "description": "Curriculum Problem 500 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI.",
+      "description": "Implement OpenAI CLIP's signature symmetric contrastive loss function, the foundational objective powering zero-shot classification, multimodal vector search, and vision-language pretraining across modern AI.",
       "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },

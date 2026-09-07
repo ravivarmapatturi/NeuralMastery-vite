@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Agents Module 65: Problem 495"
+title: "Practice: Extract Structured ReAct Trajectory Steps"
 sidebar_position: 495
-description: "Curriculum Problem 495 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use."
+description: "Parse unstructured agent thought-action-observation scratchpads into structured execution traces for observability, replay debugging, and trajectory evaluation."
 difficulty: hard
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,110 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Agents Module 65: Problem 495
+# Extract Structured ReAct Trajectory Steps
 
 **Rank #495** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-64`.
+Implement `extract_react_steps(scratchpad)`. Agent frameworks (LangChain, AutoGPT, ReAct) generate free-form text logs consisting of alternating steps. Given a multi-line `scratchpad` string, extract each completed tool-use step. A step begins with `Thought: <thought>`, followed by `Action: <tool>[<action_input>]`, followed by `Observation: <obs>`. Content spanning multiple lines should be joined with spaces and stripped. If the scratchpad concludes with `Final Answer: <answer>`, extract it. Return a dictionary with: `steps` (list of step dicts with keys `step` (1-indexed), `thought`, `tool`, `action_input`, `observation`), `num_steps`, `has_final_answer` (boolean), and `final_answer` (string or `None`). Raise `ValueError` if `scratchpad` is not a non-empty string. Prerequisite: `agents-mcp-systems-prob-64`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-65" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p65(data):
-    # Reference implementation
-    return data
+def extract_react_steps(scratchpad):
+    if not isinstance(scratchpad, str) or not scratchpad.strip():
+        raise ValueError("scratchpad must be non-empty string")
+    
+    lines = scratchpad.splitlines()
+    steps = []
+    
+    curr_thought = []
+    curr_tool = None
+    curr_input = None
+    curr_obs = []
+    state = "THOUGHT"
+    
+    final_answer = None
+    has_final = False
+    
+    action_pattern = re.compile(r"^Action:\s*([a-zA-Z0-9_\-]+)\[(.*)\]\s*$")
+    final_pattern = re.compile(r"^Final Answer:\s*(.*)$")
+    
+    step_num = 1
+    for line in lines:
+        stripped = line.strip()
+        final_match = final_pattern.match(stripped)
+        if final_match:
+            has_final = True
+            final_answer = final_match.group(1).strip()
+            state = "FINAL"
+            continue
+            
+        action_match = action_pattern.match(stripped)
+        if action_match:
+            curr_tool = action_match.group(1).strip()
+            curr_input = action_match.group(2).strip()
+            state = "ACTION"
+            continue
+            
+        if stripped.startswith("Observation:"):
+            obs_text = stripped[len("Observation:"):].strip()
+            curr_obs = [obs_text] if obs_text else []
+            state = "OBSERVATION"
+            continue
+            
+        if stripped.startswith("Thought:"):
+            if curr_tool and curr_obs:
+                steps.append({
+                    "step": step_num,
+                    "thought": " ".join(curr_thought).strip(),
+                    "tool": curr_tool,
+                    "action_input": curr_input,
+                    "observation": " ".join(curr_obs).strip()
+                })
+                step_num += 1
+                curr_thought = []
+                curr_tool = None
+                curr_input = None
+                curr_obs = []
+            
+            thought_text = stripped[len("Thought:"):].strip()
+            curr_thought = [thought_text] if thought_text else []
+            state = "THOUGHT"
+            continue
+            
+        if state == "THOUGHT" and stripped:
+            curr_thought.append(stripped)
+        elif state == "OBSERVATION" and stripped:
+            curr_obs.append(stripped)
+        elif state == "FINAL" and stripped:
+            final_answer += " " + stripped
+            
+    if curr_tool and curr_obs:
+        steps.append({
+            "step": step_num,
+            "thought": " ".join(curr_thought).strip(),
+            "tool": curr_tool,
+            "action_input": curr_input,
+            "observation": " ".join(curr_obs).strip()
+        })
+        
+    return {
+        "steps": steps,
+        "num_steps": len(steps),
+        "has_final_answer": has_final,
+        "final_answer": final_answer
+    }
 ```
 
-This problem tests fundamental skills in Agents / tool use.
+### Key Concept: Extracting structured steps turns unstructured text logs into queryable traces for agent evaluation benchmarks like SWE-bench and GAIA.
+
+**Constraints**:
+- scratchpad must be a non-empty string.
+- Steps are 1-indexed integers.
+- Multi-line thoughts/observations must be whitespace-trimmed and space-joined.
+- Action format is strictly Action: tool[input].
+- has_final_answer is True if Final Answer: is present, else False.
 
 </Solution>
