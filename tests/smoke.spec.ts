@@ -183,10 +183,12 @@ test.describe('Visualization', () => {
   test('home page playground demo executes Python and fires celebration', async ({ page }) => {
     test.setTimeout(60000);
     const errors = collectConsoleErrors(page);
-    await page.goto('learn');
+    // The real homescreen is "/" (ChooserPage.tsx), not "/learn" (Home.tsx)
+    // -- see App.tsx routing. The live playground lives here.
+    await page.goto('');
     await expect(page.locator('h1')).toBeVisible();
 
-    const playgroundSection = page.locator('.nm-home-playground-section');
+    const playgroundSection = page.locator('.nm-practice-live');
     await playgroundSection.scrollIntoViewIfNeeded();
     await expect(playgroundSection).toBeVisible();
 
