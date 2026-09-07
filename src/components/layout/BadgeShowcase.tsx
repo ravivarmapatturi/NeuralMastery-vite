@@ -1,13 +1,11 @@
 import { useAuth } from '../../contexts/AuthContext';
 import { useGamification } from '../../contexts/GamificationContext';
 import { BADGES } from '../../lib/badges';
-import { computeRLValuation } from '../../lib/gamification';
 import { useVizTokens } from '../../theme/vizTokens';
 
 export default function BadgeShowcase() {
   const t = useVizTokens();
   const { events, points: totalXP, streak } = useGamification();
-  const activeDates = events.map((e) => e.date);
 
   // Compute breakdown stats for badge unlocks
   const pagesUnderstood = events.filter((e) => e.kind === 'mark').length;
@@ -27,10 +25,6 @@ export default function BadgeShowcase() {
 
   const unlockedBadges = BADGES.filter((b) => b.checkUnlocked(stats));
   const unlockedCount = unlockedBadges.length;
-
-  // Sample RL valuation for solving a medium problem
-  const rlValuation = computeRLValuation('complete', 'medium', events, activeDates);
-
 
   return (
     <div
@@ -73,57 +67,6 @@ export default function BadgeShowcase() {
           }}
         >
           {Math.round((unlockedCount / BADGES.length) * 100)}% Completed
-        </div>
-      </div>
-
-      {/* RL Reward Engine Banner */}
-      <div
-        style={{
-          background:
-            'linear-gradient(135deg, color-mix(in srgb, var(--nm-accent-secondary) 10%, transparent) 0%, color-mix(in srgb, var(--nm-accent-purple) 10%, transparent) 100%)',
-          border: '1px solid color-mix(in srgb, var(--nm-accent-secondary) 25%, transparent)',
-          borderRadius: 12,
-          padding: 16,
-          marginBottom: 24,
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: 16,
-        }}
-      >
-        <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--nm-accent-secondary)', fontWeight: 600 }}>
-            RL Reward Model G_t
-          </div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)', marginTop: 4 }}>
-            {rlValuation.discountedReturn} <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--nm-text-secondary)' }}>G_t</span>
-          </div>
-          <div style={{ fontSize: 12, color: 'var(--nm-text-secondary)', marginTop: 2 }}>
-            Short-term ({rlValuation.immediateReward} XP) + Long-term ({rlValuation.futureValue} V)
-          </div>
-        </div>
-
-        <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--nm-accent-purple)', fontWeight: 600 }}>
-            Discount Factor (γ)
-          </div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)', marginTop: 4 }}>
-            {rlValuation.gamma}
-          </div>
-          <div style={{ fontSize: 12, color: 'var(--nm-text-secondary)', marginTop: 2 }}>
-            Balances immediate dopamine vs milestone horizon
-          </div>
-        </div>
-
-        <div>
-          <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--nm-accent-primary)', fontWeight: 600 }}>
-            Streak Multiplier
-          </div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--nm-text-primary)', marginTop: 4 }}>
-            {rlValuation.streakBonus}x
-          </div>
-          <div style={{ fontSize: 12, color: 'var(--nm-text-secondary)', marginTop: 2 }}>
-            {streak > 0 ? `${streak}-day active streak bonus` : 'Complete daily tasks to boost'}
-          </div>
         </div>
       </div>
 
