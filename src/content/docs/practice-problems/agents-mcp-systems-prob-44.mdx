@@ -1,31 +1,38 @@
 ---
-placeholder: true
-title: "Practice: Agents Module 44: Problem 474"
+title: "Practice: Check an Agent Conversation Turn Budget"
 sidebar_position: 474
-description: "Curriculum Problem 474 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use."
-difficulty: medium
+description: "Check whether an agent has exceeded its LLM-call turn budget -- a real safety limit distinct from consecutive tool-loop detection."
+difficulty: easy
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Agents Module 44: Problem 474
+# Check an Agent Conversation Turn Budget
 
-**Rank #474** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #474** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-43`.
+Implement `has_exceeded_turn_budget(turns, max_turns)`, the turn-budget guard an agent loop checks before letting itself keep going -- counting total LLM-costing turns regardless of what the agent is doing, so a runaway agent doing different things every turn still gets capped. Prerequisite: `agents-mcp-systems-prob-43`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-44" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p44(data):
-    # Reference implementation
-    return data
+def has_exceeded_turn_budget(turns, max_turns):
+    if max_turns <= 0:
+        raise ValueError("max_turns must be positive")
+    valid_roles = {"user", "assistant", "tool"}
+    count = 0
+    for role in turns:
+        if role not in valid_roles:
+            raise ValueError(f"unknown role: {role!r}")
+        if role == "assistant":
+            count += 1
+    return count >= max_turns
 ```
 
-This problem tests fundamental skills in Agents / tool use.
+This complements (not duplicates) consecutive tool-loop detection -- a loop guard catches an agent stuck repeating the same action, while a turn budget catches an agent that is making real progress but simply taking too many LLM calls to ever finish.
 
 </Solution>

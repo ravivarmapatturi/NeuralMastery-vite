@@ -1,31 +1,40 @@
 ---
-placeholder: true
-title: "Practice: Agents Module 37: Problem 467"
+title: "Practice: Validate an Agent Plan's Dependency Order"
 sidebar_position: 467
-description: "Curriculum Problem 467 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use."
-difficulty: medium
+description: "Check that a multi-step agent plan respects its own declared step dependencies before execution."
+difficulty: hard
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Agents Module 37: Problem 467
+# Validate an Agent Plan's Dependency Order
 
-**Rank #467** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #467** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-36`.
+Implement `validate_plan_order(steps)`, the dependency-order validator a plan-and-execute agent needs before running a multi-step plan -- an LLM-generated plan can name steps in the wrong order or reference one that doesn't exist, and executing it blindly would run a step before its input is ready. Prerequisite: `agents-mcp-systems-prob-36`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-37" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p37(data):
-    # Reference implementation
-    return data
+def validate_plan_order(steps):
+    all_ids = {s["id"] for s in steps}
+    for s in steps:
+        for dep in s["depends_on"]:
+            if dep not in all_ids:
+                raise ValueError(f"unknown dependency: {dep!r}")
+    completed = set()
+    for s in steps:
+        for dep in s["depends_on"]:
+            if dep not in completed:
+                return s["id"]
+        completed.add(s["id"])
+    return None
 ```
 
-This problem tests fundamental skills in Agents / tool use.
+This is a lightweight, order-checking companion to a full topological sort -- rather than computing a valid order from scratch, it validates whether an already-proposed order (e.g. one an LLM planner produced) actually respects the plan's own declared dependencies, which is the more common real check needed right before execution.
 
 </Solution>

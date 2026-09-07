@@ -1,31 +1,37 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 38: Problem 468"
+title: "Practice: Cursor-Based Pagination for an MCP Tool List"
 sidebar_position: 468
-description: "Curriculum Problem 468 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
-difficulty: medium
+description: "Implement cursor-based pagination for an MCP tools/list response, the pattern real MCP servers use for large tool sets."
+difficulty: easy
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 38: Problem 468
+# Cursor-Based Pagination for an MCP Tool List
 
-**Rank #468** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #468** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-37`.
+Implement `paginate_tools(tools, page_size, cursor)`, cursor-based pagination for an MCP `tools/list` response -- real MCP servers with many tools paginate results using an opaque cursor rather than returning everything at once, and a client has to follow that cursor correctly to enumerate every tool. Prerequisite: `agents-mcp-systems-prob-37`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-38" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p38(data):
-    # Reference implementation
-    return data
+def paginate_tools(tools, page_size, cursor):
+    if page_size <= 0:
+        raise ValueError("page_size must be positive")
+    start = int(cursor) if cursor is not None else 0
+    if start < 0 or start > len(tools):
+        raise ValueError("invalid cursor")
+    page = tools[start:start + page_size]
+    next_start = start + page_size
+    next_cursor = str(next_start) if next_start < len(tools) else None
+    return (page, next_cursor)
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+A cursor (rather than a plain page number) is what lets a paginated API stay correct even if the underlying list changes between requests -- the client never needs to know or compute an index itself, only pass back exactly what the server gave it.
 
 </Solution>

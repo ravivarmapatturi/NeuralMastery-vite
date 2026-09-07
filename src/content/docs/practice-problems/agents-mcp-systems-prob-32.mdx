@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: MLOps Module 32: Problem 462"
+title: "Practice: Query a Staged Rollout Traffic Schedule"
 sidebar_position: 462
-description: "Curriculum Problem 462 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems."
+description: "Look up the traffic percentage in effect at a given time from a staged (blue-green) rollout schedule."
 difficulty: medium
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,34 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MLOps Module 32: Problem 462
+# Query a Staged Rollout Traffic Schedule
 
 **Rank #462** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-31`.
+Implement `traffic_percentage_at(schedule, query_time)`, the step-function lookup behind a time-staged blue-green rollout -- unlike a per-request hash-based canary split, this ramps traffic at planned points in time, and this is the query that answers "what percentage is live right now?" Prerequisite: `agents-mcp-systems-prob-31`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-32" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p32(data):
-    # Reference implementation
-    return data
+def traffic_percentage_at(schedule, query_time):
+    if not schedule:
+        raise ValueError("schedule must be non-empty")
+    for t, pct in schedule:
+        if not (0 <= pct <= 100):
+            raise ValueError("percentage must be between 0 and 100")
+    current = None
+    for t, pct in sorted(schedule, key=lambda p: p[0]):
+        if t <= query_time:
+            current = pct
+        else:
+            break
+    if current is None:
+        raise ValueError("query_time is before the first scheduled step")
+    return current
 ```
 
-This problem tests fundamental skills in MLOps / data systems.
+This is a step function, not interpolation -- traffic jumps discretely at each scheduled time rather than ramping smoothly, which is exactly how a real blue-green/staged rollout is usually operated.
 
 </Solution>

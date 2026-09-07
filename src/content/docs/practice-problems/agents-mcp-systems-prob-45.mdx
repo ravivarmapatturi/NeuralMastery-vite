@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 45: Problem 475"
+title: "Practice: Debounce MCP Resource-Changed Notifications"
 sidebar_position: 475
-description: "Curriculum Problem 475 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
+description: "Collapse a burst of resource-changed events down to one notification per quiet window -- a real MCP server reliability pattern."
 difficulty: medium
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,29 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 45: Problem 475
+# Debounce MCP Resource-Changed Notifications
 
 **Rank #475** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-44`.
+Implement `debounce_notifications(timestamps, window)`, debouncing for MCP resource-changed notifications -- a resource that changes many times in rapid succession would otherwise flood a client with a notification per change, so a real MCP server debounces bursts down to one notification per quiet window. Prerequisite: `agents-mcp-systems-prob-44`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-45" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p45(data):
-    # Reference implementation
-    return data
+def debounce_notifications(timestamps, window):
+    if window < 0:
+        raise ValueError("window must be non-negative")
+    if not timestamps:
+        return []
+    sent = [timestamps[0]]
+    for t in timestamps[1:]:
+        if t - sent[-1] >= window:
+            sent.append(t)
+    return sent
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+Debouncing (send after a quiet gap since the last sent event) is a distinct pattern from rate limiting (a token-bucket cap on throughput) -- debouncing collapses a burst down to its first event, while a rate limiter instead spreads allowed events out over time regardless of how they cluster.
 
 </Solution>

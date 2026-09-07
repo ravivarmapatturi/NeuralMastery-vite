@@ -1,31 +1,37 @@
 ---
-placeholder: true
-title: "Practice: Multimodal AI Module 42: Problem 472"
+title: "Practice: Aspect-Ratio-Preserving Image Resize"
 sidebar_position: 472
-description: "Curriculum Problem 472 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI."
-difficulty: medium
+description: "Resize an image so its larger dimension hits a target size while preserving aspect ratio -- standard vision-model preprocessing."
+difficulty: easy
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Multimodal AI Module 42: Problem 472
+# Aspect-Ratio-Preserving Image Resize
 
-**Rank #472** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #472** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-41`.
+Implement `aspect_preserving_resize(width, height, max_dimension)`, the aspect-ratio-preserving resize every vision model's preprocessing pipeline runs before an image reaches a CNN or ViT -- distorting an image's proportions throws away real information the model was trained to expect. Prerequisite: `agents-mcp-systems-prob-41`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-42" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p42(data):
-    # Reference implementation
-    return data
+def aspect_preserving_resize(width, height, max_dimension):
+    if width <= 0 or height <= 0 or max_dimension <= 0:
+        raise ValueError("width, height, and max_dimension must be positive")
+    if width >= height:
+        new_w = max_dimension
+        new_h = round(height * max_dimension / width)
+    else:
+        new_h = max_dimension
+        new_w = round(width * max_dimension / height)
+    return (new_w, new_h)
 ```
 
-This problem tests fundamental skills in Multimodal AI.
+This is the same "letterbox to a max side length" resize used before feeding an image into most vision models -- the model then typically pads or crops the shorter side to reach a fixed square input, but that padding step is separate from (and downstream of) this proportional scaling.
 
 </Solution>

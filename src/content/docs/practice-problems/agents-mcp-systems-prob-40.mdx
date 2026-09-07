@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Distributed systems Module 40: Problem 470"
+title: "Practice: Find Replica Divergence for Anti-Entropy Repair"
 sidebar_position: 470
-description: "Curriculum Problem 470 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems."
+description: "Find which keys two replicas disagree on -- the divergence-detection step behind anti-entropy repair in eventually-consistent stores."
 difficulty: medium
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,23 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Distributed systems Module 40: Problem 470
+# Find Replica Divergence for Anti-Entropy Repair
 
 **Rank #470** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-39`.
+Implement `find_replica_divergence(replica_a, replica_b)`, the divergence-detection step behind anti-entropy repair -- the background process a Dynamo-style eventually-consistent store runs to find and reconcile keys where two replicas have drifted apart. Prerequisite: `agents-mcp-systems-prob-39`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-40" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p40(data):
-    # Reference implementation
-    return data
+def find_replica_divergence(replica_a, replica_b):
+    keys = set(replica_a) | set(replica_b)
+    diff = [k for k in keys if replica_a.get(k) != replica_b.get(k)]
+    return sorted(diff)
 ```
 
-This problem tests fundamental skills in Distributed systems.
+A real anti-entropy process uses a Merkle tree instead of comparing every key directly, so two replicas can find their point of divergence by comparing O(log n) hash values instead of the full keyspace -- but the thing being detected is exactly what this function computes directly: which keys actually disagree.
 
 </Solution>

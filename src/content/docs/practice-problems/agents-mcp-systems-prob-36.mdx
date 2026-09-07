@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: RAG Module 36: Problem 466"
+title: "Practice: Merge Overlapping Retrieved Chunk Ranges"
 sidebar_position: 466
-description: "Curriculum Problem 466 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval."
+description: "Merge overlapping character ranges from the same source document -- avoiding redundant, overlapping RAG context fragments."
 difficulty: medium
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,33 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# RAG Module 36: Problem 466
+# Merge Overlapping Retrieved Chunk Ranges
 
 **Rank #466** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-35`.
+Implement `merge_overlapping_ranges(ranges)`, the interval-merging pass a RAG pipeline runs when multiple retrieved chunks come from the same source document and overlap -- merging their character ranges first means re-fetching one continuous span of real context instead of feeding the LLM several redundant fragments. Prerequisite: `agents-mcp-systems-prob-35`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-36" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p36(data):
-    # Reference implementation
-    return data
+def merge_overlapping_ranges(ranges):
+    if not ranges:
+        return []
+    for s, e in ranges:
+        if e <= s:
+            raise ValueError("each range must have end > start")
+    sorted_ranges = sorted(ranges, key=lambda r: r[0])
+    merged = [list(sorted_ranges[0])]
+    for s, e in sorted_ranges[1:]:
+        if s <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], e)
+        else:
+            merged.append([s, e])
+    return [tuple(r) for r in merged]
 ```
 
-This problem tests fundamental skills in RAG / information retrieval.
+This is the classic "merge intervals" algorithm, applied here to real RAG chunk spans -- the same core pattern (sort, then linear-scan-and-merge) shows up any time overlapping ranges from independent sources need to be collapsed into non-overlapping coverage.
 
 </Solution>

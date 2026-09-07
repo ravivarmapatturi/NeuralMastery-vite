@@ -4539,6 +4539,716 @@ def jaccard_relevance(query, chunk):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  // --- Agents, MCP & Systems batch 3 (ranks 461-475) -- same real-content
+  // pattern as batches 1-2: hand-written functions, every
+  // testCase.expectedOutput computed by actually running the reference
+  // implementation.
+  'agents-mcp-systems-prob-31': {
+    id: 'agents-mcp-systems-prob-31',
+    title: 'Render an MCP Prompt Template',
+    difficulty: 'easy',
+    topic: 'Model Context Protocol',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'render_mcp_prompt',
+    functionSignature: 'render_mcp_prompt(template: str, arguments: dict[str, str]) -> str',
+    starterCode: `import re
+
+def render_mcp_prompt(template, arguments):
+    """Substitute every {{variable}} placeholder in template with
+    arguments[variable]. Raise ValueError if a placeholder's variable is
+    missing from arguments."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the template-rendering step behind MCP "prompts" -- the third core MCP primitive alongside tools and resources, letting a server expose reusable, parameterized prompt templates a client fills in with real arguments before sending to an LLM.',
+    taskDescription: 'Implement `render_mcp_prompt(template, arguments)`. Replace every `{{variable}}` placeholder in `template` with `str(arguments[variable])`. Raise `ValueError` if any placeholder\'s variable name is not a key in `arguments`.',
+    constraints: [
+      'A placeholder is exactly `{{name}}` where `name` is one or more word characters (letters, digits, underscore).',
+      'Must raise ValueError if a placeholder references a variable not present in `arguments`.',
+      'A template with no placeholders is returned unchanged.',
+      'Every occurrence of a placeholder is replaced, not just the first.',
+    ],
+    hints: {
+      small: 'A regex substitution with a replacement FUNCTION (not a plain string) lets you look up each match individually: `re.sub(r"\\{\\{(\\w+)\\}\\}", repl, template)`.',
+      strong: 'Inside the replacement function, raise ValueError immediately if the captured variable name is not in `arguments`; otherwise return `str(arguments[name])`.',
+      concept: 'MCP prompts exist precisely because a raw prompt string checked into a server\'s code is not reusable across contexts -- the server declares named arguments, and the client (or the user, via an MCP-aware UI) supplies real values at call time, exactly like this rendering step.',
+    },
+    conceptConnections: [
+      { title: 'MCP Protocol Deep Dive', route: '/docs/agents/mcp/protocol-deep-dive', description: 'Prompts are one of MCP\'s three core primitives, alongside tools and resources' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Two Placeholders', input: { template: 'Summarize this {{topic}} for a {{audience}} audience.', arguments: { topic: 'quantum computing', audience: 'beginner' } }, expectedOutput: 'Summarize this quantum computing for a beginner audience.', hidden: false },
+      { id: 'no-placeholders', label: 'No Placeholders', input: { template: 'No placeholders here.', arguments: {} }, expectedOutput: 'No placeholders here.', hidden: false },
+      { id: 'missing-argument', label: 'Missing Argument', input: { template: 'Hello {{name}}!', arguments: {} }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-32': {
+    id: 'agents-mcp-systems-prob-32',
+    title: 'Query a Staged Rollout Traffic Schedule',
+    difficulty: 'medium',
+    topic: 'MLOps & Deployment',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'traffic_percentage_at',
+    functionSignature: 'traffic_percentage_at(schedule: list[tuple[float, float]], query_time: float) -> float',
+    starterCode: `def traffic_percentage_at(schedule, query_time):
+    """schedule is a list of (time, percentage) staged-rollout steps.
+    Return the percentage in effect at query_time: the percentage of the
+    LATEST step whose time is <= query_time. Raise ValueError if schedule
+    is empty, any percentage is outside [0, 100], or query_time is before
+    every step's time."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the step-function lookup behind a time-staged (blue-green) rollout schedule -- unlike a per-request hash-based canary split, a staged rollout ramps traffic to a new version at PLANNED points in time, and this is the query that answers "what percentage is live right now?"',
+    taskDescription: 'Implement `traffic_percentage_at(schedule, query_time)`. `schedule` is a list of `(time, percentage)` steps (not necessarily given in order). Return the percentage from the step with the LATEST time that is `<= query_time`. Raise `ValueError` if `schedule` is empty, any percentage is outside `[0, 100]`, or `query_time` precedes every step.',
+    constraints: [
+      'Must raise ValueError if schedule is empty.',
+      'Must raise ValueError if any percentage in the schedule is outside [0, 100].',
+      'Must raise ValueError if query_time is earlier than every step\'s time (no step yet in effect).',
+      'The schedule may be given out of time order -- sort it first.',
+    ],
+    hints: {
+      small: 'Sort `schedule` by time first, since it is not guaranteed to already be in order.',
+      strong: 'Scan the sorted schedule and keep updating `current = pct` for every step whose time is `<= query_time`; stop (or just let the loop finish naturally) once a step\'s time exceeds query_time.',
+      concept: 'This is a step function, not interpolation -- traffic jumps discretely at each scheduled time rather than ramping smoothly, which is exactly how a real blue-green/staged rollout is usually operated (a human or automation flips the percentage at discrete checkpoints, not continuously).',
+    },
+    conceptConnections: [
+      { title: 'Deployment Strategies', route: '/docs/mlops/deployment-strategies', description: 'Staged/blue-green rollouts are a real deployment strategy distinct from per-request canary hashing' },
+    ],
+    testCases: [
+      { id: 'early', label: 'Early in the Rollout', input: { schedule: [[0, 0], [60, 10], [180, 50], [300, 100]], query_time: 30 }, expectedOutput: 0, hidden: false },
+      { id: 'mid', label: 'Mid-Rollout', input: { schedule: [[0, 0], [60, 10], [180, 50], [300, 100]], query_time: 200 }, expectedOutput: 50, hidden: false },
+      { id: 'exact-step', label: 'Exactly at a Step Time', input: { schedule: [[0, 0], [60, 10], [180, 50], [300, 100]], query_time: 300 }, expectedOutput: 100, hidden: false },
+      { id: 'after-last', label: 'After the Last Step', input: { schedule: [[0, 0], [60, 10], [180, 50], [300, 100]], query_time: 1000 }, expectedOutput: 100, hidden: true },
+      { id: 'before-first', label: 'Before the First Step', input: { schedule: [[0, 0], [60, 10], [180, 50], [300, 100]], query_time: -5 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-33': {
+    id: 'agents-mcp-systems-prob-33',
+    title: 'Determine a Two-Phase Commit Outcome',
+    difficulty: 'easy',
+    topic: 'Distributed Systems',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'two_phase_commit_outcome',
+    functionSignature: 'two_phase_commit_outcome(votes: list[bool | None]) -> str',
+    starterCode: `def two_phase_commit_outcome(votes):
+    """votes has one entry per participant: True (yes), False (no), or
+    None (timed out, treated as a no). Return "commit" only if every
+    participant voted True, else "abort". Raise ValueError if votes is
+    empty."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the coordinator\'s final decision rule in Two-Phase Commit -- the classic distributed transaction protocol where every participant must unanimously agree before a transaction is allowed to commit, and any single "no" (including a timeout) forces the whole transaction to abort.',
+    taskDescription: 'Implement `two_phase_commit_outcome(votes)`. Return `"commit"` only if every entry in `votes` is exactly `True`; otherwise return `"abort"`. Raise `ValueError` if `votes` is empty.',
+    constraints: [
+      'Must raise ValueError if votes is empty.',
+      '"commit" requires every vote to be True -- a single False or None forces "abort".',
+      'None represents a timed-out participant and must be treated the same as an explicit no.',
+    ],
+    hints: {
+      small: '`all(v is True for v in votes)` is exactly the unanimous-yes check -- using `is True` rather than plain truthiness matters since `None` is falsy but so is `False`, and both must count as a no here.',
+      strong: 'This needs no loop of your own beyond the `all(...)` generator expression -- the empty-votes check is the only other branch.',
+      concept: 'A coordinator timeout is deliberately treated identically to an explicit "no" -- 2PC has no way to distinguish "the participant is slow" from "the participant failed," so the only SAFE assumption when a vote never arrives is to abort, never to optimistically commit.',
+    },
+    conceptConnections: [
+      { title: 'Networking & Distributed Systems', route: '/docs/cs-fundamentals/networking-and-distributed-systems', description: 'Two-Phase Commit is the classic distributed transaction protocol requiring unanimous participant agreement' },
+    ],
+    testCases: [
+      { id: 'all-yes', label: 'Unanimous Yes', input: { votes: [true, true, true] }, expectedOutput: 'commit', hidden: false },
+      { id: 'one-no', label: 'One Participant Votes No', input: { votes: [true, false, true] }, expectedOutput: 'abort', hidden: false },
+      { id: 'timeout', label: 'A Participant Times Out', input: { votes: [true, null, true] }, expectedOutput: 'abort', hidden: false, description: 'A timeout (None/null) is treated the same as an explicit no' },
+      { id: 'empty-votes', label: 'No Participants', input: { votes: [] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-34': {
+    id: 'agents-mcp-systems-prob-34',
+    title: 'IVF Coarse Quantizer: Assign a Vector to Its Cell',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'ivf_assign_cell',
+    functionSignature: 'ivf_assign_cell(query: list[float], centroids: list[list[float]]) -> int',
+    starterCode: `import math
+
+def ivf_assign_cell(query, centroids):
+    """Return the index of the centroid closest to query by Euclidean
+    distance (ties broken by lower index). Raise ValueError if centroids
+    is empty."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the coarse quantizer step of an IVF (Inverted File) vector index -- before ever comparing a query against the full dataset, IVF first assigns it to its nearest cluster centroid ("cell"), so the actual similarity search only has to scan the (much smaller) set of vectors already assigned to that cell.',
+    taskDescription: 'Implement `ivf_assign_cell(query, centroids)`. Return the index of the centroid in `centroids` closest to `query` by Euclidean distance, ties broken by the lower index. Raise `ValueError` if `centroids` is empty.',
+    constraints: [
+      'Must raise ValueError if centroids is empty.',
+      'Distance is plain Euclidean distance, not cosine similarity.',
+      'Ties (equal distance to two centroids) are broken by the lower centroid index.',
+    ],
+    hints: {
+      small: 'Compute the Euclidean distance from `query` to every centroid, tracking the running minimum and its index as you go.',
+      strong: 'Only update the best index when a distance is STRICTLY less than the current best -- that naturally keeps the first (lowest-index) centroid on a tie, since a later equal distance never satisfies "strictly less."',
+      concept: 'This single nearest-centroid assignment is what makes IVF an APPROXIMATE index: a query only ever gets compared against vectors in its own assigned cell (plus, in a real implementation, a configurable number of nearby cells for `nprobe` > 1), so a true nearest neighbor sitting in a different cell can be missed entirely -- the tradeoff that buys IVF its large speedup over brute-force search.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'IVF (Inverted File) indexing partitions vectors into cells via a coarse quantizer, the technique this problem implements' },
+    ],
+    testCases: [
+      { id: 'nearest-origin', label: 'Nearest to Origin Cluster', input: { query: [1, 1], centroids: [[0, 0], [10, 10], [5, 0]] }, expectedOutput: 0, hidden: false },
+      { id: 'nearest-far-cluster', label: 'Nearest to a Far Cluster', input: { query: [9, 9], centroids: [[0, 0], [10, 10], [5, 0]] }, expectedOutput: 1, hidden: false },
+      { id: 'nearest-third', label: 'Nearest to the Third Centroid', input: { query: [5, 1], centroids: [[0, 0], [10, 10], [5, 0]] }, expectedOutput: 2, hidden: false },
+      { id: 'empty-centroids', label: 'No Centroids', input: { query: [1, 1], centroids: [] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-35': {
+    id: 'agents-mcp-systems-prob-35',
+    title: 'Non-Maximum Suppression for Detection Boxes',
+    difficulty: 'hard',
+    topic: 'Multimodal AI',
+    estimatedTime: '25–30 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'non_max_suppression',
+    functionSignature: 'non_max_suppression(boxes: list[list[float]], scores: list[float], iou_threshold: float) -> list[int]',
+    starterCode: `def non_max_suppression(boxes, scores, iou_threshold):
+    """Each box is [x1, y1, x2, y2]. Greedily keep the highest-scoring
+    remaining box, suppress every not-yet-suppressed box whose IoU with
+    it is >= iou_threshold, and repeat until every box is either kept or
+    suppressed. Return the indices of kept boxes, in the order they were
+    kept (highest score first). Raise ValueError if boxes and scores
+    differ in length, or iou_threshold is outside [0, 1]."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Non-Maximum Suppression, the algorithm every real object detector (YOLO, Faster R-CNN, DETR included) runs as its final post-processing step to collapse many overlapping, redundant detections of the SAME object down to one confident box.',
+    taskDescription: 'Implement `non_max_suppression(boxes, scores, iou_threshold)`. Process boxes in descending score order. For each not-yet-suppressed box, keep it, then suppress every remaining not-yet-suppressed box whose IoU with it is `>= iou_threshold`. Return the kept indices, in the order they were kept.',
+    constraints: [
+      'Must raise ValueError if boxes and scores have different lengths.',
+      'Must raise ValueError if iou_threshold is outside [0, 1].',
+      'Boxes are processed strictly in descending score order.',
+      'Once a box is suppressed, it can never itself suppress another box or be kept.',
+    ],
+    hints: {
+      small: 'First compute a processing order: `sorted(range(len(boxes)), key=lambda i: -scores[i])`.',
+      strong: 'Walk that order with a `suppressed` set: skip an index already in the set; otherwise keep it, then mark every other not-yet-suppressed box with IoU >= threshold against it as suppressed. You will need an IoU helper (same formula as the standalone bounding-box IoU problem).',
+      concept: 'NMS is greedy and score-driven on purpose -- the highest-confidence detection in a cluster of overlapping boxes almost always represents the real object best, so suppressing its lower-confidence overlapping neighbors (rather than, say, averaging them) is what turns a raw detector\'s dense box proposals into one clean detection per object.',
+    },
+    conceptConnections: [
+      { title: 'Vision Tasks & Models', route: '/docs/computer-vision/vision-tasks-and-models', description: 'NMS is the standard post-processing step in every real object detection pipeline' },
+    ],
+    testCases: [
+      {
+        id: 'basic',
+        label: 'Two Clusters of Overlapping Boxes',
+        input: { boxes: [[0, 0, 10, 10], [1, 1, 11, 11], [20, 20, 30, 30], [0, 0, 9, 9]], scores: [0.9, 0.8, 0.95, 0.7], iou_threshold: 0.5 },
+        expectedOutput: [2, 0],
+        hidden: false,
+        description: 'Box 2 (score 0.95) is isolated and always kept; box 0 (score 0.9) suppresses boxes 1 and 3, which overlap it heavily',
+      },
+      {
+        id: 'high-threshold',
+        label: 'High Threshold Keeps Nearly Everything',
+        input: { boxes: [[0, 0, 10, 10], [1, 1, 11, 11], [20, 20, 30, 30], [0, 0, 9, 9]], scores: [0.9, 0.8, 0.95, 0.7], iou_threshold: 0.99 },
+        expectedOutput: [2, 0, 1, 3],
+        hidden: false,
+        description: 'No pair of boxes overlaps at IoU >= 0.99, so nothing gets suppressed',
+      },
+      { id: 'length-mismatch', label: 'Boxes and Scores Length Mismatch', input: { boxes: [[0, 0, 10, 10]], scores: [], iou_threshold: 0.5 }, expectError: 'ValueError', hidden: true },
+      { id: 'bad-threshold', label: 'Threshold Out of Range', input: { boxes: [[0, 0, 1, 1]], scores: [0.5], iou_threshold: 1.5 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-36': {
+    id: 'agents-mcp-systems-prob-36',
+    title: 'Merge Overlapping Retrieved Chunk Ranges',
+    difficulty: 'medium',
+    topic: 'Retrieval-Augmented Generation',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'merge_overlapping_ranges',
+    functionSignature: 'merge_overlapping_ranges(ranges: list[tuple[int, int]]) -> list[tuple[int, int]]',
+    starterCode: `def merge_overlapping_ranges(ranges):
+    """Each range is (start, end) character offsets of a retrieved chunk
+    within the same source document. Merge any ranges that overlap or
+    touch (one's start <= another's end) into a single combined range.
+    Return the merged ranges sorted by start. Raise ValueError if any
+    range has end <= start."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the interval-merging pass a RAG pipeline runs when multiple retrieved chunks come from the SAME source document and overlap -- merging their character ranges first means re-fetching one continuous span of real context instead of feeding the LLM several redundant, overlapping fragments.',
+    taskDescription: 'Implement `merge_overlapping_ranges(ranges)`. Sort ranges by start, then merge any two that overlap or touch (the next range\'s start is `<=` the current merged range\'s end) into one combined range. Return the final merged ranges, sorted by start. Raise `ValueError` if any input range has `end <= start`.',
+    constraints: [
+      'Must raise ValueError if any range has end <= start (a degenerate or backwards range).',
+      'Ranges that only TOUCH (one\'s start equals another\'s end) are merged, not left separate.',
+      'Input ranges may be given in any order -- sort by start first.',
+      'An empty input returns an empty list.',
+    ],
+    hints: {
+      small: 'Sort ranges by start, then walk through them keeping a "current merged range" you extend or close off as you go.',
+      strong: 'For each next range `(s, e)`: if `s <= current_end`, extend the current range to `max(current_end, e)`; otherwise the current range is finished -- append it and start a new current range at `(s, e)`.',
+      concept: 'This is the classic "merge intervals" algorithm, applied here to real RAG chunk spans -- the same core pattern (sort, then linear-scan-and-merge) shows up any time overlapping ranges from independent sources need to be collapsed into non-overlapping coverage.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval-Augmented Generation', route: '/docs/llms-genai/rag', description: 'Merging overlapping chunk spans from the same document avoids feeding redundant context to the LLM' },
+    ],
+    testCases: [
+      { id: 'chain-merge', label: 'Chain of Overlapping Ranges', input: { ranges: [[0, 500], [400, 900], [1000, 1200]] }, expectedOutput: [[0, 900], [1000, 1200]], hidden: false, description: 'The first two ranges overlap (400 <= 500) and merge; the third is separate' },
+      { id: 'no-overlap', label: 'No Overlap at All', input: { ranges: [[0, 100], [200, 300]] }, expectedOutput: [[0, 100], [200, 300]], hidden: false },
+      { id: 'unsorted-input', label: 'Input Given Out of Order', input: { ranges: [[500, 900], [0, 500]] }, expectedOutput: [[0, 900]], hidden: false, description: 'Ranges touch exactly at 500 -- still merged even though input was reverse-sorted' },
+      { id: 'empty', label: 'No Ranges', input: { ranges: [] }, expectedOutput: [], hidden: true },
+      { id: 'degenerate', label: 'Degenerate Range', input: { ranges: [[100, 50]] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-37': {
+    id: 'agents-mcp-systems-prob-37',
+    title: 'Validate an Agent Plan\'s Dependency Order',
+    difficulty: 'hard',
+    topic: 'Agent Orchestration',
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'validate_plan_order',
+    functionSignature: 'validate_plan_order(steps: list[dict]) -> str | None',
+    starterCode: `def validate_plan_order(steps):
+    """Each step is {"id": str, "depends_on": list[str]}. Verify steps
+    are ordered so every step's dependencies appear earlier in the list.
+    Return the id of the FIRST step whose dependencies are not yet
+    satisfied, or None if the whole plan is validly ordered. Raise
+    ValueError if any depends_on references an id that never appears
+    anywhere in steps."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the dependency-order validator a plan-and-execute agent needs before running a multi-step plan -- an LLM-generated plan can name steps in the wrong order or reference a step that does not exist, and executing it blindly would run a step before the input it depends on is ready.',
+    taskDescription: 'Implement `validate_plan_order(steps)`. First check every `depends_on` id actually appears as some step\'s `"id"` anywhere in `steps` (raise `ValueError` if not). Then walk `steps` in order, tracking which ids have been "completed" so far; return the `id` of the first step whose `depends_on` includes an id not yet completed. Return `None` if the plan is fully validly ordered.',
+    constraints: [
+      'Must raise ValueError if any depends_on id never appears as a step id anywhere in the plan (a real, structural error, checked before ordering).',
+      'A step depending on itself, or on a LATER step, is the ordering violation this function detects.',
+      'Return the id of the FIRST offending step, not all of them.',
+      'An empty steps list, or a plan with no dependencies at all, returns None.',
+    ],
+    hints: {
+      small: 'First collect the full set of valid ids (`{s["id"] for s in steps}`) and check every dependency against it before doing anything else.',
+      strong: 'Then do a second pass with a running `completed` set: for each step, check its dependencies against `completed` BEFORE adding the step\'s own id to `completed` -- a step cannot satisfy its own dependency.',
+      concept: 'This is a lightweight, order-checking companion to a full topological sort -- rather than computing a valid order from scratch, it validates whether an ALREADY-PROPOSED order (e.g. one an LLM planner produced) actually respects the plan\'s own declared dependencies, which is the more common real check needed right before execution.',
+    },
+    conceptConnections: [
+      { title: 'Plan-and-Execute Agents', route: '/docs/agents/plan-and-execute', description: 'Dependency validation is a real safety check before executing a multi-step generated plan' },
+    ],
+    testCases: [
+      {
+        id: 'valid-order',
+        label: 'Correctly Ordered Plan',
+        input: { steps: [{ id: 'fetch_data', depends_on: [] }, { id: 'clean_data', depends_on: ['fetch_data'] }, { id: 'train_model', depends_on: ['clean_data'] }] },
+        expectedOutput: null,
+        hidden: false,
+      },
+      {
+        id: 'out-of-order',
+        label: 'A Step Runs Before Its Dependency',
+        input: { steps: [{ id: 'train_model', depends_on: ['clean_data'] }, { id: 'fetch_data', depends_on: [] }, { id: 'clean_data', depends_on: ['fetch_data'] }] },
+        expectedOutput: 'train_model',
+        hidden: false,
+        description: 'train_model depends on clean_data, which has not run yet at that point in the list',
+      },
+      { id: 'unknown-dependency', label: 'Dependency on a Nonexistent Step', input: { steps: [{ id: 'a', depends_on: ['nonexistent'] }] }, expectError: 'ValueError', hidden: true },
+      { id: 'empty-plan', label: 'Empty Plan', input: { steps: [] }, expectedOutput: null, hidden: true },
+      { id: 'self-dependency', label: 'Step Depends on Itself', input: { steps: [{ id: 'a', depends_on: ['a'] }] }, expectedOutput: 'a', hidden: true, description: 'A step can never satisfy a dependency on itself within the same pass' },
+      {
+        id: 'multi-dependency-violation',
+        label: 'One of Two Dependencies Not Yet Satisfied',
+        input: { steps: [{ id: 'x', depends_on: [] }, { id: 'y', depends_on: ['x', 'z'] }, { id: 'z', depends_on: ['x'] }] },
+        expectedOutput: 'y',
+        hidden: true,
+        description: 'y depends on both x (satisfied) and z (not yet run) -- z runs after y in this order',
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-38': {
+    id: 'agents-mcp-systems-prob-38',
+    title: 'Cursor-Based Pagination for an MCP Tool List',
+    difficulty: 'easy',
+    topic: 'Model Context Protocol',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'paginate_tools',
+    functionSignature: 'paginate_tools(tools: list[str], page_size: int, cursor: str | None) -> tuple[list[str], str | None]',
+    starterCode: `def paginate_tools(tools, page_size, cursor):
+    """cursor is None for the first page, else the opaque cursor string
+    returned by the previous call. Return (page_items, next_cursor),
+    where next_cursor is None once there are no more items. Raise
+    ValueError if page_size <= 0 or cursor does not correspond to a valid
+    position."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement cursor-based pagination for an MCP `tools/list` response -- real MCP servers with many tools paginate list results using an opaque cursor rather than returning everything (or a numeric offset) at once, and a client has to follow that cursor correctly to enumerate every tool.',
+    taskDescription: 'Implement `paginate_tools(tools, page_size, cursor)`. Treat `cursor` as `None` for the first page, or the string form of a starting index for a later page. Return `(tools[start:start+page_size], next_cursor)`, where `next_cursor` is the string form of the next start index, or `None` if the page reaches the end of `tools`.',
+    constraints: [
+      'Must raise ValueError if page_size <= 0.',
+      'Must raise ValueError if cursor does not parse to a valid position (negative, or past the end of tools).',
+      'cursor=None always means "start from the beginning."',
+      'next_cursor is None exactly when the returned page reaches the end of the list.',
+    ],
+    hints: {
+      small: 'Convert `cursor` to a start index with `int(cursor) if cursor is not None else 0`.',
+      strong: 'Slice `tools[start:start+page_size]` for the page; the next cursor is `str(start + page_size)` UNLESS that value is already `>= len(tools)`, in which case it is None.',
+      concept: 'A cursor (rather than a plain page number) is what lets a paginated API stay correct even if the underlying list changes between requests -- the client never needs to know or compute an index itself, only pass back exactly what the server gave it.',
+    },
+    conceptConnections: [
+      { title: 'MCP Protocol Deep Dive', route: '/docs/agents/mcp/protocol-deep-dive', description: 'MCP list endpoints (tools/resources/prompts) support cursor-based pagination for large result sets' },
+    ],
+    testCases: [
+      { id: 'first-page', label: 'First Page', input: { tools: ['alpha', 'beta', 'gamma', 'delta', 'epsilon'], page_size: 2, cursor: null }, expectedOutput: [['alpha', 'beta'], '2'], hidden: false },
+      { id: 'middle-page', label: 'Middle Page', input: { tools: ['alpha', 'beta', 'gamma', 'delta', 'epsilon'], page_size: 2, cursor: '2' }, expectedOutput: [['gamma', 'delta'], '4'], hidden: false },
+      { id: 'last-page', label: 'Last Page -- No Next Cursor', input: { tools: ['alpha', 'beta', 'gamma', 'delta', 'epsilon'], page_size: 2, cursor: '4' }, expectedOutput: [['epsilon'], null], hidden: false },
+      { id: 'bad-page-size', label: 'Non-Positive Page Size', input: { tools: ['a'], page_size: 0, cursor: null }, expectError: 'ValueError', hidden: true },
+      { id: 'cursor-past-end', label: 'Cursor Past the End', input: { tools: ['alpha', 'beta', 'gamma', 'delta', 'epsilon'], page_size: 2, cursor: '99' }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-39': {
+    id: 'agents-mcp-systems-prob-39',
+    title: 'Compute an Autoscaling Instance Target',
+    difficulty: 'easy',
+    topic: 'MLOps & Deployment',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'compute_autoscale_target',
+    functionSignature: 'compute_autoscale_target(request_rate: float, target_per_instance: float, min_instances: int, max_instances: int) -> int',
+    starterCode: `import math
+
+def compute_autoscale_target(request_rate, target_per_instance, min_instances, max_instances):
+    """Return the number of instances needed to handle request_rate at
+    target_per_instance requests per instance, rounded UP, then clamped
+    to [min_instances, max_instances]. Raise ValueError if
+    target_per_instance <= 0, request_rate < 0, min_instances <= 0, or
+    max_instances < min_instances."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the core arithmetic behind a real autoscaler (the same shape as a Kubernetes Horizontal Pod Autoscaler target calculation) -- given current load and a per-instance capacity target, compute how many instances should be running right now.',
+    taskDescription: 'Implement `compute_autoscale_target(request_rate, target_per_instance, min_instances, max_instances)`. Compute `ceil(request_rate / target_per_instance)`, then clamp the result to `[min_instances, max_instances]`.',
+    constraints: [
+      'Must raise ValueError if target_per_instance <= 0.',
+      'Must raise ValueError if request_rate < 0.',
+      'Must raise ValueError if min_instances <= 0 or max_instances < min_instances.',
+      'The raw computed instance count is always rounded UP (ceiling), then clamped.',
+    ],
+    hints: {
+      small: '`math.ceil(request_rate / target_per_instance)` gives the raw (unclamped) instance count.',
+      strong: 'Clamp with `max(min_instances, min(raw, max_instances))` -- clamping to the upper bound first and the lower bound second (or vice versa) both work as long as both bounds are applied.',
+      concept: 'Rounding UP (not to the nearest integer) is deliberate -- an autoscaler that rounds down or to-nearest can under-provision and let requests queue up, while rounding up trades a small amount of extra idle capacity for never being caught short.',
+    },
+    conceptConnections: [
+      { title: 'Kubernetes for ML', route: '/docs/mlops/kubernetes', description: 'Horizontal autoscaling computes an instance/replica target from current load, the calculation this problem implements' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Basic Scale-Up', input: { request_rate: 950, target_per_instance: 100, min_instances: 1, max_instances: 20 }, expectedOutput: 10, hidden: false },
+      { id: 'clamped-to-min', label: 'Clamped to the Minimum', input: { request_rate: 50, target_per_instance: 100, min_instances: 3, max_instances: 20 }, expectedOutput: 3, hidden: false, description: 'ceil(50/100)=1, but min_instances=3 forces the floor' },
+      { id: 'clamped-to-max', label: 'Clamped to the Maximum', input: { request_rate: 5000, target_per_instance: 100, min_instances: 1, max_instances: 20 }, expectedOutput: 20, hidden: false, description: 'ceil(5000/100)=50, capped at max_instances=20' },
+      { id: 'negative-rate', label: 'Negative Request Rate', input: { request_rate: -1, target_per_instance: 100, min_instances: 1, max_instances: 10 }, expectError: 'ValueError', hidden: true },
+      { id: 'zero-target', label: 'Non-Positive Target', input: { request_rate: 100, target_per_instance: 0, min_instances: 1, max_instances: 10 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-40': {
+    id: 'agents-mcp-systems-prob-40',
+    title: 'Find Replica Divergence for Anti-Entropy Repair',
+    difficulty: 'medium',
+    topic: 'Distributed Systems',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'find_replica_divergence',
+    functionSignature: 'find_replica_divergence(replica_a: dict[str, str], replica_b: dict[str, str]) -> list[str]',
+    starterCode: `def find_replica_divergence(replica_a, replica_b):
+    """Return the sorted list of keys where replica_a and replica_b
+    disagree -- either the value differs, or the key is present in only
+    one replica. An empty result means the replicas are fully in sync."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the divergence-detection step behind anti-entropy repair -- the background process a Dynamo-style eventually-consistent store runs to find and reconcile keys where two replicas have drifted apart (a real system does this comparison efficiently with Merkle trees over large keyspaces; this problem is the direct, small-scale version of exactly what that comparison is checking for).',
+    taskDescription: 'Implement `find_replica_divergence(replica_a, replica_b)`. Return the sorted list of keys (over the union of both replicas\' keys) where `replica_a.get(key) != replica_b.get(key)` -- this covers both a differing value and a key present in only one replica.',
+    constraints: [
+      'A key present in only one replica counts as diverged (its "missing" value on the other side is None, which never equals a real value).',
+      'The result is sorted alphabetically.',
+      'Two fully identical replicas return an empty list.',
+      'Two entirely empty replicas return an empty list, not an error.',
+    ],
+    hints: {
+      small: 'Take the union of both replicas\' keys with `set(replica_a) | set(replica_b)`.',
+      strong: 'For each key in that union, compare `replica_a.get(key)` against `replica_b.get(key)` -- `.get()` naturally returns `None` for a key missing from one side, which correctly never equals any real stored value.',
+      concept: 'A real anti-entropy process uses a Merkle tree instead of comparing every key directly, so two replicas can find their point of divergence by comparing O(log n) hash values instead of the full keyspace -- but the thing being detected is exactly what this function computes directly: which keys actually disagree.',
+    },
+    conceptConnections: [
+      { title: 'Networking & Distributed Systems', route: '/docs/cs-fundamentals/networking-and-distributed-systems', description: 'Anti-entropy repair is how eventually-consistent distributed stores reconcile replicas that have drifted apart' },
+    ],
+    testCases: [
+      { id: 'one-key-diverged', label: 'One Key Has a Different Value', input: { replica_a: { a: '1', b: '2', c: '3' }, replica_b: { a: '1', b: '9', c: '3' } }, expectedOutput: ['b'], hidden: false },
+      { id: 'in-sync', label: 'Fully In Sync', input: { replica_a: { a: '1' }, replica_b: { a: '1' } }, expectedOutput: [], hidden: false },
+      { id: 'missing-key', label: 'A Key Present on Only One Side', input: { replica_a: { a: '1' }, replica_b: { a: '1', b: '2' } }, expectedOutput: ['b'], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-41': {
+    id: 'agents-mcp-systems-prob-41',
+    title: 'Estimate a Vector Index\'s Memory Footprint',
+    difficulty: 'easy',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'estimate_index_memory_bytes',
+    functionSignature: 'estimate_index_memory_bytes(num_vectors: int, dimensions: int, bytes_per_element: int, quantization_bits: int | None) -> int',
+    starterCode: `import math
+
+def estimate_index_memory_bytes(num_vectors, dimensions, bytes_per_element, quantization_bits):
+    """Estimate total index memory in bytes. Without quantization, each
+    vector costs dimensions * bytes_per_element bytes. With
+    quantization_bits set, each vector instead costs
+    ceil(dimensions * quantization_bits / 8) bytes. Raise ValueError if
+    num_vectors, dimensions, or bytes_per_element is <= 0, or
+    quantization_bits is given and <= 0."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the back-of-envelope capacity-planning calculation every real vector database deployment needs before provisioning hardware -- "how much RAM does storing N embeddings actually cost," and how much quantization saves versus storing raw float32 vectors.',
+    taskDescription: 'Implement `estimate_index_memory_bytes(num_vectors, dimensions, bytes_per_element, quantization_bits)`. Without quantization (`quantization_bits` is `None`), each vector costs `dimensions * bytes_per_element` bytes. With quantization, each vector instead costs `ceil(dimensions * quantization_bits / 8)` bytes. Multiply by `num_vectors` for the total.',
+    constraints: [
+      'Must raise ValueError if num_vectors, dimensions, or bytes_per_element is <= 0.',
+      'Must raise ValueError if quantization_bits is given (not None) and <= 0.',
+      'quantization_bits=None means unquantized storage, using bytes_per_element directly.',
+      'Quantized bit totals that are not a whole number of bytes round UP (ceiling) to the next byte.',
+    ],
+    hints: {
+      small: 'The unquantized case is a one-line multiplication: `dimensions * bytes_per_element * num_vectors`.',
+      strong: 'For the quantized case, compute bits first (`dimensions * quantization_bits`), convert to bytes with `math.ceil(bits / 8)`, THEN multiply by num_vectors -- rounding per-vector, not on the grand total, matters when bits-per-vector is not a whole number of bytes.',
+      concept: 'Quantization (e.g. 8-bit scalar quantization, or 1-bit binary quantization) is the standard way real vector databases fit far more vectors in the same RAM -- this calculation is exactly the tradeoff a team runs before deciding whether raw float32 storage is even affordable at their target scale.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Memory footprint is a real, first-order capacity-planning constraint for any production vector index' },
+    ],
+    testCases: [
+      { id: 'unquantized', label: 'Unquantized float32 Storage', input: { num_vectors: 1000, dimensions: 768, bytes_per_element: 4, quantization_bits: null }, expectedOutput: 3072000, hidden: false },
+      { id: 'quantized-8bit', label: '8-Bit Scalar Quantization', input: { num_vectors: 1000, dimensions: 768, bytes_per_element: 4, quantization_bits: 8 }, expectedOutput: 768000, hidden: false, description: '4x smaller than unquantized float32 storage' },
+      { id: 'quantized-1bit', label: '1-Bit Binary Quantization', input: { num_vectors: 1000, dimensions: 768, bytes_per_element: 4, quantization_bits: 1 }, expectedOutput: 96000, hidden: false },
+      { id: 'bad-num-vectors', label: 'Non-Positive num_vectors', input: { num_vectors: 0, dimensions: 768, bytes_per_element: 4, quantization_bits: null }, expectError: 'ValueError', hidden: true },
+      { id: 'bad-quantization-bits', label: 'Non-Positive quantization_bits', input: { num_vectors: 1000, dimensions: 768, bytes_per_element: 4, quantization_bits: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-42': {
+    id: 'agents-mcp-systems-prob-42',
+    title: 'Aspect-Ratio-Preserving Image Resize',
+    difficulty: 'easy',
+    topic: 'Multimodal AI',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'aspect_preserving_resize',
+    functionSignature: 'aspect_preserving_resize(width: int, height: int, max_dimension: int) -> tuple[int, int]',
+    starterCode: `def aspect_preserving_resize(width, height, max_dimension):
+    """Return (new_width, new_height) scaled so the LARGER original
+    dimension becomes exactly max_dimension, preserving aspect ratio (the
+    other dimension scales proportionally, rounded to the nearest
+    integer). Raise ValueError if width, height, or max_dimension is
+    <= 0."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the aspect-ratio-preserving resize every vision model\'s preprocessing pipeline runs before an image reaches a CNN or ViT -- distorting an image\'s proportions (stretching it to a fixed square, say) throws away real information the model was trained to expect, so the standard preprocessing step scales proportionally instead.',
+    taskDescription: 'Implement `aspect_preserving_resize(width, height, max_dimension)`. Scale so the LARGER of `width`/`height` becomes exactly `max_dimension`, and the other dimension scales by the same ratio, rounded to the nearest integer.',
+    constraints: [
+      'Must raise ValueError if width, height, or max_dimension is <= 0.',
+      'The LARGER original dimension always becomes exactly max_dimension in the output.',
+      'The smaller dimension is scaled by the same ratio and rounded to the nearest integer.',
+      'A square image (width == height) treats width as the "larger" dimension for the scaling ratio.',
+    ],
+    hints: {
+      small: 'Determine which of width/height is larger (or use width on a tie) -- that one becomes `max_dimension` directly.',
+      strong: 'The scale ratio is `max_dimension / larger_original_dimension`; apply it to the OTHER dimension and round: `round(other_dimension * ratio)`.',
+      concept: 'This is the same "letterbox to a max side length" resize used before feeding an image into most vision models -- the model then typically pads or crops the shorter side to reach a fixed square input, but that padding step is separate from (and downstream of) this proportional scaling.',
+    },
+    conceptConnections: [
+      { title: 'Computer Vision Fundamentals', route: '/docs/computer-vision/vision-fundamentals', description: 'Aspect-preserving resize is a standard image preprocessing step before feeding a model' },
+    ],
+    testCases: [
+      { id: 'landscape', label: 'Landscape Image', input: { width: 1920, height: 1080, max_dimension: 800 }, expectedOutput: [800, 450], hidden: false },
+      { id: 'portrait', label: 'Portrait Image', input: { width: 1080, height: 1920, max_dimension: 800 }, expectedOutput: [450, 800], hidden: false },
+      { id: 'square', label: 'Square Image', input: { width: 500, height: 500, max_dimension: 224 }, expectedOutput: [224, 224], hidden: false },
+      { id: 'bad-width', label: 'Non-Positive Width', input: { width: 0, height: 100, max_dimension: 50 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-43': {
+    id: 'agents-mcp-systems-prob-43',
+    title: 'Score RAG Answer Groundedness',
+    difficulty: 'medium',
+    topic: 'Retrieval-Augmented Generation',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'groundedness_score',
+    functionSignature: 'groundedness_score(answer: str, source_chunks: list[str]) -> float',
+    starterCode: `import re
+
+def groundedness_score(answer, source_chunks):
+    """Tokenize answer into lowercase alphanumeric words, and tokenize
+    the UNION of all source_chunks the same way. Return the fraction of
+    answer's UNIQUE tokens that also appear somewhere in the source
+    vocabulary -- a cheap proxy for "is this answer grounded in the
+    retrieved context, or hallucinating." Raise ValueError if answer has
+    zero tokens."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement a cheap lexical groundedness check -- a real, if simplistic, proxy for the actively-discussed RAG problem of detecting when a generated answer says something the retrieved context never actually supports (hallucination), by asking what fraction of the answer\'s own vocabulary is even present anywhere in the sources.',
+    taskDescription: 'Implement `groundedness_score(answer, source_chunks)`. Tokenize `answer` into a set of lowercase alphanumeric words. Tokenize the UNION of all strings in `source_chunks` the same way, into one combined source vocabulary. Return `|answer_tokens ∩ source_vocabulary| / |answer_tokens|`. Raise `ValueError` if `answer` has zero tokens.',
+    constraints: [
+      'The denominator is the number of UNIQUE tokens in `answer` only -- not the union with the sources (unlike Jaccard similarity).',
+      'source_chunks contributes a single combined vocabulary (the union across all chunks), not a per-chunk score.',
+      'Must raise ValueError if answer tokenizes to zero words.',
+      'An empty source_chunks list is valid and simply yields a score of 0.0 (no source vocabulary to match against).',
+    ],
+    hints: {
+      small: 'Tokenize `answer` once into a set; build the source vocabulary by unioning the token sets of every string in `source_chunks`.',
+      strong: 'The formula is `len(answer_tokens & source_vocab) / len(answer_tokens)` -- note this is NOT symmetric like Jaccard similarity, since the denominator only counts the answer\'s tokens.',
+      concept: 'This score answers a different question than a relevance metric like Jaccard or cosine similarity: it is not "how similar are these two texts," but "how much of what the answer claims can even be traced back to the retrieved context" -- a real (simplified) building block toward automated RAG faithfulness evaluation.',
+    },
+    conceptConnections: [
+      { title: 'LLM/RAG/Agent Evaluation', route: '/docs/ai-evaluation/llm-rag-agent-evaluation', description: 'Groundedness/faithfulness scoring is a real, actively-used category of RAG evaluation metric' },
+    ],
+    testCases: [
+      { id: 'fully-grounded', label: 'Fully Grounded Answer', input: { answer: 'The capital of France is Paris', source_chunks: ['Paris is the capital and largest city of France.'] }, expectedOutput: 1.0, hidden: false },
+      { id: 'partially-grounded', label: 'Partially Grounded Answer', input: { answer: 'The moon is made of cheese', source_chunks: ['Paris is the capital of France.'] }, expectedOutput: 0.5, hidden: false, description: '3 of the 6 answer tokens ("the", "is", "of") appear in the source vocabulary' },
+      { id: 'empty-answer', label: 'Empty Answer', input: { answer: '', source_chunks: ['something'] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-44': {
+    id: 'agents-mcp-systems-prob-44',
+    title: 'Check an Agent Conversation Turn Budget',
+    difficulty: 'easy',
+    topic: 'Agent Orchestration',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'has_exceeded_turn_budget',
+    functionSignature: 'has_exceeded_turn_budget(turns: list[str], max_turns: int) -> bool',
+    starterCode: `def has_exceeded_turn_budget(turns, max_turns):
+    """turns is an ordered list of role strings ("user", "assistant", or
+    "tool") for a conversation so far. Return True if the number of
+    "assistant" turns (the ones that cost an LLM call) is >= max_turns.
+    Raise ValueError if max_turns <= 0 or any role is not one of "user",
+    "assistant", "tool"."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the turn-budget guard an agent loop checks before letting itself keep going -- a real safety limit distinct from detecting a repeating loop (same tool called over and over): this counts total LLM-costing turns regardless of what the agent is doing, so a runaway agent doing DIFFERENT things every turn still gets capped.',
+    taskDescription: 'Implement `has_exceeded_turn_budget(turns, max_turns)`. Count how many entries in `turns` equal `"assistant"`. Return `True` if that count is `>= max_turns`.',
+    constraints: [
+      'Must raise ValueError if max_turns <= 0.',
+      'Must raise ValueError if any entry in turns is not exactly "user", "assistant", or "tool".',
+      'Only "assistant" turns count toward the budget -- "user" and "tool" turns do not cost an LLM call.',
+      'An empty turns list returns False (0 assistant turns never exceeds a positive budget).',
+    ],
+    hints: {
+      small: 'Validate every role against the fixed set `{"user", "assistant", "tool"}` before counting anything.',
+      strong: 'A single pass counting `role == "assistant"` occurrences, compared with `>=` (not `>`) against max_turns, covers the whole function.',
+      concept: 'This complements (not duplicates) consecutive tool-loop detection -- a loop guard catches an agent stuck repeating the SAME action, while a turn budget catches an agent that is making real progress but simply taking too many LLM calls to ever finish, which is its own real cost/latency risk worth capping independently.',
+    },
+    conceptConnections: [
+      { title: 'Agent Fundamentals', route: '/docs/agents/agent-fundamentals', description: 'Turn/step budgets are a standard safety guard in a real agent execution loop' },
+    ],
+    testCases: [
+      { id: 'exceeded', label: 'Budget Exceeded', input: { turns: ['user', 'assistant', 'tool', 'assistant', 'user', 'assistant'], max_turns: 3 }, expectedOutput: true, hidden: false, description: '3 assistant turns meets max_turns=3' },
+      { id: 'within-budget', label: 'Within Budget', input: { turns: ['user', 'assistant'], max_turns: 3 }, expectedOutput: false, hidden: false },
+      { id: 'empty-turns', label: 'No Turns Yet', input: { turns: [], max_turns: 1 }, expectedOutput: false, hidden: true },
+      { id: 'invalid-role', label: 'Unrecognized Role', input: { turns: ['user', 'weird_role'], max_turns: 3 }, expectError: 'ValueError', hidden: true },
+      { id: 'bad-max-turns', label: 'Non-Positive max_turns', input: { turns: ['user'], max_turns: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-45': {
+    id: 'agents-mcp-systems-prob-45',
+    title: 'Debounce MCP Resource-Changed Notifications',
+    difficulty: 'medium',
+    topic: 'Model Context Protocol',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'debounce_notifications',
+    functionSignature: 'debounce_notifications(timestamps: list[float], window: float) -> list[float]',
+    starterCode: `def debounce_notifications(timestamps, window):
+    """timestamps is an ordered (non-decreasing) list of times a resource
+    changed. Return the subset that would actually be SENT as
+    notifications if debounced by window: the first change is always
+    sent, and a later change is sent only if at least window seconds have
+    passed since the last SENT notification. Raise ValueError if window
+    is negative."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement debouncing for MCP resource-changed notifications -- a resource that changes many times in rapid succession (a file under active edits, a fast-moving data feed) would otherwise flood a client with a notification per change, so a real MCP server debounces bursts down to one notification per quiet window.',
+    taskDescription: 'Implement `debounce_notifications(timestamps, window)`. `timestamps` is ordered and non-decreasing. The first timestamp is always sent. Each later timestamp is sent only if at least `window` seconds have elapsed since the last SENT (not merely the last seen) timestamp. Return the list of timestamps actually sent.',
+    constraints: [
+      'Must raise ValueError if window is negative.',
+      'The comparison is always against the last SENT timestamp, not the last timestamp seen -- a burst of changes only ever produces one send until the window has elapsed again.',
+      'window=0 sends every timestamp (no debouncing).',
+      'An empty timestamps list returns an empty list.',
+    ],
+    hints: {
+      small: 'Always send `timestamps[0]` first and remember it as `last_sent`.',
+      strong: 'For each subsequent timestamp, send it (and update `last_sent`) only when `t - last_sent >= window` -- comparing against `last_sent`, never against the previous timestamp in the input regardless of whether it was sent.',
+      concept: 'Debouncing (send after a quiet gap since the LAST SENT event) is a distinct pattern from rate limiting (a token-bucket cap on throughput) -- debouncing collapses a burst down to its first (or last, depending on the variant) event, while a rate limiter instead spreads allowed events out over time regardless of how they cluster.',
+    },
+    conceptConnections: [
+      { title: 'Production Reliability', route: '/docs/mlops/production-reliability', description: 'Debouncing high-frequency change events is a real reliability pattern to avoid overwhelming a downstream consumer' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Burst Then Spaced-Out Changes', input: { timestamps: [0, 0.5, 1.0, 3.0, 3.2, 6.0], window: 2.0 }, expectedOutput: [0, 3.0, 6.0], hidden: false, description: '0.5 and 1.0 are within 2s of the last sent (0), so both are suppressed; 3.0 is sent, then 3.2 is suppressed, then 6.0 is sent' },
+      { id: 'zero-window', label: 'Zero Window Sends Everything', input: { timestamps: [0, 1, 2, 3], window: 0 }, expectedOutput: [0, 1, 2, 3], hidden: false },
+      { id: 'empty', label: 'No Timestamps', input: { timestamps: [], window: 1.0 }, expectedOutput: [], hidden: true },
+      { id: 'negative-window', label: 'Negative Window', input: { timestamps: [1, 2], window: -1 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: RAG Module 43: Problem 473"
+title: "Practice: Score RAG Answer Groundedness"
 sidebar_position: 473
-description: "Curriculum Problem 473 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval."
+description: "Score what fraction of a generated answer's vocabulary is traceable to the retrieved context -- a cheap RAG hallucination proxy."
 difficulty: medium
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,29 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# RAG Module 43: Problem 473
+# Score RAG Answer Groundedness
 
 **Rank #473** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-42`.
+Implement `groundedness_score(answer, source_chunks)`, a cheap lexical proxy for the actively-discussed RAG problem of detecting hallucination -- what fraction of the answer's own vocabulary is even present anywhere in the retrieved sources. Prerequisite: `agents-mcp-systems-prob-42`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-43" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p43(data):
-    # Reference implementation
-    return data
+import re
+
+def groundedness_score(answer, source_chunks):
+    answer_tokens = set(re.findall(r"[a-z0-9]+", answer.lower()))
+    if not answer_tokens:
+        raise ValueError("answer must contain at least one token")
+    source_tokens = set()
+    for chunk in source_chunks:
+        source_tokens |= set(re.findall(r"[a-z0-9]+", chunk.lower()))
+    return len(answer_tokens & source_tokens) / len(answer_tokens)
 ```
 
-This problem tests fundamental skills in RAG / information retrieval.
+This score answers a different question than a relevance metric like Jaccard or cosine similarity: it is not "how similar are these two texts," but "how much of what the answer claims can even be traced back to the retrieved context" -- a real (simplified) building block toward automated RAG faithfulness evaluation.
 
 </Solution>

@@ -1,31 +1,31 @@
 ---
-placeholder: true
-title: "Practice: Distributed systems Module 33: Problem 463"
+title: "Practice: Determine a Two-Phase Commit Outcome"
 sidebar_position: 463
-description: "Curriculum Problem 463 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems."
-difficulty: medium
+description: "Decide commit or abort from participant votes -- the coordinator's unanimous-agreement rule in Two-Phase Commit."
+difficulty: easy
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Distributed systems Module 33: Problem 463
+# Determine a Two-Phase Commit Outcome
 
-**Rank #463** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #463** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-32`.
+Implement `two_phase_commit_outcome(votes)`, the coordinator's final decision rule in Two-Phase Commit -- every participant must unanimously agree before a transaction commits, and any single "no" (including a timeout) forces the whole transaction to abort. Prerequisite: `agents-mcp-systems-prob-32`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-33" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p33(data):
-    # Reference implementation
-    return data
+def two_phase_commit_outcome(votes):
+    if not votes:
+        raise ValueError("votes must be non-empty")
+    return "commit" if all(v is True for v in votes) else "abort"
 ```
 
-This problem tests fundamental skills in Distributed systems.
+A coordinator timeout is deliberately treated identically to an explicit "no" -- 2PC has no way to distinguish "the participant is slow" from "the participant failed," so the only safe assumption when a vote never arrives is to abort, never to optimistically commit.
 
 </Solution>

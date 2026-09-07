@@ -1,31 +1,36 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 31: Problem 461"
+title: "Practice: Render an MCP Prompt Template"
 sidebar_position: 461
-description: "Curriculum Problem 461 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
-difficulty: medium
+description: "Substitute named arguments into an MCP prompt template -- the rendering step behind MCP's reusable, parameterized prompt primitive."
+difficulty: easy
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 31: Problem 461
+# Render an MCP Prompt Template
 
-**Rank #461** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #461** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-30`.
+Implement `render_mcp_prompt(template, arguments)`, substituting `{{variable}}` placeholders with real argument values -- the rendering step behind MCP "prompts," the third core MCP primitive alongside tools and resources. Prerequisite: `agents-mcp-systems-prob-30`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-31" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p31(data):
-    # Reference implementation
-    return data
+import re
+
+def render_mcp_prompt(template, arguments):
+    def repl(m):
+        key = m.group(1)
+        if key not in arguments:
+            raise ValueError(f"missing required argument: {key!r}")
+        return str(arguments[key])
+    return re.sub(r"\{\{(\w+)\}\}", repl, template)
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+MCP prompts exist precisely because a raw prompt string checked into a server's code is not reusable across contexts -- the server declares named arguments, and the client (or the user, via an MCP-aware UI) supplies real values at call time, exactly like this rendering step.
 
 </Solution>
