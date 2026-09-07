@@ -2555,6 +2555,630 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'arr-hash-prob-1': {
+    id: 'arr-hash-prob-1',
+    title: 'Two Sum',
+    difficulty: 'easy',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '10–15 min',
+    functionName: 'two_sum',
+    functionSignature: 'two_sum(nums: list[int], target: int) -> list[int]',
+    starterCode: `def two_sum(nums, target):
+    """Return the indices [i, j] (i < j) of the two numbers in nums that
+    add up to target. Assume exactly one valid pair exists and you may
+    not use the same element twice. Raise ValueError if no pair sums to
+    target."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Two Sum with a single-pass hash map -- O(n) instead of the O(n^2) brute-force nested loop, and the canonical first problem that teaches "trade memory for time" via hashing.',
+    taskDescription: 'Implement `two_sum(nums, target)`: for each number, check whether its complement (target - number) has already been seen; if so, return the pair of indices. Otherwise record the current number and its index and keep scanning.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Exactly one valid pair exists per input, and the same element may not be used twice.',
+      'Return indices as [i, j] with i < j.',
+      'Raise ValueError if no valid pair exists (defensive -- the stated inputs always have one).',
+    ],
+    hints: {
+      small: 'For each number, ask "have I already seen the number that would complete this pair?" before adding the current number to what you have seen.',
+      strong: 'seen = {}; for i, x in enumerate(nums): if target - x in seen: return [seen[target - x], i]; seen[x] = i.',
+      concept: 'Checking the complement BEFORE inserting the current number is what makes a single pass enough -- inserting first would make an element pair with itself when 2*x == target.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Hash-map lookups as the standard O(n) alternative to nested-loop search' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Basic Pair', input: { nums: [2, 7, 11, 15], target: 9 }, expectedOutput: [0, 1], hidden: false },
+      { id: 'later-pair', label: 'Answer Not at the Start', input: { nums: [3, 2, 4], target: 6 }, expectedOutput: [1, 2], hidden: false },
+      { id: 'duplicate-values', label: 'Duplicate Values Sum to Target', input: { nums: [3, 3], target: 6 }, expectedOutput: [0, 1], hidden: true },
+      { id: 'negative-numbers', label: 'Negative Numbers', input: { nums: [-3, 4, 3, 90], target: 0 }, expectedOutput: [0, 2], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-2': {
+    id: 'arr-hash-prob-2',
+    title: 'Contains Duplicate',
+    difficulty: 'easy',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '10–15 min',
+    functionName: 'contains_duplicate',
+    functionSignature: 'contains_duplicate(nums: list[int]) -> bool',
+    starterCode: `def contains_duplicate(nums):
+    """Return True if any value appears at least twice in nums, False if
+    every element is distinct."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the simplest real use of a hash set: turning an O(n^2) "compare every pair" question into a single O(n) pass by tracking what has already been seen.',
+    taskDescription: 'Implement `contains_duplicate(nums)`: track seen values in a set as you scan; return True the moment a value repeats (or compare the set size to the list length).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty list has no duplicates -- return False.',
+      'Must run in better than O(n^2) time (a hash set, not nested loops).',
+    ],
+    hints: {
+      small: 'A Python set automatically drops duplicates -- compare its size to the original list length.',
+      strong: 'return len(set(nums)) != len(nums).',
+      concept: 'set membership checks and insertion are both O(1) average case, which is exactly what turns this from an O(n^2) all-pairs comparison into a single O(n) pass.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Hash sets as the standard O(n) tool for duplicate/membership questions' },
+    ],
+    testCases: [
+      { id: 'has-duplicate', label: 'Contains a Duplicate', input: { nums: [1, 2, 3, 1] }, expectedOutput: true, hidden: false },
+      { id: 'all-distinct', label: 'All Distinct', input: { nums: [1, 2, 3, 4] }, expectedOutput: false, hidden: false },
+      { id: 'empty', label: 'Empty List', input: { nums: [] }, expectedOutput: false, hidden: true },
+      { id: 'many-duplicates', label: 'Several Repeats', input: { nums: [1, 1, 1, 3, 3, 4, 3, 2, 4, 2] }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-3': {
+    id: 'arr-hash-prob-3',
+    title: 'Valid Anagram',
+    difficulty: 'easy',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '10–15 min',
+    functionName: 'is_anagram',
+    functionSignature: 'is_anagram(s: str, t: str) -> bool',
+    starterCode: `def is_anagram(s, t):
+    """Return True if t is an anagram of s (same characters, same
+    multiplicity, any order), False otherwise."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement anagram detection via character-frequency counting -- the hash-map pattern for "do two collections have the exact same multiset of items?" that generalizes far beyond just letters.',
+    taskDescription: 'Implement `is_anagram(s, t)`: if the lengths differ, they cannot be anagrams. Otherwise count each character in s, then decrement for each character in t; the strings are anagrams exactly when every count returns to zero.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries (e.g. collections.Counter) are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Different-length strings can never be anagrams -- check that first.',
+      'Case-sensitive: "Rat" and "art" are not treated as anagrams of each other.',
+    ],
+    hints: {
+      small: 'Build a frequency count of every character in s, then walk through t decrementing that same count.',
+      strong: 'If len(s) != len(t): return False. counts = {}; for c in s: counts[c] = counts.get(c,0)+1. For each c in t, decrement (and remove at 0); if a character in t is missing from counts, return False. At the end, return True only if every count is back to 0.',
+      concept: 'This is the exact same "compare multisets via counting" pattern used for Group Anagrams -- once you have a per-character frequency map, exact anagram equality is just "do the two frequency maps match."',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Frequency-counting as the standard technique for multiset-equality questions' },
+    ],
+    testCases: [
+      { id: 'is-anagram', label: 'Valid Anagram', input: { s: 'anagram', t: 'nagaram' }, expectedOutput: true, hidden: false },
+      { id: 'not-anagram', label: 'Not an Anagram', input: { s: 'rat', t: 'car' }, expectedOutput: false, hidden: false },
+      { id: 'different-lengths', label: 'Different Lengths', input: { s: 'a', t: 'ab' }, expectedOutput: false, hidden: true },
+      { id: 'same-string', label: 'Identical Strings', input: { s: 'listen', t: 'listen' }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-4': {
+    id: 'arr-hash-prob-4',
+    title: 'Best Time to Buy and Sell Stock',
+    difficulty: 'easy',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '10–15 min',
+    functionName: 'max_profit',
+    functionSignature: 'max_profit(prices: list[int]) -> int',
+    starterCode: `def max_profit(prices):
+    """prices[i] is the stock price on day i. Return the maximum profit
+    from buying on one day and selling on a LATER day (0 if no profit is
+    possible, e.g. prices only ever fall). Return 0 for an empty list."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the single-pass "track the minimum seen so far" pattern -- one linear scan replaces the O(n^2) check of every buy/sell day pair.',
+    taskDescription: 'Implement `max_profit(prices)`: walk the prices once, tracking the lowest price seen so far and the best profit (current price minus that running minimum) seen so far.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'You must buy before you sell (a later day\'s price, never an earlier one).',
+      'Return 0 (not a negative number) if no profitable transaction exists.',
+      'Return 0 for an empty price list.',
+    ],
+    hints: {
+      small: 'As you scan left to right, keep the lowest price seen so far -- the best possible sale on today\'s price is always today\'s price minus that running minimum.',
+      strong: 'min_price = prices[0]; best = 0; for p in prices[1:]: best = max(best, p - min_price); min_price = min(min_price, p).',
+      concept: 'This is a greedy, single-pass O(n) solution -- the key insight is that the best day to have bought, as of any given day, is always the minimum price seen up to (and including) the day before.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Single-pass running-minimum/maximum tracking as a core greedy array pattern' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Clear Buy Low Sell High', input: { prices: [7, 1, 5, 3, 6, 4] }, expectedOutput: 5, hidden: false, description: 'Buy at 1, sell at 6' },
+      { id: 'always-falling', label: 'Prices Only Fall', input: { prices: [7, 6, 4, 3, 1] }, expectedOutput: 0, hidden: false },
+      { id: 'buy-then-dip', label: 'Best Buy Comes After a Dip', input: { prices: [2, 4, 1] }, expectedOutput: 2, hidden: true },
+      { id: 'empty', label: 'Empty Price List', input: { prices: [] }, expectedOutput: 0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-5': {
+    id: 'arr-hash-prob-5',
+    title: 'Move Zeroes',
+    difficulty: 'easy',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '10–15 min',
+    functionName: 'move_zeroes',
+    functionSignature: 'move_zeroes(nums: list[int]) -> list[int]',
+    starterCode: `def move_zeroes(nums):
+    """Return a new list with every 0 moved to the end, while preserving
+    the RELATIVE order of all the non-zero elements."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the two-pointer "write position" in-place-partition pattern -- the same technique behind partitioning steps in quicksort and the Dutch National Flag problem, applied to its simplest case.',
+    taskDescription: 'Implement `move_zeroes(nums)`: walk through nums once, writing every non-zero value to the next available front position (a running write-index), then fill the remaining tail positions with zeros.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'The relative order of the non-zero elements must be preserved exactly.',
+      'Return a new list (do not worry about literal in-place mutation of the input for grading purposes).',
+    ],
+    hints: {
+      small: 'Keep a "write pointer" starting at index 0. Walk through the array once, and whenever you see a non-zero value, place it at the write pointer and advance it.',
+      strong: 'insert_pos = 0; for x in nums: if x != 0: result[insert_pos] = x; insert_pos += 1. After the scan, fill every remaining index from insert_pos to the end with 0.',
+      concept: 'This "stable partition via a write pointer" pattern generalizes to any "move all X to one side while preserving relative order of the rest" problem, not just zeros.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The two-pointer write-index pattern for in-place array partitioning' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Mixed Zeros and Values', input: { nums: [0, 1, 0, 3, 12] }, expectedOutput: [1, 3, 12, 0, 0], hidden: false },
+      { id: 'all-zero', label: 'Single Zero', input: { nums: [0] }, expectedOutput: [0], hidden: false },
+      { id: 'no-zeros', label: 'No Zeros At All', input: { nums: [1, 2, 3] }, expectedOutput: [1, 2, 3], hidden: true },
+      { id: 'zeros-at-end', label: 'Zeros Already at the End', input: { nums: [5, 2, 0, 0] }, expectedOutput: [5, 2, 0, 0], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-11': {
+    id: 'arr-hash-prob-11',
+    title: 'Group Anagrams',
+    difficulty: 'medium',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '15–20 min',
+    functionName: 'group_anagrams',
+    functionSignature: 'group_anagrams(words: list[str]) -> list[list[str]]',
+    starterCode: `def group_anagrams(words):
+    """Group words that are anagrams of each other. Return the groups
+    sorted by their sorted-letters key in ascending alphabetical order;
+    within each group, preserve the words' original relative order."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Group Anagrams -- using a canonical key (each word\'s own sorted letters) as a hash-map key is the general pattern for "bucket items by some derived signature," not just for anagrams.',
+    taskDescription: 'Implement `group_anagrams(words)`: for each word, compute its sorted-letters key (e.g. "eat" -> "aet") and append it to that key\'s bucket in a dict. Return the buckets as a list of lists, sorted by key alphabetically.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Two words are anagrams exactly when their sorted-letters keys are identical.',
+      'Within a group, preserve the words\' original relative order from the input.',
+      'Return the groups themselves sorted by their key string in ascending alphabetical order, so the output is fully deterministic.',
+    ],
+    hints: {
+      small: 'A word\'s own letters, sorted, is a canonical signature every one of its anagrams shares -- use that as a dict key.',
+      strong: 'groups = {}; for w in words: key = "".join(sorted(w)); groups.setdefault(key, []).append(w). Return [groups[k] for k in sorted(groups)].',
+      concept: 'Sorting a small string (a handful of letters) to derive a hashable canonical key is a general technique -- the same idea applies to grouping by "same set of characters," "same digit multiset," or any other order-independent equivalence.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Canonical-key hashing as the standard way to bucket items by a derived signature' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three Groups', input: { words: ['eat', 'tea', 'tan', 'ate', 'nat', 'bat'] }, expectedOutput: [['bat'], ['eat', 'tea', 'ate'], ['tan', 'nat']], hidden: false, description: 'Sorted-key order: "abt" < "aet" < "ant"' },
+      { id: 'empty-string', label: 'Single Empty String', input: { words: [''] }, expectedOutput: [['']], hidden: false },
+      { id: 'single-word', label: 'Single Word, No Anagrams', input: { words: ['a'] }, expectedOutput: [['a']], hidden: true },
+      { id: 'two-clean-groups', label: 'Two Clean Groups', input: { words: ['abc', 'bca', 'cab', 'xyz', 'zyx'] }, expectedOutput: [['abc', 'bca', 'cab'], ['xyz', 'zyx']], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-12': {
+    id: 'arr-hash-prob-12',
+    title: 'Product of Array Except Self',
+    difficulty: 'medium',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '15–20 min',
+    functionName: 'product_except_self',
+    functionSignature: 'product_except_self(nums: list[int]) -> list[int]',
+    starterCode: `def product_except_self(nums):
+    """Return a list where result[i] is the product of every element in
+    nums EXCEPT nums[i]. Must not use division, and must run in O(n)
+    time (extra O(n) output space is fine; the classic follow-up asks
+    for O(1) *extra* space beyond the output, but that isn't required
+    here)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Product of Array Except Self via two passes (prefix products, then suffix products) -- the classic answer to "compute this without division," which also correctly handles zeros in the input.',
+    taskDescription: 'Implement `product_except_self(nums)`: first pass left-to-right builds each position\'s product of everything BEFORE it; second pass right-to-left multiplies in the product of everything AFTER it.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Division is not allowed (a zero in the input would break a divide-by-total approach anyway).',
+      'Must run in O(n) time.',
+    ],
+    hints: {
+      small: 'result[i] should end up as (product of everything before i) times (product of everything after i) -- compute those two halves in two separate passes.',
+      strong: 'result[i] = prefix product up to i (exclusive) in a left-to-right pass; then walk right-to-left multiplying result[i] by a running suffix product (exclusive of i).',
+      concept: 'This handles zeros correctly for free: if exactly one element is 0, every OTHER position\'s result becomes 0 automatically (since its prefix or suffix product includes that zero), and the zero position itself gets the product of everything else -- no special-casing needed.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Prefix/suffix precomputation as a core no-division array technique' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'No Zeros', input: { nums: [1, 2, 3, 4] }, expectedOutput: [24, 12, 8, 6], hidden: false },
+      { id: 'one-zero', label: 'Exactly One Zero', input: { nums: [-1, 1, 0, -3, 3] }, expectedOutput: [0, 0, 9, 0, 0], hidden: false },
+      { id: 'two-elements', label: 'Two Elements', input: { nums: [3, 5] }, expectedOutput: [5, 3], hidden: true },
+      { id: 'negatives', label: 'Negative Numbers', input: { nums: [-1, -2, -3] }, expectedOutput: [6, 3, 2], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-13': {
+    id: 'arr-hash-prob-13',
+    title: 'Longest Consecutive Sequence',
+    difficulty: 'medium',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '15–20 min',
+    functionName: 'longest_consecutive',
+    functionSignature: 'longest_consecutive(nums: list[int]) -> int',
+    starterCode: `def longest_consecutive(nums):
+    """Return the length of the longest run of consecutive integers
+    present in nums (in any order in the input). Must run in O(n) time
+    (no sorting)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the O(n) hash-set solution to Longest Consecutive Sequence -- the classic case where sorting FEELS natural but is actually the wrong complexity, and a hash set achieves true O(n).',
+    taskDescription: 'Implement `longest_consecutive(nums)`: put every number in a set; for each number that is the START of a run (i.e. number-1 is NOT in the set), count forward (number+1, number+2, ...) to find that run\'s length, and track the best.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(n) time -- sorting first (O(n log n)) does not satisfy the intended solution, even though it would give a correct answer.',
+      'An empty list has longest-consecutive length 0.',
+    ],
+    hints: {
+      small: 'Only start counting a run from a number that is genuinely the START of it -- i.e. number - 1 is not present in the set. Every other number gets counted as part of exactly one run, starting from its run\'s true beginning.',
+      strong: 'numset = set(nums); for x in numset: if x - 1 not in numset: length = 1; cur = x; while cur+1 in numset: cur += 1; length += 1; best = max(best, length).',
+      concept: 'The "only start counting from a true run start" check is what keeps this O(n) overall -- without it, every element inside a long run would redundantly re-scan the whole run, degrading to O(n^2) in the worst case (e.g. one giant consecutive run).',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Hash-set membership checks as an O(n) alternative to sorting' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Scattered Input', input: { nums: [100, 4, 200, 1, 3, 2] }, expectedOutput: 4, hidden: false, description: 'The run 1,2,3,4' },
+      { id: 'with-duplicates', label: 'Longer Run With a Duplicate', input: { nums: [0, 3, 7, 2, 5, 8, 4, 6, 0, 1] }, expectedOutput: 9, hidden: false, description: 'The run 0 through 8 (the duplicate 0 does not extend it further)' },
+      { id: 'empty', label: 'Empty List', input: { nums: [] }, expectedOutput: 0, hidden: true },
+      { id: 'no-consecutive', label: 'No Two Numbers Adjacent', input: { nums: [10, 20, 30] }, expectedOutput: 1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-14': {
+    id: 'arr-hash-prob-14',
+    title: 'Container With Most Water',
+    difficulty: 'medium',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '15–20 min',
+    functionName: 'max_area',
+    functionSignature: 'max_area(heights: list[int]) -> int',
+    starterCode: `def max_area(heights):
+    """heights[i] is the height of a vertical line at position i. Return
+    the maximum area of water a pair of these lines (plus the x-axis
+    between them) can contain: area = min(heights[i], heights[j]) *
+    abs(i - j)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the greedy two-pointer solution to Container With Most Water -- the classic proof that checking every pair (O(n^2)) is unnecessary once you see WHY moving the shorter pointer is always the only move worth making.',
+    taskDescription: 'Implement `max_area(heights)`: start with pointers at both ends. At each step, compute the area between them, then move whichever pointer points at the SHORTER line inward (moving the taller one can only ever decrease or maintain the width-limited-by-the-short-side area).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Area = min(heights[l], heights[r]) * (r - l) for pointers l < r.',
+      'Must run in O(n) time (a single two-pointer pass, not all pairs).',
+    ],
+    hints: {
+      small: 'Start with the widest possible container (both ends) and shrink inward -- but only ever move the pointer at the SHORTER line.',
+      strong: 'l, r = 0, len(heights)-1; best = 0; while l < r: best = max(best, min(heights[l],heights[r])*(r-l)); if heights[l] < heights[r]: l += 1 else: r -= 1.',
+      concept: 'Moving the taller pointer can never help: the area is capped by the SHORTER side, so keeping the taller line in place while shrinking the width only ever makes things worse or equal -- moving the shorter line is the only move that has any chance of finding a taller limiting height.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The greedy two-pointer-from-both-ends pattern for array optimization problems' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Classic Example', input: { heights: [1, 8, 6, 2, 5, 4, 8, 3, 7] }, expectedOutput: 49, hidden: false, description: 'Lines at height 8 and 7, width 7' },
+      { id: 'two-elements', label: 'Two Elements Only', input: { heights: [1, 1] }, expectedOutput: 1, hidden: false },
+      { id: 'increasing', label: 'Strictly Increasing Heights', input: { heights: [1, 2, 3, 4, 5] }, expectedOutput: 6, hidden: true, description: 'min(2,5)*3 = 6 beats the two end lines (min(1,5)*4 = 4)' },
+      { id: 'all-equal', label: 'All Equal Heights', input: { heights: [4, 4, 4, 4] }, expectedOutput: 12, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-15': {
+    id: 'arr-hash-prob-15',
+    title: 'Subarray Sum Equals K',
+    difficulty: 'medium',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '15–20 min',
+    functionName: 'subarray_sum',
+    functionSignature: 'subarray_sum(nums: list[int], k: int) -> int',
+    starterCode: `def subarray_sum(nums, k):
+    """Return the number of CONTIGUOUS subarrays of nums whose elements
+    sum to exactly k. nums may contain negative numbers (so a sliding
+    window alone does not work here -- use prefix sums)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Subarray Sum Equals K via the prefix-sum-plus-hash-map trick -- the technique that makes this solvable in O(n) even with negative numbers present, where a sliding window would fail.',
+    taskDescription: 'Implement `subarray_sum(nums, k)`: track a running prefix sum and a hash map of "how many times has each prefix sum value occurred so far." A subarray ending at the current position sums to k exactly when (current prefix sum - k) has occurred before -- add that count to the running total.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'nums may contain negative numbers -- a sliding-window approach (which requires monotonic growth) is not valid here.',
+      'Initialize the prefix-sum-count map with {0: 1} to correctly count subarrays that start at index 0.',
+    ],
+    hints: {
+      small: 'A subarray from index i+1 to j sums to k exactly when prefixSum[j] - prefixSum[i] == k -- i.e. prefixSum[i] == prefixSum[j] - k.',
+      strong: 'counts = {0: 1}; total = 0; result = 0; for x in nums: total += x; result += counts.get(total - k, 0); counts[total] = counts.get(total, 0) + 1.',
+      concept: 'The {0: 1} initialization is what correctly counts a subarray starting at index 0 -- it represents "the empty prefix," so a subarray from the very start that happens to sum to k is found via prefixSum[j] - 0 == k.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Prefix sums combined with hash-map counting for subarray-sum questions' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Two Matching Subarrays', input: { nums: [1, 1, 1], k: 2 }, expectedOutput: 2, hidden: false, description: '[1,1] at indices 0-1 and 1-2' },
+      { id: 'mixed', label: 'Two Different-Length Matches', input: { nums: [1, 2, 3], k: 3 }, expectedOutput: 2, hidden: false, description: '[1,2] and [3]' },
+      { id: 'with-negatives', label: 'Negative Numbers Present', input: { nums: [1, -1, 0], k: 0 }, expectedOutput: 3, hidden: true, description: '[1,-1], [0], and [1,-1,0]' },
+      { id: 'no-match', label: 'No Subarray Matches', input: { nums: [1, 2, 3], k: 100 }, expectedOutput: 0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-16': {
+    id: 'arr-hash-prob-16',
+    title: 'Sort Colors (Dutch National Flag)',
+    difficulty: 'medium',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '15–20 min',
+    functionName: 'sort_colors',
+    functionSignature: 'sort_colors(nums: list[int]) -> list[int]',
+    starterCode: `def sort_colors(nums):
+    """nums contains only the values 0, 1, and 2. Return them sorted
+    (all 0s, then all 1s, then all 2s) in a SINGLE pass using the
+    three-pointer Dutch National Flag partition (not a general sort)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Dijkstra\'s Dutch National Flag partition -- a single O(n) pass with three pointers (low/mid/high) that sorts a 3-valued array without ever calling a general sort or using counting-sort-style extra passes.',
+    taskDescription: 'Implement `sort_colors(nums)`: maintain low/mid/high pointers. While mid <= high: if nums[mid] is 0, swap it to the low region and advance both low and mid; if it\'s 1, just advance mid; if it\'s 2, swap it to the high region and shrink high (without advancing mid, since the swapped-in value at mid is still unexamined).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Input values are only ever 0, 1, or 2.',
+      'Intended as a single O(n) pass with three pointers -- calling a general sort function defeats the point of the exercise, though it is not separately graded here.',
+    ],
+    hints: {
+      small: 'Three regions grow from the outside in: 0s at the front (before low), 2s at the back (after high), and the mid pointer scans the unknown middle region.',
+      strong: 'low=mid=0; high=len(nums)-1. While mid<=high: if nums[mid]==0: swap(low,mid); low+=1; mid+=1. elif nums[mid]==1: mid+=1. else: swap(mid,high); high-=1 (do NOT advance mid here).',
+      concept: 'The 2-case deliberately does not advance mid: the value just swapped in from the high end has not been examined yet, so mid must re-check it on the next loop iteration -- advancing mid there is the single most common bug in this algorithm.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The three-pointer Dutch National Flag partition for fixed-alphabet sorting' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Mixed Colors', input: { nums: [2, 0, 2, 1, 1, 0] }, expectedOutput: [0, 0, 1, 1, 2, 2], hidden: false },
+      { id: 'small', label: 'Three Elements', input: { nums: [2, 0, 1] }, expectedOutput: [0, 1, 2], hidden: false },
+      { id: 'already-sorted', label: 'Already Sorted', input: { nums: [0, 0, 1, 2, 2] }, expectedOutput: [0, 0, 1, 2, 2], hidden: true },
+      { id: 'single-color', label: 'Only One Color Present', input: { nums: [1, 1, 1] }, expectedOutput: [1, 1, 1], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-21': {
+    id: 'arr-hash-prob-21',
+    title: 'Trapping Rain Water',
+    difficulty: 'hard',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '20–25 min',
+    functionName: 'trap_rain_water',
+    functionSignature: 'trap_rain_water(height: list[int]) -> int',
+    starterCode: `def trap_rain_water(height):
+    """height[i] is the height of a bar at position i in an elevation
+    map. Return the total units of rainwater trapped between the bars
+    after it rains."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Trapping Rain Water via precomputed left-max/right-max arrays -- the classic hard array problem, and the key insight (water trapped at any position depends only on the shorter of the tallest walls to its left and right) that makes an O(n)-time, O(n)-space solution possible.',
+    taskDescription: 'Implement `trap_rain_water(height)`: precompute, for every position, the tallest bar to its left (inclusive) and the tallest bar to its right (inclusive). The water trapped at that position is max(0, min(left_max, right_max) - height[i]); sum this over every position.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'The water level at position i is bounded by the SHORTER of the tallest wall to its left and the tallest wall to its right -- water cannot rise above the lower of the two containing walls.',
+      'An empty height list traps 0 units.',
+    ],
+    hints: {
+      small: 'For each position, you need to know two things: the tallest bar anywhere to its left, and the tallest bar anywhere to its right. Precompute both as arrays first.',
+      strong: 'left_max[i] = max of height[0..i]; right_max[i] = max of height[i..end]. Then water at i = max(0, min(left_max[i], right_max[i]) - height[i]); sum over all i.',
+      concept: 'This is a "precompute both directions, then combine" pattern -- the two-pointer O(1)-space version of this same problem exists, but the two-array version here is the clearer place to build the core insight first.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Precomputed left/right extrema as the core technique behind Trapping Rain Water' },
+    ],
+    testCases: [
+      { id: 'classic', label: 'Classic 12-Bar Example', input: { height: [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1] }, expectedOutput: 6, hidden: false },
+      { id: 'six-bar', label: 'Six-Bar Example', input: { height: [4, 2, 0, 3, 2, 5] }, expectedOutput: 9, hidden: false },
+      { id: 'no-trapping', label: 'Strictly Decreasing (No Trapping)', input: { height: [5, 4, 3, 2, 1] }, expectedOutput: 0, hidden: true },
+      { id: 'empty', label: 'Empty Elevation Map', input: { height: [] }, expectedOutput: 0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-22': {
+    id: 'arr-hash-prob-22',
+    title: 'First Missing Positive',
+    difficulty: 'hard',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '20–25 min',
+    functionName: 'first_missing_positive',
+    functionSignature: 'first_missing_positive(nums: list[int]) -> int',
+    starterCode: `def first_missing_positive(nums):
+    """Return the smallest positive integer (>= 1) that does NOT appear
+    in nums. Must run in O(n) time using O(1) extra space (in-place
+    index placement -- no new hash set/dict of size n)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement First Missing Positive via in-place cyclic placement -- the key realization that the answer is always in [1, n+1], so the array itself (size n) can be reused as its own O(1)-extra-space hash table.',
+    taskDescription: 'Implement `first_missing_positive(nums)`: for each position, if its value v is in range [1, n] and it is not already at its "home" index v-1, swap it there -- repeat until every in-range value sits at index (value - 1). Then scan once more: the first index i where nums[i] != i+1 gives the answer i+1; if none, the answer is n+1.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(n) time using O(1) EXTRA space -- no new set/dict sized to the input (in-place index-swapping is the intended technique).',
+      'The answer is always in the range [1, n+1] for an n-element array.',
+    ],
+    hints: {
+      small: 'The smallest missing positive for an n-element array can never exceed n+1 -- so you only ever need to "place" values in the range [1, n], everything else (negatives, zero, duplicates, too-large values) can be ignored.',
+      strong: 'for i in range(n): while 1<=nums[i]<=n and nums[nums[i]-1] != nums[i]: swap nums[i] and nums[nums[i]-1]. Then scan for the first i where nums[i] != i+1; return i+1, or n+1 if none.',
+      concept: 'This turns the array into its own hash table: after the placement pass, "is value v present?" becomes "is nums[v-1] == v?" -- an O(1) lookup with zero extra memory.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'In-place cyclic index placement as an O(1)-extra-space alternative to a hash set' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Small Gap', input: { nums: [1, 2, 0] }, expectedOutput: 3, hidden: false },
+      { id: 'mixed-signs', label: 'Negative and Out-of-Range Values', input: { nums: [3, 4, -1, 1] }, expectedOutput: 2, hidden: false },
+      { id: 'all-too-large', label: 'Every Value Out of Range', input: { nums: [7, 8, 9, 11, 12] }, expectedOutput: 1, hidden: true },
+      { id: 'consecutive-from-one', label: 'Fully Consecutive From 1', input: { nums: [1, 2, 3] }, expectedOutput: 4, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-23': {
+    id: 'arr-hash-prob-23',
+    title: '4Sum',
+    difficulty: 'hard',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '20–25 min',
+    functionName: 'four_sum',
+    functionSignature: 'four_sum(nums: list[int], target: int) -> list[list[int]]',
+    starterCode: `def four_sum(nums, target):
+    """Return every unique quadruple [a, b, c, d] from nums (each element
+    used at most once per quadruple, by index) such that a+b+c+d ==
+    target. Each quadruple's 4 numbers must be listed in ascending
+    order. Return the quadruples sorted by their first two positions in
+    the standard sort-then-two-pointer scan order (matching the
+    reference solution below) -- no duplicate quadruples (by value)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement 4Sum, the generalization of 3Sum/Two Sum to four numbers via sort + two fixed outer indices + a two-pointer inner scan -- and the duplicate-quadruple-avoidance logic that makes it correct on inputs with many repeated values.',
+    taskDescription: 'Implement `four_sum(nums, target)`: sort the array, fix the first two indices with nested loops (skipping duplicate values at each level to avoid duplicate quadruples), then use a two-pointer scan over the remaining range for the last two numbers, skipping duplicates on the pointers as matches are found.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'No duplicate quadruples in the output, even if nums has many repeated values.',
+      'Each quadruple\'s own 4 numbers must be in ascending order.',
+      'Sort nums first -- both the duplicate-skipping and the two-pointer scan depend on it.',
+    ],
+    hints: {
+      small: 'This is 3Sum with one more fixed outer loop wrapped around it -- sort first, then for each pair of fixed indices (i, j), two-pointer-scan the remainder for the last two numbers.',
+      strong: 'Sort nums. For i in range(n-3), skip if arr[i]==arr[i-1]. For j in range(i+1, n-2), skip if arr[j]==arr[j-1] (and j>i+1). Two-pointer l=j+1, r=n-1: if sum==target, record and skip duplicate l/r values; if sum<target, l+=1; else r-=1.',
+      concept: 'Skipping a duplicate value at each fixed-index level (i, j) AND on the two moving pointers (l, r) after a match are two SEPARATE duplicate-avoidance checks -- missing either one is the most common source of duplicate quadruples in a naive implementation.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Sort + fixed-index + two-pointer as the general k-Sum pattern' },
+    ],
+    testCases: [
+      { id: 'classic', label: 'Classic Example (Target 0)', input: { nums: [1, 0, -1, 0, -2, 2], target: 0 }, expectedOutput: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]], hidden: false },
+      { id: 'all-same', label: 'All Identical Values', input: { nums: [2, 2, 2, 2, 2], target: 8 }, expectedOutput: [[2, 2, 2, 2]], hidden: false, description: 'Heavy duplicates must collapse to exactly one quadruple' },
+      { id: 'no-solution', label: 'No Quadruple Sums to Target', input: { nums: [1, 2, 3, 4], target: 100 }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'arr-hash-prob-24': {
+    id: 'arr-hash-prob-24',
+    title: 'Median of Two Sorted Arrays',
+    difficulty: 'hard',
+    topic: 'Arrays / Hashing / Two Pointers',
+    estimatedTime: '25–30 min',
+    functionName: 'find_median_sorted_arrays',
+    functionSignature: 'find_median_sorted_arrays(nums1: list[int], nums2: list[int]) -> float',
+    starterCode: `def find_median_sorted_arrays(nums1, nums2):
+    """nums1 and nums2 are each already sorted ascending. Return the
+    median of the combined (conceptually merged) sorted array, as a
+    float, in O(log(min(len(nums1), len(nums2)))) time -- do not
+    actually merge the two arrays."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the binary-search-on-partition-point solution to Median of Two Sorted Arrays -- one of the most-cited "hard" interview problems, solved by binary searching for a partition rather than ever merging the arrays.',
+    taskDescription: 'Implement `find_median_sorted_arrays(nums1, nums2)`: binary search over the SHORTER array for a partition index i (with the other array\'s partition j determined by i, so the left halves together hold exactly half the total elements), such that every element left of the partition is <= every element right of it. The median is then derived directly from the four boundary values around that partition.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(log(min(m, n))) time -- binary search over the shorter array, never merge the two arrays.',
+      'Return a float even when the answer is a whole number (e.g. 2.0, not 2).',
+      'One of the two input arrays may be empty; the other is never empty at the same time.',
+    ],
+    hints: {
+      small: 'Binary search for how many elements of the SHORTER array belong on the "left half" of the combined array -- the matching count from the longer array is then forced by the total length.',
+      strong: 'Binary search i in [0, m] over the shorter array (length m); j = (m+n+1)//2 - i. Track left1/right1 (around i in nums1) and left2/right2 (around j in nums2) using -inf/+inf at the boundaries. If max(left1,left2) <= min(right1,right2), you found the partition -- return max(left1,left2) if total length is odd, else the average of max(left1,left2) and min(right1,right2).',
+      concept: 'Binary searching the shorter array specifically (not either array arbitrarily) is what keeps the complexity at O(log(min(m,n))) -- swapping to always search the shorter side is a one-line guard worth remembering as a general pattern for two-array partition problems.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Binary search on an answer/partition point, applied across two sorted arrays' },
+    ],
+    testCases: [
+      { id: 'odd-total', label: 'Odd Total Length', input: { nums1: [1, 3], nums2: [2] }, expectedOutput: 2.0, hidden: false },
+      { id: 'even-total', label: 'Even Total Length', input: { nums1: [1, 2], nums2: [3, 4] }, expectedOutput: 2.5, hidden: false },
+      { id: 'one-empty', label: 'One Array Empty', input: { nums1: [], nums2: [1] }, expectedOutput: 1.0, hidden: true },
+      { id: 'all-same-value', label: 'All Values Identical', input: { nums1: [0, 0], nums2: [0, 0] }, expectedOutput: 0.0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
