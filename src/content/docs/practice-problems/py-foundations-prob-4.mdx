@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Arrays Module 4: Problem 4"
 sidebar_position: 4
-description: "Curriculum Problem 4 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Curriculum Problem 4 (Stage 1: AI Foundations & Python Programming): Master Flatten an Arbitrarily Nested List."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,35 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 4: Problem 4
+# Flatten an Arbitrarily Nested List
 
-**Rank #4** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #4** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-3`.
+## Overview
+
+Implement `flatten_nested_list(nested)`: recursively unpack an arbitrarily nested hierarchy of lists into a flat 1D sequence, maintaining the relative order of all leaf elements.
+
+## Task
+
+Implement the function `flatten_nested_list(nested)`: return a flat list containing all non-list items in `nested` in their original order. Empty sublists should be cleanly bypassed. If `nested` contains no leaf elements, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-4" />
 
 <Solution>
 
 ```python
-def py_foundations_p4(data):
-    # Reference implementation
-    return data
+def flatten_nested_list(nested):
+    res = []
+    def _flatten(item):
+        if isinstance(item, list):
+            for sub in item:
+                _flatten(sub)
+        else:
+            res.append(item)
+    _flatten(nested)
+    return res
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Recursive tree traversal over nested data structures is a key prerequisite for AST processing, document parsing, and recursive JSON decoding.
 
 </Solution>

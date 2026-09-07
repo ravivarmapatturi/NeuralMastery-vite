@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Python & programming fundamentals Module 9: Problem 9"
 sidebar_position: 9
-description: "Curriculum Problem 9 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Curriculum Problem 9 (Stage 1: AI Foundations & Python Programming): Master Transpose a 2D Matrix."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,33 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 9: Problem 9
+# Transpose a 2D Matrix
 
-**Rank #9** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #9** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-8`.
+## Overview
+
+Implement `transpose_matrix(matrix)`: flip an M x N 2D list of lists across its diagonal into an N x M matrix, raising ValueError if the matrix has jagged rows.
+
+## Task
+
+Implement the function `transpose_matrix(matrix)`: return the transpose of `matrix`. If `matrix` is empty, return `[]`. If rows have inconsistent lengths, raise `ValueError`.
 
 <PracticePlayground problemId="py-foundations-prob-9" />
 
 <Solution>
 
 ```python
-def py_foundations_p9(data):
-    # Reference implementation
-    return data
+def transpose_matrix(matrix):
+    if not matrix or not matrix[0]:
+        return []
+    rows, cols = len(matrix), len(matrix[0])
+    for row in matrix:
+        if len(row) != cols:
+            raise ValueError('Inconsistent row lengths in matrix')
+    return [[matrix[r][c] for r in range(rows)] for c in range(cols)]
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Matrix transposition swaps feature axes and sample axes, representing column-oriented vs row-oriented data layouts in linear algebra.
 
 </Solution>

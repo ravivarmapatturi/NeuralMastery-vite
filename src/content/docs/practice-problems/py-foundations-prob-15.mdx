@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Python & programming fundamentals Module 15: Problem 15"
 sidebar_position: 15
-description: "Curriculum Problem 15 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Curriculum Problem 15 (Stage 1: AI Foundations & Python Programming): Master Safe Nested Dictionary Traversal."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,32 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 15: Problem 15
+# Safe Nested Dictionary Traversal
 
-**Rank #15** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #15** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-14`.
+## Overview
+
+Implement `safe_nested_get(data, keys, default=None)`: safely traverse hierarchical dictionary structures along a path of keys without throwing KeyError or TypeError.
+
+## Task
+
+Implement the function `safe_nested_get(data, keys, default=None)`: sequentially look up each key in `keys` within `data`. If any key is absent or an intermediate value is not a dictionary, return `default`. If `keys` is empty, return `data`.
 
 <PracticePlayground problemId="py-foundations-prob-15" />
 
 <Solution>
 
 ```python
-def py_foundations_p15(data):
-    # Reference implementation
-    return data
+def safe_nested_get(data, keys, default=None):
+    curr = data
+    for key in keys:
+        if not isinstance(curr, dict) or key not in curr:
+            return default
+        curr = curr[key]
+    return curr
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Defensive navigation prevents catastrophic crashes when parsing semi-structured schema-less responses from external APIs and agent tools.
 
 </Solution>

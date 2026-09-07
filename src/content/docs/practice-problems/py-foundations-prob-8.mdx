@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Arrays Module 8: Problem 8"
 sidebar_position: 8
-description: "Curriculum Problem 8 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Curriculum Problem 8 (Stage 1: AI Foundations & Python Programming): Master Deduplicate List Preserving Order."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,33 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 8: Problem 8
+# Deduplicate List Preserving Order
 
-**Rank #8** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #8** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-7`.
+## Overview
+
+Implement `deduplicate_preserve_order(items)`: filter out redundant elements while strictly preserving the initial arrival order of each unique item.
+
+## Task
+
+Implement the function `deduplicate_preserve_order(items)`: return a new list with duplicate elements removed, keeping only the first occurrence of each item in order. If `items` is empty, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-8" />
 
 <Solution>
 
 ```python
-def py_foundations_p8(data):
-    # Reference implementation
-    return data
+def deduplicate_preserve_order(items):
+    seen = set()
+    res = []
+    for item in items:
+        if item not in seen:
+            seen.add(item)
+            res.append(item)
+    return res
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Preserving insertion order during deduplication is critical in RAG pipelines where retrieved passages are ranked by relevance score and must not be shuffled.
 
 </Solution>

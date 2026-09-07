@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Arrays Module 10: Problem 10"
 sidebar_position: 10
-description: "Curriculum Problem 10 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Curriculum Problem 10 (Stage 1: AI Foundations & Python Programming): Master Custom Zip Longest."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,33 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 10: Problem 10
+# Custom Zip Longest
 
-**Rank #10** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #10** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-9`.
+## Overview
+
+Implement `zip_longest_custom(list_a, list_b, fillvalue=None)`: pair elements from two sequences up to the length of the longer sequence, padding the shorter with a fill value.
+
+## Task
+
+Implement the function `zip_longest_custom(list_a, list_b, fillvalue=None)`: return a list of 2-element pairs `[[a, b], ...]`. Pad missing items from the shorter list with `fillvalue`. If both lists are empty, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-10" />
 
 <Solution>
 
 ```python
-def py_foundations_p10(data):
-    # Reference implementation
-    return data
+def zip_longest_custom(list_a, list_b, fillvalue=None):
+    max_len = max(len(list_a), len(list_b))
+    res = []
+    for i in range(max_len):
+        a = list_a[i] if i < len(list_a) else fillvalue
+        b = list_b[i] if i < len(list_b) else fillvalue
+        res.append([a, b])
+    return res
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Sequence alignment with padding is the primary data preparation step when batching variable-length token sequences into tensor matrices.
 
 </Solution>

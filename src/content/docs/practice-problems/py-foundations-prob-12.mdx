@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Arrays Module 12: Problem 12"
 sidebar_position: 12
-description: "Curriculum Problem 12 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Curriculum Problem 12 (Stage 1: AI Foundations & Python Programming): Master Chunk a List into Batches."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,31 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 12: Problem 12
+# Chunk a List into Batches
 
-**Rank #12** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #12** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-11`.
+## Overview
+
+Implement `chunk_list(items, chunk_size)`: partition a list into chunks of length `chunk_size`, handling uneven trailing batches and invalid chunk sizes.
+
+## Task
+
+Implement the function `chunk_list(items, chunk_size)`: split `items` into consecutive sublists of length at most `chunk_size`. If `chunk_size <= 0`, raise `ValueError`. If `items` is empty, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-12" />
 
 <Solution>
 
 ```python
-def py_foundations_p12(data):
-    # Reference implementation
-    return data
+def chunk_list(items, chunk_size):
+    if chunk_size <= 0:
+        raise ValueError('chunk_size must be positive')
+    if not items:
+        return []
+    return [items[i:i + chunk_size] for i in range(0, len(items), chunk_size)]
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Batching divides large workloads into manageable chunks to respect rate limits, memory constraints, and vectorized hardware SIMD widths.
 
 </Solution>

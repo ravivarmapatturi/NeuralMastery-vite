@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Python & programming fundamentals Module 3: Problem 3"
 sidebar_position: 3
-description: "Curriculum Problem 3 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Curriculum Problem 3 (Stage 1: AI Foundations & Python Programming): Master Invert a Dictionary."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,34 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 3: Problem 3
+# Invert a Dictionary
 
-**Rank #3** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #3** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-2`.
+## Overview
+
+Implement `invert_dictionary(mapping)`: transform a key-to-value map into a value-to-keys reverse index, the fundamental structure powering inverted indexes in information retrieval.
+
+## Task
+
+Implement the function `invert_dictionary(mapping)`: return a new dictionary mapping each unique value in `mapping` to a sorted list of keys that mapped to that value. If `mapping` is empty, return `{}`.
 
 <PracticePlayground problemId="py-foundations-prob-3" />
 
 <Solution>
 
 ```python
-def py_foundations_p3(data):
-    # Reference implementation
-    return data
+def invert_dictionary(mapping):
+    inv = {}
+    for k, v in mapping.items():
+        if v not in inv:
+            inv[v] = []
+        inv[v].append(k)
+    for v in inv:
+        inv[v].sort()
+    return inv
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Inverting mappings to create multi-value lookups is the cornerstone of search engines (inverted index: term -> doc IDs) and clustering groupings.
 
 </Solution>

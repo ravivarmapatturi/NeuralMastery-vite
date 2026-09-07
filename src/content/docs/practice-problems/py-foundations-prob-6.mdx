@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Arrays Module 6: Problem 6"
 sidebar_position: 6
-description: "Curriculum Problem 6 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Curriculum Problem 6 (Stage 1: AI Foundations & Python Programming): Master Compute Cumulative Prefix Sum."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,34 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 6: Problem 6
+# Compute Cumulative Prefix Sum
 
-**Rank #6** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #6** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-5`.
+## Overview
+
+Implement `cumulative_sum(nums)`, constructing the prefix sum array in a single O(n) scan -- fundamental for constant-time range queries and empirical CDF construction.
+
+## Task
+
+Implement the function `cumulative_sum(nums)`: return a list where each element at index `i` is the sum of all elements in `nums` up to index `i`. If `nums` is empty, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-6" />
 
 <Solution>
 
 ```python
-def py_foundations_p6(data):
-    # Reference implementation
-    return data
+def cumulative_sum(nums):
+    if not nums:
+        return []
+    res = []
+    curr = 0
+    for x in nums:
+        curr += x
+        res.append(curr)
+    return res
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+A prefix sum transforms range sum calculations from O(k) per query to O(1), and converting probability mass functions (PMFs) to cumulative distribution functions (CDFs) enables inverse transform sampling.
 
 </Solution>

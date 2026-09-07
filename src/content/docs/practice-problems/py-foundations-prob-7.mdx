@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Python & programming fundamentals Module 7: Problem 7"
 sidebar_position: 7
-description: "Curriculum Problem 7 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Curriculum Problem 7 (Stage 1: AI Foundations & Python Programming): Master Merge Dictionaries with Value Aggregation."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,30 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 7: Problem 7
+# Merge Dictionaries with Value Aggregation
 
-**Rank #7** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #7** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-6`.
+## Overview
+
+Implement `merge_dicts_with_sum(dict_a, dict_b)`: merge two frequency count dictionaries, summing counts for shared keys without mutating the input structures.
+
+## Task
+
+Implement the function `merge_dicts_with_sum(dict_a, dict_b)`: return a new dictionary containing all keys from both input dictionaries. When a key exists in both, sum their numeric values. If a key exists in only one dictionary, keep its original value.
 
 <PracticePlayground problemId="py-foundations-prob-7" />
 
 <Solution>
 
 ```python
-def py_foundations_p7(data):
-    # Reference implementation
-    return data
+def merge_dicts_with_sum(dict_a, dict_b):
+    res = dict(dict_a)
+    for k, v in dict_b.items():
+        res[k] = res.get(k, 0) + v
+    return res
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Dictionary merging with reduction (like sum or max) is the fundamental reduce operation in MapReduce architectures and distributed gradient all-reduce simulation.
 
 </Solution>

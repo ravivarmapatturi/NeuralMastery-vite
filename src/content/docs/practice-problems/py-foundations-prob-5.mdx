@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Python & programming fundamentals Module 5: Problem 5"
 sidebar_position: 5
-description: "Curriculum Problem 5 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Curriculum Problem 5 (Stage 1: AI Foundations & Python Programming): Master Clean and Tokenize Text."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,32 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 5: Problem 5
+# Clean and Tokenize Text
 
-**Rank #5** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #5** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-4`.
+## Overview
+
+Implement `clean_and_tokenize(text)`: normalize raw text by converting to lowercase, stripping punctuation, and breaking it into clean alphanumeric word tokens.
+
+## Task
+
+Implement the function `clean_and_tokenize(text)`: return a list of lowercase alphanumeric word tokens from `text`. Replace any non-alphanumeric non-whitespace characters with spaces before splitting on whitespace. If `text` is empty, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-5" />
 
 <Solution>
 
 ```python
-def py_foundations_p5(data):
-    # Reference implementation
-    return data
+import re
+
+def clean_and_tokenize(text):
+    if not text:
+        return []
+    cleaned = re.sub(r'[^a-zA-Z0-9\s]', ' ', text.lower())
+    return cleaned.split()
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Text cleaning (lowercasing, punctuation removal, whitespace splitting) transforms raw unstructured string input into discrete symbolic tokens for feature extraction.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Python & programming fundamentals Module 13: Problem 13"
 sidebar_position: 13
-description: "Curriculum Problem 13 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Curriculum Problem 13 (Stage 1: AI Foundations & Python Programming): Master Deep Merge Nested Dictionaries."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,33 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 13: Problem 13
+# Deep Merge Nested Dictionaries
 
-**Rank #13** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #13** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-12`.
+## Overview
+
+Implement `deep_merge_dicts(base, update)`: recursively merge nested configuration structures without mutating the original dictionary objects.
+
+## Task
+
+Implement the function `deep_merge_dicts(base, update)`: return a new dictionary with `update` merged into `base`. When both `base` and `update` contain a dictionary at the same key, merge them recursively; otherwise, use `update`'s value.
 
 <PracticePlayground problemId="py-foundations-prob-13" />
 
 <Solution>
 
 ```python
-def py_foundations_p13(data):
-    # Reference implementation
-    return data
+def deep_merge_dicts(base, update):
+    result = dict(base)
+    for k, v in update.items():
+        if k in result and isinstance(result[k], dict) and isinstance(v, dict):
+            result[k] = deep_merge_dicts(result[k], v)
+        else:
+            result[k] = v
+    return result
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Deep merging allows software systems to define base default configurations and let users supply minimal override deltas without duplicating the whole tree.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Python & programming fundamentals Module 1: Problem 1"
 sidebar_position: 1
-description: "Curriculum Problem 1 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Curriculum Problem 1 (Stage 1: AI Foundations & Python Programming): Master Count Item Frequencies."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,30 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 1: Problem 1
+# Count Item Frequencies
 
-**Rank #1** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #1** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `None`.
+## Overview
+
+Implement `count_frequencies(items)`, counting occurrences of elements in a list using a dictionary -- the foundational primitive behind token counting, vocabulary construction, and categorical frequency analysis in machine learning.
+
+## Task
+
+Implement the function `count_frequencies(items)`: return a dictionary mapping each distinct item in `items` to the number of times it appears. If `items` is empty, return an empty dictionary `{}`.
 
 <PracticePlayground problemId="py-foundations-prob-1" />
 
 <Solution>
 
 ```python
-def py_foundations_p1(data):
-    # Reference implementation
-    return data
+def count_frequencies(items):
+    freq = {}
+    for item in items:
+        freq[item] = freq.get(item, 0) + 1
+    return freq
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Counting frequencies is the core building block for vocabulary building, TF-IDF, bag-of-words representations, and categorical probability distributions.
 
 </Solution>

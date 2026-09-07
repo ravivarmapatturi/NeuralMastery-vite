@@ -13163,7 +13163,7 @@
       "section": "practice-problems",
       "title": "Practice: Python & programming fundamentals Module 1: Problem 1",
       "sidebarPosition": 1,
-      "description": "Curriculum Problem 1 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Curriculum Problem 1 (Stage 1: AI Foundations & Python Programming): Master Count Item Frequencies.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13172,7 +13172,7 @@
       "section": "practice-problems",
       "title": "Practice: Arrays Module 10: Problem 10",
       "sidebarPosition": 10,
-      "description": "Curriculum Problem 10 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Curriculum Problem 10 (Stage 1: AI Foundations & Python Programming): Master Custom Zip Longest.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13181,7 +13181,7 @@
       "section": "practice-problems",
       "title": "Practice: Python & programming fundamentals Module 11: Problem 11",
       "sidebarPosition": 11,
-      "description": "Curriculum Problem 11 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Curriculum Problem 11 (Stage 1: AI Foundations & Python Programming): Master Group Dictionaries by Key.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13190,7 +13190,7 @@
       "section": "practice-problems",
       "title": "Practice: Arrays Module 12: Problem 12",
       "sidebarPosition": 12,
-      "description": "Curriculum Problem 12 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Curriculum Problem 12 (Stage 1: AI Foundations & Python Programming): Master Chunk a List into Batches.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13199,7 +13199,7 @@
       "section": "practice-problems",
       "title": "Practice: Python & programming fundamentals Module 13: Problem 13",
       "sidebarPosition": 13,
-      "description": "Curriculum Problem 13 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Curriculum Problem 13 (Stage 1: AI Foundations & Python Programming): Master Deep Merge Nested Dictionaries.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13208,7 +13208,7 @@
       "section": "practice-problems",
       "title": "Practice: Arrays Module 14: Problem 14",
       "sidebarPosition": 14,
-      "description": "Curriculum Problem 14 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Curriculum Problem 14 (Stage 1: AI Foundations & Python Programming): Master Top K Frequent Elements.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13217,7 +13217,7 @@
       "section": "practice-problems",
       "title": "Practice: Python & programming fundamentals Module 15: Problem 15",
       "sidebarPosition": 15,
-      "description": "Curriculum Problem 15 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Curriculum Problem 15 (Stage 1: AI Foundations & Python Programming): Master Safe Nested Dictionary Traversal.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13262,7 +13262,7 @@
       "section": "practice-problems",
       "title": "Practice: Arrays Module 2: Problem 2",
       "sidebarPosition": 2,
-      "description": "Curriculum Problem 2 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Curriculum Problem 2 (Stage 1: AI Foundations & Python Programming): Master Rotate List by K Positions.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13361,7 +13361,7 @@
       "section": "practice-problems",
       "title": "Practice: Python & programming fundamentals Module 3: Problem 3",
       "sidebarPosition": 3,
-      "description": "Curriculum Problem 3 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Curriculum Problem 3 (Stage 1: AI Foundations & Python Programming): Master Invert a Dictionary.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13460,7 +13460,7 @@
       "section": "practice-problems",
       "title": "Practice: Arrays Module 4: Problem 4",
       "sidebarPosition": 4,
-      "description": "Curriculum Problem 4 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Curriculum Problem 4 (Stage 1: AI Foundations & Python Programming): Master Flatten an Arbitrarily Nested List.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13559,7 +13559,7 @@
       "section": "practice-problems",
       "title": "Practice: Python & programming fundamentals Module 5: Problem 5",
       "sidebarPosition": 5,
-      "description": "Curriculum Problem 5 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Curriculum Problem 5 (Stage 1: AI Foundations & Python Programming): Master Clean and Tokenize Text.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13658,7 +13658,7 @@
       "section": "practice-problems",
       "title": "Practice: Arrays Module 6: Problem 6",
       "sidebarPosition": 6,
-      "description": "Curriculum Problem 6 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Curriculum Problem 6 (Stage 1: AI Foundations & Python Programming): Master Compute Cumulative Prefix Sum.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13676,7 +13676,7 @@
       "section": "practice-problems",
       "title": "Practice: Python & programming fundamentals Module 7: Problem 7",
       "sidebarPosition": 7,
-      "description": "Curriculum Problem 7 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Curriculum Problem 7 (Stage 1: AI Foundations & Python Programming): Master Merge Dictionaries with Value Aggregation.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13685,7 +13685,7 @@
       "section": "practice-problems",
       "title": "Practice: Arrays Module 8: Problem 8",
       "sidebarPosition": 8,
-      "description": "Curriculum Problem 8 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Curriculum Problem 8 (Stage 1: AI Foundations & Python Programming): Master Deduplicate List Preserving Order.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },
@@ -13694,7 +13694,7 @@
       "section": "practice-problems",
       "title": "Practice: Python & programming fundamentals Module 9: Problem 9",
       "sidebarPosition": 9,
-      "description": "Curriculum Problem 9 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Curriculum Problem 9 (Stage 1: AI Foundations & Python Programming): Master Transpose a 2D Matrix.",
       "difficulty": "easy",
       "topic": "python-fundamentals"
     },

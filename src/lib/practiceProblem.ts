@@ -8437,6 +8437,647 @@ def compute_bleu_1(reference, candidate):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'py-foundations-prob-1': {
+    id: 'py-foundations-prob-1',
+    title: 'Count Item Frequencies',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'count_frequencies',
+    functionSignature: 'count_frequencies(items: list) -> dict',
+    starterCode: `def count_frequencies(items):
+    """Count the frequency of each element in the input list.
+
+    Return a dictionary mapping each unique item to its count.
+    An empty list should return an empty dictionary."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement an element frequency counter using standard Python dictionaries -- the primary foundation for word frequency analysis, token counting, and categorical distribution calculation in machine learning.",
+    taskDescription: "Implement `count_frequencies(items)`: return a dictionary mapping each distinct item in `items` to the number of times it appears. If `items` is empty, return an empty dictionary `{}`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Must handle empty input list by returning an empty dict {}.",
+          "Preserves types of the items (strings, integers, etc.) as dictionary keys."
+    ],
+    hints: {
+      small: "Iterate over items and use dict.get(item, 0) or collections.defaultdict.",
+      strong: "counts = {}; for item in items: counts[item] = counts.get(item, 0) + 1; return counts",
+      concept: "Counting frequencies is the core building block for vocabulary building, TF-IDF, bag-of-words representations, and categorical probability distributions.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Core Python dictionary and collection manipulation patterns" },
+    ],
+    testCases: [
+      {"id": "basic-strings", "label": "String Items", "input": {"items": ["apple", "banana", "apple", "orange", "banana", "apple"]}, "expectedOutput": {"apple": 3, "banana": 2, "orange": 1}, "hidden": false},
+      {"id": "integers", "label": "Integer Items", "input": {"items": [1, 2, 2, 3, 3, 3]}, "expectedOutput": {"1": 1, "2": 2, "3": 3}, "hidden": false},
+      {"id": "identical", "label": "All Elements Identical", "input": {"items": ["x", "x", "x", "x"]}, "expectedOutput": {"x": 4}, "hidden": true},
+      {"id": "empty", "label": "Empty List", "input": {"items": []}, "expectedOutput": {}, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-2': {
+    id: 'py-foundations-prob-2',
+    title: 'Rotate List by K Positions',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'rotate_list',
+    functionSignature: 'rotate_list(nums: list, k: int) -> list',
+    starterCode: `def rotate_list(nums, k):
+    """Rotate the list nums to the right by k positions.
+
+    A positive k rotates elements to the right; a negative k rotates
+    to the left. Handles k larger than len(nums). Returns a new list.
+    Empty list returns an empty list."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement list rotation using Python slicing and modulo arithmetic -- an essential technique for circular buffer management, window shifting, and rolling feature computation.",
+    taskDescription: "Implement `rotate_list(nums, k)`: rotate `nums` to the right by `k` steps. A negative `k` rotates to the left. When `k` exceeds `len(nums)`, wrap around using modulo arithmetic. Return a new list without mutating the original. If `nums` is empty, return `[]`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Should not modify the input list in place.",
+          "Supports k >= len(nums) and negative k.",
+          "Empty input list returns []."
+    ],
+    hints: {
+      small: "Compute effective shift using modulo: k = k % len(nums).",
+      strong: "Slice the list into two halves: nums[-k:] + nums[:-k]. If k == 0, return a shallow copy of nums.",
+      concept: "List slicing and modular index arithmetic are standard Python patterns for shifting sequences and implementing circular queues.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Sequence indexing and slice mechanics in Python" },
+    ],
+    testCases: [
+      {"id": "basic", "label": "Standard Right Rotation", "input": {"nums": [1, 2, 3, 4, 5], "k": 2}, "expectedOutput": [4, 5, 1, 2, 3], "hidden": false},
+      {"id": "large-k", "label": "K Greater Than Length", "input": {"nums": [10, 20, 30], "k": 4}, "expectedOutput": [30, 10, 20], "hidden": false},
+      {"id": "negative-k", "label": "Negative K (Rotate Left)", "input": {"nums": [1, 2, 3, 4], "k": -1}, "expectedOutput": [2, 3, 4, 1], "hidden": true},
+      {"id": "zero-k", "label": "Zero Shift", "input": {"nums": [1, 2, 3], "k": 0}, "expectedOutput": [1, 2, 3], "hidden": true},
+      {"id": "empty", "label": "Empty List", "input": {"nums": [], "k": 3}, "expectedOutput": [], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-3': {
+    id: 'py-foundations-prob-3',
+    title: 'Invert a Dictionary',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'invert_dictionary',
+    functionSignature: 'invert_dictionary(mapping: dict) -> dict',
+    starterCode: `def invert_dictionary(mapping):
+    """Invert a dictionary mapping keys to values.
+
+    Returns a dictionary mapping each unique value to a sorted list of
+    keys that mapped to it. Returns an empty dict for an empty input."""
+    # Your implementation here
+    pass
+`,
+    mission: "Invert a key-to-value dictionary into a value-to-keys reverse index -- the basic logic behind building inverted indexes for search and grouping mappings.",
+    taskDescription: "Implement `invert_dictionary(mapping)`: produce an inverted dictionary where each key is a distinct value from `mapping`, and its value is a sorted list of keys from `mapping` that held that value. If `mapping` is empty, return `{}`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Each list of keys in the inverted dictionary must be sorted in ascending order.",
+          "Empty input dictionary returns an empty dictionary {}."
+    ],
+    hints: {
+      small: "Iterate over mapping.items(), appending each key to a list in inverted[val].",
+      strong: "inv = {}; for k, v in mapping.items(): inv.setdefault(v, []).append(k); for v in inv: inv[v].sort(); return inv",
+      concept: "Inverting mappings to create multi-value lookups is the cornerstone of search engines (inverted index: term -> doc IDs) and clustering groupings.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Dictionary inversion and multi-mapping patterns" },
+    ],
+    testCases: [
+      {"id": "basic", "label": "Duplicate Values", "input": {"mapping": {"a": 1, "b": 2, "c": 1}}, "expectedOutput": {"1": ["a", "c"], "2": ["b"]}, "hidden": false},
+      {"id": "unique", "label": "All Unique Values", "input": {"mapping": {"x": 10, "y": 20}}, "expectedOutput": {"10": ["x"], "20": ["y"]}, "hidden": false},
+      {"id": "same-value", "label": "All Keys Share Same Value", "input": {"mapping": {"gamma": 5, "alpha": 5, "beta": 5}}, "expectedOutput": {"5": ["alpha", "beta", "gamma"]}, "hidden": true},
+      {"id": "empty", "label": "Empty Mapping", "input": {"mapping": {}}, "expectedOutput": {}, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-4': {
+    id: 'py-foundations-prob-4',
+    title: 'Flatten an Arbitrarily Nested List',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'flatten_nested_list',
+    functionSignature: 'flatten_nested_list(nested: list) -> list',
+    starterCode: `def flatten_nested_list(nested):
+    """Flatten an arbitrarily nested list of items into a 1D list.
+
+    Preserves the relative ordering of all leaf items. Handles empty
+    sublists and arbitrary nesting depth."""
+    # Your implementation here
+    pass
+`,
+    mission: "Flatten an arbitrarily nested hierarchy of lists into a single flat list -- a foundational recursive pattern common in parsing hierarchical JSON responses and nested token structures.",
+    taskDescription: "Implement `flatten_nested_list(nested)`: recursively traverse `nested` and return a flat list containing all leaf (non-list) elements in their original order. Empty lists should be ignored. Return an empty list if `nested` contains no leaf items.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Must handle arbitrary nesting depth (e.g. lists within lists within lists).",
+          "Non-list elements should remain intact and ordered."
+    ],
+    hints: {
+      small: "Use recursion or a stack. Check if each item is an instance of list.",
+      strong: "res = []; def f(x): [f(y) for y in x] if isinstance(x, list) else res.append(x); f(nested); return res",
+      concept: "Recursive tree traversal over nested data structures is a key prerequisite for AST processing, document parsing, and recursive JSON decoding.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Recursive sequences and recursive list flattening" },
+    ],
+    testCases: [
+      {"id": "nested", "label": "Irregular Nested Structure", "input": {"nested": [1, [2, [3, 4], 5], [6], 7]}, "expectedOutput": [1, 2, 3, 4, 5, 6, 7], "hidden": false},
+      {"id": "flat", "label": "Already Flat List", "input": {"nested": [10, 20, 30]}, "expectedOutput": [10, 20, 30], "hidden": false},
+      {"id": "empty-sublists", "label": "Nested With Empty Lists", "input": {"nested": [[], [1, [[]]], [2, [3]]]}, "expectedOutput": [1, 2, 3], "hidden": true},
+      {"id": "empty", "label": "Empty Root List", "input": {"nested": []}, "expectedOutput": [], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-5': {
+    id: 'py-foundations-prob-5',
+    title: 'Clean and Tokenize Text',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'clean_and_tokenize',
+    functionSignature: 'clean_and_tokenize(text: str) -> list[str]',
+    starterCode: `def clean_and_tokenize(text):
+    """Normalize and tokenize text into lowercase words.
+
+    Convert to lowercase, replace non-alphanumeric characters (except
+    whitespace) with spaces, and split into whitespace-delimited tokens.
+    Empty string returns an empty list."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement basic text normalization and tokenization in pure Python -- the very first step of any classical NLP or search pre-processing pipeline.",
+    taskDescription: "Implement `clean_and_tokenize(text)`: convert `text` to lowercase, replace any character that is not alphanumeric (`a-z`, `0-9`) or whitespace with a space, and split into words by whitespace. Return a list of normalized string tokens.",
+    constraints: [
+          "Libraries (like standard re) are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Tokens must contain only lowercase letters and digits.",
+          "Consecutive whitespace and punctuation must not yield empty string tokens.",
+          "Empty input text returns []."
+    ],
+    hints: {
+      small: "Use re.sub(r'[^a-zA-Z0-9\\s]', ' ', text.lower()) and then .split().",
+      strong: "import re; cleaned = re.sub(r'[^a-zA-Z0-9\\s]', ' ', text.lower()); return cleaned.split()",
+      concept: "Text cleaning (lowercasing, punctuation removal, whitespace splitting) transforms raw unstructured string input into discrete symbolic tokens for feature extraction.",
+    },
+    conceptConnections: [
+      { title: "Classical NLP", route: "/docs/nlp/classical-nlp", description: "Text pre-processing, normalization, and tokenization techniques" },
+    ],
+    testCases: [
+      {"id": "sentence", "label": "Standard Sentence with Punctuation", "input": {"text": "Hello, World! Welcome to AI."}, "expectedOutput": ["hello", "world", "welcome", "to", "ai"], "hidden": false},
+      {"id": "hyphen-numbers", "label": "Hyphens and Version Digits", "input": {"text": "state-of-the-art multi-agent system -- v2.0"}, "expectedOutput": ["state", "of", "the", "art", "multi", "agent", "system", "v2", "0"], "hidden": false},
+      {"id": "whitespace", "label": "Irregular Whitespace and Tabs", "input": {"text": "  NLP \t\n embeddings... \n  "}, "expectedOutput": ["nlp", "embeddings"], "hidden": true},
+      {"id": "empty", "label": "Empty String", "input": {"text": ""}, "expectedOutput": [], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-6': {
+    id: 'py-foundations-prob-6',
+    title: 'Compute Cumulative Prefix Sum',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'cumulative_sum',
+    functionSignature: 'cumulative_sum(nums: list[float]) -> list[float]',
+    starterCode: `def cumulative_sum(nums):
+    """Compute the running cumulative sum of a numeric sequence.
+
+    Each element at index i in the returned list is the sum of nums[0..i].
+    Returns an empty list for empty input."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a single-pass cumulative prefix sum -- the foundation for O(1) range sum queries, probability distribution sampling (CDFs), and integral images.",
+    taskDescription: "Implement `cumulative_sum(nums)`: return a new list where the value at index `i` is the sum of all elements in `nums` from index 0 through `i`. If `nums` is empty, return `[]`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Should run in O(n) time and O(n) auxiliary space.",
+          "Empty input list returns []."
+    ],
+    hints: {
+      small: "Maintain a running total variable, adding each number and appending the total to the result list.",
+      strong: "res = []; curr = 0; for x in nums: curr += x; res.append(curr); return res",
+      concept: "A prefix sum transforms range sum calculations from O(k) per query to O(1), and converting probability mass functions (PMFs) to cumulative distribution functions (CDFs) enables inverse transform sampling.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Sequence transformations and running aggregations" },
+    ],
+    testCases: [
+      {"id": "integers", "label": "Positive Integers", "input": {"nums": [1, 2, 3, 4, 5]}, "expectedOutput": [1, 3, 6, 10, 15], "hidden": false},
+      {"id": "negatives", "label": "Mixed Positive and Negative", "input": {"nums": [10, -5, 20, -10]}, "expectedOutput": [10, 5, 25, 15], "hidden": false},
+      {"id": "floats", "label": "Floating Point Values", "input": {"nums": [0.5, 1.5, 2.0]}, "expectedOutput": [0.5, 2.0, 4.0], "hidden": true},
+      {"id": "empty", "label": "Empty List", "input": {"nums": []}, "expectedOutput": [], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-7': {
+    id: 'py-foundations-prob-7',
+    title: 'Merge Dictionaries with Value Aggregation',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'merge_dicts_with_sum',
+    functionSignature: 'merge_dicts_with_sum(dict_a: dict, dict_b: dict) -> dict',
+    starterCode: `def merge_dicts_with_sum(dict_a, dict_b):
+    """Merge two dictionaries of numeric values, summing values for common keys.
+
+    Keys unique to dict_a or dict_b retain their original value.
+    Does not mutate input dictionaries."""
+    # Your implementation here
+    pass
+`,
+    mission: "Merge two dictionary counters by aggregating values for colliding keys -- essential for combining bag-of-words histograms, token usage telemetry, and parameter gradients across mini-batches.",
+    taskDescription: "Implement `merge_dicts_with_sum(dict_a, dict_b)`: return a new dictionary containing all keys from `dict_a` and `dict_b`. For keys present in both dictionaries, their values should be added together. Neither input dictionary should be mutated.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Do not mutate dict_a or dict_b in place.",
+          "Handles empty dictionaries cleanly."
+    ],
+    hints: {
+      small: "Copy dict_a into a new dict, then loop over items in dict_b adding to existing keys.",
+      strong: "res = dict(dict_a); for k, v in dict_b.items(): res[k] = res.get(k, 0) + v; return res",
+      concept: "Dictionary merging with reduction (like sum or max) is the fundamental reduce operation in MapReduce architectures and distributed gradient all-reduce simulation.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Dictionary merging, union, and aggregation semantics" },
+    ],
+    testCases: [
+      {"id": "overlap", "label": "Overlapping and Unique Keys", "input": {"dict_a": {"apples": 5, "bananas": 3}, "dict_b": {"bananas": 2, "oranges": 4}}, "expectedOutput": {"apples": 5, "bananas": 5, "oranges": 4}, "hidden": false},
+      {"id": "disjoint", "label": "Completely Disjoint Keys", "input": {"dict_a": {"a": 1}, "dict_b": {"b": 2}}, "expectedOutput": {"a": 1, "b": 2}, "hidden": false},
+      {"id": "one-empty", "label": "One Empty Dictionary", "input": {"dict_a": {}, "dict_b": {"tokens": 150}}, "expectedOutput": {"tokens": 150}, "hidden": true},
+      {"id": "both-empty", "label": "Both Empty", "input": {"dict_a": {}, "dict_b": {}}, "expectedOutput": {}, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-8': {
+    id: 'py-foundations-prob-8',
+    title: 'Deduplicate List Preserving Order',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'deduplicate_preserve_order',
+    functionSignature: 'deduplicate_preserve_order(items: list) -> list',
+    starterCode: `def deduplicate_preserve_order(items):
+    """Remove duplicates from a list while maintaining original first-appearance order.
+
+    Unlike set(items), strictly preserves the order of elements as they
+    first appeared in items. Returns an empty list for empty input."""
+    # Your implementation here
+    pass
+`,
+    mission: "Deduplicate a sequence while strictly maintaining order -- standard `set(items)` destroys ordering, but ranking algorithms and prompt context builders need uniqueness without scrambling priority.",
+    taskDescription: "Implement `deduplicate_preserve_order(items)`: return a new list containing only the unique elements of `items`, in the exact order of their first appearance. If `items` is empty, return `[]`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Must run in O(n) expected time.",
+          "First-appearance order must be preserved.",
+          "Empty input list returns []."
+    ],
+    hints: {
+      small: "Keep track of already seen items in a set while appending new items to a result list.",
+      strong: "seen = set(); res = []; for x in items: if x not in seen: seen.add(x); res.append(x); return res",
+      concept: "Preserving insertion order during deduplication is critical in RAG pipelines where retrieved passages are ranked by relevance score and must not be shuffled.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Set membership testing and order-preserving sequence filtering" },
+    ],
+    testCases: [
+      {"id": "strings", "label": "Interleaved Duplicate Strings", "input": {"items": ["b", "a", "c", "a", "b", "d", "c"]}, "expectedOutput": ["b", "a", "c", "d"], "hidden": false},
+      {"id": "integers", "label": "Duplicate Integers", "input": {"items": [4, 5, 4, 1, 2, 5, 3]}, "expectedOutput": [4, 5, 1, 2, 3], "hidden": false},
+      {"id": "all-unique", "label": "All Elements Unique", "input": {"items": [10, 20, 30]}, "expectedOutput": [10, 20, 30], "hidden": true},
+      {"id": "empty", "label": "Empty List", "input": {"items": []}, "expectedOutput": [], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-9': {
+    id: 'py-foundations-prob-9',
+    title: 'Transpose a 2D Matrix',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'transpose_matrix',
+    functionSignature: 'transpose_matrix(matrix: list[list]) -> list[list]',
+    starterCode: `def transpose_matrix(matrix):
+    """Transpose an M x N matrix (list of lists) into an N x M matrix.
+
+    Rows become columns and columns become rows. Raises ValueError if
+    rows have inconsistent lengths. Returns an empty list for empty input."""
+    # Your implementation here
+    pass
+`,
+    mission: "Transpose a 2D matrix represented as nested Python lists -- the pure-Python foundation for matrix transposition before reaching for NumPy arrays.",
+    taskDescription: "Implement `transpose_matrix(matrix)`: given an `M x N` matrix represented as a list of lists, return its `N x M` transpose where element `(i, j)` becomes `(j, i)`. If `matrix` is empty or contains an empty row, return `[]`. Raise `ValueError` if rows have inconsistent lengths.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Must raise ValueError if row lengths differ (irregular matrix).",
+          "Empty matrix [] or [[]] returns []."
+    ],
+    hints: {
+      small: "Check that all rows have the same length as matrix[0], then use nested list comprehensions or zip(*matrix).",
+      strong: "if not matrix or not matrix[0]: return []; cols = len(matrix[0]); if any(len(r) != cols for r in matrix): raise ValueError(); return [[matrix[r][c] for r in range(len(matrix))] for c in range(cols)]",
+      concept: "Matrix transposition swaps feature axes and sample axes, representing column-oriented vs row-oriented data layouts in linear algebra.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Nested list representations and multidimensional iteration" },
+    ],
+    testCases: [
+      {"id": "rectangular", "label": "2x3 Rectangular Matrix", "input": {"matrix": [[1, 2, 3], [4, 5, 6]]}, "expectedOutput": [[1, 4], [2, 5], [3, 6]], "hidden": false},
+      {"id": "column-vector", "label": "3x1 Column Vector", "input": {"matrix": [[1], [2], [3]]}, "expectedOutput": [[1, 2, 3]], "hidden": false},
+      {"id": "square", "label": "2x2 Square Matrix", "input": {"matrix": [[1, 2], [3, 4]]}, "expectedOutput": [[1, 3], [2, 4]], "hidden": true},
+      {"id": "empty", "label": "Empty Matrix", "input": {"matrix": []}, "expectedOutput": [], "hidden": true},
+      {"id": "irregular", "label": "Inconsistent Row Lengths", "input": {"matrix": [[1, 2], [3]]}, "expectError": "ValueError", "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-10': {
+    id: 'py-foundations-prob-10',
+    title: 'Custom Zip Longest',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'zip_longest_custom',
+    functionSignature: 'zip_longest_custom(list_a: list, list_b: list, fillvalue=None) -> list[list]',
+    starterCode: `def zip_longest_custom(list_a, list_b, fillvalue=None):
+    """Pair elements from two lists, padding the shorter with fillvalue.
+
+    Pairs elements up to the length of the longer list. Returns a list
+    of 2-element lists [a, b]. Returns an empty list if both are empty."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement zip_longest padding behavior from scratch -- essential for pairing sequences of differing lengths like parallel sentences in machine translation or question-answer alignment.",
+    taskDescription: "Implement `zip_longest_custom(list_a, list_b, fillvalue=None)`: iterate up to `max(len(list_a), len(list_b))`, pairing the elements at each index into a 2-element list `[a, b]`. If a list is shorter than the other, use `fillvalue` for missing entries. Return a list of pairs.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Returns a list of 2-element lists [elem_a, elem_b].",
+          "If both lists are empty, return []."
+    ],
+    hints: {
+      small: "Find the maximum length of both lists and iterate through that range.",
+      strong: "max_len = max(len(list_a), len(list_b)); return [[list_a[i] if i < len(list_a) else fillvalue, list_b[i] if i < len(list_b) else fillvalue] for i in range(max_len)]",
+      concept: "Sequence alignment with padding is the primary data preparation step when batching variable-length token sequences into tensor matrices.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Dual sequence iteration and padding semantics" },
+    ],
+    testCases: [
+      {"id": "a-longer", "label": "First List Longer", "input": {"list_a": [1, 2, 3], "list_b": ["a"], "fillvalue": "PAD"}, "expectedOutput": [[1, "a"], [2, "PAD"], [3, "PAD"]], "hidden": false},
+      {"id": "b-longer", "label": "Second List Longer", "input": {"list_a": ["x"], "list_b": [10, 20], "fillvalue": 0}, "expectedOutput": [["x", 10], [0, 20]], "hidden": false},
+      {"id": "equal", "label": "Equal Length Lists", "input": {"list_a": [1, 2], "list_b": [3, 4], "fillvalue": "NONE"}, "expectedOutput": [[1, 3], [2, 4]], "hidden": true},
+      {"id": "both-empty", "label": "Both Empty Lists", "input": {"list_a": [], "list_b": [], "fillvalue": "EMPTY"}, "expectedOutput": [], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-11': {
+    id: 'py-foundations-prob-11',
+    title: 'Group Dictionaries by Key',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'group_by_key',
+    functionSignature: 'group_by_key(items: list[dict], key: str) -> dict',
+    starterCode: `def group_by_key(items, key):
+    """Group a list of dictionaries by the value of a specified key.
+
+    Returns a dictionary mapping each group value to a list of matching
+    dictionaries (preserving original order). Skips dictionaries lacking the key."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement categorical grouping over records -- the pure Python equivalent of SQL GROUP BY and Pandas groupby, fundamental for cohort analysis and dataset partitioning.",
+    taskDescription: "Implement `group_by_key(items, key)`: group a list of record dictionaries by the value of `key`. Return a dictionary where keys are the values found at `item[key]`, and values are lists of records sharing that key value (in original encounter order). If a dictionary does not contain `key`, skip it. If `items` is empty, return `{}`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Preserves the original relative ordering of dictionaries within each group.",
+          "Dictionaries without the specified key must be silently omitted."
+    ],
+    hints: {
+      small: "Iterate over items, check if key in item, and append to grouped.setdefault(item[key], []).",
+      strong: "grouped = {}; for item in items: if key in item: grouped.setdefault(item[key], []).append(dict(item)); return grouped",
+      concept: "Grouping records into buckets by key is the universal data organization primitive behind sharding, faceted search, and multi-class dataset splits.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Record grouping, dictionary bucketing, and data partitioning" },
+    ],
+    testCases: [
+      {"id": "departments", "label": "Group By Department", "input": {"items": [{"name": "Alice", "dept": "AI"}, {"name": "Bob", "dept": "Web"}, {"name": "Charlie", "dept": "AI"}], "key": "dept"}, "expectedOutput": {"AI": [{"name": "Alice", "dept": "AI"}, {"name": "Charlie", "dept": "AI"}], "Web": [{"name": "Bob", "dept": "Web"}]}, "hidden": false},
+      {"id": "missing-key", "label": "Records Missing Group Key", "input": {"items": [{"id": 1, "role": "user"}, {"id": 2}, {"id": 3, "role": "user"}], "key": "role"}, "expectedOutput": {"user": [{"id": 1, "role": "user"}, {"id": 3, "role": "user"}]}, "hidden": false},
+      {"id": "empty", "label": "Empty Record List", "input": {"items": [], "key": "type"}, "expectedOutput": {}, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-12': {
+    id: 'py-foundations-prob-12',
+    title: 'Chunk a List into Batches',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'chunk_list',
+    functionSignature: 'chunk_list(items: list, chunk_size: int) -> list[list]',
+    starterCode: `def chunk_list(items, chunk_size):
+    """Split a list into consecutive chunks of at most chunk_size length.
+
+    The final chunk may be smaller if len(items) is not divisible by
+    chunk_size. Raises ValueError if chunk_size <= 0. Empty list returns []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Partition a flat list into fixed-size batches -- the standard pattern used in LLM prompt batching, database bulk insertion, and mini-batch gradient descent.",
+    taskDescription: "Implement `chunk_list(items, chunk_size)`: partition `items` into sublists of length `chunk_size`. The final chunk contains the remaining elements if `len(items)` is not evenly divisible. Raise `ValueError` if `chunk_size <= 0`. If `items` is empty, return `[]`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Must raise ValueError if chunk_size is less than or equal to 0.",
+          "The last chunk may contain fewer elements than chunk_size.",
+          "Empty input list returns []."
+    ],
+    hints: {
+      small: "Use range(0, len(items), chunk_size) with list slicing items[i:i + chunk_size].",
+      strong: "if chunk_size <= 0: raise ValueError(); return [items[i:i + chunk_size] for i in range(0, len(items), chunk_size)]",
+      concept: "Batching divides large workloads into manageable chunks to respect rate limits, memory constraints, and vectorized hardware SIMD widths.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Batching patterns and slice window stepping in Python" },
+    ],
+    testCases: [
+      {"id": "uneven", "label": "Uneven List Length", "input": {"items": [1, 2, 3, 4, 5, 6, 7], "chunk_size": 3}, "expectedOutput": [[1, 2, 3], [4, 5, 6], [7]], "hidden": false},
+      {"id": "exact", "label": "Exact Multiple Length", "input": {"items": [10, 20, 30, 40], "chunk_size": 2}, "expectedOutput": [[10, 20], [30, 40]], "hidden": false},
+      {"id": "large-chunk", "label": "Chunk Size Greater Than Length", "input": {"items": [1, 2], "chunk_size": 5}, "expectedOutput": [[1, 2]], "hidden": true},
+      {"id": "empty", "label": "Empty List", "input": {"items": [], "chunk_size": 3}, "expectedOutput": [], "hidden": true},
+      {"id": "invalid-size", "label": "Non-Positive Chunk Size", "input": {"items": [1, 2, 3], "chunk_size": 0}, "expectError": "ValueError", "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-13': {
+    id: 'py-foundations-prob-13',
+    title: 'Deep Merge Nested Dictionaries',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'deep_merge_dicts',
+    functionSignature: 'deep_merge_dicts(base: dict, update: dict) -> dict',
+    starterCode: `def deep_merge_dicts(base, update):
+    """Recursively merge dictionary update into base.
+
+    If both base and update contain a dict at key k, recursively merge them.
+    Otherwise, update[k] overwrites base[k]. Does not mutate inputs."""
+    # Your implementation here
+    pass
+`,
+    mission: "Recursively merge nested configuration dictionaries -- the cornerstone pattern for cascading settings, default-override hierarchies, and hyperparameter config management.",
+    taskDescription: "Implement `deep_merge_dicts(base, update)`: produce a new dictionary where keys from `update` are merged into `base`. If a key exists in both dictionaries and both values are dictionaries, recursively merge them. Otherwise, the value from `update` replaces the value in `base`. Do not mutate the original dictionaries.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Do not mutate base or update in place.",
+          "Recursively merges nested dicts without replacing intermediate containers."
+    ],
+    hints: {
+      small: "Create a copy of base, iterate through update.items(), and check if both values are dicts.",
+      strong: "res = dict(base); for k, v in update.items(): res[k] = deep_merge_dicts(res[k], v) if k in res and isinstance(res[k], dict) and isinstance(v, dict) else v; return res",
+      concept: "Deep merging allows software systems to define base default configurations and let users supply minimal override deltas without duplicating the whole tree.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Recursive dictionary merging and configuration trees" },
+    ],
+    testCases: [
+      {"id": "nested-override", "label": "Nested Dict Override", "input": {"base": {"model": {"name": "gpt-4o", "temp": 0.7}, "retries": 3}, "update": {"model": {"temp": 0.2, "top_p": 0.9}, "stream": true}}, "expectedOutput": {"model": {"name": "gpt-4o", "temp": 0.2, "top_p": 0.9}, "retries": 3, "stream": true}, "hidden": false},
+      {"id": "scalar-replaces-dict", "label": "Scalar Replaces Dict", "input": {"base": {"server": {"host": "localhost", "port": 8000}}, "update": {"server": "cloud"}}, "expectedOutput": {"server": "cloud"}, "hidden": false},
+      {"id": "empty-update", "label": "Empty Update", "input": {"base": {"a": 1, "b": {"c": 2}}, "update": {}}, "expectedOutput": {"a": 1, "b": {"c": 2}}, "hidden": true},
+      {"id": "empty-base", "label": "Empty Base", "input": {"base": {}, "update": {"x": {"y": 10}}}, "expectedOutput": {"x": {"y": 10}}, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-14': {
+    id: 'py-foundations-prob-14',
+    title: 'Top K Frequent Elements',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'top_k_frequent',
+    functionSignature: 'top_k_frequent(items: list, k: int) -> list',
+    starterCode: `def top_k_frequent(items, k):
+    """Return the k most frequent elements in items.
+
+    Sorts by frequency descending, breaking ties by element value
+    (converted to string) ascending. Raises ValueError if k < 0 or
+    k > number of unique elements."""
+    # Your implementation here
+    pass
+`,
+    mission: "Extract top-K items by frequency with deterministic tie-breaking -- the standard pattern behind vocabulary truncation, stop-word detection, and most-common label filtering.",
+    taskDescription: "Implement `top_k_frequent(items, k)`: find the `k` most common elements in `items`. Order results primarily by frequency descending. Break frequency ties deterministically by comparing their string representations in ascending order (`str(x)`). Raise `ValueError` if `k < 0` or if `k` exceeds the number of unique elements in `items`. Return `[]` if `k == 0`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Must raise ValueError if k < 0 or k > len(unique_elements).",
+          "Ties broken by str(element) in ascending alphabetical order."
+    ],
+    hints: {
+      small: "Count items using a dictionary, then sort the unique keys using key=lambda x: (-counts[x], str(x)).",
+      strong: "freq = {}; for x in items: freq[x] = freq.get(x, 0) + 1; if k < 0 or k > len(freq): raise ValueError(); return sorted(freq.keys(), key=lambda x: (-freq[x], str(x)))[:k]",
+      concept: "Filtering datasets down to top-K frequent categories or tokens prevents high-cardinality explosion and prunes long-tail noise in ML pipelines.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Sorting with custom key functions and frequency extraction" },
+    ],
+    testCases: [
+      {"id": "basic", "label": "Clear Frequency Ranking", "input": {"items": ["a", "b", "b", "c", "a", "b", "d"], "k": 2}, "expectedOutput": ["b", "a"], "hidden": false},
+      {"id": "ties", "label": "Tie Breaking by String", "input": {"items": ["z", "a", "m"], "k": 2}, "expectedOutput": ["a", "m"], "hidden": false},
+      {"id": "numbers", "label": "Single Item Selection", "input": {"items": [10, 20, 30], "k": 1}, "expectedOutput": [10], "hidden": true},
+      {"id": "zero-k", "label": "Zero K Return Empty", "input": {"items": ["a", "b"], "k": 0}, "expectedOutput": [], "hidden": true},
+      {"id": "out-of-range", "label": "K Exceeds Unique Count", "input": {"items": ["a", "b"], "k": 5}, "expectError": "ValueError", "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-foundations-prob-15': {
+    id: 'py-foundations-prob-15',
+    title: 'Safe Nested Dictionary Traversal',
+    difficulty: 'easy',
+    topic: 'Python Fundamentals',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'safe_nested_get',
+    functionSignature: 'safe_nested_get(data: dict, keys: list[str], default=None)',
+    starterCode: `def safe_nested_get(data, keys, default=None):
+    """Safely traverse a nested dictionary path without KeyError or TypeError.
+
+    Walks down keys in order. If any key is missing or an intermediate
+    value is not a dict, returns default. If keys is empty, returns data."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement defensive nested property lookup (optional chaining) -- essential for safely querying deeply nested REST payloads, GraphQL responses, and LLM structured outputs.",
+    taskDescription: "Implement `safe_nested_get(data, keys, default=None)`: walk through `keys` sequentially within `data`. If at any stage a key does not exist or the current object is not a dictionary, return `default`. If `keys` is empty, return `data`.",
+    constraints: [
+          "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+          "Must never raise KeyError, TypeError, or IndexError during traversal.",
+          "Returns default whenever traversal cannot proceed.",
+          "Empty keys list returns data directly."
+    ],
+    hints: {
+      small: "Loop over each key: if not isinstance(curr, dict) or key not in curr, return default.",
+      strong: "curr = data; for k in keys: if not isinstance(curr, dict) or k not in curr: return default; curr = curr[k]; return curr",
+      concept: "Defensive navigation prevents catastrophic crashes when parsing semi-structured schema-less responses from external APIs and agent tools.",
+    },
+    conceptConnections: [
+      { title: "Language Fundamentals", route: "/docs/python-engineering/language-fundamentals-and-oop", description: "Defensive property access and optional chaining patterns" },
+    ],
+    testCases: [
+      {"id": "found", "label": "Deeply Nested Key Found", "input": {"data": {"user": {"profile": {"name": "Ada Lovelace"}}}, "keys": ["user", "profile", "name"], "default": "Unknown"}, "expectedOutput": "Ada Lovelace", "hidden": false},
+      {"id": "missing", "label": "Key Missing Along Path", "input": {"data": {"user": {"id": 42}}, "keys": ["user", "email"], "default": "no-email"}, "expectedOutput": "no-email", "hidden": false},
+      {"id": "non-dict", "label": "Intermediate Value Non-Dict", "input": {"data": {"items": [1, 2, 3]}, "keys": ["items", "length"], "default": -1}, "expectedOutput": -1, "hidden": true},
+      {"id": "empty-keys", "label": "Empty Keys Path", "input": {"data": {"status": "ok"}, "keys": [], "default": "default-val"}, "expectedOutput": {"status": "ok"}, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

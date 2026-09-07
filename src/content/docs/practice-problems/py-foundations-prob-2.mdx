@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Arrays Module 2: Problem 2"
 sidebar_position: 2
-description: "Curriculum Problem 2 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Curriculum Problem 2 (Stage 1: AI Foundations & Python Programming): Master Rotate List by K Positions."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,32 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 2: Problem 2
+# Rotate List by K Positions
 
-**Rank #2** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
+**Rank #2** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-1`.
+## Overview
+
+Implement `rotate_list(nums, k)`, shifting elements cyclically to the right or left using slicing and modulo arithmetic -- an essential technique for circular buffers and sequence windows.
+
+## Task
+
+Implement the function `rotate_list(nums, k)`: rotate `nums` to the right by `k` steps (or left if `k` is negative). When `k` exceeds `len(nums)`, wrap around using modulo arithmetic. Return a new list. If `nums` is empty, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-2" />
 
 <Solution>
 
 ```python
-def py_foundations_p2(data):
-    # Reference implementation
-    return data
+def rotate_list(nums, k):
+    if not nums:
+        return []
+    k = k % len(nums)
+    if k == 0:
+        return list(nums)
+    return nums[-k:] + nums[:-k]
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+List slicing and modular index arithmetic are standard Python patterns for shifting sequences and implementing circular queues.
 
 </Solution>
