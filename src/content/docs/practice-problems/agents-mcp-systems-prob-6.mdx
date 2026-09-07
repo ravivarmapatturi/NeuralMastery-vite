@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Vector search Module 6: Problem 436"
+title: "Practice: Filtered Vector Search With a Metadata Tag"
 sidebar_position: 436
-description: "Curriculum Problem 436 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search."
+description: "Implement metadata-filtered vector search -- restrict candidates by a tag, then rank the survivors by cosine similarity, the pattern every real vector database offers."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,38 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Vector search Module 6: Problem 436
+# Filtered Vector Search With a Metadata Tag
 
 **Rank #436** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-5`.
+Implement `filtered_vector_search(query, vectors, tags, required_tag, k)`: restrict candidates to those matching `required_tag`, then return the `k` most similar among only those by cosine similarity -- the metadata-pre-filter-plus-similarity pattern every real vector database (Pinecone, Weaviate, Qdrant) offers, since "find the most similar PUBLISHED articles by THIS author" is a far more common real query than pure unfiltered similarity search. Prerequisite: `agents-mcp-systems-prob-5`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-6" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p6(data):
-    # Reference implementation
-    return data
+import math
+
+def _cosine_sim(a, b):
+    dot = sum(x * y for x, y in zip(a, b))
+    na = math.sqrt(sum(x * x for x in a))
+    nb = math.sqrt(sum(x * x for x in b))
+    if na == 0 or nb == 0:
+        raise ValueError("zero vector has undefined cosine similarity")
+    return dot / (na * nb)
+
+def filtered_vector_search(query, vectors, tags, required_tag, k):
+    if k <= 0:
+        raise ValueError("k must be positive")
+    candidates = [i for i, t in enumerate(tags) if t == required_tag]
+    if k > len(candidates):
+        raise ValueError("k cannot exceed number of matching candidates")
+    sims = [(i, _cosine_sim(query, vectors[i])) for i in candidates]
+    sims.sort(key=lambda p: (-p[1], p[0]))
+    return [i for i, _ in sims[:k]]
 ```
 
-This problem tests fundamental skills in Vector search.
+A real vector index applies the metadata filter before (or interleaved with) the similarity search, not after truncating to k -- filtering after truncation could return fewer than k results even when enough matching candidates exist, exactly the bug this problem's "k exceeds matching candidates" check guards against.
 
 </Solution>

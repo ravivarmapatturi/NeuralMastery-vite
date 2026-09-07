@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 3: Problem 433"
+title: "Practice: Validate an MCP Tool-Call Payload"
 sidebar_position: 433
-description: "Curriculum Problem 433 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
+description: "Implement the request-shape validator an MCP server runs before trusting a tool-call payload's fields and types."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,33 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 3: Problem 433
+# Validate an MCP Tool-Call Payload
 
 **Rank #433** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-2`.
+Implement `validate_mcp_tool_call(schema, payload)`, checking a tool-call payload against a `{field: type}` schema and returning a list of human-readable error strings (missing fields, type mismatches) -- an MCP tool is only as safe as the check that runs before its arguments ever reach real code. Prerequisite: `agents-mcp-systems-prob-2`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-3" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p3(data):
-    # Reference implementation
-    return data
+_TYPE_MAP = {"string": str, "number": (int, float), "boolean": bool, "array": list, "object": dict}
+
+def validate_mcp_tool_call(schema, payload):
+    errors = []
+    for field, expected_type in schema.items():
+        if field not in payload:
+            errors.append(f"missing required field: {field}")
+            continue
+        value = payload[field]
+        if expected_type == "number" and isinstance(value, bool):
+            errors.append(f"field {field}: expected number, got boolean")
+        elif not isinstance(value, _TYPE_MAP[expected_type]):
+            errors.append(f"field {field}: expected {expected_type}, got {type(value).__name__}")
+    return errors
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+MCP tool calls arrive over JSON-RPC as untyped JSON -- the server has no compile-time guarantee the client sent the right shape, so this kind of runtime schema check is the actual boundary between "arbitrary JSON from the wire" and "safe to call the underlying Python function with."
 
 </Solution>

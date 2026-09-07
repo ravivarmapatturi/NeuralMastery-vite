@@ -1783,6 +1783,778 @@ def silhouette_score(X, labels):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  // --- Agents, MCP & Systems batch 1 (ranks 431-445) -- real content
+  // replacing the generic Stage 8 placeholder template. Function names,
+  // test cases, and reference solutions were hand-written and every
+  // testCase.expectedOutput was computed by actually running the
+  // reference implementation (see the practice-problems-initiative
+  // pattern), not guessed.
+  'agents-mcp-systems-prob-1': {
+    id: 'agents-mcp-systems-prob-1',
+    title: 'Sliding-Window Text Chunking for RAG',
+    difficulty: 'easy',
+    topic: 'Retrieval-Augmented Generation',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'chunk_text',
+    functionSignature: 'chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]',
+    starterCode: `def chunk_text(text, chunk_size, overlap):
+    """Split text into overlapping fixed-size chunks for a RAG ingestion
+    pipeline. Each chunk after the first starts (chunk_size - overlap)
+    characters after the previous chunk's start. Raise ValueError if
+    chunk_size <= 0 or if overlap is not in [0, chunk_size)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the sliding-window chunker that turns a raw document into the overlapping text chunks a RAG pipeline actually embeds and indexes -- the overlap is what stops a fact from being silently cut in half at a chunk boundary.',
+    taskDescription: 'Implement `chunk_text(text, chunk_size, overlap)`, returning a list of chunks. Each chunk is up to `chunk_size` characters; consecutive chunks start `chunk_size - overlap` characters apart. The last chunk may be shorter. Return `[]` for empty text.',
+    constraints: [
+      'Must raise ValueError if chunk_size <= 0.',
+      'Must raise ValueError if overlap < 0 or overlap >= chunk_size (no forward progress otherwise).',
+      'Empty text returns an empty list, not an error.',
+      'The final chunk should include the tail of the text even if shorter than chunk_size.',
+    ],
+    hints: {
+      small: 'Track a start index `i` and slice `text[i:i+chunk_size]`. Advance `i` by `chunk_size - overlap` each step.',
+      strong: 'Stop advancing once `i + chunk_size >= len(text)` -- append that final (possibly short) slice and break, rather than looping past the end of the string.',
+      concept: 'Overlap exists because a naive non-overlapping split can cut a sentence -- and the fact inside it -- exactly at a chunk boundary, so neither chunk alone contains the whole idea to embed and retrieve.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval-Augmented Generation', route: '/docs/llms-genai/rag', description: 'Chunking is the first step of a RAG ingestion pipeline, before embedding and indexing' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Overlapping Chunks', input: { text: 'ABCDEFGHIJ', chunk_size: 4, overlap: 1 }, expectedOutput: ['ABCD', 'DEFG', 'GHIJ'], hidden: false, description: 'step = 4 - 1 = 3; last chunk lands exactly on the tail' },
+      { id: 'short-text', label: 'Text Shorter Than Chunk Size', input: { text: 'Hi', chunk_size: 10, overlap: 2 }, expectedOutput: ['Hi'], hidden: false, description: 'A single chunk covers the whole short string' },
+      { id: 'empty', label: 'Empty Text', input: { text: '', chunk_size: 4, overlap: 1 }, expectedOutput: [], hidden: false },
+      { id: 'no-overlap', label: 'Zero Overlap', input: { text: 'ABCDEFGH', chunk_size: 4, overlap: 0 }, expectedOutput: ['ABCD', 'EFGH'], hidden: true, description: 'step = chunk_size, i.e. a plain non-overlapping split' },
+      { id: 'bad-overlap', label: 'Overlap Equals Chunk Size', input: { text: 'abcdef', chunk_size: 5, overlap: 5 }, expectError: 'ValueError', hidden: true, description: 'overlap >= chunk_size would never advance -- must raise' },
+      { id: 'bad-chunk-size', label: 'Non-Positive Chunk Size', input: { text: 'abcdef', chunk_size: 0, overlap: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-2': {
+    id: 'agents-mcp-systems-prob-2',
+    title: 'Parse a ReAct Agent Action String',
+    difficulty: 'easy',
+    topic: 'Agent Orchestration',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'parse_react_action',
+    functionSignature: 'parse_react_action(text: str) -> tuple[str, str]',
+    starterCode: `import re
+
+def parse_react_action(text):
+    """Parse a ReAct-style agent line of the exact form
+    "Action: tool_name[argument text]" into (tool_name, argument text).
+    Leading/trailing whitespace on the whole line is ignored. Raise
+    ValueError if the line doesn't match that exact shape."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the parser that turns a ReAct agent\'s free-text "Action: tool[arg]" line into a real (tool_name, argument) pair the agent loop can actually dispatch -- the same parsing step every ReAct-style agent framework needs between "the LLM said this" and "call this tool with this input".',
+    taskDescription: 'Implement `parse_react_action(text)`. `text` is one line of the form `Action: tool_name[argument text]`. Return `(tool_name, argument_text)`. Raise `ValueError` if the line does not match that exact shape (missing `Action:` prefix, missing brackets, etc.).',
+    constraints: [
+      'The tool name matches `[A-Za-z_][A-Za-z0-9_]*` (a valid identifier).',
+      'The argument text is everything between the first `[` after the tool name and the final `]` -- it may itself contain spaces, punctuation, or digits.',
+      'Leading/trailing whitespace around the whole line must be stripped before matching.',
+      'Any line not matching `Action: name[...]` exactly must raise ValueError.',
+    ],
+    hints: {
+      small: 'Strip the input first, then match it against a regex anchored with `^` and `$` so trailing garbage is rejected too.',
+      strong: 'Pattern: `^Action:\\s*([A-Za-z_][A-Za-z0-9_]*)\\[(.*)\\]$`. If `re.match` returns None, raise ValueError; otherwise return the two captured groups as a tuple.',
+      concept: 'ReAct interleaves free-text "Thought" / "Action" / "Observation" steps -- the Action line is the one point where unstructured LLM text has to become a structured tool call the runtime can actually execute, so this parse boundary has to fail loudly on malformed input rather than silently misfire a tool.',
+    },
+    conceptConnections: [
+      { title: 'Agent Loops & Graphs', route: '/docs/agents/loops-and-graphs', description: 'The ReAct Thought/Action/Observation loop this action line is one step of' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Simple Action', input: { text: 'Action: search[capital of France]' }, expectedOutput: ['search', 'capital of France'], hidden: false },
+      { id: 'whitespace', label: 'Surrounding Whitespace', input: { text: '  Action: lookup[Einstein]  ' }, expectedOutput: ['lookup', 'Einstein'], hidden: false, description: 'Whitespace around the whole line is stripped before matching' },
+      { id: 'missing-prefix', label: 'Missing "Action:" Prefix', input: { text: 'search[capital of France]' }, expectError: 'ValueError', hidden: false },
+      { id: 'wrong-brackets', label: 'Parentheses Instead of Brackets', input: { text: 'Action: search(capital of France)' }, expectError: 'ValueError', hidden: true },
+      { id: 'numeric-arg', label: 'Argument With Digits and Punctuation', input: { text: 'Action: calculator[2 + 2 = ?]' }, expectedOutput: ['calculator', '2 + 2 = ?'], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-3': {
+    id: 'agents-mcp-systems-prob-3',
+    title: 'Validate an MCP Tool-Call Payload',
+    difficulty: 'easy',
+    topic: 'Model Context Protocol',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'validate_mcp_tool_call',
+    functionSignature: 'validate_mcp_tool_call(schema: dict, payload: dict) -> list[str]',
+    starterCode: `def validate_mcp_tool_call(schema, payload):
+    """schema maps field name -> type name ('string' | 'number' |
+    'boolean' | 'array' | 'object'). Validate payload against schema and
+    return a list of human-readable error strings (empty list = valid).
+    Report a missing field as "missing required field: <field>" and a
+    type mismatch as "field <field>: expected <type>, got <actual>",
+    where <actual> is Python's real type name (e.g. "int", "str")."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the request-shape validator every MCP server needs before it trusts a tool-call payload -- an MCP tool is only as safe as the check that runs before its arguments ever reach real code.',
+    taskDescription: 'Implement `validate_mcp_tool_call(schema, payload)`. For each `field: type` pair in `schema` (in schema order): if `field` is missing from `payload`, append `"missing required field: {field}"`; if present but the wrong Python type for `type`, append `"field {field}: expected {type}, got {actual_type_name}"` (using Python\'s real type name, e.g. `int`, `str`, `bool`). Return the list of error strings (empty means valid). Treat `"number"` as accepting both `int` and `float`, but reject a `bool` value for `"number"` explicitly (Python bools are technically ints) with the message `"field {field}: expected number, got boolean"`.',
+    constraints: [
+      'Iterate schema fields in the order they appear in `schema`.',
+      '`"number"` accepts int or float, but not bool (bool must report "got boolean").',
+      '`"string"`/`"boolean"`/`"array"`/`"object"` map to Python str/bool/list/dict respectively.',
+      'A field missing from payload is reported once and does not also get a type-mismatch entry.',
+    ],
+    hints: {
+      small: 'Build a small type-name -> Python type map, then loop over `schema.items()` checking membership and `isinstance`.',
+      strong: 'Special-case `expected_type == "number" and isinstance(value, bool)` before the general isinstance check, since `isinstance(True, int)` is True in Python and would otherwise silently pass.',
+      concept: 'MCP tool calls arrive over JSON-RPC as untyped JSON -- the server has no compile-time guarantee the client sent the right shape, so this kind of runtime schema check is the actual boundary between "arbitrary JSON from the wire" and "safe to call the underlying Python function with".',
+    },
+    conceptConnections: [
+      { title: 'MCP Protocol Deep Dive', route: '/docs/agents/mcp/protocol-deep-dive', description: 'Tool-call argument validation at the MCP server boundary' },
+    ],
+    testCases: [
+      { id: 'valid', label: 'Fully Valid Payload', input: { schema: { query: 'string', top_k: 'number' }, payload: { query: 'hello', top_k: 5 } }, expectedOutput: [], hidden: false },
+      { id: 'missing-field', label: 'Missing Required Field', input: { schema: { query: 'string', top_k: 'number' }, payload: { query: 'hello' } }, expectedOutput: ['missing required field: top_k'], hidden: false },
+      { id: 'wrong-type', label: 'Wrong Type', input: { schema: { query: 'string', top_k: 'number' }, payload: { query: 123, top_k: 5 } }, expectedOutput: ['field query: expected string, got int'], hidden: false },
+      { id: 'bool-as-number', label: 'Boolean Rejected for Number', input: { schema: { query: 'string', top_k: 'number' }, payload: { query: 'hi', top_k: true } }, expectedOutput: ['field top_k: expected number, got boolean'], hidden: true },
+      { id: 'array-ok', label: 'Array Field Valid', input: { schema: { items: 'array' }, payload: { items: [1, 2, 3] } }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-4': {
+    id: 'agents-mcp-systems-prob-4',
+    title: 'Exponential Moving Average for Metric Smoothing',
+    difficulty: 'easy',
+    topic: 'MLOps & Deployment',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'ema',
+    functionSignature: 'ema(values: list[float], alpha: float) -> list[float]',
+    starterCode: `def ema(values, alpha):
+    """Return the exponential moving average of values: result[0] =
+    values[0]; result[i] = alpha*values[i] + (1-alpha)*result[i-1].
+    Raise ValueError if values is empty or alpha is not in (0, 1]."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the exponential moving average used to smooth a noisy live metric stream (request latency, error rate) into the stable signal an alerting or autoscaling system actually reacts to.',
+    taskDescription: 'Implement `ema(values, alpha)`. `result[0] = values[0]`, then `result[i] = alpha * values[i] + (1 - alpha) * result[i-1]` for each later value. Raise `ValueError` if `values` is empty or `alpha` is not in `(0, 1]`.',
+    constraints: [
+      'Must raise ValueError for an empty `values` list.',
+      'Must raise ValueError if alpha <= 0 or alpha > 1.',
+      'alpha = 1 means result equals values exactly (no smoothing).',
+      'Returned list has the same length as `values`.',
+    ],
+    hints: {
+      small: 'Seed a result list with `values[0]`, then loop over the remaining values, appending `alpha * v + (1 - alpha) * result[-1]` each time.',
+      strong: 'Validate `values` and `alpha` first (raise before touching `values[0]`), then a single pass with a running `previous` value is enough -- no need to look further back than one step.',
+      concept: 'A higher alpha weights recent samples more (reacts fast, noisier); a lower alpha weights history more (smoother, slower to react) -- the same latency-vs-stability tradeoff behind every dashboard smoothing slider and canary-analysis metric.',
+    },
+    conceptConnections: [
+      { title: 'Monitoring & Drift Detection', route: '/docs/mlops/monitoring-and-drift', description: 'Smoothed metrics are what production alerting and drift detection actually threshold against' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three-Point Smoothing', input: { values: [10, 20, 30], alpha: 0.5 }, expectedOutput: [10, 15, 22.5], hidden: false },
+      { id: 'single-value', label: 'Single Value', input: { values: [100], alpha: 0.3 }, expectedOutput: [100], hidden: false },
+      { id: 'alpha-one', label: 'Alpha of 1 -- No Smoothing', input: { values: [1, 2, 3], alpha: 1 }, expectedOutput: [1, 2, 3], hidden: false },
+      { id: 'empty-values', label: 'Empty Values List', input: { values: [], alpha: 0.5 }, expectError: 'ValueError', hidden: true },
+      { id: 'zero-alpha', label: 'Alpha of Zero', input: { values: [1, 2, 3], alpha: 0 }, expectError: 'ValueError', hidden: true, description: 'alpha must be in (0, 1], so 0 is invalid (the series would never update)' },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-5': {
+    id: 'agents-mcp-systems-prob-5',
+    title: 'Token Bucket Rate Limiter',
+    difficulty: 'medium',
+    topic: 'Distributed Systems',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'token_bucket_allow',
+    functionSignature: 'token_bucket_allow(timestamps: list[float], capacity: int, refill_rate: float) -> list[bool]',
+    starterCode: `def token_bucket_allow(timestamps, capacity, refill_rate):
+    """Simulate a token-bucket rate limiter. The bucket starts full
+    (capacity tokens). For each timestamp (seconds, non-decreasing), first
+    refill by (elapsed_seconds * refill_rate) tokens (capped at capacity),
+    then allow the request (and consume 1 token) if at least 1 token is
+    available, else deny it. Return the list of allow/deny booleans, one
+    per timestamp. Raise ValueError if capacity <= 0 or timestamps are not
+    non-decreasing."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the token-bucket algorithm that real API gateways and MCP servers use to rate-limit clients -- allow bursts up to a capacity, then throttle to a steady refill rate, rather than a naive fixed-window counter that lets a client burst at every window boundary.',
+    taskDescription: 'Implement `token_bucket_allow(timestamps, capacity, refill_rate)`. The bucket starts with `capacity` tokens. Process `timestamps` in order: refill by `elapsed * refill_rate` tokens since the previous timestamp (capped at `capacity`, no refill before the first timestamp), then allow (and consume 1 token) if at least 1 token is available, otherwise deny. Return one bool per timestamp.',
+    constraints: [
+      'Must raise ValueError if capacity <= 0.',
+      'Must raise ValueError if any timestamp is earlier than the previous one.',
+      'Tokens never exceed `capacity`, even after a long gap.',
+      'A request that is allowed consumes exactly 1 token.',
+    ],
+    hints: {
+      small: 'Track `tokens` (starts at `capacity`) and `last_t` (starts as `None`). On each timestamp, if `last_t` is not `None`, add `(t - last_t) * refill_rate` to `tokens`, capped at `capacity`.',
+      strong: 'After refilling, check `if tokens >= 1: tokens -= 1; allow = True` else `allow = False` -- update `last_t = t` every iteration regardless of the outcome, including the very first one.',
+      concept: 'This is the same rate-limiting shape behind `Retry-After` / 429 responses in real APIs -- capacity absorbs a legitimate burst, refill_rate caps sustained throughput, and the two together are strictly more forgiving to bursty legitimate traffic than a fixed request-per-window counter.',
+    },
+    conceptConnections: [
+      { title: 'Networking & Distributed Systems', route: '/docs/cs-fundamentals/networking-and-distributed-systems', description: 'Rate limiting as a core distributed-systems reliability pattern' },
+    ],
+    testCases: [
+      { id: 'burst-then-deny', label: 'Burst Exhausts Capacity', input: { timestamps: [0, 0, 0, 0], capacity: 3, refill_rate: 1 }, expectedOutput: [true, true, true, false], hidden: false, description: '3 requests at the same instant drain the bucket; the 4th is denied' },
+      { id: 'refill-over-time', label: 'Refill Keeps Up With Spaced Requests', input: { timestamps: [0, 0.5, 1.0, 10.0], capacity: 2, refill_rate: 1 }, expectedOutput: [true, true, true, true], hidden: false, description: 'Each gap refills enough tokens before the next request arrives' },
+      { id: 'zero-capacity', label: 'Non-Positive Capacity', input: { timestamps: [1], capacity: 0, refill_rate: 1 }, expectError: 'ValueError', hidden: true },
+      { id: 'out-of-order', label: 'Decreasing Timestamps', input: { timestamps: [5, 3], capacity: 2, refill_rate: 1 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-6': {
+    id: 'agents-mcp-systems-prob-6',
+    title: 'Filtered Vector Search With a Metadata Tag',
+    difficulty: 'easy',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'filtered_vector_search',
+    functionSignature: 'filtered_vector_search(query: list[float], vectors: list[list[float]], tags: list[str], required_tag: str, k: int) -> list[int]',
+    starterCode: `import math
+
+def filtered_vector_search(query, vectors, tags, required_tag, k):
+    """Restrict the candidate set to vectors[i] where tags[i] ==
+    required_tag, then return the indices (into the ORIGINAL vectors
+    list) of the k most similar candidates to query by cosine similarity,
+    sorted most-similar first (ties broken by lower index). Raise
+    ValueError if k <= 0, if k exceeds the number of matching candidates,
+    or if query or a matching candidate has zero magnitude."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement filtered vector search -- the metadata-pre-filter-plus-similarity-search pattern every real vector database (Pinecone, Weaviate, Qdrant) offers, since "find me the most similar PUBLISHED articles by THIS author" is a far more common real query than pure unfiltered similarity search.',
+    taskDescription: 'Implement `filtered_vector_search(query, vectors, tags, required_tag, k)`. First restrict to indices where `tags[i] == required_tag`. Among only those candidates, compute cosine similarity to `query` and return the `k` most similar candidate indices (indices into the original `vectors` list), sorted descending by similarity, ties broken by the lower original index.',
+    constraints: [
+      'Must raise ValueError if k <= 0.',
+      'Must raise ValueError if k exceeds the number of candidates matching required_tag (not the total vector count).',
+      'Must raise ValueError if `query` or any matching candidate has zero magnitude.',
+      'Returned indices are positions in the ORIGINAL `vectors` list, not positions within the filtered subset.',
+    ],
+    hints: {
+      small: 'First build the candidate index list: `[i for i, t in enumerate(tags) if t == required_tag]`.',
+      strong: 'Compute `(i, cosine_similarity(query, vectors[i]))` only for `i` in that candidate list, sort by `(-similarity, i)`, then take the first k -- the indices are already the correct original-list positions since you never re-indexed the filtered subset.',
+      concept: 'A real vector index applies the metadata filter BEFORE (or interleaved with) the similarity search, not after truncating to k -- filtering after truncation could return fewer than k results even when enough matching candidates exist, exactly the bug this problem\'s "k exceeds matching candidates" check guards against.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Metadata-filtered similarity search is a standard feature of every production vector database' },
+    ],
+    testCases: [
+      {
+        id: 'basic',
+        label: 'Top 2 Among Tag "a"',
+        input: { query: [1, 0], vectors: [[1, 0], [0, 1], [1, 1], [-1, 0], [0.9, 0.1]], tags: ['a', 'b', 'a', 'a', 'b'], required_tag: 'a', k: 2 },
+        expectedOutput: [0, 2],
+        hidden: false,
+        description: 'Candidates are indices 0, 2, 3 (tag "a"); index 1 and 4 (tag "b") are excluded entirely',
+      },
+      {
+        id: 'all-candidates',
+        label: 'k Equals Candidate Count',
+        input: { query: [1, 0], vectors: [[1, 0], [0, 1], [1, 1], [-1, 0], [0.9, 0.1]], tags: ['a', 'b', 'a', 'a', 'b'], required_tag: 'a', k: 3 },
+        expectedOutput: [0, 2, 3],
+        hidden: false,
+      },
+      {
+        id: 'k-exceeds-candidates',
+        label: 'k Exceeds Matching Candidates',
+        input: { query: [1, 0], vectors: [[1, 0], [0, 1], [1, 1], [-1, 0], [0.9, 0.1]], tags: ['a', 'b', 'a', 'a', 'b'], required_tag: 'a', k: 4 },
+        expectError: 'ValueError',
+        hidden: true,
+        description: 'Only 3 vectors match tag "a", even though the total vector count is 5',
+      },
+      {
+        id: 'no-matches',
+        label: 'No Vectors Match the Tag',
+        input: { query: [1, 0], vectors: [[1, 0], [0, 1]], tags: ['a', 'b'], required_tag: 'zzz', k: 1 },
+        expectError: 'ValueError',
+        hidden: true,
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-7': {
+    id: 'agents-mcp-systems-prob-7',
+    title: 'Patchify an Image for a Vision Transformer',
+    difficulty: 'easy',
+    topic: 'Multimodal AI',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'patchify',
+    functionSignature: 'patchify(image: list[list[float]], patch_size: int) -> list[list[list[float]]]',
+    starterCode: `def patchify(image, patch_size):
+    """Split a 2D image (list of rows) into non-overlapping
+    patch_size x patch_size square patches, scanning row-major (left to
+    right, then top to bottom). Raise ValueError if patch_size <= 0 or if
+    the image's height or width is not evenly divisible by patch_size."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the exact patch-splitting step a Vision Transformer (ViT) runs before anything else -- turning a 2D image into the sequence of fixed-size patches that get linearly embedded into "visual tokens", the same way a tokenizer turns text into tokens.',
+    taskDescription: 'Implement `patchify(image, patch_size)`. `image` is a list of equal-length rows. Return a list of `patch_size x patch_size` patches (each a list of rows), scanning patches row-major: left-to-right across a row of patches, then down to the next row of patches.',
+    constraints: [
+      'Must raise ValueError if patch_size <= 0.',
+      "Must raise ValueError if the image's height or width is not evenly divisible by patch_size.",
+      'Patches are emitted row-major: all patches in the top patch-row first (left to right), then the next patch-row.',
+    ],
+    hints: {
+      small: 'Loop `r` over `range(0, height, patch_size)` and, inside that, `c` over `range(0, width, patch_size)`.',
+      strong: 'For each `(r, c)`, the patch is `[row[c:c+patch_size] for row in image[r:r+patch_size]]` -- slice the rows first, then slice columns within each of those rows.',
+      concept: 'ViT treats an image as a sequence the same way a Transformer treats text -- each fixed-size patch becomes one "token" via a linear projection, so patchify is literally the image-domain equivalent of tokenization.',
+    },
+    conceptConnections: [
+      { title: 'Modern Vision & Multimodal Models', route: '/docs/computer-vision/modern-vision-and-multimodal', description: 'Patch embedding is the first layer of every Vision Transformer' },
+    ],
+    testCases: [
+      {
+        id: 'basic-4x4',
+        label: '4x4 Image, 2x2 Patches',
+        input: { image: [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]], patch_size: 2 },
+        expectedOutput: [[[1, 2], [5, 6]], [[3, 4], [7, 8]], [[9, 10], [13, 14]], [[11, 12], [15, 16]]],
+        hidden: false,
+      },
+      { id: 'unit-patches', label: '1x1 Patches', input: { image: [[1, 2], [3, 4]], patch_size: 1 }, expectedOutput: [[[1]], [[2]], [[3]], [[4]]], hidden: false },
+      { id: 'not-divisible', label: 'Dimensions Not Divisible by patch_size', input: { image: [[1, 2, 3], [4, 5, 6], [7, 8, 9]], patch_size: 2 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-8': {
+    id: 'agents-mcp-systems-prob-8',
+    title: 'Assemble RAG Context Within a Token Budget',
+    difficulty: 'medium',
+    topic: 'Retrieval-Augmented Generation',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'assemble_context_within_budget',
+    functionSignature: 'assemble_context_within_budget(token_counts: list[int], max_tokens: int) -> list[int]',
+    starterCode: `def assemble_context_within_budget(token_counts, max_tokens):
+    """token_counts[i] is the token count of the i-th retrieved chunk,
+    already ranked best-first. Greedily include chunks in rank order
+    while the running total stays within max_tokens, and STOP (do not
+    skip ahead to a smaller later chunk) at the first chunk that would
+    exceed the budget. Return the included chunks' original indices, in
+    order. Raise ValueError if max_tokens <= 0."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the greedy token-budget packer that decides how many of a RAG pipeline\'s ranked, retrieved chunks actually fit into the LLM\'s finite context window -- the real, mundane step between "we retrieved 20 relevant chunks" and "here is the prompt we can actually send."',
+    taskDescription: 'Implement `assemble_context_within_budget(token_counts, max_tokens)`. Walk `token_counts` in rank order (best chunk first), adding each chunk\'s token count to a running total. Stop entirely at the first chunk that would push the running total over `max_tokens` -- do not skip it and keep checking later, smaller chunks. Return the indices of the included chunks, in their original order.',
+    constraints: [
+      'Must raise ValueError if max_tokens <= 0.',
+      'Stop at the FIRST chunk that would exceed the budget -- never skip a chunk to fit a later, smaller one (that would break the retrieval\'s relevance ranking).',
+      'An empty `token_counts` list returns an empty list.',
+      'A chunk exactly filling the remaining budget (running total after it equals max_tokens) is included.',
+    ],
+    hints: {
+      small: 'Track a running `used` total starting at 0. For each chunk in order, check whether `used + token_counts[i] > max_tokens` before adding it.',
+      strong: 'The moment a chunk would exceed the budget, `break` out of the loop immediately -- do not `continue` to check whether a later, smaller chunk might still fit, since that would reorder which chunks get included relative to the retriever\'s own relevance ranking.',
+      concept: 'This is deliberately NOT a knapsack optimization (which would maximize chunks packed in, possibly reordering by size) -- a RAG context window has to preserve the retriever\'s relevance order, so a smaller-but-lower-ranked chunk must never bump a larger-but-higher-ranked one out of the prompt.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval-Augmented Generation', route: '/docs/llms-genai/rag', description: 'Fitting retrieved chunks into a finite context window is a real constraint of every RAG pipeline' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Third Chunk Breaks the Budget', input: { token_counts: [100, 150, 80, 200], max_tokens: 300 }, expectedOutput: [0, 1], hidden: false, description: '100 + 150 = 250; adding 80 more would make 330 > 300, so it stops there' },
+      { id: 'all-fit', label: 'Every Chunk Fits', input: { token_counts: [50, 50, 50], max_tokens: 1000 }, expectedOutput: [0, 1, 2], hidden: false },
+      { id: 'first-too-big', label: 'Even the First Chunk Does Not Fit', input: { token_counts: [500], max_tokens: 100 }, expectedOutput: [], hidden: false },
+      { id: 'exact-fit', label: 'Exact Budget Fit', input: { token_counts: [100, 100, 100], max_tokens: 300 }, expectedOutput: [0, 1, 2], hidden: true, description: 'Running total after all three is exactly 300, which is allowed' },
+      { id: 'bad-budget', label: 'Non-Positive Budget', input: { token_counts: [1, 2, 3], max_tokens: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-9': {
+    id: 'agents-mcp-systems-prob-9',
+    title: 'Detect a Repeating Agent Tool-Call Loop',
+    difficulty: 'medium',
+    topic: 'Agent Orchestration',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'detect_agent_loop',
+    functionSignature: 'detect_agent_loop(calls: list[tuple[str, str]], max_repeats: int) -> bool',
+    starterCode: `def detect_agent_loop(calls, max_repeats):
+    """calls is an ordered list of (tool_name, arg) pairs an agent has
+    called so far. Return True if the SAME (tool_name, arg) pair occurs
+    max_repeats or more times CONSECUTIVELY anywhere in calls, else False.
+    Raise ValueError if max_repeats < 1."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the loop-guard that stops an agent from silently burning its whole tool-call budget retrying the exact same failing action forever -- a real, common agent failure mode, not a hypothetical one.',
+    taskDescription: 'Implement `detect_agent_loop(calls, max_repeats)`. Return `True` if the identical `(tool_name, arg)` pair appears `max_repeats` or more times in a row anywhere in `calls`, else `False`. An empty `calls` list returns `False`.',
+    constraints: [
+      'Must raise ValueError if max_repeats < 1.',
+      'Only CONSECUTIVE repeats count -- the same call reappearing later after a different call in between does not accumulate with earlier occurrences.',
+      'An empty `calls` list returns False, not an error.',
+    ],
+    hints: {
+      small: 'Track the current run\'s value and its length as you scan left to right; reset the run whenever the call changes.',
+      strong: 'Increment `run_len` when `calls[i] == run_value`; return True as soon as `run_len >= max_repeats`. On a mismatch, reset `run_value = calls[i]` and `run_len = 1`.',
+      concept: 'This is a simple consecutive-run scan (the same shape as run-length encoding) -- deliberately consecutive-only, since an agent legitimately re-trying the same tool call after doing something else in between is normal, but 3+ IDENTICAL calls in a row with no new information is the real signal something is stuck.',
+    },
+    conceptConnections: [
+      { title: 'Reflection & Self-Critique', route: '/docs/agents/reflection-self-critique', description: 'Loop detection is a real guardrail an agent runtime needs alongside self-critique' },
+    ],
+    testCases: [
+      { id: 'exact-repeat', label: 'Exactly max_repeats Consecutive Calls', input: { calls: [['search', 'x'], ['search', 'x'], ['search', 'x']], max_repeats: 3 }, expectedOutput: true, hidden: false },
+      { id: 'below-threshold', label: 'Below the Threshold', input: { calls: [['search', 'x'], ['search', 'x']], max_repeats: 3 }, expectedOutput: false, hidden: false },
+      { id: 'interrupted-then-repeat', label: 'Different Call Resets the Run', input: { calls: [['search', 'x'], ['calc', 'y'], ['search', 'x'], ['search', 'x']], max_repeats: 2 }, expectedOutput: true, hidden: false, description: 'The trailing 2 identical calls are what trips max_repeats=2, not the earlier isolated one' },
+      { id: 'empty-calls', label: 'No Calls Yet', input: { calls: [], max_repeats: 2 }, expectedOutput: false, hidden: true },
+      { id: 'invalid-max-repeats', label: 'max_repeats Below 1', input: { calls: [['a', 'b']], max_repeats: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-10': {
+    id: 'agents-mcp-systems-prob-10',
+    title: 'Correlate JSON-RPC Responses to Requests',
+    difficulty: 'medium',
+    topic: 'Model Context Protocol',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'correlate_jsonrpc_responses',
+    functionSignature: 'correlate_jsonrpc_responses(requests: list[dict], responses: list[dict]) -> list[dict]',
+    starterCode: `def correlate_jsonrpc_responses(requests, responses):
+    """requests is a list of {"id": ..., "method": str}, in the order they
+    were sent. responses is a list of {"id": ..., "result": Any} or
+    {"id": ..., "error": str}, possibly arriving out of order. Return a
+    list, in REQUEST order, of {"method": str, "result": Any} or
+    {"method": str, "error": str}. Raise ValueError if a request's id has
+    no matching response, or a response has neither "result" nor "error"."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the request/response correlation every MCP client needs, since JSON-RPC 2.0 (the wire protocol MCP is built on) lets responses arrive in a different order than the requests were sent -- the client has to match them back up by id, not by arrival order.',
+    taskDescription: 'Implement `correlate_jsonrpc_responses(requests, responses)`. Build an id -> outcome map from `responses` (each has `"result"` or `"error"`), then return one entry per request IN REQUEST ORDER: `{"method": ..., "result": ...}` or `{"method": ..., "error": ...}`. Raise `ValueError` if any request has no matching response, or if a response has neither key.',
+    constraints: [
+      'Output preserves the ORDER of `requests`, regardless of the order `responses` arrived in.',
+      'Must raise ValueError if a request id has no corresponding entry in `responses`.',
+      'Must raise ValueError if a response has neither "result" nor "error".',
+      'Each output entry has exactly two keys: "method" plus either "result" or "error".',
+    ],
+    hints: {
+      small: 'First build a dict from `responses`, keyed by id, storing whichever of result/error each one has.',
+      strong: 'Then do a second pass over `requests` in order, looking up each request\'s id in that dict and raising immediately if it is missing.',
+      concept: 'JSON-RPC 2.0 is explicitly async-friendly: nothing requires a server to answer requests in the order it received them, so id-based correlation (not arrival order) is the only correct way to match a response back to the request that produced it -- this is exactly the plumbing underneath every MCP client\'s tool-call/response round trip.',
+    },
+    conceptConnections: [
+      { title: 'MCP Protocol Deep Dive', route: '/docs/agents/mcp/protocol-deep-dive', description: 'JSON-RPC 2.0 request/response correlation is the wire-level mechanism MCP tool calls use' },
+    ],
+    testCases: [
+      {
+        id: 'out-of-order',
+        label: 'Responses Arrive Out of Order',
+        input: {
+          requests: [{ id: 1, method: 'search' }, { id: 2, method: 'calc' }],
+          responses: [{ id: 2, result: 42 }, { id: 1, result: 'ok' }],
+        },
+        expectedOutput: [{ method: 'search', result: 'ok' }, { method: 'calc', result: 42 }],
+        hidden: false,
+      },
+      {
+        id: 'error-response',
+        label: 'A Response Carries an Error',
+        input: { requests: [{ id: 1, method: 'search' }], responses: [{ id: 1, error: 'timeout' }] },
+        expectedOutput: [{ method: 'search', error: 'timeout' }],
+        hidden: false,
+      },
+      {
+        id: 'missing-response',
+        label: 'No Response for a Request',
+        input: { requests: [{ id: 1, method: 'search' }], responses: [] },
+        expectError: 'ValueError',
+        hidden: true,
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-11': {
+    id: 'agents-mcp-systems-prob-11',
+    title: 'Deterministic Canary Rollout Router',
+    difficulty: 'medium',
+    topic: 'MLOps & Deployment',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'route_canary',
+    functionSignature: 'route_canary(request_id: str, canary_percentage: float) -> str',
+    starterCode: `import hashlib
+
+def route_canary(request_id, canary_percentage):
+    """Deterministically route a request to "canary" or "stable" so the
+    SAME request_id always gets the SAME answer for a given
+    canary_percentage. Use an MD5-hash-based bucket in [0, 100): hash
+    request_id, take the hash integer mod 100 as the bucket, and route to
+    "canary" if bucket < canary_percentage else "stable". Raise ValueError
+    if canary_percentage is not in [0, 100]."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the deterministic hash-based routing a canary/blue-green rollout uses to decide which model or service version a given request sees -- the same request_id (e.g. a user or session id) must land on the same side of the split every time, or a user would flicker between old and new behavior mid-session.',
+    taskDescription: 'Implement `route_canary(request_id, canary_percentage)`. Hash `request_id` with MD5, take `int(hexdigest, 16) % 100` as a stable bucket, and return `"canary"` if `bucket < canary_percentage` else `"stable"`. Raise `ValueError` if `canary_percentage` is outside `[0, 100]`.',
+    constraints: [
+      'Must raise ValueError if canary_percentage < 0 or canary_percentage > 100.',
+      'The same request_id and canary_percentage must always produce the same result (no randomness).',
+      'canary_percentage = 0 always returns "stable"; canary_percentage = 100 always returns "canary".',
+    ],
+    hints: {
+      small: 'Use `hashlib.md5(request_id.encode()).hexdigest()`, then `int(digest, 16) % 100` for a bucket in [0, 100).',
+      strong: 'The comparison is `bucket < canary_percentage`, not `<=` -- that\'s what makes canary_percentage=0 route everything to stable and canary_percentage=100 route everything to canary.',
+      concept: 'Hashing the identity into a bucket (instead of `random.random() < p`) is what makes the split STICKY -- the same user keeps hitting the same variant on every request, which is required for any rollout that has session-visible behavior differences.',
+    },
+    conceptConnections: [
+      { title: 'Deployment Strategies', route: '/docs/mlops/deployment-strategies', description: 'Canary rollouts are one of the core deployment strategies for shipping a new model safely' },
+    ],
+    testCases: [
+      { id: 'stable', label: 'Routes to Stable', input: { request_id: 'user-1001', canary_percentage: 50 }, expectedOutput: 'stable', hidden: false, description: 'md5("user-1001") mod 100 = 75, which is not < 50' },
+      { id: 'canary', label: 'Routes to Canary', input: { request_id: 'user-1002', canary_percentage: 50 }, expectedOutput: 'canary', hidden: false, description: 'md5("user-1002") mod 100 = 35, which is < 50' },
+      { id: 'zero-percent', label: 'Zero Percent Always Stable', input: { request_id: 'user-1001', canary_percentage: 0 }, expectedOutput: 'stable', hidden: false },
+      { id: 'hundred-percent', label: 'Hundred Percent Always Canary', input: { request_id: 'user-1001', canary_percentage: 100 }, expectedOutput: 'canary', hidden: true },
+      { id: 'out-of-range', label: 'Percentage Out of Range', input: { request_id: 'user-1001', canary_percentage: 150 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-12': {
+    id: 'agents-mcp-systems-prob-12',
+    title: 'Consistent Hashing Ring Lookup',
+    difficulty: 'hard',
+    topic: 'Distributed Systems',
+    estimatedTime: '25–30 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'consistent_hash_lookup',
+    functionSignature: 'consistent_hash_lookup(nodes: list[str], key: str, replicas: int) -> str',
+    starterCode: `import hashlib
+
+def _hash(s):
+    return int(hashlib.md5(s.encode()).hexdigest(), 16) % (2**32)
+
+def consistent_hash_lookup(nodes, key, replicas):
+    """Build a consistent-hashing ring: each node gets 'replicas' virtual
+    points on the ring at hash(f"{node}#{i}") for i in range(replicas).
+    Look up 'key' by hashing it and returning the owning node -- the node
+    of the first ring point at or after hash(key), wrapping around to the
+    smallest ring point if hash(key) is past every point. Raise ValueError
+    if nodes is empty or replicas < 1."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement consistent hashing, the algorithm real distributed caches and sharded databases (DynamoDB, Cassandra, memcached clients) use to map keys to nodes so that adding or removing ONE node only reshuffles a small fraction of keys, instead of remapping everything the way `hash(key) % num_nodes` would.',
+    taskDescription: 'Implement `consistent_hash_lookup(nodes, key, replicas)`. Build a ring of `len(nodes) * replicas` virtual points, each node contributing points at `hash(f"{node}#{i}")` for `i in range(replicas)`. To look up `key`, hash it and walk clockwise around the sorted ring to the first point at or after that hash, returning its node (wrapping to the smallest point if none is at or after it).',
+    constraints: [
+      'Must raise ValueError if `nodes` is empty.',
+      'Must raise ValueError if `replicas` < 1.',
+      'The lookup for a given key must be deterministic (the same key always maps to the same node for the same nodes/replicas).',
+      'Use the exact hash scheme in the starter code (`md5` of the string, interpreted as an integer, mod 2**32) so results are reproducible.',
+    ],
+    hints: {
+      small: 'Build the ring as a list of `(hash_value, node)` pairs, one per virtual replica, and sort it by hash_value.',
+      strong: 'Hash the lookup key the same way, then scan the sorted ring for the first point whose hash is `>= target`; if you reach the end without finding one, wrap around and return the very first ring entry\'s node.',
+      concept: 'Plain `hash(key) % num_nodes` remaps almost every key when num_nodes changes -- a full cache/shard invalidation. Consistent hashing instead places both nodes and keys on the same ring, so removing a node only reassigns the keys that were mapped to that node\'s arcs, not the whole keyspace; multiple virtual replicas per node exist to smooth out an uneven key distribution across the ring.',
+    },
+    conceptConnections: [
+      { title: 'Networking & Distributed Systems', route: '/docs/cs-fundamentals/networking-and-distributed-systems', description: 'Consistent hashing is the standard sharding/routing scheme behind distributed caches and databases' },
+    ],
+    testCases: [
+      { id: 'lookup-a', label: 'Key Maps to node-a', input: { nodes: ['node-a', 'node-b', 'node-c'], key: 'user-1', replicas: 3 }, expectedOutput: 'node-a', hidden: false },
+      { id: 'lookup-b', label: 'Key Maps to node-b', input: { nodes: ['node-a', 'node-b', 'node-c'], key: 'user-3', replicas: 3 }, expectedOutput: 'node-b', hidden: false },
+      { id: 'lookup-c', label: 'Key Maps to node-c', input: { nodes: ['node-a', 'node-b', 'node-c'], key: 'user-5', replicas: 3 }, expectedOutput: 'node-c', hidden: false, description: 'Different keys land on different nodes -- a stub that always returns the same node fails this' },
+      { id: 'empty-nodes', label: 'No Nodes', input: { nodes: [], key: 'user-1', replicas: 3 }, expectError: 'ValueError', hidden: true },
+      { id: 'zero-replicas', label: 'Zero Replicas', input: { nodes: ['node-a'], key: 'user-1', replicas: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-13': {
+    id: 'agents-mcp-systems-prob-13',
+    title: 'Hybrid Search Score Fusion',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'hybrid_search_score',
+    functionSignature: 'hybrid_search_score(keyword_scores: dict[str, float], vector_scores: dict[str, float], alpha: float) -> dict[str, float]',
+    starterCode: `def hybrid_search_score(keyword_scores, vector_scores, alpha):
+    """Combine a keyword-search score map and a vector-similarity score
+    map into one hybrid score per document: combined = alpha * vector +
+    (1 - alpha) * keyword. A document missing from one map contributes 0
+    for that side. Return a dict covering the union of both maps' keys.
+    Raise ValueError if alpha is not in [0, 1]."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the linear score-fusion step a hybrid vector database (e.g. pgvector combined with Postgres full-text search, or Weaviate/Elasticsearch hybrid mode) uses to blend keyword relevance and semantic similarity into a single ranking, tunable by alpha between pure keyword and pure vector search.',
+    taskDescription: 'Implement `hybrid_search_score(keyword_scores, vector_scores, alpha)`. For every document appearing in either map, compute `alpha * vector_scores.get(doc, 0.0) + (1 - alpha) * keyword_scores.get(doc, 0.0)`. Return a dict from document ID to combined score. Raise `ValueError` if `alpha` is outside `[0, 1]`.',
+    constraints: [
+      'Must raise ValueError if alpha < 0 or alpha > 1.',
+      'The result covers the UNION of keys from both input maps.',
+      'A document present in only one map is treated as score 0.0 on the other side.',
+      'alpha = 1.0 reduces to pure vector scores; alpha = 0.0 reduces to pure keyword scores.',
+    ],
+    hints: {
+      small: 'Build the key set with `set(keyword_scores) | set(vector_scores)`, then compute one weighted sum per key.',
+      strong: 'Use `.get(doc, 0.0)` on both dicts so a document missing from either side contributes exactly 0 for that term, rather than a KeyError.',
+      concept: 'Keyword (BM25-style) and vector similarity scores live on totally different, unnormalized scales -- alpha is a tunable knob a real search system exposes to shift weight toward exact-term matching (alpha near 0) or semantic/paraphrase matching (alpha near 1) without having to renormalize either score.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval & Reranking Architectures', route: '/docs/llms-genai/retrieval-and-reranking-architectures', description: 'Hybrid keyword+vector search and its score-fusion step' },
+    ],
+    testCases: [
+      {
+        id: 'balanced',
+        label: 'Balanced Alpha With a Partial Overlap',
+        input: { keyword_scores: { doc1: 0.8, doc2: 0.2 }, vector_scores: { doc1: 0.5, doc3: 0.9 }, alpha: 0.5 },
+        expectedOutput: { doc1: 0.65, doc2: 0.1, doc3: 0.45 },
+        hidden: false,
+      },
+      {
+        id: 'pure-vector',
+        label: 'Alpha 1.0 Is Pure Vector',
+        input: { keyword_scores: { doc1: 0.8, doc2: 0.2 }, vector_scores: { doc1: 0.5, doc3: 0.9 }, alpha: 1.0 },
+        expectedOutput: { doc1: 0.5, doc2: 0.0, doc3: 0.9 },
+        hidden: false,
+      },
+      {
+        id: 'pure-keyword',
+        label: 'Alpha 0.0 Is Pure Keyword',
+        input: { keyword_scores: { doc1: 0.8, doc2: 0.2 }, vector_scores: { doc1: 0.5, doc3: 0.9 }, alpha: 0.0 },
+        expectedOutput: { doc1: 0.8, doc2: 0.2, doc3: 0.0 },
+        hidden: true,
+      },
+      { id: 'bad-alpha', label: 'Alpha Out of Range', input: { keyword_scores: {}, vector_scores: {}, alpha: 1.5 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-14': {
+    id: 'agents-mcp-systems-prob-14',
+    title: 'CLIP-Style Zero-Shot Classification',
+    difficulty: 'medium',
+    topic: 'Multimodal AI',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'clip_zero_shot_predict',
+    functionSignature: 'clip_zero_shot_predict(image_embedding: list[float], label_embeddings: list[list[float]], temperature: float) -> list[float]',
+    starterCode: `import math
+
+def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
+    """CLIP-style zero-shot classification: compute cosine similarity
+    between image_embedding and each vector in label_embeddings, divide
+    each by temperature, then return the softmax over those scaled
+    similarities as a list of probabilities (one per label, summing to
+    1.0). Raise ValueError if label_embeddings is empty or temperature
+    <= 0."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the exact scoring step behind CLIP zero-shot image classification: no classifier head is trained at all -- an image is classified by comparing its embedding against a set of TEXT label embeddings ("a photo of a cat", "a photo of a dog", ...) and taking a temperature-scaled softmax over the similarities.',
+    taskDescription: 'Implement `clip_zero_shot_predict(image_embedding, label_embeddings, temperature)`. For each label embedding, compute cosine similarity to `image_embedding`, divide by `temperature`, then apply softmax across all labels\' scaled similarities. Return the resulting probabilities (summing to 1.0), one per label in the same order as `label_embeddings`.',
+    constraints: [
+      'Must raise ValueError if `label_embeddings` is empty.',
+      'Must raise ValueError if `temperature` <= 0.',
+      'Subtract the max scaled similarity before exponentiating (numerically stable softmax).',
+      'Output length equals `len(label_embeddings)` and its values sum to 1.0.',
+    ],
+    hints: {
+      small: 'First compute one cosine similarity per label embedding, then divide every one by `temperature`.',
+      strong: 'Numerically-stable softmax: subtract the max scaled score before `math.exp`, sum the exponentials, then divide each by that sum.',
+      concept: 'A LOWER temperature sharpens the distribution toward the single best-matching label (more confident, more decisive); a HIGHER temperature flattens it toward uniform -- this is the same temperature-scaling knob used in LLM sampling, applied here to a similarity-based classifier instead of next-token logits.',
+    },
+    conceptConnections: [
+      { title: 'Modern Vision & Multimodal Models', route: '/docs/computer-vision/modern-vision-and-multimodal', description: 'CLIP-style contrastive image-text embeddings are the basis of zero-shot multimodal classification' },
+    ],
+    testCases: [
+      {
+        id: 'two-labels-orthogonal',
+        label: 'Two Orthogonal Labels',
+        input: { image_embedding: [1, 0], label_embeddings: [[1, 0], [0, 1]], temperature: 1.0 },
+        expectedOutput: [0.7310585786300049, 0.2689414213699951],
+        hidden: false,
+        description: 'The matching label (cosine sim 1.0) gets most of the probability mass',
+      },
+      {
+        id: 'three-labels-low-temp',
+        label: 'Three Labels, Lower Temperature',
+        input: { image_embedding: [1, 0], label_embeddings: [[1, 0], [0, 1], [1, 1]], temperature: 0.5 },
+        expectedOutput: [0.5910154348001523, 0.07998524126588842, 0.3289993239339593],
+        hidden: false,
+      },
+      { id: 'empty-labels', label: 'No Label Embeddings', input: { image_embedding: [1, 0], label_embeddings: [], temperature: 1.0 }, expectError: 'ValueError', hidden: true },
+      { id: 'bad-temperature', label: 'Non-Positive Temperature', input: { image_embedding: [1, 0], label_embeddings: [[1, 0]], temperature: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-15': {
+    id: 'agents-mcp-systems-prob-15',
+    title: 'Recall@K for RAG Retrieval Evaluation',
+    difficulty: 'easy',
+    topic: 'Retrieval-Augmented Generation',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'retrieval_recall_at_k',
+    functionSignature: 'retrieval_recall_at_k(retrieved: list[str], relevant: list[str], k: int) -> float',
+    starterCode: `def retrieval_recall_at_k(retrieved, relevant, k):
+    """retrieved is a ranked list of document IDs (best first). relevant
+    is the list of document IDs that are actually correct for the query.
+    Return recall@k: the fraction of 'relevant' documents that appear
+    among the top k of 'retrieved'. Raise ValueError if k <= 0 or if
+    relevant is empty."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Recall@K, the standard metric for asking "did the retriever actually surface the documents that matter?" -- the metric a RAG pipeline is evaluated on before ever touching generation quality, since a perfect LLM answer is impossible if the right chunk was never retrieved.',
+    taskDescription: 'Implement `retrieval_recall_at_k(retrieved, relevant, k)`. Take the top `k` entries of `retrieved`, and return `|top_k ∩ relevant| / |relevant|` as a float. Raise `ValueError` if `k <= 0` or `relevant` is empty.',
+    constraints: [
+      'Must raise ValueError if k <= 0.',
+      'Must raise ValueError if relevant is empty (recall is undefined with no relevant documents).',
+      'Only the first k entries of retrieved count, even if retrieved is longer.',
+      'The denominator is always len(relevant), regardless of how many were retrieved.',
+    ],
+    hints: {
+      small: 'Slice `retrieved[:k]`, then count how many of those IDs are also in `relevant`.',
+      strong: 'Convert both the top-k slice and `relevant` to sets and intersect them for the hit count, then divide by `len(relevant)`.',
+      concept: 'Recall@K only asks whether the relevant documents were SOMEWHERE in the top k -- it says nothing about their exact rank order within those k, which is what a separate metric like MRR or nDCG@K captures instead.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval-Augmented Generation', route: '/docs/llms-genai/rag', description: 'Recall@K is the standard retrieval-quality metric a RAG pipeline is evaluated on before generation' },
+    ],
+    testCases: [
+      { id: 'partial-recall', label: 'Partial Recall at k=3', input: { retrieved: ['docA', 'docB', 'docC', 'docD'], relevant: ['docB', 'docD', 'docE'], k: 3 }, expectedOutput: 0.3333333333333333, hidden: false, description: 'Top 3 = [docA, docB, docC]; only docB of the 3 relevant docs is in there' },
+      { id: 'better-recall', label: 'Larger k Recovers More', input: { retrieved: ['docA', 'docB', 'docC', 'docD'], relevant: ['docB', 'docD', 'docE'], k: 4 }, expectedOutput: 0.6666666666666666, hidden: false, description: 'Top 4 now also includes docD' },
+      { id: 'zero-recall', label: 'No Overlap', input: { retrieved: ['docX'], relevant: ['docY'], k: 1 }, expectedOutput: 0.0, hidden: false },
+      { id: 'bad-k', label: 'Non-Positive k', input: { retrieved: ['docA'], relevant: ['docB'], k: 0 }, expectError: 'ValueError', hidden: true },
+      { id: 'empty-relevant', label: 'Empty Relevant Set', input: { retrieved: ['docA'], relevant: [], k: 1 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

@@ -1,31 +1,46 @@
 ---
-placeholder: true
-title: "Practice: Distributed systems Module 5: Problem 435"
+title: "Practice: Token Bucket Rate Limiter"
 sidebar_position: 435
-description: "Curriculum Problem 435 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems."
-difficulty: easy
+description: "Implement the token-bucket algorithm real API gateways and MCP servers use to rate-limit clients while absorbing legitimate bursts."
+difficulty: medium
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Distributed systems Module 5: Problem 435
+# Token Bucket Rate Limiter
 
-**Rank #435** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #435** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-4`.
+Implement `token_bucket_allow(timestamps, capacity, refill_rate)`, simulating a token-bucket rate limiter that allows a burst up to `capacity` and then throttles to a steady refill rate -- more forgiving to bursty legitimate traffic than a fixed-window request counter. Prerequisite: `agents-mcp-systems-prob-4`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-5" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p5(data):
-    # Reference implementation
-    return data
+def token_bucket_allow(timestamps, capacity, refill_rate):
+    if capacity <= 0:
+        raise ValueError("capacity must be positive")
+    tokens = float(capacity)
+    last_t = None
+    results = []
+    for t in timestamps:
+        if last_t is not None:
+            elapsed = t - last_t
+            if elapsed < 0:
+                raise ValueError("timestamps must be non-decreasing")
+            tokens = min(capacity, tokens + elapsed * refill_rate)
+        last_t = t
+        if tokens >= 1:
+            tokens -= 1
+            results.append(True)
+        else:
+            results.append(False)
+    return results
 ```
 
-This problem tests fundamental skills in Distributed systems.
+This is the same rate-limiting shape behind `Retry-After` / 429 responses in real APIs -- capacity absorbs a legitimate burst, refill_rate caps sustained throughput, and the two together are strictly more forgiving to bursty legitimate traffic than a fixed request-per-window counter.
 
 </Solution>

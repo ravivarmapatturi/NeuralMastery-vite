@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: RAG Module 15: Problem 445"
+title: "Practice: Recall@K for RAG Retrieval Evaluation"
 sidebar_position: 445
-description: "Curriculum Problem 445 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval."
+description: "Implement Recall@K, the standard metric for whether a RAG pipeline's retriever actually surfaced the documents that matter."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,28 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# RAG Module 15: Problem 445
+# Recall@K for RAG Retrieval Evaluation
 
 **Rank #445** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-14`.
+Implement `retrieval_recall_at_k(retrieved, relevant, k)`, the standard metric for asking "did the retriever actually surface the documents that matter?" -- the metric a RAG pipeline is evaluated on before ever touching generation quality, since a perfect LLM answer is impossible if the right chunk was never retrieved. Prerequisite: `agents-mcp-systems-prob-14`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-15" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p15(data):
-    # Reference implementation
-    return data
+def retrieval_recall_at_k(retrieved, relevant, k):
+    if k <= 0:
+        raise ValueError("k must be positive")
+    relevant_set = set(relevant)
+    if not relevant_set:
+        raise ValueError("relevant must be non-empty")
+    top_k = set(retrieved[:k])
+    hits = len(top_k & relevant_set)
+    return hits / len(relevant_set)
 ```
 
-This problem tests fundamental skills in RAG / information retrieval.
+Recall@K only asks whether the relevant documents were somewhere in the top k -- it says nothing about their exact rank order within those k, which is what a separate metric like MRR or nDCG@K captures instead.
 
 </Solution>

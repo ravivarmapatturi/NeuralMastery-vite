@@ -1,31 +1,35 @@
 ---
-placeholder: true
-title: "Practice: Vector search Module 13: Problem 443"
+title: "Practice: Hybrid Search Score Fusion"
 sidebar_position: 443
-description: "Curriculum Problem 443 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search."
-difficulty: easy
+description: "Implement the linear score-fusion step a hybrid vector database uses to blend keyword relevance and semantic similarity into one ranking."
+difficulty: medium
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Vector search Module 13: Problem 443
+# Hybrid Search Score Fusion
 
-**Rank #443** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #443** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-12`.
+Implement `hybrid_search_score(keyword_scores, vector_scores, alpha)`, the linear score-fusion step a hybrid vector database (pgvector plus full-text search, or Weaviate/Elasticsearch hybrid mode) uses to blend keyword relevance and semantic similarity into a single ranking, tunable by alpha between pure keyword and pure vector search. Prerequisite: `agents-mcp-systems-prob-12`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-13" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p13(data):
-    # Reference implementation
-    return data
+def hybrid_search_score(keyword_scores, vector_scores, alpha):
+    if not (0 <= alpha <= 1):
+        raise ValueError("alpha must be between 0 and 1")
+    doc_ids = set(keyword_scores) | set(vector_scores)
+    return {
+        d: alpha * vector_scores.get(d, 0.0) + (1 - alpha) * keyword_scores.get(d, 0.0)
+        for d in doc_ids
+    }
 ```
 
-This problem tests fundamental skills in Vector search.
+Keyword (BM25-style) and vector similarity scores live on totally different, unnormalized scales -- alpha is a tunable knob a real search system exposes to shift weight toward exact-term matching (alpha near 0) or semantic/paraphrase matching (alpha near 1) without having to renormalize either score.
 
 </Solution>

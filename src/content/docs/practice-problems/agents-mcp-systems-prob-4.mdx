@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: MLOps Module 4: Problem 434"
+title: "Practice: Exponential Moving Average for Metric Smoothing"
 sidebar_position: 434
-description: "Curriculum Problem 434 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems."
+description: "Implement the exponential moving average that smooths a noisy live metric stream into the stable signal an alerting system reacts to."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,28 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MLOps Module 4: Problem 434
+# Exponential Moving Average for Metric Smoothing
 
 **Rank #434** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-3`.
+Implement `ema(values, alpha)`, the exponential moving average used to smooth a noisy live metric stream (request latency, error rate) into the stable signal an alerting or autoscaling system actually reacts to. Prerequisite: `agents-mcp-systems-prob-3`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-4" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p4(data):
-    # Reference implementation
-    return data
+def ema(values, alpha):
+    if not values:
+        raise ValueError("values must be non-empty")
+    if not (0 < alpha <= 1):
+        raise ValueError("alpha must be in (0, 1]")
+    result = [values[0]]
+    for v in values[1:]:
+        result.append(alpha * v + (1 - alpha) * result[-1])
+    return result
 ```
 
-This problem tests fundamental skills in MLOps / data systems.
+A higher alpha weights recent samples more (reacts fast, noisier); a lower alpha weights history more (smoother, slower to react) -- the same latency-vs-stability tradeoff behind every dashboard smoothing slider and canary-analysis metric.
 
 </Solution>

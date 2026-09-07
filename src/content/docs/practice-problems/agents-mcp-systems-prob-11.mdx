@@ -1,31 +1,35 @@
 ---
-placeholder: true
-title: "Practice: MLOps Module 11: Problem 441"
+title: "Practice: Deterministic Canary Rollout Router"
 sidebar_position: 441
-description: "Curriculum Problem 441 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems."
-difficulty: easy
+description: "Implement the deterministic hash-based routing a canary rollout uses so the same request_id always sees the same model version."
+difficulty: medium
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MLOps Module 11: Problem 441
+# Deterministic Canary Rollout Router
 
-**Rank #441** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #441** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-10`.
+Implement `route_canary(request_id, canary_percentage)`, the deterministic hash-based routing a canary/blue-green rollout uses to decide which model or service version a given request sees -- the same request_id must land on the same side of the split every time, or a user would flicker between old and new behavior mid-session. Prerequisite: `agents-mcp-systems-prob-10`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-11" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p11(data):
-    # Reference implementation
-    return data
+import hashlib
+
+def route_canary(request_id, canary_percentage):
+    if not (0 <= canary_percentage <= 100):
+        raise ValueError("canary_percentage must be between 0 and 100")
+    digest = hashlib.md5(request_id.encode()).hexdigest()
+    bucket = int(digest, 16) % 100
+    return "canary" if bucket < canary_percentage else "stable"
 ```
 
-This problem tests fundamental skills in MLOps / data systems.
+Hashing the identity into a bucket (instead of `random.random() < p`) is what makes the split sticky -- the same user keeps hitting the same variant on every request, which is required for any rollout that has session-visible behavior differences.
 
 </Solution>

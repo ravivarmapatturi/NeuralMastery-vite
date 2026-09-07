@@ -1,31 +1,48 @@
 ---
-placeholder: true
-title: "Practice: Multimodal AI Module 14: Problem 444"
+title: "Practice: CLIP-Style Zero-Shot Classification"
 sidebar_position: 444
-description: "Curriculum Problem 444 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI."
-difficulty: easy
+description: "Implement the temperature-scaled softmax-over-cosine-similarity scoring behind CLIP zero-shot image classification."
+difficulty: medium
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Multimodal AI Module 14: Problem 444
+# CLIP-Style Zero-Shot Classification
 
-**Rank #444** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #444** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-13`.
+Implement `clip_zero_shot_predict(image_embedding, label_embeddings, temperature)`. No classifier head is trained at all -- CLIP classifies an image by comparing its embedding against a set of text label embeddings ("a photo of a cat", "a photo of a dog", ...) and taking a temperature-scaled softmax over the similarities. Prerequisite: `agents-mcp-systems-prob-13`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-14" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p14(data):
-    # Reference implementation
-    return data
+import math
+
+def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
+    if temperature <= 0:
+        raise ValueError("temperature must be positive")
+    if not label_embeddings:
+        raise ValueError("label_embeddings must be non-empty")
+
+    def cos(a, b):
+        dot = sum(x * y for x, y in zip(a, b))
+        na = math.sqrt(sum(x * x for x in a))
+        nb = math.sqrt(sum(x * x for x in b))
+        if na == 0 or nb == 0:
+            raise ValueError("zero vector has undefined cosine similarity")
+        return dot / (na * nb)
+
+    sims = [cos(image_embedding, lbl) / temperature for lbl in label_embeddings]
+    m = max(sims)
+    exps = [math.exp(s - m) for s in sims]
+    total = sum(exps)
+    return [e / total for e in exps]
 ```
 
-This problem tests fundamental skills in Multimodal AI.
+A lower temperature sharpens the distribution toward the single best-matching label (more confident, more decisive); a higher temperature flattens it toward uniform -- this is the same temperature-scaling knob used in LLM sampling, applied here to a similarity-based classifier instead of next-token logits.
 
 </Solution>

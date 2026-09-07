@@ -1,31 +1,44 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 10: Problem 440"
+title: "Practice: Correlate JSON-RPC Responses to Requests"
 sidebar_position: 440
-description: "Curriculum Problem 440 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
-difficulty: easy
+description: "Implement the request/response correlation an MCP client needs since JSON-RPC 2.0 lets responses arrive out of order."
+difficulty: medium
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 10: Problem 440
+# Correlate JSON-RPC Responses to Requests
 
-**Rank #440** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #440** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-9`.
+Implement `correlate_jsonrpc_responses(requests, responses)`, matching JSON-RPC responses back to the requests that produced them by id -- since JSON-RPC 2.0 (the wire protocol MCP is built on) lets responses arrive in a different order than the requests were sent. Prerequisite: `agents-mcp-systems-prob-9`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-10" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p10(data):
-    # Reference implementation
-    return data
+def correlate_jsonrpc_responses(requests, responses):
+    by_id = {}
+    for resp in responses:
+        rid = resp["id"]
+        if "result" in resp:
+            by_id[rid] = {"result": resp["result"]}
+        elif "error" in resp:
+            by_id[rid] = {"error": resp["error"]}
+        else:
+            raise ValueError(f"response {rid!r} has neither result nor error")
+    output = []
+    for req in requests:
+        rid = req["id"]
+        if rid not in by_id:
+            raise ValueError(f"no response for request id {rid!r}")
+        output.append({"method": req["method"], **by_id[rid]})
+    return output
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+JSON-RPC 2.0 is explicitly async-friendly: nothing requires a server to answer requests in the order it received them, so id-based correlation (not arrival order) is the only correct way to match a response back to the request that produced it -- this is exactly the plumbing underneath every MCP client's tool-call/response round trip.
 
 </Solution>

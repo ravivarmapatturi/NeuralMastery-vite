@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Multimodal AI Module 7: Problem 437"
+title: "Practice: Patchify an Image for a Vision Transformer"
 sidebar_position: 437
-description: "Curriculum Problem 437 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI."
+description: "Implement the patch-splitting step a Vision Transformer runs before anything else, turning an image into a sequence of visual tokens."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,32 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Multimodal AI Module 7: Problem 437
+# Patchify an Image for a Vision Transformer
 
 **Rank #437** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-6`.
+Implement `patchify(image, patch_size)`, splitting a 2D image into non-overlapping square patches scanned row-major -- the exact step a Vision Transformer (ViT) runs before anything else, turning an image into the sequence of fixed-size patches that get linearly embedded into "visual tokens." Prerequisite: `agents-mcp-systems-prob-6`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-7" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p7(data):
-    # Reference implementation
-    return data
+def patchify(image, patch_size):
+    if patch_size <= 0:
+        raise ValueError("patch_size must be positive")
+    h = len(image)
+    w = len(image[0]) if h else 0
+    if h % patch_size != 0 or w % patch_size != 0:
+        raise ValueError("image dimensions must be divisible by patch_size")
+    patches = []
+    for r in range(0, h, patch_size):
+        for c in range(0, w, patch_size):
+            patch = [row[c:c + patch_size] for row in image[r:r + patch_size]]
+            patches.append(patch)
+    return patches
 ```
 
-This problem tests fundamental skills in Multimodal AI.
+ViT treats an image as a sequence the same way a Transformer treats text -- each fixed-size patch becomes one "token" via a linear projection, so patchify is literally the image-domain equivalent of tokenization.
 
 </Solution>

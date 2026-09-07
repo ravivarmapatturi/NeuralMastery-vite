@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Agents Module 2: Problem 432"
+title: "Practice: Parse a ReAct Agent Action String"
 sidebar_position: 432
-description: "Curriculum Problem 432 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use."
+description: "Parse a ReAct-style agent's free-text \"Action: tool[arg]\" line into a real (tool_name, argument) pair the agent loop can dispatch."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,28 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Agents Module 2: Problem 432
+# Parse a ReAct Agent Action String
 
 **Rank #432** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-1`.
+Implement `parse_react_action(text)`, turning a ReAct agent's `Action: tool_name[argument text]` line into a real `(tool_name, argument)` pair -- the parsing step every ReAct-style agent framework needs between "the LLM said this" and "call this tool with this input." Prerequisite: `agents-mcp-systems-prob-1`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-2" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p2(data):
-    # Reference implementation
-    return data
+import re
+
+_PATTERN = re.compile(r"^Action:\s*([A-Za-z_][A-Za-z0-9_]*)\[(.*)\]$")
+
+def parse_react_action(text):
+    m = _PATTERN.match(text.strip())
+    if not m:
+        raise ValueError(f"malformed action string: {text!r}")
+    return (m.group(1), m.group(2))
 ```
 
-This problem tests fundamental skills in Agents / tool use.
+ReAct interleaves free-text Thought/Action/Observation steps -- the Action line is the one point where unstructured LLM text has to become a structured tool call the runtime can actually execute, so this parse boundary has to fail loudly on malformed input rather than silently misfire a tool.
 
 </Solution>

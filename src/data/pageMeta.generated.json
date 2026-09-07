@@ -2883,63 +2883,63 @@
     "/docs/practice-problems/agents-mcp-systems-prob-1": {
       "slug": "practice-problems/agents-mcp-systems-prob-1",
       "section": "practice-problems",
-      "title": "Practice: RAG Module 1: Problem 431",
+      "title": "Practice: Sliding-Window Text Chunking for RAG",
       "sidebarPosition": 431,
-      "description": "Curriculum Problem 431 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval.",
+      "description": "Implement the overlapping sliding-window text chunker a RAG ingestion pipeline uses before embedding and indexing a document.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-10": {
       "slug": "practice-problems/agents-mcp-systems-prob-10",
       "section": "practice-problems",
-      "title": "Practice: MCP Module 10: Problem 440",
+      "title": "Practice: Correlate JSON-RPC Responses to Requests",
       "sidebarPosition": 440,
-      "description": "Curriculum Problem 440 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols.",
-      "difficulty": "easy",
+      "description": "Implement the request/response correlation an MCP client needs since JSON-RPC 2.0 lets responses arrive out of order.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-11": {
       "slug": "practice-problems/agents-mcp-systems-prob-11",
       "section": "practice-problems",
-      "title": "Practice: MLOps Module 11: Problem 441",
+      "title": "Practice: Deterministic Canary Rollout Router",
       "sidebarPosition": 441,
-      "description": "Curriculum Problem 441 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems.",
-      "difficulty": "easy",
+      "description": "Implement the deterministic hash-based routing a canary rollout uses so the same request_id always sees the same model version.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-12": {
       "slug": "practice-problems/agents-mcp-systems-prob-12",
       "section": "practice-problems",
-      "title": "Practice: Distributed systems Module 12: Problem 442",
+      "title": "Practice: Consistent Hashing Ring Lookup",
       "sidebarPosition": 442,
-      "description": "Curriculum Problem 442 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems.",
-      "difficulty": "easy",
+      "description": "Implement consistent hashing, the algorithm real distributed caches and sharded databases use so adding or removing a node reshuffles only a small fraction of keys.",
+      "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-13": {
       "slug": "practice-problems/agents-mcp-systems-prob-13",
       "section": "practice-problems",
-      "title": "Practice: Vector search Module 13: Problem 443",
+      "title": "Practice: Hybrid Search Score Fusion",
       "sidebarPosition": 443,
-      "description": "Curriculum Problem 443 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search.",
-      "difficulty": "easy",
+      "description": "Implement the linear score-fusion step a hybrid vector database uses to blend keyword relevance and semantic similarity into one ranking.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-14": {
       "slug": "practice-problems/agents-mcp-systems-prob-14",
       "section": "practice-problems",
-      "title": "Practice: Multimodal AI Module 14: Problem 444",
+      "title": "Practice: CLIP-Style Zero-Shot Classification",
       "sidebarPosition": 444,
-      "description": "Curriculum Problem 444 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI.",
-      "difficulty": "easy",
+      "description": "Implement the temperature-scaled softmax-over-cosine-similarity scoring behind CLIP zero-shot image classification.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-15": {
       "slug": "practice-problems/agents-mcp-systems-prob-15",
       "section": "practice-problems",
-      "title": "Practice: RAG Module 15: Problem 445",
+      "title": "Practice: Recall@K for RAG Retrieval Evaluation",
       "sidebarPosition": 445,
-      "description": "Curriculum Problem 445 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval.",
+      "description": "Implement Recall@K, the standard metric for whether a RAG pipeline's retriever actually surfaced the documents that matter.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
@@ -2982,9 +2982,9 @@
     "/docs/practice-problems/agents-mcp-systems-prob-2": {
       "slug": "practice-problems/agents-mcp-systems-prob-2",
       "section": "practice-problems",
-      "title": "Practice: Agents Module 2: Problem 432",
+      "title": "Practice: Parse a ReAct Agent Action String",
       "sidebarPosition": 432,
-      "description": "Curriculum Problem 432 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use.",
+      "description": "Parse a ReAct-style agent's free-text \"Action: tool[arg]\" line into a real (tool_name, argument) pair the agent loop can dispatch.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
@@ -3081,9 +3081,9 @@
     "/docs/practice-problems/agents-mcp-systems-prob-3": {
       "slug": "practice-problems/agents-mcp-systems-prob-3",
       "section": "practice-problems",
-      "title": "Practice: MCP Module 3: Problem 433",
+      "title": "Practice: Validate an MCP Tool-Call Payload",
       "sidebarPosition": 433,
-      "description": "Curriculum Problem 433 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols.",
+      "description": "Implement the request-shape validator an MCP server runs before trusting a tool-call payload's fields and types.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
@@ -3180,9 +3180,9 @@
     "/docs/practice-problems/agents-mcp-systems-prob-4": {
       "slug": "practice-problems/agents-mcp-systems-prob-4",
       "section": "practice-problems",
-      "title": "Practice: MLOps Module 4: Problem 434",
+      "title": "Practice: Exponential Moving Average for Metric Smoothing",
       "sidebarPosition": 434,
-      "description": "Curriculum Problem 434 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems.",
+      "description": "Implement the exponential moving average that smooths a noisy live metric stream into the stable signal an alerting system reacts to.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
@@ -3279,10 +3279,10 @@
     "/docs/practice-problems/agents-mcp-systems-prob-5": {
       "slug": "practice-problems/agents-mcp-systems-prob-5",
       "section": "practice-problems",
-      "title": "Practice: Distributed systems Module 5: Problem 435",
+      "title": "Practice: Token Bucket Rate Limiter",
       "sidebarPosition": 435,
-      "description": "Curriculum Problem 435 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems.",
-      "difficulty": "easy",
+      "description": "Implement the token-bucket algorithm real API gateways and MCP servers use to rate-limit clients while absorbing legitimate bursts.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-50": {
@@ -3378,9 +3378,9 @@
     "/docs/practice-problems/agents-mcp-systems-prob-6": {
       "slug": "practice-problems/agents-mcp-systems-prob-6",
       "section": "practice-problems",
-      "title": "Practice: Vector search Module 6: Problem 436",
+      "title": "Practice: Filtered Vector Search With a Metadata Tag",
       "sidebarPosition": 436,
-      "description": "Curriculum Problem 436 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search.",
+      "description": "Implement metadata-filtered vector search -- restrict candidates by a tag, then rank the survivors by cosine similarity, the pattern every real vector database offers.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
@@ -3477,9 +3477,9 @@
     "/docs/practice-problems/agents-mcp-systems-prob-7": {
       "slug": "practice-problems/agents-mcp-systems-prob-7",
       "section": "practice-problems",
-      "title": "Practice: Multimodal AI Module 7: Problem 437",
+      "title": "Practice: Patchify an Image for a Vision Transformer",
       "sidebarPosition": 437,
-      "description": "Curriculum Problem 437 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI.",
+      "description": "Implement the patch-splitting step a Vision Transformer runs before anything else, turning an image into a sequence of visual tokens.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
@@ -3495,19 +3495,19 @@
     "/docs/practice-problems/agents-mcp-systems-prob-8": {
       "slug": "practice-problems/agents-mcp-systems-prob-8",
       "section": "practice-problems",
-      "title": "Practice: RAG Module 8: Problem 438",
+      "title": "Practice: Assemble RAG Context Within a Token Budget",
       "sidebarPosition": 438,
-      "description": "Curriculum Problem 438 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval.",
-      "difficulty": "easy",
+      "description": "Implement the greedy token-budget packer that decides how many of a RAG pipeline's ranked, retrieved chunks actually fit into the LLM's context window.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-9": {
       "slug": "practice-problems/agents-mcp-systems-prob-9",
       "section": "practice-problems",
-      "title": "Practice: Agents Module 9: Problem 439",
+      "title": "Practice: Detect a Repeating Agent Tool-Call Loop",
       "sidebarPosition": 439,
-      "description": "Curriculum Problem 439 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use.",
-      "difficulty": "easy",
+      "description": "Implement the loop-guard that stops an agent from silently burning its whole tool-call budget retrying the exact same failing action.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/alibi-positional-bias": {

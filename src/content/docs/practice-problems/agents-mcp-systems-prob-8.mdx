@@ -1,31 +1,38 @@
 ---
-placeholder: true
-title: "Practice: RAG Module 8: Problem 438"
+title: "Practice: Assemble RAG Context Within a Token Budget"
 sidebar_position: 438
-description: "Curriculum Problem 438 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval."
-difficulty: easy
+description: "Implement the greedy token-budget packer that decides how many of a RAG pipeline's ranked, retrieved chunks actually fit into the LLM's context window."
+difficulty: medium
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# RAG Module 8: Problem 438
+# Assemble RAG Context Within a Token Budget
 
-**Rank #438** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #438** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-7`.
+Implement `assemble_context_within_budget(token_counts, max_tokens)`, the greedy token-budget packer that decides how many of a RAG pipeline's ranked, retrieved chunks actually fit into the LLM's finite context window -- the real, mundane step between "we retrieved 20 relevant chunks" and "here is the prompt we can actually send." Prerequisite: `agents-mcp-systems-prob-7`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-8" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p8(data):
-    # Reference implementation
-    return data
+def assemble_context_within_budget(token_counts, max_tokens):
+    if max_tokens <= 0:
+        raise ValueError("max_tokens must be positive")
+    included = []
+    used = 0
+    for i, t in enumerate(token_counts):
+        if used + t > max_tokens:
+            break
+        included.append(i)
+        used += t
+    return included
 ```
 
-This problem tests fundamental skills in RAG / information retrieval.
+This is deliberately not a knapsack optimization (which would maximize chunks packed in, possibly reordering by size) -- a RAG context window has to preserve the retriever's relevance order, so a smaller-but-lower-ranked chunk must never bump a larger-but-higher-ranked one out of the prompt.
 
 </Solution>

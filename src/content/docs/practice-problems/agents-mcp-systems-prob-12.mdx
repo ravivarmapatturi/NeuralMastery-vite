@@ -1,31 +1,47 @@
 ---
-placeholder: true
-title: "Practice: Distributed systems Module 12: Problem 442"
+title: "Practice: Consistent Hashing Ring Lookup"
 sidebar_position: 442
-description: "Curriculum Problem 442 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems."
-difficulty: easy
+description: "Implement consistent hashing, the algorithm real distributed caches and sharded databases use so adding or removing a node reshuffles only a small fraction of keys."
+difficulty: hard
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Distributed systems Module 12: Problem 442
+# Consistent Hashing Ring Lookup
 
-**Rank #442** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #442** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-11`.
+Implement `consistent_hash_lookup(nodes, key, replicas)`, the algorithm real distributed caches and sharded databases (DynamoDB, Cassandra, memcached clients) use to map keys to nodes so that adding or removing one node only reshuffles a small fraction of keys, instead of remapping everything the way `hash(key) % num_nodes` would. Prerequisite: `agents-mcp-systems-prob-11`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-12" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p12(data):
-    # Reference implementation
-    return data
+import hashlib
+
+def _hash(s):
+    return int(hashlib.md5(s.encode()).hexdigest(), 16) % (2 ** 32)
+
+def consistent_hash_lookup(nodes, key, replicas):
+    if not nodes:
+        raise ValueError("nodes must be non-empty")
+    if replicas < 1:
+        raise ValueError("replicas must be >= 1")
+    ring = []
+    for node in nodes:
+        for i in range(replicas):
+            ring.append((_hash(f"{node}#{i}"), node))
+    ring.sort(key=lambda p: p[0])
+    target = _hash(key)
+    for pos, node in ring:
+        if pos >= target:
+            return node
+    return ring[0][1]
 ```
 
-This problem tests fundamental skills in Distributed systems.
+Plain `hash(key) % num_nodes` remaps almost every key when num_nodes changes -- a full cache/shard invalidation. Consistent hashing instead places both nodes and keys on the same ring, so removing a node only reassigns the keys that were mapped to that node's arcs, not the whole keyspace; multiple virtual replicas per node exist to smooth out an uneven key distribution across the ring.
 
 </Solution>
