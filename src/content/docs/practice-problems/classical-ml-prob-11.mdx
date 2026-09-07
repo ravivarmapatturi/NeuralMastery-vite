@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 11: Problem 251"
 sidebar_position: 251
-description: "Curriculum Problem 251 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
+description: "Curriculum Problem 251 (Stage 5: Classical Machine Learning & Optimization): Master Linear Regression Gradient Descent Step."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,41 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Classical ML Module 11: Problem 251
+# Linear Regression Gradient Descent Step
 
-**Rank #251** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #251** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-10`.
+## Overview
+
+Implement `linear_regression_gd_step(X, y, weights, bias, lr)`, executing a single first-order gradient descent optimization step for Ordinary Least Squares.
+
+## Task
+
+Implement `linear_regression_gd_step(X, y, weights, bias, lr)`: calculate forward predictions, residual errors, parameter gradients, and updated weights plus bias. Return a concatenated list of `d + 1` floats `[*new_weights, new_bias]`.
 
 <PracticePlayground problemId="classical-ml-prob-11" />
 
 <Solution>
 
 ```python
-def classical_ml_p11(data):
-    # Reference implementation
-    return data
+def linear_regression_gd_step(X, y, weights, bias, lr):
+    n = len(X)
+    d = len(weights)
+    grad_w = [0.0] * d
+    grad_b = 0.0
+    for i in range(n):
+        pred = sum(w * xi for w, xi in zip(weights, X[i])) + bias
+        err = pred - y[i]
+        for j in range(d):
+            grad_w[j] += err * X[i][j]
+        grad_b += err
+    grad_w = [gw / n for gw in grad_w]
+    grad_b = grad_b / n
+    new_weights = [round(w - lr * gw, 6) for w, gw in zip(weights, grad_w)]
+    new_bias = round(bias - lr * grad_b, 6)
+    return [*new_weights, new_bias]
 ```
 
-This problem tests fundamental skills in Classical ML.
+Batch gradient descent iteratively steps in the direction of steepest descent across the convex MSE loss bowl.
 
 </Solution>

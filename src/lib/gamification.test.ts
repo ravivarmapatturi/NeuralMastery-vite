@@ -288,7 +288,7 @@ describe('activityCounts', () => {
 
 describe('computeRLValuation', () => {
   it('calculates discounted return G_t with gamma=0.85 and streak multipliers', () => {
-    const valuation = computeRLValuation('complete', 'medium', [], ['2026-09-06'])
+    const valuation = computeRLValuation('complete', 'medium', [], ['2026-09-09'], new Date(2026, 8, 10))
     expect(valuation.immediateReward).toBe(50)
     expect(valuation.gamma).toBe(0.85)
     expect(valuation.streakBonus).toBe(1.1)

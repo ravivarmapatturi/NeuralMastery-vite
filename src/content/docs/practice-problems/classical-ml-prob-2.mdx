@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 2: Problem 242"
 sidebar_position: 242
-description: "Curriculum Problem 242 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
+description: "Curriculum Problem 242 (Stage 5: Classical Machine Learning & Optimization): Master K-Means Cluster Assignment."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,37 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Clustering Module 2: Problem 242
+# K-Means Cluster Assignment
 
-**Rank #242** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #242** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Clustering / Recommenders** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-1`.
+## Overview
+
+Implement `kmeans_assign_clusters(points, centroids)`, the expectation step of Lloyd's algorithm for K-Means clustering, determining Voronoi cell membership for each sample point.
+
+## Task
+
+Implement `kmeans_assign_clusters(points, centroids)`: compute squared Euclidean distance between each point and all centroids, returning a list of integer centroid indices corresponding to the nearest centroid. Break ties by choosing the smaller centroid index.
 
 <PracticePlayground problemId="classical-ml-prob-2" />
 
 <Solution>
 
 ```python
-def classical_ml_p2(data):
-    # Reference implementation
-    return data
+def kmeans_assign_clusters(points, centroids):
+    assignments = []
+    for p in points:
+        min_dist = float("inf")
+        best_c = 0
+        for c_idx, c in enumerate(centroids):
+            dist = sum((pi - ci) ** 2 for pi, ci in zip(p, c))
+            if dist < min_dist:
+                min_dist = dist
+                best_c = c_idx
+        assignments.append(best_c)
+    return assignments
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+The assignment step partitions the feature space into convex Voronoi polyhedra, forming the E-step of K-Means expectation-maximization.
 
 </Solution>

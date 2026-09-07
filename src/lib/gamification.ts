@@ -354,13 +354,14 @@ export function computeRLValuation(
   difficulty: string | undefined,
   currentEvents: AwardEvent[],
   activeDates: string[],
+  today: Date = new Date(),
 ): RLValuation {
   let immediateReward = MARK_UNDERSTOOD_POINTS;
   if (actionKind === 'complete') immediateReward = pointsForDifficulty(difficulty);
   else if (actionKind === 'design') immediateReward = SYSTEM_DESIGN_CHALLENGE_POINTS;
   else if (actionKind === 'flashcard') immediateReward = FLASHCARD_REVEAL_POINTS;
 
-  const streak = computeStreak(activeDates);
+  const streak = computeStreak(activeDates, today);
   const streakBonus = 1.0 + 0.1 * Math.min(streak, 7);
 
   const points = totalPoints(currentEvents);

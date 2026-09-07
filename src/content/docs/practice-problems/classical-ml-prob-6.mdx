@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 6: Problem 246"
 sidebar_position: 246
-description: "Curriculum Problem 246 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
+description: "Curriculum Problem 246 (Stage 5: Classical Machine Learning & Optimization): Master Within-Cluster Sum of Squares (Inertia)."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,31 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Clustering Module 6: Problem 246
+# Within-Cluster Sum of Squares (Inertia)
 
-**Rank #246** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #246** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Clustering / Recommenders** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-5`.
+## Overview
+
+Implement `wcss_inertia(points, centroids, assignments)`, calculating the objective function minimized by K-Means -- used directly in the Elbow heuristic for hyperparameter selection.
+
+## Task
+
+Implement `wcss_inertia(points, centroids, assignments)`: return the sum over all points `i` of the squared Euclidean distance between `points[i]` and `centroids[assignments[i]]`.
 
 <PracticePlayground problemId="classical-ml-prob-6" />
 
 <Solution>
 
 ```python
-def classical_ml_p6(data):
-    # Reference implementation
-    return data
+def wcss_inertia(points, centroids, assignments):
+    total = 0.0
+    for p, c_idx in zip(points, assignments):
+        c = centroids[c_idx]
+        total += sum((pi - ci) ** 2 for pi, ci in zip(p, c))
+    return round(total, 6)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Plotting WCSS against cluster count k reveals an elbow point where diminishing returns in compactness occur.
 
 </Solution>

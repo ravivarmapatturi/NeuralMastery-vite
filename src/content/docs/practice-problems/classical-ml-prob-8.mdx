@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 8: Problem 248"
 sidebar_position: 248
-description: "Curriculum Problem 248 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
+description: "Curriculum Problem 248 (Stage 5: Classical Machine Learning & Optimization): Master User-Item Jaccard Similarity."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,33 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Clustering Module 8: Problem 248
+# User-Item Jaccard Similarity
 
-**Rank #248** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #248** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Clustering / Recommenders** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-7`.
+## Overview
+
+Implement `user_jaccard_similarity(user_a_items, user_b_items)`, computing the Jaccard similarity coefficient between two users' binary interaction lists -- a core primitive in implicit-feedback recommender systems.
+
+## Task
+
+Implement `user_jaccard_similarity(user_a_items, user_b_items)`: convert item lists into sets, computing the ratio of intersection size to union size. Handle empty edge cases cleanly (1.0 if both empty, 0.0 if one empty).
 
 <PracticePlayground problemId="classical-ml-prob-8" />
 
 <Solution>
 
 ```python
-def classical_ml_p8(data):
-    # Reference implementation
-    return data
+def user_jaccard_similarity(user_a_items, user_b_items):
+    sa = set(user_a_items)
+    sb = set(user_b_items)
+    union = sa | sb
+    if not union:
+        return 1.0
+    inter = sa & sb
+    return round(len(inter) / len(union), 6)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Jaccard similarity measures overlap of implicit binary feedback (clicks, purchases, views) without needing explicit rating scales.
 
 </Solution>

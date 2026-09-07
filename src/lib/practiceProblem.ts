@@ -9078,6 +9078,666 @@ def compute_bleu_1(reference, candidate):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  // --- Classical ML batch (prob classical-ml-prob-1, rank #241) ---
+  'classical-ml-prob-1': {
+    id: 'classical-ml-prob-1',
+    title: "Mean Squared Error",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'mean_squared_error',
+    functionSignature: 'mean_squared_error(y_true: list[float], y_pred: list[float]) -> float',
+    starterCode: `def mean_squared_error(y_true, y_pred):
+    """Compute the Mean Squared Error (MSE) between actual and predicted values.
+
+    MSE = 1/N * sum((y_true[i] - y_pred[i])^2).
+    If inputs are empty, return 0.0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the universal regression loss metric measuring average squared residuals between ground truth targets and continuous model predictions.",
+    taskDescription: "Implement `mean_squared_error(y_true, y_pred)`: compute MSE = 1/N * sum((y_true[i] - y_pred[i])^2). If inputs are empty, return 0.0.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "y_true and y_pred have identical length.",
+      "Empty lists return 0.0.",
+    ],
+    hints: {
+      small: "Iterate through pairs using zip(y_true, y_pred) and square the difference.",
+      strong: "Sum the squared errors sum((yt - yp)**2 for yt, yp in zip(y_true, y_pred)) and divide by len(y_true).",
+      concept: "MSE measures variance of residuals and is differentiable everywhere, making it ideal for gradient descent.",
+    },
+    conceptConnections: [
+      { title: "Supervised Learning Fundamentals", route: "/docs/classical-machine-learning/supervised-learning-fundamentals", description: "Foundational regression loss surfaces" },
+    ],
+    testCases: [
+      {"id": "perfect", "label": "Perfect Predictions", "input": {"y_true": [1.0, 2.0, 3.0], "y_pred": [1.0, 2.0, 3.0]}, "expectedOutput": 0.0, "hidden": false},
+      {"id": "unit-error", "label": "Constant Unit Residual", "input": {"y_true": [1.0, 2.0, 3.0], "y_pred": [2.0, 3.0, 4.0]}, "expectedOutput": 1.0, "hidden": false},
+      {"id": "mixed-signs", "label": "Mixed Residuals", "input": {"y_true": [10.0, -5.0, 0.0], "y_pred": [12.0, -2.0, 1.0]}, "expectedOutput": 4.666666666666667, "hidden": false},
+      {"id": "single", "label": "Single Element", "input": {"y_true": [0.5], "y_pred": [1.5]}, "expectedOutput": 1.0, "hidden": true},
+      {"id": "empty", "label": "Empty Inputs", "input": {"y_true": [], "y_pred": []}, "expectedOutput": 0.0, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-2, rank #242) ---
+  'classical-ml-prob-2': {
+    id: 'classical-ml-prob-2',
+    title: "K-Means Cluster Assignment",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'kmeans_assign_clusters',
+    functionSignature: 'kmeans_assign_clusters(points: list[list[float]], centroids: list[list[float]]) -> list[int]',
+    starterCode: `def kmeans_assign_clusters(points, centroids):
+    """Assign each data point to the nearest centroid index using Euclidean distance.
+
+    In case of equal distance, choose the smaller centroid index."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the expectation / assignment step of Lloyd's K-Means algorithm by mapping each sample to its closest centroid in feature space.",
+    taskDescription: "Implement `kmeans_assign_clusters(points, centroids)`: for each multidimensional point, assign it to the index (0-indexed) of the closest centroid. In case of ties, choose the lowest index.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "Each point in points and centroid in centroids shares the same dimension d >= 1.",
+      "Ties broken by selecting the smaller centroid index.",
+    ],
+    hints: {
+      small: "For each point, loop over centroids and compute sum((pi - ci)**2). Track minimum distance and best index.",
+      strong: "min_dist = float(\"inf\"); best_c = 0; if dist < min_dist: min_dist = dist; best_c = idx.",
+      concept: "Comparing squared Euclidean distances avoids expensive square root computations while preserving ordering.",
+    },
+    conceptConnections: [
+      { title: "Clustering & Unsupervised Learning", route: "/docs/classical-machine-learning/clustering-and-unsupervised-learning", description: "Lloyd algorithm and K-Means convergence" },
+    ],
+    testCases: [
+      {"id": "two-clusters", "label": "Two Separated Clusters", "input": {"points": [[0.0, 0.0], [1.0, 1.0], [9.0, 9.0], [10.0, 10.0]], "centroids": [[0.0, 0.0], [10.0, 10.0]]}, "expectedOutput": [0, 0, 1, 1], "hidden": false},
+      {"id": "tie-break", "label": "Equal Distance Tie Break", "input": {"points": [[2.0, 3.0], [5.0, 5.0]], "centroids": [[1.0, 1.0], [4.0, 4.0], [8.0, 8.0]]}, "expectedOutput": [0, 1], "hidden": false},
+      {"id": "3d-points", "label": "3D Single Point", "input": {"points": [[1.0, 2.0, 3.0]], "centroids": [[0.0, 0.0, 0.0], [1.0, 2.0, 3.0]]}, "expectedOutput": [1], "hidden": false},
+      {"id": "negatives", "label": "Negative Coordinates", "input": {"points": [[-1.0, -2.0], [3.0, 4.0]], "centroids": [[-2.0, -2.0], [2.0, 2.0]]}, "expectedOutput": [0, 1], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-3, rank #243) ---
+  'classical-ml-prob-3': {
+    id: 'classical-ml-prob-3',
+    title: "Binary Cross-Entropy Loss",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'binary_cross_entropy',
+    functionSignature: 'binary_cross_entropy(y_true: list[int], y_pred: list[float], eps: float = 1e-15) -> float',
+    starterCode: `def binary_cross_entropy(y_true, y_pred, eps=1e-15):
+    """Compute average binary cross-entropy loss with prediction clipping.
+
+    BCE = -1/N * sum(y * ln(p) + (1 - y) * ln(1 - p)),
+    where p is clipped to [eps, 1 - eps]. If inputs are empty, return 0.0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute numerically stable binary cross-entropy loss (log loss) with probability clipping to avoid undefined logarithms at 0 and 1.",
+    taskDescription: "Implement `binary_cross_entropy(y_true, y_pred, eps=1e-15)`: return the mean BCE across samples. Clip predicted probabilities `p` to `[eps, 1.0 - eps]`. If empty, return 0.0.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "y_true elements are 0 or 1; y_pred elements are floats in [0.0, 1.0].",
+      "Clip predictions p using max(eps, min(1.0 - eps, p)).",
+    ],
+    hints: {
+      small: "Use math.log for the natural logarithm and clip p before calling log.",
+      strong: "p_clipped = max(eps, min(1.0 - eps, float(p))); loss += -(y * math.log(p_clipped) + (1 - y) * math.log(1 - p_clipped))",
+      concept: "Binary cross entropy is derived directly from negative log-likelihood under a Bernoulli distribution.",
+    },
+    conceptConnections: [
+      { title: "Supervised Learning Fundamentals", route: "/docs/classical-machine-learning/supervised-learning-fundamentals", description: "Logistic regression and Bernoulli likelihood" },
+    ],
+    testCases: [
+      {"id": "confident", "label": "Confident Correct Predictions", "input": {"y_true": [1, 0, 1, 0], "y_pred": [0.9, 0.1, 0.8, 0.2]}, "expectedOutput": 0.164252, "hidden": false},
+      {"id": "uninformative", "label": "Uniform 0.5 Predictions", "input": {"y_true": [1, 0], "y_pred": [0.5, 0.5]}, "expectedOutput": 0.693147, "hidden": false},
+      {"id": "exact-ones", "label": "Perfect Probabilities with Clipping", "input": {"y_true": [1], "y_pred": [1.0]}, "expectedOutput": 0.0, "hidden": false},
+      {"id": "wrong-confident", "label": "Confident Inverted Predictions", "input": {"y_true": [0, 1], "y_pred": [0.8, 0.2]}, "expectedOutput": 1.609438, "hidden": true},
+      {"id": "empty", "label": "Empty Input Lists", "input": {"y_true": [], "y_pred": []}, "expectedOutput": 0.0, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-4, rank #244) ---
+  'classical-ml-prob-4': {
+    id: 'classical-ml-prob-4',
+    title: "K-Means Centroid Update",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'kmeans_update_centroids',
+    functionSignature: 'kmeans_update_centroids(points: list[list[float]], assignments: list[int], k: int) -> list[list[float]]',
+    starterCode: `def kmeans_update_centroids(points, assignments, k):
+    """Recompute cluster centroids as the mean of points assigned to each cluster.
+
+    If cluster c (0 <= c < k) has no assigned points, set its centroid to [0.0] * dim."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the maximization / centroid recomputation step of Lloyd's K-Means algorithm by computing sample means within each partition.",
+    taskDescription: "Implement `kmeans_update_centroids(points, assignments, k)`: compute new centroids for clusters `0 <= c < k` as the arithmetic mean of all points assigned to cluster `c`. If a cluster has 0 points, return `[0.0] * dim`.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "k >= 1; len(points) == len(assignments).",
+      "Empty clusters receive [0.0] * d.",
+    ],
+    hints: {
+      small: "Maintain an accumulator list of dimension sums and counts for each cluster from 0 to k-1.",
+      strong: "sums = [[0.0]*d for _ in range(k)]; counts = [0]*k; iterate points and update sums[c][j] += p[j].",
+      concept: "The arithmetic mean of points is the mathematical minimizer of squared Euclidean distance to a single center.",
+    },
+    conceptConnections: [
+      { title: "Clustering & Unsupervised Learning", route: "/docs/classical-machine-learning/clustering-and-unsupervised-learning", description: "Lloyd algorithm centroid update dynamics" },
+    ],
+    testCases: [
+      {"id": "two-clusters", "label": "Two Balanced Clusters", "input": {"points": [[0.0, 0.0], [2.0, 2.0], [10.0, 10.0], [12.0, 12.0]], "assignments": [0, 0, 1, 1], "k": 2}, "expectedOutput": [[1.0, 1.0], [11.0, 11.0]], "hidden": false},
+      {"id": "empty-cluster", "label": "Cluster with Zero Assigned Points", "input": {"points": [[1.0, 2.0]], "assignments": [1], "k": 2}, "expectedOutput": [[0.0, 0.0], [1.0, 2.0]], "hidden": false},
+      {"id": "single-cluster-3d", "label": "All Points in Cluster 0 (3D)", "input": {"points": [[1.0, 1.0, 1.0], [3.0, 3.0, 3.0], [5.0, 5.0, 5.0]], "assignments": [0, 0, 0], "k": 1}, "expectedOutput": [[3.0, 3.0, 3.0]], "hidden": false},
+      {"id": "sparse-k3", "label": "Three Clusters with One Empty", "input": {"points": [[1.0, 0.0], [0.0, 1.0], [4.0, 4.0]], "assignments": [0, 0, 2], "k": 3}, "expectedOutput": [[0.5, 0.5], [0.0, 0.0], [4.0, 4.0]], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-5, rank #245) ---
+  'classical-ml-prob-5': {
+    id: 'classical-ml-prob-5',
+    title: "Z-Score Feature Standardization",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'standard_scaler',
+    functionSignature: 'standard_scaler(X: list[list[float]]) -> list[list[float]]',
+    starterCode: `def standard_scaler(X):
+    """Standardize feature matrix X by centering to mean 0 and scaling to unit variance.
+
+    z = (x - mean) / std.
+    If std < 1e-12 (constant feature), set scaled column values to 0.0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Standardize continuous feature matrix columns to zero mean and unit variance (standard normal scaling) with zero-variance protection.",
+    taskDescription: "Implement `standard_scaler(X)`: for each column `j`, compute mean `mu` and population standard deviation `sigma = sqrt(1/N * sum((x - mu)^2))`. Scale `(x - mu) / sigma`. If `sigma < 1e-12`, set column values to `0.0`.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "X is a 2D list where each row has uniform dimension d.",
+      "Use population standard deviation (divide by N). Set constant columns to 0.0.",
+    ],
+    hints: {
+      small: "Extract each column col = [X[i][j] for i in range(n)], compute mean and std, then populate the output array.",
+      strong: "var = sum((x - mu)**2 for x in col) / n; std = math.sqrt(var); if std < 1e-12: scaled[i][j] = 0.0 else (X[i][j] - mu)/std.",
+      concept: "Without standardization, features with larger numeric scales dominate Euclidean distance and gradient updates.",
+    },
+    conceptConnections: [
+      { title: "Feature Engineering & Preprocessing", route: "/docs/classical-machine-learning/feature-engineering-and-preprocessing", description: "StandardScaler and numerical normalization pipelines" },
+    ],
+    testCases: [
+      {"id": "basic-2col", "label": "Two Feature Columns", "input": {"X": [[1.0, 10.0], [2.0, 20.0], [3.0, 30.0]]}, "expectedOutput": [[-1.224745, -1.224745], [0.0, 0.0], [1.224745, 1.224745]], "hidden": false},
+      {"id": "constant-col", "label": "Column with Zero Variance", "input": {"X": [[5.0, 1.0], [5.0, 2.0], [5.0, 3.0]]}, "expectedOutput": [[0.0, -1.224745], [0.0, 0.0], [0.0, 1.224745]], "hidden": false},
+      {"id": "single-element", "label": "1x1 Matrix", "input": {"X": [[0.0]]}, "expectedOutput": [[0.0]], "hidden": true},
+      {"id": "symmetric-2x2", "label": "Opposing Coordinates", "input": {"X": [[10.0, -10.0], [-10.0, 10.0]]}, "expectedOutput": [[1.0, -1.0], [-1.0, 1.0]], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-6, rank #246) ---
+  'classical-ml-prob-6': {
+    id: 'classical-ml-prob-6',
+    title: "Within-Cluster Sum of Squares (Inertia)",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'wcss_inertia',
+    functionSignature: 'wcss_inertia(points: list[list[float]], centroids: list[list[float]], assignments: list[int]) -> float',
+    starterCode: `def wcss_inertia(points, centroids, assignments):
+    """Compute Within-Cluster Sum of Squares (WCSS / Inertia).
+
+    WCSS = sum_i ||points[i] - centroids[assignments[i]]||^2."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute total within-cluster sum of squares (WCSS / inertia) measuring compactness of cluster partitions for the Elbow method.",
+    taskDescription: "Implement `wcss_inertia(points, centroids, assignments)`: sum squared Euclidean distances between each point `points[i]` and its assigned centroid `centroids[assignments[i]]`.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "len(points) == len(assignments).",
+      "assignments contains valid centroid indices 0 <= c_idx < len(centroids).",
+    ],
+    hints: {
+      small: "Iterate over points and assigned centroid indices, summing sum((pi - ci)**2).",
+      strong: "total = 0.0; for p, c_idx in zip(points, assignments): c = centroids[c_idx]; total += sum((pi - ci)**2 for pi, ci in zip(p, c)); return total.",
+      concept: "Inertia decreases monotonically with k, reaching 0 when k equals the number of samples.",
+    },
+    conceptConnections: [
+      { title: "Clustering & Unsupervised Learning", route: "/docs/classical-machine-learning/clustering-and-unsupervised-learning", description: "Elbow method and cluster compactness evaluation" },
+    ],
+    testCases: [
+      {"id": "four-points-two-clusters", "label": "Four Points Two Clusters", "input": {"points": [[1.0, 2.0], [1.0, 4.0], [5.0, 8.0], [5.0, 10.0]], "centroids": [[1.0, 3.0], [5.0, 9.0]], "assignments": [0, 0, 1, 1]}, "expectedOutput": 4.0, "hidden": false},
+      {"id": "zero-inertia", "label": "Point on Centroid", "input": {"points": [[0.0, 0.0]], "centroids": [[0.0, 0.0]], "assignments": [0]}, "expectedOutput": 0.0, "hidden": false},
+      {"id": "symmetric-split", "label": "Two Opposing Points to Origin", "input": {"points": [[3.0, 4.0], [-3.0, -4.0]], "centroids": [[0.0, 0.0]], "assignments": [0, 0]}, "expectedOutput": 50.0, "hidden": false},
+      {"id": "3d-two-points", "label": "3D Space Distance Sum", "input": {"points": [[1.0, 1.0, 1.0], [2.0, 2.0, 2.0]], "centroids": [[0.0, 0.0, 0.0]], "assignments": [0, 0]}, "expectedOutput": 15.0, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-7, rank #247) ---
+  'classical-ml-prob-7': {
+    id: 'classical-ml-prob-7',
+    title: "Min-Max Feature Normalization",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'min_max_scaler',
+    functionSignature: 'min_max_scaler(X: list[list[float]], min_val: float = 0.0, max_val: float = 1.0) -> list[list[float]]',
+    starterCode: `def min_max_scaler(X, min_val=0.0, max_val=1.0):
+    """Scale feature matrix X column-wise to the range [min_val, max_val].
+
+    scaled = min_val + (x - col_min) / (col_max - col_min) * (max_val - min_val).
+    If col_max == col_min, set scaled values to min_val."""
+    # Your implementation here
+    pass
+`,
+    mission: "Normalize feature columns into a designated bounded interval [min_val, max_val] with robust zero-range fallback.",
+    taskDescription: "Implement `min_max_scaler(X, min_val=0.0, max_val=1.0)`: rescale each column `j` using `min_val + (x - min) / (max - min) * (max_val - min_val)`. If `max == min`, set to `min_val`.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "min_val < max_val.",
+      "Empty matrix returns [].",
+    ],
+    hints: {
+      small: "For each column j, find min and max, then apply the linear interpolation formula.",
+      strong: "span = col_max - col_min; if span < 1e-12: scaled[i][j] = min_val else min_val + (X[i][j] - col_min)/span * (max_val - min_val).",
+      concept: "Unlike StandardScaler, MinMaxScaler is sensitive to extreme outliers because min and max define the bounding interval.",
+    },
+    conceptConnections: [
+      { title: "Feature Engineering & Preprocessing", route: "/docs/classical-machine-learning/feature-engineering-and-preprocessing", description: "MinMaxScaler and bounded range transformation" },
+    ],
+    testCases: [
+      {"id": "basic-01", "label": "Scale 3x2 Matrix to [0, 1]", "input": {"X": [[1.0, -2.0], [3.0, 0.0], [5.0, 2.0]], "min_val": 0.0, "max_val": 1.0}, "expectedOutput": [[0.0, 0.0], [0.5, 0.5], [1.0, 1.0]], "hidden": false},
+      {"id": "neg1-to-1", "label": "Scale to [-1, 1]", "input": {"X": [[10.0], [20.0]], "min_val": -1.0, "max_val": 1.0}, "expectedOutput": [[-1.0], [1.0]], "hidden": false},
+      {"id": "constant-col", "label": "Constant Feature Column", "input": {"X": [[4.0, 1.0], [4.0, 5.0]], "min_val": 0.0, "max_val": 1.0}, "expectedOutput": [[0.0, 0.0], [0.0, 1.0]], "hidden": false},
+      {"id": "single-val", "label": "Single 1x1 Value", "input": {"X": [[2.5]], "min_val": 0.0, "max_val": 1.0}, "expectedOutput": [[0.0]], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-8, rank #248) ---
+  'classical-ml-prob-8': {
+    id: 'classical-ml-prob-8',
+    title: "User-Item Jaccard Similarity",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'user_jaccard_similarity',
+    functionSignature: 'user_jaccard_similarity(user_a_items: list[str], user_b_items: list[str]) -> float',
+    starterCode: `def user_jaccard_similarity(user_a_items, user_b_items):
+    """Compute Jaccard similarity between two users based on their consumed item sets.
+
+    J(A, B) = |A ∩ B| / |A ∪ B|.
+    If both sets are empty, return 1.0. If only one is empty, return 0.0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute set-based Jaccard similarity between interaction histories for collaborative filtering and nearest-neighbor recommendation.",
+    taskDescription: "Implement `user_jaccard_similarity(user_a_items, user_b_items)`: return |A \u2229 B| / |A \u222a B|. If both sets are empty, return 1.0. If only one is empty, return 0.0.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "Item identifiers are strings.",
+      "Duplicate items in lists are treated as single set members.",
+    ],
+    hints: {
+      small: "Use Python sets: sa = set(user_a_items), sb = set(user_b_items).",
+      strong: "union = sa | sb; if not union: return 1.0; return len(sa & sb) / len(union).",
+      concept: "Jaccard index ranges from 0.0 (completely disjoint sets) to 1.0 (identical sets).",
+    },
+    conceptConnections: [
+      { title: "Clustering & Recommender Systems", route: "/docs/classical-machine-learning/clustering-and-unsupervised-learning", description: "Collaborative filtering and implicit similarity metrics" },
+    ],
+    testCases: [
+      {"id": "partial-overlap", "label": "Partial Item Overlap", "input": {"user_a_items": ["item1", "item2", "item3"], "user_b_items": ["item2", "item3", "item4"]}, "expectedOutput": 0.5, "hidden": false},
+      {"id": "disjoint", "label": "No Shared Items", "input": {"user_a_items": ["a", "b"], "user_b_items": ["c", "d"]}, "expectedOutput": 0.0, "hidden": false},
+      {"id": "identical", "label": "Identical Item Sets", "input": {"user_a_items": ["x", "y"], "user_b_items": ["y", "x"]}, "expectedOutput": 1.0, "hidden": false},
+      {"id": "both-empty", "label": "Both Users Empty", "input": {"user_a_items": [], "user_b_items": []}, "expectedOutput": 1.0, "hidden": true},
+      {"id": "one-empty", "label": "One User Empty", "input": {"user_a_items": ["movie_a"], "user_b_items": []}, "expectedOutput": 0.0, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-9, rank #249) ---
+  'classical-ml-prob-9': {
+    id: 'classical-ml-prob-9',
+    title: "Polynomial Feature Expansion",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'polynomial_features_deg2',
+    functionSignature: 'polynomial_features_deg2(x: list[float], include_bias: bool = True) -> list[float]',
+    starterCode: `def polynomial_features_deg2(x, include_bias=True):
+    """Generate degree-2 polynomial features for a 1D feature vector x.
+
+    Output order: [bias (1.0 if include_bias), linear terms x_i, pairwise terms x_i * x_j (0 <= i <= j < d)]."""
+    # Your implementation here
+    pass
+`,
+    mission: "Expand linear feature representations with degree-2 interactions to model non-linear boundaries in linear classifiers and regression models.",
+    taskDescription: "Implement `polynomial_features_deg2(x, include_bias=True)`: return `[1.0]` (if include_bias), followed by linear terms `x[0], ..., x[d-1]`, followed by interaction terms `x[i] * x[j]` for all `0 <= i <= j < d`.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "Output order is deterministic: bias -> linear terms -> pairwise terms (i <= j).",
+      "Float precision preserved.",
+    ],
+    hints: {
+      small: "Start with [1.0] if include_bias else []. Append each x[i], then nested loop for i in range(d): for j in range(i, d).",
+      strong: "res = [1.0] if include_bias else []; res.extend(float(v) for v in x); for i in range(d): for j in range(i, d): res.append(x[i]*x[j]).",
+      concept: "For dimension d, degree 2 expansion produces 1 + d + d*(d+1)/2 features.",
+    },
+    conceptConnections: [
+      { title: "Feature Engineering & Preprocessing", route: "/docs/classical-machine-learning/feature-engineering-and-preprocessing", description: "Non-linear feature expansion and polynomial regression" },
+    ],
+    testCases: [
+      {"id": "2d-with-bias", "label": "2D Vector with Bias", "input": {"x": [2.0, 3.0], "include_bias": true}, "expectedOutput": [1.0, 2.0, 3.0, 4.0, 6.0, 9.0], "hidden": false},
+      {"id": "1d-no-bias", "label": "1D Vector without Bias", "input": {"x": [4.0], "include_bias": false}, "expectedOutput": [4.0, 16.0], "hidden": false},
+      {"id": "3d-with-bias", "label": "3D Vector with Bias", "input": {"x": [1.0, 2.0, 3.0], "include_bias": true}, "expectedOutput": [1.0, 1.0, 2.0, 3.0, 1.0, 2.0, 3.0, 4.0, 6.0, 9.0], "hidden": false},
+      {"id": "negative-terms", "label": "Negative Coordinates without Bias", "input": {"x": [0.0, -1.0], "include_bias": false}, "expectedOutput": [0.0, -1.0, 0.0, -0.0, 1.0], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-10, rank #250) ---
+  'classical-ml-prob-10': {
+    id: 'classical-ml-prob-10',
+    title: "Item-Based Collaborative Filtering Score",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'item_collaborative_predict',
+    functionSignature: 'item_collaborative_predict(user_ratings: dict[str, float], item_similarities: dict[str, float]) -> float',
+    starterCode: `def item_collaborative_predict(user_ratings, item_similarities):
+    """Predict user rating for a target item using item-item collaborative filtering.
+
+    score = sum(sim_i * rating_i) / sum(sim_i) for items with sim_i > 0 that the user rated.
+    If no positive similarity items have been rated, return 0.0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Predict an unrated item score using item-item similarity weighted aggregation of the user's historical ratings.",
+    taskDescription: "Implement `item_collaborative_predict(user_ratings, item_similarities)`: compute `sum(sim_i * rating_i) / sum(sim_i)` over rated items where `sim_i > 0`. If `sum(sim_i) == 0`, return 0.0.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "Only consider items with similarity > 0.",
+      "Return 0.0 if similarity sum is zero or ratings are empty.",
+    ],
+    hints: {
+      small: "Iterate through user_ratings; check if item is in item_similarities and sim > 0.",
+      strong: "weighted = sum(sim * r for i, r in user_ratings.items() if (sim := item_similarities.get(i, 0)) > 0); divide by sum of similarities.",
+      concept: "Item-based filtering predicts preference based on items similar to those already enjoyed by the user.",
+    },
+    conceptConnections: [
+      { title: "Clustering & Recommender Systems", route: "/docs/classical-machine-learning/clustering-and-unsupervised-learning", description: "Item-based collaborative filtering architectures" },
+    ],
+    testCases: [
+      {"id": "two-items", "label": "Two Rated Similar Items", "input": {"user_ratings": {"item1": 5.0, "item2": 3.0}, "item_similarities": {"item1": 0.8, "item2": 0.2, "item3": 0.5}}, "expectedOutput": 4.6, "hidden": false},
+      {"id": "no-overlap", "label": "No Shared Items Between Ratings and Similarities", "input": {"user_ratings": {"i1": 4.0}, "item_similarities": {"i2": 0.9}}, "expectedOutput": 0.0, "hidden": false},
+      {"id": "equal-weights", "label": "Equal Similarity Weights", "input": {"user_ratings": {"a": 2.0, "b": 4.0}, "item_similarities": {"a": 0.5, "b": 0.5}}, "expectedOutput": 3.0, "hidden": false},
+      {"id": "empty-ratings", "label": "Empty User Ratings", "input": {"user_ratings": {}, "item_similarities": {"a": 0.5}}, "expectedOutput": 0.0, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-11, rank #251) ---
+  'classical-ml-prob-11': {
+    id: 'classical-ml-prob-11',
+    title: "Linear Regression Gradient Descent Step",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'linear_regression_gd_step',
+    functionSignature: 'linear_regression_gd_step(X: list[list[float]], y: list[float], weights: list[float], bias: float, lr: float) -> list[float]',
+    starterCode: `def linear_regression_gd_step(X, y, weights, bias, lr):
+    """Perform one gradient descent update step on weights and bias for MSE loss.
+
+    grad_w = (1/N) * sum_i (y_pred_i - y_i) * X[i]
+    grad_b = (1/N) * sum_i (y_pred_i - y_i)
+    Return [*new_weights, new_bias]."""
+    # Your implementation here
+    pass
+`,
+    mission: "Execute an explicit analytical gradient descent parameter update on weights and intercept for linear regression with Mean Squared Error loss.",
+    taskDescription: "Implement `linear_regression_gd_step(X, y, weights, bias, lr)`: compute predictions `y_hat_i = w^T x_i + b`, gradients `grad_w = (1/N) X^T (y_hat - y)` and `grad_b = (1/N) sum(y_hat - y)`. Return `[*new_w, new_b]` where `param_new = param - lr * grad`.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "len(X) == len(y) >= 1; len(weights) == len(X[0]).",
+      "Learning rate lr > 0.",
+    ],
+    hints: {
+      small: "For each sample i, compute pred = sum(w * x) + bias, err = pred - y[i].",
+      strong: "Accumulate grad_w[j] += err * X[i][j] and grad_b += err. Divide by N, then update w - lr * grad_w.",
+      concept: "Gradient of MSE loss is proportional to the residual error scaled by input features.",
+    },
+    conceptConnections: [
+      { title: "Supervised Learning Fundamentals", route: "/docs/classical-machine-learning/supervised-learning-fundamentals", description: "Linear regression and gradient optimization" },
+    ],
+    testCases: [
+      {"id": "1d-step", "label": "1D Single Feature Update", "input": {"X": [[1.0], [2.0], [3.0]], "y": [2.0, 4.0, 6.0], "weights": [0.0], "bias": 0.0, "lr": 0.1}, "expectedOutput": [0.933333, 0.4], "hidden": false},
+      {"id": "zero-error", "label": "Zero Residual Exact Fit", "input": {"X": [[1.0, 0.0], [0.0, 1.0]], "y": [1.0, 2.0], "weights": [1.0, 2.0], "bias": 0.0, "lr": 0.05}, "expectedOutput": [1.0, 2.0, 0.0], "hidden": false},
+      {"id": "single-sample", "label": "Single Sample Update", "input": {"X": [[1.0]], "y": [3.0], "weights": [1.0], "bias": 0.0, "lr": 0.5}, "expectedOutput": [2.0, 1.0], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-12, rank #252) ---
+  'classical-ml-prob-12': {
+    id: 'classical-ml-prob-12',
+    title: "Hierarchical Clustering Single-Linkage Distance",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'single_linkage_distance',
+    functionSignature: 'single_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float',
+    starterCode: `def single_linkage_distance(cluster_a, cluster_b):
+    """Compute single-linkage (minimum pairwise Euclidean distance) between two clusters.
+
+    If either cluster is empty, return 0.0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute agglomerative single-linkage inter-cluster distance by identifying the minimum Euclidean distance between all cross-cluster point pairs.",
+    taskDescription: "Implement `single_linkage_distance(cluster_a, cluster_b)`: compute min ||p_a - p_b|| over all `p_a in cluster_a` and `p_b in cluster_b`. If either cluster is empty, return 0.0.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "Points have equal dimensionality.",
+      "Empty clusters return 0.0.",
+    ],
+    hints: {
+      small: "Use nested loops over cluster_a and cluster_b, tracking the minimum Euclidean distance.",
+      strong: "for pa in cluster_a: for pb in cluster_b: d = math.sqrt(sum((x-y)**2)); min_dist = min(min_dist, d).",
+      concept: "Single-linkage distance between two sets corresponds to the shortest path between their boundaries.",
+    },
+    conceptConnections: [
+      { title: "Clustering & Unsupervised Learning", route: "/docs/classical-machine-learning/clustering-and-unsupervised-learning", description: "Agglomerative hierarchical clustering and dendrogram generation" },
+    ],
+    testCases: [
+      {"id": "parallel-segments", "label": "Parallel Line Segments", "input": {"cluster_a": [[0.0, 0.0], [0.0, 1.0]], "cluster_b": [[3.0, 0.0], [3.0, 1.0]]}, "expectedOutput": 3.0, "hidden": false},
+      {"id": "singletons", "label": "Single-Point Clusters (3-4-5 Triangle)", "input": {"cluster_a": [[1.0, 1.0]], "cluster_b": [[4.0, 5.0]]}, "expectedOutput": 5.0, "hidden": false},
+      {"id": "closest-pair", "label": "Clusters with Closest Pair at Distance 1", "input": {"cluster_a": [[2.0, 3.0], [10.0, 10.0]], "cluster_b": [[2.0, 4.0], [20.0, 20.0]]}, "expectedOutput": 1.0, "hidden": false},
+      {"id": "empty-cluster", "label": "Empty Cluster Input", "input": {"cluster_a": [], "cluster_b": [[1.0, 1.0]]}, "expectedOutput": 0.0, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-13, rank #253) ---
+  'classical-ml-prob-13': {
+    id: 'classical-ml-prob-13',
+    title: "R-Squared (Coefficient of Determination)",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'r2_score',
+    functionSignature: 'r2_score(y_true: list[float], y_pred: list[float]) -> float',
+    starterCode: `def r2_score(y_true, y_pred):
+    """Compute R^2 (coefficient of determination) regression score.
+
+    R^2 = 1 - SS_res / SS_tot.
+    If SS_tot == 0, return 1.0 if SS_res == 0 else 0.0. If inputs are empty, return 1.0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the coefficient of determination (R-squared) quantifying the proportion of variance explained by a regression model.",
+    taskDescription: "Implement `r2_score(y_true, y_pred)`: compute `1 - SS_res / SS_tot` where `SS_res = sum((y_true - y_pred)^2)` and `SS_tot = sum((y_true - mean(y_true))^2)`. If `SS_tot == 0`, return 1.0 if `SS_res == 0` else 0.0. Return 1.0 for empty inputs.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "len(y_true) == len(y_pred).",
+      "Handle SS_tot == 0: return 1.0 if SS_res == 0 else 0.0.",
+    ],
+    hints: {
+      small: "Compute mean_y = sum(y_true)/n, then compute ss_tot and ss_res.",
+      strong: "ss_tot = sum((y - mean_y)**2 for y in y_true); ss_res = sum((yt - yp)**2 for yt, yp in zip(y_true, y_pred)); return 1 - ss_res/ss_tot.",
+      concept: "R^2 can be negative when testing on out-of-sample data if model predictions deviate further than the mean baseline.",
+    },
+    conceptConnections: [
+      { title: "Supervised Learning Fundamentals", route: "/docs/classical-machine-learning/supervised-learning-fundamentals", description: "Regression evaluation metrics and variance breakdown" },
+    ],
+    testCases: [
+      {"id": "good-fit", "label": "Four Points Near Line", "input": {"y_true": [3.0, -0.5, 2.0, 7.0], "y_pred": [2.5, 0.0, 2.0, 8.0]}, "expectedOutput": 0.948608, "hidden": false},
+      {"id": "perfect-fit", "label": "Perfect Fit (R^2 = 1.0)", "input": {"y_true": [1.0, 2.0, 3.0], "y_pred": [1.0, 2.0, 3.0]}, "expectedOutput": 1.0, "hidden": false},
+      {"id": "mean-baseline", "label": "Predicting the Mean (R^2 = 0.0)", "input": {"y_true": [1.0, 2.0, 3.0], "y_pred": [2.0, 2.0, 2.0]}, "expectedOutput": 0.0, "hidden": false},
+      {"id": "constant-target", "label": "Constant Target with Zero Residual", "input": {"y_true": [5.0, 5.0], "y_pred": [5.0, 5.0]}, "expectedOutput": 1.0, "hidden": true},
+      {"id": "worse-than-mean", "label": "Arbitrary Out-of-Scale Predictions", "input": {"y_true": [1.0, 2.0, 3.0], "y_pred": [10.0, 20.0, 30.0]}, "expectedOutput": -566.0, "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-14, rank #254) ---
+  'classical-ml-prob-14': {
+    id: 'classical-ml-prob-14',
+    title: "DBSCAN Epsilon Neighborhood Query",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'dbscan_region_query',
+    functionSignature: 'dbscan_region_query(points: list[list[float]], point_idx: int, eps: float) -> list[int]',
+    starterCode: `def dbscan_region_query(points, point_idx, eps):
+    """Find all point indices within Euclidean distance eps of points[point_idx].
+
+    Return sorted list of matching indices (including point_idx itself)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the core density query primitive for DBSCAN clustering, extracting epsilon-neighborhood indices around a query point.",
+    taskDescription: "Implement `dbscan_region_query(points, point_idx, eps)`: find indices of all points in `points` within Euclidean distance `<= eps` of `points[point_idx]`. Return indices sorted in ascending order.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "0 <= point_idx < len(points); eps >= 0.0.",
+      "Return sorted ascending list of indices.",
+    ],
+    hints: {
+      small: "Compare squared distances dist_sq <= eps**2 + 1e-12 to avoid computing square roots.",
+      strong: "target = points[point_idx]; [idx for idx, p in enumerate(points) if sum((pi-ti)**2 for pi,ti in zip(p, target)) <= eps**2 + 1e-12].",
+      concept: "Points with at least min_samples neighbors in their epsilon neighborhood become cluster cores in DBSCAN.",
+    },
+    conceptConnections: [
+      { title: "Clustering & Unsupervised Learning", route: "/docs/classical-machine-learning/clustering-and-unsupervised-learning", description: "DBSCAN density clustering and epsilon neighborhoods" },
+    ],
+    testCases: [
+      {"id": "cluster-core", "label": "Three Neighbors within Radius", "input": {"points": [[0.0, 0.0], [1.0, 0.0], [0.0, 1.0], [5.0, 5.0]], "point_idx": 0, "eps": 1.5}, "expectedOutput": [0, 1, 2], "hidden": false},
+      {"id": "isolated-point", "label": "Isolated Outlier", "input": {"points": [[0.0, 0.0], [10.0, 10.0]], "point_idx": 1, "eps": 2.0}, "expectedOutput": [1], "hidden": false},
+      {"id": "exact-boundary", "label": "Points on Distance Boundary", "input": {"points": [[1.0, 1.0], [1.0, 2.0], [2.0, 1.0]], "point_idx": 0, "eps": 1.0}, "expectedOutput": [0, 1, 2], "hidden": false},
+      {"id": "3d-query", "label": "3D Point Query", "input": {"points": [[0.0, 0.0, 0.0], [1.0, 1.0, 1.0], [2.0, 2.0, 2.0]], "point_idx": 1, "eps": 1.8}, "expectedOutput": [0, 1, 2], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  // --- Classical ML batch (prob classical-ml-prob-15, rank #255) ---
+  'classical-ml-prob-15': {
+    id: 'classical-ml-prob-15',
+    title: "One-Hot Feature Encoding",
+    difficulty: 'easy',
+    topic: 'Classical Machine Learning',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'one_hot_encode',
+    functionSignature: 'one_hot_encode(categories: list[str], vocabulary: list[str], handle_unknown: str = "ignore") -> list[list[int]]',
+    starterCode: `def one_hot_encode(categories, vocabulary, handle_unknown="ignore"):
+    """Encode categorical features into one-hot binary vectors based on vocabulary.
+
+    If handle_unknown == "ignore", unknown categories receive an all-zero vector.
+    If handle_unknown == "error", raise ValueError for unknown categories."""
+    # Your implementation here
+    pass
+`,
+    mission: "Transform discrete categorical features into one-hot indicator vectors with configurable handling of unseen out-of-vocabulary categories.",
+    taskDescription: "Implement `one_hot_encode(categories, vocabulary, handle_unknown=\"ignore\")`: for each string in `categories`, return a binary vector of length `len(vocabulary)` with 1 at its vocabulary index and 0 elsewhere. If unknown and `handle_unknown == \"ignore\"`, return `[0] * len(vocabulary)`; if `\"error\"`, raise `ValueError`.",
+    constraints: [
+      "Libraries allowed \u00b7 Pure Python earns +10 bonus XP",
+      "vocabulary elements are distinct strings.",
+      "Raise ValueError when handle_unknown == error on unseen categories.",
+    ],
+    hints: {
+      small: "Build a dictionary mapping each vocabulary word to its index: {w: i for i, w in enumerate(vocabulary)}.",
+      strong: "If cat in vocab_map: vec = [0]*len(vocab); vec[vocab_map[cat]] = 1; else check handle_unknown.",
+      concept: "One-hot encoding represents K mutually exclusive categories as K-dimensional basis vectors.",
+    },
+    conceptConnections: [
+      { title: "Feature Engineering & Preprocessing", route: "/docs/classical-machine-learning/feature-engineering-and-preprocessing", description: "Categorical encoders and one-hot representation" },
+    ],
+    testCases: [
+      {"id": "known-vocab", "label": "Known Categories Encoded", "input": {"categories": ["cat", "dog", "bird"], "vocabulary": ["cat", "dog", "fish", "bird"], "handle_unknown": "ignore"}, "expectedOutput": [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1]], "hidden": false},
+      {"id": "unknown-ignore", "label": "Unknown Category Ignored (All Zeros)", "input": {"categories": ["apple", "unknown_fruit"], "vocabulary": ["apple", "banana"], "handle_unknown": "ignore"}, "expectedOutput": [[1, 0], [0, 0]], "hidden": false},
+      {"id": "known-error-mode", "label": "Known Category with Error Mode", "input": {"categories": ["x"], "vocabulary": ["x", "y"], "handle_unknown": "error"}, "expectedOutput": [[1, 0]], "hidden": false},
+      {"id": "unknown-raise", "label": "Unknown Category Raises ValueError", "input": {"categories": ["missing"], "vocabulary": ["a", "b"], "handle_unknown": "error"}, "expectError": "ValueError", "hidden": true},
+      {"id": "empty-input", "label": "Empty Input List", "input": {"categories": [], "vocabulary": ["red", "green", "blue"], "handle_unknown": "ignore"}, "expectedOutput": [], "hidden": true},
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
 };
 
 import curriculum500Data from '../data/curriculum500.json';

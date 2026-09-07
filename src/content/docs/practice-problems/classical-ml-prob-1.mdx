@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 1: Problem 241"
 sidebar_position: 241
-description: "Curriculum Problem 241 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
+description: "Curriculum Problem 241 (Stage 5: Classical Machine Learning & Optimization): Master Mean Squared Error."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,29 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Classical ML Module 1: Problem 241
+# Mean Squared Error
 
-**Rank #241** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #241** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-60`.
+## Overview
+
+Implement `mean_squared_error(y_true, y_pred)`, calculating the Mean Squared Error (MSE) across target and prediction vectors -- the canonical regression loss in machine learning and gradient-based optimization.
+
+## Task
+
+Implement `mean_squared_error(y_true, y_pred)`: return the average squared difference between corresponding elements of `y_true` and `y_pred`. If `y_true` and `y_pred` are empty, return `0.0`.
 
 <PracticePlayground problemId="classical-ml-prob-1" />
 
 <Solution>
 
 ```python
-def classical_ml_p1(data):
-    # Reference implementation
-    return data
+def mean_squared_error(y_true, y_pred):
+    if not y_true:
+        return 0.0
+    return sum((yt - yp) ** 2 for yt, yp in zip(y_true, y_pred)) / len(y_true)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Mean Squared Error heavily penalizes larger outliers due to squaring, making it standard for Gaussian likelihood estimation and ordinary least squares.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 10: Problem 250"
 sidebar_position: 250
-description: "Curriculum Problem 250 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
+description: "Curriculum Problem 250 (Stage 5: Classical Machine Learning & Optimization): Master Item-Based Collaborative Filtering Score."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,37 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Clustering Module 10: Problem 250
+# Item-Based Collaborative Filtering Score
 
-**Rank #250** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #250** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Clustering / Recommenders** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-9`.
+## Overview
+
+Implement `item_collaborative_predict(user_ratings, item_similarities)`, the core prediction equation in item-item collaborative filtering recommenders popularized by Amazon.
+
+## Task
+
+Implement `item_collaborative_predict(user_ratings, item_similarities)`: compute the similarity-weighted average rating for a target item across all items the user rated that have positive similarity. Return `0.0` when no rated items share positive similarity.
 
 <PracticePlayground problemId="classical-ml-prob-10" />
 
 <Solution>
 
 ```python
-def classical_ml_p10(data):
-    # Reference implementation
-    return data
+def item_collaborative_predict(user_ratings, item_similarities):
+    weighted_sum = 0.0
+    sim_sum = 0.0
+    for item, rating in user_ratings.items():
+        if item in item_similarities:
+            sim = item_similarities[item]
+            if sim > 0:
+                weighted_sum += sim * rating
+                sim_sum += sim
+    if sim_sum == 0:
+        return 0.0
+    return round(weighted_sum / sim_sum, 6)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Item-item collaborative filtering scales efficiently because item similarity matrices are static and far sparser than user correlation graphs.
 
 </Solution>

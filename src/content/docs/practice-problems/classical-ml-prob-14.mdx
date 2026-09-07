@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 14: Problem 254"
 sidebar_position: 254
-description: "Curriculum Problem 254 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
+description: "Curriculum Problem 254 (Stage 5: Classical Machine Learning & Optimization): Master DBSCAN Epsilon Neighborhood Query."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,35 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Clustering Module 14: Problem 254
+# DBSCAN Epsilon Neighborhood Query
 
-**Rank #254** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #254** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Clustering / Recommenders** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-13`.
+## Overview
+
+Implement `dbscan_region_query(points, point_idx, eps)`, the fundamental neighborhood search operation powering DBSCAN density-based spatial clustering.
+
+## Task
+
+Implement `dbscan_region_query(points, point_idx, eps)`: compute Euclidean distances from `points[point_idx]` to all points. Return a sorted list of integer indices whose distance is less than or equal to `eps` (including `point_idx`).
 
 <PracticePlayground problemId="classical-ml-prob-14" />
 
 <Solution>
 
 ```python
-def classical_ml_p14(data):
-    # Reference implementation
-    return data
+def dbscan_region_query(points, point_idx, eps):
+    target = points[point_idx]
+    neighbors = []
+    eps_sq = eps * eps
+    for idx, p in enumerate(points):
+        dist_sq = sum((pi - ti) ** 2 for pi, ti in zip(p, target))
+        if dist_sq <= eps_sq + 1e-12:
+            neighbors.append(idx)
+    neighbors.sort()
+    return neighbors
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+The epsilon-neighborhood cardinality determines whether a point is a core point, border point, or noise point in DBSCAN.
 
 </Solution>

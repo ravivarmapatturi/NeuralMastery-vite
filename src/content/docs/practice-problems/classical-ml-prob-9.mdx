@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 9: Problem 249"
 sidebar_position: 249
-description: "Curriculum Problem 249 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
+description: "Curriculum Problem 249 (Stage 5: Classical Machine Learning & Optimization): Master Polynomial Feature Expansion."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,34 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Classical ML Module 9: Problem 249
+# Polynomial Feature Expansion
 
-**Rank #249** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #249** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-8`.
+## Overview
+
+Implement `polynomial_features_deg2(x, include_bias=True)`, mapping input features into a higher-dimensional polynomial Hilbert space so linear models can capture non-linear relationships.
+
+## Task
+
+Implement `polynomial_features_deg2(x, include_bias=True)`: generate bias (if enabled), all first-order linear features, and all second-order combinations `x_i * x_j` in lexicographical order (`i <= j`).
 
 <PracticePlayground problemId="classical-ml-prob-9" />
 
 <Solution>
 
 ```python
-def classical_ml_p9(data):
-    # Reference implementation
-    return data
+def polynomial_features_deg2(x, include_bias=True):
+    res = [1.0] if include_bias else []
+    d = len(x)
+    for val in x:
+        res.append(float(val))
+    for i in range(d):
+        for j in range(i, d):
+            res.append(round(x[i] * x[j], 6))
+    return res
 ```
 
-This problem tests fundamental skills in Classical ML.
+Polynomial expansion underlies the polynomial kernel trick in Support Vector Machines and basis function expansion in linear regression.
 
 </Solution>

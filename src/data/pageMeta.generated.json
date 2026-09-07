@@ -4109,7 +4109,7 @@
       "section": "practice-problems",
       "title": "Practice: Classical ML Module 1: Problem 241",
       "sidebarPosition": 241,
-      "description": "Curriculum Problem 241 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
+      "description": "Curriculum Problem 241 (Stage 5: Classical Machine Learning & Optimization): Master Mean Squared Error.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4118,7 +4118,7 @@
       "section": "practice-problems",
       "title": "Practice: Clustering Module 10: Problem 250",
       "sidebarPosition": 250,
-      "description": "Curriculum Problem 250 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
+      "description": "Curriculum Problem 250 (Stage 5: Classical Machine Learning & Optimization): Master Item-Based Collaborative Filtering Score.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4127,7 +4127,7 @@
       "section": "practice-problems",
       "title": "Practice: Classical ML Module 11: Problem 251",
       "sidebarPosition": 251,
-      "description": "Curriculum Problem 251 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
+      "description": "Curriculum Problem 251 (Stage 5: Classical Machine Learning & Optimization): Master Linear Regression Gradient Descent Step.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4136,7 +4136,7 @@
       "section": "practice-problems",
       "title": "Practice: Clustering Module 12: Problem 252",
       "sidebarPosition": 252,
-      "description": "Curriculum Problem 252 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
+      "description": "Curriculum Problem 252 (Stage 5: Classical Machine Learning & Optimization): Master Hierarchical Clustering Single-Linkage Distance.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4145,7 +4145,7 @@
       "section": "practice-problems",
       "title": "Practice: Classical ML Module 13: Problem 253",
       "sidebarPosition": 253,
-      "description": "Curriculum Problem 253 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
+      "description": "Curriculum Problem 253 (Stage 5: Classical Machine Learning & Optimization): Master R-Squared (Coefficient of Determination).",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4154,7 +4154,7 @@
       "section": "practice-problems",
       "title": "Practice: Clustering Module 14: Problem 254",
       "sidebarPosition": 254,
-      "description": "Curriculum Problem 254 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
+      "description": "Curriculum Problem 254 (Stage 5: Classical Machine Learning & Optimization): Master DBSCAN Epsilon Neighborhood Query.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4163,7 +4163,7 @@
       "section": "practice-problems",
       "title": "Practice: Classical ML Module 15: Problem 255",
       "sidebarPosition": 255,
-      "description": "Curriculum Problem 255 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
+      "description": "Curriculum Problem 255 (Stage 5: Classical Machine Learning & Optimization): Master One-Hot Feature Encoding.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4208,7 +4208,7 @@
       "section": "practice-problems",
       "title": "Practice: Clustering Module 2: Problem 242",
       "sidebarPosition": 242,
-      "description": "Curriculum Problem 242 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
+      "description": "Curriculum Problem 242 (Stage 5: Classical Machine Learning & Optimization): Master K-Means Cluster Assignment.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4307,7 +4307,7 @@
       "section": "practice-problems",
       "title": "Practice: Classical ML Module 3: Problem 243",
       "sidebarPosition": 243,
-      "description": "Curriculum Problem 243 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
+      "description": "Curriculum Problem 243 (Stage 5: Classical Machine Learning & Optimization): Master Binary Cross-Entropy Loss.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4406,7 +4406,7 @@
       "section": "practice-problems",
       "title": "Practice: Clustering Module 4: Problem 244",
       "sidebarPosition": 244,
-      "description": "Curriculum Problem 244 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
+      "description": "Curriculum Problem 244 (Stage 5: Classical Machine Learning & Optimization): Master K-Means Centroid Update.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4505,7 +4505,7 @@
       "section": "practice-problems",
       "title": "Practice: Classical ML Module 5: Problem 245",
       "sidebarPosition": 245,
-      "description": "Curriculum Problem 245 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
+      "description": "Curriculum Problem 245 (Stage 5: Classical Machine Learning & Optimization): Master Z-Score Feature Standardization.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4604,7 +4604,7 @@
       "section": "practice-problems",
       "title": "Practice: Clustering Module 6: Problem 246",
       "sidebarPosition": 246,
-      "description": "Curriculum Problem 246 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
+      "description": "Curriculum Problem 246 (Stage 5: Classical Machine Learning & Optimization): Master Within-Cluster Sum of Squares (Inertia).",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4622,7 +4622,7 @@
       "section": "practice-problems",
       "title": "Practice: Classical ML Module 7: Problem 247",
       "sidebarPosition": 247,
-      "description": "Curriculum Problem 247 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
+      "description": "Curriculum Problem 247 (Stage 5: Classical Machine Learning & Optimization): Master Min-Max Feature Normalization.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4631,7 +4631,7 @@
       "section": "practice-problems",
       "title": "Practice: Clustering Module 8: Problem 248",
       "sidebarPosition": 248,
-      "description": "Curriculum Problem 248 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
+      "description": "Curriculum Problem 248 (Stage 5: Classical Machine Learning & Optimization): Master User-Item Jaccard Similarity.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },
@@ -4640,7 +4640,7 @@
       "section": "practice-problems",
       "title": "Practice: Classical ML Module 9: Problem 249",
       "sidebarPosition": 249,
-      "description": "Curriculum Problem 249 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
+      "description": "Curriculum Problem 249 (Stage 5: Classical Machine Learning & Optimization): Master Polynomial Feature Expansion.",
       "difficulty": "easy",
       "topic": "classical-ml"
     },

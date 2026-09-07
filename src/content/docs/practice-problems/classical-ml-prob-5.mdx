@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 5: Problem 245"
 sidebar_position: 245
-description: "Curriculum Problem 245 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
+description: "Curriculum Problem 245 (Stage 5: Classical Machine Learning & Optimization): Master Z-Score Feature Standardization."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,45 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Classical ML Module 5: Problem 245
+# Z-Score Feature Standardization
 
-**Rank #245** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #245** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-4`.
+## Overview
+
+Implement `standard_scaler(X)`, performing column-wise Z-score standardization on 2D sample arrays -- a vital prerequisite for distance-based and regularized models like SVMs, PCA, Ridge/Lasso, and Neural Networks.
+
+## Task
+
+Implement `standard_scaler(X)`: transform matrix `X` so each feature has mean 0 and standard deviation 1. When a feature has zero variance, assign `0.0` to avoid division by zero. Return the transformed 2D list.
 
 <PracticePlayground problemId="classical-ml-prob-5" />
 
 <Solution>
 
 ```python
-def classical_ml_p5(data):
-    # Reference implementation
-    return data
+import math
+
+def standard_scaler(X):
+    if not X or not X[0]:
+        return []
+    n = len(X)
+    d = len(X[0])
+    scaled = [[0.0] * d for _ in range(n)]
+    for j in range(d):
+        col = [X[i][j] for i in range(n)]
+        mu = sum(col) / n
+        var = sum((x - mu) ** 2 for x in col) / n
+        std = math.sqrt(var)
+        if std < 1e-12:
+            for i in range(n):
+                scaled[i][j] = 0.0
+        else:
+            for i in range(n):
+                scaled[i][j] = round((X[i][j] - mu) / std, 6)
+    return scaled
 ```
 
-This problem tests fundamental skills in Classical ML.
+Z-score normalization ensures gradient descent steps progress symmetrically across features with vastly different natural scales.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 3: Problem 243"
 sidebar_position: 243
-description: "Curriculum Problem 243 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
+description: "Curriculum Problem 243 (Stage 5: Classical Machine Learning & Optimization): Master Binary Cross-Entropy Loss."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,36 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Classical ML Module 3: Problem 243
+# Binary Cross-Entropy Loss
 
-**Rank #243** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #243** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-2`.
+## Overview
+
+Implement `binary_cross_entropy(y_true, y_pred, eps=1e-15)`, the standard loss function for binary classification models (logistic regression, gradient boosted trees, neural binary classifiers).
+
+## Task
+
+Implement `binary_cross_entropy(y_true, y_pred, eps=1e-15)`: calculate BCE = -1/N * sum(y * ln(p) + (1 - y) * ln(1 - p)) where each prediction `p` is clamped to `[eps, 1.0 - eps]`. Return `0.0` when inputs are empty.
 
 <PracticePlayground problemId="classical-ml-prob-3" />
 
 <Solution>
 
 ```python
-def classical_ml_p3(data):
-    # Reference implementation
-    return data
+import math
+
+def binary_cross_entropy(y_true, y_pred, eps=1e-15):
+    if not y_true:
+        return 0.0
+    n = len(y_true)
+    total = 0.0
+    for y, p in zip(y_true, y_pred):
+        p_clipped = max(eps, min(1.0 - eps, float(p)))
+        total += -(y * math.log(p_clipped) + (1.0 - y) * math.log(1.0 - p_clipped))
+    return round(total / n, 6)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Probability clipping prevents log(0) which yields -inf or NaN, ensuring robust optimization in classification pipelines.
 
 </Solution>

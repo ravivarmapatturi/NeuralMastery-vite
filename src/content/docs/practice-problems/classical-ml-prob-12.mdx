@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 12: Problem 252"
 sidebar_position: 252
-description: "Curriculum Problem 252 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
+description: "Curriculum Problem 252 (Stage 5: Classical Machine Learning & Optimization): Master Hierarchical Clustering Single-Linkage Distance."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,37 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Clustering Module 12: Problem 252
+# Hierarchical Clustering Single-Linkage Distance
 
-**Rank #252** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #252** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Clustering / Recommenders** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-11`.
+## Overview
+
+Implement `single_linkage_distance(cluster_a, cluster_b)`, the proximity criterion for single-link agglomerative hierarchical clustering.
+
+## Task
+
+Implement `single_linkage_distance(cluster_a, cluster_b)`: find the minimum Euclidean distance between any point in `cluster_a` and any point in `cluster_b`. Return `0.0` if either cluster is empty.
 
 <PracticePlayground problemId="classical-ml-prob-12" />
 
 <Solution>
 
 ```python
-def classical_ml_p12(data):
-    # Reference implementation
-    return data
+import math
+
+def single_linkage_distance(cluster_a, cluster_b):
+    if not cluster_a or not cluster_b:
+        return 0.0
+    min_dist = float("inf")
+    for pa in cluster_a:
+        for pb in cluster_b:
+            d = math.sqrt(sum((x - y) ** 2 for x, y in zip(pa, pb)))
+            if d < min_dist:
+                min_dist = d
+    return round(min_dist, 6)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Single linkage can construct non-elliptical cluster chains, though it is susceptible to the chaining effect in noisy data.
 
 </Solution>

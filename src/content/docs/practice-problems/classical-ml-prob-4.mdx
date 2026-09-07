@@ -1,8 +1,7 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 4: Problem 244"
 sidebar_position: 244
-description: "Curriculum Problem 244 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
+description: "Curriculum Problem 244 (Stage 5: Classical Machine Learning & Optimization): Master K-Means Centroid Update."
 difficulty: easy
 topic: classical-ml
 ---
@@ -10,22 +9,43 @@ topic: classical-ml
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Clustering Module 4: Problem 244
+# K-Means Centroid Update
 
-**Rank #244** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
+**Rank #244** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Clustering / Recommenders** | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-3`.
+## Overview
+
+Implement `kmeans_update_centroids(points, assignments, k)`, the maximization step of Lloyd's algorithm, re-estimating cluster centers by averaging sample coordinates assigned to each partition.
+
+## Task
+
+Implement `kmeans_update_centroids(points, assignments, k)`: for each cluster index `c` from 0 to `k - 1`, compute the coordinate-wise average of all points assigned to `c`. If a cluster receives no points, assign `[0.0] * dim` as its centroid.
 
 <PracticePlayground problemId="classical-ml-prob-4" />
 
 <Solution>
 
 ```python
-def classical_ml_p4(data):
-    # Reference implementation
-    return data
+def kmeans_update_centroids(points, assignments, k):
+    if not points:
+        return []
+    d = len(points[0])
+    sums = [[0.0] * d for _ in range(k)]
+    counts = [0] * k
+    for p, c in zip(points, assignments):
+        if 0 <= c < k:
+            counts[c] += 1
+            for j in range(d):
+                sums[c][j] += p[j]
+    centroids = []
+    for c in range(k):
+        if counts[c] > 0:
+            centroids.append([round(sums[c][j] / counts[c], 6) for j in range(d)])
+        else:
+            centroids.append([0.0] * d)
+    return centroids
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+The update step minimizes the within-cluster sum of squares for the given partition, completing one EM iteration of K-Means.
 
 </Solution>
