@@ -1,31 +1,35 @@
 ---
-placeholder: true
-title: "Practice: RAG Module 29: Problem 459"
+title: "Practice: Jaccard Keyword Relevance for RAG Pre-Filtering"
 sidebar_position: 459
-description: "Curriculum Problem 459 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval."
-difficulty: medium
+description: "Compute Jaccard keyword overlap between a query and a chunk -- a cheap lexical relevance signal used alongside embedding similarity."
+difficulty: easy
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# RAG Module 29: Problem 459
+# Jaccard Keyword Relevance for RAG Pre-Filtering
 
-**Rank #459** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #459** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-28`.
+Implement `jaccard_relevance(query, chunk)`, a cheap lexical-overlap score real RAG pipelines use as a fast pre-filter (or a component of a hybrid score) before ever running an expensive embedding similarity comparison. Prerequisite: `agents-mcp-systems-prob-28`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-29" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p29(data):
-    # Reference implementation
-    return data
+import re
+
+def jaccard_relevance(query, chunk):
+    q_tokens = set(re.findall(r"[a-z0-9]+", query.lower()))
+    c_tokens = set(re.findall(r"[a-z0-9]+", chunk.lower()))
+    if not q_tokens or not c_tokens:
+        raise ValueError("query and chunk must both contain at least one token")
+    return len(q_tokens & c_tokens) / len(q_tokens | c_tokens)
 ```
 
-This problem tests fundamental skills in RAG / information retrieval.
+Jaccard similarity, unlike cosine similarity on embeddings, only ever looks at exact vocabulary overlap -- it has no notion of synonyms or semantic closeness, which is exactly why it is used as a cheap lexical signal alongside (not instead of) embedding-based relevance in a hybrid pipeline.
 
 </Solution>

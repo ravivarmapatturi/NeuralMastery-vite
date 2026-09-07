@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Vector search Module 27: Problem 457"
+title: "Practice: Apply Insert/Delete Operations to a Vector Index"
 sidebar_position: 457
-description: "Curriculum Problem 457 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search."
+description: "Simulate tombstone-based insert/delete on a vector index's live ID set -- how real ANN indexes like HNSW handle mutability."
 difficulty: medium
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,32 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Vector search Module 27: Problem 457
+# Apply Insert/Delete Operations to a Vector Index
 
 **Rank #457** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-26`.
+Implement `apply_index_operations(operations)`, tracking which vector IDs remain live after a sequence of insert/delete operations -- the bookkeeping behind tombstone-based deletion, since many real ANN indexes (HNSW in particular) don't support true in-place removal. Prerequisite: `agents-mcp-systems-prob-26`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-27" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p27(data):
-    # Reference implementation
-    return data
+def apply_index_operations(operations):
+    live = set()
+    for op in operations:
+        kind, doc_id = op[0], op[1]
+        if kind == "insert":
+            live.add(doc_id)
+        elif kind == "delete":
+            if doc_id not in live:
+                raise ValueError(f"cannot delete non-existent id: {doc_id!r}")
+            live.remove(doc_id)
+        else:
+            raise ValueError(f"unknown operation: {kind!r}")
+    return sorted(live)
 ```
 
-This problem tests fundamental skills in Vector search.
+This models WHY many real ANN indexes use tombstoning instead of true deletion: physically removing a node from a graph-based index like HNSW is expensive and can break the graph's connectivity, so a "delete" instead just marks an id as dead and filters it from results, with actual removal deferred to a periodic full rebuild.
 
 </Solution>

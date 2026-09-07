@@ -1,31 +1,35 @@
 ---
-placeholder: true
-title: "Practice: Agents Module 30: Problem 460"
+title: "Practice: Exponential Backoff Retry Delays"
 sidebar_position: 460
-description: "Curriculum Problem 460 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use."
-difficulty: medium
+description: "Compute a capped exponential backoff retry schedule -- how an agent's tool-calling loop avoids hammering a flaky dependency."
+difficulty: easy
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Agents Module 30: Problem 460
+# Exponential Backoff Retry Delays
 
-**Rank #460** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #460** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-29`.
+Implement `exponential_backoff_delays(num_attempts, base_delay, max_delay)`, the standard capped-exponential retry-delay schedule an agent's tool-calling loop (or any client of a flaky external API) uses to avoid hammering a failing service with immediate retries. Prerequisite: `agents-mcp-systems-prob-29`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-30" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p30(data):
-    # Reference implementation
-    return data
+def exponential_backoff_delays(num_attempts, base_delay, max_delay):
+    if num_attempts <= 0:
+        raise ValueError("num_attempts must be positive")
+    if base_delay <= 0:
+        raise ValueError("base_delay must be positive")
+    if max_delay < base_delay:
+        raise ValueError("max_delay must be >= base_delay")
+    return [min(base_delay * (2 ** i), max_delay) for i in range(num_attempts)]
 ```
 
-This problem tests fundamental skills in Agents / tool use.
+The cap exists because unbounded exponential growth would eventually make a client wait absurdly long between retries -- capping keeps the retry schedule useful (a bounded worst-case wait) while still backing off aggressively enough to avoid retry storms against a struggling service.
 
 </Solution>

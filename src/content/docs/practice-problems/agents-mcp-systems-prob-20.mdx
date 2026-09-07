@@ -1,31 +1,45 @@
 ---
-placeholder: true
-title: "Practice: Vector search Module 20: Problem 450"
+title: "Practice: Binary-Quantized Hamming Distance Search"
 sidebar_position: 450
-description: "Curriculum Problem 450 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search."
-difficulty: easy
+description: "Binary-quantize vectors to bitstrings and rank candidates by Hamming distance -- an extremely fast, low-memory first-pass ANN filter."
+difficulty: medium
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Vector search Module 20: Problem 450
+# Binary-Quantized Hamming Distance Search
 
-**Rank #450** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #450** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-19`.
+Implement `hamming_search(query, vectors, k)`: binary-quantize every vector (1 bit per dimension) and rank candidates by Hamming distance to the quantized query -- the real technique some vector databases use for an extremely fast, low-memory first-pass filter before a slower, precise re-ranking pass. Prerequisite: `agents-mcp-systems-prob-19`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-20" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p20(data):
-    # Reference implementation
-    return data
+def _sign_bits(v):
+    return ''.join('1' if x >= 0 else '0' for x in v)
+
+def hamming_search(query, vectors, k):
+    if k <= 0:
+        raise ValueError("k must be positive")
+    if k > len(vectors):
+        raise ValueError("k cannot exceed number of vectors")
+    qbits = _sign_bits(query)
+    dists = []
+    for i, v in enumerate(vectors):
+        if len(v) != len(query):
+            raise ValueError("all vectors must have the same dimensionality as query")
+        vbits = _sign_bits(v)
+        d = sum(1 for a, b in zip(qbits, vbits) if a != b)
+        dists.append((i, d))
+    dists.sort(key=lambda p: (p[1], p[0]))
+    return [i for i, _ in dists[:k]]
 ```
 
-This problem tests fundamental skills in Vector search.
+Hamming distance on bit-packed vectors can be computed with hardware-accelerated XOR + popcount, which is why binary quantization trades a large amount of precision for a large speedup -- it is deliberately a cheap first-pass filter, not the final ranking.
 
 </Solution>

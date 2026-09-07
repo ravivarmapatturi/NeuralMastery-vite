@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 17: Problem 447"
+title: "Practice: Parse an MCP Resource URI"
 sidebar_position: 447
-description: "Curriculum Problem 447 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
+description: "Parse and validate the scheme of an MCP resource URI -- the check a client runs before fetching a server-exposed resource."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,26 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 17: Problem 447
+# Parse an MCP Resource URI
 
 **Rank #447** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-16`.
+Implement `parse_mcp_resource_uri(uri, allowed_schemes)`, splitting an MCP resource URI into `(scheme, path)` and validating the scheme against an allowlist -- the check an MCP client needs before fetching a resource a server names. Prerequisite: `agents-mcp-systems-prob-16`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-17" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p17(data):
-    # Reference implementation
-    return data
+def parse_mcp_resource_uri(uri, allowed_schemes):
+    if "://" not in uri:
+        raise ValueError(f"malformed resource URI: {uri!r}")
+    scheme, path = uri.split("://", 1)
+    if scheme not in allowed_schemes:
+        raise ValueError(f"unsupported scheme: {scheme!r}")
+    return (scheme, path)
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+Validating the scheme against an explicit allowlist (not just "does it parse") is the real security-relevant step -- an MCP client blindly fetching whatever scheme a server names is exactly the kind of resource-access bug an allowlist prevents.
 
 </Solution>

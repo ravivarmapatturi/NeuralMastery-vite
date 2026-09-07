@@ -3179,6 +3179,726 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  // --- Agents, MCP & Systems batch 2 (ranks 446-460) -- same real-content
+  // pattern as batch 1: hand-written functions, every testCase.expectedOutput
+  // computed by actually running the reference implementation.
+  'agents-mcp-systems-prob-16': {
+    id: 'agents-mcp-systems-prob-16',
+    title: 'Keyword-Based Agent Tool Router',
+    difficulty: 'easy',
+    topic: 'Agent Orchestration',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'route_to_tool',
+    functionSignature: 'route_to_tool(query: str, tool_keywords: dict[str, list[str]]) -> str',
+    starterCode: `import re
+
+def route_to_tool(query, tool_keywords):
+    """Pick the tool whose keyword list has the most matches among the
+    query's lowercase word tokens. Ties broken alphabetically by tool
+    name. Raise ValueError if tool_keywords is empty or no tool matches
+    any token."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the simplest real form of agent tool routing: before an LLM-based router or embedding-based intent classifier, a keyword-overlap router is the cheap first pass many real agent systems still use to shortlist or directly dispatch a tool call.',
+    taskDescription: 'Implement `route_to_tool(query, tool_keywords)`. Tokenize `query` into lowercase alphanumeric words. For each tool (in alphabetical order), count how many of its keywords appear among those tokens. Return the tool name with the highest count (ties go to whichever comes first alphabetically, since it is checked first and a later tool needs a STRICTLY higher score to replace it).',
+    constraints: [
+      'Must raise ValueError if `tool_keywords` is empty.',
+      'Must raise ValueError if no tool has any matching keyword (score 0 for every tool).',
+      'Tokenization is case-insensitive; only whole alphanumeric tokens count (not substrings).',
+      'Ties are broken alphabetically by tool name.',
+    ],
+    hints: {
+      small: 'Extract query tokens once with `re.findall(r"[a-z0-9]+", query.lower())` and put them in a set for O(1) membership checks.',
+      strong: 'Iterate `sorted(tool_keywords)` so ties naturally resolve alphabetically, and only replace the current best when a tool\'s score is STRICTLY greater than the best score so far.',
+      concept: 'This is deliberately a cheap lexical pre-filter, not a semantic router -- production agent systems often layer this in front of a more expensive embedding-similarity or LLM-based router to short-circuit the obvious cases.',
+    },
+    conceptConnections: [
+      { title: 'Routing & Supervisor Patterns', route: '/docs/agents/routing-and-supervisor', description: 'Keyword routing is the cheapest tier of a real agent tool-routing pipeline' },
+    ],
+    testCases: [
+      {
+        id: 'weather',
+        label: 'Weather Query',
+        input: { query: "What's the weather forecast for tomorrow?", tool_keywords: { weather: ['weather', 'temperature', 'forecast'], calculator: ['add', 'subtract', 'multiply', 'calculate'], search: ['search', 'find', 'lookup'] } },
+        expectedOutput: 'weather',
+        hidden: false,
+        description: 'Matches "weather" and "forecast" -- 2 keyword hits beats 0 for the other tools',
+      },
+      {
+        id: 'calculator',
+        label: 'Calculator Query',
+        input: { query: 'Please calculate and add these numbers', tool_keywords: { weather: ['weather', 'temperature', 'forecast'], calculator: ['add', 'subtract', 'multiply', 'calculate'], search: ['search', 'find', 'lookup'] } },
+        expectedOutput: 'calculator',
+        hidden: false,
+      },
+      {
+        id: 'alphabetical-tiebreak',
+        label: 'Tie Goes to the Alphabetically First Tool',
+        input: { query: 'search and find lookup', tool_keywords: { search: ['search', 'find', 'lookup'], zsearch: ['search', 'find', 'lookup'] } },
+        expectedOutput: 'search',
+        hidden: true,
+        description: 'Both tools score 3 -- "search" wins for being alphabetically first',
+      },
+      {
+        id: 'no-match',
+        label: 'No Tool Matches',
+        input: { query: 'random unrelated text', tool_keywords: { weather: ['weather'], calculator: ['add'] } },
+        expectError: 'ValueError',
+        hidden: true,
+      },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-17': {
+    id: 'agents-mcp-systems-prob-17',
+    title: 'Parse an MCP Resource URI',
+    difficulty: 'easy',
+    topic: 'Model Context Protocol',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'parse_mcp_resource_uri',
+    functionSignature: 'parse_mcp_resource_uri(uri: str, allowed_schemes: list[str]) -> tuple[str, str]',
+    starterCode: `def parse_mcp_resource_uri(uri, allowed_schemes):
+    """Split an MCP resource URI of the form "scheme://path" into
+    (scheme, path). Raise ValueError if the URI has no "://" separator,
+    or if the scheme is not in allowed_schemes."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the URI parser an MCP client needs before it can fetch a "resource" (MCP\'s term for an addressable piece of context a server exposes) -- every resource is identified by a URI, and a client must validate the scheme against what it actually knows how to fetch before acting on it.',
+    taskDescription: 'Implement `parse_mcp_resource_uri(uri, allowed_schemes)`. Split `uri` on the FIRST `"://"` into `(scheme, path)`. Raise `ValueError` if there is no `"://"` in `uri`, or if `scheme` is not in `allowed_schemes`.',
+    constraints: [
+      'Must raise ValueError if the URI contains no "://".',
+      'Must raise ValueError if the scheme is not present in allowed_schemes.',
+      'Only the FIRST "://" is a delimiter -- the path may itself contain "://" later (rare but not disallowed).',
+      'The returned path is everything after the first "://", unmodified.',
+    ],
+    hints: {
+      small: '`uri.split("://", 1)` splits on only the first occurrence, giving you exactly `[scheme, path]`.',
+      strong: 'Check `"://" not in uri` first and raise before attempting the split; check scheme membership in `allowed_schemes` after splitting.',
+      concept: 'Validating the scheme against an explicit allowlist (not just "does it parse") is the real security-relevant step -- an MCP client blindly fetching whatever scheme a server names (e.g. an unexpected `file://` from a remote server) is exactly the kind of resource-access bug an allowlist prevents.',
+    },
+    conceptConnections: [
+      { title: 'MCP Protocol Deep Dive', route: '/docs/agents/mcp/protocol-deep-dive', description: 'Resources are one of MCP\'s three core primitives (alongside tools and prompts), each addressed by URI' },
+    ],
+    testCases: [
+      { id: 'file-scheme', label: 'File Scheme', input: { uri: 'file:///home/user/doc.txt', allowed_schemes: ['file', 'https'] }, expectedOutput: ['file', '/home/user/doc.txt'], hidden: false },
+      { id: 'https-scheme', label: 'HTTPS Scheme', input: { uri: 'https://example.com/api', allowed_schemes: ['file', 'https'] }, expectedOutput: ['https', 'example.com/api'], hidden: false },
+      { id: 'disallowed-scheme', label: 'Scheme Not Allowed', input: { uri: 'ftp://x', allowed_schemes: ['file', 'https'] }, expectError: 'ValueError', hidden: true },
+      { id: 'malformed', label: 'No Scheme Separator', input: { uri: 'not-a-uri', allowed_schemes: ['file'] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-18': {
+    id: 'agents-mcp-systems-prob-18',
+    title: 'Compute a Latency Percentile (p95/p99)',
+    difficulty: 'medium',
+    topic: 'MLOps & Deployment',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'percentile',
+    functionSignature: 'percentile(values: list[float], p: float) -> float',
+    starterCode: `def percentile(values, p):
+    """Return the p-th percentile (0 <= p <= 100) of values using linear
+    interpolation between the two nearest ranks (the same method
+    numpy.percentile uses by default). Raise ValueError if values is
+    empty or p is outside [0, 100]."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the p95/p99 latency percentile calculation every SLO dashboard and alerting rule is built on -- a mean latency hides exactly the slow-tail requests an SLO cares about, which is why real systems always threshold on a percentile, not an average.',
+    taskDescription: 'Implement `percentile(values, p)`. Sort `values`, compute the fractional rank `r = (p/100) * (n-1)`, and linearly interpolate between `values[floor(r)]` and `values[ceil(r)]` by the fractional part of `r`. Raise `ValueError` if `values` is empty or `p` is not in `[0, 100]`.',
+    constraints: [
+      'Must raise ValueError if values is empty.',
+      'Must raise ValueError if p < 0 or p > 100.',
+      'p=0 returns the minimum; p=100 returns the maximum.',
+      'Uses linear interpolation between ranks, not nearest-rank rounding.',
+    ],
+    hints: {
+      small: 'Sort the values first. The fractional rank is `(p / 100) * (n - 1)` -- its integer part is the lower index, its fractional part is the interpolation weight.',
+      strong: 'lower = int(rank); upper = lower + 1 unless lower is already the last index; return `s[lower] + (s[upper] - s[lower]) * (rank - lower)`.',
+      concept: 'p99 latency (not average latency) is the standard SLO metric because it directly answers "how bad is the worst-affecting-real-users tail," which an average can hide behind a large number of fast requests.',
+    },
+    conceptConnections: [
+      { title: 'Production Reliability', route: '/docs/mlops/production-reliability', description: 'Latency percentiles are the standard metric behind real SLOs and alerting thresholds' },
+    ],
+    testCases: [
+      { id: 'p50', label: 'Median (p50)', input: { values: [12, 45, 23, 67, 34, 89, 21, 56, 78, 90], p: 50 }, expectedOutput: 50.5, hidden: false },
+      { id: 'p95', label: 'p95', input: { values: [12, 45, 23, 67, 34, 89, 21, 56, 78, 90], p: 95 }, expectedOutput: 89.55, hidden: false },
+      { id: 'p0', label: 'p0 Is the Minimum', input: { values: [12, 45, 23, 67, 34, 89, 21, 56, 78, 90], p: 0 }, expectedOutput: 12.0, hidden: false },
+      { id: 'p100', label: 'p100 Is the Maximum', input: { values: [12, 45, 23, 67, 34, 89, 21, 56, 78, 90], p: 100 }, expectedOutput: 90.0, hidden: true },
+      { id: 'empty-values', label: 'Empty Values', input: { values: [], p: 50 }, expectError: 'ValueError', hidden: true },
+      { id: 'bad-p', label: 'p Out of Range', input: { values: [1, 2, 3], p: 150 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-19': {
+    id: 'agents-mcp-systems-prob-19',
+    title: 'Find When a Write Quorum Is Reached',
+    difficulty: 'easy',
+    topic: 'Distributed Systems',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'quorum_reached_at',
+    functionSignature: 'quorum_reached_at(acks: list[bool], quorum: int) -> int',
+    starterCode: `def quorum_reached_at(acks, quorum):
+    """acks is an ordered list of per-replica ack booleans as they arrive.
+    Return the 0-based index of the ack at which the running count of
+    True acks FIRST reaches quorum, or -1 if it never does. Raise
+    ValueError if quorum <= 0."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the quorum-detection check a distributed write path (Dynamo-style replication, Raft commit) uses to decide the earliest moment it can safely acknowledge a write back to the client -- as soon as quorum is met, waiting for the remaining replicas only adds latency, not safety.',
+    taskDescription: 'Implement `quorum_reached_at(acks, quorum)`. Walk `acks` in order, keeping a running count of `True` values. Return the index at which that count first reaches `quorum`. Return `-1` if quorum is never reached across all acks.',
+    constraints: [
+      'Must raise ValueError if quorum <= 0.',
+      'Only `True` values count toward the running total; `False` acks are ignored, not counted as failures that reset anything.',
+      'An empty `acks` list returns -1.',
+      'Returns the index of the ack that CAUSED quorum to be reached, not the count itself.',
+    ],
+    hints: {
+      small: 'Track a running `count`, incrementing it only when `acks[i]` is `True`.',
+      strong: 'Check `count >= quorum` immediately after each increment and return `i` right there -- do not wait until the loop ends.',
+      concept: 'A quorum write deliberately does not wait for ALL replicas to ack -- requiring only a majority (or configured W) is what lets the system stay available and low-latency even when some replicas are slow or temporarily unreachable.',
+    },
+    conceptConnections: [
+      { title: 'Networking & Distributed Systems', route: '/docs/cs-fundamentals/networking-and-distributed-systems', description: 'Quorum-based replication (W acks out of N replicas) as a core distributed-systems durability pattern' },
+    ],
+    testCases: [
+      { id: 'reached', label: 'Quorum Reached Mid-Sequence', input: { acks: [true, false, true, true], quorum: 3 }, expectedOutput: 3, hidden: false, description: 'The 3rd True ack lands at index 3 (index 1 was False and does not count)' },
+      { id: 'never-reached', label: 'Quorum Never Reached', input: { acks: [true, true], quorum: 3 }, expectedOutput: -1, hidden: false },
+      { id: 'empty-acks', label: 'No Acks Yet', input: { acks: [], quorum: 1 }, expectedOutput: -1, hidden: true },
+      { id: 'bad-quorum', label: 'Non-Positive Quorum', input: { acks: [true], quorum: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-20': {
+    id: 'agents-mcp-systems-prob-20',
+    title: 'Binary-Quantized Hamming Distance Search',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'hamming_search',
+    functionSignature: 'hamming_search(query: list[float], vectors: list[list[float]], k: int) -> list[int]',
+    starterCode: `def hamming_search(query, vectors, k):
+    """Binary-quantize query and every vector (1 bit per dimension: 1 if
+    the value is >= 0, else 0), then return the indices of the k vectors
+    with the smallest Hamming distance to the quantized query, ties
+    broken by lower index. Raise ValueError if k <= 0, k > len(vectors),
+    or any vector's dimensionality differs from query's."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement binary quantization + Hamming-distance search, the real technique some vector databases use for an extremely fast, low-memory first-pass filter over billions of vectors before a slower, more precise re-ranking pass over the survivors.',
+    taskDescription: 'Implement `hamming_search(query, vectors, k)`. Quantize every vector (including `query`) to a bitstring: 1 bit per dimension, `1` if the value is `>= 0` else `0`. Return the indices of the `k` vectors with the smallest Hamming distance (count of differing bits) to the quantized query, sorted ascending by distance, ties broken by lower original index.',
+    constraints: [
+      'Must raise ValueError if k <= 0.',
+      'Must raise ValueError if k exceeds the number of vectors.',
+      'Must raise ValueError if any vector\'s length differs from query\'s length.',
+      'A value of exactly 0.0 quantizes to bit 1 (the ">= 0" rule, not "> 0").',
+    ],
+    hints: {
+      small: 'Write a helper that turns a vector into a bitstring: `\'\'.join(\'1\' if x >= 0 else \'0\' for x in v)`.',
+      strong: 'Hamming distance between two equal-length bitstrings is just the count of positions where the characters differ -- `sum(1 for a, b in zip(bits_a, bits_b) if a != b)`.',
+      concept: 'Hamming distance on bit-packed vectors can be computed with hardware-accelerated XOR + popcount, which is why binary quantization trades a large amount of precision for a large speedup -- it is deliberately a cheap first-pass filter, not the final ranking.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Binary quantization is a real, extreme-compression alternative to scalar quantization for large-scale ANN search' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Top 2 by Hamming Distance', input: { query: [1, -1, 1], vectors: [[1, -1, 1], [1, 1, 1], [-1, -1, -1], [1, -1, -1]], k: 2 }, expectedOutput: [0, 1], hidden: false, description: 'Vector 0 is an exact bit match (distance 0); vectors 1 and 3 both differ by 1 bit, index tiebreak picks 1' },
+      { id: 'all-vectors', label: 'k Equals Vector Count', input: { query: [1, -1, 1], vectors: [[1, -1, 1], [1, 1, 1], [-1, -1, -1], [1, -1, -1]], k: 4 }, expectedOutput: [0, 1, 3, 2], hidden: false },
+      { id: 'k-too-large', label: 'k Exceeds Vector Count', input: { query: [1, -1, 1], vectors: [[1, -1, 1], [1, 1, 1], [-1, -1, -1], [1, -1, -1]], k: 5 }, expectError: 'ValueError', hidden: true },
+      { id: 'dimension-mismatch', label: 'Dimension Mismatch', input: { query: [1, -1, 1], vectors: [[1, 1]], k: 1 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-21': {
+    id: 'agents-mcp-systems-prob-21',
+    title: 'Attention-Weighted Pooling of Image Patches',
+    difficulty: 'medium',
+    topic: 'Multimodal AI',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'attention_weighted_pool',
+    functionSignature: 'attention_weighted_pool(patch_embeddings: list[list[float]], attention_weights: list[float]) -> list[float]',
+    starterCode: `def attention_weighted_pool(patch_embeddings, attention_weights):
+    """Combine per-patch embeddings into one embedding via a weighted
+    average, using attention_weights normalized to sum to 1 first (the
+    caller's weights need not already sum to 1). Raise ValueError if the
+    two lists differ in length, are empty, the weights sum to zero, or
+    the embeddings have inconsistent dimensionality."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement attention-weighted pooling, the real mechanism a vision-language connector (or a perceiver-resampler-style module) uses to collapse a variable-length sequence of patch embeddings into one fixed-size image representation -- weighting some patches more than others, rather than treating every patch as equally important like plain mean pooling does.',
+    taskDescription: 'Implement `attention_weighted_pool(patch_embeddings, attention_weights)`. Normalize `attention_weights` so they sum to 1 (divide each by their total), then return the elementwise weighted sum of `patch_embeddings` using those normalized weights.',
+    constraints: [
+      'Must raise ValueError if patch_embeddings and attention_weights have different lengths.',
+      'Must raise ValueError if patch_embeddings is empty.',
+      'Must raise ValueError if attention_weights sum to zero (normalization would divide by zero).',
+      'Must raise ValueError if the patch embeddings do not all share the same dimensionality.',
+      'attention_weights need not already sum to 1 -- normalize them internally.',
+    ],
+    hints: {
+      small: 'First compute `total = sum(attention_weights)` and normalize every weight by dividing by it.',
+      strong: 'Initialize a zero vector of the embedding dimension, then for each (embedding, normalized_weight) pair add `weight * embedding[i]` into each dimension `i` of the accumulator.',
+      concept: 'Because weights are normalized internally, [1, 1, 2] and [2, 2, 4] (the same ratios) must produce the IDENTICAL pooled output -- a real property of attention weights, which only ever matter in relative proportion, not absolute scale.',
+    },
+    conceptConnections: [
+      { title: 'Modern Vision & Multimodal Models', route: '/docs/computer-vision/modern-vision-and-multimodal', description: 'Pooling patch embeddings into a single representation is a real step in vision-language model architectures' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Weighted Pool (Unnormalized Weights)', input: { patch_embeddings: [[1, 0], [0, 1], [2, 2]], attention_weights: [1, 1, 2] }, expectedOutput: [1.25, 1.25], hidden: false },
+      { id: 'scale-invariance', label: 'Same Ratios, Different Scale -- Identical Result', input: { patch_embeddings: [[1, 0], [0, 1], [2, 2]], attention_weights: [2, 2, 4] }, expectedOutput: [1.25, 1.25], hidden: false, description: 'Weights [2,2,4] are the same ratios as [1,1,2] -- normalization makes the result identical' },
+      { id: 'uniform-weights', label: 'Uniform Weights Reduce to Mean Pooling', input: { patch_embeddings: [[2, 0], [0, 2], [4, 4]], attention_weights: [1, 1, 1] }, expectedOutput: [2.0, 2.0], hidden: true },
+      { id: 'zero-weights', label: 'Weights Sum to Zero', input: { patch_embeddings: [[1, 0], [0, 1]], attention_weights: [0, 0] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-22': {
+    id: 'agents-mcp-systems-prob-22',
+    title: 'Deduplicate Near-Identical Retrieved Passages',
+    difficulty: 'easy',
+    topic: 'Retrieval-Augmented Generation',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'dedupe_passages',
+    functionSignature: 'dedupe_passages(passages: list[str]) -> list[str]',
+    starterCode: `import re
+
+def dedupe_passages(passages):
+    """Remove passages that are duplicates of an earlier one after
+    normalizing (strip, lowercase, collapse internal whitespace runs to a
+    single space). Keep the FIRST occurrence's original (non-normalized)
+    text, preserving overall order."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the cheap, exact-after-normalization deduplication pass a RAG pipeline runs on its retrieved passages -- two chunks that differ only by capitalization or stray whitespace (a common artifact of overlapping chunking or multiple retrieval sources) waste context-window budget saying the same thing twice.',
+    taskDescription: 'Implement `dedupe_passages(passages)`. For each passage, compute a normalized form (`strip()`, lowercase, collapse any run of whitespace to a single space). Keep a passage only if its normalized form has not been seen in an earlier passage, and return the kept passages in their ORIGINAL (non-normalized) text and original relative order.',
+    constraints: [
+      'Comparison is on the normalized form; the returned strings are the original, un-normalized text.',
+      'The FIRST occurrence (by original order) of each normalized form is kept; later duplicates are dropped.',
+      'An empty list returns an empty list.',
+      'Normalization: strip leading/trailing whitespace, lowercase, and collapse internal whitespace runs to one space.',
+    ],
+    hints: {
+      small: 'Use `re.sub(r\'\\s+\', \' \', p.strip().lower())` to compute each passage\'s normalized form.',
+      strong: 'Track normalized forms already seen in a `set`; append a passage to the result (its ORIGINAL text) only the first time its normalized form is new.',
+      concept: 'This is deliberately exact-after-normalization dedup, not semantic/embedding-based dedup (see the existing near-duplicate-embeddings problem for that) -- a cheap, fast text-level pass that catches whitespace/capitalization noise before ever reaching a vector comparison.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval-Augmented Generation', route: '/docs/llms-genai/rag', description: 'Deduplicating retrieved passages is a real post-retrieval cleanup step before assembling the LLM prompt' },
+    ],
+    testCases: [
+      {
+        id: 'basic',
+        label: 'Whitespace and Case Variants Collapse',
+        input: { passages: ['The Cat Sat.', 'the cat sat.', 'A dog barked.', '  The   Cat Sat.  '] },
+        expectedOutput: ['The Cat Sat.', 'A dog barked.'],
+        hidden: false,
+        description: 'All 3 variants of "the cat sat." normalize identically -- only the first (original-cased) one survives',
+      },
+      { id: 'no-duplicates', label: 'No Duplicates Present', input: { passages: ['Unique one.', 'Unique two.', 'Unique three.'] }, expectedOutput: ['Unique one.', 'Unique two.', 'Unique three.'], hidden: false },
+      { id: 'empty', label: 'Empty Input', input: { passages: [] }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-23': {
+    id: 'agents-mcp-systems-prob-23',
+    title: 'Assign Subtasks to Capable Agents',
+    difficulty: 'medium',
+    topic: 'Agent Orchestration',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'assign_subtasks',
+    functionSignature: 'assign_subtasks(subtasks: list[dict], agents: dict[str, list[str]]) -> list[str]',
+    starterCode: `def assign_subtasks(subtasks, agents):
+    """Each subtask is {"task": str, "requires": str}. agents maps
+    agent_name -> list of capabilities. Assign each subtask, in order, to
+    the FIRST agent (in agents' iteration order) whose capability list
+    contains the subtask's "requires" value. Return the list of assigned
+    agent names, one per subtask, in subtask order. Raise ValueError if
+    no agent can handle a subtask's required capability."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the capability-based task delegation a multi-agent supervisor uses to decide which specialist sub-agent should handle each piece of a larger plan -- the real routing decision behind a supervisor/orchestrator pattern with multiple narrow, capability-specific agents instead of one generalist.',
+    taskDescription: 'Implement `assign_subtasks(subtasks, agents)`. For each subtask (in order), scan `agents` in their given order and assign the subtask to the first agent whose capability list contains `subtask["requires"]`. Return the list of assigned agent names, one per subtask.',
+    constraints: [
+      'Subtasks are processed in the order given; each is assigned independently.',
+      'For each subtask, the FIRST matching agent in `agents`\' iteration order is chosen -- not the "best" or "least busy" one.',
+      'Must raise ValueError if no agent in `agents` has the required capability for some subtask.',
+      'An empty `subtasks` list returns an empty list.',
+    ],
+    hints: {
+      small: 'For each subtask, loop over `agents.items()` and return/record the first agent name whose capability list contains `subtask["requires"]`.',
+      strong: 'Use a `for...else` (or a flag) to detect the "no agent found" case cleanly and raise ValueError there, rather than letting a missing match silently produce `None`.',
+      concept: 'This is deliberately a simple first-match policy, not an optimal assignment (like a bipartite matching or load-balancing algorithm) -- real supervisor/orchestrator implementations often start exactly this simple and only add load-awareness once first-match proves insufficient.',
+    },
+    conceptConnections: [
+      { title: 'Multi-Agent Systems', route: '/docs/agents/multi-agent-systems', description: 'Capability-based task delegation to specialist sub-agents is a core multi-agent orchestration pattern' },
+    ],
+    testCases: [
+      {
+        id: 'basic',
+        label: 'Three Subtasks, Three Capabilities',
+        input: {
+          subtasks: [{ task: 't1', requires: 'code' }, { task: 't2', requires: 'search' }, { task: 't3', requires: 'translate' }],
+          agents: { agent_a: ['search', 'summarize'], agent_b: ['code', 'search'], agent_c: ['translate'] },
+        },
+        expectedOutput: ['agent_b', 'agent_a', 'agent_c'],
+        hidden: false,
+        description: '"search" matches agent_a first even though agent_b also has it, since agent_a comes first in iteration order',
+      },
+      {
+        id: 'no-agent-found',
+        label: 'No Agent Has the Required Capability',
+        input: { subtasks: [{ task: 't4', requires: 'unknown_cap' }], agents: { agent_a: ['search'], agent_b: ['code'] } },
+        expectError: 'ValueError',
+        hidden: true,
+      },
+      { id: 'empty-subtasks', label: 'No Subtasks', input: { subtasks: [], agents: { agent_a: ['search'] } }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-24': {
+    id: 'agents-mcp-systems-prob-24',
+    title: 'Negotiate MCP Client/Server Capabilities',
+    difficulty: 'easy',
+    topic: 'Model Context Protocol',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'negotiate_capabilities',
+    functionSignature: 'negotiate_capabilities(client_caps: dict[str, bool], server_caps: dict[str, bool]) -> dict[str, bool]',
+    starterCode: `def negotiate_capabilities(client_caps, server_caps):
+    """Return a dict containing only the capabilities that are truthy in
+    BOTH client_caps and server_caps, each mapped to True. A capability
+    present in only one side, or false in either, is excluded."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the capability-intersection logic behind MCP\'s initialize handshake -- a client and server each declare what they support, and the session can only actually use whatever both sides agree on, exactly like an HTTP/2 or TLS feature negotiation.',
+    taskDescription: 'Implement `negotiate_capabilities(client_caps, server_caps)`. Return a dict containing only the keys that are truthy in BOTH `client_caps` and `server_caps`, each mapped to `True`.',
+    constraints: [
+      'A capability must be truthy in BOTH dicts to appear in the result.',
+      'A capability present in only one dict (regardless of its value) is excluded.',
+      'A capability that is `False` in either dict is excluded, even if present in both.',
+      'Every value in the returned dict is `True` -- the result only records WHICH capabilities were negotiated, not their original values.',
+    ],
+    hints: {
+      small: 'A dict comprehension over `client_caps` checking `server_caps.get(key)` covers most of this in one line.',
+      strong: '`{k: True for k in client_caps if client_caps.get(k) and server_caps.get(k)}` -- `.get()` returns `None` (falsy) for a missing key, so a capability absent on either side is naturally excluded without a separate check.',
+      concept: 'This mirrors real protocol capability negotiation (TLS cipher suites, HTTP/2 SETTINGS) -- both sides advertise everything they COULD support, and the negotiated session is always the intersection, never either side\'s full list.',
+    },
+    conceptConnections: [
+      { title: 'MCP Protocol Deep Dive', route: '/docs/agents/mcp/protocol-deep-dive', description: 'Capability negotiation happens during MCP\'s initialize handshake, before any tool/resource calls' },
+    ],
+    testCases: [
+      {
+        id: 'partial-overlap',
+        label: 'Partial Overlap',
+        input: { client_caps: { sampling: true, roots: true, experimental: false }, server_caps: { sampling: true, roots: false, logging: true } },
+        expectedOutput: { sampling: true },
+        hidden: false,
+        description: 'roots is excluded (server says false), experimental is excluded (client says false), logging is excluded (client never declared it)',
+      },
+      { id: 'no-overlap', label: 'No Overlap', input: { client_caps: { a: true }, server_caps: { b: true } }, expectedOutput: {}, hidden: false },
+      { id: 'full-overlap', label: 'Full Overlap', input: { client_caps: { x: true, y: true }, server_caps: { x: true, y: true } }, expectedOutput: { x: true, y: true }, hidden: true },
+      { id: 'empty-client', label: 'Empty Client Capabilities', input: { client_caps: {}, server_caps: { x: true } }, expectedOutput: {}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-25': {
+    id: 'agents-mcp-systems-prob-25',
+    title: 'Population Stability Index for Model Drift',
+    difficulty: 'hard',
+    topic: 'MLOps & Deployment',
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'population_stability_index',
+    functionSignature: 'population_stability_index(baseline_counts: list[int], current_counts: list[int]) -> float',
+    starterCode: `import math
+
+def population_stability_index(baseline_counts, current_counts):
+    """Compute the Population Stability Index (PSI) between a baseline
+    and current bucketed distribution (same buckets, so same length).
+    For each bucket: convert counts to proportions of their own total,
+    floor each proportion at 1e-6 to avoid log(0), then sum
+    (cur_pct - base_pct) * ln(cur_pct / base_pct) across buckets. Raise
+    ValueError if the lengths differ, either list is empty, or either
+    total is zero."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the Population Stability Index, the standard metric production ML monitoring uses to detect real distribution drift between the data a model was trained on and the data it is currently seeing -- the actual number behind a "feature drift" alert firing.',
+    taskDescription: 'Implement `population_stability_index(baseline_counts, current_counts)`. Convert each list of bucket counts into proportions (divide by that list\'s own total). Floor every proportion at `1e-6` (to avoid `log(0)`). Return `sum((cur_pct - base_pct) * ln(cur_pct / base_pct))` across all buckets. Raise `ValueError` if the two lists have different lengths, either is empty, or either sums to zero.',
+    constraints: [
+      'Must raise ValueError if baseline_counts and current_counts have different lengths.',
+      'Must raise ValueError if either list is empty.',
+      'Must raise ValueError if either list sums to zero.',
+      'A proportion of exactly 0 in a bucket is floored to 1e-6 before the log, never passed to `math.log` directly.',
+      'Identical baseline and current distributions produce a PSI of exactly 0.0.',
+    ],
+    hints: {
+      small: 'Compute proportions with `count / total` for each side\'s own total, then apply `max(proportion, 1e-6)` to each.',
+      strong: 'PSI is a sum, not a single formula call -- accumulate `(cur_pct - base_pct) * math.log(cur_pct / base_pct)` bucket by bucket over `zip(baseline_counts, current_counts)`.',
+      concept: 'PSI is asymmetric-looking but actually a symmetric-in-effect divergence measure: below ~0.1 is considered stable, 0.1-0.25 moderate drift worth watching, above 0.25 significant drift -- these are the real thresholds production monitoring dashboards use to decide whether a model needs retraining.',
+    },
+    conceptConnections: [
+      { title: 'Monitoring & Drift Detection', route: '/docs/mlops/monitoring-and-drift', description: 'PSI is the standard metric behind real feature-drift and model-drift alerts' },
+    ],
+    testCases: [
+      { id: 'identical', label: 'Identical Distributions', input: { baseline_counts: [100, 100, 100, 100], current_counts: [100, 100, 100, 100] }, expectedOutput: 0.0, hidden: false, description: 'No drift at all -- PSI is exactly 0' },
+      { id: 'shifted', label: 'Shifted Distribution', input: { baseline_counts: [100, 100, 100, 100], current_counts: [150, 90, 90, 70] }, expectedOutput: 0.0827017850918168, hidden: false },
+      { id: 'vanished-bucket', label: 'A Bucket Drops to Zero', input: { baseline_counts: [50, 50], current_counts: [100, 0] }, expectedOutput: 6.90774215661876, hidden: true, description: 'The epsilon floor keeps this finite instead of raising a math domain error' },
+      { id: 'length-mismatch', label: 'Different Bucket Counts', input: { baseline_counts: [1, 2], current_counts: [1, 2, 3] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-26': {
+    id: 'agents-mcp-systems-prob-26',
+    title: 'Compare Two Vector Clocks',
+    difficulty: 'hard',
+    topic: 'Distributed Systems',
+    estimatedTime: '20–25 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'compare_vector_clocks',
+    functionSignature: 'compare_vector_clocks(a: dict[str, int], b: dict[str, int]) -> str',
+    starterCode: `def compare_vector_clocks(a, b):
+    """a and b are vector clocks (node_id -> counter; a missing node is
+    implicitly counter 0). Return "equal" if all counters match, "before"
+    if a happened-before b (every counter in a <= the matching one in b,
+    at least one strictly less), "after" for the symmetric case, or
+    "concurrent" if neither dominates the other."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement vector clock comparison, the real algorithm distributed systems (and CRDTs, and version-vector-based databases like Riak/DynamoDB) use to determine causality between two events across different nodes without a shared global clock -- exactly the mechanism that answers "did this write happen before, after, or concurrently with that one?"',
+    taskDescription: 'Implement `compare_vector_clocks(a, b)`. Treat a missing key in either clock as counter 0. Compare every node ID present in either clock: if every coordinate of `a` is `<=` the matching coordinate of `b` (with at least one strictly less), return `"before"`; the symmetric case returns `"after"`; if all coordinates match exactly, return `"equal"`; otherwise (some coordinate greater, some lesser) return `"concurrent"`.',
+    constraints: [
+      'A node ID present in only one clock is treated as counter 0 in the other.',
+      'Exactly one of "equal", "before", "after", "concurrent" is always returned.',
+      '"concurrent" means neither clock happened-before the other -- some coordinate favors each side.',
+      '"equal" only when every coordinate (over the union of node IDs) matches exactly.',
+    ],
+    hints: {
+      small: 'Compute the union of node IDs from both clocks, and for each one compare `a.get(node, 0)` against `b.get(node, 0)`.',
+      strong: 'Track two booleans while scanning: `le` (a <= b so far) and `ge` (a >= b so far), clearing `le` on any coordinate where a > b and clearing `ge` on any coordinate where a < b. At the end: both true means equal, only `le` means before, only `ge` means after, neither means concurrent.',
+      concept: 'A vector clock captures partial (not total) ordering -- unlike a single Lamport timestamp, it can correctly say "these two events are causally unrelated" (concurrent) instead of forcing every pair of events into a single global before/after order that a single scalar clock would incorrectly impose.',
+    },
+    conceptConnections: [
+      { title: 'Networking & Distributed Systems', route: '/docs/cs-fundamentals/networking-and-distributed-systems', description: 'Vector clocks are the standard mechanism for tracking causality in a distributed system without a shared clock' },
+    ],
+    testCases: [
+      { id: 'equal', label: 'Equal Clocks', input: { a: { n1: 1, n2: 2 }, b: { n1: 1, n2: 2 } }, expectedOutput: 'equal', hidden: false },
+      { id: 'before', label: 'A Happened Before B', input: { a: { n1: 1, n2: 1 }, b: { n1: 1, n2: 2 } }, expectedOutput: 'before', hidden: false },
+      { id: 'concurrent', label: 'Concurrent Events', input: { a: { n1: 2, n2: 1 }, b: { n1: 1, n2: 2 } }, expectedOutput: 'concurrent', hidden: false, description: 'n1 favors a, n2 favors b -- neither dominates' },
+      { id: 'missing-node', label: 'A Missing Node Counts as Zero', input: { a: { n1: 1 }, b: { n1: 1, n2: 1 } }, expectedOutput: 'before', hidden: true, description: "a's implicit n2=0 is <= b's n2=1, and every other coordinate matches, so a happened-before b" },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-27': {
+    id: 'agents-mcp-systems-prob-27',
+    title: 'Apply Insert/Delete Operations to a Vector Index',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'apply_index_operations',
+    functionSignature: 'apply_index_operations(operations: list[tuple[str, str]]) -> list[str]',
+    starterCode: `def apply_index_operations(operations):
+    """Each operation is ("insert", id) or ("delete", id), applied in
+    order to an initially empty index. Return the sorted list of ids
+    still live after all operations. Raise ValueError when deleting an id
+    that is not currently live, or on an unrecognized operation kind."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the live-ID bookkeeping behind vector index mutation -- many real ANN indexes (HNSW in particular) do not support true in-place deletion, so a "delete" is implemented as a tombstone rather than actually removing the vector, and this live-set simulation is exactly the logic that tracks which IDs a query should still be allowed to return.',
+    taskDescription: 'Implement `apply_index_operations(operations)`. Starting from an empty set of live IDs, apply each `("insert", id)` or `("delete", id)` operation in order. Return the sorted list of IDs still live at the end.',
+    constraints: [
+      'Must raise ValueError when deleting an id that is not currently live (never inserted, or already deleted).',
+      'Must raise ValueError on any operation kind other than "insert" or "delete".',
+      'Re-inserting an id that was previously deleted makes it live again.',
+      'An empty operations list returns an empty list.',
+    ],
+    hints: {
+      small: 'A plain `set()` of live IDs is enough state -- `insert` adds to it, `delete` removes from it.',
+      strong: 'Before removing on a `delete`, check membership first and raise ValueError if the id is not present, rather than letting `set.remove` raise its own (different) exception.',
+      concept: 'This models WHY many real ANN indexes use tombstoning instead of true deletion: physically removing a node from a graph-based index like HNSW is expensive and can break the graph\'s connectivity, so a "delete" instead just marks an id as dead and filters it from results, with actual removal deferred to a periodic full rebuild.',
+    },
+    conceptConnections: [
+      { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Tombstone-based deletion is how many production ANN indexes handle mutability' },
+    ],
+    testCases: [
+      { id: 'insert-delete-insert', label: 'Insert, Delete, Insert Again', input: { operations: [['insert', 'a'], ['insert', 'b'], ['delete', 'a'], ['insert', 'c']] }, expectedOutput: ['b', 'c'], hidden: false },
+      { id: 'reinsert-after-delete', label: 'Re-Insert After Delete', input: { operations: [['insert', 'x'], ['delete', 'x'], ['insert', 'x']] }, expectedOutput: ['x'], hidden: false },
+      { id: 'empty-ops', label: 'No Operations', input: { operations: [] }, expectedOutput: [], hidden: true },
+      { id: 'delete-nonexistent', label: 'Delete a Never-Inserted Id', input: { operations: [['delete', 'z']] }, expectError: 'ValueError', hidden: true },
+      { id: 'unknown-op', label: 'Unrecognized Operation Kind', input: { operations: [['weird', 'a']] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-28': {
+    id: 'agents-mcp-systems-prob-28',
+    title: 'Intersection-over-Union for Bounding Boxes',
+    difficulty: 'medium',
+    topic: 'Multimodal AI',
+    estimatedTime: '15–20 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'bbox_iou',
+    functionSignature: 'bbox_iou(box_a: list[float], box_b: list[float]) -> float',
+    starterCode: `def bbox_iou(box_a, box_b):
+    """Each box is [x1, y1, x2, y2] (x1<x2, y1<y2). Return the
+    Intersection-over-Union of the two boxes. Raise ValueError if either
+    box is degenerate (x2 <= x1 or y2 <= y1)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Intersection-over-Union, the single most standard evaluation metric in object detection -- it is how a predicted bounding box is scored against ground truth, and the threshold (commonly IoU >= 0.5) that decides whether a detection counts as a correct match at all.',
+    taskDescription: 'Implement `bbox_iou(box_a, box_b)`. Each box is `[x1, y1, x2, y2]`. Compute the area of their intersection rectangle (0 if they don\'t overlap) divided by the area of their union. Raise `ValueError` if either box is degenerate.',
+    constraints: [
+      'Must raise ValueError if either box has x2 <= x1 or y2 <= y1.',
+      'Two non-overlapping boxes have IoU exactly 0.0, not an error.',
+      'Two identical boxes have IoU exactly 1.0.',
+      'Intersection area is computed by clamping the overlap width/height at 0, not allowing a negative "overlap".',
+    ],
+    hints: {
+      small: 'The intersection rectangle\'s corners are `max(x1s)`, `max(y1s)`, `min(x2s)`, `min(y2s)` -- if the resulting width or height is negative, clamp it to 0 (no overlap).',
+      strong: 'union = area_a + area_b - intersection_area (inclusion-exclusion) -- this is why the intersection area must not be double-subtracted or omitted.',
+      concept: 'IoU >= 0.5 is the conventional threshold (used in PASCAL VOC and COCO evaluation) for counting a predicted box as a correct detection of a ground-truth box -- it is a geometric overlap measure, completely independent of any embedding or learned similarity.',
+    },
+    conceptConnections: [
+      { title: 'Vision Tasks & Models', route: '/docs/computer-vision/vision-tasks-and-models', description: 'IoU is the standard evaluation metric for object detection bounding boxes' },
+    ],
+    testCases: [
+      { id: 'partial-overlap', label: 'Partial Overlap', input: { box_a: [0, 0, 10, 10], box_b: [5, 5, 15, 15] }, expectedOutput: 0.14285714285714285, hidden: false, description: 'Intersection area 25, union area 175 -- 25/175 = 1/7' },
+      { id: 'no-overlap', label: 'No Overlap', input: { box_a: [0, 0, 10, 10], box_b: [20, 20, 30, 30] }, expectedOutput: 0.0, hidden: false },
+      { id: 'identical', label: 'Identical Boxes', input: { box_a: [0, 0, 5, 5], box_b: [0, 0, 5, 5] }, expectedOutput: 1.0, hidden: false },
+      { id: 'degenerate', label: 'Degenerate Box', input: { box_a: [5, 5, 5, 5], box_b: [0, 0, 1, 1] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+  'agents-mcp-systems-prob-29': {
+    id: 'agents-mcp-systems-prob-29',
+    title: 'Jaccard Keyword Relevance for RAG Pre-Filtering',
+    difficulty: 'easy',
+    topic: 'Retrieval-Augmented Generation',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'jaccard_relevance',
+    functionSignature: 'jaccard_relevance(query: str, chunk: str) -> float',
+    starterCode: `import re
+
+def jaccard_relevance(query, chunk):
+    """Tokenize query and chunk into lowercase alphanumeric word sets, and
+    return the Jaccard similarity |intersection| / |union| between them.
+    Raise ValueError if either string has zero tokens."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Jaccard keyword relevance, a cheap lexical-overlap score real RAG pipelines use as a fast pre-filter (or a component of a hybrid score) before ever running an expensive embedding similarity comparison -- the simplest real alternative to BM25 for "does this chunk share vocabulary with the query at all?"',
+    taskDescription: 'Implement `jaccard_relevance(query, chunk)`. Tokenize both strings into sets of lowercase alphanumeric words. Return `|intersection| / |union|`. Raise `ValueError` if either string tokenizes to zero words.',
+    constraints: [
+      'Tokenization is case-insensitive; only alphanumeric runs count as tokens (punctuation is not part of any token).',
+      'Repeated words in either string do not affect the result (sets, not multisets).',
+      'Must raise ValueError if either query or chunk has zero tokens.',
+      'Two strings sharing no tokens return exactly 0.0, not an error.',
+    ],
+    hints: {
+      small: 'Use `re.findall(r"[a-z0-9]+", text.lower())` to get tokens, then wrap the result in `set(...)`.',
+      strong: 'Jaccard similarity is `len(set_a & set_b) / len(set_a | set_b)` -- compute both sets once each, not per pair.',
+      concept: 'Jaccard similarity, unlike cosine similarity on embeddings, only ever looks at exact vocabulary overlap -- it has no notion of synonyms or semantic closeness, which is exactly why it is used as a cheap lexical SIGNAL alongside (not instead of) embedding-based relevance in a hybrid pipeline.',
+    },
+    conceptConnections: [
+      { title: 'Retrieval & Reranking Architectures', route: '/docs/llms-genai/retrieval-and-reranking-architectures', description: 'Lexical overlap scores like Jaccard are a real component of hybrid keyword+vector retrieval' },
+    ],
+    testCases: [
+      { id: 'partial-overlap', label: 'Partial Vocabulary Overlap', input: { query: 'the cat sat on the mat', chunk: 'a cat sat on a mat quietly' }, expectedOutput: 0.5714285714285714, hidden: false, description: '4 shared tokens (cat, sat, on, mat) over a union of 7 unique tokens' },
+      { id: 'no-overlap', label: 'No Shared Vocabulary', input: { query: 'hello world', chunk: 'completely different text' }, expectedOutput: 0.0, hidden: false },
+      { id: 'empty-query', label: 'Empty Query', input: { query: '', chunk: 'something' }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'agents-mcp-systems-prob-30': {
+    id: 'agents-mcp-systems-prob-30',
+    title: 'Exponential Backoff Retry Delays',
+    difficulty: 'easy',
+    topic: 'Agent Orchestration',
+    estimatedTime: '10–15 min',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    functionName: 'exponential_backoff_delays',
+    functionSignature: 'exponential_backoff_delays(num_attempts: int, base_delay: float, max_delay: float) -> list[float]',
+    starterCode: `def exponential_backoff_delays(num_attempts, base_delay, max_delay):
+    """Return the list of retry delays for num_attempts attempts, where
+    the i-th delay (0-indexed) is base_delay * 2**i, capped at max_delay.
+    Raise ValueError if num_attempts <= 0, base_delay <= 0, or
+    max_delay < base_delay."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement exponential backoff, the standard retry-delay schedule an agent\'s tool-calling loop (or any client of a flaky external API) uses to avoid hammering a failing service with immediate retries -- delays double each attempt, capped so retries stay bounded even after many failures.',
+    taskDescription: 'Implement `exponential_backoff_delays(num_attempts, base_delay, max_delay)`. Return a list of `num_attempts` delays where the `i`-th (0-indexed) delay is `min(base_delay * 2**i, max_delay)`.',
+    constraints: [
+      'Must raise ValueError if num_attempts <= 0.',
+      'Must raise ValueError if base_delay <= 0.',
+      'Must raise ValueError if max_delay < base_delay.',
+      'Each delay is capped at max_delay once the exponential growth would exceed it.',
+    ],
+    hints: {
+      small: 'A single list comprehension over `range(num_attempts)` computing `base_delay * (2 ** i)` covers the un-capped case.',
+      strong: 'Wrap each computed delay in `min(..., max_delay)` to apply the cap.',
+      concept: 'The cap exists because unbounded exponential growth would eventually make a client wait absurdly long between retries -- capping keeps the retry schedule useful (a bounded worst-case wait) while still backing off aggressively enough to avoid retry storms against a struggling service.',
+    },
+    conceptConnections: [
+      { title: 'Production Reliability', route: '/docs/mlops/production-reliability', description: 'Exponential backoff is a standard reliability pattern for retrying calls to a flaky dependency' },
+    ],
+    testCases: [
+      { id: 'under-cap', label: 'All Delays Under the Cap', input: { num_attempts: 5, base_delay: 1, max_delay: 20 }, expectedOutput: [1, 2, 4, 8, 16], hidden: false },
+      { id: 'hits-cap', label: 'Later Delays Hit the Cap', input: { num_attempts: 6, base_delay: 1, max_delay: 20 }, expectedOutput: [1, 2, 4, 8, 16, 20], hidden: false, description: 'base*2^5=32 would exceed 20, so it is capped' },
+      { id: 'single-attempt', label: 'Single Attempt', input: { num_attempts: 1, base_delay: 5, max_delay: 100 }, expectedOutput: [5], hidden: true },
+      { id: 'bad-num-attempts', label: 'Non-Positive num_attempts', input: { num_attempts: 0, base_delay: 1, max_delay: 20 }, expectError: 'ValueError', hidden: true },
+      { id: 'max-below-base', label: 'max_delay Below base_delay', input: { num_attempts: 3, base_delay: 10, max_delay: 5 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

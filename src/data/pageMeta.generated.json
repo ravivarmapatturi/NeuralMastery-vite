@@ -2946,36 +2946,36 @@
     "/docs/practice-problems/agents-mcp-systems-prob-16": {
       "slug": "practice-problems/agents-mcp-systems-prob-16",
       "section": "practice-problems",
-      "title": "Practice: Agents Module 16: Problem 446",
+      "title": "Practice: Keyword-Based Agent Tool Router",
       "sidebarPosition": 446,
-      "description": "Curriculum Problem 446 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use.",
+      "description": "Route a query to the best-matching tool by counting keyword overlaps -- the cheap lexical first pass many real agent tool routers use.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-17": {
       "slug": "practice-problems/agents-mcp-systems-prob-17",
       "section": "practice-problems",
-      "title": "Practice: MCP Module 17: Problem 447",
+      "title": "Practice: Parse an MCP Resource URI",
       "sidebarPosition": 447,
-      "description": "Curriculum Problem 447 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols.",
+      "description": "Parse and validate the scheme of an MCP resource URI -- the check a client runs before fetching a server-exposed resource.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-18": {
       "slug": "practice-problems/agents-mcp-systems-prob-18",
       "section": "practice-problems",
-      "title": "Practice: MLOps Module 18: Problem 448",
+      "title": "Practice: Compute a Latency Percentile (p95/p99)",
       "sidebarPosition": 448,
-      "description": "Curriculum Problem 448 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems.",
-      "difficulty": "easy",
+      "description": "Compute a p95/p99 latency percentile via linear interpolation -- the real metric behind every production SLO and alert threshold.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-19": {
       "slug": "practice-problems/agents-mcp-systems-prob-19",
       "section": "practice-problems",
-      "title": "Practice: Distributed systems Module 19: Problem 449",
+      "title": "Practice: Find When a Write Quorum Is Reached",
       "sidebarPosition": 449,
-      "description": "Curriculum Problem 449 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems.",
+      "description": "Find the earliest point in an ack sequence at which a distributed write reaches quorum -- the moment it's safe to acknowledge back to the client.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
@@ -2991,91 +2991,91 @@
     "/docs/practice-problems/agents-mcp-systems-prob-20": {
       "slug": "practice-problems/agents-mcp-systems-prob-20",
       "section": "practice-problems",
-      "title": "Practice: Vector search Module 20: Problem 450",
+      "title": "Practice: Binary-Quantized Hamming Distance Search",
       "sidebarPosition": 450,
-      "description": "Curriculum Problem 450 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search.",
-      "difficulty": "easy",
+      "description": "Binary-quantize vectors to bitstrings and rank candidates by Hamming distance -- an extremely fast, low-memory first-pass ANN filter.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-21": {
       "slug": "practice-problems/agents-mcp-systems-prob-21",
       "section": "practice-problems",
-      "title": "Practice: Multimodal AI Module 21: Problem 451",
+      "title": "Practice: Attention-Weighted Pooling of Image Patches",
       "sidebarPosition": 451,
-      "description": "Curriculum Problem 451 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI.",
-      "difficulty": "easy",
+      "description": "Pool per-patch embeddings into one image embedding via a normalized attention-weighted average, as a vision-language connector does.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-22": {
       "slug": "practice-problems/agents-mcp-systems-prob-22",
       "section": "practice-problems",
-      "title": "Practice: RAG Module 22: Problem 452",
+      "title": "Practice: Deduplicate Near-Identical Retrieved Passages",
       "sidebarPosition": 452,
-      "description": "Curriculum Problem 452 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval.",
+      "description": "Remove passages that are duplicates of an earlier one after normalization -- a cheap RAG post-retrieval cleanup pass.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-23": {
       "slug": "practice-problems/agents-mcp-systems-prob-23",
       "section": "practice-problems",
-      "title": "Practice: Agents Module 23: Problem 453",
+      "title": "Practice: Assign Subtasks to Capable Agents",
       "sidebarPosition": 453,
-      "description": "Curriculum Problem 453 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use.",
-      "difficulty": "easy",
+      "description": "Delegate each subtask to the first agent with the required capability -- the routing decision behind a multi-agent supervisor pattern.",
+      "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-24": {
       "slug": "practice-problems/agents-mcp-systems-prob-24",
       "section": "practice-problems",
-      "title": "Practice: MCP Module 24: Problem 454",
+      "title": "Practice: Negotiate MCP Client/Server Capabilities",
       "sidebarPosition": 454,
-      "description": "Curriculum Problem 454 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols.",
+      "description": "Compute the intersection of client and server capabilities -- the real logic behind MCP's initialize handshake.",
       "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-25": {
       "slug": "practice-problems/agents-mcp-systems-prob-25",
       "section": "practice-problems",
-      "title": "Practice: MLOps Module 25: Problem 455",
+      "title": "Practice: Population Stability Index for Model Drift",
       "sidebarPosition": 455,
-      "description": "Curriculum Problem 455 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems.",
-      "difficulty": "medium",
+      "description": "Compute the Population Stability Index between a baseline and current distribution -- the real number behind a production feature-drift alert.",
+      "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-26": {
       "slug": "practice-problems/agents-mcp-systems-prob-26",
       "section": "practice-problems",
-      "title": "Practice: Distributed systems Module 26: Problem 456",
+      "title": "Practice: Compare Two Vector Clocks",
       "sidebarPosition": 456,
-      "description": "Curriculum Problem 456 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems.",
-      "difficulty": "medium",
+      "description": "Determine the happens-before/concurrent relationship between two vector clocks -- the real causality mechanism behind version-vector databases.",
+      "difficulty": "hard",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-27": {
       "slug": "practice-problems/agents-mcp-systems-prob-27",
       "section": "practice-problems",
-      "title": "Practice: Vector search Module 27: Problem 457",
+      "title": "Practice: Apply Insert/Delete Operations to a Vector Index",
       "sidebarPosition": 457,
-      "description": "Curriculum Problem 457 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search.",
+      "description": "Simulate tombstone-based insert/delete on a vector index's live ID set -- how real ANN indexes like HNSW handle mutability.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-28": {
       "slug": "practice-problems/agents-mcp-systems-prob-28",
       "section": "practice-problems",
-      "title": "Practice: Multimodal AI Module 28: Problem 458",
+      "title": "Practice: Intersection-over-Union for Bounding Boxes",
       "sidebarPosition": 458,
-      "description": "Curriculum Problem 458 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI.",
+      "description": "Compute IoU between two bounding boxes -- the single most standard evaluation metric in object detection.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-29": {
       "slug": "practice-problems/agents-mcp-systems-prob-29",
       "section": "practice-problems",
-      "title": "Practice: RAG Module 29: Problem 459",
+      "title": "Practice: Jaccard Keyword Relevance for RAG Pre-Filtering",
       "sidebarPosition": 459,
-      "description": "Curriculum Problem 459 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval.",
-      "difficulty": "medium",
+      "description": "Compute Jaccard keyword overlap between a query and a chunk -- a cheap lexical relevance signal used alongside embedding similarity.",
+      "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-3": {
@@ -3090,10 +3090,10 @@
     "/docs/practice-problems/agents-mcp-systems-prob-30": {
       "slug": "practice-problems/agents-mcp-systems-prob-30",
       "section": "practice-problems",
-      "title": "Practice: Agents Module 30: Problem 460",
+      "title": "Practice: Exponential Backoff Retry Delays",
       "sidebarPosition": 460,
-      "description": "Curriculum Problem 460 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use.",
-      "difficulty": "medium",
+      "description": "Compute a capped exponential backoff retry schedule -- how an agent's tool-calling loop avoids hammering a flaky dependency.",
+      "difficulty": "easy",
       "topic": "agents,-mcp-systems"
     },
     "/docs/practice-problems/agents-mcp-systems-prob-31": {

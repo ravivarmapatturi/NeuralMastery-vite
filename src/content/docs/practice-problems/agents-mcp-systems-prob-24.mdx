@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: MCP Module 24: Problem 454"
+title: "Practice: Negotiate MCP Client/Server Capabilities"
 sidebar_position: 454
-description: "Curriculum Problem 454 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols."
+description: "Compute the intersection of client and server capabilities -- the real logic behind MCP's initialize handshake."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,21 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MCP Module 24: Problem 454
+# Negotiate MCP Client/Server Capabilities
 
 **Rank #454** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-23`.
+Implement `negotiate_capabilities(client_caps, server_caps)`, returning only the capabilities truthy on both sides -- the capability-intersection logic behind MCP's initialize handshake, exactly like an HTTP/2 or TLS feature negotiation. Prerequisite: `agents-mcp-systems-prob-23`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-24" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p24(data):
-    # Reference implementation
-    return data
+def negotiate_capabilities(client_caps, server_caps):
+    return {k: True for k in client_caps if client_caps.get(k) and server_caps.get(k)}
 ```
 
-This problem tests fundamental skills in MCP / APIs / protocols.
+This mirrors real protocol capability negotiation (TLS cipher suites, HTTP/2 SETTINGS) -- both sides advertise everything they COULD support, and the negotiated session is always the intersection, never either side's full list.
 
 </Solution>

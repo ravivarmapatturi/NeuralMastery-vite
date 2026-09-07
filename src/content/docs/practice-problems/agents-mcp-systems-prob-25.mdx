@@ -1,31 +1,45 @@
 ---
-placeholder: true
-title: "Practice: MLOps Module 25: Problem 455"
+title: "Practice: Population Stability Index for Model Drift"
 sidebar_position: 455
-description: "Curriculum Problem 455 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems."
-difficulty: medium
+description: "Compute the Population Stability Index between a baseline and current distribution -- the real number behind a production feature-drift alert."
+difficulty: hard
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MLOps Module 25: Problem 455
+# Population Stability Index for Model Drift
 
-**Rank #455** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #455** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-24`.
+Implement `population_stability_index(baseline_counts, current_counts)`, the standard metric production ML monitoring uses to detect real distribution drift between a model's training data and the data it is currently seeing -- the actual number behind a "feature drift" alert firing. Prerequisite: `agents-mcp-systems-prob-24`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-25" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p25(data):
-    # Reference implementation
-    return data
+import math
+
+def population_stability_index(baseline_counts, current_counts):
+    if len(baseline_counts) != len(current_counts):
+        raise ValueError("baseline_counts and current_counts must have the same number of buckets")
+    if not baseline_counts:
+        raise ValueError("counts must be non-empty")
+    base_total = sum(baseline_counts)
+    cur_total = sum(current_counts)
+    if base_total == 0 or cur_total == 0:
+        raise ValueError("counts must not sum to zero")
+    eps = 1e-6
+    psi = 0.0
+    for b, c in zip(baseline_counts, current_counts):
+        b_pct = max(b / base_total, eps)
+        c_pct = max(c / cur_total, eps)
+        psi += (c_pct - b_pct) * math.log(c_pct / b_pct)
+    return psi
 ```
 
-This problem tests fundamental skills in MLOps / data systems.
+PSI is asymmetric-looking but actually a symmetric-in-effect divergence measure: below ~0.1 is considered stable, 0.1-0.25 moderate drift worth watching, above 0.25 significant drift -- these are the real thresholds production monitoring dashboards use to decide whether a model needs retraining.
 
 </Solution>

@@ -1,31 +1,39 @@
 ---
-placeholder: true
-title: "Practice: MLOps Module 18: Problem 448"
+title: "Practice: Compute a Latency Percentile (p95/p99)"
 sidebar_position: 448
-description: "Curriculum Problem 448 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems."
-difficulty: easy
+description: "Compute a p95/p99 latency percentile via linear interpolation -- the real metric behind every production SLO and alert threshold."
+difficulty: medium
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# MLOps Module 18: Problem 448
+# Compute a Latency Percentile (p95/p99)
 
-**Rank #448** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #448** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-17`.
+Implement `percentile(values, p)`, computing a percentile via linear interpolation between ranks (the same method `numpy.percentile` uses by default) -- the calculation every p95/p99 SLO dashboard is built on, since a mean latency hides exactly the slow-tail requests an SLO cares about. Prerequisite: `agents-mcp-systems-prob-17`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-18" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p18(data):
-    # Reference implementation
-    return data
+def percentile(values, p):
+    if not values:
+        raise ValueError("values must be non-empty")
+    if not (0 <= p <= 100):
+        raise ValueError("p must be between 0 and 100")
+    s = sorted(values)
+    n = len(s)
+    rank = (p / 100) * (n - 1)
+    lower = int(rank)
+    upper = lower + 1 if lower < n - 1 else lower
+    weight = rank - lower
+    return s[lower] + (s[upper] - s[lower]) * weight
 ```
 
-This problem tests fundamental skills in MLOps / data systems.
+p99 latency (not average latency) is the standard SLO metric because it directly answers "how bad is the worst-affecting-real-users tail," which an average can hide behind a large number of fast requests.
 
 </Solution>

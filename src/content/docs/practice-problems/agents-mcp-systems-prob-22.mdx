@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: RAG Module 22: Problem 452"
+title: "Practice: Deduplicate Near-Identical Retrieved Passages"
 sidebar_position: 452
-description: "Curriculum Problem 452 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval."
+description: "Remove passages that are duplicates of an earlier one after normalization -- a cheap RAG post-retrieval cleanup pass."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,30 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# RAG Module 22: Problem 452
+# Deduplicate Near-Identical Retrieved Passages
 
 **Rank #452** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-21`.
+Implement `dedupe_passages(passages)`, dropping passages that are duplicates of an earlier one after normalizing whitespace and case -- the cheap exact-after-normalization cleanup a RAG pipeline runs so overlapping chunking or multiple retrieval sources don't waste context-window budget saying the same thing twice. Prerequisite: `agents-mcp-systems-prob-21`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-22" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p22(data):
-    # Reference implementation
-    return data
+import re
+
+def dedupe_passages(passages):
+    seen = set()
+    result = []
+    for p in passages:
+        norm = re.sub(r'\s+', ' ', p.strip().lower())
+        if norm not in seen:
+            seen.add(norm)
+            result.append(p)
+    return result
 ```
 
-This problem tests fundamental skills in RAG / information retrieval.
+This is deliberately exact-after-normalization dedup, not semantic/embedding-based dedup -- a cheap, fast text-level pass that catches whitespace/capitalization noise before ever reaching a vector comparison.
 
 </Solution>

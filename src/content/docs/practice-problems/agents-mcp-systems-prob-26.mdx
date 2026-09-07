@@ -1,31 +1,45 @@
 ---
-placeholder: true
-title: "Practice: Distributed systems Module 26: Problem 456"
+title: "Practice: Compare Two Vector Clocks"
 sidebar_position: 456
-description: "Curriculum Problem 456 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems."
-difficulty: medium
+description: "Determine the happens-before/concurrent relationship between two vector clocks -- the real causality mechanism behind version-vector databases."
+difficulty: hard
 topic: agents,-mcp-systems
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Distributed systems Module 26: Problem 456
+# Compare Two Vector Clocks
 
-**Rank #456** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+**Rank #456** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-25`.
+Implement `compare_vector_clocks(a, b)`, returning "equal", "before", "after", or "concurrent" -- the real algorithm distributed systems (and version-vector databases like Riak/DynamoDB) use to determine causality between two events across different nodes without a shared global clock. Prerequisite: `agents-mcp-systems-prob-25`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-26" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p26(data):
-    # Reference implementation
-    return data
+def compare_vector_clocks(a, b):
+    keys = set(a) | set(b)
+    le = True
+    ge = True
+    for k in keys:
+        av = a.get(k, 0)
+        bv = b.get(k, 0)
+        if av > bv:
+            le = False
+        if av < bv:
+            ge = False
+    if le and ge:
+        return "equal"
+    if le:
+        return "before"
+    if ge:
+        return "after"
+    return "concurrent"
 ```
 
-This problem tests fundamental skills in Distributed systems.
+A vector clock captures partial (not total) ordering -- unlike a single Lamport timestamp, it can correctly say "these two events are causally unrelated" (concurrent) instead of forcing every pair of events into a single global before/after order that a single scalar clock would incorrectly impose.
 
 </Solution>

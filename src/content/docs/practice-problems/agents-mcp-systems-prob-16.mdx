@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Agents Module 16: Problem 446"
+title: "Practice: Keyword-Based Agent Tool Router"
 sidebar_position: 446
-description: "Curriculum Problem 446 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use."
+description: "Route a query to the best-matching tool by counting keyword overlaps -- the cheap lexical first pass many real agent tool routers use."
 difficulty: easy
 topic: agents,-mcp-systems
 ---
@@ -10,22 +9,35 @@ topic: agents,-mcp-systems
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Agents Module 16: Problem 446
+# Keyword-Based Agent Tool Router
 
 **Rank #446** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `agents-mcp-systems-prob-15`.
+Implement `route_to_tool(query, tool_keywords)`, picking the tool whose keyword list has the most matches among the query's word tokens -- the cheap lexical pre-filter many real agent systems run before an embedding-similarity or LLM-based router. Prerequisite: `agents-mcp-systems-prob-15`.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-16" />
 
 <Solution>
 
 ```python
-def agents_mcp_systems_p16(data):
-    # Reference implementation
-    return data
+import re
+
+def route_to_tool(query, tool_keywords):
+    if not tool_keywords:
+        raise ValueError("tool_keywords must be non-empty")
+    tokens = set(re.findall(r"[a-z0-9]+", query.lower()))
+    best_tool = None
+    best_score = 0
+    for tool in sorted(tool_keywords):
+        score = sum(1 for kw in tool_keywords[tool] if kw.lower() in tokens)
+        if score > best_score:
+            best_score = score
+            best_tool = tool
+    if best_tool is None:
+        raise ValueError("no tool matches the query")
+    return best_tool
 ```
 
-This problem tests fundamental skills in Agents / tool use.
+This is deliberately a cheap lexical pre-filter, not a semantic router -- production agent systems often layer this in front of a more expensive embedding-similarity or LLM-based router to short-circuit the obvious cases.
 
 </Solution>
