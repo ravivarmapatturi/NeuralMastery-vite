@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 12: Problem 372"
+title: "Practice: Compute LLM Generation Latency Metrics"
 sidebar_position: 372
-description: "Curriculum Problem 372 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
+description: "Compute production LLM serving benchmarks: Time To First Token (TTFT), Inter-Token Latency (ITL), and throughput (Tokens Per Second)."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,36 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 12: Problem 372
+# Compute LLM Generation Latency Metrics
 
 **Rank #372** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-11`.
+Compute production LLM serving benchmarks: Time To First Token (TTFT), Inter-Token Latency (ITL), and throughput (Tokens Per Second). Prerequisite: `llm-internals-prob-11`.
 
 <PracticePlayground problemId="llm-internals-prob-12" />
 
 <Solution>
 
 ```python
-def llm_internals_p12(data):
-    # Reference implementation
-    return data
+def evaluate_generation_latencies(timestamps):
+    if len(timestamps) < 2:
+        raise ValueError("Must provide at least request start and first token timestamp")
+    for i in range(1, len(timestamps)):
+        if timestamps[i] < timestamps[i-1]:
+            raise ValueError("Timestamps must be non-decreasing")
+    ttft_ms = (timestamps[1] - timestamps[0]) * 1000.0
+    itls = [(timestamps[i] - timestamps[i-1]) * 1000.0 for i in range(2, len(timestamps))]
+    mean_itl_ms = sum(itls) / len(itls) if itls else 0.0
+    total_time = timestamps[-1] - timestamps[0]
+    num_tokens = len(timestamps) - 1
+    tps = (num_tokens / total_time) if total_time > 0 else 0.0
+    return {
+        "ttft_ms": round(ttft_ms, 2),
+        "mean_itl_ms": round(mean_itl_ms, 2),
+        "tokens_per_second": round(tps, 2)
+    }
 ```
 
-This problem tests fundamental skills in LLM evaluation.
+Time To First Token (TTFT) gauges time-to-responsiveness (prefill phase), while Inter-Token Latency (ITL) and Tokens Per Second (TPS) measure decode streaming fluency in interactive LLM applications.
 
 </Solution>

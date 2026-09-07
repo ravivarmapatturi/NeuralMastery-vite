@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 11: Problem 371"
+title: "Practice: Calculate KV-Cache Memory Footprint"
 sidebar_position: 371
-description: "Curriculum Problem 371 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
+description: "Calculate the exact VRAM footprint in bytes required by an LLM KV-cache during multi-turn autoregressive serving."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,24 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 11: Problem 371
+# Calculate KV-Cache Memory Footprint
 
 **Rank #371** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-10`.
+Calculate the exact VRAM footprint in bytes required by an LLM KV-cache during multi-turn autoregressive serving. Prerequisite: `llm-internals-prob-10`.
 
 <PracticePlayground problemId="llm-internals-prob-11" />
 
 <Solution>
 
 ```python
-def llm_internals_p11(data):
-    # Reference implementation
-    return data
+def calculate_kv_cache_bytes(num_layers, num_kv_heads, head_dim, seq_len, batch_size, bytes_per_param=2):
+    for arg in (num_layers, num_kv_heads, head_dim, seq_len, batch_size, bytes_per_param):
+        if arg <= 0:
+            raise ValueError("All parameters must be positive integers")
+    return 2 * num_layers * num_kv_heads * head_dim * seq_len * batch_size * bytes_per_param
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+At inference time, transformer decoders store past Key and Value tensors in memory to avoid recalculating self-attention on prior tokens; KV-cache memory scales linearly with sequence length and batch size.
 
 </Solution>

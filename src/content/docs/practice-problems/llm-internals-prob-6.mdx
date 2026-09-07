@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 6: Problem 366"
+title: "Practice: Compute ROUGE-1 Summarization Score"
 sidebar_position: 366
-description: "Curriculum Problem 366 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
+description: "Compute the ROUGE-1 summarization evaluation metric measuring unigram recall and precision against a human reference summary."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,43 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 6: Problem 366
+# Compute ROUGE-1 Summarization Score
 
 **Rank #366** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-5`.
+Compute the ROUGE-1 summarization evaluation metric measuring unigram recall and precision against a human reference summary. Prerequisite: `llm-internals-prob-5`.
 
 <PracticePlayground problemId="llm-internals-prob-6" />
 
 <Solution>
 
 ```python
-def llm_internals_p6(data):
-    # Reference implementation
-    return data
+import re
+from collections import Counter
+
+def rouge_1_score(reference, candidate):
+    def tokenize(s):
+        clean = re.sub(r'[^\w\s]', '', s.lower())
+        return clean.split()
+    ref_tokens = tokenize(reference)
+    cand_tokens = tokenize(candidate)
+    if not ref_tokens and not cand_tokens:
+        return {"precision": 1.0, "recall": 1.0, "f1": 1.0}
+    if not ref_tokens or not cand_tokens:
+        return {"precision": 0.0, "recall": 0.0, "f1": 0.0}
+    ref_counts = Counter(ref_tokens)
+    cand_counts = Counter(cand_tokens)
+    overlap = sum(min(cand_counts[w], ref_counts[w]) for w in cand_counts)
+    precision = overlap / len(cand_tokens)
+    recall = overlap / len(ref_tokens)
+    f1 = (2 * precision * recall) / (precision + recall) if precision + recall > 0 else 0.0
+    return {
+        "precision": round(precision, 4),
+        "recall": round(recall, 4),
+        "f1": round(f1, 4)
+    }
 ```
 
-This problem tests fundamental skills in LLM evaluation.
+ROUGE-1 measures unigram recall and precision with frequency clipping, evaluating how completely a generated candidate captures key vocabulary from a ground truth summary.
 
 </Solution>

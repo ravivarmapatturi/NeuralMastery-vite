@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 5: Problem 365"
+title: "Practice: Temperature-Scaled Softmax Distribution"
 sidebar_position: 365
-description: "Curriculum Problem 365 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
+description: "Implement temperature-scaled softmax probability computation with numerical stability for LLM sampling and decoding control."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,31 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 5: Problem 365
+# Temperature-Scaled Softmax Distribution
 
 **Rank #365** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-4`.
+Implement temperature-scaled softmax probability computation with numerical stability for LLM sampling and decoding control. Prerequisite: `llm-internals-prob-4`.
 
 <PracticePlayground problemId="llm-internals-prob-5" />
 
 <Solution>
 
 ```python
-def llm_internals_p5(data):
-    # Reference implementation
-    return data
+import math
+
+def temperature_softmax(logits, temperature):
+    if temperature <= 0:
+        raise ValueError("temperature must be positive")
+    if not logits:
+        raise ValueError("logits must be non-empty")
+    max_l = max(logits)
+    scaled = [(l - max_l) / temperature for l in logits]
+    exp_vals = [math.exp(s) for s in scaled]
+    sum_exp = sum(exp_vals)
+    return [round(e / sum_exp, 4) for e in exp_vals]
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Subtracting the maximum logit ensures numerical stability before exponentiation, while the temperature denominator scales variance: lower values peak probabilities on the argmax, higher values flatten towards uniform.
 
 </Solution>

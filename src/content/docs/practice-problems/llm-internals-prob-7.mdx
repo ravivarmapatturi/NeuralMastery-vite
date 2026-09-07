@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 7: Problem 367"
+title: "Practice: Sinusoidal Positional Encoding"
 sidebar_position: 367
-description: "Curriculum Problem 367 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
+description: "Implement the classic Vaswani et al. (2017) sinusoidal positional encoding table inject position awareness into sequence embeddings."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,33 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 7: Problem 367
+# Sinusoidal Positional Encoding
 
 **Rank #367** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-6`.
+Implement the classic Vaswani et al. (2017) sinusoidal positional encoding table inject position awareness into sequence embeddings. Prerequisite: `llm-internals-prob-6`.
 
 <PracticePlayground problemId="llm-internals-prob-7" />
 
 <Solution>
 
 ```python
-def llm_internals_p7(data):
-    # Reference implementation
-    return data
+import math
+
+def sinusoidal_position_encoding(seq_len, d_model):
+    if seq_len <= 0 or d_model <= 0 or d_model % 2 != 0:
+        raise ValueError("seq_len and d_model must be positive and d_model even")
+    pe = []
+    for pos in range(seq_len):
+        row = []
+        for i in range(d_model // 2):
+            denom = 10000.0 ** ((2 * i) / d_model)
+            row.append(round(math.sin(pos / denom), 4))
+            row.append(round(math.cos(pos / denom), 4))
+        pe.append(row)
+    return pe
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Fixed sinusoidal encodings use geometric progression wavelengths across embedding dimensions, enabling the attention mechanism to learn relative token offsets as linear projections.
 
 </Solution>

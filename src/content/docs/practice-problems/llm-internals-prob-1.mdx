@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 1: Problem 361"
+title: "Practice: Compute Scaled Dot-Product Attention Scores"
 sidebar_position: 361
-description: "Curriculum Problem 361 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
+description: "Compute scaled dot-product attention logits between a query vector and a sequence of key vectors -- the foundational similarity calculation in transformer attention layers."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,33 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 1: Problem 361
+# Compute Scaled Dot-Product Attention Scores
 
 **Rank #361** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-60`.
+Compute scaled dot-product attention logits between a query vector and a sequence of key vectors -- the foundational similarity calculation in transformer attention layers. Prerequisite: `deep-learning-prob-60`.
 
 <PracticePlayground problemId="llm-internals-prob-1" />
 
 <Solution>
 
 ```python
-def llm_internals_p1(data):
-    # Reference implementation
-    return data
+import math
+
+def scaled_dot_product_scores(q, k):
+    if not q or not k:
+        raise ValueError("q and k must be non-empty")
+    d = len(q)
+    scale = math.sqrt(d)
+    scores = []
+    for ki in k:
+        if len(ki) != d:
+            raise ValueError("All key vectors must have the same dimension as query vector")
+        dot = sum(qi * k_val for qi, k_val in zip(q, ki))
+        scores.append(round(dot / scale, 4))
+    return scores
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Dividing dot products by sqrt(d) stabilizes attention logits against extreme values as dimension increases, preventing softmax gradients from saturating and vanishing during backpropagation.
 
 </Solution>

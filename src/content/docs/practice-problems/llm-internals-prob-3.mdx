@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 3: Problem 363"
+title: "Practice: Construct Causal Attention Mask"
 sidebar_position: 363
-description: "Curriculum Problem 363 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
+description: "Build a causal (autoregressive) attention mask matrix preventing query positions from attending to future key positions during decoding."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,23 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 3: Problem 363
+# Construct Causal Attention Mask
 
 **Rank #363** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-2`.
+Build a causal (autoregressive) attention mask matrix preventing query positions from attending to future key positions during decoding. Prerequisite: `llm-internals-prob-2`.
 
 <PracticePlayground problemId="llm-internals-prob-3" />
 
 <Solution>
 
 ```python
-def llm_internals_p3(data):
-    # Reference implementation
-    return data
+def causal_attention_mask(seq_len):
+    if seq_len <= 0:
+        raise ValueError("seq_len must be positive")
+    return [[1 if j <= i else 0 for j in range(seq_len)] for i in range(seq_len)]
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Causal masks enforce autoregressive generation by preventing positions from attending to future tokens, ensuring each token's representation depends only on preceding context.
 
 </Solution>

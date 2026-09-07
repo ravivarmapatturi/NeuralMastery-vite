@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 9: Problem 369"
+title: "Practice: Compute Rotary Position Embedding (RoPE) Angles"
 sidebar_position: 369
-description: "Curriculum Problem 369 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
+description: "Implement Rotary Position Embedding (RoPE) angle calculation -- the modern positional representation powering LLaMA, Mistral, and modern open-weights LLMs."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,30 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 9: Problem 369
+# Compute Rotary Position Embedding (RoPE) Angles
 
 **Rank #369** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-8`.
+Implement Rotary Position Embedding (RoPE) angle calculation -- the modern positional representation powering LLaMA, Mistral, and modern open-weights LLMs. Prerequisite: `llm-internals-prob-8`.
 
 <PracticePlayground problemId="llm-internals-prob-9" />
 
 <Solution>
 
 ```python
-def llm_internals_p9(data):
-    # Reference implementation
-    return data
+def rope_angles(seq_len, head_dim, base=10000.0):
+    if seq_len <= 0 or head_dim <= 0 or head_dim % 2 != 0 or base <= 0:
+        raise ValueError("Invalid parameters for rope_angles")
+    angles = []
+    for m in range(seq_len):
+        row = []
+        for i in range(head_dim // 2):
+            theta = base ** (-2 * i / head_dim)
+            row.append(round(m * theta, 4))
+        angles.append(row)
+    return angles
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Rotary Position Embeddings (RoPE) represent token positions as complex coordinate rotations in head-dimension subspace pairs, decaying attention scores smoothly over distance without absolute position lookup tables.
 
 </Solution>

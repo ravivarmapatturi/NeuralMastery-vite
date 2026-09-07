@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 10: Problem 370"
+title: "Practice: Detect Prompt Injection Heuristics"
 sidebar_position: 370
-description: "Curriculum Problem 370 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
+description: "Build a rule-based safety classifier detecting adversarial prompt injections, system overrides, and jailbreak attempts in user inputs."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,40 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 10: Problem 370
+# Detect Prompt Injection Heuristics
 
 **Rank #370** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-9`.
+Build a rule-based safety classifier detecting adversarial prompt injections, system overrides, and jailbreak attempts in user inputs. Prerequisite: `llm-internals-prob-9`.
 
 <PracticePlayground problemId="llm-internals-prob-10" />
 
 <Solution>
 
 ```python
-def llm_internals_p10(data):
-    # Reference implementation
-    return data
+def detect_prompt_injection(prompt, custom_patterns=None):
+    if custom_patterns is None:
+        patterns = [
+            "ignore previous instructions",
+            "disregard all prior instructions",
+            "system override",
+            "you are now dan",
+            "act as an unfiltered",
+            "bypass safety guidelines"
+        ]
+    else:
+        patterns = [p.lower() for p in custom_patterns]
+    
+    prompt_lower = prompt.lower()
+    matched = [p for p in patterns if p in prompt_lower]
+    risk_score = round(len(matched) / len(patterns), 4) if patterns else 0.0
+    return {
+        "is_suspicious": len(matched) > 0,
+        "matched_patterns": matched,
+        "risk_score": risk_score
+    }
 ```
 
-This problem tests fundamental skills in LLM evaluation.
+Heuristic safety filters scan inputs for instruction override and jailbreak patterns before model inference, providing a deterministic guardrail layer to protect agentic workflows.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 13: Problem 373"
+title: "Practice: Top-K Logit Filtering"
 sidebar_position: 373
-description: "Curriculum Problem 373 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
+description: "Implement Top-K logit filtering -- pruning low-probability tail tokens from the candidate vocabulary during autoregressive generation."
 difficulty: easy
 topic: transformers-llms
 ---
@@ -10,22 +9,28 @@ topic: transformers-llms
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 13: Problem 373
+# Top-K Logit Filtering
 
 **Rank #373** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-12`.
+Implement Top-K logit filtering -- pruning low-probability tail tokens from the candidate vocabulary during autoregressive generation. Prerequisite: `llm-internals-prob-12`.
 
 <PracticePlayground problemId="llm-internals-prob-13" />
 
 <Solution>
 
 ```python
-def llm_internals_p13(data):
-    # Reference implementation
-    return data
+def top_k_filter(logits, k, mask_value=-1e9):
+    if not logits:
+        raise ValueError("logits cannot be empty")
+    if k <= 0 or k > len(logits):
+        raise ValueError("k must be between 1 and len(logits)")
+    indexed = list(enumerate(logits))
+    indexed.sort(key=lambda x: x[1], reverse=True)
+    top_indices = set(idx for idx, _ in indexed[:k])
+    return [val if i in top_indices else mask_value for i, val in enumerate(logits)]
 ```
 
-This problem tests fundamental skills in Transformers / LLM internals.
+Top-K filtering truncates the sampling vocabulary to only the K highest-probability tokens, removing low-probability tail tokens that cause incoherent or nonsensical generations.
 
 </Solution>
