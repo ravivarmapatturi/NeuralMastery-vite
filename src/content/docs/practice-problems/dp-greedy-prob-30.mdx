@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #680. Dynamic Programming & Greedy Module 6: Problem 30"
 description: "Master #680. Dynamic Programming & Greedy Module 6: Problem 30 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,37 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #680. Dynamic Programming & Greedy Module 6: Problem 30
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #680 of 1072 | **Points**: 90 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #680 of 1072 | **Points**
 
 ## Overview
 
-Implement `#680. Dynamic Programming & Greedy Module 6: Problem 30` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine the minimum initial health needed to navigate a dungeon grid using reverse dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_6_problem_30`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `calculate_minimum_hp(dungeon)`: working backward from destination (m-1, n-1) to start (0, 0), compute the minimum health needed before entering each room: needed = min(dp[i+1][j], dp[i][j+1]) - dungeon[i][j]; dp[i][j] = max(1, needed).
 
 <PracticePlayground problemId="dp-greedy-prob-30" />
+
+<Solution>
+
+```python
+def calculate_minimum_hp(dungeon):
+    m, n = len(dungeon), len(dungeon[0])
+    dp = [[float('inf')] * (n + 1) for _ in range(m + 1)]
+    dp[m][n - 1] = 1
+    dp[m - 1][n] = 1
+    for i in range(m - 1, -1, -1):
+        for j in range(n - 1, -1, -1):
+            needed = min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j]
+            dp[i][j] = 1 if needed <= 0 else needed
+    return dp[0][0]
+```
+
+Recurse backwards from princess room. At each cell, calculate the minimum health required upon entry to survive whichever successor room demands less health, bounded below by 1.
+
+</Solution>

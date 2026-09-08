@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #618. Trees / Binary Search Module 6: Problem 28"
 description: "Master #618. Trees / Binary Search Module 6: Problem 28 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,45 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #618. Trees / Binary Search Module 6: Problem 28
 
-**Track**: Trees / Binary Search | **Rank**: #618 of 1072 | **Points**: 90 XP
+**Track**: Trees / Binary Search | **Rank**: #618 of 1072 | **Points**
 
 ## Overview
 
-Implement `#618. Trees / Binary Search Module 6: Problem 28` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Sort binary tree nodes by column coordinates from left to right, tie-breaking by row and then node value.
 
 ## Task
 
-Implement the function `trees___binary_search_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `vertical_order_traversal(root)`: assign (row, col) coordinates with root at (0, 0). Left child is at (row + 1, col - 1) and right at (row + 1, col + 1). Group nodes by col and sort within each column by (row, val).
 
 <PracticePlayground problemId="tree-bs-prob-28" />
+
+<Solution>
+
+```python
+def vertical_order_traversal(root):
+    if not root:
+        return []
+    from collections import defaultdict
+    cols = defaultdict(list)
+    queue = [(root, 0, 0)]
+    while queue:
+        node, col, row = queue.pop(0)
+        cols[col].append((row, node['val']))
+        if node.get('left'):
+            queue.append((node['left'], col - 1, row + 1))
+        if node.get('right'):
+            queue.append((node['right'], col + 1, row + 1))
+    res = []
+    for c in sorted(cols.keys()):
+        sorted_nodes = sorted(cols[c], key=lambda x: (x[0], x[1]))
+        res.append([v for _, v in sorted_nodes])
+    return res
+```
+
+Assign coordinate offsets (row, col) starting at (0, 0). Group nodes by column, sort columns from left to right, and sort nodes sharing a column by row and then value.
+
+</Solution>

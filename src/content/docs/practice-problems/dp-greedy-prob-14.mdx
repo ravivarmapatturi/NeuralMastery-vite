@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #664. Dynamic Programming & Greedy Module 3: Problem 14"
 description: "Master #664. Dynamic Programming & Greedy Module 3: Problem 14 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,40 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #664. Dynamic Programming & Greedy Module 3: Problem 14
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #664 of 1072 | **Points**: 60 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #664 of 1072 | **Points**
 
 ## Overview
 
-Implement `#664. Dynamic Programming & Greedy Module 3: Problem 14` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the length of the longest subsequence shared between two text sequences using 2D DP.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `longest_common_subsequence(text1, text2)`: if text1[i] == text2[j], dp[j] = prev + 1; otherwise dp[j] = max(dp[j], dp[j-1]).
 
 <PracticePlayground problemId="dp-greedy-prob-14" />
+
+<Solution>
+
+```python
+def longest_common_subsequence(text1, text2):
+    m, n = len(text1), len(text2)
+    dp = [0] * (n + 1)
+    for c1 in text1:
+        prev = 0
+        for j, c2 in enumerate(text2, 1):
+            temp = dp[j]
+            if c1 == c2:
+                dp[j] = prev + 1
+            else:
+                dp[j] = max(dp[j], dp[j - 1])
+            prev = temp
+    return dp[n]
+```
+
+Iterate through characters of text1 and text2. Matching characters increment the diagonal subproblem result; mismatches take the max of discarding from either text.
+
+</Solution>

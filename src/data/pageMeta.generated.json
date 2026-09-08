@@ -7058,7 +7058,7 @@
       "description": "Master #651. Dynamic Programming & Greedy Module 1: Problem 1 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-10": {
       "slug": "practice-problems/dp-greedy-prob-10",
@@ -7068,7 +7068,7 @@
       "description": "Master #660. Dynamic Programming & Greedy Module 2: Problem 10 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-11": {
       "slug": "practice-problems/dp-greedy-prob-11",
@@ -7078,7 +7078,7 @@
       "description": "Master #661. Dynamic Programming & Greedy Module 3: Problem 11 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-12": {
       "slug": "practice-problems/dp-greedy-prob-12",
@@ -7088,7 +7088,7 @@
       "description": "Master #662. Dynamic Programming & Greedy Module 3: Problem 12 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-13": {
       "slug": "practice-problems/dp-greedy-prob-13",
@@ -7098,7 +7098,7 @@
       "description": "Master #663. Dynamic Programming & Greedy Module 3: Problem 13 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-14": {
       "slug": "practice-problems/dp-greedy-prob-14",
@@ -7108,7 +7108,7 @@
       "description": "Master #664. Dynamic Programming & Greedy Module 3: Problem 14 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-15": {
       "slug": "practice-problems/dp-greedy-prob-15",
@@ -7118,7 +7118,7 @@
       "description": "Master #665. Dynamic Programming & Greedy Module 3: Problem 15 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-16": {
       "slug": "practice-problems/dp-greedy-prob-16",
@@ -7128,7 +7128,7 @@
       "description": "Master #666. Dynamic Programming & Greedy Module 4: Problem 16 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-17": {
       "slug": "practice-problems/dp-greedy-prob-17",
@@ -7138,7 +7138,7 @@
       "description": "Master #667. Dynamic Programming & Greedy Module 4: Problem 17 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-18": {
       "slug": "practice-problems/dp-greedy-prob-18",
@@ -7148,7 +7148,7 @@
       "description": "Master #668. Dynamic Programming & Greedy Module 4: Problem 18 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-19": {
       "slug": "practice-problems/dp-greedy-prob-19",
@@ -7158,7 +7158,7 @@
       "description": "Master #669. Dynamic Programming & Greedy Module 4: Problem 19 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-2": {
       "slug": "practice-problems/dp-greedy-prob-2",
@@ -7168,7 +7168,7 @@
       "description": "Master #652. Dynamic Programming & Greedy Module 1: Problem 2 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-20": {
       "slug": "practice-problems/dp-greedy-prob-20",
@@ -7178,7 +7178,7 @@
       "description": "Master #670. Dynamic Programming & Greedy Module 4: Problem 20 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-21": {
       "slug": "practice-problems/dp-greedy-prob-21",
@@ -7188,7 +7188,7 @@
       "description": "Master #671. Dynamic Programming & Greedy Module 5: Problem 21 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-22": {
       "slug": "practice-problems/dp-greedy-prob-22",
@@ -7198,7 +7198,7 @@
       "description": "Master #672. Dynamic Programming & Greedy Module 5: Problem 22 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-23": {
       "slug": "practice-problems/dp-greedy-prob-23",
@@ -7208,7 +7208,7 @@
       "description": "Master #673. Dynamic Programming & Greedy Module 5: Problem 23 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-24": {
       "slug": "practice-problems/dp-greedy-prob-24",
@@ -7218,7 +7218,7 @@
       "description": "Master #674. Dynamic Programming & Greedy Module 5: Problem 24 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-25": {
       "slug": "practice-problems/dp-greedy-prob-25",
@@ -7228,7 +7228,7 @@
       "description": "Master #675. Dynamic Programming & Greedy Module 5: Problem 25 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-26": {
       "slug": "practice-problems/dp-greedy-prob-26",
@@ -7238,7 +7238,7 @@
       "description": "Master #676. Dynamic Programming & Greedy Module 6: Problem 26 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-27": {
       "slug": "practice-problems/dp-greedy-prob-27",
@@ -7248,7 +7248,7 @@
       "description": "Master #677. Dynamic Programming & Greedy Module 6: Problem 27 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-28": {
       "slug": "practice-problems/dp-greedy-prob-28",
@@ -7258,7 +7258,7 @@
       "description": "Master #678. Dynamic Programming & Greedy Module 6: Problem 28 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-29": {
       "slug": "practice-problems/dp-greedy-prob-29",
@@ -7268,7 +7268,7 @@
       "description": "Master #679. Dynamic Programming & Greedy Module 6: Problem 29 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-3": {
       "slug": "practice-problems/dp-greedy-prob-3",
@@ -7278,7 +7278,7 @@
       "description": "Master #653. Dynamic Programming & Greedy Module 1: Problem 3 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-30": {
       "slug": "practice-problems/dp-greedy-prob-30",
@@ -7288,7 +7288,7 @@
       "description": "Master #680. Dynamic Programming & Greedy Module 6: Problem 30 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-4": {
       "slug": "practice-problems/dp-greedy-prob-4",
@@ -7298,7 +7298,7 @@
       "description": "Master #654. Dynamic Programming & Greedy Module 1: Problem 4 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-5": {
       "slug": "practice-problems/dp-greedy-prob-5",
@@ -7308,7 +7308,7 @@
       "description": "Master #655. Dynamic Programming & Greedy Module 1: Problem 5 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-6": {
       "slug": "practice-problems/dp-greedy-prob-6",
@@ -7318,7 +7318,7 @@
       "description": "Master #656. Dynamic Programming & Greedy Module 2: Problem 6 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-7": {
       "slug": "practice-problems/dp-greedy-prob-7",
@@ -7328,7 +7328,7 @@
       "description": "Master #657. Dynamic Programming & Greedy Module 2: Problem 7 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-8": {
       "slug": "practice-problems/dp-greedy-prob-8",
@@ -7338,7 +7338,7 @@
       "description": "Master #658. Dynamic Programming & Greedy Module 2: Problem 8 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dp-greedy-prob-9": {
       "slug": "practice-problems/dp-greedy-prob-9",
@@ -7348,7 +7348,7 @@
       "description": "Master #659. Dynamic Programming & Greedy Module 2: Problem 9 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Dynamic Programming & Greedy",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dpo-loss": {
       "slug": "practice-problems/dpo-loss",
@@ -16938,7 +16938,7 @@
       "description": "Master #600. Trees / Binary Search Module 2: Problem 10 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-11": {
       "slug": "practice-problems/tree-bs-prob-11",
@@ -17008,7 +17008,7 @@
       "description": "Master #607. Trees / Binary Search Module 4: Problem 17 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-18": {
       "slug": "practice-problems/tree-bs-prob-18",
@@ -17018,7 +17018,7 @@
       "description": "Master #608. Trees / Binary Search Module 4: Problem 18 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-19": {
       "slug": "practice-problems/tree-bs-prob-19",
@@ -17028,7 +17028,7 @@
       "description": "Master #609. Trees / Binary Search Module 4: Problem 19 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-2": {
       "slug": "practice-problems/tree-bs-prob-2",
@@ -17048,7 +17048,7 @@
       "description": "Master #610. Trees / Binary Search Module 4: Problem 20 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-21": {
       "slug": "practice-problems/tree-bs-prob-21",
@@ -17098,7 +17098,7 @@
       "description": "Master #615. Trees / Binary Search Module 5: Problem 25 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-26": {
       "slug": "practice-problems/tree-bs-prob-26",
@@ -17108,7 +17108,7 @@
       "description": "Master #616. Trees / Binary Search Module 6: Problem 26 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-27": {
       "slug": "practice-problems/tree-bs-prob-27",
@@ -17118,7 +17118,7 @@
       "description": "Master #617. Trees / Binary Search Module 6: Problem 27 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-28": {
       "slug": "practice-problems/tree-bs-prob-28",
@@ -17128,7 +17128,7 @@
       "description": "Master #618. Trees / Binary Search Module 6: Problem 28 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-29": {
       "slug": "practice-problems/tree-bs-prob-29",
@@ -17138,7 +17138,7 @@
       "description": "Master #619. Trees / Binary Search Module 6: Problem 29 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-3": {
       "slug": "practice-problems/tree-bs-prob-3",
@@ -17158,7 +17158,7 @@
       "description": "Master #620. Trees / Binary Search Module 6: Problem 30 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-4": {
       "slug": "practice-problems/tree-bs-prob-4",
@@ -17188,7 +17188,7 @@
       "description": "Master #596. Trees / Binary Search Module 2: Problem 6 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-7": {
       "slug": "practice-problems/tree-bs-prob-7",
@@ -17198,7 +17198,7 @@
       "description": "Master #597. Trees / Binary Search Module 2: Problem 7 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-8": {
       "slug": "practice-problems/tree-bs-prob-8",
@@ -17208,7 +17208,7 @@
       "description": "Master #598. Trees / Binary Search Module 2: Problem 8 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/tree-bs-prob-9": {
       "slug": "practice-problems/tree-bs-prob-9",
@@ -17218,7 +17218,7 @@
       "description": "Master #599. Trees / Binary Search Module 2: Problem 9 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Trees / Binary Search",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/two-lone-numbers": {
       "slug": "practice-problems/two-lone-numbers",

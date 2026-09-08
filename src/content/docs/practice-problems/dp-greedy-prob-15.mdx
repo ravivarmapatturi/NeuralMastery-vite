@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #665. Dynamic Programming & Greedy Module 3: Problem 15"
 description: "Master #665. Dynamic Programming & Greedy Module 3: Problem 15 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,35 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #665. Dynamic Programming & Greedy Module 3: Problem 15
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #665 of 1072 | **Points**: 60 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #665 of 1072 | **Points**
 
 ## Overview
 
-Implement `#665. Dynamic Programming & Greedy Module 3: Problem 15` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine if the end of an array is reachable using a greedy farthest-reach window scan.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `can_jump(nums)`: track the maximum reachable index max_reach. If current index `i > max_reach`, return False; otherwise update `max_reach = max(max_reach, i + nums[i])`.
 
 <PracticePlayground problemId="dp-greedy-prob-15" />
+
+<Solution>
+
+```python
+def can_jump(nums):
+    max_reach = 0
+    for i, jump in enumerate(nums):
+        if i > max_reach:
+            return False
+        if i + jump > max_reach:
+            max_reach = i + jump
+    return True
+```
+
+Scan through the array while maintaining the farthest index reachable. If the current index exceeds max_reach, jumping is blocked; otherwise expand max_reach.
+
+</Solution>

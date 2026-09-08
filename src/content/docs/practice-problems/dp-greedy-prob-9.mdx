@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #659. Dynamic Programming & Greedy Module 2: Problem 9"
 description: "Master #659. Dynamic Programming & Greedy Module 2: Problem 9 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,33 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #659. Dynamic Programming & Greedy Module 2: Problem 9
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #659 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #659 of 1072 | **Points**
 
 ## Overview
 
-Implement `#659. Dynamic Programming & Greedy Module 2: Problem 9` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Generate a single row of Pascal's triangle using in-place 1D dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `pascals_triangle_row(rowIndex)`: allocate a list of length rowIndex + 1 filled with 1s. Update elements backwards from j = i-1 down to 1 using row[j] += row[j-1].
 
 <PracticePlayground problemId="dp-greedy-prob-9" />
+
+<Solution>
+
+```python
+def pascals_triangle_row(rowIndex):
+    row = [1] * (rowIndex + 1)
+    for i in range(2, rowIndex + 1):
+        for j in range(i - 1, 0, -1):
+            row[j] += row[j - 1]
+    return row
+```
+
+Initialize an array of 1s of size rowIndex + 1. For each successive row level, iterate backwards from right to left, adding the adjacent left entry.
+
+</Solution>

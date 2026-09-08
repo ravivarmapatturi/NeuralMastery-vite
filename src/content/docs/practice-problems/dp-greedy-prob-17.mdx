@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #667. Dynamic Programming & Greedy Module 4: Problem 17"
 description: "Master #667. Dynamic Programming & Greedy Module 4: Problem 17 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,41 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #667. Dynamic Programming & Greedy Module 4: Problem 17
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #667 of 1072 | **Points**: 60 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #667 of 1072 | **Points**
 
 ## Overview
 
-Implement `#667. Dynamic Programming & Greedy Module 4: Problem 17` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine if an array can be split into two subsets with identical sum using 0/1 knapsack dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `can_partition_equal_subset(nums)`: if total sum is odd, return False. Otherwise solve 0/1 knapsack for target = sum // 2 using a boolean DP array traversed in reverse.
 
 <PracticePlayground problemId="dp-greedy-prob-17" />
+
+<Solution>
+
+```python
+def can_partition_equal_subset(nums):
+    total = sum(nums)
+    if total % 2 != 0:
+        return False
+    target = total // 2
+    dp = [False] * (target + 1)
+    dp[0] = True
+    for x in nums:
+        for j in range(target, x - 1, -1):
+            if dp[j - x]:
+                dp[j] = True
+        if dp[target]:
+            return True
+    return dp[target]
+```
+
+Compute half of the total sum. If total is odd, return False. Run 1D reverse 0/1 knapsack to determine if any subset sums exactly to target.
+
+</Solution>

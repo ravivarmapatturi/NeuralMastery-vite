@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #600. Trees / Binary Search Module 2: Problem 10"
 description: "Master #600. Trees / Binary Search Module 2: Problem 10 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,44 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #600. Trees / Binary Search Module 2: Problem 10
 
-**Track**: Trees / Binary Search | **Rank**: #600 of 1072 | **Points**: 40 XP
+**Track**: Trees / Binary Search | **Rank**: #600 of 1072 | **Points**
 
 ## Overview
 
-Implement `#600. Trees / Binary Search Module 2: Problem 10` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Traverse a binary tree breadth-first, collecting node values grouped by depth level.
 
 ## Task
 
-Implement the function `trees___binary_search_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `level_order_traversal(root)`: using a queue (BFS), visit each level of the tree sequentially, appending each level list of values to the result.
 
 <PracticePlayground problemId="tree-bs-prob-10" />
+
+<Solution>
+
+```python
+def level_order_traversal(root):
+    if not root:
+        return []
+    result = []
+    queue = [root]
+    while queue:
+        level_vals = []
+        next_queue = []
+        for node in queue:
+            level_vals.append(node['val'])
+            if node.get('left'):
+                next_queue.append(node['left'])
+            if node.get('right'):
+                next_queue.append(node['right'])
+        result.append(level_vals)
+        queue = next_queue
+    return result
+```
+
+Maintain a FIFO queue. At each level, collect the values of all current nodes, enqueue their existing children into a new list, and repeat until the queue is empty.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #663. Dynamic Programming & Greedy Module 3: Problem 13"
 description: "Master #663. Dynamic Programming & Greedy Module 3: Problem 13 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,37 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #663. Dynamic Programming & Greedy Module 3: Problem 13
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #663 of 1072 | **Points**: 60 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #663 of 1072 | **Points**
 
 ## Overview
 
-Implement `#663. Dynamic Programming & Greedy Module 3: Problem 13` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine the length of the longest strictly increasing subsequence in O(n log n) time using patience sorting.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `longest_increasing_subsequence(nums)`: maintain tails array where tails[i] is the smallest tail of all increasing subsequences of length i+1. Use binary search (bisect_left) to update tails.
 
 <PracticePlayground problemId="dp-greedy-prob-13" />
+
+<Solution>
+
+```python
+def longest_increasing_subsequence(nums):
+    import bisect
+    tails = []
+    for x in nums:
+        idx = bisect.bisect_left(tails, x)
+        if idx == len(tails):
+            tails.append(x)
+        else:
+            tails[idx] = x
+    return len(tails)
+```
+
+For each number, find its insertion point in tails via binary search. Replace the first element `>= x` or append if x is strictly greater than all tails.
+
+</Solution>

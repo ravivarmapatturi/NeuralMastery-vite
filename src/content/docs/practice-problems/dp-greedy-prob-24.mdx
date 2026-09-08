@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #674. Dynamic Programming & Greedy Module 5: Problem 24"
 description: "Master #674. Dynamic Programming & Greedy Module 5: Problem 24 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,43 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #674. Dynamic Programming & Greedy Module 5: Problem 24
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #674 of 1072 | **Points**: 90 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #674 of 1072 | **Points**
 
 ## Overview
 
-Implement `#674. Dynamic Programming & Greedy Module 5: Problem 24` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement full regular expression matching supporting "." and "*" wildcards using 2D dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_regex_match(s, p)`: dp[i][j] is True if s[:i] matches p[:j]. For "*", branch on zero occurrences (dp[i][j-2]) or one/more occurrences matching the preceding token.
 
 <PracticePlayground problemId="dp-greedy-prob-24" />
+
+<Solution>
+
+```python
+def is_regex_match(s, p):
+    m, n = len(s), len(p)
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+    dp[0][0] = True
+    for j in range(2, n + 1):
+        if p[j - 1] == '*':
+            dp[0][j] = dp[0][j - 2]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if p[j - 1] == '*':
+                dp[i][j] = dp[i][j - 2]
+                if p[j - 2] == s[i - 1] or p[j - 2] == '.':
+                    dp[i][j] = dp[i][j] or dp[i - 1][j]
+            elif p[j - 1] == '.' or p[j - 1] == s[i - 1]:
+                dp[i][j] = dp[i - 1][j - 1]
+    return dp[m][n]
+```
+
+A 2D boolean grid matches prefixes of string and pattern. Asterisks handle both 0-match (skip two characters back in pattern) and 1+-match (match current char and keep asterisk alive).
+
+</Solution>

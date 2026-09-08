@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #607. Trees / Binary Search Module 4: Problem 17"
 description: "Master #607. Trees / Binary Search Module 4: Problem 17 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,40 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #607. Trees / Binary Search Module 4: Problem 17
 
-**Track**: Trees / Binary Search | **Rank**: #607 of 1072 | **Points**: 60 XP
+**Track**: Trees / Binary Search | **Rank**: #607 of 1072 | **Points**
 
 ## Overview
 
-Implement `#607. Trees / Binary Search Module 4: Problem 17` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the lowest common ancestor of two nodes in an arbitrary binary tree without BST ordering guarantees.
 
 ## Task
 
-Implement the function `trees___binary_search_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `lowest_common_ancestor_bt(root, p, q)`: perform a bottom-up postorder traversal. If a node matches p or q, return it. If both left and right recursive calls return non-null nodes, the current node is the LCA.
 
 <PracticePlayground problemId="tree-bs-prob-17" />
+
+<Solution>
+
+```python
+def lowest_common_ancestor_bt(root, p, q):
+    def dfs(node):
+        if not node:
+            return None
+        if node['val'] == p or node['val'] == q:
+            return node
+        left = dfs(node.get('left'))
+        right = dfs(node.get('right'))
+        if left and right:
+            return node
+        return left if left else right
+    res = dfs(root)
+    return res['val'] if res else -1
+```
+
+Recursively search both subtrees. If both return a target, the current node is their convergence point (the LCA). Otherwise, propagate up whichever target was found.
+
+</Solution>

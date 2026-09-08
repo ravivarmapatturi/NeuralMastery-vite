@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #617. Trees / Binary Search Module 6: Problem 27"
 description: "Master #617. Trees / Binary Search Module 6: Problem 27 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,44 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #617. Trees / Binary Search Module 6: Problem 27
 
-**Track**: Trees / Binary Search | **Rank**: #617 of 1072 | **Points**: 90 XP
+**Track**: Trees / Binary Search | **Rank**: #617 of 1072 | **Points**
 
 ## Overview
 
-Implement `#617. Trees / Binary Search Module 6: Problem 27` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine the minimum number of monitoring cameras needed to cover all nodes of a binary tree using greedy postorder traversal.
 
 ## Task
 
-Implement the function `trees___binary_search_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `min_camera_cover(root)`: use bottom-up postorder DFS returning 3 states: 0 (uncovered), 1 (has camera), 2 (covered without camera). Place cameras greedily at parents of uncovered leaves.
 
 <PracticePlayground problemId="tree-bs-prob-27" />
+
+<Solution>
+
+```python
+def min_camera_cover(root):
+    cameras = 0
+    def dfs(node):
+        nonlocal cameras
+        if not node:
+            return 2
+        left = dfs(node.get('left'))
+        right = dfs(node.get('right'))
+        if left == 0 or right == 0:
+            cameras += 1
+            return 1
+        if left == 1 or right == 1:
+            return 2
+        return 0
+    if dfs(root) == 0:
+        cameras += 1
+    return cameras
+```
+
+Use a 3-state bottom-up postorder traversal. A node installs a camera if and only if at least one child is uncovered. If the root itself remains uncovered after traversal, add one final camera.
+
+</Solution>

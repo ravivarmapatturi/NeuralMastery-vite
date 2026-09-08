@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #660. Dynamic Programming & Greedy Module 2: Problem 10"
 description: "Master #660. Dynamic Programming & Greedy Module 2: Problem 10 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,38 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #660. Dynamic Programming & Greedy Module 2: Problem 10
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #660 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #660 of 1072 | **Points**
 
 ## Overview
 
-Implement `#660. Dynamic Programming & Greedy Module 2: Problem 10` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Maximize unit capacity on a truck using greedy fractional knapsack ordering.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `maximum_units_on_truck(boxTypes, truckSize)`: sort boxTypes descending by units per box. Greedily load boxes of highest unit density until truckSize is filled.
 
 <PracticePlayground problemId="dp-greedy-prob-10" />
+
+<Solution>
+
+```python
+def maximum_units_on_truck(boxTypes, truckSize):
+    boxTypes.sort(key=lambda x: x[1], reverse=True)
+    total_units = 0
+    remaining = truckSize
+    for count, units in boxTypes:
+        take = min(count, remaining)
+        total_units += take * units
+        remaining -= take
+        if remaining == 0:
+            break
+    return total_units
+```
+
+Sort boxes by units descending. At each step, take as many boxes of the highest remaining unit value as will fit in the truck.
+
+</Solution>

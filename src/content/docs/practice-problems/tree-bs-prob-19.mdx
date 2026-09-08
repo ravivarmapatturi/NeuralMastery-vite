@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #609. Trees / Binary Search Module 4: Problem 19"
 description: "Master #609. Trees / Binary Search Module 4: Problem 19 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,47 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #609. Trees / Binary Search Module 4: Problem 19
 
-**Track**: Trees / Binary Search | **Rank**: #609 of 1072 | **Points**: 60 XP
+**Track**: Trees / Binary Search | **Rank**: #609 of 1072 | **Points**
 
 ## Overview
 
-Implement `#609. Trees / Binary Search Module 4: Problem 19` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Count the number of nodes in a complete binary tree in O((log n)^2) time by leveraging its structural completeness.
 
 ## Task
 
-Implement the function `trees___binary_search_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `count_complete_tree_nodes(root)`: measure the leftmost and rightmost depths. If equal, the tree is full (2^d - 1 nodes); otherwise recursively count left and right subtrees.
 
 <PracticePlayground problemId="tree-bs-prob-19" />
+
+<Solution>
+
+```python
+def count_complete_tree_nodes(root):
+    if not root:
+        return 0
+    def left_depth(node):
+        d = 0
+        while node:
+            d += 1
+            node = node.get('left')
+        return d
+    def right_depth(node):
+        d = 0
+        while node:
+            d += 1
+            node = node.get('right')
+        return d
+    ld = left_depth(root)
+    rd = right_depth(root)
+    if ld == rd:
+        return (1 << ld) - 1
+    return 1 + count_complete_tree_nodes(root.get('left')) + count_complete_tree_nodes(root.get('right'))
+```
+
+Compute left and right extreme heights. When they match, the subtree is perfect, so its node count is computed in O(1) via (2^h - 1). Otherwise, recurse on both subtrees.
+
+</Solution>

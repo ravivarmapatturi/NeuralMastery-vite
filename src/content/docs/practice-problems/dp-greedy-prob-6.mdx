@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #656. Dynamic Programming & Greedy Module 2: Problem 6"
 description: "Master #656. Dynamic Programming & Greedy Module 2: Problem 6 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,32 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #656. Dynamic Programming & Greedy Module 2: Problem 6
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #656 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #656 of 1072 | **Points**
 
 ## Overview
 
-Implement `#656. Dynamic Programming & Greedy Module 2: Problem 6` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Count the number of set bits for all integers from 0 to n in O(n) linear time using bitwise dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `count_bits(n)`: use the recurrence `dp[i] = dp[i >> 1] + (i & 1)` to determine the bit count of each integer from previously computed subproblems.
 
 <PracticePlayground problemId="dp-greedy-prob-6" />
+
+<Solution>
+
+```python
+def count_bits(n):
+    ans = [0] * (n + 1)
+    for i in range(1, n + 1):
+        ans[i] = ans[i >> 1] + (i & 1)
+    return ans
+```
+
+Shifting i right by 1 bit yields an already-computed smaller integer i // 2. The bit count of i is simply `ans[i >> 1]` plus 1 if the lowest bit is set.
+
+</Solution>

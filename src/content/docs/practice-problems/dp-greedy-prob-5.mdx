@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #655. Dynamic Programming & Greedy Module 1: Problem 5"
 description: "Master #655. Dynamic Programming & Greedy Module 1: Problem 5 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #655. Dynamic Programming & Greedy Module 1: Problem 5
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #655 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #655 of 1072 | **Points**
 
 ## Overview
 
-Implement `#655. Dynamic Programming & Greedy Module 1: Problem 5` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Maximize the number of satisfied children by greedily assigning the smallest acceptable cookie to each child.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_1_problem_5`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `assign_cookies(g, s)`: sort both greed factors and cookie sizes ascending. Use two pointers to match the smallest valid cookie to the child with smallest greed.
 
 <PracticePlayground problemId="dp-greedy-prob-5" />
+
+<Solution>
+
+```python
+def assign_cookies(g, s):
+    g.sort()
+    s.sort()
+    child_i, cookie_j = 0, 0
+    while child_i < len(g) and cookie_j < len(s):
+        if s[cookie_j] >= g[child_i]:
+            child_i += 1
+        cookie_j += 1
+    return child_i
+```
+
+Sort both arrays. If the current cookie satisfies the current least-greedy child, allocate it and move to the next child; otherwise try the next larger cookie.
+
+</Solution>

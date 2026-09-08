@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #679. Dynamic Programming & Greedy Module 6: Problem 29"
 description: "Master #679. Dynamic Programming & Greedy Module 6: Problem 29 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,42 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #679. Dynamic Programming & Greedy Module 6: Problem 29
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #679 of 1072 | **Points**: 90 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #679 of 1072 | **Points**
 
 ## Overview
 
-Implement `#679. Dynamic Programming & Greedy Module 6: Problem 29` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the length of the longest valid contiguous parentheses substring in O(n) time using index tracking.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `longest_valid_parentheses(s)`: use an index stack seeded with -1 as the base boundary. For "(", push index; for ")", pop and calculate length i - stack[-1] (or reset base if stack is empty).
 
 <PracticePlayground problemId="dp-greedy-prob-29" />
+
+<Solution>
+
+```python
+def longest_valid_parentheses(s):
+    stack = [-1]
+    max_len = 0
+    for i, c in enumerate(s):
+        if c == '(':
+            stack.append(i)
+        else:
+            stack.pop()
+            if not stack:
+                stack.append(i)
+            else:
+                length = i - stack[-1]
+                if length > max_len:
+                    max_len = length
+    return max_len
+```
+
+Initialize the stack with -1. Push indices of "(". For ")", pop top. If empty, the current index becomes the new boundary; otherwise the distance to stack top is a valid substring length.
+
+</Solution>

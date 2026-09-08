@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #651. Dynamic Programming & Greedy Module 1: Problem 1"
 description: "Master #651. Dynamic Programming & Greedy Module 1: Problem 1 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,32 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #651. Dynamic Programming & Greedy Module 1: Problem 1
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #651 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #651 of 1072 | **Points**
 
 ## Overview
 
-Implement `#651. Dynamic Programming & Greedy Module 1: Problem 1` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the minimum cost to climb a staircase where each step incurs a specified cost using 1D dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_1_problem_1`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `min_cost_climbing_stairs(cost)`: let dp[i] be the minimum cost to reach step i. Transitions are dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]), optimized to O(1) space.
 
 <PracticePlayground problemId="dp-greedy-prob-1" />
+
+<Solution>
+
+```python
+def min_cost_climbing_stairs(cost):
+    f0, f1 = 0, 0
+    for i in range(2, len(cost) + 1):
+        f0, f1 = f1, min(f1 + cost[i - 1], f0 + cost[i - 2])
+    return f1
+```
+
+Track the minimum cost to reach the two most recent steps. At each index, take the minimum of reaching from step i-1 or i-2 and paying the respective cost.
+
+</Solution>

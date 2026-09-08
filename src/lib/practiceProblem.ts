@@ -26850,6 +26850,4125 @@ def cross_entropy_loss(logits, target_idx):
 ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  'tree-bs-prob-6': {
+    id: 'tree-bs-prob-6',
+    title: "Merge Two Binary Trees",
+    difficulty: 'easy',
+    topic: "Trees / Binary Search",
+    estimatedTime: '10–15 min',
+    functionName: 'merge_trees',
+    functionSignature: "merge_trees(root1: dict | None, root2: dict | None) -> dict | None",
+    starterCode: `def merge_trees(root1, root2):
+    """root1, root2: binary tree roots as {'val', 'left', 'right'} or None.
+    Merge root2 into root1 by summing node values where both exist, or using
+    the existing subtree where one is None. Return the merged root."""
+    # Your implementation here
+    pass
+`,
+    mission: "Combine two binary trees by summing overlapping node values into a single merged tree structure.",
+    taskDescription: "Implement `merge_trees(root1, root2)`: if either root is None, return the other. Otherwise create a node with val = root1[\"val\"] + root2[\"val\"], merging their left and right subtrees recursively.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Each tree has between 0 and 1000 nodes.",
+      "-10^4 <= Node.val <= 10^4",
+      "Tree representation uses dicts with keys \"val\", \"left\", and \"right\"."
+],
+    hints: {
+      "small": "Base cases: if root1 is None return root2; if root2 is None return root1.",
+      "strong": "Create a new node with sum of vals, then set left child to merge_trees(root1[\"left\"], root2[\"left\"]) and right child analogously.",
+      "concept": "Simultaneous tree traversal recurses down parallel positions in two trees simultaneously, combining structural states at each step."
+},
+    conceptConnections: [
+      {
+            "title": "DSA & Trees",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Tree traversal recursion patterns"
+      }
+],
+    testCases: [
+      {
+            "id": "both-trees",
+            "label": "Overlapping 3-Node Trees",
+            "input": {
+                  "root1": {
+                        "val": 1,
+                        "left": {
+                              "val": 3,
+                              "left": {
+                                    "val": 5,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": null
+                        },
+                        "right": {
+                              "val": 2,
+                              "left": null,
+                              "right": null
+                        }
+                  },
+                  "root2": {
+                        "val": 2,
+                        "left": {
+                              "val": 1,
+                              "left": null,
+                              "right": {
+                                    "val": 4,
+                                    "left": null,
+                                    "right": null
+                              }
+                        },
+                        "right": {
+                              "val": 3,
+                              "left": null,
+                              "right": {
+                                    "val": 7,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 3,
+                  "left": {
+                        "val": 4,
+                        "left": {
+                              "val": 5,
+                              "left": null,
+                              "right": null
+                        },
+                        "right": {
+                              "val": 4,
+                              "left": null,
+                              "right": null
+                        }
+                  },
+                  "right": {
+                        "val": 5,
+                        "left": null,
+                        "right": {
+                              "val": 7,
+                              "left": null,
+                              "right": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "one-none",
+            "label": "One Tree is None",
+            "input": {
+                  "root1": {
+                        "val": 1,
+                        "left": null,
+                        "right": null
+                  },
+                  "root2": null
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "left": null,
+                  "right": null
+            },
+            "hidden": false
+      },
+      {
+            "id": "both-none",
+            "label": "Both Trees None",
+            "input": {
+                  "root1": null,
+                  "root2": null
+            },
+            "expectedOutput": null,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-7': {
+    id: 'tree-bs-prob-7',
+    title: "Lowest Common Ancestor of a Binary Search Tree",
+    difficulty: 'easy',
+    topic: "Trees / Binary Search",
+    estimatedTime: '10–15 min',
+    functionName: 'lowest_common_ancestor_bst',
+    functionSignature: "lowest_common_ancestor_bst(root: dict, p: int, q: int) -> int",
+    starterCode: `def lowest_common_ancestor_bst(root, p, q):
+    """root: root of a BST with distinct integer values.
+    p, q: values of two distinct nodes guaranteed to exist in the BST.
+    Return the value of their Lowest Common Ancestor (LCA)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Exploit the binary search tree property to locate the Lowest Common Ancestor of two nodes in O(h) time.",
+    taskDescription: "Implement `lowest_common_ancestor_bst(root, p, q)`: starting from root, if both p and q are strictly less than current val, move left; if both are strictly greater, move right; otherwise the current node is their lowest split point.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Number of nodes in the tree is between 2 and 10^5.",
+      "-10^9 <= Node.val <= 10^9",
+      "All Node.val are unique.",
+      "p and q will exist in the BST."
+],
+    hints: {
+      "small": "In a BST, if p and q lie on opposite sides of the current node, this node is their lowest common ancestor.",
+      "strong": "If both p < val and q < val, search left. If both p > val and q > val, search right. Otherwise, return root[\"val\"].",
+      "concept": "The BST ordering property guarantees that the split point where two targets diverge into different subtrees is uniquely the LCA."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Search Trees",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "BST structural invariants and navigation"
+      }
+],
+    testCases: [
+      {
+            "id": "standard-lca",
+            "label": "Standard 6-node BST",
+            "input": {
+                  "root": {
+                        "val": 6,
+                        "left": {
+                              "val": 2,
+                              "left": {
+                                    "val": 0,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 4,
+                                    "left": {
+                                          "val": 3,
+                                          "left": null,
+                                          "right": null
+                                    },
+                                    "right": {
+                                          "val": 5,
+                                          "left": null,
+                                          "right": null
+                                    }
+                              }
+                        },
+                        "right": {
+                              "val": 8,
+                              "left": {
+                                    "val": 7,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 9,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  },
+                  "p": 2,
+                  "q": 8
+            },
+            "expectedOutput": 6,
+            "hidden": false
+      },
+      {
+            "id": "ancestor-is-target",
+            "label": "One Target is Ancestor of Other",
+            "input": {
+                  "root": {
+                        "val": 6,
+                        "left": {
+                              "val": 2,
+                              "left": null,
+                              "right": {
+                                    "val": 4,
+                                    "left": null,
+                                    "right": null
+                              }
+                        },
+                        "right": {
+                              "val": 8,
+                              "left": null,
+                              "right": null
+                        }
+                  },
+                  "p": 2,
+                  "q": 4
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "deep-subtree",
+            "label": "LCA in Left Subtree",
+            "input": {
+                  "root": {
+                        "val": 6,
+                        "left": {
+                              "val": 2,
+                              "left": {
+                                    "val": 0,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 4,
+                                    "left": {
+                                          "val": 3,
+                                          "left": null,
+                                          "right": null
+                                    },
+                                    "right": {
+                                          "val": 5,
+                                          "left": null,
+                                          "right": null
+                                    }
+                              }
+                        },
+                        "right": {
+                              "val": 8,
+                              "left": null,
+                              "right": null
+                        }
+                  },
+                  "p": 3,
+                  "q": 5
+            },
+            "expectedOutput": 4,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-8': {
+    id: 'tree-bs-prob-8',
+    title: "Search in Rotated Sorted Array",
+    difficulty: 'easy',
+    topic: "Trees / Binary Search",
+    estimatedTime: '10–15 min',
+    functionName: 'search_rotated_array',
+    functionSignature: "search_rotated_array(nums: list[int], target: int) -> int",
+    starterCode: `def search_rotated_array(nums, target):
+    """nums: list of distinct integers sorted ascending, then rotated at an unknown pivot.
+    target: integer value to find.
+    Return index of target in nums, or -1 if not present. Must run in O(log n)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Search for a target value in a sorted array that has been circularly rotated, maintaining O(log n) time complexity.",
+    taskDescription: "Implement `search_rotated_array(nums, target)`: determine which half of the array [lo..mid] or [mid..hi] is sorted, then check if target falls within that sorted segment to narrow down the search window.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 5000",
+      "-10^4 <= nums[i] <= 10^4",
+      "All values of nums are unique.",
+      "nums is guaranteed to be rotated at some pivot."
+],
+    hints: {
+      "small": "At least one half between lo and mid, or mid and hi, is always monotonically sorted.",
+      "strong": "If nums[lo] <= nums[mid], the left half is sorted. Check if nums[lo] <= target < nums[mid]; if so hi = mid - 1, else lo = mid + 1.",
+      "concept": "Modified binary search identifies monotonic segments by comparing endpoints, discarding half the search space even without global monotonicity."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Search",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Logarithmic search variations and partition logic"
+      }
+],
+    testCases: [
+      {
+            "id": "rotated-present",
+            "label": "Target Present in Rotated Array",
+            "input": {
+                  "nums": [
+                        4,
+                        5,
+                        6,
+                        7,
+                        0,
+                        1,
+                        2
+                  ],
+                  "target": 0
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "rotated-missing",
+            "label": "Target Not in Rotated Array",
+            "input": {
+                  "nums": [
+                        4,
+                        5,
+                        6,
+                        7,
+                        0,
+                        1,
+                        2
+                  ],
+                  "target": 3
+            },
+            "expectedOutput": -1,
+            "hidden": false
+      },
+      {
+            "id": "single-elem",
+            "label": "Single Element Match",
+            "input": {
+                  "nums": [
+                        1
+                  ],
+                  "target": 1
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      },
+      {
+            "id": "two-elems",
+            "label": "Two Elements Pivot",
+            "input": {
+                  "nums": [
+                        3,
+                        1
+                  ],
+                  "target": 1
+            },
+            "expectedOutput": 1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-9': {
+    id: 'tree-bs-prob-9',
+    title: "Find Minimum in Rotated Sorted Array",
+    difficulty: 'easy',
+    topic: "Trees / Binary Search",
+    estimatedTime: '10–15 min',
+    functionName: 'find_min_rotated_array',
+    functionSignature: "find_min_rotated_array(nums: list[int]) -> int",
+    starterCode: `def find_min_rotated_array(nums):
+    """nums: list of unique integers sorted ascending and rotated between 1 and n times.
+    Return the minimum element in nums in O(log n) time."""
+    # Your implementation here
+    pass
+`,
+    mission: "Locate the minimum element (the rotation pivot) in a rotated sorted array using binary search in O(log n) time.",
+    taskDescription: "Implement `find_min_rotated_array(nums)`: compare `nums[mid]` against `nums[hi]`. If `nums[mid] > nums[hi]`, the minimum must lie to the right of mid; otherwise it lies at or to the left of mid.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 5000",
+      "-5000 <= nums[i] <= 5000",
+      "All values in nums are unique."
+],
+    hints: {
+      "small": "Compare nums[mid] to nums[hi]. Is the right side out of order?",
+      "strong": "If nums[mid] > nums[hi], the inflection point is strictly after mid (lo = mid + 1). Otherwise hi = mid.",
+      "concept": "Comparing against the right endpoint determines whether the pivot lies in the left or right subarray."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Search",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Finding inflection points in piecewise monotonic functions"
+      }
+],
+    testCases: [
+      {
+            "id": "standard-rotated",
+            "label": "Standard 5-element Rotated Array",
+            "input": {
+                  "nums": [
+                        3,
+                        4,
+                        5,
+                        1,
+                        2
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "multiple-rotations",
+            "label": "7-element Rotated Array",
+            "input": {
+                  "nums": [
+                        4,
+                        5,
+                        6,
+                        7,
+                        0,
+                        1,
+                        2
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": false
+      },
+      {
+            "id": "already-sorted",
+            "label": "Already Sorted Array (0 rotation)",
+            "input": {
+                  "nums": [
+                        11,
+                        13,
+                        15,
+                        17
+                  ]
+            },
+            "expectedOutput": 11,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-10': {
+    id: 'tree-bs-prob-10',
+    title: "Binary Tree Level Order Traversal",
+    difficulty: 'easy',
+    topic: "Trees / Binary Search",
+    estimatedTime: '10–15 min',
+    functionName: 'level_order_traversal',
+    functionSignature: "level_order_traversal(root: dict | None) -> list[list[int]]",
+    starterCode: `def level_order_traversal(root):
+    """root: binary tree root node as {'val', 'left', 'right'} or None.
+    Return the level order traversal of its nodes' values as a list of lists,
+    from left to right, level by level."""
+    # Your implementation here
+    pass
+`,
+    mission: "Traverse a binary tree breadth-first, collecting node values grouped by depth level.",
+    taskDescription: "Implement `level_order_traversal(root)`: using a queue (BFS), visit each level of the tree sequentially, appending each level list of values to the result.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Number of nodes in the tree is in range [0, 2000].",
+      "-1000 <= Node.val <= 1000"
+],
+    hints: {
+      "small": "Use a queue. Process all nodes at the current level before moving to their children.",
+      "strong": "For each level, record len(queue) nodes, pop them, collect their values, and push their non-null children.",
+      "concept": "Breadth-First Search naturally segments tree nodes into concentric depth shells."
+},
+    conceptConnections: [
+      {
+            "title": "Breadth-First Search",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "BFS tree and graph traversal"
+      }
+],
+    testCases: [
+      {
+            "id": "standard-tree",
+            "label": "3-Level Binary Tree",
+            "input": {
+                  "root": {
+                        "val": 3,
+                        "left": {
+                              "val": 9,
+                              "left": null,
+                              "right": null
+                        },
+                        "right": {
+                              "val": 20,
+                              "left": {
+                                    "val": 15,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 7,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        3
+                  ],
+                  [
+                        9,
+                        20
+                  ],
+                  [
+                        15,
+                        7
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-node",
+            "label": "Single Root Node",
+            "input": {
+                  "root": {
+                        "val": 1,
+                        "left": null,
+                        "right": null
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        1
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty-tree",
+            "label": "Empty Tree",
+            "input": {
+                  "root": null
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-17': {
+    id: 'tree-bs-prob-17',
+    title: "Lowest Common Ancestor of a Binary Tree",
+    difficulty: 'medium',
+    topic: "Trees / Binary Search",
+    estimatedTime: '15–20 min',
+    functionName: 'lowest_common_ancestor_bt',
+    functionSignature: "lowest_common_ancestor_bt(root: dict, p: int, q: int) -> int",
+    starterCode: `def lowest_common_ancestor_bt(root, p, q):
+    """root: binary tree root node as {'val', 'left', 'right'}.
+    p, q: values of two distinct nodes guaranteed to be in the tree.
+    Return the value of the Lowest Common Ancestor (LCA) node."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the lowest common ancestor of two nodes in an arbitrary binary tree without BST ordering guarantees.",
+    taskDescription: "Implement `lowest_common_ancestor_bt(root, p, q)`: perform a bottom-up postorder traversal. If a node matches p or q, return it. If both left and right recursive calls return non-null nodes, the current node is the LCA.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Number of nodes in the tree is in range [2, 10^5].",
+      "-10^9 <= Node.val <= 10^9",
+      "All Node.val are unique.",
+      "p and q exist in the tree and p != q."
+],
+    hints: {
+      "small": "Recurse on left and right subtrees. If a subtree contains either p or q, it returns that node.",
+      "strong": "If both left and right return non-null, root is the LCA. If only one returns non-null, return that one.",
+      "concept": "Bottom-up recursive aggregation bubbles up presence markers until their convergence identifies the LCA."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Trees",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Recursive divide and conquer on trees"
+      }
+],
+    testCases: [
+      {
+            "id": "split-subtrees",
+            "label": "p and q in Different Subtrees",
+            "input": {
+                  "root": {
+                        "val": 3,
+                        "left": {
+                              "val": 5,
+                              "left": {
+                                    "val": 6,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 2,
+                                    "left": {
+                                          "val": 7,
+                                          "left": null,
+                                          "right": null
+                                    },
+                                    "right": {
+                                          "val": 4,
+                                          "left": null,
+                                          "right": null
+                                    }
+                              }
+                        },
+                        "right": {
+                              "val": 1,
+                              "left": {
+                                    "val": 0,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 8,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  },
+                  "p": 5,
+                  "q": 1
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "nested-lca",
+            "label": "LCA is One of the Nodes",
+            "input": {
+                  "root": {
+                        "val": 3,
+                        "left": {
+                              "val": 5,
+                              "left": null,
+                              "right": {
+                                    "val": 4,
+                                    "left": null,
+                                    "right": null
+                              }
+                        },
+                        "right": {
+                              "val": 1,
+                              "left": null,
+                              "right": null
+                        }
+                  },
+                  "p": 5,
+                  "q": 4
+            },
+            "expectedOutput": 5,
+            "hidden": false
+      },
+      {
+            "id": "two-node-tree",
+            "label": "Two Node Tree Root and Child",
+            "input": {
+                  "root": {
+                        "val": 1,
+                        "left": {
+                              "val": 2,
+                              "left": null,
+                              "right": null
+                        },
+                        "right": null
+                  },
+                  "p": 1,
+                  "q": 2
+            },
+            "expectedOutput": 1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-18': {
+    id: 'tree-bs-prob-18',
+    title: "Binary Tree Zigzag Level Order Traversal",
+    difficulty: 'medium',
+    topic: "Trees / Binary Search",
+    estimatedTime: '15–20 min',
+    functionName: 'zigzag_level_order',
+    functionSignature: "zigzag_level_order(root: dict | None) -> list[list[int]]",
+    starterCode: `def zigzag_level_order(root):
+    """root: binary tree root node as {'val', 'left', 'right'} or None.
+    Return zigzag level order traversal (alternating left-to-right and right-to-left
+    at each level)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Traverse a binary tree level by level, alternating horizontal scan direction between left-to-right and right-to-left.",
+    taskDescription: "Implement `zigzag_level_order(root)`: perform BFS level-order traversal, alternating the order of elements appended to each level list depending on whether the level index is even or odd.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Number of nodes in the tree is in range [0, 2000].",
+      "-1000 <= Node.val <= 1000"
+],
+    hints: {
+      "small": "Standard BFS queue, but reverse the list of collected node values on every other level.",
+      "strong": "Maintain a boolean left_to_right flag. After collecting level values, if not left_to_right, reverse the list before appending to result.",
+      "concept": "Level-order queue traversal combined with directional parity flipping produces alternating zigzag traversals."
+},
+    conceptConnections: [
+      {
+            "title": "Breadth-First Search",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "BFS queues and level-based processing"
+      }
+],
+    testCases: [
+      {
+            "id": "zigzag-3-levels",
+            "label": "3-Level Binary Tree Zigzag",
+            "input": {
+                  "root": {
+                        "val": 3,
+                        "left": {
+                              "val": 9,
+                              "left": null,
+                              "right": null
+                        },
+                        "right": {
+                              "val": 20,
+                              "left": {
+                                    "val": 15,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 7,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        3
+                  ],
+                  [
+                        20,
+                        9
+                  ],
+                  [
+                        15,
+                        7
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-node-zigzag",
+            "label": "Single Node",
+            "input": {
+                  "root": {
+                        "val": 1,
+                        "left": null,
+                        "right": null
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        1
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty-tree-zigzag",
+            "label": "Empty Tree",
+            "input": {
+                  "root": null
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-19': {
+    id: 'tree-bs-prob-19',
+    title: "Count Complete Tree Nodes",
+    difficulty: 'medium',
+    topic: "Trees / Binary Search",
+    estimatedTime: '15–20 min',
+    functionName: 'count_complete_tree_nodes',
+    functionSignature: "count_complete_tree_nodes(root: dict | None) -> int",
+    starterCode: `def count_complete_tree_nodes(root):
+    """root: root of a complete binary tree as {'val', 'left', 'right'} or None.
+    Return total number of nodes in strictly less than O(n) time."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count the number of nodes in a complete binary tree in O((log n)^2) time by leveraging its structural completeness.",
+    taskDescription: "Implement `count_complete_tree_nodes(root)`: measure the leftmost and rightmost depths. If equal, the tree is full (2^d - 1 nodes); otherwise recursively count left and right subtrees.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Number of nodes in the tree is in range [0, 5 * 10^4].",
+      "0 <= Node.val <= 5 * 10^4",
+      "The tree is guaranteed to be complete."
+],
+    hints: {
+      "small": "Follow only left pointers to get left depth, and only right pointers to get right depth.",
+      "strong": "If left_depth == right_depth, the subtree is a perfect binary tree with (1 << depth) - 1 nodes. Otherwise 1 + count(left) + count(right).",
+      "concept": "Because at least one subtree is always a perfect binary tree, we prune half the search at each recursive step, achieving O((log n)^2)."
+},
+    conceptConnections: [
+      {
+            "title": "Complete Binary Trees",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Properties of complete trees and heaps"
+      }
+],
+    testCases: [
+      {
+            "id": "complete-6-nodes",
+            "label": "6-Node Complete Tree",
+            "input": {
+                  "root": {
+                        "val": 1,
+                        "left": {
+                              "val": 2,
+                              "left": {
+                                    "val": 4,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 5,
+                                    "left": null,
+                                    "right": null
+                              }
+                        },
+                        "right": {
+                              "val": 3,
+                              "left": {
+                                    "val": 6,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": null
+                        }
+                  }
+            },
+            "expectedOutput": 6,
+            "hidden": false
+      },
+      {
+            "id": "empty-complete-tree",
+            "label": "Empty Complete Tree",
+            "input": {
+                  "root": null
+            },
+            "expectedOutput": 0,
+            "hidden": false
+      },
+      {
+            "id": "perfect-3-nodes",
+            "label": "3-Node Perfect Tree",
+            "input": {
+                  "root": {
+                        "val": 1,
+                        "left": {
+                              "val": 2,
+                              "left": null,
+                              "right": null
+                        },
+                        "right": {
+                              "val": 3,
+                              "left": null,
+                              "right": null
+                        }
+                  }
+            },
+            "expectedOutput": 3,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-20': {
+    id: 'tree-bs-prob-20',
+    title: "Find Peak Element",
+    difficulty: 'medium',
+    topic: "Trees / Binary Search",
+    estimatedTime: '15–20 min',
+    functionName: 'find_peak_element',
+    functionSignature: "find_peak_element(nums: list[int]) -> int",
+    starterCode: `def find_peak_element(nums):
+    """nums: list of integers where nums[i] != nums[i+1].
+    Return index of any peak element (nums[i] strictly greater than its neighbors).
+    Must run in O(log n) time."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find a local peak index in an array in O(log n) time using binary search on slope direction.",
+    taskDescription: "Implement `find_peak_element(nums)`: compare `nums[mid]` to `nums[mid + 1]`. If `nums[mid] < nums[mid + 1]`, an uphill slope guarantees a peak exists to the right; otherwise search the left.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 1000",
+      "-2^31 <= nums[i] <= 2^31 - 1",
+      "nums[i] != nums[i + 1] for all valid i."
+],
+    hints: {
+      "small": "If nums[mid] < nums[mid + 1], you are on an upward slope. A peak is guaranteed to exist at or after mid + 1.",
+      "strong": "If nums[mid] < nums[mid + 1], set lo = mid + 1; otherwise hi = mid. The loop terminates when lo == hi.",
+      "concept": "Binary search applies to any domain with a directional derivative/gradient guarantee, not just sorted sequences."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Search",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Binary search on monotonic slopes and peaks"
+      }
+],
+    testCases: [
+      {
+            "id": "single-peak",
+            "label": "Array with Single Central Peak",
+            "input": {
+                  "nums": [
+                        1,
+                        2,
+                        3,
+                        1
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "multiple-peaks",
+            "label": "Array with Multiple Local Peaks",
+            "input": {
+                  "nums": [
+                        1,
+                        2,
+                        1,
+                        3,
+                        5,
+                        6,
+                        4
+                  ]
+            },
+            "expectedOutput": 5,
+            "hidden": false
+      },
+      {
+            "id": "single-element-peak",
+            "label": "Single Element is Peak",
+            "input": {
+                  "nums": [
+                        1
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      },
+      {
+            "id": "descending-peak",
+            "label": "Monotonically Descending",
+            "input": {
+                  "nums": [
+                        3,
+                        2,
+                        1
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-25': {
+    id: 'tree-bs-prob-25',
+    title: "Kth Smallest Number in Multiplication Table",
+    difficulty: 'hard',
+    topic: "Trees / Binary Search",
+    estimatedTime: '20–25 min',
+    functionName: 'find_kth_number_multiplication_table',
+    functionSignature: "find_kth_number_multiplication_table(m: int, n: int, k: int) -> int",
+    starterCode: `def find_kth_number_multiplication_table(m, n, k):
+    """m, n: dimensions of multiplication table where table[i][j] = i * j (1-indexed).
+    k: target rank (1-indexed).
+    Return the kth smallest value in the m x n table in O(m * log(m*n)) time."""
+    # Your implementation here
+    pass
+`,
+    mission: "Search the value space using binary search to find the kth smallest product in an m x n multiplication table.",
+    taskDescription: "Implement `find_kth_number_multiplication_table(m, n, k)`: binary search the range [1, m * n]. For a candidate product x, count elements `<= x` across rows using min(x // i, n).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= m, n <= 3 * 10^4",
+      "1 <= k <= m * n"
+],
+    hints: {
+      "small": "Binary search over values in range [1, m * n], not table indices.",
+      "strong": "In row i, numbers are i, 2i, 3i, ..., ni. The count of numbers <= x in row i is min(x // i, n).",
+      "concept": "Binary search on the answer space tests feasibility of candidate solutions monotonically without storing the dataset."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Search on Answer Space",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Searching numeric answer ranges efficiently"
+      }
+],
+    testCases: [
+      {
+            "id": "table-3x3-k5",
+            "label": "3x3 Table k=5",
+            "input": {
+                  "m": 3,
+                  "n": 3,
+                  "k": 5
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "table-2x3-k6",
+            "label": "2x3 Table k=6 (Largest Element)",
+            "input": {
+                  "m": 2,
+                  "n": 3,
+                  "k": 6
+            },
+            "expectedOutput": 6,
+            "hidden": false
+      },
+      {
+            "id": "table-1x1-k1",
+            "label": "1x1 Table k=1",
+            "input": {
+                  "m": 1,
+                  "n": 1,
+                  "k": 1
+            },
+            "expectedOutput": 1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-26': {
+    id: 'tree-bs-prob-26',
+    title: "Deserialize Binary Tree from Preorder Encoding",
+    difficulty: 'hard',
+    topic: "Trees / Binary Search",
+    estimatedTime: '20–25 min',
+    functionName: 'deserialize_tree',
+    functionSignature: "deserialize_tree(data: str) -> dict | None",
+    starterCode: `def deserialize_tree(data):
+    """data: comma-separated string encoding of a binary tree in preorder,
+    where '#' denotes a null/empty node.
+    Reconstruct and return the tree as nested dicts {'val', 'left', 'right'}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Reconstruct the original binary tree structure from its serialized preorder string representation containing null markers.",
+    taskDescription: "Implement `deserialize_tree(data)`: tokenize the string by commas into an iterator. Recursively consume tokens: if token is \"#\", return None; otherwise construct a node with int(val) and recursively build left and right children.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Tree contains between 0 and 10^4 nodes.",
+      "-1000 <= Node.val <= 1000",
+      "data is a valid comma-separated preorder string."
+],
+    hints: {
+      "small": "Split data by commas and turn the list into an iterator (iter(data.split(\",\"))).",
+      "strong": "next(iterator): if token is \"#\" return None. Else create node, recurse for left, then right, then return node.",
+      "concept": "Preorder serialization with explicit null markers has a 1-to-1 bijection with binary tree topology, enabling deterministic recursive reconstruction."
+},
+    conceptConnections: [
+      {
+            "title": "Serialization & Trees",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Tree serialization patterns and parsers"
+      }
+],
+    testCases: [
+      {
+            "id": "standard-tree-string",
+            "label": "5-Node Tree Preorder String",
+            "input": {
+                  "data": "1,2,#,#,3,4,#,#,5,#,#"
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "left": {
+                        "val": 2,
+                        "left": null,
+                        "right": null
+                  },
+                  "right": {
+                        "val": 3,
+                        "left": {
+                              "val": 4,
+                              "left": null,
+                              "right": null
+                        },
+                        "right": {
+                              "val": 5,
+                              "left": null,
+                              "right": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty-tree-string",
+            "label": "Empty Tree (#)",
+            "input": {
+                  "data": "#"
+            },
+            "expectedOutput": null,
+            "hidden": false
+      },
+      {
+            "id": "single-node-string",
+            "label": "Single Node (42,#,#)",
+            "input": {
+                  "data": "42,#,#"
+            },
+            "expectedOutput": {
+                  "val": 42,
+                  "left": null,
+                  "right": null
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-27': {
+    id: 'tree-bs-prob-27',
+    title: "Binary Tree Cameras",
+    difficulty: 'hard',
+    topic: "Trees / Binary Search",
+    estimatedTime: '25–30 min',
+    functionName: 'min_camera_cover',
+    functionSignature: "min_camera_cover(root: dict | None) -> int",
+    starterCode: `def min_camera_cover(root):
+    """root: binary tree root node as {'val', 'left', 'right'} or None.
+    A camera monitors its node, parent, and immediate children.
+    Return the minimum number of cameras needed to monitor all nodes."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine the minimum number of monitoring cameras needed to cover all nodes of a binary tree using greedy postorder traversal.",
+    taskDescription: "Implement `min_camera_cover(root)`: use bottom-up postorder DFS returning 3 states: 0 (uncovered), 1 (has camera), 2 (covered without camera). Place cameras greedily at parents of uncovered leaves.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Number of nodes in the tree is in range [1, 1000].",
+      "Node.val == 0"
+],
+    hints: {
+      "small": "Never place cameras at leaf nodes; placing a camera at a leaf parent covers more nodes.",
+      "strong": "Postorder states: 0 = needs camera, 1 = camera installed, 2 = covered. If either child is 0, install camera (state 1). If either child is 1, parent is covered (state 2). Else needs camera (state 0).",
+      "concept": "Greedy tree DP places resources bottom-up at the highest possible vantage point that still covers uncovered descendants."
+},
+    conceptConnections: [
+      {
+            "title": "Greedy Algorithms on Trees",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Tree vertex cover and dominating set"
+      }
+],
+    testCases: [
+      {
+            "id": "chain-4-nodes",
+            "label": "Chain of 4 Nodes",
+            "input": {
+                  "root": {
+                        "val": 0,
+                        "left": {
+                              "val": 0,
+                              "left": {
+                                    "val": 0,
+                                    "left": null,
+                                    "right": {
+                                          "val": 0,
+                                          "left": null,
+                                          "right": null
+                                    }
+                              },
+                              "right": null
+                        },
+                        "right": null
+                  }
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "single-node-camera",
+            "label": "Single Node Requires 1 Camera",
+            "input": {
+                  "root": {
+                        "val": 0,
+                        "left": null,
+                        "right": null
+                  }
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "symmetric-tree-cameras",
+            "label": "Symmetric 5-Node Tree",
+            "input": {
+                  "root": {
+                        "val": 0,
+                        "left": {
+                              "val": 0,
+                              "left": {
+                                    "val": 0,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": null
+                        },
+                        "right": {
+                              "val": 0,
+                              "left": null,
+                              "right": {
+                                    "val": 0,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": 2,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-28': {
+    id: 'tree-bs-prob-28',
+    title: "Vertical Order Traversal of Binary Tree",
+    difficulty: 'hard',
+    topic: "Trees / Binary Search",
+    estimatedTime: '25–30 min',
+    functionName: 'vertical_order_traversal',
+    functionSignature: "vertical_order_traversal(root: dict | None) -> list[list[int]]",
+    starterCode: `def vertical_order_traversal(root):
+    """root: binary tree root node as {'val', 'left', 'right'} or None.
+    Return vertical column traversal of node values from left to right.
+    For nodes at same column and row, order them by value ascending."""
+    # Your implementation here
+    pass
+`,
+    mission: "Sort binary tree nodes by column coordinates from left to right, tie-breaking by row and then node value.",
+    taskDescription: "Implement `vertical_order_traversal(root)`: assign (row, col) coordinates with root at (0, 0). Left child is at (row + 1, col - 1) and right at (row + 1, col + 1). Group nodes by col and sort within each column by (row, val).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Number of nodes in the tree is in range [1, 1000].",
+      "0 <= Node.val <= 1000"
+],
+    hints: {
+      "small": "Traverse with BFS or DFS tracking (col, row). Store coordinates in a dict mapping col to list of (row, val).",
+      "strong": "Sort columns from minimum to maximum. For each column, sort entries by row ascending, then by val ascending.",
+      "concept": "2D spatial coordinate mapping on tree graphs allows arbitrary geometric groupings."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Tree Traversal",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Coordinate systems and tree hashing"
+      }
+],
+    testCases: [
+      {
+            "id": "standard-5-nodes",
+            "label": "Standard 5-Node Tree Columns",
+            "input": {
+                  "root": {
+                        "val": 3,
+                        "left": {
+                              "val": 9,
+                              "left": null,
+                              "right": null
+                        },
+                        "right": {
+                              "val": 20,
+                              "left": {
+                                    "val": 15,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 7,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        9
+                  ],
+                  [
+                        3,
+                        15
+                  ],
+                  [
+                        20
+                  ],
+                  [
+                        7
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "same-pos-overlap",
+            "label": "Overlapping Nodes Same Position",
+            "input": {
+                  "root": {
+                        "val": 1,
+                        "left": {
+                              "val": 2,
+                              "left": {
+                                    "val": 4,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 6,
+                                    "left": null,
+                                    "right": null
+                              }
+                        },
+                        "right": {
+                              "val": 3,
+                              "left": {
+                                    "val": 5,
+                                    "left": null,
+                                    "right": null
+                              },
+                              "right": {
+                                    "val": 7,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        4
+                  ],
+                  [
+                        2
+                  ],
+                  [
+                        1,
+                        5,
+                        6
+                  ],
+                  [
+                        3
+                  ],
+                  [
+                        7
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-node-col",
+            "label": "Single Node Column",
+            "input": {
+                  "root": {
+                        "val": 1,
+                        "left": null,
+                        "right": null
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        1
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-29': {
+    id: 'tree-bs-prob-29',
+    title: "Split Array Largest Sum",
+    difficulty: 'hard',
+    topic: "Trees / Binary Search",
+    estimatedTime: '25–30 min',
+    functionName: 'split_array_largest_sum',
+    functionSignature: "split_array_largest_sum(nums: list[int], k: int) -> int",
+    starterCode: `def split_array_largest_sum(nums, k):
+    """nums: list of non-negative integers.
+    k: number of contiguous non-empty subarrays to partition nums into.
+    Return the minimized largest sum among these k subarrays."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the optimal partition of an array into k contiguous subarrays that minimizes the maximum subarray sum.",
+    taskDescription: "Implement `split_array_largest_sum(nums, k)`: binary search the answer range [max(nums), sum(nums)]. A greedy scan verifies whether a proposed maximum sum requires at most k subarrays.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 1000",
+      "0 <= nums[i] <= 10^6",
+      "1 <= k <= min(50, len(nums))"
+],
+    hints: {
+      "small": "The answer must lie between max(nums) and sum(nums).",
+      "strong": "Given a candidate max sum target, greedily add numbers until adding the next would exceed target, then increment subarray count. Check if count <= k.",
+      "concept": "Monotonic predicate checking (can_partition(sum)) transforms an optimization problem into binary search on integers."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Search on Answer",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Minimax optimization via monotonic binary search"
+      }
+],
+    testCases: [
+      {
+            "id": "split-5-elems-k2",
+            "label": "5 Elements Split into 2 Subarrays",
+            "input": {
+                  "nums": [
+                        7,
+                        2,
+                        5,
+                        10,
+                        8
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": 18,
+            "hidden": false
+      },
+      {
+            "id": "split-5-elems-k3",
+            "label": "5 Elements Split into 3 Subarrays",
+            "input": {
+                  "nums": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": 6,
+            "hidden": false
+      },
+      {
+            "id": "k-equals-n",
+            "label": "k Equals Array Length",
+            "input": {
+                  "nums": [
+                        1,
+                        4,
+                        4
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": 4,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'tree-bs-prob-30': {
+    id: 'tree-bs-prob-30',
+    title: "Recover Binary Search Tree Swapped Values",
+    difficulty: 'hard',
+    topic: "Trees / Binary Search",
+    estimatedTime: '25–30 min',
+    functionName: 'find_swapped_values_bst',
+    functionSignature: "find_swapped_values_bst(root: dict | None) -> list[int]",
+    starterCode: `def find_swapped_values_bst(root):
+    """root: root of a BST where exactly two node values were swapped by mistake.
+    Find and return the two swapped values as [smaller_val, larger_val] in ascending order."""
+    # Your implementation here
+    pass
+`,
+    mission: "Identify the two node values in a corrupted Binary Search Tree that were accidentally swapped.",
+    taskDescription: "Implement `find_swapped_values_bst(root)`: perform an inorder traversal to detect the inversion(s) where `prev[\"val\"] > curr[\"val\"]`. Return the two inverted values [min_val, max_val].",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "The number of nodes in the tree is in range [2, 1000].",
+      "-2^31 <= Node.val <= 2^31 - 1",
+      "Exactly two nodes were swapped."
+],
+    hints: {
+      "small": "An inorder traversal of a valid BST is strictly ascending.",
+      "strong": "During inorder traversal, find the two locations where prev.val > curr.val. The first swapped node is the earlier prev, and the second is the later curr.",
+      "concept": "Inorder traversal projects a 2D BST topology into a 1D sorted array, exposing topological anomalies as simple inversions."
+},
+    conceptConnections: [
+      {
+            "title": "Binary Search Trees",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Inorder traversal invariants and BST debugging"
+      }
+],
+    testCases: [
+      {
+            "id": "swapped-adjacent",
+            "label": "Swapped Root and Left Child",
+            "input": {
+                  "root": {
+                        "val": 1,
+                        "left": {
+                              "val": 3,
+                              "left": null,
+                              "right": {
+                                    "val": 2,
+                                    "left": null,
+                                    "right": null
+                              }
+                        },
+                        "right": null
+                  }
+            },
+            "expectedOutput": [
+                  1,
+                  3
+            ],
+            "hidden": false
+      },
+      {
+            "id": "swapped-distant",
+            "label": "Swapped Distant Nodes",
+            "input": {
+                  "root": {
+                        "val": 2,
+                        "left": {
+                              "val": 4,
+                              "left": null,
+                              "right": null
+                        },
+                        "right": {
+                              "val": 3,
+                              "left": null,
+                              "right": {
+                                    "val": 1,
+                                    "left": null,
+                                    "right": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": [
+                  1,
+                  4
+            ],
+            "hidden": false
+      },
+      {
+            "id": "two-nodes-swapped",
+            "label": "Two Nodes Swapped",
+            "input": {
+                  "root": {
+                        "val": 2,
+                        "left": null,
+                        "right": {
+                              "val": 1,
+                              "left": null,
+                              "right": null
+                        }
+                  }
+            },
+            "expectedOutput": [
+                  1,
+                  2
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-1': {
+    id: 'dp-greedy-prob-1',
+    title: "Min Cost Climbing Stairs",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'min_cost_climbing_stairs',
+    functionSignature: "min_cost_climbing_stairs(cost: list[int]) -> int",
+    starterCode: `def min_cost_climbing_stairs(cost):
+    """cost: list of non-negative integers where cost[i] is the cost of stepping on stair i.
+    You can start at index 0 or index 1, and take 1 or 2 steps each time.
+    Return the minimum cost to reach the top of the floor (past the last index)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the minimum cost to climb a staircase where each step incurs a specified cost using 1D dynamic programming.",
+    taskDescription: "Implement `min_cost_climbing_stairs(cost)`: let dp[i] be the minimum cost to reach step i. Transitions are dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]), optimized to O(1) space.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= len(cost) <= 1000",
+      "0 <= cost[i] <= 999"
+],
+    hints: {
+      "small": "To step onto floor i, you must have stepped from either i - 1 or i - 2.",
+      "strong": "Maintain two variables: cost to reach previous step and step before that.",
+      "concept": "Classic 1D DP recurrence minimizing path cost over local backward choices."
+},
+    conceptConnections: [
+      {
+            "title": "Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Linear DP state transitions"
+      }
+],
+    testCases: [
+      {
+            "id": "cost-3-stairs",
+            "label": "3 Stairs [10, 15, 20]",
+            "input": {
+                  "cost": [
+                        10,
+                        15,
+                        20
+                  ]
+            },
+            "expectedOutput": 15,
+            "hidden": false
+      },
+      {
+            "id": "cost-10-stairs",
+            "label": "10 Alternating Stairs",
+            "input": {
+                  "cost": [
+                        1,
+                        100,
+                        1,
+                        1,
+                        1,
+                        100,
+                        1,
+                        1,
+                        100,
+                        1
+                  ]
+            },
+            "expectedOutput": 6,
+            "hidden": false
+      },
+      {
+            "id": "two-stairs-min",
+            "label": "Two Stairs [0, 0]",
+            "input": {
+                  "cost": [
+                        0,
+                        0
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-2': {
+    id: 'dp-greedy-prob-2',
+    title: "N-th Tribonacci Number",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'tribonacci',
+    functionSignature: "tribonacci(n: int) -> int",
+    starterCode: `def tribonacci(n):
+    """n: non-negative integer.
+    T_0 = 0, T_1 = 1, T_2 = 1, and T_{n+3} = T_n + T_{n+1} + T_{n+2}.
+    Return the value of T_n."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the N-th Tribonacci number efficiently using constant space iteration.",
+    taskDescription: "Implement `tribonacci(n)`: return T_n computed iteratively by sliding a 3-element rolling window across n steps.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= n <= 37",
+      "Answer fits in a 32-bit integer."
+],
+    hints: {
+      "small": "Base cases: T(0) = 0, T(1) = 1, T(2) = 1.",
+      "strong": "Keep three variables: t0, t1, t2. Update t0, t1, t2 = t1, t2, t0 + t1 + t2.",
+      "concept": "Constant-space recurrence relations only maintain k recent states for order-k recurrences."
+},
+    conceptConnections: [
+      {
+            "title": "Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Recurrence relations and state space compression"
+      }
+],
+    testCases: [
+      {
+            "id": "trib-4",
+            "label": "n = 4",
+            "input": {
+                  "n": 4
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "trib-25",
+            "label": "n = 25",
+            "input": {
+                  "n": 25
+            },
+            "expectedOutput": 1389537,
+            "hidden": false
+      },
+      {
+            "id": "trib-0",
+            "label": "n = 0 Base Case",
+            "input": {
+                  "n": 0
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-3': {
+    id: 'dp-greedy-prob-3',
+    title: "Can Place Flowers",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'can_place_flowers',
+    functionSignature: "can_place_flowers(flowerbed: list[int], n: int) -> bool",
+    starterCode: `def can_place_flowers(flowerbed, n):
+    """flowerbed: list of 0s and 1s where 1 means a flower is planted.
+    No two flowers can be planted in adjacent plots.
+    n: number of new flowers to plant.
+    Return True if n new flowers can be planted without violating the rule, False otherwise."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine if n flowers can be planted in empty plots without violating the adjacency rule using a greedy scan.",
+    taskDescription: "Implement `can_place_flowers(flowerbed, n)`: iterate through plots. Whenever current plot is 0 and both neighbors (treating out-of-bounds as 0) are 0, plant a flower greedily and decrement n.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(flowerbed) <= 2 * 10^4",
+      "flowerbed[i] is 0 or 1.",
+      "There are no two adjacent flowers in flowerbed initially.",
+      "0 <= n <= len(flowerbed)"
+],
+    hints: {
+      "small": "Planting as early as possible never hurts future planting opportunities (greedy choice property).",
+      "strong": "Check if (i == 0 or flowerbed[i-1] == 0) and (i == len - 1 or flowerbed[i+1] == 0).",
+      "concept": "Greedy allocation on non-overlapping independent sets in 1D arrays."
+},
+    conceptConnections: [
+      {
+            "title": "Greedy Algorithms",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Greedy choice property in 1D intervals"
+      }
+],
+    testCases: [
+      {
+            "id": "place-1-possible",
+            "label": "[1,0,0,0,1] with n=1",
+            "input": {
+                  "flowerbed": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        1
+                  ],
+                  "n": 1
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "place-2-impossible",
+            "label": "[1,0,0,0,1] with n=2",
+            "input": {
+                  "flowerbed": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        1
+                  ],
+                  "n": 2
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "single-zero-bed",
+            "label": "Single Empty Plot [0], n=1",
+            "input": {
+                  "flowerbed": [
+                        0
+                  ],
+                  "n": 1
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-4': {
+    id: 'dp-greedy-prob-4',
+    title: "Best Time to Buy and Sell Stock",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'max_profit_stock',
+    functionSignature: "max_profit_stock(prices: list[int]) -> int",
+    starterCode: `def max_profit_stock(prices):
+    """prices: list of stock prices on consecutive days.
+    You may complete at most one transaction (buy once, sell once in the future).
+    Return maximum profit achievable, or 0 if no profit is possible."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the maximum profit from a single buy-sell trade in an array of stock prices in O(n) time.",
+    taskDescription: "Implement `max_profit_stock(prices)`: iterate through prices, tracking the lowest price seen so far and maximizing price - min_price at each day.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(prices) <= 10^5",
+      "0 <= prices[i] <= 10^4"
+],
+    hints: {
+      "small": "To maximize profit on day i, you should have bought at the minimum price in days 0..i-1.",
+      "strong": "Keep track of min_price. For each price, profit = max(profit, price - min_price).",
+      "concept": "Prefix minimum tracking reduces an O(n^2) pair comparison to a single O(n) pass."
+},
+    conceptConnections: [
+      {
+            "title": "Dynamic Programming & Prefix Min",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Single-pass state tracking"
+      }
+],
+    testCases: [
+      {
+            "id": "standard-stock",
+            "label": "Standard Prices [7,1,5,3,6,4]",
+            "input": {
+                  "prices": [
+                        7,
+                        1,
+                        5,
+                        3,
+                        6,
+                        4
+                  ]
+            },
+            "expectedOutput": 5,
+            "hidden": false
+      },
+      {
+            "id": "decreasing-stock",
+            "label": "Monotonically Decreasing [7,6,4,3,1]",
+            "input": {
+                  "prices": [
+                        7,
+                        6,
+                        4,
+                        3,
+                        1
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": false
+      },
+      {
+            "id": "flat-prices",
+            "label": "Flat Prices [3,3,3,3]",
+            "input": {
+                  "prices": [
+                        3,
+                        3,
+                        3,
+                        3
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-5': {
+    id: 'dp-greedy-prob-5',
+    title: "Assign Cookies",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'assign_cookies',
+    functionSignature: "assign_cookies(g: list[int], s: list[int]) -> int",
+    starterCode: `def assign_cookies(g, s):
+    """g: list of greed factors of children.
+    s: list of sizes of cookies.
+    Each child can get at most one cookie, and is satisfied only if s[j] >= g[i].
+    Return the maximum number of satisfied children."""
+    # Your implementation here
+    pass
+`,
+    mission: "Maximize the number of satisfied children by greedily assigning the smallest acceptable cookie to each child.",
+    taskDescription: "Implement `assign_cookies(g, s)`: sort both greed factors and cookie sizes ascending. Use two pointers to match the smallest valid cookie to the child with smallest greed.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(g), len(s) <= 3 * 10^4",
+      "1 <= g[i], s[j] <= 2^31 - 1"
+],
+    hints: {
+      "small": "Sort both arrays. Match the least greedy child with the smallest cookie that satisfies them.",
+      "strong": "If cookie s[j] satisfies child g[i], advance both child and cookie pointers. Otherwise advance only cookie pointer.",
+      "concept": "Greedy sorting matches resources to demands by satisfying easiest constraints with minimal expenditure."
+},
+    conceptConnections: [
+      {
+            "title": "Greedy Two Pointers",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Optimal resource assignment via sorting"
+      }
+],
+    testCases: [
+      {
+            "id": "assign-cookies-1",
+            "label": "g=[1,2,3], s=[1,1]",
+            "input": {
+                  "g": [
+                        1,
+                        2,
+                        3
+                  ],
+                  "s": [
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "assign-cookies-2",
+            "label": "g=[1,2], s=[1,2,3]",
+            "input": {
+                  "g": [
+                        1,
+                        2
+                  ],
+                  "s": [
+                        1,
+                        2,
+                        3
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "no-cookies-fit",
+            "label": "g=[5,6,7], s=[1,2,3]",
+            "input": {
+                  "g": [
+                        5,
+                        6,
+                        7
+                  ],
+                  "s": [
+                        1,
+                        2,
+                        3
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-6': {
+    id: 'dp-greedy-prob-6',
+    title: "Counting Bits via DP",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'count_bits',
+    functionSignature: "count_bits(n: int) -> list[int]",
+    starterCode: `def count_bits(n):
+    """n: non-negative integer.
+    Return an array ans of length n + 1 where ans[i] is the number of 1's
+    in the binary representation of i, computed in O(n) time using dynamic programming."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count the number of set bits for all integers from 0 to n in O(n) linear time using bitwise dynamic programming.",
+    taskDescription: "Implement `count_bits(n)`: use the recurrence `dp[i] = dp[i >> 1] + (i & 1)` to determine the bit count of each integer from previously computed subproblems.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= n <= 10^5"
+],
+    hints: {
+      "small": "i >> 1 removes the least significant bit. Its bit count is already known.",
+      "strong": "dp[i] = dp[i >> 1] + (i & 1). For odd numbers, add 1; for even numbers, same as i // 2.",
+      "concept": "Bitwise DP relations exploit self-similarity in numeric representations under bit shifts."
+},
+    conceptConnections: [
+      {
+            "title": "Bit Manipulation & DP",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Subproblem reuse via bit shifting"
+      }
+],
+    testCases: [
+      {
+            "id": "n-2",
+            "label": "n = 2 [0, 1, 2]",
+            "input": {
+                  "n": 2
+            },
+            "expectedOutput": [
+                  0,
+                  1,
+                  1
+            ],
+            "hidden": false
+      },
+      {
+            "id": "n-5",
+            "label": "n = 5",
+            "input": {
+                  "n": 5
+            },
+            "expectedOutput": [
+                  0,
+                  1,
+                  1,
+                  2,
+                  1,
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "n-0",
+            "label": "n = 0 Base",
+            "input": {
+                  "n": 0
+            },
+            "expectedOutput": [
+                  0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-7': {
+    id: 'dp-greedy-prob-7',
+    title: "Lemonade Change",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'lemonade_change',
+    functionSignature: "lemonade_change(bills: list[int]) -> bool",
+    starterCode: `def lemonade_change(bills):
+    """bills: list of integers where bills[i] is 5, 10, or 20.
+    Each lemonade costs $5. Customers pay in order. You start with no change.
+    Return True if you can provide every customer with correct change, False otherwise."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate cash register change-making greedily prioritizing larger denomination bills to preserve change flexibility.",
+    taskDescription: "Implement `lemonade_change(bills)`: track counts of $5 and $10 bills. When receiving a $20, greedily give one $10 and one $5 as change (saving $5 bills for subsequent change).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(bills) <= 10^5",
+      "bills[i] is either 5, 10, or 20."
+],
+    hints: {
+      "small": "$5 bills are more versatile than $10 bills because they can make change for both $10 and $20.",
+      "strong": "For $20 bills, always give $10 + $5 if available before falling back to three $5 bills.",
+      "concept": "Greedy prioritization of less versatile resources preserves maximum flexibility for future transactions."
+},
+    conceptConnections: [
+      {
+            "title": "Greedy Algorithms",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Resource conservation and coin change heuristics"
+      }
+],
+    testCases: [
+      {
+            "id": "change-possible",
+            "label": "[5, 5, 5, 10, 20]",
+            "input": {
+                  "bills": [
+                        5,
+                        5,
+                        5,
+                        10,
+                        20
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "change-impossible",
+            "label": "[5, 5, 10, 10, 20]",
+            "input": {
+                  "bills": [
+                        5,
+                        5,
+                        10,
+                        10,
+                        20
+                  ]
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "single-5",
+            "label": "Single Customer [5]",
+            "input": {
+                  "bills": [
+                        5
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-8': {
+    id: 'dp-greedy-prob-8',
+    title: "Divisor Game",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'divisor_game',
+    functionSignature: "divisor_game(n: int) -> bool",
+    starterCode: `def divisor_game(n):
+    """n: initial number on blackboard.
+    Alice and Bob take turns choosing x (0 < x < n, n % x == 0) and replacing n with n - x.
+    The player who cannot make a move loses. Alice goes first.
+    Return True if Alice wins assuming optimal play, False otherwise."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine the winning player in a mathematical subtraction game using game theory DP.",
+    taskDescription: "Implement `divisor_game(n)`: return True if Alice has a winning strategy from state n. In game theory, even states are winning (choose x=1 to give opponent an odd state).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 1000"
+],
+    hints: {
+      "small": "Analyze base cases: n=1 Alice loses. n=2 Alice chooses 1 and Bob gets 1 (Alice wins).",
+      "strong": "An even number always has odd divisors (e.g. 1). Subtracting 1 leaves an odd number, forcing the opponent into losing states.",
+      "concept": "Impartial game theory models positions as winning (N-position) or losing (P-position) via state parity."
+},
+    conceptConnections: [
+      {
+            "title": "Game Theory DP",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Minimax and Sprague-Grundy theorem basics"
+      }
+],
+    testCases: [
+      {
+            "id": "n-2-win",
+            "label": "n = 2 (Alice Wins)",
+            "input": {
+                  "n": 2
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "n-3-loss",
+            "label": "n = 3 (Alice Loses)",
+            "input": {
+                  "n": 3
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "n-1-loss",
+            "label": "n = 1 (Alice Cannot Move)",
+            "input": {
+                  "n": 1
+            },
+            "expectedOutput": false,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-9': {
+    id: 'dp-greedy-prob-9',
+    title: "Pascal's Triangle Row",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'pascals_triangle_row',
+    functionSignature: "pascals_triangle_row(rowIndex: int) -> list[int]",
+    starterCode: `def pascals_triangle_row(rowIndex):
+    """rowIndex: 0-indexed row number.
+    Return the rowIndex-th row of Pascal's triangle using O(rowIndex) extra space."""
+    # Your implementation here
+    pass
+`,
+    mission: "Generate a single row of Pascal's triangle using in-place 1D dynamic programming.",
+    taskDescription: "Implement `pascals_triangle_row(rowIndex)`: allocate a list of length rowIndex + 1 filled with 1s. Update elements backwards from j = i-1 down to 1 using row[j] += row[j-1].",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= rowIndex <= 33"
+],
+    hints: {
+      "small": "Update the row array from right to left to avoid overwriting values needed for the current step.",
+      "strong": "for i in range(2, rowIndex + 1): for j in range(i - 1, 0, -1): row[j] += row[j - 1].",
+      "concept": "Reverse iteration prevents subproblem overwriting in space-optimized 1D arrays."
+},
+    conceptConnections: [
+      {
+            "title": "Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "In-place state transitions and space reduction"
+      }
+],
+    testCases: [
+      {
+            "id": "row-3",
+            "label": "Row 3 [1, 3, 3, 1]",
+            "input": {
+                  "rowIndex": 3
+            },
+            "expectedOutput": [
+                  1,
+                  3,
+                  3,
+                  1
+            ],
+            "hidden": false
+      },
+      {
+            "id": "row-0",
+            "label": "Row 0 [1]",
+            "input": {
+                  "rowIndex": 0
+            },
+            "expectedOutput": [
+                  1
+            ],
+            "hidden": false
+      },
+      {
+            "id": "row-1",
+            "label": "Row 1 [1, 1]",
+            "input": {
+                  "rowIndex": 1
+            },
+            "expectedOutput": [
+                  1,
+                  1
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-10': {
+    id: 'dp-greedy-prob-10',
+    title: "Maximum Units on a Truck",
+    difficulty: 'easy',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '10–15 min',
+    functionName: 'maximum_units_on_truck',
+    functionSignature: "maximum_units_on_truck(boxTypes: list[list[int]], truckSize: int) -> int",
+    starterCode: `def maximum_units_on_truck(boxTypes, truckSize):
+    """boxTypes: list of [numberOfBoxes_i, numberOfUnitsPerBox_i].
+    truckSize: maximum number of boxes that can be put on the truck.
+    Return the maximum total number of units that can be loaded onto the truck."""
+    # Your implementation here
+    pass
+`,
+    mission: "Maximize unit capacity on a truck using greedy fractional knapsack ordering.",
+    taskDescription: "Implement `maximum_units_on_truck(boxTypes, truckSize)`: sort boxTypes descending by units per box. Greedily load boxes of highest unit density until truckSize is filled.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(boxTypes) <= 1000",
+      "1 <= numberOfBoxes_i, numberOfUnitsPerBox_i <= 1000",
+      "1 <= truckSize <= 10^6"
+],
+    hints: {
+      "small": "Prioritize boxes with the highest units per box first.",
+      "strong": "Sort boxTypes by box[1] in descending order. Take min(box[0], remaining_space) boxes.",
+      "concept": "The fractional knapsack greedy strategy is optimal when items can be selected incrementally."
+},
+    conceptConnections: [
+      {
+            "title": "Greedy Knapsack",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Density-based greedy selection"
+      }
+],
+    testCases: [
+      {
+            "id": "truck-4",
+            "label": "boxTypes=[[1,3],[2,2],[3,1]], truckSize=4",
+            "input": {
+                  "boxTypes": [
+                        [
+                              1,
+                              3
+                        ],
+                        [
+                              2,
+                              2
+                        ],
+                        [
+                              3,
+                              1
+                        ]
+                  ],
+                  "truckSize": 4
+            },
+            "expectedOutput": 8,
+            "hidden": false
+      },
+      {
+            "id": "truck-10",
+            "label": "boxTypes=[[5,10],[2,5],[4,7],[3,9]], truckSize=10",
+            "input": {
+                  "boxTypes": [
+                        [
+                              5,
+                              10
+                        ],
+                        [
+                              2,
+                              5
+                        ],
+                        [
+                              4,
+                              7
+                        ],
+                        [
+                              3,
+                              9
+                        ]
+                  ],
+                  "truckSize": 10
+            },
+            "expectedOutput": 91,
+            "hidden": false
+      },
+      {
+            "id": "truck-exact-fit",
+            "label": "Single Box Type truckSize=1",
+            "input": {
+                  "boxTypes": [
+                        [
+                              5,
+                              10
+                        ]
+                  ],
+                  "truckSize": 1
+            },
+            "expectedOutput": 10,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-11': {
+    id: 'dp-greedy-prob-11',
+    title: "Unique Paths II (Grid with Obstacles)",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'unique_paths_with_obstacles',
+    functionSignature: "unique_paths_with_obstacles(obstacleGrid: list[list[int]]) -> int",
+    starterCode: `def unique_paths_with_obstacles(obstacleGrid):
+    """obstacleGrid: m x n binary grid where 1 marks an obstacle and 0 an empty space.
+    Robot starts at top-left (0,0) and can only move down or right.
+    Return the number of unique paths to bottom-right (m-1, n-1)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count unique paths from top-left to bottom-right in a grid containing static obstacles using 2D/1D dynamic programming.",
+    taskDescription: "Implement `unique_paths_with_obstacles(obstacleGrid)`: if cell is an obstacle, dp[j] = 0; otherwise dp[j] += dp[j-1]. Start with dp[0] = 1 if (0,0) is open.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= m, n <= 100",
+      "obstacleGrid[i][j] is 0 or 1."
+],
+    hints: {
+      "small": "Any obstacle cell has 0 paths through it.",
+      "strong": "Maintain a 1D dp array of length n. When obstacleGrid[i][j] == 1 set dp[j] = 0, else dp[j] += dp[j-1].",
+      "concept": "Boundary constraints and interior obstacles in 2D grid DP act as boundary conditions resetting state mass to 0."
+},
+    conceptConnections: [
+      {
+            "title": "Grid Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "2D grid transitions and obstacle handling"
+      }
+],
+    testCases: [
+      {
+            "id": "center-obstacle",
+            "label": "3x3 Grid with Center Obstacle",
+            "input": {
+                  "obstacleGrid": [
+                        [
+                              0,
+                              0,
+                              0
+                        ],
+                        [
+                              0,
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              0,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "corner-obstacle",
+            "label": "2x2 Grid with Blocked Target",
+            "input": {
+                  "obstacleGrid": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              0,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "start-blocked",
+            "label": "Start Cell Blocked",
+            "input": {
+                  "obstacleGrid": [
+                        [
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-12': {
+    id: 'dp-greedy-prob-12',
+    title: "Minimum Path Sum in Grid",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'min_path_sum',
+    functionSignature: "min_path_sum(grid: list[list[int]]) -> int",
+    starterCode: `def min_path_sum(grid):
+    """grid: m x n grid filled with non-negative numbers.
+    Find a path from top-left (0,0) to bottom-right (m-1, n-1) which minimizes
+    the sum of all numbers along its path. You can only move right or down."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the path with minimal sum through a 2D matrix moving only right and down using dynamic programming.",
+    taskDescription: "Implement `min_path_sum(grid)`: dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1]). Compress to a 1D array of length n for O(n) space.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(grid), len(grid[0]) <= 200",
+      "0 <= grid[i][j] <= 200"
+],
+    hints: {
+      "small": "At any cell (i, j), you arrived from either (i-1, j) or (i, j-1).",
+      "strong": "Initialize first row prefix sums. For each subsequent row, dp[0] += grid[i][0], then dp[j] = min(dp[j], dp[j-1]) + grid[i][j].",
+      "concept": "2D matrix optimization paths project into Markovian DP transitions along row/column frontiers."
+},
+    conceptConnections: [
+      {
+            "title": "2D Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Optimal path planning in cost grids"
+      }
+],
+    testCases: [
+      {
+            "id": "grid-3x3",
+            "label": "3x3 Cost Grid",
+            "input": {
+                  "grid": [
+                        [
+                              1,
+                              3,
+                              1
+                        ],
+                        [
+                              1,
+                              5,
+                              1
+                        ],
+                        [
+                              4,
+                              2,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": 7,
+            "hidden": false
+      },
+      {
+            "id": "grid-2x3",
+            "label": "2x3 Cost Grid",
+            "input": {
+                  "grid": [
+                        [
+                              1,
+                              2,
+                              3
+                        ],
+                        [
+                              4,
+                              5,
+                              6
+                        ]
+                  ]
+            },
+            "expectedOutput": 12,
+            "hidden": false
+      },
+      {
+            "id": "single-cell-grid",
+            "label": "1x1 Grid",
+            "input": {
+                  "grid": [
+                        [
+                              7
+                        ]
+                  ]
+            },
+            "expectedOutput": 7,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-13': {
+    id: 'dp-greedy-prob-13',
+    title: "Longest Increasing Subsequence",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'longest_increasing_subsequence',
+    functionSignature: "longest_increasing_subsequence(nums: list[int]) -> int",
+    starterCode: `def longest_increasing_subsequence(nums):
+    """nums: integer array.
+    Return the length of the longest strictly increasing subsequence.
+    Must run in O(n log n) time."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine the length of the longest strictly increasing subsequence in O(n log n) time using patience sorting.",
+    taskDescription: "Implement `longest_increasing_subsequence(nums)`: maintain tails array where tails[i] is the smallest tail of all increasing subsequences of length i+1. Use binary search (bisect_left) to update tails.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 2500",
+      "-10^4 <= nums[i] <= 10^4"
+],
+    hints: {
+      "small": "Keep track of the smallest possible ending element for each subsequence length.",
+      "strong": "For each number x, binary search into tails. If x is larger than all elements, append x. Otherwise replace tails[idx] with x.",
+      "concept": "Patience sorting and bisect-accelerated dynamic programming compress exponential search spaces into logarithmic tail updates."
+},
+    conceptConnections: [
+      {
+            "title": "Longest Increasing Subsequence",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Patience sorting and binary search DP"
+      }
+],
+    testCases: [
+      {
+            "id": "lis-8-elems",
+            "label": "[10,9,2,5,3,7,101,18]",
+            "input": {
+                  "nums": [
+                        10,
+                        9,
+                        2,
+                        5,
+                        3,
+                        7,
+                        101,
+                        18
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "lis-all-zeros",
+            "label": "[0,1,0,3,2,3]",
+            "input": {
+                  "nums": [
+                        0,
+                        1,
+                        0,
+                        3,
+                        2,
+                        3
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "all-identical",
+            "label": "All Identical [7,7,7,7]",
+            "input": {
+                  "nums": [
+                        7,
+                        7,
+                        7,
+                        7
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-14': {
+    id: 'dp-greedy-prob-14',
+    title: "Longest Common Subsequence",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'longest_common_subsequence',
+    functionSignature: "longest_common_subsequence(text1: str, text2: str) -> int",
+    starterCode: `def longest_common_subsequence(text1, text2):
+    """text1, text2: two input strings.
+    Return the length of their longest common subsequence.
+    A subsequence is derived by deleting zero or more characters without changing relative order."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the length of the longest subsequence shared between two text sequences using 2D DP.",
+    taskDescription: "Implement `longest_common_subsequence(text1, text2)`: if text1[i] == text2[j], dp[j] = prev + 1; otherwise dp[j] = max(dp[j], dp[j-1]).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(text1), len(text2) <= 1000",
+      "text1 and text2 consist of only lowercase English characters."
+],
+    hints: {
+      "small": "If the current characters match, extending both prefixes adds 1 to the LCS of their prefixes.",
+      "strong": "If text1[i-1] == text2[j-1], dp[i][j] = 1 + dp[i-1][j-1]; else max(dp[i-1][j], dp[i][j-1]).",
+      "concept": "String alignment DP forms the foundation of diff algorithms and genomic sequence comparison."
+},
+    conceptConnections: [
+      {
+            "title": "Dynamic Programming & String Algorithms",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Sequence alignment and LCS"
+      }
+],
+    testCases: [
+      {
+            "id": "abcde-ace",
+            "label": "text1=\"abcde\", text2=\"ace\"",
+            "input": {
+                  "text1": "abcde",
+                  "text2": "ace"
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "identical-texts",
+            "label": "text1=\"abc\", text2=\"abc\"",
+            "input": {
+                  "text1": "abc",
+                  "text2": "abc"
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "disjoint-texts",
+            "label": "text1=\"abc\", text2=\"def\"",
+            "input": {
+                  "text1": "abc",
+                  "text2": "def"
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-15': {
+    id: 'dp-greedy-prob-15',
+    title: "Jump Game",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'can_jump',
+    functionSignature: "can_jump(nums: list[int]) -> bool",
+    starterCode: `def can_jump(nums):
+    """nums: integer array where nums[i] is the maximum jump length from position i.
+    You start at index 0. Return True if you can reach the last index, False otherwise."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine if the end of an array is reachable using a greedy farthest-reach window scan.",
+    taskDescription: "Implement `can_jump(nums)`: track the maximum reachable index max_reach. If current index `i > max_reach`, return False; otherwise update `max_reach = max(max_reach, i + nums[i])`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 10^4",
+      "0 <= nums[i] <= 10^5"
+],
+    hints: {
+      "small": "Track the farthest index reachable so far.",
+      "strong": "For each index i, if i > max_reach return False. Update max_reach = max(max_reach, i + nums[i]).",
+      "concept": "Interval expansion greedily maintains the reachability boundary without testing individual jump combinations."
+},
+    conceptConnections: [
+      {
+            "title": "Greedy Algorithms",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Reachable interval propagation"
+      }
+],
+    testCases: [
+      {
+            "id": "can-jump-true",
+            "label": "[2,3,1,1,4]",
+            "input": {
+                  "nums": [
+                        2,
+                        3,
+                        1,
+                        1,
+                        4
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "can-jump-false",
+            "label": "[3,2,1,0,4]",
+            "input": {
+                  "nums": [
+                        3,
+                        2,
+                        1,
+                        0,
+                        4
+                  ]
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "single-zero",
+            "label": "Single Element [0]",
+            "input": {
+                  "nums": [
+                        0
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-16': {
+    id: 'dp-greedy-prob-16',
+    title: "Jump Game II (Minimum Jumps)",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'min_jumps',
+    functionSignature: "min_jumps(nums: list[int]) -> int",
+    starterCode: `def min_jumps(nums):
+    """nums: integer array where nums[i] is maximum forward jump length from index i.
+    You start at index 0. You are guaranteed to be able to reach the last index.
+    Return the minimum number of jumps to reach the last index."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the minimum number of jumps required to reach the end of an array using BFS-level interval expansion.",
+    taskDescription: "Implement `min_jumps(nums)`: track the current jump horizon curr_end and the farthest reachable index farthest. When index i reaches curr_end, increment jumps and advance curr_end = farthest.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 10^4",
+      "0 <= nums[i] <= 1000",
+      "It is guaranteed that you can reach nums[-1]."
+],
+    hints: {
+      "small": "View the problem as BFS levels where each level corresponds to one additional jump.",
+      "strong": "Keep current jump range [curr_start, curr_end]. Scan across it to find the maximum reachable index for the next jump.",
+      "concept": "Greedy interval BFS advances layer horizons without explicitly allocating graph queue structures."
+},
+    conceptConnections: [
+      {
+            "title": "Greedy Interval Search",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "BFS frontier tracking on 1D arrays"
+      }
+],
+    testCases: [
+      {
+            "id": "jumps-2",
+            "label": "[2,3,1,1,4]",
+            "input": {
+                  "nums": [
+                        2,
+                        3,
+                        1,
+                        1,
+                        4
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "jumps-3",
+            "label": "[2,3,0,1,4]",
+            "input": {
+                  "nums": [
+                        2,
+                        3,
+                        0,
+                        1,
+                        4
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "single-node-jumps",
+            "label": "Single Element [0]",
+            "input": {
+                  "nums": [
+                        0
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-17': {
+    id: 'dp-greedy-prob-17',
+    title: "Partition Equal Subset Sum",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'can_partition_equal_subset',
+    functionSignature: "can_partition_equal_subset(nums: list[int]) -> bool",
+    starterCode: `def can_partition_equal_subset(nums):
+    """nums: array of positive integers.
+    Determine if the array can be partitioned into two subsets such that the
+    sum of elements in both subsets is equal."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine if an array can be split into two subsets with identical sum using 0/1 knapsack dynamic programming.",
+    taskDescription: "Implement `can_partition_equal_subset(nums)`: if total sum is odd, return False. Otherwise solve 0/1 knapsack for target = sum // 2 using a boolean DP array traversed in reverse.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 200",
+      "1 <= nums[i] <= 100"
+],
+    hints: {
+      "small": "The problem is equivalent to finding a subset whose sum equals exactly half the total sum.",
+      "strong": "target = sum(nums) // 2. Iterate backward over dp array from target down to x to avoid using the same number twice.",
+      "concept": "0/1 subset sum reductions transform combinatorial partition questions into pseudo-polynomial dynamic programming."
+},
+    conceptConnections: [
+      {
+            "title": "0/1 Knapsack & Subset Sum",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Subset sum decision problems"
+      }
+],
+    testCases: [
+      {
+            "id": "partition-possible",
+            "label": "[1, 5, 11, 5]",
+            "input": {
+                  "nums": [
+                        1,
+                        5,
+                        11,
+                        5
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "partition-impossible",
+            "label": "[1, 2, 3, 5]",
+            "input": {
+                  "nums": [
+                        1,
+                        2,
+                        3,
+                        5
+                  ]
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "odd-sum",
+            "label": "Odd Sum [1, 2, 4]",
+            "input": {
+                  "nums": [
+                        1,
+                        2,
+                        4
+                  ]
+            },
+            "expectedOutput": false,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-18': {
+    id: 'dp-greedy-prob-18',
+    title: "Non-overlapping Intervals",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'erase_overlap_intervals',
+    functionSignature: "erase_overlap_intervals(intervals: list[list[int]]) -> int",
+    starterCode: `def erase_overlap_intervals(intervals):
+    """intervals: list of intervals [start, end].
+    Return the minimum number of intervals you need to remove to make the rest
+    of the intervals non-overlapping."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the minimum number of intervals to remove to eliminate all overlaps using greedy interval scheduling.",
+    taskDescription: "Implement `erase_overlap_intervals(intervals)`: sort intervals by finish time ascending. Greedily keep intervals that finish earliest to leave maximum room for future intervals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(intervals) <= 10^5",
+      "intervals[i].length == 2",
+      "-5 * 10^4 <= start_i < end_i <= 5 * 10^4"
+],
+    hints: {
+      "small": "Minimizing removals is equivalent to maximizing the count of mutually compatible intervals.",
+      "strong": "Sort intervals by end time. If the next interval starts before the current interval ends, an overlap occurs (remove it).",
+      "concept": "Earliest Deadline First (EDF) greedy scheduling maximizes compatible intervals in linear time after sorting."
+},
+    conceptConnections: [
+      {
+            "title": "Interval Scheduling",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Earliest deadline first greedy proof"
+      }
+],
+    testCases: [
+      {
+            "id": "overlap-1-removal",
+            "label": "[[1,2],[2,3],[3,4],[1,3]]",
+            "input": {
+                  "intervals": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              3,
+                              4
+                        ],
+                        [
+                              1,
+                              3
+                        ]
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "overlap-2-removals",
+            "label": "[[1,2],[1,2],[1,2]]",
+            "input": {
+                  "intervals": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              1,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "no-overlap",
+            "label": "[[1,2],[2,3]]",
+            "input": {
+                  "intervals": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ]
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-19': {
+    id: 'dp-greedy-prob-19',
+    title: "Gas Station Circuit",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'gas_station_start',
+    functionSignature: "gas_station_start(gas: list[int], cost: list[int]) -> int",
+    starterCode: `def gas_station_start(gas, cost):
+    """gas, cost: lists of non-negative integers of length n.
+    There are n gas stations along a circular route. gas[i] is the gas at station i,
+    and cost[i] is the gas needed to travel from station i to station (i + 1) % n.
+    Return starting station index if you can complete circuit once clockwise, or -1."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the starting gas station to complete a clockwise circuit in O(n) time using greedy prefix balance tracking.",
+    taskDescription: "Implement `gas_station_start(gas, cost)`: if `sum(gas) < sum(cost)`, return -1. Otherwise whenever current fuel tank drops below 0, reset start to i + 1 and curr_tank to 0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(gas) == len(cost)",
+      "1 <= len(gas) <= 10^5",
+      "0 <= gas[i], cost[i] <= 10^4"
+],
+    hints: {
+      "small": "If total gas is less than total cost, no solution exists.",
+      "strong": "If you cannot reach station B from station A, no station between A and B can reach B either. Advance start to B + 1.",
+      "concept": "Circular invariance and cumulative balance resets prove single-pass sufficiency in net flow circuits."
+},
+    conceptConnections: [
+      {
+            "title": "Greedy Algorithms",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Circular array balance analysis"
+      }
+],
+    testCases: [
+      {
+            "id": "circuit-possible",
+            "label": "gas=[1,2,3,4,5], cost=[3,4,5,1,2]",
+            "input": {
+                  "gas": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                  ],
+                  "cost": [
+                        3,
+                        4,
+                        5,
+                        1,
+                        2
+                  ]
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "circuit-impossible",
+            "label": "gas=[2,3,4], cost=[3,4,3]",
+            "input": {
+                  "gas": [
+                        2,
+                        3,
+                        4
+                  ],
+                  "cost": [
+                        3,
+                        4,
+                        3
+                  ]
+            },
+            "expectedOutput": -1,
+            "hidden": false
+      },
+      {
+            "id": "single-station-ok",
+            "label": "gas=[5], cost=[4]",
+            "input": {
+                  "gas": [
+                        5
+                  ],
+                  "cost": [
+                        4
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-20': {
+    id: 'dp-greedy-prob-20',
+    title: "House Robber II (Circular Street)",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'house_robber_ii',
+    functionSignature: "house_robber_ii(nums: list[int]) -> int",
+    starterCode: `def house_robber_ii(nums):
+    """nums: non-negative integers representing the amount of money of each house.
+    All houses are arranged in a circle (house 0 and house n-1 are adjacent).
+    Adjacent houses cannot both be robbed. Return the maximum amount of money you can rob."""
+    # Your implementation here
+    pass
+`,
+    mission: "Rob non-adjacent houses along a circular street by decomposing the cycle into two linear dynamic programming subproblems.",
+    taskDescription: "Implement `house_robber_ii(nums)`: since house 0 and house n-1 cannot both be robbed, take max(rob_linear(nums[:-1]), rob_linear(nums[1:])).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 100",
+      "0 <= nums[i] <= 1000"
+],
+    hints: {
+      "small": "The first and last houses are neighbors. You cannot rob both.",
+      "strong": "Solve standard House Robber on nums[0:n-1] and on nums[1:n]. Take the maximum.",
+      "concept": "Circular constraints are resolved by case-splitting on whether a boundary element is included or excluded."
+},
+    conceptConnections: [
+      {
+            "title": "Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Circular array dynamic programming reductions"
+      }
+],
+    testCases: [
+      {
+            "id": "circle-3-houses",
+            "label": "[2,3,2] max=3",
+            "input": {
+                  "nums": [
+                        2,
+                        3,
+                        2
+                  ]
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "circle-4-houses",
+            "label": "[1,2,3,1] max=4",
+            "input": {
+                  "nums": [
+                        1,
+                        2,
+                        3,
+                        1
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "single-house",
+            "label": "[7] single house",
+            "input": {
+                  "nums": [
+                        7
+                  ]
+            },
+            "expectedOutput": 7,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-21': {
+    id: 'dp-greedy-prob-21',
+    title: "Decode Ways",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'num_decodings',
+    functionSignature: "num_decodings(s: str) -> int",
+    starterCode: `def num_decodings(s):
+    """s: string containing digits ('1'-'26' map to 'A'-'Z').
+    A message can be decoded in multiple ways (e.g. '12' -> 'AB' or 'L').
+    Return the total number of ways to decode s."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count valid alphabetic decodings of a numeric digit string using Fibonacci-like 1D dynamic programming.",
+    taskDescription: "Implement `num_decodings(s)`: dp[i] depends on valid single-digit decodings (s[i] != \"0\") and valid two-digit decodings (`\"10\" <= s[i-1:i+1] <= \"26\"`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(s) <= 100",
+      "s consists of only digits and may contain leading zeros."
+],
+    hints: {
+      "small": "A single zero cannot be decoded alone. It must be paired with 1 or 2.",
+      "strong": "If s[i] != \"0\", add dp[i-1]. If 10 <= int(s[i-1:i+1]) <= 26, add dp[i-2].",
+      "concept": "Grammar and string parsing DP models transition validity as state filters over linear prefixes."
+},
+    conceptConnections: [
+      {
+            "title": "String Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Digit sequence decoding and grammar DP"
+      }
+],
+    testCases: [
+      {
+            "id": "decode-12",
+            "label": "s=\"12\" (AB or L)",
+            "input": {
+                  "s": "12"
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "decode-226",
+            "label": "s=\"226\" (BZ, VF, BBF)",
+            "input": {
+                  "s": "226"
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "leading-zero",
+            "label": "s=\"06\" Invalid",
+            "input": {
+                  "s": "06"
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-22': {
+    id: 'dp-greedy-prob-22',
+    title: "Maximum Product Subarray",
+    difficulty: 'medium',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '15–20 min',
+    functionName: 'max_product_subarray',
+    functionSignature: "max_product_subarray(nums: list[int]) -> int",
+    starterCode: `def max_product_subarray(nums):
+    """nums: integer array.
+    Find a contiguous non-empty subarray within nums that has the largest product,
+    and return that product."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the maximum product of a contiguous subarray in O(n) time by maintaining dual running min and max products.",
+    taskDescription: "Implement `max_product_subarray(nums)`: because multiplying by a negative number flips sign, maintain both curr_max and curr_min at each element: candidates = (x, curr_max * x, curr_min * x).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 2 * 10^4",
+      "-10 <= nums[i] <= 10",
+      "The product of any prefix or suffix fits in a 64-bit integer."
+],
+    hints: {
+      "small": "A large negative product can become a large positive product when multiplied by another negative number.",
+      "strong": "Track both the maximum product and the minimum product ending at the current position.",
+      "concept": "Sign-inversion DP tracks extreme bounds (both min and max) when multiplication does not preserve monotonicity."
+},
+    conceptConnections: [
+      {
+            "title": "Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Dual-state tracking in sign-varying sequences"
+      }
+],
+    testCases: [
+      {
+            "id": "product-6",
+            "label": "[2,3,-2,4] max=6",
+            "input": {
+                  "nums": [
+                        2,
+                        3,
+                        -2,
+                        4
+                  ]
+            },
+            "expectedOutput": 6,
+            "hidden": false
+      },
+      {
+            "id": "product-0",
+            "label": "[-2,0,-1] max=0",
+            "input": {
+                  "nums": [
+                        -2,
+                        0,
+                        -1
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": false
+      },
+      {
+            "id": "double-negative",
+            "label": "[-2, 3, -4] max=24",
+            "input": {
+                  "nums": [
+                        -2,
+                        3,
+                        -4
+                  ]
+            },
+            "expectedOutput": 24,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-23': {
+    id: 'dp-greedy-prob-23',
+    title: "Best Time to Buy and Sell Stock IV (At Most K Transactions)",
+    difficulty: 'hard',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '20–25 min',
+    functionName: 'max_profit_k_transactions',
+    functionSignature: "max_profit_k_transactions(k: int, prices: list[int]) -> int",
+    starterCode: `def max_profit_k_transactions(k, prices):
+    """k: maximum number of completed buy-sell transactions allowed.
+    prices: list of stock prices on consecutive days.
+    Return the maximum profit achievable."""
+    # Your implementation here
+    pass
+`,
+    mission: "Maximize stock trading profit under an upper bound of k transactions using a state-machine dynamic program.",
+    taskDescription: "Implement `max_profit_k_transactions(k, prices)`: maintain buy[i] and sell[i] arrays for i in 1..k. If `k >= len(prices) // 2`, simplify to greedy unlimited transactions.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= k <= 100",
+      "0 <= len(prices) <= 1000",
+      "0 <= prices[i] <= 1000"
+],
+    hints: {
+      "small": "If k >= n // 2, you can take every profitable upward price movement.",
+      "strong": "buy[i] = max(buy[i], sell[i-1] - price) and sell[i] = max(sell[i], buy[i] + price).",
+      "concept": "Finite state machine dynamic programming captures interleaved ownership and capital phases."
+},
+    conceptConnections: [
+      {
+            "title": "State Machine DP",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Stock transaction DP with state transitions"
+      }
+],
+    testCases: [
+      {
+            "id": "k2-profit2",
+            "label": "k=2, prices=[2,4,1]",
+            "input": {
+                  "k": 2,
+                  "prices": [
+                        2,
+                        4,
+                        1
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "k2-profit7",
+            "label": "k=2, prices=[3,2,6,5,0,3]",
+            "input": {
+                  "k": 2,
+                  "prices": [
+                        3,
+                        2,
+                        6,
+                        5,
+                        0,
+                        3
+                  ]
+            },
+            "expectedOutput": 7,
+            "hidden": false
+      },
+      {
+            "id": "k0-profit0",
+            "label": "k=0 no transactions allowed",
+            "input": {
+                  "k": 0,
+                  "prices": [
+                        1,
+                        2,
+                        3
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-24': {
+    id: 'dp-greedy-prob-24',
+    title: "Regular Expression Matching",
+    difficulty: 'hard',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '25–30 min',
+    functionName: 'is_regex_match',
+    functionSignature: "is_regex_match(s: str, p: str) -> bool",
+    starterCode: `def is_regex_match(s, p):
+    """s: input string.
+    p: pattern supporting '.' (matches any single char) and '*' (matches zero or more of preceding char).
+    Return True if s matches pattern p across the entire string."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement full regular expression matching supporting \".\" and \"*\" wildcards using 2D dynamic programming.",
+    taskDescription: "Implement `is_regex_match(s, p)`: dp[i][j] is True if s[:i] matches p[:j]. For \"*\", branch on zero occurrences (dp[i][j-2]) or one/more occurrences matching the preceding token.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(s) <= 20",
+      "1 <= len(p) <= 20",
+      "s contains only lowercase English letters.",
+      "p contains only lowercase English letters, \".\", and \"*\".",
+      "Each \"*\" is guaranteed to be preceded by a valid char."
+],
+    hints: {
+      "small": "When p[j-1] == \"*\", look at p[j-2]. You can either ignore the pair (zero matches) or use it if s[i-1] matches p[j-2].",
+      "strong": "Zero match: dp[i][j] = dp[i][j-2]. One or more match: (p[j-2] in {s[i-1], \".\"}) and dp[i-1][j].",
+      "concept": "Non-deterministic finite automaton (NFA) state transitions mapped directly onto dynamic programming grids."
+},
+    conceptConnections: [
+      {
+            "title": "Automata & Regex DP",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "NFA simulation via dynamic programming"
+      }
+],
+    testCases: [
+      {
+            "id": "regex-star-match",
+            "label": "s=\"aa\", p=\"a*\"",
+            "input": {
+                  "s": "aa",
+                  "p": "a*"
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "regex-dot-star",
+            "label": "s=\"ab\", p=\".*\"",
+            "input": {
+                  "s": "ab",
+                  "p": ".*"
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "regex-mismatch",
+            "label": "s=\"mississippi\", p=\"mis*is*p*.\"",
+            "input": {
+                  "s": "mississippi",
+                  "p": "mis*is*p*."
+            },
+            "expectedOutput": false,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-25': {
+    id: 'dp-greedy-prob-25',
+    title: "Wildcard Matching",
+    difficulty: 'hard',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '25–30 min',
+    functionName: 'is_wildcard_match',
+    functionSignature: "is_wildcard_match(s: str, p: str) -> bool",
+    starterCode: `def is_wildcard_match(s, p):
+    """s: input string.
+    p: pattern supporting '?' (matches any single character) and '*' (matches any sequence of characters including empty).
+    Return True if pattern matches entire string s."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement wildcard string matching with \"?\" and arbitrary sequence \"*\" using 2D dynamic programming.",
+    taskDescription: "Implement `is_wildcard_match(s, p)`: if p[j-1] == \"*\", dp[i][j] = dp[i-1][j] (star matches current char of s) or dp[i][j-1] (star matches empty sequence).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= len(s), len(p) <= 2000",
+      "s contains only lowercase English letters.",
+      "p contains only lowercase English letters, \"?\", or \"*\"."
+],
+    hints: {
+      "small": "Unlike regex \"*\", wildcard \"*\" does not depend on the previous character; it matches any substring.",
+      "strong": "If p[j-1] == \"*\": dp[i][j] = dp[i-1][j] or dp[i][j-1]. If p[j-1] in {s[i-1], \"?\"}: dp[i][j] = dp[i-1][j-1].",
+      "concept": "Wildcard matching transitions absorb characters into wildcards through vertical and horizontal grid propagation."
+},
+    conceptConnections: [
+      {
+            "title": "Wildcard Pattern Matching",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "2D DP for string globbing"
+      }
+],
+    testCases: [
+      {
+            "id": "wildcard-star-match",
+            "label": "s=\"adceb\", p=\"*a*b\"",
+            "input": {
+                  "s": "adceb",
+                  "p": "*a*b"
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "wildcard-false",
+            "label": "s=\"acdcb\", p=\"a*c?b\"",
+            "input": {
+                  "s": "acdcb",
+                  "p": "a*c?b"
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "empty-both",
+            "label": "s=\"\", p=\"*\"",
+            "input": {
+                  "s": "",
+                  "p": "*"
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-26': {
+    id: 'dp-greedy-prob-26',
+    title: "Burst Balloons",
+    difficulty: 'hard',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '25–30 min',
+    functionName: 'max_coins_burst_balloons',
+    functionSignature: "max_coins_burst_balloons(nums: list[int]) -> int",
+    starterCode: `def max_coins_burst_balloons(nums):
+    """nums: array of numbers on balloons.
+    Bursting balloon i yields nums[i-1] * nums[i] * nums[i+1] coins (out-of-bounds treat as 1).
+    Return maximum coins you can collect by bursting all balloons wisely."""
+    # Your implementation here
+    pass
+`,
+    mission: "Maximize coins gained from bursting balloons using reverse-order interval dynamic programming.",
+    taskDescription: "Implement `max_coins_burst_balloons(nums)`: think in reverse: which balloon is burst LAST in interval (left, right)? dp[left][right] = max(vals[left]*vals[k]*vals[right] + dp[left][k] + dp[k][right]).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(nums) <= 300",
+      "0 <= nums[i] <= 100"
+],
+    hints: {
+      "small": "Working forward creates dependencies because neighbors change. Working backward makes the last burst balloon independent.",
+      "strong": "Pad nums with 1 at both ends. For length from 2 to n: iterate all left/right windows and pick the optimal last balloon k.",
+      "concept": "Interval dynamic programming partitions subproblems across a pivot element burst last rather than first."
+},
+    conceptConnections: [
+      {
+            "title": "Interval Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Matrix chain multiplication and interval DP"
+      }
+],
+    testCases: [
+      {
+            "id": "balloons-3158",
+            "label": "[3,1,5,8] max=167",
+            "input": {
+                  "nums": [
+                        3,
+                        1,
+                        5,
+                        8
+                  ]
+            },
+            "expectedOutput": 167,
+            "hidden": false
+      },
+      {
+            "id": "balloons-15",
+            "label": "[1,5] max=10",
+            "input": {
+                  "nums": [
+                        1,
+                        5
+                  ]
+            },
+            "expectedOutput": 10,
+            "hidden": false
+      },
+      {
+            "id": "single-balloon",
+            "label": "[9] single balloon",
+            "input": {
+                  "nums": [
+                        9
+                  ]
+            },
+            "expectedOutput": 9,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-27': {
+    id: 'dp-greedy-prob-27',
+    title: "Candy Distribution",
+    difficulty: 'hard',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '20–25 min',
+    functionName: 'candy',
+    functionSignature: "candy(ratings: list[int]) -> int",
+    starterCode: `def candy(ratings):
+    """ratings: list of ratings of children standing in a line.
+    Each child must have at least one candy. Children with a higher rating
+    get more candies than their immediate neighbors. Return the minimum total candies needed."""
+    # Your implementation here
+    pass
+`,
+    mission: "Distribute candies to children meeting local rating constraints with minimal total count via two-pass greedy sweeps.",
+    taskDescription: "Implement `candy(ratings)`: initialize candies array to 1s. Sweep left-to-right (if `ratings[i] > ratings[i-1]`, `candies[i] = candies[i-1] + 1`), then right-to-left (if `ratings[i] > ratings[i+1]`, `candies[i] = max(candies[i], candies[i+1] + 1)`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(ratings) <= 2 * 10^4",
+      "0 <= ratings[i] <= 2 * 10^4"
+],
+    hints: {
+      "small": "Decompose the condition into two independent constraints: left neighbor constraint and right neighbor constraint.",
+      "strong": "Pass 1 left-to-right satisfies ratings[i] > ratings[i-1]. Pass 2 right-to-left satisfies ratings[i] > ratings[i+1] using max().",
+      "concept": "Bidirectional greedy sweeps decouple bidirectional constraints into two unidirectional passes."
+},
+    conceptConnections: [
+      {
+            "title": "Two-Pass Greedy Algorithms",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Bidirectional constraint propagation"
+      }
+],
+    testCases: [
+      {
+            "id": "candy-102",
+            "label": "[1, 0, 2] min=5",
+            "input": {
+                  "ratings": [
+                        1,
+                        0,
+                        2
+                  ]
+            },
+            "expectedOutput": 5,
+            "hidden": false
+      },
+      {
+            "id": "candy-122",
+            "label": "[1, 2, 2] min=4",
+            "input": {
+                  "ratings": [
+                        1,
+                        2,
+                        2
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "single-child",
+            "label": "[5] single child",
+            "input": {
+                  "ratings": [
+                        5
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-28': {
+    id: 'dp-greedy-prob-28',
+    title: "Distinct Subsequences",
+    difficulty: 'hard',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '20–25 min',
+    functionName: 'num_distinct_subsequences',
+    functionSignature: "num_distinct_subsequences(s: str, t: str) -> int",
+    starterCode: `def num_distinct_subsequences(s, t):
+    """s, t: strings of lowercase English letters.
+    Return the number of distinct subsequences of s which equal t."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count the exact number of occurrences of target string t as a subsequence within source string s using 1D dynamic programming.",
+    taskDescription: "Implement `num_distinct_subsequences(s, t)`: dp[j] stores number of times t[:j] appears in prefix of s. When s[i] == t[j], dp[j] += dp[j-1], iterating j in reverse.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(s), len(t) <= 1000",
+      "s and t consist of English letters.",
+      "The answer fits on a 32-bit signed integer."
+],
+    hints: {
+      "small": "If the current characters match, you can either include s[i] in the match or skip it.",
+      "strong": "Iterate characters of s. For each matching t[j-1] == s[i], dp[j] += dp[j-1], iterating j backwards from len(t) to 1.",
+      "concept": "Counting DP transitions accumulate combinatorial paths rather than taking min or max."
+},
+    conceptConnections: [
+      {
+            "title": "Combinatorial Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Subsequence counting algorithms"
+      }
+],
+    testCases: [
+      {
+            "id": "rabbbit-rabbit",
+            "label": "s=\"rabbbit\", t=\"rabbit\" (3 ways)",
+            "input": {
+                  "s": "rabbbit",
+                  "t": "rabbit"
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "babgbag-bag",
+            "label": "s=\"babgbag\", t=\"bag\" (5 ways)",
+            "input": {
+                  "s": "babgbag",
+                  "t": "bag"
+            },
+            "expectedOutput": 5,
+            "hidden": false
+      },
+      {
+            "id": "no-match-subseq",
+            "label": "s=\"abc\", t=\"d\" (0 ways)",
+            "input": {
+                  "s": "abc",
+                  "t": "d"
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-29': {
+    id: 'dp-greedy-prob-29',
+    title: "Longest Valid Parentheses",
+    difficulty: 'hard',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '20–25 min',
+    functionName: 'longest_valid_parentheses',
+    functionSignature: "longest_valid_parentheses(s: str) -> int",
+    starterCode: `def longest_valid_parentheses(s):
+    """s: string containing just the characters '(' and ')'.
+    Return the length of the longest valid (well-formed) parentheses substring."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the length of the longest valid contiguous parentheses substring in O(n) time using index tracking.",
+    taskDescription: "Implement `longest_valid_parentheses(s)`: use an index stack seeded with -1 as the base boundary. For \"(\", push index; for \")\", pop and calculate length i - stack[-1] (or reset base if stack is empty).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= len(s) <= 3 * 10^4",
+      "s consists of only \"(\" and \")\"."
+],
+    hints: {
+      "small": "Store indices of unmatched parentheses on a stack.",
+      "strong": "Initialize stack with -1. When encountering \")\", pop. If stack is empty, push current index as new baseline; else max_len = max(max_len, i - stack[-1]).",
+      "concept": "Index-tracking stacks measure substring extents between consecutive delimiter violations."
+},
+    conceptConnections: [
+      {
+            "title": "Stack and Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Parentheses validation and maximal length"
+      }
+],
+    testCases: [
+      {
+            "id": "parentheses-2",
+            "label": "s=\"(()\" max=2",
+            "input": {
+                  "s": "(()"
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "parentheses-4",
+            "label": "s=\")()())\" max=4",
+            "input": {
+                  "s": ")()())"
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "empty-parentheses",
+            "label": "Empty string s=\"\"",
+            "input": {
+                  "s": ""
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dp-greedy-prob-30': {
+    id: 'dp-greedy-prob-30',
+    title: "Dungeon Game (Reverse Grid DP)",
+    difficulty: 'hard',
+    topic: "Dynamic Programming & Greedy",
+    estimatedTime: '25–30 min',
+    functionName: 'calculate_minimum_hp',
+    functionSignature: "calculate_minimum_hp(dungeon: list[list[int]]) -> int",
+    starterCode: `def calculate_minimum_hp(dungeon):
+    """dungeon: m x n grid containing integers (demons are negative, magic orbs positive).
+    Knight starts at top-left (0,0) and must reach princess at bottom-right (m-1, n-1).
+    Knight can only move right or down, and health must remain >= 1 at all times.
+    Return the knight's minimum initial health needed to rescue the princess."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine the minimum initial health needed to navigate a dungeon grid using reverse dynamic programming.",
+    taskDescription: "Implement `calculate_minimum_hp(dungeon)`: working backward from destination (m-1, n-1) to start (0, 0), compute the minimum health needed before entering each room: needed = min(dp[i+1][j], dp[i][j+1]) - dungeon[i][j]; dp[i][j] = max(1, needed).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(dungeon), len(dungeon[0]) <= 200",
+      "-1000 <= dungeon[i][j] <= 1000"
+],
+    hints: {
+      "small": "Forward DP does not work because remaining health depends on future choices. Work backwards from destination!",
+      "strong": "At cell (i, j), min health needed before entry is max(1, min(dp[i+1][j], dp[i][j+1]) - dungeon[i][j]).",
+      "concept": "Reverse dynamic programming computes precondition requirements from known terminal victory states."
+},
+    conceptConnections: [
+      {
+            "title": "Reverse Dynamic Programming",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Precondition analysis and backward induction"
+      }
+],
+    testCases: [
+      {
+            "id": "dungeon-3x3",
+            "label": "3x3 Dungeon [min_hp=7]",
+            "input": {
+                  "dungeon": [
+                        [
+                              -2,
+                              -3,
+                              3
+                        ],
+                        [
+                              -5,
+                              -10,
+                              1
+                        ],
+                        [
+                              10,
+                              30,
+                              -5
+                        ]
+                  ]
+            },
+            "expectedOutput": 7,
+            "hidden": false
+      },
+      {
+            "id": "dungeon-1x1",
+            "label": "1x1 Dungeon [[0]]",
+            "input": {
+                  "dungeon": [
+                        [
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "dungeon-negative-single",
+            "label": "1x1 Dungeon [[-10]]",
+            "input": {
+                  "dungeon": [
+                        [
+                              -10
+                        ]
+                  ]
+            },
+            "expectedOutput": 11,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

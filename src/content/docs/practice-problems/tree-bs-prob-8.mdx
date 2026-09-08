@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #598. Trees / Binary Search Module 2: Problem 8"
 description: "Master #598. Trees / Binary Search Module 2: Problem 8 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,44 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #598. Trees / Binary Search Module 2: Problem 8
 
-**Track**: Trees / Binary Search | **Rank**: #598 of 1072 | **Points**: 40 XP
+**Track**: Trees / Binary Search | **Rank**: #598 of 1072 | **Points**
 
 ## Overview
 
-Implement `#598. Trees / Binary Search Module 2: Problem 8` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Search for a target value in a sorted array that has been circularly rotated, maintaining O(log n) time complexity.
 
 ## Task
 
-Implement the function `trees___binary_search_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `search_rotated_array(nums, target)`: determine which half of the array [lo..mid] or [mid..hi] is sorted, then check if target falls within that sorted segment to narrow down the search window.
 
 <PracticePlayground problemId="tree-bs-prob-8" />
+
+<Solution>
+
+```python
+def search_rotated_array(nums, target):
+    lo, hi = 0, len(nums) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if nums[mid] == target:
+            return mid
+        if nums[lo] <= nums[mid]:
+            if nums[lo] <= target < nums[mid]:
+                hi = mid - 1
+            else:
+                lo = mid + 1
+        else:
+            if nums[mid] < target <= nums[hi]:
+                lo = mid + 1
+            else:
+                hi = mid - 1
+    return -1
+```
+
+Compare nums[lo] and nums[mid] to determine which half is normally sorted. Check if the target is within the sorted range; if yes, narrow into it, otherwise search the opposite half.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #652. Dynamic Programming & Greedy Module 1: Problem 2"
 description: "Master #652. Dynamic Programming & Greedy Module 1: Problem 2 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #652. Dynamic Programming & Greedy Module 1: Problem 2
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #652 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #652 of 1072 | **Points**
 
 ## Overview
 
-Implement `#652. Dynamic Programming & Greedy Module 1: Problem 2` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the N-th Tribonacci number efficiently using constant space iteration.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `tribonacci(n)`: return T_n computed iteratively by sliding a 3-element rolling window across n steps.
 
 <PracticePlayground problemId="dp-greedy-prob-2" />
+
+<Solution>
+
+```python
+def tribonacci(n):
+    if n == 0:
+        return 0
+    if n <= 2:
+        return 1
+    t0, t1, t2 = 0, 1, 1
+    for _ in range(3, n + 1):
+        t0, t1, t2 = t1, t2, t0 + t1 + t2
+    return t2
+```
+
+Use three variables to store T(i-3), T(i-2), and T(i-1). Advance them one step per loop iteration in O(n) time and O(1) space.
+
+</Solution>

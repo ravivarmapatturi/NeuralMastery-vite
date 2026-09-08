@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #597. Trees / Binary Search Module 2: Problem 7"
 description: "Master #597. Trees / Binary Search Module 2: Problem 7 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,37 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #597. Trees / Binary Search Module 2: Problem 7
 
-**Track**: Trees / Binary Search | **Rank**: #597 of 1072 | **Points**: 40 XP
+**Track**: Trees / Binary Search | **Rank**: #597 of 1072 | **Points**
 
 ## Overview
 
-Implement `#597. Trees / Binary Search Module 2: Problem 7` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Exploit the binary search tree property to locate the Lowest Common Ancestor of two nodes in O(h) time.
 
 ## Task
 
-Implement the function `trees___binary_search_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `lowest_common_ancestor_bst(root, p, q)`: starting from root, if both p and q are strictly less than current val, move left; if both are strictly greater, move right; otherwise the current node is their lowest split point.
 
 <PracticePlayground problemId="tree-bs-prob-7" />
+
+<Solution>
+
+```python
+def lowest_common_ancestor_bst(root, p, q):
+    curr = root
+    while curr:
+        if p < curr['val'] and q < curr['val']:
+            curr = curr['left']
+        elif p > curr['val'] and q > curr['val']:
+            curr = curr['right']
+        else:
+            return curr['val']
+    return -1
+```
+
+Traverse down the tree: as long as both p and q are on the same side of the current node, descend into that side. The first node where they diverge (or one equals current) is the LCA.
+
+</Solution>

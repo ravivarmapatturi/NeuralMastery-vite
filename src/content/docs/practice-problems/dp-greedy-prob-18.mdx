@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #668. Dynamic Programming & Greedy Module 4: Problem 18"
 description: "Master #668. Dynamic Programming & Greedy Module 4: Problem 18 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,39 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #668. Dynamic Programming & Greedy Module 4: Problem 18
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #668 of 1072 | **Points**: 60 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #668 of 1072 | **Points**
 
 ## Overview
 
-Implement `#668. Dynamic Programming & Greedy Module 4: Problem 18` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the minimum number of intervals to remove to eliminate all overlaps using greedy interval scheduling.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `erase_overlap_intervals(intervals)`: sort intervals by finish time ascending. Greedily keep intervals that finish earliest to leave maximum room for future intervals.
 
 <PracticePlayground problemId="dp-greedy-prob-18" />
+
+<Solution>
+
+```python
+def erase_overlap_intervals(intervals):
+    if not intervals:
+        return 0
+    sorted_inv = sorted(intervals, key=lambda x: x[1])
+    count = 0
+    end = sorted_inv[0][1]
+    for start, finish in sorted_inv[1:]:
+        if start < end:
+            count += 1
+        else:
+            end = finish
+    return count
+```
+
+Sort intervals by end time. Always keep the interval that finishes earliest; if a subsequent interval starts before that end time, it must be removed to prevent overlap.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #673. Dynamic Programming & Greedy Module 5: Problem 23"
 description: "Master #673. Dynamic Programming & Greedy Module 5: Problem 23 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,40 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #673. Dynamic Programming & Greedy Module 5: Problem 23
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #673 of 1072 | **Points**: 90 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #673 of 1072 | **Points**
 
 ## Overview
 
-Implement `#673. Dynamic Programming & Greedy Module 5: Problem 23` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Maximize stock trading profit under an upper bound of k transactions using a state-machine dynamic program.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `max_profit_k_transactions(k, prices)`: maintain buy[i] and sell[i] arrays for i in 1..k. If `k >= len(prices) // 2`, simplify to greedy unlimited transactions.
 
 <PracticePlayground problemId="dp-greedy-prob-23" />
+
+<Solution>
+
+```python
+def max_profit_k_transactions(k, prices):
+    if not prices or k == 0:
+        return 0
+    n = len(prices)
+    if k >= n // 2:
+        return sum(max(0, prices[i] - prices[i - 1]) for i in range(1, n))
+    buy = [-float('inf')] * (k + 1)
+    sell = [0] * (k + 1)
+    for p in prices:
+        for i in range(1, k + 1):
+            buy[i] = max(buy[i], sell[i - 1] - p)
+            sell[i] = max(sell[i], buy[i] + p)
+    return sell[k]
+```
+
+Track the maximum balance after i-th buy and i-th sell. Update states for each transaction count on each day, returning sell[k].
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #678. Dynamic Programming & Greedy Module 6: Problem 28"
 description: "Master #678. Dynamic Programming & Greedy Module 6: Problem 28 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,36 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #678. Dynamic Programming & Greedy Module 6: Problem 28
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #678 of 1072 | **Points**: 90 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #678 of 1072 | **Points**
 
 ## Overview
 
-Implement `#678. Dynamic Programming & Greedy Module 6: Problem 28` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Count the exact number of occurrences of target string t as a subsequence within source string s using 1D dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `num_distinct_subsequences(s, t)`: dp[j] stores number of times t[:j] appears in prefix of s. When s[i] == t[j], dp[j] += dp[j-1], iterating j in reverse.
 
 <PracticePlayground problemId="dp-greedy-prob-28" />
+
+<Solution>
+
+```python
+def num_distinct_subsequences(s, t):
+    m, n = len(s), len(t)
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for c_s in s:
+        for j in range(n, 0, -1):
+            if c_s == t[j - 1]:
+                dp[j] += dp[j - 1]
+    return dp[n]
+```
+
+Maintain a 1D DP table representing prefix matches of t. When character c_s in s matches t[j-1], add the number of valid prefixes up to j-1.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #616. Trees / Binary Search Module 6: Problem 26"
 description: "Master #616. Trees / Binary Search Module 6: Problem 26 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,38 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #616. Trees / Binary Search Module 6: Problem 26
 
-**Track**: Trees / Binary Search | **Rank**: #616 of 1072 | **Points**: 90 XP
+**Track**: Trees / Binary Search | **Rank**: #616 of 1072 | **Points**
 
 ## Overview
 
-Implement `#616. Trees / Binary Search Module 6: Problem 26` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Reconstruct the original binary tree structure from its serialized preorder string representation containing null markers.
 
 ## Task
 
-Implement the function `trees___binary_search_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `deserialize_tree(data)`: tokenize the string by commas into an iterator. Recursively consume tokens: if token is "#", return None; otherwise construct a node with int(val) and recursively build left and right children.
 
 <PracticePlayground problemId="tree-bs-prob-26" />
+
+<Solution>
+
+```python
+def deserialize_tree(data):
+    tokens = iter(data.split(','))
+    def helper():
+        val = next(tokens, None)
+        if val is None or val == '#':
+            return None
+        node = {'val': int(val), 'left': None, 'right': None}
+        node['left'] = helper()
+        node['right'] = helper()
+        return node
+    return helper()
+```
+
+Iterate through tokens. In preorder order, the first token is the root; its left subtree consumes tokens until it completes, after which the right subtree consumes its tokens.
+
+</Solution>

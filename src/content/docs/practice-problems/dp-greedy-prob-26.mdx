@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #676. Dynamic Programming & Greedy Module 6: Problem 26"
 description: "Master #676. Dynamic Programming & Greedy Module 6: Problem 26 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,41 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #676. Dynamic Programming & Greedy Module 6: Problem 26
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #676 of 1072 | **Points**: 90 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #676 of 1072 | **Points**
 
 ## Overview
 
-Implement `#676. Dynamic Programming & Greedy Module 6: Problem 26` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Maximize coins gained from bursting balloons using reverse-order interval dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `max_coins_burst_balloons(nums)`: think in reverse: which balloon is burst LAST in interval (left, right)? dp[left][right] = max(vals[left]*vals[k]*vals[right] + dp[left][k] + dp[k][right]).
 
 <PracticePlayground problemId="dp-greedy-prob-26" />
+
+<Solution>
+
+```python
+def max_coins_burst_balloons(nums):
+    vals = [1] + [x for x in nums if x > 0] + [1]
+    if len(vals) == 2:
+        return 0
+    n = len(vals)
+    dp = [[0] * n for _ in range(n)]
+    for length in range(2, n):
+        for left in range(0, n - length):
+            right = left + length
+            for k in range(left + 1, right):
+                gain = vals[left] * vals[k] * vals[right] + dp[left][k] + dp[k][right]
+                if gain > dp[left][right]:
+                    dp[left][right] = gain
+    return dp[0][n - 1]
+```
+
+By deciding which balloon k is burst LAST in sub-interval (left, right), the boundary balloons vals[left] and vals[right] remain intact as its immediate neighbors, eliminating subproblem interference.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #608. Trees / Binary Search Module 4: Problem 18"
 description: "Master #608. Trees / Binary Search Module 4: Problem 18 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,47 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #608. Trees / Binary Search Module 4: Problem 18
 
-**Track**: Trees / Binary Search | **Rank**: #608 of 1072 | **Points**: 60 XP
+**Track**: Trees / Binary Search | **Rank**: #608 of 1072 | **Points**
 
 ## Overview
 
-Implement `#608. Trees / Binary Search Module 4: Problem 18` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Traverse a binary tree level by level, alternating horizontal scan direction between left-to-right and right-to-left.
 
 ## Task
 
-Implement the function `trees___binary_search_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `zigzag_level_order(root)`: perform BFS level-order traversal, alternating the order of elements appended to each level list depending on whether the level index is even or odd.
 
 <PracticePlayground problemId="tree-bs-prob-18" />
+
+<Solution>
+
+```python
+def zigzag_level_order(root):
+    if not root:
+        return []
+    result = []
+    queue = [root]
+    left_to_right = True
+    while queue:
+        vals = [n['val'] for n in queue]
+        if not left_to_right:
+            vals.reverse()
+        result.append(vals)
+        left_to_right = not left_to_right
+        next_queue = []
+        for n in queue:
+            if n.get('left'):
+                next_queue.append(n['left'])
+            if n.get('right'):
+                next_queue.append(n['right'])
+        queue = next_queue
+    return result
+```
+
+Collect nodes level by level using BFS. Use a boolean toggle to reverse the order of node values collected on odd-depth levels.
+
+</Solution>

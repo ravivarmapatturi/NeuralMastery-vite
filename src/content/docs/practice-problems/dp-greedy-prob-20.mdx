@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #670. Dynamic Programming & Greedy Module 4: Problem 20"
 description: "Master #670. Dynamic Programming & Greedy Module 4: Problem 20 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,38 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #670. Dynamic Programming & Greedy Module 4: Problem 20
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #670 of 1072 | **Points**: 60 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #670 of 1072 | **Points**
 
 ## Overview
 
-Implement `#670. Dynamic Programming & Greedy Module 4: Problem 20` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Rob non-adjacent houses along a circular street by decomposing the cycle into two linear dynamic programming subproblems.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `house_robber_ii(nums)`: since house 0 and house n-1 cannot both be robbed, take max(rob_linear(nums[:-1]), rob_linear(nums[1:])).
 
 <PracticePlayground problemId="dp-greedy-prob-20" />
+
+<Solution>
+
+```python
+def house_robber_ii(nums):
+    if not nums:
+        return 0
+    if len(nums) == 1:
+        return nums[0]
+    def rob_linear(houses):
+        rob1, rob2 = 0, 0
+        for h in houses:
+            rob1, rob2 = rob2, max(rob2, rob1 + h)
+        return rob2
+    return max(rob_linear(nums[:-1]), rob_linear(nums[1:]))
+```
+
+Break the circle into two linear instances: excluding the last house (0 to n-2) or excluding the first house (1 to n-1). Return the maximum of both linear DP solutions.
+
+</Solution>

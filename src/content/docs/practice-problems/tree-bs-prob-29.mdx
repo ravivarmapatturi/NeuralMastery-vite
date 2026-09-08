@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #619. Trees / Binary Search Module 6: Problem 29"
 description: "Master #619. Trees / Binary Search Module 6: Problem 29 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,46 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #619. Trees / Binary Search Module 6: Problem 29
 
-**Track**: Trees / Binary Search | **Rank**: #619 of 1072 | **Points**: 90 XP
+**Track**: Trees / Binary Search | **Rank**: #619 of 1072 | **Points**
 
 ## Overview
 
-Implement `#619. Trees / Binary Search Module 6: Problem 29` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the optimal partition of an array into k contiguous subarrays that minimizes the maximum subarray sum.
 
 ## Task
 
-Implement the function `trees___binary_search_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `split_array_largest_sum(nums, k)`: binary search the answer range [max(nums), sum(nums)]. A greedy scan verifies whether a proposed maximum sum requires at most k subarrays.
 
 <PracticePlayground problemId="tree-bs-prob-29" />
+
+<Solution>
+
+```python
+def split_array_largest_sum(nums, k):
+    def can_split(max_sum):
+        splits = 1
+        curr = 0
+        for x in nums:
+            if curr + x > max_sum:
+                splits += 1
+                curr = x
+            else:
+                curr += x
+        return splits <= k
+    lo, hi = max(nums), sum(nums)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if can_split(mid):
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
+```
+
+The largest sum must fall between max(nums) and sum(nums). For any candidate sum mid, a greedy scan counts the minimum subarrays needed; if `count <= k`, search lower.
+
+</Solution>

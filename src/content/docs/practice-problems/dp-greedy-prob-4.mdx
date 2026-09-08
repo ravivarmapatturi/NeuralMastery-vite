@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #654. Dynamic Programming & Greedy Module 1: Problem 4"
 description: "Master #654. Dynamic Programming & Greedy Module 1: Problem 4 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,38 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #654. Dynamic Programming & Greedy Module 1: Problem 4
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #654 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #654 of 1072 | **Points**
 
 ## Overview
 
-Implement `#654. Dynamic Programming & Greedy Module 1: Problem 4` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the maximum profit from a single buy-sell trade in an array of stock prices in O(n) time.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `max_profit_stock(prices)`: iterate through prices, tracking the lowest price seen so far and maximizing price - min_price at each day.
 
 <PracticePlayground problemId="dp-greedy-prob-4" />
+
+<Solution>
+
+```python
+def max_profit_stock(prices):
+    if not prices:
+        return 0
+    min_price = prices[0]
+    max_prof = 0
+    for p in prices[1:]:
+        if p < min_price:
+            min_price = p
+        elif p - min_price > max_prof:
+            max_prof = p - min_price
+    return max_prof
+```
+
+Track the minimum price seen so far as the optimal purchase day, evaluating potential profit if selling at current day.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #677. Dynamic Programming & Greedy Module 6: Problem 27"
 description: "Master #677. Dynamic Programming & Greedy Module 6: Problem 27 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,37 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #677. Dynamic Programming & Greedy Module 6: Problem 27
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #677 of 1072 | **Points**: 90 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #677 of 1072 | **Points**
 
 ## Overview
 
-Implement `#677. Dynamic Programming & Greedy Module 6: Problem 27` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Distribute candies to children meeting local rating constraints with minimal total count via two-pass greedy sweeps.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `candy(ratings)`: initialize candies array to 1s. Sweep left-to-right (if `ratings[i] > ratings[i-1]`, `candies[i] = candies[i-1] + 1`), then right-to-left (if `ratings[i] > ratings[i+1]`, `candies[i] = max(candies[i], candies[i+1] + 1)`).
 
 <PracticePlayground problemId="dp-greedy-prob-27" />
+
+<Solution>
+
+```python
+def candy(ratings):
+    n = len(ratings)
+    candies = [1] * n
+    for i in range(1, n):
+        if ratings[i] > ratings[i - 1]:
+            candies[i] = candies[i - 1] + 1
+    for i in range(n - 2, -1, -1):
+        if ratings[i] > ratings[i + 1]:
+            candies[i] = max(candies[i], candies[i + 1] + 1)
+    return sum(candies)
+```
+
+First satisfy all left-neighbor conditions by sweeping forward. Then satisfy all right-neighbor conditions by sweeping backward, taking the maximum to ensure both hold.
+
+</Solution>

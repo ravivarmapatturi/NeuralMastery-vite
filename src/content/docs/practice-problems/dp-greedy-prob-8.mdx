@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #658. Dynamic Programming & Greedy Module 2: Problem 8"
 description: "Master #658. Dynamic Programming & Greedy Module 2: Problem 8 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,29 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #658. Dynamic Programming & Greedy Module 2: Problem 8
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #658 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #658 of 1072 | **Points**
 
 ## Overview
 
-Implement `#658. Dynamic Programming & Greedy Module 2: Problem 8` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine the winning player in a mathematical subtraction game using game theory DP.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `divisor_game(n)`: return True if Alice has a winning strategy from state n. In game theory, even states are winning (choose x=1 to give opponent an odd state).
 
 <PracticePlayground problemId="dp-greedy-prob-8" />
+
+<Solution>
+
+```python
+def divisor_game(n):
+    return n % 2 == 0
+```
+
+If n is even, Alice can always subtract 1 to pass Bob an odd number. An odd number only has odd divisors, so Bob must subtract an odd number, returning an even number to Alice. Eventually Bob receives 1 and loses.
+
+</Solution>

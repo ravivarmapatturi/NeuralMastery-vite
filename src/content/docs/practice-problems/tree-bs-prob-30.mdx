@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #620. Trees / Binary Search Module 6: Problem 30"
 description: "Master #620. Trees / Binary Search Module 6: Problem 30 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,47 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #620. Trees / Binary Search Module 6: Problem 30
 
-**Track**: Trees / Binary Search | **Rank**: #620 of 1072 | **Points**: 90 XP
+**Track**: Trees / Binary Search | **Rank**: #620 of 1072 | **Points**
 
 ## Overview
 
-Implement `#620. Trees / Binary Search Module 6: Problem 30` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Identify the two node values in a corrupted Binary Search Tree that were accidentally swapped.
 
 ## Task
 
-Implement the function `trees___binary_search_module_6_problem_30`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_swapped_values_bst(root)`: perform an inorder traversal to detect the inversion(s) where `prev["val"] > curr["val"]`. Return the two inverted values [min_val, max_val].
 
 <PracticePlayground problemId="tree-bs-prob-30" />
+
+<Solution>
+
+```python
+def find_swapped_values_bst(root):
+    first, second, prev = None, None, None
+    curr = root
+    stack = []
+    while stack or curr:
+        while curr:
+            stack.append(curr)
+            curr = curr.get('left')
+        curr = stack.pop()
+        if prev and prev['val'] > curr['val']:
+            if not first:
+                first = prev
+                second = curr
+            else:
+                second = curr
+        prev = curr
+        curr = curr.get('right')
+    res = [first['val'], second['val']]
+    res.sort()
+    return res
+```
+
+Perform an iterative inorder traversal. An error creates one or two inversions where `prev.val > curr.val`. The first mistake is prev and the second mistake is curr.
+
+</Solution>

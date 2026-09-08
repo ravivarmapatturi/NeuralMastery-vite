@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #599. Trees / Binary Search Module 2: Problem 9"
 description: "Master #599. Trees / Binary Search Module 2: Problem 9 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #599. Trees / Binary Search Module 2: Problem 9
 
-**Track**: Trees / Binary Search | **Rank**: #599 of 1072 | **Points**: 40 XP
+**Track**: Trees / Binary Search | **Rank**: #599 of 1072 | **Points**
 
 ## Overview
 
-Implement `#599. Trees / Binary Search Module 2: Problem 9` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Locate the minimum element (the rotation pivot) in a rotated sorted array using binary search in O(log n) time.
 
 ## Task
 
-Implement the function `trees___binary_search_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_min_rotated_array(nums)`: compare `nums[mid]` against `nums[hi]`. If `nums[mid] > nums[hi]`, the minimum must lie to the right of mid; otherwise it lies at or to the left of mid.
 
 <PracticePlayground problemId="tree-bs-prob-9" />
+
+<Solution>
+
+```python
+def find_min_rotated_array(nums):
+    lo, hi = 0, len(nums) - 1
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if nums[mid] > nums[hi]:
+            lo = mid + 1
+        else:
+            hi = mid
+    return nums[lo]
+```
+
+Use binary search comparing mid to hi. If `nums[mid] > nums[hi]`, the drop must occur after mid, so lo = mid + 1. Otherwise, mid could be the min or the min is to its left, so hi = mid.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #661. Dynamic Programming & Greedy Module 3: Problem 11"
 description: "Master #661. Dynamic Programming & Greedy Module 3: Problem 11 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,40 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #661. Dynamic Programming & Greedy Module 3: Problem 11
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #661 of 1072 | **Points**: 60 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #661 of 1072 | **Points**
 
 ## Overview
 
-Implement `#661. Dynamic Programming & Greedy Module 3: Problem 11` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Count unique paths from top-left to bottom-right in a grid containing static obstacles using 2D/1D dynamic programming.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `unique_paths_with_obstacles(obstacleGrid)`: if cell is an obstacle, dp[j] = 0; otherwise dp[j] += dp[j-1]. Start with dp[0] = 1 if (0,0) is open.
 
 <PracticePlayground problemId="dp-greedy-prob-11" />
+
+<Solution>
+
+```python
+def unique_paths_with_obstacles(obstacleGrid):
+    if not obstacleGrid or obstacleGrid[0][0] == 1:
+        return 0
+    m, n = len(obstacleGrid), len(obstacleGrid[0])
+    dp = [0] * n
+    dp[0] = 1
+    for i in range(m):
+        for j in range(n):
+            if obstacleGrid[i][j] == 1:
+                dp[j] = 0
+            elif j > 0:
+                dp[j] += dp[j - 1]
+    return dp[-1]
+```
+
+Use a 1D DP table representing the current row. If a cell contains an obstacle, set dp[j] = 0; otherwise accumulate paths from the left neighbor dp[j-1].
+
+</Solution>

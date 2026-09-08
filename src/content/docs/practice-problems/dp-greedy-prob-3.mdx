@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #653. Dynamic Programming & Greedy Module 1: Problem 3"
 description: "Master #653. Dynamic Programming & Greedy Module 1: Problem 3 in the Dynamic Programming & Greedy track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,41 @@ topic: "Dynamic Programming & Greedy"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #653. Dynamic Programming & Greedy Module 1: Problem 3
 
-**Track**: Dynamic Programming & Greedy | **Rank**: #653 of 1072 | **Points**: 40 XP
+**Track**: Dynamic Programming & Greedy | **Rank**: #653 of 1072 | **Points**
 
 ## Overview
 
-Implement `#653. Dynamic Programming & Greedy Module 1: Problem 3` to advance your mastery in **Dynamic Programming & Greedy**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine if n flowers can be planted in empty plots without violating the adjacency rule using a greedy scan.
 
 ## Task
 
-Implement the function `dynamic_programming_and_greedy_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `can_place_flowers(flowerbed, n)`: iterate through plots. Whenever current plot is 0 and both neighbors (treating out-of-bounds as 0) are 0, plant a flower greedily and decrement n.
 
 <PracticePlayground problemId="dp-greedy-prob-3" />
+
+<Solution>
+
+```python
+def can_place_flowers(flowerbed, n):
+    count = 0
+    beds = list(flowerbed)
+    length = len(beds)
+    for i in range(length):
+        if beds[i] == 0:
+            left = (i == 0 or beds[i - 1] == 0)
+            right = (i == length - 1 or beds[i + 1] == 0)
+            if left and right:
+                beds[i] = 1
+                count += 1
+                if count >= n:
+                    return True
+    return count >= n
+```
+
+Greedily plant in any valid plot (0 with 0 neighbors). Early placement maximizes available future slots without reducing capacity.
+
+</Solution>

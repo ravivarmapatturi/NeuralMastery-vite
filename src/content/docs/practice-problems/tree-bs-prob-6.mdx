@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #596. Trees / Binary Search Module 2: Problem 6"
 description: "Master #596. Trees / Binary Search Module 2: Problem 6 in the Trees / Binary Search track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,37 @@ topic: "Trees / Binary Search"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #596. Trees / Binary Search Module 2: Problem 6
 
-**Track**: Trees / Binary Search | **Rank**: #596 of 1072 | **Points**: 40 XP
+**Track**: Trees / Binary Search | **Rank**: #596 of 1072 | **Points**
 
 ## Overview
 
-Implement `#596. Trees / Binary Search Module 2: Problem 6` to advance your mastery in **Trees / Binary Search**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Combine two binary trees by summing overlapping node values into a single merged tree structure.
 
 ## Task
 
-Implement the function `trees___binary_search_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_trees(root1, root2)`: if either root is None, return the other. Otherwise create a node with val = root1["val"] + root2["val"], merging their left and right subtrees recursively.
 
 <PracticePlayground problemId="tree-bs-prob-6" />
+
+<Solution>
+
+```python
+def merge_trees(root1, root2):
+    if root1 is None:
+        return root2
+    if root2 is None:
+        return root1
+    return {
+        'val': root1['val'] + root2['val'],
+        'left': merge_trees(root1.get('left'), root2.get('left')),
+        'right': merge_trees(root1.get('right'), root2.get('right'))
+    }
+```
+
+Recurse simultaneously on both trees. If either subtree is None, the remaining subtree is attached directly. Otherwise, sum their values and recurse on their left and right children.
+
+</Solution>
