@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #458. Agent Security & Reliability Module 4: Problem 16"
-description: "Master #458. Agent Security & Reliability Module 4: Problem 16 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Detect Shell Metacharacters in Tool Arguments"
+description: "Implement shell-metacharacter detection, a real, critical input check before a tool argument is EVER passed to a shell command (the exact class of bug behind real command-injection vulnerabilities)."
 difficulty: "medium"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #458. Agent Security & Reliability Module 4: Problem 16
+# Detect Shell Metacharacters in Tool Arguments
 
-**Track**: Agent Security & Reliability | **Rank**: #458 of 1072 | **Points**: 60 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#458. Agent Security & Reliability Module 4: Problem 16` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement shell-metacharacter detection, a real, critical input check before a tool argument is EVER passed to a shell command (the exact class of bug behind real command-injection vulnerabilities).
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_shell_metacharacters(arg)`: return `True` if `arg` contains any of these characters: `;`, `|`, `&`, `$`, backtick, `>`, `<`, `\n`, `(`, `)`.
 
 <PracticePlayground problemId="security-prob-16" />

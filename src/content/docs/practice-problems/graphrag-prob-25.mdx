@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #409. Knowledge Graph & GraphRAG Module 5: Problem 25"
-description: "Master #409. Knowledge Graph & GraphRAG Module 5: Problem 25 in the Knowledge Graph & GraphRAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Rank Multiple Candidate Paths by Length Then Weight"
+description: "Implement multi-path ranking, deciding which of several candidate reasoning paths between two entities a GraphRAG answer should present first."
+difficulty: "medium"
 topic: "Knowledge Graph & GraphRAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #409. Knowledge Graph & GraphRAG Module 5: Problem 25
+# Rank Multiple Candidate Paths by Length Then Weight
 
-**Track**: Knowledge Graph & GraphRAG | **Rank**: #409 of 1072 | **Points**: 90 XP
+**Track**: Knowledge Graph & GraphRAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#409. Knowledge Graph & GraphRAG Module 5: Problem 25` to advance your mastery in **Knowledge Graph & GraphRAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement multi-path ranking, deciding which of several candidate reasoning paths between two entities a GraphRAG answer should present first.
 
 ## Task
 
-Implement the function `knowledge_graph_and_graphrag_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `rank_paths(paths)`. Each path is `{"id": str, "length": int, "confidence": float}`. Rank primarily by SHORTER length (fewer hops = more direct, preferred), secondarily by HIGHER confidence. Return the sorted list of path ids.
 
 <PracticePlayground problemId="graphrag-prob-25" />

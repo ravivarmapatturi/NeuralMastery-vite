@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #408. Knowledge Graph & GraphRAG Module 5: Problem 24"
-description: "Master #408. Knowledge Graph & GraphRAG Module 5: Problem 24 in the Knowledge Graph & GraphRAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Merge Two Duplicate Nodes' Edges"
+description: "Implement duplicate-node merging, the real graph-maintenance operation applied after entity resolution decides two existing nodes actually refer to the same entity."
+difficulty: "medium"
 topic: "Knowledge Graph & GraphRAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #408. Knowledge Graph & GraphRAG Module 5: Problem 24
+# Merge Two Duplicate Nodes' Edges
 
-**Track**: Knowledge Graph & GraphRAG | **Rank**: #408 of 1072 | **Points**: 90 XP
+**Track**: Knowledge Graph & GraphRAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#408. Knowledge Graph & GraphRAG Module 5: Problem 24` to advance your mastery in **Knowledge Graph & GraphRAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement duplicate-node merging, the real graph-maintenance operation applied after entity resolution decides two existing nodes actually refer to the same entity.
 
 ## Task
 
-Implement the function `knowledge_graph_and_graphrag_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_duplicate_nodes(graph, keep, remove)`. Redirect all of `remove`'s outgoing edges onto `keep` (deduped, sorted), and every OTHER node's edge that points to `remove` is retargeted to point to `keep` instead (deduped, sorted). Delete the `remove` key entirely. Return the mutated graph.
 
 <PracticePlayground problemId="graphrag-prob-24" />

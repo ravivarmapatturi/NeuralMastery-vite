@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #394. Knowledge Graph & GraphRAG Module 2: Problem 10"
-description: "Master #394. Knowledge Graph & GraphRAG Module 2: Problem 10 in the Knowledge Graph & GraphRAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Score a Path by Edge Weight Product"
+description: "Implement path-confidence scoring by multiplying edge confidences, the real way a multi-hop graph reasoning chain's overall reliability degrades with each additional hop."
+difficulty: "medium"
 topic: "Knowledge Graph & GraphRAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #394. Knowledge Graph & GraphRAG Module 2: Problem 10
+# Score a Path by Edge Weight Product
 
-**Track**: Knowledge Graph & GraphRAG | **Rank**: #394 of 1072 | **Points**: 40 XP
+**Track**: Knowledge Graph & GraphRAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#394. Knowledge Graph & GraphRAG Module 2: Problem 10` to advance your mastery in **Knowledge Graph & GraphRAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement path-confidence scoring by multiplying edge confidences, the real way a multi-hop graph reasoning chain's overall reliability degrades with each additional hop.
 
 ## Task
 
-Implement the function `knowledge_graph_and_graphrag_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `score_path(path, edge_weights)`. For each consecutive pair `(path[i], path[i+1])`, look up its weight in `edge_weights` under the key `f'{path[i]}->{path[i+1]}'`. Return the PRODUCT of all edge weights along the path. Return `1.0` for a path with 0 or 1 nodes (no edges to traverse).
 
 <PracticePlayground problemId="graphrag-prob-10" />

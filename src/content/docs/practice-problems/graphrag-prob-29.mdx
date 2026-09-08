@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #413. Knowledge Graph & GraphRAG Module 6: Problem 29"
-description: "Master #413. Knowledge Graph & GraphRAG Module 6: Problem 29 in the Knowledge Graph & GraphRAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: GraphRAG Retrieval Recall Against Ground-Truth Entities"
+description: "Implement GraphRAG retrieval recall, measuring what fraction of the entities genuinely needed to answer a question were actually pulled into the retrieved subgraph."
+difficulty: "medium"
 topic: "Knowledge Graph & GraphRAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #413. Knowledge Graph & GraphRAG Module 6: Problem 29
+# GraphRAG Retrieval Recall Against Ground-Truth Entities
 
-**Track**: Knowledge Graph & GraphRAG | **Rank**: #413 of 1072 | **Points**: 90 XP
+**Track**: Knowledge Graph & GraphRAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#413. Knowledge Graph & GraphRAG Module 6: Problem 29` to advance your mastery in **Knowledge Graph & GraphRAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement GraphRAG retrieval recall, measuring what fraction of the entities genuinely needed to answer a question were actually pulled into the retrieved subgraph.
 
 ## Task
 
-Implement the function `knowledge_graph_and_graphrag_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `graph_retrieval_recall(retrieved_entities, ground_truth_entities)`: return `|retrieved ∩ ground_truth| / |ground_truth|`. Return `1.0` if `ground_truth_entities` is empty (vacuously complete).
 
 <PracticePlayground problemId="graphrag-prob-29" />

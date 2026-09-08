@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #454. Agent Security & Reliability Module 3: Problem 12"
-description: "Master #454. Agent Security & Reliability Module 3: Problem 12 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Check Dependency Version Is Pinned"
+description: "Implement dependency-pinning validation, a real supply-chain security check flagging unpinned dependencies an agent (or its generated code) might introduce."
+difficulty: "easy"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #454. Agent Security & Reliability Module 3: Problem 12
+# Check Dependency Version Is Pinned
 
-**Track**: Agent Security & Reliability | **Rank**: #454 of 1072 | **Points**: 60 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#454. Agent Security & Reliability Module 3: Problem 12` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement dependency-pinning validation, a real supply-chain security check flagging unpinned dependencies an agent (or its generated code) might introduce.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_version_pinned(version_spec)`. Return `False` if `version_spec` is `'*'`, `'latest'`, or empty. Return `False` if it contains any of `'>='`, `'<='`, `'>'`, `'<'`, `'^'`, `'~'` (a range/floating spec). Otherwise (looks like an exact version, e.g. `'1.2.3'`) return `True`.
 
 <PracticePlayground problemId="security-prob-12" />

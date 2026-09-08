@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #444. Agent Security & Reliability Module 1: Problem 2"
-description: "Master #444. Agent Security & Reliability Module 1: Problem 2 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Redact PII Patterns From Text"
+description: "Implement basic PII redaction, a real output-side safety filter before an agent's response (which may echo retrieved content) is shown to a user or logged."
+difficulty: "medium"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #444. Agent Security & Reliability Module 1: Problem 2
+# Redact PII Patterns From Text
 
-**Track**: Agent Security & Reliability | **Rank**: #444 of 1072 | **Points**: 40 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#444. Agent Security & Reliability Module 1: Problem 2` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement basic PII redaction, a real output-side safety filter before an agent's response (which may echo retrieved content) is shown to a user or logged.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `redact_pii(text)`. Replace every email-like pattern (`\S+@\S+\.\S+`) with `'[EMAIL]'` and every US-phone-like pattern (`\d{3}-\d{3}-\d{4}`) with `'[PHONE]'`.
 
 <PracticePlayground problemId="security-prob-2" />

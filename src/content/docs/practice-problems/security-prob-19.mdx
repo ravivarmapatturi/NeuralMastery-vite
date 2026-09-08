@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #461. Agent Security & Reliability Module 4: Problem 19"
-description: "Master #461. Agent Security & Reliability Module 4: Problem 19 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Data Exfiltration Egress URL Check"
+description: "Implement egress-domain allowlisting, a real, critical safeguard preventing an agent's HTTP tool from sending data to an attacker-controlled external URL (a real exfiltration vector via prompt injection)."
 difficulty: "medium"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #461. Agent Security & Reliability Module 4: Problem 19
+# Data Exfiltration Egress URL Check
 
-**Track**: Agent Security & Reliability | **Rank**: #461 of 1072 | **Points**: 60 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#461. Agent Security & Reliability Module 4: Problem 19` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement egress-domain allowlisting, a real, critical safeguard preventing an agent's HTTP tool from sending data to an attacker-controlled external URL (a real exfiltration vector via prompt injection).
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_egress_allowed(target_url, allowed_domains)`. Extract the domain: strip a leading `'http://'` or `'https://'`, then take everything up to (not including) the first `'/'` or end of string. Return `True` if that domain EXACTLY matches one in `allowed_domains` (no subdomain wildcarding).
 
 <PracticePlayground problemId="security-prob-19" />

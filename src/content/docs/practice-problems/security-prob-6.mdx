@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #448. Agent Security & Reliability Module 2: Problem 6"
-description: "Master #448. Agent Security & Reliability Module 2: Problem 6 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Scan Text for API-Key-Shaped Secrets"
+description: "Implement a real, simple secret-leakage scanner, catching an agent about to log or echo something that looks like an API key or access token."
+difficulty: "medium"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #448. Agent Security & Reliability Module 2: Problem 6
+# Scan Text for API-Key-Shaped Secrets
 
-**Track**: Agent Security & Reliability | **Rank**: #448 of 1072 | **Points**: 40 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#448. Agent Security & Reliability Module 2: Problem 6` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real, simple secret-leakage scanner, catching an agent about to log or echo something that looks like an API key or access token.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_potential_secrets(text)`. Find every substring matching the pattern of 20+ consecutive alphanumeric/underscore/hyphen characters that contains AT LEAST one digit and at least one letter (a real, common shape for API keys/tokens). Return the sorted list of DISTINCT matches.
 
 <PracticePlayground problemId="security-prob-6" />

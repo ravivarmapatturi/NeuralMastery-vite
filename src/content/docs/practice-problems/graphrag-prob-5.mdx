@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #389. Knowledge Graph & GraphRAG Module 1: Problem 5"
-description: "Master #389. Knowledge Graph & GraphRAG Module 1: Problem 5 in the Knowledge Graph & GraphRAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Fuzzy Entity Name Similarity via Character Bigrams"
+description: "Implement character-bigram Jaccard similarity, a real, simple fuzzy-matching technique for entity resolution when two mentions refer to the same entity but aren't spelled identically."
+difficulty: "medium"
 topic: "Knowledge Graph & GraphRAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #389. Knowledge Graph & GraphRAG Module 1: Problem 5
+# Fuzzy Entity Name Similarity via Character Bigrams
 
-**Track**: Knowledge Graph & GraphRAG | **Rank**: #389 of 1072 | **Points**: 40 XP
+**Track**: Knowledge Graph & GraphRAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#389. Knowledge Graph & GraphRAG Module 1: Problem 5` to advance your mastery in **Knowledge Graph & GraphRAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement character-bigram Jaccard similarity, a real, simple fuzzy-matching technique for entity resolution when two mentions refer to the same entity but aren't spelled identically.
 
 ## Task
 
-Implement the function `knowledge_graph_and_graphrag_module_1_problem_5`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `entity_name_similarity(name_a, name_b)`. Lowercase both names, then form the SET of consecutive 2-character substrings (bigrams) of each. Return the Jaccard similarity between the two bigram sets. Return `1.0` if both names are identical after lowercasing.
 
 <PracticePlayground problemId="graphrag-prob-5" />

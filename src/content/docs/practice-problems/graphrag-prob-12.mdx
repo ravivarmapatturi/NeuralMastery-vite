@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #396. Knowledge Graph & GraphRAG Module 3: Problem 12"
-description: "Master #396. Knowledge Graph & GraphRAG Module 3: Problem 12 in the Knowledge Graph & GraphRAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Resolve Entity Alias to Canonical ID"
+description: "Implement alias resolution, mapping a text mention (e.g. an abbreviation or nickname) to its canonical entity id in a knowledge graph."
+difficulty: "easy"
 topic: "Knowledge Graph & GraphRAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #396. Knowledge Graph & GraphRAG Module 3: Problem 12
+# Resolve Entity Alias to Canonical ID
 
-**Track**: Knowledge Graph & GraphRAG | **Rank**: #396 of 1072 | **Points**: 60 XP
+**Track**: Knowledge Graph & GraphRAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#396. Knowledge Graph & GraphRAG Module 3: Problem 12` to advance your mastery in **Knowledge Graph & GraphRAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement alias resolution, mapping a text mention (e.g. an abbreviation or nickname) to its canonical entity id in a knowledge graph.
 
 ## Task
 
-Implement the function `knowledge_graph_and_graphrag_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `resolve_alias(mention, alias_map)`: return `alias_map.get(mention, mention)` -- if the mention has a known canonical mapping, use it; otherwise treat the mention ITSELF as the canonical id (it's presumably already canonical or a new entity).
 
 <PracticePlayground problemId="graphrag-prob-12" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #469. Agent Security & Reliability Module 6: Problem 27"
-description: "Master #469. Agent Security & Reliability Module 6: Problem 27 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Least-Privilege Capability Set Check"
+description: "Implement a least-privilege check, flagging when an agent is requesting MORE capabilities than the task genuinely requires -- a real security-review finding, not just an access-denied case."
+difficulty: "medium"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #469. Agent Security & Reliability Module 6: Problem 27
+# Least-Privilege Capability Set Check
 
-**Track**: Agent Security & Reliability | **Rank**: #469 of 1072 | **Points**: 90 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#469. Agent Security & Reliability Module 6: Problem 27` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a least-privilege check, flagging when an agent is requesting MORE capabilities than the task genuinely requires -- a real security-review finding, not just an access-denied case.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_least_privilege(requested_capabilities, minimal_required_capabilities)`: return `True` only if `requested_capabilities` EQUALS `minimal_required_capabilities` exactly (requesting extra, unused capabilities violates least privilege, even if they'd technically be granted).
 
 <PracticePlayground problemId="security-prob-27" />

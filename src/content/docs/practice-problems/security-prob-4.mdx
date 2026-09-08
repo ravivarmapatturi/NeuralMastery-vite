@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #446. Agent Security & Reliability Module 1: Problem 4"
-description: "Master #446. Agent Security & Reliability Module 1: Problem 4 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Detect Directory Traversal Sequences"
+description: "Implement directory-traversal detection, a real, standard input check before a file-tool argument is used to construct a filesystem path."
+difficulty: "medium"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #446. Agent Security & Reliability Module 1: Problem 4
+# Detect Directory Traversal Sequences
 
-**Track**: Agent Security & Reliability | **Rank**: #446 of 1072 | **Points**: 40 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#446. Agent Security & Reliability Module 1: Problem 4` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement directory-traversal detection, a real, standard input check before a file-tool argument is used to construct a filesystem path.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_path_traversal(path)`: return `True` if `path` contains the literal substring `'..'` ANYWHERE (a real, standard conservative rule -- reject rather than try to cleverly distinguish safe from unsafe uses of `..`).
 
 <PracticePlayground problemId="security-prob-4" />

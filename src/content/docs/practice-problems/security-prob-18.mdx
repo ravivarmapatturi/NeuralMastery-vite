@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #460. Agent Security & Reliability Module 4: Problem 18"
-description: "Master #460. Agent Security & Reliability Module 4: Problem 18 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Role-Based Access Control Check"
+description: "Implement role-based access control checking, the real, standard mechanism gating which agent actions a given user's role may authorize."
+difficulty: "easy"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #460. Agent Security & Reliability Module 4: Problem 18
+# Role-Based Access Control Check
 
-**Track**: Agent Security & Reliability | **Rank**: #460 of 1072 | **Points**: 60 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#460. Agent Security & Reliability Module 4: Problem 18` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement role-based access control checking, the real, standard mechanism gating which agent actions a given user's role may authorize.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `rbac_allows(user_role, required_permission, role_permissions)`: return `True` if `user_role` is a key in `role_permissions` AND `required_permission` is in that role's permission list.
 
 <PracticePlayground problemId="security-prob-18" />

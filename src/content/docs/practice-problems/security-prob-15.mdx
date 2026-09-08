@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #457. Agent Security & Reliability Module 3: Problem 15"
-description: "Master #457. Agent Security & Reliability Module 3: Problem 15 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Output-Length Denial-of-Service Guard"
+description: "Implement an output-length guard, a real, simple defense against a request asking for an unreasonably large generation that would tie up compute or spike cost."
+difficulty: "easy"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #457. Agent Security & Reliability Module 3: Problem 15
+# Output-Length Denial-of-Service Guard
 
-**Track**: Agent Security & Reliability | **Rank**: #457 of 1072 | **Points**: 60 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#457. Agent Security & Reliability Module 3: Problem 15` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement an output-length guard, a real, simple defense against a request asking for an unreasonably large generation that would tie up compute or spike cost.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_output_length_safe(requested_max_tokens, hard_ceiling)`: return `True` if `0 < requested_max_tokens <= hard_ceiling`.
 
 <PracticePlayground problemId="security-prob-15" />

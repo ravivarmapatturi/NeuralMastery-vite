@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #466. Agent Security & Reliability Module 5: Problem 24"
-description: "Master #466. Agent Security & Reliability Module 5: Problem 24 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Sanitize User Input Before Tool Use"
+description: "Implement basic input sanitization, stripping control characters and excess whitespace before user-supplied text flows into a tool argument."
+difficulty: "medium"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #466. Agent Security & Reliability Module 5: Problem 24
+# Sanitize User Input Before Tool Use
 
-**Track**: Agent Security & Reliability | **Rank**: #466 of 1072 | **Points**: 90 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#466. Agent Security & Reliability Module 5: Problem 24` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement basic input sanitization, stripping control characters and excess whitespace before user-supplied text flows into a tool argument.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `sanitize_input(raw_input)`. Remove all ASCII control characters (code points 0-31, except plain space 32) from the string, then strip leading/trailing whitespace, then collapse any run of internal whitespace to a single space.
 
 <PracticePlayground problemId="security-prob-24" />

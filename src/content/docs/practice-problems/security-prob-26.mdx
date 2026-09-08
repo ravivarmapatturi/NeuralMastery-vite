@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #468. Agent Security & Reliability Module 6: Problem 26"
-description: "Master #468. Agent Security & Reliability Module 6: Problem 26 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Detect Stale Security-Patched Dependency"
+description: "Implement security-patch staleness detection, a real check flagging when a dependency's applied security patch is far enough behind the latest known patch to warrant an update."
+difficulty: "medium"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #468. Agent Security & Reliability Module 6: Problem 26
+# Detect Stale Security-Patched Dependency
 
-**Track**: Agent Security & Reliability | **Rank**: #468 of 1072 | **Points**: 90 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#468. Agent Security & Reliability Module 6: Problem 26` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement security-patch staleness detection, a real check flagging when a dependency's applied security patch is far enough behind the latest known patch to warrant an update.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_patch_stale(current_patch_date, latest_patch_date, staleness_threshold_days)`. Both dates are days-since-epoch floats. Return `True` if `(latest_patch_date - current_patch_date) > staleness_threshold_days`.
 
 <PracticePlayground problemId="security-prob-26" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #411. Knowledge Graph & GraphRAG Module 6: Problem 27"
-description: "Master #411. Knowledge Graph & GraphRAG Module 6: Problem 27 in the Knowledge Graph & GraphRAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Check Answer Entities Are Grounded in Retrieved Subgraph"
+description: "Implement GraphRAG answer-grounding validation, checking that every entity a generated answer names actually appeared in the retrieved subgraph (not hallucinated)."
+difficulty: "medium"
 topic: "Knowledge Graph & GraphRAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #411. Knowledge Graph & GraphRAG Module 6: Problem 27
+# Check Answer Entities Are Grounded in Retrieved Subgraph
 
-**Track**: Knowledge Graph & GraphRAG | **Rank**: #411 of 1072 | **Points**: 90 XP
+**Track**: Knowledge Graph & GraphRAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#411. Knowledge Graph & GraphRAG Module 6: Problem 27` to advance your mastery in **Knowledge Graph & GraphRAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement GraphRAG answer-grounding validation, checking that every entity a generated answer names actually appeared in the retrieved subgraph (not hallucinated).
 
 ## Task
 
-Implement the function `knowledge_graph_and_graphrag_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `answer_entities_grounded(answer_entities, subgraph_entities)`: return `True` only if EVERY entity in `answer_entities` is present in `subgraph_entities`. An empty `answer_entities` list is trivially grounded.
 
 <PracticePlayground problemId="graphrag-prob-27" />

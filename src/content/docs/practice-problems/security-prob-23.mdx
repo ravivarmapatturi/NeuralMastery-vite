@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #465. Agent Security & Reliability Module 5: Problem 23"
-description: "Master #465. Agent Security & Reliability Module 5: Problem 23 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Cumulative Resource Quota Enforcement"
+description: "Implement cumulative resource quota enforcement, a real spend/usage cap distinct from a per-request rate limit -- bounding TOTAL usage over a billing period rather than instantaneous rate."
+difficulty: "easy"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #465. Agent Security & Reliability Module 5: Problem 23
+# Cumulative Resource Quota Enforcement
 
-**Track**: Agent Security & Reliability | **Rank**: #465 of 1072 | **Points**: 90 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#465. Agent Security & Reliability Module 5: Problem 23` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement cumulative resource quota enforcement, a real spend/usage cap distinct from a per-request rate limit -- bounding TOTAL usage over a billing period rather than instantaneous rate.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `within_quota(used_so_far, additional_usage, quota)`: return `True` if `(used_so_far + additional_usage) <= quota`.
 
 <PracticePlayground problemId="security-prob-23" />

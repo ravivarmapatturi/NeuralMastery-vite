@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #467. Agent Security & Reliability Module 5: Problem 25"
-description: "Master #467. Agent Security & Reliability Module 5: Problem 25 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Multi-Tenant Resource Isolation Check"
+description: "Implement multi-tenant isolation checking, the real, critical boundary preventing one tenant's agent from accessing another tenant's data in a shared multi-tenant deployment."
+difficulty: "easy"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #467. Agent Security & Reliability Module 5: Problem 25
+# Multi-Tenant Resource Isolation Check
 
-**Track**: Agent Security & Reliability | **Rank**: #467 of 1072 | **Points**: 90 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#467. Agent Security & Reliability Module 5: Problem 25` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement multi-tenant isolation checking, the real, critical boundary preventing one tenant's agent from accessing another tenant's data in a shared multi-tenant deployment.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_tenant_isolated(requesting_tenant_id, resource_tenant_id)`: return `True` (access allowed, properly isolated) if `requesting_tenant_id == resource_tenant_id`.
 
 <PracticePlayground problemId="security-prob-25" />

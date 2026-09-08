@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #459. Agent Security & Reliability Module 4: Problem 17"
-description: "Master #459. Agent Security & Reliability Module 4: Problem 17 in the Agent Security & Reliability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Validate Session Token Not Expired"
+description: "Implement session-token expiry validation, a real, basic authentication check before honoring any agent action taken on behalf of an authenticated session."
+difficulty: "easy"
 topic: "Agent Security & Reliability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #459. Agent Security & Reliability Module 4: Problem 17
+# Validate Session Token Not Expired
 
-**Track**: Agent Security & Reliability | **Rank**: #459 of 1072 | **Points**: 60 XP
+**Track**: Agent Security & Reliability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#459. Agent Security & Reliability Module 4: Problem 17` to advance your mastery in **Agent Security & Reliability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement session-token expiry validation, a real, basic authentication check before honoring any agent action taken on behalf of an authenticated session.
 
 ## Task
 
-Implement the function `agent_security_and_reliability_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_session_valid(issued_at, current_time, ttl_seconds)`: return `True` if `(current_time - issued_at) < ttl_seconds`.
 
 <PracticePlayground problemId="security-prob-17" />

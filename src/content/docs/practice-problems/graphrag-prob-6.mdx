@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #390. Knowledge Graph & GraphRAG Module 2: Problem 6"
-description: "Master #390. Knowledge Graph & GraphRAG Module 2: Problem 6 in the Knowledge Graph & GraphRAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Classify Relation Type by Keyword Rule"
+description: "Implement rule-based relation-type classification, mapping a raw extracted predicate phrase into a normalized relation category for a knowledge graph schema."
 difficulty: "easy"
 topic: "Knowledge Graph & GraphRAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #390. Knowledge Graph & GraphRAG Module 2: Problem 6
+# Classify Relation Type by Keyword Rule
 
-**Track**: Knowledge Graph & GraphRAG | **Rank**: #390 of 1072 | **Points**: 40 XP
+**Track**: Knowledge Graph & GraphRAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#390. Knowledge Graph & GraphRAG Module 2: Problem 6` to advance your mastery in **Knowledge Graph & GraphRAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement rule-based relation-type classification, mapping a raw extracted predicate phrase into a normalized relation category for a knowledge graph schema.
 
 ## Task
 
-Implement the function `knowledge_graph_and_graphrag_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `classify_relation(predicate_text)`. Lowercase the input. If it contains `'ceo'` or `'founder'` or `'leads'`, return `'LEADERSHIP'`. If it contains `'located'` or `'based'`, return `'LOCATION'`. If it contains `'acquire'` or `'bought'` or `'owns'`, return `'OWNERSHIP'`. Otherwise return `'OTHER'`. Check categories in the order listed (first match wins).
 
 <PracticePlayground problemId="graphrag-prob-6" />
