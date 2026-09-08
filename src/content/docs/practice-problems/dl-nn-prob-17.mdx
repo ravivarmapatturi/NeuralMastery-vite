@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #877. Deep Learning & Neural Networks Module 4: Problem 17"
 description: "Master #877. Deep Learning & Neural Networks Module 4: Problem 17 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,34 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #877. Deep Learning & Neural Networks Module 4: Problem 17
+# #877. Global Gradient Norm Clipping
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #877 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#877. Deep Learning & Neural Networks Module 4: Problem 17` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Mitigate exploding gradients in deep neural networks and recurrent models by scaling down gradients when their L2 norm exceeds a threshold.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `grad_clip_by_norm(grads, max_norm)`: compute the global L2 norm `norm = sqrt(sum(g_i^2))`. If `norm > max_norm`, scale each gradient element by `max_norm / norm`; otherwise leave gradients unchanged. Return `{'clipped_grads': [...], 'global_norm': norm}` with all numbers rounded to 6 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-17" />
+
+<Solution>
+
+```python
+def grad_clip_by_norm(grads: list[float], max_norm: float) -> dict:
+    global_norm = math.sqrt(sum(g ** 2 for g in grads))
+    if global_norm <= max_norm or global_norm == 0.0:
+        scale = 1.0
+    else:
+        scale = max_norm / global_norm
+    return {"clipped_grads": [round(g * scale, 6) for g in grads], "global_norm": round(global_norm, 6)}
+```
+
+By scaling all elements by min(1, max_norm / norm), the relative direction of the gradient vector is maintained without exceeding max_norm.
+
+</Solution>

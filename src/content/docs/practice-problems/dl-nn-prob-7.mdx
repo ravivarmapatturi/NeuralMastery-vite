@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #867. Deep Learning & Neural Networks Module 2: Problem 7"
 description: "Master #867. Deep Learning & Neural Networks Module 2: Problem 7 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #867. Deep Learning & Neural Networks Module 2: Problem 7
+# #867. Kaiming / He Initialization Variance
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #867 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#867. Deep Learning & Neural Networks Module 2: Problem 7` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate the exact standard deviation for Kaiming (He) normal initialization to preserve activation variance across deep layers.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `he_initialization_std(fan_in, mode='relu')`: compute `std = gain / sqrt(fan_in)`. The `gain` depends on `mode`: for `'relu'`, `gain = sqrt(2.0)`; for `'leaky_relu'`, `gain = sqrt(2.0 / (1.0 + 0.01^2))`; for any other string (e.g. `'linear'`), `gain = 1.0`. Return `std` rounded to 6 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-7" />
+
+<Solution>
+
+```python
+def he_initialization_std(fan_in: int, mode: str = "relu") -> float:
+    if mode == "relu":
+        gain = math.sqrt(2.0)
+    elif mode == "leaky_relu":
+        gain = math.sqrt(2.0 / (1.0 + 0.01 ** 2))
+    else:
+        gain = 1.0
+    std = gain / math.sqrt(fan_in)
+    return round(std, 6)
+```
+
+Because ReLU zeroes out approximately half the incoming inputs, the variance of outputs halves unless weights are scaled by sqrt(2/fan_in).
+
+</Solution>

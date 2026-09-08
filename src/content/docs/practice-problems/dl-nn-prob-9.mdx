@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #869. Deep Learning & Neural Networks Module 2: Problem 9"
 description: "Master #869. Deep Learning & Neural Networks Module 2: Problem 9 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #869. Deep Learning & Neural Networks Module 2: Problem 9
+# #869. SGD with Momentum Parameter Step
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #869 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#869. Deep Learning & Neural Networks Module 2: Problem 9` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Accelerate stochastic gradient descent and dampen oscillations along ravines using classical momentum.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `sgd_momentum_step(param, grad, velocity, lr, momentum)`: for each index `k`, update the velocity as `v_k = momentum * velocity[k] + lr * grad[k]`, and then update the parameter as `param_k = param[k] - v_k`. Return a dictionary `{'param': [...], 'velocity': [...]}` with each float rounded to 6 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-9" />
+
+<Solution>
+
+```python
+def sgd_momentum_step(param: list[float], grad: list[float], velocity: list[float], lr: float, momentum: float) -> dict:
+    new_v = []
+    new_p = []
+    for p, g, v in zip(param, grad, velocity):
+        v_step = momentum * v + lr * g
+        p_step = p - v_step
+        new_v.append(round(v_step, 6))
+        new_p.append(round(p_step, 6))
+    return {"param": new_p, "velocity": new_v}
+```
+
+Classical momentum treats parameters as particles moving through a friction-dampened potential landscape: velocity retains history and integrates the current gradient force.
+
+</Solution>

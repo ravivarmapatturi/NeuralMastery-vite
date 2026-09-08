@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #898. Computer Vision & CNN Architectures Module 2: Problem 8"
 description: "Master #898. Computer Vision & CNN Architectures Module 2: Problem 8 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,44 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #898. Computer Vision & CNN Architectures Module 2: Problem 8
+# #898. Per-Channel Image Normalization
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #898 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#898. Computer Vision & CNN Architectures Module 2: Problem 8` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Standardize input image distributions using dataset channel statistics (e.g. ImageNet mean/std) for neural network pre-processing.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `image_normalize(img, mean, std)`: for each channel `c` in tensor `img` of shape `(C, H, W)`, subtract `mean[c]` and divide by `std[c]`: `out[c][i][j] = (img[c][i][j] - mean[c]) / std[c]`. Return the normalized tensor rounded to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-8" />
+
+<Solution>
+
+```python
+def image_normalize(img: list[list[list[float]]], mean: list[float], std: list[float]) -> list[list[list[float]]]:
+    C = len(img)
+    H = len(img[0])
+    W = len(img[0][0])
+    out = []
+    for c in range(C):
+        c_mat = []
+        m = mean[c]
+        s = std[c]
+        for i in range(H):
+            row = []
+            for j in range(W):
+                val = (img[c][i][j] - m) / s
+                row.append(round(float(val), 4))
+            c_mat.append(row)
+        out.append(c_mat)
+    return out
+```
+
+Standardizing each channel by its channel-specific mean and standard deviation aligns the input distribution with pretrained model weights.
+
+</Solution>

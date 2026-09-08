@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #862. Deep Learning & Neural Networks Module 1: Problem 2"
 description: "Master #862. Deep Learning & Neural Networks Module 1: Problem 2 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #862. Deep Learning & Neural Networks Module 1: Problem 2
+# #862. ReLU Backward Gradient Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #862 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#862. Deep Learning & Neural Networks Module 1: Problem 2` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Backpropagate upstream gradients through a Rectified Linear Unit (ReLU) activation function.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `relu_backward(dout, x)` which computes the element-wise gradient `dx` given upstream gradient `dout` and forward input cache `x`. For each element, if `x[i][j] > 0`, the derivative is 1 so `dx[i][j] = dout[i][j]`; if `x[i][j] <= 0`, the derivative is 0 so `dx[i][j] = 0.0`. Round results to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-2" />
+
+<Solution>
+
+```python
+def relu_backward(dout: list[list[float]], x: list[list[float]]) -> list[list[float]]:
+    out = []
+    for i in range(len(dout)):
+        row = []
+        for j in range(len(dout[0])):
+            grad = dout[i][j] if x[i][j] > 0.0 else 0.0
+            row.append(round(float(grad), 4))
+        out.append(row)
+    return out
+```
+
+The derivative of ReLU(x) is 1 for x `>` 0 and 0 for x `<=` 0. By the chain rule, upstream gradient dout is multiplied element-wise by this local derivative.
+
+</Solution>

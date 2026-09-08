@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #907. Computer Vision & CNN Architectures Module 4: Problem 17"
 description: "Master #907. Computer Vision & CNN Architectures Module 4: Problem 17 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,43 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #907. Computer Vision & CNN Architectures Module 4: Problem 17
+# #907. Anchor Box Coordinate Generator for Object Detection
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #907 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#907. Computer Vision & CNN Architectures Module 4: Problem 17` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Synthesize candidate prior bounding boxes (anchors) across a spatial grid for single-stage and two-stage object detectors.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `generate_anchor_boxes(...)`. For each cell `(r, c)` in `[0..feature_map_h - 1] x [0..feature_map_w - 1]`, the center in image coordinates is `cy = (r + 0.5) * stride`, `cx = (c + 0.5) * stride`. For each scale `s` in `scales` and aspect ratio `ar` in `aspect_ratios`: width `w = base_size * s * sqrt(ar)`, height `h = base_size * s / sqrt(ar)`. The box is `[cx - w/2, cy - h/2, cx + w/2, cy + h/2]`. Round each coordinate to 2 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-17" />
+
+<Solution>
+
+```python
+def generate_anchor_boxes(feature_map_h: int, feature_map_w: int, stride: int, base_size: int, aspect_ratios: list[float], scales: list[float]) -> list[list[float]]:
+    boxes = []
+    for r in range(feature_map_h):
+        cy = (r + 0.5) * stride
+        for c in range(feature_map_w):
+            cx = (c + 0.5) * stride
+            for s in scales:
+                for ar in aspect_ratios:
+                    w = base_size * s * math.sqrt(ar)
+                    h = base_size * s / math.sqrt(ar)
+                    x1 = round(cx - w / 2.0, 2)
+                    y1 = round(cy - h / 2.0, 2)
+                    x2 = round(cx + w / 2.0, 2)
+                    y2 = round(cy + h / 2.0, 2)
+                    boxes.append([x1, y1, x2, y2])
+    return boxes
+```
+
+Iterating across grid coordinates and combining scales with aspect ratios generates the canonical set of anchor proposals.
+
+</Solution>

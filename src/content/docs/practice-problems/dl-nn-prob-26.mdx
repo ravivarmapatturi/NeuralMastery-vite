@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #886. Deep Learning & Neural Networks Module 6: Problem 26"
 description: "Master #886. Deep Learning & Neural Networks Module 6: Problem 26 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,41 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #886. Deep Learning & Neural Networks Module 6: Problem 26
+# #886. Vanilla Elman RNN Step Forward
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #886 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#886. Deep Learning & Neural Networks Module 6: Problem 26` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute recurrent state transitions for sequence modeling in a classic Elman recurrent neural network.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `vanilla_rnn_step_forward(x, h_prev, Wxh, Whh, bh)`: for each batch sample `i`, compute the new hidden state `h_next[i] = tanh(x[i] @ Wxh + h_prev[i] @ Whh + bh)`. Return `h_next` of shape `(N, H)` with all elements rounded to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-26" />
+
+<Solution>
+
+```python
+def vanilla_rnn_step_forward(x: list[list[float]], h_prev: list[list[float]], Wxh: list[list[float]], Whh: list[list[float]], bh: list[float]) -> list[list[float]]:
+    N = len(x)
+    D_in = len(Wxh)
+    H = len(Whh)
+    h_next = []
+    for i in range(N):
+        row = []
+        for j in range(H):
+            in_term = sum(x[i][k] * Wxh[k][j] for k in range(D_in))
+            hid_term = sum(h_prev[i][k] * Whh[k][j] for k in range(H))
+            val = math.tanh(in_term + hid_term + bh[j])
+            row.append(round(float(val), 4))
+        h_next.append(row)
+    return h_next
+```
+
+The current input vector and previous hidden state vector are projected into a common hidden dimension and passed through a hyperbolic tangent activation.
+
+</Solution>

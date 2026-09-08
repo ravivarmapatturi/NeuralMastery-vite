@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #874. Deep Learning & Neural Networks Module 3: Problem 14"
 description: "Master #874. Deep Learning & Neural Networks Module 3: Problem 14 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,58 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #874. Deep Learning & Neural Networks Module 3: Problem 14
+# #874. 1D Batch Normalization Forward Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #874 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#874. Deep Learning & Neural Networks Module 3: Problem 14` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Stabilize deep network training by standardizing mini-batch feature distributions across samples.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `batch_norm1d_forward(...)`: in `training=True` mode, compute sample mean `mu_B` and variance `sigma_B^2` across batch rows `N` for each feature column. Update running statistics: `running_mean = (1 - momentum) * running_mean + momentum * mu_B` and `running_var = (1 - momentum) * running_var + momentum * sigma_B^2`. Normalize inputs using `mu_B` and `sigma_B^2`. In `training=False` mode, use `running_mean` and `running_var` directly without updating them. Return `{'out': out, 'running_mean': ..., 'running_var': ...}`.
 
 <PracticePlayground problemId="dl-nn-prob-14" />
+
+<Solution>
+
+```python
+def batch_norm1d_forward(x: list[list[float]], gamma: list[float], beta: list[float], running_mean: list[float], running_var: list[float], eps: float = 1e-5, momentum: float = 0.1, training: bool = True) -> dict:
+    N = len(x)
+    D = len(x[0])
+    out = []
+    new_mean = list(running_mean)
+    new_var = list(running_var)
+
+    if training:
+        batch_mean = [sum(x[i][j] for i in range(N)) / N for j in range(D)]
+        batch_var = [sum((x[i][j] - batch_mean[j]) ** 2 for i in range(N)) / N for j in range(D)]
+        for j in range(D):
+            new_mean[j] = round((1.0 - momentum) * running_mean[j] + momentum * batch_mean[j], 6)
+            new_var[j] = round((1.0 - momentum) * running_var[j] + momentum * batch_var[j], 6)
+
+        for i in range(N):
+            row = []
+            for j in range(D):
+                x_hat = (x[i][j] - batch_mean[j]) / math.sqrt(batch_var[j] + eps)
+                y = gamma[j] * x_hat + beta[j]
+                row.append(round(float(y), 4))
+            out.append(row)
+    else:
+        for i in range(N):
+            row = []
+            for j in range(D):
+                x_hat = (x[i][j] - running_mean[j]) / math.sqrt(running_var[j] + eps)
+                y = gamma[j] * x_hat + beta[j]
+                row.append(round(float(y), 4))
+            out.append(row)
+
+    return {"out": out, "running_mean": new_mean, "running_var": new_var}
+```
+
+Batch normalization standardizes activations along the batch dimension during training and uses running statistics for deterministic evaluation.
+
+</Solution>

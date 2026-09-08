@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #913. Computer Vision & CNN Architectures Module 5: Problem 23"
 description: "Master #913. Computer Vision & CNN Architectures Module 5: Problem 23 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,38 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #913. Computer Vision & CNN Architectures Module 5: Problem 23
+# #913. Conv2D Backward Pass Gradient w.r.t. Kernel Weights
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #913 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#913. Computer Vision & CNN Architectures Module 5: Problem 23` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Derive and compute analytical gradients for convolutional filter weights during reverse-mode automatic differentiation.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `conv2d_backward_weights(...)`. For each kernel weight position `(ki, kj)` in `[0..kernel_size-1] x [0..kernel_size-1]`: `grad_W[ki][kj] = sum_{i=0..H_out-1, j=0..W_out-1} grad_output[i][j] * input_map[i * stride + ki][j * stride + kj]`. Round each value to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-23" />
+
+<Solution>
+
+```python
+def conv2d_backward_weights(input_map: list[list[float]], grad_output: list[list[float]], kernel_size: int = 3, stride: int = 1) -> list[list[float]]:
+    H_out = len(grad_output)
+    W_out = len(grad_output[0])
+    grad_w = []
+    for ki in range(kernel_size):
+        row = []
+        for kj in range(kernel_size):
+            val = sum(grad_output[i][j] * input_map[i * stride + ki][j * stride + kj] for i in range(H_out) for j in range(W_out))
+            row.append(round(val, 4))
+        grad_w.append(row)
+    return grad_w
+```
+
+Cross-correlating the input feature activation patches with upstream gradients yields the exact analytical weight updates.
+
+</Solution>

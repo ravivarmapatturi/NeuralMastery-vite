@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #863. Deep Learning & Neural Networks Module 1: Problem 3"
 description: "Master #863. Deep Learning & Neural Networks Module 1: Problem 3 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,35 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #863. Deep Learning & Neural Networks Module 1: Problem 3
+# #863. Binary Cross-Entropy Loss
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #863 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#863. Deep Learning & Neural Networks Module 1: Problem 3` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate stable binary cross-entropy loss for binary classification models with probability clipping.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `binary_cross_entropy(y_pred, y_true, eps=1e-7)`: compute the average BCE loss over `N` samples: `loss = -(1/N) * sum(y * log(p) + (1 - y) * log(1 - p))`. Clamp `y_pred` to `[eps, 1.0 - eps]` before taking logarithms to avoid numerical instability. Return the mean loss rounded to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-3" />
+
+<Solution>
+
+```python
+def binary_cross_entropy(y_pred: list[float], y_true: list[float], eps: float = 1e-7) -> float:
+    total = 0.0
+    n = len(y_pred)
+    for p, y in zip(y_pred, y_true):
+        p_clamped = max(min(p, 1.0 - eps), eps)
+        loss_i = -(y * math.log(p_clamped) + (1.0 - y) * math.log(1.0 - p_clamped))
+        total += loss_i
+    return round(total / n, 4)
+```
+
+Clamping predictions to [eps, 1 - eps] avoids log(0) undefined values. We sum individual cross entropies and divide by sample count N.
+
+</Solution>

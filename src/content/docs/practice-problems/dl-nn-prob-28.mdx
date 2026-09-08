@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #888. Deep Learning & Neural Networks Module 6: Problem 28"
 description: "Master #888. Deep Learning & Neural Networks Module 6: Problem 28 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,59 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #888. Deep Learning & Neural Networks Module 6: Problem 28
+# #888. Gated Recurrent Unit (GRU) Forward Step
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #888 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#888. Deep Learning & Neural Networks Module 6: Problem 28` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Execute update and reset gating mechanics in Cho et al.'s Gated Recurrent Unit.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `gru_cell_forward(...)`: concatenated input `[x, h_prev]` is mapped by `W_z` and `W_r` to compute update gate `z = sigmoid(x @ W_z[:D] + h_prev @ W_z[D:] + b_z)` and reset gate `r = sigmoid(x @ W_r[:D] + h_prev @ W_r[D:] + b_r)`. Candidate hidden state is `n = tanh(x @ W_h[:D] + (r * h_prev) @ W_h[D:] + b_h)`. New hidden state is `h_next = (1 - z) * n + z * h_prev`. Return `h_next` rounded to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-28" />
+
+<Solution>
+
+```python
+def gru_cell_forward(x: list[list[float]], h_prev: list[list[float]], W_z: list[list[float]], W_r: list[list[float]], W_h: list[list[float]], b_z: list[float], b_r: list[float], b_h: list[float]) -> list[list[float]]:
+    N = len(x)
+    D = len(x[0])
+    H = len(h_prev[0])
+
+    def sigmoid(v):
+        return 1.0 / (1.0 + math.exp(-max(min(v, 30.0), -30.0)))
+
+    h_next = []
+    for i in range(N):
+        z = []
+        for j in range(H):
+            val = sum(x[i][k] * W_z[k][j] for k in range(D)) + sum(h_prev[i][k] * W_z[D + k][j] for k in range(H)) + b_z[j]
+            z.append(sigmoid(val))
+
+        r = []
+        for j in range(H):
+            val = sum(x[i][k] * W_r[k][j] for k in range(D)) + sum(h_prev[i][k] * W_r[D + k][j] for k in range(H)) + b_r[j]
+            r.append(sigmoid(val))
+
+        n = []
+        for j in range(H):
+            val = sum(x[i][k] * W_h[k][j] for k in range(D)) + sum((r[k] * h_prev[i][k]) * W_h[D + k][j] for k in range(H)) + b_h[j]
+            n.append(math.tanh(val))
+
+        row = []
+        for j in range(H):
+            val = (1.0 - z[j]) * n[j] + z[j] * h_prev[i][j]
+            row.append(round(float(val), 4))
+        h_next.append(row)
+
+    return h_next
+```
+
+GRUs interpolate between the candidate activation and previous hidden state via the update gate, with fewer parameters than an LSTM.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #866. Deep Learning & Neural Networks Module 2: Problem 6"
 description: "Master #866. Deep Learning & Neural Networks Module 2: Problem 6 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,32 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #866. Deep Learning & Neural Networks Module 2: Problem 6
+# #866. Leaky ReLU Activation Forward
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #866 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#866. Deep Learning & Neural Networks Module 2: Problem 6` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the Leaky ReLU non-linearity to prevent the 'dying ReLU' problem in deep neural networks.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `leaky_relu(x, alpha=0.01)`: for each scalar `v` in matrix `x`, compute `v` if `v >= 0.0` else `alpha * v`. Round each value to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-6" />
+
+<Solution>
+
+```python
+def leaky_relu(x: list[list[float]], alpha: float = 0.01) -> list[list[float]]:
+    out = []
+    for row in x:
+        out.append([round(float(v if v >= 0.0 else alpha * v), 4) for v in row])
+    return out
+```
+
+If v is non-negative, the identity is preserved. For negative values, multiplying by a small slope alpha maintains gradient flow during backpropagation.
+
+</Solution>

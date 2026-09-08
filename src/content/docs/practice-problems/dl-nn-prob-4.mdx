@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #864. Deep Learning & Neural Networks Module 1: Problem 4"
 description: "Master #864. Deep Learning & Neural Networks Module 1: Problem 4 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #864. Deep Learning & Neural Networks Module 1: Problem 4
+# #864. Numerically Stable Softmax
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #864 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#864. Deep Learning & Neural Networks Module 1: Problem 4` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Transform unnormalized log-odds (logits) into a valid probability distribution without floating point overflow.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `softmax_stable(logits)`: for each row `z` in `logits`, compute `exp(z_i - max(z)) / sum(exp(z_j - max(z)))`. Subtracting the row maximum ensures that the largest exponent evaluated is `exp(0) = 1`, preventing float overflow. Round every output probability to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-4" />
+
+<Solution>
+
+```python
+def softmax_stable(logits: list[list[float]]) -> list[list[float]]:
+    out = []
+    for row in logits:
+        max_val = max(row)
+        exps = [math.exp(v - max_val) for v in row]
+        sum_exps = sum(exps)
+        probs = [round(e / sum_exps, 4) for e in exps]
+        out.append(probs)
+    return out
+```
+
+By subtracting the maximum logit in each row, we prevent numeric overflow from large positive values while preserving the exact probability distribution.
+
+</Solution>

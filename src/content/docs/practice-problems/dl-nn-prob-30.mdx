@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #890. Deep Learning & Neural Networks Module 6: Problem 30"
 description: "Master #890. Deep Learning & Neural Networks Module 6: Problem 30 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,61 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #890. Deep Learning & Neural Networks Module 6: Problem 30
+# #890. Unrolled RNN Forward Sequence
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #890 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#890. Deep Learning & Neural Networks Module 6: Problem 30` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Unroll a recurrent neural network across an entire temporal sequence, collecting hidden state histories and output predictions.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_6_problem_30`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `bptt_rnn_unroll(...)`: for each timestep `t` from `0` to `T - 1`, compute `h_t = tanh(x_seq[t] @ Wxh + h_{t-1} @ Whh + bh)` where `h_{-1} = h_init`. Then compute linear output projections `y_t = h_t @ Wy + by`. Return a dictionary `{'h_seq': h_seq, 'y_seq': y_seq}` where all floats are rounded to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-30" />
+
+<Solution>
+
+```python
+def bptt_rnn_unroll(x_seq: list[list[list[float]]], h_init: list[list[float]], Wxh: list[list[float]], Whh: list[list[float]], bh: list[float], Wy: list[list[float]], by: list[float]) -> dict:
+    T = len(x_seq)
+    N = len(x_seq[0])
+    D_in = len(Wxh)
+    H = len(Whh)
+    D_out = len(Wy[0])
+
+    h_seq = []
+    y_seq = []
+    h_prev = h_init
+
+    for t in range(T):
+        h_t = []
+        y_t = []
+        for i in range(N):
+            row_h = []
+            for j in range(H):
+                in_term = sum(x_seq[t][i][k] * Wxh[k][j] for k in range(D_in))
+                hid_term = sum(h_prev[i][k] * Whh[k][j] for k in range(H))
+                val_h = math.tanh(in_term + hid_term + bh[j])
+                row_h.append(round(float(val_h), 4))
+            h_t.append(row_h)
+
+            row_y = []
+            for j in range(D_out):
+                val_y = sum(row_h[k] * Wy[k][j] for k in range(H)) + by[j]
+                row_y.append(round(float(val_y), 4))
+            y_t.append(row_y)
+
+        h_seq.append(h_t)
+        y_seq.append(y_t)
+        h_prev = h_t
+
+    return {"h_seq": h_seq, "y_seq": y_seq}
+```
+
+Unrolling in time constructs the full computational trajectory needed for sequence generation and backpropagation through time.
+
+</Solution>

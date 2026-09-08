@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #868. Deep Learning & Neural Networks Module 2: Problem 8"
 description: "Master #868. Deep Learning & Neural Networks Module 2: Problem 8 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,39 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #868. Deep Learning & Neural Networks Module 2: Problem 8
+# #868. Inverted Dropout Forward Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #868 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#868. Deep Learning & Neural Networks Module 2: Problem 8` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Apply inverted dropout regularization during training to prevent co-adaptation of feature representations.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dropout_forward(x, p_drop, mask)`: given activations `x`, dropout probability `p_drop`, and binary keep-mask `mask` (where `1` means keep, `0` means drop), compute `out[i][j] = (x[i][j] * mask[i][j]) / (1.0 - p_drop)`. Scaling during training ensures that no scaling is required at test time. Round each element to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-8" />
+
+<Solution>
+
+```python
+def dropout_forward(x: list[list[float]], p_drop: float, mask: list[list[int]]) -> list[list[float]]:
+    if p_drop >= 1.0:
+        return [[0.0 for _ in row] for row in x]
+    scale = 1.0 / (1.0 - p_drop)
+    out = []
+    for i in range(len(x)):
+        row = []
+        for j in range(len(x[0])):
+            val = (x[i][j] * mask[i][j]) * scale
+            row.append(round(float(val), 4))
+        out.append(row)
+    return out
+```
+
+Multiplying kept activations by 1/(1 - p) scales up surviving units so the total energy / expected sum of activations matches inference mode.
+
+</Solution>

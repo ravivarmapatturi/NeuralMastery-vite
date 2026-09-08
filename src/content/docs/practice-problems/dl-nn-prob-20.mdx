@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #880. Deep Learning & Neural Networks Module 4: Problem 20"
 description: "Master #880. Deep Learning & Neural Networks Module 4: Problem 20 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,37 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #880. Deep Learning & Neural Networks Module 4: Problem 20
+# #880. Swish / SiLU Activation Forward Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #880 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#880. Deep Learning & Neural Networks Module 4: Problem 20` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the smooth, non-monotonic Swish/SiLU activation function popularized by Ramachandran et al. and used extensively in EfficientNet and LLaMA.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `swish_forward(x, beta=1.0)`: for each scalar `v` in matrix `x`, compute `v * (1 / (1 + exp(-beta * v)))`. Round each resulting value to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-20" />
+
+<Solution>
+
+```python
+def swish_forward(x: list[list[float]], beta: float = 1.0) -> list[list[float]]:
+    out = []
+    for row in x:
+        r = []
+        for v in row:
+            sig = 1.0 / (1.0 + math.exp(-beta * v))
+            y = v * sig
+            r.append(round(float(y), 4))
+        out.append(r)
+    return out
+```
+
+Swish interpolates between the identity (when beta approaches 0) and ReLU (when beta approaches infinity), with beta=1 producing the standard SiLU function.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #887. Deep Learning & Neural Networks Module 6: Problem 27"
 description: "Master #887. Deep Learning & Neural Networks Module 6: Problem 27 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,59 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #887. Deep Learning & Neural Networks Module 6: Problem 27
+# #887. LSTM Cell Forward Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #887 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#887. Deep Learning & Neural Networks Module 6: Problem 27` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Regulate sequence memory and overcome vanishing gradients using gated LSTM memory cells.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `lstm_cell_forward(...)`: compute combined gate pre-activations `raw = x @ W_x + h_prev @ W_h + b` of length `4 * H`. Split into input gate `i = sigmoid(raw[0:H])`, forget gate `f = sigmoid(raw[H:2H])`, candidate cell `g = tanh(raw[2H:3H])`, and output gate `o = sigmoid(raw[3H:4H])`. Update cell state `c_next = f * c_prev + i * g`, and hidden state `h_next = o * tanh(c_next)`. Return `{'h_next': h_next, 'c_next': c_next}` with elements rounded to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-27" />
+
+<Solution>
+
+```python
+def lstm_cell_forward(x: list[list[float]], h_prev: list[list[float]], c_prev: list[list[float]], W_x: list[list[float]], W_h: list[list[float]], b: list[float]) -> dict:
+    N = len(x)
+    D_in = len(W_x)
+    H = len(h_prev[0])
+
+    def sigmoid(v):
+        return 1.0 / (1.0 + math.exp(-max(min(v, 30.0), -30.0)))
+
+    next_h = []
+    next_c = []
+    for n in range(N):
+        raw_gates = []
+        for j in range(4 * H):
+            v = sum(x[n][k] * W_x[k][j] for k in range(D_in)) + sum(h_prev[n][k] * W_h[k][j] for k in range(H)) + b[j]
+            raw_gates.append(v)
+
+        i_gate = [sigmoid(raw_gates[j]) for j in range(0, H)]
+        f_gate = [sigmoid(raw_gates[j]) for j in range(H, 2 * H)]
+        g_gate = [math.tanh(raw_gates[j]) for j in range(2 * H, 3 * H)]
+        o_gate = [sigmoid(raw_gates[j]) for j in range(3 * H, 4 * H)]
+
+        c_row = []
+        h_row = []
+        for j in range(H):
+            c_val = f_gate[j] * c_prev[n][j] + i_gate[j] * g_gate[j]
+            h_val = o_gate[j] * math.tanh(c_val)
+            c_row.append(round(float(c_val), 4))
+            h_row.append(round(float(h_val), 4))
+        next_c.append(c_row)
+        next_h.append(h_row)
+
+    return {"h_next": next_h, "c_next": next_c}
+```
+
+LSTMs use additive linear cell updates modulated by sigmoid gates to control memory retention and update.
+
+</Solution>

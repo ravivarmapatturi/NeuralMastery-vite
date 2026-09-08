@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #873. Deep Learning & Neural Networks Module 3: Problem 13"
 description: "Master #873. Deep Learning & Neural Networks Module 3: Problem 13 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,43 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #873. Deep Learning & Neural Networks Module 3: Problem 13
+# #873. Layer Normalization Forward Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #873 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#873. Deep Learning & Neural Networks Module 3: Problem 13` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Normalize activations across the channel/feature dimension independently per sample, as standard in Transformers and RNNs.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `layer_norm_forward(x, gamma, beta, eps=1e-5)`: for each sample row `x[i]` of length `D`, compute mean `mu_i = (1/D) * sum(x[i])` and variance `sigma_i^2 = (1/D) * sum((x[i][j] - mu_i)^2)`. Normalize each entry `x_hat[i][j] = (x[i][j] - mu_i) / sqrt(sigma_i^2 + eps)` and apply affine parameters `y[i][j] = gamma[j] * x_hat[i][j] + beta[j]`. Round each value to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-13" />
+
+<Solution>
+
+```python
+def layer_norm_forward(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]:
+    N = len(x)
+    D = len(x[0])
+    out = []
+    for i in range(N):
+        row = x[i]
+        mean = sum(row) / D
+        var = sum((v - mean) ** 2 for v in row) / D
+        std = math.sqrt(var + eps)
+        norm_row = []
+        for j in range(D):
+            x_hat = (row[j] - mean) / std
+            y = gamma[j] * x_hat + beta[j]
+            norm_row.append(round(float(y), 4))
+        out.append(norm_row)
+    return out
+```
+
+LayerNorm calculates the empirical mean and variance across the feature dimension for each sample independently, normalizing before applying scale gamma and bias beta.
+
+</Solution>

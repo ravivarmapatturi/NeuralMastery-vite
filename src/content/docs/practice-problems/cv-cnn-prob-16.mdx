@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #906. Computer Vision & CNN Architectures Module 4: Problem 16"
 description: "Master #906. Computer Vision & CNN Architectures Module 4: Problem 16 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,33 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #906. Computer Vision & CNN Architectures Module 4: Problem 16
+# #906. Transposed Conv2D Output Spatial Dimension Calculator
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #906 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#906. Computer Vision & CNN Architectures Module 4: Problem 16` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate the exact output spatial dimensions of transposed 2D convolution layers used in decoder architectures.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `conv_transpose2d_output_shape(...)`. In PyTorch/TensorFlow deconvolution: `out_dim = (in_dim - 1) * stride - 2 * pad + dilation * (k - 1) + out_pad + 1`. Compute and return `[out_H, out_W]`.
 
 <PracticePlayground problemId="cv-cnn-prob-16" />
+
+<Solution>
+
+```python
+def conv_transpose2d_output_shape(H: int, W: int, kH: int, kW: int, stride_h: int = 1, stride_w: int = 1, pad_h: int = 0, pad_w: int = 0, out_pad_h: int = 0, out_pad_w: int = 0, dilation_h: int = 1, dilation_w: int = 1) -> list[int]:
+    eff_kH = dilation_h * (kH - 1) + 1
+    eff_kW = dilation_w * (kW - 1) + 1
+    out_H = (H - 1) * stride_h - 2 * pad_h + eff_kH + out_pad_h
+    out_W = (W - 1) * stride_w - 2 * pad_w + eff_kW + out_pad_w
+    return [out_H, out_W]
+```
+
+Using the inverse relationship of the standard convolution spatial equation gives the transposed convolution output formula.
+
+</Solution>

@@ -1,23 +1,51 @@
 ---
-placeholder: true
 title: "Practice: #914. Computer Vision & CNN Architectures Module 5: Problem 24"
 description: "Master #914. Computer Vision & CNN Architectures Module 5: Problem 24 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+difficulty: "medium"
 topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #914. Computer Vision & CNN Architectures Module 5: Problem 24
+# #914. 2D Max Pooling Backward Pass Gradient Router
 
-**Track**: Computer Vision & CNN Architectures | **Rank**: #914 of 1072 | **Points**: 90 XP
+**Track**: Computer Vision & CNN Architectures | **Rank**: #914 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#914. Computer Vision & CNN Architectures Module 5: Problem 24` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Route backpropagated errors solely to the active argmax elements that contributed to downstream pooling activations.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `max_pool2d_backward(...)`. Initialize `grad_input` to zeros with shape `(H_in, W_in)`. For each pooling window `(i, j)`, find the index `(max_r, max_c)` corresponding to the maximum value in `input_map[i*stride : i*stride+pool_size, j*stride : j*stride+pool_size]`. (If multiple elements tie, pick the first in row-major order). Add `grad_output[i][j]` to `grad_input[max_r][max_c]`. Round all elements in `grad_input` to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-24" />
+
+<Solution>
+
+```python
+def max_pool2d_backward(input_map: list[list[float]], grad_output: list[list[float]], pool_size: int = 2, stride: int = 2) -> list[list[float]]:
+    H_in = len(input_map)
+    W_in = len(input_map[0])
+    H_out = len(grad_output)
+    W_out = len(grad_output[0])
+    grad_in = [[0.0 for _ in range(W_in)] for _ in range(H_in)]
+    for i in range(H_out):
+        for j in range(W_out):
+            r_start = i * stride
+            c_start = j * stride
+            max_val = -float('inf')
+            max_r, max_c = r_start, c_start
+            for r in range(r_start, r_start + pool_size):
+                for c in range(c_start, c_start + pool_size):
+                    if input_map[r][c] > max_val:
+                        max_val = input_map[r][c]
+                        max_r, max_c = r, c
+            grad_in[max_r][max_c] += grad_output[i][j]
+    return [[round(grad_in[r][c], 4) for c in range(W_in)] for r in range(H_in)]
+```
+
+Max pooling transmits gradients exclusively to forward pass argmax coordinates, accumulating contributions across overlapping strides.
+
+</Solution>

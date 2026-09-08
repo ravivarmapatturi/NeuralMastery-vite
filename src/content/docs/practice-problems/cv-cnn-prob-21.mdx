@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #911. Computer Vision & CNN Architectures Module 5: Problem 21"
 description: "Master #911. Computer Vision & CNN Architectures Module 5: Problem 21 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,38 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #911. Computer Vision & CNN Architectures Module 5: Problem 21
+# #911. Bilinear Interpolation at Continuous Coordinates
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #911 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#911. Computer Vision & CNN Architectures Module 5: Problem 21` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Sample continuous sub-pixel coordinates for spatial transformer networks and RoI Align layers.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `bilinear_interpolate(...)`. Given floating coordinates `(y, x)`, find corner indices `y0 = floor(y)`, `y1 = min(H - 1, y0 + 1)`, `x0 = floor(x)`, `x1 = min(W - 1, x0 + 1)`. Let `dy = y - y0` and `dx = x - x0`. Interpolate: `val = (1 - dy) * (1 - dx) * I[y0][x0] + (1 - dy) * dx * I[y0][x1] + dy * (1 - dx) * I[y1][x0] + dy * dx * I[y1][x1]`. Return `round(val, 4)`.
 
 <PracticePlayground problemId="cv-cnn-prob-21" />
+
+<Solution>
+
+```python
+def bilinear_interpolate(image: list[list[float]], y: float, x: float) -> float:
+    H = len(image)
+    W = len(image[0])
+    y0 = int(math.floor(y))
+    y1 = min(H - 1, y0 + 1)
+    x0 = int(math.floor(x))
+    x1 = min(W - 1, x0 + 1)
+    dy = y - y0
+    dx = x - x0
+    val = (1.0 - dy) * (1.0 - dx) * image[y0][x0] + (1.0 - dy) * dx * image[y0][x1] + dy * (1.0 - dx) * image[y1][x0] + dy * dx * image[y1][x1]
+    return round(val, 4)
+```
+
+Bilinear interpolation performs two 1D linear interpolations successively along row and column dimensions.
+
+</Solution>

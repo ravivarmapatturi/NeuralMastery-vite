@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #883. Deep Learning & Neural Networks Module 5: Problem 23"
 description: "Master #883. Deep Learning & Neural Networks Module 5: Problem 23 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,84 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #883. Deep Learning & Neural Networks Module 5: Problem 23
+# #883. Two-Layer MLP Training Step
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #883 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#883. Deep Learning & Neural Networks Module 5: Problem 23` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Execute an end-to-end training iteration: forward pass with ReLU, Softmax cross-entropy, backpropagation, and gradient updates.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `two_layer_mlp_train_step(...)`: for batch `x` and targets `y`, compute hidden activations `a1 = ReLU(x @ w1 + b1)`. Compute logits `z2 = a1 @ w2 + b2` and softmax probabilities `p`. Compute cross-entropy loss `-(1/N) sum(log(p_i[y_i]))`. Backpropagate gradients: `dlogits = (p - one_hot(y)) / N`, `dw2 = a1.T @ dlogits`, `db2 = sum(dlogits)`. Backpropagate through ReLU: `da1 = dlogits @ w2.T`, `dz1 = da1 * (z1 > 0)`, `dw1 = x.T @ dz1`, `db1 = sum(dz1)`. Update parameters using SGD: `param_new = param - lr * dparam`. Return `{'loss': ..., 'w1': ..., 'b1': ..., 'w2': ..., 'b2': ...}` with all floats rounded to 4 decimals.
 
 <PracticePlayground problemId="dl-nn-prob-23" />
+
+<Solution>
+
+```python
+def two_layer_mlp_train_step(x: list[list[float]], y: list[int], w1: list[list[float]], b1: list[float], w2: list[list[float]], b2: list[float], lr: float = 0.1) -> dict:
+    N = len(x)
+    D_in = len(w1)
+    H = len(w2)
+    C = len(w2[0])
+
+    z1 = []
+    a1 = []
+    for i in range(N):
+        row_z = []
+        row_a = []
+        for j in range(H):
+            v = sum(x[i][k] * w1[k][j] for k in range(D_in)) + b1[j]
+            row_z.append(v)
+            row_a.append(max(0.0, v))
+        z1.append(row_z)
+        a1.append(row_a)
+
+    logits = []
+    probs = []
+    loss = 0.0
+    for i in range(N):
+        row_l = []
+        for j in range(C):
+            v = sum(a1[i][k] * w2[k][j] for k in range(H)) + b2[j]
+            row_l.append(v)
+        m_l = max(row_l)
+        exps = [math.exp(v - m_l) for v in row_l]
+        s_exp = sum(exps)
+        p = [e / s_exp for e in exps]
+        probs.append(p)
+        loss += -math.log(max(p[y[i]], 1e-12))
+    loss /= N
+
+    dlogits = []
+    for i in range(N):
+        row = []
+        for j in range(C):
+            indicator = 1.0 if j == y[i] else 0.0
+            row.append((probs[i][j] - indicator) / N)
+        dlogits.append(row)
+
+    dw2 = [[sum(a1[k][i] * dlogits[k][j] for k in range(N)) for j in range(C)] for i in range(H)]
+    db2 = [sum(dlogits[k][j] for k in range(N)) for j in range(C)]
+
+    da1 = [[sum(dlogits[i][k] * w2[j][k] for k in range(C)) for j in range(H)] for i in range(N)]
+    dz1 = [[da1[i][j] if z1[i][j] > 0.0 else 0.0 for j in range(H)] for i in range(N)]
+
+    dw1 = [[sum(x[k][i] * dz1[k][j] for k in range(N)) for j in range(H)] for i in range(D_in)]
+    db1 = [sum(dz1[k][j] for k in range(N)) for j in range(H)]
+
+    w1_new = [[round(w1[i][j] - lr * dw1[i][j], 4) for j in range(H)] for i in range(D_in)]
+    b1_new = [round(b1[j] - lr * db1[j], 4) for j in range(H)]
+    w2_new = [[round(w2[i][j] - lr * dw2[i][j], 4) for j in range(C)] for i in range(H)]
+    b2_new = [round(b2[j] - lr * db2[j], 4) for j in range(C)]
+
+    return {"loss": round(loss, 4), "w1": w1_new, "b1": b1_new, "w2": w2_new, "b2": b2_new}
+```
+
+A full forward and backward pass of a 2-layer MLP requires chaining softmax cross-entropy gradients back through dense layer weights and ReLU gates.
+
+</Solution>

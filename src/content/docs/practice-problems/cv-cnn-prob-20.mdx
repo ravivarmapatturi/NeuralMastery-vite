@@ -1,23 +1,42 @@
 ---
-placeholder: true
 title: "Practice: #910. Computer Vision & CNN Architectures Module 4: Problem 20"
 description: "Master #910. Computer Vision & CNN Architectures Module 4: Problem 20 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+difficulty: "easy"
 topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #910. Computer Vision & CNN Architectures Module 4: Problem 20
+# #910. Pixel Brightness and Contrast Linear Transform
 
-**Track**: Computer Vision & CNN Architectures | **Rank**: #910 of 1072 | **Points**: 60 XP
+**Track**: Computer Vision & CNN Architectures | **Rank**: #910 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#910. Computer Vision & CNN Architectures Module 4: Problem 20` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Apply standard photometric jittering by scaling contrast and shifting brightness while enforcing dynamic range clamping.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `adjust_brightness_contrast(...)`. For each pixel value `p`, compute `p_new = max(min_val, min(max_val, alpha * p + beta))`. Round each transformed pixel value to 4 decimal places and return the 2D grid.
 
 <PracticePlayground problemId="cv-cnn-prob-20" />
+
+<Solution>
+
+```python
+def adjust_brightness_contrast(image: list[list[float]], alpha: float, beta: float, min_val: float = 0.0, max_val: float = 255.0) -> list[list[float]]:
+    out = []
+    for row in image:
+        new_row = []
+        for val in row:
+            adj = alpha * val + beta
+            clamped = max(min_val, min(max_val, adj))
+            new_row.append(round(clamped, 4))
+        out.append(new_row)
+    return out
+```
+
+Linear scaling by alpha modifies the dynamic contrast range, and beta offsets overall brightness prior to clamping.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #893. Computer Vision & CNN Architectures Module 1: Problem 3"
 description: "Master #893. Computer Vision & CNN Architectures Module 1: Problem 3 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,43 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #893. Computer Vision & CNN Architectures Module 1: Problem 3
+# #893. 2D Average Pooling Forward Pass
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #893 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#893. Computer Vision & CNN Architectures Module 1: Problem 3` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Smooth feature representations and downsample spatial dimensions by computing local window averages.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `avg_pool2d_forward(x, pool_size=2, stride=2)`: slide a square window of size `pool_size x pool_size` over `x` with step size `stride`. For each valid window, compute the arithmetic mean of the entries. Round output values to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-3" />
+
+<Solution>
+
+```python
+def avg_pool2d_forward(x: list[list[float]], pool_size: int = 2, stride: int = 2) -> list[list[float]]:
+    H = len(x)
+    W = len(x[0])
+    out_H = (H - pool_size) // stride + 1
+    out_W = (W - pool_size) // stride + 1
+    out = []
+    area = pool_size * pool_size
+    for i in range(out_H):
+        row = []
+        for j in range(out_W):
+            h_start = i * stride
+            w_start = j * stride
+            window_sum = sum(x[h_start + kh][w_start + kw] for kh in range(pool_size) for kw in range(pool_size))
+            row.append(round(float(window_sum / area), 4))
+        out.append(row)
+    return out
+```
+
+Average pooling smooths activations by aggregating all signals equally across the receptive field window.
+
+</Solution>

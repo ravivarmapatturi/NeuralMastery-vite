@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #894. Computer Vision & CNN Architectures Module 1: Problem 4"
 description: "Master #894. Computer Vision & CNN Architectures Module 1: Problem 4 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,37 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #894. Computer Vision & CNN Architectures Module 1: Problem 4
+# #894. 2D Zero-Padding Implementation
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #894 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#894. Computer Vision & CNN Architectures Module 1: Problem 4` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Preserve boundary spatial resolution during convolution by symmetrically extending images with zeros.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `zero_padding2d(x, pad_h, pad_w)`: return a new 2D matrix of shape `(H + 2*pad_h, W + 2*pad_w)` where the original matrix `x` is centered and all border entries are `0.0`.
 
 <PracticePlayground problemId="cv-cnn-prob-4" />
+
+<Solution>
+
+```python
+def zero_padding2d(x: list[list[float]], pad_h: int, pad_w: int) -> list[list[float]]:
+    H = len(x)
+    W = len(x[0])
+    new_H = H + 2 * pad_h
+    new_W = W + 2 * pad_w
+    padded = [[0.0 for _ in range(new_W)] for _ in range(new_H)]
+    for i in range(H):
+        for j in range(W):
+            padded[i + pad_h][j + pad_w] = float(x[i][j])
+    return padded
+```
+
+Constructing an expanded zero matrix and placing the original values at offset [pad_h, pad_w] implements symmetric zero-padding.
+
+</Solution>

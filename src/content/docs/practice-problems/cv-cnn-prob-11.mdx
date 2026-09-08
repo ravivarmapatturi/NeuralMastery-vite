@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #901. Computer Vision & CNN Architectures Module 3: Problem 11"
 description: "Master #901. Computer Vision & CNN Architectures Module 3: Problem 11 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,61 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #901. Computer Vision & CNN Architectures Module 3: Problem 11
+# #901. Multi-Channel 2D Convolution
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #901 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#901. Computer Vision & CNN Architectures Module 3: Problem 11` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the core 3D tensor inner product across all input channels for a convolutional filter.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `conv2d_multi_channel(x, kernel, bias=0.0, stride=1, padding=0)`: pad each of the `C` input channels with `padding` zeros. Then slide the 3D filter `(C, kH, kW)` over the spatial dimensions with stride `stride`. At each location, sum the element-wise products across all channels and spatial kernel coordinates, add `bias`, and round to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-11" />
+
+<Solution>
+
+```python
+def conv2d_multi_channel(x: list[list[list[float]]], kernel: list[list[list[float]]], bias: float = 0.0, stride: int = 1, padding: int = 0) -> list[list[float]]:
+    C = len(x)
+    H = len(x[0])
+    W = len(x[0][0])
+    kH = len(kernel[0])
+    kW = len(kernel[0][0])
+
+    padded_x = []
+    for c in range(C):
+        pad_mat = [[0.0 for _ in range(W + 2 * padding)] for _ in range(H + 2 * padding)]
+        for i in range(H):
+            for j in range(W):
+                pad_mat[i + padding][j + padding] = float(x[c][i][j])
+        padded_x.append(pad_mat)
+
+    pH = H + 2 * padding
+    pW = W + 2 * padding
+    out_H = (pH - kH) // stride + 1
+    out_W = (pW - kW) // stride + 1
+
+    out = []
+    for i in range(out_H):
+        row = []
+        for j in range(out_W):
+            h_start = i * stride
+            w_start = j * stride
+            val = bias
+            for c in range(C):
+                for kh in range(kH):
+                    for kw in range(kW):
+                        val += padded_x[c][h_start + kh][w_start + kw] * kernel[c][kh][kw]
+            row.append(round(float(val), 4))
+        out.append(row)
+    return out
+```
+
+Convolving across channels computes the inner product between the input volume and filter kernel plus bias.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #871. Deep Learning & Neural Networks Module 3: Problem 11"
 description: "Master #871. Deep Learning & Neural Networks Module 3: Problem 11 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,54 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #871. Deep Learning & Neural Networks Module 3: Problem 11
+# #871. Dense Layer Backward Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #871 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#871. Deep Learning & Neural Networks Module 3: Problem 11` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Derive and compute the analytical backward gradients for a fully-connected affine layer.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dense_backward(dout, x, w)`: given upstream gradient `dout` `(N, D_out)`, input cache `x` `(N, D_in)`, and weight matrix `w` `(D_in, D_out)`, compute `dx = dout @ w.T`, `dw = x.T @ dout`, and `db = sum(dout, axis=0)`. Return a dictionary `{'dx': dx, 'dw': dw, 'db': db}` with all numbers rounded to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-11" />
+
+<Solution>
+
+```python
+def dense_backward(dout: list[list[float]], x: list[list[float]], w: list[list[float]]) -> dict:
+    N = len(x)
+    D_in = len(w)
+    D_out = len(w[0])
+
+    dx = []
+    for i in range(N):
+        row = []
+        for j in range(D_in):
+            val = sum(dout[i][k] * w[j][k] for k in range(D_out))
+            row.append(round(float(val), 4))
+        dx.append(row)
+
+    dw = []
+    for i in range(D_in):
+        row = []
+        for j in range(D_out):
+            val = sum(x[k][i] * dout[k][j] for k in range(N))
+            row.append(round(float(val), 4))
+        dw.append(row)
+
+    db = []
+    for j in range(D_out):
+        val = sum(dout[k][j] for k in range(N))
+        db.append(round(float(val), 4))
+
+    return {"dx": dx, "dw": dw, "db": db}
+```
+
+Following the chain rule: dx = dout @ w^T, dw = x^T @ dout, and db = sum(dout) across the batch dimension N.
+
+</Solution>

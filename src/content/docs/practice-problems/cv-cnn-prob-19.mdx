@@ -1,23 +1,44 @@
 ---
-placeholder: true
 title: "Practice: #909. Computer Vision & CNN Architectures Module 4: Problem 19"
 description: "Master #909. Computer Vision & CNN Architectures Module 4: Problem 19 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+difficulty: "easy"
 topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #909. Computer Vision & CNN Architectures Module 4: Problem 19
+# #909. Mixup Convex Linear Data Augmentation
 
-**Track**: Computer Vision & CNN Architectures | **Rank**: #909 of 1072 | **Points**: 60 XP
+**Track**: Computer Vision & CNN Architectures | **Rank**: #909 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#909. Computer Vision & CNN Architectures Module 4: Problem 19` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Regularize deep neural networks by synthesizing virtual training examples via convex combinations of pairs of training examples and labels.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `mixup_blend(...)`. Compute `mixed_image = lam * img1 + (1 - lam) * img2` elementwise, and `mixed_label = lam * label1 + (1 - lam) * label2`. Round all values to 4 decimal places. Return a dict `{"image": mixed_image, "label": mixed_label}`.
 
 <PracticePlayground problemId="cv-cnn-prob-19" />
+
+<Solution>
+
+```python
+def mixup_blend(img1: list[list[float]], img2: list[list[float]], label1: list[float], label2: list[float], lam: float) -> dict:
+    H = len(img1)
+    W = len(img1[0])
+    mixed_img = []
+    for i in range(H):
+        row = []
+        for j in range(W):
+            val = lam * img1[i][j] + (1.0 - lam) * img2[i][j]
+            row.append(round(val, 4))
+        mixed_img.append(row)
+    mixed_lbl = [round(lam * label1[k] + (1.0 - lam) * label2[k], 4) for k in range(len(label1))]
+    return {"image": mixed_img, "label": mixed_lbl}
+```
+
+Convex combinations of both inputs and target label vectors establish linear transitions across decision boundaries.
+
+</Solution>

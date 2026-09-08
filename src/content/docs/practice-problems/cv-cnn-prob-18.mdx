@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #908. Computer Vision & CNN Architectures Module 4: Problem 18"
 description: "Master #908. Computer Vision & CNN Architectures Module 4: Problem 18 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,41 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #908. Computer Vision & CNN Architectures Module 4: Problem 18
+# #908. Spatial Pyramid Pooling Fixed-Length Descriptor
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #908 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#908. Computer Vision & CNN Architectures Module 4: Problem 18` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Eliminate fixed-size input image restrictions by producing fixed-length representation vectors via multi-level spatial binning.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `spatial_pyramid_pooling(...)`. For each grid level `n` in `pool_sizes`, divide the `H x W` feature map into `n x n` spatial bins. For bin `(bi, bj)` where `0 <= bi, bj < n`: row range is `[floor(bi * H / n), ceil((bi + 1) * H / n)]` and column range is `[floor(bj * W / n), ceil((bj + 1) * W / n)]`. Compute the maximum value in each bin, rounded to 4 decimals, and concatenate all bins in row-major order across levels.
 
 <PracticePlayground problemId="cv-cnn-prob-18" />
+
+<Solution>
+
+```python
+def spatial_pyramid_pooling(feature_map: list[list[float]], pool_sizes: list[int]) -> list[float]:
+    H = len(feature_map)
+    W = len(feature_map[0])
+    result = []
+    for n in pool_sizes:
+        for bi in range(n):
+            r_start = math.floor(bi * H / n)
+            r_end = math.ceil((bi + 1) * H / n)
+            for bj in range(n):
+                c_start = math.floor(bj * W / n)
+                c_end = math.ceil((bj + 1) * W / n)
+                max_val = max(feature_map[r][c] for r in range(r_start, r_end) for c in range(c_start, c_end))
+                result.append(round(float(max_val), 4))
+    return result
+```
+
+Partitioning the arbitrary HxW map into n-by-n bins and computing maximums creates a deterministic feature vector size regardless of input dimension.
+
+</Solution>

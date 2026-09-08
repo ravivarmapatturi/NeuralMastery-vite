@@ -2023,302 +2023,302 @@
     "/docs/practice-problems/adv-ds-prob-1": {
       "slug": "practice-problems/adv-ds-prob-1",
       "section": "practice-problems",
-      "title": "Practice: #681. Advanced Data Structures for AI Module 1: Problem 1",
-      "sidebarPosition": null,
-      "description": "Master #681. Advanced Data Structures for AI Module 1: Problem 1 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #681. Trie insert and search",
+      "sidebarPosition": 681,
+      "description": "Master Trie insert and search in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-10": {
       "slug": "practice-problems/adv-ds-prob-10",
       "section": "practice-problems",
-      "title": "Practice: #690. Advanced Data Structures for AI Module 2: Problem 10",
-      "sidebarPosition": null,
-      "description": "Master #690. Advanced Data Structures for AI Module 2: Problem 10 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #690. Priority queue for beam search",
+      "sidebarPosition": 690,
+      "description": "Master Priority queue for beam search in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-11": {
       "slug": "practice-problems/adv-ds-prob-11",
       "section": "practice-problems",
-      "title": "Practice: #691. Advanced Data Structures for AI Module 3: Problem 11",
-      "sidebarPosition": null,
-      "description": "Master #691. Advanced Data Structures for AI Module 3: Problem 11 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #691. Disjoint set union (union-find)",
+      "sidebarPosition": 691,
+      "description": "Master Disjoint set union (union-find) in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-12": {
       "slug": "practice-problems/adv-ds-prob-12",
       "section": "practice-problems",
-      "title": "Practice: #692. Advanced Data Structures for AI Module 3: Problem 12",
-      "sidebarPosition": null,
-      "description": "Master #692. Advanced Data Structures for AI Module 3: Problem 12 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #692. Union-find with path compression",
+      "sidebarPosition": 692,
+      "description": "Master Union-find with path compression in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-13": {
       "slug": "practice-problems/adv-ds-prob-13",
       "section": "practice-problems",
-      "title": "Practice: #693. Advanced Data Structures for AI Module 3: Problem 13",
-      "sidebarPosition": null,
-      "description": "Master #693. Advanced Data Structures for AI Module 3: Problem 13 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #693. LRU cache eviction",
+      "sidebarPosition": 693,
+      "description": "Master LRU cache eviction in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-14": {
       "slug": "practice-problems/adv-ds-prob-14",
       "section": "practice-problems",
-      "title": "Practice: #694. Advanced Data Structures for AI Module 3: Problem 14",
-      "sidebarPosition": null,
-      "description": "Master #694. Advanced Data Structures for AI Module 3: Problem 14 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #694. LFU cache (frequency counting)",
+      "sidebarPosition": 694,
+      "description": "Master LFU cache (frequency counting) in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-15": {
       "slug": "practice-problems/adv-ds-prob-15",
       "section": "practice-problems",
-      "title": "Practice: #695. Advanced Data Structures for AI Module 3: Problem 15",
-      "sidebarPosition": null,
-      "description": "Master #695. Advanced Data Structures for AI Module 3: Problem 15 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #695. B-tree node split concept",
+      "sidebarPosition": 695,
+      "description": "Master B-tree node split concept in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-16": {
       "slug": "practice-problems/adv-ds-prob-16",
       "section": "practice-problems",
-      "title": "Practice: #696. Advanced Data Structures for AI Module 4: Problem 16",
-      "sidebarPosition": null,
-      "description": "Master #696. Advanced Data Structures for AI Module 4: Problem 16 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #696. Hash map with chaining (collision handling)",
+      "sidebarPosition": 696,
+      "description": "Master Hash map with chaining (collision handling) in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-17": {
       "slug": "practice-problems/adv-ds-prob-17",
       "section": "practice-problems",
-      "title": "Practice: #697. Advanced Data Structures for AI Module 4: Problem 17",
-      "sidebarPosition": null,
-      "description": "Master #697. Advanced Data Structures for AI Module 4: Problem 17 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #697. Cuckoo hashing displacement",
+      "sidebarPosition": 697,
+      "description": "Master Cuckoo hashing displacement in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-18": {
       "slug": "practice-problems/adv-ds-prob-18",
       "section": "practice-problems",
-      "title": "Practice: #698. Advanced Data Structures for AI Module 4: Problem 18",
-      "sidebarPosition": null,
-      "description": "Master #698. Advanced Data Structures for AI Module 4: Problem 18 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #698. Consistent hashing ring",
+      "sidebarPosition": 698,
+      "description": "Master Consistent hashing ring in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-19": {
       "slug": "practice-problems/adv-ds-prob-19",
       "section": "practice-problems",
-      "title": "Practice: #699. Advanced Data Structures for AI Module 4: Problem 19",
-      "sidebarPosition": null,
-      "description": "Master #699. Advanced Data Structures for AI Module 4: Problem 19 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #699. Van Emde Boas tree successor concept",
+      "sidebarPosition": 699,
+      "description": "Master Van Emde Boas tree successor concept in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-2": {
       "slug": "practice-problems/adv-ds-prob-2",
       "section": "practice-problems",
-      "title": "Practice: #682. Advanced Data Structures for AI Module 1: Problem 2",
-      "sidebarPosition": null,
-      "description": "Master #682. Advanced Data Structures for AI Module 1: Problem 2 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #682. Trie prefix completion",
+      "sidebarPosition": 682,
+      "description": "Master Trie prefix completion in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-20": {
       "slug": "practice-problems/adv-ds-prob-20",
       "section": "practice-problems",
-      "title": "Practice: #700. Advanced Data Structures for AI Module 4: Problem 20",
-      "sidebarPosition": null,
-      "description": "Master #700. Advanced Data Structures for AI Module 4: Problem 20 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #700. Radix sort (integer keys)",
+      "sidebarPosition": 700,
+      "description": "Master Radix sort (integer keys) in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-21": {
       "slug": "practice-problems/adv-ds-prob-21",
       "section": "practice-problems",
-      "title": "Practice: #701. Advanced Data Structures for AI Module 5: Problem 21",
-      "sidebarPosition": null,
-      "description": "Master #701. Advanced Data Structures for AI Module 5: Problem 21 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #701. Count-Min Sketch query",
+      "sidebarPosition": 701,
+      "description": "Master Count-Min Sketch query in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-22": {
       "slug": "practice-problems/adv-ds-prob-22",
       "section": "practice-problems",
-      "title": "Practice: #702. Advanced Data Structures for AI Module 5: Problem 22",
-      "sidebarPosition": null,
-      "description": "Master #702. Advanced Data Structures for AI Module 5: Problem 22 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #702. HyperLogLog cardinality estimate",
+      "sidebarPosition": 702,
+      "description": "Master HyperLogLog cardinality estimate in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-23": {
       "slug": "practice-problems/adv-ds-prob-23",
       "section": "practice-problems",
-      "title": "Practice: #703. Advanced Data Structures for AI Module 5: Problem 23",
-      "sidebarPosition": null,
-      "description": "Master #703. Advanced Data Structures for AI Module 5: Problem 23 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #703. Reservoir sampling",
+      "sidebarPosition": 703,
+      "description": "Master Reservoir sampling in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-24": {
       "slug": "practice-problems/adv-ds-prob-24",
       "section": "practice-problems",
-      "title": "Practice: #704. Advanced Data Structures for AI Module 5: Problem 24",
-      "sidebarPosition": null,
-      "description": "Master #704. Advanced Data Structures for AI Module 5: Problem 24 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #704. Weighted random sampling",
+      "sidebarPosition": 704,
+      "description": "Master Weighted random sampling in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-25": {
       "slug": "practice-problems/adv-ds-prob-25",
       "section": "practice-problems",
-      "title": "Practice: #705. Advanced Data Structures for AI Module 5: Problem 25",
-      "sidebarPosition": null,
-      "description": "Master #705. Advanced Data Structures for AI Module 5: Problem 25 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #705. Order statistics tree rank query",
+      "sidebarPosition": 705,
+      "description": "Master Order statistics tree rank query in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-26": {
       "slug": "practice-problems/adv-ds-prob-26",
       "section": "practice-problems",
-      "title": "Practice: #706. Advanced Data Structures for AI Module 6: Problem 26",
-      "sidebarPosition": null,
-      "description": "Master #706. Advanced Data Structures for AI Module 6: Problem 26 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #706. Interval tree overlap detection",
+      "sidebarPosition": 706,
+      "description": "Master Interval tree overlap detection in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-27": {
       "slug": "practice-problems/adv-ds-prob-27",
       "section": "practice-problems",
-      "title": "Practice: #707. Advanced Data Structures for AI Module 6: Problem 27",
-      "sidebarPosition": null,
-      "description": "Master #707. Advanced Data Structures for AI Module 6: Problem 27 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #707. KD-tree nearest neighbor search (2D)",
+      "sidebarPosition": 707,
+      "description": "Master KD-tree nearest neighbor search (2D) in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-28": {
       "slug": "practice-problems/adv-ds-prob-28",
       "section": "practice-problems",
-      "title": "Practice: #708. Advanced Data Structures for AI Module 6: Problem 28",
-      "sidebarPosition": null,
-      "description": "Master #708. Advanced Data Structures for AI Module 6: Problem 28 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #708. Ball tree node assignment",
+      "sidebarPosition": 708,
+      "description": "Master Ball tree node assignment in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-29": {
       "slug": "practice-problems/adv-ds-prob-29",
       "section": "practice-problems",
-      "title": "Practice: #709. Advanced Data Structures for AI Module 6: Problem 29",
-      "sidebarPosition": null,
-      "description": "Master #709. Advanced Data Structures for AI Module 6: Problem 29 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #709. HNSW greedy search layer traversal",
+      "sidebarPosition": 709,
+      "description": "Master HNSW greedy search layer traversal in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-3": {
       "slug": "practice-problems/adv-ds-prob-3",
       "section": "practice-problems",
-      "title": "Practice: #683. Advanced Data Structures for AI Module 1: Problem 3",
-      "sidebarPosition": null,
-      "description": "Master #683. Advanced Data Structures for AI Module 1: Problem 3 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #683. Segment tree range sum query",
+      "sidebarPosition": 683,
+      "description": "Master Segment tree range sum query in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-30": {
       "slug": "practice-problems/adv-ds-prob-30",
       "section": "practice-problems",
-      "title": "Practice: #710. Advanced Data Structures for AI Module 6: Problem 30",
-      "sidebarPosition": null,
-      "description": "Master #710. Advanced Data Structures for AI Module 6: Problem 30 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #710. Inverted index term lookup",
+      "sidebarPosition": 710,
+      "description": "Master Inverted index term lookup in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-4": {
       "slug": "practice-problems/adv-ds-prob-4",
       "section": "practice-problems",
-      "title": "Practice: #684. Advanced Data Structures for AI Module 1: Problem 4",
-      "sidebarPosition": null,
-      "description": "Master #684. Advanced Data Structures for AI Module 1: Problem 4 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #684. Segment tree point update",
+      "sidebarPosition": 684,
+      "description": "Master Segment tree point update in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-5": {
       "slug": "practice-problems/adv-ds-prob-5",
       "section": "practice-problems",
-      "title": "Practice: #685. Advanced Data Structures for AI Module 1: Problem 5",
-      "sidebarPosition": null,
-      "description": "Master #685. Advanced Data Structures for AI Module 1: Problem 5 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #685. Fenwick tree (BIT) prefix sum",
+      "sidebarPosition": 685,
+      "description": "Master Fenwick tree (BIT) prefix sum in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-6": {
       "slug": "practice-problems/adv-ds-prob-6",
       "section": "practice-problems",
-      "title": "Practice: #686. Advanced Data Structures for AI Module 2: Problem 6",
-      "sidebarPosition": null,
-      "description": "Master #686. Advanced Data Structures for AI Module 2: Problem 6 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #686. Fenwick tree update",
+      "sidebarPosition": 686,
+      "description": "Master Fenwick tree update in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-7": {
       "slug": "practice-problems/adv-ds-prob-7",
       "section": "practice-problems",
-      "title": "Practice: #687. Advanced Data Structures for AI Module 2: Problem 7",
-      "sidebarPosition": null,
-      "description": "Master #687. Advanced Data Structures for AI Module 2: Problem 7 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #687. Skip list search",
+      "sidebarPosition": 687,
+      "description": "Master Skip list search in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-8": {
       "slug": "practice-problems/adv-ds-prob-8",
       "section": "practice-problems",
-      "title": "Practice: #688. Advanced Data Structures for AI Module 2: Problem 8",
-      "sidebarPosition": null,
-      "description": "Master #688. Advanced Data Structures for AI Module 2: Problem 8 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #688. Bloom filter add and check",
+      "sidebarPosition": 688,
+      "description": "Master Bloom filter add and check in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/adv-ds-prob-9": {
       "slug": "practice-problems/adv-ds-prob-9",
       "section": "practice-problems",
-      "title": "Practice: #689. Advanced Data Structures for AI Module 2: Problem 9",
-      "sidebarPosition": null,
-      "description": "Master #689. Advanced Data Structures for AI Module 2: Problem 9 in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #689. Min-heap push/pop",
+      "sidebarPosition": 689,
+      "description": "Master Min-heap push/pop in the Advanced Data Structures for AI track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Advanced Data Structures for AI",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-graph-prob-1": {
       "slug": "practice-problems/agent-graph-prob-1",
@@ -2613,302 +2613,302 @@
     "/docs/practice-problems/agent-loop-prob-1": {
       "slug": "practice-problems/agent-loop-prob-1",
       "section": "practice-problems",
-      "title": "Practice: #091. Minimal Agent Loop",
-      "sidebarPosition": null,
-      "description": "Master #091. Minimal Agent Loop in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #91. ReAct loop single iteration (parse thought/action/observation)",
+      "sidebarPosition": 91,
+      "description": "Master ReAct loop single iteration (parse thought/action/observation) in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-10": {
       "slug": "practice-problems/agent-loop-prob-10",
       "section": "practice-problems",
-      "title": "Practice: #100. Infinite Loop Guard",
-      "sidebarPosition": null,
-      "description": "Master #100. Infinite Loop Guard in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #100. Partial JSON buffer fixer",
+      "sidebarPosition": 100,
+      "description": "Master Partial JSON buffer fixer in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-11": {
       "slug": "practice-problems/agent-loop-prob-11",
       "section": "practice-problems",
-      "title": "Practice: #101. Tool Output Schema Validator",
-      "sidebarPosition": null,
-      "description": "Master #101. Tool Output Schema Validator in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #101. Loop state machine transitions",
+      "sidebarPosition": 101,
+      "description": "Master Loop state machine transitions in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-12": {
       "slug": "practice-problems/agent-loop-prob-12",
       "section": "practice-problems",
-      "title": "Practice: #102. Asynchronous Tool Runner",
-      "sidebarPosition": null,
-      "description": "Master #102. Asynchronous Tool Runner in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #102. History truncation for context limit",
+      "sidebarPosition": 102,
+      "description": "Master History truncation for context limit in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-13": {
       "slug": "practice-problems/agent-loop-prob-13",
       "section": "practice-problems",
-      "title": "Practice: #103. Parallel Tool Execution Engine",
-      "sidebarPosition": null,
-      "description": "Master #103. Parallel Tool Execution Engine in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #103. Tool result formatter",
+      "sidebarPosition": 103,
+      "description": "Master Tool result formatter in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-14": {
       "slug": "practice-problems/agent-loop-prob-14",
       "section": "practice-problems",
-      "title": "Practice: #104. Tool Execution Timeout Handler",
-      "sidebarPosition": null,
-      "description": "Master #104. Tool Execution Timeout Handler in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #104. Thought-only step handler",
+      "sidebarPosition": 104,
+      "description": "Master Thought-only step handler in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-15": {
       "slug": "practice-problems/agent-loop-prob-15",
       "section": "practice-problems",
-      "title": "Practice: #105. Agent Action Dispatched Log",
-      "sidebarPosition": null,
-      "description": "Master #105. Agent Action Dispatched Log in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #105. Multi-step plan executor",
+      "sidebarPosition": 105,
+      "description": "Master Multi-step plan executor in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-16": {
       "slug": "practice-problems/agent-loop-prob-16",
       "section": "practice-problems",
-      "title": "Practice: #106. Tool Argument Transformer",
-      "sidebarPosition": null,
-      "description": "Master #106. Tool Argument Transformer in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #106. Callback hook registration",
+      "sidebarPosition": 106,
+      "description": "Master Callback hook registration in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-17": {
       "slug": "practice-problems/agent-loop-prob-17",
       "section": "practice-problems",
-      "title": "Practice: #107. Agent Decision Point Logger",
-      "sidebarPosition": null,
-      "description": "Master #107. Agent Decision Point Logger in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #107. Loop telemetry logger",
+      "sidebarPosition": 107,
+      "description": "Master Loop telemetry logger in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-18": {
       "slug": "practice-problems/agent-loop-prob-18",
       "section": "practice-problems",
-      "title": "Practice: #108. Dynamic Tool Selector",
-      "sidebarPosition": null,
-      "description": "Master #108. Dynamic Tool Selector in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #108. Timeout enforcer per step",
+      "sidebarPosition": 108,
+      "description": "Master Timeout enforcer per step in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-19": {
       "slug": "practice-problems/agent-loop-prob-19",
       "section": "practice-problems",
-      "title": "Practice: #109. Sub-Agent Loop Call",
-      "sidebarPosition": null,
-      "description": "Master #109. Sub-Agent Loop Call in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #109. Structured output extractor from LLM response",
+      "sidebarPosition": 109,
+      "description": "Master Structured output extractor from LLM response in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-2": {
       "slug": "practice-problems/agent-loop-prob-2",
       "section": "practice-problems",
-      "title": "Practice: #092. ReAct Loop From Scratch",
-      "sidebarPosition": null,
-      "description": "Master #092. ReAct Loop From Scratch in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #92. Tool call parser (JSON action extraction)",
+      "sidebarPosition": 92,
+      "description": "Master Tool call parser (JSON action extraction) in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-20": {
       "slug": "practice-problems/agent-loop-prob-20",
       "section": "practice-problems",
-      "title": "Practice: #110. Tool Failure Fallback Strategy",
-      "sidebarPosition": null,
-      "description": "Master #110. Tool Failure Fallback Strategy in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #110. Action dispatcher (route to tool)",
+      "sidebarPosition": 110,
+      "description": "Master Action dispatcher (route to tool) in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-21": {
       "slug": "practice-problems/agent-loop-prob-21",
       "section": "practice-problems",
-      "title": "Practice: #111. Human in the Loop Pause",
-      "sidebarPosition": null,
-      "description": "Master #111. Human in the Loop Pause in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #111. Agent scratchpad manager",
+      "sidebarPosition": 111,
+      "description": "Master Agent scratchpad manager in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-22": {
       "slug": "practice-problems/agent-loop-prob-22",
       "section": "practice-problems",
-      "title": "Practice: #112. Human Approval Gate",
-      "sidebarPosition": null,
-      "description": "Master #112. Human Approval Gate in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #112. Final answer extractor",
+      "sidebarPosition": 112,
+      "description": "Master Final answer extractor in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-23": {
       "slug": "practice-problems/agent-loop-prob-23",
       "section": "practice-problems",
-      "title": "Practice: #113. Agent State Serializer",
-      "sidebarPosition": null,
-      "description": "Master #113. Agent State Serializer in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #113. Loop abort on error threshold",
+      "sidebarPosition": 113,
+      "description": "Master Loop abort on error threshold in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-24": {
       "slug": "practice-problems/agent-loop-prob-24",
       "section": "practice-problems",
-      "title": "Practice: #114. Agent Context Window Trimmer",
-      "sidebarPosition": null,
-      "description": "Master #114. Agent Context Window Trimmer in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #114. Parallel tool call batching",
+      "sidebarPosition": 114,
+      "description": "Master Parallel tool call batching in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-25": {
       "slug": "practice-problems/agent-loop-prob-25",
       "section": "practice-problems",
-      "title": "Practice: #115. Step Execution Cost Tracker",
-      "sidebarPosition": null,
-      "description": "Master #115. Step Execution Cost Tracker in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #115. Sequential tool chaining",
+      "sidebarPosition": 115,
+      "description": "Master Sequential tool chaining in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-26": {
       "slug": "practice-problems/agent-loop-prob-26",
       "section": "practice-problems",
-      "title": "Practice: #116. Agent Run History Compactor",
-      "sidebarPosition": null,
-      "description": "Master #116. Agent Run History Compactor in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #116. Context compression mid-loop",
+      "sidebarPosition": 116,
+      "description": "Master Context compression mid-loop in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-27": {
       "slug": "practice-problems/agent-loop-prob-27",
       "section": "practice-problems",
-      "title": "Practice: #117. Tool Call Deduplicator",
-      "sidebarPosition": null,
-      "description": "Master #117. Tool Call Deduplicator in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #117. Loop checkpoint save/restore",
+      "sidebarPosition": 117,
+      "description": "Master Loop checkpoint save/restore in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-28": {
       "slug": "practice-problems/agent-loop-prob-28",
       "section": "practice-problems",
-      "title": "Practice: #118. Streaming ReAct Loop",
-      "sidebarPosition": null,
-      "description": "Master #118. Streaming ReAct Loop in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #118. Streaming chunk assembler",
+      "sidebarPosition": 118,
+      "description": "Master Streaming chunk assembler in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-29": {
       "slug": "practice-problems/agent-loop-prob-29",
       "section": "practice-problems",
-      "title": "Practice: #119. Fault Tolerant Agent Runner",
-      "sidebarPosition": null,
-      "description": "Master #119. Fault Tolerant Agent Runner in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #119. Token usage tracker per loop",
+      "sidebarPosition": 119,
+      "description": "Master Token usage tracker per loop in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-3": {
       "slug": "practice-problems/agent-loop-prob-3",
       "section": "practice-problems",
-      "title": "Practice: #093. Agent Step Budget",
-      "sidebarPosition": null,
-      "description": "Master #093. Agent Step Budget in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #93. Observation injector (append tool result)",
+      "sidebarPosition": 93,
+      "description": "Master Observation injector (append tool result) in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-30": {
       "slug": "practice-problems/agent-loop-prob-30",
       "section": "practice-problems",
-      "title": "Practice: #120. Self Healing Agent Step",
-      "sidebarPosition": null,
-      "description": "Master #120. Self Healing Agent Step in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #120. Agent handoff (sub-agent delegation)",
+      "sidebarPosition": 120,
+      "description": "Master Agent handoff (sub-agent delegation) in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-4": {
       "slug": "practice-problems/agent-loop-prob-4",
       "section": "practice-problems",
-      "title": "Practice: #094. Loop Termination by No Progress",
-      "sidebarPosition": null,
-      "description": "Master #094. Loop Termination by No Progress in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #94. Stop condition checker (final answer detection)",
+      "sidebarPosition": 94,
+      "description": "Master Stop condition checker (final answer detection) in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-5": {
       "slug": "practice-problems/agent-loop-prob-5",
       "section": "practice-problems",
-      "title": "Practice: #095. Repeated Tool Call Detector",
-      "sidebarPosition": null,
-      "description": "Master #095. Repeated Tool Call Detector in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #95. Max iteration enforcer",
+      "sidebarPosition": 95,
+      "description": "Master Max iteration enforcer in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-6": {
       "slug": "practice-problems/agent-loop-prob-6",
       "section": "practice-problems",
-      "title": "Practice: #096. Agent Loop Replay",
-      "sidebarPosition": null,
-      "description": "Master #096. Agent Loop Replay in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #96. Error recovery handler (retry on tool failure)",
+      "sidebarPosition": 96,
+      "description": "Master Error recovery handler (retry on tool failure) in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-7": {
       "slug": "practice-problems/agent-loop-prob-7",
       "section": "practice-problems",
-      "title": "Practice: #097. Deterministic Replay",
-      "sidebarPosition": null,
-      "description": "Master #097. Deterministic Replay in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #97. Tool registry lookup",
+      "sidebarPosition": 97,
+      "description": "Master Tool registry lookup in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-8": {
       "slug": "practice-problems/agent-loop-prob-8",
       "section": "practice-problems",
-      "title": "Practice: #098. Tool Result Truncation",
-      "sidebarPosition": null,
-      "description": "Master #098. Tool Result Truncation in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #98. Tool call validator (schema check)",
+      "sidebarPosition": 98,
+      "description": "Master Tool call validator (schema check) in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agent-loop-prob-9": {
       "slug": "practice-problems/agent-loop-prob-9",
       "section": "practice-problems",
-      "title": "Practice: #099. Agent State Recovery",
-      "sidebarPosition": null,
-      "description": "Master #099. Agent State Recovery in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #99. Streamed response token accumulator",
+      "sidebarPosition": 99,
+      "description": "Master Streamed response token accumulator in the Agent Loop Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Loop Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agentic-rag-prob-1": {
       "slug": "practice-problems/agentic-rag-prob-1",
@@ -3608,7 +3608,7 @@
       "description": "Curriculum Problem 476 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-47": {
       "slug": "practice-problems/agents-mcp-systems-prob-47",
@@ -3618,7 +3618,7 @@
       "description": "Curriculum Problem 477 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-48": {
       "slug": "practice-problems/agents-mcp-systems-prob-48",
@@ -3628,7 +3628,7 @@
       "description": "Curriculum Problem 478 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-49": {
       "slug": "practice-problems/agents-mcp-systems-prob-49",
@@ -3638,7 +3638,7 @@
       "description": "Curriculum Problem 479 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Multimodal AI.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-5": {
       "slug": "practice-problems/agents-mcp-systems-prob-5",
@@ -3658,7 +3658,7 @@
       "description": "Curriculum Problem 480 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master RAG / information retrieval.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-51": {
       "slug": "practice-problems/agents-mcp-systems-prob-51",
@@ -3668,7 +3668,7 @@
       "description": "Curriculum Problem 481 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Agents / tool use.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-52": {
       "slug": "practice-problems/agents-mcp-systems-prob-52",
@@ -3678,7 +3678,7 @@
       "description": "Curriculum Problem 482 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MCP / APIs / protocols.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-53": {
       "slug": "practice-problems/agents-mcp-systems-prob-53",
@@ -3688,7 +3688,7 @@
       "description": "Curriculum Problem 483 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master MLOps / data systems.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-54": {
       "slug": "practice-problems/agents-mcp-systems-prob-54",
@@ -3698,7 +3698,7 @@
       "description": "Curriculum Problem 484 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Distributed systems.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-55": {
       "slug": "practice-problems/agents-mcp-systems-prob-55",
@@ -3708,7 +3708,7 @@
       "description": "Curriculum Problem 485 (Stage 8: RAG, Agents, MCP & Distributed Systems): Master Vector search.",
       "difficulty": "medium",
       "topic": "agents,-mcp-systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/agents-mcp-systems-prob-56": {
       "slug": "practice-problems/agents-mcp-systems-prob-56",
@@ -5508,7 +5508,7 @@
       "description": "Master #891. Computer Vision & CNN Architectures Module 1: Problem 1 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-10": {
       "slug": "practice-problems/cv-cnn-prob-10",
@@ -5518,7 +5518,7 @@
       "description": "Master #900. Computer Vision & CNN Architectures Module 2: Problem 10 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-11": {
       "slug": "practice-problems/cv-cnn-prob-11",
@@ -5528,7 +5528,7 @@
       "description": "Master #901. Computer Vision & CNN Architectures Module 3: Problem 11 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-12": {
       "slug": "practice-problems/cv-cnn-prob-12",
@@ -5538,7 +5538,7 @@
       "description": "Master #902. Computer Vision & CNN Architectures Module 3: Problem 12 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-13": {
       "slug": "practice-problems/cv-cnn-prob-13",
@@ -5548,7 +5548,7 @@
       "description": "Master #903. Computer Vision & CNN Architectures Module 3: Problem 13 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-14": {
       "slug": "practice-problems/cv-cnn-prob-14",
@@ -5558,7 +5558,7 @@
       "description": "Master #904. Computer Vision & CNN Architectures Module 3: Problem 14 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-15": {
       "slug": "practice-problems/cv-cnn-prob-15",
@@ -5568,7 +5568,7 @@
       "description": "Master #905. Computer Vision & CNN Architectures Module 3: Problem 15 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-16": {
       "slug": "practice-problems/cv-cnn-prob-16",
@@ -5578,7 +5578,7 @@
       "description": "Master #906. Computer Vision & CNN Architectures Module 4: Problem 16 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-17": {
       "slug": "practice-problems/cv-cnn-prob-17",
@@ -5588,7 +5588,7 @@
       "description": "Master #907. Computer Vision & CNN Architectures Module 4: Problem 17 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-18": {
       "slug": "practice-problems/cv-cnn-prob-18",
@@ -5598,7 +5598,7 @@
       "description": "Master #908. Computer Vision & CNN Architectures Module 4: Problem 18 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-19": {
       "slug": "practice-problems/cv-cnn-prob-19",
@@ -5606,9 +5606,9 @@
       "title": "Practice: #909. Computer Vision & CNN Architectures Module 4: Problem 19",
       "sidebarPosition": null,
       "description": "Master #909. Computer Vision & CNN Architectures Module 4: Problem 19 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-2": {
       "slug": "practice-problems/cv-cnn-prob-2",
@@ -5618,7 +5618,7 @@
       "description": "Master #892. Computer Vision & CNN Architectures Module 1: Problem 2 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-20": {
       "slug": "practice-problems/cv-cnn-prob-20",
@@ -5626,9 +5626,9 @@
       "title": "Practice: #910. Computer Vision & CNN Architectures Module 4: Problem 20",
       "sidebarPosition": null,
       "description": "Master #910. Computer Vision & CNN Architectures Module 4: Problem 20 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-21": {
       "slug": "practice-problems/cv-cnn-prob-21",
@@ -5638,7 +5638,7 @@
       "description": "Master #911. Computer Vision & CNN Architectures Module 5: Problem 21 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-22": {
       "slug": "practice-problems/cv-cnn-prob-22",
@@ -5646,9 +5646,9 @@
       "title": "Practice: #912. Computer Vision & CNN Architectures Module 5: Problem 22",
       "sidebarPosition": null,
       "description": "Master #912. Computer Vision & CNN Architectures Module 5: Problem 22 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-23": {
       "slug": "practice-problems/cv-cnn-prob-23",
@@ -5658,7 +5658,7 @@
       "description": "Master #913. Computer Vision & CNN Architectures Module 5: Problem 23 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-24": {
       "slug": "practice-problems/cv-cnn-prob-24",
@@ -5666,9 +5666,9 @@
       "title": "Practice: #914. Computer Vision & CNN Architectures Module 5: Problem 24",
       "sidebarPosition": null,
       "description": "Master #914. Computer Vision & CNN Architectures Module 5: Problem 24 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-25": {
       "slug": "practice-problems/cv-cnn-prob-25",
@@ -5676,9 +5676,9 @@
       "title": "Practice: #915. Computer Vision & CNN Architectures Module 5: Problem 25",
       "sidebarPosition": null,
       "description": "Master #915. Computer Vision & CNN Architectures Module 5: Problem 25 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-26": {
       "slug": "practice-problems/cv-cnn-prob-26",
@@ -5686,9 +5686,9 @@
       "title": "Practice: #916. Computer Vision & CNN Architectures Module 6: Problem 26",
       "sidebarPosition": null,
       "description": "Master #916. Computer Vision & CNN Architectures Module 6: Problem 26 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-27": {
       "slug": "practice-problems/cv-cnn-prob-27",
@@ -5696,9 +5696,9 @@
       "title": "Practice: #917. Computer Vision & CNN Architectures Module 6: Problem 27",
       "sidebarPosition": null,
       "description": "Master #917. Computer Vision & CNN Architectures Module 6: Problem 27 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-28": {
       "slug": "practice-problems/cv-cnn-prob-28",
@@ -5706,9 +5706,9 @@
       "title": "Practice: #918. Computer Vision & CNN Architectures Module 6: Problem 28",
       "sidebarPosition": null,
       "description": "Master #918. Computer Vision & CNN Architectures Module 6: Problem 28 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-29": {
       "slug": "practice-problems/cv-cnn-prob-29",
@@ -5718,7 +5718,7 @@
       "description": "Master #919. Computer Vision & CNN Architectures Module 6: Problem 29 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-3": {
       "slug": "practice-problems/cv-cnn-prob-3",
@@ -5728,7 +5728,7 @@
       "description": "Master #893. Computer Vision & CNN Architectures Module 1: Problem 3 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-30": {
       "slug": "practice-problems/cv-cnn-prob-30",
@@ -5736,9 +5736,9 @@
       "title": "Practice: #920. Computer Vision & CNN Architectures Module 6: Problem 30",
       "sidebarPosition": null,
       "description": "Master #920. Computer Vision & CNN Architectures Module 6: Problem 30 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-4": {
       "slug": "practice-problems/cv-cnn-prob-4",
@@ -5748,7 +5748,7 @@
       "description": "Master #894. Computer Vision & CNN Architectures Module 1: Problem 4 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-5": {
       "slug": "practice-problems/cv-cnn-prob-5",
@@ -5758,7 +5758,7 @@
       "description": "Master #895. Computer Vision & CNN Architectures Module 1: Problem 5 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-6": {
       "slug": "practice-problems/cv-cnn-prob-6",
@@ -5768,7 +5768,7 @@
       "description": "Master #896. Computer Vision & CNN Architectures Module 2: Problem 6 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-7": {
       "slug": "practice-problems/cv-cnn-prob-7",
@@ -5778,7 +5778,7 @@
       "description": "Master #897. Computer Vision & CNN Architectures Module 2: Problem 7 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-8": {
       "slug": "practice-problems/cv-cnn-prob-8",
@@ -5788,7 +5788,7 @@
       "description": "Master #898. Computer Vision & CNN Architectures Module 2: Problem 8 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/cv-cnn-prob-9": {
       "slug": "practice-problems/cv-cnn-prob-9",
@@ -5798,7 +5798,7 @@
       "description": "Master #899. Computer Vision & CNN Architectures Module 2: Problem 9 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Computer Vision & CNN Architectures",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/daily-temperatures": {
       "slug": "practice-problems/daily-temperatures",
@@ -6498,7 +6498,7 @@
       "description": "Master #951. Distributed AI Systems Module 1: Problem 1 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-10": {
       "slug": "practice-problems/dist-sys-prob-10",
@@ -6508,7 +6508,7 @@
       "description": "Master #960. Distributed AI Systems Module 2: Problem 10 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-11": {
       "slug": "practice-problems/dist-sys-prob-11",
@@ -6518,7 +6518,7 @@
       "description": "Master #961. Distributed AI Systems Module 3: Problem 11 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-12": {
       "slug": "practice-problems/dist-sys-prob-12",
@@ -6528,7 +6528,7 @@
       "description": "Master #962. Distributed AI Systems Module 3: Problem 12 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-13": {
       "slug": "practice-problems/dist-sys-prob-13",
@@ -6538,7 +6538,7 @@
       "description": "Master #963. Distributed AI Systems Module 3: Problem 13 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-14": {
       "slug": "practice-problems/dist-sys-prob-14",
@@ -6548,7 +6548,7 @@
       "description": "Master #964. Distributed AI Systems Module 3: Problem 14 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-15": {
       "slug": "practice-problems/dist-sys-prob-15",
@@ -6558,7 +6558,7 @@
       "description": "Master #965. Distributed AI Systems Module 3: Problem 15 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-16": {
       "slug": "practice-problems/dist-sys-prob-16",
@@ -6568,7 +6568,7 @@
       "description": "Master #966. Distributed AI Systems Module 4: Problem 16 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-17": {
       "slug": "practice-problems/dist-sys-prob-17",
@@ -6578,7 +6578,7 @@
       "description": "Master #967. Distributed AI Systems Module 4: Problem 17 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-18": {
       "slug": "practice-problems/dist-sys-prob-18",
@@ -6588,7 +6588,7 @@
       "description": "Master #968. Distributed AI Systems Module 4: Problem 18 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-19": {
       "slug": "practice-problems/dist-sys-prob-19",
@@ -6598,7 +6598,7 @@
       "description": "Master #969. Distributed AI Systems Module 4: Problem 19 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-2": {
       "slug": "practice-problems/dist-sys-prob-2",
@@ -6608,7 +6608,7 @@
       "description": "Master #952. Distributed AI Systems Module 1: Problem 2 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-20": {
       "slug": "practice-problems/dist-sys-prob-20",
@@ -6618,7 +6618,7 @@
       "description": "Master #970. Distributed AI Systems Module 4: Problem 20 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-21": {
       "slug": "practice-problems/dist-sys-prob-21",
@@ -6628,7 +6628,7 @@
       "description": "Master #971. Distributed AI Systems Module 5: Problem 21 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-22": {
       "slug": "practice-problems/dist-sys-prob-22",
@@ -6638,7 +6638,7 @@
       "description": "Master #972. Distributed AI Systems Module 5: Problem 22 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-23": {
       "slug": "practice-problems/dist-sys-prob-23",
@@ -6648,7 +6648,7 @@
       "description": "Master #973. Distributed AI Systems Module 5: Problem 23 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-24": {
       "slug": "practice-problems/dist-sys-prob-24",
@@ -6658,7 +6658,7 @@
       "description": "Master #974. Distributed AI Systems Module 5: Problem 24 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-25": {
       "slug": "practice-problems/dist-sys-prob-25",
@@ -6668,7 +6668,7 @@
       "description": "Master #975. Distributed AI Systems Module 5: Problem 25 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-3": {
       "slug": "practice-problems/dist-sys-prob-3",
@@ -6678,7 +6678,7 @@
       "description": "Master #953. Distributed AI Systems Module 1: Problem 3 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-4": {
       "slug": "practice-problems/dist-sys-prob-4",
@@ -6688,7 +6688,7 @@
       "description": "Master #954. Distributed AI Systems Module 1: Problem 4 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-5": {
       "slug": "practice-problems/dist-sys-prob-5",
@@ -6698,7 +6698,7 @@
       "description": "Master #955. Distributed AI Systems Module 1: Problem 5 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-6": {
       "slug": "practice-problems/dist-sys-prob-6",
@@ -6708,7 +6708,7 @@
       "description": "Master #956. Distributed AI Systems Module 2: Problem 6 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-7": {
       "slug": "practice-problems/dist-sys-prob-7",
@@ -6718,7 +6718,7 @@
       "description": "Master #957. Distributed AI Systems Module 2: Problem 7 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-8": {
       "slug": "practice-problems/dist-sys-prob-8",
@@ -6728,7 +6728,7 @@
       "description": "Master #958. Distributed AI Systems Module 2: Problem 8 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dist-sys-prob-9": {
       "slug": "practice-problems/dist-sys-prob-9",
@@ -6738,7 +6738,7 @@
       "description": "Master #959. Distributed AI Systems Module 2: Problem 9 in the Distributed AI Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Distributed AI Systems",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-1": {
       "slug": "practice-problems/dl-nn-prob-1",
@@ -6748,7 +6748,7 @@
       "description": "Master #861. Deep Learning & Neural Networks Module 1: Problem 1 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-10": {
       "slug": "practice-problems/dl-nn-prob-10",
@@ -6758,7 +6758,7 @@
       "description": "Master #870. Deep Learning & Neural Networks Module 2: Problem 10 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-11": {
       "slug": "practice-problems/dl-nn-prob-11",
@@ -6768,7 +6768,7 @@
       "description": "Master #871. Deep Learning & Neural Networks Module 3: Problem 11 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-12": {
       "slug": "practice-problems/dl-nn-prob-12",
@@ -6778,7 +6778,7 @@
       "description": "Master #872. Deep Learning & Neural Networks Module 3: Problem 12 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-13": {
       "slug": "practice-problems/dl-nn-prob-13",
@@ -6788,7 +6788,7 @@
       "description": "Master #873. Deep Learning & Neural Networks Module 3: Problem 13 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-14": {
       "slug": "practice-problems/dl-nn-prob-14",
@@ -6798,7 +6798,7 @@
       "description": "Master #874. Deep Learning & Neural Networks Module 3: Problem 14 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-15": {
       "slug": "practice-problems/dl-nn-prob-15",
@@ -6808,7 +6808,7 @@
       "description": "Master #875. Deep Learning & Neural Networks Module 3: Problem 15 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-16": {
       "slug": "practice-problems/dl-nn-prob-16",
@@ -6818,7 +6818,7 @@
       "description": "Master #876. Deep Learning & Neural Networks Module 4: Problem 16 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-17": {
       "slug": "practice-problems/dl-nn-prob-17",
@@ -6828,7 +6828,7 @@
       "description": "Master #877. Deep Learning & Neural Networks Module 4: Problem 17 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-18": {
       "slug": "practice-problems/dl-nn-prob-18",
@@ -6838,7 +6838,7 @@
       "description": "Master #878. Deep Learning & Neural Networks Module 4: Problem 18 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-19": {
       "slug": "practice-problems/dl-nn-prob-19",
@@ -6848,7 +6848,7 @@
       "description": "Master #879. Deep Learning & Neural Networks Module 4: Problem 19 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-2": {
       "slug": "practice-problems/dl-nn-prob-2",
@@ -6858,7 +6858,7 @@
       "description": "Master #862. Deep Learning & Neural Networks Module 1: Problem 2 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-20": {
       "slug": "practice-problems/dl-nn-prob-20",
@@ -6868,7 +6868,7 @@
       "description": "Master #880. Deep Learning & Neural Networks Module 4: Problem 20 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-21": {
       "slug": "practice-problems/dl-nn-prob-21",
@@ -6878,7 +6878,7 @@
       "description": "Master #881. Deep Learning & Neural Networks Module 5: Problem 21 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-22": {
       "slug": "practice-problems/dl-nn-prob-22",
@@ -6888,7 +6888,7 @@
       "description": "Master #882. Deep Learning & Neural Networks Module 5: Problem 22 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-23": {
       "slug": "practice-problems/dl-nn-prob-23",
@@ -6898,7 +6898,7 @@
       "description": "Master #883. Deep Learning & Neural Networks Module 5: Problem 23 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-24": {
       "slug": "practice-problems/dl-nn-prob-24",
@@ -6908,7 +6908,7 @@
       "description": "Master #884. Deep Learning & Neural Networks Module 5: Problem 24 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-25": {
       "slug": "practice-problems/dl-nn-prob-25",
@@ -6918,7 +6918,7 @@
       "description": "Master #885. Deep Learning & Neural Networks Module 5: Problem 25 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-26": {
       "slug": "practice-problems/dl-nn-prob-26",
@@ -6928,7 +6928,7 @@
       "description": "Master #886. Deep Learning & Neural Networks Module 6: Problem 26 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-27": {
       "slug": "practice-problems/dl-nn-prob-27",
@@ -6938,7 +6938,7 @@
       "description": "Master #887. Deep Learning & Neural Networks Module 6: Problem 27 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-28": {
       "slug": "practice-problems/dl-nn-prob-28",
@@ -6948,7 +6948,7 @@
       "description": "Master #888. Deep Learning & Neural Networks Module 6: Problem 28 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-29": {
       "slug": "practice-problems/dl-nn-prob-29",
@@ -6958,7 +6958,7 @@
       "description": "Master #889. Deep Learning & Neural Networks Module 6: Problem 29 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-3": {
       "slug": "practice-problems/dl-nn-prob-3",
@@ -6968,7 +6968,7 @@
       "description": "Master #863. Deep Learning & Neural Networks Module 1: Problem 3 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-30": {
       "slug": "practice-problems/dl-nn-prob-30",
@@ -6978,7 +6978,7 @@
       "description": "Master #890. Deep Learning & Neural Networks Module 6: Problem 30 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-4": {
       "slug": "practice-problems/dl-nn-prob-4",
@@ -6988,7 +6988,7 @@
       "description": "Master #864. Deep Learning & Neural Networks Module 1: Problem 4 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-5": {
       "slug": "practice-problems/dl-nn-prob-5",
@@ -6998,7 +6998,7 @@
       "description": "Master #865. Deep Learning & Neural Networks Module 1: Problem 5 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-6": {
       "slug": "practice-problems/dl-nn-prob-6",
@@ -7008,7 +7008,7 @@
       "description": "Master #866. Deep Learning & Neural Networks Module 2: Problem 6 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-7": {
       "slug": "practice-problems/dl-nn-prob-7",
@@ -7018,7 +7018,7 @@
       "description": "Master #867. Deep Learning & Neural Networks Module 2: Problem 7 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-8": {
       "slug": "practice-problems/dl-nn-prob-8",
@@ -7028,7 +7028,7 @@
       "description": "Master #868. Deep Learning & Neural Networks Module 2: Problem 8 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dl-nn-prob-9": {
       "slug": "practice-problems/dl-nn-prob-9",
@@ -7038,7 +7038,7 @@
       "description": "Master #869. Deep Learning & Neural Networks Module 2: Problem 9 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Deep Learning & Neural Networks",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/dot-product": {
       "slug": "practice-problems/dot-product",
@@ -11863,302 +11863,302 @@
     "/docs/practice-problems/memory-prob-1": {
       "slug": "practice-problems/memory-prob-1",
       "section": "practice-problems",
-      "title": "Practice: #151. Agent Memory & Context Engineering Module 1: Problem 1",
-      "sidebarPosition": null,
-      "description": "Master #151. Agent Memory & Context Engineering Module 1: Problem 1 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #151. Sliding window context truncation",
+      "sidebarPosition": 151,
+      "description": "Master Sliding window context truncation in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-10": {
       "slug": "practice-problems/memory-prob-10",
       "section": "practice-problems",
-      "title": "Practice: #160. Agent Memory & Context Engineering Module 2: Problem 10",
-      "sidebarPosition": null,
-      "description": "Master #160. Agent Memory & Context Engineering Module 2: Problem 10 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #160. Memory deduplication",
+      "sidebarPosition": 160,
+      "description": "Master Memory deduplication in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-11": {
       "slug": "practice-problems/memory-prob-11",
       "section": "practice-problems",
-      "title": "Practice: #161. Agent Memory & Context Engineering Module 3: Problem 11",
-      "sidebarPosition": null,
-      "description": "Master #161. Agent Memory & Context Engineering Module 3: Problem 11 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #161. Hierarchical memory (short/long-term split)",
+      "sidebarPosition": 161,
+      "description": "Master Hierarchical memory (short/long-term split) in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-12": {
       "slug": "practice-problems/memory-prob-12",
       "section": "practice-problems",
-      "title": "Practice: #162. Agent Memory & Context Engineering Module 3: Problem 12",
-      "sidebarPosition": null,
-      "description": "Master #162. Agent Memory & Context Engineering Module 3: Problem 12 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #162. Memory indexing by entity",
+      "sidebarPosition": 162,
+      "description": "Master Memory indexing by entity in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-13": {
       "slug": "practice-problems/memory-prob-13",
       "section": "practice-problems",
-      "title": "Practice: #163. Agent Memory & Context Engineering Module 3: Problem 13",
-      "sidebarPosition": null,
-      "description": "Master #163. Agent Memory & Context Engineering Module 3: Problem 13 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #163. Memory expiry (TTL-based eviction)",
+      "sidebarPosition": 163,
+      "description": "Master Memory expiry (TTL-based eviction) in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-14": {
       "slug": "practice-problems/memory-prob-14",
       "section": "practice-problems",
-      "title": "Practice: #164. Agent Memory & Context Engineering Module 3: Problem 14",
-      "sidebarPosition": null,
-      "description": "Master #164. Agent Memory & Context Engineering Module 3: Problem 14 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #164. Cross-session memory persistence",
+      "sidebarPosition": 164,
+      "description": "Master Cross-session memory persistence in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-15": {
       "slug": "practice-problems/memory-prob-15",
       "section": "practice-problems",
-      "title": "Practice: #165. Agent Memory & Context Engineering Module 3: Problem 15",
-      "sidebarPosition": null,
-      "description": "Master #165. Agent Memory & Context Engineering Module 3: Problem 15 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #165. Tool call result caching in memory",
+      "sidebarPosition": 165,
+      "description": "Master Tool call result caching in memory in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-16": {
       "slug": "practice-problems/memory-prob-16",
       "section": "practice-problems",
-      "title": "Practice: #166. Agent Memory & Context Engineering Module 4: Problem 16",
-      "sidebarPosition": null,
-      "description": "Master #166. Agent Memory & Context Engineering Module 4: Problem 16 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #166. Belief state tracking",
+      "sidebarPosition": 166,
+      "description": "Master Belief state tracking in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-17": {
       "slug": "practice-problems/memory-prob-17",
       "section": "practice-problems",
-      "title": "Practice: #167. Agent Memory & Context Engineering Module 4: Problem 17",
-      "sidebarPosition": null,
-      "description": "Master #167. Agent Memory & Context Engineering Module 4: Problem 17 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #167. Contradiction detection in memories",
+      "sidebarPosition": 167,
+      "description": "Master Contradiction detection in memories in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-18": {
       "slug": "practice-problems/memory-prob-18",
       "section": "practice-problems",
-      "title": "Practice: #168. Agent Memory & Context Engineering Module 4: Problem 18",
-      "sidebarPosition": null,
-      "description": "Master #168. Agent Memory & Context Engineering Module 4: Problem 18 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #168. Memory importance scoring",
+      "sidebarPosition": 168,
+      "description": "Master Memory importance scoring in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-19": {
       "slug": "practice-problems/memory-prob-19",
       "section": "practice-problems",
-      "title": "Practice: #169. Agent Memory & Context Engineering Module 4: Problem 19",
-      "sidebarPosition": null,
-      "description": "Master #169. Agent Memory & Context Engineering Module 4: Problem 19 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #169. Forgetting curve simulation (Ebbinghaus)",
+      "sidebarPosition": 169,
+      "description": "Master Forgetting curve simulation (Ebbinghaus) in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-2": {
       "slug": "practice-problems/memory-prob-2",
       "section": "practice-problems",
-      "title": "Practice: #152. Agent Memory & Context Engineering Module 1: Problem 2",
-      "sidebarPosition": null,
-      "description": "Master #152. Agent Memory & Context Engineering Module 1: Problem 2 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #152. Token budget enforcement",
+      "sidebarPosition": 152,
+      "description": "Master Token budget enforcement in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-20": {
       "slug": "practice-problems/memory-prob-20",
       "section": "practice-problems",
-      "title": "Practice: #170. Agent Memory & Context Engineering Module 4: Problem 20",
-      "sidebarPosition": null,
-      "description": "Master #170. Agent Memory & Context Engineering Module 4: Problem 20 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #170. Attention-based memory selection",
+      "sidebarPosition": 170,
+      "description": "Master Attention-based memory selection in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-21": {
       "slug": "practice-problems/memory-prob-21",
       "section": "practice-problems",
-      "title": "Practice: #171. Agent Memory & Context Engineering Module 5: Problem 21",
-      "sidebarPosition": null,
-      "description": "Master #171. Agent Memory & Context Engineering Module 5: Problem 21 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #171. Memory augmented generation prompt builder",
+      "sidebarPosition": 171,
+      "description": "Master Memory augmented generation prompt builder in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-22": {
       "slug": "practice-problems/memory-prob-22",
       "section": "practice-problems",
-      "title": "Practice: #172. Agent Memory & Context Engineering Module 5: Problem 22",
-      "sidebarPosition": null,
-      "description": "Master #172. Agent Memory & Context Engineering Module 5: Problem 22 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #172. Conversation summary extraction",
+      "sidebarPosition": 172,
+      "description": "Master Conversation summary extraction in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-23": {
       "slug": "practice-problems/memory-prob-23",
       "section": "practice-problems",
-      "title": "Practice: #173. Agent Memory & Context Engineering Module 5: Problem 23",
-      "sidebarPosition": null,
-      "description": "Master #173. Agent Memory & Context Engineering Module 5: Problem 23 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #173. Key-value memory store operations",
+      "sidebarPosition": 173,
+      "description": "Master Key-value memory store operations in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-24": {
       "slug": "practice-problems/memory-prob-24",
       "section": "practice-problems",
-      "title": "Practice: #174. Agent Memory & Context Engineering Module 5: Problem 24",
-      "sidebarPosition": null,
-      "description": "Master #174. Agent Memory & Context Engineering Module 5: Problem 24 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #174. Entity-centric memory lookup",
+      "sidebarPosition": 174,
+      "description": "Master Entity-centric memory lookup in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-25": {
       "slug": "practice-problems/memory-prob-25",
       "section": "practice-problems",
-      "title": "Practice: #175. Agent Memory & Context Engineering Module 5: Problem 25",
-      "sidebarPosition": null,
-      "description": "Master #175. Agent Memory & Context Engineering Module 5: Problem 25 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #175. Memory capacity overflow handling",
+      "sidebarPosition": 175,
+      "description": "Master Memory capacity overflow handling in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-26": {
       "slug": "practice-problems/memory-prob-26",
       "section": "practice-problems",
-      "title": "Practice: #176. Agent Memory & Context Engineering Module 6: Problem 26",
-      "sidebarPosition": null,
-      "description": "Master #176. Agent Memory & Context Engineering Module 6: Problem 26 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #176. Memory read/write permissions check",
+      "sidebarPosition": 176,
+      "description": "Master Memory read/write permissions check in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-27": {
       "slug": "practice-problems/memory-prob-27",
       "section": "practice-problems",
-      "title": "Practice: #177. Agent Memory & Context Engineering Module 6: Problem 27",
-      "sidebarPosition": null,
-      "description": "Master #177. Agent Memory & Context Engineering Module 6: Problem 27 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #177. Retrieval augmented reasoning step",
+      "sidebarPosition": 177,
+      "description": "Master Retrieval augmented reasoning step in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-28": {
       "slug": "practice-problems/memory-prob-28",
       "section": "practice-problems",
-      "title": "Practice: #178. Agent Memory & Context Engineering Module 6: Problem 28",
-      "sidebarPosition": null,
-      "description": "Master #178. Agent Memory & Context Engineering Module 6: Problem 28 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #178. Multi-modal memory type routing",
+      "sidebarPosition": 178,
+      "description": "Master Multi-modal memory type routing in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-29": {
       "slug": "practice-problems/memory-prob-29",
       "section": "practice-problems",
-      "title": "Practice: #179. Agent Memory & Context Engineering Module 6: Problem 29",
-      "sidebarPosition": null,
-      "description": "Master #179. Agent Memory & Context Engineering Module 6: Problem 29 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #179. Memory provenance tracking",
+      "sidebarPosition": 179,
+      "description": "Master Memory provenance tracking in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-3": {
       "slug": "practice-problems/memory-prob-3",
       "section": "practice-problems",
-      "title": "Practice: #153. Agent Memory & Context Engineering Module 1: Problem 3",
-      "sidebarPosition": null,
-      "description": "Master #153. Agent Memory & Context Engineering Module 1: Problem 3 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #153. Semantic memory retrieval (top-K by cosine sim)",
+      "sidebarPosition": 153,
+      "description": "Master Semantic memory retrieval (top-K by cosine sim) in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-30": {
       "slug": "practice-problems/memory-prob-30",
       "section": "practice-problems",
-      "title": "Practice: #180. Agent Memory & Context Engineering Module 6: Problem 30",
-      "sidebarPosition": null,
-      "description": "Master #180. Agent Memory & Context Engineering Module 6: Problem 30 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #180. Reflective memory self-review",
+      "sidebarPosition": 180,
+      "description": "Master Reflective memory self-review in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-4": {
       "slug": "practice-problems/memory-prob-4",
       "section": "practice-problems",
-      "title": "Practice: #154. Agent Memory & Context Engineering Module 1: Problem 4",
-      "sidebarPosition": null,
-      "description": "Master #154. Agent Memory & Context Engineering Module 1: Problem 4 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #154. Episodic memory store/retrieve (recency-weighted)",
+      "sidebarPosition": 154,
+      "description": "Master Episodic memory store/retrieve (recency-weighted) in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-5": {
       "slug": "practice-problems/memory-prob-5",
       "section": "practice-problems",
-      "title": "Practice: #155. Agent Memory & Context Engineering Module 1: Problem 5",
-      "sidebarPosition": null,
-      "description": "Master #155. Agent Memory & Context Engineering Module 1: Problem 5 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #155. Working memory buffer FIFO eviction",
+      "sidebarPosition": 155,
+      "description": "Master Working memory buffer FIFO eviction in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-6": {
       "slug": "practice-problems/memory-prob-6",
       "section": "practice-problems",
-      "title": "Practice: #156. Agent Memory & Context Engineering Module 2: Problem 6",
-      "sidebarPosition": null,
-      "description": "Master #156. Agent Memory & Context Engineering Module 2: Problem 6 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #156. Memory consolidation (compress similar entries)",
+      "sidebarPosition": 156,
+      "description": "Master Memory consolidation (compress similar entries) in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-7": {
       "slug": "practice-problems/memory-prob-7",
       "section": "practice-problems",
-      "title": "Practice: #157. Agent Memory & Context Engineering Module 2: Problem 7",
-      "sidebarPosition": null,
-      "description": "Master #157. Agent Memory & Context Engineering Module 2: Problem 7 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #157. Memory retrieval scoring (BM25-style)",
+      "sidebarPosition": 157,
+      "description": "Master Memory retrieval scoring (BM25-style) in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-8": {
       "slug": "practice-problems/memory-prob-8",
       "section": "practice-problems",
-      "title": "Practice: #158. Agent Memory & Context Engineering Module 2: Problem 8",
-      "sidebarPosition": null,
-      "description": "Master #158. Agent Memory & Context Engineering Module 2: Problem 8 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #158. Context window packing (bin packing)",
+      "sidebarPosition": 158,
+      "description": "Master Context window packing (bin packing) in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/memory-prob-9": {
       "slug": "practice-problems/memory-prob-9",
       "section": "practice-problems",
-      "title": "Practice: #159. Agent Memory & Context Engineering Module 2: Problem 9",
-      "sidebarPosition": null,
-      "description": "Master #159. Agent Memory & Context Engineering Module 2: Problem 9 in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #159. Summary-based memory compression",
+      "sidebarPosition": 159,
+      "description": "Master Summary-based memory compression in the Agent Memory & Context Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Memory & Context Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/merge-k-sorted-lists": {
       "slug": "practice-problems/merge-k-sorted-lists",
@@ -14033,302 +14033,302 @@
     "/docs/practice-problems/planning-prob-1": {
       "slug": "practice-problems/planning-prob-1",
       "section": "practice-problems",
-      "title": "Practice: #121. Agent Planning & Reasoning Module 1: Problem 1",
-      "sidebarPosition": null,
-      "description": "Master #121. Agent Planning & Reasoning Module 1: Problem 1 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #121. PDDL-style goal decomposition (goal stack)",
+      "sidebarPosition": 121,
+      "description": "Master PDDL-style goal decomposition (goal stack) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-10": {
       "slug": "practice-problems/planning-prob-10",
       "section": "practice-problems",
-      "title": "Practice: #130. Agent Planning & Reasoning Module 2: Problem 10",
-      "sidebarPosition": null,
-      "description": "Master #130. Agent Planning & Reasoning Module 2: Problem 10 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #130. Chain-of-thought step validity check",
+      "sidebarPosition": 130,
+      "description": "Master Chain-of-thought step validity check in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-11": {
       "slug": "practice-problems/planning-prob-11",
       "section": "practice-problems",
-      "title": "Practice: #131. Agent Planning & Reasoning Module 3: Problem 11",
-      "sidebarPosition": null,
-      "description": "Master #131. Agent Planning & Reasoning Module 3: Problem 11 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #131. Thought-Action-Observation triple extraction",
+      "sidebarPosition": 131,
+      "description": "Master Thought-Action-Observation triple extraction in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-12": {
       "slug": "practice-problems/planning-prob-12",
       "section": "practice-problems",
-      "title": "Practice: #132. Agent Planning & Reasoning Module 3: Problem 12",
-      "sidebarPosition": null,
-      "description": "Master #132. Agent Planning & Reasoning Module 3: Problem 12 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #132. Plan validation (precondition checking)",
+      "sidebarPosition": 132,
+      "description": "Master Plan validation (precondition checking) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-13": {
       "slug": "practice-problems/planning-prob-13",
       "section": "practice-problems",
-      "title": "Practice: #133. Agent Planning & Reasoning Module 3: Problem 13",
-      "sidebarPosition": null,
-      "description": "Master #133. Agent Planning & Reasoning Module 3: Problem 13 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #133. Goal regression (backward chaining)",
+      "sidebarPosition": 133,
+      "description": "Master Goal regression (backward chaining) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-14": {
       "slug": "practice-problems/planning-prob-14",
       "section": "practice-problems",
-      "title": "Practice: #134. Agent Planning & Reasoning Module 3: Problem 14",
-      "sidebarPosition": null,
-      "description": "Master #134. Agent Planning & Reasoning Module 3: Problem 14 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #134. Constraint satisfaction backtracking",
+      "sidebarPosition": 134,
+      "description": "Master Constraint satisfaction backtracking in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-15": {
       "slug": "practice-problems/planning-prob-15",
       "section": "practice-problems",
-      "title": "Practice: #135. Agent Planning & Reasoning Module 3: Problem 15",
-      "sidebarPosition": null,
-      "description": "Master #135. Agent Planning & Reasoning Module 3: Problem 15 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #135. Planning horizon limit enforcement",
+      "sidebarPosition": 135,
+      "description": "Master Planning horizon limit enforcement in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-16": {
       "slug": "practice-problems/planning-prob-16",
       "section": "practice-problems",
-      "title": "Practice: #136. Agent Planning & Reasoning Module 4: Problem 16",
-      "sidebarPosition": null,
-      "description": "Master #136. Agent Planning & Reasoning Module 4: Problem 16 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #136. Subgoal identification from natural language",
+      "sidebarPosition": 136,
+      "description": "Master Subgoal identification from natural language in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-17": {
       "slug": "practice-problems/planning-prob-17",
       "section": "practice-problems",
-      "title": "Practice: #137. Agent Planning & Reasoning Module 4: Problem 17",
-      "sidebarPosition": null,
-      "description": "Master #137. Agent Planning & Reasoning Module 4: Problem 17 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #137. Action cost accumulation (total plan cost)",
+      "sidebarPosition": 137,
+      "description": "Master Action cost accumulation (total plan cost) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-18": {
       "slug": "practice-problems/planning-prob-18",
       "section": "practice-problems",
-      "title": "Practice: #138. Agent Planning & Reasoning Module 4: Problem 18",
-      "sidebarPosition": null,
-      "description": "Master #138. Agent Planning & Reasoning Module 4: Problem 18 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #138. Plan repair (detect violated postcondition)",
+      "sidebarPosition": 138,
+      "description": "Master Plan repair (detect violated postcondition) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-19": {
       "slug": "practice-problems/planning-prob-19",
       "section": "practice-problems",
-      "title": "Practice: #139. Agent Planning & Reasoning Module 4: Problem 19",
-      "sidebarPosition": null,
-      "description": "Master #139. Agent Planning & Reasoning Module 4: Problem 19 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #139. Greedy best-first search for planning",
+      "sidebarPosition": 139,
+      "description": "Master Greedy best-first search for planning in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-2": {
       "slug": "practice-problems/planning-prob-2",
       "section": "practice-problems",
-      "title": "Practice: #122. Agent Planning & Reasoning Module 1: Problem 2",
-      "sidebarPosition": null,
-      "description": "Master #122. Agent Planning & Reasoning Module 1: Problem 2 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #122. Task dependency graph topological ordering",
+      "sidebarPosition": 122,
+      "description": "Master Task dependency graph topological ordering in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-20": {
       "slug": "practice-problems/planning-prob-20",
       "section": "practice-problems",
-      "title": "Practice: #140. Agent Planning & Reasoning Module 4: Problem 20",
-      "sidebarPosition": null,
-      "description": "Master #140. Agent Planning & Reasoning Module 4: Problem 20 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #140. Iterative deepening planning",
+      "sidebarPosition": 140,
+      "description": "Master Iterative deepening planning in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-21": {
       "slug": "practice-problems/planning-prob-21",
       "section": "practice-problems",
-      "title": "Practice: #141. Agent Planning & Reasoning Module 5: Problem 21",
-      "sidebarPosition": null,
-      "description": "Master #141. Agent Planning & Reasoning Module 5: Problem 21 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #141. Multi-step rollout simulation",
+      "sidebarPosition": 141,
+      "description": "Master Multi-step rollout simulation in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-22": {
       "slug": "practice-problems/planning-prob-22",
       "section": "practice-problems",
-      "title": "Practice: #142. Agent Planning & Reasoning Module 5: Problem 22",
-      "sidebarPosition": null,
-      "description": "Master #142. Agent Planning & Reasoning Module 5: Problem 22 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "title": "Practice: #142. Utility function scoring for plans",
+      "sidebarPosition": 142,
+      "description": "Master Utility function scoring for plans in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-23": {
       "slug": "practice-problems/planning-prob-23",
       "section": "practice-problems",
-      "title": "Practice: #143. Agent Planning & Reasoning Module 5: Problem 23",
-      "sidebarPosition": null,
-      "description": "Master #143. Agent Planning & Reasoning Module 5: Problem 23 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #143. Risk-aware plan selection (variance)",
+      "sidebarPosition": 143,
+      "description": "Master Risk-aware plan selection (variance) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-24": {
       "slug": "practice-problems/planning-prob-24",
       "section": "practice-problems",
-      "title": "Practice: #144. Agent Planning & Reasoning Module 5: Problem 24",
-      "sidebarPosition": null,
-      "description": "Master #144. Agent Planning & Reasoning Module 5: Problem 24 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #144. Parallel task scheduling (independent actions)",
+      "sidebarPosition": 144,
+      "description": "Master Parallel task scheduling (independent actions) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-25": {
       "slug": "practice-problems/planning-prob-25",
       "section": "practice-problems",
-      "title": "Practice: #145. Agent Planning & Reasoning Module 5: Problem 25",
-      "sidebarPosition": null,
-      "description": "Master #145. Agent Planning & Reasoning Module 5: Problem 25 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #145. Sequential task scheduling (dependencies)",
+      "sidebarPosition": 145,
+      "description": "Master Sequential task scheduling (dependencies) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-26": {
       "slug": "practice-problems/planning-prob-26",
       "section": "practice-problems",
-      "title": "Practice: #146. Agent Planning & Reasoning Module 6: Problem 26",
-      "sidebarPosition": null,
-      "description": "Master #146. Agent Planning & Reasoning Module 6: Problem 26 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #146. Plan summarization (step compression)",
+      "sidebarPosition": 146,
+      "description": "Master Plan summarization (step compression) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-27": {
       "slug": "practice-problems/planning-prob-27",
       "section": "practice-problems",
-      "title": "Practice: #147. Agent Planning & Reasoning Module 6: Problem 27",
-      "sidebarPosition": null,
-      "description": "Master #147. Agent Planning & Reasoning Module 6: Problem 27 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #147. Alternative plan generation (beam search)",
+      "sidebarPosition": 147,
+      "description": "Master Alternative plan generation (beam search) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-28": {
       "slug": "practice-problems/planning-prob-28",
       "section": "practice-problems",
-      "title": "Practice: #148. Agent Planning & Reasoning Module 6: Problem 28",
-      "sidebarPosition": null,
-      "description": "Master #148. Agent Planning & Reasoning Module 6: Problem 28 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #148. Replanning trigger detection",
+      "sidebarPosition": 148,
+      "description": "Master Replanning trigger detection in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-29": {
       "slug": "practice-problems/planning-prob-29",
       "section": "practice-problems",
-      "title": "Practice: #149. Agent Planning & Reasoning Module 6: Problem 29",
-      "sidebarPosition": null,
-      "description": "Master #149. Agent Planning & Reasoning Module 6: Problem 29 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #149. Goal prioritization (importance weighting)",
+      "sidebarPosition": 149,
+      "description": "Master Goal prioritization (importance weighting) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-3": {
       "slug": "practice-problems/planning-prob-3",
       "section": "practice-problems",
-      "title": "Practice: #123. Agent Planning & Reasoning Module 1: Problem 3",
-      "sidebarPosition": null,
-      "description": "Master #123. Agent Planning & Reasoning Module 1: Problem 3 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #123. BFS planning (find shortest action sequence)",
+      "sidebarPosition": 123,
+      "description": "Master BFS planning (find shortest action sequence) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-30": {
       "slug": "practice-problems/planning-prob-30",
       "section": "practice-problems",
-      "title": "Practice: #150. Agent Planning & Reasoning Module 6: Problem 30",
-      "sidebarPosition": null,
-      "description": "Master #150. Agent Planning & Reasoning Module 6: Problem 30 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "title": "Practice: #150. Plan execution monitoring (state diff)",
+      "sidebarPosition": 150,
+      "description": "Master Plan execution monitoring (state diff) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-4": {
       "slug": "practice-problems/planning-prob-4",
       "section": "practice-problems",
-      "title": "Practice: #124. Agent Planning & Reasoning Module 1: Problem 4",
-      "sidebarPosition": null,
-      "description": "Master #124. Agent Planning & Reasoning Module 1: Problem 4 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #124. DFS planning with backtracking",
+      "sidebarPosition": 124,
+      "description": "Master DFS planning with backtracking in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-5": {
       "slug": "practice-problems/planning-prob-5",
       "section": "practice-problems",
-      "title": "Practice: #125. Agent Planning & Reasoning Module 1: Problem 5",
-      "sidebarPosition": null,
-      "description": "Master #125. Agent Planning & Reasoning Module 1: Problem 5 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #125. A* planning heuristic (admissible heuristic)",
+      "sidebarPosition": 125,
+      "description": "Master A* planning heuristic (admissible heuristic) in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-6": {
       "slug": "practice-problems/planning-prob-6",
       "section": "practice-problems",
-      "title": "Practice: #126. Agent Planning & Reasoning Module 2: Problem 6",
-      "sidebarPosition": null,
-      "description": "Master #126. Agent Planning & Reasoning Module 2: Problem 6 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #126. STRIPS-style precondition/effect state update",
+      "sidebarPosition": 126,
+      "description": "Master STRIPS-style precondition/effect state update in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-7": {
       "slug": "practice-problems/planning-prob-7",
       "section": "practice-problems",
-      "title": "Practice: #127. Agent Planning & Reasoning Module 2: Problem 7",
-      "sidebarPosition": null,
-      "description": "Master #127. Agent Planning & Reasoning Module 2: Problem 7 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #127. HTN (Hierarchical Task Network) method selection",
+      "sidebarPosition": 127,
+      "description": "Master HTN (Hierarchical Task Network) method selection in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-8": {
       "slug": "practice-problems/planning-prob-8",
       "section": "practice-problems",
-      "title": "Practice: #128. Agent Planning & Reasoning Module 2: Problem 8",
-      "sidebarPosition": null,
-      "description": "Master #128. Agent Planning & Reasoning Module 2: Problem 8 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #128. Monte Carlo Tree Search UCT score",
+      "sidebarPosition": 128,
+      "description": "Master Monte Carlo Tree Search UCT score in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/planning-prob-9": {
       "slug": "practice-problems/planning-prob-9",
       "section": "practice-problems",
-      "title": "Practice: #129. Agent Planning & Reasoning Module 2: Problem 9",
-      "sidebarPosition": null,
-      "description": "Master #129. Agent Planning & Reasoning Module 2: Problem 9 in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "title": "Practice: #129. ReAct (Reason + Act) trace parsing",
+      "sidebarPosition": 129,
+      "description": "Master ReAct (Reason + Act) trace parsing in the Agent Planning & Reasoning track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "difficulty": "medium",
       "topic": "Agent Planning & Reasoning",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/production-prob-1": {
       "slug": "practice-problems/production-prob-1",
@@ -17288,7 +17288,7 @@
       "description": "Master #988. Vector Search & Index Optimization Module 3: Problem 13 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Vector Search & Index Optimization",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/vec-search-prob-14": {
       "slug": "practice-problems/vec-search-prob-14",

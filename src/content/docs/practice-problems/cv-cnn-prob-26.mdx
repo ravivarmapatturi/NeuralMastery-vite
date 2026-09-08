@@ -1,23 +1,40 @@
 ---
-placeholder: true
 title: "Practice: #916. Computer Vision & CNN Architectures Module 6: Problem 26"
 description: "Master #916. Computer Vision & CNN Architectures Module 6: Problem 26 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+difficulty: "medium"
 topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #916. Computer Vision & CNN Architectures Module 6: Problem 26
+# #916. ResNet Basic Residual Block Forward Pass
 
-**Track**: Computer Vision & CNN Architectures | **Rank**: #916 of 1072 | **Points**: 90 XP
+**Track**: Computer Vision & CNN Architectures | **Rank**: #916 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#916. Computer Vision & CNN Architectures Module 6: Problem 26` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Overcome degradation and vanishing gradients in deep networks by learning residual mapping functions F(x) + x.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `resnet_residual_block(...)`:\n1. Layer 1: `h1 = relu(w1 * x)` elementwise.\n2. Layer 2: `h2 = w2 * h1` elementwise.\n3. Shortcut: `res = shortcut_weight * x` if `shortcut_weight is not None` else `x`.\n4. Output: `relu(h2 + res)` elementwise. Round each element to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-26" />
+
+<Solution>
+
+```python
+def resnet_residual_block(x: list[list[float]], w1: float, w2: float, shortcut_weight: float | None = None) -> list[list[float]]:
+    H = len(x)
+    W = len(x[0])
+    out1 = [[max(0.0, x[i][j] * w1) for j in range(W)] for i in range(H)]
+    out2 = [[out1[i][j] * w2 for j in range(W)] for i in range(H)]
+    res = [[x[i][j] * shortcut_weight for j in range(W)] for i in range(H)] if shortcut_weight is not None else x
+    out = [[round(max(0.0, out2[i][j] + res[i][j]), 4) for j in range(W)] for i in range(H)]
+    return out
+```
+
+The block learns the residual adjustment F(x) and adds it directly to the identity projection before final rectification.
+
+</Solution>

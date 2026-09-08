@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #903. Computer Vision & CNN Architectures Module 3: Problem 13"
 description: "Master #903. Computer Vision & CNN Architectures Module 3: Problem 13 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,50 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #903. Computer Vision & CNN Architectures Module 3: Problem 13
+# #903. Depthwise 2D Convolution
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #903 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#903. Computer Vision & CNN Architectures Module 3: Problem 13` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Decouple spatial filtering from channel mixing using depthwise separable convolutions as in MobileNet and Xception.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `depthwise_conv2d(x, kernels, stride=1)`: given input `x` of shape `(C, H, W)` and `kernels` of shape `(C, kH, kW)`, convolve each channel `c` independently with `kernels[c]` in valid mode (no padding). Return the output tensor of shape `(C, H_out, W_out)` with each entry rounded to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-13" />
+
+<Solution>
+
+```python
+def depthwise_conv2d(x: list[list[list[float]]], kernels: list[list[list[float]]], stride: int = 1) -> list[list[list[float]]]:
+    C = len(x)
+    H = len(x[0])
+    W = len(x[0][0])
+    kH = len(kernels[0])
+    kW = len(kernels[0][0])
+
+    out_H = (H - kH) // stride + 1
+    out_W = (W - kW) // stride + 1
+
+    out = []
+    for c in range(C):
+        c_mat = []
+        for i in range(out_H):
+            row = []
+            for j in range(out_W):
+                h_start = i * stride
+                w_start = j * stride
+                val = sum(x[c][h_start + kh][w_start + kw] * kernels[c][kh][kw] for kh in range(kH) for kw in range(kW))
+                row.append(round(float(val), 4))
+            c_mat.append(row)
+        out.append(c_mat)
+    return out
+```
+
+Depthwise convolution applies an independent 2D spatial convolution per channel without cross-channel communication.
+
+</Solution>

@@ -1,23 +1,57 @@
 ---
-placeholder: true
 title: "Practice: #912. Computer Vision & CNN Architectures Module 5: Problem 22"
 description: "Master #912. Computer Vision & CNN Architectures Module 5: Problem 22 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+difficulty: "hard"
 topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #912. Computer Vision & CNN Architectures Module 5: Problem 22
+# #912. Squeeze-and-Excitation Channel Attention Block
 
-**Track**: Computer Vision & CNN Architectures | **Rank**: #912 of 1072 | **Points**: 60 XP
+**Track**: Computer Vision & CNN Architectures | **Rank**: #912 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#912. Computer Vision & CNN Architectures Module 5: Problem 22` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Dynamically recalibrate channel-wise feature responses by explicitly modeling interdependencies between channels.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `squeeze_and_excitation(...)`:\n1. Squeeze: Global average pool each channel across `H x W` to obtain vector `z` of length `C`.\n2. Excitation stage 1: Compute `s1 = relu(w1 @ z)` where `s1[r] = max(0.0, sum(w1[r][c] * z[c]))`.\n3. Excitation stage 2: Compute `s2 = sigmoid(w2 @ s1)` where `s2[c] = 1.0 / (1.0 + exp(-sum(w2[c][r] * s1[r])))`.\n4. Scale: Multiply each channel `features[c]` by scalar `s2[c]`. Round all elements to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-22" />
+
+<Solution>
+
+```python
+def squeeze_and_excitation(features: list[list[list[float]]], w1: list[list[float]], w2: list[list[float]]) -> list[list[list[float]]]:
+    C = len(features)
+    H = len(features[0])
+    W = len(features[0][0])
+    z = [sum(features[c][i][j] for i in range(H) for j in range(W)) / (H * W) for c in range(C)]
+    R = len(w1)
+    s1 = []
+    for r in range(R):
+        dot = sum(w1[r][c] * z[c] for c in range(C))
+        s1.append(max(0.0, dot))
+    s2 = []
+    for c in range(C):
+        dot = sum(w2[c][r] * s1[r] for r in range(R))
+        sig = 1.0 / (1.0 + math.exp(-dot))
+        s2.append(sig)
+    out = []
+    for c in range(C):
+        channel = []
+        for i in range(H):
+            row = []
+            for j in range(W):
+                row.append(round(features[c][i][j] * s2[c], 4))
+            channel.append(row)
+        out.append(channel)
+    return out
+```
+
+Global pooling extracts channel statistics, two dense projections produce channel weights, and element-wise channel multiplication rescales features.
+
+</Solution>

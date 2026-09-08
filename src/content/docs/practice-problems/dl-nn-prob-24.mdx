@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #884. Deep Learning & Neural Networks Module 5: Problem 24"
 description: "Master #884. Deep Learning & Neural Networks Module 5: Problem 24 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,58 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #884. Deep Learning & Neural Networks Module 5: Problem 24
+# #884. Layer Normalization Backward Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #884 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#884. Deep Learning & Neural Networks Module 5: Problem 24` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute exact analytical gradients for Layer Normalization without numerical differentiation.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `layer_norm_backward(dout, x, gamma, eps=1e-5)`: given upstream gradient `dout` and input `x`, compute `dbeta = sum_i(dout_i)` and `dgamma = sum_i(dout_i * x_hat_i)`. For each sample `i`, compute the gradient w.r.t input `x_i` as `dx_ij = (1 / (D * sqrt(var + eps))) * (D * dxhat_j - sum(dxhat) - x_hat_j * sum(dxhat * x_hat))`, where `dxhat_j = dout_ij * gamma_j`. Return `{'dx': dx, 'dgamma': dgamma, 'dbeta': dbeta}` rounded to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-24" />
+
+<Solution>
+
+```python
+def layer_norm_backward(dout: list[list[float]], x: list[list[float]], gamma: list[float], eps: float = 1e-5) -> dict:
+    N = len(x)
+    D = len(x[0])
+
+    dx = []
+    dgamma = [0.0] * D
+    dbeta = [0.0] * D
+
+    for i in range(N):
+        row = x[i]
+        mean = sum(row) / D
+        var = sum((v - mean) ** 2 for v in row) / D
+        std_inv = 1.0 / math.sqrt(var + eps)
+        x_hat = [(v - mean) * std_inv for v in row]
+
+        for j in range(D):
+            dgamma[j] += dout[i][j] * x_hat[j]
+            dbeta[j] += dout[i][j]
+
+        dxhat = [dout[i][j] * gamma[j] for j in range(D)]
+        s1 = sum(dxhat)
+        s2 = sum(dxhat[j] * x_hat[j] for j in range(D))
+        dx_row = []
+        for j in range(D):
+            val = (std_inv / D) * (D * dxhat[j] - s1 - x_hat[j] * s2)
+            dx_row.append(round(float(val), 4))
+        dx.append(dx_row)
+
+    dgamma = [round(float(v), 4) for v in dgamma]
+    dbeta = [round(float(v), 4) for v in dbeta]
+    return {"dx": dx, "dgamma": dgamma, "dbeta": dbeta}
+```
+
+Differentiating through both the mean and variance terms yields the standardized projection formula for dx.
+
+</Solution>

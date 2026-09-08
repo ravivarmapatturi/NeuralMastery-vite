@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #889. Deep Learning & Neural Networks Module 6: Problem 29"
 description: "Master #889. Deep Learning & Neural Networks Module 6: Problem 29 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,48 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #889. Deep Learning & Neural Networks Module 6: Problem 29
+# #889. Cross-Entropy Loss with Label Smoothing
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #889 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#889. Deep Learning & Neural Networks Module 6: Problem 29` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Prevent model overconfidence and improve calibration using Szegedy et al.'s label smoothing regularization.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cross_entropy_label_smoothing(logits, target_idx, eps=0.1)`: for `C` classes, the smoothed ground-truth distribution for sample `i` is `q(k) = (1 - eps)` if `k == target_idx[i]` else `0`, plus `eps / C`. Compute log-softmax values stably: `log_p[k] = logits[k] - max(logits) - log(sum(exp(logits - max(logits))))`. The sample loss is `-sum(q(k) * log_p[k])`. Return the mean loss across `N` samples rounded to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-29" />
+
+<Solution>
+
+```python
+def cross_entropy_label_smoothing(logits: list[list[float]], target_idx: list[int], eps: float = 0.1) -> float:
+    N = len(logits)
+    C = len(logits[0])
+    total_loss = 0.0
+
+    for i in range(N):
+        row = logits[i]
+        m = max(row)
+        exps = [math.exp(v - m) for v in row]
+        sum_exp = sum(exps)
+        log_probs = [v - m - math.log(sum_exp) for v in row]
+
+        y_i = target_idx[i]
+        loss_i = 0.0
+        for j in range(C):
+            q_j = (1.0 - eps) if j == y_i else 0.0
+            q_j += eps / C
+            loss_i += -q_j * log_probs[j]
+        total_loss += loss_i
+
+    return round(total_loss / N, 4)
+```
+
+Label smoothing replaces hard Dirac-delta targets with a mixture of true labels and a uniform prior over all classes.
+
+</Solution>

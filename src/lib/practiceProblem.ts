@@ -76985,6 +76985,11639 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] }
   },
+  'cv-cnn-prob-1': {
+    id: 'cv-cnn-prob-1',
+    title: "Conv2D Output Spatial Dimension Calculator",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'conv2d_output_shape',
+    functionSignature: "conv2d_output_shape(H: int, W: int, kH: int, kW: int, pad_h: int = 0, pad_w: int = 0, stride_h: int = 1, stride_w: int = 1, dilation_h: int = 1, dilation_w: int = 1) -> list[int]",
+    starterCode: `def conv2d_output_shape(H: int, W: int, kH: int, kW: int, pad_h: int = 0, pad_w: int = 0, stride_h: int = 1, stride_w: int = 1, dilation_h: int = 1, dilation_w: int = 1) -> list[int]:
+    """Compute the output spatial height and width of a 2D convolution.
+
+    Args:
+        H, W: Input spatial height and width.
+        kH, kW: Kernel height and width.
+        pad_h, pad_w: Implicit padding added to both sides of height/width.
+        stride_h, stride_w: Stride of the convolution.
+        dilation_h, dilation_w: Dilation rate of kernel elements.
+
+    Returns:
+        List [out_H, out_W] of integer dimensions.
+    """
+    pass
+`,
+    mission: "Calculate exact output spatial feature map dimensions for convolutional layers across various padding, stride, and dilation configurations.",
+    taskDescription: "Implement `conv2d_output_shape(...)`: calculate the output spatial shape `[out_H, out_W]`. The effective kernel dimension with dilation `d` is `k_eff = k + (k - 1) * (d - 1)`. The output dimension is `floor((dim + 2 * pad - k_eff) / stride) + 1`. Return `[out_H, out_W]` as integers.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 4096",
+      "1 <= kH <= H",
+      "1 <= kW <= W",
+      "stride_h, stride_w >= 1",
+      "dilation_h, dilation_w >= 1"
+],
+    hints: {
+      "small": "Compute effective kernel size: k_eff = kH + (kH - 1) * (dilation_h - 1).",
+      "strong": "out_H = math.floor((H + 2 * pad_h - k_eff) / stride_h) + 1.",
+      "concept": "Accurate shape tracking across deep convolutional backbones ensures dimension alignment before dense heads or skip-connection additions."
+},
+    conceptConnections: [
+      {
+            "title": "Convolutional Arithmetic",
+            "route": "/practice/convolution-arithmetic",
+            "description": "Mathematical foundations of receptive fields and feature map sizing."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Valid convolution no padding",
+            "input": {
+                  "H": 32,
+                  "W": 32,
+                  "kH": 3,
+                  "kW": 3,
+                  "pad_h": 0,
+                  "pad_w": 0,
+                  "stride_h": 1,
+                  "stride_w": 1,
+                  "dilation_h": 1,
+                  "dilation_w": 1
+            },
+            "expectedOutput": [
+                  30,
+                  30
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Same convolution with padding 1",
+            "input": {
+                  "H": 28,
+                  "W": 28,
+                  "kH": 3,
+                  "kW": 3,
+                  "pad_h": 1,
+                  "pad_w": 1,
+                  "stride_h": 1,
+                  "stride_w": 1,
+                  "dilation_h": 1,
+                  "dilation_w": 1
+            },
+            "expectedOutput": [
+                  28,
+                  28
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Strided downsampling",
+            "input": {
+                  "H": 224,
+                  "W": 224,
+                  "kH": 7,
+                  "kW": 7,
+                  "pad_h": 3,
+                  "pad_w": 3,
+                  "stride_h": 2,
+                  "stride_w": 2,
+                  "dilation_h": 1,
+                  "dilation_w": 1
+            },
+            "expectedOutput": [
+                  112,
+                  112
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Dilated convolution (atrous)",
+            "input": {
+                  "H": 64,
+                  "W": 64,
+                  "kH": 3,
+                  "kW": 3,
+                  "pad_h": 2,
+                  "pad_w": 2,
+                  "stride_h": 1,
+                  "stride_w": 1,
+                  "dilation_h": 2,
+                  "dilation_w": 2
+            },
+            "expectedOutput": [
+                  64,
+                  64
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-1': {
+    id: 'dl-nn-prob-1',
+    title: "Dense Layer Forward Pass",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'dense_forward',
+    functionSignature: "dense_forward(x: list[list[float]], w: list[list[float]], b: list[float]) -> list[list[float]]",
+    starterCode: `def dense_forward(x: list[list[float]], w: list[list[float]], b: list[float]) -> list[list[float]]:
+    """Compute the linear affine transformation out = x @ w + b for batch input x.
+
+    Args:
+        x: 2D matrix of shape (N, D_in).
+        w: 2D weight matrix of shape (D_in, D_out).
+        b: 1D bias vector of length D_out.
+
+    Returns:
+        2D list of shape (N, D_out) rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the fundamental affine transformation for a fully connected (dense) neural network layer across a mini-batch.",
+    taskDescription: "Implement `dense_forward(x, w, b)` which computes the forward pass of a linear layer: `y = x @ w + b`. Given `x` of shape `(N, D_in)`, weight matrix `w` of shape `(D_in, D_out)`, and bias vector `b` of length `D_out`, return the output matrix of shape `(N, D_out)` where each element is rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 100",
+      "1 <= D_in, D_out <= 64",
+      "Inputs contain valid finite floating-point numbers"
+],
+    hints: {
+      "small": "For each row i in x and column j in w, take the dot product sum(x[i][k] * w[k][j] for k) and add b[j].",
+      "strong": "Remember that b has length D_out, so b[j] corresponds directly to the j-th output column.",
+      "concept": "A dense layer projects input features from an input dimension D_in to a target representation space D_out followed by a bias offset."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Multiplication in Neural Nets",
+            "route": "/practice/matrix-multiplication",
+            "description": "Core linear algebra underpinning layer projections."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single sample 2D to 2D",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              0.5,
+                              -0.5
+                        ],
+                        [
+                              1.0,
+                              1.5
+                        ]
+                  ],
+                  "b": [
+                        0.1,
+                        -0.2
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.6,
+                        2.3
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Batch of 2 samples",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              -1.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              -1.0,
+                              0.5,
+                              0.0
+                        ]
+                  ],
+                  "b": [
+                        1.0,
+                        0.0,
+                        -1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.5,
+                        -1.0
+                  ],
+                  [
+                        4.0,
+                        3.5,
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero weights and bias",
+            "input": {
+                  "x": [
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              0.0
+                        ],
+                        [
+                              0.0
+                        ]
+                  ],
+                  "b": [
+                        5.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-dimensional batch",
+            "input": {
+                  "x": [
+                        [
+                              1.5,
+                              -2.0,
+                              0.5
+                        ]
+                  ],
+                  "w": [
+                        [
+                              0.2,
+                              0.4
+                        ],
+                        [
+                              -0.1,
+                              0.3
+                        ],
+                        [
+                              1.0,
+                              -0.5
+                        ]
+                  ],
+                  "b": [
+                        0.0,
+                        0.5
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.25
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-2': {
+    id: 'cv-cnn-prob-2',
+    title: "2D Max Pooling Forward Pass",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'max_pool2d_forward',
+    functionSignature: "max_pool2d_forward(x: list[list[float]], pool_size: int = 2, stride: int = 2) -> list[list[float]]",
+    starterCode: `def max_pool2d_forward(x: list[list[float]], pool_size: int = 2, stride: int = 2) -> list[list[float]]:
+    """Execute 2D max pooling forward pass on a single-channel feature map.
+
+    Args:
+        x: 2D matrix of shape (H, W).
+        pool_size: Square pooling window dimension.
+        stride: Stride of the pooling window.
+
+    Returns:
+        Pooled 2D matrix of shape ((H - pool_size)//stride + 1, (W - pool_size)//stride + 1).
+    """
+    pass
+`,
+    mission: "Downsample spatial representations and extract dominant features using 2D max pooling.",
+    taskDescription: "Implement `max_pool2d_forward(x, pool_size=2, stride=2)`: slide a square window of size `pool_size x pool_size` with step size `stride` over 2D input `x`. For each window position, take the maximum element. Round output floats to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= H, W <= 128",
+      "1 <= pool_size <= min(H, W)",
+      "stride >= 1"
+],
+    hints: {
+      "small": "Window top-left starts at h_start = i * stride and w_start = j * stride.",
+      "strong": "Take max(x[h_start + kh][w_start + kw] for kh in range(pool_size) for kw in range(pool_size)).",
+      "concept": "Max pooling provides translation invariance by capturing the most salient response in local neighborhoods."
+},
+    conceptConnections: [
+      {
+            "title": "Pooling Layers",
+            "route": "/practice/pooling-operations",
+            "description": "Spatial downsampling and invariance properties."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "4x4 matrix with 2x2 stride 2 pool",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              6.0,
+                              7.0,
+                              8.0
+                        ],
+                        [
+                              9.0,
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0,
+                              7.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        6.0,
+                        8.0
+                  ],
+                  [
+                        9.0,
+                        7.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Overlapping pooling stride 1",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              3.0,
+                              2.0
+                        ],
+                        [
+                              4.0,
+                              0.0,
+                              5.0
+                        ],
+                        [
+                              2.0,
+                              1.0,
+                              3.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        4.0,
+                        5.0
+                  ],
+                  [
+                        4.0,
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 pool on 3x3 input",
+            "input": {
+                  "x": [
+                        [
+                              -1.0,
+                              2.0,
+                              0.5
+                        ],
+                        [
+                              4.0,
+                              -3.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              5.0,
+                              -2.0
+                        ]
+                  ],
+                  "pool_size": 3,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "All negative matrix",
+            "input": {
+                  "x": [
+                        [
+                              -10.0,
+                              -5.0
+                        ],
+                        [
+                              -8.0,
+                              -2.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        -2.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-2': {
+    id: 'dl-nn-prob-2',
+    title: "ReLU Backward Gradient Pass",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'relu_backward',
+    functionSignature: "relu_backward(dout: list[list[float]], x: list[list[float]]) -> list[list[float]]",
+    starterCode: `def relu_backward(dout: list[list[float]], x: list[list[float]]) -> list[list[float]]:
+    """Compute the gradient of the loss with respect to input x through a ReLU activation.
+
+    Args:
+        dout: Upstream gradient matrix of shape (N, D).
+        x: Forward input matrix of shape (N, D).
+
+    Returns:
+        Gradient matrix dx where dx[i][j] = dout[i][j] if x[i][j] > 0 else 0.0, rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Backpropagate upstream gradients through a Rectified Linear Unit (ReLU) activation function.",
+    taskDescription: "Implement `relu_backward(dout, x)` which computes the element-wise gradient `dx` given upstream gradient `dout` and forward input cache `x`. For each element, if `x[i][j] > 0`, the derivative is 1 so `dx[i][j] = dout[i][j]`; if `x[i][j] <= 0`, the derivative is 0 so `dx[i][j] = 0.0`. Round results to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "dout and x have identical 2D dimensions",
+      "1 <= N, D <= 100",
+      "Floats are finite"
+],
+    hints: {
+      "small": "Check whether x[i][j] is strictly greater than 0.",
+      "strong": "If x[i][j] `>` 0.0, keep dout[i][j], otherwise return 0.0.",
+      "concept": "ReLU is piecewise linear; its subgradient is 1 for positive inputs and 0 for negative or zero inputs."
+},
+    conceptConnections: [
+      {
+            "title": "Backpropagation Basics",
+            "route": "/practice/backprop-foundations",
+            "description": "Chain rule application across piecewise activations."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Positive and negative inputs",
+            "input": {
+                  "dout": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              0.5,
+                              -1.0
+                        ]
+                  ],
+                  "x": [
+                        [
+                              3.0,
+                              -2.0
+                        ],
+                        [
+                              0.0,
+                              1.5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        -1.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "All negative inputs",
+            "input": {
+                  "dout": [
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ],
+                  "x": [
+                        [
+                              -1.0,
+                              -0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "All positive inputs",
+            "input": {
+                  "dout": [
+                        [
+                              1.5,
+                              0.8
+                        ]
+                  ],
+                  "x": [
+                        [
+                              2.0,
+                              0.1
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.5,
+                        0.8
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Zero boundary case",
+            "input": {
+                  "dout": [
+                        [
+                              5.0,
+                              4.0
+                        ]
+                  ],
+                  "x": [
+                        [
+                              0.0,
+                              -0.001
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-3': {
+    id: 'cv-cnn-prob-3',
+    title: "2D Average Pooling Forward Pass",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'avg_pool2d_forward',
+    functionSignature: "avg_pool2d_forward(x: list[list[float]], pool_size: int = 2, stride: int = 2) -> list[list[float]]",
+    starterCode: `def avg_pool2d_forward(x: list[list[float]], pool_size: int = 2, stride: int = 2) -> list[list[float]]:
+    """Execute 2D average pooling forward pass on a 2D feature map.
+
+    Args:
+        x: 2D matrix of shape (H, W).
+        pool_size: Dimension of square pooling window.
+        stride: Stride of the pooling window.
+
+    Returns:
+        Averaged 2D matrix rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Smooth feature representations and downsample spatial dimensions by computing local window averages.",
+    taskDescription: "Implement `avg_pool2d_forward(x, pool_size=2, stride=2)`: slide a square window of size `pool_size x pool_size` over `x` with step size `stride`. For each valid window, compute the arithmetic mean of the entries. Round output values to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= H, W <= 128",
+      "1 <= pool_size <= min(H, W)",
+      "stride >= 1"
+],
+    hints: {
+      "small": "Sum elements in the window and divide by pool_size * pool_size.",
+      "strong": "window_sum = sum(x[h_start + kh][w_start + kw] for kh in range(pool_size) for kw in range(pool_size)).",
+      "concept": "Average pooling acts as a spatial low-pass filter, retaining smooth contextual background signals."
+},
+    conceptConnections: [
+      {
+            "title": "Downsampling Strategies",
+            "route": "/practice/pooling-comparison",
+            "description": "Max pooling versus average pooling trade-offs."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "4x4 matrix 2x2 avg pool",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              3.0,
+                              2.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              7.0,
+                              6.0,
+                              8.0
+                        ],
+                        [
+                              2.0,
+                              2.0,
+                              4.0,
+                              4.0
+                        ],
+                        [
+                              6.0,
+                              6.0,
+                              8.0,
+                              8.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        4.0,
+                        5.0
+                  ],
+                  [
+                        4.0,
+                        6.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Uniform matrix constant average",
+            "input": {
+                  "x": [
+                        [
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              5.0,
+                              5.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Stride 1 overlapping average pool",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        3.0,
+                        4.0
+                  ],
+                  [
+                        6.0,
+                        7.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 pool on 3x3 matrix",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0,
+                              5.0
+                        ],
+                        [
+                              6.0,
+                              7.0,
+                              8.0
+                        ]
+                  ],
+                  "pool_size": 3,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        4.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-3': {
+    id: 'dl-nn-prob-3',
+    title: "Binary Cross-Entropy Loss",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'binary_cross_entropy',
+    functionSignature: "binary_cross_entropy(y_pred: list[float], y_true: list[float], eps: float = 1e-7) -> float",
+    starterCode: `def binary_cross_entropy(y_pred: list[float], y_true: list[float], eps: float = 1e-7) -> float:
+    """Compute mean binary cross-entropy loss with epsilon clipping.
+
+    Args:
+        y_pred: Predicted probabilities in [0.0, 1.0].
+        y_true: True binary targets (0.0 or 1.0).
+        eps: Small float to prevent log(0).
+
+    Returns:
+        Mean BCE loss rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Calculate stable binary cross-entropy loss for binary classification models with probability clipping.",
+    taskDescription: "Implement `binary_cross_entropy(y_pred, y_true, eps=1e-7)`: compute the average BCE loss over `N` samples: `loss = -(1/N) * sum(y * log(p) + (1 - y) * log(1 - p))`. Clamp `y_pred` to `[eps, 1.0 - eps]` before taking logarithms to avoid numerical instability. Return the mean loss rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(y_pred) == len(y_true) >= 1",
+      "0.0 <= y_pred[i] <= 1.0",
+      "y_true[i] in {0.0, 1.0}"
+],
+    hints: {
+      "small": "Clamp p = max(min(p, 1.0 - eps), eps) before taking math.log.",
+      "strong": "Each sample loss is -(y * math.log(p) + (1.0 - y) * math.log(1.0 - p)). Average across all samples.",
+      "concept": "Cross-entropy quantifies divergence between Bernoulli distributions predicted by a sigmoid output."
+},
+    conceptConnections: [
+      {
+            "title": "Cross Entropy Fundamentals",
+            "route": "/practice/cross-entropy-loss",
+            "description": "Information theory metrics in supervised learning."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Well-calibrated predictions",
+            "input": {
+                  "y_pred": [
+                        0.9,
+                        0.1,
+                        0.8
+                  ],
+                  "y_true": [
+                        1.0,
+                        0.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": 0.1446,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "High error predictions",
+            "input": {
+                  "y_pred": [
+                        0.1,
+                        0.9
+                  ],
+                  "y_true": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": 2.3026,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Boundary probabilities",
+            "input": {
+                  "y_pred": [
+                        1.0,
+                        0.0
+                  ],
+                  "y_true": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Mixed batch with eps clamping",
+            "input": {
+                  "y_pred": [
+                        0.5,
+                        0.5,
+                        0.5
+                  ],
+                  "y_true": [
+                        1.0,
+                        0.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": 0.6931,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-4': {
+    id: 'cv-cnn-prob-4',
+    title: "2D Zero-Padding Implementation",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'zero_padding2d',
+    functionSignature: "zero_padding2d(x: list[list[float]], pad_h: int, pad_w: int) -> list[list[float]]",
+    starterCode: `def zero_padding2d(x: list[list[float]], pad_h: int, pad_w: int) -> list[list[float]]:
+    """Apply symmetric zero-padding around a 2D matrix.
+
+    Args:
+        x: 2D input matrix of shape (H, W).
+        pad_h: Number of zero rows to add on top and bottom.
+        pad_w: Number of zero columns to add on left and right.
+
+    Returns:
+        Padded matrix of shape (H + 2*pad_h, W + 2*pad_w).
+    """
+    pass
+`,
+    mission: "Preserve boundary spatial resolution during convolution by symmetrically extending images with zeros.",
+    taskDescription: "Implement `zero_padding2d(x, pad_h, pad_w)`: return a new 2D matrix of shape `(H + 2*pad_h, W + 2*pad_w)` where the original matrix `x` is centered and all border entries are `0.0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 256",
+      "0 <= pad_h, pad_w <= 32"
+],
+    hints: {
+      "small": "Initialize a matrix of zeros with shape (H + 2*pad_h, W + 2*pad_w).",
+      "strong": "Copy x[i][j] into padded[i + pad_h][j + pad_w].",
+      "concept": "Zero-padding prevents boundary shrinkage and allows deeper architectures to preserve fine spatial details."
+},
+    conceptConnections: [
+      {
+            "title": "Padding Strategies",
+            "route": "/practice/padding-modes",
+            "description": "Zero, reflection, and replication padding in vision."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Pad 2x2 with 1 border",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "pad_h": 1,
+                  "pad_w": 1
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0,
+                        2.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        3.0,
+                        4.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Asymmetric padding pad_h=2 pad_w=1",
+            "input": {
+                  "x": [
+                        [
+                              5.0
+                        ]
+                  ],
+                  "pad_h": 2,
+                  "pad_w": 1
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        5.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero padding no-op",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "pad_h": 0,
+                  "pad_w": 0
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        2.0
+                  ],
+                  [
+                        3.0,
+                        4.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Pad 3x3 with pad 2",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              2.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              3.0,
+                              3.0
+                        ]
+                  ],
+                  "pad_h": 2,
+                  "pad_w": 2
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        2.0,
+                        2.0,
+                        2.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        3.0,
+                        3.0,
+                        3.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-4': {
+    id: 'dl-nn-prob-4',
+    title: "Numerically Stable Softmax",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'softmax_stable',
+    functionSignature: "softmax_stable(logits: list[list[float]]) -> list[list[float]]",
+    starterCode: `def softmax_stable(logits: list[list[float]]) -> list[list[float]]:
+    """Compute row-wise softmax probabilities with max subtraction for numerical stability.
+
+    Args:
+        logits: 2D matrix of shape (N, C).
+
+    Returns:
+        2D probability matrix of shape (N, C) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Transform unnormalized log-odds (logits) into a valid probability distribution without floating point overflow.",
+    taskDescription: "Implement `softmax_stable(logits)`: for each row `z` in `logits`, compute `exp(z_i - max(z)) / sum(exp(z_j - max(z)))`. Subtracting the row maximum ensures that the largest exponent evaluated is `exp(0) = 1`, preventing float overflow. Round every output probability to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 100",
+      "1 <= C <= 1000",
+      "Logits are real numbers"
+],
+    hints: {
+      "small": "Find m = max(row) for each row before exponentiating.",
+      "strong": "exp_shifted = [math.exp(v - m) for v in row]. Divide by sum(exp_shifted).",
+      "concept": "Shift invariance of softmax: softmax(z) = softmax(z - c) for any constant scalar c."
+},
+    conceptConnections: [
+      {
+            "title": "Softmax Activation",
+            "route": "/practice/softmax-temperature",
+            "description": "Probability normalization in multi-class classifiers."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard small logits",
+            "input": {
+                  "logits": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.09,
+                        0.2447,
+                        0.6652
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Large logits requiring stabilization",
+            "input": {
+                  "logits": [
+                        [
+                              1000.0,
+                              1001.0,
+                              1002.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.09,
+                        0.2447,
+                        0.6652
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Batch of 2 rows",
+            "input": {
+                  "logits": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              2.0,
+                              -2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.5,
+                        0.5
+                  ],
+                  [
+                        0.982,
+                        0.018
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Negative logits batch",
+            "input": {
+                  "logits": [
+                        [
+                              -10.0,
+                              -20.0,
+                              -10.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.5,
+                        0.0,
+                        0.5
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-5': {
+    id: 'cv-cnn-prob-5',
+    title: "RGB to Grayscale Luminance Conversion",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'rgb_to_grayscale',
+    functionSignature: "rgb_to_grayscale(rgb_image: list[list[list[float]]]) -> list[list[float]]",
+    starterCode: `def rgb_to_grayscale(rgb_image: list[list[list[float]]]) -> list[list[float]]:
+    """Convert a 3-channel RGB image tensor (3, H, W) to a 2D grayscale luminance matrix.
+
+    Args:
+        rgb_image: 3D list of shape (3, H, W) representing Red, Green, and Blue channels.
+
+    Returns:
+        2D list of shape (H, W) containing luminance values rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Convert multi-channel color images to single-channel intensity maps using human perceptual luminance weights.",
+    taskDescription: "Implement `rgb_to_grayscale(rgb_image)`: given a tensor of shape `(3, H, W)` where channel 0 is R, channel 1 is G, and channel 2 is B, compute the ITU-R BT.601 luminance at each coordinate `(i, j)`: `Y = 0.299 * R + 0.587 * G + 0.114 * B`. Return the `(H, W)` matrix with floats rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(rgb_image) == 3",
+      "1 <= H, W <= 256"
+],
+    hints: {
+      "small": "R = rgb_image[0][i][j], G = rgb_image[1][i][j], B = rgb_image[2][i][j].",
+      "strong": "Green carries the highest perceptual weight (0.587) due to human retinal cone sensitivity.",
+      "concept": "Luminance weighting models human photometric vision, which is significantly more sensitive to green than red or blue."
+},
+    conceptConnections: [
+      {
+            "title": "Color Spaces",
+            "route": "/practice/color-spaces",
+            "description": "RGB, Grayscale, HSV, and LAB color representations."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single pixel primary colors",
+            "input": {
+                  "rgb_image": [
+                        [
+                              [
+                                    255.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        76.245
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Pure green pixel",
+            "input": {
+                  "rgb_image": [
+                        [
+                              [
+                                    0.0
+                              ]
+                        ],
+                        [
+                              [
+                                    255.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        149.685
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "2x2 color patch",
+            "input": {
+                  "rgb_image": [
+                        [
+                              [
+                                    100.0,
+                                    50.0
+                              ],
+                              [
+                                    200.0,
+                                    0.0
+                              ]
+                        ],
+                        [
+                              [
+                                    150.0,
+                                    80.0
+                              ],
+                              [
+                                    50.0,
+                                    255.0
+                              ]
+                        ],
+                        [
+                              [
+                                    200.0,
+                                    10.0
+                              ],
+                              [
+                                    100.0,
+                                    128.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        140.75,
+                        63.05
+                  ],
+                  [
+                        100.55,
+                        164.277
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Normalized [0, 1] inputs",
+            "input": {
+                  "rgb_image": [
+                        [
+                              [
+                                    1.0,
+                                    0.5
+                              ]
+                        ],
+                        [
+                              [
+                                    0.8,
+                                    0.2
+                              ]
+                        ],
+                        [
+                              [
+                                    0.2,
+                                    0.9
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.7914,
+                        0.3695
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-5': {
+    id: 'dl-nn-prob-5',
+    title: "Mean Squared Error Loss Gradient",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'mse_loss_backward',
+    functionSignature: "mse_loss_backward(y_pred: list[list[float]], y_true: list[list[float]]) -> list[list[float]]",
+    starterCode: `def mse_loss_backward(y_pred: list[list[float]], y_true: list[list[float]]) -> list[list[float]]:
+    """Compute gradient of mean squared error with respect to predictions y_pred.
+
+    Args:
+        y_pred: Model predictions of shape (N, D).
+        y_true: Ground truth targets of shape (N, D).
+
+    Returns:
+        Gradient matrix dL/dy_pred of shape (N, D) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Compute the analytical gradient of Mean Squared Error loss w.r.t network predictions to initiate backpropagation.",
+    taskDescription: "Implement `mse_loss_backward(y_pred, y_true)`: with `MSE = (1 / (N * D)) * sum((y_pred - y_true)^2)`, compute the derivative with respect to each prediction `y_pred[i][j]`, which is `(2 / (N * D)) * (y_pred[i][j] - y_true[i][j])`. Here `N` is the number of rows and `D` is the number of columns. Round each gradient element to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "y_pred and y_true have matching shape (N, D)",
+      "1 <= N, D <= 100"
+],
+    hints: {
+      "small": "Total elements is N * D where N = len(y_pred) and D = len(y_pred[0]).",
+      "strong": "Each gradient cell is (2.0 / (N * D)) * (y_pred[i][j] - y_true[i][j]).",
+      "concept": "The MSE gradient scales linearly with the residual error, providing strong correction for large errors."
+},
+    conceptConnections: [
+      {
+            "title": "Regression Loss Functions",
+            "route": "/practice/linear-regression-gradient",
+            "description": "L2 regression objectives and gradients."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single sample 1D output",
+            "input": {
+                  "y_pred": [
+                        [
+                              3.0,
+                              5.0
+                        ]
+                  ],
+                  "y_true": [
+                        [
+                              2.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        4.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Batch of 2 samples",
+            "input": {
+                  "y_pred": [
+                        [
+                              1.0
+                        ],
+                        [
+                              4.0
+                        ]
+                  ],
+                  "y_true": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0
+                  ],
+                  [
+                        2.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Exact match zero gradient",
+            "input": {
+                  "y_pred": [
+                        [
+                              2.5,
+                              -1.0
+                        ]
+                  ],
+                  "y_true": [
+                        [
+                              2.5,
+                              -1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-dimensional batch gradient",
+            "input": {
+                  "y_pred": [
+                        [
+                              0.5,
+                              1.2
+                        ],
+                        [
+                              -0.4,
+                              2.0
+                        ]
+                  ],
+                  "y_true": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.25,
+                        0.1
+                  ],
+                  [
+                        -0.2,
+                        0.5
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-6': {
+    id: 'cv-cnn-prob-6',
+    title: "Global Average Pooling (GAP) 2D",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'global_avg_pool2d',
+    functionSignature: "global_avg_pool2d(x: list[list[list[float]]]) -> list[float]",
+    starterCode: `def global_avg_pool2d(x: list[list[list[float]]]) -> list[float]:
+    """Compute Global Average Pooling over a 3D feature tensor of shape (C, H, W).
+
+    Args:
+        x: 3D feature map tensor of shape (C, H, W).
+
+    Returns:
+        1D vector of length C containing the spatial average for each channel, rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Collapse 2D spatial feature maps into a 1D vector to bridge convolutional backbones and classification heads without dense parameter explosion.",
+    taskDescription: "Implement `global_avg_pool2d(x)`: for each of the `C` channels in tensor `x` of shape `(C, H, W)`, compute the mean of all `H * W` spatial elements. Return a 1D list of length `C` with values rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= C <= 512",
+      "1 <= H, W <= 64"
+],
+    hints: {
+      "small": "Compute area = H * W where H = len(x[0]) and W = len(x[0][0]).",
+      "strong": "Average each channel independently: sum(x[c][i][j]) / area.",
+      "concept": "Introduced in Network-in-Network and popularized by ResNet, GAP eliminates millions of parameters compared to flattening into dense layers."
+},
+    conceptConnections: [
+      {
+            "title": "CNN Classifier Heads",
+            "route": "/practice/cnn-heads",
+            "description": "Global average pooling versus fully connected bottlenecks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2 channels of 2x2 maps",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    2.0
+                              ],
+                              [
+                                    3.0,
+                                    4.0
+                              ]
+                        ],
+                        [
+                              [
+                                    10.0,
+                                    20.0
+                              ],
+                              [
+                                    30.0,
+                                    40.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  2.5,
+                  25.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Single channel 3x3 map",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    1.0,
+                                    1.0
+                              ],
+                              [
+                                    2.0,
+                                    2.0,
+                                    2.0
+                              ],
+                              [
+                                    3.0,
+                                    3.0,
+                                    3.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  2.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero feature map",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    0.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    0.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    0.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3 channels with negative values",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    -1.0,
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    -5.0,
+                                    5.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.5,
+                                    0.5
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0,
+                  0.5
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-6': {
+    id: 'dl-nn-prob-6',
+    title: "Leaky ReLU Activation Forward",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'leaky_relu',
+    functionSignature: "leaky_relu(x: list[list[float]], alpha: float = 0.01) -> list[list[float]]",
+    starterCode: `def leaky_relu(x: list[list[float]], alpha: float = 0.01) -> list[list[float]]:
+    """Apply the Leaky ReLU activation element-wise.
+
+    Args:
+        x: 2D input matrix of shape (N, D).
+        alpha: Slope for negative values (default: 0.01).
+
+    Returns:
+        2D matrix with Leaky ReLU applied, rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Implement the Leaky ReLU non-linearity to prevent the 'dying ReLU' problem in deep neural networks.",
+    taskDescription: "Implement `leaky_relu(x, alpha=0.01)`: for each scalar `v` in matrix `x`, compute `v` if `v >= 0.0` else `alpha * v`. Round each value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N, D <= 100",
+      "0.0 <= alpha <= 1.0",
+      "x contains finite floats"
+],
+    hints: {
+      "small": "Use a list comprehension over each row, applying v if v `>=` 0 else alpha * v.",
+      "strong": "Ensure alpha is multiplied only for negative values.",
+      "concept": "Leaky ReLU provides a small non-zero gradient for negative activations, allowing dormant neurons to recover."
+},
+    conceptConnections: [
+      {
+            "title": "Activation Functions",
+            "route": "/practice/activation-benchmark",
+            "description": "Comparative study of non-linear activations."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Positive and negative entries",
+            "input": {
+                  "x": [
+                        [
+                              -2.0,
+                              0.0,
+                              3.0
+                        ]
+                  ],
+                  "alpha": 0.01
+            },
+            "expectedOutput": [
+                  [
+                        -0.02,
+                        0.0,
+                        3.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Custom slope alpha 0.2",
+            "input": {
+                  "x": [
+                        [
+                              -5.0,
+                              2.5
+                        ],
+                        [
+                              -1.0,
+                              4.0
+                        ]
+                  ],
+                  "alpha": 0.2
+            },
+            "expectedOutput": [
+                  [
+                        -1.0,
+                        2.5
+                  ],
+                  [
+                        -0.2,
+                        4.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "All negative matrix",
+            "input": {
+                  "x": [
+                        [
+                              -10.0,
+                              -0.5
+                        ]
+                  ],
+                  "alpha": 0.1
+            },
+            "expectedOutput": [
+                  [
+                        -1.0,
+                        -0.05
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Zero boundary check",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              -0.0
+                        ]
+                  ],
+                  "alpha": 0.05
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        -0.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-7': {
+    id: 'cv-cnn-prob-7',
+    title: "Bounding Box Intersection over Union (IoU)",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'iou_bounding_box',
+    functionSignature: "iou_bounding_box(box_a: list[float], box_b: list[float]) -> float",
+    starterCode: `def iou_bounding_box(box_a: list[float], box_b: list[float]) -> float:
+    """Calculate Intersection over Union (IoU) between two 2D bounding boxes.
+
+    Args:
+        box_a: [x1, y1, x2, y2] coordinates where (x1, y1) is top-left and (x2, y2) is bottom-right.
+        box_b: [x1, y1, x2, y2] coordinates.
+
+    Returns:
+        IoU float in [0.0, 1.0] rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the Jaccard overlap index between two bounding boxes for object detection evaluation and non-maximum suppression.",
+    taskDescription: "Implement `iou_bounding_box(box_a, box_b)`: given two boxes formatted as `[x1, y1, x2, y2]` (with `x1 <= x2` and `y1 <= y2`), compute the intersection rectangle coordinates: `xA = max(x1_a, x1_b)`, `yA = max(y1_a, y1_b)`, `xB = min(x2_a, x2_b)`, `yB = min(y2_a, y2_b)`. If `xB <= xA` or `yB <= yA`, the intersection area is `0.0`. Otherwise `inter = (xB - xA) * (yB - yA)`. The union is `area_a + area_b - inter`. Return `inter / union` rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "box coordinates are non-negative floats",
+      "x1 <= x2 and y1 <= y2"
+],
+    hints: {
+      "small": "Intersection width is max(0.0, min(x2_a, x2_b) - max(x1_a, x1_b)).",
+      "strong": "Union area is area_a + area_b - inter_area. Avoid division by zero if union is 0.",
+      "concept": "IoU is the universal metric for evaluating object detection accuracy and matching proposals to ground truth boxes."
+},
+    conceptConnections: [
+      {
+            "title": "Object Detection Metrics",
+            "route": "/practice/detection-iou-map",
+            "description": "IoU thresholds and mean Average Precision (mAP)."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identical boxes IoU 1.0",
+            "input": {
+                  "box_a": [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                  ],
+                  "box_b": [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Partial overlap",
+            "input": {
+                  "box_a": [
+                        0.0,
+                        0.0,
+                        2.0,
+                        2.0
+                  ],
+                  "box_b": [
+                        1.0,
+                        1.0,
+                        3.0,
+                        3.0
+                  ]
+            },
+            "expectedOutput": 0.1429,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Disjoint non-overlapping boxes",
+            "input": {
+                  "box_a": [
+                        0.0,
+                        0.0,
+                        1.0,
+                        1.0
+                  ],
+                  "box_b": [
+                        5.0,
+                        5.0,
+                        6.0,
+                        6.0
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Touching border zero intersection",
+            "input": {
+                  "box_a": [
+                        0.0,
+                        0.0,
+                        5.0,
+                        5.0
+                  ],
+                  "box_b": [
+                        5.0,
+                        0.0,
+                        10.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-7': {
+    id: 'dl-nn-prob-7',
+    title: "Kaiming / He Initialization Variance",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'he_initialization_std',
+    functionSignature: "he_initialization_std(fan_in: int, mode: str = 'relu') -> float",
+    starterCode: `def he_initialization_std(fan_in: int, mode: str = "relu") -> float:
+    """Compute theoretical standard deviation for He (Kaiming) weight initialization.
+
+    Args:
+        fan_in: Number of input units in the weight tensor.
+        mode: Non-linearity type ('relu', 'leaky_relu', or 'linear').
+
+    Returns:
+        Standard deviation float rounded to 6 decimal places.
+    """
+    pass
+`,
+    mission: "Calculate the exact standard deviation for Kaiming (He) normal initialization to preserve activation variance across deep layers.",
+    taskDescription: "Implement `he_initialization_std(fan_in, mode='relu')`: compute `std = gain / sqrt(fan_in)`. The `gain` depends on `mode`: for `'relu'`, `gain = sqrt(2.0)`; for `'leaky_relu'`, `gain = sqrt(2.0 / (1.0 + 0.01^2))`; for any other string (e.g. `'linear'`), `gain = 1.0`. Return `std` rounded to 6 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "fan_in >= 1",
+      "mode in ['relu', 'leaky_relu', 'linear']"
+],
+    hints: {
+      "small": "Use math.sqrt to calculate the gain and divide by math.sqrt(fan_in).",
+      "strong": "For 'relu', gain is sqrt(2). For 'leaky_relu', gain is sqrt(2 / (1 + 0.01^2)).",
+      "concept": "He initialization compensates for the half-rectified signal of ReLUs, maintaining unit variance through forward pass activations."
+},
+    conceptConnections: [
+      {
+            "title": "Weight Initialization Strategies",
+            "route": "/practice/weight-init",
+            "description": "Xavier and He initialization theory."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "ReLU with fan_in 512",
+            "input": {
+                  "fan_in": 512,
+                  "mode": "relu"
+            },
+            "expectedOutput": 0.0625,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Linear with fan_in 256",
+            "input": {
+                  "fan_in": 256,
+                  "mode": "linear"
+            },
+            "expectedOutput": 0.0625,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Small layer fan_in 32",
+            "input": {
+                  "fan_in": 32,
+                  "mode": "relu"
+            },
+            "expectedOutput": 0.25,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Leaky ReLU fan_in 1024",
+            "input": {
+                  "fan_in": 1024,
+                  "mode": "leaky_relu"
+            },
+            "expectedOutput": 0.044192,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-8': {
+    id: 'cv-cnn-prob-8',
+    title: "Per-Channel Image Normalization",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'image_normalize',
+    functionSignature: "image_normalize(img: list[list[list[float]]], mean: list[float], std: list[float]) -> list[list[list[float]]]",
+    starterCode: `def image_normalize(img: list[list[list[float]]], mean: list[float], std: list[float]) -> list[list[list[float]]]:
+    """Normalize a multi-channel image tensor using per-channel mean and standard deviation.
+
+    Args:
+        img: 3D tensor of shape (C, H, W).
+        mean: List of channel means of length C.
+        std: List of channel standard deviations of length C.
+
+    Returns:
+        Normalized 3D tensor of shape (C, H, W) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Standardize input image distributions using dataset channel statistics (e.g. ImageNet mean/std) for neural network pre-processing.",
+    taskDescription: "Implement `image_normalize(img, mean, std)`: for each channel `c` in tensor `img` of shape `(C, H, W)`, subtract `mean[c]` and divide by `std[c]`: `out[c][i][j] = (img[c][i][j] - mean[c]) / std[c]`. Return the normalized tensor rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(img) == len(mean) == len(std) >= 1",
+      "1 <= H, W <= 128",
+      "std[c] > 0.0"
+],
+    hints: {
+      "small": "Iterate through c in range(len(img)), applying (pixel - mean[c]) / std[c].",
+      "strong": "Preserve the 3D list structure (C, H, W).",
+      "concept": "Per-channel standardization centers the inputs around zero with unit variance, ensuring stable gradient dynamics from the first layer."
+},
+    conceptConnections: [
+      {
+            "title": "Vision Data Pipelines",
+            "route": "/practice/vision-preprocessing",
+            "description": "Standardization, resizing, and augmentations."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single channel normalization",
+            "input": {
+                  "img": [
+                        [
+                              [
+                                    10.0,
+                                    20.0
+                              ],
+                              [
+                                    30.0,
+                                    40.0
+                              ]
+                        ]
+                  ],
+                  "mean": [
+                        25.0
+                  ],
+                  "std": [
+                        10.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              -1.5,
+                              -0.5
+                        ],
+                        [
+                              0.5,
+                              1.5
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "3-channel ImageNet-like scaling",
+            "input": {
+                  "img": [
+                        [
+                              [
+                                    0.485
+                              ]
+                        ],
+                        [
+                              [
+                                    0.456
+                              ]
+                        ],
+                        [
+                              [
+                                    0.406
+                              ]
+                        ]
+                  ],
+                  "mean": [
+                        0.485,
+                        0.456,
+                        0.406
+                  ],
+                  "std": [
+                        0.229,
+                        0.224,
+                        0.225
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              0.0
+                        ]
+                  ],
+                  [
+                        [
+                              0.0
+                        ]
+                  ],
+                  [
+                        [
+                              0.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero mean unit variance pass-through",
+            "input": {
+                  "img": [
+                        [
+                              [
+                                    1.5,
+                                    -2.5
+                              ]
+                        ]
+                  ],
+                  "mean": [
+                        0.0
+                  ],
+                  "std": [
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              1.5,
+                              -2.5
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-channel multi-row tensor",
+            "input": {
+                  "img": [
+                        [
+                              [
+                                    100.0,
+                                    200.0
+                              ]
+                        ],
+                        [
+                              [
+                                    50.0,
+                                    150.0
+                              ]
+                        ]
+                  ],
+                  "mean": [
+                        128.0,
+                        100.0
+                  ],
+                  "std": [
+                        64.0,
+                        50.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              -0.4375,
+                              1.125
+                        ]
+                  ],
+                  [
+                        [
+                              -1.0,
+                              1.0
+                        ]
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-8': {
+    id: 'dl-nn-prob-8',
+    title: "Inverted Dropout Forward Pass",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'dropout_forward',
+    functionSignature: "dropout_forward(x: list[list[float]], p_drop: float, mask: list[list[int]]) -> list[list[float]]",
+    starterCode: `def dropout_forward(x: list[list[float]], p_drop: float, mask: list[list[int]]) -> list[list[float]]:
+    """Execute inverted dropout forward pass using a provided binary mask.
+
+    Args:
+        x: 2D input activations of shape (N, D).
+        p_drop: Probability of dropping a unit (0.0 <= p_drop < 1.0).
+        mask: 2D binary integer mask (1 = keep, 0 = drop) matching shape of x.
+
+    Returns:
+        Scaled activations matrix of shape (N, D) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Apply inverted dropout regularization during training to prevent co-adaptation of feature representations.",
+    taskDescription: "Implement `dropout_forward(x, p_drop, mask)`: given activations `x`, dropout probability `p_drop`, and binary keep-mask `mask` (where `1` means keep, `0` means drop), compute `out[i][j] = (x[i][j] * mask[i][j]) / (1.0 - p_drop)`. Scaling during training ensures that no scaling is required at test time. Round each element to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0.0 <= p_drop < 1.0",
+      "x and mask have identical 2D dimensions (N, D)",
+      "1 <= N, D <= 100"
+],
+    hints: {
+      "small": "Compute the keep scale factor scale = 1.0 / (1.0 - p_drop).",
+      "strong": "Multiply each element x[i][j] by mask[i][j] and by scale.",
+      "concept": "Inverted dropout preserves the expected value of activations during training so test-time inference is a simple identity."
+},
+    conceptConnections: [
+      {
+            "title": "Regularization Techniques",
+            "route": "/practice/regularization-l1-l2",
+            "description": "Overfitting prevention in deep networks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Dropout p=0.5 with alternating mask",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "p_drop": 0.5,
+                  "mask": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        8.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "No drop p=0.0",
+            "input": {
+                  "x": [
+                        [
+                              1.5,
+                              -2.0
+                        ]
+                  ],
+                  "p_drop": 0.0,
+                  "mask": [
+                        [
+                              1,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.5,
+                        -2.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "High drop rate p=0.8",
+            "input": {
+                  "x": [
+                        [
+                              10.0,
+                              20.0,
+                              30.0
+                        ]
+                  ],
+                  "p_drop": 0.8,
+                  "mask": [
+                        [
+                              0,
+                              1,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        100.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Full dropout drop all",
+            "input": {
+                  "x": [
+                        [
+                              5.0,
+                              6.0
+                        ]
+                  ],
+                  "p_drop": 0.5,
+                  "mask": [
+                        [
+                              0,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-9': {
+    id: 'cv-cnn-prob-9',
+    title: "Sobel Edge Gradient Magnitude",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'sobel_edge_magnitude',
+    functionSignature: "sobel_edge_magnitude(img: list[list[float]]) -> list[list[float]]",
+    starterCode: `def sobel_edge_magnitude(img: list[list[float]]) -> list[list[float]]:
+    """Compute Sobel edge gradient magnitude on a 2D grayscale image in valid mode.
+
+    Args:
+        img: 2D image matrix of shape (H, W).
+
+    Returns:
+        Gradient magnitude matrix of shape (H - 2, W - 2) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Detect spatial intensity gradients and edges using discrete Sobel convolutional derivative filters.",
+    taskDescription: "Implement `sobel_edge_magnitude(img)`: convolve a 2D image `(H, W)` with 3x3 Sobel kernels `Gx` and `Gy` in valid mode (no padding). `Gx = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]` and `Gy = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]`. For each valid position, compute the gradient magnitude `sqrt(Gx^2 + Gy^2)`. Return the `(H - 2, W - 2)` output matrix rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "3 <= H, W <= 128"
+],
+    hints: {
+      "small": "Gx detects horizontal changes (vertical edges), Gy detects vertical changes (horizontal edges).",
+      "strong": "mag = math.sqrt(gx**2 + gy**2) for each 3x3 window.",
+      "concept": "The Sobel operator approximates the first spatial derivatives of an image using combined smoothing and differentiation."
+},
+    conceptConnections: [
+      {
+            "title": "Classical Edge Detection",
+            "route": "/practice/edge-detection",
+            "description": "Sobel, Prewitt, and Canny filter formulations."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Vertical step edge",
+            "input": {
+                  "img": [
+                        [
+                              0.0,
+                              0.0,
+                              255.0,
+                              255.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              255.0,
+                              255.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              255.0,
+                              255.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              255.0,
+                              255.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1020.0,
+                        1020.0
+                  ],
+                  [
+                        1020.0,
+                        1020.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Flat uniform patch zero edges",
+            "input": {
+                  "img": [
+                        [
+                              100.0,
+                              100.0,
+                              100.0
+                        ],
+                        [
+                              100.0,
+                              100.0,
+                              100.0
+                        ],
+                        [
+                              100.0,
+                              100.0,
+                              100.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Horizontal step edge",
+            "input": {
+                  "img": [
+                        [
+                              0.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              10.0,
+                              10.0,
+                              10.0
+                        ],
+                        [
+                              20.0,
+                              20.0,
+                              20.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        80.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Diagonal gradient 4x4 image",
+            "input": {
+                  "img": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              2.0,
+                              3.0,
+                              4.0,
+                              5.0
+                        ],
+                        [
+                              3.0,
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0,
+                              7.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        11.3137,
+                        11.3137
+                  ],
+                  [
+                        11.3137,
+                        11.3137
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-9': {
+    id: 'dl-nn-prob-9',
+    title: "SGD with Momentum Parameter Step",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'sgd_momentum_step',
+    functionSignature: "sgd_momentum_step(param: list[float], grad: list[float], velocity: list[float], lr: float, momentum: float) -> dict",
+    starterCode: `def sgd_momentum_step(param: list[float], grad: list[float], velocity: list[float], lr: float, momentum: float) -> dict:
+    """Compute one parameter update step using SGD with classical momentum.
+
+    Args:
+        param: Current 1D parameter weights.
+        grad: Current parameter gradient vector.
+        velocity: Previous velocity buffer vector.
+        lr: Learning rate.
+        momentum: Momentum decay coefficient (e.g. 0.9).
+
+    Returns:
+        Dictionary with updated 'param' and 'velocity' lists, rounded to 6 decimals.
+    """
+    pass
+`,
+    mission: "Accelerate stochastic gradient descent and dampen oscillations along ravines using classical momentum.",
+    taskDescription: "Implement `sgd_momentum_step(param, grad, velocity, lr, momentum)`: for each index `k`, update the velocity as `v_k = momentum * velocity[k] + lr * grad[k]`, and then update the parameter as `param_k = param[k] - v_k`. Return a dictionary `{'param': [...], 'velocity': [...]}` with each float rounded to 6 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(param) == len(grad) == len(velocity) >= 1",
+      "0.0 <= momentum < 1.0",
+      "lr > 0.0"
+],
+    hints: {
+      "small": "Update velocity first: v = momentum * v_prev + lr * g.",
+      "strong": "Subtract the newly computed velocity from the parameter: param = param - v.",
+      "concept": "Momentum accumulates past velocity to smooth noisy gradients and accelerate along consistent descent directions."
+},
+    conceptConnections: [
+      {
+            "title": "Optimization Algorithms",
+            "route": "/practice/gradient-descent-variants",
+            "description": "Momentum, RMSprop, and Adam dynamics."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "First step with zero velocity",
+            "input": {
+                  "param": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad": [
+                        0.1,
+                        -0.2
+                  ],
+                  "velocity": [
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.1,
+                  "momentum": 0.9
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.99,
+                        2.02
+                  ],
+                  "velocity": [
+                        0.01,
+                        -0.02
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Second step with accumulated velocity",
+            "input": {
+                  "param": [
+                        0.99,
+                        2.02
+                  ],
+                  "grad": [
+                        0.1,
+                        -0.2
+                  ],
+                  "velocity": [
+                        0.01,
+                        -0.02
+                  ],
+                  "lr": 0.1,
+                  "momentum": 0.9
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.971,
+                        2.058
+                  ],
+                  "velocity": [
+                        0.019,
+                        -0.038
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero gradient inertia",
+            "input": {
+                  "param": [
+                        0.5
+                  ],
+                  "grad": [
+                        0.0
+                  ],
+                  "velocity": [
+                        0.1
+                  ],
+                  "lr": 0.01,
+                  "momentum": 0.5
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.45
+                  ],
+                  "velocity": [
+                        0.05
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-parameter vector update",
+            "input": {
+                  "param": [
+                        1.0,
+                        -1.0,
+                        0.5
+                  ],
+                  "grad": [
+                        0.5,
+                        -0.5,
+                        0.0
+                  ],
+                  "velocity": [
+                        0.1,
+                        0.1,
+                        0.2
+                  ],
+                  "lr": 0.05,
+                  "momentum": 0.8
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.895,
+                        -1.055,
+                        0.34
+                  ],
+                  "velocity": [
+                        0.105,
+                        0.055,
+                        0.16
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-10': {
+    id: 'cv-cnn-prob-10',
+    title: "Cumulative Receptive Field Tracker",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'receptive_field_1d',
+    functionSignature: "receptive_field_1d(kernel_sizes: list[int], strides: list[int]) -> dict",
+    starterCode: `def receptive_field_1d(kernel_sizes: list[int], strides: list[int]) -> dict:
+    """Compute the cumulative receptive field and total stride across stacked 1D/2D convolutional layers.
+
+    Args:
+        kernel_sizes: List of kernel sizes for each successive layer.
+        strides: List of strides for each successive layer.
+
+    Returns:
+        Dictionary with 'receptive_field' (int) and 'cumulative_stride' (int).
+    """
+    pass
+`,
+    mission: "Track how deep convolutional feature representations expand their field of view over input image coordinates.",
+    taskDescription: "Implement `receptive_field_1d(kernel_sizes, strides)`: start with receptive field `rf = 1` and cumulative stride `stride = 1`. For each layer `l` with kernel size `k` and stride `s`, update: `rf = rf + (k - 1) * stride`, and then `stride = stride * s`. Return `{'receptive_field': rf, 'cumulative_stride': stride}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(kernel_sizes) == len(strides) >= 1",
+      "kernel_sizes[i] >= 1",
+      "strides[i] >= 1"
+],
+    hints: {
+      "small": "The jump in receptive field at layer l depends on the cumulative stride of all previous layers.",
+      "strong": "rf increases by (k - 1) * stride BEFORE updating stride = stride * s.",
+      "concept": "Stacking two 3x3 convolutions with stride 1 yields an effective receptive field of 5x5, matching a 5x5 filter with fewer parameters and extra non-linearities."
+},
+    conceptConnections: [
+      {
+            "title": "Receptive Field Analysis",
+            "route": "/practice/receptive-field-theory",
+            "description": "Theoretical receptive field expansion in CNNs."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single 3x3 conv stride 1",
+            "input": {
+                  "kernel_sizes": [
+                        3
+                  ],
+                  "strides": [
+                        1
+                  ]
+            },
+            "expectedOutput": {
+                  "receptive_field": 3,
+                  "cumulative_stride": 1
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Two 3x3 convs stride 1",
+            "input": {
+                  "kernel_sizes": [
+                        3,
+                        3
+                  ],
+                  "strides": [
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": {
+                  "receptive_field": 5,
+                  "cumulative_stride": 1
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Conv stride 2 followed by conv stride 1",
+            "input": {
+                  "kernel_sizes": [
+                        3,
+                        3
+                  ],
+                  "strides": [
+                        2,
+                        1
+                  ]
+            },
+            "expectedOutput": {
+                  "receptive_field": 7,
+                  "cumulative_stride": 2
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Deep stack of 4 layers",
+            "input": {
+                  "kernel_sizes": [
+                        7,
+                        3,
+                        3,
+                        3
+                  ],
+                  "strides": [
+                        2,
+                        2,
+                        1,
+                        2
+                  ]
+            },
+            "expectedOutput": {
+                  "receptive_field": 27,
+                  "cumulative_stride": 8
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-10': {
+    id: 'dl-nn-prob-10',
+    title: "Categorical Cross-Entropy Loss",
+    difficulty: 'easy',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '15 min',
+    functionName: 'categorical_cross_entropy',
+    functionSignature: "categorical_cross_entropy(probs: list[list[float]], targets: list[int], eps: float = 1e-12) -> float",
+    starterCode: `def categorical_cross_entropy(probs: list[list[float]], targets: list[int], eps: float = 1e-12) -> float:
+    """Compute average categorical cross-entropy loss given softmax probabilities and class targets.
+
+    Args:
+        probs: 2D probability matrix of shape (N, C).
+        targets: 1D list of integer class labels of length N (0 <= targets[i] < C).
+        eps: Small float to prevent log(0).
+
+    Returns:
+        Mean loss float rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Calculate negative log-likelihood loss for multi-class classification from predicted softmax probability distributions.",
+    taskDescription: "Implement `categorical_cross_entropy(probs, targets, eps=1e-12)`: for each sample `i`, retrieve the predicted probability `p = max(probs[i][targets[i]], eps)` for ground truth class index `targets[i]`. The sample loss is `-log(p)`. Return the average loss across all `N` samples rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(probs) == len(targets) >= 1",
+      "0 <= targets[i] < len(probs[0])",
+      "probs entries are valid probabilities"
+],
+    hints: {
+      "small": "For each row i, select the probability at column targets[i].",
+      "strong": "loss_i = -math.log(max(probs[i][targets[i]], eps)). Sum and divide by N.",
+      "concept": "Categorical cross-entropy maximizes the log likelihood of the correct categorical labels under the model's posterior."
+},
+    conceptConnections: [
+      {
+            "title": "Multi-Class Classification",
+            "route": "/practice/multiclass-metrics",
+            "description": "Loss metrics and evaluation across multiple categories."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Confident correct predictions",
+            "input": {
+                  "probs": [
+                        [
+                              0.7,
+                              0.2,
+                              0.1
+                        ],
+                        [
+                              0.05,
+                              0.9,
+                              0.05
+                        ]
+                  ],
+                  "targets": [
+                        0,
+                        1
+                  ]
+            },
+            "expectedOutput": 0.231,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Uniform predictions 3 classes",
+            "input": {
+                  "probs": [
+                        [
+                              0.3333,
+                              0.3333,
+                              0.3334
+                        ]
+                  ],
+                  "targets": [
+                        2
+                  ]
+            },
+            "expectedOutput": 1.0984,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Low probability target",
+            "input": {
+                  "probs": [
+                        [
+                              0.98,
+                              0.01,
+                              0.01
+                        ]
+                  ],
+                  "targets": [
+                        1
+                  ]
+            },
+            "expectedOutput": 4.6052,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Batch of 4 samples",
+            "input": {
+                  "probs": [
+                        [
+                              0.8,
+                              0.2
+                        ],
+                        [
+                              0.1,
+                              0.9
+                        ],
+                        [
+                              0.6,
+                              0.4
+                        ],
+                        [
+                              0.3,
+                              0.7
+                        ]
+                  ],
+                  "targets": [
+                        0,
+                        1,
+                        1,
+                        0
+                  ]
+            },
+            "expectedOutput": 0.6122,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-11': {
+    id: 'cv-cnn-prob-11',
+    title: "Multi-Channel 2D Convolution",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'conv2d_multi_channel',
+    functionSignature: "conv2d_multi_channel(x: list[list[list[float]]], kernel: list[list[list[float]]], bias: float = 0.0, stride: int = 1, padding: int = 0) -> list[list[float]]",
+    starterCode: `def conv2d_multi_channel(x: list[list[list[float]]], kernel: list[list[list[float]]], bias: float = 0.0, stride: int = 1, padding: int = 0) -> list[list[float]]:
+    """Perform 2D discrete cross-correlation on multi-channel input (C, H, W) with a 3D kernel (C, kH, kW).
+
+    Args:
+        x: Input feature maps of shape (C, H, W).
+        kernel: Filter weights of shape (C, kH, kW).
+        bias: Additive scalar bias.
+        stride: Spatial sliding stride.
+        padding: Zero-padding applied to borders.
+
+    Returns:
+        Single output feature map matrix (H_out, W_out) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Compute the core 3D tensor inner product across all input channels for a convolutional filter.",
+    taskDescription: "Implement `conv2d_multi_channel(x, kernel, bias=0.0, stride=1, padding=0)`: pad each of the `C` input channels with `padding` zeros. Then slide the 3D filter `(C, kH, kW)` over the spatial dimensions with stride `stride`. At each location, sum the element-wise products across all channels and spatial kernel coordinates, add `bias`, and round to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(x) == len(kernel) >= 1",
+      "1 <= H, W <= 64",
+      "1 <= kH, kW <= 15",
+      "stride >= 1",
+      "padding >= 0"
+],
+    hints: {
+      "small": "Zero-pad all C input channels before starting the convolution loops.",
+      "strong": "Each output pixel is bias + sum_`{c, kh, kw}` (padded_x[c][h + kh][w + kw] * kernel[c][kh][kw]).",
+      "concept": "A single CNN filter integrates signals across all input channels simultaneously, fusing multi-spectral or latent representations."
+},
+    conceptConnections: [
+      {
+            "title": "2D Convolution Mechanics",
+            "route": "/practice/convolution-mechanics",
+            "description": "Cross-correlation across multi-channel tensors."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2-channel 3x3 input 2x2 kernel stride 1 no pad",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    2.0
+                              ],
+                              [
+                                    3.0,
+                                    4.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.5,
+                                    0.5
+                              ],
+                              [
+                                    0.5,
+                                    0.5
+                              ]
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              [
+                                    1.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0,
+                                    2.0
+                              ],
+                              [
+                                    2.0,
+                                    2.0
+                              ]
+                        ]
+                  ],
+                  "bias": 0.5,
+                  "stride": 1,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  [
+                        9.5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Single channel 3x3 kernel with padding 1",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    2.0
+                              ],
+                              [
+                                    3.0,
+                                    4.0
+                              ]
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    1.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                              ]
+                        ]
+                  ],
+                  "bias": 0.0,
+                  "stride": 1,
+                  "padding": 1
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        2.0
+                  ],
+                  [
+                        3.0,
+                        4.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Strided multi-channel conv stride 2",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    2.0,
+                                    3.0
+                              ],
+                              [
+                                    4.0,
+                                    5.0,
+                                    6.0
+                              ],
+                              [
+                                    7.0,
+                                    8.0,
+                                    9.0
+                              ]
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              [
+                                    1.0,
+                                    1.0
+                              ],
+                              [
+                                    1.0,
+                                    1.0
+                              ]
+                        ]
+                  ],
+                  "bias": 1.0,
+                  "stride": 2,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  [
+                        13.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3-channel RGB convolution",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0,
+                                    1.0
+                              ],
+                              [
+                                    1.0,
+                                    2.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.0,
+                                    3.0
+                              ],
+                              [
+                                    3.0,
+                                    0.0
+                              ]
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              [
+                                    0.5,
+                                    0.5
+                              ],
+                              [
+                                    0.5,
+                                    0.5
+                              ]
+                        ],
+                        [
+                              [
+                                    -0.5,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    -0.5
+                              ]
+                        ],
+                        [
+                              [
+                                    0.2,
+                                    0.2
+                              ],
+                              [
+                                    0.2,
+                                    0.2
+                              ]
+                        ]
+                  ],
+                  "bias": -0.1,
+                  "stride": 1,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  [
+                        0.1
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-11': {
+    id: 'dl-nn-prob-11',
+    title: "Dense Layer Backward Pass",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'dense_backward',
+    functionSignature: "dense_backward(dout: list[list[float]], x: list[list[float]], w: list[list[float]]) -> dict",
+    starterCode: `def dense_backward(dout: list[list[float]], x: list[list[float]], w: list[list[float]]) -> dict:
+    """Compute gradients of loss with respect to inputs, weights, and biases of a dense layer.
+
+    Args:
+        dout: Upstream gradient matrix of shape (N, D_out).
+        x: Forward input matrix of shape (N, D_in).
+        w: Forward weight matrix of shape (D_in, D_out).
+
+    Returns:
+        Dictionary with 'dx': (N, D_in), 'dw': (D_in, D_out), 'db': (D_out,), all rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Derive and compute the analytical backward gradients for a fully-connected affine layer.",
+    taskDescription: "Implement `dense_backward(dout, x, w)`: given upstream gradient `dout` `(N, D_out)`, input cache `x` `(N, D_in)`, and weight matrix `w` `(D_in, D_out)`, compute `dx = dout @ w.T`, `dw = x.T @ dout`, and `db = sum(dout, axis=0)`. Return a dictionary `{'dx': dx, 'dw': dw, 'db': db}` with all numbers rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 100",
+      "1 <= D_in, D_out <= 64",
+      "Consistent input dimensions"
+],
+    hints: {
+      "small": "dx has shape (N, D_in): dx[i][j] = sum(dout[i][k] * w[j][k] for k in range(D_out)).",
+      "strong": "dw has shape (D_in, D_out): dw[i][j] = sum(x[k][i] * dout[k][j] for k in range(N)). db[j] is sum of column j of dout.",
+      "concept": "Matrix calculus rules state that the derivative of an affine map Y = X W + b yields dX = dY W^T and dW = X^T dY."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Gradients",
+            "route": "/practice/matrix-gradients",
+            "description": "Vector and matrix calculus in neural network training."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Batch of 2, Din 2, Dout 2",
+            "input": {
+                  "dout": [
+                        [
+                              1.0,
+                              0.5
+                        ],
+                        [
+                              -0.5,
+                              2.0
+                        ]
+                  ],
+                  "x": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              -1.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              0.5,
+                              -1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "dx": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              -2.25,
+                              -0.5
+                        ]
+                  ],
+                  "dw": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              1.5,
+                              -1.5
+                        ]
+                  ],
+                  "db": [
+                        0.5,
+                        2.5
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Single sample projection",
+            "input": {
+                  "dout": [
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "x": [
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              1.0,
+                              0.5
+                        ],
+                        [
+                              2.0,
+                              -0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "dx": [
+                        [
+                              0.5,
+                              2.5
+                        ]
+                  ],
+                  "dw": [
+                        [
+                              3.0,
+                              -3.0
+                        ],
+                        [
+                              4.0,
+                              -4.0
+                        ]
+                  ],
+                  "db": [
+                        1.0,
+                        -1.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero upstream gradient",
+            "input": {
+                  "dout": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "dx": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "dw": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "db": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Asymmetric dimension batch",
+            "input": {
+                  "dout": [
+                        [
+                              0.2
+                        ],
+                        [
+                              0.8
+                        ]
+                  ],
+                  "x": [
+                        [
+                              1.0,
+                              -2.0,
+                              0.5
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              0.5
+                        ],
+                        [
+                              -0.5
+                        ],
+                        [
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "dx": [
+                        [
+                              0.1,
+                              -0.1,
+                              0.2
+                        ],
+                        [
+                              0.4,
+                              -0.4,
+                              0.8
+                        ]
+                  ],
+                  "dw": [
+                        [
+                              0.2
+                        ],
+                        [
+                              0.4
+                        ],
+                        [
+                              -0.7
+                        ]
+                  ],
+                  "db": [
+                        1.0
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-12': {
+    id: 'cv-cnn-prob-12',
+    title: "Non-Maximum Suppression (NMS)",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'non_max_suppression',
+    functionSignature: "non_max_suppression(boxes: list[list[float]], scores: list[float], iou_threshold: float = 0.5) -> list[int]",
+    starterCode: `def non_max_suppression(boxes: list[list[float]], scores: list[float], iou_threshold: float = 0.5) -> list[int]:
+    """Perform greedy Non-Maximum Suppression to eliminate redundant overlapping bounding boxes.
+
+    Args:
+        boxes: List of bounding boxes [x1, y1, x2, y2].
+        scores: Confidence score float for each box.
+        iou_threshold: Overlap threshold above which lower-scoring boxes are pruned.
+
+    Returns:
+        List of integer indices of retained boxes, sorted by descending score.
+    """
+    pass
+`,
+    mission: "Eliminate redundant duplicate bounding box predictions in object detection pipelines using greedy Non-Maximum Suppression.",
+    taskDescription: "Implement `non_max_suppression(boxes, scores, iou_threshold=0.5)`: sort candidate box indices by descending confidence `scores`. Greedily select the highest-scoring box, add its index to `keep`, and suppress (discard) any remaining boxes whose IoU with it exceeds `iou_threshold`. Repeat until all candidates are processed. Return the list of kept indices.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(boxes) == len(scores)",
+      "0.0 <= iou_threshold <= 1.0"
+],
+    hints: {
+      "small": "Sort indices by scores in descending order: indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True).",
+      "strong": "Pop the top index current, add to keep, and filter remaining indices keeping those with IoU(current, i) `<=` iou_threshold.",
+      "concept": "NMS post-processes dense detector output, consolidating thousands of overlapping anchor predictions into single detections per object."
+},
+    conceptConnections: [
+      {
+            "title": "Object Detection Post-Processing",
+            "route": "/practice/nms-algorithms",
+            "description": "Greedy NMS, Soft-NMS, and DIoU-NMS implementations."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two highly overlapping boxes",
+            "input": {
+                  "boxes": [
+                        [
+                              0.0,
+                              0.0,
+                              10.0,
+                              10.0
+                        ],
+                        [
+                              1.0,
+                              1.0,
+                              10.0,
+                              10.0
+                        ]
+                  ],
+                  "scores": [
+                        0.9,
+                        0.75
+                  ],
+                  "iou_threshold": 0.5
+            },
+            "expectedOutput": [
+                  0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Two distant boxes both retained",
+            "input": {
+                  "boxes": [
+                        [
+                              0.0,
+                              0.0,
+                              2.0,
+                              2.0
+                        ],
+                        [
+                              10.0,
+                              10.0,
+                              12.0,
+                              12.0
+                        ]
+                  ],
+                  "scores": [
+                        0.8,
+                        0.85
+                  ],
+                  "iou_threshold": 0.5
+            },
+            "expectedOutput": [
+                  1,
+                  0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Empty candidate list",
+            "input": {
+                  "boxes": [],
+                  "scores": [],
+                  "iou_threshold": 0.5
+            },
+            "expectedOutput": [],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Three overlapping clusters",
+            "input": {
+                  "boxes": [
+                        [
+                              0.0,
+                              0.0,
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              0.5,
+                              0.5,
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              10.0,
+                              10.0,
+                              15.0,
+                              15.0
+                        ],
+                        [
+                              10.2,
+                              9.8,
+                              15.2,
+                              14.8
+                        ]
+                  ],
+                  "scores": [
+                        0.95,
+                        0.8,
+                        0.9,
+                        0.85
+                  ],
+                  "iou_threshold": 0.4
+            },
+            "expectedOutput": [
+                  0,
+                  2
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-12': {
+    id: 'dl-nn-prob-12',
+    title: "Adam Optimizer Step with Bias Correction",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'adam_optimizer_step',
+    functionSignature: "adam_optimizer_step(param: list[float], grad: list[float], m: list[float], v: list[float], t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict",
+    starterCode: `def adam_optimizer_step(param: list[float], grad: list[float], m: list[float], v: list[float], t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict:
+    """Execute one update step of the Adam optimizer with bias correction.
+
+    Args:
+        param: Current parameter values.
+        grad: Gradient vector.
+        m: First moment vector.
+        v: Second raw moment vector.
+        t: Current timestep index (t >= 1).
+        lr: Learning rate.
+        beta1: First moment decay factor.
+        beta2: Second moment decay factor.
+        eps: Small epsilon denominator term.
+
+    Returns:
+        Dictionary with 'param', 'm', 'v' lists, each rounded to 6 decimal places.
+    """
+    pass
+`,
+    mission: "Implement Kingma and Ba's adaptive moment estimation (Adam) optimizer step with bias correction.",
+    taskDescription: "Implement `adam_optimizer_step(...)`: at timestep `t >= 1`, compute for each parameter: `m_t = beta1 * m + (1 - beta1) * g`, `v_t = beta2 * v + (1 - beta2) * g^2`. Correct bias: `m_hat = m_t / (1 - beta1^t)`, `v_hat = v_t / (1 - beta2^t)`. Update parameter: `param = param - lr * m_hat / (sqrt(v_hat) + eps)`. Return `{'param': ..., 'm': ..., 'v': ...}` rounded to 6 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "t >= 1",
+      "len(param) == len(grad) == len(m) == len(v) >= 1",
+      "0 < beta1, beta2 < 1.0",
+      "lr > 0.0"
+],
+    hints: {
+      "small": "Remember bias correction uses power of t: 1.0 - beta1**t.",
+      "strong": "Calculate m_hat = m_t / (1 - beta1**t) and v_hat = v_t / (1 - beta2**t) before taking sqrt(v_hat).",
+      "concept": "Bias correction is critical during early training iterations to counteract the zero-initialization of moment estimates."
+},
+    conceptConnections: [
+      {
+            "title": "Adam Optimization",
+            "route": "/practice/adam-optimizer",
+            "description": "Adaptive learning rates for deep networks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "First Adam step t=1",
+            "input": {
+                  "param": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad": [
+                        0.1,
+                        -0.2
+                  ],
+                  "m": [
+                        0.0,
+                        0.0
+                  ],
+                  "v": [
+                        0.0,
+                        0.0
+                  ],
+                  "t": 1,
+                  "lr": 0.001,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.999,
+                        2.001
+                  ],
+                  "m": [
+                        0.01,
+                        -0.02
+                  ],
+                  "v": [
+                        1e-05,
+                        4e-05
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Second Adam step t=2 with memory",
+            "input": {
+                  "param": [
+                        0.999,
+                        2.001
+                  ],
+                  "grad": [
+                        0.1,
+                        -0.2
+                  ],
+                  "m": [
+                        0.01,
+                        -0.02
+                  ],
+                  "v": [
+                        0.0001,
+                        0.0004
+                  ],
+                  "t": 2,
+                  "lr": 0.001,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.998574,
+                        2.001426
+                  ],
+                  "m": [
+                        0.019,
+                        -0.038
+                  ],
+                  "v": [
+                        0.00011,
+                        0.00044
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero gradient step",
+            "input": {
+                  "param": [
+                        0.5
+                  ],
+                  "grad": [
+                        0.0
+                  ],
+                  "m": [
+                        0.1
+                  ],
+                  "v": [
+                        0.05
+                  ],
+                  "t": 5,
+                  "lr": 0.01,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.499305
+                  ],
+                  "m": [
+                        0.09
+                  ],
+                  "v": [
+                        0.04995
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-variable vector step",
+            "input": {
+                  "param": [
+                        -1.0,
+                        0.0,
+                        1.0
+                  ],
+                  "grad": [
+                        -0.5,
+                        0.2,
+                        0.0
+                  ],
+                  "m": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "v": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "t": 1,
+                  "lr": 0.005,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "param": [
+                        -0.995,
+                        -0.005,
+                        1.0
+                  ],
+                  "m": [
+                        -0.05,
+                        0.02,
+                        0.0
+                  ],
+                  "v": [
+                        0.00025,
+                        4e-05,
+                        0.0
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-13': {
+    id: 'cv-cnn-prob-13',
+    title: "Depthwise 2D Convolution",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'depthwise_conv2d',
+    functionSignature: "depthwise_conv2d(x: list[list[list[float]]], kernels: list[list[list[float]]], stride: int = 1) -> list[list[list[float]]]",
+    starterCode: `def depthwise_conv2d(x: list[list[list[float]]], kernels: list[list[list[float]]], stride: int = 1) -> list[list[list[float]]]:
+    """Execute depthwise 2D convolution applying a separate 2D kernel to each input channel.
+
+    Args:
+        x: Input tensor of shape (C, H, W).
+        kernels: Filter bank of shape (C, kH, kW) with one kernel per channel.
+        stride: Sliding window stride.
+
+    Returns:
+        Output tensor of shape (C, H_out, W_out) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Decouple spatial filtering from channel mixing using depthwise separable convolutions as in MobileNet and Xception.",
+    taskDescription: "Implement `depthwise_conv2d(x, kernels, stride=1)`: given input `x` of shape `(C, H, W)` and `kernels` of shape `(C, kH, kW)`, convolve each channel `c` independently with `kernels[c]` in valid mode (no padding). Return the output tensor of shape `(C, H_out, W_out)` with each entry rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(x) == len(kernels) >= 1",
+      "1 <= H, W <= 64",
+      "stride >= 1"
+],
+    hints: {
+      "small": "Unlike standard conv2d, there is NO summation across channels.",
+      "strong": "Channel c in output is formed purely by convolving x[c] with kernels[c].",
+      "concept": "Depthwise convolution drastically reduces computational FLOPs and parameter count by factoring 3D spatial-channel convolution into two separate stages."
+},
+    conceptConnections: [
+      {
+            "title": "Efficient Architectures",
+            "route": "/practice/mobilenet-depthwise",
+            "description": "MobileNet depthwise separable convolution blocks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2 channels 3x3 input 2x2 kernel stride 1",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    2.0,
+                                    3.0
+                              ],
+                              [
+                                    4.0,
+                                    5.0,
+                                    6.0
+                              ],
+                              [
+                                    7.0,
+                                    8.0,
+                                    9.0
+                              ]
+                        ],
+                        [
+                              [
+                                    9.0,
+                                    8.0,
+                                    7.0
+                              ],
+                              [
+                                    6.0,
+                                    5.0,
+                                    4.0
+                              ],
+                              [
+                                    3.0,
+                                    2.0,
+                                    1.0
+                              ]
+                        ]
+                  ],
+                  "kernels": [
+                        [
+                              [
+                                    1.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.5,
+                                    0.5
+                              ],
+                              [
+                                    0.5,
+                                    0.5
+                              ]
+                        ]
+                  ],
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              6.0,
+                              8.0
+                        ],
+                        [
+                              12.0,
+                              14.0
+                        ]
+                  ],
+                  [
+                        [
+                              14.0,
+                              12.0
+                        ],
+                        [
+                              8.0,
+                              6.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Stride 2 depthwise downsampling",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    2.0,
+                                    3.0
+                              ],
+                              [
+                                    4.0,
+                                    5.0,
+                                    6.0
+                              ],
+                              [
+                                    7.0,
+                                    8.0,
+                                    9.0
+                              ]
+                        ]
+                  ],
+                  "kernels": [
+                        [
+                              [
+                                    1.0,
+                                    1.0
+                              ],
+                              [
+                                    1.0,
+                                    1.0
+                              ]
+                        ]
+                  ],
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              12.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Single pixel kernel identity",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    2.0,
+                                    4.0
+                              ]
+                        ]
+                  ],
+                  "kernels": [
+                        [
+                              [
+                                    1.0
+                              ]
+                        ]
+                  ],
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              2.0,
+                              4.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3-channel independent filter bank",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    1.0
+                              ],
+                              [
+                                    1.0,
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0,
+                                    2.0
+                              ],
+                              [
+                                    2.0,
+                                    2.0
+                              ]
+                        ],
+                        [
+                              [
+                                    3.0,
+                                    3.0
+                              ],
+                              [
+                                    3.0,
+                                    3.0
+                              ]
+                        ]
+                  ],
+                  "kernels": [
+                        [
+                              [
+                                    1.0,
+                                    -1.0
+                              ],
+                              [
+                                    -1.0,
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.5,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    0.5
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0,
+                                    1.0
+                              ],
+                              [
+                                    1.0,
+                                    2.0
+                              ]
+                        ]
+                  ],
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              0.0
+                        ]
+                  ],
+                  [
+                        [
+                              2.0
+                        ]
+                  ],
+                  [
+                        [
+                              18.0
+                        ]
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-13': {
+    id: 'dl-nn-prob-13',
+    title: "Layer Normalization Forward Pass",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'layer_norm_forward',
+    functionSignature: "layer_norm_forward(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]",
+    starterCode: `def layer_norm_forward(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]:
+    """Compute Layer Normalization forward pass across the feature dimension for each sample.
+
+    Args:
+        x: 2D input matrix of shape (N, D).
+        gamma: Learnable scaling parameters of length D.
+        beta: Learnable shifting parameters of length D.
+        eps: Small constant for numerical stability.
+
+    Returns:
+        Normalized and affine-transformed matrix of shape (N, D) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Normalize activations across the channel/feature dimension independently per sample, as standard in Transformers and RNNs.",
+    taskDescription: "Implement `layer_norm_forward(x, gamma, beta, eps=1e-5)`: for each sample row `x[i]` of length `D`, compute mean `mu_i = (1/D) * sum(x[i])` and variance `sigma_i^2 = (1/D) * sum((x[i][j] - mu_i)^2)`. Normalize each entry `x_hat[i][j] = (x[i][j] - mu_i) / sqrt(sigma_i^2 + eps)` and apply affine parameters `y[i][j] = gamma[j] * x_hat[i][j] + beta[j]`. Round each value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 100",
+      "1 <= D <= 512",
+      "len(gamma) == len(beta) == D",
+      "eps > 0.0"
+],
+    hints: {
+      "small": "Compute mean and variance over the columns (features) of each individual row.",
+      "strong": "std = math.sqrt(var + eps). Then x_hat = (v - mean) / std and y = gamma[j] * x_hat + beta[j].",
+      "concept": "Unlike Batch Normalization, Layer Normalization operates independently on each sample, making it invariant to batch size."
+},
+    conceptConnections: [
+      {
+            "title": "LayerNorm vs BatchNorm",
+            "route": "/practice/normalization-layers",
+            "description": "Comparison of normalization techniques across architectures."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single sample normalization",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  "beta": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": [
+                  [
+                        -1.2247,
+                        0.0,
+                        1.2247
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Batch with scaling gamma and shift beta",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              4.0
+                        ],
+                        [
+                              10.0,
+                              20.0
+                        ]
+                  ],
+                  "gamma": [
+                        2.0,
+                        0.5
+                  ],
+                  "beta": [
+                        -1.0,
+                        1.0
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": [
+                  [
+                        -3.0,
+                        1.5
+                  ],
+                  [
+                        -3.0,
+                        1.5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Constant row check zero variance",
+            "input": {
+                  "x": [
+                        [
+                              5.0,
+                              5.0,
+                              5.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  "beta": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "4-dimensional feature vector",
+            "input": {
+                  "x": [
+                        [
+                              1.5,
+                              -0.5,
+                              2.0,
+                              0.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        2.0,
+                        1.0,
+                        0.5
+                  ],
+                  "beta": [
+                        0.1,
+                        -0.1,
+                        0.0,
+                        0.5
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": [
+                  [
+                        0.8276,
+                        -2.5253,
+                        1.2127,
+                        0.1362
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-14': {
+    id: 'cv-cnn-prob-14',
+    title: "Pointwise (1x1) 2D Convolution",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'pointwise_conv2d',
+    functionSignature: "pointwise_conv2d(x: list[list[list[float]]], weights: list[list[float]], bias: list[float]) -> list[list[list[float]]]",
+    starterCode: `def pointwise_conv2d(x: list[list[list[float]]], weights: list[list[float]], bias: list[float]) -> list[list[list[float]]]:
+    """Execute 1x1 pointwise convolution to combine channels at each spatial coordinate.
+
+    Args:
+        x: Input tensor of shape (C_in, H, W).
+        weights: 2D weight matrix of shape (C_out, C_in).
+        bias: 1D bias vector of length C_out.
+
+    Returns:
+        Output tensor of shape (C_out, H, W) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Change channel dimensionality and linearly combine feature channels across every pixel location using 1x1 convolutions.",
+    taskDescription: "Implement `pointwise_conv2d(x, weights, bias)`: given input tensor `x` `(C_in, H, W)`, weight matrix `weights` `(C_out, C_in)`, and `bias` `(C_out,)`, compute at each pixel `(i, j)` the projection `out[co][i][j] = sum(weights[co][ci] * x[ci][i][j] for ci in range(C_in)) + bias[co]`. Return `out` of shape `(C_out, H, W)` rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= C_in, C_out <= 256",
+      "1 <= H, W <= 64",
+      "len(bias) == C_out"
+],
+    hints: {
+      "small": "Spatial dimensions H and W remain completely unchanged.",
+      "strong": "For each output channel co and pixel (i, j), compute the dot product of weights[co] with the channel column x[:, i, j] + bias[co].",
+      "concept": "1x1 convolutions act as cross-channel MLPs applied identically at every spatial grid position, enabling inexpensive channel pooling and projection."
+},
+    conceptConnections: [
+      {
+            "title": "1x1 Convolutions",
+            "route": "/practice/one-by-one-conv",
+            "description": "Dimensionality reduction and feature pooling across channels."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Channel reduction 2 to 1",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    2.0
+                              ]
+                        ],
+                        [
+                              [
+                                    3.0,
+                                    4.0
+                              ]
+                        ]
+                  ],
+                  "weights": [
+                        [
+                              0.5,
+                              0.5
+                        ]
+                  ],
+                  "bias": [
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Channel expansion 1 to 2",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    2.0,
+                                    -1.0
+                              ]
+                        ]
+                  ],
+                  "weights": [
+                        [
+                              1.0
+                        ],
+                        [
+                              -1.0
+                        ]
+                  ],
+                  "bias": [
+                        0.5,
+                        -0.5
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              2.5,
+                              -0.5
+                        ]
+                  ],
+                  [
+                        [
+                              -2.5,
+                              0.5
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "2x2 spatial grid channel mixing",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.0,
+                                    1.0
+                              ],
+                              [
+                                    1.0,
+                                    0.0
+                              ]
+                        ]
+                  ],
+                  "weights": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "bias": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  [
+                        [
+                              1.0,
+                              -1.0
+                        ],
+                        [
+                              -1.0,
+                              1.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3 to 2 channels with non-zero biases",
+            "input": {
+                  "x": [
+                        [
+                              [
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0
+                              ]
+                        ],
+                        [
+                              [
+                                    3.0
+                              ]
+                        ]
+                  ],
+                  "weights": [
+                        [
+                              0.1,
+                              0.2,
+                              0.3
+                        ],
+                        [
+                              -0.1,
+                              0.0,
+                              0.1
+                        ]
+                  ],
+                  "bias": [
+                        1.0,
+                        -1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              2.4
+                        ]
+                  ],
+                  [
+                        [
+                              -0.8
+                        ]
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-14': {
+    id: 'dl-nn-prob-14',
+    title: "1D Batch Normalization Forward Pass",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'batch_norm1d_forward',
+    functionSignature: "batch_norm1d_forward(x: list[list[float]], gamma: list[float], beta: list[float], running_mean: list[float], running_var: list[float], eps: float = 1e-5, momentum: float = 0.1, training: bool = True) -> dict",
+    starterCode: `def batch_norm1d_forward(x: list[list[float]], gamma: list[float], beta: list[float], running_mean: list[float], running_var: list[float], eps: float = 1e-5, momentum: float = 0.1, training: bool = True) -> dict:
+    """Compute 1D Batch Normalization forward pass in training or inference mode.
+
+    Args:
+        x: 2D input batch of shape (N, D).
+        gamma: Scale parameter vector of length D.
+        beta: Shift parameter vector of length D.
+        running_mean: Running mean vector of length D.
+        running_var: Running variance vector of length D.
+        eps: Numerical stability constant.
+        momentum: Exponential moving average momentum factor.
+        training: Boolean flag indicating train vs test mode.
+
+    Returns:
+        Dictionary with 'out', 'running_mean', and 'running_var'.
+    """
+    pass
+`,
+    mission: "Stabilize deep network training by standardizing mini-batch feature distributions across samples.",
+    taskDescription: "Implement `batch_norm1d_forward(...)`: in `training=True` mode, compute sample mean `mu_B` and variance `sigma_B^2` across batch rows `N` for each feature column. Update running statistics: `running_mean = (1 - momentum) * running_mean + momentum * mu_B` and `running_var = (1 - momentum) * running_var + momentum * sigma_B^2`. Normalize inputs using `mu_B` and `sigma_B^2`. In `training=False` mode, use `running_mean` and `running_var` directly without updating them. Return `{'out': out, 'running_mean': ..., 'running_var': ...}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "N >= 1",
+      "D >= 1",
+      "len(gamma) == len(beta) == len(running_mean) == len(running_var) == D",
+      "0.0 <= momentum <= 1.0"
+],
+    hints: {
+      "small": "In training mode, calculate mean and variance across the rows (batch dimension N) for each column.",
+      "strong": "Remember that running stats update using EMA: (1 - momentum) * old + momentum * new.",
+      "concept": "Batch Normalization reduces internal covariate shift and provides mild regularization during training."
+},
+    conceptConnections: [
+      {
+            "title": "Batch Normalization",
+            "route": "/practice/batch-norm",
+            "description": "Internal covariate shift mitigation in deep networks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Training mode batch of 2",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              10.0
+                        ],
+                        [
+                              3.0,
+                              20.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0
+                  ],
+                  "beta": [
+                        0.0,
+                        0.0
+                  ],
+                  "running_mean": [
+                        0.0,
+                        0.0
+                  ],
+                  "running_var": [
+                        1.0,
+                        1.0
+                  ],
+                  "eps": 1e-05,
+                  "momentum": 0.1,
+                  "training": true
+            },
+            "expectedOutput": {
+                  "out": [
+                        [
+                              -1.0,
+                              -1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "running_mean": [
+                        0.2,
+                        1.5
+                  ],
+                  "running_var": [
+                        1.0,
+                        3.4
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Eval mode using running stats",
+            "input": {
+                  "x": [
+                        [
+                              2.0,
+                              15.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0
+                  ],
+                  "beta": [
+                        0.0,
+                        0.0
+                  ],
+                  "running_mean": [
+                        2.0,
+                        15.0
+                  ],
+                  "running_var": [
+                        1.0,
+                        25.0
+                  ],
+                  "eps": 1e-05,
+                  "momentum": 0.1,
+                  "training": false
+            },
+            "expectedOutput": {
+                  "out": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "running_mean": [
+                        2.0,
+                        15.0
+                  ],
+                  "running_var": [
+                        1.0,
+                        25.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Eval mode with non-trivial gamma/beta",
+            "input": {
+                  "x": [
+                        [
+                              3.0,
+                              5.0
+                        ]
+                  ],
+                  "gamma": [
+                        2.0,
+                        -1.0
+                  ],
+                  "beta": [
+                        1.0,
+                        0.5
+                  ],
+                  "running_mean": [
+                        1.0,
+                        5.0
+                  ],
+                  "running_var": [
+                        4.0,
+                        1.0
+                  ],
+                  "eps": 1e-05,
+                  "momentum": 0.1,
+                  "training": false
+            },
+            "expectedOutput": {
+                  "out": [
+                        [
+                              3.0,
+                              0.5
+                        ]
+                  ],
+                  "running_mean": [
+                        1.0,
+                        5.0
+                  ],
+                  "running_var": [
+                        4.0,
+                        1.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Training mode larger batch",
+            "input": {
+                  "x": [
+                        [
+                              -1.0,
+                              2.0
+                        ],
+                        [
+                              1.0,
+                              4.0
+                        ],
+                        [
+                              0.0,
+                              6.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0
+                  ],
+                  "beta": [
+                        0.0,
+                        0.0
+                  ],
+                  "running_mean": [
+                        0.0,
+                        0.0
+                  ],
+                  "running_var": [
+                        1.0,
+                        1.0
+                  ],
+                  "eps": 1e-05,
+                  "momentum": 0.2,
+                  "training": true
+            },
+            "expectedOutput": {
+                  "out": [
+                        [
+                              -1.2247,
+                              -1.2247
+                        ],
+                        [
+                              1.2247,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.2247
+                        ]
+                  ],
+                  "running_mean": [
+                        0.0,
+                        0.8
+                  ],
+                  "running_var": [
+                        0.933333,
+                        1.333333
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-15': {
+    id: 'cv-cnn-prob-15',
+    title: "Dilated Convolution Receptive Field Analyzer",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'dilated_conv2d_receptive_field',
+    functionSignature: "dilated_conv2d_receptive_field(dilations: list[int], kernel_size: int = 3) -> dict",
+    starterCode: `def dilated_conv2d_receptive_field(dilations: list[int], kernel_size: int = 3) -> dict:
+    """Calculate effective kernel sizes and cumulative receptive field for stacked dilated convolutions.
+
+    Args:
+        dilations: List of dilation rates d for each layer (stride assumed 1).
+        kernel_size: Base kernel size k for all layers (default: 3).
+
+    Returns:
+        Dictionary with 'receptive_field' (int) and 'effective_kernels' (list[int]).
+    """
+    pass
+`,
+    mission: "Expand receptive field exponentially without downsampling or parameter explosion via atrous (dilated) convolutions.",
+    taskDescription: "Implement `dilated_conv2d_receptive_field(dilations, kernel_size=3)`: for each layer with dilation rate `d`, the effective kernel footprint is `k_eff = 1 + (kernel_size - 1) * d`. Assuming unit stride, each layer expands the total receptive field by `k_eff - 1`. Starting with initial `rf = 1`, compute the cumulative receptive field and the list of effective kernel sizes. Return `{'receptive_field': rf, 'effective_kernels': effective_kernels}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(dilations) >= 1",
+      "kernel_size >= 2",
+      "dilations[i] >= 1"
+],
+    hints: {
+      "small": "For dilation d and kernel k, effective footprint is k_eff = 1 + (k - 1) * d.",
+      "strong": "At each step: rf = rf + (k_eff - 1).",
+      "concept": "Dilated convolutions allow dense prediction models (e.g. semantic segmentation) to capture multi-scale context while maintaining full resolution feature maps."
+},
+    conceptConnections: [
+      {
+            "title": "Dilated / Atrous Convolutions",
+            "route": "/practice/dilated-convolutions",
+            "description": "DeepLab and WaveNet dilated convolution mechanics."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single dilation d=2 with k=3",
+            "input": {
+                  "dilations": [
+                        2
+                  ],
+                  "kernel_size": 3
+            },
+            "expectedOutput": {
+                  "receptive_field": 5,
+                  "effective_kernels": [
+                        5
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Standard dilated stack [1, 2, 4] with k=3",
+            "input": {
+                  "dilations": [
+                        1,
+                        2,
+                        4
+                  ],
+                  "kernel_size": 3
+            },
+            "expectedOutput": {
+                  "receptive_field": 15,
+                  "effective_kernels": [
+                        3,
+                        5,
+                        9
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "All standard dilations d=1 with k=5",
+            "input": {
+                  "dilations": [
+                        1,
+                        1
+                  ],
+                  "kernel_size": 5
+            },
+            "expectedOutput": {
+                  "receptive_field": 9,
+                  "effective_kernels": [
+                        5,
+                        5
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Deep exponential dilation schedule",
+            "input": {
+                  "dilations": [
+                        1,
+                        2,
+                        4,
+                        8,
+                        16
+                  ],
+                  "kernel_size": 3
+            },
+            "expectedOutput": {
+                  "receptive_field": 63,
+                  "effective_kernels": [
+                        3,
+                        5,
+                        9,
+                        17,
+                        33
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-15': {
+    id: 'dl-nn-prob-15',
+    title: "RMSprop Optimizer Parameter Step",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'rmsprop_step',
+    functionSignature: "rmsprop_step(param: list[float], grad: list[float], square_avg: list[float], lr: float = 0.01, alpha: float = 0.99, eps: float = 1e-8) -> dict",
+    starterCode: `def rmsprop_step(param: list[float], grad: list[float], square_avg: list[float], lr: float = 0.01, alpha: float = 0.99, eps: float = 1e-8) -> dict:
+    """Execute one parameter update step using the RMSprop adaptive learning rate algorithm.
+
+    Args:
+        param: Parameter vector.
+        grad: Gradient vector.
+        square_avg: Moving average of squared gradients.
+        lr: Learning rate.
+        alpha: Smoothing constant (decay rate, typically 0.99).
+        eps: Denominator epsilon.
+
+    Returns:
+        Dictionary with updated 'param' and 'square_avg' vectors rounded to 6 decimal places.
+    """
+    pass
+`,
+    mission: "Resolve AdaGrad's diminishing learning rates by keeping an exponentially decaying average of squared gradients.",
+    taskDescription: "Implement `rmsprop_step(param, grad, square_avg, lr=0.01, alpha=0.99, eps=1e-8)`: for each index `k`, update the squared gradient moving average: `v_k = alpha * square_avg[k] + (1 - alpha) * grad[k]^2`. Update the parameter: `param_k = param[k] - (lr / (sqrt(v_k) + eps)) * grad[k]`. Return `{'param': ..., 'square_avg': ...}` with values rounded to 6 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(param) == len(grad) == len(square_avg) >= 1",
+      "0.0 < alpha < 1.0",
+      "lr > 0.0"
+],
+    hints: {
+      "small": "Compute v_new = alpha * v_old + (1 - alpha) * (grad ** 2).",
+      "strong": "Then scale gradient by lr / (sqrt(v_new) + eps).",
+      "concept": "RMSprop normalizes gradient updates by the root-mean-square of recent gradients, scaling steps appropriately per coordinate."
+},
+    conceptConnections: [
+      {
+            "title": "Adaptive Gradient Algorithms",
+            "route": "/practice/adagrad-rmsprop",
+            "description": "Historical progression from AdaGrad to RMSprop."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Initial step with zero square avg",
+            "input": {
+                  "param": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad": [
+                        0.2,
+                        -0.4
+                  ],
+                  "square_avg": [
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.01,
+                  "alpha": 0.9,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.968377,
+                        2.031623
+                  ],
+                  "square_avg": [
+                        0.004,
+                        0.016
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Step with accumulated history",
+            "input": {
+                  "param": [
+                        0.95,
+                        1.9
+                  ],
+                  "grad": [
+                        0.1,
+                        -0.1
+                  ],
+                  "square_avg": [
+                        0.04,
+                        0.16
+                  ],
+                  "lr": 0.01,
+                  "alpha": 0.99,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.944981,
+                        1.902512
+                  ],
+                  "square_avg": [
+                        0.0397,
+                        0.1585
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero gradient preserves param",
+            "input": {
+                  "param": [
+                        3.0
+                  ],
+                  "grad": [
+                        0.0
+                  ],
+                  "square_avg": [
+                        0.1
+                  ],
+                  "lr": 0.01,
+                  "alpha": 0.9,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "param": [
+                        3.0
+                  ],
+                  "square_avg": [
+                        0.09
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3D parameter vector step",
+            "input": {
+                  "param": [
+                        0.0,
+                        0.5,
+                        -0.5
+                  ],
+                  "grad": [
+                        1.0,
+                        -0.5,
+                        0.2
+                  ],
+                  "square_avg": [
+                        0.01,
+                        0.02,
+                        0.01
+                  ],
+                  "lr": 0.005,
+                  "alpha": 0.95,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "param": [
+                        -0.020498,
+                        0.514086,
+                        -0.509325
+                  ],
+                  "square_avg": [
+                        0.0595,
+                        0.0315,
+                        0.0115
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-16': {
+    id: 'cv-cnn-prob-16',
+    title: "Transposed Conv2D Output Spatial Dimension Calculator",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'conv_transpose2d_output_shape',
+    functionSignature: "conv_transpose2d_output_shape(H: int, W: int, kH: int, kW: int, stride_h: int = 1, stride_w: int = 1, pad_h: int = 0, pad_w: int = 0, out_pad_h: int = 0, out_pad_w: int = 0, dilation_h: int = 1, dilation_w: int = 1) -> list[int]",
+    starterCode: `def conv_transpose2d_output_shape(H: int, W: int, kH: int, kW: int, stride_h: int = 1, stride_w: int = 1, pad_h: int = 0, pad_w: int = 0, out_pad_h: int = 0, out_pad_w: int = 0, dilation_h: int = 1, dilation_w: int = 1) -> list[int]:\\n    """Calculate output spatial dimensions for a transposed 2D convolution layer.\\n\\n    Args:\\n        H, W: Input spatial dimensions.\\n        kH, kW: Kernel height and width.\\n        stride_h, stride_w: Stride of the transposed convolution.\\n        pad_h, pad_w: Zero padding added to both sides of input.\\n        out_pad_h, out_pad_w: Additional size added to output shape.\\n        dilation_h, dilation_w: Dilation rate of kernel elements.\\n\\n    Returns:\\n        [out_H, out_W] list of integers.\\n    """\\n    pass\\n`,
+    mission: "Calculate the exact output spatial dimensions of transposed 2D convolution layers used in decoder architectures.",
+    taskDescription: "Implement `conv_transpose2d_output_shape(...)`. In PyTorch/TensorFlow deconvolution: `out_dim = (in_dim - 1) * stride - 2 * pad + dilation * (k - 1) + out_pad + 1`. Compute and return `[out_H, out_W]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 2048",
+      "1 <= kH, kW <= 64",
+      "stride >= 1",
+      "out_pad < stride"
+],
+    hints: {
+      "small": "The effective kernel size with dilation is eff_k = dilation * (k - 1) + 1.",
+      "strong": "out_H = (H - 1) * stride_h - 2 * pad_h + eff_kH + out_pad_h.",
+      "concept": "Transposed convolutions perform fractionally strided convolutions to upsample feature maps in generative and segmentation networks."
+},
+    conceptConnections: [
+      {
+            "title": "Transposed Convolutions",
+            "route": "/practice/transposed-convolutions",
+            "description": "Mathematical mechanics of deconvolution and checkerboard artifact mitigation."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x upsampling with 2x2 kernel",
+            "input": {
+                  "H": 14,
+                  "W": 14,
+                  "kH": 2,
+                  "kW": 2,
+                  "stride_h": 2,
+                  "stride_w": 2,
+                  "pad_h": 0,
+                  "pad_w": 0,
+                  "out_pad_h": 0,
+                  "out_pad_w": 0,
+                  "dilation_h": 1,
+                  "dilation_w": 1
+            },
+            "expectedOutput": [
+                  28,
+                  28
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Same transpose conv with padding",
+            "input": {
+                  "H": 7,
+                  "W": 7,
+                  "kH": 3,
+                  "kW": 3,
+                  "stride_h": 2,
+                  "stride_w": 2,
+                  "pad_h": 1,
+                  "pad_w": 1,
+                  "out_pad_h": 1,
+                  "out_pad_w": 1,
+                  "dilation_h": 1,
+                  "dilation_w": 1
+            },
+            "expectedOutput": [
+                  14,
+                  14
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Stride 1 deconvolution",
+            "input": {
+                  "H": 10,
+                  "W": 10,
+                  "kH": 3,
+                  "kW": 3,
+                  "stride_h": 1,
+                  "stride_w": 1,
+                  "pad_h": 0,
+                  "pad_w": 0,
+                  "out_pad_h": 0,
+                  "out_pad_w": 0,
+                  "dilation_h": 1,
+                  "dilation_w": 1
+            },
+            "expectedOutput": [
+                  12,
+                  12
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Dilated transpose convolution",
+            "input": {
+                  "H": 16,
+                  "W": 16,
+                  "kH": 3,
+                  "kW": 3,
+                  "stride_h": 2,
+                  "stride_w": 2,
+                  "pad_h": 1,
+                  "pad_w": 1,
+                  "out_pad_h": 0,
+                  "out_pad_w": 0,
+                  "dilation_h": 2,
+                  "dilation_w": 2
+            },
+            "expectedOutput": [
+                  33,
+                  33
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-16': {
+    id: 'dl-nn-prob-16',
+    title: "L2 Weight Decay Gradient Adjustment",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'l2_weight_decay',
+    functionSignature: "l2_weight_decay(grads: list[float], weights: list[float], weight_decay: float) -> list[float]",
+    starterCode: `def l2_weight_decay(grads: list[float], weights: list[float], weight_decay: float) -> list[float]:
+    """Add L2 weight decay gradient penalty to raw parameter gradients.
+
+    Args:
+        grads: 1D list of unregularized parameter gradients.
+        weights: 1D list of parameter weights.
+        weight_decay: L2 penalty multiplier lambda.
+
+    Returns:
+        1D list of adjusted gradients rounded to 6 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the combined gradient vector incorporating L2 regularization penalty to prevent large weight values.",
+    taskDescription: "Implement `l2_weight_decay(grads, weights, weight_decay)`: given raw objective gradients `grads` and parameters `weights`, the regularized objective is `L_total = L + 0.5 * weight_decay * sum(w_k^2)`. The adjusted gradient for each parameter is `g_adj[k] = grads[k] + weight_decay * weights[k]`. Return the adjusted gradients rounded to 6 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(grads) == len(weights) >= 1",
+      "weight_decay >= 0.0"
+],
+    hints: {
+      "small": "Differentiating 0.5 * lambda * w^2 w.r.t w yields lambda * w.",
+      "strong": "Add weight_decay * weights[k] to grads[k] for every index.",
+      "concept": "L2 regularization pulls weights toward zero, penalizing high-magnitude weights that could lead to overfitting."
+},
+    conceptConnections: [
+      {
+            "title": "Weight Decay vs L2",
+            "route": "/practice/l2-regularization",
+            "description": "Comparison of classic L2 penalty and decoupled weight decay."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard weight decay addition",
+            "input": {
+                  "grads": [
+                        0.1,
+                        -0.2
+                  ],
+                  "weights": [
+                        2.0,
+                        -1.0
+                  ],
+                  "weight_decay": 0.01
+            },
+            "expectedOutput": [
+                  0.12,
+                  -0.21
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero weight decay matches grads",
+            "input": {
+                  "grads": [
+                        0.5,
+                        1.5
+                  ],
+                  "weights": [
+                        10.0,
+                        20.0
+                  ],
+                  "weight_decay": 0.0
+            },
+            "expectedOutput": [
+                  0.5,
+                  1.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero initial gradients",
+            "input": {
+                  "grads": [
+                        0.0,
+                        0.0
+                  ],
+                  "weights": [
+                        5.0,
+                        -5.0
+                  ],
+                  "weight_decay": 0.1
+            },
+            "expectedOutput": [
+                  0.5,
+                  -0.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-parameter vector",
+            "input": {
+                  "grads": [
+                        0.05,
+                        -0.05,
+                        0.2
+                  ],
+                  "weights": [
+                        1.0,
+                        2.0,
+                        -0.5
+                  ],
+                  "weight_decay": 0.005
+            },
+            "expectedOutput": [
+                  0.055,
+                  -0.04,
+                  0.1975
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-17': {
+    id: 'cv-cnn-prob-17',
+    title: "Anchor Box Coordinate Generator for Object Detection",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'generate_anchor_boxes',
+    functionSignature: "generate_anchor_boxes(feature_map_h: int, feature_map_w: int, stride: int, base_size: int, aspect_ratios: list[float], scales: list[float]) -> list[list[float]]",
+    starterCode: `def generate_anchor_boxes(feature_map_h: int, feature_map_w: int, stride: int, base_size: int, aspect_ratios: list[float], scales: list[float]) -> list[list[float]]:\\n    """Generate anchor box coordinates [x1, y1, x2, y2] across a 2D feature map grid.\\n\\n    Args:\\n        feature_map_h, feature_map_w: Grid dimensions.\\n        stride: Sampling stride in input image pixels.\\n        base_size: Reference anchor side length.\\n        aspect_ratios: List of width/height aspect ratios.\\n        scales: List of scale factors.\\n\\n    Returns:\\n        List of [x1, y1, x2, y2] boxes rounded to 2 decimal places.\\n    """\\n    pass\\n`,
+    mission: "Synthesize candidate prior bounding boxes (anchors) across a spatial grid for single-stage and two-stage object detectors.",
+    taskDescription: "Implement `generate_anchor_boxes(...)`. For each cell `(r, c)` in `[0..feature_map_h - 1] x [0..feature_map_w - 1]`, the center in image coordinates is `cy = (r + 0.5) * stride`, `cx = (c + 0.5) * stride`. For each scale `s` in `scales` and aspect ratio `ar` in `aspect_ratios`: width `w = base_size * s * sqrt(ar)`, height `h = base_size * s / sqrt(ar)`. The box is `[cx - w/2, cy - h/2, cx + w/2, cy + h/2]`. Round each coordinate to 2 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= feature_map_h, feature_map_w <= 100",
+      "stride >= 1",
+      "base_size >= 1",
+      "aspect_ratios, scales non-empty"
+],
+    hints: {
+      "small": "Cell center: cx = (c + 0.5) * stride, cy = (r + 0.5) * stride.",
+      "strong": "Iterate r, then c, then scale s, then aspect ratio ar to produce [x1, y1, x2, y2].",
+      "concept": "Anchor boxes act as prior templates that detector regression heads perturb to fit ground-truth targets."
+},
+    conceptConnections: [
+      {
+            "title": "Faster R-CNN Anchor Priors",
+            "route": "/practice/faster-rcnn-anchors",
+            "description": "Prior box design in Region Proposal Networks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single cell single scale square",
+            "input": {
+                  "feature_map_h": 1,
+                  "feature_map_w": 1,
+                  "stride": 16,
+                  "base_size": 32,
+                  "aspect_ratios": [
+                        1.0
+                  ],
+                  "scales": [
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -8.0,
+                        -8.0,
+                        24.0,
+                        24.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "2x2 grid with two aspect ratios",
+            "input": {
+                  "feature_map_h": 2,
+                  "feature_map_w": 2,
+                  "stride": 32,
+                  "base_size": 64,
+                  "aspect_ratios": [
+                        0.5,
+                        2.0
+                  ],
+                  "scales": [
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -6.63,
+                        -29.25,
+                        38.63,
+                        61.25
+                  ],
+                  [
+                        -29.25,
+                        -6.63,
+                        61.25,
+                        38.63
+                  ],
+                  [
+                        25.37,
+                        -29.25,
+                        70.63,
+                        61.25
+                  ],
+                  [
+                        2.75,
+                        -6.63,
+                        93.25,
+                        38.63
+                  ],
+                  [
+                        -6.63,
+                        2.75,
+                        38.63,
+                        93.25
+                  ],
+                  [
+                        -29.25,
+                        25.37,
+                        61.25,
+                        70.63
+                  ],
+                  [
+                        25.37,
+                        2.75,
+                        70.63,
+                        93.25
+                  ],
+                  [
+                        2.75,
+                        25.37,
+                        93.25,
+                        70.63
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "1x2 grid multi-scale multi-ratio",
+            "input": {
+                  "feature_map_h": 1,
+                  "feature_map_w": 2,
+                  "stride": 16,
+                  "base_size": 16,
+                  "aspect_ratios": [
+                        0.5,
+                        1.0,
+                        2.0
+                  ],
+                  "scales": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.34,
+                        -3.31,
+                        13.66,
+                        19.31
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        16.0,
+                        16.0
+                  ],
+                  [
+                        -3.31,
+                        2.34,
+                        19.31,
+                        13.66
+                  ],
+                  [
+                        -3.31,
+                        -14.63,
+                        19.31,
+                        30.63
+                  ],
+                  [
+                        -8.0,
+                        -8.0,
+                        24.0,
+                        24.0
+                  ],
+                  [
+                        -14.63,
+                        -3.31,
+                        30.63,
+                        19.31
+                  ],
+                  [
+                        18.34,
+                        -3.31,
+                        29.66,
+                        19.31
+                  ],
+                  [
+                        16.0,
+                        0.0,
+                        32.0,
+                        16.0
+                  ],
+                  [
+                        12.69,
+                        2.34,
+                        35.31,
+                        13.66
+                  ],
+                  [
+                        12.69,
+                        -14.63,
+                        35.31,
+                        30.63
+                  ],
+                  [
+                        8.0,
+                        -8.0,
+                        40.0,
+                        24.0
+                  ],
+                  [
+                        1.37,
+                        -3.31,
+                        46.63,
+                        19.31
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 grid standard RPN anchors",
+            "input": {
+                  "feature_map_h": 3,
+                  "feature_map_w": 3,
+                  "stride": 16,
+                  "base_size": 32,
+                  "aspect_ratios": [
+                        1.0
+                  ],
+                  "scales": [
+                        0.5,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0,
+                        16.0,
+                        16.0
+                  ],
+                  [
+                        -8.0,
+                        -8.0,
+                        24.0,
+                        24.0
+                  ],
+                  [
+                        16.0,
+                        0.0,
+                        32.0,
+                        16.0
+                  ],
+                  [
+                        8.0,
+                        -8.0,
+                        40.0,
+                        24.0
+                  ],
+                  [
+                        32.0,
+                        0.0,
+                        48.0,
+                        16.0
+                  ],
+                  [
+                        24.0,
+                        -8.0,
+                        56.0,
+                        24.0
+                  ],
+                  [
+                        0.0,
+                        16.0,
+                        16.0,
+                        32.0
+                  ],
+                  [
+                        -8.0,
+                        8.0,
+                        24.0,
+                        40.0
+                  ],
+                  [
+                        16.0,
+                        16.0,
+                        32.0,
+                        32.0
+                  ],
+                  [
+                        8.0,
+                        8.0,
+                        40.0,
+                        40.0
+                  ],
+                  [
+                        32.0,
+                        16.0,
+                        48.0,
+                        32.0
+                  ],
+                  [
+                        24.0,
+                        8.0,
+                        56.0,
+                        40.0
+                  ],
+                  [
+                        0.0,
+                        32.0,
+                        16.0,
+                        48.0
+                  ],
+                  [
+                        -8.0,
+                        24.0,
+                        24.0,
+                        56.0
+                  ],
+                  [
+                        16.0,
+                        32.0,
+                        32.0,
+                        48.0
+                  ],
+                  [
+                        8.0,
+                        24.0,
+                        40.0,
+                        56.0
+                  ],
+                  [
+                        32.0,
+                        32.0,
+                        48.0,
+                        48.0
+                  ],
+                  [
+                        24.0,
+                        24.0,
+                        56.0,
+                        56.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-17': {
+    id: 'dl-nn-prob-17',
+    title: "Global Gradient Norm Clipping",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'grad_clip_by_norm',
+    functionSignature: "grad_clip_by_norm(grads: list[float], max_norm: float) -> dict",
+    starterCode: `def grad_clip_by_norm(grads: list[float], max_norm: float) -> dict:
+    """Clip gradients by global Euclidean L2 norm to avoid exploding gradients.
+
+    Args:
+        grads: 1D list of parameter gradient values.
+        max_norm: Maximum permitted L2 norm.
+
+    Returns:
+        Dictionary with 'clipped_grads' and 'global_norm', rounded to 6 decimal places.
+    """
+    pass
+`,
+    mission: "Mitigate exploding gradients in deep neural networks and recurrent models by scaling down gradients when their L2 norm exceeds a threshold.",
+    taskDescription: "Implement `grad_clip_by_norm(grads, max_norm)`: compute the global L2 norm `norm = sqrt(sum(g_i^2))`. If `norm > max_norm`, scale each gradient element by `max_norm / norm`; otherwise leave gradients unchanged. Return `{'clipped_grads': [...], 'global_norm': norm}` with all numbers rounded to 6 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(grads) >= 1",
+      "max_norm > 0.0"
+],
+    hints: {
+      "small": "Compute global_norm = math.sqrt(sum(g ** 2 for g in grads)).",
+      "strong": "If global_norm `>` max_norm, scale is max_norm / global_norm, else 1.0.",
+      "concept": "Clipping by global norm preserves the direction of the optimization step while constraining its maximum magnitude."
+},
+    conceptConnections: [
+      {
+            "title": "Gradient Clipping Strategies",
+            "route": "/practice/gradient-clipping",
+            "description": "Stabilizing training against gradient explosions."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Gradient norm exceeds threshold",
+            "input": {
+                  "grads": [
+                        3.0,
+                        4.0
+                  ],
+                  "max_norm": 2.5
+            },
+            "expectedOutput": {
+                  "clipped_grads": [
+                        1.5,
+                        2.0
+                  ],
+                  "global_norm": 5.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Gradient norm within threshold",
+            "input": {
+                  "grads": [
+                        1.0,
+                        -1.0
+                  ],
+                  "max_norm": 5.0
+            },
+            "expectedOutput": {
+                  "clipped_grads": [
+                        1.0,
+                        -1.0
+                  ],
+                  "global_norm": 1.414214
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero gradients",
+            "input": {
+                  "grads": [
+                        0.0,
+                        0.0
+                  ],
+                  "max_norm": 1.0
+            },
+            "expectedOutput": {
+                  "clipped_grads": [
+                        0.0,
+                        0.0
+                  ],
+                  "global_norm": 0.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "High-dimensional vector clipping",
+            "input": {
+                  "grads": [
+                        10.0,
+                        -10.0,
+                        10.0,
+                        -10.0
+                  ],
+                  "max_norm": 5.0
+            },
+            "expectedOutput": {
+                  "clipped_grads": [
+                        2.5,
+                        -2.5,
+                        2.5,
+                        -2.5
+                  ],
+                  "global_norm": 20.0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-18': {
+    id: 'cv-cnn-prob-18',
+    title: "Spatial Pyramid Pooling Fixed-Length Descriptor",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'spatial_pyramid_pooling',
+    functionSignature: "spatial_pyramid_pooling(feature_map: list[list[float]], pool_sizes: list[int]) -> list[float]",
+    starterCode: `def spatial_pyramid_pooling(feature_map: list[list[float]], pool_sizes: list[int]) -> list[float]:\\n    """Compute fixed-length SPP descriptor from variable-sized 2D feature map.\\n\\n    Args:\\n        feature_map: 2D list of shape (H, W).\\n        pool_sizes: List of bin grid dimensions (e.g. [1, 2, 4]).\\n\\n    Returns:\\n        Flattened 1D list of pooled max values across all pyramid levels.\\n    """\\n    pass\\n`,
+    mission: "Eliminate fixed-size input image restrictions by producing fixed-length representation vectors via multi-level spatial binning.",
+    taskDescription: "Implement `spatial_pyramid_pooling(...)`. For each grid level `n` in `pool_sizes`, divide the `H x W` feature map into `n x n` spatial bins. For bin `(bi, bj)` where `0 <= bi, bj < n`: row range is `[floor(bi * H / n), ceil((bi + 1) * H / n)]` and column range is `[floor(bj * W / n), ceil((bj + 1) * W / n)]`. Compute the maximum value in each bin, rounded to 4 decimals, and concatenate all bins in row-major order across levels.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 128",
+      "pool_sizes entries >= 1",
+      "pool_sizes entry <= min(H, W)"
+],
+    hints: {
+      "small": "Use math.floor and math.ceil to partition rows and columns evenly into n bins.",
+      "strong": "r_start = math.floor(bi * H / n), r_end = math.ceil((bi + 1) * H / n).",
+      "concept": "SPPNet introduced spatial pyramid pooling to allow CNNs to process arbitrary aspect ratio images without distortion or cropping."
+},
+    conceptConnections: [
+      {
+            "title": "SPP-Net Architecture",
+            "route": "/practice/spatial-pyramid-pooling",
+            "description": "Multi-scale feature aggregation for detection and classification."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "4x4 map with 1x1 and 2x2 pooling",
+            "input": {
+                  "feature_map": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              6.0,
+                              7.0,
+                              8.0
+                        ],
+                        [
+                              9.0,
+                              10.0,
+                              11.0,
+                              12.0
+                        ],
+                        [
+                              13.0,
+                              14.0,
+                              15.0,
+                              16.0
+                        ]
+                  ],
+                  "pool_sizes": [
+                        1,
+                        2
+                  ]
+            },
+            "expectedOutput": [
+                  16.0,
+                  6.0,
+                  8.0,
+                  14.0,
+                  16.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "3x3 map single 1x1 pool",
+            "input": {
+                  "feature_map": [
+                        [
+                              2.5,
+                              3.1,
+                              1.2
+                        ],
+                        [
+                              4.4,
+                              8.9,
+                              2.0
+                        ],
+                        [
+                              1.1,
+                              0.5,
+                              5.5
+                        ]
+                  ],
+                  "pool_sizes": [
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  8.9
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 map with pool_sizes [1, 3]",
+            "input": {
+                  "feature_map": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "pool_sizes": [
+                        1,
+                        3
+                  ]
+            },
+            "expectedOutput": [
+                  9.0,
+                  1.0,
+                  2.0,
+                  3.0,
+                  4.0,
+                  5.0,
+                  6.0,
+                  7.0,
+                  8.0,
+                  9.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "5x5 map with pool_sizes [2]",
+            "input": {
+                  "feature_map": [
+                        [
+                              0.0,
+                              1.0,
+                              2.0,
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              6.0,
+                              7.0,
+                              8.0,
+                              9.0
+                        ],
+                        [
+                              10.0,
+                              11.0,
+                              12.0,
+                              13.0,
+                              14.0
+                        ],
+                        [
+                              15.0,
+                              16.0,
+                              17.0,
+                              18.0,
+                              19.0
+                        ],
+                        [
+                              20.0,
+                              21.0,
+                              22.0,
+                              23.0,
+                              24.0
+                        ]
+                  ],
+                  "pool_sizes": [
+                        2
+                  ]
+            },
+            "expectedOutput": [
+                  12.0,
+                  14.0,
+                  22.0,
+                  24.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-18': {
+    id: 'dl-nn-prob-18',
+    title: "Cosine Annealing Learning Rate Schedule",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'cosine_annealing_lr',
+    functionSignature: "cosine_annealing_lr(initial_lr: float, min_lr: float, cur_epoch: int, max_epochs: int) -> float",
+    starterCode: `def cosine_annealing_lr(initial_lr: float, min_lr: float, cur_epoch: int, max_epochs: int) -> float:
+    """Compute scheduled learning rate using cosine annealing decay.
+
+    Args:
+        initial_lr: Maximum starting learning rate eta_max.
+        min_lr: Minimum floor learning rate eta_min.
+        cur_epoch: Current epoch index t (0 <= cur_epoch <= max_epochs).
+        max_epochs: Total number of training epochs T_max.
+
+    Returns:
+        Current learning rate float rounded to 6 decimal places.
+    """
+    pass
+`,
+    mission: "Smoothly decay learning rates over training epochs according to Loshchilov and Hutter's cosine schedule.",
+    taskDescription: "Implement `cosine_annealing_lr(initial_lr, min_lr, cur_epoch, max_epochs)`: compute `lr = min_lr + 0.5 * (initial_lr - min_lr) * (1 + cos(pi * cur_epoch / max_epochs))`. Return the computed learning rate rounded to 6 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= cur_epoch <= max_epochs",
+      "max_epochs >= 1",
+      "0.0 <= min_lr <= initial_lr"
+],
+    hints: {
+      "small": "Use math.cos(math.pi * cur_epoch / max_epochs).",
+      "strong": "At cur_epoch=0, cos(0)=1 so lr=initial_lr. At cur_epoch=max_epochs, cos(pi)=-1 so lr=min_lr.",
+      "concept": "Cosine annealing avoids sharp transitions by decaying slowly at first, rapidly in the middle, and gently towards min_lr."
+},
+    conceptConnections: [
+      {
+            "title": "Learning Rate Schedules",
+            "route": "/practice/learning-rate-decay",
+            "description": "Annealing, step decay, and warm-up dynamics."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Start epoch 0",
+            "input": {
+                  "initial_lr": 0.1,
+                  "min_lr": 0.001,
+                  "cur_epoch": 0,
+                  "max_epochs": 100
+            },
+            "expectedOutput": 0.1,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Halfway epoch 50",
+            "input": {
+                  "initial_lr": 0.1,
+                  "min_lr": 0.001,
+                  "cur_epoch": 50,
+                  "max_epochs": 100
+            },
+            "expectedOutput": 0.0505,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Final epoch 100",
+            "input": {
+                  "initial_lr": 0.1,
+                  "min_lr": 0.001,
+                  "cur_epoch": 100,
+                  "max_epochs": 100
+            },
+            "expectedOutput": 0.001,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Quarter progress epoch 25",
+            "input": {
+                  "initial_lr": 0.01,
+                  "min_lr": 1e-05,
+                  "cur_epoch": 25,
+                  "max_epochs": 100
+            },
+            "expectedOutput": 0.008537,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-19': {
+    id: 'cv-cnn-prob-19',
+    title: "Mixup Convex Linear Data Augmentation",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'mixup_blend',
+    functionSignature: "mixup_blend(img1: list[list[float]], img2: list[list[float]], label1: list[float], label2: list[float], lam: float) -> dict",
+    starterCode: `def mixup_blend(img1: list[list[float]], img2: list[list[float]], label1: list[float], label2: list[float], lam: float) -> dict:\\n    """Blend two images and their target label vectors linearly by factor lambda.\\n\\n    Args:\\n        img1, img2: 2D lists of floats representing grayscale images of shape (H, W).\\n        label1, label2: 1D lists of floats representing one-hot or soft labels.\\n        lam: Mixing coefficient in [0.0, 1.0].\\n\\n    Returns:\\n        dict with keys "image" and "label".\\n    """\\n    pass\\n`,
+    mission: "Regularize deep neural networks by synthesizing virtual training examples via convex combinations of pairs of training examples and labels.",
+    taskDescription: "Implement `mixup_blend(...)`. Compute `mixed_image = lam * img1 + (1 - lam) * img2` elementwise, and `mixed_label = lam * label1 + (1 - lam) * label2`. Round all values to 4 decimal places. Return a dict `{\"image\": mixed_image, \"label\": mixed_label}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "img1 and img2 have identical shape (H, W)",
+      "label1 and label2 have identical length K",
+      "0.0 <= lam <= 1.0"
+],
+    hints: {
+      "small": "For each pixel (i, j): round(lam * img1[i][j] + (1 - lam) * img2[i][j], 4).",
+      "strong": "Apply identical linear interpolation to both the image pixel values and the target vector elements.",
+      "concept": "Mixup encourages models to behave linearly in-between training examples, suppressing undesirable oscillations away from training data."
+},
+    conceptConnections: [
+      {
+            "title": "Mixup Regularization",
+            "route": "/practice/mixup-augmentation",
+            "description": "Vicinal risk minimization through linear interpolation."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Equal 50-50 mixup blend",
+            "input": {
+                  "img1": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "img2": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "label1": [
+                        1.0,
+                        0.0
+                  ],
+                  "label2": [
+                        0.0,
+                        1.0
+                  ],
+                  "lam": 0.5
+            },
+            "expectedOutput": {
+                  "image": [
+                        [
+                              0.5,
+                              0.5
+                        ],
+                        [
+                              0.5,
+                              0.5
+                        ]
+                  ],
+                  "label": [
+                        0.5,
+                        0.5
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Biased mixup lambda 0.8",
+            "input": {
+                  "img1": [
+                        [
+                              10.0,
+                              20.0
+                        ],
+                        [
+                              30.0,
+                              40.0
+                        ]
+                  ],
+                  "img2": [
+                        [
+                              50.0,
+                              60.0
+                        ],
+                        [
+                              70.0,
+                              80.0
+                        ]
+                  ],
+                  "label1": [
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  "label2": [
+                        0.0,
+                        0.0,
+                        1.0
+                  ],
+                  "lam": 0.8
+            },
+            "expectedOutput": {
+                  "image": [
+                        [
+                              18.0,
+                              28.0
+                        ],
+                        [
+                              38.0,
+                              48.0
+                        ]
+                  ],
+                  "label": [
+                        0.8,
+                        0.0,
+                        0.2
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero lambda returns img2 exactly",
+            "input": {
+                  "img1": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "img2": [
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "label1": [
+                        1.0
+                  ],
+                  "label2": [
+                        0.0
+                  ],
+                  "lam": 0.0
+            },
+            "expectedOutput": {
+                  "image": [
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "label": [
+                        0.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 image blend with lambda 0.35",
+            "input": {
+                  "img1": [
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "img2": [
+                        [
+                              5.0,
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              5.0,
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              5.0,
+                              5.0,
+                              5.0
+                        ]
+                  ],
+                  "label1": [
+                        0.6,
+                        0.4
+                  ],
+                  "label2": [
+                        0.1,
+                        0.9
+                  ],
+                  "lam": 0.35
+            },
+            "expectedOutput": {
+                  "image": [
+                        [
+                              3.6,
+                              3.6,
+                              3.6
+                        ],
+                        [
+                              3.6,
+                              3.6,
+                              3.6
+                        ],
+                        [
+                              3.6,
+                              3.6,
+                              3.6
+                        ]
+                  ],
+                  "label": [
+                        0.275,
+                        0.725
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-19': {
+    id: 'dl-nn-prob-19',
+    title: "GELU Activation Function Forward",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'gelu_forward',
+    functionSignature: "gelu_forward(x: list[list[float]], approximate: bool = True) -> list[list[float]]",
+    starterCode: `def gelu_forward(x: list[list[float]], approximate: bool = True) -> list[list[float]]:
+    """Compute Gaussian Error Linear Unit (GELU) activation forward pass.
+
+    Args:
+        x: 2D input matrix of shape (N, D).
+        approximate: Whether to use tanh approximation (True) or exact erf (False).
+
+    Returns:
+        2D matrix of shape (N, D) rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Implement the Gaussian Error Linear Unit (GELU) activation standard in modern Transformer architectures like BERT and GPT.",
+    taskDescription: "Implement `gelu_forward(x, approximate=True)`: if `approximate=True`, compute `0.5 * v * (1 + tanh(sqrt(2/pi) * (v + 0.044715 * v^3)))`. If `approximate=False`, compute `0.5 * v * (1 + erf(v / sqrt(2)))` using `math.erf`. Round all resulting values to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N, D <= 100",
+      "x contains finite floats"
+],
+    hints: {
+      "small": "Python's math module provides math.erf and math.tanh.",
+      "strong": "In approximate mode: inner = math.sqrt(2 / math.pi) * (v + 0.044715 * v**3).",
+      "concept": "GELU weights inputs by their percentile in a standard normal distribution, providing a smooth non-monotonic curve."
+},
+    conceptConnections: [
+      {
+            "title": "Transformer Activations",
+            "route": "/practice/transformer-feedforward",
+            "description": "Non-linearities in Transformer multi-layer perceptron blocks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Approximate GELU standard points",
+            "input": {
+                  "x": [
+                        [
+                              -1.0,
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "approximate": true
+            },
+            "expectedOutput": [
+                  [
+                        -0.1588,
+                        0.0,
+                        0.8412
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Exact erf GELU standard points",
+            "input": {
+                  "x": [
+                        [
+                              -1.0,
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "approximate": false
+            },
+            "expectedOutput": [
+                  [
+                        -0.1587,
+                        0.0,
+                        0.8413
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Large positive and negative activations",
+            "input": {
+                  "x": [
+                        [
+                              -4.0,
+                              4.0
+                        ]
+                  ],
+                  "approximate": true
+            },
+            "expectedOutput": [
+                  [
+                        -0.0001,
+                        3.9999
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Batch of 2 rows exact mode",
+            "input": {
+                  "x": [
+                        [
+                              -0.5,
+                              0.5
+                        ],
+                        [
+                              -2.0,
+                              2.0
+                        ]
+                  ],
+                  "approximate": false
+            },
+            "expectedOutput": [
+                  [
+                        -0.1543,
+                        0.3457
+                  ],
+                  [
+                        -0.0455,
+                        1.9545
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-20': {
+    id: 'cv-cnn-prob-20',
+    title: "Pixel Brightness and Contrast Linear Transform",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'adjust_brightness_contrast',
+    functionSignature: "adjust_brightness_contrast(image: list[list[float]], alpha: float, beta: float, min_val: float = 0.0, max_val: float = 255.0) -> list[list[float]]",
+    starterCode: `def adjust_brightness_contrast(image: list[list[float]], alpha: float, beta: float, min_val: float = 0.0, max_val: float = 255.0) -> list[list[float]]:\\n    """Adjust image brightness and contrast with output clipping.\\n\\n    Args:\\n        image: 2D list of shape (H, W).\\n        alpha: Contrast gain multiplier.\\n        beta: Brightness bias addition.\\n        min_val: Minimum clamp threshold.\\n        max_val: Maximum clamp threshold.\\n\\n    Returns:\\n        2D list of adjusted pixel values rounded to 4 decimals.\\n    """\\n    pass\\n`,
+    mission: "Apply standard photometric jittering by scaling contrast and shifting brightness while enforcing dynamic range clamping.",
+    taskDescription: "Implement `adjust_brightness_contrast(...)`. For each pixel value `p`, compute `p_new = max(min_val, min(max_val, alpha * p + beta))`. Round each transformed pixel value to 4 decimal places and return the 2D grid.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 512",
+      "alpha >= 0.0",
+      "min_val < max_val"
+],
+    hints: {
+      "small": "Compute candidate = alpha * p + beta, then clamp with max(min_val, min(max_val, candidate)).",
+      "strong": "Round each result to 4 decimal places after clamping.",
+      "concept": "Photometric data augmentations teach CNNs invariance to lighting conditions, camera exposure, and ambient illumination changes."
+},
+    conceptConnections: [
+      {
+            "title": "Color Jitter Augmentation",
+            "route": "/practice/color-jitter",
+            "description": "Photometric invariance in vision models."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Simple contrast boost and brightness offset",
+            "input": {
+                  "image": [
+                        [
+                              50.0,
+                              100.0
+                        ],
+                        [
+                              150.0,
+                              200.0
+                        ]
+                  ],
+                  "alpha": 1.2,
+                  "beta": 10.0,
+                  "min_val": 0.0,
+                  "max_val": 255.0
+            },
+            "expectedOutput": [
+                  [
+                        70.0,
+                        130.0
+                  ],
+                  [
+                        190.0,
+                        250.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Clamping at upper bound 255",
+            "input": {
+                  "image": [
+                        [
+                              200.0,
+                              240.0
+                        ],
+                        [
+                              220.0,
+                              250.0
+                        ]
+                  ],
+                  "alpha": 1.5,
+                  "beta": 20.0,
+                  "min_val": 0.0,
+                  "max_val": 255.0
+            },
+            "expectedOutput": [
+                  [
+                        255.0,
+                        255.0
+                  ],
+                  [
+                        255.0,
+                        255.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Clamping at lower bound 0 with negative beta",
+            "input": {
+                  "image": [
+                        [
+                              10.0,
+                              20.0
+                        ],
+                        [
+                              5.0,
+                              30.0
+                        ]
+                  ],
+                  "alpha": 1.0,
+                  "beta": -15.0,
+                  "min_val": 0.0,
+                  "max_val": 255.0
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        5.0
+                  ],
+                  [
+                        0.0,
+                        15.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Normalized 0 to 1 range",
+            "input": {
+                  "image": [
+                        [
+                              0.2,
+                              0.5
+                        ],
+                        [
+                              0.8,
+                              1.0
+                        ]
+                  ],
+                  "alpha": 0.5,
+                  "beta": 0.1,
+                  "min_val": 0.0,
+                  "max_val": 1.0
+            },
+            "expectedOutput": [
+                  [
+                        0.2,
+                        0.35
+                  ],
+                  [
+                        0.5,
+                        0.6
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-20': {
+    id: 'dl-nn-prob-20',
+    title: "Swish / SiLU Activation Forward Pass",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'swish_forward',
+    functionSignature: "swish_forward(x: list[list[float]], beta: float = 1.0) -> list[list[float]]",
+    starterCode: `def swish_forward(x: list[list[float]], beta: float = 1.0) -> list[list[float]]:
+    """Compute the Swish (SiLU) activation function x * sigmoid(beta * x).
+
+    Args:
+        x: 2D matrix of shape (N, D).
+        beta: Scaling coefficient (default: 1.0).
+
+    Returns:
+        2D matrix of shape (N, D) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Compute the smooth, non-monotonic Swish/SiLU activation function popularized by Ramachandran et al. and used extensively in EfficientNet and LLaMA.",
+    taskDescription: "Implement `swish_forward(x, beta=1.0)`: for each scalar `v` in matrix `x`, compute `v * (1 / (1 + exp(-beta * v)))`. Round each resulting value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N, D <= 100",
+      "beta > 0.0"
+],
+    hints: {
+      "small": "Compute sigmoid(beta * v) = 1.0 / (1.0 + math.exp(-beta * v)).",
+      "strong": "Multiply the input v by its sigmoid value.",
+      "concept": "Swish is smooth and non-monotonic, dipping below zero to ~ -0.278 for small negative inputs before approaching zero."
+},
+    conceptConnections: [
+      {
+            "title": "Modern Activation Designs",
+            "route": "/practice/modern-activations",
+            "description": "SiLU, Swish, and GeGLU across modern networks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard SiLU with beta=1.0",
+            "input": {
+                  "x": [
+                        [
+                              -2.0,
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "beta": 1.0
+            },
+            "expectedOutput": [
+                  [
+                        -0.2384,
+                        0.0,
+                        1.7616
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Swish with custom beta=0.5",
+            "input": {
+                  "x": [
+                        [
+                              -4.0,
+                              4.0
+                        ]
+                  ],
+                  "beta": 0.5
+            },
+            "expectedOutput": [
+                  [
+                        -0.4768,
+                        3.5232
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Negative dip region",
+            "input": {
+                  "x": [
+                        [
+                              -1.28
+                        ]
+                  ],
+                  "beta": 1.0
+            },
+            "expectedOutput": [
+                  [
+                        -0.2785
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Batch of 2 rows",
+            "input": {
+                  "x": [
+                        [
+                              -1.0,
+                              1.0
+                        ],
+                        [
+                              -3.0,
+                              3.0
+                        ]
+                  ],
+                  "beta": 2.0
+            },
+            "expectedOutput": [
+                  [
+                        -0.1192,
+                        0.8808
+                  ],
+                  [
+                        -0.0074,
+                        2.9926
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-21': {
+    id: 'cv-cnn-prob-21',
+    title: "Bilinear Interpolation at Continuous Coordinates",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'bilinear_interpolate',
+    functionSignature: "bilinear_interpolate(image: list[list[float]], y: float, x: float) -> float",
+    starterCode: `def bilinear_interpolate(image: list[list[float]], y: float, x: float) -> float:\\n    """Sample image intensity at continuous coordinates (y, x) using bilinear interpolation.\\n\\n    Args:\\n        image: 2D grid of floats of shape (H, W).\\n        y: Floating-point vertical coordinate in [0, H - 1].\\n        x: Floating-point horizontal coordinate in [0, W - 1].\\n\\n    Returns:\\n        Interpolated float value rounded to 4 decimals.\\n    """\\n    pass\\n`,
+    mission: "Sample continuous sub-pixel coordinates for spatial transformer networks and RoI Align layers.",
+    taskDescription: "Implement `bilinear_interpolate(...)`. Given floating coordinates `(y, x)`, find corner indices `y0 = floor(y)`, `y1 = min(H - 1, y0 + 1)`, `x0 = floor(x)`, `x1 = min(W - 1, x0 + 1)`. Let `dy = y - y0` and `dx = x - x0`. Interpolate: `val = (1 - dy) * (1 - dx) * I[y0][x0] + (1 - dy) * dx * I[y0][x1] + dy * (1 - dx) * I[y1][x0] + dy * dx * I[y1][x1]`. Return `round(val, 4)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= H, W <= 512",
+      "0.0 <= y <= H - 1",
+      "0.0 <= x <= W - 1"
+],
+    hints: {
+      "small": "Find the 4 surrounding pixels (y0, x0), (y0, x1), (y1, x0), (y1, x1).",
+      "strong": "Weight each pixel inversely by its Manhattan distance along each axis.",
+      "concept": "RoI Align eliminates quantization errors in RoI Pooling by evaluating exact continuous sample locations via bilinear interpolation."
+},
+    conceptConnections: [
+      {
+            "title": "RoI Align Sampling",
+            "route": "/practice/roi-align",
+            "description": "Continuous sampling in Mask R-CNN."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Exact integer coordinate point",
+            "input": {
+                  "image": [
+                        [
+                              10.0,
+                              20.0
+                        ],
+                        [
+                              30.0,
+                              40.0
+                        ]
+                  ],
+                  "y": 0.0,
+                  "x": 0.0
+            },
+            "expectedOutput": 10.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Center midpoint interpolation",
+            "input": {
+                  "image": [
+                        [
+                              10.0,
+                              20.0
+                        ],
+                        [
+                              30.0,
+                              40.0
+                        ]
+                  ],
+                  "y": 0.5,
+                  "x": 0.5
+            },
+            "expectedOutput": 25.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Fractional coordinate in 3x3 grid",
+            "input": {
+                  "image": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "y": 1.25,
+                  "x": 0.75
+            },
+            "expectedOutput": 5.5,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Near boundary right-bottom edge",
+            "input": {
+                  "image": [
+                        [
+                              0.0,
+                              10.0
+                        ],
+                        [
+                              20.0,
+                              30.0
+                        ]
+                  ],
+                  "y": 0.9,
+                  "x": 0.9
+            },
+            "expectedOutput": 27.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-21': {
+    id: 'dl-nn-prob-21',
+    title: "Binary Focal Loss Calculation",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'focal_loss_binary',
+    functionSignature: "focal_loss_binary(y_pred: list[float], y_true: list[float], alpha: float = 0.25, gamma: float = 2.0, eps: float = 1e-7) -> float",
+    starterCode: `def focal_loss_binary(y_pred: list[float], y_true: list[float], alpha: float = 0.25, gamma: float = 2.0, eps: float = 1e-7) -> float:
+    """Compute Binary Focal Loss to address extreme class imbalance.
+
+    Args:
+        y_pred: Predicted probabilities in [0.0, 1.0].
+        y_true: True binary targets (0.0 or 1.0).
+        alpha: Weighting factor for positive class (1 - alpha for negative).
+        gamma: Focusing parameter (gamma >= 0).
+        eps: Small epsilon for clipping.
+
+    Returns:
+        Mean focal loss float rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Down-weight easy examples and focus learning on hard negatives using Lin et al.'s Focal Loss.",
+    taskDescription: "Implement `focal_loss_binary(y_pred, y_true, alpha=0.25, gamma=2.0, eps=1e-7)`: for each sample, define `p_t = p` if `y == 1` else `1 - p`, and `alpha_t = alpha` if `y == 1` else `1 - alpha`. Clamp `p_t` into `[eps, 1.0 - eps]`. The focal loss is `FL(p_t) = -alpha_t * (1 - p_t)^gamma * log(p_t)`. Return the mean across `N` samples rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(y_pred) == len(y_true) >= 1",
+      "0.0 <= y_pred[i] <= 1.0",
+      "y_true[i] in {0.0, 1.0}",
+      "gamma >= 0.0"
+],
+    hints: {
+      "small": "For y=1, p_t = p and alpha_t = alpha. For y=0, p_t = 1 - p and alpha_t = 1 - alpha.",
+      "strong": "loss_i = -alpha_t * ((1 - p_t)**gamma) * math.log(p_t).",
+      "concept": "When gamma `>` 0, the modulating factor (1 - p_t)^gamma suppresses the loss of well-classified examples (where p_t `>` 0.5)."
+},
+    conceptConnections: [
+      {
+            "title": "Object Detection Losses",
+            "route": "/practice/object-detection-loss",
+            "description": "Focal loss and class imbalance in single-stage detectors."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Easy positive and hard positive",
+            "input": {
+                  "y_pred": [
+                        0.95,
+                        0.3
+                  ],
+                  "y_true": [
+                        1.0,
+                        1.0
+                  ],
+                  "alpha": 0.25,
+                  "gamma": 2.0
+            },
+            "expectedOutput": 0.0738,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Easy negative and hard negative",
+            "input": {
+                  "y_pred": [
+                        0.05,
+                        0.8
+                  ],
+                  "y_true": [
+                        0.0,
+                        0.0
+                  ],
+                  "alpha": 0.25,
+                  "gamma": 2.0
+            },
+            "expectedOutput": 0.3863,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "gamma=0 equivalent to weighted BCE",
+            "input": {
+                  "y_pred": [
+                        0.7,
+                        0.2
+                  ],
+                  "y_true": [
+                        1.0,
+                        0.0
+                  ],
+                  "alpha": 0.5,
+                  "gamma": 0.0
+            },
+            "expectedOutput": 0.145,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Balanced batch",
+            "input": {
+                  "y_pred": [
+                        0.6,
+                        0.4,
+                        0.9,
+                        0.1
+                  ],
+                  "y_true": [
+                        1.0,
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  "alpha": 0.25,
+                  "gamma": 2.0
+            },
+            "expectedOutput": 0.3756,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-22': {
+    id: 'cv-cnn-prob-22',
+    title: "Squeeze-and-Excitation Channel Attention Block",
+    difficulty: 'hard',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '25 min',
+    functionName: 'squeeze_and_excitation',
+    functionSignature: "squeeze_and_excitation(features: list[list[list[float]]], w1: list[list[float]], w2: list[list[float]]) -> list[list[list[float]]]",
+    starterCode: `def squeeze_and_excitation(features: list[list[list[float]]], w1: list[list[float]], w2: list[list[float]]) -> list[list[list[float]]]:\\n    """Apply Squeeze-and-Excitation channel attention recalibration.\\n\\n    Args:\\n        features: 3D list of shape (C, H, W).\\n        w1: Reduction weights of shape (R, C).\\n        w2: Expansion weights of shape (C, R).\\n\\n    Returns:\\n        Recalibrated 3D features of shape (C, H, W) rounded to 4 decimals.\\n    """\\n    pass\\n`,
+    mission: "Dynamically recalibrate channel-wise feature responses by explicitly modeling interdependencies between channels.",
+    taskDescription: "Implement `squeeze_and_excitation(...)`:\\n1. Squeeze: Global average pool each channel across `H x W` to obtain vector `z` of length `C`.\\n2. Excitation stage 1: Compute `s1 = relu(w1 @ z)` where `s1[r] = max(0.0, sum(w1[r][c] * z[c]))`.\\n3. Excitation stage 2: Compute `s2 = sigmoid(w2 @ s1)` where `s2[c] = 1.0 / (1.0 + exp(-sum(w2[c][r] * s1[r])))`.\\n4. Scale: Multiply each channel `features[c]` by scalar `s2[c]`. Round all elements to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= C <= 64",
+      "1 <= R <= C",
+      "1 <= H, W <= 64"
+],
+    hints: {
+      "small": "Global average pooling computes the mean value of each 2D channel slice.",
+      "strong": "Use max(0.0, x) for ReLU and 1.0 / (1.0 + math.exp(-x)) for Sigmoid.",
+      "concept": "SENets won the ImageNet 2017 challenge by demonstrating that gating channel feature responses improves representational power with minimal parameter overhead."
+},
+    conceptConnections: [
+      {
+            "title": "SENet Architecture",
+            "route": "/practice/senet-attention",
+            "description": "Channel attention mechanisms in deep vision backbones."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2 channels 2x2 spatial reduction 1",
+            "input": {
+                  "features": [
+                        [
+                              [
+                                    1.0,
+                                    2.0
+                              ],
+                              [
+                                    3.0,
+                                    4.0
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0,
+                                    2.0
+                              ],
+                              [
+                                    2.0,
+                                    2.0
+                              ]
+                        ]
+                  ],
+                  "w1": [
+                        [
+                              0.5,
+                              0.5
+                        ]
+                  ],
+                  "w2": [
+                        [
+                              0.5
+                        ],
+                        [
+                              0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              0.7549,
+                              1.5098
+                        ],
+                        [
+                              2.2647,
+                              3.0197
+                        ]
+                  ],
+                  [
+                        [
+                              1.5098,
+                              1.5098
+                        ],
+                        [
+                              1.5098,
+                              1.5098
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Identity weights with 1 channel",
+            "input": {
+                  "features": [
+                        [
+                              [
+                                    4.0
+                              ]
+                        ]
+                  ],
+                  "w1": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "w2": [
+                        [
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              2.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "3 channels 1x1 bottleneck dim 1",
+            "input": {
+                  "features": [
+                        [
+                              [
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0
+                              ]
+                        ],
+                        [
+                              [
+                                    3.0
+                              ]
+                        ]
+                  ],
+                  "w1": [
+                        [
+                              0.2,
+                              0.3,
+                              0.5
+                        ]
+                  ],
+                  "w2": [
+                        [
+                              0.1
+                        ],
+                        [
+                              0.2
+                        ],
+                        [
+                              0.3
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              0.5572
+                        ]
+                  ],
+                  [
+                        [
+                              1.226
+                        ]
+                  ],
+                  [
+                        [
+                              1.9979
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "All zero feature map",
+            "input": {
+                  "features": [
+                        [
+                              [
+                                    0.0,
+                                    0.0
+                              ],
+                              [
+                                    0.0,
+                                    0.0
+                              ]
+                        ]
+                  ],
+                  "w1": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "w2": [
+                        [
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-22': {
+    id: 'dl-nn-prob-22',
+    title: "Residual Block Forward Pass",
+    difficulty: 'medium',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '20 min',
+    functionName: 'residual_block_forward',
+    functionSignature: "residual_block_forward(x: list[list[float]], w1: list[list[float]], b1: list[float], w2: list[list[float]], b2: list[float]) -> list[list[float]]",
+    starterCode: `def residual_block_forward(x: list[list[float]], w1: list[list[float]], b1: list[float], w2: list[list[float]], b2: list[float]) -> list[list[float]]:
+    """Execute forward pass of a basic skip-connection residual block.
+
+    Args:
+        x: 2D input batch of shape (N, D).
+        w1: First layer weight matrix of shape (D, D).
+        b1: First layer bias vector of length D.
+        w2: Second layer weight matrix of shape (D, D).
+        b2: Second layer bias vector of length D.
+
+    Returns:
+        Output activations matrix of shape (N, D) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Propagate signals through a skip-connection residual block: F(x) + x with non-linear activations.",
+    taskDescription: "Implement `residual_block_forward(x, w1, b1, w2, b2)`: compute `h1 = ReLU(x @ w1 + b1)`, then linear transformation `h2 = h1 @ w2 + b2`. Add the identity skip connection: `out = ReLU(x + h2)`. Round each float in the output matrix `(N, D)` to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "N >= 1",
+      "D >= 1",
+      "w1 and w2 are square matrices of shape (D, D)",
+      "b1 and b2 have length D"
+],
+    hints: {
+      "small": "Compute h1 = max(0, x @ w1 + b1) element-wise.",
+      "strong": "h2 = h1 @ w2 + b2 is NOT passed through ReLU before addition; add x directly, then apply the final ReLU.",
+      "concept": "Residual connections allow gradients to flow directly through identity shortcuts, enabling successful training of networks with hundreds of layers."
+},
+    conceptConnections: [
+      {
+            "title": "ResNet Architecture",
+            "route": "/practice/resnet-blocks",
+            "description": "Skip connections and residual learning theory."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2D identity residual block",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "w1": [
+                        [
+                              0.5,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.5
+                        ]
+                  ],
+                  "b1": [
+                        0.0,
+                        0.0
+                  ],
+                  "w2": [
+                        [
+                              0.5,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.5
+                        ]
+                  ],
+                  "b2": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.25,
+                        2.5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Residual block with negative suppression",
+            "input": {
+                  "x": [
+                        [
+                              -1.0,
+                              0.5
+                        ]
+                  ],
+                  "w1": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "b1": [
+                        -0.5,
+                        -0.5
+                  ],
+                  "w2": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "b2": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Batch of 2 samples",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              -1.0
+                        ]
+                  ],
+                  "w1": [
+                        [
+                              0.2,
+                              -0.1
+                        ],
+                        [
+                              0.4,
+                              0.3
+                        ]
+                  ],
+                  "b1": [
+                        0.1,
+                        0.1
+                  ],
+                  "w2": [
+                        [
+                              0.5,
+                              0.2
+                        ],
+                        [
+                              -0.3,
+                              0.4
+                        ]
+                  ],
+                  "b2": [
+                        0.0,
+                        -0.1
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.13,
+                        1.16
+                  ],
+                  [
+                        2.05,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "3-dimensional feature block",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              -2.0,
+                              3.0
+                        ]
+                  ],
+                  "w1": [
+                        [
+                              0.1,
+                              0.2,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.1,
+                              0.2
+                        ],
+                        [
+                              0.2,
+                              0.0,
+                              0.1
+                        ]
+                  ],
+                  "b1": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "w2": [
+                        [
+                              0.2,
+                              0.0,
+                              0.1
+                        ],
+                        [
+                              0.1,
+                              0.2,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.1,
+                              0.2
+                        ]
+                  ],
+                  "b2": [
+                        0.1,
+                        0.1,
+                        0.1
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.24,
+                        0.0,
+                        3.17
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-23': {
+    id: 'cv-cnn-prob-23',
+    title: "Conv2D Backward Pass Gradient w.r.t. Kernel Weights",
+    difficulty: 'hard',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '25 min',
+    functionName: 'conv2d_backward_weights',
+    functionSignature: "conv2d_backward_weights(input_map: list[list[float]], grad_output: list[list[float]], kernel_size: int = 3, stride: int = 1) -> list[list[float]]",
+    starterCode: `def conv2d_backward_weights(input_map: list[list[float]], grad_output: list[list[float]], kernel_size: int = 3, stride: int = 1) -> list[list[float]]:\\n    """Compute gradient of loss w.r.t. convolution kernel weights.\\n\\n    Args:\\n        input_map: 2D list of shape (H_in, W_in).\\n        grad_output: 2D list of incoming gradients of shape (H_out, W_out).\\n        kernel_size: Spatial size of kernel (K x K).\\n        stride: Stride used in forward convolution.\\n\\n    Returns:\\n        2D list of kernel weight gradients of shape (kernel_size, kernel_size).\\n    """\\n    pass\\n`,
+    mission: "Derive and compute analytical gradients for convolutional filter weights during reverse-mode automatic differentiation.",
+    taskDescription: "Implement `conv2d_backward_weights(...)`. For each kernel weight position `(ki, kj)` in `[0..kernel_size-1] x [0..kernel_size-1]`: `grad_W[ki][kj] = sum_{i=0..H_out-1, j=0..W_out-1} grad_output[i][j] * input_map[i * stride + ki][j * stride + kj]`. Round each value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= kernel_size <= 7",
+      "stride >= 1",
+      "Dimensions match valid forward convolution without padding"
+],
+    hints: {
+      "small": "Every output gradient grad_output[i][j] acts as a scalar weight on the corresponding input receptive patch.",
+      "strong": "Iterate over ki and kj, then accumulate product of grad_output[i][j] and input_map[i*stride + ki][j*stride + kj].",
+      "concept": "Weight gradient computation is structurally equivalent to cross-correlating input activations with upstream gradients."
+},
+    conceptConnections: [
+      {
+            "title": "Convolution Backpropagation",
+            "route": "/practice/convolution-backward",
+            "description": "Manual backward pass mechanics in CNN layers."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3x3 input 2x2 kernel stride 1",
+            "input": {
+                  "input_map": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "grad_output": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "kernel_size": 2,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        12.0,
+                        16.0
+                  ],
+                  [
+                        24.0,
+                        28.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Stride 2 gradient accumulation",
+            "input": {
+                  "input_map": [
+                        [
+                              1.0,
+                              0.0,
+                              2.0
+                        ],
+                        [
+                              0.0,
+                              3.0,
+                              0.0
+                        ],
+                        [
+                              4.0,
+                              0.0,
+                              5.0
+                        ]
+                  ],
+                  "grad_output": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              0.5,
+                              3.0
+                        ]
+                  ],
+                  "kernel_size": 1,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        21.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Unit grad output 1x1 filter",
+            "input": {
+                  "input_map": [
+                        [
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0
+                        ]
+                  ],
+                  "grad_output": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "kernel_size": 1,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        40.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Zero grad output yields zero weights",
+            "input": {
+                  "input_map": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "grad_output": [
+                        [
+                              0.0
+                        ]
+                  ],
+                  "kernel_size": 2,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-23': {
+    id: 'dl-nn-prob-23',
+    title: "Two-Layer MLP Training Step",
+    difficulty: 'hard',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '25 min',
+    functionName: 'two_layer_mlp_train_step',
+    functionSignature: "two_layer_mlp_train_step(x: list[list[float]], y: list[int], w1: list[list[float]], b1: list[float], w2: list[list[float]], b2: list[float], lr: float = 0.1) -> dict",
+    starterCode: `def two_layer_mlp_train_step(x: list[list[float]], y: list[int], w1: list[list[float]], b1: list[float], w2: list[list[float]], b2: list[float], lr: float = 0.1) -> dict:
+    """Execute complete forward pass, loss computation, backpropagation, and SGD update for a 2-layer MLP.
+
+    Args:
+        x: Input matrix of shape (N, D_in).
+        y: Ground truth integer class indices of length N.
+        w1: First layer weights of shape (D_in, H).
+        b1: First layer bias of length H.
+        w2: Second layer weights of shape (H, C).
+        b2: Second layer bias of length C.
+        lr: Learning rate.
+
+    Returns:
+        Dictionary with 'loss' (float) and updated 'w1', 'b1', 'w2', 'b2', all rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Execute an end-to-end training iteration: forward pass with ReLU, Softmax cross-entropy, backpropagation, and gradient updates.",
+    taskDescription: "Implement `two_layer_mlp_train_step(...)`: for batch `x` and targets `y`, compute hidden activations `a1 = ReLU(x @ w1 + b1)`. Compute logits `z2 = a1 @ w2 + b2` and softmax probabilities `p`. Compute cross-entropy loss `-(1/N) sum(log(p_i[y_i]))`. Backpropagate gradients: `dlogits = (p - one_hot(y)) / N`, `dw2 = a1.T @ dlogits`, `db2 = sum(dlogits)`. Backpropagate through ReLU: `da1 = dlogits @ w2.T`, `dz1 = da1 * (z1 > 0)`, `dw1 = x.T @ dz1`, `db1 = sum(dz1)`. Update parameters using SGD: `param_new = param - lr * dparam`. Return `{'loss': ..., 'w1': ..., 'b1': ..., 'w2': ..., 'b2': ...}` with all floats rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 50",
+      "1 <= D_in, H, C <= 32",
+      "0 <= y[i] < C",
+      "lr > 0.0"
+],
+    hints: {
+      "small": "Use stable softmax (subtract row max) when computing probabilities.",
+      "strong": "The gradient of cross-entropy with softmax w.r.t logits is cleanly (p - 1_y) / N.",
+      "concept": "Combining softmax and cross-entropy creates an elegant cancellation in the backward pass, yielding stable linear gradients."
+},
+    conceptConnections: [
+      {
+            "title": "End-to-End Backprop",
+            "route": "/practice/mlp-from-scratch",
+            "description": "Full neural network implementation from scratch."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single sample 2-input 2-hidden 2-class",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "y": [
+                        0
+                  ],
+                  "w1": [
+                        [
+                              0.5,
+                              -0.5
+                        ],
+                        [
+                              0.2,
+                              0.3
+                        ]
+                  ],
+                  "b1": [
+                        0.1,
+                        0.0
+                  ],
+                  "w2": [
+                        [
+                              0.4,
+                              -0.4
+                        ],
+                        [
+                              0.1,
+                              0.2
+                        ]
+                  ],
+                  "b2": [
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.1
+            },
+            "expectedOutput": {
+                  "loss": 0.5459,
+                  "w1": [
+                        [
+                              0.5337,
+                              -0.5
+                        ],
+                        [
+                              0.1663,
+                              0.3
+                        ]
+                  ],
+                  "b1": [
+                        0.1337,
+                        0.0
+                  ],
+                  "w2": [
+                        [
+                              0.4168,
+                              -0.4168
+                        ],
+                        [
+                              0.1,
+                              0.2
+                        ]
+                  ],
+                  "b2": [
+                        0.0421,
+                        -0.0421
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Batch of 2 samples XOR-like",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "y": [
+                        1,
+                        0
+                  ],
+                  "w1": [
+                        [
+                              0.1,
+                              0.5
+                        ],
+                        [
+                              -0.2,
+                              0.4
+                        ]
+                  ],
+                  "b1": [
+                        0.0,
+                        0.1
+                  ],
+                  "w2": [
+                        [
+                              0.5,
+                              -0.5
+                        ],
+                        [
+                              -0.2,
+                              0.3
+                        ]
+                  ],
+                  "b2": [
+                        0.1,
+                        -0.1
+                  ],
+                  "lr": 0.05
+            },
+            "expectedOutput": {
+                  "loss": 0.6808,
+                  "w1": [
+                        [
+                              0.1125,
+                              0.4938
+                        ],
+                        [
+                              -0.2,
+                              0.4061
+                        ]
+                  ],
+                  "b1": [
+                        0.0125,
+                        0.0998
+                  ],
+                  "w2": [
+                        [
+                              0.5012,
+                              -0.5012
+                        ],
+                        [
+                              -0.1986,
+                              0.2986
+                        ]
+                  ],
+                  "b2": [
+                        0.1003,
+                        -0.1003
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "3-class classification step",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "y": [
+                        2
+                  ],
+                  "w1": [
+                        [
+                              0.3,
+                              -0.2
+                        ],
+                        [
+                              0.1,
+                              0.4
+                        ]
+                  ],
+                  "b1": [
+                        0.0,
+                        0.0
+                  ],
+                  "w2": [
+                        [
+                              0.1,
+                              0.2,
+                              -0.3
+                        ],
+                        [
+                              0.2,
+                              -0.1,
+                              0.4
+                        ]
+                  ],
+                  "b2": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.2
+            },
+            "expectedOutput": {
+                  "loss": 1.1101,
+                  "w1": [
+                        [
+                              0.2401,
+                              -0.1544
+                        ],
+                        [
+                              -0.0198,
+                              0.4913
+                        ]
+                  ],
+                  "b1": [
+                        -0.0599,
+                        0.0456
+                  ],
+                  "w2": [
+                        [
+                              0.0643,
+                              0.1687,
+                              -0.233
+                        ],
+                        [
+                              0.1572,
+                              -0.1376,
+                              0.4805
+                        ]
+                  ],
+                  "b2": [
+                        -0.0714,
+                        -0.0627,
+                        0.1341
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Batch of 3 samples with higher learning rate",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "y": [
+                        0,
+                        1,
+                        1
+                  ],
+                  "w1": [
+                        [
+                              0.2,
+                              -0.1
+                        ],
+                        [
+                              0.3,
+                              0.1
+                        ]
+                  ],
+                  "b1": [
+                        0.1,
+                        -0.1
+                  ],
+                  "w2": [
+                        [
+                              0.3,
+                              -0.3
+                        ],
+                        [
+                              0.1,
+                              0.2
+                        ]
+                  ],
+                  "b2": [
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.1
+            },
+            "expectedOutput": {
+                  "loss": 0.7723,
+                  "w1": [
+                        [
+                              0.1973,
+                              -0.1
+                        ],
+                        [
+                              0.277,
+                              0.1
+                        ]
+                  ],
+                  "b1": [
+                        0.0861,
+                        -0.1
+                  ],
+                  "w2": [
+                        [
+                              0.2853,
+                              -0.2853
+                        ],
+                        [
+                              0.1,
+                              0.2
+                        ]
+                  ],
+                  "b2": [
+                        -0.0231,
+                        0.0231
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-24': {
+    id: 'cv-cnn-prob-24',
+    title: "2D Max Pooling Backward Pass Gradient Router",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'max_pool2d_backward',
+    functionSignature: "max_pool2d_backward(input_map: list[list[float]], grad_output: list[list[float]], pool_size: int = 2, stride: int = 2) -> list[list[float]]",
+    starterCode: `def max_pool2d_backward(input_map: list[list[float]], grad_output: list[list[float]], pool_size: int = 2, stride: int = 2) -> list[list[float]]:\\n    """Route upstream gradients back to the argmax positions of a max pooling layer.\\n\\n    Args:\\n        input_map: 2D list of shape (H_in, W_in).\\n        grad_output: 2D list of upstream gradients of shape (H_out, W_out).\\n        pool_size: Pooling window spatial dimension.\\n        stride: Pooling stride.\\n\\n    Returns:\\n        2D list of shape (H_in, W_in) with routed gradients rounded to 4 decimals.\\n    """\\n    pass\\n`,
+    mission: "Route backpropagated errors solely to the active argmax elements that contributed to downstream pooling activations.",
+    taskDescription: "Implement `max_pool2d_backward(...)`. Initialize `grad_input` to zeros with shape `(H_in, W_in)`. For each pooling window `(i, j)`, find the index `(max_r, max_c)` corresponding to the maximum value in `input_map[i*stride : i*stride+pool_size, j*stride : j*stride+pool_size]`. (If multiple elements tie, pick the first in row-major order). Add `grad_output[i][j]` to `grad_input[max_r][max_c]`. Round all elements in `grad_input` to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= H_in, W_in <= 128",
+      "pool_size >= 1",
+      "stride >= 1"
+],
+    hints: {
+      "small": "In max pooling backprop, all non-maximal elements receive 0 gradient.",
+      "strong": "Accumulate with += because overlapping pooling windows can route gradient to the same input pixel multiple times.",
+      "concept": "Max pooling acts as a dynamic routing switch during backprop, routing 100% of upstream gradient to the forward argmax coordinate."
+},
+    conceptConnections: [
+      {
+            "title": "Max Pooling Derivative",
+            "route": "/practice/max-pooling-derivative",
+            "description": "Subgradient selection and gradient routing in pooling operations."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "4x4 input 2x2 max pool stride 2",
+            "input": {
+                  "input_map": [
+                        [
+                              1.0,
+                              3.0,
+                              2.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              2.0,
+                              8.0,
+                              6.0
+                        ],
+                        [
+                              3.0,
+                              7.0,
+                              1.0,
+                              5.0
+                        ],
+                        [
+                              2.0,
+                              4.0,
+                              9.0,
+                              0.0
+                        ]
+                  ],
+                  "grad_output": [
+                        [
+                              1.5,
+                              2.5
+                        ],
+                        [
+                              3.5,
+                              4.5
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        1.5,
+                        0.0,
+                        2.5,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        3.5,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        4.5,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "2x2 input 2x2 pool stride 2 single grad",
+            "input": {
+                  "input_map": [
+                        [
+                              10.0,
+                              20.0
+                        ],
+                        [
+                              15.0,
+                              5.0
+                        ]
+                  ],
+                  "grad_output": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        1.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Overlapping pool stride 1 routing",
+            "input": {
+                  "input_map": [
+                        [
+                              1.0,
+                              5.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0,
+                              1.0
+                        ]
+                  ],
+                  "grad_output": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        3.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Negative values tracking maximum correctly",
+            "input": {
+                  "input_map": [
+                        [
+                              -5.0,
+                              -2.0
+                        ],
+                        [
+                              -10.0,
+                              -8.0
+                        ]
+                  ],
+                  "grad_output": [
+                        [
+                              3.0
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        3.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-24': {
+    id: 'dl-nn-prob-24',
+    title: "Layer Normalization Backward Pass",
+    difficulty: 'hard',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '25 min',
+    functionName: 'layer_norm_backward',
+    functionSignature: "layer_norm_backward(dout: list[list[float]], x: list[list[float]], gamma: list[float], eps: float = 1e-5) -> dict",
+    starterCode: `def layer_norm_backward(dout: list[list[float]], x: list[list[float]], gamma: list[float], eps: float = 1e-5) -> dict:
+    """Compute analytical backward pass for Layer Normalization w.r.t input x, gamma, and beta.
+
+    Args:
+        dout: Upstream gradient matrix of shape (N, D).
+        x: Forward input cache matrix of shape (N, D).
+        gamma: Scaling parameter vector of length D.
+        eps: Stability epsilon.
+
+    Returns:
+        Dictionary with 'dx': (N, D), 'dgamma': (D,), 'dbeta': (D,), all rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Compute exact analytical gradients for Layer Normalization without numerical differentiation.",
+    taskDescription: "Implement `layer_norm_backward(dout, x, gamma, eps=1e-5)`: given upstream gradient `dout` and input `x`, compute `dbeta = sum_i(dout_i)` and `dgamma = sum_i(dout_i * x_hat_i)`. For each sample `i`, compute the gradient w.r.t input `x_i` as `dx_ij = (1 / (D * sqrt(var + eps))) * (D * dxhat_j - sum(dxhat) - x_hat_j * sum(dxhat * x_hat))`, where `dxhat_j = dout_ij * gamma_j`. Return `{'dx': dx, 'dgamma': dgamma, 'dbeta': dbeta}` rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 50",
+      "2 <= D <= 128",
+      "len(gamma) == D"
+],
+    hints: {
+      "small": "First compute x_hat for each row as in the forward pass.",
+      "strong": "dgamma[j] accumulates dout[i][j] * x_hat[j] across all batch samples i.",
+      "concept": "The LayerNorm backward gradient accounts for how changes in x affect both the normalized values and the row's sample mean and variance."
+},
+    conceptConnections: [
+      {
+            "title": "Normalization Gradients",
+            "route": "/practice/norm-backward",
+            "description": "Mathematical derivation of LayerNorm and BatchNorm backward passes."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single sample 2D features",
+            "input": {
+                  "dout": [
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "x": [
+                        [
+                              2.0,
+                              4.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": {
+                  "dx": [
+                        [
+                              0.0,
+                              -0.0
+                        ]
+                  ],
+                  "dgamma": [
+                        -1.0,
+                        -1.0
+                  ],
+                  "dbeta": [
+                        1.0,
+                        -1.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Scaled gamma vector",
+            "input": {
+                  "dout": [
+                        [
+                              0.5,
+                              0.5
+                        ]
+                  ],
+                  "x": [
+                        [
+                              1.0,
+                              3.0
+                        ]
+                  ],
+                  "gamma": [
+                        2.0,
+                        0.5
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": {
+                  "dx": [
+                        [
+                              0.0,
+                              -0.0
+                        ]
+                  ],
+                  "dgamma": [
+                        -0.5,
+                        0.5
+                  ],
+                  "dbeta": [
+                        0.5,
+                        0.5
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Batch of 2 samples",
+            "input": {
+                  "dout": [
+                        [
+                              1.0,
+                              0.0,
+                              -1.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "x": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              10.0,
+                              20.0,
+                              30.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": {
+                  "dx": [
+                        [
+                              0.0,
+                              0.0,
+                              -0.0
+                        ],
+                        [
+                              -0.0408,
+                              0.0816,
+                              -0.0408
+                        ]
+                  ],
+                  "dgamma": [
+                        -1.2247,
+                        0.0,
+                        -1.2247
+                  ],
+                  "dbeta": [
+                        1.0,
+                        1.0,
+                        -1.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Non-trivial gamma with batch",
+            "input": {
+                  "dout": [
+                        [
+                              0.2,
+                              -0.4
+                        ],
+                        [
+                              0.5,
+                              -0.1
+                        ]
+                  ],
+                  "x": [
+                        [
+                              -1.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              0.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.5,
+                        0.8
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": {
+                  "dx": [
+                        [
+                              0.0,
+                              -0.0
+                        ],
+                        [
+                              0.0,
+                              -0.0
+                        ]
+                  ],
+                  "dgamma": [
+                        0.3,
+                        -0.3
+                  ],
+                  "dbeta": [
+                        0.7,
+                        -0.5
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-25': {
+    id: 'cv-cnn-prob-25',
+    title: "Focal Loss for Dense Object Detection Imbalance",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'focal_loss',
+    functionSignature: "focal_loss(predictions: list[float], targets: list[int], alpha: float = 0.25, gamma: float = 2.0, eps: float = 1e-7) -> float",
+    starterCode: `def focal_loss(predictions: list[float], targets: list[int], alpha: float = 0.25, gamma: float = 2.0, eps: float = 1e-7) -> float:\\n    """Compute mean Focal Loss over predicted foreground probabilities.\\n\\n    Args:\\n        predictions: Predicted probabilities p in [0, 1].\\n        targets: Binary class ground truth labels y in {0, 1}.\\n        alpha: Weighting factor for positive class.\\n        gamma: Focusing parameter for hard examples.\\n        eps: Small epsilon for numerical clipping.\\n\\n    Returns:\\n        Mean focal loss as a float rounded to 4 decimals.\\n    """\\n    pass\\n`,
+    mission: "Resolve extreme foreground-background class imbalance in dense one-stage object detectors by dynamically scaling cross-entropy loss.",
+    taskDescription: "Implement `focal_loss(...)`. Clip predictions to `[eps, 1 - eps]`. For each sample `i`: let `p_t = p` if `y == 1` else `1 - p`; let `alpha_t = alpha` if `y == 1` else `1 - alpha`. Compute `loss_i = -alpha_t * ((1 - p_t) ** gamma) * ln(p_t)`. Return the mean across all samples rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(predictions) == len(targets) <= 10000",
+      "0.0 <= alpha <= 1.0",
+      "gamma >= 0.0"
+],
+    hints: {
+      "small": "Clip p using max(eps, min(1.0 - eps, p)).",
+      "strong": "When gamma `>` 0, easy examples with p_t close to 1 receive a modulation factor (1 - p_t)^gamma close to 0.",
+      "concept": "Focal Loss downweights easy background examples, allowing dense detectors like RetinaNet to match or exceed two-stage accuracy."
+},
+    conceptConnections: [
+      {
+            "title": "RetinaNet Focal Loss",
+            "route": "/practice/focal-loss",
+            "description": "Modulated cross entropy for dense anchor classification."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Well-classified easy negatives downweighted",
+            "input": {
+                  "predictions": [
+                        0.01,
+                        0.02,
+                        0.95
+                  ],
+                  "targets": [
+                        0,
+                        0,
+                        1
+                  ],
+                  "alpha": 0.25,
+                  "gamma": 2.0,
+                  "eps": 1e-07
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Hard negative penalized heavily",
+            "input": {
+                  "predictions": [
+                        0.9
+                  ],
+                  "targets": [
+                        0
+                  ],
+                  "alpha": 0.25,
+                  "gamma": 2.0,
+                  "eps": 1e-07
+            },
+            "expectedOutput": 1.3988,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Standard cross-entropy limit when gamma 0",
+            "input": {
+                  "predictions": [
+                        0.8,
+                        0.2
+                  ],
+                  "targets": [
+                        1,
+                        0
+                  ],
+                  "alpha": 0.5,
+                  "gamma": 0.0,
+                  "eps": 1e-07
+            },
+            "expectedOutput": 0.1116,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Balanced easy positive and negative",
+            "input": {
+                  "predictions": [
+                        0.99,
+                        0.01
+                  ],
+                  "targets": [
+                        1,
+                        0
+                  ],
+                  "alpha": 0.25,
+                  "gamma": 2.0,
+                  "eps": 1e-07
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-25': {
+    id: 'dl-nn-prob-25',
+    title: "AdamW Optimizer with Decoupled Weight Decay",
+    difficulty: 'hard',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '25 min',
+    functionName: 'adamw_optimizer_step',
+    functionSignature: "adamw_optimizer_step(param: list[float], grad: list[float], m: list[float], v: list[float], t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8, weight_decay: float = 0.01) -> dict",
+    starterCode: `def adamw_optimizer_step(param: list[float], grad: list[float], m: list[float], v: list[float], t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8, weight_decay: float = 0.01) -> dict:
+    """Execute an update step of AdamW with decoupled weight decay.
+
+    Args:
+        param: Parameter vector.
+        grad: Gradient vector.
+        m: First moment vector.
+        v: Second moment vector.
+        t: Current timestep index (t >= 1).
+        lr: Learning rate.
+        beta1: Exponential decay rate for first moment.
+        beta2: Exponential decay rate for second moment.
+        eps: Small denominator epsilon.
+        weight_decay: Decoupled weight decay coefficient.
+
+    Returns:
+        Dictionary with updated 'param', 'm', and 'v' lists rounded to 6 decimals.
+    """
+    pass
+`,
+    mission: "Fix weight decay generalization in adaptive gradient methods using Loshchilov and Hutter's decoupled AdamW algorithm.",
+    taskDescription: "Implement `adamw_optimizer_step(...)`: update moments: `m_t = beta1 * m + (1 - beta1) * grad`, `v_t = beta2 * v + (1 - beta2) * grad^2`. Correct bias: `m_hat = m_t / (1 - beta1^t)`, `v_hat = v_t / (1 - beta2^t)`. Apply decoupled weight decay directly to parameter: `param = param * (1 - lr * weight_decay) - lr * m_hat / (sqrt(v_hat) + eps)`. Return `{'param': ..., 'm': ..., 'v': ...}` rounded to 6 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "t >= 1",
+      "len(param) == len(grad) == len(m) == len(v) >= 1",
+      "lr > 0.0",
+      "weight_decay >= 0.0"
+],
+    hints: {
+      "small": "In AdamW, weight decay does NOT enter the calculation of m or v.",
+      "strong": "Update p_new = p * (1.0 - lr * weight_decay) - (lr * m_hat) / (math.sqrt(v_hat) + eps).",
+      "concept": "In standard Adam with L2 regularization, weights with large historical gradients are penalized LESS because the penalty is divided by sqrt(v); AdamW fixes this by decoupling the penalty."
+},
+    conceptConnections: [
+      {
+            "title": "AdamW vs Adam",
+            "route": "/practice/adamw-decoupling",
+            "description": "Why decoupled weight decay is standard in Transformers."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Step 1 with decoupled decay",
+            "input": {
+                  "param": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad": [
+                        0.1,
+                        -0.2
+                  ],
+                  "m": [
+                        0.0,
+                        0.0
+                  ],
+                  "v": [
+                        0.0,
+                        0.0
+                  ],
+                  "t": 1,
+                  "lr": 0.001,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08,
+                  "weight_decay": 0.01
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.99899,
+                        2.00098
+                  ],
+                  "m": [
+                        0.01,
+                        -0.02
+                  ],
+                  "v": [
+                        1e-05,
+                        4e-05
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero weight decay matches standard Adam",
+            "input": {
+                  "param": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad": [
+                        0.1,
+                        -0.2
+                  ],
+                  "m": [
+                        0.0,
+                        0.0
+                  ],
+                  "v": [
+                        0.0,
+                        0.0
+                  ],
+                  "t": 1,
+                  "lr": 0.001,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08,
+                  "weight_decay": 0.0
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.999,
+                        2.001
+                  ],
+                  "m": [
+                        0.01,
+                        -0.02
+                  ],
+                  "v": [
+                        1e-05,
+                        4e-05
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Step 5 with strong weight decay",
+            "input": {
+                  "param": [
+                        0.5
+                  ],
+                  "grad": [
+                        0.0
+                  ],
+                  "m": [
+                        0.02
+                  ],
+                  "v": [
+                        0.001
+                  ],
+                  "t": 5,
+                  "lr": 0.01,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08,
+                  "weight_decay": 0.1
+            },
+            "expectedOutput": {
+                  "param": [
+                        0.498518
+                  ],
+                  "m": [
+                        0.018
+                  ],
+                  "v": [
+                        0.000999
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-variable vector AdamW",
+            "input": {
+                  "param": [
+                        -1.0,
+                        0.5,
+                        2.0
+                  ],
+                  "grad": [
+                        0.2,
+                        -0.1,
+                        0.5
+                  ],
+                  "m": [
+                        0.01,
+                        -0.01,
+                        0.02
+                  ],
+                  "v": [
+                        0.001,
+                        0.001,
+                        0.002
+                  ],
+                  "t": 2,
+                  "lr": 0.005,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08,
+                  "weight_decay": 0.02
+            },
+            "expectedOutput": {
+                  "param": [
+                        -1.000959,
+                        0.500654,
+                        1.998113
+                  ],
+                  "m": [
+                        0.029,
+                        -0.019,
+                        0.068
+                  ],
+                  "v": [
+                        0.001039,
+                        0.001009,
+                        0.002248
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-26': {
+    id: 'cv-cnn-prob-26',
+    title: "ResNet Basic Residual Block Forward Pass",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'resnet_residual_block',
+    functionSignature: "resnet_residual_block(x: list[list[float]], w1: float, w2: float, shortcut_weight: float | None = None) -> list[list[float]]",
+    starterCode: `def resnet_residual_block(x: list[list[float]], w1: float, w2: float, shortcut_weight: float | None = None) -> list[list[float]]:\\n    """Execute forward pass of a basic residual block with additive shortcut.\\n\\n    Args:\\n        x: 2D feature map of shape (H, W).\\n        w1: First layer linear scalar weight.\\n        w2: Second layer linear scalar weight.\\n        shortcut_weight: Projection weight for shortcut if present, else identity if None.\\n\\n    Returns:\\n        2D list of output activations after residual addition and final ReLU.\\n    """\\n    pass\\n`,
+    mission: "Overcome degradation and vanishing gradients in deep networks by learning residual mapping functions F(x) + x.",
+    taskDescription: "Implement `resnet_residual_block(...)`:\\n1. Layer 1: `h1 = relu(w1 * x)` elementwise.\\n2. Layer 2: `h2 = w2 * h1` elementwise.\\n3. Shortcut: `res = shortcut_weight * x` if `shortcut_weight is not None` else `x`.\\n4. Output: `relu(h2 + res)` elementwise. Round each element to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 256",
+      "w1, w2 are finite floats"
+],
+    hints: {
+      "small": "Layer 1 applies ReLU, but Layer 2 is linear before adding the shortcut.",
+      "strong": "Apply the final ReLU after summing h2 and the shortcut connection.",
+      "concept": "Residual connections allow gradients to propagate uninterrupted through the identity pathway during backpropagation."
+},
+    conceptConnections: [
+      {
+            "title": "Deep Residual Learning",
+            "route": "/practice/resnet-architecture",
+            "description": "Skip connection dynamics in ultra-deep networks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identity shortcut block",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "w1": 0.5,
+                  "w2": 2.0,
+                  "shortcut_weight": null
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        4.0
+                  ],
+                  [
+                        6.0,
+                        8.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Projection shortcut block",
+            "input": {
+                  "x": [
+                        [
+                              2.0,
+                              -1.0
+                        ],
+                        [
+                              0.0,
+                              4.0
+                        ]
+                  ],
+                  "w1": 1.0,
+                  "w2": 1.0,
+                  "shortcut_weight": 0.5
+            },
+            "expectedOutput": [
+                  [
+                        3.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        6.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Negative activations suppressed by post-addition ReLU",
+            "input": {
+                  "x": [
+                        [
+                              -3.0,
+                              -2.0
+                        ],
+                        [
+                              -1.0,
+                              0.0
+                        ]
+                  ],
+                  "w1": 1.0,
+                  "w2": 1.0,
+                  "shortcut_weight": null
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Larger 3x3 map identity connection",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              2.0,
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "w1": 0.8,
+                  "w2": 1.2,
+                  "shortcut_weight": null
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        1.96,
+                        3.92
+                  ],
+                  [
+                        1.96,
+                        3.92,
+                        5.88
+                  ],
+                  [
+                        3.92,
+                        5.88,
+                        7.84
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-26': {
+    id: 'dl-nn-prob-26',
+    title: "Vanilla Elman RNN Step Forward",
+    difficulty: 'hard',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '25 min',
+    functionName: 'vanilla_rnn_step_forward',
+    functionSignature: "vanilla_rnn_step_forward(x: list[list[float]], h_prev: list[list[float]], Wxh: list[list[float]], Whh: list[list[float]], bh: list[float]) -> list[list[float]]",
+    starterCode: `def vanilla_rnn_step_forward(x: list[list[float]], h_prev: list[list[float]], Wxh: list[list[float]], Whh: list[list[float]], bh: list[float]) -> list[list[float]]:
+    """Compute forward pass for a single timestep of a vanilla Elman RNN cell.
+
+    Args:
+        x: Input matrix of shape (N, D_in).
+        h_prev: Previous hidden state matrix of shape (N, H).
+        Wxh: Input-to-hidden weight matrix of shape (D_in, H).
+        Whh: Hidden-to-hidden weight matrix of shape (H, H).
+        bh: Hidden bias vector of length H.
+
+    Returns:
+        Updated hidden state matrix h_next of shape (N, H) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Compute recurrent state transitions for sequence modeling in a classic Elman recurrent neural network.",
+    taskDescription: "Implement `vanilla_rnn_step_forward(x, h_prev, Wxh, Whh, bh)`: for each batch sample `i`, compute the new hidden state `h_next[i] = tanh(x[i] @ Wxh + h_prev[i] @ Whh + bh)`. Return `h_next` of shape `(N, H)` with all elements rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 50",
+      "1 <= D_in, H <= 64",
+      "len(bh) == H",
+      "Whh is of shape (H, H)"
+],
+    hints: {
+      "small": "For each row i and hidden unit j, sum the input contribution x @ Wxh and recurrent contribution h_prev @ Whh, add bh[j], and apply math.tanh.",
+      "strong": "val = sum(x[i][k] * Wxh[k][j] for k) + sum(h_prev[i][k] * Whh[k][j] for k) + bh[j].",
+      "concept": "The recurrent weight Whh allows the network to maintain an internal state (memory) that persists information across time steps."
+},
+    conceptConnections: [
+      {
+            "title": "Recurrent Architectures",
+            "route": "/practice/rnn-cell-basics",
+            "description": "Foundations of sequential deep learning."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single sample 1D input 1D hidden",
+            "input": {
+                  "x": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.5
+                        ]
+                  ],
+                  "Wxh": [
+                        [
+                              0.8
+                        ]
+                  ],
+                  "Whh": [
+                        [
+                              0.2
+                        ]
+                  ],
+                  "bh": [
+                        0.1
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.7616
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero initial state 2D hidden",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "Wxh": [
+                        [
+                              0.5,
+                              -0.5
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "Whh": [
+                        [
+                              0.1,
+                              0.2
+                        ],
+                        [
+                              -0.1,
+                              0.3
+                        ]
+                  ],
+                  "bh": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -0.4621,
+                        -0.4621
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Batch of 2 recurrent steps",
+            "input": {
+                  "x": [
+                        [
+                              0.5
+                        ],
+                        [
+                              -0.5
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.2,
+                              -0.2
+                        ],
+                        [
+                              0.8,
+                              -0.8
+                        ]
+                  ],
+                  "Wxh": [
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "Whh": [
+                        [
+                              0.5,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.5
+                        ]
+                  ],
+                  "bh": [
+                        0.1,
+                        -0.1
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.6044,
+                        -0.6044
+                  ],
+                  [
+                        0.0,
+                        -0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Saturating tanh activations",
+            "input": {
+                  "x": [
+                        [
+                              10.0,
+                              20.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "Wxh": [
+                        [
+                              1.0,
+                              -1.0
+                        ],
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "Whh": [
+                        [
+                              0.1,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.1
+                        ]
+                  ],
+                  "bh": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        -1.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-27': {
+    id: 'cv-cnn-prob-27',
+    title: "Dice Loss for Binary Semantic Segmentation",
+    difficulty: 'easy',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'dice_loss',
+    functionSignature: "dice_loss(predictions: list[list[float]], targets: list[list[int]], smooth: float = 1.0) -> float",
+    starterCode: `def dice_loss(predictions: list[list[float]], targets: list[list[int]], smooth: float = 1.0) -> float:\\n    """Compute Dice Loss between predicted probability map and binary ground truth mask.\\n\\n    Args:\\n        predictions: 2D float probabilities in [0.0, 1.0] of shape (H, W).\\n        targets: 2D binary integers in {0, 1} of shape (H, W).\\n        smooth: Smoothing laplacian factor to prevent division by zero.\\n\\n    Returns:\\n        Dice loss float rounded to 4 decimals.\\n    """\\n    pass\\n`,
+    mission: "Optimize boundary overlap directly for medical image segmentation and sparse foreground object segmentation tasks.",
+    taskDescription: "Implement `dice_loss(...)`. Calculate intersection `sum(p_ij * y_ij)`, prediction sum `sum(p_ij)`, and ground truth sum `sum(y_ij)` over all pixels. Compute `dice_coeff = (2 * intersection + smooth) / (sum_p + sum_y + smooth)`. Return `round(1.0 - dice_coeff, 4)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 256",
+      "0.0 <= p_ij <= 1.0",
+      "y_ij in {0, 1}",
+      "smooth > 0"
+],
+    hints: {
+      "small": "Intersection is the inner product of continuous predictions and binary ground truth.",
+      "strong": "Dice coefficient = (2 * intersection + smooth) / (|P| + |Y| + smooth); Dice Loss = 1 - Dice coefficient.",
+      "concept": "Dice loss is immune to severe background pixel dominance, making it the de facto loss function for U-Net biomedical segmentation."
+},
+    conceptConnections: [
+      {
+            "title": "U-Net Image Segmentation",
+            "route": "/practice/unet-segmentation",
+            "description": "Overlap metrics and region-based losses."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect segmentation match gives zero loss",
+            "input": {
+                  "predictions": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "targets": [
+                        [
+                              1,
+                              1
+                        ],
+                        [
+                              0,
+                              0
+                        ]
+                  ],
+                  "smooth": 1.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Complete mismatch",
+            "input": {
+                  "predictions": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "targets": [
+                        [
+                              0,
+                              0
+                        ],
+                        [
+                              0,
+                              0
+                        ]
+                  ],
+                  "smooth": 1.0
+            },
+            "expectedOutput": 0.8,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Partial probabilistic overlap",
+            "input": {
+                  "predictions": [
+                        [
+                              0.8,
+                              0.2
+                        ],
+                        [
+                              0.4,
+                              0.9
+                        ]
+                  ],
+                  "targets": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              1,
+                              1
+                        ]
+                  ],
+                  "smooth": 1.0
+            },
+            "expectedOutput": 0.1746,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Small target mask with smooth=0.1",
+            "input": {
+                  "predictions": [
+                        [
+                              0.5,
+                              0.5
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "targets": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              0
+                        ]
+                  ],
+                  "smooth": 0.1
+            },
+            "expectedOutput": 0.4762,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-27': {
+    id: 'dl-nn-prob-27',
+    title: "LSTM Cell Forward Pass",
+    difficulty: 'hard',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '25 min',
+    functionName: 'lstm_cell_forward',
+    functionSignature: "lstm_cell_forward(x: list[list[float]], h_prev: list[list[float]], c_prev: list[list[float]], W_x: list[list[float]], W_h: list[list[float]], b: list[float]) -> dict",
+    starterCode: `def lstm_cell_forward(x: list[list[float]], h_prev: list[list[float]], c_prev: list[list[float]], W_x: list[list[float]], W_h: list[list[float]], b: list[float]) -> dict:
+    """Execute single timestep forward pass of a Long Short-Term Memory (LSTM) cell.
+
+    Args:
+        x: Input batch of shape (N, D_in).
+        h_prev: Previous hidden state of shape (N, H).
+        c_prev: Previous cell state of shape (N, H).
+        W_x: Input weight matrix of shape (D_in, 4 * H).
+        W_h: Hidden weight matrix of shape (H, 4 * H).
+        b: Bias vector of length 4 * H (order: i, f, g, o).
+
+    Returns:
+        Dictionary with 'h_next' and 'c_next', both of shape (N, H) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Regulate sequence memory and overcome vanishing gradients using gated LSTM memory cells.",
+    taskDescription: "Implement `lstm_cell_forward(...)`: compute combined gate pre-activations `raw = x @ W_x + h_prev @ W_h + b` of length `4 * H`. Split into input gate `i = sigmoid(raw[0:H])`, forget gate `f = sigmoid(raw[H:2H])`, candidate cell `g = tanh(raw[2H:3H])`, and output gate `o = sigmoid(raw[3H:4H])`. Update cell state `c_next = f * c_prev + i * g`, and hidden state `h_next = o * tanh(c_next)`. Return `{'h_next': h_next, 'c_next': c_next}` with elements rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 32",
+      "1 <= D_in, H <= 32",
+      "W_x shape is (D_in, 4*H)",
+      "W_h shape is (H, 4*H)",
+      "len(b) == 4*H"
+],
+    hints: {
+      "small": "Gates are laid out in blocks of size H: [i, f, g, o].",
+      "strong": "c_next[n][j] = f[j] * c_prev[n][j] + i[j] * g[j], then h_next[n][j] = o[j] * math.tanh(c_next[n][j]).",
+      "concept": "The constant error carousel in the cell state c allows gradients to flow across hundreds of timesteps without exponential decay."
+},
+    conceptConnections: [
+      {
+            "title": "LSTM Cell Dynamics",
+            "route": "/practice/lstm-internals",
+            "description": "Gating mechanisms and vanishing gradient mitigation."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single sample 1D H=1",
+            "input": {
+                  "x": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.0
+                        ]
+                  ],
+                  "c_prev": [
+                        [
+                              0.0
+                        ]
+                  ],
+                  "W_x": [
+                        [
+                              0.5,
+                              0.5,
+                              0.5,
+                              0.5
+                        ]
+                  ],
+                  "W_h": [
+                        [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "b": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "h_next": [
+                        [
+                              0.1743
+                        ]
+                  ],
+                  "c_next": [
+                        [
+                              0.2876
+                        ]
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Retention through forget gate",
+            "input": {
+                  "x": [
+                        [
+                              0.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.5
+                        ]
+                  ],
+                  "c_prev": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "W_x": [
+                        [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "W_h": [
+                        [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "b": [
+                        -10.0,
+                        10.0,
+                        0.0,
+                        10.0
+                  ]
+            },
+            "expectedOutput": {
+                  "h_next": [
+                        [
+                              0.7615
+                        ]
+                  ],
+                  "c_next": [
+                        [
+                              1.0
+                        ]
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "H=2 dimensional state",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.1,
+                              -0.1
+                        ]
+                  ],
+                  "c_prev": [
+                        [
+                              0.5,
+                              -0.5
+                        ]
+                  ],
+                  "W_x": [
+                        [
+                              0.1,
+                              0.1,
+                              0.1,
+                              0.1,
+                              0.1,
+                              0.1,
+                              0.1,
+                              0.1
+                        ],
+                        [
+                              0.2,
+                              0.2,
+                              0.2,
+                              0.2,
+                              0.2,
+                              0.2,
+                              0.2,
+                              0.2
+                        ]
+                  ],
+                  "W_h": [
+                        [
+                              0.05,
+                              0.05,
+                              0.05,
+                              0.05,
+                              0.05,
+                              0.05,
+                              0.05,
+                              0.05
+                        ],
+                        [
+                              -0.05,
+                              -0.05,
+                              -0.05,
+                              -0.05,
+                              -0.05,
+                              -0.05,
+                              -0.05,
+                              -0.05
+                        ]
+                  ],
+                  "b": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "h_next": [
+                        [
+                              0.164,
+                              -0.1071
+                        ]
+                  ],
+                  "c_next": [
+                        [
+                              0.3215,
+                              -0.2059
+                        ]
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Batch of 2 samples",
+            "input": {
+                  "x": [
+                        [
+                              0.5
+                        ],
+                        [
+                              -0.5
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.2
+                        ],
+                        [
+                              -0.2
+                        ]
+                  ],
+                  "c_prev": [
+                        [
+                              0.1
+                        ],
+                        [
+                              -0.1
+                        ]
+                  ],
+                  "W_x": [
+                        [
+                              0.2,
+                              0.4,
+                              0.1,
+                              0.3
+                        ]
+                  ],
+                  "W_h": [
+                        [
+                              0.1,
+                              0.1,
+                              0.2,
+                              0.1
+                        ]
+                  ],
+                  "b": [
+                        0.0,
+                        0.5,
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "h_next": [
+                        [
+                              0.062
+                        ],
+                        [
+                              -0.0452
+                        ]
+                  ],
+                  "c_next": [
+                        [
+                              0.1148
+                        ],
+                        [
+                              -0.0991
+                        ]
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-28': {
+    id: 'cv-cnn-prob-28',
+    title: "FPN Top-Down Pathway Lateral Feature Fusion",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '20 min',
+    functionName: 'fpn_top_down_fusion',
+    functionSignature: "fpn_top_down_fusion(higher_level: list[list[float]], lower_level_lateral: list[list[float]]) -> list[list[float]]",
+    starterCode: `def fpn_top_down_fusion(higher_level: list[list[float]], lower_level_lateral: list[list[float]]) -> list[list[float]]:\\n    """Fuse a deeper semantic feature map with a lateral higher-resolution feature map.\\n\\n    Args:\\n        higher_level: 2D list of shape (H, W).\\n        lower_level_lateral: 2D list of shape (2H, 2W).\\n\\n    Returns:\\n        Fused 2D list of shape (2H, 2W) rounded to 4 decimals.\\n    """\\n    pass\\n`,
+    mission: "Construct rich multi-scale feature pyramids by propagating semantically strong high-level features downward to merge with spatially precise shallow features.",
+    taskDescription: "Implement `fpn_top_down_fusion(...)`. Upsample `higher_level` (shape `H x W`) by a factor of 2 along both spatial dimensions using nearest-neighbor interpolation: each element `(r, c)` expands to cover rows `2r, 2r+1` and columns `2c, 2c+1`. Add the upsampled result elementwise to `lower_level_lateral` (shape `2H x 2W`). Round each fused pixel value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 128",
+      "lower_level_lateral shape is exactly (2H, 2W)"
+],
+    hints: {
+      "small": "For target coordinate (i, j) in the fused grid, map back to src_r = i // 2, src_c = j // 2.",
+      "strong": "fused[i][j] = round(higher_level[i // 2][j // 2] + lower_level_lateral[i][j], 4).",
+      "concept": "Feature Pyramid Networks combine high-level semantics with low-level spatial resolution without prohibitive computation overhead."
+},
+    conceptConnections: [
+      {
+            "title": "Feature Pyramid Networks",
+            "route": "/practice/fpn-detection",
+            "description": "Multi-scale feature representation for dense detection."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 upsampled to 4x4 with uniform lateral",
+            "input": {
+                  "higher_level": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "lower_level_lateral": [
+                        [
+                              0.5,
+                              0.5,
+                              0.5,
+                              0.5
+                        ],
+                        [
+                              0.5,
+                              0.5,
+                              0.5,
+                              0.5
+                        ],
+                        [
+                              0.5,
+                              0.5,
+                              0.5,
+                              0.5
+                        ],
+                        [
+                              0.5,
+                              0.5,
+                              0.5,
+                              0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.5,
+                        1.5,
+                        2.5,
+                        2.5
+                  ],
+                  [
+                        1.5,
+                        1.5,
+                        2.5,
+                        2.5
+                  ],
+                  [
+                        3.5,
+                        3.5,
+                        4.5,
+                        4.5
+                  ],
+                  [
+                        3.5,
+                        3.5,
+                        4.5,
+                        4.5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "1x1 upsampled to 2x2 with lateral zeros",
+            "input": {
+                  "higher_level": [
+                        [
+                              5.0
+                        ]
+                  ],
+                  "lower_level_lateral": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0,
+                        6.0
+                  ],
+                  [
+                        7.0,
+                        8.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "2x1 upsampled to 4x2",
+            "input": {
+                  "higher_level": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ],
+                  "lower_level_lateral": [
+                        [
+                              0.1,
+                              0.2
+                        ],
+                        [
+                              0.3,
+                              0.4
+                        ],
+                        [
+                              0.5,
+                              0.6
+                        ],
+                        [
+                              0.7,
+                              0.8
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.1,
+                        1.2
+                  ],
+                  [
+                        1.3,
+                        1.4
+                  ],
+                  [
+                        2.5,
+                        2.6
+                  ],
+                  [
+                        2.7,
+                        2.8
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Negative lateral features",
+            "input": {
+                  "higher_level": [
+                        [
+                              2.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              2.0
+                        ]
+                  ],
+                  "lower_level_lateral": [
+                        [
+                              -1.0,
+                              -1.0,
+                              -1.0,
+                              -1.0
+                        ],
+                        [
+                              -1.0,
+                              -1.0,
+                              -1.0,
+                              -1.0
+                        ],
+                        [
+                              -1.0,
+                              -1.0,
+                              -1.0,
+                              -1.0
+                        ],
+                        [
+                              -1.0,
+                              -1.0,
+                              -1.0,
+                              -1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-28': {
+    id: 'dl-nn-prob-28',
+    title: "Gated Recurrent Unit (GRU) Forward Step",
+    difficulty: 'hard',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '25 min',
+    functionName: 'gru_cell_forward',
+    functionSignature: "gru_cell_forward(x: list[list[float]], h_prev: list[list[float]], W_z: list[list[float]], W_r: list[list[float]], W_h: list[list[float]], b_z: list[float], b_r: list[float], b_h: list[float]) -> list[list[float]]",
+    starterCode: `def gru_cell_forward(x: list[list[float]], h_prev: list[list[float]], W_z: list[list[float]], W_r: list[list[float]], W_h: list[list[float]], b_z: list[float], b_r: list[float], b_h: list[float]) -> list[list[float]]:
+    """Execute forward step of a Gated Recurrent Unit (GRU) cell.
+
+    Args:
+        x: Input matrix of shape (N, D).
+        h_prev: Previous hidden state of shape (N, H).
+        W_z: Update gate weights of shape (D + H, H).
+        W_r: Reset gate weights of shape (D + H, H).
+        W_h: Candidate state weights of shape (D + H, H).
+        b_z, b_r, b_h: Bias vectors of length H.
+
+    Returns:
+        Updated hidden state matrix h_next of shape (N, H) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Execute update and reset gating mechanics in Cho et al.'s Gated Recurrent Unit.",
+    taskDescription: "Implement `gru_cell_forward(...)`: concatenated input `[x, h_prev]` is mapped by `W_z` and `W_r` to compute update gate `z = sigmoid(x @ W_z[:D] + h_prev @ W_z[D:] + b_z)` and reset gate `r = sigmoid(x @ W_r[:D] + h_prev @ W_r[D:] + b_r)`. Candidate hidden state is `n = tanh(x @ W_h[:D] + (r * h_prev) @ W_h[D:] + b_h)`. New hidden state is `h_next = (1 - z) * n + z * h_prev`. Return `h_next` rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 32",
+      "1 <= D, H <= 32",
+      "Weight matrices have shape (D + H, H)"
+],
+    hints: {
+      "small": "W_z[:D] acts on input x, while W_z[D:] acts on previous hidden state h_prev.",
+      "strong": "Reset gate r element-wise multiplies h_prev before the candidate projection.",
+      "concept": "GRUs eliminate the separate cell state of LSTMs, coupling the forget and input mechanisms into a single update gate z."
+},
+    conceptConnections: [
+      {
+            "title": "GRU vs LSTM",
+            "route": "/practice/gru-architecture",
+            "description": "Comparison of gated recurrent mechanisms."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single sample 1D D=1 H=1",
+            "input": {
+                  "x": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.5
+                        ]
+                  ],
+                  "W_z": [
+                        [
+                              0.5
+                        ],
+                        [
+                              0.5
+                        ]
+                  ],
+                  "W_r": [
+                        [
+                              0.5
+                        ],
+                        [
+                              0.5
+                        ]
+                  ],
+                  "W_h": [
+                        [
+                              0.5
+                        ],
+                        [
+                              0.5
+                        ]
+                  ],
+                  "b_z": [
+                        0.0
+                  ],
+                  "b_r": [
+                        0.0
+                  ],
+                  "b_h": [
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.5272
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Reset gate active near zero",
+            "input": {
+                  "x": [
+                        [
+                              0.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "W_z": [
+                        [
+                              0.0
+                        ],
+                        [
+                              0.0
+                        ]
+                  ],
+                  "W_r": [
+                        [
+                              0.0
+                        ],
+                        [
+                              0.0
+                        ]
+                  ],
+                  "W_h": [
+                        [
+                              0.0
+                        ],
+                        [
+                              1.0
+                        ]
+                  ],
+                  "b_z": [
+                        0.0
+                  ],
+                  "b_r": [
+                        -20.0
+                  ],
+                  "b_h": [
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Batch of 2 recurrent samples",
+            "input": {
+                  "x": [
+                        [
+                              1.0
+                        ],
+                        [
+                              -1.0
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.2
+                        ],
+                        [
+                              -0.2
+                        ]
+                  ],
+                  "W_z": [
+                        [
+                              0.1
+                        ],
+                        [
+                              0.2
+                        ]
+                  ],
+                  "W_r": [
+                        [
+                              0.3
+                        ],
+                        [
+                              0.1
+                        ]
+                  ],
+                  "W_h": [
+                        [
+                              0.4
+                        ],
+                        [
+                              0.2
+                        ]
+                  ],
+                  "b_z": [
+                        0.1
+                  ],
+                  "b_r": [
+                        0.1
+                  ],
+                  "b_h": [
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.2882
+                  ],
+                  [
+                        -0.2995
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "2-dimensional hidden vector",
+            "input": {
+                  "x": [
+                        [
+                              0.5,
+                              -0.5
+                        ]
+                  ],
+                  "h_prev": [
+                        [
+                              0.1,
+                              0.2
+                        ]
+                  ],
+                  "W_z": [
+                        [
+                              0.1,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.1
+                        ],
+                        [
+                              0.1,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.1
+                        ]
+                  ],
+                  "W_r": [
+                        [
+                              0.1,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.1
+                        ],
+                        [
+                              0.1,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.1
+                        ]
+                  ],
+                  "W_h": [
+                        [
+                              0.2,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.2
+                        ],
+                        [
+                              0.2,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.2
+                        ]
+                  ],
+                  "b_z": [
+                        0.0,
+                        0.0
+                  ],
+                  "b_r": [
+                        0.0,
+                        0.0
+                  ],
+                  "b_h": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.1048,
+                        0.0578
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-29': {
+    id: 'cv-cnn-prob-29',
+    title: "Region of Interest (RoI) Max Pooling Layer",
+    difficulty: 'hard',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '25 min',
+    functionName: 'roi_max_pool',
+    functionSignature: "roi_max_pool(feature_map: list[list[float]], roi: list[int], output_size: list[int]) -> list[list[float]]",
+    starterCode: `def roi_max_pool(feature_map: list[list[float]], roi: list[int], output_size: list[int]) -> list[list[float]]:\\n    """Perform RoI Max Pooling on feature map for a proposed bounding box.\\n\\n    Args:\\n        feature_map: 2D list of shape (H, W).\\n        roi: [x1, y1, x2, y2] integer box coordinates (inclusive).\\n        output_size: [out_h, out_w] target pooled spatial dimensions.\\n\\n    Returns:\\n        Pooled 2D list of shape (out_h, out_w) rounded to 4 decimals.\\n    """\\n    pass\\n`,
+    mission: "Convert non-uniform candidate bounding region feature maps into fixed spatial dimension representations for classification and regression heads.",
+    taskDescription: "Implement `roi_max_pool(...)`. Given `roi = [x1, y1, x2, y2]` and `output_size = [out_h, out_w]`: let `roi_w = max(1, x2 - x1 + 1)` and `roi_h = max(1, y2 - y1 + 1)`. For bin `(ph, pw)` where `0 <= ph < out_h` and `0 <= pw < out_w`:\\n- `r_start = y1 + floor(ph * roi_h / out_h)`, `r_end = y1 + ceil((ph + 1) * roi_h / out_h)`\\n- `c_start = x1 + floor(pw * roi_w / out_w)`, `c_end = x1 + ceil((pw + 1) * roi_w / out_w)`\\nCompute the maximum element in `feature_map[r][c]` over these ranges and round each to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 256",
+      "0 <= x1 <= x2 < W",
+      "0 <= y1 <= y2 < H",
+      "out_h, out_w >= 1"
+],
+    hints: {
+      "small": "Partition the ROI subgrid using floor and ceil binning bounds.",
+      "strong": "r_start = y1 + math.floor(ph * roi_h / out_h), r_end = y1 + math.ceil((ph + 1) * roi_h / out_h).",
+      "concept": "Fast R-CNN introduced RoI Pooling to share convolutional computation across hundreds of object proposals in a single forward pass."
+},
+    conceptConnections: [
+      {
+            "title": "Fast R-CNN RoI Pooling",
+            "route": "/practice/fast-rcnn-roi",
+            "description": "Candidate region feature alignment."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "8x8 map RoI [0, 0, 3, 3] pooled to 2x2",
+            "input": {
+                  "feature_map": [
+                        [
+                              0.0,
+                              1.0,
+                              2.0,
+                              3.0,
+                              4.0,
+                              5.0,
+                              6.0,
+                              7.0
+                        ],
+                        [
+                              8.0,
+                              9.0,
+                              10.0,
+                              11.0,
+                              12.0,
+                              13.0,
+                              14.0,
+                              15.0
+                        ],
+                        [
+                              16.0,
+                              17.0,
+                              18.0,
+                              19.0,
+                              20.0,
+                              21.0,
+                              22.0,
+                              23.0
+                        ],
+                        [
+                              24.0,
+                              25.0,
+                              26.0,
+                              27.0,
+                              28.0,
+                              29.0,
+                              30.0,
+                              31.0
+                        ],
+                        [
+                              32.0,
+                              33.0,
+                              34.0,
+                              35.0,
+                              36.0,
+                              37.0,
+                              38.0,
+                              39.0
+                        ],
+                        [
+                              40.0,
+                              41.0,
+                              42.0,
+                              43.0,
+                              44.0,
+                              45.0,
+                              46.0,
+                              47.0
+                        ],
+                        [
+                              48.0,
+                              49.0,
+                              50.0,
+                              51.0,
+                              52.0,
+                              53.0,
+                              54.0,
+                              55.0
+                        ],
+                        [
+                              56.0,
+                              57.0,
+                              58.0,
+                              59.0,
+                              60.0,
+                              61.0,
+                              62.0,
+                              63.0
+                        ]
+                  ],
+                  "roi": [
+                        0,
+                        0,
+                        3,
+                        3
+                  ],
+                  "output_size": [
+                        2,
+                        2
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        9.0,
+                        11.0
+                  ],
+                  [
+                        25.0,
+                        27.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "RoI spanning full 4x4 map pooled to 1x1",
+            "input": {
+                  "feature_map": [
+                        [
+                              1.0,
+                              5.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              9.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              3.0,
+                              2.0,
+                              7.0,
+                              8.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              4.0,
+                              6.0
+                        ]
+                  ],
+                  "roi": [
+                        0,
+                        0,
+                        3,
+                        3
+                  ],
+                  "output_size": [
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        9.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Non-square RoI pooled to 2x2",
+            "input": {
+                  "feature_map": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              6.0,
+                              7.0,
+                              8.0
+                        ],
+                        [
+                              9.0,
+                              10.0,
+                              11.0,
+                              12.0
+                        ]
+                  ],
+                  "roi": [
+                        1,
+                        0,
+                        3,
+                        2
+                  ],
+                  "output_size": [
+                        2,
+                        2
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        7.0,
+                        8.0
+                  ],
+                  [
+                        11.0,
+                        12.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Single pixel RoI pooled to 1x1",
+            "input": {
+                  "feature_map": [
+                        [
+                              10.0,
+                              20.0
+                        ],
+                        [
+                              30.0,
+                              40.0
+                        ]
+                  ],
+                  "roi": [
+                        1,
+                        1,
+                        1,
+                        1
+                  ],
+                  "output_size": [
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        40.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-29': {
+    id: 'dl-nn-prob-29',
+    title: "Cross-Entropy Loss with Label Smoothing",
+    difficulty: 'hard',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '25 min',
+    functionName: 'cross_entropy_label_smoothing',
+    functionSignature: "cross_entropy_label_smoothing(logits: list[list[float]], target_idx: list[int], eps: float = 0.1) -> float",
+    starterCode: `def cross_entropy_label_smoothing(logits: list[list[float]], target_idx: list[int], eps: float = 0.1) -> float:
+    """Compute cross-entropy loss with label smoothing directly from logits.
+
+    Args:
+        logits: Log-odds matrix of shape (N, C).
+        target_idx: Ground truth class index for each sample of length N.
+        eps: Label smoothing factor epsilon (0.0 <= eps < 1.0).
+
+    Returns:
+        Mean loss float rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Prevent model overconfidence and improve calibration using Szegedy et al.'s label smoothing regularization.",
+    taskDescription: "Implement `cross_entropy_label_smoothing(logits, target_idx, eps=0.1)`: for `C` classes, the smoothed ground-truth distribution for sample `i` is `q(k) = (1 - eps)` if `k == target_idx[i]` else `0`, plus `eps / C`. Compute log-softmax values stably: `log_p[k] = logits[k] - max(logits) - log(sum(exp(logits - max(logits))))`. The sample loss is `-sum(q(k) * log_p[k])`. Return the mean loss across `N` samples rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= N <= 50",
+      "2 <= C <= 100",
+      "0.0 <= eps < 1.0",
+      "0 <= target_idx[i] < C"
+],
+    hints: {
+      "small": "Compute stable log-probabilities using the log-sum-exp trick.",
+      "strong": "Each class target is q[k] = (1 - eps + eps/C) if k == target else (eps / C).",
+      "concept": "Label smoothing prevents the logits from growing arbitrarily large during training, discouraging overconfident miscalibrated predictions."
+},
+    conceptConnections: [
+      {
+            "title": "Model Calibration",
+            "route": "/practice/label-smoothing",
+            "description": "Mitigating overconfidence in classification models."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Confident logits 3 classes eps=0.1",
+            "input": {
+                  "logits": [
+                        [
+                              2.0,
+                              0.0,
+                              -1.0
+                        ]
+                  ],
+                  "target_idx": [
+                        0
+                  ],
+                  "eps": 0.1
+            },
+            "expectedOutput": 0.3365,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "No smoothing eps=0 matches standard CE",
+            "input": {
+                  "logits": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "target_idx": [
+                        1
+                  ],
+                  "eps": 0.0
+            },
+            "expectedOutput": 0.3133,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Uniform logits zero loss penalty",
+            "input": {
+                  "logits": [
+                        [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "target_idx": [
+                        2
+                  ],
+                  "eps": 0.2
+            },
+            "expectedOutput": 1.3863,
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Batch of 2 samples",
+            "input": {
+                  "logits": [
+                        [
+                              3.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.5,
+                              2.5,
+                              0.5
+                        ]
+                  ],
+                  "target_idx": [
+                        0,
+                        1
+                  ],
+                  "eps": 0.15
+            },
+            "expectedOutput": 0.4297,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'cv-cnn-prob-30': {
+    id: 'cv-cnn-prob-30',
+    title: "MobileNetV2 Inverted Residual Block Architecture Specs",
+    difficulty: 'medium',
+    topic: "Computer Vision & CNN Architectures",
+    estimatedTime: '15 min',
+    functionName: 'inverted_residual_block_specs',
+    functionSignature: "inverted_residual_block_specs(in_channels: int, out_channels: int, stride: int, expand_ratio: int) -> dict",
+    starterCode: `def inverted_residual_block_specs(in_channels: int, out_channels: int, stride: int, expand_ratio: int) -> dict:\\n    """Calculate architectural characteristics and parameter counts of an MBConv block.\\n\\n    Args:\\n        in_channels: Number of input channels.\\n        out_channels: Number of output channels.\\n        stride: Stride of depthwise convolution (1 or 2).\\n        expand_ratio: Expansion multiplier for intermediate bottleneck.\\n\\n    Returns:\\n        dict with keys "expanded_channels", "has_residual", and "total_weights".\\n    """\\n    pass\\n`,
+    mission: "Design lightweight mobile vision backbones using inverted residual structures with linear bottlenecks and depthwise separable convolutions.",
+    taskDescription: "Implement `inverted_residual_block_specs(...)`. The MBConv block structure consists of:\\n1. Expansion 1x1 Conv: projects `in_channels` to `expanded_channels = in_channels * expand_ratio`. If `expand_ratio == 1`, this layer is omitted (0 weights), otherwise it has `in_channels * expanded_channels` weights.\\n2. Depthwise 3x3 Conv: operates per channel, having `expanded_channels * 9` weights.\\n3. Linear Bottleneck 1x1 Conv: projects back to `out_channels`, having `expanded_channels * out_channels` weights.\\n4. Residual connection: present if and only if `stride == 1 and in_channels == out_channels`.\\nReturn dict `{\"expanded_channels\": expanded_channels, \"has_residual\": has_residual, \"total_weights\": total_weights}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "in_channels, out_channels >= 1",
+      "stride in {1, 2}",
+      "expand_ratio >= 1"
+],
+    hints: {
+      "small": "Residual skip is enabled only when stride == 1 and in_channels == out_channels.",
+      "strong": "Expansion layer is bypassed if expand_ratio == 1, contributing 0 weights.",
+      "concept": "MobileNetV2 inverts classic ResNet bottlenecks by expanding channels in the high-dimensional internal representation and keeping shortcuts between thin bottlenecks."
+},
+    conceptConnections: [
+      {
+            "title": "MobileNetV2 MBConv",
+            "route": "/practice/mobilenetv2-mbconv",
+            "description": "Inverted residuals and linear bottlenecks in mobile networks."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard inverted bottleneck stride 1 matching channels",
+            "input": {
+                  "in_channels": 32,
+                  "out_channels": 32,
+                  "stride": 1,
+                  "expand_ratio": 6
+            },
+            "expectedOutput": {
+                  "expanded_channels": 192,
+                  "has_residual": true,
+                  "total_weights": 14016
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Downsampling block stride 2 no residual",
+            "input": {
+                  "in_channels": 32,
+                  "out_channels": 64,
+                  "stride": 2,
+                  "expand_ratio": 6
+            },
+            "expectedOutput": {
+                  "expanded_channels": 192,
+                  "has_residual": false,
+                  "total_weights": 20160
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Initial block expand ratio 1 no expansion conv",
+            "input": {
+                  "in_channels": 16,
+                  "out_channels": 16,
+                  "stride": 1,
+                  "expand_ratio": 1
+            },
+            "expectedOutput": {
+                  "expanded_channels": 16,
+                  "has_residual": true,
+                  "total_weights": 400
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "Channel change stride 1 no residual",
+            "input": {
+                  "in_channels": 64,
+                  "out_channels": 96,
+                  "stride": 1,
+                  "expand_ratio": 6
+            },
+            "expectedOutput": {
+                  "expanded_channels": 384,
+                  "has_residual": false,
+                  "total_weights": 64896
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'dl-nn-prob-30': {
+    id: 'dl-nn-prob-30',
+    title: "Unrolled RNN Forward Sequence",
+    difficulty: 'hard',
+    topic: "Deep Learning & Neural Networks",
+    estimatedTime: '25 min',
+    functionName: 'bptt_rnn_unroll',
+    functionSignature: "bptt_rnn_unroll(x_seq: list[list[list[float]]], h_init: list[list[float]], Wxh: list[list[float]], Whh: list[list[float]], bh: list[float], Wy: list[list[float]], by: list[float]) -> dict",
+    starterCode: `def bptt_rnn_unroll(x_seq: list[list[list[float]]], h_init: list[list[float]], Wxh: list[list[float]], Whh: list[list[float]], bh: list[float], Wy: list[list[float]], by: list[float]) -> dict:
+    """Unroll an Elman RNN across a sequence of T timesteps.
+
+    Args:
+        x_seq: 3D input sequence of shape (T, N, D_in).
+        h_init: Initial hidden state of shape (N, H).
+        Wxh: Input-to-hidden weights of shape (D_in, H).
+        Whh: Hidden-to-hidden weights of shape (H, H).
+        bh: Hidden bias of length H.
+        Wy: Hidden-to-output weights of shape (H, D_out).
+        by: Output bias of length D_out.
+
+    Returns:
+        Dictionary with 'h_seq' (T, N, H) and 'y_seq' (T, N, D_out) rounded to 4 decimals.
+    """
+    pass
+`,
+    mission: "Unroll a recurrent neural network across an entire temporal sequence, collecting hidden state histories and output predictions.",
+    taskDescription: "Implement `bptt_rnn_unroll(...)`: for each timestep `t` from `0` to `T - 1`, compute `h_t = tanh(x_seq[t] @ Wxh + h_{t-1} @ Whh + bh)` where `h_{-1} = h_init`. Then compute linear output projections `y_t = h_t @ Wy + by`. Return a dictionary `{'h_seq': h_seq, 'y_seq': y_seq}` where all floats are rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= T <= 20",
+      "1 <= N <= 20",
+      "1 <= D_in, H, D_out <= 32"
+],
+    hints: {
+      "small": "Loop over t in range(T). Pass the newly calculated h_t as h_prev for the next timestep.",
+      "strong": "y_t is calculated from h_t: y_t[i][j] = sum(h_t[i][k] * Wy[k][j]) + by[j].",
+      "concept": "Unrolling an RNN in time translates recurrent temporal dependencies into a deep feedforward computation graph suitable for standard backpropagation."
+},
+    conceptConnections: [
+      {
+            "title": "Sequence Modeling",
+            "route": "/practice/sequence-to-sequence",
+            "description": "Unrolled computation graphs in temporal architectures."
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "T=2 timesteps, single sample",
+            "input": {
+                  "x_seq": [
+                        [
+                              [
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0
+                              ]
+                        ]
+                  ],
+                  "h_init": [
+                        [
+                              0.0
+                        ]
+                  ],
+                  "Wxh": [
+                        [
+                              0.5
+                        ]
+                  ],
+                  "Whh": [
+                        [
+                              0.5
+                        ]
+                  ],
+                  "bh": [
+                        0.0
+                  ],
+                  "Wy": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "by": [
+                        0.1
+                  ]
+            },
+            "expectedOutput": {
+                  "h_seq": [
+                        [
+                              [
+                                    0.4621
+                              ]
+                        ],
+                        [
+                              [
+                                    0.8429
+                              ]
+                        ]
+                  ],
+                  "y_seq": [
+                        [
+                              [
+                                    0.5621
+                              ]
+                        ],
+                        [
+                              [
+                                    0.9429
+                              ]
+                        ]
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero inputs with state decay",
+            "input": {
+                  "x_seq": [
+                        [
+                              [
+                                    0.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.0
+                              ]
+                        ]
+                  ],
+                  "h_init": [
+                        [
+                              0.8
+                        ]
+                  ],
+                  "Wxh": [
+                        [
+                              0.0
+                        ]
+                  ],
+                  "Whh": [
+                        [
+                              0.5
+                        ]
+                  ],
+                  "bh": [
+                        0.0
+                  ],
+                  "Wy": [
+                        [
+                              2.0
+                        ]
+                  ],
+                  "by": [
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "h_seq": [
+                        [
+                              [
+                                    0.3799
+                              ]
+                        ],
+                        [
+                              [
+                                    0.1877
+                              ]
+                        ]
+                  ],
+                  "y_seq": [
+                        [
+                              [
+                                    0.7598
+                              ]
+                        ],
+                        [
+                              [
+                                    0.3754
+                              ]
+                        ]
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Batch of 2 samples across 2 steps",
+            "input": {
+                  "x_seq": [
+                        [
+                              [
+                                    1.0
+                              ],
+                              [
+                                    -1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.5
+                              ],
+                              [
+                                    -0.5
+                              ]
+                        ]
+                  ],
+                  "h_init": [
+                        [
+                              0.0
+                        ],
+                        [
+                              0.0
+                        ]
+                  ],
+                  "Wxh": [
+                        [
+                              0.5
+                        ]
+                  ],
+                  "Whh": [
+                        [
+                              0.2
+                        ]
+                  ],
+                  "bh": [
+                        0.1
+                  ],
+                  "Wy": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "by": [
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "h_seq": [
+                        [
+                              [
+                                    0.537
+                              ],
+                              [
+                                    -0.3799
+                              ]
+                        ],
+                        [
+                              [
+                                    0.428
+                              ],
+                              [
+                                    -0.2222
+                              ]
+                        ]
+                  ],
+                  "y_seq": [
+                        [
+                              [
+                                    0.537
+                              ],
+                              [
+                                    -0.3799
+                              ]
+                        ],
+                        [
+                              [
+                                    0.428
+                              ],
+                              [
+                                    -0.2222
+                              ]
+                        ]
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc4",
+            "label": "T=3 sequence multi-dimensional output",
+            "input": {
+                  "x_seq": [
+                        [
+                              [
+                                    1.0,
+                                    0.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.0,
+                                    1.0
+                              ]
+                        ],
+                        [
+                              [
+                                    1.0,
+                                    1.0
+                              ]
+                        ]
+                  ],
+                  "h_init": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "Wxh": [
+                        [
+                              0.2,
+                              0.1
+                        ],
+                        [
+                              -0.1,
+                              0.2
+                        ]
+                  ],
+                  "Whh": [
+                        [
+                              0.5,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.5
+                        ]
+                  ],
+                  "bh": [
+                        0.0,
+                        0.0
+                  ],
+                  "Wy": [
+                        [
+                              1.0,
+                              0.5
+                        ],
+                        [
+                              0.5,
+                              1.0
+                        ]
+                  ],
+                  "by": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "h_seq": [
+                        [
+                              [
+                                    0.1974,
+                                    0.0997
+                              ]
+                        ],
+                        [
+                              [
+                                    -0.0013,
+                                    0.2448
+                              ]
+                        ],
+                        [
+                              [
+                                    0.099,
+                                    0.399
+                              ]
+                        ]
+                  ],
+                  "y_seq": [
+                        [
+                              [
+                                    0.2472,
+                                    0.1984
+                              ]
+                        ],
+                        [
+                              [
+                                    0.1211,
+                                    0.2441
+                              ]
+                        ],
+                        [
+                              [
+                                    0.2985,
+                                    0.4485
+                              ]
+                        ]
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #904. Computer Vision & CNN Architectures Module 3: Problem 14"
 description: "Master #904. Computer Vision & CNN Architectures Module 3: Problem 14 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,45 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #904. Computer Vision & CNN Architectures Module 3: Problem 14
+# #904. Pointwise (1x1) 2D Convolution
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #904 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#904. Computer Vision & CNN Architectures Module 3: Problem 14` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Change channel dimensionality and linearly combine feature channels across every pixel location using 1x1 convolutions.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `pointwise_conv2d(x, weights, bias)`: given input tensor `x` `(C_in, H, W)`, weight matrix `weights` `(C_out, C_in)`, and `bias` `(C_out,)`, compute at each pixel `(i, j)` the projection `out[co][i][j] = sum(weights[co][ci] * x[ci][i][j] for ci in range(C_in)) + bias[co]`. Return `out` of shape `(C_out, H, W)` rounded to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-14" />
+
+<Solution>
+
+```python
+def pointwise_conv2d(x: list[list[list[float]]], weights: list[list[float]], bias: list[float]) -> list[list[list[float]]]:
+    C_in = len(x)
+    H = len(x[0])
+    W = len(x[0][0])
+    C_out = len(weights)
+
+    out = []
+    for co in range(C_out):
+        co_mat = []
+        b = bias[co]
+        for i in range(H):
+            row = []
+            for j in range(W):
+                val = sum(weights[co][ci] * x[ci][i][j] for ci in range(C_in)) + b
+                row.append(round(float(val), 4))
+            co_mat.append(row)
+        out.append(co_mat)
+    return out
+```
+
+Pointwise 1x1 convolution applies an affine transformation along the channel axis independently at each spatial pixel.
+
+</Solution>

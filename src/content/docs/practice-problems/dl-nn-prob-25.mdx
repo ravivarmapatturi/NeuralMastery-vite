@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #885. Deep Learning & Neural Networks Module 5: Problem 25"
 description: "Master #885. Deep Learning & Neural Networks Module 5: Problem 25 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,44 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #885. Deep Learning & Neural Networks Module 5: Problem 25
+# #885. AdamW Optimizer with Decoupled Weight Decay
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #885 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#885. Deep Learning & Neural Networks Module 5: Problem 25` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Fix weight decay generalization in adaptive gradient methods using Loshchilov and Hutter's decoupled AdamW algorithm.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `adamw_optimizer_step(...)`: update moments: `m_t = beta1 * m + (1 - beta1) * grad`, `v_t = beta2 * v + (1 - beta2) * grad^2`. Correct bias: `m_hat = m_t / (1 - beta1^t)`, `v_hat = v_t / (1 - beta2^t)`. Apply decoupled weight decay directly to parameter: `param = param * (1 - lr * weight_decay) - lr * m_hat / (sqrt(v_hat) + eps)`. Return `{'param': ..., 'm': ..., 'v': ...}` rounded to 6 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-25" />
+
+<Solution>
+
+```python
+def adamw_optimizer_step(param: list[float], grad: list[float], m: list[float], v: list[float], t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8, weight_decay: float = 0.01) -> dict:
+    new_p = []
+    new_m = []
+    new_v = []
+    b1_corr = 1.0 - (beta1 ** t)
+    b2_corr = 1.0 - (beta2 ** t)
+    for p, g, m_prev, v_prev in zip(param, grad, m, v):
+        p_decayed = p * (1.0 - lr * weight_decay)
+        m_t = beta1 * m_prev + (1.0 - beta1) * g
+        v_t = beta2 * v_prev + (1.0 - beta2) * (g ** 2)
+        m_hat = m_t / b1_corr
+        v_hat = v_t / b2_corr
+        p_t = p_decayed - (lr * m_hat) / (math.sqrt(v_hat) + eps)
+        new_p.append(round(p_t, 6))
+        new_m.append(round(m_t, 6))
+        new_v.append(round(v_t, 6))
+    return {"param": new_p, "m": new_m, "v": new_v}
+```
+
+Decoupled weight decay applies direct shrinkage proportional to lr * weight_decay * param, avoiding distortion from gradient scale normalization.
+
+</Solution>

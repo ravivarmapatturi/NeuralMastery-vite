@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #896. Computer Vision & CNN Architectures Module 2: Problem 6"
 description: "Master #896. Computer Vision & CNN Architectures Module 2: Problem 6 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,37 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #896. Computer Vision & CNN Architectures Module 2: Problem 6
+# #896. Global Average Pooling (GAP) 2D
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #896 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#896. Computer Vision & CNN Architectures Module 2: Problem 6` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Collapse 2D spatial feature maps into a 1D vector to bridge convolutional backbones and classification heads without dense parameter explosion.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `global_avg_pool2d(x)`: for each of the `C` channels in tensor `x` of shape `(C, H, W)`, compute the mean of all `H * W` spatial elements. Return a 1D list of length `C` with values rounded to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-6" />
+
+<Solution>
+
+```python
+def global_avg_pool2d(x: list[list[list[float]]]) -> list[float]:
+    C = len(x)
+    H = len(x[0])
+    W = len(x[0][0])
+    area = H * W
+    out = []
+    for c in range(C):
+        c_sum = sum(x[c][i][j] for i in range(H) for j in range(W))
+        out.append(round(float(c_sum / area), 4))
+    return out
+```
+
+Averaging each 2D channel across its entire spatial extent produces a compact representation invariant to spatial translations.
+
+</Solution>

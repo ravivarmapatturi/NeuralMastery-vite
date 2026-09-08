@@ -1,23 +1,40 @@
 ---
-placeholder: true
 title: "Practice: #917. Computer Vision & CNN Architectures Module 6: Problem 27"
 description: "Master #917. Computer Vision & CNN Architectures Module 6: Problem 27 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+difficulty: "easy"
 topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #917. Computer Vision & CNN Architectures Module 6: Problem 27
+# #917. Dice Loss for Binary Semantic Segmentation
 
-**Track**: Computer Vision & CNN Architectures | **Rank**: #917 of 1072 | **Points**: 90 XP
+**Track**: Computer Vision & CNN Architectures | **Rank**: #917 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#917. Computer Vision & CNN Architectures Module 6: Problem 27` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Optimize boundary overlap directly for medical image segmentation and sparse foreground object segmentation tasks.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dice_loss(...)`. Calculate intersection `sum(p_ij * y_ij)`, prediction sum `sum(p_ij)`, and ground truth sum `sum(y_ij)` over all pixels. Compute `dice_coeff = (2 * intersection + smooth) / (sum_p + sum_y + smooth)`. Return `round(1.0 - dice_coeff, 4)`.
 
 <PracticePlayground problemId="cv-cnn-prob-27" />
+
+<Solution>
+
+```python
+def dice_loss(predictions: list[list[float]], targets: list[list[int]], smooth: float = 1.0) -> float:
+    H = len(predictions)
+    W = len(predictions[0])
+    intersection = sum(predictions[i][j] * targets[i][j] for i in range(H) for j in range(W))
+    sum_p = sum(predictions[i][j] for i in range(H) for j in range(W))
+    sum_t = sum(targets[i][j] for i in range(H) for j in range(W))
+    dice_coeff = (2.0 * intersection + smooth) / (sum_p + sum_t + smooth)
+    return round(1.0 - dice_coeff, 4)
+```
+
+Evaluating the harmonic overlap between predicted masks and ground truth penalizes boundary inaccuracies regardless of image background scale.
+
+</Solution>

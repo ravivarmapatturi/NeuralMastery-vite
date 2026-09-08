@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #899. Computer Vision & CNN Architectures Module 2: Problem 9"
 description: "Master #899. Computer Vision & CNN Architectures Module 2: Problem 9 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,46 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #899. Computer Vision & CNN Architectures Module 2: Problem 9
+# #899. Sobel Edge Gradient Magnitude
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #899 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#899. Computer Vision & CNN Architectures Module 2: Problem 9` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Detect spatial intensity gradients and edges using discrete Sobel convolutional derivative filters.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `sobel_edge_magnitude(img)`: convolve a 2D image `(H, W)` with 3x3 Sobel kernels `Gx` and `Gy` in valid mode (no padding). `Gx = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]` and `Gy = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]`. For each valid position, compute the gradient magnitude `sqrt(Gx^2 + Gy^2)`. Return the `(H - 2, W - 2)` output matrix rounded to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-9" />
+
+<Solution>
+
+```python
+def sobel_edge_magnitude(img: list[list[float]]) -> list[list[float]]:
+    H = len(img)
+    W = len(img[0])
+    out_H = H - 2
+    out_W = W - 2
+    mag = []
+    for i in range(out_H):
+        row = []
+        for j in range(out_W):
+            p00 = img[i][j];     p01 = img[i][j+1];     p02 = img[i][j+2]
+            p10 = img[i+1][j];   p11 = img[i+1][j+1];   p12 = img[i+1][j+2]
+            p20 = img[i+2][j];   p21 = img[i+2][j+1];   p22 = img[i+2][j+2]
+
+            gx = -p00 + p02 - 2.0 * p10 + 2.0 * p12 - p20 + p22
+            gy = -p00 - 2.0 * p01 - p02 + p20 + 2.0 * p21 + p22
+            m = math.sqrt(gx * gx + gy * gy)
+            row.append(round(float(m), 4))
+        mag.append(row)
+    return mag
+```
+
+Evaluating the orthogonal Sobel convolution responses Gx and Gy produces the Euclidean gradient vector magnitude at each pixel location.
+
+</Solution>

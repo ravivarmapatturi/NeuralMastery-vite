@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #900. Computer Vision & CNN Architectures Module 2: Problem 10"
 description: "Master #900. Computer Vision & CNN Architectures Module 2: Problem 10 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,34 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #900. Computer Vision & CNN Architectures Module 2: Problem 10
+# #900. Cumulative Receptive Field Tracker
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #900 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#900. Computer Vision & CNN Architectures Module 2: Problem 10` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Track how deep convolutional feature representations expand their field of view over input image coordinates.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `receptive_field_1d(kernel_sizes, strides)`: start with receptive field `rf = 1` and cumulative stride `stride = 1`. For each layer `l` with kernel size `k` and stride `s`, update: `rf = rf + (k - 1) * stride`, and then `stride = stride * s`. Return `{'receptive_field': rf, 'cumulative_stride': stride}`.
 
 <PracticePlayground problemId="cv-cnn-prob-10" />
+
+<Solution>
+
+```python
+def receptive_field_1d(kernel_sizes: list[int], strides: list[int]) -> dict:
+    rf = 1
+    stride = 1
+    for k, s in zip(kernel_sizes, strides):
+        rf = rf + (k - 1) * stride
+        stride = stride * s
+    return {"receptive_field": rf, "cumulative_stride": stride}
+```
+
+Each successive layer broadens the effective input patch by its kernel extent scaled by the preceding cumulative feature map stride.
+
+</Solution>

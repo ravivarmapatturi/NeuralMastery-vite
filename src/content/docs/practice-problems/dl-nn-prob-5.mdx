@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #865. Deep Learning & Neural Networks Module 1: Problem 5"
 description: "Master #865. Deep Learning & Neural Networks Module 1: Problem 5 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,39 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #865. Deep Learning & Neural Networks Module 1: Problem 5
+# #865. Mean Squared Error Loss Gradient
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #865 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#865. Deep Learning & Neural Networks Module 1: Problem 5` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the analytical gradient of Mean Squared Error loss w.r.t network predictions to initiate backpropagation.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_1_problem_5`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `mse_loss_backward(y_pred, y_true)`: with `MSE = (1 / (N * D)) * sum((y_pred - y_true)^2)`, compute the derivative with respect to each prediction `y_pred[i][j]`, which is `(2 / (N * D)) * (y_pred[i][j] - y_true[i][j])`. Here `N` is the number of rows and `D` is the number of columns. Round each gradient element to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-5" />
+
+<Solution>
+
+```python
+def mse_loss_backward(y_pred: list[list[float]], y_true: list[list[float]]) -> list[list[float]]:
+    N = len(y_pred)
+    D = len(y_pred[0])
+    total_elements = N * D
+    grad = []
+    for i in range(N):
+        row = []
+        for j in range(D):
+            val = (2.0 / total_elements) * (y_pred[i][j] - y_true[i][j])
+            row.append(round(float(val), 4))
+        grad.append(row)
+    return grad
+```
+
+Differentiating (1/M) sum (y_hat - y)^2 w.r.t y_hat yields (2/M)(y_hat - y) where M = N * D is the total number of evaluated scalar predictions.
+
+</Solution>

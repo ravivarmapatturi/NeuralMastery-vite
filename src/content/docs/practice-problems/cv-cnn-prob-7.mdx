@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #897. Computer Vision & CNN Architectures Module 2: Problem 7"
 description: "Master #897. Computer Vision & CNN Architectures Module 2: Problem 7 in the Computer Vision & CNN Architectures track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,44 @@ topic: "Computer Vision & CNN Architectures"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #897. Computer Vision & CNN Architectures Module 2: Problem 7
+# #897. Bounding Box Intersection over Union (IoU)
 
 **Track**: Computer Vision & CNN Architectures | **Rank**: #897 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#897. Computer Vision & CNN Architectures Module 2: Problem 7` to advance your mastery in **Computer Vision & CNN Architectures**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the Jaccard overlap index between two bounding boxes for object detection evaluation and non-maximum suppression.
 
 ## Task
 
-Implement the function `computer_vision_and_cnn_architectures_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `iou_bounding_box(box_a, box_b)`: given two boxes formatted as `[x1, y1, x2, y2]` (with `x1 <= x2` and `y1 <= y2`), compute the intersection rectangle coordinates: `xA = max(x1_a, x1_b)`, `yA = max(y1_a, y1_b)`, `xB = min(x2_a, x2_b)`, `yB = min(y2_a, y2_b)`. If `xB <= xA` or `yB <= yA`, the intersection area is `0.0`. Otherwise `inter = (xB - xA) * (yB - yA)`. The union is `area_a + area_b - inter`. Return `inter / union` rounded to 4 decimal places.
 
 <PracticePlayground problemId="cv-cnn-prob-7" />
+
+<Solution>
+
+```python
+def iou_bounding_box(box_a: list[float], box_b: list[float]) -> float:
+    xA = max(box_a[0], box_b[0])
+    yA = max(box_a[1], box_b[1])
+    xB = min(box_a[2], box_b[2])
+    yB = min(box_a[3], box_b[3])
+
+    inter_w = max(0.0, xB - xA)
+    inter_h = max(0.0, yB - yA)
+    inter_area = inter_w * inter_h
+
+    area_a = max(0.0, box_a[2] - box_a[0]) * max(0.0, box_a[3] - box_a[1])
+    area_b = max(0.0, box_b[2] - box_b[0]) * max(0.0, box_b[3] - box_b[1])
+    union_area = area_a + area_b - inter_area
+
+    if union_area <= 0.0:
+        return 0.0
+    return round(float(inter_area / union_area), 4)
+```
+
+Determining overlapping coordinate extents yields the intersection area, which is divided by the combined area of both boxes minus the intersection.
+
+</Solution>

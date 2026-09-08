@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #882. Deep Learning & Neural Networks Module 5: Problem 22"
 description: "Master #882. Deep Learning & Neural Networks Module 5: Problem 22 in the Deep Learning & Neural Networks track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,48 @@ topic: "Deep Learning & Neural Networks"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #882. Deep Learning & Neural Networks Module 5: Problem 22
+# #882. Residual Block Forward Pass
 
 **Track**: Deep Learning & Neural Networks | **Rank**: #882 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#882. Deep Learning & Neural Networks Module 5: Problem 22` to advance your mastery in **Deep Learning & Neural Networks**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Propagate signals through a skip-connection residual block: F(x) + x with non-linear activations.
 
 ## Task
 
-Implement the function `deep_learning_and_neural_networks_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `residual_block_forward(x, w1, b1, w2, b2)`: compute `h1 = ReLU(x @ w1 + b1)`, then linear transformation `h2 = h1 @ w2 + b2`. Add the identity skip connection: `out = ReLU(x + h2)`. Round each float in the output matrix `(N, D)` to 4 decimal places.
 
 <PracticePlayground problemId="dl-nn-prob-22" />
+
+<Solution>
+
+```python
+def residual_block_forward(x: list[list[float]], w1: list[list[float]], b1: list[float], w2: list[list[float]], b2: list[float]) -> list[list[float]]:
+    N = len(x)
+    D = len(x[0])
+
+    h1 = []
+    for i in range(N):
+        row = []
+        for j in range(D):
+            val = sum(x[i][k] * w1[k][j] for k in range(D)) + b1[j]
+            row.append(max(0.0, val))
+        h1.append(row)
+
+    out = []
+    for i in range(N):
+        row = []
+        for j in range(D):
+            val = sum(h1[i][k] * w2[k][j] for k in range(D)) + b2[j]
+            res = x[i][j] + val
+            row.append(round(max(0.0, res), 4))
+        out.append(row)
+    return out
+```
+
+A residual block computes F(x) = W2 * ReLU(W1 * x + b1) + b2, then applies an outer ReLU to the sum F(x) + x.
+
+</Solution>
