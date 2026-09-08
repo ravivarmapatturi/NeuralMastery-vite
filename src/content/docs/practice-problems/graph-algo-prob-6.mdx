@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #626. Graphs & Network Algorithms Module 2: Problem 6"
 description: "Master #626. Graphs & Network Algorithms Module 2: Problem 6 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #626. Graphs & Network Algorithms Module 2: Problem 6
 
-**Track**: Graphs & Network Algorithms | **Rank**: #626 of 1072 | **Points**: 40 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #626 of 1072 | **Points**
 
 ## Overview
 
-Implement `#626. Graphs & Network Algorithms Module 2: Problem 6` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Identify a universal sink node with in-degree n-1 and out-degree 0 in a directed graph.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_town_judge(n, trust)`: maintain trust score `in_degree - out_degree` for each person. The judge must have net score exactly `n - 1`.
 
 <PracticePlayground problemId="graph-algo-prob-6" />
+
+<Solution>
+
+```python
+def find_town_judge(n, trust):
+    scores = [0] * (n + 1)
+    for a, b in trust:
+        scores[a] -= 1
+        scores[b] += 1
+    for i in range(1, n + 1):
+        if scores[i] == n - 1:
+            return i
+    return -1
+```
+
+Track net in-degree minus out-degree for each person. Only a universal sink trusted by all other n-1 people and trusting nobody can achieve a net score of n-1.
+
+</Solution>

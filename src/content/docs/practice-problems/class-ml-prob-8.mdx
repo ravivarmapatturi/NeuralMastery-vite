@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #808. Classical Machine Learning Module 2: Problem 8"
 description: "Master #808. Classical Machine Learning Module 2: Problem 8 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,40 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #808. Classical Machine Learning Module 2: Problem 8
 
-**Track**: Classical Machine Learning | **Rank**: #808 of 1072 | **Points**: 40 XP
+**Track**: Classical Machine Learning | **Rank**: #808 of 1072 | **Points**
 
 ## Overview
 
-Implement `#808. Classical Machine Learning Module 2: Problem 8` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute an n x n pairwise distance matrix under Euclidean or Manhattan metrics.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `pairwise_distances(X, metric)`: compute all pairwise distances between rows of X using either L2 (Euclidean) or L1 (Manhattan) distance, rounding entries to 4 decimals.
 
 <PracticePlayground problemId="class-ml-prob-8" />
+
+<Solution>
+
+```python
+import math
+
+def pairwise_distances(X, metric):
+    n = len(X)
+    dist = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if metric == 'euclidean':
+                d = math.sqrt(sum((a - b) ** 2 for a, b in zip(X[i], X[j])))
+            else:
+                d = sum(abs(a - b) for a, b in zip(X[i], X[j]))
+            dist[i][j] = round(d, 4)
+    return dist
+```
+
+Compute distance for every sample pair according to the requested norm and return the symmetric distance matrix.
+
+</Solution>

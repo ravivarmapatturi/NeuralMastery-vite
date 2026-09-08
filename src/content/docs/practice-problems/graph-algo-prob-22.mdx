@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #642. Graphs & Network Algorithms Module 5: Problem 22"
 description: "Master #642. Graphs & Network Algorithms Module 5: Problem 22 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,41 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #642. Graphs & Network Algorithms Module 5: Problem 22
 
-**Track**: Graphs & Network Algorithms | **Rank**: #642 of 1072 | **Points**: 60 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #642 of 1072 | **Points**
 
 ## Overview
 
-Implement `#642. Graphs & Network Algorithms Module 5: Problem 22` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Reconstruct a complete travel itinerary visiting every ticket edge using Hierholzer's Eulerian path algorithm.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_itinerary(tickets)`: sort adjacency lists lexicographically in reverse. Perform Hierholzer's postorder DFS, pushing airport to route when its outgoing edges are exhausted.
 
 <PracticePlayground problemId="graph-algo-prob-22" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def find_itinerary(tickets):
+    adj = defaultdict(list)
+    for src, dst in sorted(tickets, reverse=True):
+        adj[src].append(dst)
+    route = []
+    def dfs(airport):
+        while adj[airport]:
+            next_dest = adj[airport].pop()
+            dfs(next_dest)
+        route.append(airport)
+    dfs("JFK")
+    return route[::-1]
+```
+
+Sort destinations in reverse lexical order so popping yields the smallest lexical neighbor. Postorder collection naturally stitches cycles into the Eulerian route.
+
+</Solution>

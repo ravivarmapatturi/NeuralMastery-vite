@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #817. Classical Machine Learning Module 4: Problem 17"
 description: "Master #817. Classical Machine Learning Module 4: Problem 17 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,44 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #817. Classical Machine Learning Module 4: Problem 17
 
-**Track**: Classical Machine Learning | **Rank**: #817 of 1072 | **Points**: 60 XP
+**Track**: Classical Machine Learning | **Rank**: #817 of 1072 | **Points**
 
 ## Overview
 
-Implement `#817. Classical Machine Learning Module 4: Problem 17` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement k-nearest neighbors classification with majority voting from scratch.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `knn_classify(X_train, y_train, X_test, k)`: for each test sample, compute Euclidean distance to all training samples, find the k nearest neighbors, and return the majority label.
 
 <PracticePlayground problemId="class-ml-prob-17" />
+
+<Solution>
+
+```python
+import math
+
+def knn_classify(X_train, y_train, X_test, k):
+    res = []
+    for test_pt in X_test:
+        dists = []
+        for i, train_pt in enumerate(X_train):
+            d = math.sqrt(sum((a - b) ** 2 for a, b in zip(test_pt, train_pt)))
+            dists.append((d, y_train[i]))
+        dists.sort(key=lambda x: x[0])
+        neighbors = dists[:k]
+        votes = {}
+        for _, lbl in neighbors:
+            votes[lbl] = votes.get(lbl, 0) + 1
+        best_lbl = sorted(votes.keys(), key=lambda l: (-votes[l], l))[0]
+        res.append(best_lbl)
+    return res
+```
+
+Find the k nearest training samples under Euclidean distance for each query point and predict the most frequent neighbor label.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #632. Graphs & Network Algorithms Module 3: Problem 12"
 description: "Master #632. Graphs & Network Algorithms Module 3: Problem 12 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,45 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #632. Graphs & Network Algorithms Module 3: Problem 12
 
-**Track**: Graphs & Network Algorithms | **Rank**: #632 of 1072 | **Points**: 60 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #632 of 1072 | **Points**
 
 ## Overview
 
-Implement `#632. Graphs & Network Algorithms Module 3: Problem 12` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Generate a valid linear sequence to complete all prerequisite courses using Kahn's topological sort.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_course_order(numCourses, prerequisites)`: collect courses with zero in-degree into a queue, appending to an ordering list as dependencies are resolved.
 
 <PracticePlayground problemId="graph-algo-prob-12" />
+
+<Solution>
+
+```python
+from collections import deque, defaultdict
+
+def find_course_order(numCourses, prerequisites):
+    adj = defaultdict(list)
+    in_degree = [0] * numCourses
+    for dest, src in prerequisites:
+        adj[src].append(dest)
+        in_degree[dest] += 1
+    q = deque([i for i in range(numCourses) if in_degree[i] == 0])
+    order = []
+    while q:
+        curr = q.popleft()
+        order.append(curr)
+        for nbr in adj[curr]:
+            in_degree[nbr] -= 1
+            if in_degree[nbr] == 0:
+                q.append(nbr)
+    return order if len(order) == numCourses else []
+```
+
+Maintain a queue of courses with zero unsatisfied prerequisites. Append them to the result sequence as their dependents are freed.
+
+</Solution>

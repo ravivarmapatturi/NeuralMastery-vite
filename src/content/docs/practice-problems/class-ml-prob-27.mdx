@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #827. Classical Machine Learning Module 6: Problem 27"
 description: "Master #827. Classical Machine Learning Module 6: Problem 27 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,35 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #827. Classical Machine Learning Module 6: Problem 27
 
-**Track**: Classical Machine Learning | **Rank**: #827 of 1072 | **Points**: 90 XP
+**Track**: Classical Machine Learning | **Rank**: #827 of 1072 | **Points**
 
 ## Overview
 
-Implement `#827. Classical Machine Learning Module 6: Problem 27` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Identify density-reachable core points in spatial datasets under the DBSCAN definition.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dbscan_core_points(X, eps, min_samples)`: for each point i, count how many points lie within Euclidean distance eps. If , point i is a core point.
 
 <PracticePlayground problemId="class-ml-prob-27" />
+
+<Solution>
+
+```python
+def dbscan_core_points(X, eps, min_samples):
+    core_points = []
+    eps_sq = eps ** 2
+    for i, p1 in enumerate(X):
+        count = sum(1 for p2 in X if sum((a - b) ** 2 for a, b in zip(p1, p2)) <= eps_sq)
+        if count >= min_samples:
+            core_points.append(i)
+    return core_points
+```
+
+Measure Euclidean distance from each candidate point to all other points. If the cardinality of the eps-ball equals or exceeds min_samples, designate it as a core point.
+
+</Solution>

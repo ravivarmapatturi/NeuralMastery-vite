@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #805. Classical Machine Learning Module 1: Problem 5"
 description: "Master #805. Classical Machine Learning Module 1: Problem 5 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,39 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #805. Classical Machine Learning Module 1: Problem 5
 
-**Track**: Classical Machine Learning | **Rank**: #805 of 1072 | **Points**: 40 XP
+**Track**: Classical Machine Learning | **Rank**: #805 of 1072 | **Points**
 
 ## Overview
 
-Implement `#805. Classical Machine Learning Module 1: Problem 5` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Dissect classifier predictions into true/false positive and negative quadrants.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_1_problem_5`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `confusion_matrix_binary(y_true, y_pred)`: count occurrences of TP (1,1), FP (0,1), TN (0,0), and FN (1,0).
 
 <PracticePlayground problemId="class-ml-prob-5" />
+
+<Solution>
+
+```python
+def confusion_matrix_binary(y_true, y_pred):
+    tp, fp, tn, fn = 0, 0, 0, 0
+    for yt, yp in zip(y_true, y_pred):
+        if yt == 1 and yp == 1:
+            tp += 1
+        elif yt == 0 and yp == 1:
+            fp += 1
+        elif yt == 0 and yp == 0:
+            tn += 1
+        else:
+            fn += 1
+    return {'tp': tp, 'fp': fp, 'tn': tn, 'fn': fn}
+```
+
+Iterate through matched label pairs, incrementing the corresponding quadrant count based on true and predicted values.
+
+</Solution>

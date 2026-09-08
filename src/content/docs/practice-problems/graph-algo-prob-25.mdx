@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #645. Graphs & Network Algorithms Module 5: Problem 25"
 description: "Master #645. Graphs & Network Algorithms Module 5: Problem 25 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,44 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #645. Graphs & Network Algorithms Module 5: Problem 25
 
-**Track**: Graphs & Network Algorithms | **Rank**: #645 of 1072 | **Points**: 90 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #645 of 1072 | **Points**
 
 ## Overview
 
-Implement `#645. Graphs & Network Algorithms Module 5: Problem 25` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the minimum steps to visit all nodes in an undirected graph using bitmask state-space BFS.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `shortest_path_visiting_all_nodes(graph)`: maintain state `(curr_node, visited_mask)`. Seed BFS with all nodes and explore shortest path transitions until `mask == (1 << n) - 1`.
 
 <PracticePlayground problemId="graph-algo-prob-25" />
+
+<Solution>
+
+```python
+from collections import deque
+
+def shortest_path_visiting_all_nodes(graph):
+    n = len(graph)
+    target_mask = (1 << n) - 1
+    q = deque([(i, 1 << i, 0) for i in range(n)])
+    visited = {(i, 1 << i) for i in range(n)}
+    while q:
+        node, mask, steps = q.popleft()
+        if mask == target_mask:
+            return steps
+        for nbr in graph[node]:
+            next_mask = mask | (1 << nbr)
+            if (nbr, next_mask) not in visited:
+                visited.add((nbr, next_mask))
+                q.append((nbr, next_mask, steps + 1))
+    return 0
+```
+
+Execute multi-source BFS over the compound state space (current_node, visited_bitmask). The first time any path reaches full mask coverage gives the minimal step count.
+
+</Solution>

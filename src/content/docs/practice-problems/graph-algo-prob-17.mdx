@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #637. Graphs & Network Algorithms Module 4: Problem 17"
 description: "Master #637. Graphs & Network Algorithms Module 4: Problem 17 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,47 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #637. Graphs & Network Algorithms Module 4: Problem 17
 
-**Track**: Graphs & Network Algorithms | **Rank**: #637 of 1072 | **Points**: 60 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #637 of 1072 | **Points**
 
 ## Overview
 
-Implement `#637. Graphs & Network Algorithms Module 4: Problem 17` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Measure signal latency across a directed network using single-source shortest paths.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `network_delay_time(times, n, k)`: run Dijkstra's algorithm starting from node k. The time required is the maximum shortest distance across all nodes, or -1 if any node remains unreachable.
 
 <PracticePlayground problemId="graph-algo-prob-17" />
+
+<Solution>
+
+```python
+import heapq
+from collections import defaultdict
+
+def network_delay_time(times, n, k):
+    adj = defaultdict(list)
+    for u, v, w in times:
+        adj[u].append((v, w))
+    dist = {i: float('inf') for i in range(1, n + 1)}
+    dist[k] = 0
+    pq = [(0, k)]
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d > dist[u]:
+            continue
+        for v, w in adj[u]:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                heapq.heappush(pq, (dist[v], v))
+    max_d = max(dist.values())
+    return max_d if max_d != float('inf') else -1
+```
+
+Use a priority queue to compute shortest paths from source k to all nodes in the directed graph, returning the maximum delay time across all nodes.
+
+</Solution>

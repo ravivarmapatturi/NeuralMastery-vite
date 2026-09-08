@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #818. Classical Machine Learning Module 4: Problem 18"
 description: "Master #818. Classical Machine Learning Module 4: Problem 18 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,41 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #818. Classical Machine Learning Module 4: Problem 18
 
-**Track**: Classical Machine Learning | **Rank**: #818 of 1072 | **Points**: 60 XP
+**Track**: Classical Machine Learning | **Rank**: #818 of 1072 | **Points**
 
 ## Overview
 
-Implement `#818. Classical Machine Learning Module 4: Problem 18` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Optimize linear regression weights using batch gradient descent.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `batch_gradient_descent_linear(X, y, lr, epochs)`: start with zero weights, iteratively compute predictions `X*w`, errors `pred - y`, and gradient `(2/n) * X^T * err`, updating weights each epoch.
 
 <PracticePlayground problemId="class-ml-prob-18" />
+
+<Solution>
+
+```python
+def batch_gradient_descent_linear(X, y, lr, epochs):
+    n_features = len(X[0])
+    w = [0.0] * n_features
+    n = len(X)
+    for _ in range(epochs):
+        grads = [0.0] * n_features
+        for i in range(n):
+            pred = sum(X[i][j] * w[j] for j in range(n_features))
+            err = pred - y[i]
+            for j in range(n_features):
+                grads[j] += err * X[i][j]
+        for j in range(n_features):
+            w[j] -= lr * (2.0 / n) * grads[j]
+    return [round(val, 4) for val in w]
+```
+
+Compute batch predictions and residuals across all training samples, calculate feature-wise partial derivatives, and apply gradient descent updates.
+
+</Solution>

@@ -30969,6 +30969,5737 @@ def cross_entropy_loss(logits, target_idx):
 ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  'class-ml-prob-4': {
+    id: 'class-ml-prob-4',
+    title: "Regression Metrics: MSE, MAE, and RMSE",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'regression_metrics',
+    functionSignature: "regression_metrics(y_true: list[float], y_pred: list[float]) -> dict[str, float]",
+    starterCode: `def regression_metrics(y_true, y_pred):
+    """y_true, y_pred: equal-length lists of true and predicted regression values.
+    Return dict with keys 'mse', 'mae', 'rmse', each rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute fundamental regression error metrics MSE, MAE, and RMSE from scratch.",
+    taskDescription: "Implement `regression_metrics(y_true, y_pred)`: calculate mean squared error, mean absolute error, and square root of MSE, rounding all returned values to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(y_true) == len(y_pred) <= 10^5",
+      "All values are finite floats."
+],
+    hints: {
+      "small": "MSE sums squared residuals divided by n; MAE sums absolute residuals divided by n.",
+      "strong": "Calculate mse = sum((yt - yp)**2)/n, mae = sum(abs(yt - yp))/n, rmse = math.sqrt(mse).",
+      "concept": "MSE penalizes large outlier errors quadratically, whereas MAE penalizes errors linearly."
+},
+    conceptConnections: [
+      {
+            "title": "Evaluation Metrics",
+            "route": "/docs/machine-learning/metrics-evaluation",
+            "description": "Regression loss functions and metrics"
+      }
+],
+    testCases: [
+      {
+            "id": "metrics-basic",
+            "label": "Basic 3 Samples",
+            "input": {
+                  "y_true": [
+                        3.0,
+                        -0.5,
+                        2.0,
+                        7.0
+                  ],
+                  "y_pred": [
+                        2.5,
+                        0.0,
+                        2.0,
+                        8.0
+                  ]
+            },
+            "expectedOutput": {
+                  "mse": 0.375,
+                  "mae": 0.5,
+                  "rmse": 0.6124
+            },
+            "hidden": false
+      },
+      {
+            "id": "perfect-prediction",
+            "label": "Zero Error Predictions",
+            "input": {
+                  "y_true": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "y_pred": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ]
+            },
+            "expectedOutput": {
+                  "mse": 0.0,
+                  "mae": 0.0,
+                  "rmse": 0.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "single-sample",
+            "label": "Single Sample Error",
+            "input": {
+                  "y_true": [
+                        10.0
+                  ],
+                  "y_pred": [
+                        7.0
+                  ]
+            },
+            "expectedOutput": {
+                  "mse": 9.0,
+                  "mae": 3.0,
+                  "rmse": 3.0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-5': {
+    id: 'class-ml-prob-5',
+    title: "Binary Confusion Matrix Elements",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'confusion_matrix_binary',
+    functionSignature: "confusion_matrix_binary(y_true: list[int], y_pred: list[int]) -> dict[str, int]",
+    starterCode: `def confusion_matrix_binary(y_true, y_pred):
+    """y_true, y_pred: lists of binary labels (0 or 1).
+    Return a dict with keys 'tp', 'fp', 'tn', 'fn' representing the counts
+    of true positives, false positives, true negatives, and false negatives."""
+    # Your implementation here
+    pass
+`,
+    mission: "Dissect classifier predictions into true/false positive and negative quadrants.",
+    taskDescription: "Implement `confusion_matrix_binary(y_true, y_pred)`: count occurrences of TP (1,1), FP (0,1), TN (0,0), and FN (1,0).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(y_true) == len(y_pred) <= 10^5",
+      "All labels are in `{0, 1}`."
+],
+    hints: {
+      "small": "Compare pairs (yt, yp): if yt == 1 and yp == 1, increment tp.",
+      "strong": "tp: true=1, pred=1. fp: true=0, pred=1. tn: true=0, pred=0. fn: true=1, pred=0.",
+      "concept": "The 2x2 confusion matrix is the basis for precision, recall, specificity, and ROC curves."
+},
+    conceptConnections: [
+      {
+            "title": "Confusion Matrix",
+            "route": "/docs/machine-learning/metrics-evaluation",
+            "description": "Classification performance diagnostics"
+      }
+],
+    testCases: [
+      {
+            "id": "mixed-classes",
+            "label": "Mixed 4-quadrant Labels",
+            "input": {
+                  "y_true": [
+                        1,
+                        0,
+                        0,
+                        1,
+                        1,
+                        0
+                  ],
+                  "y_pred": [
+                        1,
+                        0,
+                        1,
+                        0,
+                        1,
+                        0
+                  ]
+            },
+            "expectedOutput": {
+                  "tp": 2,
+                  "fp": 1,
+                  "tn": 2,
+                  "fn": 1
+            },
+            "hidden": false
+      },
+      {
+            "id": "all-correct",
+            "label": "100% Correct Classification",
+            "input": {
+                  "y_true": [
+                        0,
+                        1,
+                        0,
+                        1
+                  ],
+                  "y_pred": [
+                        0,
+                        1,
+                        0,
+                        1
+                  ]
+            },
+            "expectedOutput": {
+                  "tp": 2,
+                  "fp": 0,
+                  "tn": 2,
+                  "fn": 0
+            },
+            "hidden": false
+      },
+      {
+            "id": "all-negative",
+            "label": "All Zeros",
+            "input": {
+                  "y_true": [
+                        0,
+                        0,
+                        0
+                  ],
+                  "y_pred": [
+                        0,
+                        0,
+                        0
+                  ]
+            },
+            "expectedOutput": {
+                  "tp": 0,
+                  "fp": 0,
+                  "tn": 3,
+                  "fn": 0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-6': {
+    id: 'class-ml-prob-6',
+    title: "Feature Min-Max Normalization",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'feature_min_max_normalize',
+    functionSignature: "feature_min_max_normalize(X: list[list[float]]) -> list[list[float]]",
+    starterCode: `def feature_min_max_normalize(X):
+    """X: 2D matrix (n_samples x n_features) of numerical features.
+    Scale each feature column independently into [0.0, 1.0] using min-max scaling.
+    If a column has zero range (max == min), set all values in that column to 0.0.
+    Return scaled matrix with entries rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Rescale multivariate feature matrices column-wise to the unit interval [0, 1].",
+    taskDescription: "Implement `feature_min_max_normalize(X)`: for each feature column j, compute `(x[i][j] - min_j) / (max_j - min_j)`. Return matrix with entries rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X) <= 1000",
+      "1 <= len(X[0]) <= 100"
+],
+    hints: {
+      "small": "Calculate min and max for each column across all rows first.",
+      "strong": "Divide by `(max - min)` unless `max == min`, in which case set the scaled value to 0.0.",
+      "concept": "Min-max scaling preserves relative sample spacing while bounding feature values to [0, 1]."
+},
+    conceptConnections: [
+      {
+            "title": "Feature Preprocessing",
+            "route": "/docs/machine-learning/preprocessing",
+            "description": "Feature scaling and bounds normalization"
+      }
+],
+    testCases: [
+      {
+            "id": "scale-2x2",
+            "label": "Simple 2x2 Matrix",
+            "input": {
+                  "X": [
+                        [
+                              -1.0,
+                              2.0
+                        ],
+                        [
+                              -0.5,
+                              6.0
+                        ],
+                        [
+                              0.0,
+                              10.0
+                        ],
+                        [
+                              1.0,
+                              18.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.25,
+                        0.25
+                  ],
+                  [
+                        0.5,
+                        0.5
+                  ],
+                  [
+                        1.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "constant-col",
+            "label": "Matrix with Constant Column",
+            "input": {
+                  "X": [
+                        [
+                              5.0,
+                              1.0
+                        ],
+                        [
+                              5.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-row",
+            "label": "Single Row Matrix",
+            "input": {
+                  "X": [
+                        [
+                              3.0,
+                              7.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-7': {
+    id: 'class-ml-prob-7',
+    title: "Z-Score Standardization",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'z_score_normalize',
+    functionSignature: "z_score_normalize(X: list[list[float]]) -> list[list[float]]",
+    starterCode: `def z_score_normalize(X):
+    """X: 2D matrix of shape (n_samples x n_features).
+    Standardize each feature column independently to have zero mean and unit variance:
+    z = (x - mean) / std. If std is 0.0, set transformed values to 0.0.
+    Return matrix with entries rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Standardize features to zero mean and unit variance column-wise.",
+    taskDescription: "Implement `z_score_normalize(X)`: compute population mean and population standard deviation `sqrt(sum((x - mean)^2) / n)` per column, transforming each value into `(x - mean) / std`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X) <= 1000",
+      "1 <= len(X[0]) <= 100"
+],
+    hints: {
+      "small": "Calculate column means first, then column population standard deviations.",
+      "strong": "If standard deviation is 0.0, the feature is constant; set standardized values to 0.0.",
+      "concept": "Standardization ensures features with different physical scales contribute equally to distance and gradient calculations."
+},
+    conceptConnections: [
+      {
+            "title": "Feature Preprocessing",
+            "route": "/docs/machine-learning/preprocessing",
+            "description": "Standardization and Gaussian normalization"
+      }
+],
+    testCases: [
+      {
+            "id": "z-score-3x2",
+            "label": "3 Samples 2 Features",
+            "input": {
+                  "X": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              4.0
+                        ],
+                        [
+                              3.0,
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -1.2247,
+                        -1.2247
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        1.2247,
+                        1.2247
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "z-score-symmetric",
+            "label": "Symmetric Values",
+            "input": {
+                  "X": [
+                        [
+                              -1.0
+                        ],
+                        [
+                              0.0
+                        ],
+                        [
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -1.2247
+                  ],
+                  [
+                        0.0
+                  ],
+                  [
+                        1.2247
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "z-score-constant",
+            "label": "Constant Feature",
+            "input": {
+                  "X": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              4.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        -1.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-8': {
+    id: 'class-ml-prob-8',
+    title: "Pairwise Distance Matrix",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'pairwise_distances',
+    functionSignature: "pairwise_distances(X: list[list[float]], metric: str) -> list[list[float]]",
+    starterCode: `def pairwise_distances(X, metric):
+    """X: list of n feature vectors of length d.
+    metric: 'euclidean' or 'manhattan'.
+    Return an n x n distance matrix D where D[i][j] is the distance between X[i] and X[j],
+    with values rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute an n x n pairwise distance matrix under Euclidean or Manhattan metrics.",
+    taskDescription: "Implement `pairwise_distances(X, metric)`: compute all pairwise distances between rows of X using either L2 (Euclidean) or L1 (Manhattan) distance, rounding entries to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X) <= 100",
+      "1 <= len(X[0]) <= 50",
+      "metric is \"euclidean\" or \"manhattan\"."
+],
+    hints: {
+      "small": "Euclidean distance is `sqrt(sum((a - b)**2))`; Manhattan distance is `sum(abs(a - b))`.",
+      "strong": "Diagonal entries D[i][i] must be 0.0; the matrix is symmetric D[i][j] == D[j][i].",
+      "concept": "Distance matrices form the core pairwise kernel in KNN, hierarchical clustering, and t-SNE."
+},
+    conceptConnections: [
+      {
+            "title": "Distance Metrics",
+            "route": "/docs/machine-learning/clustering",
+            "description": "Normed metric spaces in machine learning"
+      }
+],
+    testCases: [
+      {
+            "id": "dist-euclidean",
+            "label": "Euclidean 3 Points in 2D",
+            "input": {
+                  "X": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "metric": "euclidean"
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        5.0,
+                        1.4142
+                  ],
+                  [
+                        5.0,
+                        0.0,
+                        3.6056
+                  ],
+                  [
+                        1.4142,
+                        3.6056,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "dist-manhattan",
+            "label": "Manhattan 2 Points",
+            "input": {
+                  "X": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              4.0,
+                              6.0
+                        ]
+                  ],
+                  "metric": "manhattan"
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        7.0
+                  ],
+                  [
+                        7.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-point-dist",
+            "label": "Single Point Zero Distance",
+            "input": {
+                  "X": [
+                        [
+                              5.0,
+                              5.0
+                        ]
+                  ],
+                  "metric": "euclidean"
+            },
+            "expectedOutput": [
+                  [
+                        0.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-9': {
+    id: 'class-ml-prob-9',
+    title: "Categorical One-Hot Encoding",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'one_hot_encode',
+    functionSignature: "one_hot_encode(labels: list[str]) -> list[list[int]]",
+    starterCode: `def one_hot_encode(labels):
+    """labels: list of categorical string labels.
+    Find all unique categories sorted lexicographically.
+    Return 2D list of 0/1 indicator vectors representing one-hot encoded rows."""
+    # Your implementation here
+    pass
+`,
+    mission: "Convert categorical string variables into indicator vectors ordered lexicographically.",
+    taskDescription: "Implement `one_hot_encode(labels)`: sort unique category labels alphabetically. Create a binary vector for each item with 1 at the matching category index and 0 elsewhere.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(labels) <= 10^4",
+      "All labels are non-empty strings."
+],
+    hints: {
+      "small": "Collect distinct categories using `sorted(list(set(labels)))`.",
+      "strong": "Build a category-to-index lookup dict; allocate vector of length len(categories) and set index to 1.",
+      "concept": "One-hot encoding embeds nominal discrete features without imposing artificial ordinality."
+},
+    conceptConnections: [
+      {
+            "title": "Data Preprocessing",
+            "route": "/docs/machine-learning/preprocessing",
+            "description": "Categorical variable encoding"
+      }
+],
+    testCases: [
+      {
+            "id": "encode-fruits",
+            "label": "Fruits Categories",
+            "input": {
+                  "labels": [
+                        "apple",
+                        "banana",
+                        "apple",
+                        "cherry"
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1,
+                        0,
+                        0
+                  ],
+                  [
+                        0,
+                        1,
+                        0
+                  ],
+                  [
+                        1,
+                        0,
+                        0
+                  ],
+                  [
+                        0,
+                        0,
+                        1
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "encode-binary",
+            "label": "Binary Categories",
+            "input": {
+                  "labels": [
+                        "cat",
+                        "dog",
+                        "dog",
+                        "cat"
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1,
+                        0
+                  ],
+                  [
+                        0,
+                        1
+                  ],
+                  [
+                        0,
+                        1
+                  ],
+                  [
+                        1,
+                        0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single-category",
+            "label": "Single Unique Category",
+            "input": {
+                  "labels": [
+                        "yes",
+                        "yes",
+                        "yes"
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1
+                  ],
+                  [
+                        1
+                  ],
+                  [
+                        1
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-10': {
+    id: 'class-ml-prob-10',
+    title: "Deterministic Train-Test Split Indexing",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'train_test_split_indices',
+    functionSignature: "train_test_split_indices(n_samples: int, test_size: float) -> tuple[list[int], list[int]]",
+    starterCode: `def train_test_split_indices(n_samples, test_size):
+    """n_samples: total number of samples (integer >= 1).
+    test_size: float in (0.0, 1.0) indicating fraction of test samples.
+    Let n_test = int(n_samples * test_size) and n_train = n_samples - n_test.
+    Return tuple of (train_indices, test_indices) where train takes the first
+    n_train indices [0..n_train-1] and test takes [n_train..n_samples-1]."""
+    # Your implementation here
+    pass
+`,
+    mission: "Partition sample index ranges into deterministic training and test sets.",
+    taskDescription: "Implement `train_test_split_indices(n_samples, test_size)`: partition `range(n_samples)` into contiguous train and test index lists where `n_test = int(n_samples * test_size)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n_samples <= 10^5",
+      "0.0 < test_size < 1.0"
+],
+    hints: {
+      "small": "Compute `n_test = int(n_samples * test_size)` and `n_train = n_samples - n_test`.",
+      "strong": "Train indices are `list(range(n_train))` and test indices are `list(range(n_train, n_samples))`.",
+      "concept": "Index-based splitting decouples dataset partitioning from data array manipulation."
+},
+    conceptConnections: [
+      {
+            "title": "Cross Validation & Splits",
+            "route": "/docs/machine-learning/metrics-evaluation",
+            "description": "Dataset splitting strategies"
+      }
+],
+    testCases: [
+      {
+            "id": "split-10-samples",
+            "label": "10 Samples test_size=0.2",
+            "input": {
+                  "n_samples": 10,
+                  "test_size": 0.2
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7
+                  ],
+                  [
+                        8,
+                        9
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "split-5-samples",
+            "label": "5 Samples test_size=0.4",
+            "input": {
+                  "n_samples": 5,
+                  "test_size": 0.4
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        2
+                  ],
+                  [
+                        3,
+                        4
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "split-rounding",
+            "label": "7 Samples test_size=0.3",
+            "input": {
+                  "n_samples": 7,
+                  "test_size": 0.3
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                  ],
+                  [
+                        5,
+                        6
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-17': {
+    id: 'class-ml-prob-17',
+    title: "K-Nearest Neighbors Classifier",
+    difficulty: 'medium',
+    topic: "Classical Machine Learning",
+    estimatedTime: '15–20 min',
+    functionName: 'knn_classify',
+    functionSignature: "knn_classify(X_train: list[list[float]], y_train: list[int], X_test: list[list[float]], k: int) -> list[int]",
+    starterCode: `def knn_classify(X_train, y_train, X_test, k):
+    """X_train: training features (n_train x d).
+    y_train: training integer labels.
+    X_test: test features (n_test x d).
+    k: odd integer number of neighbors.
+    For each test point, predict class label by majority vote among k nearest Euclidean neighbors.
+    Break vote ties by choosing the smaller label. Return list of predicted labels."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement k-nearest neighbors classification with majority voting from scratch.",
+    taskDescription: "Implement `knn_classify(X_train, y_train, X_test, k)`: for each test sample, compute Euclidean distance to all training samples, find the k nearest neighbors, and return the majority label.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X_train) <= 500",
+      "1 <= len(X_test) <= 100",
+      "1 <= k <= len(X_train)"
+],
+    hints: {
+      "small": "Compute Euclidean distance between test vector and all train vectors.",
+      "strong": "Sort neighbors by distance ascending, take top k, and count label frequencies.",
+      "concept": "Non-parametric instance-based learning memorizes training data and assigns local manifold consensus."
+},
+    conceptConnections: [
+      {
+            "title": "KNN Algorithms",
+            "route": "/docs/machine-learning/supervised-learning",
+            "description": "Instance-based classification"
+      }
+],
+    testCases: [
+      {
+            "id": "knn-2d-basic",
+            "label": "2D 4 Train Points k=3",
+            "input": {
+                  "X_train": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              5.0,
+                              6.0
+                        ]
+                  ],
+                  "y_train": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ],
+                  "X_test": [
+                        [
+                              0.1,
+                              0.2
+                        ],
+                        [
+                              4.9,
+                              5.1
+                        ]
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": [
+                  0,
+                  1
+            ],
+            "hidden": false
+      },
+      {
+            "id": "knn-k1",
+            "label": "Nearest Neighbor k=1",
+            "input": {
+                  "X_train": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ],
+                        [
+                              10.0
+                        ]
+                  ],
+                  "y_train": [
+                        0,
+                        0,
+                        1
+                  ],
+                  "X_test": [
+                        [
+                              1.9
+                        ]
+                  ],
+                  "k": 1
+            },
+            "expectedOutput": [
+                  0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "knn-tie-breaking",
+            "label": "Tie-break to smaller label",
+            "input": {
+                  "X_train": [
+                        [
+                              0.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ],
+                  "y_train": [
+                        0,
+                        1
+                  ],
+                  "X_test": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": [
+                  0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-18': {
+    id: 'class-ml-prob-18',
+    title: "Batch Gradient Descent for Linear Regression",
+    difficulty: 'medium',
+    topic: "Classical Machine Learning",
+    estimatedTime: '15–20 min',
+    functionName: 'batch_gradient_descent_linear',
+    functionSignature: "batch_gradient_descent_linear(X: list[list[float]], y: list[float], lr: float, epochs: int) -> list[float]",
+    starterCode: `def batch_gradient_descent_linear(X, y, lr, epochs):
+    """X: feature matrix (n x d).
+    y: targets of length n.
+    lr: learning rate.
+    epochs: number of gradient descent iterations.
+    Weights w are initialized to all 0.0 (length d, no explicit bias).
+    MSE loss: (1/n) * sum((X*w - y)^2). Gradient: (2/n) * X^T * (X*w - y).
+    Update weights w = w - lr * grad.
+    Return final weights rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Optimize linear regression weights using batch gradient descent.",
+    taskDescription: "Implement `batch_gradient_descent_linear(X, y, lr, epochs)`: start with zero weights, iteratively compute predictions `X*w`, errors `pred - y`, and gradient `(2/n) * X^T * err`, updating weights each epoch.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X) <= 1000",
+      "1 <= len(X[0]) <= 20",
+      "0.0001 <= lr <= 0.5",
+      "1 <= epochs <= 1000"
+],
+    hints: {
+      "small": "Gradient for feature j is `(2/n) * sum((pred_i - y_i) * X[i][j])`.",
+      "strong": "Accumulate gradient contributions across all samples before updating weights simultaneously.",
+      "concept": "First-order optimization iteratively descends the quadratic loss surface toward the global minimum."
+},
+    conceptConnections: [
+      {
+            "title": "Gradient Descent",
+            "route": "/docs/machine-learning/optimization",
+            "description": "First-order gradient optimization"
+      }
+],
+    testCases: [
+      {
+            "id": "bgd-1d",
+            "label": "1D Simple Trend y = 2x",
+            "input": {
+                  "X": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ],
+                        [
+                              3.0
+                        ]
+                  ],
+                  "y": [
+                        2.0,
+                        4.0,
+                        6.0
+                  ],
+                  "lr": 0.1,
+                  "epochs": 50
+            },
+            "expectedOutput": [
+                  2.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "bgd-2d",
+            "label": "2D Features",
+            "input": {
+                  "X": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "y": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "lr": 0.1,
+                  "epochs": 50
+            },
+            "expectedOutput": [
+                  1.0159,
+                  1.9841
+            ],
+            "hidden": false
+      },
+      {
+            "id": "zero-target",
+            "label": "Zero Targets",
+            "input": {
+                  "X": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ],
+                  "y": [
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.05,
+                  "epochs": 10
+            },
+            "expectedOutput": [
+                  0.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-19': {
+    id: 'class-ml-prob-19',
+    title: "K-Means Clustering: Single Lloyd Step",
+    difficulty: 'medium',
+    topic: "Classical Machine Learning",
+    estimatedTime: '15–20 min',
+    functionName: 'kmeans_step',
+    functionSignature: "kmeans_step(X: list[list[float]], centroids: list[list[float]]) -> tuple[list[int], list[list[float]]]",
+    starterCode: `def kmeans_step(X, centroids):
+    """X: data points (n x d).
+    centroids: current cluster centers (k x d).
+    Perform one step of Lloyd's algorithm:
+    1. Assign each point to closest centroid (break ties by smallest centroid index).
+    2. Recompute each centroid as mean of its assigned points (rounded to 4 decimal places).
+       (If a centroid has no points, keep it unchanged).
+    Return (assignments, new_centroids)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Execute a single iteration of Lloyd's algorithm for K-means clustering.",
+    taskDescription: "Implement `kmeans_step(X, centroids)`: assign each point to its nearest centroid by squared Euclidean distance, then update each centroid to the mean of assigned points.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X) <= 1000",
+      "1 <= len(centroids) <= 50",
+      "len(X[0]) == len(centroids[0])"
+],
+    hints: {
+      "small": "Squared Euclidean distance is sufficient for assigning points to nearest centroids.",
+      "strong": "Group points by assigned centroid index and average feature coordinates column-wise.",
+      "concept": "Expectation-Maximization alternating between discrete assignment (E-step) and coordinate averaging (M-step)."
+},
+    conceptConnections: [
+      {
+            "title": "K-Means Clustering",
+            "route": "/docs/machine-learning/clustering",
+            "description": "Lloyd's algorithm and partition optimization"
+      }
+],
+    testCases: [
+      {
+            "id": "kmeans-2-clusters",
+            "label": "2 Clusters in 2D",
+            "input": {
+                  "X": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.5,
+                              2.0
+                        ],
+                        [
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              6.0,
+                              5.0
+                        ]
+                  ],
+                  "centroids": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              10.0,
+                              10.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        0,
+                        0,
+                        1
+                  ],
+                  [
+                        [
+                              2.5,
+                              2.6667
+                        ],
+                        [
+                              6.0,
+                              5.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "kmeans-single-cluster",
+            "label": "k=1 Single Cluster",
+            "input": {
+                  "X": [
+                        [
+                              2.0,
+                              4.0
+                        ],
+                        [
+                              4.0,
+                              6.0
+                        ]
+                  ],
+                  "centroids": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        0
+                  ],
+                  [
+                        [
+                              3.0,
+                              5.0
+                        ]
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty-centroid",
+            "label": "Centroid with no members remains unchanged",
+            "input": {
+                  "X": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              2.0
+                        ]
+                  ],
+                  "centroids": [
+                        [
+                              1.5,
+                              1.5
+                        ],
+                        [
+                              100.0,
+                              100.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        0
+                  ],
+                  [
+                        [
+                              1.5,
+                              1.5
+                        ],
+                        [
+                              100.0,
+                              100.0
+                        ]
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-20': {
+    id: 'class-ml-prob-20',
+    title: "1D Polynomial Feature Expansion",
+    difficulty: 'medium',
+    topic: "Classical Machine Learning",
+    estimatedTime: '15–20 min',
+    functionName: 'polynomial_features_1d',
+    functionSignature: "polynomial_features_1d(x: list[float], degree: int) -> list[list[float]]",
+    starterCode: `def polynomial_features_1d(x, degree):
+    """x: 1D list of scalar features of length n.
+    degree: positive integer maximum degree.
+    Transform each x_i into [x_i^1, x_i^2, ..., x_i^degree].
+    Return matrix of shape (n x degree) with values rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Expand 1D feature vectors into polynomial basis features.",
+    taskDescription: "Implement `polynomial_features_1d(x, degree)`: map each scalar feature `x_i` to powers `x_i^1` through `x_i^degree`, rounding each entry to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(x) <= 1000",
+      "1 <= degree <= 10"
+],
+    hints: {
+      "small": "For each value val, generate `[val**1, val**2, ..., val**degree]`.",
+      "strong": "Compute `val ** d` for d in `range(1, degree + 1)` and round each to 4 decimals.",
+      "concept": "Polynomial feature expansions allow linear models to fit non-linear curves."
+},
+    conceptConnections: [
+      {
+            "title": "Polynomial Regression",
+            "route": "/docs/machine-learning/linear-regression",
+            "description": "Non-linear feature spaces"
+      }
+],
+    testCases: [
+      {
+            "id": "poly-degree-3",
+            "label": "x=[2.0, 3.0], degree=3",
+            "input": {
+                  "x": [
+                        2.0,
+                        3.0
+                  ],
+                  "degree": 3
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        4.0,
+                        8.0
+                  ],
+                  [
+                        3.0,
+                        9.0,
+                        27.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "poly-degree-1",
+            "label": "x=[5.0], degree=1",
+            "input": {
+                  "x": [
+                        5.0
+                  ],
+                  "degree": 1
+            },
+            "expectedOutput": [
+                  [
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "poly-fractional",
+            "label": "Fractional Values degree=2",
+            "input": {
+                  "x": [
+                        0.5,
+                        -1.5
+                  ],
+                  "degree": 2
+            },
+            "expectedOutput": [
+                  [
+                        0.5,
+                        0.25
+                  ],
+                  [
+                        -1.5,
+                        2.25
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-21': {
+    id: 'class-ml-prob-21',
+    title: "AdaBoost Sample Weight Update",
+    difficulty: 'medium',
+    topic: "Classical Machine Learning",
+    estimatedTime: '15–20 min',
+    functionName: 'adaboost_weight_update',
+    functionSignature: "adaboost_weight_update(weights: list[float], y_true: list[int], y_pred: list[int], alpha: float) -> list[float]",
+    starterCode: `def adaboost_weight_update(weights, y_true, y_pred, alpha):
+    """weights: positive sample weights summing to 1.0.
+    y_true, y_pred: binary labels in {-1, 1}.
+    alpha: estimator weight.
+    Update weights: w_i = w_i * exp(-alpha * y_true_i * y_pred_i).
+    Normalize new weights so they sum to 1.0.
+    Return normalized weights rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Update and renormalize sample weights in AdaBoost based on classifier error.",
+    taskDescription: "Implement `adaboost_weight_update(weights, y_true, y_pred, alpha)`: multiply weights by `exp(-alpha * y_true * y_pred)` and normalize so sum equals 1.0, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(weights) <= 10^4",
+      "y_true[i], y_pred[i] in {-1, 1}",
+      "alpha > 0.0"
+],
+    hints: {
+      "small": "When y_true == y_pred, exponent is -alpha (weight decreases). When unequal, exponent is +alpha (weight increases).",
+      "strong": "Calculate new weights, compute sum, divide each weight by total sum, and round to 4 decimals.",
+      "concept": "Exponential loss reweighting forces subsequent ensemble learners to focus on misclassified boundary samples."
+},
+    conceptConnections: [
+      {
+            "title": "Boosting & AdaBoost",
+            "route": "/docs/machine-learning/ensemble-learning",
+            "description": "Adaptive boosting sample dynamics"
+      }
+],
+    testCases: [
+      {
+            "id": "adaboost-4-samples",
+            "label": "4 Samples with One Error",
+            "input": {
+                  "weights": [
+                        0.25,
+                        0.25,
+                        0.25,
+                        0.25
+                  ],
+                  "y_true": [
+                        1,
+                        1,
+                        -1,
+                        -1
+                  ],
+                  "y_pred": [
+                        1,
+                        1,
+                        1,
+                        -1
+                  ],
+                  "alpha": 0.5
+            },
+            "expectedOutput": [
+                  0.1749,
+                  0.1749,
+                  0.4754,
+                  0.1749
+            ],
+            "hidden": false
+      },
+      {
+            "id": "adaboost-all-correct",
+            "label": "All Correct Predictions",
+            "input": {
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "y_true": [
+                        1,
+                        -1
+                  ],
+                  "y_pred": [
+                        1,
+                        -1
+                  ],
+                  "alpha": 1.0
+            },
+            "expectedOutput": [
+                  0.5,
+                  0.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "adaboost-all-wrong",
+            "label": "All Incorrect Predictions",
+            "input": {
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "y_true": [
+                        1,
+                        -1
+                  ],
+                  "y_pred": [
+                        -1,
+                        1
+                  ],
+                  "alpha": 0.8
+            },
+            "expectedOutput": [
+                  0.5,
+                  0.5
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-22': {
+    id: 'class-ml-prob-22',
+    title: "Softmax Regression Probabilities",
+    difficulty: 'medium',
+    topic: "Classical Machine Learning",
+    estimatedTime: '15–20 min',
+    functionName: 'softmax_probabilities',
+    functionSignature: "softmax_probabilities(logits: list[list[float]]) -> list[list[float]]",
+    starterCode: `def softmax_probabilities(logits):
+    """logits: 2D matrix (n_samples x n_classes) of raw score values.
+    Apply numerically stable softmax row-wise: p_ij = exp(z_ij - max_j) / sum_k(exp(z_ik - max_j)).
+    Return probability matrix with entries rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Convert unnormalized logit scores into calibrated probability distributions with numerical stability.",
+    taskDescription: "Implement `softmax_probabilities(logits)`: subtract row maximum from logits before exponentiating, then normalize each row to sum to 1.0, rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(logits) <= 1000",
+      "2 <= len(logits[0]) <= 100"
+],
+    hints: {
+      "small": "Subtract the max logit of each row to prevent overflow with large exponents.",
+      "strong": "For each row: `m = max(row)`, `exps = [exp(v - m) for v in row]`, `probs = [e / sum(exps) for e in exps]`.",
+      "concept": "The log-sum-exp trick ensures numerical stability in exponential categorical distributions."
+},
+    conceptConnections: [
+      {
+            "title": "Multinomial Logistic Regression",
+            "route": "/docs/machine-learning/classification",
+            "description": "Softmax activation and multi-class probability"
+      }
+],
+    testCases: [
+      {
+            "id": "softmax-2x3",
+            "label": "2 Samples 3 Classes",
+            "input": {
+                  "logits": [
+                        [
+                              2.0,
+                              1.0,
+                              0.1
+                        ],
+                        [
+                              1.0,
+                              3.0,
+                              0.2
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.659,
+                        0.2424,
+                        0.0986
+                  ],
+                  [
+                        0.1131,
+                        0.836,
+                        0.0508
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "softmax-identical",
+            "label": "Identical Logits (Uniform)",
+            "input": {
+                  "logits": [
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.3333,
+                        0.3333,
+                        0.3333
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "large-logits-stability",
+            "label": "Large Logits Testing Overflow Stability",
+            "input": {
+                  "logits": [
+                        [
+                              1000.0,
+                              1001.0,
+                              999.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.2447,
+                        0.6652,
+                        0.09
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-26': {
+    id: 'class-ml-prob-26',
+    title: "Decision Tree Best Binary Split",
+    difficulty: 'hard',
+    topic: "Classical Machine Learning",
+    estimatedTime: '20–25 min',
+    functionName: 'best_binary_split',
+    functionSignature: "best_binary_split(X_col: list[float], y: list[int]) -> tuple[float, float]",
+    starterCode: `def best_binary_split(X_col, y):
+    """X_col: 1D feature values of length n.
+    y: binary target labels in {0, 1}.
+    Gini impurity: 1 - sum(p_k^2).
+    Evaluate candidate thresholds between adjacent sorted unique feature values.
+    Find split threshold <= t that maximizes Gini Gain = Gini(parent) - (N_L/N * Gini_L + N_R/N * Gini_R).
+    Return (best_threshold, best_gini_gain) rounded to 4 decimal places.
+    If all feature values are identical, return (0.0, 0.0)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Identify the optimal threshold for splitting a continuous feature by maximizing Gini impurity reduction.",
+    taskDescription: "Implement `best_binary_split(X_col, y)`: evaluate midpoints between consecutive sorted unique feature values. Find the threshold yielding maximum Gini gain, returning (best_threshold, best_gain).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= len(X_col) == len(y) <= 1000",
+      "y consists of integers in `{0, 1}`."
+],
+    hints: {
+      "small": "Calculate initial parent Gini impurity. Gini for a binary set is `1 - p0^2 - p1^2`.",
+      "strong": "Thresholds are `(unique[i] + unique[i+1]) / 2`. Split samples into left (`val <= thresh`) and right (`val > thresh`).",
+      "concept": "Greedy split selection in CART algorithms recursively partitions continuous feature spaces."
+},
+    conceptConnections: [
+      {
+            "title": "Decision Trees & CART",
+            "route": "/docs/machine-learning/decision-trees",
+            "description": "Recursive partitioning and Gini impurity"
+      }
+],
+    testCases: [
+      {
+            "id": "clean-split",
+            "label": "Linearly Separable Split",
+            "input": {
+                  "X_col": [
+                        1.0,
+                        2.0,
+                        7.0,
+                        8.0
+                  ],
+                  "y": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  4.5,
+                  0.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "interleaved-split",
+            "label": "Mixed Values Split",
+            "input": {
+                  "X_col": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0
+                  ],
+                  "y": [
+                        0,
+                        1,
+                        0,
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  3.5,
+                  0.2133
+            ],
+            "hidden": false
+      },
+      {
+            "id": "identical-values",
+            "label": "All Feature Values Identical",
+            "input": {
+                  "X_col": [
+                        5.0,
+                        5.0,
+                        5.0
+                  ],
+                  "y": [
+                        0,
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-27': {
+    id: 'class-ml-prob-27',
+    title: "DBSCAN Core Points Detection",
+    difficulty: 'hard',
+    topic: "Classical Machine Learning",
+    estimatedTime: '20–25 min',
+    functionName: 'dbscan_core_points',
+    functionSignature: "dbscan_core_points(X: list[list[float]], eps: float, min_samples: int) -> list[int]",
+    starterCode: `def dbscan_core_points(X, eps, min_samples):
+    """X: list of d-dimensional points (n x d).
+    eps: neighborhood radius distance threshold (Euclidean).
+    min_samples: minimum number of points (including self) in eps-neighborhood.
+    Return sorted list of indices of all core points."""
+    # Your implementation here
+    pass
+`,
+    mission: "Identify density-reachable core points in spatial datasets under the DBSCAN definition.",
+    taskDescription: "Implement `dbscan_core_points(X, eps, min_samples)`: for each point i, count how many points lie within Euclidean distance eps. If , point i is a core point.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X) <= 1000",
+      "1 <= len(X[0]) <= 20",
+      "eps > 0.0",
+      "min_samples >= 1"
+],
+    hints: {
+      "small": "Compare squared distances to avoid calling `math.sqrt()` repeatedly.",
+      "strong": "A point is its own neighbor. Check if `sum(dist(p_i, p_j) <= eps) >= min_samples`.",
+      "concept": "Core points anchor density-connected components, forming noise-robust clusters of arbitrary topology."
+},
+    conceptConnections: [
+      {
+            "title": "DBSCAN & Density Clustering",
+            "route": "/docs/machine-learning/clustering",
+            "description": "Density-based spatial clustering of applications with noise"
+      }
+],
+    testCases: [
+      {
+            "id": "dbscan-cluster-and-noise",
+            "label": "Dense Cluster and Isolated Point",
+            "input": {
+                  "X": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.1,
+                              0.1
+                        ],
+                        [
+                              0.2,
+                              0.0
+                        ],
+                        [
+                              10.0,
+                              10.0
+                        ]
+                  ],
+                  "eps": 1.0,
+                  "min_samples": 3
+            },
+            "expectedOutput": [
+                  0,
+                  1,
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "dbscan-all-isolated",
+            "label": "All Points Isolated (No Cores)",
+            "input": {
+                  "X": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              10.0,
+                              10.0
+                        ]
+                  ],
+                  "eps": 1.0,
+                  "min_samples": 2
+            },
+            "expectedOutput": [],
+            "hidden": false
+      },
+      {
+            "id": "dbscan-min-samples-1",
+            "label": "min_samples=1 All Points Are Core",
+            "input": {
+                  "X": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "eps": 0.1,
+                  "min_samples": 1
+            },
+            "expectedOutput": [
+                  0,
+                  1
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-28': {
+    id: 'class-ml-prob-28',
+    title: "Fisher's Linear Discriminant Analysis Projection",
+    difficulty: 'hard',
+    topic: "Classical Machine Learning",
+    estimatedTime: '20–25 min',
+    functionName: 'lda_projection_vector',
+    functionSignature: "lda_projection_vector(class0: list[list[float]], class1: list[list[float]]) -> list[float]",
+    starterCode: `def lda_projection_vector(class0, class1):
+    """class0, class1: lists of 2D data points for two classes.
+    Compute Fisher's linear discriminant vector w = S_w^(-1) * (m1 - m0).
+    S_w is the within-class scatter matrix S0 + S1.
+    Normalize w to unit length: w / ||w||_2.
+    Return unit vector w rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Derive Fisher's optimal 1D discriminant projection vector for two Gaussian classes.",
+    taskDescription: "Implement `lda_projection_vector(class0, class1)`: compute class mean vectors `m0, m1`, within-class scatter matrix `S_w`, invert `S_w`, multiply by `m1 - m0`, and normalize `w` to unit length.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= len(class0), len(class1) <= 500",
+      "Each point is a 2D float vector [x1, x2].",
+      "S_w is non-singular."
+],
+    hints: {
+      "small": "Compute means m0, m1. Scatter S_w = sum((x - m0)(x - m0)^T) + sum((x - m1)(x - m1)^T).",
+      "strong": "Invert 2x2 matrix using formula: `[[d, -b], [-c, a]] / (ad - bc)`. Multiply by `(m1 - m0)` and normalize.",
+      "concept": "Fisher's criterion maximizes between-class variance relative to within-class variance."
+},
+    conceptConnections: [
+      {
+            "title": "Linear Discriminant Analysis",
+            "route": "/docs/machine-learning/supervised-learning",
+            "description": "Fisher criterion and dimensionality reduction"
+      }
+],
+    testCases: [
+      {
+            "id": "lda-horizontal-separation",
+            "label": "Horizontal Class Separation",
+            "input": {
+                  "class0": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              3.0,
+                              3.0
+                        ]
+                  ],
+                  "class1": [
+                        [
+                              8.0,
+                              2.0
+                        ],
+                        [
+                              9.0,
+                              1.0
+                        ],
+                        [
+                              10.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0.7682,
+                  -0.6402
+            ],
+            "hidden": false
+      },
+      {
+            "id": "lda-diagonal-separation",
+            "label": "Diagonal Class Separation",
+            "input": {
+                  "class0": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "class1": [
+                        [
+                              4.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              5.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0.7071,
+                  0.7071
+            ],
+            "hidden": false
+      },
+      {
+            "id": "lda-vertical-separation",
+            "label": "Vertical Class Separation",
+            "input": {
+                  "class0": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "class1": [
+                        [
+                              1.0,
+                              8.0
+                        ],
+                        [
+                              1.0,
+                              9.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  1.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-29': {
+    id: 'class-ml-prob-29',
+    title: "Gaussian Mixture Model: 1D EM Step",
+    difficulty: 'hard',
+    topic: "Classical Machine Learning",
+    estimatedTime: '20–25 min',
+    functionName: 'gmm_em_step_1d',
+    functionSignature: "gmm_em_step_1d(X: list[float], weights: list[float], means: list[float], variances: list[float]) -> dict",
+    starterCode: `def gmm_em_step_1d(X, weights, means, variances):
+    """X: 1D observed data points.
+    weights, means, variances: initial parameters for k Gaussian components.
+    Perform one EM iteration:
+    1. E-step: calculate posterior responsibilities gamma_ik for each point i and component k.
+    2. M-step: re-estimate mixture weights, means, and variances.
+    Return dict {'weights': [...], 'means': [...], 'variances': [...]} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Execute one full Expectation-Maximization step for 1D Gaussian Mixture Models.",
+    taskDescription: "Implement `gmm_em_step_1d(X, weights, means, variances)`: compute Gaussian densities and responsibilities (E-step), then update weights, means, and variances (M-step), returning rounded dict.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X) <= 1000",
+      "len(weights) == len(means) == len(variances) >= 2",
+      "variances[k] > 0"
+],
+    hints: {
+      "small": "Density is `(1 / sqrt(2*pi*var)) * exp(-(x - mu)^2 / (2*var))`.",
+      "strong": "Normalize likelihoods per sample: `gamma[i][k] = (w_k * p_k) / sum_j(w_j * p_j)`. Re-estimate `N_k = sum_i gamma[i][k]`.",
+      "concept": "Expectation-Maximization guarantees monotonic improvement of observed data log-likelihood."
+},
+    conceptConnections: [
+      {
+            "title": "GMM & EM Algorithm",
+            "route": "/docs/machine-learning/probabilistic-models",
+            "description": "Latent variable inference via EM"
+      }
+],
+    testCases: [
+      {
+            "id": "gmm-2-comp",
+            "label": "2 Components 4 Points",
+            "input": {
+                  "X": [
+                        1.0,
+                        1.2,
+                        5.0,
+                        5.2
+                  ],
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        1.0,
+                        5.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.4999,
+                        0.5001
+                  ],
+                  "means": [
+                        1.1009,
+                        5.0979
+                  ],
+                  "variances": [
+                        0.0138,
+                        0.0185
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "gmm-symmetric",
+            "label": "Symmetric Points",
+            "input": {
+                  "X": [
+                        -2.0,
+                        -1.0,
+                        1.0,
+                        2.0
+                  ],
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        -1.5,
+                        1.5
+                  ],
+                  "variances": [
+                        0.5,
+                        0.5
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        -1.4975,
+                        1.4975
+                  ],
+                  "variances": [
+                        0.2574,
+                        0.2574
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "single-cluster-gmm",
+            "label": "Concentrated Points",
+            "input": {
+                  "X": [
+                        0.0,
+                        0.1,
+                        -0.1
+                  ],
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        0.0,
+                        1.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.6223,
+                        0.3777
+                  ],
+                  "means": [
+                        -0.0025,
+                        0.0041
+                  ],
+                  "variances": [
+                        0.0067,
+                        0.0067
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'class-ml-prob-30': {
+    id: 'class-ml-prob-30',
+    title: "Coordinate Descent for Lasso Regression",
+    difficulty: 'hard',
+    topic: "Classical Machine Learning",
+    estimatedTime: '25–30 min',
+    functionName: 'lasso_coordinate_descent',
+    functionSignature: "lasso_coordinate_descent(X: list[list[float]], y: list[float], alpha: float, max_iter: int) -> list[float]",
+    starterCode: `def lasso_coordinate_descent(X, y, alpha, max_iter):
+    """X: design matrix (n x p).
+    y: target vector of length n.
+    alpha: L1 regularization penalty parameter.
+    max_iter: number of full coordinate descent sweeps.
+    Objective: 0.5 * ||y - X*w||_2^2 + alpha * ||w||_1.
+    For each feature j, compute rho_j = sum_i(X[i][j] * (y[i] - sum_{k != j} X[i][k]*w[k])).
+    Update w[j] via soft-thresholding S(rho_j, alpha) / sum_i(X[i][j]^2).
+    Return weights w rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Fit an L1-regularized sparse linear model using cyclical coordinate descent with soft thresholding.",
+    taskDescription: "Implement `lasso_coordinate_descent(X, y, alpha, max_iter)`: iteratively update each coordinate `w_j` using soft thresholding on partial residuals, inducing feature sparsity.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(X) <= 500",
+      "1 <= len(X[0]) <= 20",
+      "alpha > 0.0",
+      "1 <= max_iter <= 500"
+],
+    hints: {
+      "small": "Coordinate descent optimizes one parameter at a time while holding all other parameters fixed.",
+      "strong": "Soft-thresholding operator: if `rho < -alpha`, `(rho + alpha) / z`; if `rho > alpha`, `(rho - alpha) / z`; else `0.0`.",
+      "concept": "Because L1 regularization is non-differentiable at zero, subgradient-based coordinate descent enables exact sparse solutions."
+},
+    conceptConnections: [
+      {
+            "title": "Lasso Regression",
+            "route": "/docs/machine-learning/linear-regression",
+            "description": "L1 sparsity and coordinate optimization"
+      }
+],
+    testCases: [
+      {
+            "id": "lasso-sparse-feature",
+            "label": "One Informative and One Noise Feature",
+            "input": {
+                  "X": [
+                        [
+                              1.0,
+                              0.1
+                        ],
+                        [
+                              2.0,
+                              -0.1
+                        ],
+                        [
+                              3.0,
+                              0.2
+                        ],
+                        [
+                              4.0,
+                              -0.2
+                        ]
+                  ],
+                  "y": [
+                        2.0,
+                        4.0,
+                        6.0,
+                        8.0
+                  ],
+                  "alpha": 1.0,
+                  "max_iter": 50
+            },
+            "expectedOutput": [
+                  1.9667,
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "lasso-high-penalty",
+            "label": "High Penalty Setting All to Zero",
+            "input": {
+                  "X": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ],
+                  "y": [
+                        1.0,
+                        1.0
+                  ],
+                  "alpha": 100.0,
+                  "max_iter": 10
+            },
+            "expectedOutput": [
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "lasso-orthogonal",
+            "label": "Orthogonal Features",
+            "input": {
+                  "X": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "y": [
+                        3.0,
+                        4.0
+                  ],
+                  "alpha": 0.5,
+                  "max_iter": 20
+            },
+            "expectedOutput": [
+                  2.5,
+                  3.5
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-1': {
+    id: 'graph-algo-prob-1',
+    title: "Find Center of Star Graph",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'find_star_center',
+    functionSignature: "find_star_center(edges: list[list[int]]) -> int",
+    starterCode: `def find_star_center(edges):
+    """edges: list of undirected edges representing an n-node star graph.
+    Return the center node of the star graph in O(1) time."""
+    # Your implementation here
+    pass
+`,
+    mission: "Identify the central hub node of a star graph in constant O(1) time.",
+    taskDescription: "Implement `find_star_center(edges)`: since the center node must connect to every other node, it is guaranteed to appear in both of the first two edges.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "3 <= n <= 10^5",
+      "len(edges) == n - 1",
+      "edges represents a valid star graph."
+],
+    hints: {
+      "small": "The center node is connected to every peripheral node.",
+      "strong": "Check which node in `edges[0]` also appears in `edges[1]`.",
+      "concept": "Star graph topologies have degree n-1 at the hub and degree 1 at all leaves."
+},
+    conceptConnections: [
+      {
+            "title": "Graph Topology Basics",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Star and tree graph degree properties"
+      }
+],
+    testCases: [
+      {
+            "id": "star-4-nodes",
+            "label": "4-Node Star (Center 2)",
+            "input": {
+                  "edges": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              4,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "star-5-nodes",
+            "label": "5-Node Star (Center 1)",
+            "input": {
+                  "edges": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              5,
+                              1
+                        ],
+                        [
+                              1,
+                              3
+                        ],
+                        [
+                              1,
+                              4
+                        ]
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "star-minimal",
+            "label": "3-Node Star (Center 3)",
+            "input": {
+                  "edges": [
+                        [
+                              3,
+                              1
+                        ],
+                        [
+                              3,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": 3,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-2': {
+    id: 'graph-algo-prob-2',
+    title: "Find if Path Exists in Graph",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'valid_path_exists',
+    functionSignature: "valid_path_exists(n: int, edges: list[list[int]], source: int, destination: int) -> bool",
+    starterCode: `def valid_path_exists(n, edges, source, destination):
+    """n: number of vertices (0 to n-1).
+    edges: list of undirected edges [u, v].
+    source, destination: start and goal vertices.
+    Return True if there is a valid path from source to destination, False otherwise."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine graph reachability between two vertices using BFS or DFS traversal.",
+    taskDescription: "Implement `valid_path_exists(n, edges, source, destination)`: construct an adjacency list and use BFS with a visited set to determine if destination is reachable from source.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 2 * 10^5",
+      "0 <= len(edges) <= 2 * 10^5",
+      "0 <= source, destination < n"
+],
+    hints: {
+      "small": "If source == destination, return True immediately.",
+      "strong": "Build adjacency list, enqueue source, mark visited, and traverse neighbors with a queue until finding destination.",
+      "concept": "Breadth-first search traverses reachable components level-by-level without revisits."
+},
+    conceptConnections: [
+      {
+            "title": "Graph Traversal (BFS)",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "BFS connectivity and shortest path search"
+      }
+],
+    testCases: [
+      {
+            "id": "path-exists-3-nodes",
+            "label": "Triangle Path Exists",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              0
+                        ]
+                  ],
+                  "source": 0,
+                  "destination": 2
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "path-disconnected",
+            "label": "Two Disconnected Components",
+            "input": {
+                  "n": 6,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              0,
+                              2
+                        ],
+                        [
+                              3,
+                              5
+                        ],
+                        [
+                              5,
+                              4
+                        ],
+                        [
+                              4,
+                              3
+                        ]
+                  ],
+                  "source": 0,
+                  "destination": 5
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "self-loop-start",
+            "label": "Source Equals Destination",
+            "input": {
+                  "n": 1,
+                  "edges": [],
+                  "source": 0,
+                  "destination": 0
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-3': {
+    id: 'graph-algo-prob-3',
+    title: "Compute Undirected Graph Node Degrees",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'compute_node_degrees',
+    functionSignature: "compute_node_degrees(n: int, edges: list[list[int]]) -> dict[int, int]",
+    starterCode: `def compute_node_degrees(n, edges):
+    """n: number of nodes labeled 0 to n-1.
+    edges: list of undirected edges [u, v].
+    Return a dictionary mapping each node index 0..n-1 to its degree (incident edge count)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate vertex degrees across all nodes in an undirected graph.",
+    taskDescription: "Implement `compute_node_degrees(n, edges)`: initialize degree count 0 for every node 0..n-1, and increment degrees for both endpoints of each edge.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 10^5",
+      "0 <= len(edges) <= 2 * 10^5"
+],
+    hints: {
+      "small": "In an undirected edge [u, v], both node u and node v gain 1 degree.",
+      "strong": "Initialize `{i: 0 for i in range(n)}`, then loop over edges incrementing both endpoints.",
+      "concept": "By the Handshaking Lemma, the sum of all node degrees equals twice the number of edges."
+},
+    conceptConnections: [
+      {
+            "title": "Graph Invariants",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Handshaking lemma and degree sequences"
+      }
+],
+    testCases: [
+      {
+            "id": "degrees-triangle",
+            "label": "3-Node Triangle (All Degree 2)",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "0": 2,
+                  "1": 2,
+                  "2": 2
+            },
+            "hidden": false
+      },
+      {
+            "id": "degrees-star",
+            "label": "Star Graph with Isolated Node",
+            "input": {
+                  "n": 4,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              0,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "0": 2,
+                  "1": 1,
+                  "2": 1,
+                  "3": 0
+            },
+            "hidden": false
+      },
+      {
+            "id": "degrees-empty",
+            "label": "Graph with No Edges",
+            "input": {
+                  "n": 2,
+                  "edges": []
+            },
+            "expectedOutput": {
+                  "0": 0,
+                  "1": 0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-4': {
+    id: 'graph-algo-prob-4',
+    title: "Adjacency List to Adjacency Matrix",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'adj_list_to_matrix',
+    functionSignature: "adj_list_to_matrix(n: int, adj_list: dict[int, list[int]]) -> list[list[int]]",
+    starterCode: `def adj_list_to_matrix(n, adj_list):
+    """n: number of vertices (0 to n-1).
+    adj_list: dictionary mapping node u to list of neighbors.
+    Return n x n binary adjacency matrix where matrix[u][v] = 1 if edge exists, else 0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Transform an adjacency list representation into a dense adjacency matrix.",
+    taskDescription: "Implement `adj_list_to_matrix(n, adj_list)`: create an n x n zero matrix, and set `matrix[u][v] = 1` for each neighbor in `adj_list`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 500",
+      "All vertices in adj_list are in range `0..n-1`."
+],
+    hints: {
+      "small": "Initialize an n x n 2D grid filled with 0.",
+      "strong": "Iterate through keys and neighbor lists in adj_list, setting `matrix[int(u)][v] = 1`.",
+      "concept": "Adjacency matrices provide O(1) edge lookup at the cost of O(V^2) space complexity."
+},
+    conceptConnections: [
+      {
+            "title": "Graph Representations",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Lists vs. matrices representation tradeoffs"
+      }
+],
+    testCases: [
+      {
+            "id": "adj-3x3",
+            "label": "3 Vertices Directed Chain",
+            "input": {
+                  "n": 3,
+                  "adj_list": {
+                        "0": [
+                              1
+                        ],
+                        "1": [
+                              2
+                        ],
+                        "2": []
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        0
+                  ],
+                  [
+                        0,
+                        0,
+                        1
+                  ],
+                  [
+                        0,
+                        0,
+                        0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "adj-undirected",
+            "label": "2 Vertices Undirected Edge",
+            "input": {
+                  "n": 2,
+                  "adj_list": {
+                        "0": [
+                              1
+                        ],
+                        "1": [
+                              0
+                        ]
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1
+                  ],
+                  [
+                        1,
+                        0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "adj-disconnected",
+            "label": "Single Node No Edges",
+            "input": {
+                  "n": 1,
+                  "adj_list": {
+                        "0": []
+                  }
+            },
+            "expectedOutput": [
+                  [
+                        0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-5': {
+    id: 'graph-algo-prob-5',
+    title: "Is Graph Bipartite (2-Colorability)",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'is_bipartite_bfs',
+    functionSignature: "is_bipartite_bfs(n: int, graph: list[list[int]]) -> bool",
+    starterCode: `def is_bipartite_bfs(n, graph):
+    """n: number of nodes labeled 0 to n-1.
+    graph: adjacency list where graph[u] is list of neighbors of u.
+    Return True if the graph is bipartite (2-colorable), False otherwise."""
+    # Your implementation here
+    pass
+`,
+    mission: "Check if a graph can be 2-colored such that no two adjacent vertices share the same color.",
+    taskDescription: "Implement `is_bipartite_bfs(n, graph)`: use BFS coloring with colors 0 and 1. If any neighbor already has the same color as the current vertex, return False.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 100",
+      "graph[u] contains distinct values."
+],
+    hints: {
+      "small": "A graph is bipartite if and only if it contains no odd-length cycles.",
+      "strong": "Maintain a color array initialized to -1. For each component, assign color 0 to the start node and flip colors along BFS edges.",
+      "concept": "K\u00f6nig's theorem: a graph is bipartite if and only if its chromatic number is <= 2."
+},
+    conceptConnections: [
+      {
+            "title": "Graph Coloring",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "2-colorability and bipartite matching"
+      }
+],
+    testCases: [
+      {
+            "id": "bipartite-4-cycle",
+            "label": "Even Cycle (Square: Bipartite)",
+            "input": {
+                  "n": 4,
+                  "graph": [
+                        [
+                              1,
+                              3
+                        ],
+                        [
+                              0,
+                              2
+                        ],
+                        [
+                              1,
+                              3
+                        ],
+                        [
+                              0,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "non-bipartite-triangle",
+            "label": "Odd Cycle (Triangle: Non-Bipartite)",
+            "input": {
+                  "n": 4,
+                  "graph": [
+                        [
+                              1,
+                              2,
+                              3
+                        ],
+                        [
+                              0,
+                              2
+                        ],
+                        [
+                              0,
+                              1,
+                              3
+                        ],
+                        [
+                              0,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "disconnected-bipartite",
+            "label": "Disconnected Single Nodes",
+            "input": {
+                  "n": 2,
+                  "graph": [
+                        [],
+                        []
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-6': {
+    id: 'graph-algo-prob-6',
+    title: "Find the Town Judge",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'find_town_judge',
+    functionSignature: "find_town_judge(n: int, trust: list[list[int]]) -> int",
+    starterCode: `def find_town_judge(n, trust):
+    """n: number of people labeled 1 to n.
+    trust: list of pairs [a, b] meaning person a trusts person b.
+    Town judge trusts nobody and is trusted by everyone else (n-1 people).
+    Return label of town judge, or -1 if none exists."""
+    # Your implementation here
+    pass
+`,
+    mission: "Identify a universal sink node with in-degree n-1 and out-degree 0 in a directed graph.",
+    taskDescription: "Implement `find_town_judge(n, trust)`: maintain trust score `in_degree - out_degree` for each person. The judge must have net score exactly `n - 1`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 1000",
+      "0 <= len(trust) <= 10^4"
+],
+    hints: {
+      "small": "Person a trusts person b: person a loses 1 point, person b gains 1 point.",
+      "strong": "The judge trusts 0 people and is trusted by n - 1 people, so their score is exactly n - 1.",
+      "concept": "Universal sink nodes in directed graphs have maximum possible in-degree and zero out-degree."
+},
+    conceptConnections: [
+      {
+            "title": "Directed Graphs",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "In-degree, out-degree, and sink vertices"
+      }
+],
+    testCases: [
+      {
+            "id": "judge-exists-2",
+            "label": "n=2, trust=[[1,2]]",
+            "input": {
+                  "n": 2,
+                  "trust": [
+                        [
+                              1,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "judge-exists-3",
+            "label": "n=3, trust=[[1,3],[2,3]]",
+            "input": {
+                  "n": 3,
+                  "trust": [
+                        [
+                              1,
+                              3
+                        ],
+                        [
+                              2,
+                              3
+                        ]
+                  ]
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "no-judge",
+            "label": "Mutual Distrust Cycle",
+            "input": {
+                  "n": 3,
+                  "trust": [
+                        [
+                              1,
+                              3
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              3,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": -1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-7': {
+    id: 'graph-algo-prob-7',
+    title: "Count Connected Components in Undirected Graph",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'count_connected_components_undirected',
+    functionSignature: "count_connected_components_undirected(n: int, edges: list[list[int]]) -> int",
+    starterCode: `def count_connected_components_undirected(n, edges):
+    """n: number of vertices (0 to n-1).
+    edges: list of undirected edges [u, v].
+    Return total number of connected components in the graph."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count the number of connected components in an undirected graph using Disjoint Set Union (Union-Find).",
+    taskDescription: "Implement `count_connected_components_undirected(n, edges)`: initialize n components with path-compressed find(). For each edge uniting distinct components, decrement component count.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 2000",
+      "0 <= len(edges) <= 5000"
+],
+    hints: {
+      "small": "Start with n separate components. Each edge that joins two distinct sets reduces the total by 1.",
+      "strong": "Use Disjoint Set Union (DSU) with path compression: `parent[i] = find(parent[i])`.",
+      "concept": "Union-Find partitions graphs into equivalence classes with near-constant amortized time complexity."
+},
+    conceptConnections: [
+      {
+            "title": "Disjoint Set Union",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "DSU and connected components"
+      }
+],
+    testCases: [
+      {
+            "id": "components-2",
+            "label": "5 Nodes 2 Components",
+            "input": {
+                  "n": 5,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              3,
+                              4
+                        ]
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "components-1",
+            "label": "5 Nodes Single Component",
+            "input": {
+                  "n": 5,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              3,
+                              4
+                        ]
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "components-all-isolated",
+            "label": "3 Nodes Zero Edges",
+            "input": {
+                  "n": 3,
+                  "edges": []
+            },
+            "expectedOutput": 3,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-8': {
+    id: 'graph-algo-prob-8',
+    title: "Directed Graph Transpose (Reversal)",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'transpose_directed_graph',
+    functionSignature: "transpose_directed_graph(n: int, edges: list[list[int]]) -> list[list[int]]",
+    starterCode: `def transpose_directed_graph(n, edges):
+    """n: number of vertices (0 to n-1).
+    edges: list of directed edges [u, v] (directed from u to v).
+    Return list of transposed edges [v, u] sorted lexicographically."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the transpose (edge reversal) of a directed graph.",
+    taskDescription: "Implement `transpose_directed_graph(n, edges)`: invert the direction of every edge from `[u, v]` to `[v, u]`, returning the sorted edge list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 10^4",
+      "0 <= len(edges) <= 2 * 10^4"
+],
+    hints: {
+      "small": "The transpose graph G^T has the same vertices but all edge directions reversed.",
+      "strong": "Map `[u, v]` to `[v, u]` for each edge, then sort the result.",
+      "concept": "Graph transposition is the critical first phase of Kosaraju's algorithm for strongly connected components."
+},
+    conceptConnections: [
+      {
+            "title": "Graph Reversal & Duality",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Adjoint graphs and reachability duality"
+      }
+],
+    testCases: [
+      {
+            "id": "transpose-chain",
+            "label": "3-Node Directed Chain",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1,
+                        0
+                  ],
+                  [
+                        2,
+                        1
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "transpose-cycle",
+            "label": "Directed Cycle",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        2
+                  ],
+                  [
+                        1,
+                        0
+                  ],
+                  [
+                        2,
+                        1
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "transpose-empty",
+            "label": "Empty Edges List",
+            "input": {
+                  "n": 4,
+                  "edges": []
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-9': {
+    id: 'graph-algo-prob-9',
+    title: "All Paths From Source to Target (DAG)",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'all_paths_source_target',
+    functionSignature: "all_paths_source_target(graph: list[list[int]]) -> list[list[int]]",
+    starterCode: `def all_paths_source_target(graph):
+    """graph: adjacency list of a directed acyclic graph (DAG) of n nodes (0 to n-1).
+    graph[i] is list of all nodes you can visit from node i.
+    Find all possible paths from node 0 to node n-1, returned in any order."""
+    # Your implementation here
+    pass
+`,
+    mission: "Enumerate all valid paths from source to target in a Directed Acyclic Graph (DAG) using backtracking.",
+    taskDescription: "Implement `all_paths_source_target(graph)`: perform DFS backtracking starting from node 0 to find all paths that reach terminal node `len(graph) - 1`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= len(graph) <= 15",
+      "graph is guaranteed to be a DAG."
+],
+    hints: {
+      "small": "Because the graph is a DAG, you do not need a visited set to avoid cycles.",
+      "strong": "DFS with current path: when `curr == n - 1`, append a copy of `path` to the result list.",
+      "concept": "Backtracking on DAGs explores tree-like path unfoldings without cycle guard overhead."
+},
+    conceptConnections: [
+      {
+            "title": "DFS Backtracking",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Path enumeration on DAGs"
+      }
+],
+    testCases: [
+      {
+            "id": "dag-4-nodes",
+            "label": "4 Nodes 2 Paths",
+            "input": {
+                  "graph": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              3
+                        ],
+                        [
+                              3
+                        ],
+                        []
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        3
+                  ],
+                  [
+                        0,
+                        2,
+                        3
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "dag-5-nodes",
+            "label": "5 Nodes 5 Paths",
+            "input": {
+                  "graph": [
+                        [
+                              4,
+                              3,
+                              1
+                        ],
+                        [
+                              3,
+                              2,
+                              4
+                        ],
+                        [
+                              3
+                        ],
+                        [
+                              4
+                        ],
+                        []
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        4
+                  ],
+                  [
+                        0,
+                        3,
+                        4
+                  ],
+                  [
+                        0,
+                        1,
+                        3,
+                        4
+                  ],
+                  [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                  ],
+                  [
+                        0,
+                        1,
+                        4
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "dag-direct",
+            "label": "2 Nodes Single Edge",
+            "input": {
+                  "graph": [
+                        [
+                              1
+                        ],
+                        []
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-10': {
+    id: 'graph-algo-prob-10',
+    title: "Kruskal's Minimum Spanning Tree Weight",
+    difficulty: 'easy',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '10–15 min',
+    functionName: 'kruskal_mst_weight',
+    functionSignature: "kruskal_mst_weight(n: int, edges: list[list[int]]) -> int",
+    starterCode: `def kruskal_mst_weight(n, edges):
+    """n: number of vertices (0 to n-1).
+    edges: list of [u, v, weight] undirected weighted edges.
+    The graph is guaranteed to be connected.
+    Return the total weight of the Minimum Spanning Tree (MST)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate the total weight of a Minimum Spanning Tree using Kruskal's greedy edge selection.",
+    taskDescription: "Implement `kruskal_mst_weight(n, edges)`: sort edges by weight ascending. Greedily add edges that join disjoint components via Union-Find until n-1 edges are chosen.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 1000",
+      "n - 1 <= len(edges) <= 10^4",
+      "Graph is connected."
+],
+    hints: {
+      "small": "Sort edges by weight. Always inspect the cheapest edge next.",
+      "strong": "Use Union-Find to detect cycles. If `find(u) != find(v)`, union them and add edge weight to total.",
+      "concept": "The cut property of spanning trees guarantees that the lightest edge crossing any partition cut belongs to the MST."
+},
+    conceptConnections: [
+      {
+            "title": "Minimum Spanning Trees",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Kruskal's greedy algorithm and cut property"
+      }
+],
+    testCases: [
+      {
+            "id": "mst-4-nodes",
+            "label": "4 Nodes 5 Edges (MST Weight 19)",
+            "input": {
+                  "n": 4,
+                  "edges": [
+                        [
+                              0,
+                              1,
+                              10
+                        ],
+                        [
+                              0,
+                              2,
+                              6
+                        ],
+                        [
+                              0,
+                              3,
+                              5
+                        ],
+                        [
+                              1,
+                              3,
+                              15
+                        ],
+                        [
+                              2,
+                              3,
+                              4
+                        ]
+                  ]
+            },
+            "expectedOutput": 19,
+            "hidden": false
+      },
+      {
+            "id": "mst-triangle",
+            "label": "3 Nodes Triangle",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              0,
+                              1,
+                              1
+                        ],
+                        [
+                              1,
+                              2,
+                              2
+                        ],
+                        [
+                              0,
+                              2,
+                              3
+                        ]
+                  ]
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "mst-single-edge",
+            "label": "2 Nodes Single Edge",
+            "input": {
+                  "n": 2,
+                  "edges": [
+                        [
+                              0,
+                              1,
+                              42
+                        ]
+                  ]
+            },
+            "expectedOutput": 42,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-11': {
+    id: 'graph-algo-prob-11',
+    title: "Course Schedule: Cycle Detection in Directed Graph",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'can_finish_courses',
+    functionSignature: "can_finish_courses(numCourses: int, prerequisites: list[list[int]]) -> bool",
+    starterCode: `def can_finish_courses(numCourses, prerequisites):
+    """numCourses: total courses labeled 0 to numCourses - 1.
+    prerequisites: list of [dest, src] meaning you must take course src before course dest.
+    Return True if it is possible to finish all courses (graph is acyclic), False otherwise."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine whether a course dependency graph contains cycles using Kahn's BFS topological sort.",
+    taskDescription: "Implement `can_finish_courses(numCourses, prerequisites)`: track in-degrees. Enqueue all courses with in-degree 0. As each course is processed, decrement neighbors' in-degrees. Return True if all courses are visited.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= numCourses <= 2000",
+      "0 <= len(prerequisites) <= 5000"
+],
+    hints: {
+      "small": "A cycle means no course in the cycle can be taken first (all have in-degree > 0).",
+      "strong": "Queue courses with 0 in-degree. Count how many courses you process. If `count == numCourses`, return True.",
+      "concept": "Kahn's algorithm detects directed cycles by testing whether the topological ordering includes all vertices."
+},
+    conceptConnections: [
+      {
+            "title": "Topological Sorting",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Kahn's algorithm and cycle detection"
+      }
+],
+    testCases: [
+      {
+            "id": "schedule-possible",
+            "label": "Linear Prerequisite Chain",
+            "input": {
+                  "numCourses": 2,
+                  "prerequisites": [
+                        [
+                              1,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "schedule-impossible-cycle",
+            "label": "Mutual Prerequisite Deadlock",
+            "input": {
+                  "numCourses": 2,
+                  "prerequisites": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "schedule-no-prereqs",
+            "label": "No Prerequisites",
+            "input": {
+                  "numCourses": 3,
+                  "prerequisites": []
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-12': {
+    id: 'graph-algo-prob-12',
+    title: "Course Schedule II: Topological Order Recovery",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'find_course_order',
+    functionSignature: "find_course_order(numCourses: int, prerequisites: list[list[int]]) -> list[int]",
+    starterCode: `def find_course_order(numCourses, prerequisites):
+    """numCourses: total courses labeled 0 to numCourses - 1.
+    prerequisites: list of [dest, src] (must take src before dest).
+    Return a valid topological order of courses to take. If impossible due to a cycle, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Generate a valid linear sequence to complete all prerequisite courses using Kahn's topological sort.",
+    taskDescription: "Implement `find_course_order(numCourses, prerequisites)`: collect courses with zero in-degree into a queue, appending to an ordering list as dependencies are resolved.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= numCourses <= 2000",
+      "0 <= len(prerequisites) <= numCourses * (numCourses - 1)"
+],
+    hints: {
+      "small": "Courses with in-degree 0 have all prerequisites satisfied.",
+      "strong": "When a course finishes, decrement in-degree for dependent courses. If in-degree reaches 0, add to queue.",
+      "concept": "Topological sorting linearizes partial orders into total orders consistent with all directed edges."
+},
+    conceptConnections: [
+      {
+            "title": "Topological Sorting",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Directed Acyclic Graph linearization"
+      }
+],
+    testCases: [
+      {
+            "id": "order-4-courses",
+            "label": "Diamond Dependency 4 Courses",
+            "input": {
+                  "numCourses": 4,
+                  "prerequisites": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              2,
+                              0
+                        ],
+                        [
+                              3,
+                              1
+                        ],
+                        [
+                              3,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0,
+                  1,
+                  2,
+                  3
+            ],
+            "hidden": false
+      },
+      {
+            "id": "order-cycle-empty",
+            "label": "Cycle Returns Empty List",
+            "input": {
+                  "numCourses": 2,
+                  "prerequisites": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": [],
+            "hidden": false
+      },
+      {
+            "id": "order-single-course",
+            "label": "Single Course No Dependencies",
+            "input": {
+                  "numCourses": 1,
+                  "prerequisites": []
+            },
+            "expectedOutput": [
+                  0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-13': {
+    id: 'graph-algo-prob-13',
+    title: "Number of Islands in 2D Grid",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'num_islands_grid',
+    functionSignature: "num_islands_grid(grid: list[list[str]]) -> int",
+    starterCode: `def num_islands_grid(grid):
+    """grid: m x n binary grid where '1' is land and '0' is water.
+    An island is surrounded by water and formed by connecting adjacent lands horizontally or vertically.
+    Return total number of islands."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count disconnected land masses in a 2D matrix using connected component search.",
+    taskDescription: "Implement `num_islands_grid(grid)`: scan the matrix. Upon encountering unvisited land \"1\", increment island count and trigger BFS/DFS to mark all connected land cells.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(grid), len(grid[0]) <= 300",
+      "grid[r][c] is \"0\" or \"1\"."
+],
+    hints: {
+      "small": "Traverse horizontally and vertically (4-directional adjacency).",
+      "strong": "Keep a visited set (or mutate grid) to ensure each land mass is explored and counted only once.",
+      "concept": "Flood fill on 2D grid topologies maps directly to connected components in 4-regular planar graphs."
+},
+    conceptConnections: [
+      {
+            "title": "Grid Graph Search",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Flood fill and 2D connectivity"
+      }
+],
+    testCases: [
+      {
+            "id": "single-island",
+            "label": "Single L-shaped Island",
+            "input": {
+                  "grid": [
+                        [
+                              "1",
+                              "1",
+                              "1",
+                              "1",
+                              "0"
+                        ],
+                        [
+                              "1",
+                              "1",
+                              "0",
+                              "1",
+                              "0"
+                        ],
+                        [
+                              "1",
+                              "1",
+                              "0",
+                              "0",
+                              "0"
+                        ],
+                        [
+                              "0",
+                              "0",
+                              "0",
+                              "0",
+                              "0"
+                        ]
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "three-islands",
+            "label": "Three Distinct Islands",
+            "input": {
+                  "grid": [
+                        [
+                              "1",
+                              "1",
+                              "0",
+                              "0",
+                              "0"
+                        ],
+                        [
+                              "1",
+                              "1",
+                              "0",
+                              "0",
+                              "0"
+                        ],
+                        [
+                              "0",
+                              "0",
+                              "1",
+                              "0",
+                              "0"
+                        ],
+                        [
+                              "0",
+                              "0",
+                              "0",
+                              "1",
+                              "1"
+                        ]
+                  ]
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "all-water",
+            "label": "All Water Grid",
+            "input": {
+                  "grid": [
+                        [
+                              "0",
+                              "0"
+                        ],
+                        [
+                              "0",
+                              "0"
+                        ]
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-14': {
+    id: 'graph-algo-prob-14',
+    title: "Rotting Oranges: Multi-Source BFS",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'oranges_rotting',
+    functionSignature: "oranges_rotting(grid: list[list[int]]) -> int",
+    starterCode: `def oranges_rotting(grid):
+    """grid: m x n grid where 0 is empty, 1 is fresh orange, 2 is rotten orange.
+    Every minute, any fresh orange 4-directionally adjacent to a rotten orange becomes rotten.
+    Return minimum minutes until no fresh orange remains, or -1 if impossible."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate synchronous disease propagation in a grid using multi-source Breadth-First Search.",
+    taskDescription: "Implement `oranges_rotting(grid)`: seed BFS queue with all initially rotten oranges at t=0. Propagate contamination to adjacent fresh oranges level-by-level.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(grid), len(grid[0]) <= 10",
+      "grid[r][c] is 0, 1, or 2."
+],
+    hints: {
+      "small": "Enqueue all initially rotten oranges simultaneously at time 0.",
+      "strong": "Count total fresh oranges initially. Decrement count as fresh oranges turn rotten. If fresh count > 0 after queue empties, return -1.",
+      "concept": "Multi-source BFS expands concentric distance shells simultaneously from multiple epicenter seeds."
+},
+    conceptConnections: [
+      {
+            "title": "Multi-Source BFS",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Simultaneous wavefront propagation"
+      }
+],
+    testCases: [
+      {
+            "id": "rotting-4-mins",
+            "label": "3x3 Grid Contagion in 4 Minutes",
+            "input": {
+                  "grid": [
+                        [
+                              2,
+                              2,
+                              2
+                        ],
+                        [
+                              2,
+                              2,
+                              0
+                        ],
+                        [
+                              0,
+                              2,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "rotting-impossible",
+            "label": "Isolated Fresh Orange (Impossible)",
+            "input": {
+                  "grid": [
+                        [
+                              2,
+                              2,
+                              2
+                        ],
+                        [
+                              0,
+                              2,
+                              2
+                        ],
+                        [
+                              1,
+                              0,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": -1,
+            "hidden": false
+      },
+      {
+            "id": "already-zero-fresh",
+            "label": "No Fresh Oranges at Start",
+            "input": {
+                  "grid": [
+                        [
+                              0,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-15': {
+    id: 'graph-algo-prob-15',
+    title: "Dijkstra's Single-Source Shortest Paths",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'dijkstra_shortest_paths',
+    functionSignature: "dijkstra_shortest_paths(n: int, edges: list[list[int]], src: int) -> dict[int, int]",
+    starterCode: `def dijkstra_shortest_paths(n, edges, src):
+    """n: number of vertices (0 to n-1).
+    edges: list of [u, v, weight] undirected edges with non-negative weights.
+    src: source vertex.
+    Return dict mapping each node 0..n-1 to its shortest distance from src (use -1 if unreachable)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find shortest paths from a source to all nodes in a weighted graph using Dijkstra's algorithm.",
+    taskDescription: "Implement `dijkstra_shortest_paths(n, edges, src)`: use a priority queue (min-heap) to explore nodes in order of current shortest tentative distance.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 1000",
+      "0 <= len(edges) <= 10^4",
+      "All edge weights >= 0"
+],
+    hints: {
+      "small": "Initialize distance to src as 0, all other distances to infinity.",
+      "strong": "Push `(dist, node)` to min-heap. When popping, if `dist > dist[node]`, continue. Relax incident edges `dist[u] + w < dist[v]`.",
+      "concept": "Greedy relaxation guarantees optimal prefix paths under non-negative weight metrics."
+},
+    conceptConnections: [
+      {
+            "title": "Shortest Path Algorithms",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Dijkstra's algorithm and priority queues"
+      }
+],
+    testCases: [
+      {
+            "id": "dijkstra-5-nodes",
+            "label": "5 Nodes Weighted Graph",
+            "input": {
+                  "n": 5,
+                  "edges": [
+                        [
+                              0,
+                              1,
+                              4
+                        ],
+                        [
+                              0,
+                              2,
+                              2
+                        ],
+                        [
+                              1,
+                              2,
+                              1
+                        ],
+                        [
+                              1,
+                              3,
+                              5
+                        ],
+                        [
+                              2,
+                              3,
+                              8
+                        ],
+                        [
+                              2,
+                              4,
+                              10
+                        ],
+                        [
+                              3,
+                              4,
+                              2
+                        ]
+                  ],
+                  "src": 0
+            },
+            "expectedOutput": {
+                  "0": 0,
+                  "1": 3,
+                  "2": 2,
+                  "3": 8,
+                  "4": 10
+            },
+            "hidden": false
+      },
+      {
+            "id": "dijkstra-disconnected-node",
+            "label": "Graph with Unreachable Node",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              0,
+                              1,
+                              3
+                        ]
+                  ],
+                  "src": 0
+            },
+            "expectedOutput": {
+                  "0": 0,
+                  "1": 3,
+                  "2": -1
+            },
+            "hidden": false
+      },
+      {
+            "id": "dijkstra-single-node",
+            "label": "Single Node Graph",
+            "input": {
+                  "n": 1,
+                  "edges": [],
+                  "src": 0
+            },
+            "expectedOutput": {
+                  "0": 0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-16': {
+    id: 'graph-algo-prob-16',
+    title: "Deep Clone Graph Structure",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'clone_graph_dict',
+    functionSignature: "clone_graph_dict(node: dict | None) -> dict | None",
+    starterCode: `def clone_graph_dict(node):
+    """node: dict representation of graph node {'val': int, 'neighbors': list}.
+    Create and return an independent deep copy of the node structure."""
+    # Your implementation here
+    pass
+`,
+    mission: "Deep copy a node and its recursive graph neighborhood preserving cyclic topology.",
+    taskDescription: "Implement `clone_graph_dict(node)`: return a deep copy of the graph node structure.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Number of nodes in the graph is in range [0, 100].",
+      "Node values are unique integers."
+],
+    hints: {
+      "small": "If node is None, return None.",
+      "strong": "Maintain a mapping from original node identities to their cloned counterparts to handle cycles.",
+      "concept": "Object graph cloning with cyclic dependencies requires hash-mapped visited tables."
+},
+    conceptConnections: [
+      {
+            "title": "Graph Search",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Deep copy patterns on cyclic graphs"
+      }
+],
+    testCases: [
+      {
+            "id": "clone-simple",
+            "label": "Node with Neighbors",
+            "input": {
+                  "node": {
+                        "val": 1,
+                        "neighbors": [
+                              2,
+                              4
+                        ]
+                  }
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "neighbors": [
+                        2,
+                        4
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "clone-isolated",
+            "label": "Single Node",
+            "input": {
+                  "node": {
+                        "val": 1,
+                        "neighbors": []
+                  }
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "neighbors": []
+            },
+            "hidden": false
+      },
+      {
+            "id": "clone-none",
+            "label": "None Node",
+            "input": {
+                  "node": null
+            },
+            "expectedOutput": null,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-17': {
+    id: 'graph-algo-prob-17',
+    title: "Network Delay Time via Dijkstra",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'network_delay_time',
+    functionSignature: "network_delay_time(times: list[list[int]], n: int, k: int) -> int",
+    starterCode: `def network_delay_time(times, n, k):
+    """times: list of [u, v, w] directed edges (travel time w from u to v).
+    n: total nodes (1 to n).
+    k: source node signal originates from.
+    Return the minimum time for all n nodes to receive the signal, or -1 if unreachable."""
+    # Your implementation here
+    pass
+`,
+    mission: "Measure signal latency across a directed network using single-source shortest paths.",
+    taskDescription: "Implement `network_delay_time(times, n, k)`: run Dijkstra's algorithm starting from node k. The time required is the maximum shortest distance across all nodes, or -1 if any node remains unreachable.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= k <= n <= 100",
+      "1 <= len(times) <= 6000",
+      "0 <= w <= 100"
+],
+    hints: {
+      "small": "Run Dijkstra from source k to find shortest arrival time to every node.",
+      "strong": "Return `max(distances)` if all n nodes are reachable, otherwise return -1.",
+      "concept": "Broadcast arrival time equals the maximum shortest-path latency across all reachable destinations."
+},
+    conceptConnections: [
+      {
+            "title": "Dijkstra & Networks",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Signal latency and shortest path propagation"
+      }
+],
+    testCases: [
+      {
+            "id": "delay-4-nodes",
+            "label": "4 Nodes Directed Network",
+            "input": {
+                  "times": [
+                        [
+                              2,
+                              1,
+                              1
+                        ],
+                        [
+                              2,
+                              3,
+                              1
+                        ],
+                        [
+                              3,
+                              4,
+                              1
+                        ]
+                  ],
+                  "n": 4,
+                  "k": 2
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "delay-unreachable",
+            "label": "Unreachable Node Returns -1",
+            "input": {
+                  "times": [
+                        [
+                              1,
+                              2,
+                              1
+                        ]
+                  ],
+                  "n": 2,
+                  "k": 2
+            },
+            "expectedOutput": -1,
+            "hidden": false
+      },
+      {
+            "id": "delay-2-nodes",
+            "label": "2 Nodes Direct Connection",
+            "input": {
+                  "times": [
+                        [
+                              1,
+                              2,
+                              1
+                        ]
+                  ],
+                  "n": 2,
+                  "k": 1
+            },
+            "expectedOutput": 1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-18': {
+    id: 'graph-algo-prob-18',
+    title: "Redundant Connection in Graph",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'find_redundant_connection',
+    functionSignature: "find_redundant_connection(edges: list[list[int]]) -> list[int]",
+    starterCode: `def find_redundant_connection(edges):
+    """edges: list of undirected edges formed by adding one edge to a tree of n nodes (1 to n).
+    Find and return an edge that can be removed so that the resulting graph is a tree.
+    If multiple answers exist, return the one that occurs last in the input."""
+    # Your implementation here
+    pass
+`,
+    mission: "Identify the edge completing a cycle in a near-tree graph using Union-Find.",
+    taskDescription: "Implement `find_redundant_connection(edges)`: process edges sequentially. The first edge connecting two vertices that already share the same root in Disjoint Set Union is the redundant cycle-creating edge.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "3 <= len(edges) <= 1000",
+      "edges[i].length == 2",
+      "1 <= u < v <= len(edges)"
+],
+    hints: {
+      "small": "In a tree, adding any single edge creates exactly one simple cycle.",
+      "strong": "If `find(u) == find(v)`, adding edge `[u, v]` creates a cycle; return `[u, v]`.",
+      "concept": "Incremental cycle detection via Union-Find isolates cycle-forming topological closures in near-linear time."
+},
+    conceptConnections: [
+      {
+            "title": "Cycle Detection & DSU",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Disjoint Set Union cycle identification"
+      }
+],
+    testCases: [
+      {
+            "id": "redundant-triangle",
+            "label": "3 Nodes Triangle (Redundant [2,3])",
+            "input": {
+                  "edges": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              1,
+                              3
+                        ],
+                        [
+                              2,
+                              3
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  2,
+                  3
+            ],
+            "hidden": false
+      },
+      {
+            "id": "redundant-5-nodes",
+            "label": "5 Nodes Cycle (Redundant [1,4])",
+            "input": {
+                  "edges": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              3,
+                              4
+                        ],
+                        [
+                              1,
+                              4
+                        ],
+                        [
+                              1,
+                              5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  4
+            ],
+            "hidden": false
+      },
+      {
+            "id": "redundant-square",
+            "label": "4 Nodes Square (Redundant [1,4])",
+            "input": {
+                  "edges": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              3,
+                              4
+                        ],
+                        [
+                              1,
+                              4
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  4
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-19': {
+    id: 'graph-algo-prob-19',
+    title: "Cheapest Flights Within K Stops",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'find_cheapest_flight',
+    functionSignature: "find_cheapest_flight(n: int, flights: list[list[int]], src: int, dst: int, k: int) -> int",
+    starterCode: `def find_cheapest_flight(n, flights, src, dst, k):
+    """n: number of cities (0 to n-1).
+    flights: list of [from, to, price].
+    src: departure city, dst: destination city.
+    k: maximum number of intermediate stops allowed.
+    Return cheapest price from src to dst with at most k stops, or -1 if no route exists."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the cheapest flight path bounded by at most k intermediate stops using Bellman-Ford step relaxation.",
+    taskDescription: "Implement `find_cheapest_flight(n, flights, src, dst, k)`: run at most `k + 1` iterations of Bellman-Ford using a cloned distance buffer to prevent multi-hop cascades within a single round.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 100",
+      "0 <= len(flights) <= (n * (n - 1) // 2)",
+      "0 <= src, dst < n",
+      "0 <= k < n"
+],
+    hints: {
+      "small": "At most k stops means at most k + 1 flights (edges) in the path.",
+      "strong": "Run Bellman-Ford for `k + 1` iterations. Update prices into a temporary copy so hops are not compounded in one step.",
+      "concept": "Step-limited shortest paths constrain Bellman-Ford relaxation depth to enforce diameter limits."
+},
+    conceptConnections: [
+      {
+            "title": "Bellman-Ford Algorithm",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Constrained hop shortest paths"
+      }
+],
+    testCases: [
+      {
+            "id": "flights-4-cities-k1",
+            "label": "4 Cities k=1 Stop",
+            "input": {
+                  "n": 4,
+                  "flights": [
+                        [
+                              0,
+                              1,
+                              100
+                        ],
+                        [
+                              1,
+                              2,
+                              100
+                        ],
+                        [
+                              2,
+                              0,
+                              100
+                        ],
+                        [
+                              1,
+                              3,
+                              600
+                        ],
+                        [
+                              2,
+                              3,
+                              200
+                        ]
+                  ],
+                  "src": 0,
+                  "dst": 3,
+                  "k": 1
+            },
+            "expectedOutput": 700,
+            "hidden": false
+      },
+      {
+            "id": "flights-3-cities-k0",
+            "label": "3 Cities k=0 Direct Only",
+            "input": {
+                  "n": 3,
+                  "flights": [
+                        [
+                              0,
+                              1,
+                              100
+                        ],
+                        [
+                              1,
+                              2,
+                              100
+                        ],
+                        [
+                              0,
+                              2,
+                              500
+                        ]
+                  ],
+                  "src": 0,
+                  "dst": 2,
+                  "k": 0
+            },
+            "expectedOutput": 500,
+            "hidden": false
+      },
+      {
+            "id": "flights-unreachable",
+            "label": "Destination Unreachable",
+            "input": {
+                  "n": 3,
+                  "flights": [
+                        [
+                              0,
+                              1,
+                              100
+                        ]
+                  ],
+                  "src": 0,
+                  "dst": 2,
+                  "k": 1
+            },
+            "expectedOutput": -1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-20': {
+    id: 'graph-algo-prob-20',
+    title: "Min Cost to Connect All Points (Prim's MST)",
+    difficulty: 'medium',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '15–20 min',
+    functionName: 'min_cost_connect_all_points',
+    functionSignature: "min_cost_connect_all_points(points: list[list[int]]) -> int",
+    starterCode: `def min_cost_connect_all_points(points):
+    """points: 2D integer coordinates [xi, yi].
+    Cost to connect two points is Manhattan distance |xi - xj| + |yi - yj|.
+    Return the minimum cost to make all points connected (Minimum Spanning Tree)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Connect 2D geometric coordinates with minimum total Manhattan edge cost using Prim's algorithm.",
+    taskDescription: "Implement `min_cost_connect_all_points(points)`: grow a minimum spanning tree using a min-heap priority queue, adding the cheapest Manhattan connection to an unvisited point at each step.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(points) <= 1000",
+      "-10^6 <= xi, yi <= 10^6"
+],
+    hints: {
+      "small": "This is a complete graph where edge weights are Manhattan distances between coordinate pairs.",
+      "strong": "Start at point 0. Keep a min-heap of `(distance, point_index)` to unvisited vertices. Add nearest point and accumulate cost.",
+      "concept": "Prim's algorithm grows a single tree component outward from an arbitrary start node using a priority queue."
+},
+    conceptConnections: [
+      {
+            "title": "Prim's Algorithm",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Priority queue MST generation on coordinate graphs"
+      }
+],
+    testCases: [
+      {
+            "id": "points-5-coords",
+            "label": "5 Points Coordinate Set (Cost 20)",
+            "input": {
+                  "points": [
+                        [
+                              0,
+                              0
+                        ],
+                        [
+                              2,
+                              2
+                        ],
+                        [
+                              3,
+                              10
+                        ],
+                        [
+                              5,
+                              2
+                        ],
+                        [
+                              7,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 20,
+            "hidden": false
+      },
+      {
+            "id": "points-3-coords",
+            "label": "3 Triangle Points (Cost 18)",
+            "input": {
+                  "points": [
+                        [
+                              3,
+                              12
+                        ],
+                        [
+                              -2,
+                              5
+                        ],
+                        [
+                              -4,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": 18,
+            "hidden": false
+      },
+      {
+            "id": "single-point",
+            "label": "Single Point Zero Cost",
+            "input": {
+                  "points": [
+                        [
+                              0,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-21': {
+    id: 'graph-algo-prob-21',
+    title: "Find Articulation Points (Cut Vertices)",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '20–25 min',
+    functionName: 'find_all_articulation_points',
+    functionSignature: "find_all_articulation_points(n: int, edges: list[list[int]]) -> list[int]",
+    starterCode: `def find_all_articulation_points(n, edges):
+    """n: number of vertices (0 to n-1).
+    edges: list of undirected edges [u, v].
+    An articulation point (cut vertex) is a node whose removal increases the
+    number of connected components.
+    Return sorted list of all articulation point indices."""
+    # Your implementation here
+    pass
+`,
+    mission: "Locate all articulation points (cut vertices) in a network using Tarjan's low-link discovery time DFS.",
+    taskDescription: "Implement `find_all_articulation_points(n, edges)`: compute discovery time `tin[u]` and lowest reachable time `low[u]`. A non-root node u is a cut vertex if it has a child v with `low[v] >= tin[u]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 10^4",
+      "0 <= len(edges) <= 2 * 10^4"
+],
+    hints: {
+      "small": "For the DFS tree root, it is an articulation point if and only if it has two or more DFS children.",
+      "strong": "For any non-root vertex u, if child v has `low[v] >= tin[u]`, then v cannot bypass u to reach an ancestor, making u a cut vertex.",
+      "concept": "Biconnected components and cut vertex identification using back-edge low-link values."
+},
+    conceptConnections: [
+      {
+            "title": "Biconnected Components",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Tarjan's cut vertices and network reliability"
+      }
+],
+    testCases: [
+      {
+            "id": "cut-vertex-bowtie",
+            "label": "Bowtie Graph (Center Node 2)",
+            "input": {
+                  "n": 5,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              0
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              3,
+                              4
+                        ],
+                        [
+                              4,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "cut-vertex-line",
+            "label": "Line Graph 4 Nodes (Nodes 1, 2 Cut)",
+            "input": {
+                  "n": 4,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "cut-vertex-cycle",
+            "label": "Simple Cycle (No Cut Vertices)",
+            "input": {
+                  "n": 4,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              3,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-22': {
+    id: 'graph-algo-prob-22',
+    title: "Reconstruct Itinerary (Eulerian Path)",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '20–25 min',
+    functionName: 'find_itinerary',
+    functionSignature: "find_itinerary(tickets: list[list[str]]) -> list[str]",
+    starterCode: `def find_itinerary(tickets):
+    """tickets: list of airline ticket pairs [from, to].
+    All tickets must be used exactly once, departing from 'JFK'.
+    If multiple valid itineraries exist, return the one with smallest lexical order.
+    Return full itinerary as list of airport codes."""
+    # Your implementation here
+    pass
+`,
+    mission: "Reconstruct a complete travel itinerary visiting every ticket edge using Hierholzer's Eulerian path algorithm.",
+    taskDescription: "Implement `find_itinerary(tickets)`: sort adjacency lists lexicographically in reverse. Perform Hierholzer's postorder DFS, pushing airport to route when its outgoing edges are exhausted.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(tickets) <= 300",
+      "All tickets depart from or arrive at 3-letter airport codes.",
+      "A valid Eulerian path starting from JFK is guaranteed."
+],
+    hints: {
+      "small": "This is finding an Eulerian path in a directed multigraph.",
+      "strong": "Use Hierholzer's algorithm: traverse greedily with smallest lexical edge; when stuck, prepend node to path (or reverse postorder).",
+      "concept": "Hierholzer's algorithm resolves dead-end traps in Eulerian graphs through postorder cycle splicing."
+},
+    conceptConnections: [
+      {
+            "title": "Eulerian Paths",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Hierholzer's algorithm and Eulerian traversals"
+      }
+],
+    testCases: [
+      {
+            "id": "itinerary-simple",
+            "label": "4 Flight Tickets",
+            "input": {
+                  "tickets": [
+                        [
+                              "MUC",
+                              "LHR"
+                        ],
+                        [
+                              "JFK",
+                              "MUC"
+                        ],
+                        [
+                              "SFO",
+                              "SJC"
+                        ],
+                        [
+                              "LHR",
+                              "SFO"
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  "JFK",
+                  "MUC",
+                  "LHR",
+                  "SFO",
+                  "SJC"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "itinerary-lexical-tiebreak",
+            "label": "Lexical Tiebreak Choice",
+            "input": {
+                  "tickets": [
+                        [
+                              "JFK",
+                              "SFO"
+                        ],
+                        [
+                              "JFK",
+                              "ATL"
+                        ],
+                        [
+                              "SFO",
+                              "ATL"
+                        ],
+                        [
+                              "ATL",
+                              "JFK"
+                        ],
+                        [
+                              "ATL",
+                              "SFO"
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  "JFK",
+                  "ATL",
+                  "JFK",
+                  "SFO",
+                  "ATL",
+                  "SFO"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "itinerary-two-hops",
+            "label": "Two Hops",
+            "input": {
+                  "tickets": [
+                        [
+                              "JFK",
+                              "KUL"
+                        ],
+                        [
+                              "KUL",
+                              "JFK"
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  "JFK",
+                  "KUL",
+                  "JFK"
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-23': {
+    id: 'graph-algo-prob-23',
+    title: "Strongly Connected Components (Kosaraju)",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '20–25 min',
+    functionName: 'find_strongly_connected_components',
+    functionSignature: "find_strongly_connected_components(n: int, edges: list[list[int]]) -> list[list[int]]",
+    starterCode: `def find_strongly_connected_components(n, edges):
+    """n: number of vertices (0 to n-1).
+    edges: list of directed edges [u, v].
+    Find all strongly connected components (SCCs).
+    Sort each component internally, and sort all components by their smallest element."""
+    # Your implementation here
+    pass
+`,
+    mission: "Decompose a directed graph into its maximal strongly connected components using Kosaraju's two-pass algorithm.",
+    taskDescription: "Implement `find_strongly_connected_components(n, edges)`: compute DFS postorder exit times, transpose graph edges, and extract components in descending order of exit times.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 10^4",
+      "0 <= len(edges) <= 2 * 10^4"
+],
+    hints: {
+      "small": "Pass 1 runs DFS on graph G to order vertices by decreasing finish times.",
+      "strong": "Pass 2 runs DFS on transpose graph G^T in that finish order. Each DFS tree is an SCC.",
+      "concept": "Kosaraju's algorithm topologically condenses cyclic directed graphs into directed acyclic component trees."
+},
+    conceptConnections: [
+      {
+            "title": "Strongly Connected Components",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Kosaraju and Tarjan SCC decomposition"
+      }
+],
+    testCases: [
+      {
+            "id": "scc-5-nodes",
+            "label": "5 Nodes Two SCCs",
+            "input": {
+                  "n": 5,
+                  "edges": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              2
+                        ],
+                        [
+                              2,
+                              1
+                        ],
+                        [
+                              0,
+                              3
+                        ],
+                        [
+                              3,
+                              4
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        2
+                  ],
+                  [
+                        3
+                  ],
+                  [
+                        4
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "scc-single-cycle",
+            "label": "Single 3-Node Cycle",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        2
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "scc-all-isolated",
+            "label": "No Edges (All Singletons)",
+            "input": {
+                  "n": 3,
+                  "edges": []
+            },
+            "expectedOutput": [
+                  [
+                        0
+                  ],
+                  [
+                        1
+                  ],
+                  [
+                        2
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-24': {
+    id: 'graph-algo-prob-24',
+    title: "Critical Connections in a Network (Bridges)",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '20–25 min',
+    functionName: 'critical_connections',
+    functionSignature: "critical_connections(n: int, connections: list[list[int]]) -> list[list[int]]",
+    starterCode: `def critical_connections(n, connections):
+    """n: number of servers labeled 0 to n-1.
+    connections: list of undirected connections [a, b].
+    A critical connection (bridge) is an edge whose removal disconnects the network.
+    Return list of all critical connections sorted lexicographically."""
+    # Your implementation here
+    pass
+`,
+    mission: "Detect network bridges (critical single-point-of-failure links) using Tarjan's bridge-finding algorithm.",
+    taskDescription: "Implement `critical_connections(n, connections)`: use DFS low-link numbers. An edge `(u, v)` is a bridge if and only if `low[v] > tin[u]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= n <= 10^5",
+      "n - 1 <= len(connections) <= 10^5",
+      "Network is connected."
+],
+    hints: {
+      "small": "Bridges cannot belong to any simple cycle.",
+      "strong": "If `low[v] > tin[u]`, then node v has no back-edge to node u or any of u's ancestors, meaning `[u, v]` is a bridge.",
+      "concept": "Tarjan's bridge-finding DFS detects cycle-independent edges in linear O(V + E) time."
+},
+    conceptConnections: [
+      {
+            "title": "Bridges & Network Reliability",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Tarjan's bridge-finding algorithm"
+      }
+],
+    testCases: [
+      {
+            "id": "bridges-4-servers",
+            "label": "4 Servers (Bridge [1,3])",
+            "input": {
+                  "n": 4,
+                  "connections": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              0
+                        ],
+                        [
+                              1,
+                              3
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1,
+                        3
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "bridges-two-nodes",
+            "label": "2 Servers Single Edge",
+            "input": {
+                  "n": 2,
+                  "connections": [
+                        [
+                              0,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "bridges-cycle",
+            "label": "Simple 4-Cycle No Bridges",
+            "input": {
+                  "n": 4,
+                  "connections": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              3,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-25': {
+    id: 'graph-algo-prob-25',
+    title: "Shortest Path Visiting All Nodes (Bitmask BFS)",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '20–25 min',
+    functionName: 'shortest_path_visiting_all_nodes',
+    functionSignature: "shortest_path_visiting_all_nodes(graph: list[list[int]]) -> int",
+    starterCode: `def shortest_path_visiting_all_nodes(graph):
+    """graph: undirected connected graph represented as adjacency list.
+    Return the length of the shortest path that visits every node (nodes may be revisited)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the minimum steps to visit all nodes in an undirected graph using bitmask state-space BFS.",
+    taskDescription: "Implement `shortest_path_visiting_all_nodes(graph)`: maintain state `(curr_node, visited_mask)`. Seed BFS with all nodes and explore shortest path transitions until `mask == (1 << n) - 1`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(graph) <= 12",
+      "Graph is connected."
+],
+    hints: {
+      "small": "Represent the set of visited nodes as an integer bitmask of length n.",
+      "strong": "Queue entries are `(node, mask, steps)`. Keep a visited set of `(node, mask)` pairs to avoid cycles.",
+      "concept": "State-space expansion embeds subset coverage into graph vertices, solving NP-hard traversals via BFS on hypercubes."
+},
+    conceptConnections: [
+      {
+            "title": "Bitmask BFS",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Subset state-space exploration"
+      }
+],
+    testCases: [
+      {
+            "id": "visit-all-4-nodes",
+            "label": "4 Nodes Graph (Shortest 4)",
+            "input": {
+                  "graph": [
+                        [
+                              1,
+                              2,
+                              3
+                        ],
+                        [
+                              0
+                        ],
+                        [
+                              0
+                        ],
+                        [
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "visit-all-line",
+            "label": "3 Nodes Line (Shortest 2)",
+            "input": {
+                  "graph": [
+                        [
+                              1
+                        ],
+                        [
+                              0,
+                              2
+                        ],
+                        [
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "single-node-visit",
+            "label": "Single Node (0 Steps)",
+            "input": {
+                  "graph": [
+                        []
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-26': {
+    id: 'graph-algo-prob-26',
+    title: "Maximum Network Flow (Edmonds-Karp)",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '25–30 min',
+    functionName: 'max_network_flow',
+    functionSignature: "max_network_flow(n: int, source: int, sink: int, capacities: list[list[int]]) -> int",
+    starterCode: `def max_network_flow(n, source, sink, capacities):
+    """n: number of vertices (0 to n-1).
+    source, sink: indices of source and sink vertices.
+    capacities: n x n matrix where capacities[u][v] is edge capacity from u to v.
+    Compute and return the maximum flow from source to sink using Edmonds-Karp."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the maximum s-t flow in a capacitated network using the Edmonds-Karp augmenting path algorithm.",
+    taskDescription: "Implement `max_network_flow(n, source, sink, capacities)`: use BFS to find the shortest augmenting path in the residual network, augment flow by the path bottleneck, and repeat until no path exists.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "2 <= n <= 50",
+      "0 <= capacities[u][v] <= 10^5"
+],
+    hints: {
+      "small": "Use BFS to find shortest augmenting path in terms of edge count.",
+      "strong": "Find minimum residual capacity along path. Update residual matrix: subtract from forward edges, add to reverse edges.",
+      "concept": "Max-Flow Min-Cut theorem: maximal network flow equals the capacity of the minimal cut separating source and sink."
+},
+    conceptConnections: [
+      {
+            "title": "Network Flow Algorithms",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Ford-Fulkerson and Edmonds-Karp max flow"
+      }
+],
+    testCases: [
+      {
+            "id": "flow-4-nodes",
+            "label": "Diamond Network Max Flow 20",
+            "input": {
+                  "n": 4,
+                  "source": 0,
+                  "sink": 3,
+                  "capacities": [
+                        [
+                              0,
+                              10,
+                              10,
+                              0
+                        ],
+                        [
+                              0,
+                              0,
+                              2,
+                              10
+                        ],
+                        [
+                              0,
+                              0,
+                              0,
+                              10
+                        ],
+                        [
+                              0,
+                              0,
+                              0,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 20,
+            "hidden": false
+      },
+      {
+            "id": "flow-bottleneck",
+            "label": "Single Bottleneck Channel",
+            "input": {
+                  "n": 3,
+                  "source": 0,
+                  "sink": 2,
+                  "capacities": [
+                        [
+                              0,
+                              5,
+                              0
+                        ],
+                        [
+                              0,
+                              0,
+                              3
+                        ],
+                        [
+                              0,
+                              0,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "flow-disconnected",
+            "label": "No Path from Source to Sink",
+            "input": {
+                  "n": 2,
+                  "source": 0,
+                  "sink": 1,
+                  "capacities": [
+                        [
+                              0,
+                              0
+                        ],
+                        [
+                              0,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-27': {
+    id: 'graph-algo-prob-27',
+    title: "PageRank Power Iteration",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '20–25 min',
+    functionName: 'pagerank_power_iteration',
+    functionSignature: "pagerank_power_iteration(n: int, edges: list[list[int]], d: float, max_iter: int) -> list[float]",
+    starterCode: `def pagerank_power_iteration(n, edges, d, max_iter):
+    """n: number of web pages (0 to n-1).
+    edges: list of directed links [u, v].
+    d: damping factor (e.g. 0.85).
+    max_iter: number of power iteration steps.
+    Initialize PR(u) = 1/n.
+    PR(v) = (1 - d)/n + d * sum_{u -> v} (PR(u) / out_degree(u)).
+    Return final PageRank vector rounded to 4 decimal places."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute stationary link distribution probabilities using PageRank power iteration.",
+    taskDescription: "Implement `pagerank_power_iteration(n, edges, d, max_iter)`: initialize uniform probabilities `1/n`, iteratively update incoming rank distributions with damping factor d, returning rounded probabilities.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= n <= 100",
+      "0.0 <= d <= 1.0",
+      "1 <= max_iter <= 200"
+],
+    hints: {
+      "small": "Calculate out-degrees of each node and store incoming links for each node.",
+      "strong": "In each iteration, `new_pr[v] = (1 - d)/n + d * sum(pr[u] / out_degree[u])`.",
+      "concept": "Markov chain stationary distribution under the random surfer model with damping teleportation."
+},
+    conceptConnections: [
+      {
+            "title": "PageRank & Graph Centrality",
+            "route": "/docs/machine-learning/probabilistic-models",
+            "description": "Markov stationary distribution and random surfer dynamics"
+      }
+],
+    testCases: [
+      {
+            "id": "pagerank-3-cycle",
+            "label": "3-Node Directed Cycle (Equal Rank)",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              2,
+                              0
+                        ]
+                  ],
+                  "d": 0.85,
+                  "max_iter": 20
+            },
+            "expectedOutput": [
+                  0.3333,
+                  0.3333,
+                  0.3333
+            ],
+            "hidden": false
+      },
+      {
+            "id": "pagerank-sink-star",
+            "label": "All Nodes Point to Node 0",
+            "input": {
+                  "n": 3,
+                  "edges": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              2,
+                              0
+                        ]
+                  ],
+                  "d": 0.85,
+                  "max_iter": 20
+            },
+            "expectedOutput": [
+                  0.135,
+                  0.05,
+                  0.05
+            ],
+            "hidden": false
+      },
+      {
+            "id": "pagerank-single-node",
+            "label": "Single Node",
+            "input": {
+                  "n": 1,
+                  "edges": [],
+                  "d": 0.85,
+                  "max_iter": 10
+            },
+            "expectedOutput": [
+                  0.15
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-28': {
+    id: 'graph-algo-prob-28',
+    title: "Word Ladder II: All Shortest Transformation Sequences",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '25–30 min',
+    functionName: 'find_all_ladders',
+    functionSignature: "find_all_ladders(beginWord: str, endWord: str, wordList: list[str]) -> list[list[str]]",
+    starterCode: `def find_all_ladders(beginWord, endWord, wordList):
+    """beginWord, endWord: strings.
+    wordList: dictionary of valid vocabulary words.
+    Find all shortest transformation sequences from beginWord to endWord where
+    adjacent words differ by exactly one character.
+    Return list of sequences sorted lexicographically."""
+    # Your implementation here
+    pass
+`,
+    mission: "Reconstruct all minimal word ladder transformation paths using level-by-level BFS and DFS backtracking.",
+    taskDescription: "Implement `find_all_ladders(beginWord, endWord, wordList)`: perform level-order BFS to construct predecessor DAG links at the shortest depth, then backtrack all minimal paths.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(beginWord) <= 10",
+      "1 <= len(wordList) <= 500"
+],
+    hints: {
+      "small": "BFS gives the shortest distance level; record directed transitions between levels.",
+      "strong": "Do not remove words from the vocabulary until the entire current BFS layer finishes, allowing multiple parents.",
+      "concept": "Bi-level path recovery decouples shortest-distance metric discovery (BFS) from exhaustive path enumeration (backtracking)."
+},
+    conceptConnections: [
+      {
+            "title": "Shortest Paths & Backtracking",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "BFS DAG generation and exhaustive backtracking"
+      }
+],
+    testCases: [
+      {
+            "id": "ladder-hit-cog",
+            "label": "hit to cog (Two Valid Ladders)",
+            "input": {
+                  "beginWord": "hit",
+                  "endWord": "cog",
+                  "wordList": [
+                        "hot",
+                        "dot",
+                        "dog",
+                        "lot",
+                        "log",
+                        "cog"
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        "hit",
+                        "hot",
+                        "dot",
+                        "dog",
+                        "cog"
+                  ],
+                  [
+                        "hit",
+                        "hot",
+                        "lot",
+                        "log",
+                        "cog"
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "ladder-impossible",
+            "label": "endWord Not in WordList",
+            "input": {
+                  "beginWord": "hit",
+                  "endWord": "cog",
+                  "wordList": [
+                        "hot",
+                        "dot",
+                        "dog",
+                        "lot",
+                        "log"
+                  ]
+            },
+            "expectedOutput": [],
+            "hidden": false
+      },
+      {
+            "id": "ladder-direct",
+            "label": "1-Step Transformation",
+            "input": {
+                  "beginWord": "a",
+                  "endWord": "c",
+                  "wordList": [
+                        "a",
+                        "b",
+                        "c"
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        "a",
+                        "c"
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-29': {
+    id: 'graph-algo-prob-29',
+    title: "Maximum Bipartite Matching (Augmenting Paths)",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '20–25 min',
+    functionName: 'max_bipartite_matching',
+    functionSignature: "max_bipartite_matching(u_count: int, v_count: int, edges: list[list[int]]) -> int",
+    starterCode: `def max_bipartite_matching(u_count, v_count, edges):
+    """u_count, v_count: number of vertices in left partition U and right partition V.
+    edges: list of [u, v] where u in 0..u_count-1 and v in 0..v_count-1.
+    Find the maximum number of disjoint edges that can be matched."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine the maximum cardinality matching in a bipartite graph using augmenting path DFS.",
+    taskDescription: "Implement `max_bipartite_matching(u_count, v_count, edges)`: maintain `match_v` array. For each vertex in partition U, search for an augmenting path using DFS, flipping matching assignments.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= u_count, v_count <= 200",
+      "0 <= len(edges) <= 5000"
+],
+    hints: {
+      "small": "An augmenting path starts and ends at unmatched vertices, alternating between non-matched and matched edges.",
+      "strong": "For each vertex in U: if an augmenting path is found via DFS, increment match count.",
+      "concept": "Berge's lemma: a matching is of maximum cardinality if and only if it contains no augmenting paths."
+},
+    conceptConnections: [
+      {
+            "title": "Bipartite Matching",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Augmenting paths and Hopcroft-Karp foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "matching-perfect",
+            "label": "3x3 Perfect Matching",
+            "input": {
+                  "u_count": 3,
+                  "v_count": 3,
+                  "edges": [
+                        [
+                              0,
+                              0
+                        ],
+                        [
+                              0,
+                              1
+                        ],
+                        [
+                              1,
+                              1
+                        ],
+                        [
+                              2,
+                              2
+                        ]
+                  ]
+            },
+            "expectedOutput": 3,
+            "hidden": false
+      },
+      {
+            "id": "matching-bottleneck",
+            "label": "Bottleneck Matching Capacity 1",
+            "input": {
+                  "u_count": 3,
+                  "v_count": 1,
+                  "edges": [
+                        [
+                              0,
+                              0
+                        ],
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              2,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": false
+      },
+      {
+            "id": "matching-empty",
+            "label": "Zero Edges",
+            "input": {
+                  "u_count": 2,
+                  "v_count": 2,
+                  "edges": []
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'graph-algo-prob-30': {
+    id: 'graph-algo-prob-30',
+    title: "Travelling Salesperson Problem: Held-Karp DP",
+    difficulty: 'hard',
+    topic: "Graphs & Network Algorithms",
+    estimatedTime: '25–30 min',
+    functionName: 'tsp_exact_cost',
+    functionSignature: "tsp_exact_cost(dist_matrix: list[list[int]]) -> int",
+    starterCode: `def tsp_exact_cost(dist_matrix):
+    """dist_matrix: n x n symmetric distance matrix where dist_matrix[i][j] is travel cost.
+    Find the minimum total cost of a Hamiltonian tour visiting every city exactly once
+    and returning to city 0 using Held-Karp O(n^2 * 2^n) dynamic programming."""
+    # Your implementation here
+    pass
+`,
+    mission: "Solve the symmetric Travelling Salesperson Problem exactly using the Held-Karp bitmask dynamic programming algorithm.",
+    taskDescription: "Implement `tsp_exact_cost(dist_matrix)`: memoize `tsp(mask, u)` representing the minimum cost to visit remaining unvisited cities starting from city u and returning to 0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(dist_matrix) <= 12",
+      "dist_matrix is symmetric with non-negative entries."
+],
+    hints: {
+      "small": "Represent the subset of already-visited cities as an integer bitmask.",
+      "strong": "Recurrence: `tsp(mask, u) = min_{v not in mask} (dist[u][v] + tsp(mask | (1 << v), v))`. Base case: when all cities visited, return `dist[u][0]`.",
+      "concept": "The Held-Karp algorithm reduces TSP complexity from factorial O(n!) brute-force to exponential O(n^2 * 2^n)."
+},
+    conceptConnections: [
+      {
+            "title": "Travelling Salesperson & Held-Karp",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Exact Hamiltonian tour optimization via bitmask DP"
+      }
+],
+    testCases: [
+      {
+            "id": "tsp-4-cities",
+            "label": "4 Cities Matrix (Optimal 35)",
+            "input": {
+                  "dist_matrix": [
+                        [
+                              0,
+                              10,
+                              15,
+                              20
+                        ],
+                        [
+                              10,
+                              0,
+                              35,
+                              25
+                        ],
+                        [
+                              15,
+                              35,
+                              0,
+                              30
+                        ],
+                        [
+                              20,
+                              25,
+                              30,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 80,
+            "hidden": false
+      },
+      {
+            "id": "tsp-3-cities",
+            "label": "3 Cities Triangle (Optimal 6)",
+            "input": {
+                  "dist_matrix": [
+                        [
+                              0,
+                              1,
+                              2
+                        ],
+                        [
+                              1,
+                              0,
+                              3
+                        ],
+                        [
+                              2,
+                              3,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 6,
+            "hidden": false
+      },
+      {
+            "id": "tsp-single-city",
+            "label": "Single City Cost 0",
+            "input": {
+                  "dist_matrix": [
+                        [
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

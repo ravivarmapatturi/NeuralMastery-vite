@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #633. Graphs & Network Algorithms Module 3: Problem 13"
 description: "Master #633. Graphs & Network Algorithms Module 3: Problem 13 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,49 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #633. Graphs & Network Algorithms Module 3: Problem 13
 
-**Track**: Graphs & Network Algorithms | **Rank**: #633 of 1072 | **Points**: 60 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #633 of 1072 | **Points**
 
 ## Overview
 
-Implement `#633. Graphs & Network Algorithms Module 3: Problem 13` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Count disconnected land masses in a 2D matrix using connected component search.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `num_islands_grid(grid)`: scan the matrix. Upon encountering unvisited land "1", increment island count and trigger BFS/DFS to mark all connected land cells.
 
 <PracticePlayground problemId="graph-algo-prob-13" />
+
+<Solution>
+
+```python
+from collections import deque
+
+def num_islands_grid(grid):
+    if not grid or not grid[0]:
+        return 0
+    m, n = len(grid), len(grid[0])
+    visited = set()
+    islands = 0
+    for r in range(m):
+        for c in range(n):
+            if grid[r][c] == '1' and (r, c) not in visited:
+                islands += 1
+                q = deque([(r, c)])
+                visited.add((r, c))
+                while q:
+                    cr, cc = q.popleft()
+                    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                        nr, nc = cr + dr, cc + dc
+                        if 0 <= nr < m and 0 <= nc < n and grid[nr][nc] == '1' and (nr, nc) not in visited:
+                            visited.add((nr, nc))
+                            q.append((nr, nc))
+    return islands
+```
+
+Scan through the grid. When encountering an unvisited land cell, increment the island counter and execute BFS to mark all 4-way adjacent land cells.
+
+</Solution>

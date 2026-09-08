@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #829. Classical Machine Learning Module 6: Problem 29"
 description: "Master #829. Classical Machine Learning Module 6: Problem 29 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,47 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #829. Classical Machine Learning Module 6: Problem 29
 
-**Track**: Classical Machine Learning | **Rank**: #829 of 1072 | **Points**: 90 XP
+**Track**: Classical Machine Learning | **Rank**: #829 of 1072 | **Points**
 
 ## Overview
 
-Implement `#829. Classical Machine Learning Module 6: Problem 29` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Execute one full Expectation-Maximization step for 1D Gaussian Mixture Models.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `gmm_em_step_1d(X, weights, means, variances)`: compute Gaussian densities and responsibilities (E-step), then update weights, means, and variances (M-step), returning rounded dict.
 
 <PracticePlayground problemId="class-ml-prob-29" />
+
+<Solution>
+
+```python
+import math
+
+def gmm_em_step_1d(X, weights, means, variances):
+    K, N = len(weights), len(X)
+    def pdf(x, mu, var):
+        return math.exp(-((x - mu) ** 2) / (2 * var)) / math.sqrt(2 * math.pi * var)
+    gamma = []
+    for x in X:
+        likes = [weights[k] * pdf(x, means[k], variances[k]) for k in range(K)]
+        total = sum(likes)
+        gamma.append([l / total for l in likes])
+    new_w, new_m, new_v = [], [], []
+    for k in range(K):
+        Nk = sum(gamma[i][k] for i in range(N))
+        new_w.append(round(Nk / N, 4))
+        mu_k = sum(gamma[i][k] * X[i] for i in range(N)) / Nk
+        new_m.append(round(mu_k, 4))
+        var_k = sum(gamma[i][k] * ((X[i] - mu_k) ** 2) for i in range(N)) / Nk
+        new_v.append(round(var_k, 4))
+    return {'weights': new_w, 'means': new_m, 'variances': new_v}
+```
+
+Compute posterior responsibility weights for each observation and component in the E-step, then calculate soft-weighted averages to update component parameters in the M-step.
+
+</Solution>

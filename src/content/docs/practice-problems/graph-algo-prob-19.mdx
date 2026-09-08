@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #639. Graphs & Network Algorithms Module 4: Problem 19"
 description: "Master #639. Graphs & Network Algorithms Module 4: Problem 19 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,37 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #639. Graphs & Network Algorithms Module 4: Problem 19
 
-**Track**: Graphs & Network Algorithms | **Rank**: #639 of 1072 | **Points**: 60 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #639 of 1072 | **Points**
 
 ## Overview
 
-Implement `#639. Graphs & Network Algorithms Module 4: Problem 19` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the cheapest flight path bounded by at most k intermediate stops using Bellman-Ford step relaxation.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_cheapest_flight(n, flights, src, dst, k)`: run at most `k + 1` iterations of Bellman-Ford using a cloned distance buffer to prevent multi-hop cascades within a single round.
 
 <PracticePlayground problemId="graph-algo-prob-19" />
+
+<Solution>
+
+```python
+def find_cheapest_flight(n, flights, src, dst, k):
+    prices = [float('inf')] * n
+    prices[src] = 0
+    for _ in range(k + 1):
+        tmp = list(prices)
+        for u, v, w in flights:
+            if prices[u] != float('inf') and prices[u] + w < tmp[v]:
+                tmp[v] = prices[u] + w
+        prices = tmp
+    return prices[dst] if prices[dst] != float('inf') else -1
+```
+
+Execute k+1 edge relaxation rounds using a snapshot array to ensure each round models exactly one flight leg without cascading.
+
+</Solution>

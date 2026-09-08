@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #629. Graphs & Network Algorithms Module 2: Problem 9"
 description: "Master #629. Graphs & Network Algorithms Module 2: Problem 9 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,40 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #629. Graphs & Network Algorithms Module 2: Problem 9
 
-**Track**: Graphs & Network Algorithms | **Rank**: #629 of 1072 | **Points**: 40 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #629 of 1072 | **Points**
 
 ## Overview
 
-Implement `#629. Graphs & Network Algorithms Module 2: Problem 9` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Enumerate all valid paths from source to target in a Directed Acyclic Graph (DAG) using backtracking.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `all_paths_source_target(graph)`: perform DFS backtracking starting from node 0 to find all paths that reach terminal node `len(graph) - 1`.
 
 <PracticePlayground problemId="graph-algo-prob-9" />
+
+<Solution>
+
+```python
+def all_paths_source_target(graph):
+    target = len(graph) - 1
+    res = []
+    def dfs(curr, path):
+        if curr == target:
+            res.append(list(path))
+            return
+        for nbr in graph[curr]:
+            path.append(nbr)
+            dfs(nbr, path)
+            path.pop()
+    dfs(0, [0])
+    return res
+```
+
+Recurse along directed edges starting from node 0. When the destination node is reached, capture a copy of the path.
+
+</Solution>

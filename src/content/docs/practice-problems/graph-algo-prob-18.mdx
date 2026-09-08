@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #638. Graphs & Network Algorithms Module 4: Problem 18"
 description: "Master #638. Graphs & Network Algorithms Module 4: Problem 18 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,41 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #638. Graphs & Network Algorithms Module 4: Problem 18
 
-**Track**: Graphs & Network Algorithms | **Rank**: #638 of 1072 | **Points**: 60 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #638 of 1072 | **Points**
 
 ## Overview
 
-Implement `#638. Graphs & Network Algorithms Module 4: Problem 18` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Identify the edge completing a cycle in a near-tree graph using Union-Find.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_redundant_connection(edges)`: process edges sequentially. The first edge connecting two vertices that already share the same root in Disjoint Set Union is the redundant cycle-creating edge.
 
 <PracticePlayground problemId="graph-algo-prob-18" />
+
+<Solution>
+
+```python
+def find_redundant_connection(edges):
+    n = len(edges)
+    parent = list(range(n + 1))
+    def find(i):
+        if parent[i] == i:
+            return i
+        parent[i] = find(parent[i])
+        return parent[i]
+    for u, v in edges:
+        ru, rv = find(u), find(v)
+        if ru == rv:
+            return [u, v]
+        parent[ru] = rv
+    return []
+```
+
+Process edges into a Disjoint Set Union data structure. The first edge whose endpoints already belong to the same connected component creates a cycle.
+
+</Solution>

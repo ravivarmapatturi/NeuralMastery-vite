@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #807. Classical Machine Learning Module 2: Problem 7"
 description: "Master #807. Classical Machine Learning Module 2: Problem 7 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,42 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #807. Classical Machine Learning Module 2: Problem 7
 
-**Track**: Classical Machine Learning | **Rank**: #807 of 1072 | **Points**: 40 XP
+**Track**: Classical Machine Learning | **Rank**: #807 of 1072 | **Points**
 
 ## Overview
 
-Implement `#807. Classical Machine Learning Module 2: Problem 7` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Standardize features to zero mean and unit variance column-wise.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `z_score_normalize(X)`: compute population mean and population standard deviation `sqrt(sum((x - mean)^2) / n)` per column, transforming each value into `(x - mean) / std`.
 
 <PracticePlayground problemId="class-ml-prob-7" />
+
+<Solution>
+
+```python
+import math
+
+def z_score_normalize(X):
+    n_rows, n_cols = len(X), len(X[0])
+    means = [sum(X[i][j] for i in range(n_rows)) / n_rows for j in range(n_cols)]
+    stds = [math.sqrt(sum((X[i][j] - means[j]) ** 2 for i in range(n_rows)) / n_rows) for j in range(n_cols)]
+    res = []
+    for row in X:
+        new_row = []
+        for j in range(n_cols):
+            s = stds[j]
+            val = (row[j] - means[j]) / s if s > 0 else 0.0
+            new_row.append(round(val, 4))
+        res.append(new_row)
+    return res
+```
+
+Compute the sample population mean and standard deviation for each feature column, then center and divide by standard deviation.
+
+</Solution>

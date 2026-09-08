@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #646. Graphs & Network Algorithms Module 6: Problem 26"
 description: "Master #646. Graphs & Network Algorithms Module 6: Problem 26 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,58 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #646. Graphs & Network Algorithms Module 6: Problem 26
 
-**Track**: Graphs & Network Algorithms | **Rank**: #646 of 1072 | **Points**: 90 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #646 of 1072 | **Points**
 
 ## Overview
 
-Implement `#646. Graphs & Network Algorithms Module 6: Problem 26` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the maximum s-t flow in a capacitated network using the Edmonds-Karp augmenting path algorithm.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `max_network_flow(n, source, sink, capacities)`: use BFS to find the shortest augmenting path in the residual network, augment flow by the path bottleneck, and repeat until no path exists.
 
 <PracticePlayground problemId="graph-algo-prob-26" />
+
+<Solution>
+
+```python
+from collections import deque
+
+def max_network_flow(n, source, sink, capacities):
+    cap = [row[:] for row in capacities]
+    max_flow = 0
+    while True:
+        parent = [-1] * n
+        q = deque([source])
+        parent[source] = source
+        while q and parent[sink] == -1:
+            u = q.popleft()
+            for v in range(n):
+                if parent[v] == -1 and cap[u][v] > 0:
+                    parent[v] = u
+                    q.append(v)
+        if parent[sink] == -1:
+            break
+        path_flow = float('inf')
+        curr = sink
+        while curr != source:
+            prev = parent[curr]
+            path_flow = min(path_flow, cap[prev][curr])
+            curr = prev
+        curr = sink
+        while curr != source:
+            prev = parent[curr]
+            cap[prev][curr] -= path_flow
+            cap[curr][prev] += path_flow
+            curr = prev
+        max_flow += path_flow
+    return max_flow
+```
+
+Repeatedly find augmenting paths in the residual graph via BFS, augmenting along the bottleneck edge and maintaining backward flow channels until exhaustion.
+
+</Solution>

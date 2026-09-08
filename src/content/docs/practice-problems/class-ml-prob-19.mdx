@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #819. Classical Machine Learning Module 4: Problem 19"
 description: "Master #819. Classical Machine Learning Module 4: Problem 19 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,49 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #819. Classical Machine Learning Module 4: Problem 19
 
-**Track**: Classical Machine Learning | **Rank**: #819 of 1072 | **Points**: 60 XP
+**Track**: Classical Machine Learning | **Rank**: #819 of 1072 | **Points**
 
 ## Overview
 
-Implement `#819. Classical Machine Learning Module 4: Problem 19` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Execute a single iteration of Lloyd's algorithm for K-means clustering.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `kmeans_step(X, centroids)`: assign each point to its nearest centroid by squared Euclidean distance, then update each centroid to the mean of assigned points.
 
 <PracticePlayground problemId="class-ml-prob-19" />
+
+<Solution>
+
+```python
+def kmeans_step(X, centroids):
+    k = len(centroids)
+    assignments = []
+    for x in X:
+        best_c = 0
+        best_dist = float('inf')
+        for c_idx, c in enumerate(centroids):
+            d = sum((a - b) ** 2 for a, b in zip(x, c))
+            if d < best_dist:
+                best_dist = d
+                best_c = c_idx
+        assignments.append(best_c)
+    dim = len(X[0])
+    new_centroids = []
+    for c_idx in range(k):
+        members = [X[i] for i, a in enumerate(assignments) if a == c_idx]
+        if members:
+            new_c = [round(sum(m[j] for m in members) / len(members), 4) for j in range(dim)]
+        else:
+            new_c = list(centroids[c_idx])
+        new_centroids.append(new_c)
+    return assignments, new_centroids
+```
+
+Assign each sample to the centroid with minimal squared distance, then update each centroid to the center of mass of its assigned cluster.
+
+</Solution>

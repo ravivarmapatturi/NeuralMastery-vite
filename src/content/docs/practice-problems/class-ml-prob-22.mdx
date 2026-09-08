@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #822. Classical Machine Learning Module 5: Problem 22"
 description: "Master #822. Classical Machine Learning Module 5: Problem 22 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,37 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #822. Classical Machine Learning Module 5: Problem 22
 
-**Track**: Classical Machine Learning | **Rank**: #822 of 1072 | **Points**: 60 XP
+**Track**: Classical Machine Learning | **Rank**: #822 of 1072 | **Points**
 
 ## Overview
 
-Implement `#822. Classical Machine Learning Module 5: Problem 22` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Convert unnormalized logit scores into calibrated probability distributions with numerical stability.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `softmax_probabilities(logits)`: subtract row maximum from logits before exponentiating, then normalize each row to sum to 1.0, rounded to 4 decimals.
 
 <PracticePlayground problemId="class-ml-prob-22" />
+
+<Solution>
+
+```python
+import math
+
+def softmax_probabilities(logits):
+    res = []
+    for row in logits:
+        max_v = max(row)
+        exps = [math.exp(v - max_v) for v in row]
+        sum_exp = sum(exps)
+        res.append([round(e / sum_exp, 4) for e in exps])
+    return res
+```
+
+Subtract row maximums to avoid numerical overflow, exponentiate, and divide by the row sum to form normalized probability distributions.
+
+</Solution>

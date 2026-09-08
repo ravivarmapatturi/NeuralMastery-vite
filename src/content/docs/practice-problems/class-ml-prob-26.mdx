@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #826. Classical Machine Learning Module 6: Problem 26"
 description: "Master #826. Classical Machine Learning Module 6: Problem 26 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,54 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #826. Classical Machine Learning Module 6: Problem 26
 
-**Track**: Classical Machine Learning | **Rank**: #826 of 1072 | **Points**: 90 XP
+**Track**: Classical Machine Learning | **Rank**: #826 of 1072 | **Points**
 
 ## Overview
 
-Implement `#826. Classical Machine Learning Module 6: Problem 26` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Identify the optimal threshold for splitting a continuous feature by maximizing Gini impurity reduction.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `best_binary_split(X_col, y)`: evaluate midpoints between consecutive sorted unique feature values. Find the threshold yielding maximum Gini gain, returning (best_threshold, best_gain).
 
 <PracticePlayground problemId="class-ml-prob-26" />
+
+<Solution>
+
+```python
+def best_binary_split(X_col, y):
+    def gini(labels):
+        if not labels:
+            return 0.0
+        n = len(labels)
+        p1 = sum(labels) / n
+        return 1.0 - p1 ** 2 - (1.0 - p1) ** 2
+
+    n = len(y)
+    base_gini = gini(y)
+    pairs = sorted(zip(X_col, y), key=lambda x: x[0])
+    unique_vals = sorted(list(set(X_col)))
+    if len(unique_vals) <= 1:
+        return 0.0, 0.0
+
+    best_gain = -1.0
+    best_thresh = unique_vals[0]
+    for i in range(len(unique_vals) - 1):
+        thresh = (unique_vals[i] + unique_vals[i + 1]) / 2.0
+        left = [lbl for val, lbl in pairs if val <= thresh]
+        right = [lbl for val, lbl in pairs if val > thresh]
+        weighted_gini = (len(left) / n) * gini(left) + (len(right) / n) * gini(right)
+        gain = base_gini - weighted_gini
+        if gain > best_gain:
+            best_gain = gain
+            best_thresh = thresh
+    return round(best_thresh, 4), round(best_gain, 4)
+```
+
+Scan through all midpoints between distinct sorted feature values, partition labels into left and right subsets, and select the threshold that minimizes weighted child Gini impurity.
+
+</Solution>

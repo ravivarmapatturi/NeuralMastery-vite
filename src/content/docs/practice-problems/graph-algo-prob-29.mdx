@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #649. Graphs & Network Algorithms Module 6: Problem 29"
 description: "Master #649. Graphs & Network Algorithms Module 6: Problem 29 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,48 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #649. Graphs & Network Algorithms Module 6: Problem 29
 
-**Track**: Graphs & Network Algorithms | **Rank**: #649 of 1072 | **Points**: 90 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #649 of 1072 | **Points**
 
 ## Overview
 
-Implement `#649. Graphs & Network Algorithms Module 6: Problem 29` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine the maximum cardinality matching in a bipartite graph using augmenting path DFS.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `max_bipartite_matching(u_count, v_count, edges)`: maintain `match_v` array. For each vertex in partition U, search for an augmenting path using DFS, flipping matching assignments.
 
 <PracticePlayground problemId="graph-algo-prob-29" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def max_bipartite_matching(u_count, v_count, edges):
+    adj = defaultdict(list)
+    for u, v in edges:
+        adj[u].append(v)
+    match_v = [-1] * v_count
+    def dfs(u, visited):
+        for v in adj[u]:
+            if not visited[v]:
+                visited[v] = True
+                if match_v[v] == -1 or dfs(match_v[v], visited):
+                    match_v[v] = u
+                    return True
+        return False
+    matches = 0
+    for u in range(u_count):
+        visited = [False] * v_count
+        if dfs(u, visited):
+            matches += 1
+    return matches
+```
+
+Search for augmenting paths from each unmatched vertex in partition U. Finding an alternating chain re-pairs intermediate matches, expanding total matching cardinality.
+
+</Solution>

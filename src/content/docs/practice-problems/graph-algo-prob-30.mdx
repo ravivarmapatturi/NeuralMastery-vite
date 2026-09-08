@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #650. Graphs & Network Algorithms Module 6: Problem 30"
 description: "Master #650. Graphs & Network Algorithms Module 6: Problem 30 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,45 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #650. Graphs & Network Algorithms Module 6: Problem 30
 
-**Track**: Graphs & Network Algorithms | **Rank**: #650 of 1072 | **Points**: 90 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #650 of 1072 | **Points**
 
 ## Overview
 
-Implement `#650. Graphs & Network Algorithms Module 6: Problem 30` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Solve the symmetric Travelling Salesperson Problem exactly using the Held-Karp bitmask dynamic programming algorithm.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_6_problem_30`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `tsp_exact_cost(dist_matrix)`: memoize `tsp(mask, u)` representing the minimum cost to visit remaining unvisited cities starting from city u and returning to 0.
 
 <PracticePlayground problemId="graph-algo-prob-30" />
+
+<Solution>
+
+```python
+def tsp_exact_cost(dist_matrix):
+    n = len(dist_matrix)
+    if n <= 1:
+        return 0
+    memo = {}
+    def tsp(mask, u):
+        if mask == (1 << n) - 1:
+            return dist_matrix[u][0]
+        state = (mask, u)
+        if state in memo:
+            return memo[state]
+        ans = float('inf')
+        for v in range(n):
+            if not (mask & (1 << v)):
+                ans = min(ans, dist_matrix[u][v] + tsp(mask | (1 << v), v))
+        memo[state] = ans
+        return ans
+    return tsp(1, 0)
+```
+
+Use memoized bitmask recursion to find the minimal cost completion tour for each subset of visited cities and current endpoint, terminating with return to city 0.
+
+</Solution>

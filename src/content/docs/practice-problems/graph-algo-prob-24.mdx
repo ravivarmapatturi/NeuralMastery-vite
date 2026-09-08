@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #644. Graphs & Network Algorithms Module 5: Problem 24"
 description: "Master #644. Graphs & Network Algorithms Module 5: Problem 24 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,54 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #644. Graphs & Network Algorithms Module 5: Problem 24
 
-**Track**: Graphs & Network Algorithms | **Rank**: #644 of 1072 | **Points**: 90 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #644 of 1072 | **Points**
 
 ## Overview
 
-Implement `#644. Graphs & Network Algorithms Module 5: Problem 24` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Detect network bridges (critical single-point-of-failure links) using Tarjan's bridge-finding algorithm.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `critical_connections(n, connections)`: use DFS low-link numbers. An edge `(u, v)` is a bridge if and only if `low[v] > tin[u]`.
 
 <PracticePlayground problemId="graph-algo-prob-24" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def critical_connections(n, connections):
+    adj = defaultdict(list)
+    for u, v in connections:
+        adj[u].append(v)
+        adj[v].append(u)
+    tin = [-1] * n
+    low = [-1] * n
+    timer = 0
+    bridges = []
+    def dfs(u, p=-1):
+        nonlocal timer
+        tin[u] = low[u] = timer
+        timer += 1
+        for v in adj[u]:
+            if v == p:
+                continue
+            if tin[v] != -1:
+                low[u] = min(low[u], tin[v])
+            else:
+                dfs(v, u)
+                low[u] = min(low[u], low[v])
+                if low[v] > tin[u]:
+                    bridges.append(sorted([u, v]))
+    dfs(0)
+    return sorted(bridges)
+```
+
+Perform DFS computing discovery time and low-link reachable ancestor times. Any tree edge where child cannot reach an ancestor of parent constitutes a bridge.
+
+</Solution>

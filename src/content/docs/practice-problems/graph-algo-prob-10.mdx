@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #630. Graphs & Network Algorithms Module 2: Problem 10"
 description: "Master #630. Graphs & Network Algorithms Module 2: Problem 10 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,46 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #630. Graphs & Network Algorithms Module 2: Problem 10
 
-**Track**: Graphs & Network Algorithms | **Rank**: #630 of 1072 | **Points**: 40 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #630 of 1072 | **Points**
 
 ## Overview
 
-Implement `#630. Graphs & Network Algorithms Module 2: Problem 10` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate the total weight of a Minimum Spanning Tree using Kruskal's greedy edge selection.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `kruskal_mst_weight(n, edges)`: sort edges by weight ascending. Greedily add edges that join disjoint components via Union-Find until n-1 edges are chosen.
 
 <PracticePlayground problemId="graph-algo-prob-10" />
+
+<Solution>
+
+```python
+def kruskal_mst_weight(n, edges):
+    sorted_edges = sorted(edges, key=lambda x: x[2])
+    parent = list(range(n))
+    def find(i):
+        if parent[i] == i:
+            return i
+        parent[i] = find(parent[i])
+        return parent[i]
+    mst_weight = 0
+    edges_count = 0
+    for u, v, w in sorted_edges:
+        ru, rv = find(u), find(v)
+        if ru != rv:
+            parent[ru] = rv
+            mst_weight += w
+            edges_count += 1
+            if edges_count == n - 1:
+                break
+    return mst_weight
+```
+
+Sort edges by weight ascending. Sequentially connect non-cyclic endpoints using Union-Find, accumulating edge weights until spanning the tree.
+
+</Solution>

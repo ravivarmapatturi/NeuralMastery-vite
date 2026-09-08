@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #820. Classical Machine Learning Module 4: Problem 20"
 description: "Master #820. Classical Machine Learning Module 4: Problem 20 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,29 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #820. Classical Machine Learning Module 4: Problem 20
 
-**Track**: Classical Machine Learning | **Rank**: #820 of 1072 | **Points**: 60 XP
+**Track**: Classical Machine Learning | **Rank**: #820 of 1072 | **Points**
 
 ## Overview
 
-Implement `#820. Classical Machine Learning Module 4: Problem 20` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Expand 1D feature vectors into polynomial basis features.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `polynomial_features_1d(x, degree)`: map each scalar feature `x_i` to powers `x_i^1` through `x_i^degree`, rounding each entry to 4 decimal places.
 
 <PracticePlayground problemId="class-ml-prob-20" />
+
+<Solution>
+
+```python
+def polynomial_features_1d(x, degree):
+    return [[round(val ** d, 4) for d in range(1, degree + 1)] for val in x]
+```
+
+Construct powers of the input feature from 1 to degree for each sample to build the polynomial design matrix.
+
+</Solution>

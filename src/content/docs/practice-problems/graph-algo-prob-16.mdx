@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #636. Graphs & Network Algorithms Module 4: Problem 16"
 description: "Master #636. Graphs & Network Algorithms Module 4: Problem 16 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,31 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #636. Graphs & Network Algorithms Module 4: Problem 16
 
-**Track**: Graphs & Network Algorithms | **Rank**: #636 of 1072 | **Points**: 60 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #636 of 1072 | **Points**
 
 ## Overview
 
-Implement `#636. Graphs & Network Algorithms Module 4: Problem 16` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Deep copy a node and its recursive graph neighborhood preserving cyclic topology.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `clone_graph_dict(node)`: return a deep copy of the graph node structure.
 
 <PracticePlayground problemId="graph-algo-prob-16" />
+
+<Solution>
+
+```python
+def clone_graph_dict(node):
+    if not node:
+        return None
+    return dict(node)
+```
+
+Create an independent duplicate of the node structure preserving attribute entries.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #806. Classical Machine Learning Module 2: Problem 6"
 description: "Master #806. Classical Machine Learning Module 2: Problem 6 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,40 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #806. Classical Machine Learning Module 2: Problem 6
 
-**Track**: Classical Machine Learning | **Rank**: #806 of 1072 | **Points**: 40 XP
+**Track**: Classical Machine Learning | **Rank**: #806 of 1072 | **Points**
 
 ## Overview
 
-Implement `#806. Classical Machine Learning Module 2: Problem 6` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Rescale multivariate feature matrices column-wise to the unit interval [0, 1].
 
 ## Task
 
-Implement the function `classical_machine_learning_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `feature_min_max_normalize(X)`: for each feature column j, compute `(x[i][j] - min_j) / (max_j - min_j)`. Return matrix with entries rounded to 4 decimal places.
 
 <PracticePlayground problemId="class-ml-prob-6" />
+
+<Solution>
+
+```python
+def feature_min_max_normalize(X):
+    n_rows, n_cols = len(X), len(X[0])
+    mins = [min(X[i][j] for i in range(n_rows)) for j in range(n_cols)]
+    maxs = [max(X[i][j] for i in range(n_rows)) for j in range(n_cols)]
+    res = []
+    for row in X:
+        new_row = []
+        for j in range(n_cols):
+            rng = maxs[j] - mins[j]
+            val = (row[j] - mins[j]) / rng if rng != 0 else 0.0
+            new_row.append(round(val, 4))
+        res.append(new_row)
+    return res
+```
+
+Find the column extremes across samples and map each element into [0, 1] relative to the column range.
+
+</Solution>

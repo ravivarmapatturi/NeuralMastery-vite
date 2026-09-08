@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #623. Graphs & Network Algorithms Module 1: Problem 3"
 description: "Master #623. Graphs & Network Algorithms Module 1: Problem 3 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,33 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #623. Graphs & Network Algorithms Module 1: Problem 3
 
-**Track**: Graphs & Network Algorithms | **Rank**: #623 of 1072 | **Points**: 40 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #623 of 1072 | **Points**
 
 ## Overview
 
-Implement `#623. Graphs & Network Algorithms Module 1: Problem 3` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate vertex degrees across all nodes in an undirected graph.
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `compute_node_degrees(n, edges)`: initialize degree count 0 for every node 0..n-1, and increment degrees for both endpoints of each edge.
 
 <PracticePlayground problemId="graph-algo-prob-3" />
+
+<Solution>
+
+```python
+def compute_node_degrees(n, edges):
+    degrees = {i: 0 for i in range(n)}
+    for u, v in edges:
+        degrees[u] += 1
+        degrees[v] += 1
+    return degrees
+```
+
+Initialize degree counts to zero for all n vertices, then iterate through edges incrementing the degree counter for both connected endpoints.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #821. Classical Machine Learning Module 5: Problem 21"
 description: "Master #821. Classical Machine Learning Module 5: Problem 21 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,33 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #821. Classical Machine Learning Module 5: Problem 21
 
-**Track**: Classical Machine Learning | **Rank**: #821 of 1072 | **Points**: 60 XP
+**Track**: Classical Machine Learning | **Rank**: #821 of 1072 | **Points**
 
 ## Overview
 
-Implement `#821. Classical Machine Learning Module 5: Problem 21` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Update and renormalize sample weights in AdaBoost based on classifier error.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `adaboost_weight_update(weights, y_true, y_pred, alpha)`: multiply weights by `exp(-alpha * y_true * y_pred)` and normalize so sum equals 1.0, rounded to 4 decimal places.
 
 <PracticePlayground problemId="class-ml-prob-21" />
+
+<Solution>
+
+```python
+import math
+
+def adaboost_weight_update(weights, y_true, y_pred, alpha):
+    new_weights = [w * math.exp(-alpha * yt * yp) for w, yt, yp in zip(weights, y_true, y_pred)]
+    total = sum(new_weights)
+    return [round(w / total, 4) for w in new_weights]
+```
+
+Multiply weights by exp(-alpha * y * y_hat), which scales up misclassified instances and scales down correctly predicted instances, followed by normalization.
+
+</Solution>

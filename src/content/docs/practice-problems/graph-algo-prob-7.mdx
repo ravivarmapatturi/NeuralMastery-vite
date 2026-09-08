@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #627. Graphs & Network Algorithms Module 2: Problem 7"
 description: "Master #627. Graphs & Network Algorithms Module 2: Problem 7 in the Graphs & Network Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,41 @@ topic: "Graphs & Network Algorithms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #627. Graphs & Network Algorithms Module 2: Problem 7
 
-**Track**: Graphs & Network Algorithms | **Rank**: #627 of 1072 | **Points**: 40 XP
+**Track**: Graphs & Network Algorithms | **Rank**: #627 of 1072 | **Points**
 
 ## Overview
 
-Implement `#627. Graphs & Network Algorithms Module 2: Problem 7` to advance your mastery in **Graphs & Network Algorithms**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Count the number of connected components in an undirected graph using Disjoint Set Union (Union-Find).
 
 ## Task
 
-Implement the function `graphs_and_network_algorithms_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `count_connected_components_undirected(n, edges)`: initialize n components with path-compressed find(). For each edge uniting distinct components, decrement component count.
 
 <PracticePlayground problemId="graph-algo-prob-7" />
+
+<Solution>
+
+```python
+def count_connected_components_undirected(n, edges):
+    parent = list(range(n))
+    def find(i):
+        if parent[i] == i:
+            return i
+        parent[i] = find(parent[i])
+        return parent[i]
+    components = n
+    for u, v in edges:
+        ru, rv = find(u), find(v)
+        if ru != rv:
+            parent[ru] = rv
+            components -= 1
+    return components
+```
+
+Initialize n disjoint sets. For each edge, if the endpoints belong to different sets, union them and decrement the remaining component count.
+
+</Solution>

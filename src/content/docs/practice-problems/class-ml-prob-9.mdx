@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #809. Classical Machine Learning Module 2: Problem 9"
 description: "Master #809. Classical Machine Learning Module 2: Problem 9 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #809. Classical Machine Learning Module 2: Problem 9
 
-**Track**: Classical Machine Learning | **Rank**: #809 of 1072 | **Points**: 40 XP
+**Track**: Classical Machine Learning | **Rank**: #809 of 1072 | **Points**
 
 ## Overview
 
-Implement `#809. Classical Machine Learning Module 2: Problem 9` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Convert categorical string variables into indicator vectors ordered lexicographically.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `one_hot_encode(labels)`: sort unique category labels alphabetically. Create a binary vector for each item with 1 at the matching category index and 0 elsewhere.
 
 <PracticePlayground problemId="class-ml-prob-9" />
+
+<Solution>
+
+```python
+def one_hot_encode(labels):
+    unique = sorted(list(set(labels)))
+    mapping = {cat: idx for idx, cat in enumerate(unique)}
+    res = []
+    for lbl in labels:
+        row = [0] * len(unique)
+        row[mapping[lbl]] = 1
+        res.append(row)
+    return res
+```
+
+Sort distinct categories to ensure deterministic feature columns. For each input label, produce a one-hot vector with a 1 in its designated category index.
+
+</Solution>

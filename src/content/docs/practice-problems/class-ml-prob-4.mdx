@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #804. Classical Machine Learning Module 1: Problem 4"
 description: "Master #804. Classical Machine Learning Module 1: Problem 4 in the Classical Machine Learning track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,38 @@ topic: "Classical Machine Learning"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #804. Classical Machine Learning Module 1: Problem 4
 
-**Track**: Classical Machine Learning | **Rank**: #804 of 1072 | **Points**: 40 XP
+**Track**: Classical Machine Learning | **Rank**: #804 of 1072 | **Points**
 
 ## Overview
 
-Implement `#804. Classical Machine Learning Module 1: Problem 4` to advance your mastery in **Classical Machine Learning**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute fundamental regression error metrics MSE, MAE, and RMSE from scratch.
 
 ## Task
 
-Implement the function `classical_machine_learning_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `regression_metrics(y_true, y_pred)`: calculate mean squared error, mean absolute error, and square root of MSE, rounding all returned values to 4 decimal places.
 
 <PracticePlayground problemId="class-ml-prob-4" />
+
+<Solution>
+
+```python
+import math
+
+def regression_metrics(y_true, y_pred):
+    n = len(y_true)
+    mse = sum((yt - yp) ** 2 for yt, yp in zip(y_true, y_pred)) / n
+    mae = sum(abs(yt - yp) for yt, yp in zip(y_true, y_pred)) / n
+    return {
+        'mse': round(mse, 4),
+        'mae': round(mae, 4),
+        'rmse': round(math.sqrt(mse), 4)
+    }
+```
+
+Compute pointwise squared and absolute deviations between predicted and true targets, average across samples, and take square root of MSE for RMSE.
+
+</Solution>
