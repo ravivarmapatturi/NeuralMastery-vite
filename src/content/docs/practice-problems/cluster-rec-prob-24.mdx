@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #854. Clustering & Recommender Systems Module 5: Problem 24"
-description: "Master #854. Clustering & Recommender Systems Module 5: Problem 24 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Dunn Index Cluster Validity"
+description: "Implement the Dunn Index, an internal cluster-validity metric that needs no ground truth -- higher is better, rewarding compact well-separated clusters."
 difficulty: "hard"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #854. Clustering & Recommender Systems Module 5: Problem 24
+# Dunn Index Cluster Validity
 
-**Track**: Clustering & Recommender Systems | **Rank**: #854 of 1072 | **Points**: 90 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#854. Clustering & Recommender Systems Module 5: Problem 24` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the Dunn Index, an internal cluster-validity metric that needs no ground truth -- higher is better, rewarding compact well-separated clusters.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dunn_index(clusters)`. `clusters` is a list of clusters, each a list of points. Compute `min_inter` = the minimum single-linkage distance between any two DIFFERENT clusters, and `max_intra` = the maximum diameter (max pairwise distance) within any single cluster (a singleton cluster has diameter 0). Return `min_inter / max_intra`. Assume at least 2 clusters and `max_intra > 0`.
 
 <PracticePlayground problemId="cluster-rec-prob-24" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #845. Clustering & Recommender Systems Module 3: Problem 15"
-description: "Master #845. Clustering & Recommender Systems Module 3: Problem 15 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Popularity-Based Baseline Recommender"
+description: "Implement the popularity baseline every real recommender system is measured against, and the standard cold-start fallback."
+difficulty: "easy"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #845. Clustering & Recommender Systems Module 3: Problem 15
+# Popularity-Based Baseline Recommender
 
-**Track**: Clustering & Recommender Systems | **Rank**: #845 of 1072 | **Points**: 60 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#845. Clustering & Recommender Systems Module 3: Problem 15` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the popularity baseline every real recommender system is measured against, and the standard cold-start fallback.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `popularity_topk(interactions, k)`. `interactions` is a flat list of item ids (one entry per interaction, possibly repeated). Return the `k` most frequently occurring item ids, sorted descending by frequency; ties broken by item id ascending.
 
 <PracticePlayground problemId="cluster-rec-prob-15" />

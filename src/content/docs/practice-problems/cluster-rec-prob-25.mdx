@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #855. Clustering & Recommender Systems Module 5: Problem 25"
-description: "Master #855. Clustering & Recommender Systems Module 5: Problem 25 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Elbow Method: Detect the Knee in a WCSS Curve"
+description: "Implement a real, deterministic knee-detection rule for the elbow method, turning a subjective visual heuristic into a reproducible function."
+difficulty: "medium"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #855. Clustering & Recommender Systems Module 5: Problem 25
+# Elbow Method: Detect the Knee in a WCSS Curve
 
-**Track**: Clustering & Recommender Systems | **Rank**: #855 of 1072 | **Points**: 90 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#855. Clustering & Recommender Systems Module 5: Problem 25` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real, deterministic knee-detection rule for the elbow method, turning a subjective visual heuristic into a reproducible function.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `elbow_k(wcss_values)`. `wcss_values[i]` is the WCSS for `k=i+1` clusters (i.e. index 0 is k=1). For each interior index `i` from `1` to `len-2` inclusive, compute the second difference `wcss[i-1] - 2*wcss[i] + wcss[i+1]`. Return the k (i.e. `i+1`) with the LARGEST second difference (the sharpest bend). If `len(wcss_values) < 3`, return `1`.
 
 <PracticePlayground problemId="cluster-rec-prob-25" />

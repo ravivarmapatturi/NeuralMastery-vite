@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #941. MLOps & Data Systems Module 5: Problem 21"
-description: "Master #941. MLOps & Data Systems Module 5: Problem 21 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Latency Percentile Computation"
+description: "Implement real p50/p95/p99 latency percentile computation, the standard way model-serving SLOs are measured (never use plain average latency for SLOs)."
 difficulty: "medium"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #941. MLOps & Data Systems Module 5: Problem 21
+# Latency Percentile Computation
 
-**Track**: MLOps & Data Systems | **Rank**: #941 of 1072 | **Points**: 60 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#941. MLOps & Data Systems Module 5: Problem 21` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement real p50/p95/p99 latency percentile computation, the standard way model-serving SLOs are measured (never use plain average latency for SLOs).
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `latency_percentile(samples_ms, p)`. Sort `samples_ms` ascending. Using the nearest-rank method, the index is `ceil(p/100 * n) - 1`, clamped to `[0, n-1]`. Return the value at that index. `p` is in `[0, 100]`.
 
 <PracticePlayground problemId="mlops-sys-prob-21" />

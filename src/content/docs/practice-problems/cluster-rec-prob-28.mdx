@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #858. Clustering & Recommender Systems Module 6: Problem 28"
-description: "Master #858. Clustering & Recommender Systems Module 6: Problem 28 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Gaussian Mixture Model: Responsibility Computation"
+description: "Implement the E-step responsibility calculation of a 1D Gaussian Mixture Model, the soft-clustering generalization of k-means."
 difficulty: "hard"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #858. Clustering & Recommender Systems Module 6: Problem 28
+# Gaussian Mixture Model: Responsibility Computation
 
-**Track**: Clustering & Recommender Systems | **Rank**: #858 of 1072 | **Points**: 90 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#858. Clustering & Recommender Systems Module 6: Problem 28` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the E-step responsibility calculation of a 1D Gaussian Mixture Model, the soft-clustering generalization of k-means.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `gmm_responsibility(x, means, variances, weights)`. For each component `k`, compute its weighted Gaussian density at `x`: `weights[k] * N(x; means[k], variances[k])` where `N(x;m,v) = (1/sqrt(2*pi*v)) * exp(-(x-m)**2/(2*v))`. Return the normalized responsibilities (each divided by the sum over all components) as a list of floats.
 
 <PracticePlayground problemId="cluster-rec-prob-28" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #933. MLOps & Data Systems Module 3: Problem 13"
-description: "Master #933. MLOps & Data Systems Module 3: Problem 13 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Linear Learning-Rate Warmup Schedule"
+description: "Implement linear learning-rate warmup, a real, near-universal training stabilization technique for large model training."
+difficulty: "easy"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #933. MLOps & Data Systems Module 3: Problem 13
+# Linear Learning-Rate Warmup Schedule
 
-**Track**: MLOps & Data Systems | **Rank**: #933 of 1072 | **Points**: 60 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#933. MLOps & Data Systems Module 3: Problem 13` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement linear learning-rate warmup, a real, near-universal training stabilization technique for large model training.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `warmup_lr(step, warmup_steps, base_lr)`. If `step >= warmup_steps` (or `warmup_steps == 0`), return `base_lr`. Otherwise return `base_lr * step / warmup_steps` (linear ramp from 0).
 
 <PracticePlayground problemId="mlops-sys-prob-13" />

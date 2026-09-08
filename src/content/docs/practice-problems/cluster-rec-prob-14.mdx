@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #844. Clustering & Recommender Systems Module 3: Problem 14"
-description: "Master #844. Clustering & Recommender Systems Module 3: Problem 14 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Intra-List Diversity of a Recommendation List"
+description: "Implement intra-list diversity, the standard metric for how varied a single recommendation list is, not just how accurate."
 difficulty: "medium"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #844. Clustering & Recommender Systems Module 3: Problem 14
+# Intra-List Diversity of a Recommendation List
 
-**Track**: Clustering & Recommender Systems | **Rank**: #844 of 1072 | **Points**: 60 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#844. Clustering & Recommender Systems Module 3: Problem 14` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement intra-list diversity, the standard metric for how varied a single recommendation list is, not just how accurate.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `intra_list_diversity(item_vectors)`. Return the average pairwise dissimilarity `(1 - cosine_similarity)` over all UNIQUE pairs of items in the list. If fewer than 2 items, return `0.0`.
 
 <PracticePlayground problemId="cluster-rec-prob-14" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #928. MLOps & Data Systems Module 2: Problem 8"
-description: "Master #928. MLOps & Data Systems Module 2: Problem 8 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Deterministic Hash-Based Train/Test Split"
+description: "Implement hash-based deterministic train/test splitting, which stays stable as new data arrives (unlike a random shuffle-and-cut split that reshuffles everything on every re-run)."
+difficulty: "medium"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #928. MLOps & Data Systems Module 2: Problem 8
+# Deterministic Hash-Based Train/Test Split
 
-**Track**: MLOps & Data Systems | **Rank**: #928 of 1072 | **Points**: 40 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#928. MLOps & Data Systems Module 2: Problem 8` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement hash-based deterministic train/test splitting, which stays stable as new data arrives (unlike a random shuffle-and-cut split that reshuffles everything on every re-run).
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `hash_split(record_id, test_pct)`. Hash `record_id` with `hashlib.md5`, take the first 4 bytes as a big-endian unsigned int, compute `bucket = (that_int % 10000) / 100.0` (in `[0,100)`), and return `'test'` if `bucket < test_pct` else `'train'`.
 
 <PracticePlayground problemId="mlops-sys-prob-8" />

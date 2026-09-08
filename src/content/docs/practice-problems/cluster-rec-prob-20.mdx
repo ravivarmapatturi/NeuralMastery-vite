@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #850. Clustering & Recommender Systems Module 4: Problem 20"
-description: "Master #850. Clustering & Recommender Systems Module 4: Problem 20 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: K-Medoids Total Clustering Cost"
+description: "Implement the k-medoids objective function -- like k-means but using real data points as cluster centers, more robust to outliers."
 difficulty: "medium"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #850. Clustering & Recommender Systems Module 4: Problem 20
+# K-Medoids Total Clustering Cost
 
-**Track**: Clustering & Recommender Systems | **Rank**: #850 of 1072 | **Points**: 60 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#850. Clustering & Recommender Systems Module 4: Problem 20` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the k-medoids objective function -- like k-means but using real data points as cluster centers, more robust to outliers.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `kmedoids_cost(points, medoids)`: for each point, find its nearest medoid by Euclidean distance, and return the SUM of those nearest distances (not squared, unlike k-means' WCSS).
 
 <PracticePlayground problemId="cluster-rec-prob-20" />

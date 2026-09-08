@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #859. Clustering & Recommender Systems Module 6: Problem 29"
-description: "Master #859. Clustering & Recommender Systems Module 6: Problem 29 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Spectral Clustering: Gaussian Affinity Matrix"
+description: "Implement the Gaussian (RBF) affinity matrix, the first real step of spectral clustering -- turning raw points into a similarity graph."
+difficulty: "medium"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #859. Clustering & Recommender Systems Module 6: Problem 29
+# Spectral Clustering: Gaussian Affinity Matrix
 
-**Track**: Clustering & Recommender Systems | **Rank**: #859 of 1072 | **Points**: 90 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#859. Clustering & Recommender Systems Module 6: Problem 29` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the Gaussian (RBF) affinity matrix, the first real step of spectral clustering -- turning raw points into a similarity graph.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `gaussian_affinity_matrix(points, sigma)`. Return the `n x n` matrix where entry `[i][j] = exp(-euclidean(points[i], points[j])**2 / (2*sigma**2))`. Diagonal entries (i==i) should be `1.0` (distance 0 gives exp(0)=1 naturally -- just confirming the expected convention).
 
 <PracticePlayground problemId="cluster-rec-prob-29" />

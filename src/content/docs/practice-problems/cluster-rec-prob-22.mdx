@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #852. Clustering & Recommender Systems Module 5: Problem 22"
-description: "Master #852. Clustering & Recommender Systems Module 5: Problem 22 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Cluster Purity Score"
+description: "Implement cluster purity, an external validation metric that scores clustering quality against known ground-truth labels."
 difficulty: "medium"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #852. Clustering & Recommender Systems Module 5: Problem 22
+# Cluster Purity Score
 
-**Track**: Clustering & Recommender Systems | **Rank**: #852 of 1072 | **Points**: 60 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#852. Clustering & Recommender Systems Module 5: Problem 22` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement cluster purity, an external validation metric that scores clustering quality against known ground-truth labels.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `purity_score(cluster_labels, true_labels)`. For each distinct cluster id in `cluster_labels`, find the count of its most common true label among members, sum those counts across all clusters, and divide by the total number of points.
 
 <PracticePlayground problemId="cluster-rec-prob-22" />

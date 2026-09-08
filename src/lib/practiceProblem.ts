@@ -90002,6 +90002,6169 @@ def hnsw_assign_level(u: float, m_l: float) -> int:
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  "cluster-rec-prob-1": {
+    id: "cluster-rec-prob-1",
+    title: "K-Means Cluster Assignment Step",
+    difficulty: "easy",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "kmeans_assign",
+    functionSignature: "kmeans_assign(points: list[list[float]], centroids: list[list[float]]) -> list[int]",
+    starterCode: `def kmeans_assign(points, centroids):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the assignment (E) step of Lloyd's k-means algorithm.",
+    taskDescription: "Implement `kmeans_assign(points, centroids)`. For each point, return the index of its nearest centroid by Euclidean distance. Ties broken by lowest index.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "1 <= len(centroids)",
+        "all points/centroids share dimensionality"
+      ],
+    hints: {
+  "small": "Compute Euclidean distance to every centroid, pick the min.",
+        "strong": "argmin over centroids of euclidean(point, centroid); tie -> smallest index.",
+        "concept": "This is exactly the Voronoi-partition step -- k-means alternates this with recomputing centroids until assignments stop changing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "2 clear clusters",
+          "input": {
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                0.1,
+                0.1
+              ],
+              [
+                9,
+                9
+              ]
+            ],
+            "centroids": [
+              [
+                0,
+                0
+              ],
+              [
+                9,
+                9
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0,
+            0,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "tie broken by lowest index",
+          "input": {
+            "points": [
+              [
+                1,
+                0
+              ]
+            ],
+            "centroids": [
+              [
+                0,
+                0
+              ],
+              [
+                2,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single centroid",
+          "input": {
+            "points": [
+              [
+                1
+              ],
+              [
+                2
+              ],
+              [
+                3
+              ]
+            ],
+            "centroids": [
+              [
+                0
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0,
+            0,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3 centroids",
+          "input": {
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                10,
+                10
+              ]
+            ],
+            "centroids": [
+              [
+                0,
+                0
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                10,
+                10
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0,
+            1,
+            2
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-2": {
+    id: "cluster-rec-prob-2",
+    title: "K-Means Centroid Update Step",
+    difficulty: "easy",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "kmeans_update_centroids",
+    functionSignature: "kmeans_update_centroids(points: list[list[float]], assignments: list[int], k: int) -> list[list[float]]",
+    starterCode: `def kmeans_update_centroids(points, assignments, k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the update (M) step of Lloyd's k-means algorithm.",
+    taskDescription: "Implement `kmeans_update_centroids(points, assignments, k)`. Return a list of k centroids, each the element-wise mean of the points assigned to it. If a cluster has zero points, its centroid is the zero vector of the same dimensionality.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(points) == len(assignments)",
+        "assignments values in [0, k)"
+      ],
+    hints: {
+  "small": "Group points by cluster index, average each group.",
+        "strong": "for each cluster i, mean of {points[j] for j where assignments[j]==i}, or zeros if empty.",
+        "concept": "The centroid update minimizes within-cluster sum of squared distances for a fixed assignment -- this is why k-means monotonically decreases WCSS each iteration."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two clusters",
+          "input": {
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                10,
+                10
+              ]
+            ],
+            "assignments": [
+              0,
+              0,
+              1
+            ],
+            "k": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              0
+            ],
+            [
+              10,
+              10
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "empty cluster returns zeros",
+          "input": {
+            "points": [
+              [
+                1
+              ],
+              [
+                2
+              ]
+            ],
+            "assignments": [
+              0,
+              0
+            ],
+            "k": 2
+          },
+          "expectedOutput": [
+            [
+              1.5
+            ],
+            [
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single point per cluster",
+          "input": {
+            "points": [
+              [
+                1,
+                1
+              ],
+              [
+                3,
+                3
+              ]
+            ],
+            "assignments": [
+              0,
+              1
+            ],
+            "k": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              1
+            ],
+            [
+              3,
+              3
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3 clusters uneven sizes",
+          "input": {
+            "points": [
+              [
+                0
+              ],
+              [
+                2
+              ],
+              [
+                4
+              ],
+              [
+                100
+              ]
+            ],
+            "assignments": [
+              0,
+              0,
+              1,
+              2
+            ],
+            "k": 3
+          },
+          "expectedOutput": [
+            [
+              1
+            ],
+            [
+              4
+            ],
+            [
+              100
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-3": {
+    id: "cluster-rec-prob-3",
+    title: "DBSCAN Core Point Check",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "is_core_point",
+    functionSignature: "is_core_point(point_idx: int, points: list[list[float]], eps: float, min_pts: int) -> bool",
+    starterCode: `def is_core_point(point_idx, points, eps, min_pts):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement DBSCAN's core-point test, the primitive that makes density-based clustering possible without pre-specifying k.",
+    taskDescription: "Implement `is_core_point(point_idx, points, eps, min_pts)`. A point is a core point if at least `min_pts` OTHER points (excluding itself) lie within Euclidean distance `eps` (inclusive) of it.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= point_idx < len(points)",
+        "eps > 0",
+        "min_pts >= 1"
+      ],
+    hints: {
+  "small": "Count neighbors within eps, excluding the point itself.",
+        "strong": "count = sum(1 for j,p in enumerate(points) if j != point_idx and euclid(points[point_idx],p) <= eps); return count >= min_pts.",
+        "concept": "DBSCAN builds clusters entirely from core points and their eps-neighborhoods, which is why it naturally finds arbitrary-shaped clusters and labels sparse points as noise."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "dense point is core",
+          "input": {
+            "point_idx": 0,
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                0.1,
+                0
+              ],
+              [
+                0,
+                0.1
+              ],
+              [
+                0.1,
+                0.1
+              ]
+            ],
+            "eps": 0.5,
+            "min_pts": 3
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "sparse point is not core",
+          "input": {
+            "point_idx": 0,
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                100,
+                100
+              ]
+            ],
+            "eps": 0.5,
+            "min_pts": 1
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exact boundary distance counts",
+          "input": {
+            "point_idx": 0,
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "eps": 1,
+            "min_pts": 1
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "min_pts=1 with one neighbor",
+          "input": {
+            "point_idx": 1,
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                0.2,
+                0
+              ],
+              [
+                5,
+                5
+              ]
+            ],
+            "eps": 0.5,
+            "min_pts": 1
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-4": {
+    id: "cluster-rec-prob-4",
+    title: "Within-Cluster Sum of Squares (WCSS)",
+    difficulty: "easy",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "wcss",
+    functionSignature: "wcss(points: list[list[float]], centroid: list[float]) -> float",
+    starterCode: `def wcss(points, centroid):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement within-cluster sum of squares, the objective k-means directly minimizes and the core ingredient of the elbow method.",
+    taskDescription: "Implement `wcss(points, centroid)`: return the sum of squared Euclidean distances from each point to `centroid`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all points share centroid's dimensionality"
+      ],
+    hints: {
+  "small": "Sum squared distance for every point.",
+        "strong": "sum(sum((p[i]-centroid[i])**2 for i in range(len(centroid))) for p in points).",
+        "concept": "k-means' full objective is the sum of each cluster's WCSS -- minimizing this sum (approximately, via Lloyd's algorithm) is literally what 'k-means' means."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "points at centroid",
+          "input": {
+            "points": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "centroid": [
+              1,
+              1
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "simple 1D spread",
+          "input": {
+            "points": [
+              [
+                0
+              ],
+              [
+                2
+              ],
+              [
+                4
+              ]
+            ],
+            "centroid": [
+              2
+            ]
+          },
+          "expectedOutput": 8,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty points",
+          "input": {
+            "points": [],
+            "centroid": [
+              0,
+              0
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "2D spread",
+          "input": {
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                3,
+                4
+              ]
+            ],
+            "centroid": [
+              0,
+              0
+            ]
+          },
+          "expectedOutput": 25,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-5": {
+    id: "cluster-rec-prob-5",
+    title: "Hierarchical Clustering: Single Linkage Distance",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "single_linkage",
+    functionSignature: "single_linkage(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
+    starterCode: `def single_linkage(cluster_a, cluster_b):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement single-linkage (nearest-neighbor) inter-cluster distance for agglomerative hierarchical clustering.",
+    taskDescription: "Implement `single_linkage(cluster_a, cluster_b)`: return the MINIMUM Euclidean distance between any point in `cluster_a` and any point in `cluster_b`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both clusters non-empty",
+        "points share dimensionality"
+      ],
+    hints: {
+  "small": "Check every pair, take the minimum.",
+        "strong": "min(euclid(a,b) for a in cluster_a for b in cluster_b).",
+        "concept": "Single linkage tends to produce elongated 'chained' clusters since it only needs ONE close pair to merge two clusters -- a real, known bias worth knowing versus complete/average linkage."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple 1D clusters",
+          "input": {
+            "cluster_a": [
+              [
+                0
+              ],
+              [
+                1
+              ]
+            ],
+            "cluster_b": [
+              [
+                5
+              ],
+              [
+                6
+              ]
+            ]
+          },
+          "expectedOutput": 4,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "overlapping ranges",
+          "input": {
+            "cluster_a": [
+              [
+                0
+              ],
+              [
+                10
+              ]
+            ],
+            "cluster_b": [
+              [
+                5
+              ],
+              [
+                20
+              ]
+            ]
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single point each",
+          "input": {
+            "cluster_a": [
+              [
+                0,
+                0
+              ]
+            ],
+            "cluster_b": [
+              [
+                3,
+                4
+              ]
+            ]
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "2D multi-point",
+          "input": {
+            "cluster_a": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "cluster_b": [
+              [
+                2,
+                2
+              ],
+              [
+                10,
+                10
+              ]
+            ]
+          },
+          "expectedOutput": 1.4142135623730951,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-6": {
+    id: "cluster-rec-prob-6",
+    title: "Hierarchical Clustering: Complete Linkage Distance",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "complete_linkage",
+    functionSignature: "complete_linkage(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
+    starterCode: `def complete_linkage(cluster_a, cluster_b):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement complete-linkage (farthest-neighbor) inter-cluster distance, the opposite bias to single linkage.",
+    taskDescription: "Implement `complete_linkage(cluster_a, cluster_b)`: return the MAXIMUM Euclidean distance between any point in `cluster_a` and any point in `cluster_b`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both clusters non-empty",
+        "points share dimensionality"
+      ],
+    hints: {
+  "small": "Check every pair, take the maximum.",
+        "strong": "max(euclid(a,b) for a in cluster_a for b in cluster_b).",
+        "concept": "Complete linkage requires the WORST pair to be close before merging, so it tends to produce tight, compact, roughly equal-diameter clusters -- opposite of single linkage's chaining bias."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple 1D clusters",
+          "input": {
+            "cluster_a": [
+              [
+                0
+              ],
+              [
+                1
+              ]
+            ],
+            "cluster_b": [
+              [
+                5
+              ],
+              [
+                6
+              ]
+            ]
+          },
+          "expectedOutput": 6,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single point each",
+          "input": {
+            "cluster_a": [
+              [
+                0,
+                0
+              ]
+            ],
+            "cluster_b": [
+              [
+                3,
+                4
+              ]
+            ]
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "wide spread cluster",
+          "input": {
+            "cluster_a": [
+              [
+                0
+              ],
+              [
+                100
+              ]
+            ],
+            "cluster_b": [
+              [
+                50
+              ]
+            ]
+          },
+          "expectedOutput": 50,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "2D multi-point",
+          "input": {
+            "cluster_a": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "cluster_b": [
+              [
+                2,
+                2
+              ],
+              [
+                10,
+                10
+              ]
+            ]
+          },
+          "expectedOutput": 14.142135623730951,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-7": {
+    id: "cluster-rec-prob-7",
+    title: "Hierarchical Clustering: Average Linkage Distance",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "average_linkage",
+    functionSignature: "average_linkage(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
+    starterCode: `def average_linkage(cluster_a, cluster_b):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement average-linkage inter-cluster distance, a compromise between single and complete linkage's biases.",
+    taskDescription: "Implement `average_linkage(cluster_a, cluster_b)`: return the MEAN Euclidean distance over all pairs of points between `cluster_a` and `cluster_b`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both clusters non-empty",
+        "points share dimensionality"
+      ],
+    hints: {
+  "small": "Average over every cross-cluster pair.",
+        "strong": "sum(euclid(a,b) for a in A for b in B) / (len(A)*len(B)).",
+        "concept": "Average linkage (UPGMA) is less sensitive to outliers than single/complete linkage since one extreme pair can't dominate the whole distance."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple 1D clusters",
+          "input": {
+            "cluster_a": [
+              [
+                0
+              ],
+              [
+                2
+              ]
+            ],
+            "cluster_b": [
+              [
+                10
+              ]
+            ]
+          },
+          "expectedOutput": 9,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single point each",
+          "input": {
+            "cluster_a": [
+              [
+                0,
+                0
+              ]
+            ],
+            "cluster_b": [
+              [
+                3,
+                4
+              ]
+            ]
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "equal-sized clusters",
+          "input": {
+            "cluster_a": [
+              [
+                0
+              ],
+              [
+                0
+              ]
+            ],
+            "cluster_b": [
+              [
+                10
+              ],
+              [
+                10
+              ]
+            ]
+          },
+          "expectedOutput": 10,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "2D multi-point",
+          "input": {
+            "cluster_a": [
+              [
+                0,
+                0
+              ],
+              [
+                2,
+                0
+              ]
+            ],
+            "cluster_b": [
+              [
+                0,
+                3
+              ],
+              [
+                2,
+                3
+              ]
+            ]
+          },
+          "expectedOutput": 3.302775637731995,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-8": {
+    id: "cluster-rec-prob-8",
+    title: "Jaccard Similarity for Collaborative Filtering",
+    difficulty: "easy",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "jaccard_similarity",
+    functionSignature: "jaccard_similarity(set_a: list, set_b: list) -> float",
+    starterCode: `def jaccard_similarity(set_a, set_b):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Jaccard similarity, a simple but real similarity metric used in item-based collaborative filtering on implicit (binary) interaction data.",
+    taskDescription: "Implement `jaccard_similarity(set_a, set_b)`: return `|A intersect B| / |A union B|` (as a float). Return `0.0` if both sets are empty.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "elements are hashable"
+      ],
+    hints: {
+  "small": "Convert to sets, compute intersection and union sizes.",
+        "strong": "len(set(a)&set(b)) / len(set(a)|set(b)), guarding for the empty/empty case.",
+        "concept": "Jaccard is exactly the right similarity for implicit binary feedback (did-they-interact) where a plain dot product would be dominated by popularity rather than co-occurrence rate."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "partial overlap",
+          "input": {
+            "set_a": [
+              "a",
+              "b",
+              "c"
+            ],
+            "set_b": [
+              "b",
+              "c",
+              "d"
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "identical sets",
+          "input": {
+            "set_a": [
+              1,
+              2,
+              3
+            ],
+            "set_b": [
+              1,
+              2,
+              3
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no overlap",
+          "input": {
+            "set_a": [
+              1,
+              2
+            ],
+            "set_b": [
+              3,
+              4
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "both empty",
+          "input": {
+            "set_a": [],
+            "set_b": []
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-9": {
+    id: "cluster-rec-prob-9",
+    title: "User-Based Collaborative Filtering Prediction",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "predict_rating_user_cf",
+    functionSignature: "predict_rating_user_cf(target_ratings: dict[str, float], neighbor_ratings: dict[str, dict[str, float]], similarities: dict[str, float], item: str) -> float",
+    starterCode: `def predict_rating_user_cf(target_ratings, neighbor_ratings, similarities, item):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real user-based collaborative filtering prediction formula: a similarity-weighted average of neighbors' ratings for an unseen item.",
+    taskDescription: "Implement `predict_rating_user_cf(target_ratings, neighbor_ratings, similarities, item)`. Among neighbors (keys of `neighbor_ratings`) who have rated `item`, predicted rating is `sum(sim[n] * neighbor_ratings[n][item]) / sum(abs(sim[n]))` over those neighbors. If no neighbor has rated `item`, return `0.0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "similarities values in [-1, 1]"
+      ],
+    hints: {
+  "small": "Only include neighbors who rated the target item.",
+        "strong": "numerator = sum(similarities[n]*neighbor_ratings[n][item] for n in raters); denominator = sum(abs(similarities[n]) for n in raters); guard denominator==0.",
+        "concept": "Weighting by similarity (not a plain average) is what makes this collaborative -- neighbors more like the target user count more, and the abs() denominator correctly handles negative similarity."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two neighbors rated item",
+          "input": {
+            "target_ratings": {},
+            "neighbor_ratings": {
+              "u1": {
+                "itemA": 4
+              },
+              "u2": {
+                "itemA": 2
+              }
+            },
+            "similarities": {
+              "u1": 0.8,
+              "u2": 0.4
+            },
+            "item": "itemA"
+          },
+          "expectedOutput": 3.333333333333333,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no neighbor rated item",
+          "input": {
+            "target_ratings": {},
+            "neighbor_ratings": {
+              "u1": {
+                "itemB": 3
+              }
+            },
+            "similarities": {
+              "u1": 0.5
+            },
+            "item": "itemA"
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single neighbor",
+          "input": {
+            "target_ratings": {},
+            "neighbor_ratings": {
+              "u1": {
+                "itemA": 5
+              }
+            },
+            "similarities": {
+              "u1": 1
+            },
+            "item": "itemA"
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "negative similarity neighbor",
+          "input": {
+            "target_ratings": {},
+            "neighbor_ratings": {
+              "u1": {
+                "itemA": 5
+              },
+              "u2": {
+                "itemA": 1
+              }
+            },
+            "similarities": {
+              "u1": -0.5,
+              "u2": 0.5
+            },
+            "item": "itemA"
+          },
+          "expectedOutput": -2,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-10": {
+    id: "cluster-rec-prob-10",
+    title: "Matrix Factorization SGD Update Step",
+    difficulty: "hard",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "mf_sgd_step",
+    functionSignature: "mf_sgd_step(user_vec: list[float], item_vec: list[float], true_rating: float, lr: float, reg: float) -> tuple",
+    starterCode: `def mf_sgd_step(user_vec, item_vec, true_rating, lr, reg):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement one real stochastic-gradient-descent update of matrix factorization latent vectors, the core training step behind classic collaborative-filtering recommenders (e.g. the Netflix Prize SVD approach).",
+    taskDescription: "Implement `mf_sgd_step(user_vec, item_vec, true_rating, lr, reg)`. Predicted rating is `dot(user_vec, item_vec)`. Error `e = true_rating - predicted`. Update each component: `new_user_i = user_i + lr*(e*item_i - reg*user_i)`, `new_item_i = item_i + lr*(e*user_i - reg*item_i)`, using the ORIGINAL (pre-update) vectors on the right-hand side. Return `(new_user_vec, new_item_vec)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(user_vec) == len(item_vec)",
+        "lr > 0"
+      ],
+    hints: {
+  "small": "Compute the prediction and error first, then update both vectors using original values.",
+        "strong": "pred = sum(u*i for u,i in zip(user_vec,item_vec)); e = true_rating - pred; then apply the update formula component-wise to copies.",
+        "concept": "This is literally the update rule from Koren et al.'s matrix factorization techniques paper -- the reg term is L2 regularization pulling latent factors toward zero to prevent overfitting on sparse rating data."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect prediction, no update from error",
+          "input": {
+            "user_vec": [
+              1,
+              0
+            ],
+            "item_vec": [
+              1,
+              0
+            ],
+            "true_rating": 1,
+            "lr": 0.1,
+            "reg": 0
+          },
+          "expectedOutput": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "underestimate pulls vectors up",
+          "input": {
+            "user_vec": [
+              0.5,
+              0.5
+            ],
+            "item_vec": [
+              0.5,
+              0.5
+            ],
+            "true_rating": 5,
+            "lr": 0.1,
+            "reg": 0.01
+          },
+          "expectedOutput": [
+            [
+              0.7245,
+              0.7245
+            ],
+            [
+              0.7245,
+              0.7245
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero learning rate no-op",
+          "input": {
+            "user_vec": [
+              1,
+              1
+            ],
+            "item_vec": [
+              1,
+              1
+            ],
+            "true_rating": 3,
+            "lr": 0,
+            "reg": 0.1
+          },
+          "expectedOutput": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "regularization shrinks with zero error",
+          "input": {
+            "user_vec": [
+              2
+            ],
+            "item_vec": [
+              0
+            ],
+            "true_rating": 0,
+            "lr": 0.5,
+            "reg": 0.1
+          },
+          "expectedOutput": [
+            [
+              1.9
+            ],
+            [
+              0
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-11": {
+    id: "cluster-rec-prob-11",
+    title: "NDCG@K Ranking Quality",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "ndcg_at_k",
+    functionSignature: "ndcg_at_k(relevances: list[float], k: int) -> float",
+    starterCode: `def ndcg_at_k(relevances, k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement NDCG@K, the standard graded-relevance ranking metric used to evaluate recommendation and search result ordering.",
+    taskDescription: "Implement `ndcg_at_k(relevances, k)`. `relevances` is the list of relevance scores IN THE ORDER they were ranked/returned. DCG@k = `sum(rel_i / log2(i+2) for i in range(min(k,len(relevances))))` (0-indexed i). IDCG@k is the same formula applied to `relevances` sorted descending. Return `DCG/IDCG`, or `0.0` if IDCG is 0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "k >= 1",
+        "relevances values >= 0"
+      ],
+    hints: {
+  "small": "DCG discounts each item's relevance by its rank position (log2); IDCG is the best-possible DCG from the ideal ordering.",
+        "strong": "dcg(rels) = sum(r/math.log2(i+2) for i,r in enumerate(rels[:k])); ndcg = dcg(relevances)/dcg(sorted(relevances,reverse=True)).",
+        "concept": "The log2(rank+2) discount is what makes NDCG care about ORDER, not just which relevant items appear -- a relevant item at rank 1 contributes far more than the same item at rank 10."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect ranking, ndcg=1",
+          "input": {
+            "relevances": [
+              3,
+              2,
+              1
+            ],
+            "k": 3
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "worst ranking",
+          "input": {
+            "relevances": [
+              1,
+              2,
+              3
+            ],
+            "k": 3
+          },
+          "expectedOutput": 0.7899980042460358,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all zero relevance",
+          "input": {
+            "relevances": [
+              0,
+              0
+            ],
+            "k": 2
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "k smaller than list",
+          "input": {
+            "relevances": [
+              1,
+              3,
+              2,
+              0
+            ],
+            "k": 2
+          },
+          "expectedOutput": 0.6787622294601761,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-12": {
+    id: "cluster-rec-prob-12",
+    title: "Mean Average Precision at K (MAP@K)",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "average_precision_at_k",
+    functionSignature: "average_precision_at_k(ranked_items: list[str], relevant_items: set, k: int) -> float",
+    starterCode: `def average_precision_at_k(ranked_items, relevant_items, k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Average Precision@K for one user, the per-query building block of the MAP@K metric used to evaluate recommendation ranking quality.",
+    taskDescription: "Implement `average_precision_at_k(ranked_items, relevant_items, k)`. Walk `ranked_items[:k]` in order; every time you hit a relevant item, compute precision-so-far (hits found / position, 1-indexed) and record it. Return the average of those recorded precision values, or `0.0` if no relevant item was found in the top k.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "k >= 1"
+      ],
+    hints: {
+  "small": "Only positions where a relevant item appears contribute a precision value.",
+        "strong": "hits=0; precisions=[]; for i,item in enumerate(ranked_items[:k],1): if item in relevant_items: hits+=1; precisions.append(hits/i). Average precisions, or 0.0 if empty.",
+        "concept": "AP rewards finding relevant items EARLY -- two rankings with the same total hits get different AP if one front-loads the relevant items."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all relevant, front-loaded",
+          "input": {
+            "ranked_items": [
+              "a",
+              "b",
+              "c"
+            ],
+            "relevant_items": [
+              "a",
+              "b",
+              "c"
+            ],
+            "k": 3
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no relevant found",
+          "input": {
+            "ranked_items": [
+              "a",
+              "b"
+            ],
+            "relevant_items": [
+              "z"
+            ],
+            "k": 2
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "relevant items spread out",
+          "input": {
+            "ranked_items": [
+              "a",
+              "x",
+              "b",
+              "y"
+            ],
+            "relevant_items": [
+              "a",
+              "b"
+            ],
+            "k": 4
+          },
+          "expectedOutput": 0.8333333333333333,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "k truncates before relevant item",
+          "input": {
+            "ranked_items": [
+              "x",
+              "y",
+              "a"
+            ],
+            "relevant_items": [
+              "a"
+            ],
+            "k": 2
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-13": {
+    id: "cluster-rec-prob-13",
+    title: "Recommendation Catalog Coverage",
+    difficulty: "easy",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "catalog_coverage",
+    functionSignature: "catalog_coverage(all_recommendations: list[list[str]], catalog_size: int) -> float",
+    starterCode: `def catalog_coverage(all_recommendations, catalog_size):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement catalog coverage, a real diversity/business metric measuring what fraction of the entire catalog a recommender ever surfaces.",
+    taskDescription: "Implement `catalog_coverage(all_recommendations, catalog_size)`. `all_recommendations` is a list of per-user recommendation lists. Return `(number of DISTINCT items recommended to anyone) / catalog_size`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "catalog_size >= 1"
+      ],
+    hints: {
+  "small": "Union all recommended items, divide by catalog size.",
+        "strong": "unique = set(item for recs in all_recommendations for item in recs); return len(unique)/catalog_size.",
+        "concept": "A recommender with great per-user accuracy can still have terrible coverage (always recommending the same popular handful) -- this metric catches exactly that failure mode."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "full coverage",
+          "input": {
+            "all_recommendations": [
+              [
+                "a",
+                "b"
+              ],
+              [
+                "c",
+                "d"
+              ]
+            ],
+            "catalog_size": 4
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "low coverage, same items repeated",
+          "input": {
+            "all_recommendations": [
+              [
+                "a"
+              ],
+              [
+                "a"
+              ],
+              [
+                "a"
+              ]
+            ],
+            "catalog_size": 10
+          },
+          "expectedOutput": 0.1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no recommendations",
+          "input": {
+            "all_recommendations": [],
+            "catalog_size": 5
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "overlapping recommendations",
+          "input": {
+            "all_recommendations": [
+              [
+                "a",
+                "b"
+              ],
+              [
+                "b",
+                "c"
+              ]
+            ],
+            "catalog_size": 10
+          },
+          "expectedOutput": 0.3,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-14": {
+    id: "cluster-rec-prob-14",
+    title: "Intra-List Diversity of a Recommendation List",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "intra_list_diversity",
+    functionSignature: "intra_list_diversity(item_vectors: list[list[float]]) -> float",
+    starterCode: `def intra_list_diversity(item_vectors: list[list[float]]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement intra-list diversity, the standard metric for how varied a single recommendation list is, not just how accurate.",
+    taskDescription: "Implement `intra_list_diversity(item_vectors)`. Return the average pairwise dissimilarity `(1 - cosine_similarity)` over all UNIQUE pairs of items in the list. If fewer than 2 items, return `0.0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all vectors non-zero, equal dimensionality"
+      ],
+    hints: {
+  "small": "Average (1 - cosine) over all i<j pairs.",
+        "strong": "pairs = [(i,j) for i in range(n) for j in range(i+1,n)]; average of 1-cos(v[i],v[j]) over pairs.",
+        "concept": "High accuracy and high diversity are often in tension -- a recommender that always suggests near-duplicate items can score well on precision while providing a genuinely poor user experience, which is exactly what this metric is designed to catch."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical items, zero diversity",
+          "input": {
+            "item_vectors": [
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "orthogonal items, max diversity",
+          "input": {
+            "item_vectors": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single item",
+          "input": {
+            "item_vectors": [
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three items mixed",
+          "input": {
+            "item_vectors": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 0.6666666666666666,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-15": {
+    id: "cluster-rec-prob-15",
+    title: "Popularity-Based Baseline Recommender",
+    difficulty: "easy",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "popularity_topk",
+    functionSignature: "popularity_topk(interactions: list[str], k: int) -> list[str]",
+    starterCode: `def popularity_topk(interactions, k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the popularity baseline every real recommender system is measured against, and the standard cold-start fallback.",
+    taskDescription: "Implement `popularity_topk(interactions, k)`. `interactions` is a flat list of item ids (one entry per interaction, possibly repeated). Return the `k` most frequently occurring item ids, sorted descending by frequency; ties broken by item id ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "1 <= k"
+      ],
+    hints: {
+  "small": "Count occurrences, sort by (-count, id).",
+        "strong": "from collections import Counter; sorted(Counter(interactions).items(), key=lambda t: (-t[1], t[0]))[:k], return just the ids.",
+        "concept": "Any real recommender must beat this trivial baseline to justify its complexity -- it's the honest floor for 'is personalization actually helping.'"
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic frequency ranking",
+          "input": {
+            "interactions": [
+              "a",
+              "b",
+              "a",
+              "c",
+              "a",
+              "b"
+            ],
+            "k": 2
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "tie broken by id",
+          "input": {
+            "interactions": [
+              "z",
+              "a"
+            ],
+            "k": 2
+          },
+          "expectedOutput": [
+            "a",
+            "z"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "k larger than distinct items",
+          "input": {
+            "interactions": [
+              "a",
+              "a",
+              "b"
+            ],
+            "k": 5
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all same item",
+          "input": {
+            "interactions": [
+              "x",
+              "x",
+              "x"
+            ],
+            "k": 1
+          },
+          "expectedOutput": [
+            "x"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-16": {
+    id: "cluster-rec-prob-16",
+    title: "Content-Based Filtering Score",
+    difficulty: "easy",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "content_based_score",
+    functionSignature: "content_based_score(user_profile: list[float], item_vector: list[float]) -> float",
+    starterCode: `def content_based_score(user_profile, item_vector):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the core content-based filtering score: cosine similarity between a user's preference profile and a candidate item's feature vector.",
+    taskDescription: "Implement `content_based_score(user_profile, item_vector)`: return the cosine similarity between the two vectors.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both vectors non-zero, equal dimensionality"
+      ],
+    hints: {
+  "small": "cosine similarity = dot / (norm*norm).",
+        "strong": "dot(a,b)/(|a|*|b|).",
+        "concept": "Content-based scoring needs no other users' data at all (unlike collaborative filtering), which is exactly why it works for brand-new items with zero interaction history."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical vectors",
+          "input": {
+            "user_profile": [
+              1,
+              0
+            ],
+            "item_vector": [
+              1,
+              0
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "orthogonal vectors",
+          "input": {
+            "user_profile": [
+              1,
+              0
+            ],
+            "item_vector": [
+              0,
+              1
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "opposite vectors",
+          "input": {
+            "user_profile": [
+              1,
+              1
+            ],
+            "item_vector": [
+              -1,
+              -1
+            ]
+          },
+          "expectedOutput": -0.9999999999999998,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "partial overlap",
+          "input": {
+            "user_profile": [
+              1,
+              2,
+              0
+            ],
+            "item_vector": [
+              1,
+              0,
+              3
+            ]
+          },
+          "expectedOutput": 0.14142135623730948,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-17": {
+    id: "cluster-rec-prob-17",
+    title: "Hybrid Recommendation Score Blending",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "hybrid_blend",
+    functionSignature: "hybrid_blend(cf_scores: dict[str, float], content_scores: dict[str, float], weight_cf: float) -> dict[str, float]",
+    starterCode: `def hybrid_blend(cf_scores, content_scores, weight_cf):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement weighted score blending, the simplest real way to combine a collaborative-filtering model with a content-based model into one hybrid recommender.",
+    taskDescription: "Implement `hybrid_blend(cf_scores, content_scores, weight_cf)`. For every item id appearing in EITHER dict, blended score is `weight_cf*cf_scores.get(id,0) + (1-weight_cf)*content_scores.get(id,0)`. Return a dict of item id -> blended score.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= weight_cf <= 1"
+      ],
+    hints: {
+  "small": "Union the keys of both dicts, treat a missing score as 0.",
+        "strong": "ids = set(cf_scores) | set(content_scores); {i: weight_cf*cf_scores.get(i,0)+(1-weight_cf)*content_scores.get(i,0) for i in ids}.",
+        "concept": "Score blending is the cheapest real hybrid strategy -- it sidesteps the cold-start weakness of pure CF (weight_cf=0 falls back entirely to content-based for brand-new items) without needing a joint model."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "equal weight blend",
+          "input": {
+            "cf_scores": {
+              "a": 1
+            },
+            "content_scores": {
+              "a": 0
+            },
+            "weight_cf": 0.5
+          },
+          "expectedOutput": {
+            "a": 0.5
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "item only in content scores",
+          "input": {
+            "cf_scores": {},
+            "content_scores": {
+              "b": 0.8
+            },
+            "weight_cf": 0.5
+          },
+          "expectedOutput": {
+            "b": 0.4
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "pure CF weight",
+          "input": {
+            "cf_scores": {
+              "a": 0.6
+            },
+            "content_scores": {
+              "a": 0.9
+            },
+            "weight_cf": 1
+          },
+          "expectedOutput": {
+            "a": 0.6
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "pure content weight",
+          "input": {
+            "cf_scores": {
+              "a": 0.6
+            },
+            "content_scores": {
+              "a": 0.9
+            },
+            "weight_cf": 0
+          },
+          "expectedOutput": {
+            "a": 0.9
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-18": {
+    id: "cluster-rec-prob-18",
+    title: "Bayesian Personalized Ranking (BPR) Pairwise Loss",
+    difficulty: "hard",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "bpr_loss",
+    functionSignature: "bpr_loss(score_pos: float, score_neg: float) -> float",
+    starterCode: `import math
+
+def bpr_loss(score_pos, score_neg):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Bayesian Personalized Ranking loss, a real pairwise objective used to train implicit-feedback recommenders directly for ranking rather than rating prediction.",
+    taskDescription: "Implement `bpr_loss(score_pos, score_neg)`. BPR's loss for one (positive item, negative item) pair is `-log(sigmoid(score_pos - score_neg))`, where `sigmoid(x) = 1/(1+exp(-x))`. Return the loss as a float.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "scores are finite floats"
+      ],
+    hints: {
+  "small": "loss = -log(sigmoid(score_pos - score_neg)).",
+        "strong": "diff = score_pos - score_neg; return -math.log(1/(1+math.exp(-diff))).",
+        "concept": "BPR directly optimizes 'rank the item the user actually interacted with above one they didn't' -- unlike squared-error rating prediction, this objective matches what a top-k recommendation list actually needs."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "positive much higher, low loss",
+          "input": {
+            "score_pos": 5,
+            "score_neg": 0
+          },
+          "expectedOutput": 0.006715348489117944,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "equal scores, loss=-log(0.5)",
+          "input": {
+            "score_pos": 1,
+            "score_neg": 1
+          },
+          "expectedOutput": 0.6931471805599453,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "negative higher, high loss",
+          "input": {
+            "score_pos": 0,
+            "score_neg": 5
+          },
+          "expectedOutput": 5.006715348489118,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "both zero",
+          "input": {
+            "score_pos": 0,
+            "score_neg": 0
+          },
+          "expectedOutput": 0.6931471805599453,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-19": {
+    id: "cluster-rec-prob-19",
+    title: "Implicit Feedback Confidence Weighting",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "implicit_confidence",
+    functionSignature: "implicit_confidence(raw_count: float, alpha: float) -> float",
+    starterCode: `def implicit_confidence(raw_count, alpha):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real confidence-weighting formula from Hu, Koren & Volinsky's implicit-feedback ALS paper, used whenever recommendations are trained on clicks/views/plays instead of explicit star ratings.",
+    taskDescription: "Implement `implicit_confidence(raw_count, alpha)`: return `1 + alpha * raw_count`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "raw_count >= 0",
+        "alpha >= 0"
+      ],
+    hints: {
+  "small": "It's a direct linear formula.",
+        "strong": "return 1 + alpha*raw_count.",
+        "concept": "Implicit signals (a view, a play count) aren't preferences directly -- they're EVIDENCE of preference with varying confidence, which is why this model treats every item as 'preferred' but weights the loss by how much evidence supports that."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "zero interactions, baseline confidence",
+          "input": {
+            "raw_count": 0,
+            "alpha": 40
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "typical alpha=40, count=3",
+          "input": {
+            "raw_count": 3,
+            "alpha": 40
+          },
+          "expectedOutput": 121,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "alpha=0 always baseline",
+          "input": {
+            "raw_count": 100,
+            "alpha": 0
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "fractional count",
+          "input": {
+            "raw_count": 0.5,
+            "alpha": 10
+          },
+          "expectedOutput": 6,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-20": {
+    id: "cluster-rec-prob-20",
+    title: "K-Medoids Total Clustering Cost",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "kmedoids_cost",
+    functionSignature: "kmedoids_cost(points: list[list[float]], medoids: list[list[float]]) -> float",
+    starterCode: `def kmedoids_cost(points, medoids):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the k-medoids objective function -- like k-means but using real data points as cluster centers, more robust to outliers.",
+    taskDescription: "Implement `kmedoids_cost(points, medoids)`: for each point, find its nearest medoid by Euclidean distance, and return the SUM of those nearest distances (not squared, unlike k-means' WCSS).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "1 <= len(medoids)",
+        "points and medoids share dimensionality"
+      ],
+    hints: {
+  "small": "For each point, min distance to any medoid, then sum.",
+        "strong": "sum(min(euclid(p,m) for m in medoids) for p in points).",
+        "concept": "Because medoids must be actual data points (not computed averages), k-medoids is far less sensitive to outliers than k-means -- one extreme point can't drag a medoid to a location with no real data."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "points at medoids, zero cost",
+          "input": {
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                5,
+                5
+              ]
+            ],
+            "medoids": [
+              [
+                0,
+                0
+              ],
+              [
+                5,
+                5
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single medoid",
+          "input": {
+            "points": [
+              [
+                0
+              ],
+              [
+                4
+              ]
+            ],
+            "medoids": [
+              [
+                2
+              ]
+            ]
+          },
+          "expectedOutput": 4,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "two medoids, nearest chosen",
+          "input": {
+            "points": [
+              [
+                1
+              ],
+              [
+                9
+              ]
+            ],
+            "medoids": [
+              [
+                0
+              ],
+              [
+                10
+              ]
+            ]
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3 points 1 medoid",
+          "input": {
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                6,
+                8
+              ]
+            ],
+            "medoids": [
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 15,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-21": {
+    id: "cluster-rec-prob-21",
+    title: "Mean Shift Update Step",
+    difficulty: "hard",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "mean_shift_step",
+    functionSignature: "mean_shift_step(point: list[float], all_points: list[list[float]], bandwidth: float) -> list[float]",
+    starterCode: `def mean_shift_step(point, all_points, bandwidth):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement one iteration of the mean shift algorithm, a real mode-seeking clustering method that discovers the number of clusters automatically.",
+    taskDescription: "Implement `mean_shift_step(point, all_points, bandwidth)`. Using a flat (uniform) kernel, find all points in `all_points` within Euclidean distance `bandwidth` (inclusive) of `point`, and return their element-wise mean as the shifted point. If no points fall within bandwidth (should not normally happen since a point is within bandwidth of itself), return `point` unchanged.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "bandwidth > 0",
+        "point shares dimensionality with all_points"
+      ],
+    hints: {
+  "small": "Find neighbors within bandwidth (including the point itself if present in all_points), average them.",
+        "strong": "neighbors = [p for p in all_points if euclid(p,point) <= bandwidth]; if empty return point; else element-wise mean.",
+        "concept": "Repeatedly shifting each point toward its local neighborhood mean converges to the nearest density mode -- clusters emerge as basins of attraction, with no k specified upfront."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "point shifts toward local cluster",
+          "input": {
+            "point": [
+              0,
+              0
+            ],
+            "all_points": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "bandwidth": 1.5
+          },
+          "expectedOutput": [
+            0.3333333333333333,
+            0.3333333333333333
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "isolated point stays put",
+          "input": {
+            "point": [
+              100,
+              100
+            ],
+            "all_points": [
+              [
+                0,
+                0
+              ],
+              [
+                100,
+                100
+              ]
+            ],
+            "bandwidth": 1
+          },
+          "expectedOutput": [
+            100,
+            100
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "tight bandwidth includes only self",
+          "input": {
+            "point": [
+              5
+            ],
+            "all_points": [
+              [
+                5
+              ],
+              [
+                10
+              ]
+            ],
+            "bandwidth": 0.5
+          },
+          "expectedOutput": [
+            5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "wide bandwidth includes all",
+          "input": {
+            "point": [
+              0
+            ],
+            "all_points": [
+              [
+                0
+              ],
+              [
+                2
+              ],
+              [
+                4
+              ]
+            ],
+            "bandwidth": 10
+          },
+          "expectedOutput": [
+            2
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-22": {
+    id: "cluster-rec-prob-22",
+    title: "Cluster Purity Score",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "purity_score",
+    functionSignature: "purity_score(cluster_labels: list[int], true_labels: list[str]) -> float",
+    starterCode: `def purity_score(cluster_labels, true_labels):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement cluster purity, an external validation metric that scores clustering quality against known ground-truth labels.",
+    taskDescription: "Implement `purity_score(cluster_labels, true_labels)`. For each distinct cluster id in `cluster_labels`, find the count of its most common true label among members, sum those counts across all clusters, and divide by the total number of points.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(cluster_labels) == len(true_labels)",
+        "at least 1 point"
+      ],
+    hints: {
+  "small": "Group true labels by cluster, count the mode of each group.",
+        "strong": "from collections import Counter; for each unique cluster id, Counter(true_labels[i] for i where cluster_labels[i]==id).most_common(1)[0][1]; sum these / n.",
+        "concept": "Purity is trivially maximized (=1.0) by putting every point in its own singleton cluster -- it must always be reported alongside a metric like the number of clusters or NMI to be meaningful."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect clustering",
+          "input": {
+            "cluster_labels": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "true_labels": [
+              "a",
+              "a",
+              "b",
+              "b"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one mixed cluster",
+          "input": {
+            "cluster_labels": [
+              0,
+              0,
+              0
+            ],
+            "true_labels": [
+              "a",
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": 0.6666666666666666,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "singleton clusters, purity 1",
+          "input": {
+            "cluster_labels": [
+              0,
+              1,
+              2
+            ],
+            "true_labels": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "two mixed clusters",
+          "input": {
+            "cluster_labels": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "true_labels": [
+              "a",
+              "b",
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-23": {
+    id: "cluster-rec-prob-23",
+    title: "Adjusted Rand Index Between Two Clusterings",
+    difficulty: "hard",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "adjusted_rand_index",
+    functionSignature: "adjusted_rand_index(labels_a: list, labels_b: list) -> float",
+    starterCode: `def adjusted_rand_index(labels_a, labels_b):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Adjusted Rand Index, the standard chance-corrected metric for comparing two clusterings (or a clustering against ground truth).",
+    taskDescription: "Implement `adjusted_rand_index(labels_a, labels_b)` using the real contingency-table formula: build `n_ij` = count of points with label `i` in `labels_a` AND label `j` in `labels_b`; `a_i` = row sums, `b_j` = column sums, `n` = total points. `index = sum(C(n_ij,2))`, `expected = sum(C(a_i,2))*sum(C(b_j,2)) / C(n,2)`, `max_index = 0.5*(sum(C(a_i,2)) + sum(C(b_j,2)))`, where `C(x,2) = x*(x-1)/2`. Return `(index - expected) / (max_index - expected)`. If `max_index == expected`, return `1.0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(labels_a) == len(labels_b) >= 1"
+      ],
+    hints: {
+  "small": "Build the contingency table as a dict of (label_a, label_b) -> count.",
+        "strong": "from collections import Counter; pair_counts = Counter(zip(labels_a,labels_b)); a_counts=Counter(labels_a); b_counts=Counter(labels_b); apply C(x,2)=x*(x-1)/2 to each.",
+        "concept": "ARI corrects the raw Rand Index for chance agreement -- two RANDOM clusterings score close to 0, not some large positive baseline, which is exactly why it's the standard choice over the uncorrected Rand Index."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical labelings, ARI=1",
+          "input": {
+            "labels_a": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "labels_b": [
+              0,
+              0,
+              1,
+              1
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "relabeled but same partition, ARI=1",
+          "input": {
+            "labels_a": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "labels_b": [
+              "x",
+              "x",
+              "y",
+              "y"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "completely different partition",
+          "input": {
+            "labels_a": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "labels_b": [
+              0,
+              1,
+              0,
+              1
+            ]
+          },
+          "expectedOutput": -0.49999999999999994,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all same cluster both sides",
+          "input": {
+            "labels_a": [
+              0,
+              0,
+              0
+            ],
+            "labels_b": [
+              0,
+              0,
+              0
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-24": {
+    id: "cluster-rec-prob-24",
+    title: "Dunn Index Cluster Validity",
+    difficulty: "hard",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "dunn_index",
+    functionSignature: "dunn_index(clusters: list[list[list[float]]]) -> float",
+    starterCode: `def dunn_index(clusters):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Dunn Index, an internal cluster-validity metric that needs no ground truth -- higher is better, rewarding compact well-separated clusters.",
+    taskDescription: "Implement `dunn_index(clusters)`. `clusters` is a list of clusters, each a list of points. Compute `min_inter` = the minimum single-linkage distance between any two DIFFERENT clusters, and `max_intra` = the maximum diameter (max pairwise distance) within any single cluster (a singleton cluster has diameter 0). Return `min_inter / max_intra`. Assume at least 2 clusters and `max_intra > 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(clusters) >= 2",
+        "every cluster non-empty"
+      ],
+    hints: {
+  "small": "min_inter: smallest distance between any pair of points from two different clusters. max_intra: largest distance between any pair of points within the same cluster.",
+        "strong": "min_inter = min(euclid(p,q) for i,ci in enumerate(clusters) for j,cj in enumerate(clusters) if i<j for p in ci for q in cj); max_intra = max(max((euclid(p,q) for p in c for q in c), default=0) for c in clusters).",
+        "concept": "A high Dunn index needs BOTH tight clusters (small max_intra) AND well-separated clusters (large min_inter) simultaneously -- a single bad cluster on either axis tanks the whole score, which is a deliberately strict, conservative design."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two tight well-separated clusters",
+          "input": {
+            "clusters": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0.1,
+                  0.1
+                ]
+              ],
+              [
+                [
+                  10,
+                  10
+                ],
+                [
+                  10.1,
+                  10.1
+                ]
+              ]
+            ]
+          },
+          "expectedOutput": 98.99999999999999,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one singleton, one 2-point cluster",
+          "input": {
+            "clusters": [
+              [
+                [
+                  0,
+                  0
+                ]
+              ],
+              [
+                [
+                  5,
+                  5
+                ],
+                [
+                  5.5,
+                  5.5
+                ]
+              ]
+            ]
+          },
+          "expectedOutput": 10,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "three clusters",
+          "input": {
+            "clusters": [
+              [
+                [
+                  0
+                ],
+                [
+                  0.5
+                ]
+              ],
+              [
+                [
+                  5
+                ],
+                [
+                  5.5
+                ]
+              ],
+              [
+                [
+                  10
+                ],
+                [
+                  10.5
+                ]
+              ]
+            ]
+          },
+          "expectedOutput": 9,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "loose cluster reduces score",
+          "input": {
+            "clusters": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  3,
+                  3
+                ]
+              ],
+              [
+                [
+                  10,
+                  10
+                ]
+              ]
+            ]
+          },
+          "expectedOutput": 2.3333333333333335,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-25": {
+    id: "cluster-rec-prob-25",
+    title: "Elbow Method: Detect the Knee in a WCSS Curve",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "elbow_k",
+    functionSignature: "elbow_k(wcss_values: list[float]) -> int",
+    starterCode: `def elbow_k(wcss_values):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, deterministic knee-detection rule for the elbow method, turning a subjective visual heuristic into a reproducible function.",
+    taskDescription: "Implement `elbow_k(wcss_values)`. `wcss_values[i]` is the WCSS for `k=i+1` clusters (i.e. index 0 is k=1). For each interior index `i` from `1` to `len-2` inclusive, compute the second difference `wcss[i-1] - 2*wcss[i] + wcss[i+1]`. Return the k (i.e. `i+1`) with the LARGEST second difference (the sharpest bend). If `len(wcss_values) < 3`, return `1`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "wcss_values is non-increasing in a typical real curve, but do not assume this"
+      ],
+    hints: {
+  "small": "The second difference measures how sharply the curve bends at each interior point.",
+        "strong": "for i in range(1, len(wcss)-1): diff = wcss[i-1] - 2*wcss[i] + wcss[i+1]; track the argmax, return that index+1.",
+        "concept": "This is exactly the discrete second-derivative test for a knee/inflection point -- the elbow method is 'eyeballing' precisely this quantity, made rigorous and automatable."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear elbow at k=3",
+          "input": {
+            "wcss_values": [
+              100,
+              50,
+              45,
+              43,
+              41
+            ]
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "too few points, default to 1",
+          "input": {
+            "wcss_values": [
+              100,
+              50
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "linear decrease, elbow ambiguous but deterministic",
+          "input": {
+            "wcss_values": [
+              40,
+              30,
+              20,
+              10
+            ]
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "sharp early elbow",
+          "input": {
+            "wcss_values": [
+              200,
+              20,
+              18,
+              16,
+              14
+            ]
+          },
+          "expectedOutput": 2,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-26": {
+    id: "cluster-rec-prob-26",
+    title: "Cold-Start Recommendation Fallback Weighting",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "cold_start_weight",
+    functionSignature: "cold_start_weight(user_interaction_count: int, full_confidence_threshold: int) -> float",
+    starterCode: `def cold_start_weight(user_interaction_count, full_confidence_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real cold-start blending weight: how much to trust personalized (CF) recommendations versus a popularity fallback, based on how much history a user actually has.",
+    taskDescription: "Implement `cold_start_weight(user_interaction_count, full_confidence_threshold)`. Return `min(1.0, user_interaction_count / full_confidence_threshold)` -- the weight to give the personalized model (1 - this value goes to the popularity fallback). If `full_confidence_threshold <= 0`, return `1.0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "user_interaction_count >= 0"
+      ],
+    hints: {
+  "small": "Linear ramp from 0 to 1 as interaction count approaches the threshold, capped at 1.",
+        "strong": "if threshold <= 0: return 1.0; else return min(1.0, count/threshold).",
+        "concept": "This is a real, simple, production-usable answer to 'when do we trust CF over the popularity baseline' -- brand-new users get pure popularity, users past the threshold get pure personalization, and it's a smooth ramp in between."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "brand new user, zero weight",
+          "input": {
+            "user_interaction_count": 0,
+            "full_confidence_threshold": 20
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "halfway to threshold",
+          "input": {
+            "user_interaction_count": 10,
+            "full_confidence_threshold": 20
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "past threshold, capped at 1",
+          "input": {
+            "user_interaction_count": 50,
+            "full_confidence_threshold": 20
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero threshold edge case",
+          "input": {
+            "user_interaction_count": 0,
+            "full_confidence_threshold": 0
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-27": {
+    id: "cluster-rec-prob-27",
+    title: "Session-Based Next-Item Markov Score",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "next_item_scores",
+    functionSignature: "next_item_scores(current_item: str, transition_counts: dict[str, dict[str, int]]) -> dict[str, float]",
+    starterCode: `def next_item_scores(current_item, transition_counts):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a first-order Markov next-item recommender, the simplest real session-based recommendation model.",
+    taskDescription: "Implement `next_item_scores(current_item, transition_counts)`. `transition_counts[a][b]` is the observed count of item `b` following item `a` in real sessions. Return a dict mapping every observed next-item `b` (for the given `current_item`) to its transition PROBABILITY: `count(current_item, b) / sum(count(current_item, *))`. Return an empty dict if `current_item` has no recorded transitions.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all counts >= 0"
+      ],
+    hints: {
+  "small": "Normalize the current item's outgoing transition counts into probabilities.",
+        "strong": "if current_item not in transition_counts: return {}; total = sum(transition_counts[current_item].values()); {b: c/total for b,c in transition_counts[current_item].items()}.",
+        "concept": "This is literally a one-step Markov chain over item sequences -- it's a real, still-used session-based recommendation baseline (predates and still competes with RNN/transformer session models on short sessions)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic two-transition split",
+          "input": {
+            "current_item": "a",
+            "transition_counts": {
+              "a": {
+                "b": 3,
+                "c": 1
+              }
+            }
+          },
+          "expectedOutput": {
+            "b": 0.75,
+            "c": 0.25
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "unseen current item",
+          "input": {
+            "current_item": "z",
+            "transition_counts": {
+              "a": {
+                "b": 1
+              }
+            }
+          },
+          "expectedOutput": {},
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single deterministic transition",
+          "input": {
+            "current_item": "a",
+            "transition_counts": {
+              "a": {
+                "b": 5
+              }
+            }
+          },
+          "expectedOutput": {
+            "b": 1
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three-way split",
+          "input": {
+            "current_item": "x",
+            "transition_counts": {
+              "x": {
+                "y": 2,
+                "z": 2,
+                "w": 4
+              }
+            }
+          },
+          "expectedOutput": {
+            "y": 0.25,
+            "z": 0.25,
+            "w": 0.5
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-28": {
+    id: "cluster-rec-prob-28",
+    title: "Gaussian Mixture Model: Responsibility Computation",
+    difficulty: "hard",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "gmm_responsibility",
+    functionSignature: "gmm_responsibility(x: float, means: list[float], variances: list[float], weights: list[float]) -> list[float]",
+    starterCode: `import math
+
+def gmm_responsibility(x, means, variances, weights):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the E-step responsibility calculation of a 1D Gaussian Mixture Model, the soft-clustering generalization of k-means.",
+    taskDescription: "Implement `gmm_responsibility(x, means, variances, weights)`. For each component `k`, compute its weighted Gaussian density at `x`: `weights[k] * N(x; means[k], variances[k])` where `N(x;m,v) = (1/sqrt(2*pi*v)) * exp(-(x-m)**2/(2*v))`. Return the normalized responsibilities (each divided by the sum over all components) as a list of floats.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(means) == len(variances) == len(weights)",
+        "variances > 0",
+        "weights sum to 1"
+      ],
+    hints: {
+  "small": "Compute each component's weighted Gaussian density at x, then normalize across components.",
+        "strong": "density_k = weights[k] * (1/math.sqrt(2*math.pi*variances[k])) * math.exp(-((x-means[k])**2)/(2*variances[k])); normalize by the sum.",
+        "concept": "Unlike k-means' hard 0/1 assignment, GMM responsibility is a real soft probability that a point belongs to each cluster -- this is exactly what makes GMM a probabilistic generalization of k-means (which is GMM's limit as all variances shrink to 0)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "point exactly at one mean",
+          "input": {
+            "x": 0,
+            "means": [
+              0,
+              10
+            ],
+            "variances": [
+              1,
+              1
+            ],
+            "weights": [
+              0.5,
+              0.5
+            ]
+          },
+          "expectedOutput": [
+            1,
+            1.9287498479639178e-22
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "point between two equidistant means",
+          "input": {
+            "x": 5,
+            "means": [
+              0,
+              10
+            ],
+            "variances": [
+              1,
+              1
+            ],
+            "weights": [
+              0.5,
+              0.5
+            ]
+          },
+          "expectedOutput": [
+            0.5,
+            0.5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unequal component weights",
+          "input": {
+            "x": 0,
+            "means": [
+              0,
+              0
+            ],
+            "variances": [
+              1,
+              1
+            ],
+            "weights": [
+              0.8,
+              0.2
+            ]
+          },
+          "expectedOutput": [
+            0.7999999999999999,
+            0.19999999999999998
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three components",
+          "input": {
+            "x": 2,
+            "means": [
+              0,
+              2,
+              4
+            ],
+            "variances": [
+              1,
+              1,
+              1
+            ],
+            "weights": [
+              0.3,
+              0.4,
+              0.3
+            ]
+          },
+          "expectedOutput": [
+            0.08437341284078798,
+            0.831253174318424,
+            0.08437341284078798
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-29": {
+    id: "cluster-rec-prob-29",
+    title: "Spectral Clustering: Gaussian Affinity Matrix",
+    difficulty: "medium",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "gaussian_affinity_matrix",
+    functionSignature: "gaussian_affinity_matrix(points: list[list[float]], sigma: float) -> list[list[float]]",
+    starterCode: `def gaussian_affinity_matrix(points, sigma):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Gaussian (RBF) affinity matrix, the first real step of spectral clustering -- turning raw points into a similarity graph.",
+    taskDescription: "Implement `gaussian_affinity_matrix(points, sigma)`. Return the `n x n` matrix where entry `[i][j] = exp(-euclidean(points[i], points[j])**2 / (2*sigma**2))`. Diagonal entries (i==i) should be `1.0` (distance 0 gives exp(0)=1 naturally -- just confirming the expected convention).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "sigma > 0"
+      ],
+    hints: {
+  "small": "Compute pairwise squared Euclidean distances, apply the RBF kernel.",
+        "strong": "matrix[i][j] = exp(-sq_dist(points[i],points[j]) / (2*sigma**2)).",
+        "concept": "This affinity matrix is what spectral clustering's eigendecomposition actually operates on -- sigma controls the neighborhood scale, and picking it badly (too large or small) is the single most common reason spectral clustering underperforms in practice."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two identical points",
+          "input": {
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "sigma": 1
+          },
+          "expectedOutput": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "two distant points, low affinity",
+          "input": {
+            "points": [
+              [
+                0
+              ],
+              [
+                100
+              ]
+            ],
+            "sigma": 1
+          },
+          "expectedOutput": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "diagonal is always 1",
+          "input": {
+            "points": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                5,
+                6
+              ]
+            ],
+            "sigma": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              0.36787944117144233,
+              0.01831563888873418
+            ],
+            [
+              0.36787944117144233,
+              1,
+              0.36787944117144233
+            ],
+            [
+              0.01831563888873418,
+              0.36787944117144233,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "small sigma sharpens affinity",
+          "input": {
+            "points": [
+              [
+                0
+              ],
+              [
+                1
+              ]
+            ],
+            "sigma": 0.5
+          },
+          "expectedOutput": [
+            [
+              1,
+              0.1353352832366127
+            ],
+            [
+              0.1353352832366127,
+              1
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "cluster-rec-prob-30": {
+    id: "cluster-rec-prob-30",
+    title: "Recommendation Novelty Score",
+    difficulty: "easy",
+    topic: "Clustering & Recommender Systems",
+    estimatedTime: '15 min',
+    functionName: "novelty_score",
+    functionSignature: "novelty_score(recommended_items: list[str], item_popularity: dict[str, float]) -> float",
+    starterCode: `import math
+
+def novelty_score(recommended_items, item_popularity):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement self-information-based novelty, a real metric that scores a recommendation list on how non-obvious (unpopular) its items are.",
+    taskDescription: "Implement `novelty_score(recommended_items, item_popularity)`. `item_popularity` maps item id -> its popularity as a probability in (0, 1] (fraction of all users who've interacted with it). Each item's novelty (self-information) is `-log2(item_popularity[item])`. Return the AVERAGE novelty over `recommended_items`. If the list is empty, return `0.0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "popularity values in (0, 1]",
+        "every recommended item exists in item_popularity"
+      ],
+    hints: {
+  "small": "Rare items (low popularity) get HIGH novelty; popular items get LOW (near-zero) novelty.",
+        "strong": "novelty(item) = -math.log2(item_popularity[item]); average over recommended_items.",
+        "concept": "This is the same self-information formula from information theory (surprisal) -- recommending only blockbuster items scores near-zero novelty even with perfect accuracy, which is exactly the 'filter bubble of popular stuff' failure this metric is meant to surface."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "very popular items, low novelty",
+          "input": {
+            "recommended_items": [
+              "a",
+              "b"
+            ],
+            "item_popularity": {
+              "a": 0.9,
+              "b": 0.8
+            }
+          },
+          "expectedOutput": 0.2369655941662061,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "rare items, high novelty",
+          "input": {
+            "recommended_items": [
+              "a"
+            ],
+            "item_popularity": {
+              "a": 0.01
+            }
+          },
+          "expectedOutput": 6.643856189774724,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "max popularity item, novelty 0",
+          "input": {
+            "recommended_items": [
+              "a"
+            ],
+            "item_popularity": {
+              "a": 1
+            }
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty recommendation list",
+          "input": {
+            "recommended_items": [],
+            "item_popularity": {}
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-1": {
+    id: "mlops-sys-prob-1",
+    title: "Population Stability Index (PSI) for Drift Detection",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "psi",
+    functionSignature: "psi(expected_pct: list[float], actual_pct: list[float]) -> float",
+    starterCode: `import math
+
+def psi(expected_pct, actual_pct):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Population Stability Index, the standard real metric MLOps pipelines use to detect feature/label distribution drift between training and production.",
+    taskDescription: "Implement `psi(expected_pct, actual_pct)`. Both lists give the fraction of data in each of the same N bins (they sum to 1 each). PSI = `sum((actual[i]-expected[i]) * ln(actual[i]/expected[i]))` over all bins. Treat any bin with 0 in either list as contributing 0 to the sum (skip it) to avoid a log(0) or division by zero.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(expected_pct) == len(actual_pct)",
+        "values in [0,1]"
+      ],
+    hints: {
+  "small": "Sum a per-bin term over all bins, skipping any bin where either value is exactly 0.",
+        "strong": "term = (a-e)*math.log(a/e) for each bin where a>0 and e>0.",
+        "concept": "PSI < 0.1 is typically 'no significant shift', 0.1-0.25 'moderate', >0.25 'significant' -- this exact threshold convention is why PSI, not raw KL-divergence, is the industry-standard drift monitor."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical distributions, psi=0",
+          "input": {
+            "expected_pct": [
+              0.3,
+              0.4,
+              0.3
+            ],
+            "actual_pct": [
+              0.3,
+              0.4,
+              0.3
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "moderate shift",
+          "input": {
+            "expected_pct": [
+              0.5,
+              0.5
+            ],
+            "actual_pct": [
+              0.6,
+              0.4
+            ]
+          },
+          "expectedOutput": 0.04054651081081642,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero bin skipped safely",
+          "input": {
+            "expected_pct": [
+              0.5,
+              0.5,
+              0
+            ],
+            "actual_pct": [
+              0.4,
+              0.6,
+              0
+            ]
+          },
+          "expectedOutput": 0.04054651081081642,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large shift",
+          "input": {
+            "expected_pct": [
+              0.9,
+              0.1
+            ],
+            "actual_pct": [
+              0.1,
+              0.9
+            ]
+          },
+          "expectedOutput": 3.515559323737951,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-2": {
+    id: "mlops-sys-prob-2",
+    title: "Model Retraining Staleness Check",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "is_model_stale",
+    functionSignature: "is_model_stale(days_since_training: int, retrain_threshold_days: int) -> bool",
+    starterCode: `def is_model_stale(days_since_training, retrain_threshold_days):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, simple time-based retraining trigger check, one real signal an MLOps pipeline uses to decide whether a model needs refreshing.",
+    taskDescription: "Implement `is_model_stale(days_since_training, retrain_threshold_days)`: return `True` if `days_since_training >= retrain_threshold_days`, else `False`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both values >= 0"
+      ],
+    hints: {
+  "small": "Simple comparison.",
+        "strong": "return days_since_training >= retrain_threshold_days.",
+        "concept": "Real production systems combine several such signals (staleness, drift, performance decay) into a retraining decision -- this is the simplest one, and often the least reliable alone since a model can be stale in wall-clock time but still accurate."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "well within threshold",
+          "input": {
+            "days_since_training": 5,
+            "retrain_threshold_days": 30
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "exactly at threshold",
+          "input": {
+            "days_since_training": 30,
+            "retrain_threshold_days": 30
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "past threshold",
+          "input": {
+            "days_since_training": 45,
+            "retrain_threshold_days": 30
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "brand new model",
+          "input": {
+            "days_since_training": 0,
+            "retrain_threshold_days": 7
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-3": {
+    id: "mlops-sys-prob-3",
+    title: "Canary Rollout Traffic Assignment",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "canary_route",
+    functionSignature: "canary_route(request_id: str, canary_pct: float) -> str",
+    starterCode: `def canary_route(request_id, canary_pct):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement deterministic canary-rollout traffic routing -- the real mechanism behind gradually shifting production traffic to a new model version.",
+    taskDescription: "Implement `canary_route(request_id, canary_pct)`. Hash `request_id` with `hashlib.md5`, take the first 4 bytes as a big-endian unsigned int, and compute `bucket = (that_int % 10000) / 100.0` (a value in `[0, 100)`). Return `'canary'` if `bucket < canary_pct`, else `'stable'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= canary_pct <= 100"
+      ],
+    hints: {
+  "small": "Hash the id to get a deterministic pseudo-random bucket in [0,100), compare to canary_pct.",
+        "strong": "int.from_bytes(hashlib.md5(request_id.encode()).digest()[:4], 'big') % 10000 / 100.0.",
+        "concept": "Hashing the request/user id (not calling random()) is what makes routing STICKY -- the same user consistently lands in canary or stable across requests, which is essential for a valid rollout experiment."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "0% canary always stable",
+          "input": {
+            "request_id": "user-1",
+            "canary_pct": 0
+          },
+          "expectedOutput": "stable",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "100% canary always canary",
+          "input": {
+            "request_id": "user-1",
+            "canary_pct": 100
+          },
+          "expectedOutput": "canary",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "deterministic for fixed id",
+          "input": {
+            "request_id": "user-42",
+            "canary_pct": 50
+          },
+          "expectedOutput": "canary",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "different id different bucket",
+          "input": {
+            "request_id": "user-99",
+            "canary_pct": 50
+          },
+          "expectedOutput": "stable",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-4": {
+    id: "mlops-sys-prob-4",
+    title: "Z-Score Feature Standardization",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "standardize",
+    functionSignature: "standardize(values: list[float], mean: float, std: float) -> list[float]",
+    starterCode: `def standardize(values, mean, std):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement z-score standardization using pre-computed training statistics -- the real, correct way to scale features at inference time (never recompute mean/std on the inference batch).",
+    taskDescription: "Implement `standardize(values, mean, std)`: return `[(v - mean) / std for v in values]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "std > 0"
+      ],
+    hints: {
+  "small": "Subtract mean, divide by std, element-wise.",
+        "strong": "[(v-mean)/std for v in values].",
+        "concept": "Using the TRAINING set's mean/std at serving time (not the live batch's own stats) is a real, common production requirement -- recomputing per-batch is a genuine, subtle bug (train/serve skew) this problem is designed to make you think about."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "value equals mean",
+          "input": {
+            "values": [
+              5
+            ],
+            "mean": 5,
+            "std": 2
+          },
+          "expectedOutput": [
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "basic standardization",
+          "input": {
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "mean": 2,
+            "std": 1
+          },
+          "expectedOutput": [
+            -1,
+            0,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "negative values",
+          "input": {
+            "values": [
+              -1,
+              0,
+              1
+            ],
+            "mean": 0,
+            "std": 0.5
+          },
+          "expectedOutput": [
+            -2,
+            0,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large std",
+          "input": {
+            "values": [
+              10,
+              20
+            ],
+            "mean": 15,
+            "std": 10
+          },
+          "expectedOutput": [
+            -0.5,
+            0.5
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-5": {
+    id: "mlops-sys-prob-5",
+    title: "Min-Max Feature Normalization",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "min_max_normalize",
+    functionSignature: "min_max_normalize(values: list[float], data_min: float, data_max: float) -> list[float]",
+    starterCode: `def min_max_normalize(values, data_min, data_max):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement min-max normalization using fixed training-set bounds, scaling features to [0,1] for models sensitive to feature magnitude.",
+    taskDescription: "Implement `min_max_normalize(values, data_min, data_max)`: return `[(v - data_min) / (data_max - data_min) for v in values]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "data_max > data_min"
+      ],
+    hints: {
+  "small": "Linear rescale to [0,1] using the given min/max.",
+        "strong": "[(v-data_min)/(data_max-data_min) for v in values].",
+        "concept": "Unlike standardization, min-max is sensitive to outliers in the training data (a single extreme value compresses everything else near 0) -- a real, common reason teams switch to standardization or robust scaling instead."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "value at min",
+          "input": {
+            "values": [
+              0
+            ],
+            "data_min": 0,
+            "data_max": 10
+          },
+          "expectedOutput": [
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "value at max",
+          "input": {
+            "values": [
+              10
+            ],
+            "data_min": 0,
+            "data_max": 10
+          },
+          "expectedOutput": [
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "midpoint value",
+          "input": {
+            "values": [
+              5
+            ],
+            "data_min": 0,
+            "data_max": 10
+          },
+          "expectedOutput": [
+            0.5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "negative range",
+          "input": {
+            "values": [
+              -5,
+              0,
+              5
+            ],
+            "data_min": -10,
+            "data_max": 10
+          },
+          "expectedOutput": [
+            0.25,
+            0.5,
+            0.75
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-6": {
+    id: "mlops-sys-prob-6",
+    title: "Mean Imputation for Missing Values",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "impute_mean",
+    functionSignature: "impute_mean(values: list) -> list[float]",
+    starterCode: `def impute_mean(values):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement mean imputation, the simplest real missing-value handling strategy in a production feature pipeline.",
+    taskDescription: "Implement `impute_mean(values)`. `values` is a list where missing entries are `None`. Compute the mean of the non-`None` entries, then return a new list with every `None` replaced by that mean (non-missing values unchanged, as floats).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "at least one non-None value present"
+      ],
+    hints: {
+  "small": "Compute the mean over present values first, then fill.",
+        "strong": "present = [v for v in values if v is not None]; m = sum(present)/len(present); [float(v) if v is not None else m for v in values].",
+        "concept": "Mean imputation silently reduces variance and can distort correlations -- real pipelines often add a companion 'was_missing' binary flag feature alongside the imputed value so the model can still learn from missingness itself."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one missing value",
+          "input": {
+            "values": [
+              1,
+              null,
+              3
+            ]
+          },
+          "expectedOutput": [
+            1,
+            2,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no missing values",
+          "input": {
+            "values": [
+              1,
+              2,
+              3
+            ]
+          },
+          "expectedOutput": [
+            1,
+            2,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple missing",
+          "input": {
+            "values": [
+              10,
+              null,
+              null,
+              20
+            ]
+          },
+          "expectedOutput": [
+            10,
+            15,
+            15,
+            20
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "missing at both ends",
+          "input": {
+            "values": [
+              null,
+              5,
+              null
+            ]
+          },
+          "expectedOutput": [
+            5,
+            5,
+            5
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-7": {
+    id: "mlops-sys-prob-7",
+    title: "One-Hot Encode a Categorical Feature",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "one_hot_encode",
+    functionSignature: "one_hot_encode(value: str, categories: list[str]) -> list[int]",
+    starterCode: `def one_hot_encode(value, categories):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement one-hot encoding against a FIXED, pre-defined category vocabulary -- the real production-safe way to encode categoricals (never fit categories on live data).",
+    taskDescription: "Implement `one_hot_encode(value, categories)`. Return a list the same length as `categories`, with a `1` at the index matching `value` and `0` elsewhere. If `value` is not in `categories` (an unseen category), return an all-zero vector.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "categories has no duplicates"
+      ],
+    hints: {
+  "small": "Find value's index in categories, build a zero vector with a 1 there.",
+        "strong": "if value not in categories: return [0]*len(categories); else set index categories.index(value) to 1.",
+        "concept": "Fitting the category vocabulary at training time and freezing it (rather than re-deriving categories from each new batch) is what prevents a genuinely common production bug: an unseen category at serving time silently shifting every downstream feature index."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "known category, middle index",
+          "input": {
+            "value": "blue",
+            "categories": [
+              "red",
+              "blue",
+              "green"
+            ]
+          },
+          "expectedOutput": [
+            0,
+            1,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "unseen category, all zero",
+          "input": {
+            "value": "purple",
+            "categories": [
+              "red",
+              "blue",
+              "green"
+            ]
+          },
+          "expectedOutput": [
+            0,
+            0,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "first category",
+          "input": {
+            "value": "red",
+            "categories": [
+              "red",
+              "blue"
+            ]
+          },
+          "expectedOutput": [
+            1,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single category vocabulary",
+          "input": {
+            "value": "x",
+            "categories": [
+              "x"
+            ]
+          },
+          "expectedOutput": [
+            1
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-8": {
+    id: "mlops-sys-prob-8",
+    title: "Deterministic Hash-Based Train/Test Split",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "hash_split",
+    functionSignature: "hash_split(record_id: str, test_pct: float) -> str",
+    starterCode: `def hash_split(record_id, test_pct):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement hash-based deterministic train/test splitting, which stays stable as new data arrives (unlike a random shuffle-and-cut split that reshuffles everything on every re-run).",
+    taskDescription: "Implement `hash_split(record_id, test_pct)`. Hash `record_id` with `hashlib.md5`, take the first 4 bytes as a big-endian unsigned int, compute `bucket = (that_int % 10000) / 100.0` (in `[0,100)`), and return `'test'` if `bucket < test_pct` else `'train'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= test_pct <= 100"
+      ],
+    hints: {
+  "small": "Same hashing pattern as deterministic routing -- hash to a stable bucket, threshold it.",
+        "strong": "int.from_bytes(hashlib.md5(record_id.encode()).digest()[:4],'big') % 10000 / 100.0 < test_pct.",
+        "concept": "A record with a given id ALWAYS lands in the same split even as the dataset grows over time -- critical for avoiding train/test contamination when re-running a pipeline on an updated dataset."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "0% test always train",
+          "input": {
+            "record_id": "rec-1",
+            "test_pct": 0
+          },
+          "expectedOutput": "train",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "100% test always test",
+          "input": {
+            "record_id": "rec-1",
+            "test_pct": 100
+          },
+          "expectedOutput": "test",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "deterministic for same id",
+          "input": {
+            "record_id": "rec-42",
+            "test_pct": 20
+          },
+          "expectedOutput": "train",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "different id",
+          "input": {
+            "record_id": "rec-777",
+            "test_pct": 20
+          },
+          "expectedOutput": "train",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-9": {
+    id: "mlops-sys-prob-9",
+    title: "Data Quality: Null Rate Check",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "null_rate",
+    functionSignature: "null_rate(values: list) -> float",
+    starterCode: `def null_rate(values):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a null-rate data quality check, one of the real automated gates a feature pipeline runs before letting data flow to training or serving.",
+    taskDescription: "Implement `null_rate(values)`: return the fraction of entries in `values` that are `None`, as a float. Return `0.0` for an empty list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "values may be empty"
+      ],
+    hints: {
+  "small": "Count Nones, divide by total length.",
+        "strong": "return 0.0 if not values else sum(1 for v in values if v is None)/len(values).",
+        "concept": "A sudden spike in null rate for a feature is often the single fastest real signal an upstream data pipeline broke -- much faster to detect than waiting for model accuracy to degrade."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no nulls",
+          "input": {
+            "values": [
+              1,
+              2,
+              3
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "all null",
+          "input": {
+            "values": [
+              null,
+              null
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "half null",
+          "input": {
+            "values": [
+              1,
+              null,
+              2,
+              null
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty list",
+          "input": {
+            "values": []
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-10": {
+    id: "mlops-sys-prob-10",
+    title: "Data Quality: Schema Type Validation",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "validate_schema",
+    functionSignature: "validate_schema(record: dict, schema: dict) -> list[str]",
+    starterCode: `def validate_schema(record, schema):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real schema-validation gate: catching malformed records before they corrupt a feature store or a training dataset.",
+    taskDescription: "Implement `validate_schema(record, schema)`. `schema` maps field name -> expected Python type name (`'int'`, `'float'`, `'str'`, `'bool'`). Return a sorted list of error strings, one per problem: `\"missing field: <name>\"` if a schema field is absent from `record`, or `\"wrong type: <name>\"` if present but its Python type's `__name__` doesn't match. Return an empty list if the record is fully valid.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "schema is non-empty"
+      ],
+    hints: {
+  "small": "Check both 'missing' and 'wrong type' cases per schema field, collect messages, sort them.",
+        "strong": "for field, expected_type in schema.items(): if field not in record: errors.append(f'missing field: {field}'); elif type(record[field]).__name__ != expected_type: errors.append(f'wrong type: {field}').",
+        "concept": "This is the exact real discipline a feature store's write path needs -- catching a type mismatch at ingestion is far cheaper than debugging it after it's silently corrupted downstream model training."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "fully valid record",
+          "input": {
+            "record": {
+              "age": 30,
+              "name": "x"
+            },
+            "schema": {
+              "age": "int",
+              "name": "str"
+            }
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "missing field",
+          "input": {
+            "record": {
+              "age": 30
+            },
+            "schema": {
+              "age": "int",
+              "name": "str"
+            }
+          },
+          "expectedOutput": [
+            "missing field: name"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "wrong type",
+          "input": {
+            "record": {
+              "age": "thirty"
+            },
+            "schema": {
+              "age": "int"
+            }
+          },
+          "expectedOutput": [
+            "wrong type: age"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple errors sorted",
+          "input": {
+            "record": {
+              "age": "x"
+            },
+            "schema": {
+              "age": "int",
+              "score": "float"
+            }
+          },
+          "expectedOutput": [
+            "missing field: score",
+            "wrong type: age"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-11": {
+    id: "mlops-sys-prob-11",
+    title: "Semantic Version Comparison for Model Registry",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "semver_is_newer",
+    functionSignature: "semver_is_newer(version_a: str, version_b: str) -> bool",
+    starterCode: `def semver_is_newer(version_a, version_b):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real semantic-version comparison, needed whenever a model registry decides which registered model version is actually the latest.",
+    taskDescription: "Implement `semver_is_newer(version_a, version_b)`. Both are `'MAJOR.MINOR.PATCH'` strings (e.g. `'1.4.2'`). Return `True` if `version_a` is strictly newer than `version_b`, comparing MAJOR first, then MINOR, then PATCH as integers.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both strings match the MAJOR.MINOR.PATCH format with integer parts"
+      ],
+    hints: {
+  "small": "Split each on '.', compare the resulting integer tuples.",
+        "strong": "tuple(int(x) for x in version_a.split('.')) > tuple(int(x) for x in version_b.split('.')).",
+        "concept": "String comparison ('9.0.0' < '10.0.0' lexicographically) is a real, common bug here -- comparing as integer tuples is what makes version ordering correct beyond single digits."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "major version newer",
+          "input": {
+            "version_a": "2.0.0",
+            "version_b": "1.9.9"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "patch version newer",
+          "input": {
+            "version_a": "1.0.2",
+            "version_b": "1.0.1"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "equal versions, not newer",
+          "input": {
+            "version_a": "1.2.3",
+            "version_b": "1.2.3"
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "double-digit minor beats single-digit lexicographically-larger-looking",
+          "input": {
+            "version_a": "1.10.0",
+            "version_b": "1.9.0"
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-12": {
+    id: "mlops-sys-prob-12",
+    title: "Training Batch GPU Memory Estimator",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "estimate_batch_memory_gb",
+    functionSignature: "estimate_batch_memory_gb(num_params: int, batch_size: int, seq_len: int, hidden_dim: int, bytes_per_param: float = 4.0) -> float",
+    starterCode: `def estimate_batch_memory_gb(num_params, batch_size, seq_len, hidden_dim, bytes_per_param=4.0):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, back-of-envelope GPU memory estimator MLOps engineers actually use to pick a batch size before a training run OOMs.",
+    taskDescription: "Implement `estimate_batch_memory_gb(num_params, batch_size, seq_len, hidden_dim, bytes_per_param=4.0)`. Model weight memory (with Adam's 2 extra moment buffers, i.e. 3x weights total) is `num_params * bytes_per_param * 3`. Activation memory (a common simplified estimate) is `batch_size * seq_len * hidden_dim * bytes_per_param * 2` (forward + backward). Return `(weight_memory + activation_memory) / (1024**3)` (bytes to GB).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all inputs positive"
+      ],
+    hints: {
+  "small": "Sum weight memory (params * 3 for Adam states) and activation memory, convert bytes to GB.",
+        "strong": "weight_mem = num_params*bytes_per_param*3; act_mem = batch_size*seq_len*hidden_dim*bytes_per_param*2; return (weight_mem+act_mem)/(1024**3).",
+        "concept": "The real reason 'just increase batch size' silently OOMs: activation memory scales LINEARLY with batch_size while weight memory stays fixed -- this estimator makes that tradeoff visible before you burn a training run finding out."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "small model small batch",
+          "input": {
+            "num_params": 1000000,
+            "batch_size": 8,
+            "seq_len": 128,
+            "hidden_dim": 256,
+            "bytes_per_param": 4
+          },
+          "expectedOutput": 0.013128995895385742,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "fp16 halves memory",
+          "input": {
+            "num_params": 1000000,
+            "batch_size": 8,
+            "seq_len": 128,
+            "hidden_dim": 256,
+            "bytes_per_param": 2
+          },
+          "expectedOutput": 0.006564497947692871,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "larger batch scales activations",
+          "input": {
+            "num_params": 1000000,
+            "batch_size": 64,
+            "seq_len": 128,
+            "hidden_dim": 256,
+            "bytes_per_param": 4
+          },
+          "expectedOutput": 0.026800870895385742,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "bigger model",
+          "input": {
+            "num_params": 100000000,
+            "batch_size": 16,
+            "seq_len": 512,
+            "hidden_dim": 768,
+            "bytes_per_param": 4
+          },
+          "expectedOutput": 1.1644620895385742,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-13": {
+    id: "mlops-sys-prob-13",
+    title: "Linear Learning-Rate Warmup Schedule",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "warmup_lr",
+    functionSignature: "warmup_lr(step: int, warmup_steps: int, base_lr: float) -> float",
+    starterCode: `def warmup_lr(step, warmup_steps, base_lr):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement linear learning-rate warmup, a real, near-universal training stabilization technique for large model training.",
+    taskDescription: "Implement `warmup_lr(step, warmup_steps, base_lr)`. If `step >= warmup_steps` (or `warmup_steps == 0`), return `base_lr`. Otherwise return `base_lr * step / warmup_steps` (linear ramp from 0).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "step >= 0",
+        "warmup_steps >= 0"
+      ],
+    hints: {
+  "small": "Linear ramp up to base_lr, then constant.",
+        "strong": "if warmup_steps == 0 or step >= warmup_steps: return base_lr; else return base_lr*step/warmup_steps.",
+        "concept": "Warmup exists because large batch / high learning rate training is genuinely unstable in the first few steps before the optimizer's moment estimates (in Adam) have accumulated meaningful statistics -- skipping it is a common real cause of early training divergence."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "midway through warmup",
+          "input": {
+            "step": 50,
+            "warmup_steps": 100,
+            "base_lr": 0.001
+          },
+          "expectedOutput": 0.0005,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "at step 0",
+          "input": {
+            "step": 0,
+            "warmup_steps": 100,
+            "base_lr": 0.001
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "past warmup, full lr",
+          "input": {
+            "step": 200,
+            "warmup_steps": 100,
+            "base_lr": 0.001
+          },
+          "expectedOutput": 0.001,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero warmup steps",
+          "input": {
+            "step": 5,
+            "warmup_steps": 0,
+            "base_lr": 0.01
+          },
+          "expectedOutput": 0.01,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-14": {
+    id: "mlops-sys-prob-14",
+    title: "Cosine Annealing Learning Rate",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "cosine_annealing_lr",
+    functionSignature: "cosine_annealing_lr(step: int, total_steps: int, base_lr: float, min_lr: float = 0.0) -> float",
+    starterCode: `import math
+
+def cosine_annealing_lr(step, total_steps, base_lr, min_lr=0.0):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement cosine-annealing learning rate decay, one of the most widely-used real LR schedules for training large models.",
+    taskDescription: "Implement `cosine_annealing_lr(step, total_steps, base_lr, min_lr=0.0)`. Return `min_lr + 0.5*(base_lr-min_lr)*(1 + cos(pi*step/total_steps))`. Clamp `step` to `total_steps` if it exceeds it (so the schedule never goes below `min_lr`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "total_steps > 0",
+        "base_lr >= min_lr"
+      ],
+    hints: {
+  "small": "It's a cosine curve from base_lr (at step=0) down to min_lr (at step=total_steps).",
+        "strong": "step = min(step, total_steps); min_lr + 0.5*(base_lr-min_lr)*(1+math.cos(math.pi*step/total_steps)).",
+        "concept": "Unlike step-decay, cosine annealing decreases smoothly with no discontinuities -- the smooth final approach to min_lr is specifically what helps training settle into a sharper minimum near the end."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "at step 0, full base_lr",
+          "input": {
+            "step": 0,
+            "total_steps": 100,
+            "base_lr": 0.1,
+            "min_lr": 0
+          },
+          "expectedOutput": 0.1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "at final step, min_lr",
+          "input": {
+            "step": 100,
+            "total_steps": 100,
+            "base_lr": 0.1,
+            "min_lr": 0
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "halfway point",
+          "input": {
+            "step": 50,
+            "total_steps": 100,
+            "base_lr": 0.1,
+            "min_lr": 0
+          },
+          "expectedOutput": 0.05,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "step beyond total, clamped",
+          "input": {
+            "step": 150,
+            "total_steps": 100,
+            "base_lr": 0.1,
+            "min_lr": 0.01
+          },
+          "expectedOutput": 0.01,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-15": {
+    id: "mlops-sys-prob-15",
+    title: "Early Stopping Patience Check",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "should_stop_early",
+    functionSignature: "should_stop_early(val_losses: list[float], patience: int, min_delta: float = 0.0) -> bool",
+    starterCode: `def should_stop_early(val_losses, patience, min_delta=0.0):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement patience-based early stopping, the real, standard mechanism training loops use to halt before overfitting.",
+    taskDescription: "Implement `should_stop_early(val_losses, patience, min_delta=0.0)`. Track the best (minimum) loss seen so far as you walk `val_losses` in order; a loss counts as an improvement only if it's `< best - min_delta`. Count consecutive epochs WITHOUT improvement. Return `True` if that counter ever reaches `patience`, else `False` after processing the whole list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "patience >= 1",
+        "min_delta >= 0"
+      ],
+    hints: {
+  "small": "Walk the list, track best-so-far and a no-improvement counter; reset the counter on real improvement.",
+        "strong": "best = val_losses[0]; bad=0; for loss in val_losses[1:]: if loss < best - min_delta: best=loss; bad=0 else: bad+=1; if bad>=patience: return True. Return False at the end.",
+        "concept": "min_delta exists to ignore noise-level 'improvements' that aren't real signal -- without it, a training run with tiny random fluctuations could avoid triggering early stopping indefinitely even when genuinely no longer improving."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "steady improvement, no stop",
+          "input": {
+            "val_losses": [
+              1,
+              0.8,
+              0.6,
+              0.4
+            ],
+            "patience": 2,
+            "min_delta": 0
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "plateau triggers stop",
+          "input": {
+            "val_losses": [
+              1,
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "patience": 2,
+            "min_delta": 0
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "min_delta filters noise improvements",
+          "input": {
+            "val_losses": [
+              1,
+              0.999,
+              0.998,
+              0.997
+            ],
+            "patience": 2,
+            "min_delta": 0.1
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "improvement resets counter",
+          "input": {
+            "val_losses": [
+              1,
+              1.1,
+              1.2,
+              0.5,
+              1.1,
+              1.1,
+              1.1
+            ],
+            "patience": 2,
+            "min_delta": 0
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-16": {
+    id: "mlops-sys-prob-16",
+    title: "Gradient Clipping by Global Norm",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "clip_grad_norm",
+    functionSignature: "clip_grad_norm(gradients: list[float], max_norm: float) -> list[float]",
+    starterCode: `import math
+
+def clip_grad_norm(gradients, max_norm):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement gradient clipping by global L2 norm, a real, standard technique to prevent exploding gradients from destabilizing training.",
+    taskDescription: "Implement `clip_grad_norm(gradients, max_norm)`. Compute the L2 norm of the full gradient vector. If it exceeds `max_norm`, scale EVERY component by `max_norm / norm` (preserving direction, only shrinking magnitude). If the norm is already `<= max_norm`, return the gradients unchanged.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "max_norm > 0"
+      ],
+    hints: {
+  "small": "Compute the norm once, scale all components by the same factor only if needed.",
+        "strong": "norm = sqrt(sum(g**2 for g in gradients)); if norm <= max_norm: return list(gradients); scale = max_norm/norm; return [g*scale for g in gradients].",
+        "concept": "Clipping by GLOBAL norm (not per-component) preserves the gradient's direction -- clipping each component independently would distort which direction the optimizer actually steps in."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "norm under threshold, unchanged",
+          "input": {
+            "gradients": [
+              0.1,
+              0.1
+            ],
+            "max_norm": 5
+          },
+          "expectedOutput": [
+            0.1,
+            0.1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "norm exceeds threshold, scaled",
+          "input": {
+            "gradients": [
+              3,
+              4
+            ],
+            "max_norm": 2.5
+          },
+          "expectedOutput": [
+            1.5,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at threshold",
+          "input": {
+            "gradients": [
+              3,
+              4
+            ],
+            "max_norm": 5
+          },
+          "expectedOutput": [
+            3,
+            4
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large gradient vector",
+          "input": {
+            "gradients": [
+              10,
+              0,
+              0
+            ],
+            "max_norm": 1
+          },
+          "expectedOutput": [
+            1,
+            0,
+            0
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-17": {
+    id: "mlops-sys-prob-17",
+    title: "Best Checkpoint Selection by Validation Metric",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "select_best_checkpoint",
+    functionSignature: "select_best_checkpoint(checkpoints: list[dict], metric: str, mode: str) -> str",
+    starterCode: `def select_best_checkpoint(checkpoints, metric, mode):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real checkpoint-selection logic for a training pipeline, supporting both 'higher is better' and 'lower is better' metrics.",
+    taskDescription: "Implement `select_best_checkpoint(checkpoints, metric, mode)`. `checkpoints` is a list of `{\"id\": str, <metric>: float, ...}` dicts. If `mode == 'max'`, return the id with the HIGHEST value of `metric`; if `mode == 'min'`, return the id with the LOWEST. Ties broken by the earliest occurrence (first in the list).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "checkpoints non-empty",
+        "mode in {'max','min'}"
+      ],
+    hints: {
+  "small": "Scan once, tracking the best-so-far and updating only on a strict improvement.",
+        "strong": "best = checkpoints[0]; for c in checkpoints[1:]: if (mode=='max' and c[metric]>best[metric]) or (mode=='min' and c[metric]<best[metric]): best=c.",
+        "concept": "'Ties broken by earliest occurrence' matters in practice -- if two checkpoints score identically, keeping the earlier one is a genuinely reasonable default (less training, less overfitting risk) rather than an arbitrary choice."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "max mode picks highest accuracy",
+          "input": {
+            "checkpoints": [
+              {
+                "id": "ckpt1",
+                "acc": 0.8
+              },
+              {
+                "id": "ckpt2",
+                "acc": 0.9
+              }
+            ],
+            "metric": "acc",
+            "mode": "max"
+          },
+          "expectedOutput": "ckpt2",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "min mode picks lowest loss",
+          "input": {
+            "checkpoints": [
+              {
+                "id": "ckpt1",
+                "loss": 0.5
+              },
+              {
+                "id": "ckpt2",
+                "loss": 0.3
+              }
+            ],
+            "metric": "loss",
+            "mode": "min"
+          },
+          "expectedOutput": "ckpt2",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "tie broken by earliest",
+          "input": {
+            "checkpoints": [
+              {
+                "id": "first",
+                "acc": 0.9
+              },
+              {
+                "id": "second",
+                "acc": 0.9
+              }
+            ],
+            "metric": "acc",
+            "mode": "max"
+          },
+          "expectedOutput": "first",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single checkpoint",
+          "input": {
+            "checkpoints": [
+              {
+                "id": "only",
+                "acc": 0.5
+              }
+            ],
+            "metric": "acc",
+            "mode": "max"
+          },
+          "expectedOutput": "only",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-18": {
+    id: "mlops-sys-prob-18",
+    title: "Normalize Feature Importances",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "normalize_importances",
+    functionSignature: "normalize_importances(raw_importances: dict[str, float]) -> dict[str, float]",
+    starterCode: `def normalize_importances(raw_importances):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement feature-importance normalization, needed to make raw model importance scores comparable and interpretable as relative contribution percentages.",
+    taskDescription: "Implement `normalize_importances(raw_importances)`: return a new dict where every value is divided by the sum of all values (so they sum to 1.0). If all raw importances are 0, return the input unchanged (all zeros).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "values >= 0"
+      ],
+    hints: {
+  "small": "Sum all values, divide each by that sum -- guard the all-zero case.",
+        "strong": "total = sum(raw_importances.values()); if total == 0: return dict(raw_importances); return {k: v/total for k,v in raw_importances.items()}.",
+        "concept": "Raw importance magnitudes differ across model types (e.g. tree-based gain vs. permutation importance) -- normalizing to sum-to-1 is what makes 'feature X matters 30%' a comparable, reportable statement regardless of the underlying model."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic two features",
+          "input": {
+            "raw_importances": {
+              "age": 3,
+              "income": 1
+            }
+          },
+          "expectedOutput": {
+            "age": 0.75,
+            "income": 0.25
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "all zero",
+          "input": {
+            "raw_importances": {
+              "a": 0,
+              "b": 0
+            }
+          },
+          "expectedOutput": {
+            "a": 0,
+            "b": 0
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "already normalized",
+          "input": {
+            "raw_importances": {
+              "a": 0.5,
+              "b": 0.5
+            }
+          },
+          "expectedOutput": {
+            "a": 0.5,
+            "b": 0.5
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three features",
+          "input": {
+            "raw_importances": {
+              "a": 2,
+              "b": 2,
+              "c": 6
+            }
+          },
+          "expectedOutput": {
+            "a": 0.2,
+            "b": 0.2,
+            "c": 0.6
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-19": {
+    id: "mlops-sys-prob-19",
+    title: "Pipeline DAG Topological Sort",
+    difficulty: "hard",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "topological_sort",
+    functionSignature: "topological_sort(dependencies: dict[str, list[str]]) -> list[str]",
+    starterCode: `def topological_sort(dependencies):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement topological sort for a data/ML pipeline DAG, determining a valid stage execution order from declared dependencies.",
+    taskDescription: "Implement `topological_sort(dependencies)`. `dependencies` maps each stage name to a list of stages it depends on (must run first). Return a valid execution order (a list of ALL stage names, including those with no dependents) such that every stage appears after all of its dependencies. Use Kahn's algorithm; among stages with no remaining dependencies at a given point, process them in sorted (alphabetical) order for a deterministic result. Assume the graph is acyclic.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "no cycles",
+        "a stage may depend on a stage not itself listed as a key (treat it as having no further dependencies)"
+      ],
+    hints: {
+  "small": "Kahn's algorithm: repeatedly pick an available (in-degree 0) node, alphabetically among ties, remove its outgoing edges, repeat.",
+        "strong": "Build the full node set (keys + all listed dependencies). Track in-degree per node = number of things it depends on still unprocessed. Repeatedly pop the smallest-name node with in-degree 0.",
+        "concept": "This is exactly what Airflow/Dagster/Kubeflow Pipelines do internally to decide execution order from a declared DAG -- the alphabetical tie-break here just makes the answer deterministic and testable, real schedulers use other tie-break heuristics (e.g. priority weight)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "linear chain",
+          "input": {
+            "dependencies": {
+              "train": [
+                "features"
+              ],
+              "features": [
+                "ingest"
+              ],
+              "ingest": []
+            }
+          },
+          "expectedOutput": [
+            "ingest",
+            "features",
+            "train"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "diamond dependency",
+          "input": {
+            "dependencies": {
+              "deploy": [
+                "test"
+              ],
+              "test": [
+                "build_a",
+                "build_b"
+              ],
+              "build_a": [],
+              "build_b": []
+            }
+          },
+          "expectedOutput": [
+            "build_a",
+            "build_b",
+            "test",
+            "deploy"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "independent stages alphabetical",
+          "input": {
+            "dependencies": {
+              "c": [],
+              "a": [],
+              "b": []
+            }
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single stage no deps",
+          "input": {
+            "dependencies": {
+              "only": []
+            }
+          },
+          "expectedOutput": [
+            "only"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-20": {
+    id: "mlops-sys-prob-20",
+    title: "Request Queue Backpressure Check",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "should_apply_backpressure",
+    functionSignature: "should_apply_backpressure(queue_depth: int, max_queue_depth: int, avg_latency_ms: float, latency_budget_ms: float) -> bool",
+    starterCode: `def should_apply_backpressure(queue_depth, max_queue_depth, avg_latency_ms, latency_budget_ms):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real backpressure trigger for a model-serving request queue, protecting a serving system from cascading overload.",
+    taskDescription: "Implement `should_apply_backpressure(queue_depth, max_queue_depth, avg_latency_ms, latency_budget_ms)`. Return `True` (start rejecting/throttling new requests) if EITHER `queue_depth >= max_queue_depth` OR `avg_latency_ms > latency_budget_ms`. Otherwise `False`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 0"
+      ],
+    hints: {
+  "small": "Two independent trigger conditions combined with OR.",
+        "strong": "return queue_depth >= max_queue_depth or avg_latency_ms > latency_budget_ms.",
+        "concept": "Real serving systems need BOTH a queue-depth check (protects memory) and a latency check (protects user experience) -- either alone misses real failure modes the other one catches."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "healthy system, no backpressure",
+          "input": {
+            "queue_depth": 5,
+            "max_queue_depth": 100,
+            "avg_latency_ms": 50,
+            "latency_budget_ms": 200
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "queue full triggers backpressure",
+          "input": {
+            "queue_depth": 100,
+            "max_queue_depth": 100,
+            "avg_latency_ms": 50,
+            "latency_budget_ms": 200
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "latency budget exceeded triggers backpressure",
+          "input": {
+            "queue_depth": 5,
+            "max_queue_depth": 100,
+            "avg_latency_ms": 250,
+            "latency_budget_ms": 200
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "both conditions bad",
+          "input": {
+            "queue_depth": 200,
+            "max_queue_depth": 100,
+            "avg_latency_ms": 500,
+            "latency_budget_ms": 200
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-21": {
+    id: "mlops-sys-prob-21",
+    title: "Latency Percentile Computation",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "latency_percentile",
+    functionSignature: "latency_percentile(samples_ms: list[float], p: float) -> float",
+    starterCode: `def latency_percentile(samples_ms, p):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real p50/p95/p99 latency percentile computation, the standard way model-serving SLOs are measured (never use plain average latency for SLOs).",
+    taskDescription: "Implement `latency_percentile(samples_ms, p)`. Sort `samples_ms` ascending. Using the nearest-rank method, the index is `ceil(p/100 * n) - 1`, clamped to `[0, n-1]`. Return the value at that index. `p` is in `[0, 100]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "samples_ms non-empty",
+        "0 <= p <= 100"
+      ],
+    hints: {
+  "small": "Sort first, then pick the value at the nearest-rank index.",
+        "strong": "s = sorted(samples_ms); idx = max(0, min(len(s)-1, math.ceil(p/100*len(s)) - 1)); return s[idx].",
+        "concept": "Average latency hides the exact experience that matters -- p99 tells you what your SLOWEST 1% of real users actually see, which average latency can look perfectly fine while genuinely masking."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "p50 of simple list",
+          "input": {
+            "samples_ms": [
+              10,
+              20,
+              30,
+              40
+            ],
+            "p": 50
+          },
+          "expectedOutput": 20,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "p99 of larger list",
+          "input": {
+            "samples_ms": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91,
+              92,
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100
+            ],
+            "p": 99
+          },
+          "expectedOutput": 99,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "p0 returns minimum",
+          "input": {
+            "samples_ms": [
+              5,
+              1,
+              3
+            ],
+            "p": 0
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "p100 returns maximum",
+          "input": {
+            "samples_ms": [
+              5,
+              1,
+              3
+            ],
+            "p": 100
+          },
+          "expectedOutput": 5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-22": {
+    id: "mlops-sys-prob-22",
+    title: "A/B Test Statistical Significance (Two-Proportion Z-Test)",
+    difficulty: "hard",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "ab_test_z_score",
+    functionSignature: "ab_test_z_score(conversions_a: int, visitors_a: int, conversions_b: int, visitors_b: int) -> float",
+    starterCode: `import math
+
+def ab_test_z_score(conversions_a, visitors_a, conversions_b, visitors_b):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real two-proportion z-test statistic used to check whether an A/B test's conversion-rate difference is statistically significant, not just noise.",
+    taskDescription: "Implement `ab_test_z_score(conversions_a, visitors_a, conversions_b, visitors_b)`. Compute `p_a = conversions_a/visitors_a`, `p_b = conversions_b/visitors_b`, pooled proportion `p_pool = (conversions_a+conversions_b)/(visitors_a+visitors_b)`, and standard error `se = sqrt(p_pool*(1-p_pool)*(1/visitors_a + 1/visitors_b))`. Return the z-score `(p_b - p_a) / se`. Return `0.0` if `se` is 0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "visitors_a, visitors_b > 0"
+      ],
+    hints: {
+  "small": "This is a direct formula application: compute the two proportions, the pooled proportion, the standard error, then the z-score.",
+        "strong": "p_a=ca/va; p_b=cb/vb; p_pool=(ca+cb)/(va+vb); se=sqrt(p_pool*(1-p_pool)*(1/va+1/vb)); return 0.0 if se==0 else (p_b-p_a)/se.",
+        "concept": "A |z| > 1.96 corresponds to real p<0.05 significance -- this is the actual statistical test behind 'is variant B really better,' not just eyeballing which conversion rate number looks bigger."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear improvement",
+          "input": {
+            "conversions_a": 100,
+            "visitors_a": 1000,
+            "conversions_b": 150,
+            "visitors_b": 1000
+          },
+          "expectedOutput": 3.3806170189140654,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no difference",
+          "input": {
+            "conversions_a": 100,
+            "visitors_a": 1000,
+            "conversions_b": 100,
+            "visitors_b": 1000
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "b performs worse",
+          "input": {
+            "conversions_a": 200,
+            "visitors_a": 1000,
+            "conversions_b": 100,
+            "visitors_b": 1000
+          },
+          "expectedOutput": -6.262242910851494,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "small sample sizes",
+          "input": {
+            "conversions_a": 5,
+            "visitors_a": 50,
+            "conversions_b": 10,
+            "visitors_b": 50
+          },
+          "expectedOutput": 1.4002800840280096,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-23": {
+    id: "mlops-sys-prob-23",
+    title: "Pairwise Feature Correlation (Pearson)",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "pearson_correlation",
+    functionSignature: "pearson_correlation(x: list[float], y: list[float]) -> float",
+    starterCode: `import math
+
+def pearson_correlation(x, y):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Pearson correlation, the real statistic behind a feature-correlation matrix used to detect redundant/collinear features before training.",
+    taskDescription: "Implement `pearson_correlation(x, y)`: return the Pearson correlation coefficient between the two equal-length lists using the standard formula `cov(x,y) / (std(x) * std(y))`, with population (not sample) standard deviation and covariance.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(x) == len(y) >= 2",
+        "x and y both have non-zero variance"
+      ],
+    hints: {
+  "small": "Compute means, then covariance and both standard deviations.",
+        "strong": "mx=mean(x); my=mean(y); cov=mean((xi-mx)*(yi-my)); sx=sqrt(mean((xi-mx)**2)); sy=sqrt(mean((yi-my)**2)); return cov/(sx*sy).",
+        "concept": "Two features with correlation near +-1 carry almost no independent information for a model -- this is exactly the real screening step behind dropping redundant features before training, especially for models sensitive to multicollinearity."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect positive correlation",
+          "input": {
+            "x": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "y": [
+              2,
+              4,
+              6,
+              8
+            ]
+          },
+          "expectedOutput": 0.9999999999999998,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "perfect negative correlation",
+          "input": {
+            "x": [
+              1,
+              2,
+              3
+            ],
+            "y": [
+              3,
+              2,
+              1
+            ]
+          },
+          "expectedOutput": -1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "moderate correlation",
+          "input": {
+            "x": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "y": [
+              1,
+              3,
+              2,
+              5
+            ]
+          },
+          "expectedOutput": 0.8315218406202998,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "larger dataset",
+          "input": {
+            "x": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "y": [
+              5,
+              3,
+              4,
+              2,
+              1
+            ]
+          },
+          "expectedOutput": -0.8999999999999998,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-24": {
+    id: "mlops-sys-prob-24",
+    title: "Class Imbalance Ratio and Suggested Weights",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "class_weights",
+    functionSignature: "class_weights(class_counts: dict[str, int]) -> dict[str, float]",
+    starterCode: `def class_weights(class_counts):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real 'balanced' class-weight formula (matching scikit-learn's convention) used to counteract class imbalance during training.",
+    taskDescription: "Implement `class_weights(class_counts)`. For each class `c`, weight is `n_total / (n_classes * count[c])`, where `n_total` is the sum of all counts and `n_classes` is the number of distinct classes. Return a dict of class -> weight.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all counts > 0"
+      ],
+    hints: {
+  "small": "This is a direct formula application per class.",
+        "strong": "n_total = sum(class_counts.values()); n_classes = len(class_counts); {c: n_total/(n_classes*count) for c,count in class_counts.items()}.",
+        "concept": "This exact formula is scikit-learn's 'balanced' class_weight mode -- rarer classes get proportionally larger weight so a model can't just always predict the majority class to minimize loss."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "balanced classes, weight 1 each",
+          "input": {
+            "class_counts": {
+              "a": 50,
+              "b": 50
+            }
+          },
+          "expectedOutput": {
+            "a": 1,
+            "b": 1
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "imbalanced binary",
+          "input": {
+            "class_counts": {
+              "majority": 900,
+              "minority": 100
+            }
+          },
+          "expectedOutput": {
+            "majority": 0.5555555555555556,
+            "minority": 5
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "three classes",
+          "input": {
+            "class_counts": {
+              "a": 100,
+              "b": 200,
+              "c": 700
+            }
+          },
+          "expectedOutput": {
+            "a": 3.3333333333333335,
+            "b": 1.6666666666666667,
+            "c": 0.47619047619047616
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "extreme imbalance",
+          "input": {
+            "class_counts": {
+              "common": 9990,
+              "rare": 10
+            }
+          },
+          "expectedOutput": {
+            "common": 0.5005005005005005,
+            "rare": 500
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-25": {
+    id: "mlops-sys-prob-25",
+    title: "Content-Based Dataset Version Hash",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "dataset_version_hash",
+    functionSignature: "dataset_version_hash(record_hashes: list[str]) -> str",
+    starterCode: `import hashlib
+
+def dataset_version_hash(record_hashes):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement content-based dataset versioning: a deterministic fingerprint that changes if and only if the dataset's actual content changes.",
+    taskDescription: "Implement `dataset_version_hash(record_hashes)`. Sort `record_hashes` (so row order doesn't affect the result), join them with `','`, and return the hex `hashlib.sha256` digest of that joined string (UTF-8 encoded).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "record_hashes is a list of strings"
+      ],
+    hints: {
+  "small": "Sort first for order-independence, join, then hash.",
+        "strong": "hashlib.sha256(','.join(sorted(record_hashes)).encode('utf-8')).hexdigest().",
+        "concept": "Sorting before hashing is what makes this a real CONTENT hash rather than an ORDER-sensitive one -- two datasets with the identical rows in different order should be recognized as the same version, which a naive concatenation-without-sorting would get wrong."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "order independence",
+          "input": {
+            "record_hashes": [
+              "b",
+              "a",
+              "c"
+            ]
+          },
+          "expectedOutput": "205830ca5b23bbe39ab510cfddc1dff2d9842e38b5fa7b7c48cd4ca7e44f92a1",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single record",
+          "input": {
+            "record_hashes": [
+              "only"
+            ]
+          },
+          "expectedOutput": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty dataset",
+          "input": {
+            "record_hashes": []
+          },
+          "expectedOutput": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "reordered same set gives same hash",
+          "input": {
+            "record_hashes": [
+              "c",
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": "205830ca5b23bbe39ab510cfddc1dff2d9842e38b5fa7b7c48cd4ca7e44f92a1",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-26": {
+    id: "mlops-sys-prob-26",
+    title: "Model Size After Quantization Estimate",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "quantized_size_mb",
+    functionSignature: "quantized_size_mb(num_params: int, bits_per_param: int) -> float",
+    starterCode: `def quantized_size_mb(num_params, bits_per_param):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real model-size estimator after quantization, the calculation behind deciding whether a quantized model actually fits a target deployment device.",
+    taskDescription: "Implement `quantized_size_mb(num_params, bits_per_param)`: return `(num_params * bits_per_param / 8) / (1024*1024)` -- total size in megabytes.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "num_params > 0",
+        "bits_per_param > 0"
+      ],
+    hints: {
+  "small": "bits to bytes to MB.",
+        "strong": "(num_params*bits_per_param/8)/(1024*1024).",
+        "concept": "This is the actual arithmetic behind 'INT4 quantization roughly quarters model size vs FP16' claims -- a real, checkable number rather than a rule of thumb."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "fp32 7B-scale small example",
+          "input": {
+            "num_params": 1000000,
+            "bits_per_param": 32
+          },
+          "expectedOutput": 3.814697265625,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "int8 quantized",
+          "input": {
+            "num_params": 1000000,
+            "bits_per_param": 8
+          },
+          "expectedOutput": 0.95367431640625,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "int4 quantized",
+          "input": {
+            "num_params": 1000000,
+            "bits_per_param": 4
+          },
+          "expectedOutput": 0.476837158203125,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "fp16",
+          "input": {
+            "num_params": 7000000000,
+            "bits_per_param": 16
+          },
+          "expectedOutput": 13351.4404296875,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-27": {
+    id: "mlops-sys-prob-27",
+    title: "Exponential Backoff With Capped Jitter",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "backoff_delay",
+    functionSignature: "backoff_delay(attempt: int, base_delay_s: float, max_delay_s: float, jitter_fraction: float) -> tuple",
+    starterCode: `def backoff_delay(attempt, base_delay_s, max_delay_s, jitter_fraction):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement exponential backoff with a jitter RANGE (not a random draw), the real retry pattern any pipeline calling an external service (a model API, a data source) needs.",
+    taskDescription: "Implement `backoff_delay(attempt, base_delay_s, max_delay_s, jitter_fraction)`. Compute `raw = min(base_delay_s * (2 ** attempt), max_delay_s)`. Jitter range is `raw * jitter_fraction`. Return the tuple `(raw - jitter_range, raw + jitter_range)` -- the real caller draws a random delay from this range; we return the deterministic bounds so the result is testable.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "attempt >= 0",
+        "base_delay_s > 0",
+        "0 <= jitter_fraction <= 1"
+      ],
+    hints: {
+  "small": "Exponential growth capped at max_delay_s, then compute a symmetric jitter window around it.",
+        "strong": "raw = min(base_delay_s*(2**attempt), max_delay_s); j = raw*jitter_fraction; return (raw-j, raw+j).",
+        "concept": "Jitter exists specifically to prevent a 'thundering herd' -- many clients retrying at the exact same computed delay after a shared outage would all hammer the service simultaneously again; a random offset within the jitter range spreads that out."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "first attempt no growth yet",
+          "input": {
+            "attempt": 0,
+            "base_delay_s": 1,
+            "max_delay_s": 60,
+            "jitter_fraction": 0.1
+          },
+          "expectedOutput": [
+            0.9,
+            1.1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "several attempts, growing",
+          "input": {
+            "attempt": 3,
+            "base_delay_s": 1,
+            "max_delay_s": 60,
+            "jitter_fraction": 0.2
+          },
+          "expectedOutput": [
+            6.4,
+            9.6
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "capped at max_delay",
+          "input": {
+            "attempt": 10,
+            "base_delay_s": 1,
+            "max_delay_s": 30,
+            "jitter_fraction": 0.1
+          },
+          "expectedOutput": [
+            27,
+            33
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero jitter, exact bounds equal",
+          "input": {
+            "attempt": 2,
+            "base_delay_s": 2,
+            "max_delay_s": 100,
+            "jitter_fraction": 0
+          },
+          "expectedOutput": [
+            8,
+            8
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-28": {
+    id: "mlops-sys-prob-28",
+    title: "Feature Store Cache TTL Expiry Check",
+    difficulty: "easy",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "is_feature_expired",
+    functionSignature: "is_feature_expired(cached_at_ts: float, current_ts: float, ttl_seconds: float) -> bool",
+    starterCode: `def is_feature_expired(cached_at_ts, current_ts, ttl_seconds):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement TTL expiry checking for an online feature store's cache -- deciding whether a cached feature value is fresh enough to serve or needs recomputation.",
+    taskDescription: "Implement `is_feature_expired(cached_at_ts, current_ts, ttl_seconds)`: return `True` if `(current_ts - cached_at_ts) >= ttl_seconds`, else `False`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "current_ts >= cached_at_ts",
+        "ttl_seconds >= 0"
+      ],
+    hints: {
+  "small": "Compare elapsed time to the TTL.",
+        "strong": "return (current_ts - cached_at_ts) >= ttl_seconds.",
+        "concept": "Real online feature stores (e.g. Feast, Tecton) live and die on getting this exactly right -- too short a TTL causes unnecessary recomputation load, too long serves genuinely stale features to a live model."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "well within TTL",
+          "input": {
+            "cached_at_ts": 1000,
+            "current_ts": 1010,
+            "ttl_seconds": 60
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "exactly at TTL boundary",
+          "input": {
+            "cached_at_ts": 1000,
+            "current_ts": 1060,
+            "ttl_seconds": 60
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "expired well past TTL",
+          "input": {
+            "cached_at_ts": 1000,
+            "current_ts": 2000,
+            "ttl_seconds": 60
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero TTL always expired",
+          "input": {
+            "cached_at_ts": 1000,
+            "current_ts": 1000,
+            "ttl_seconds": 0
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-29": {
+    id: "mlops-sys-prob-29",
+    title: "Page-Hinkley Concept Drift Statistic Update",
+    difficulty: "hard",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "page_hinkley_update",
+    functionSignature: "page_hinkley_update(cumulative_sum: float, running_min: float, new_error: float, running_mean_error: float, delta: float) -> tuple",
+    starterCode: `def page_hinkley_update(cumulative_sum, running_min, new_error, running_mean_error, delta):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement one update step of the Page-Hinkley test, a real, lightweight streaming concept-drift detector used to monitor a live model's error rate without storing a full history window.",
+    taskDescription: "Implement `page_hinkley_update(cumulative_sum, running_min, new_error, running_mean_error, delta)`. Update `new_cumulative_sum = cumulative_sum + (new_error - running_mean_error - delta)`. Update `new_running_min = min(running_min, new_cumulative_sum)`. The current Page-Hinkley statistic (how far above the running minimum the cumulative sum has drifted) is `ph_value = new_cumulative_sum - new_running_min`. Return the tuple `(new_cumulative_sum, new_running_min, ph_value)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "delta >= 0"
+      ],
+    hints: {
+  "small": "This is a direct sequential formula application -- update the running sum, update the running min, compute the gap between them.",
+        "strong": "new_sum = cumulative_sum + (new_error - running_mean_error - delta); new_min = min(running_min, new_sum); ph = new_sum - new_min.",
+        "concept": "A real deployment compares ph_value against a threshold (e.g. 50) each update -- exceeding it flags drift. This is a genuine O(1)-memory streaming algorithm (unlike PSI, which needs a full window), which is exactly why it's used for continuous online monitoring."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "error near mean, small drift",
+          "input": {
+            "cumulative_sum": 0,
+            "running_min": 0,
+            "new_error": 0.5,
+            "running_mean_error": 0.5,
+            "delta": 0.005
+          },
+          "expectedOutput": [
+            -0.005,
+            -0.005,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "error spike increases ph_value",
+          "input": {
+            "cumulative_sum": 0,
+            "running_min": 0,
+            "new_error": 5,
+            "running_mean_error": 0.5,
+            "delta": 0.005
+          },
+          "expectedOutput": [
+            4.495,
+            0,
+            4.495
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "sequential call reusing prior state",
+          "input": {
+            "cumulative_sum": 2,
+            "running_min": -1,
+            "new_error": 0.6,
+            "running_mean_error": 0.5,
+            "delta": 0.005
+          },
+          "expectedOutput": [
+            2.0949999999999998,
+            -1,
+            3.0949999999999998
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "error below mean decreases sum",
+          "input": {
+            "cumulative_sum": 1,
+            "running_min": 0,
+            "new_error": 0.1,
+            "running_mean_error": 0.5,
+            "delta": 0.005
+          },
+          "expectedOutput": [
+            0.595,
+            0,
+            0.595
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mlops-sys-prob-30": {
+    id: "mlops-sys-prob-30",
+    title: "Feature Skew Detection Between Training and Serving",
+    difficulty: "medium",
+    topic: "MLOps & Data Systems",
+    estimatedTime: '15 min',
+    functionName: "detect_feature_skew",
+    functionSignature: "detect_feature_skew(train_stats: dict[str, float], serving_stats: dict[str, float], threshold_pct: float) -> list[str]",
+    starterCode: `def detect_feature_skew(train_stats, serving_stats, threshold_pct):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real training/serving skew detection: comparing each feature's mean between the training set and live traffic to catch a genuinely common, silent production bug.",
+    taskDescription: "Implement `detect_feature_skew(train_stats, serving_stats, threshold_pct)`. Both dicts map feature name -> its mean value. For each feature present in BOTH dicts, compute relative change `abs(serving - train) / abs(train) * 100` (skip a feature if `train`'s value is exactly 0, to avoid division by zero). Return a sorted list of feature names where that relative change EXCEEDS `threshold_pct`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "threshold_pct >= 0"
+      ],
+    hints: {
+  "small": "Only compare features present in both stats dicts; skip any with a zero training mean.",
+        "strong": "for f in set(train_stats) & set(serving_stats): if train_stats[f] == 0: continue; pct = abs(serving_stats[f]-train_stats[f])/abs(train_stats[f])*100; if pct > threshold_pct: flag it.",
+        "concept": "Training/serving skew (the exact feature computed differently, or drifting differently, between the training pipeline and the live serving pipeline) is one of the most common REAL causes of a model silently degrading in production despite no code change to the model itself."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no significant skew",
+          "input": {
+            "train_stats": {
+              "age": 30
+            },
+            "serving_stats": {
+              "age": 31
+            },
+            "threshold_pct": 10
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "significant skew flagged",
+          "input": {
+            "train_stats": {
+              "age": 30
+            },
+            "serving_stats": {
+              "age": 60
+            },
+            "threshold_pct": 10
+          },
+          "expectedOutput": [
+            "age"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple features, some skewed",
+          "input": {
+            "train_stats": {
+              "a": 10,
+              "b": 100
+            },
+            "serving_stats": {
+              "a": 10.5,
+              "b": 200
+            },
+            "threshold_pct": 20
+          },
+          "expectedOutput": [
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero training mean skipped",
+          "input": {
+            "train_stats": {
+              "a": 0,
+              "b": 5
+            },
+            "serving_stats": {
+              "a": 10,
+              "b": 5.5
+            },
+            "threshold_pct": 5
+          },
+          "expectedOutput": [
+            "b"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

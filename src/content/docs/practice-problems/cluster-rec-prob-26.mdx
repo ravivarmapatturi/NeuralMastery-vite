@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #856. Clustering & Recommender Systems Module 6: Problem 26"
-description: "Master #856. Clustering & Recommender Systems Module 6: Problem 26 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Cold-Start Recommendation Fallback Weighting"
+description: "Implement a real cold-start blending weight: how much to trust personalized (CF) recommendations versus a popularity fallback, based on how much history a user actually has."
+difficulty: "medium"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #856. Clustering & Recommender Systems Module 6: Problem 26
+# Cold-Start Recommendation Fallback Weighting
 
-**Track**: Clustering & Recommender Systems | **Rank**: #856 of 1072 | **Points**: 90 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#856. Clustering & Recommender Systems Module 6: Problem 26` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real cold-start blending weight: how much to trust personalized (CF) recommendations versus a popularity fallback, based on how much history a user actually has.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cold_start_weight(user_interaction_count, full_confidence_threshold)`. Return `min(1.0, user_interaction_count / full_confidence_threshold)` -- the weight to give the personalized model (1 - this value goes to the popularity fallback). If `full_confidence_threshold <= 0`, return `1.0`.
 
 <PracticePlayground problemId="cluster-rec-prob-26" />

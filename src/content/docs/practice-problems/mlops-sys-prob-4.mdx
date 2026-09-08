@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #924. MLOps & Data Systems Module 1: Problem 4"
-description: "Master #924. MLOps & Data Systems Module 1: Problem 4 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Z-Score Feature Standardization"
+description: "Implement z-score standardization using pre-computed training statistics -- the real, correct way to scale features at inference time (never recompute mean/std on the inference batch)."
 difficulty: "easy"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #924. MLOps & Data Systems Module 1: Problem 4
+# Z-Score Feature Standardization
 
-**Track**: MLOps & Data Systems | **Rank**: #924 of 1072 | **Points**: 40 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#924. MLOps & Data Systems Module 1: Problem 4` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement z-score standardization using pre-computed training statistics -- the real, correct way to scale features at inference time (never recompute mean/std on the inference batch).
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `standardize(values, mean, std)`: return `[(v - mean) / std for v in values]`.
 
 <PracticePlayground problemId="mlops-sys-prob-4" />

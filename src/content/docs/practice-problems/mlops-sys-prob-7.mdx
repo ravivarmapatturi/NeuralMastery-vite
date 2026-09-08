@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #927. MLOps & Data Systems Module 2: Problem 7"
-description: "Master #927. MLOps & Data Systems Module 2: Problem 7 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: One-Hot Encode a Categorical Feature"
+description: "Implement one-hot encoding against a FIXED, pre-defined category vocabulary -- the real production-safe way to encode categoricals (never fit categories on live data)."
 difficulty: "easy"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #927. MLOps & Data Systems Module 2: Problem 7
+# One-Hot Encode a Categorical Feature
 
-**Track**: MLOps & Data Systems | **Rank**: #927 of 1072 | **Points**: 40 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#927. MLOps & Data Systems Module 2: Problem 7` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement one-hot encoding against a FIXED, pre-defined category vocabulary -- the real production-safe way to encode categoricals (never fit categories on live data).
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `one_hot_encode(value, categories)`. Return a list the same length as `categories`, with a `1` at the index matching `value` and `0` elsewhere. If `value` is not in `categories` (an unseen category), return an all-zero vector.
 
 <PracticePlayground problemId="mlops-sys-prob-7" />

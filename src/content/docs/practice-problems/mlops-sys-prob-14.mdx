@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #934. MLOps & Data Systems Module 3: Problem 14"
-description: "Master #934. MLOps & Data Systems Module 3: Problem 14 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Cosine Annealing Learning Rate"
+description: "Implement cosine-annealing learning rate decay, one of the most widely-used real LR schedules for training large models."
 difficulty: "medium"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #934. MLOps & Data Systems Module 3: Problem 14
+# Cosine Annealing Learning Rate
 
-**Track**: MLOps & Data Systems | **Rank**: #934 of 1072 | **Points**: 60 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#934. MLOps & Data Systems Module 3: Problem 14` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement cosine-annealing learning rate decay, one of the most widely-used real LR schedules for training large models.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cosine_annealing_lr(step, total_steps, base_lr, min_lr=0.0)`. Return `min_lr + 0.5*(base_lr-min_lr)*(1 + cos(pi*step/total_steps))`. Clamp `step` to `total_steps` if it exceeds it (so the schedule never goes below `min_lr`).
 
 <PracticePlayground problemId="mlops-sys-prob-14" />

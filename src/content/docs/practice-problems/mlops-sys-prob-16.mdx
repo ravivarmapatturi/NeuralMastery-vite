@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #936. MLOps & Data Systems Module 4: Problem 16"
-description: "Master #936. MLOps & Data Systems Module 4: Problem 16 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Gradient Clipping by Global Norm"
+description: "Implement gradient clipping by global L2 norm, a real, standard technique to prevent exploding gradients from destabilizing training."
 difficulty: "medium"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #936. MLOps & Data Systems Module 4: Problem 16
+# Gradient Clipping by Global Norm
 
-**Track**: MLOps & Data Systems | **Rank**: #936 of 1072 | **Points**: 60 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#936. MLOps & Data Systems Module 4: Problem 16` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement gradient clipping by global L2 norm, a real, standard technique to prevent exploding gradients from destabilizing training.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `clip_grad_norm(gradients, max_norm)`. Compute the L2 norm of the full gradient vector. If it exceeds `max_norm`, scale EVERY component by `max_norm / norm` (preserving direction, only shrinking magnitude). If the norm is already `<= max_norm`, return the gradients unchanged.
 
 <PracticePlayground problemId="mlops-sys-prob-16" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #945. MLOps & Data Systems Module 5: Problem 25"
-description: "Master #945. MLOps & Data Systems Module 5: Problem 25 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Content-Based Dataset Version Hash"
+description: "Implement content-based dataset versioning: a deterministic fingerprint that changes if and only if the dataset's actual content changes."
+difficulty: "easy"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #945. MLOps & Data Systems Module 5: Problem 25
+# Content-Based Dataset Version Hash
 
-**Track**: MLOps & Data Systems | **Rank**: #945 of 1072 | **Points**: 90 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#945. MLOps & Data Systems Module 5: Problem 25` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement content-based dataset versioning: a deterministic fingerprint that changes if and only if the dataset's actual content changes.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dataset_version_hash(record_hashes)`. Sort `record_hashes` (so row order doesn't affect the result), join them with `','`, and return the hex `hashlib.sha256` digest of that joined string (UTF-8 encoded).
 
 <PracticePlayground problemId="mlops-sys-prob-25" />

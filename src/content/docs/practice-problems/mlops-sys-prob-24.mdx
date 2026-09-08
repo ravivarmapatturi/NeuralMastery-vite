@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #944. MLOps & Data Systems Module 5: Problem 24"
-description: "Master #944. MLOps & Data Systems Module 5: Problem 24 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Class Imbalance Ratio and Suggested Weights"
+description: "Implement the real 'balanced' class-weight formula (matching scikit-learn's convention) used to counteract class imbalance during training."
+difficulty: "easy"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #944. MLOps & Data Systems Module 5: Problem 24
+# Class Imbalance Ratio and Suggested Weights
 
-**Track**: MLOps & Data Systems | **Rank**: #944 of 1072 | **Points**: 90 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#944. MLOps & Data Systems Module 5: Problem 24` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the real 'balanced' class-weight formula (matching scikit-learn's convention) used to counteract class imbalance during training.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `class_weights(class_counts)`. For each class `c`, weight is `n_total / (n_classes * count[c])`, where `n_total` is the sum of all counts and `n_classes` is the number of distinct classes. Return a dict of class -> weight.
 
 <PracticePlayground problemId="mlops-sys-prob-24" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #948. MLOps & Data Systems Module 6: Problem 28"
-description: "Master #948. MLOps & Data Systems Module 6: Problem 28 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Feature Store Cache TTL Expiry Check"
+description: "Implement TTL expiry checking for an online feature store's cache -- deciding whether a cached feature value is fresh enough to serve or needs recomputation."
+difficulty: "easy"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #948. MLOps & Data Systems Module 6: Problem 28
+# Feature Store Cache TTL Expiry Check
 
-**Track**: MLOps & Data Systems | **Rank**: #948 of 1072 | **Points**: 90 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#948. MLOps & Data Systems Module 6: Problem 28` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement TTL expiry checking for an online feature store's cache -- deciding whether a cached feature value is fresh enough to serve or needs recomputation.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_feature_expired(cached_at_ts, current_ts, ttl_seconds)`: return `True` if `(current_ts - cached_at_ts) >= ttl_seconds`, else `False`.
 
 <PracticePlayground problemId="mlops-sys-prob-28" />

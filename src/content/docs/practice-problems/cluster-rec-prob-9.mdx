@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #839. Clustering & Recommender Systems Module 2: Problem 9"
-description: "Master #839. Clustering & Recommender Systems Module 2: Problem 9 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: User-Based Collaborative Filtering Prediction"
+description: "Implement the real user-based collaborative filtering prediction formula: a similarity-weighted average of neighbors' ratings for an unseen item."
+difficulty: "medium"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #839. Clustering & Recommender Systems Module 2: Problem 9
+# User-Based Collaborative Filtering Prediction
 
-**Track**: Clustering & Recommender Systems | **Rank**: #839 of 1072 | **Points**: 40 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#839. Clustering & Recommender Systems Module 2: Problem 9` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the real user-based collaborative filtering prediction formula: a similarity-weighted average of neighbors' ratings for an unseen item.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `predict_rating_user_cf(target_ratings, neighbor_ratings, similarities, item)`. Among neighbors (keys of `neighbor_ratings`) who have rated `item`, predicted rating is `sum(sim[n] * neighbor_ratings[n][item]) / sum(abs(sim[n]))` over those neighbors. If no neighbor has rated `item`, return `0.0`.
 
 <PracticePlayground problemId="cluster-rec-prob-9" />

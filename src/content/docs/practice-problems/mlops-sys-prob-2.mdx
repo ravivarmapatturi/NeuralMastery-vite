@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #922. MLOps & Data Systems Module 1: Problem 2"
-description: "Master #922. MLOps & Data Systems Module 1: Problem 2 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Model Retraining Staleness Check"
+description: "Implement a real, simple time-based retraining trigger check, one real signal an MLOps pipeline uses to decide whether a model needs refreshing."
 difficulty: "easy"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #922. MLOps & Data Systems Module 1: Problem 2
+# Model Retraining Staleness Check
 
-**Track**: MLOps & Data Systems | **Rank**: #922 of 1072 | **Points**: 40 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#922. MLOps & Data Systems Module 1: Problem 2` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real, simple time-based retraining trigger check, one real signal an MLOps pipeline uses to decide whether a model needs refreshing.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_model_stale(days_since_training, retrain_threshold_days)`: return `True` if `days_since_training >= retrain_threshold_days`, else `False`.
 
 <PracticePlayground problemId="mlops-sys-prob-2" />

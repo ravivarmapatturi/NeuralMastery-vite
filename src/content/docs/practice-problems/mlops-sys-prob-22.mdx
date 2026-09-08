@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #942. MLOps & Data Systems Module 5: Problem 22"
-description: "Master #942. MLOps & Data Systems Module 5: Problem 22 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: A/B Test Statistical Significance (Two-Proportion Z-Test)"
+description: "Implement the real two-proportion z-test statistic used to check whether an A/B test's conversion-rate difference is statistically significant, not just noise."
+difficulty: "hard"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #942. MLOps & Data Systems Module 5: Problem 22
+# A/B Test Statistical Significance (Two-Proportion Z-Test)
 
-**Track**: MLOps & Data Systems | **Rank**: #942 of 1072 | **Points**: 60 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#942. MLOps & Data Systems Module 5: Problem 22` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the real two-proportion z-test statistic used to check whether an A/B test's conversion-rate difference is statistically significant, not just noise.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `ab_test_z_score(conversions_a, visitors_a, conversions_b, visitors_b)`. Compute `p_a = conversions_a/visitors_a`, `p_b = conversions_b/visitors_b`, pooled proportion `p_pool = (conversions_a+conversions_b)/(visitors_a+visitors_b)`, and standard error `se = sqrt(p_pool*(1-p_pool)*(1/visitors_a + 1/visitors_b))`. Return the z-score `(p_b - p_a) / se`. Return `0.0` if `se` is 0.
 
 <PracticePlayground problemId="mlops-sys-prob-22" />

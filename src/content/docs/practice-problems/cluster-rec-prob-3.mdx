@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #833. Clustering & Recommender Systems Module 1: Problem 3"
-description: "Master #833. Clustering & Recommender Systems Module 1: Problem 3 in the Clustering & Recommender Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: DBSCAN Core Point Check"
+description: "Implement DBSCAN's core-point test, the primitive that makes density-based clustering possible without pre-specifying k."
+difficulty: "medium"
 topic: "Clustering & Recommender Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #833. Clustering & Recommender Systems Module 1: Problem 3
+# DBSCAN Core Point Check
 
-**Track**: Clustering & Recommender Systems | **Rank**: #833 of 1072 | **Points**: 40 XP
+**Track**: Clustering & Recommender Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#833. Clustering & Recommender Systems Module 1: Problem 3` to advance your mastery in **Clustering & Recommender Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement DBSCAN's core-point test, the primitive that makes density-based clustering possible without pre-specifying k.
 
 ## Task
 
-Implement the function `clustering_and_recommender_systems_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_core_point(point_idx, points, eps, min_pts)`. A point is a core point if at least `min_pts` OTHER points (excluding itself) lie within Euclidean distance `eps` (inclusive) of it.
 
 <PracticePlayground problemId="cluster-rec-prob-3" />

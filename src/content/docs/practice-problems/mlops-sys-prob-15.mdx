@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #935. MLOps & Data Systems Module 3: Problem 15"
-description: "Master #935. MLOps & Data Systems Module 3: Problem 15 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Early Stopping Patience Check"
+description: "Implement patience-based early stopping, the real, standard mechanism training loops use to halt before overfitting."
 difficulty: "medium"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #935. MLOps & Data Systems Module 3: Problem 15
+# Early Stopping Patience Check
 
-**Track**: MLOps & Data Systems | **Rank**: #935 of 1072 | **Points**: 60 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#935. MLOps & Data Systems Module 3: Problem 15` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement patience-based early stopping, the real, standard mechanism training loops use to halt before overfitting.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `should_stop_early(val_losses, patience, min_delta=0.0)`. Track the best (minimum) loss seen so far as you walk `val_losses` in order; a loss counts as an improvement only if it's `< best - min_delta`. Count consecutive epochs WITHOUT improvement. Return `True` if that counter ever reaches `patience`, else `False` after processing the whole list.
 
 <PracticePlayground problemId="mlops-sys-prob-15" />

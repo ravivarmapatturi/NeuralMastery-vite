@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #949. MLOps & Data Systems Module 6: Problem 29"
-description: "Master #949. MLOps & Data Systems Module 6: Problem 29 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Page-Hinkley Concept Drift Statistic Update"
+description: "Implement one update step of the Page-Hinkley test, a real, lightweight streaming concept-drift detector used to monitor a live model's error rate without storing a full history window."
 difficulty: "hard"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #949. MLOps & Data Systems Module 6: Problem 29
+# Page-Hinkley Concept Drift Statistic Update
 
-**Track**: MLOps & Data Systems | **Rank**: #949 of 1072 | **Points**: 90 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#949. MLOps & Data Systems Module 6: Problem 29` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement one update step of the Page-Hinkley test, a real, lightweight streaming concept-drift detector used to monitor a live model's error rate without storing a full history window.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `page_hinkley_update(cumulative_sum, running_min, new_error, running_mean_error, delta)`. Update `new_cumulative_sum = cumulative_sum + (new_error - running_mean_error - delta)`. Update `new_running_min = min(running_min, new_cumulative_sum)`. The current Page-Hinkley statistic (how far above the running minimum the cumulative sum has drifted) is `ph_value = new_cumulative_sum - new_running_min`. Return the tuple `(new_cumulative_sum, new_running_min, ph_value)`.
 
 <PracticePlayground problemId="mlops-sys-prob-29" />

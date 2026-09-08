@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #939. MLOps & Data Systems Module 4: Problem 19"
-description: "Master #939. MLOps & Data Systems Module 4: Problem 19 in the MLOps & Data Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Pipeline DAG Topological Sort"
+description: "Implement topological sort for a data/ML pipeline DAG, determining a valid stage execution order from declared dependencies."
+difficulty: "hard"
 topic: "MLOps & Data Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #939. MLOps & Data Systems Module 4: Problem 19
+# Pipeline DAG Topological Sort
 
-**Track**: MLOps & Data Systems | **Rank**: #939 of 1072 | **Points**: 60 XP
+**Track**: MLOps & Data Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#939. MLOps & Data Systems Module 4: Problem 19` to advance your mastery in **MLOps & Data Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement topological sort for a data/ML pipeline DAG, determining a valid stage execution order from declared dependencies.
 
 ## Task
 
-Implement the function `mlops_and_data_systems_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `topological_sort(dependencies)`. `dependencies` maps each stage name to a list of stages it depends on (must run first). Return a valid execution order (a list of ALL stage names, including those with no dependents) such that every stage appears after all of its dependencies. Use Kahn's algorithm; among stages with no remaining dependencies at a given point, process them in sorted (alphabetical) order for a deterministic result. Assume the graph is acyclic.
 
 <PracticePlayground problemId="mlops-sys-prob-19" />
