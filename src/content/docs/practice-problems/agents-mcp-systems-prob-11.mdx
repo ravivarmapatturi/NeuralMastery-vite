@@ -6,30 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deterministic Canary Rollout Router
+<#605. MCP System Concept 11>
+**Track**: agents,-mcp-systems | **Rank**: #605 of 1072 | **Points**: 40 XP
 
-**Rank #441** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `route_canary(request_id, canary_percentage)`, the deterministic hash-based routing a canary/blue-green rollout uses to decide which model or service version a given request sees -- the same request_id must land on the same side of the split every time, or a user would flicker between old and new behavior mid-session. Prerequisite: `agents-mcp-systems-prob-10`.
+Implement MCP System Concept 11 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-11" />
-
-<Solution>
-
-```python
-import hashlib
-
-def route_canary(request_id, canary_percentage):
-    if not (0 <= canary_percentage <= 100):
-        raise ValueError("canary_percentage must be between 0 and 100")
-    digest = hashlib.md5(request_id.encode()).hexdigest()
-    bucket = int(digest, 16) % 100
-    return "canary" if bucket < canary_percentage else "stable"
-```
-
-Hashing the identity into a bucket (instead of `random.random() < p`) is what makes the split sticky -- the same user keeps hitting the same variant on every request, which is required for any rollout that has session-visible behavior differences.
-
-</Solution>

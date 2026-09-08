@@ -6,36 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Validate an MCP Tool-Call Payload
+<#128. MCP System Concept 3>
+**Track**: agents,-mcp-systems | **Rank**: #128 of 1072 | **Points**: 40 XP
 
-**Rank #433** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `validate_mcp_tool_call(schema, payload)`, checking a tool-call payload against a `{field: type}` schema and returning a list of human-readable error strings (missing fields, type mismatches) -- an MCP tool is only as safe as the check that runs before its arguments ever reach real code. Prerequisite: `agents-mcp-systems-prob-2`.
+Implement MCP System Concept 3 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-3" />
-
-<Solution>
-
-```python
-_TYPE_MAP = {"string": str, "number": (int, float), "boolean": bool, "array": list, "object": dict}
-
-def validate_mcp_tool_call(schema, payload):
-    errors = []
-    for field, expected_type in schema.items():
-        if field not in payload:
-            errors.append(f"missing required field: {field}")
-            continue
-        value = payload[field]
-        if expected_type == "number" and isinstance(value, bool):
-            errors.append(f"field {field}: expected number, got boolean")
-        elif not isinstance(value, _TYPE_MAP[expected_type]):
-            errors.append(f"field {field}: expected {expected_type}, got {type(value).__name__}")
-    return errors
-```
-
-MCP tool calls arrive over JSON-RPC as untyped JSON -- the server has no compile-time guarantee the client sent the right shape, so this kind of runtime schema check is the actual boundary between "arbitrary JSON from the wire" and "safe to call the underlying Python function with."
-
-</Solution>

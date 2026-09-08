@@ -6,31 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Parse a ReAct Agent Action String
+<#885. MCP System Concept 2>
+**Track**: agents,-mcp-systems | **Rank**: #885 of 1072 | **Points**: 40 XP
 
-**Rank #432** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `parse_react_action(text)`, turning a ReAct agent's `Action: tool_name[argument text]` line into a real `(tool_name, argument)` pair -- the parsing step every ReAct-style agent framework needs between "the LLM said this" and "call this tool with this input." Prerequisite: `agents-mcp-systems-prob-1`.
+Implement MCP System Concept 2 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-2" />
-
-<Solution>
-
-```python
-import re
-
-_PATTERN = re.compile(r"^Action:\s*([A-Za-z_][A-Za-z0-9_]*)\[(.*)\]$")
-
-def parse_react_action(text):
-    m = _PATTERN.match(text.strip())
-    if not m:
-        raise ValueError(f"malformed action string: {text!r}")
-    return (m.group(1), m.group(2))
-```
-
-ReAct interleaves free-text Thought/Action/Observation steps -- the Action line is the one point where unstructured LLM text has to become a structured tool call the runtime can actually execute, so this parse boundary has to fail loudly on malformed input rather than silently misfire a tool.
-
-</Solution>

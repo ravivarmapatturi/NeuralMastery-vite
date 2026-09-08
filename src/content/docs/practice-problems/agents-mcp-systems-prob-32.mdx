@@ -6,37 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Query a Staged Rollout Traffic Schedule
+<#367. MCP System Concept 32>
+**Track**: agents,-mcp-systems | **Rank**: #367 of 1072 | **Points**: 40 XP
 
-**Rank #462** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `traffic_percentage_at(schedule, query_time)`, the step-function lookup behind a time-staged blue-green rollout -- unlike a per-request hash-based canary split, this ramps traffic at planned points in time, and this is the query that answers "what percentage is live right now?" Prerequisite: `agents-mcp-systems-prob-31`.
+Implement MCP System Concept 32 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-32" />
-
-<Solution>
-
-```python
-def traffic_percentage_at(schedule, query_time):
-    if not schedule:
-        raise ValueError("schedule must be non-empty")
-    for t, pct in schedule:
-        if not (0 <= pct <= 100):
-            raise ValueError("percentage must be between 0 and 100")
-    current = None
-    for t, pct in sorted(schedule, key=lambda p: p[0]):
-        if t <= query_time:
-            current = pct
-        else:
-            break
-    if current is None:
-        raise ValueError("query_time is before the first scheduled step")
-    return current
-```
-
-This is a step function, not interpolation -- traffic jumps discretely at each scheduled time rather than ramping smoothly, which is exactly how a real blue-green/staged rollout is usually operated.
-
-</Solution>

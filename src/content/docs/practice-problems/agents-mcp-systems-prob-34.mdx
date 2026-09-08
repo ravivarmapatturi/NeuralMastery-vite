@@ -6,35 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# IVF Coarse Quantizer: Assign a Vector to Its Cell
+<#435. MCP System Concept 34>
+**Track**: agents,-mcp-systems | **Rank**: #435 of 1072 | **Points**: 40 XP
 
-**Rank #464** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `ivf_assign_cell(query, centroids)`, the coarse quantizer step of an IVF (Inverted File) vector index -- before comparing a query against the full dataset, IVF first assigns it to its nearest cluster centroid ("cell"), so the actual search only scans the much smaller set of vectors already in that cell. Prerequisite: `agents-mcp-systems-prob-33`.
+Implement MCP System Concept 34 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-34" />
-
-<Solution>
-
-```python
-import math
-
-def ivf_assign_cell(query, centroids):
-    if not centroids:
-        raise ValueError("centroids must be non-empty")
-    best_idx = 0
-    best_dist = None
-    for i, c in enumerate(centroids):
-        d = math.sqrt(sum((a - b) ** 2 for a, b in zip(query, c)))
-        if best_dist is None or d < best_dist:
-            best_dist = d
-            best_idx = i
-    return best_idx
-```
-
-This single nearest-centroid assignment is what makes IVF an approximate index: a query only ever gets compared against vectors in its own assigned cell, so a true nearest neighbor sitting in a different cell can be missed entirely -- the tradeoff that buys IVF its large speedup over brute-force search.
-
-</Solution>

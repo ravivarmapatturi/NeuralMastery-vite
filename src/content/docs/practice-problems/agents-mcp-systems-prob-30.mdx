@@ -6,30 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Exponential Backoff Retry Delays
+<#756. MCP System Concept 30>
+**Track**: agents,-mcp-systems | **Rank**: #756 of 1072 | **Points**: 40 XP
 
-**Rank #460** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `exponential_backoff_delays(num_attempts, base_delay, max_delay)`, the standard capped-exponential retry-delay schedule an agent's tool-calling loop (or any client of a flaky external API) uses to avoid hammering a failing service with immediate retries. Prerequisite: `agents-mcp-systems-prob-29`.
+Implement MCP System Concept 30 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-30" />
-
-<Solution>
-
-```python
-def exponential_backoff_delays(num_attempts, base_delay, max_delay):
-    if num_attempts <= 0:
-        raise ValueError("num_attempts must be positive")
-    if base_delay <= 0:
-        raise ValueError("base_delay must be positive")
-    if max_delay < base_delay:
-        raise ValueError("max_delay must be >= base_delay")
-    return [min(base_delay * (2 ** i), max_delay) for i in range(num_attempts)]
-```
-
-The cap exists because unbounded exponential growth would eventually make a client wait absurdly long between retries -- capping keeps the retry schedule useful (a bounded worst-case wait) while still backing off aggressively enough to avoid retry storms against a struggling service.
-
-</Solution>

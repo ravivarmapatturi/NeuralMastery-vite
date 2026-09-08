@@ -6,24 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Negotiate MCP Client/Server Capabilities
+<#279. MCP System Concept 24>
+**Track**: agents,-mcp-systems | **Rank**: #279 of 1072 | **Points**: 40 XP
 
-**Rank #454** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `negotiate_capabilities(client_caps, server_caps)`, returning only the capabilities truthy on both sides -- the capability-intersection logic behind MCP's initialize handshake, exactly like an HTTP/2 or TLS feature negotiation. Prerequisite: `agents-mcp-systems-prob-23`.
+Implement MCP System Concept 24 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-24" />
-
-<Solution>
-
-```python
-def negotiate_capabilities(client_caps, server_caps):
-    return {k: True for k in client_caps if client_caps.get(k) and server_caps.get(k)}
-```
-
-This mirrors real protocol capability negotiation (TLS cipher suites, HTTP/2 SETTINGS) -- both sides advertise everything they COULD support, and the negotiated session is always the intersection, never either side's full list.
-
-</Solution>

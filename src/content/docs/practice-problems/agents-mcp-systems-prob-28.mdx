@@ -6,39 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Intersection-over-Union for Bounding Boxes
+<#317. MCP System Concept 28>
+**Track**: agents,-mcp-systems | **Rank**: #317 of 1072 | **Points**: 40 XP
 
-**Rank #458** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `bbox_iou(box_a, box_b)`, computing Intersection-over-Union between two bounding boxes -- the single most standard evaluation metric in object detection, and the threshold (commonly IoU >= 0.5) that decides whether a detection counts as a correct match at all. Prerequisite: `agents-mcp-systems-prob-27`.
+Implement MCP System Concept 28 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-28" />
-
-<Solution>
-
-```python
-def bbox_iou(box_a, box_b):
-    for box in (box_a, box_b):
-        if box[2] <= box[0] or box[3] <= box[1]:
-            raise ValueError("degenerate box: x2 must be > x1 and y2 must be > y1")
-    xa1, ya1, xa2, ya2 = box_a
-    xb1, yb1, xb2, yb2 = box_b
-    inter_x1 = max(xa1, xb1)
-    inter_y1 = max(ya1, yb1)
-    inter_x2 = min(xa2, xb2)
-    inter_y2 = min(ya2, yb2)
-    inter_area = max(0, inter_x2 - inter_x1) * max(0, inter_y2 - inter_y1)
-    area_a = (xa2 - xa1) * (ya2 - ya1)
-    area_b = (xb2 - xb1) * (yb2 - yb1)
-    union = area_a + area_b - inter_area
-    if union == 0:
-        raise ValueError("union area is zero")
-    return inter_area / union
-```
-
-IoU >= 0.5 is the conventional threshold (used in PASCAL VOC and COCO evaluation) for counting a predicted box as a correct detection of a ground-truth box -- it is a geometric overlap measure, completely independent of any embedding or learned similarity.
-
-</Solution>

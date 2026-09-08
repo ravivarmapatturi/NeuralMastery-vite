@@ -6,46 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Multimodal Vision-Language Attention Mask
+<#322. MCP System Concept 63>
+**Track**: agents,-mcp-systems | **Rank**: #322 of 1072 | **Points**: 40 XP
 
-**Rank #493** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `generate_multimodal_attention_mask(token_types)`. In interleaved multimodal architectures, visual representations and textual tokens are processed in a unified transformer backbone. Given a list of token type identifiers (e.g. `['image_0', 'image_0', 'text', 'image_1', 'text']`), construct an $N \times N$ attention mask matrix `M` where `M[i][j] = 1` if token $i$ can attend to token $j$, and `0` otherwise. Enforce: (1) Causal autoregression: `j > i` is always masked (`0`); (2) Text tokens can attend to all prior tokens ($j \le i$); (3) Image tokens of type `'image_K'` can only attend to prior tokens of the EXACT SAME type `'image_K'` (they cannot attend to text or other images). Return the $N \times N$ matrix as a list of lists of integers. Prerequisite: `agents-mcp-systems-prob-62`.
+Implement MCP System Concept 63 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-63" />
-
-<Solution>
-
-```python
-def generate_multimodal_attention_mask(token_types):
-    if not token_types:
-        return []
-    N = len(token_types)
-    mask = [[0] * N for _ in range(N)]
-    for i in range(N):
-        curr_type = token_types[i]
-        for j in range(i + 1):
-            src_type = token_types[j]
-            if curr_type == "text":
-                mask[i][j] = 1
-            elif curr_type.startswith("image_"):
-                if src_type == curr_type:
-                    mask[i][j] = 1
-                else:
-                    mask[i][j] = 0
-    return mask
-```
-
-### Key Concept: Preventing visual tokens from attending to subsequent text preserves pre-trained vision representations and allows static visual caching across generation turns.
-
-**Constraints**:
-- token_types is a list of strings (`'text'` or `'image_<id>'`).
-- Return N x N list of lists where N = len(token_types).
-- Causal constraint: M[i][j] = 0 for all j > i.
-- Image patches cannot attend across image boundaries or to text.
-- Empty input returns [].
-
-</Solution>

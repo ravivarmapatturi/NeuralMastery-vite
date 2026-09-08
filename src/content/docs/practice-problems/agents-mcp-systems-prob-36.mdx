@@ -6,36 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Merge Overlapping Retrieved Chunk Ranges
+<#995. MCP System Concept 36>
+**Track**: agents,-mcp-systems | **Rank**: #995 of 1072 | **Points**: 40 XP
 
-**Rank #466** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `merge_overlapping_ranges(ranges)`, the interval-merging pass a RAG pipeline runs when multiple retrieved chunks come from the same source document and overlap -- merging their character ranges first means re-fetching one continuous span of real context instead of feeding the LLM several redundant fragments. Prerequisite: `agents-mcp-systems-prob-35`.
+Implement MCP System Concept 36 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-36" />
-
-<Solution>
-
-```python
-def merge_overlapping_ranges(ranges):
-    if not ranges:
-        return []
-    for s, e in ranges:
-        if e <= s:
-            raise ValueError("each range must have end > start")
-    sorted_ranges = sorted(ranges, key=lambda r: r[0])
-    merged = [list(sorted_ranges[0])]
-    for s, e in sorted_ranges[1:]:
-        if s <= merged[-1][1]:
-            merged[-1][1] = max(merged[-1][1], e)
-        else:
-            merged.append([s, e])
-    return [tuple(r) for r in merged]
-```
-
-This is the classic "merge intervals" algorithm, applied here to real RAG chunk spans -- the same core pattern (sort, then linear-scan-and-merge) shows up any time overlapping ranges from independent sources need to be collapsed into non-overlapping coverage.
-
-</Solution>

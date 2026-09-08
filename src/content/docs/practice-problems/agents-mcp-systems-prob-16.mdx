@@ -6,38 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Keyword-Based Agent Tool Router
+<#345. MCP System Concept 16>
+**Track**: agents,-mcp-systems | **Rank**: #345 of 1072 | **Points**: 40 XP
 
-**Rank #446** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `route_to_tool(query, tool_keywords)`, picking the tool whose keyword list has the most matches among the query's word tokens -- the cheap lexical pre-filter many real agent systems run before an embedding-similarity or LLM-based router. Prerequisite: `agents-mcp-systems-prob-15`.
+Implement MCP System Concept 16 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-16" />
-
-<Solution>
-
-```python
-import re
-
-def route_to_tool(query, tool_keywords):
-    if not tool_keywords:
-        raise ValueError("tool_keywords must be non-empty")
-    tokens = set(re.findall(r"[a-z0-9]+", query.lower()))
-    best_tool = None
-    best_score = 0
-    for tool in sorted(tool_keywords):
-        score = sum(1 for kw in tool_keywords[tool] if kw.lower() in tokens)
-        if score > best_score:
-            best_score = score
-            best_tool = tool
-    if best_tool is None:
-        raise ValueError("no tool matches the query")
-    return best_tool
-```
-
-This is deliberately a cheap lexical pre-filter, not a semantic router -- production agent systems often layer this in front of a more expensive embedding-similarity or LLM-based router to short-circuit the obvious cases.
-
-</Solution>

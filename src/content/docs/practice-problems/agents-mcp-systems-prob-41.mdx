@@ -6,34 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Estimate a Vector Index's Memory Footprint
+<#708. MCP System Concept 41>
+**Track**: agents,-mcp-systems | **Rank**: #708 of 1072 | **Points**: 40 XP
 
-**Rank #471** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `estimate_index_memory_bytes(num_vectors, dimensions, bytes_per_element, quantization_bits)`, the back-of-envelope capacity-planning calculation every real vector database deployment needs before provisioning hardware -- "how much RAM does storing N embeddings actually cost," and how much quantization saves. Prerequisite: `agents-mcp-systems-prob-40`.
+Implement MCP System Concept 41 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-41" />
-
-<Solution>
-
-```python
-import math
-
-def estimate_index_memory_bytes(num_vectors, dimensions, bytes_per_element, quantization_bits):
-    if num_vectors <= 0 or dimensions <= 0 or bytes_per_element <= 0:
-        raise ValueError("num_vectors, dimensions, and bytes_per_element must be positive")
-    if quantization_bits is not None:
-        if quantization_bits <= 0:
-            raise ValueError("quantization_bits must be positive")
-        per_vector_bytes = math.ceil(dimensions * quantization_bits / 8)
-    else:
-        per_vector_bytes = dimensions * bytes_per_element
-    return per_vector_bytes * num_vectors
-```
-
-Quantization (e.g. 8-bit scalar quantization, or 1-bit binary quantization) is the standard way real vector databases fit far more vectors in the same RAM -- this calculation is exactly the tradeoff a team runs before deciding whether raw float32 storage is even affordable at their target scale.
-
-</Solution>

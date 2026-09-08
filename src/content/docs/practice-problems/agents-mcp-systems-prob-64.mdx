@@ -6,48 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# ColBERT Late Interaction MaxSim Retrieval Score
+<#51. MCP System Concept 64>
+**Track**: agents,-mcp-systems | **Rank**: #51 of 1072 | **Points**: 40 XP
 
-**Rank #494** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `colbert_maxsim_score(query_embeddings, doc_embeddings)`. ColBERT replaces single-vector embeddings with multi-vector token representations. Given a query matrix $Q$ of shape $N_q \times D$ and a document matrix $D$ of shape $N_d \times D$, calculate the Late Interaction MaxSim score: for each query token vector $q_i$, compute its dot product with every document token vector $d_j$, determine the maximum dot product $\max_j (q_i \cdot d_j)$, and sum these maximums across all $N_q$ query tokens: $\sum_{i=1}^{N_q} \max_j (q_i \cdot d_j)$. Return the total relevance score rounded to 4 decimal places. Raise `ValueError` if either matrix is empty or embedding dimensions do not match. Prerequisite: `agents-mcp-systems-prob-63`.
+Implement MCP System Concept 64 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-64" />
-
-<Solution>
-
-```python
-def colbert_maxsim_score(query_embeddings, doc_embeddings):
-    if not query_embeddings or not doc_embeddings:
-        raise ValueError("embeddings cannot be empty")
-    D = len(query_embeddings[0])
-    for q in query_embeddings:
-        if len(q) != D:
-            raise ValueError("dimension mismatch")
-    for d in doc_embeddings:
-        if len(d) != D:
-            raise ValueError("dimension mismatch")
-            
-    total_score = 0.0
-    for q in query_embeddings:
-        max_sim = -1e9
-        for d in doc_embeddings:
-            sim = sum(q[k] * d[k] for k in range(D))
-            if sim > max_sim:
-                max_sim = sim
-        total_score += max_sim
-    return round(total_score, 4)
-```
-
-### Key Concept: Late interaction avoids early cross-attention while capturing fine-grained phrase alignments that single dense vectors lose.
-
-**Constraints**:
-- query_embeddings has shape N_q x D with N_q > 0, D > 0.
-- doc_embeddings has shape N_d x D with N_d > 0, D > 0.
-- All vectors must have identical dimension D.
-- Return float rounded to 4 decimal places.
-
-</Solution>

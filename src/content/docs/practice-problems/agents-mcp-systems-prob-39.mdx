@@ -6,33 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Compute an Autoscaling Instance Target
+<#51. MCP System Concept 39>
+**Track**: agents,-mcp-systems | **Rank**: #51 of 1072 | **Points**: 40 XP
 
-**Rank #469** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `compute_autoscale_target(request_rate, target_per_instance, min_instances, max_instances)`, the core arithmetic behind a real autoscaler (the same shape as a Kubernetes Horizontal Pod Autoscaler target calculation) -- given current load and a per-instance capacity target, compute how many instances should be running right now. Prerequisite: `agents-mcp-systems-prob-38`.
+Implement MCP System Concept 39 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-39" />
-
-<Solution>
-
-```python
-import math
-
-def compute_autoscale_target(request_rate, target_per_instance, min_instances, max_instances):
-    if target_per_instance <= 0:
-        raise ValueError("target_per_instance must be positive")
-    if min_instances <= 0 or max_instances < min_instances:
-        raise ValueError("invalid instance bounds")
-    if request_rate < 0:
-        raise ValueError("request_rate must be non-negative")
-    needed = math.ceil(request_rate / target_per_instance)
-    return max(min_instances, min(needed, max_instances))
-```
-
-Rounding UP (not to the nearest integer) is deliberate -- an autoscaler that rounds down or to-nearest can under-provision and let requests queue up, while rounding up trades a small amount of extra idle capacity for never being caught short.
-
-</Solution>

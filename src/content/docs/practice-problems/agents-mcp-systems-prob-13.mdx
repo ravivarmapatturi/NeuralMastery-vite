@@ -6,30 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Hybrid Search Score Fusion
+<#630. MCP System Concept 13>
+**Track**: agents,-mcp-systems | **Rank**: #630 of 1072 | **Points**: 40 XP
 
-**Rank #443** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `hybrid_search_score(keyword_scores, vector_scores, alpha)`, the linear score-fusion step a hybrid vector database (pgvector plus full-text search, or Weaviate/Elasticsearch hybrid mode) uses to blend keyword relevance and semantic similarity into a single ranking, tunable by alpha between pure keyword and pure vector search. Prerequisite: `agents-mcp-systems-prob-12`.
+Implement MCP System Concept 13 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-13" />
-
-<Solution>
-
-```python
-def hybrid_search_score(keyword_scores, vector_scores, alpha):
-    if not (0 <= alpha <= 1):
-        raise ValueError("alpha must be between 0 and 1")
-    doc_ids = set(keyword_scores) | set(vector_scores)
-    return {
-        d: alpha * vector_scores.get(d, 0.0) + (1 - alpha) * keyword_scores.get(d, 0.0)
-        for d in doc_ids
-    }
-```
-
-Keyword (BM25-style) and vector similarity scores live on totally different, unnormalized scales -- alpha is a tunable knob a real search system exposes to shift weight toward exact-term matching (alpha near 0) or semantic/paraphrase matching (alpha near 1) without having to renormalize either score.
-
-</Solution>

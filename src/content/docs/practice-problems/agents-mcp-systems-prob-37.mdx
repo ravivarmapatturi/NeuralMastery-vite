@@ -6,35 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Validate an Agent Plan's Dependency Order
+<#547. MCP System Concept 37>
+**Track**: agents,-mcp-systems | **Rank**: #547 of 1072 | **Points**: 40 XP
 
-**Rank #467** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `validate_plan_order(steps)`, the dependency-order validator a plan-and-execute agent needs before running a multi-step plan -- an LLM-generated plan can name steps in the wrong order or reference one that doesn't exist, and executing it blindly would run a step before its input is ready. Prerequisite: `agents-mcp-systems-prob-36`.
+Implement MCP System Concept 37 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-37" />
-
-<Solution>
-
-```python
-def validate_plan_order(steps):
-    all_ids = {s["id"] for s in steps}
-    for s in steps:
-        for dep in s["depends_on"]:
-            if dep not in all_ids:
-                raise ValueError(f"unknown dependency: {dep!r}")
-    completed = set()
-    for s in steps:
-        for dep in s["depends_on"]:
-            if dep not in completed:
-                return s["id"]
-        completed.add(s["id"])
-    return None
-```
-
-This is a lightweight, order-checking companion to a full topological sort -- rather than computing a valid order from scratch, it validates whether an already-proposed order (e.g. one an LLM planner produced) actually respects the plan's own declared dependencies, which is the more common real check needed right before execution.
-
-</Solution>

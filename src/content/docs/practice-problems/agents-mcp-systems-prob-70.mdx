@@ -6,76 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CLIP Symmetric Temperature-Scaled Cross-Entropy Loss
+<#577. MCP System Concept 70>
+**Track**: agents,-mcp-systems | **Rank**: #577 of 1072 | **Points**: 40 XP
 
-**Rank #500** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `clip_symmetric_cross_entropy(image_embeddings, text_embeddings, temperature=1.0)`. In CLIP (Contrastive Language-Image Pre-training), models align visual and textual modalities using contrastive learning on paired batches. Given $N$ image embeddings and $N$ text embeddings of dimension $D$, first $L_2$-normalize every vector to unit length (divide by its Euclidean norm). Next, compute the $N \times N$ cosine similarity matrix $S$ where $S[i][j] = I_{\text{norm}}[i] \cdot T_{\text{norm}}[j]$. Scale similarities by temperature: $\text{logits}[i][j] = S[i][j] / \tau$. Compute image-to-text loss as the mean cross-entropy across rows (where the ground truth for row $i$ is class $i$): $\text{loss}_{i2t} = \frac{1}{N} \sum_{i=0}^{N-1} [-\text{logits}[i][i] + \log \sum_{j=0}^{N-1} \exp(\text{logits}[i][j])]$. Compute text-to-image loss as the mean cross-entropy across columns (where ground truth for column $j$ is class $j$). Return the symmetric loss `round((mean_i2t + mean_t2i) / 2.0, 4)`. Raise `ValueError` for mismatched lengths, empty inputs, or `temperature <= 0`. Prerequisite: `agents-mcp-systems-prob-69`.
+Implement MCP System Concept 70 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-70" />
-
-<Solution>
-
-```python
-def clip_symmetric_cross_entropy(image_embeddings, text_embeddings, temperature=1.0):
-    if not image_embeddings or not text_embeddings:
-        raise ValueError("embeddings cannot be empty")
-    N = len(image_embeddings)
-    if len(text_embeddings) != N:
-        raise ValueError("image and text embedding counts must match")
-    if temperature <= 0.0:
-        raise ValueError("temperature must be positive")
-    D = len(image_embeddings[0])
-    
-    I_norm = []
-    for vec in image_embeddings:
-        mag = math.sqrt(sum(x*x for x in vec))
-        if mag == 0:
-            raise ValueError("zero vector cannot be normalized")
-        I_norm.append([x / mag for x in vec])
-        
-    T_norm = []
-    for vec in text_embeddings:
-        mag = math.sqrt(sum(x*x for x in vec))
-        if mag == 0:
-            raise ValueError("zero vector cannot be normalized")
-        T_norm.append([x / mag for x in vec])
-        
-    logits = [[0.0]*N for _ in range(N)]
-    for i in range(N):
-        for j in range(N):
-            sim = sum(I_norm[i][k] * T_norm[j][k] for k in range(D))
-            logits[i][j] = sim / temperature
-            
-    loss_i2t = 0.0
-    for i in range(N):
-        row = logits[i]
-        m = max(row)
-        lse = m + math.log(sum(math.exp(x - m) for x in row))
-        loss_i2t += (lse - row[i])
-    mean_i2t = loss_i2t / N
-    
-    loss_t2i = 0.0
-    for j in range(N):
-        col = [logits[i][j] for i in range(N)]
-        m = max(col)
-        lse = m + math.log(sum(math.exp(x - m) for x in col))
-        loss_t2i += (lse - col[j])
-    mean_t2i = loss_t2i / N
-    
-    return round((mean_i2t + mean_t2i) / 2.0, 4)
-```
-
-### Key Concept: The symmetric loss maximizes diagonal similarities while pushing off-diagonal negative pairs apart in both embedding spaces simultaneously.
-
-**Constraints**:
-- len(image_embeddings) == len(text_embeddings) > 0.
-- All vectors have identical dimension D > 0.
-- temperature > 0.0.
-- Use numerically stable log-sum-exp (subtract max before exp).
-- Return float rounded to 4 decimal places.
-
-</Solution>

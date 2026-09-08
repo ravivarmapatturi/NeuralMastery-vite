@@ -6,33 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deduplicate Near-Identical Retrieved Passages
+<#802. MCP System Concept 22>
+**Track**: agents,-mcp-systems | **Rank**: #802 of 1072 | **Points**: 40 XP
 
-**Rank #452** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `dedupe_passages(passages)`, dropping passages that are duplicates of an earlier one after normalizing whitespace and case -- the cheap exact-after-normalization cleanup a RAG pipeline runs so overlapping chunking or multiple retrieval sources don't waste context-window budget saying the same thing twice. Prerequisite: `agents-mcp-systems-prob-21`.
+Implement MCP System Concept 22 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-22" />
-
-<Solution>
-
-```python
-import re
-
-def dedupe_passages(passages):
-    seen = set()
-    result = []
-    for p in passages:
-        norm = re.sub(r'\s+', ' ', p.strip().lower())
-        if norm not in seen:
-            seen.add(norm)
-            result.append(p)
-    return result
-```
-
-This is deliberately exact-after-normalization dedup, not semantic/embedding-based dedup -- a cheap, fast text-level pass that catches whitespace/capitalization noise before ever reaching a vector comparison.
-
-</Solution>

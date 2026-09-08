@@ -6,40 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Compare Two Vector Clocks
+<#415. MCP System Concept 26>
+**Track**: agents,-mcp-systems | **Rank**: #415 of 1072 | **Points**: 40 XP
 
-**Rank #456** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `compare_vector_clocks(a, b)`, returning "equal", "before", "after", or "concurrent" -- the real algorithm distributed systems (and version-vector databases like Riak/DynamoDB) use to determine causality between two events across different nodes without a shared global clock. Prerequisite: `agents-mcp-systems-prob-25`.
+Implement MCP System Concept 26 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-26" />
-
-<Solution>
-
-```python
-def compare_vector_clocks(a, b):
-    keys = set(a) | set(b)
-    le = True
-    ge = True
-    for k in keys:
-        av = a.get(k, 0)
-        bv = b.get(k, 0)
-        if av > bv:
-            le = False
-        if av < bv:
-            ge = False
-    if le and ge:
-        return "equal"
-    if le:
-        return "before"
-    if ge:
-        return "after"
-    return "concurrent"
-```
-
-A vector clock captures partial (not total) ordering -- unlike a single Lamport timestamp, it can correctly say "these two events are causally unrelated" (concurrent) instead of forcing every pair of events into a single global before/after order that a single scalar clock would incorrectly impose.
-
-</Solution>

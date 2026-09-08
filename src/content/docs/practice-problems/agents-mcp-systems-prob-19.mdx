@@ -6,32 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Find When a Write Quorum Is Reached
+<#917. MCP System Concept 19>
+**Track**: agents,-mcp-systems | **Rank**: #917 of 1072 | **Points**: 40 XP
 
-**Rank #449** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `quorum_reached_at(acks, quorum)`, finding the earliest index at which a running count of replica acks first reaches quorum -- the moment a distributed write path (Dynamo-style replication, Raft commit) can safely acknowledge back to the client without waiting for every replica. Prerequisite: `agents-mcp-systems-prob-18`.
+Implement MCP System Concept 19 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-19" />
-
-<Solution>
-
-```python
-def quorum_reached_at(acks, quorum):
-    if quorum <= 0:
-        raise ValueError("quorum must be positive")
-    count = 0
-    for i, ack in enumerate(acks):
-        if ack:
-            count += 1
-            if count >= quorum:
-                return i
-    return -1
-```
-
-A quorum write deliberately does not wait for ALL replicas to ack -- requiring only a majority (or configured W) is what lets the system stay available and low-latency even when some replicas are slow or temporarily unreachable.
-
-</Solution>

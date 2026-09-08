@@ -6,39 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Attention-Weighted Pooling of Image Patches
+<#759. MCP System Concept 21>
+**Track**: agents,-mcp-systems | **Rank**: #759 of 1072 | **Points**: 40 XP
 
-**Rank #451** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `attention_weighted_pool(patch_embeddings, attention_weights)`, combining per-patch embeddings into one embedding via a normalized attention-weighted average -- the real mechanism a vision-language connector uses to collapse a variable-length sequence of patches into one fixed-size image representation. Prerequisite: `agents-mcp-systems-prob-20`.
+Implement MCP System Concept 21 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-21" />
-
-<Solution>
-
-```python
-def attention_weighted_pool(patch_embeddings, attention_weights):
-    if len(patch_embeddings) != len(attention_weights):
-        raise ValueError("patch_embeddings and attention_weights must have the same length")
-    if not patch_embeddings:
-        raise ValueError("patch_embeddings must be non-empty")
-    total = sum(attention_weights)
-    if total == 0:
-        raise ValueError("attention_weights must not sum to zero")
-    norm_weights = [w / total for w in attention_weights]
-    dim = len(patch_embeddings[0])
-    result = [0.0] * dim
-    for emb, w in zip(patch_embeddings, norm_weights):
-        if len(emb) != dim:
-            raise ValueError("all patch embeddings must have the same dimensionality")
-        for i in range(dim):
-            result[i] += emb[i] * w
-    return result
-```
-
-Because weights are normalized internally, [1, 1, 2] and [2, 2, 4] (the same ratios) must produce the IDENTICAL pooled output -- a real property of attention weights, which only ever matter in relative proportion, not absolute scale.
-
-</Solution>

@@ -6,39 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Sliding-Window Text Chunking for RAG
+<#533. MCP System Concept 1>
+**Track**: agents,-mcp-systems | **Rank**: #533 of 1072 | **Points**: 40 XP
 
-**Rank #431** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `chunk_text(text, chunk_size, overlap)`, the sliding-window chunker that turns a raw document into the overlapping text chunks a RAG pipeline actually embeds and indexes. Consecutive chunks start `chunk_size - overlap` characters apart, so a fact isn't silently cut in half at a chunk boundary. Prerequisite: `llm-internals-prob-70`.
+Implement MCP System Concept 1 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-1" />
-
-<Solution>
-
-```python
-def chunk_text(text, chunk_size, overlap):
-    if chunk_size <= 0:
-        raise ValueError("chunk_size must be positive")
-    if overlap < 0 or overlap >= chunk_size:
-        raise ValueError("overlap must be >= 0 and < chunk_size")
-    if not text:
-        return []
-    step = chunk_size - overlap
-    chunks = []
-    i = 0
-    n = len(text)
-    while i < n:
-        chunks.append(text[i:i + chunk_size])
-        if i + chunk_size >= n:
-            break
-        i += step
-    return chunks
-```
-
-Overlap exists because a naive non-overlapping split can cut a sentence -- and the fact inside it -- exactly at a chunk boundary, so neither chunk alone contains the whole idea to embed and retrieve.
-
-</Solution>

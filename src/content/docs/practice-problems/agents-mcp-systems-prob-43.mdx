@@ -6,32 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Score RAG Answer Groundedness
+<#288. MCP System Concept 43>
+**Track**: agents,-mcp-systems | **Rank**: #288 of 1072 | **Points**: 40 XP
 
-**Rank #473** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `groundedness_score(answer, source_chunks)`, a cheap lexical proxy for the actively-discussed RAG problem of detecting hallucination -- what fraction of the answer's own vocabulary is even present anywhere in the retrieved sources. Prerequisite: `agents-mcp-systems-prob-42`.
+Implement MCP System Concept 43 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-43" />
-
-<Solution>
-
-```python
-import re
-
-def groundedness_score(answer, source_chunks):
-    answer_tokens = set(re.findall(r"[a-z0-9]+", answer.lower()))
-    if not answer_tokens:
-        raise ValueError("answer must contain at least one token")
-    source_tokens = set()
-    for chunk in source_chunks:
-        source_tokens |= set(re.findall(r"[a-z0-9]+", chunk.lower()))
-    return len(answer_tokens & source_tokens) / len(answer_tokens)
-```
-
-This score answers a different question than a relevance metric like Jaccard or cosine similarity: it is not "how similar are these two texts," but "how much of what the answer claims can even be traced back to the retrieved context" -- a real (simplified) building block toward automated RAG faithfulness evaluation.
-
-</Solution>

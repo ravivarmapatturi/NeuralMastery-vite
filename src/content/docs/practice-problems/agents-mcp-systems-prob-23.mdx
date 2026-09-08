@@ -6,35 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Assign Subtasks to Capable Agents
+<#680. MCP System Concept 23>
+**Track**: agents,-mcp-systems | **Rank**: #680 of 1072 | **Points**: 40 XP
 
-**Rank #453** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `assign_subtasks(subtasks, agents)`, delegating each subtask to the first agent whose capability list covers it -- the real routing decision behind a supervisor/orchestrator pattern with multiple narrow, capability-specific agents instead of one generalist. Prerequisite: `agents-mcp-systems-prob-22`.
+Implement MCP System Concept 23 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-23" />
-
-<Solution>
-
-```python
-def assign_subtasks(subtasks, agents):
-    result = []
-    for task in subtasks:
-        req = task["requires"]
-        assigned = None
-        for agent_name, caps in agents.items():
-            if req in caps:
-                assigned = agent_name
-                break
-        if assigned is None:
-            raise ValueError(f"no agent can handle capability: {req!r}")
-        result.append(assigned)
-    return result
-```
-
-This is deliberately a simple first-match policy, not an optimal assignment (like a bipartite matching or load-balancing algorithm) -- real supervisor/orchestrator implementations often start exactly this simple and only add load-awareness once first-match proves insufficient.
-
-</Solution>

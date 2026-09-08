@@ -6,57 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Gossip Protocol Heartbeat Failure Detector
+<#662. MCP System Concept 61>
+**Track**: agents,-mcp-systems | **Rank**: #662 of 1072 | **Points**: 40 XP
 
-**Rank #491** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `gossip_failure_detector(events, suspect_timeout, dead_timeout)`. In decentralized AI clusters, worker nodes broadcast heartbeat counters to peers. Given a chronicle of gossip events (each with `tick` and a `heartbeats` dict mapping `node_id` to integer sequence numbers), maintain a state table of the highest heartbeat counter seen for each node and the `tick` at which that counter was updated. Once all events are processed, let `max_tick` be the maximum tick seen. For each node, compute `delta = max_tick - last_seen_tick`. If `delta > dead_timeout`, label the node `'DEAD'`; if `delta > suspect_timeout`, label it `'SUSPECT'`; otherwise label it `'ALIVE'`. Return a dictionary `{node_id: status}` sorted alphabetically by `node_id`. Raise `ValueError` if `suspect_timeout <= 0` or `dead_timeout <= suspect_timeout`. Prerequisite: `agents-mcp-systems-prob-60`.
+Implement MCP System Concept 61 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-61" />
-
-<Solution>
-
-```python
-def gossip_failure_detector(events, suspect_timeout, dead_timeout):
-    if suspect_timeout <= 0 or dead_timeout <= suspect_timeout:
-        raise ValueError("dead_timeout must be greater than suspect_timeout > 0")
-    if not events:
-        return {}
-        
-    state = {}
-    for ev in events:
-        tick = ev["tick"]
-        for node, hb in ev.get("heartbeats", {}).items():
-            if node not in state:
-                state[node] = {"heartbeat": hb, "last_seen_tick": tick}
-            elif hb > state[node]["heartbeat"]:
-                state[node]["heartbeat"] = hb
-                state[node]["last_seen_tick"] = tick
-                
-    max_tick = max(ev["tick"] for ev in events)
-    result = {}
-    for node in sorted(state.keys()):
-        delta = max_tick - state[node]["last_seen_tick"]
-        if delta > dead_timeout:
-            status = "DEAD"
-        elif delta > suspect_timeout:
-            status = "SUSPECT"
-        else:
-            status = "ALIVE"
-        result[node] = status
-    return result
-```
-
-### Key Concept: Gossip-based failure detection avoids single-point-of-failure coordinators (like ZooKeeper) by having nodes exchange partial views probabilistically.
-
-**Constraints**:
-- suspect_timeout > 0.
-- dead_timeout > suspect_timeout.
-- Only strictly increasing heartbeats update last_seen_tick.
-- Returned dictionary keys must be sorted alphabetically.
-- Return empty dict if events is empty.
-
-</Solution>

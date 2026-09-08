@@ -6,71 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Generate Agent Function Calling Tool Schema
+<#231. MCP System Concept 58>
+**Track**: agents,-mcp-systems | **Rank**: #231 of 1072 | **Points**: 40 XP
 
-**Rank #488** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `generate_tool_schema(name, description, parameters)`. LLM agents require tool descriptions formatted as structured JSON Schema objects. Given a tool `name`, human-readable `description`, and a dict of parameter specs (mapping parameter name to a dict with `type`, optional `description`, optional `required`, optional `default`, and optional `items` for arrays), construct the standard OpenAI/Anthropic function calling tool descriptor: `{"type": "function", "function": {"name": name, "description": description, "parameters": {"type": "object", "properties": {...}, "required": [...]}}}`. Properties must be ordered alphabetically by parameter name. `required` must be a list of parameter names where `required` is `True`, sorted alphabetically. Raise `ValueError` if `name` is not a valid Python identifier, `description` is blank, or any parameter type is not in `['string', 'number', 'integer', 'boolean', 'array']`. Prerequisite: `agents-mcp-systems-prob-57`.
+Implement MCP System Concept 58 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-58" />
-
-<Solution>
-
-```python
-def generate_tool_schema(name, description, parameters):
-    if not isinstance(name, str) or not name.isidentifier():
-        raise ValueError("name must be a valid Python identifier")
-    if not isinstance(description, str) or not description.strip():
-        raise ValueError("description must be non-empty string")
-    
-    valid_types = {"string", "number", "integer", "boolean", "array"}
-    properties = {}
-    required_params = []
-    
-    for p_name in sorted(parameters.keys()):
-        p_info = parameters[p_name]
-        p_type = p_info.get("type")
-        if p_type not in valid_types:
-            raise ValueError(f"Invalid type: {p_type}")
-        
-        prop_def = {
-            "type": p_type,
-            "description": p_info.get("description", "")
-        }
-        if p_type == "array":
-            prop_def["items"] = p_info.get("items", {"type": "string"})
-        if "default" in p_info:
-            prop_def["default"] = p_info["default"]
-            
-        properties[p_name] = prop_def
-        if p_info.get("required", False):
-            required_params.append(p_name)
-            
-    required_params.sort()
-    return {
-        "type": "function",
-        "function": {
-            "name": name,
-            "description": description.strip(),
-            "parameters": {
-                "type": "object",
-                "properties": properties,
-                "required": required_params
-            }
-        }
-    }
-```
-
-### Key Concept: Tool schemas tell the model which parameters are mandatory versus optional, allowing it to emit syntactically valid JSON tool-call invocations.
-
-**Constraints**:
-- name must be a valid Python identifier (name.isidentifier()).
-- description must be non-empty.
-- Supported types: string, number, integer, boolean, array.
-- If type is array and items is omitted, default items to `{'type': 'string'}`.
-- Properties dictionary and required list must be alphabetically sorted.
-
-</Solution>

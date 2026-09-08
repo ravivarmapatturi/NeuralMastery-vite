@@ -6,31 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Recall@K for RAG Retrieval Evaluation
+<#245. MCP System Concept 15>
+**Track**: agents,-mcp-systems | **Rank**: #245 of 1072 | **Points**: 40 XP
 
-**Rank #445** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `retrieval_recall_at_k(retrieved, relevant, k)`, the standard metric for asking "did the retriever actually surface the documents that matter?" -- the metric a RAG pipeline is evaluated on before ever touching generation quality, since a perfect LLM answer is impossible if the right chunk was never retrieved. Prerequisite: `agents-mcp-systems-prob-14`.
+Implement MCP System Concept 15 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-15" />
-
-<Solution>
-
-```python
-def retrieval_recall_at_k(retrieved, relevant, k):
-    if k <= 0:
-        raise ValueError("k must be positive")
-    relevant_set = set(relevant)
-    if not relevant_set:
-        raise ValueError("relevant must be non-empty")
-    top_k = set(retrieved[:k])
-    hits = len(top_k & relevant_set)
-    return hits / len(relevant_set)
-```
-
-Recall@K only asks whether the relevant documents were somewhere in the top k -- it says nothing about their exact rank order within those k, which is what a separate metric like MRR or nDCG@K captures instead.
-
-</Solution>

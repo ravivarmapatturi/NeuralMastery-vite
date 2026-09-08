@@ -70737,7 +70737,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-1': {
+  'DUPE_llm-internals-prob-1_DUPE': {
     id: 'llm-internals-prob-1',
     title: 'LLM Concept 1',
     difficulty: 'easy',
@@ -70771,7 +70771,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-2': {
+  'DUPE_llm-internals-prob-2_DUPE': {
     id: 'llm-internals-prob-2',
     title: 'LLM Concept 2',
     difficulty: 'easy',
@@ -70805,7 +70805,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-3': {
+  'DUPE_llm-internals-prob-3_DUPE': {
     id: 'llm-internals-prob-3',
     title: 'LLM Concept 3',
     difficulty: 'easy',
@@ -70839,7 +70839,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-4': {
+  'DUPE_llm-internals-prob-4_DUPE': {
     id: 'llm-internals-prob-4',
     title: 'LLM Concept 4',
     difficulty: 'easy',
@@ -70873,7 +70873,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-5': {
+  'DUPE_llm-internals-prob-5_DUPE': {
     id: 'llm-internals-prob-5',
     title: 'LLM Concept 5',
     difficulty: 'easy',
@@ -70907,7 +70907,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-6': {
+  'DUPE_llm-internals-prob-6_DUPE': {
     id: 'llm-internals-prob-6',
     title: 'LLM Concept 6',
     difficulty: 'easy',
@@ -70941,7 +70941,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-7': {
+  'DUPE_llm-internals-prob-7_DUPE': {
     id: 'llm-internals-prob-7',
     title: 'LLM Concept 7',
     difficulty: 'easy',
@@ -70975,7 +70975,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-8': {
+  'DUPE_llm-internals-prob-8_DUPE': {
     id: 'llm-internals-prob-8',
     title: 'LLM Concept 8',
     difficulty: 'easy',
@@ -71009,7 +71009,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-9': {
+  'DUPE_llm-internals-prob-9_DUPE': {
     id: 'llm-internals-prob-9',
     title: 'LLM Concept 9',
     difficulty: 'easy',
@@ -71043,7 +71043,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-10': {
+  'DUPE_llm-internals-prob-10_DUPE': {
     id: 'llm-internals-prob-10',
     title: 'LLM Concept 10',
     difficulty: 'easy',
@@ -71077,7 +71077,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-11': {
+  'DUPE_llm-internals-prob-11_DUPE': {
     id: 'llm-internals-prob-11',
     title: 'LLM Concept 11',
     difficulty: 'medium',
@@ -71111,7 +71111,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-12': {
+  'DUPE_llm-internals-prob-12_DUPE': {
     id: 'llm-internals-prob-12',
     title: 'LLM Concept 12',
     difficulty: 'medium',
@@ -71145,7 +71145,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-13': {
+  'DUPE_llm-internals-prob-13_DUPE': {
     id: 'llm-internals-prob-13',
     title: 'LLM Concept 13',
     difficulty: 'medium',
@@ -71179,7 +71179,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-14': {
+  'DUPE_llm-internals-prob-14_DUPE': {
     id: 'llm-internals-prob-14',
     title: 'LLM Concept 14',
     difficulty: 'medium',
@@ -71213,7 +71213,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-15': {
+  'DUPE_llm-internals-prob-15_DUPE': {
     id: 'llm-internals-prob-15',
     title: 'LLM Concept 15',
     difficulty: 'medium',
@@ -71247,7 +71247,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-16': {
+  'DUPE_llm-internals-prob-16_DUPE': {
     id: 'llm-internals-prob-16',
     title: 'LLM Concept 16',
     difficulty: 'medium',
@@ -71281,7 +71281,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-17': {
+  'DUPE_llm-internals-prob-17_DUPE': {
     id: 'llm-internals-prob-17',
     title: 'LLM Concept 17',
     difficulty: 'medium',
@@ -71315,7 +71315,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-18': {
+  'DUPE_llm-internals-prob-18_DUPE': {
     id: 'llm-internals-prob-18',
     title: 'LLM Concept 18',
     difficulty: 'medium',
@@ -71349,7 +71349,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-19': {
+  'DUPE_llm-internals-prob-19_DUPE': {
     id: 'llm-internals-prob-19',
     title: 'LLM Concept 19',
     difficulty: 'medium',
@@ -71383,7 +71383,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-20': {
+  'DUPE_llm-internals-prob-20_DUPE': {
     id: 'llm-internals-prob-20',
     title: 'LLM Concept 20',
     difficulty: 'medium',
@@ -71417,7 +71417,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-21': {
+  'DUPE_llm-internals-prob-21_DUPE': {
     id: 'llm-internals-prob-21',
     title: 'LLM Concept 21',
     difficulty: 'medium',
@@ -71451,7 +71451,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-22': {
+  'DUPE_llm-internals-prob-22_DUPE': {
     id: 'llm-internals-prob-22',
     title: 'LLM Concept 22',
     difficulty: 'medium',
@@ -71485,7 +71485,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-23': {
+  'DUPE_llm-internals-prob-23_DUPE': {
     id: 'llm-internals-prob-23',
     title: 'LLM Concept 23',
     difficulty: 'medium',
@@ -71519,7 +71519,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-24': {
+  'DUPE_llm-internals-prob-24_DUPE': {
     id: 'llm-internals-prob-24',
     title: 'LLM Concept 24',
     difficulty: 'medium',
@@ -71553,7 +71553,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-25': {
+  'DUPE_llm-internals-prob-25_DUPE': {
     id: 'llm-internals-prob-25',
     title: 'LLM Concept 25',
     difficulty: 'medium',
@@ -71587,7 +71587,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-26': {
+  'DUPE_llm-internals-prob-26_DUPE': {
     id: 'llm-internals-prob-26',
     title: 'LLM Concept 26',
     difficulty: 'hard',
@@ -71621,7 +71621,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-27': {
+  'DUPE_llm-internals-prob-27_DUPE': {
     id: 'llm-internals-prob-27',
     title: 'LLM Concept 27',
     difficulty: 'hard',
@@ -71655,7 +71655,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-28': {
+  'DUPE_llm-internals-prob-28_DUPE': {
     id: 'llm-internals-prob-28',
     title: 'LLM Concept 28',
     difficulty: 'hard',
@@ -71689,7 +71689,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-29': {
+  'DUPE_llm-internals-prob-29_DUPE': {
     id: 'llm-internals-prob-29',
     title: 'LLM Concept 29',
     difficulty: 'hard',
@@ -71723,7 +71723,7 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-30': {
+  'DUPE_llm-internals-prob-30_DUPE': {
     id: 'llm-internals-prob-30',
     title: 'LLM Concept 30',
     difficulty: 'hard',
@@ -72096,6 +72096,4894 @@ def nmi_clustering(labels_true, labels_pred):
       { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
     ],
     runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-1': {
+    id: 'dist-sys-prob-1',
+    title: 'Consistent Hash Ring Lookup',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '15–20 min',
+    functionName: 'consistent_hash_lookup',
+    functionSignature: 'consistent_hash_lookup(key: str, ring: list[tuple[int, str]]) -> str',
+    starterCode: `def consistent_hash_lookup(key, ring):
+    pass
+`,
+    mission: 'Implement consistent hash ring lookup, the core operation behind distributed caching and load balancing.',
+    taskDescription: 'Hash `key` using `hash(key) % 360` and find the first node at or after that position in the sorted `ring` list. Wrap around if needed. Raise ValueError if empty.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Ring is sorted", "Wrap around", "Raise ValueError"],
+    hints: {"small": "Hash", "strong": "bisect", "concept": "consistent hashing"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"key": "user:123", "ring": [[10, "node_a"], [100, "node_b"], [200, "node_c"]]}, "expectedOutput": "node_a"}, {"id": "tc2", "label": "Test 2", "input": {"key": "user:999", "ring": [[10, "node_a"], [100, "node_b"]]}, "expectedOutput": "node_a"}, {"id": "tc3", "label": "Test 3", "input": {"key": "test", "ring": []}, "expectError": "ValueError"}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-2': {
+    id: 'dist-sys-prob-2',
+    title: 'Distributed Concept 2',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_2',
+    functionSignature: 'dist_sys_2(data: list[int]) -> bool',
+    starterCode: `def dist_sys_2(data):
+    pass
+`,
+    mission: 'Implement distributed concept 2.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-3': {
+    id: 'dist-sys-prob-3',
+    title: 'Distributed Concept 3',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_3',
+    functionSignature: 'dist_sys_3(data: list[int]) -> bool',
+    starterCode: `def dist_sys_3(data):
+    pass
+`,
+    mission: 'Implement distributed concept 3.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-4': {
+    id: 'dist-sys-prob-4',
+    title: 'Distributed Concept 4',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_4',
+    functionSignature: 'dist_sys_4(data: list[int]) -> bool',
+    starterCode: `def dist_sys_4(data):
+    pass
+`,
+    mission: 'Implement distributed concept 4.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-5': {
+    id: 'dist-sys-prob-5',
+    title: 'Distributed Concept 5',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_5',
+    functionSignature: 'dist_sys_5(data: list[int]) -> bool',
+    starterCode: `def dist_sys_5(data):
+    pass
+`,
+    mission: 'Implement distributed concept 5.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-6': {
+    id: 'dist-sys-prob-6',
+    title: 'Distributed Concept 6',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_6',
+    functionSignature: 'dist_sys_6(data: list[int]) -> bool',
+    starterCode: `def dist_sys_6(data):
+    pass
+`,
+    mission: 'Implement distributed concept 6.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-7': {
+    id: 'dist-sys-prob-7',
+    title: 'Distributed Concept 7',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_7',
+    functionSignature: 'dist_sys_7(data: list[int]) -> bool',
+    starterCode: `def dist_sys_7(data):
+    pass
+`,
+    mission: 'Implement distributed concept 7.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-8': {
+    id: 'dist-sys-prob-8',
+    title: 'Distributed Concept 8',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_8',
+    functionSignature: 'dist_sys_8(data: list[int]) -> bool',
+    starterCode: `def dist_sys_8(data):
+    pass
+`,
+    mission: 'Implement distributed concept 8.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-9': {
+    id: 'dist-sys-prob-9',
+    title: 'Distributed Concept 9',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_9',
+    functionSignature: 'dist_sys_9(data: list[int]) -> bool',
+    starterCode: `def dist_sys_9(data):
+    pass
+`,
+    mission: 'Implement distributed concept 9.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-10': {
+    id: 'dist-sys-prob-10',
+    title: 'Distributed Concept 10',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_10',
+    functionSignature: 'dist_sys_10(data: list[int]) -> bool',
+    starterCode: `def dist_sys_10(data):
+    pass
+`,
+    mission: 'Implement distributed concept 10.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-11': {
+    id: 'dist-sys-prob-11',
+    title: 'Distributed Concept 11',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_11',
+    functionSignature: 'dist_sys_11(data: list[int]) -> bool',
+    starterCode: `def dist_sys_11(data):
+    pass
+`,
+    mission: 'Implement distributed concept 11.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-12': {
+    id: 'dist-sys-prob-12',
+    title: 'Distributed Concept 12',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_12',
+    functionSignature: 'dist_sys_12(data: list[int]) -> bool',
+    starterCode: `def dist_sys_12(data):
+    pass
+`,
+    mission: 'Implement distributed concept 12.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-13': {
+    id: 'dist-sys-prob-13',
+    title: 'Distributed Concept 13',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_13',
+    functionSignature: 'dist_sys_13(data: list[int]) -> bool',
+    starterCode: `def dist_sys_13(data):
+    pass
+`,
+    mission: 'Implement distributed concept 13.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-14': {
+    id: 'dist-sys-prob-14',
+    title: 'Distributed Concept 14',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_14',
+    functionSignature: 'dist_sys_14(data: list[int]) -> bool',
+    starterCode: `def dist_sys_14(data):
+    pass
+`,
+    mission: 'Implement distributed concept 14.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-15': {
+    id: 'dist-sys-prob-15',
+    title: 'Distributed Concept 15',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_15',
+    functionSignature: 'dist_sys_15(data: list[int]) -> bool',
+    starterCode: `def dist_sys_15(data):
+    pass
+`,
+    mission: 'Implement distributed concept 15.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-16': {
+    id: 'dist-sys-prob-16',
+    title: 'Distributed Concept 16',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_16',
+    functionSignature: 'dist_sys_16(data: list[int]) -> bool',
+    starterCode: `def dist_sys_16(data):
+    pass
+`,
+    mission: 'Implement distributed concept 16.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-17': {
+    id: 'dist-sys-prob-17',
+    title: 'Distributed Concept 17',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_17',
+    functionSignature: 'dist_sys_17(data: list[int]) -> bool',
+    starterCode: `def dist_sys_17(data):
+    pass
+`,
+    mission: 'Implement distributed concept 17.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-18': {
+    id: 'dist-sys-prob-18',
+    title: 'Distributed Concept 18',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_18',
+    functionSignature: 'dist_sys_18(data: list[int]) -> bool',
+    starterCode: `def dist_sys_18(data):
+    pass
+`,
+    mission: 'Implement distributed concept 18.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-19': {
+    id: 'dist-sys-prob-19',
+    title: 'Distributed Concept 19',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_19',
+    functionSignature: 'dist_sys_19(data: list[int]) -> bool',
+    starterCode: `def dist_sys_19(data):
+    pass
+`,
+    mission: 'Implement distributed concept 19.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-20': {
+    id: 'dist-sys-prob-20',
+    title: 'Distributed Concept 20',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_20',
+    functionSignature: 'dist_sys_20(data: list[int]) -> bool',
+    starterCode: `def dist_sys_20(data):
+    pass
+`,
+    mission: 'Implement distributed concept 20.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-21': {
+    id: 'dist-sys-prob-21',
+    title: 'Distributed Concept 21',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_21',
+    functionSignature: 'dist_sys_21(data: list[int]) -> bool',
+    starterCode: `def dist_sys_21(data):
+    pass
+`,
+    mission: 'Implement distributed concept 21.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-22': {
+    id: 'dist-sys-prob-22',
+    title: 'Distributed Concept 22',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_22',
+    functionSignature: 'dist_sys_22(data: list[int]) -> bool',
+    starterCode: `def dist_sys_22(data):
+    pass
+`,
+    mission: 'Implement distributed concept 22.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-23': {
+    id: 'dist-sys-prob-23',
+    title: 'Distributed Concept 23',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_23',
+    functionSignature: 'dist_sys_23(data: list[int]) -> bool',
+    starterCode: `def dist_sys_23(data):
+    pass
+`,
+    mission: 'Implement distributed concept 23.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-24': {
+    id: 'dist-sys-prob-24',
+    title: 'Distributed Concept 24',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_24',
+    functionSignature: 'dist_sys_24(data: list[int]) -> bool',
+    starterCode: `def dist_sys_24(data):
+    pass
+`,
+    mission: 'Implement distributed concept 24.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'dist-sys-prob-25': {
+    id: 'dist-sys-prob-25',
+    title: 'Distributed Concept 25',
+    difficulty: 'easy',
+    topic: 'Distributed AI Systems',
+    estimatedTime: '10-15 min',
+    functionName: 'dist_sys_25',
+    functionSignature: 'dist_sys_25(data: list[int]) -> bool',
+    starterCode: `def dist_sys_25(data):
+    pass
+`,
+    mission: 'Implement distributed concept 25.',
+    taskDescription: 'Return True if list is valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid list"],
+    hints: {"small": "hint1", "strong": "hint2", "concept": "concept"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'vec-search-prob-13': {
+    id: 'vec-search-prob-13',
+    title: 'Product Quantization Encode',
+    difficulty: 'medium',
+    topic: 'Vector Search & Index Optimization',
+    estimatedTime: '20-30 min',
+    functionName: 'pq_encode',
+    functionSignature: 'pq_encode(vector: list[float], codebook: list[list[float]], subspace_size: int) -> list[int]',
+    starterCode: `def pq_encode(vector, codebook, subspace_size):
+    pass
+`,
+    mission: 'Implement product quantization subspace encoding.',
+    taskDescription: 'Split vector into subspaces, find nearest centroid, return indices.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid length"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"vector": [1.0, 2.0, 3.0, 4.0], "codebook": [[1.0, 2.0], [3.0, 4.0]], "subspace_size": 2}, "expectedOutput": [0, 1]}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-46': {
+    id: 'agents-mcp-systems-prob-46',
+    title: 'MCP System Concept 46',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_46',
+    functionSignature: 'mcp_sys_46(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_46(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 46.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-47': {
+    id: 'agents-mcp-systems-prob-47',
+    title: 'MCP System Concept 47',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_47',
+    functionSignature: 'mcp_sys_47(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_47(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 47.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-48': {
+    id: 'agents-mcp-systems-prob-48',
+    title: 'MCP System Concept 48',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_48',
+    functionSignature: 'mcp_sys_48(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_48(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 48.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-49': {
+    id: 'agents-mcp-systems-prob-49',
+    title: 'MCP System Concept 49',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_49',
+    functionSignature: 'mcp_sys_49(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_49(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 49.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-50': {
+    id: 'agents-mcp-systems-prob-50',
+    title: 'MCP System Concept 50',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_50',
+    functionSignature: 'mcp_sys_50(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_50(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 50.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-51': {
+    id: 'agents-mcp-systems-prob-51',
+    title: 'MCP System Concept 51',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_51',
+    functionSignature: 'mcp_sys_51(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_51(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 51.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-52': {
+    id: 'agents-mcp-systems-prob-52',
+    title: 'MCP System Concept 52',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_52',
+    functionSignature: 'mcp_sys_52(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_52(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 52.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-53': {
+    id: 'agents-mcp-systems-prob-53',
+    title: 'MCP System Concept 53',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_53',
+    functionSignature: 'mcp_sys_53(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_53(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 53.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-54': {
+    id: 'agents-mcp-systems-prob-54',
+    title: 'MCP System Concept 54',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_54',
+    functionSignature: 'mcp_sys_54(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_54(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 54.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agents-mcp-systems-prob-55': {
+    id: 'agents-mcp-systems-prob-55',
+    title: 'MCP System Concept 55',
+    difficulty: 'medium',
+    topic: 'agents,-mcp-systems',
+    estimatedTime: '15-20 min',
+    functionName: 'mcp_sys_55',
+    functionSignature: 'mcp_sys_55(data: list[int]) -> bool',
+    starterCode: `def mcp_sys_55(data):
+    pass
+`,
+    mission: 'Implement MCP System concept 55.',
+    taskDescription: 'Return True if valid.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: ["Valid"],
+    hints: {"small": "hint", "strong": "hint", "concept": "hint"},
+    conceptConnections: [],
+    testCases: [{"id": "tc1", "label": "Test 1", "input": {"data": [1, 2, 3]}, "expectedOutput": true}],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'rag-prod-prob-1': {
+    id: 'rag-prod-prob-1',
+    title: 'Document chunking with fixed size and overlap',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_rag_prod_1',
+    functionSignature: 'aggregate_rag_prod_1(records: list[dict]) -> dict',
+    starterCode: `def aggregate_rag_prod_1(records):
+    pass
+`,
+    mission: 'Implement Document chunking with fixed size and overlap to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_rag_prod_1(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Document chunking with fixed size and overlap.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Document chunking with fixed size and overlap relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Document chunking with fixed size and overlap', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-2': {
+    id: 'rag-prod-prob-2',
+    title: 'Sentence boundary chunking',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_rag_prod_2',
+    functionSignature: 'score_rag_prod_2(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_rag_prod_2(scores, threshold):
+    pass
+`,
+    mission: 'Implement Sentence boundary chunking to improve agentic systems.',
+    taskDescription: 'Implement `score_rag_prod_2(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Sentence boundary chunking.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Sentence boundary chunking relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Sentence boundary chunking', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-3': {
+    id: 'rag-prod-prob-3',
+    title: 'Semantic chunking (split on topic change)',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_rag_prod_3',
+    functionSignature: 'track_rag_prod_3(events: list[str]) -> dict',
+    starterCode: `def track_rag_prod_3(events):
+    pass
+`,
+    mission: 'Implement Semantic chunking (split on topic change) to improve agentic systems.',
+    taskDescription: 'Implement `track_rag_prod_3(events)` that returns a dictionary counting occurrences of each event string. This simulates Semantic chunking (split on topic change).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Semantic chunking (split on topic change) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Semantic chunking (split on topic change)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-4': {
+    id: 'rag-prod-prob-4',
+    title: 'Parent-child chunk relationship tracking',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_rag_prod_4',
+    functionSignature: 'filter_rag_prod_4(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_rag_prod_4(items, keyword):
+    pass
+`,
+    mission: 'Implement Parent-child chunk relationship tracking to improve agentic systems.',
+    taskDescription: 'Implement `filter_rag_prod_4(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Parent-child chunk relationship tracking.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Parent-child chunk relationship tracking relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Parent-child chunk relationship tracking', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-5': {
+    id: 'rag-prod-prob-5',
+    title: 'Chunk deduplication',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_rag_prod_5',
+    functionSignature: 'aggregate_rag_prod_5(records: list[dict]) -> dict',
+    starterCode: `def aggregate_rag_prod_5(records):
+    pass
+`,
+    mission: 'Implement Chunk deduplication to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_rag_prod_5(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Chunk deduplication.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Chunk deduplication relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Chunk deduplication', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-6': {
+    id: 'rag-prod-prob-6',
+    title: 'Embedding batch processing',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_rag_prod_6',
+    functionSignature: 'score_rag_prod_6(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_rag_prod_6(scores, threshold):
+    pass
+`,
+    mission: 'Implement Embedding batch processing to improve agentic systems.',
+    taskDescription: 'Implement `score_rag_prod_6(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Embedding batch processing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Embedding batch processing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Embedding batch processing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-7': {
+    id: 'rag-prod-prob-7',
+    title: 'Sparse retrieval BM25 scoring',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_rag_prod_7',
+    functionSignature: 'track_rag_prod_7(events: list[str]) -> dict',
+    starterCode: `def track_rag_prod_7(events):
+    pass
+`,
+    mission: 'Implement Sparse retrieval BM25 scoring to improve agentic systems.',
+    taskDescription: 'Implement `track_rag_prod_7(events)` that returns a dictionary counting occurrences of each event string. This simulates Sparse retrieval BM25 scoring.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Sparse retrieval BM25 scoring relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Sparse retrieval BM25 scoring', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-8': {
+    id: 'rag-prod-prob-8',
+    title: 'Dense retrieval cosine score ranking',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_rag_prod_8',
+    functionSignature: 'filter_rag_prod_8(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_rag_prod_8(items, keyword):
+    pass
+`,
+    mission: 'Implement Dense retrieval cosine score ranking to improve agentic systems.',
+    taskDescription: 'Implement `filter_rag_prod_8(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Dense retrieval cosine score ranking.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Dense retrieval cosine score ranking relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Dense retrieval cosine score ranking', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-9': {
+    id: 'rag-prod-prob-9',
+    title: 'Hybrid score fusion (RRF)',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_rag_prod_9',
+    functionSignature: 'aggregate_rag_prod_9(records: list[dict]) -> dict',
+    starterCode: `def aggregate_rag_prod_9(records):
+    pass
+`,
+    mission: 'Implement Hybrid score fusion (RRF) to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_rag_prod_9(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Hybrid score fusion (RRF).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Hybrid score fusion (RRF) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Hybrid score fusion (RRF)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-10': {
+    id: 'rag-prod-prob-10',
+    title: 'Retrieval reranking with cross-encoder score',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_rag_prod_10',
+    functionSignature: 'score_rag_prod_10(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_rag_prod_10(scores, threshold):
+    pass
+`,
+    mission: 'Implement Retrieval reranking with cross-encoder score to improve agentic systems.',
+    taskDescription: 'Implement `score_rag_prod_10(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Retrieval reranking with cross-encoder score.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Retrieval reranking with cross-encoder score relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Retrieval reranking with cross-encoder score', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-11': {
+    id: 'rag-prod-prob-11',
+    title: 'Query expansion (synonym injection)',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_rag_prod_11',
+    functionSignature: 'track_rag_prod_11(events: list[str]) -> dict',
+    starterCode: `def track_rag_prod_11(events):
+    pass
+`,
+    mission: 'Implement Query expansion (synonym injection) to improve agentic systems.',
+    taskDescription: 'Implement `track_rag_prod_11(events)` that returns a dictionary counting occurrences of each event string. This simulates Query expansion (synonym injection).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Query expansion (synonym injection) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Query expansion (synonym injection)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-12': {
+    id: 'rag-prod-prob-12',
+    title: 'HyDE (Hypothetical Document Embedding)',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_rag_prod_12',
+    functionSignature: 'filter_rag_prod_12(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_rag_prod_12(items, keyword):
+    pass
+`,
+    mission: 'Implement HyDE (Hypothetical Document Embedding) to improve agentic systems.',
+    taskDescription: 'Implement `filter_rag_prod_12(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates HyDE (Hypothetical Document Embedding).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'HyDE (Hypothetical Document Embedding) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'HyDE (Hypothetical Document Embedding)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-13': {
+    id: 'rag-prod-prob-13',
+    title: 'Multi-query generation',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_rag_prod_13',
+    functionSignature: 'aggregate_rag_prod_13(records: list[dict]) -> dict',
+    starterCode: `def aggregate_rag_prod_13(records):
+    pass
+`,
+    mission: 'Implement Multi-query generation to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_rag_prod_13(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Multi-query generation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Multi-query generation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Multi-query generation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-14': {
+    id: 'rag-prod-prob-14',
+    title: 'Context window packing for retrieved docs',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_rag_prod_14',
+    functionSignature: 'score_rag_prod_14(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_rag_prod_14(scores, threshold):
+    pass
+`,
+    mission: 'Implement Context window packing for retrieved docs to improve agentic systems.',
+    taskDescription: 'Implement `score_rag_prod_14(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Context window packing for retrieved docs.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Context window packing for retrieved docs relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Context window packing for retrieved docs', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-15': {
+    id: 'rag-prod-prob-15',
+    title: 'Relevance filtering by score threshold',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_rag_prod_15',
+    functionSignature: 'track_rag_prod_15(events: list[str]) -> dict',
+    starterCode: `def track_rag_prod_15(events):
+    pass
+`,
+    mission: 'Implement Relevance filtering by score threshold to improve agentic systems.',
+    taskDescription: 'Implement `track_rag_prod_15(events)` that returns a dictionary counting occurrences of each event string. This simulates Relevance filtering by score threshold.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Relevance filtering by score threshold relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Relevance filtering by score threshold', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-16': {
+    id: 'rag-prod-prob-16',
+    title: 'Source attribution tracking',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_rag_prod_16',
+    functionSignature: 'filter_rag_prod_16(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_rag_prod_16(items, keyword):
+    pass
+`,
+    mission: 'Implement Source attribution tracking to improve agentic systems.',
+    taskDescription: 'Implement `filter_rag_prod_16(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Source attribution tracking.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Source attribution tracking relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Source attribution tracking', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-17': {
+    id: 'rag-prod-prob-17',
+    title: 'Citation extraction from generated text',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_rag_prod_17',
+    functionSignature: 'aggregate_rag_prod_17(records: list[dict]) -> dict',
+    starterCode: `def aggregate_rag_prod_17(records):
+    pass
+`,
+    mission: 'Implement Citation extraction from generated text to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_rag_prod_17(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Citation extraction from generated text.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Citation extraction from generated text relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Citation extraction from generated text', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-18': {
+    id: 'rag-prod-prob-18',
+    title: 'Grounding check (answer in context)',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_rag_prod_18',
+    functionSignature: 'score_rag_prod_18(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_rag_prod_18(scores, threshold):
+    pass
+`,
+    mission: 'Implement Grounding check (answer in context) to improve agentic systems.',
+    taskDescription: 'Implement `score_rag_prod_18(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Grounding check (answer in context).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Grounding check (answer in context) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Grounding check (answer in context)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-19': {
+    id: 'rag-prod-prob-19',
+    title: 'Answer faithfulness scorer',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_rag_prod_19',
+    functionSignature: 'track_rag_prod_19(events: list[str]) -> dict',
+    starterCode: `def track_rag_prod_19(events):
+    pass
+`,
+    mission: 'Implement Answer faithfulness scorer to improve agentic systems.',
+    taskDescription: 'Implement `track_rag_prod_19(events)` that returns a dictionary counting occurrences of each event string. This simulates Answer faithfulness scorer.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Answer faithfulness scorer relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Answer faithfulness scorer', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-20': {
+    id: 'rag-prod-prob-20',
+    title: 'Context precision metric',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_rag_prod_20',
+    functionSignature: 'filter_rag_prod_20(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_rag_prod_20(items, keyword):
+    pass
+`,
+    mission: 'Implement Context precision metric to improve agentic systems.',
+    taskDescription: 'Implement `filter_rag_prod_20(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Context precision metric.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Context precision metric relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Context precision metric', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-21': {
+    id: 'rag-prod-prob-21',
+    title: 'Metadata filtering (date, source, tags)',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_rag_prod_21',
+    functionSignature: 'aggregate_rag_prod_21(records: list[dict]) -> dict',
+    starterCode: `def aggregate_rag_prod_21(records):
+    pass
+`,
+    mission: 'Implement Metadata filtering (date, source, tags) to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_rag_prod_21(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Metadata filtering (date, source, tags).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Metadata filtering (date, source, tags) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Metadata filtering (date, source, tags)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-22': {
+    id: 'rag-prod-prob-22',
+    title: 'Retrieval diversity (MMR)',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_rag_prod_22',
+    functionSignature: 'score_rag_prod_22(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_rag_prod_22(scores, threshold):
+    pass
+`,
+    mission: 'Implement Retrieval diversity (MMR) to improve agentic systems.',
+    taskDescription: 'Implement `score_rag_prod_22(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Retrieval diversity (MMR).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Retrieval diversity (MMR) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Retrieval diversity (MMR)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-23': {
+    id: 'rag-prod-prob-23',
+    title: 'Answer extraction from structured context',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_rag_prod_23',
+    functionSignature: 'track_rag_prod_23(events: list[str]) -> dict',
+    starterCode: `def track_rag_prod_23(events):
+    pass
+`,
+    mission: 'Implement Answer extraction from structured context to improve agentic systems.',
+    taskDescription: 'Implement `track_rag_prod_23(events)` that returns a dictionary counting occurrences of each event string. This simulates Answer extraction from structured context.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Answer extraction from structured context relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Answer extraction from structured context', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-24': {
+    id: 'rag-prod-prob-24',
+    title: 'Fallback retrieval (secondary index)',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_rag_prod_24',
+    functionSignature: 'filter_rag_prod_24(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_rag_prod_24(items, keyword):
+    pass
+`,
+    mission: 'Implement Fallback retrieval (secondary index) to improve agentic systems.',
+    taskDescription: 'Implement `filter_rag_prod_24(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Fallback retrieval (secondary index).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Fallback retrieval (secondary index) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Fallback retrieval (secondary index)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-25': {
+    id: 'rag-prod-prob-25',
+    title: 'Cache-first retrieval strategy',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_rag_prod_25',
+    functionSignature: 'aggregate_rag_prod_25(records: list[dict]) -> dict',
+    starterCode: `def aggregate_rag_prod_25(records):
+    pass
+`,
+    mission: 'Implement Cache-first retrieval strategy to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_rag_prod_25(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Cache-first retrieval strategy.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Cache-first retrieval strategy relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Cache-first retrieval strategy', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-26': {
+    id: 'rag-prod-prob-26',
+    title: 'Query intent classification',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_rag_prod_26',
+    functionSignature: 'score_rag_prod_26(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_rag_prod_26(scores, threshold):
+    pass
+`,
+    mission: 'Implement Query intent classification to improve agentic systems.',
+    taskDescription: 'Implement `score_rag_prod_26(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Query intent classification.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Query intent classification relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Query intent classification', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-27': {
+    id: 'rag-prod-prob-27',
+    title: 'Document store CRUD operations',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_rag_prod_27',
+    functionSignature: 'track_rag_prod_27(events: list[str]) -> dict',
+    starterCode: `def track_rag_prod_27(events):
+    pass
+`,
+    mission: 'Implement Document store CRUD operations to improve agentic systems.',
+    taskDescription: 'Implement `track_rag_prod_27(events)` that returns a dictionary counting occurrences of each event string. This simulates Document store CRUD operations.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Document store CRUD operations relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Document store CRUD operations', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-28': {
+    id: 'rag-prod-prob-28',
+    title: 'Embedding cache hit rate computation',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_rag_prod_28',
+    functionSignature: 'filter_rag_prod_28(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_rag_prod_28(items, keyword):
+    pass
+`,
+    mission: 'Implement Embedding cache hit rate computation to improve agentic systems.',
+    taskDescription: 'Implement `filter_rag_prod_28(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Embedding cache hit rate computation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Embedding cache hit rate computation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Embedding cache hit rate computation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'rag-prod-prob-29': {
+    id: 'rag-prod-prob-29',
+    title: 'End-to-end RAG pipeline orchestration',
+    difficulty: 'medium',
+    topic: 'RAG Production Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_rag_prod_29',
+    functionSignature: 'aggregate_rag_prod_29(records: list[dict]) -> dict',
+    starterCode: `def aggregate_rag_prod_29(records):
+    pass
+`,
+    mission: 'Implement End-to-end RAG pipeline orchestration to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_rag_prod_29(records)` that aggregates a list of dictionaries by summing values for each key. This simulates End-to-end RAG pipeline orchestration.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'End-to-end RAG pipeline orchestration relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'End-to-end RAG pipeline orchestration', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-1': {
+    id: 'multi-agent-prob-1',
+    title: 'Message routing by agent type',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_multi_agent_1',
+    functionSignature: 'aggregate_multi_agent_1(records: list[dict]) -> dict',
+    starterCode: `def aggregate_multi_agent_1(records):
+    pass
+`,
+    mission: 'Implement Message routing by agent type to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_multi_agent_1(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Message routing by agent type.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Message routing by agent type relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Message routing by agent type', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-2': {
+    id: 'multi-agent-prob-2',
+    title: 'Supervisor-worker task assignment',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'score_multi_agent_2',
+    functionSignature: 'score_multi_agent_2(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_multi_agent_2(scores, threshold):
+    pass
+`,
+    mission: 'Implement Supervisor-worker task assignment to improve agentic systems.',
+    taskDescription: 'Implement `score_multi_agent_2(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Supervisor-worker task assignment.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Supervisor-worker task assignment relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Supervisor-worker task assignment', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-3': {
+    id: 'multi-agent-prob-3',
+    title: 'Agent capability registry lookup',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'track_multi_agent_3',
+    functionSignature: 'track_multi_agent_3(events: list[str]) -> dict',
+    starterCode: `def track_multi_agent_3(events):
+    pass
+`,
+    mission: 'Implement Agent capability registry lookup to improve agentic systems.',
+    taskDescription: 'Implement `track_multi_agent_3(events)` that returns a dictionary counting occurrences of each event string. This simulates Agent capability registry lookup.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent capability registry lookup relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent capability registry lookup', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-4': {
+    id: 'multi-agent-prob-4',
+    title: 'Work queue priority scheduling',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_multi_agent_4',
+    functionSignature: 'filter_multi_agent_4(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_multi_agent_4(items, keyword):
+    pass
+`,
+    mission: 'Implement Work queue priority scheduling to improve agentic systems.',
+    taskDescription: 'Implement `filter_multi_agent_4(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Work queue priority scheduling.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Work queue priority scheduling relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Work queue priority scheduling', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-5': {
+    id: 'multi-agent-prob-5',
+    title: 'Result aggregation from parallel agents',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_multi_agent_5',
+    functionSignature: 'aggregate_multi_agent_5(records: list[dict]) -> dict',
+    starterCode: `def aggregate_multi_agent_5(records):
+    pass
+`,
+    mission: 'Implement Result aggregation from parallel agents to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_multi_agent_5(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Result aggregation from parallel agents.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Result aggregation from parallel agents relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Result aggregation from parallel agents', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-6': {
+    id: 'multi-agent-prob-6',
+    title: 'Agent health check / heartbeat',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'score_multi_agent_6',
+    functionSignature: 'score_multi_agent_6(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_multi_agent_6(scores, threshold):
+    pass
+`,
+    mission: 'Implement Agent health check / heartbeat to improve agentic systems.',
+    taskDescription: 'Implement `score_multi_agent_6(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Agent health check / heartbeat.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent health check / heartbeat relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent health check / heartbeat', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-7': {
+    id: 'multi-agent-prob-7',
+    title: 'Task decomposition into subtasks',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'track_multi_agent_7',
+    functionSignature: 'track_multi_agent_7(events: list[str]) -> dict',
+    starterCode: `def track_multi_agent_7(events):
+    pass
+`,
+    mission: 'Implement Task decomposition into subtasks to improve agentic systems.',
+    taskDescription: 'Implement `track_multi_agent_7(events)` that returns a dictionary counting occurrences of each event string. This simulates Task decomposition into subtasks.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Task decomposition into subtasks relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Task decomposition into subtasks', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-8': {
+    id: 'multi-agent-prob-8',
+    title: 'Subtask dependency resolution',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_multi_agent_8',
+    functionSignature: 'filter_multi_agent_8(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_multi_agent_8(items, keyword):
+    pass
+`,
+    mission: 'Implement Subtask dependency resolution to improve agentic systems.',
+    taskDescription: 'Implement `filter_multi_agent_8(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Subtask dependency resolution.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Subtask dependency resolution relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Subtask dependency resolution', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-9': {
+    id: 'multi-agent-prob-9',
+    title: 'Inter-agent message serialization',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_multi_agent_9',
+    functionSignature: 'aggregate_multi_agent_9(records: list[dict]) -> dict',
+    starterCode: `def aggregate_multi_agent_9(records):
+    pass
+`,
+    mission: 'Implement Inter-agent message serialization to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_multi_agent_9(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Inter-agent message serialization.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Inter-agent message serialization relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Inter-agent message serialization', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-10': {
+    id: 'multi-agent-prob-10',
+    title: 'Shared state lock management (optimistic)',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'score_multi_agent_10',
+    functionSignature: 'score_multi_agent_10(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_multi_agent_10(scores, threshold):
+    pass
+`,
+    mission: 'Implement Shared state lock management (optimistic) to improve agentic systems.',
+    taskDescription: 'Implement `score_multi_agent_10(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Shared state lock management (optimistic).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Shared state lock management (optimistic) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Shared state lock management (optimistic)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-11': {
+    id: 'multi-agent-prob-11',
+    title: 'Agent role assignment based on task type',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'track_multi_agent_11',
+    functionSignature: 'track_multi_agent_11(events: list[str]) -> dict',
+    starterCode: `def track_multi_agent_11(events):
+    pass
+`,
+    mission: 'Implement Agent role assignment based on task type to improve agentic systems.',
+    taskDescription: 'Implement `track_multi_agent_11(events)` that returns a dictionary counting occurrences of each event string. This simulates Agent role assignment based on task type.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent role assignment based on task type relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent role assignment based on task type', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-12': {
+    id: 'multi-agent-prob-12',
+    title: 'Broadcast message fan-out',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_multi_agent_12',
+    functionSignature: 'filter_multi_agent_12(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_multi_agent_12(items, keyword):
+    pass
+`,
+    mission: 'Implement Broadcast message fan-out to improve agentic systems.',
+    taskDescription: 'Implement `filter_multi_agent_12(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Broadcast message fan-out.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Broadcast message fan-out relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Broadcast message fan-out', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-13': {
+    id: 'multi-agent-prob-13',
+    title: 'Consensus voting among agents',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_multi_agent_13',
+    functionSignature: 'aggregate_multi_agent_13(records: list[dict]) -> dict',
+    starterCode: `def aggregate_multi_agent_13(records):
+    pass
+`,
+    mission: 'Implement Consensus voting among agents to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_multi_agent_13(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Consensus voting among agents.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Consensus voting among agents relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Consensus voting among agents', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-14': {
+    id: 'multi-agent-prob-14',
+    title: 'Agent specialization routing',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'score_multi_agent_14',
+    functionSignature: 'score_multi_agent_14(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_multi_agent_14(scores, threshold):
+    pass
+`,
+    mission: 'Implement Agent specialization routing to improve agentic systems.',
+    taskDescription: 'Implement `score_multi_agent_14(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Agent specialization routing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent specialization routing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent specialization routing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-15': {
+    id: 'multi-agent-prob-15',
+    title: 'Error propagation in agent pipeline',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'track_multi_agent_15',
+    functionSignature: 'track_multi_agent_15(events: list[str]) -> dict',
+    starterCode: `def track_multi_agent_15(events):
+    pass
+`,
+    mission: 'Implement Error propagation in agent pipeline to improve agentic systems.',
+    taskDescription: 'Implement `track_multi_agent_15(events)` that returns a dictionary counting occurrences of each event string. This simulates Error propagation in agent pipeline.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Error propagation in agent pipeline relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Error propagation in agent pipeline', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-16': {
+    id: 'multi-agent-prob-16',
+    title: 'Retry policy for failed agent',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_multi_agent_16',
+    functionSignature: 'filter_multi_agent_16(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_multi_agent_16(items, keyword):
+    pass
+`,
+    mission: 'Implement Retry policy for failed agent to improve agentic systems.',
+    taskDescription: 'Implement `filter_multi_agent_16(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Retry policy for failed agent.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Retry policy for failed agent relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Retry policy for failed agent', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-17': {
+    id: 'multi-agent-prob-17',
+    title: 'Agent output validation',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_multi_agent_17',
+    functionSignature: 'aggregate_multi_agent_17(records: list[dict]) -> dict',
+    starterCode: `def aggregate_multi_agent_17(records):
+    pass
+`,
+    mission: 'Implement Agent output validation to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_multi_agent_17(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Agent output validation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent output validation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent output validation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-18': {
+    id: 'multi-agent-prob-18',
+    title: 'Collaborative artifact assembly',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'score_multi_agent_18',
+    functionSignature: 'score_multi_agent_18(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_multi_agent_18(scores, threshold):
+    pass
+`,
+    mission: 'Implement Collaborative artifact assembly to improve agentic systems.',
+    taskDescription: 'Implement `score_multi_agent_18(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Collaborative artifact assembly.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Collaborative artifact assembly relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Collaborative artifact assembly', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-19': {
+    id: 'multi-agent-prob-19',
+    title: 'Agent token budget allocation',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'track_multi_agent_19',
+    functionSignature: 'track_multi_agent_19(events: list[str]) -> dict',
+    starterCode: `def track_multi_agent_19(events):
+    pass
+`,
+    mission: 'Implement Agent token budget allocation to improve agentic systems.',
+    taskDescription: 'Implement `track_multi_agent_19(events)` that returns a dictionary counting occurrences of each event string. This simulates Agent token budget allocation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent token budget allocation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent token budget allocation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-20': {
+    id: 'multi-agent-prob-20',
+    title: 'Sub-agent spawning condition check',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_multi_agent_20',
+    functionSignature: 'filter_multi_agent_20(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_multi_agent_20(items, keyword):
+    pass
+`,
+    mission: 'Implement Sub-agent spawning condition check to improve agentic systems.',
+    taskDescription: 'Implement `filter_multi_agent_20(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Sub-agent spawning condition check.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Sub-agent spawning condition check relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Sub-agent spawning condition check', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-21': {
+    id: 'multi-agent-prob-21',
+    title: 'Task completion notification',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_multi_agent_21',
+    functionSignature: 'aggregate_multi_agent_21(records: list[dict]) -> dict',
+    starterCode: `def aggregate_multi_agent_21(records):
+    pass
+`,
+    mission: 'Implement Task completion notification to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_multi_agent_21(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Task completion notification.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Task completion notification relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Task completion notification', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-22': {
+    id: 'multi-agent-prob-22',
+    title: 'Agent orchestration DAG execution',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'score_multi_agent_22',
+    functionSignature: 'score_multi_agent_22(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_multi_agent_22(scores, threshold):
+    pass
+`,
+    mission: 'Implement Agent orchestration DAG execution to improve agentic systems.',
+    taskDescription: 'Implement `score_multi_agent_22(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Agent orchestration DAG execution.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent orchestration DAG execution relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent orchestration DAG execution', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-23': {
+    id: 'multi-agent-prob-23',
+    title: 'Timeout handling per agent step',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'track_multi_agent_23',
+    functionSignature: 'track_multi_agent_23(events: list[str]) -> dict',
+    starterCode: `def track_multi_agent_23(events):
+    pass
+`,
+    mission: 'Implement Timeout handling per agent step to improve agentic systems.',
+    taskDescription: 'Implement `track_multi_agent_23(events)` that returns a dictionary counting occurrences of each event string. This simulates Timeout handling per agent step.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Timeout handling per agent step relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Timeout handling per agent step', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-24': {
+    id: 'multi-agent-prob-24',
+    title: 'Agent context isolation',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_multi_agent_24',
+    functionSignature: 'filter_multi_agent_24(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_multi_agent_24(items, keyword):
+    pass
+`,
+    mission: 'Implement Agent context isolation to improve agentic systems.',
+    taskDescription: 'Implement `filter_multi_agent_24(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Agent context isolation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent context isolation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent context isolation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-25': {
+    id: 'multi-agent-prob-25',
+    title: 'Shared memory read/write',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_multi_agent_25',
+    functionSignature: 'aggregate_multi_agent_25(records: list[dict]) -> dict',
+    starterCode: `def aggregate_multi_agent_25(records):
+    pass
+`,
+    mission: 'Implement Shared memory read/write to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_multi_agent_25(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Shared memory read/write.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Shared memory read/write relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Shared memory read/write', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-26': {
+    id: 'multi-agent-prob-26',
+    title: 'Agent telemetry event emission',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'score_multi_agent_26',
+    functionSignature: 'score_multi_agent_26(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_multi_agent_26(scores, threshold):
+    pass
+`,
+    mission: 'Implement Agent telemetry event emission to improve agentic systems.',
+    taskDescription: 'Implement `score_multi_agent_26(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Agent telemetry event emission.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent telemetry event emission relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent telemetry event emission', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-27': {
+    id: 'multi-agent-prob-27',
+    title: 'Cross-agent grounding verification',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'track_multi_agent_27',
+    functionSignature: 'track_multi_agent_27(events: list[str]) -> dict',
+    starterCode: `def track_multi_agent_27(events):
+    pass
+`,
+    mission: 'Implement Cross-agent grounding verification to improve agentic systems.',
+    taskDescription: 'Implement `track_multi_agent_27(events)` that returns a dictionary counting occurrences of each event string. This simulates Cross-agent grounding verification.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Cross-agent grounding verification relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Cross-agent grounding verification', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-28': {
+    id: 'multi-agent-prob-28',
+    title: 'Agent handoff protocol',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_multi_agent_28',
+    functionSignature: 'filter_multi_agent_28(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_multi_agent_28(items, keyword):
+    pass
+`,
+    mission: 'Implement Agent handoff protocol to improve agentic systems.',
+    taskDescription: 'Implement `filter_multi_agent_28(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Agent handoff protocol.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent handoff protocol relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent handoff protocol', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'multi-agent-prob-29': {
+    id: 'multi-agent-prob-29',
+    title: 'Multi-agent workflow state machine',
+    difficulty: 'medium',
+    topic: 'Multi-Agent Systems',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_multi_agent_29',
+    functionSignature: 'aggregate_multi_agent_29(records: list[dict]) -> dict',
+    starterCode: `def aggregate_multi_agent_29(records):
+    pass
+`,
+    mission: 'Implement Multi-agent workflow state machine to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_multi_agent_29(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Multi-agent workflow state machine.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Multi-agent workflow state machine relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Multi-agent workflow state machine', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-1': {
+    id: 'mcp-core-prob-1',
+    title: 'MCP message schema validation',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_core_1',
+    functionSignature: 'aggregate_mcp_core_1(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_core_1(records):
+    pass
+`,
+    mission: 'Implement MCP message schema validation to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_core_1(records)` that aggregates a list of dictionaries by summing values for each key. This simulates MCP message schema validation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP message schema validation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP message schema validation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-2': {
+    id: 'mcp-core-prob-2',
+    title: 'Tool call request parsing',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_core_2',
+    functionSignature: 'score_mcp_core_2(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_core_2(scores, threshold):
+    pass
+`,
+    mission: 'Implement Tool call request parsing to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_core_2(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Tool call request parsing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool call request parsing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool call request parsing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-3': {
+    id: 'mcp-core-prob-3',
+    title: 'Tool result response formatting',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_core_3',
+    functionSignature: 'track_mcp_core_3(events: list[str]) -> dict',
+    starterCode: `def track_mcp_core_3(events):
+    pass
+`,
+    mission: 'Implement Tool result response formatting to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_core_3(events)` that returns a dictionary counting occurrences of each event string. This simulates Tool result response formatting.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool result response formatting relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool result response formatting', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-4': {
+    id: 'mcp-core-prob-4',
+    title: 'Resource URI parsing and validation',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_core_4',
+    functionSignature: 'filter_mcp_core_4(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_core_4(items, keyword):
+    pass
+`,
+    mission: 'Implement Resource URI parsing and validation to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_core_4(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Resource URI parsing and validation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Resource URI parsing and validation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Resource URI parsing and validation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-5': {
+    id: 'mcp-core-prob-5',
+    title: 'Prompt template extraction from MCP server',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_core_5',
+    functionSignature: 'aggregate_mcp_core_5(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_core_5(records):
+    pass
+`,
+    mission: 'Implement Prompt template extraction from MCP server to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_core_5(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Prompt template extraction from MCP server.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Prompt template extraction from MCP server relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Prompt template extraction from MCP server', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-6': {
+    id: 'mcp-core-prob-6',
+    title: 'Server capability negotiation',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_core_6',
+    functionSignature: 'score_mcp_core_6(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_core_6(scores, threshold):
+    pass
+`,
+    mission: 'Implement Server capability negotiation to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_core_6(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Server capability negotiation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Server capability negotiation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Server capability negotiation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-7': {
+    id: 'mcp-core-prob-7',
+    title: 'MCP transport message framing',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_core_7',
+    functionSignature: 'track_mcp_core_7(events: list[str]) -> dict',
+    starterCode: `def track_mcp_core_7(events):
+    pass
+`,
+    mission: 'Implement MCP transport message framing to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_core_7(events)` that returns a dictionary counting occurrences of each event string. This simulates MCP transport message framing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP transport message framing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP transport message framing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-8': {
+    id: 'mcp-core-prob-8',
+    title: 'JSON-RPC request id matching',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_core_8',
+    functionSignature: 'filter_mcp_core_8(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_core_8(items, keyword):
+    pass
+`,
+    mission: 'Implement JSON-RPC request id matching to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_core_8(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates JSON-RPC request id matching.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'JSON-RPC request id matching relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'JSON-RPC request id matching', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-9': {
+    id: 'mcp-core-prob-9',
+    title: 'Tool schema validation against input',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_core_9',
+    functionSignature: 'aggregate_mcp_core_9(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_core_9(records):
+    pass
+`,
+    mission: 'Implement Tool schema validation against input to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_core_9(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Tool schema validation against input.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool schema validation against input relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool schema validation against input', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-10': {
+    id: 'mcp-core-prob-10',
+    title: 'Error code mapping (MCP error types)',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_core_10',
+    functionSignature: 'score_mcp_core_10(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_core_10(scores, threshold):
+    pass
+`,
+    mission: 'Implement Error code mapping (MCP error types) to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_core_10(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Error code mapping (MCP error types).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Error code mapping (MCP error types) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Error code mapping (MCP error types)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-11': {
+    id: 'mcp-core-prob-11',
+    title: 'MCP session initialization handshake',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_core_11',
+    functionSignature: 'track_mcp_core_11(events: list[str]) -> dict',
+    starterCode: `def track_mcp_core_11(events):
+    pass
+`,
+    mission: 'Implement MCP session initialization handshake to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_core_11(events)` that returns a dictionary counting occurrences of each event string. This simulates MCP session initialization handshake.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP session initialization handshake relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP session initialization handshake', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-12': {
+    id: 'mcp-core-prob-12',
+    title: 'Tool listing response parsing',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_core_12',
+    functionSignature: 'filter_mcp_core_12(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_core_12(items, keyword):
+    pass
+`,
+    mission: 'Implement Tool listing response parsing to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_core_12(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Tool listing response parsing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool listing response parsing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool listing response parsing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-13': {
+    id: 'mcp-core-prob-13',
+    title: 'Resource content type detection',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_core_13',
+    functionSignature: 'aggregate_mcp_core_13(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_core_13(records):
+    pass
+`,
+    mission: 'Implement Resource content type detection to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_core_13(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Resource content type detection.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Resource content type detection relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Resource content type detection', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-14': {
+    id: 'mcp-core-prob-14',
+    title: 'Sampling request construction',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_core_14',
+    functionSignature: 'score_mcp_core_14(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_core_14(scores, threshold):
+    pass
+`,
+    mission: 'Implement Sampling request construction to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_core_14(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Sampling request construction.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Sampling request construction relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Sampling request construction', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-15': {
+    id: 'mcp-core-prob-15',
+    title: 'MCP log level filtering',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_core_15',
+    functionSignature: 'track_mcp_core_15(events: list[str]) -> dict',
+    starterCode: `def track_mcp_core_15(events):
+    pass
+`,
+    mission: 'Implement MCP log level filtering to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_core_15(events)` that returns a dictionary counting occurrences of each event string. This simulates MCP log level filtering.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP log level filtering relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP log level filtering', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-16': {
+    id: 'mcp-core-prob-16',
+    title: 'Ping/pong liveness check',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_core_16',
+    functionSignature: 'filter_mcp_core_16(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_core_16(items, keyword):
+    pass
+`,
+    mission: 'Implement Ping/pong liveness check to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_core_16(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Ping/pong liveness check.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Ping/pong liveness check relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Ping/pong liveness check', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-17': {
+    id: 'mcp-core-prob-17',
+    title: 'Tool call timeout enforcement',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_core_17',
+    functionSignature: 'aggregate_mcp_core_17(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_core_17(records):
+    pass
+`,
+    mission: 'Implement Tool call timeout enforcement to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_core_17(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Tool call timeout enforcement.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool call timeout enforcement relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool call timeout enforcement', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-18': {
+    id: 'mcp-core-prob-18',
+    title: 'Concurrent request tracking',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_core_18',
+    functionSignature: 'score_mcp_core_18(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_core_18(scores, threshold):
+    pass
+`,
+    mission: 'Implement Concurrent request tracking to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_core_18(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Concurrent request tracking.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Concurrent request tracking relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Concurrent request tracking', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-19': {
+    id: 'mcp-core-prob-19',
+    title: 'MCP notification dispatch',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_core_19',
+    functionSignature: 'track_mcp_core_19(events: list[str]) -> dict',
+    starterCode: `def track_mcp_core_19(events):
+    pass
+`,
+    mission: 'Implement MCP notification dispatch to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_core_19(events)` that returns a dictionary counting occurrences of each event string. This simulates MCP notification dispatch.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP notification dispatch relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP notification dispatch', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-20': {
+    id: 'mcp-core-prob-20',
+    title: 'Resource subscription tracking',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_core_20',
+    functionSignature: 'filter_mcp_core_20(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_core_20(items, keyword):
+    pass
+`,
+    mission: 'Implement Resource subscription tracking to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_core_20(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Resource subscription tracking.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Resource subscription tracking relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Resource subscription tracking', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-21': {
+    id: 'mcp-core-prob-21',
+    title: 'Tool output schema validation',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_core_21',
+    functionSignature: 'aggregate_mcp_core_21(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_core_21(records):
+    pass
+`,
+    mission: 'Implement Tool output schema validation to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_core_21(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Tool output schema validation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool output schema validation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool output schema validation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-22': {
+    id: 'mcp-core-prob-22',
+    title: 'Request deduplication by id',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_core_22',
+    functionSignature: 'score_mcp_core_22(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_core_22(scores, threshold):
+    pass
+`,
+    mission: 'Implement Request deduplication by id to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_core_22(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Request deduplication by id.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Request deduplication by id relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Request deduplication by id', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-23': {
+    id: 'mcp-core-prob-23',
+    title: 'Server-sent event parsing',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_core_23',
+    functionSignature: 'track_mcp_core_23(events: list[str]) -> dict',
+    starterCode: `def track_mcp_core_23(events):
+    pass
+`,
+    mission: 'Implement Server-sent event parsing to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_core_23(events)` that returns a dictionary counting occurrences of each event string. This simulates Server-sent event parsing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Server-sent event parsing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Server-sent event parsing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-24': {
+    id: 'mcp-core-prob-24',
+    title: 'Batch tool call processing',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_core_24',
+    functionSignature: 'filter_mcp_core_24(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_core_24(items, keyword):
+    pass
+`,
+    mission: 'Implement Batch tool call processing to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_core_24(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Batch tool call processing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Batch tool call processing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Batch tool call processing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-25': {
+    id: 'mcp-core-prob-25',
+    title: 'MCP middleware logging',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_core_25',
+    functionSignature: 'aggregate_mcp_core_25(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_core_25(records):
+    pass
+`,
+    mission: 'Implement MCP middleware logging to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_core_25(records)` that aggregates a list of dictionaries by summing values for each key. This simulates MCP middleware logging.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP middleware logging relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP middleware logging', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-26': {
+    id: 'mcp-core-prob-26',
+    title: 'Authorization token injection',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_core_26',
+    functionSignature: 'score_mcp_core_26(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_core_26(scores, threshold):
+    pass
+`,
+    mission: 'Implement Authorization token injection to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_core_26(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Authorization token injection.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Authorization token injection relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Authorization token injection', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-27': {
+    id: 'mcp-core-prob-27',
+    title: 'Rate limit tracking per client',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_core_27',
+    functionSignature: 'track_mcp_core_27(events: list[str]) -> dict',
+    starterCode: `def track_mcp_core_27(events):
+    pass
+`,
+    mission: 'Implement Rate limit tracking per client to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_core_27(events)` that returns a dictionary counting occurrences of each event string. This simulates Rate limit tracking per client.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Rate limit tracking per client relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Rate limit tracking per client', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-28': {
+    id: 'mcp-core-prob-28',
+    title: 'Error retry with backoff',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_core_28',
+    functionSignature: 'filter_mcp_core_28(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_core_28(items, keyword):
+    pass
+`,
+    mission: 'Implement Error retry with backoff to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_core_28(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Error retry with backoff.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Error retry with backoff relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Error retry with backoff', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-core-prob-29': {
+    id: 'mcp-core-prob-29',
+    title: 'MCP protocol version check',
+    difficulty: 'medium',
+    topic: 'MCP Core Engineering',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_core_29',
+    functionSignature: 'aggregate_mcp_core_29(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_core_29(records):
+    pass
+`,
+    mission: 'Implement MCP protocol version check to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_core_29(records)` that aggregates a list of dictionaries by summing values for each key. This simulates MCP protocol version check.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP protocol version check relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP protocol version check', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-1': {
+    id: 'mcp-adv-prob-1',
+    title: 'Dynamic tool registration at runtime',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_adv_1',
+    functionSignature: 'aggregate_mcp_adv_1(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_adv_1(records):
+    pass
+`,
+    mission: 'Implement Dynamic tool registration at runtime to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_adv_1(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Dynamic tool registration at runtime.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Dynamic tool registration at runtime relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Dynamic tool registration at runtime', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-2': {
+    id: 'mcp-adv-prob-2',
+    title: 'Tool composition (chaining two tools)',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_adv_2',
+    functionSignature: 'score_mcp_adv_2(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_adv_2(scores, threshold):
+    pass
+`,
+    mission: 'Implement Tool composition (chaining two tools) to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_adv_2(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Tool composition (chaining two tools).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool composition (chaining two tools) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool composition (chaining two tools)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-3': {
+    id: 'mcp-adv-prob-3',
+    title: 'Agent-to-server capability matching',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_adv_3',
+    functionSignature: 'track_mcp_adv_3(events: list[str]) -> dict',
+    starterCode: `def track_mcp_adv_3(events):
+    pass
+`,
+    mission: 'Implement Agent-to-server capability matching to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_adv_3(events)` that returns a dictionary counting occurrences of each event string. This simulates Agent-to-server capability matching.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent-to-server capability matching relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent-to-server capability matching', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-4': {
+    id: 'mcp-adv-prob-4',
+    title: 'Multi-server tool routing',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_adv_4',
+    functionSignature: 'filter_mcp_adv_4(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_adv_4(items, keyword):
+    pass
+`,
+    mission: 'Implement Multi-server tool routing to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_adv_4(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Multi-server tool routing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Multi-server tool routing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Multi-server tool routing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-5': {
+    id: 'mcp-adv-prob-5',
+    title: 'Tool result transformation pipeline',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_adv_5',
+    functionSignature: 'aggregate_mcp_adv_5(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_adv_5(records):
+    pass
+`,
+    mission: 'Implement Tool result transformation pipeline to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_adv_5(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Tool result transformation pipeline.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool result transformation pipeline relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool result transformation pipeline', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-6': {
+    id: 'mcp-adv-prob-6',
+    title: 'LLM-to-MCP bridge (convert tool_use to MCP call)',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_adv_6',
+    functionSignature: 'score_mcp_adv_6(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_adv_6(scores, threshold):
+    pass
+`,
+    mission: 'Implement LLM-to-MCP bridge (convert tool_use to MCP call) to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_adv_6(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates LLM-to-MCP bridge (convert tool_use to MCP call).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'LLM-to-MCP bridge (convert tool_use to MCP call) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'LLM-to-MCP bridge (convert tool_use to MCP call)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-7': {
+    id: 'mcp-adv-prob-7',
+    title: 'Streaming tool result assembly',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_adv_7',
+    functionSignature: 'track_mcp_adv_7(events: list[str]) -> dict',
+    starterCode: `def track_mcp_adv_7(events):
+    pass
+`,
+    mission: 'Implement Streaming tool result assembly to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_adv_7(events)` that returns a dictionary counting occurrences of each event string. This simulates Streaming tool result assembly.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Streaming tool result assembly relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Streaming tool result assembly', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-8': {
+    id: 'mcp-adv-prob-8',
+    title: 'Tool fallback chain',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_adv_8',
+    functionSignature: 'filter_mcp_adv_8(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_adv_8(items, keyword):
+    pass
+`,
+    mission: 'Implement Tool fallback chain to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_adv_8(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Tool fallback chain.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool fallback chain relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool fallback chain', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-9': {
+    id: 'mcp-adv-prob-9',
+    title: 'Context injection into tool call',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_adv_9',
+    functionSignature: 'aggregate_mcp_adv_9(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_adv_9(records):
+    pass
+`,
+    mission: 'Implement Context injection into tool call to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_adv_9(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Context injection into tool call.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Context injection into tool call relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Context injection into tool call', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-10': {
+    id: 'mcp-adv-prob-10',
+    title: 'Tool output caching',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_adv_10',
+    functionSignature: 'score_mcp_adv_10(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_adv_10(scores, threshold):
+    pass
+`,
+    mission: 'Implement Tool output caching to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_adv_10(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Tool output caching.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool output caching relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool output caching', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-11': {
+    id: 'mcp-adv-prob-11',
+    title: 'Cross-server resource federation',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_adv_11',
+    functionSignature: 'track_mcp_adv_11(events: list[str]) -> dict',
+    starterCode: `def track_mcp_adv_11(events):
+    pass
+`,
+    mission: 'Implement Cross-server resource federation to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_adv_11(events)` that returns a dictionary counting occurrences of each event string. This simulates Cross-server resource federation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Cross-server resource federation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Cross-server resource federation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-12': {
+    id: 'mcp-adv-prob-12',
+    title: 'Tool permission scoping',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_adv_12',
+    functionSignature: 'filter_mcp_adv_12(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_adv_12(items, keyword):
+    pass
+`,
+    mission: 'Implement Tool permission scoping to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_adv_12(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Tool permission scoping.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool permission scoping relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool permission scoping', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-13': {
+    id: 'mcp-adv-prob-13',
+    title: 'Agent memory via MCP resource reads',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_adv_13',
+    functionSignature: 'aggregate_mcp_adv_13(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_adv_13(records):
+    pass
+`,
+    mission: 'Implement Agent memory via MCP resource reads to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_adv_13(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Agent memory via MCP resource reads.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent memory via MCP resource reads relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent memory via MCP resource reads', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-14': {
+    id: 'mcp-adv-prob-14',
+    title: 'Workflow state via MCP resource writes',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_adv_14',
+    functionSignature: 'score_mcp_adv_14(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_adv_14(scores, threshold):
+    pass
+`,
+    mission: 'Implement Workflow state via MCP resource writes to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_adv_14(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Workflow state via MCP resource writes.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Workflow state via MCP resource writes relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Workflow state via MCP resource writes', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-15': {
+    id: 'mcp-adv-prob-15',
+    title: 'Tool call provenance tracking',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_adv_15',
+    functionSignature: 'track_mcp_adv_15(events: list[str]) -> dict',
+    starterCode: `def track_mcp_adv_15(events):
+    pass
+`,
+    mission: 'Implement Tool call provenance tracking to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_adv_15(events)` that returns a dictionary counting occurrences of each event string. This simulates Tool call provenance tracking.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool call provenance tracking relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool call provenance tracking', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-16': {
+    id: 'mcp-adv-prob-16',
+    title: 'Adaptive tool selection (capability scoring)',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_adv_16',
+    functionSignature: 'filter_mcp_adv_16(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_adv_16(items, keyword):
+    pass
+`,
+    mission: 'Implement Adaptive tool selection (capability scoring) to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_adv_16(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Adaptive tool selection (capability scoring).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Adaptive tool selection (capability scoring) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Adaptive tool selection (capability scoring)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-17': {
+    id: 'mcp-adv-prob-17',
+    title: 'Tool cost estimation',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_adv_17',
+    functionSignature: 'aggregate_mcp_adv_17(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_adv_17(records):
+    pass
+`,
+    mission: 'Implement Tool cost estimation to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_adv_17(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Tool cost estimation.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool cost estimation relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool cost estimation', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-18': {
+    id: 'mcp-adv-prob-18',
+    title: 'Tool call batching strategy',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_adv_18',
+    functionSignature: 'score_mcp_adv_18(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_adv_18(scores, threshold):
+    pass
+`,
+    mission: 'Implement Tool call batching strategy to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_adv_18(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Tool call batching strategy.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool call batching strategy relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool call batching strategy', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-19': {
+    id: 'mcp-adv-prob-19',
+    title: 'Server health monitoring',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_adv_19',
+    functionSignature: 'track_mcp_adv_19(events: list[str]) -> dict',
+    starterCode: `def track_mcp_adv_19(events):
+    pass
+`,
+    mission: 'Implement Server health monitoring to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_adv_19(events)` that returns a dictionary counting occurrences of each event string. This simulates Server health monitoring.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Server health monitoring relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Server health monitoring', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-20': {
+    id: 'mcp-adv-prob-20',
+    title: 'Tool dependency graph resolution',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_adv_20',
+    functionSignature: 'filter_mcp_adv_20(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_adv_20(items, keyword):
+    pass
+`,
+    mission: 'Implement Tool dependency graph resolution to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_adv_20(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Tool dependency graph resolution.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool dependency graph resolution relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool dependency graph resolution', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-21': {
+    id: 'mcp-adv-prob-21',
+    title: 'Custom tool error handler',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_adv_21',
+    functionSignature: 'aggregate_mcp_adv_21(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_adv_21(records):
+    pass
+`,
+    mission: 'Implement Custom tool error handler to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_adv_21(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Custom tool error handler.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Custom tool error handler relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Custom tool error handler', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-22': {
+    id: 'mcp-adv-prob-22',
+    title: 'Tool result schema evolution (backward compat)',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_adv_22',
+    functionSignature: 'score_mcp_adv_22(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_adv_22(scores, threshold):
+    pass
+`,
+    mission: 'Implement Tool result schema evolution (backward compat) to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_adv_22(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Tool result schema evolution (backward compat).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool result schema evolution (backward compat) relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool result schema evolution (backward compat)', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-23': {
+    id: 'mcp-adv-prob-23',
+    title: 'MCP server mock for testing',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_adv_23',
+    functionSignature: 'track_mcp_adv_23(events: list[str]) -> dict',
+    starterCode: `def track_mcp_adv_23(events):
+    pass
+`,
+    mission: 'Implement MCP server mock for testing to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_adv_23(events)` that returns a dictionary counting occurrences of each event string. This simulates MCP server mock for testing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP server mock for testing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP server mock for testing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-24': {
+    id: 'mcp-adv-prob-24',
+    title: 'Tool call replay for debugging',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_adv_24',
+    functionSignature: 'filter_mcp_adv_24(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_adv_24(items, keyword):
+    pass
+`,
+    mission: 'Implement Tool call replay for debugging to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_adv_24(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Tool call replay for debugging.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool call replay for debugging relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool call replay for debugging', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-25': {
+    id: 'mcp-adv-prob-25',
+    title: 'Agent-controlled tool lifecycle',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_adv_25',
+    functionSignature: 'aggregate_mcp_adv_25(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_adv_25(records):
+    pass
+`,
+    mission: 'Implement Agent-controlled tool lifecycle to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_adv_25(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Agent-controlled tool lifecycle.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Agent-controlled tool lifecycle relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Agent-controlled tool lifecycle', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-26': {
+    id: 'mcp-adv-prob-26',
+    title: 'Dynamic prompt injection via MCP',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'score_mcp_adv_26',
+    functionSignature: 'score_mcp_adv_26(scores: list[float], threshold: float) -> list[float]',
+    starterCode: `def score_mcp_adv_26(scores, threshold):
+    pass
+`,
+    mission: 'Implement Dynamic prompt injection via MCP to improve agentic systems.',
+    taskDescription: 'Implement `score_mcp_adv_26(scores, threshold)` that returns scores greater than or equal to `threshold`. This simulates Dynamic prompt injection via MCP.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Dynamic prompt injection via MCP relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Dynamic prompt injection via MCP', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"scores": [0.1, 0.5, 0.9, 1.2], "threshold": 0.8}, expectedOutput: [0.9, 1.2], hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"scores": [], "threshold": 0.5}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'All pass', input: {"scores": [1.0, 2.0], "threshold": 0.0}, expectedOutput: [1.0, 2.0], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-27': {
+    id: 'mcp-adv-prob-27',
+    title: 'MCP event sourcing log',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'track_mcp_adv_27',
+    functionSignature: 'track_mcp_adv_27(events: list[str]) -> dict',
+    starterCode: `def track_mcp_adv_27(events):
+    pass
+`,
+    mission: 'Implement MCP event sourcing log to improve agentic systems.',
+    taskDescription: 'Implement `track_mcp_adv_27(events)` that returns a dictionary counting occurrences of each event string. This simulates MCP event sourcing log.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'MCP event sourcing log relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'MCP event sourcing log', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"events": ["A", "B", "A", "C"]}, expectedOutput: {"A": 2, "B": 1, "C": 1}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"events": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Uniform', input: {"events": ["A", "A"]}, expectedOutput: {"A": 2}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-28': {
+    id: 'mcp-adv-prob-28',
+    title: 'Tool A/B testing routing',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'filter_mcp_adv_28',
+    functionSignature: 'filter_mcp_adv_28(items: list[str], keyword: str) -> list[str]',
+    starterCode: `def filter_mcp_adv_28(items, keyword):
+    pass
+`,
+    mission: 'Implement Tool A/B testing routing to improve agentic systems.',
+    taskDescription: 'Implement `filter_mcp_adv_28(items, keyword)` that filters the list of strings, keeping only those that contain `keyword`. This simulates Tool A/B testing routing.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Tool A/B testing routing relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Tool A/B testing routing', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"items": ["alpha", "beta", "gamma", "delta", "epsilon keyword", "keyword another"], "keyword": "keyword"}, expectedOutput: ["epsilon keyword", "keyword another"], hidden: false },
+      { id: 'tc2', label: 'Empty list', input: {"items": [], "keyword": "a"}, expectedOutput: [], hidden: false },
+      { id: 'tc3', label: 'No match', input: {"items": ["a", "b"], "keyword": "c"}, expectedOutput: [], hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
+  },
+  'mcp-adv-prob-29': {
+    id: 'mcp-adv-prob-29',
+    title: 'Production MCP gateway orchestration',
+    difficulty: 'medium',
+    topic: 'MCP Advanced & Agent Integration',
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_mcp_adv_29',
+    functionSignature: 'aggregate_mcp_adv_29(records: list[dict]) -> dict',
+    starterCode: `def aggregate_mcp_adv_29(records):
+    pass
+`,
+    mission: 'Implement Production MCP gateway orchestration to improve agentic systems.',
+    taskDescription: 'Implement `aggregate_mcp_adv_29(records)` that aggregates a list of dictionaries by summing values for each key. This simulates Production MCP gateway orchestration.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Must handle empty inputs.',
+      'Must return correctly typed output.'
+    ],
+    hints: {
+      small: 'Read the inputs carefully.',
+      strong: 'Use basic Python built-ins like lists or dicts.',
+      concept: 'Production MCP gateway orchestration relies on processing data efficiently.'
+    },
+    conceptConnections: [
+      { title: 'Production MCP gateway orchestration', route: '/docs', description: 'Explore more.' }
+    ],
+    testCases: [
+      { id: 'tc1', label: 'Basic', input: {"records": [{"a": 1, "b": 2}, {"a": 3, "c": 4}]}, expectedOutput: {"a": 4, "b": 2, "c": 4}, hidden: false },
+      { id: 'tc2', label: 'Empty', input: {"records": []}, expectedOutput: {}, hidden: false },
+      { id: 'tc3', label: 'Negative', input: {"records": [{"a": -1}, {"a": 1}]}, expectedOutput: {"a": 0}, hidden: true }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] }
   },
 };
 

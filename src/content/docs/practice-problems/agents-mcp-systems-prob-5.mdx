@@ -6,41 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Token Bucket Rate Limiter
+<#243. MCP System Concept 5>
+**Track**: agents,-mcp-systems | **Rank**: #243 of 1072 | **Points**: 40 XP
 
-**Rank #435** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `token_bucket_allow(timestamps, capacity, refill_rate)`, simulating a token-bucket rate limiter that allows a burst up to `capacity` and then throttles to a steady refill rate -- more forgiving to bursty legitimate traffic than a fixed-window request counter. Prerequisite: `agents-mcp-systems-prob-4`.
+Implement MCP System Concept 5 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-5" />
-
-<Solution>
-
-```python
-def token_bucket_allow(timestamps, capacity, refill_rate):
-    if capacity <= 0:
-        raise ValueError("capacity must be positive")
-    tokens = float(capacity)
-    last_t = None
-    results = []
-    for t in timestamps:
-        if last_t is not None:
-            elapsed = t - last_t
-            if elapsed < 0:
-                raise ValueError("timestamps must be non-decreasing")
-            tokens = min(capacity, tokens + elapsed * refill_rate)
-        last_t = t
-        if tokens >= 1:
-            tokens -= 1
-            results.append(True)
-        else:
-            results.append(False)
-    return results
-```
-
-This is the same rate-limiting shape behind `Retry-After` / 429 responses in real APIs -- capacity absorbs a legitimate burst, refill_rate caps sustained throughput, and the two together are strictly more forgiving to bursty legitimate traffic than a fixed request-per-window counter.
-
-</Solution>

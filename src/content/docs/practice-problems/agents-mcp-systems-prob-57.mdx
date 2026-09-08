@@ -6,67 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Parent-Document Chunk Linker for Hierarchical RAG
+<#960. MCP System Concept 57>
+**Track**: agents,-mcp-systems | **Rank**: #960 of 1072 | **Points**: 40 XP
 
-**Rank #487** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `link_parent_child_chunks(child_chunks, parent_documents, token_budget)`. In hierarchical RAG, search hits are fine-grained child chunks, but the generator needs full parent documents. Given a list of retrieved child chunks (each with `child_id`, `parent_id`, `score`), group them by `parent_id`. For each parent, compute its `max_score` (maximum score among its matched children, rounded to 4 decimals), collect all matching `child_ids` sorted lexicographically, and look up `token_count` from `parent_documents[pid]`. Sort candidate parents by `max_score` descending (tie-breaker: `parent_id` ascending), and greedily select parents that fit within `token_budget`. Return a dictionary with `selected_parents` (list of selected parent dicts), `total_tokens`, and `remaining_budget`. Raise `ValueError` if `token_budget <= 0`, or `KeyError` if any child references an unknown parent. Prerequisite: `agents-mcp-systems-prob-56`.
+Implement MCP System Concept 57 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-57" />
-
-<Solution>
-
-```python
-def link_parent_child_chunks(child_chunks, parent_documents, token_budget):
-    if token_budget <= 0:
-        raise ValueError("token_budget must be positive")
-    groups = {}
-    for c in child_chunks:
-        pid = c["parent_id"]
-        if pid not in parent_documents:
-            raise KeyError(f"Unknown parent_id: {pid}")
-        if pid not in groups:
-            groups[pid] = []
-        groups[pid].append(c)
-    
-    parent_summaries = []
-    for pid, children in groups.items():
-        max_score = max(c["score"] for c in children)
-        child_ids = sorted(c["child_id"] for c in children)
-        parent_tokens = parent_documents[pid]["token_count"]
-        parent_summaries.append({
-            "parent_id": pid,
-            "max_score": round(max_score, 4),
-            "token_count": parent_tokens,
-            "child_ids": child_ids
-        })
-    
-    parent_summaries.sort(key=lambda x: (-x["max_score"], x["parent_id"]))
-    
-    selected = []
-    total_tokens = 0
-    for p in parent_summaries:
-        if total_tokens + p["token_count"] <= token_budget:
-            selected.append(p)
-            total_tokens += p["token_count"]
-            
-    return {
-        "selected_parents": selected,
-        "total_tokens": total_tokens,
-        "remaining_budget": token_budget - total_tokens
-    }
-```
-
-### Key Concept: Parent-document retrieval decouples the embedding unit from the generation unit, solving the needle-in-a-haystack problem while avoiding fragmentary context.
-
-**Constraints**:
-- token_budget > 0.
-- child_ids within each parent summary must be sorted alphabetically.
-- Candidates sorted by (-max_score, parent_id).
-- Greedy selection stops when the next candidate exceeds remaining budget.
-- Raise KeyError if parent_id not in parent_documents.
-
-</Solution>

@@ -6,30 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Jaccard Keyword Relevance for RAG Pre-Filtering
+<#995. MCP System Concept 29>
+**Track**: agents,-mcp-systems | **Rank**: #995 of 1072 | **Points**: 40 XP
 
-**Rank #459** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `jaccard_relevance(query, chunk)`, a cheap lexical-overlap score real RAG pipelines use as a fast pre-filter (or a component of a hybrid score) before ever running an expensive embedding similarity comparison. Prerequisite: `agents-mcp-systems-prob-28`.
+Implement MCP System Concept 29 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-29" />
-
-<Solution>
-
-```python
-import re
-
-def jaccard_relevance(query, chunk):
-    q_tokens = set(re.findall(r"[a-z0-9]+", query.lower()))
-    c_tokens = set(re.findall(r"[a-z0-9]+", chunk.lower()))
-    if not q_tokens or not c_tokens:
-        raise ValueError("query and chunk must both contain at least one token")
-    return len(q_tokens & c_tokens) / len(q_tokens | c_tokens)
-```
-
-Jaccard similarity, unlike cosine similarity on embeddings, only ever looks at exact vocabulary overlap -- it has no notion of synonyms or semantic closeness, which is exactly why it is used as a cheap lexical signal alongside (not instead of) embedding-based relevance in a hybrid pipeline.
-
-</Solution>

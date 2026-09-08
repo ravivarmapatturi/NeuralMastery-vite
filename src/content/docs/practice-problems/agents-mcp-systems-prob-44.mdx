@@ -6,33 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Check an Agent Conversation Turn Budget
+<#192. MCP System Concept 44>
+**Track**: agents,-mcp-systems | **Rank**: #192 of 1072 | **Points**: 40 XP
 
-**Rank #474** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `has_exceeded_turn_budget(turns, max_turns)`, the turn-budget guard an agent loop checks before letting itself keep going -- counting total LLM-costing turns regardless of what the agent is doing, so a runaway agent doing different things every turn still gets capped. Prerequisite: `agents-mcp-systems-prob-43`.
+Implement MCP System Concept 44 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-44" />
-
-<Solution>
-
-```python
-def has_exceeded_turn_budget(turns, max_turns):
-    if max_turns <= 0:
-        raise ValueError("max_turns must be positive")
-    valid_roles = {"user", "assistant", "tool"}
-    count = 0
-    for role in turns:
-        if role not in valid_roles:
-            raise ValueError(f"unknown role: {role!r}")
-        if role == "assistant":
-            count += 1
-    return count >= max_turns
-```
-
-This complements (not duplicates) consecutive tool-loop detection -- a loop guard catches an agent stuck repeating the same action, while a turn budget catches an agent that is making real progress but simply taking too many LLM calls to ever finish.
-
-</Solution>

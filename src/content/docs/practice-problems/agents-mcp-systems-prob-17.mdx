@@ -6,29 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Parse an MCP Resource URI
+<#83. MCP System Concept 17>
+**Track**: agents,-mcp-systems | **Rank**: #83 of 1072 | **Points**: 40 XP
 
-**Rank #447** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `parse_mcp_resource_uri(uri, allowed_schemes)`, splitting an MCP resource URI into `(scheme, path)` and validating the scheme against an allowlist -- the check an MCP client needs before fetching a resource a server names. Prerequisite: `agents-mcp-systems-prob-16`.
+Implement MCP System Concept 17 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-17" />
-
-<Solution>
-
-```python
-def parse_mcp_resource_uri(uri, allowed_schemes):
-    if "://" not in uri:
-        raise ValueError(f"malformed resource URI: {uri!r}")
-    scheme, path = uri.split("://", 1)
-    if scheme not in allowed_schemes:
-        raise ValueError(f"unsupported scheme: {scheme!r}")
-    return (scheme, path)
-```
-
-Validating the scheme against an explicit allowlist (not just "does it parse") is the real security-relevant step -- an MCP client blindly fetching whatever scheme a server names is exactly the kind of resource-access bug an allowlist prevents.
-
-</Solution>

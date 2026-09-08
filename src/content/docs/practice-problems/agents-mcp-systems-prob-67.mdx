@@ -6,81 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# PagedAttention KV-Cache Block Allocator
+<#260. MCP System Concept 67>
+**Track**: agents,-mcp-systems | **Rank**: #260 of 1072 | **Points**: 40 XP
 
-**Rank #497** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `allocate_paged_kv_cache(total_blocks, block_size, events)`. In high-throughput LLM serving, continuous batching dynamically manages KV cache memory in fixed-size blocks (e.g. 16 tokens/block). Given `total_blocks` (integer pool of available IDs `[0, 1, ..., total_blocks - 1]`), `block_size` (capacity per block in tokens), and a list of sequence events, process events in order: (1) `{'action': 'allocate', 'seq_id': id, 'tokens': N}`: allocates $\lceil N / \text{block\_size} \rceil$ blocks from the free pool in ascending ID order; (2) `{'action': 'append', 'seq_id': id, 'tokens': N}`: increases token count by $N$ and allocates any additional blocks needed; (3) `{'action': 'free', 'seq_id': id}`: releases all blocks allocated to `seq_id` back to the free pool. If an allocation or append cannot be satisfied due to lack of free blocks, immediately abort and return `{"status": "OOM", "failed_seq": seq_id, "free_blocks": len(free_pool)}`. If all events succeed, return `{"status": "SUCCESS", "free_blocks": len(free_pool), "allocations": {seq_id: [blocks]}}` with allocations sorted by sequence ID. Prerequisite: `agents-mcp-systems-prob-66`.
+Implement MCP System Concept 67 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-67" />
-
-<Solution>
-
-```python
-def allocate_paged_kv_cache(total_blocks, block_size, events):
-    if total_blocks <= 0 or block_size <= 0:
-        raise ValueError("total_blocks and block_size must be positive")
-    
-    free_pool = list(range(total_blocks))
-    allocations = {}
-    seq_tokens = {}
-    
-    for ev in events:
-        seq = ev["seq_id"]
-        action = ev["action"]
-        if action == "allocate":
-            tokens = ev["tokens"]
-            needed = math.ceil(tokens / block_size)
-            if len(free_pool) < needed:
-                return {
-                    "status": "OOM",
-                    "failed_seq": seq,
-                    "free_blocks": len(free_pool)
-                }
-            assigned = [free_pool.pop(0) for _ in range(needed)]
-            allocations[seq] = assigned
-            seq_tokens[seq] = tokens
-        elif action == "append":
-            new_tokens = ev["tokens"]
-            current_tokens = seq_tokens.get(seq, 0)
-            updated_tokens = current_tokens + new_tokens
-            current_blocks = len(allocations.get(seq, []))
-            needed_blocks = math.ceil(updated_tokens / block_size)
-            additional = needed_blocks - current_blocks
-            if additional > 0:
-                if len(free_pool) < additional:
-                    return {
-                        "status": "OOM",
-                        "failed_seq": seq,
-                        "free_blocks": len(free_pool)
-                    }
-                assigned = [free_pool.pop(0) for _ in range(additional)]
-                allocations[seq].extend(assigned)
-            seq_tokens[seq] = updated_tokens
-        elif action == "free":
-            if seq in allocations:
-                released = allocations.pop(seq)
-                free_pool.extend(released)
-                free_pool.sort()
-                seq_tokens.pop(seq, None)
-                
-    return {
-        "status": "SUCCESS",
-        "free_blocks": len(free_pool),
-        "allocations": {s: allocations[s] for s in sorted(allocations.keys())}
-    }
-```
-
-### Key Concept: PagedAttention mirrors OS virtual memory: sequences store non-contiguous block pointers, reducing KV cache waste from 60-80% down to under 4%.
-
-**Constraints**:
-- total_blocks > 0, block_size > 0.
-- Free blocks are drawn in ascending order of ID.
-- Freed blocks are returned to the pool in sorted order.
-- OOM immediately halts simulation and reports failure state.
-- Returned allocations dictionary sorted by seq_id.
-
-</Solution>

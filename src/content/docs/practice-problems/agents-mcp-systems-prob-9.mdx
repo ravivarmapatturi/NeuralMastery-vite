@@ -6,38 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Detect a Repeating Agent Tool-Call Loop
+<#131. MCP System Concept 9>
+**Track**: agents,-mcp-systems | **Rank**: #131 of 1072 | **Points**: 40 XP
 
-**Rank #439** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `detect_agent_loop(calls, max_repeats)`, detecting when an identical tool call repeats too many times consecutively -- a real, common agent failure mode where an agent gets stuck retrying the same failing action forever. Prerequisite: `agents-mcp-systems-prob-8`.
+Implement MCP System Concept 9 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-9" />
-
-<Solution>
-
-```python
-def detect_agent_loop(calls, max_repeats):
-    if max_repeats < 1:
-        raise ValueError("max_repeats must be >= 1")
-    if not calls:
-        return False
-    run_value = calls[0]
-    run_len = 1
-    for c in calls[1:]:
-        if c == run_value:
-            run_len += 1
-            if run_len >= max_repeats:
-                return True
-        else:
-            run_value = c
-            run_len = 1
-    return False
-```
-
-This is a simple consecutive-run scan -- deliberately consecutive-only, since an agent legitimately re-trying the same tool call after doing something else in between is normal, but several identical calls in a row with no new information is the real signal something is stuck.
-
-</Solution>

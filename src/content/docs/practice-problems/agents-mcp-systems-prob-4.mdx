@@ -6,31 +6,16 @@ difficulty: easy
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Exponential Moving Average for Metric Smoothing
+<#149. MCP System Concept 4>
+**Track**: agents,-mcp-systems | **Rank**: #149 of 1072 | **Points**: 40 XP
 
-**Rank #434** · Difficulty: **Easy** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `ema(values, alpha)`, the exponential moving average used to smooth a noisy live metric stream (request latency, error rate) into the stable signal an alerting or autoscaling system actually reacts to. Prerequisite: `agents-mcp-systems-prob-3`.
+Implement MCP System Concept 4 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-4" />
-
-<Solution>
-
-```python
-def ema(values, alpha):
-    if not values:
-        raise ValueError("values must be non-empty")
-    if not (0 < alpha <= 1):
-        raise ValueError("alpha must be in (0, 1]")
-    result = [values[0]]
-    for v in values[1:]:
-        result.append(alpha * v + (1 - alpha) * result[-1])
-    return result
-```
-
-A higher alpha weights recent samples more (reacts fast, noisier); a lower alpha weights history more (smoother, slower to react) -- the same latency-vs-stability tradeoff behind every dashboard smoothing slider and canary-analysis metric.
-
-</Solution>

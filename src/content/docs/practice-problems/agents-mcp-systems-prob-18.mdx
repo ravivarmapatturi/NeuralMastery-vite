@@ -6,34 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Compute a Latency Percentile (p95/p99)
+<#59. MCP System Concept 18>
+**Track**: agents,-mcp-systems | **Rank**: #59 of 1072 | **Points**: 40 XP
 
-**Rank #448** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `percentile(values, p)`, computing a percentile via linear interpolation between ranks (the same method `numpy.percentile` uses by default) -- the calculation every p95/p99 SLO dashboard is built on, since a mean latency hides exactly the slow-tail requests an SLO cares about. Prerequisite: `agents-mcp-systems-prob-17`.
+Implement MCP System Concept 18 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-18" />
-
-<Solution>
-
-```python
-def percentile(values, p):
-    if not values:
-        raise ValueError("values must be non-empty")
-    if not (0 <= p <= 100):
-        raise ValueError("p must be between 0 and 100")
-    s = sorted(values)
-    n = len(s)
-    rank = (p / 100) * (n - 1)
-    lower = int(rank)
-    upper = lower + 1 if lower < n - 1 else lower
-    weight = rank - lower
-    return s[lower] + (s[upper] - s[lower]) * weight
-```
-
-p99 latency (not average latency) is the standard SLO metric because it directly answers "how bad is the worst-affecting-real-users tail," which an average can hide behind a large number of fast requests.
-
-</Solution>

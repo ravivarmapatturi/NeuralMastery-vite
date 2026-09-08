@@ -6,43 +6,16 @@ difficulty: medium
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CLIP-Style Zero-Shot Classification
+<#614. MCP System Concept 14>
+**Track**: agents,-mcp-systems | **Rank**: #614 of 1072 | **Points**: 40 XP
 
-**Rank #444** · Difficulty: **Medium** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `clip_zero_shot_predict(image_embedding, label_embeddings, temperature)`. No classifier head is trained at all -- CLIP classifies an image by comparing its embedding against a set of text label embeddings ("a photo of a cat", "a photo of a dog", ...) and taking a temperature-scaled softmax over the similarities. Prerequisite: `agents-mcp-systems-prob-13`.
+Implement MCP System Concept 14 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-14" />
-
-<Solution>
-
-```python
-import math
-
-def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
-    if temperature <= 0:
-        raise ValueError("temperature must be positive")
-    if not label_embeddings:
-        raise ValueError("label_embeddings must be non-empty")
-
-    def cos(a, b):
-        dot = sum(x * y for x, y in zip(a, b))
-        na = math.sqrt(sum(x * x for x in a))
-        nb = math.sqrt(sum(x * x for x in b))
-        if na == 0 or nb == 0:
-            raise ValueError("zero vector has undefined cosine similarity")
-        return dot / (na * nb)
-
-    sims = [cos(image_embedding, lbl) / temperature for lbl in label_embeddings]
-    m = max(sims)
-    exps = [math.exp(s - m) for s in sims]
-    total = sum(exps)
-    return [e / total for e in exps]
-```
-
-A lower temperature sharpens the distribution toward the single best-matching label (more confident, more decisive); a higher temperature flattens it toward uniform -- this is the same temperature-scaling knob used in LLM sampling, applied here to a similarity-based classifier instead of next-token logits.
-
-</Solution>

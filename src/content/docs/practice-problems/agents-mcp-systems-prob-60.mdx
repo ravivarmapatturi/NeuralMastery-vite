@@ -6,71 +6,16 @@ difficulty: hard
 topic: agents,-mcp-systems
 ---
 
-import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Streaming Histogram Percentile Estimator
+<#260. MCP System Concept 60>
+**Track**: agents,-mcp-systems | **Rank**: #260 of 1072 | **Points**: 40 XP
 
-**Rank #490** · Difficulty: **Hard** · Stage: **Stage 8: RAG, Agents, MCP & Distributed Systems** · Category: **Agents, MCP & Systems**
+## Overview
 
-Implement `streaming_p99_latency(bucket_boundaries, observations, percentile=99.0)`. In large-scale model serving clusters (Triton / vLLM), tracking tail latencies requires online histogram buckets. Given a strictly increasing list of bucket upper bounds (e.g. `[10.0, 50.0, 100.0, 500.0, float('inf')]`, where bucket 0 covers `(0, 10.0]`, bucket 1 covers `(10.0, 50.0]`, etc.) and a list of observed latency floats, tally counts into the first bucket whose upper bound is `>= observation`. Compute the target observation rank as `(percentile / 100.0) * N`. Find the bucket $B$ containing this rank, and compute the estimated percentile using linear interpolation: `lower + ((rank - prev_cum) / count) * (upper - lower)`. If $B$ is the infinite bucket, return `lower`. Return a dictionary with `total_count`, `bucket_counts`, `target_percentile`, and `estimated_value` rounded to 2 decimal places. Prerequisite: `agents-mcp-systems-prob-59`.
+Implement MCP System Concept 60 in the agents,-mcp-systems track.
+
+## Task
+
+See the playground for detailed specifications.
 
 <PracticePlayground problemId="agents-mcp-systems-prob-60" />
-
-<Solution>
-
-```python
-def streaming_p99_latency(bucket_boundaries, observations, percentile=99.0):
-    if not bucket_boundaries or not observations:
-        raise ValueError("inputs cannot be empty")
-    if percentile < 0.0 or percentile > 100.0:
-        raise ValueError("percentile must be between 0 and 100")
-    
-    counts = [0] * len(bucket_boundaries)
-    for obs in observations:
-        for b, bound in enumerate(bucket_boundaries):
-            if obs <= bound:
-                counts[b] += 1
-                break
-                
-    N = len(observations)
-    target_rank = (percentile / 100.0) * N
-    
-    cum = 0
-    target_bucket = 0
-    prev_cum = 0
-    for b, c in enumerate(counts):
-        prev_cum = cum
-        cum += c
-        if cum >= target_rank:
-            target_bucket = b
-            break
-            
-    upper = bucket_boundaries[target_bucket]
-    lower = 0.0 if target_bucket == 0 else bucket_boundaries[target_bucket - 1]
-    
-    if math.isinf(upper):
-        est = lower
-    else:
-        bucket_count = counts[target_bucket]
-        fraction = (target_rank - prev_cum) / bucket_count if bucket_count > 0 else 0.0
-        est = lower + fraction * (upper - lower)
-        
-    return {
-        "total_count": N,
-        "bucket_counts": counts,
-        "target_percentile": percentile,
-        "estimated_value": round(est, 2)
-    }
-```
-
-### Key Concept: Prometheus histogram quantile estimation assumes uniform distribution of samples within each bucket, allowing O(1) space and constant-time aggregation across cluster nodes.
-
-**Constraints**:
-- bucket_boundaries must be non-empty and strictly increasing.
-- observations must be non-empty.
-- `0.0 <= percentile <= 100.0`.
-- Lower bound of bucket 0 is 0.0.
-- Return estimated_value rounded to 2 decimals.
-
-</Solution>
