@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #799. Pandas & Data Processing Pipelines Module 6: Problem 29"
 description: "Master #799. Pandas & Data Processing Pipelines Module 6: Problem 29 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,38 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #799. Pandas & Data Processing Pipelines Module 6: Problem 29
+# #799. Stream Watermarking and Late-Arrival Filter
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #799 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#799. Pandas & Data Processing Pipelines Module 6: Problem 29` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Track streaming watermarks and discard out-of-order records exceeding allowed event-time lag.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `watermark_stream_filter(stream, max_delay)`: maintain `watermark = -infinity`. For each event in `stream`: if `event['timestamp'] < watermark`, place in `rejected_events`. Otherwise, place in `accepted_events` and advance watermark: `watermark = max(watermark, event['timestamp'] - max_delay)`. Return dict `{"accepted_events": list[dict], "rejected_events": list[dict]}`.
 
 <PracticePlayground problemId="pandas-proc-prob-29" />
+
+<Solution>
+
+```python
+def watermark_stream_filter(stream, max_delay):
+    wm = -float('inf')
+    accepted, rejected = [], []
+    for ev in stream:
+        ts = ev['timestamp']
+        if ts < wm:
+            rejected.append(ev)
+        else:
+            accepted.append(ev)
+            wm = max(wm, ts - max_delay)
+    return {'accepted_events': accepted, 'rejected_events': rejected}
+```
+
+Updates the low-watermark threshold and filters out late-arriving temporal events.
+
+</Solution>

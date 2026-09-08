@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #770. NumPy & Vectorized Computation Module 6: Problem 30"
 description: "Master #770. NumPy & Vectorized Computation Module 6: Problem 30 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,39 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #770. NumPy & Vectorized Computation Module 6: Problem 30
+# #770. FlashAttention Online Softmax Block Accumulator
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #770 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#770. NumPy & Vectorized Computation Module 6: Problem 30` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Merge two partitioned attention blocks using online softmax rescaling without materializing the full attention matrix.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_6_problem_30`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_online_softmax_blocks(block_maxes, block_sums, block_weights)`: given two blocks with max logits `m_1, m_2`, exponential sums `l_1, l_2`, and unnormalized output accumulators `O_1, O_2`, calculate new maximum `m_new = max(m_1, m_2)`. Rescale factors `alpha_1 = exp(m_1 - m_new)` and `alpha_2 = exp(m_2 - m_new)`. Compute merged sum `l_new = alpha_1 * l_1 + alpha_2 * l_2` and output `O_new = (alpha_1 * O_1 + alpha_2 * O_2) / l_new`. Return dict with keys `merged_max`, `merged_sum`, and `merged_output` rounded to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-30" />
+
+<Solution>
+
+```python
+import math
+
+def merge_online_softmax_blocks(block_maxes, block_sums, block_weights):
+    m1, m2 = block_maxes[0], block_maxes[1]
+    l1, l2 = block_sums[0], block_sums[1]
+    O1, O2 = block_weights[0], block_weights[1]
+    m_new = max(m1, m2)
+    a1 = math.exp(m1 - m_new)
+    a2 = math.exp(m2 - m_new)
+    l_new = a1 * l1 + a2 * l2
+    O_new = [round(float((a1 * o1 + a2 * o2) / l_new), 4) for o1, o2 in zip(O1, O2)]
+    return {'merged_max': round(float(m_new), 4), 'merged_sum': round(float(l_new), 4), 'merged_output': O_new}
+```
+
+Implements the online softmax correction algorithm used in tiled attention kernels.
+
+</Solution>

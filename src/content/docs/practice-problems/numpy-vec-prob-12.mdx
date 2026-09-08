@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #752. NumPy & Vectorized Computation Module 3: Problem 12"
 description: "Master #752. NumPy & Vectorized Computation Module 3: Problem 12 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,33 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #752. NumPy & Vectorized Computation Module 3: Problem 12
+# #752. Vectorized Tile and Repeat Array Broadcasting
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #752 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#752. NumPy & Vectorized Computation Module 3: Problem 12` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Broadcast and replicate 2D matrices across row and column axes without nested copies.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `tile_matrix_2d(mat, reps_row, reps_col)`: replicate `mat` of shape `(H, W)` to produce an expanded matrix of shape `(H * reps_row, W * reps_col)` by repeating the original block structure.
 
 <PracticePlayground problemId="numpy-vec-prob-12" />
+
+<Solution>
+
+```python
+def tile_matrix_2d(mat, reps_row, reps_col):
+    tiled = []
+    for _ in range(reps_row):
+        for row in mat:
+            tiled.append(row * reps_col)
+    return tiled
+```
+
+Duplicates row items across columns then duplicates entire row blocks across rows.
+
+</Solution>

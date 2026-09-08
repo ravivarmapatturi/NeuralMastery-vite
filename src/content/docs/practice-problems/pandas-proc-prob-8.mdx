@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #778. Pandas & Data Processing Pipelines Module 2: Problem 8"
 description: "Master #778. Pandas & Data Processing Pipelines Module 2: Problem 8 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,42 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #778. Pandas & Data Processing Pipelines Module 2: Problem 8
+# #778. DataFrame As-Of Merge for Temporal Joins
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #778 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#778. Pandas & Data Processing Pipelines Module 2: Problem 8` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Join disparate time-series events onto asynchronously arriving quote streams based on backward temporal proximity.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_asof_temporal(left_events, right_quotes, tolerance)`: for each event in `left_events` at timestamp `t`, find the right record with the maximum `quote_t <= t` such that `t - quote_t <= tolerance`. Add quote fields prefixed with `'quote_'`. If no quote matches within tolerance, populate quote fields with `None`. Return merged event records.
 
 <PracticePlayground problemId="pandas-proc-prob-8" />
+
+<Solution>
+
+```python
+def merge_asof_temporal(left_events, right_quotes, tolerance):
+    merged = []
+    for ev in left_events:
+        t = ev['timestamp']
+        cands = [q for q in right_quotes if q['timestamp'] <= t and (t - q['timestamp']) <= tolerance]
+        res = dict(ev)
+        if cands:
+            best = max(cands, key=lambda q: q['timestamp'])
+            for k, v in best.items():
+                if k != 'timestamp': res[f'quote_{k}'] = v
+        else:
+            keys = {f'quote_{k}' for q in right_quotes for k in q if k != 'timestamp'}
+            for k in sorted(keys): res[k] = None
+        merged.append(res)
+    return merged
+```
+
+Locates the most recent matching record backwards in time within the given latency tolerance window.
+
+</Solution>

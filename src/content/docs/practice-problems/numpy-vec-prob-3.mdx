@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #743. NumPy & Vectorized Computation Module 1: Problem 3"
 description: "Master #743. NumPy & Vectorized Computation Module 1: Problem 3 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,32 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #743. NumPy & Vectorized Computation Module 1: Problem 3
+# #743. Vectorized Top-K Selection with Argpartition
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #743 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#743. NumPy & Vectorized Computation Module 1: Problem 3` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Extract the top-k highest scoring elements along with their original indices.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `top_k_elements(arr, k)`: select the `k` largest items in `arr`. Break ties by preserving lower original index first. Return a dict `{"values": list[float], "indices": list[int]}` where values are sorted descending and rounded to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-3" />
+
+<Solution>
+
+```python
+def top_k_elements(arr, k):
+    indexed = [(val, idx) for idx, val in enumerate(arr)]
+    indexed.sort(key=lambda x: (-x[0], x[1]))
+    top = indexed[:k]
+    return {'values': [round(float(x[0]), 4) for x in top], 'indices': [x[1] for x in top]}
+```
+
+Pair values with indices, sort by descending value and ascending index, and return top k.
+
+</Solution>

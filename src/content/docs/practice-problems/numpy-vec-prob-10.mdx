@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #750. NumPy & Vectorized Computation Module 2: Problem 10"
 description: "Master #750. NumPy & Vectorized Computation Module 2: Problem 10 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,32 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #750. NumPy & Vectorized Computation Module 2: Problem 10
+# #750. Vectorized Numerical Jacobian Estimation
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #750 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#750. NumPy & Vectorized Computation Module 2: Problem 10` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Estimate the multivariable Jacobian derivative matrix via central finite differences.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `estimate_jacobian(f_outputs_pos, f_outputs_neg, eps)`: given evaluations `f(x + eps * e_j)` and `f(x - eps * e_j)` for each basis direction `j in 0..n-1`, compute Jacobian `J[i][j] = (f_i(x + eps*e_j) - f_i(x - eps*e_j)) / (2 * eps)`. Return matrix `J` of shape `(m, n)` rounded to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-10" />
+
+<Solution>
+
+```python
+def estimate_jacobian(f_outputs_pos, f_outputs_neg, eps):
+    n = len(f_outputs_pos)
+    m = len(f_outputs_pos[0])
+    J = [[round(float((f_outputs_pos[j][i] - f_outputs_neg[j][i]) / (2.0 * eps)), 4) for j in range(n)] for i in range(m)]
+    return J
+```
+
+Assembles central difference approximations across coordinate axes into the Jacobian matrix.
+
+</Solution>

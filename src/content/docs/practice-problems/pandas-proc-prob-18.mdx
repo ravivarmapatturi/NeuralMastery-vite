@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #788. Pandas & Data Processing Pipelines Module 4: Problem 18"
 description: "Master #788. Pandas & Data Processing Pipelines Module 4: Problem 18 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,40 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #788. Pandas & Data Processing Pipelines Module 4: Problem 18
+# #788. Dual DataFrame Reconciliation Auditor
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #788 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#788. Pandas & Data Processing Pipelines Module 4: Problem 18` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Audit differences between historical and current tabular snapshots to detect modified, inserted, and deleted records.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `reconcile_dataframes(source_df, target_df, primary_key)`: compare two datasets indexed by `primary_key`. Identify `added_keys` (in target but not source) and `removed_keys` (in source but not target). For keys present in both, identify field-level mismatches as `{"key": k, "field": col, "source": s_val, "target": t_val}`. Return dictionary with keys `added_keys`, `removed_keys`, and `discrepancies`.
 
 <PracticePlayground problemId="pandas-proc-prob-18" />
+
+<Solution>
+
+```python
+def reconcile_dataframes(source_df, target_df, primary_key):
+    src = {r[primary_key]: r for r in source_df}
+    tgt = {r[primary_key]: r for r in target_df}
+    added = sorted([k for k in tgt if k not in src])
+    removed = sorted([k for k in src if k not in tgt])
+    discrepancies = []
+    for k in sorted(src.keys()):
+        if k in tgt:
+            cols = sorted(set(src[k].keys()) | set(tgt[k].keys()))
+            for c in cols:
+                if c != primary_key and src[k].get(c) != tgt[k].get(c):
+                    discrepancies.append({'key': k, 'field': c, 'source': src[k].get(c), 'target': tgt[k].get(c)})
+    return {'added_keys': added, 'removed_keys': removed, 'discrepancies': discrepancies}
+```
+
+Builds key lookup dictionaries and conducts two-way differential audit of keys and attributes.
+
+</Solution>

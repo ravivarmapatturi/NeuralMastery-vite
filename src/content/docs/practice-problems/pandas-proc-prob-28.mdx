@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #798. Pandas & Data Processing Pipelines Module 6: Problem 28"
 description: "Master #798. Pandas & Data Processing Pipelines Module 6: Problem 28 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,45 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #798. Pandas & Data Processing Pipelines Module 6: Problem 28
+# #798. Correlation Matrix with Significance Masking
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #798 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#798. Pandas & Data Processing Pipelines Module 6: Problem 28` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute full pairwise Pearson correlation matrices across tabular features with significance threshold masking.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `compute_correlation_with_mask(matrix_cols)`: given a dictionary of numeric column arrays, calculate Pearson correlation `r(X, Y) = cov(X, Y) / (sigma_X * sigma_Y)` for each feature pair. Construct `significant_mask` setting `True` where `|r| >= 0.5` and `False` otherwise. Return `{"correlation": {c1: {c2: r}}, "significant_mask": {c1: {c2: bool}}}` with correlations rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-28" />
+
+<Solution>
+
+```python
+import math
+
+def compute_correlation_with_mask(matrix_cols):
+    cols = sorted(matrix_cols.keys())
+    n = len(matrix_cols[cols[0]]) if cols else 0
+    means = {c: sum(matrix_cols[c]) / n for c in cols}
+    stds = {c: math.sqrt(sum((x - means[c])**2 for x in matrix_cols[c])) for c in cols}
+    corr, mask = {}, {}
+    for c1 in cols:
+        r_row, m_row = {}, {}
+        for c2 in cols:
+            denom = stds[c1] * stds[c2]
+            r = sum((x - means[c1]) * (y - means[c2]) for x, y in zip(matrix_cols[c1], matrix_cols[c2])) / denom if denom > 1e-12 else (1.0 if c1 == c2 else 0.0)
+            r_row[c2] = round(float(r), 4)
+            m_row[c2] = abs(r) >= 0.5
+        corr[c1] = r_row
+        mask[c1] = m_row
+    return {'correlation': corr, 'significant_mask': mask}
+```
+
+Computes centered standardized cross-products for all feature pairs and applies threshold mask.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #767. NumPy & Vectorized Computation Module 6: Problem 27"
 description: "Master #767. NumPy & Vectorized Computation Module 6: Problem 27 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,33 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #767. NumPy & Vectorized Computation Module 6: Problem 27
+# #767. Vectorized Householder Reflection Transformation
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #767 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#767. NumPy & Vectorized Computation Module 6: Problem 27` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Apply an elementary Householder reflection to a vector without explicitly building the full projection matrix.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `apply_householder_reflection(v, x)`: compute `H x = x - 2 * (v^T x / v^T v) * v`. If `v^T v < 1e-12`, return `x`. Round entries of the reflected vector to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-27" />
+
+<Solution>
+
+```python
+def apply_householder_reflection(v, x):
+    dot_vv = sum(a * a for a in v)
+    if dot_vv < 1e-12:
+        return [round(float(a), 4) for a in x]
+    scalar = 2.0 * sum(a * b for a, b in zip(v, x)) / dot_vv
+    return [round(float(a - scalar * b), 4) for a, b in zip(x, v)]
+```
+
+Directly computes the linear combination x - 2*(v.x/v.v)*v in O(n) time.
+
+</Solution>

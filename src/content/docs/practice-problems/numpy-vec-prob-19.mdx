@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #759. NumPy & Vectorized Computation Module 4: Problem 19"
 description: "Master #759. NumPy & Vectorized Computation Module 4: Problem 19 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,41 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #759. NumPy & Vectorized Computation Module 4: Problem 19
+# #759. Vectorized 2D Max-Pooling Operation
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #759 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#759. NumPy & Vectorized Computation Module 4: Problem 19` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Downsample 2D feature activations using spatial maximum pooling.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `max_pool_2d(grid, pool_size, stride)`: slide a window of size `pool_size x pool_size` with step `stride` across `grid` of shape `(H, W)`. At each window, select the maximum activation. The output spatial shape is `((H - pool_size) // stride + 1, (W - pool_size) // stride + 1)`. Round all outputs to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-19" />
+
+<Solution>
+
+```python
+def max_pool_2d(grid, pool_size, stride):
+    H, W = len(grid), len(grid[0]) if grid else 0
+    outH = (H - pool_size) // stride + 1
+    outW = (W - pool_size) // stride + 1
+    res = []
+    for i in range(outH):
+        row = []
+        r_start = i * stride
+        for j in range(outW):
+            c_start = j * stride
+            m = max(grid[r_start + ki][c_start + kj] for ki in range(pool_size) for kj in range(pool_size))
+            row.append(round(float(m), 4))
+        res.append(row)
+    return res
+```
+
+Slides pool_size window with stride and takes the maximum over each local patch.
+
+</Solution>

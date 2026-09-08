@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #782. Pandas & Data Processing Pipelines Module 3: Problem 12"
 description: "Master #782. Pandas & Data Processing Pipelines Module 3: Problem 12 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,39 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #782. Pandas & Data Processing Pipelines Module 3: Problem 12
+# #782. Nested JSON Schema Flattening Engine
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #782 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#782. Pandas & Data Processing Pipelines Module 3: Problem 12` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Recursively flatten hierarchical nested JSON trees into normalized 1D relational column schemas.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `flatten_json_payload(payload, sep)`: recursively traverse `payload`. Concatenate parent and child dictionary keys joined by delimiter `sep` (e.g. `'user_profile_city'`). Primitive values (ints, floats, strings, booleans, lists) are assigned directly. Return flattened key-value dictionary.
 
 <PracticePlayground problemId="pandas-proc-prob-12" />
+
+<Solution>
+
+```python
+def flatten_json_payload(payload, sep='_'):
+    flat = {}
+    def recurse(d, prefix=''):
+        for k in sorted(d.keys()):
+            v = d[k]
+            new_k = f'{prefix}{sep}{k}' if prefix else k
+            if isinstance(v, dict):
+                recurse(v, new_k)
+            else:
+                flat[new_k] = v
+    recurse(payload)
+    return flat
+```
+
+Recursively expands nested key paths and builds flattened relational record.
+
+</Solution>

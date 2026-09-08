@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #793. Pandas & Data Processing Pipelines Module 5: Problem 23"
 description: "Master #793. Pandas & Data Processing Pipelines Module 5: Problem 23 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,43 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #793. Pandas & Data Processing Pipelines Module 5: Problem 23
+# #793. Markov Navigation State Transition Matrix
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #793 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#793. Pandas & Data Processing Pipelines Module 5: Problem 23` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Estimate discrete-time first-order Markov transition probabilities from sequential user session logs.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `build_markov_transition_matrix(sequences)`: count bigram transitions `(s_from, s_to)` across all sequences. For each state `s_from`, normalize transition counts by total outgoing transitions to form probability distribution over all unique states. If a state has no outgoing transitions, probabilities are 0.0. Return nested dict `{s_from: {s_to: prob}}` sorted by state names with probabilities rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-23" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def build_markov_transition_matrix(sequences):
+    counts = defaultdict(lambda: defaultdict(int))
+    states = set()
+    for seq in sequences:
+        for i in range(len(seq) - 1):
+            counts[seq[i]][seq[i+1]] += 1
+            states.add(seq[i])
+            states.add(seq[i+1])
+    sorted_states = sorted(list(states))
+    mat = {}
+    for sf in sorted_states:
+        tot = sum(counts[sf].values())
+        mat[sf] = {st: round(float(counts[sf][st] / tot if tot else 0.0), 4) for st in sorted_states}
+    return mat
+```
+
+Tallies bigram state transitions and computes row-wise conditional probabilities.
+
+</Solution>

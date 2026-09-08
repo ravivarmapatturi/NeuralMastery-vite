@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #746. NumPy & Vectorized Computation Module 2: Problem 6"
 description: "Master #746. NumPy & Vectorized Computation Module 2: Problem 6 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,38 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #746. NumPy & Vectorized Computation Module 2: Problem 6
+# #746. Vectorized Softmax with Temperature Scaling
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #746 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#746. NumPy & Vectorized Computation Module 2: Problem 6` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Apply temperature-scaled softmax normalization across batch logit matrices.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `temperature_softmax(logits, temperature)`: for each row `x`, scale logits by `1 / temperature`, subtract the row maximum for numerical stability, exponentiate, and normalize by row sum. Round probabilities to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-6" />
+
+<Solution>
+
+```python
+import math
+
+def temperature_softmax(logits, temperature):
+    out = []
+    for row in logits:
+        scaled = [x / temperature for x in row]
+        m = max(scaled)
+        exps = [math.exp(x - m) for x in scaled]
+        s = sum(exps)
+        out.append([round(float(e / s), 4) for e in exps])
+    return out
+```
+
+Scales logits, shifts by max for stability, exponentiates and divides by sum.
+
+</Solution>

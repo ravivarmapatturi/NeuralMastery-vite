@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #776. Pandas & Data Processing Pipelines Module 2: Problem 6"
 description: "Master #776. Pandas & Data Processing Pipelines Module 2: Problem 6 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,39 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #776. Pandas & Data Processing Pipelines Module 2: Problem 6
+# #776. Categorical Target Encoding with Empirical Bayes Smoothing
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #776 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#776. Pandas & Data Processing Pipelines Module 2: Problem 6` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Encode high-cardinality categorical features using empirical Bayes smoothed target statistics.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `smooth_target_encoding(categories, targets, m_prior)`: calculate the global target mean. For each category `c`, compute sample count `n_c` and empirical target mean `mean_c`. Compute smoothed score `S_c = (n_c * mean_c + m_prior * global_mean) / (n_c + m_prior)`. Return a dictionary containing `global_mean`, `encoding_map`, and `encoded_series` with all float values rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-6" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def smooth_target_encoding(categories, targets, m_prior):
+    gm = sum(targets) / len(targets) if targets else 0.0
+    cat_map = defaultdict(list)
+    for c, t in zip(categories, targets):
+        cat_map[c].append(t)
+    enc = {}
+    for c, v in cat_map.items():
+        n = len(v)
+        enc[c] = round(float((n * (sum(v) / n) + m_prior * gm) / (n + m_prior)), 4)
+    return {'global_mean': round(float(gm), 4), 'encoding_map': enc, 'encoded_series': [enc[c] for c in categories]}
+```
+
+Blends category sample mean with global prior mean weighted by sample size and m_prior parameter.
+
+</Solution>

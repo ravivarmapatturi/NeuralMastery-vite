@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #760. NumPy & Vectorized Computation Module 4: Problem 20"
 description: "Master #760. NumPy & Vectorized Computation Module 4: Problem 20 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,33 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #760. NumPy & Vectorized Computation Module 4: Problem 20
+# #760. Vectorized Matrix 1-Norm and Condition Number Estimate
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #760 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#760. NumPy & Vectorized Computation Module 4: Problem 20` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Estimate the numerical stability and sensitivity of a linear system via the matrix 1-norm condition number.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `matrix_condition_number_1norm(mat, inv_mat)`: compute the maximum column sum of absolute values `||M||_1 = max_j sum_i |M_{i, j}|` for both `mat` and its inverse `inv_mat`. Calculate the condition number `kappa_1 = ||mat||_1 * ||inv_mat||_1`. Return a dict `{"norm_A": float, "norm_inv": float, "condition_number": float}` rounded to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-20" />
+
+<Solution>
+
+```python
+def matrix_condition_number_1norm(mat, inv_mat):
+    n = len(mat)
+    norm_A = max(sum(abs(mat[i][j]) for i in range(n)) for j in range(n))
+    norm_inv = max(sum(abs(inv_mat[i][j]) for i in range(n)) for j in range(n))
+    cond = norm_A * norm_inv
+    return {'norm_A': round(float(norm_A), 4), 'norm_inv': round(float(norm_inv), 4), 'condition_number': round(float(cond), 4)}
+```
+
+Finds max column absolute sums for A and A_inv and multiplies them to obtain condition number.
+
+</Solution>

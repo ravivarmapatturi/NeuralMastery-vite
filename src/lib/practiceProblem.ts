@@ -60668,6 +60668,8567 @@ def nmi_clustering(labels_true, labels_pred):
 ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  'numpy-vec-prob-1': {
+    id: 'numpy-vec-prob-1',
+    title: "Vectorized 2D Convolution Operation",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'conv2d_valid',
+    functionSignature: "conv2d_valid(image: list[list[float]], kernel: list[list[float]]) -> list[list[float]]",
+    starterCode: `def conv2d_valid(image, kernel):
+    """Perform 2D cross-correlation convolution in 'valid' mode.
+    Round all output values to 4 decimal places."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute 2D discrete convolution cross-correlation in valid mode across a 2D matrix.",
+    taskDescription: "Implement `conv2d_valid(image, kernel)`: compute the valid 2D convolution between `image` of shape `H x W` and `kernel` of shape `kH x kW`. The output spatial dimensions are `(H - kH + 1) x (W - kW + 1)`. Each pixel `(i, j)` is the sum of element-wise products over the receptive field. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= kH <= H <= 100",
+      "1 <= kW <= W <= 100"
+],
+    hints: {
+      "small": "Loop over row indices 0..H-kH and column indices 0..W-kW.",
+      "strong": "Accumulate image[i+ki][j+kj] * kernel[ki][kj] for all ki in range(kH), kj in range(kW).",
+      "concept": "2D convolution extracts localized spatial features and forms the core primitive of convolutional neural nets."
+},
+    conceptConnections: [
+      {
+            "title": "CNN Architectures",
+            "route": "/practice/cv-cnn-prob-1",
+            "description": "Convolutional feature extraction"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3x3 Image 2x2 Kernel",
+            "input": {
+                  "image": [
+                        [
+                              1,
+                              2,
+                              3
+                        ],
+                        [
+                              4,
+                              5,
+                              6
+                        ],
+                        [
+                              7,
+                              8,
+                              9
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        6.0,
+                        8.0
+                  ],
+                  [
+                        12.0,
+                        14.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Identity diagonal kernel on 3x3."
+      },
+      {
+            "id": "tc2",
+            "label": "Sobel Horizontal Edge",
+            "input": {
+                  "image": [
+                        [
+                              10,
+                              10,
+                              10
+                        ],
+                        [
+                              0,
+                              0,
+                              0
+                        ],
+                        [
+                              -10,
+                              -10,
+                              -10
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              1,
+                              2,
+                              1
+                        ],
+                        [
+                              0,
+                              0,
+                              0
+                        ],
+                        [
+                              -1,
+                              -2,
+                              -1
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        80.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "3x3 kernel on 3x3 image yielding 1x1 output."
+      },
+      {
+            "id": "tc3",
+            "label": "Box Blur Kernel",
+            "input": {
+                  "image": [
+                        [
+                              1,
+                              2,
+                              3,
+                              4
+                        ],
+                        [
+                              5,
+                              6,
+                              7,
+                              8
+                        ],
+                        [
+                              9,
+                              10,
+                              11,
+                              12
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              0.25,
+                              0.25
+                        ],
+                        [
+                              0.25,
+                              0.25
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        3.5,
+                        4.5,
+                        5.5
+                  ],
+                  [
+                        7.5,
+                        8.5,
+                        9.5
+                  ]
+            ],
+            "hidden": true,
+            "description": "2x2 box filter on 3x4 image."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-2': {
+    id: 'numpy-vec-prob-2',
+    title: "Vectorized Matrix Kronecker Product",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'kronecker_product',
+    functionSignature: "kronecker_product(A: list[list[float]], B: list[list[float]]) -> list[list[float]]",
+    starterCode: `def kronecker_product(A, B):
+    """Compute the Kronecker product of matrix A and matrix B.
+    Return resulting matrix rounded to 4 decimal places."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute the tensor block Kronecker product between two matrices.",
+    taskDescription: "Implement `kronecker_product(A, B)`: given matrix `A` of shape `(m, n)` and matrix `B` of shape `(p, q)`, return their Kronecker product `A (x) B` of shape `(m*p, n*q)` where block `(i, j)` is `A[i][j] * B`. Round entries to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= m, n <= 20",
+      "1 <= p, q <= 20"
+],
+    hints: {
+      "small": "Row index in product is i * p + k; column index is j * q + l.",
+      "strong": "Construct (m*p) rows, each having (n*q) elements.",
+      "concept": "Kronecker products represent multi-qubit quantum states and structured covariance operators in vectorized form."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Operations",
+            "route": "/practice/math-num-prob-6",
+            "description": "Linear algebra foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identity 2x2 with 2x2",
+            "input": {
+                  "A": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              1
+                        ]
+                  ],
+                  "B": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              3,
+                              4
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        2.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        3.0,
+                        4.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        1.0,
+                        2.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        3.0,
+                        4.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Kronecker product with identity matrix."
+      },
+      {
+            "id": "tc2",
+            "label": "Arbitrary 2x2 Matrices",
+            "input": {
+                  "A": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              3,
+                              4
+                        ]
+                  ],
+                  "B": [
+                        [
+                              0,
+                              5
+                        ],
+                        [
+                              6,
+                              7
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        5.0,
+                        0.0,
+                        10.0
+                  ],
+                  [
+                        6.0,
+                        7.0,
+                        12.0,
+                        14.0
+                  ],
+                  [
+                        0.0,
+                        15.0,
+                        0.0,
+                        20.0
+                  ],
+                  [
+                        18.0,
+                        21.0,
+                        24.0,
+                        28.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Standard 2x2 Kronecker product."
+      },
+      {
+            "id": "tc3",
+            "label": "Rectangular 1x2 and 2x1",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              -1.0
+                        ]
+                  ],
+                  "B": [
+                        [
+                              3.0
+                        ],
+                        [
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        6.0,
+                        -3.0
+                  ],
+                  [
+                        8.0,
+                        -4.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Rectangular matrices Kronecker product."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-3': {
+    id: 'numpy-vec-prob-3',
+    title: "Vectorized Top-K Selection with Argpartition",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'top_k_elements',
+    functionSignature: "top_k_elements(arr: list[float], k: int) -> dict[str, list]",
+    starterCode: `def top_k_elements(arr, k):
+    """Extract top k largest elements and their original indices.
+    Return {'values': list[float], 'indices': list[int]} sorted descending by value."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Extract the top-k highest scoring elements along with their original indices.",
+    taskDescription: "Implement `top_k_elements(arr, k)`: select the `k` largest items in `arr`. Break ties by preserving lower original index first. Return a dict `{\"values\": list[float], \"indices\": list[int]}` where values are sorted descending and rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= k <= len(arr) <= 50,000"
+],
+    hints: {
+      "small": "Pair each item with its index `(val, idx)`.",
+      "strong": "Sort with key `lambda x: (-x[0], x[1])` to handle descending order and tie-breaking.",
+      "concept": "Top-k filtering is central to token beam search, retrieval reranking, and nearest-neighbor selection."
+},
+    conceptConnections: [
+      {
+            "title": "Softmax & Logits",
+            "route": "/practice/numpy-pandas-prob-16",
+            "description": "Top-k sampling from logits"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Basic 1D Top-3",
+            "input": {
+                  "arr": [
+                        12.5,
+                        4.2,
+                        55.1,
+                        9.8,
+                        33.0,
+                        1.1
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": {
+                  "values": [
+                        55.1,
+                        33.0,
+                        12.5
+                  ],
+                  "indices": [
+                        2,
+                        4,
+                        0
+                  ]
+            },
+            "hidden": false,
+            "description": "Extract top-3 largest values."
+      },
+      {
+            "id": "tc2",
+            "label": "Tied Values",
+            "input": {
+                  "arr": [
+                        5.0,
+                        5.0,
+                        2.0,
+                        8.0,
+                        8.0
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": {
+                  "values": [
+                        8.0,
+                        8.0
+                  ],
+                  "indices": [
+                        3,
+                        4
+                  ]
+            },
+            "hidden": false,
+            "description": "Top-2 with identical peak values."
+      },
+      {
+            "id": "tc3",
+            "label": "Negative Floats",
+            "input": {
+                  "arr": [
+                        -10.0,
+                        -2.5,
+                        -45.0,
+                        -1.2,
+                        -8.0
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": {
+                  "values": [
+                        -1.2,
+                        -2.5
+                  ],
+                  "indices": [
+                        3,
+                        1
+                  ]
+            },
+            "hidden": true,
+            "description": "All negative floats selection."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-4': {
+    id: 'numpy-vec-prob-4',
+    title: "Vectorized Strided 2D Window Extraction",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'extract_patches_2d',
+    functionSignature: "extract_patches_2d(grid: list[list[float]], patch_size: int, stride: int) -> list[list[list[float]]]",
+    starterCode: `def extract_patches_2d(grid, patch_size, stride):
+    """Extract square patches of shape patch_size x patch_size with given stride.
+    Return list of 2D patches."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Extract 2D sliding image patches across a grid with specified stride.",
+    taskDescription: "Implement `extract_patches_2d(grid, patch_size, stride)`: slide a window of size `patch_size x patch_size` across `grid` in row-major order with step `stride`. Only include fully contained patches. Return a list of 2D patches.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= patch_size <= min(H, W) <= 50",
+      "1 <= stride <= patch_size"
+],
+    hints: {
+      "small": "Increment row index by stride while i + patch_size `<=` H.",
+      "strong": "Extract slice `[row[j:j+patch_size] for row in grid[i:i+patch_size]]`.",
+      "concept": "Strided window extraction forms the basis of patch tokenization in Vision Transformers (ViT)."
+},
+    conceptConnections: [
+      {
+            "title": "Vision Transformers",
+            "route": "/practice/cv-cnn-prob-2",
+            "description": "ViT patch embedding preparation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "4x4 Grid Patch 2x2 Stride 2",
+            "input": {
+                  "grid": [
+                        [
+                              1,
+                              2,
+                              3,
+                              4
+                        ],
+                        [
+                              5,
+                              6,
+                              7,
+                              8
+                        ],
+                        [
+                              9,
+                              10,
+                              11,
+                              12
+                        ],
+                        [
+                              13,
+                              14,
+                              15,
+                              16
+                        ]
+                  ],
+                  "patch_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              5,
+                              6
+                        ]
+                  ],
+                  [
+                        [
+                              3,
+                              4
+                        ],
+                        [
+                              7,
+                              8
+                        ]
+                  ],
+                  [
+                        [
+                              9,
+                              10
+                        ],
+                        [
+                              13,
+                              14
+                        ]
+                  ],
+                  [
+                        [
+                              11,
+                              12
+                        ],
+                        [
+                              15,
+                              16
+                        ]
+                  ]
+            ],
+            "hidden": false,
+            "description": "Non-overlapping 2x2 patch tiling."
+      },
+      {
+            "id": "tc2",
+            "label": "3x3 Grid Patch 2x2 Stride 1",
+            "input": {
+                  "grid": [
+                        [
+                              1,
+                              2,
+                              3
+                        ],
+                        [
+                              4,
+                              5,
+                              6
+                        ],
+                        [
+                              7,
+                              8,
+                              9
+                        ]
+                  ],
+                  "patch_size": 2,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              4,
+                              5
+                        ]
+                  ],
+                  [
+                        [
+                              2,
+                              3
+                        ],
+                        [
+                              5,
+                              6
+                        ]
+                  ],
+                  [
+                        [
+                              4,
+                              5
+                        ],
+                        [
+                              7,
+                              8
+                        ]
+                  ],
+                  [
+                        [
+                              5,
+                              6
+                        ],
+                        [
+                              8,
+                              9
+                        ]
+                  ]
+            ],
+            "hidden": false,
+            "description": "Overlapping 2x2 patches on 3x3."
+      },
+      {
+            "id": "tc3",
+            "label": "5x5 Grid Patch 3x3 Stride 2",
+            "input": {
+                  "grid": [
+                        [
+                              0,
+                              1,
+                              2,
+                              3,
+                              4
+                        ],
+                        [
+                              5,
+                              6,
+                              7,
+                              8,
+                              9
+                        ],
+                        [
+                              10,
+                              11,
+                              12,
+                              13,
+                              14
+                        ],
+                        [
+                              15,
+                              16,
+                              17,
+                              18,
+                              19
+                        ],
+                        [
+                              20,
+                              21,
+                              22,
+                              23,
+                              24
+                        ]
+                  ],
+                  "patch_size": 3,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              0,
+                              1,
+                              2
+                        ],
+                        [
+                              5,
+                              6,
+                              7
+                        ],
+                        [
+                              10,
+                              11,
+                              12
+                        ]
+                  ],
+                  [
+                        [
+                              2,
+                              3,
+                              4
+                        ],
+                        [
+                              7,
+                              8,
+                              9
+                        ],
+                        [
+                              12,
+                              13,
+                              14
+                        ]
+                  ],
+                  [
+                        [
+                              10,
+                              11,
+                              12
+                        ],
+                        [
+                              15,
+                              16,
+                              17
+                        ],
+                        [
+                              20,
+                              21,
+                              22
+                        ]
+                  ],
+                  [
+                        [
+                              12,
+                              13,
+                              14
+                        ],
+                        [
+                              17,
+                              18,
+                              19
+                        ],
+                        [
+                              22,
+                              23,
+                              24
+                        ]
+                  ]
+            ],
+            "hidden": true,
+            "description": "3x3 patches with stride 2."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-5': {
+    id: 'numpy-vec-prob-5',
+    title: "Vectorized Pairwise Mahalanobis Distance",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'mahalanobis_distance',
+    functionSignature: "mahalanobis_distance(u: list[float], v: list[float], inv_cov: list[list[float]]) -> float",
+    starterCode: `def mahalanobis_distance(u, v, inv_cov):
+    """Compute Mahalanobis distance sqrt((u - v)^T * inv_cov * (u - v)).
+    Round float to 4 decimal places."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute the scale-invariant Mahalanobis distance using an inverse covariance matrix.",
+    taskDescription: "Implement `mahalanobis_distance(u, v, inv_cov)`: compute `D_M = sqrt((u - v)^T Sigma^{-1} (u - v))` where `inv_cov` is `Sigma^{-1}`. Return the distance rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Vectors have length d, 1 <= d <= 100",
+      "inv_cov is d x d symmetric positive definite"
+],
+    hints: {
+      "small": "Compute difference vector d = [a - b for a, b in zip(u, v)].",
+      "strong": "Multiply diff by inv_cov to get intermediate vector, then dot with diff.",
+      "concept": "Mahalanobis distance accounts for variance and cross-correlations between features."
+},
+    conceptConnections: [
+      {
+            "title": "Distance Metrics",
+            "route": "/practice/math-num-prob-1",
+            "description": "Vector norms and distances"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identity Covariance (Euclidean)",
+            "input": {
+                  "u": [
+                        1.0,
+                        2.0
+                  ],
+                  "v": [
+                        4.0,
+                        6.0
+                  ],
+                  "inv_cov": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 5.0,
+            "hidden": false,
+            "description": "Mahalanobis with identity inverse covariance."
+      },
+      {
+            "id": "tc2",
+            "label": "Correlated Inverse Covariance",
+            "input": {
+                  "u": [
+                        2.0,
+                        3.0
+                  ],
+                  "v": [
+                        1.0,
+                        1.0
+                  ],
+                  "inv_cov": [
+                        [
+                              2.0,
+                              -0.5
+                        ],
+                        [
+                              -0.5,
+                              1.5
+                        ]
+                  ]
+            },
+            "expectedOutput": 2.4495,
+            "hidden": false,
+            "description": "Mahalanobis with non-diagonal metric tensor."
+      },
+      {
+            "id": "tc3",
+            "label": "Identical Vectors",
+            "input": {
+                  "u": [
+                        5.0,
+                        -3.0
+                  ],
+                  "v": [
+                        5.0,
+                        -3.0
+                  ],
+                  "inv_cov": [
+                        [
+                              2.0,
+                              -0.5
+                        ],
+                        [
+                              -0.5,
+                              1.5
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true,
+            "description": "Zero distance identical vectors."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-6': {
+    id: 'numpy-vec-prob-6',
+    title: "Vectorized Softmax with Temperature Scaling",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'temperature_softmax',
+    functionSignature: "temperature_softmax(logits: list[list[float]], temperature: float) -> list[list[float]]",
+    starterCode: `def temperature_softmax(logits, temperature):
+    """Compute row-wise temperature-scaled softmax.
+    Round probabilities to 4 decimal places."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Apply temperature-scaled softmax normalization across batch logit matrices.",
+    taskDescription: "Implement `temperature_softmax(logits, temperature)`: for each row `x`, scale logits by `1 / temperature`, subtract the row maximum for numerical stability, exponentiate, and normalize by row sum. Round probabilities to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "temperature > 0.0",
+      "1 <= len(logits) <= 500"
+],
+    hints: {
+      "small": "Divide elements by temperature first.",
+      "strong": "Subtract max before exp to avoid floating point overflow.",
+      "concept": "Temperature scaling calibrates prediction confidence in classification and controls randomness in LLM generation."
+},
+    conceptConnections: [
+      {
+            "title": "LLM Sampling",
+            "route": "/practice/numpy-pandas-prob-16",
+            "description": "Vectorized softmax probabilities"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "T=1 Standard Logits",
+            "input": {
+                  "logits": [
+                        [
+                              2.0,
+                              1.0,
+                              0.1
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "temperature": 1.0
+            },
+            "expectedOutput": [
+                  [
+                        0.659,
+                        0.2424,
+                        0.0986
+                  ],
+                  [
+                        0.3333,
+                        0.3333,
+                        0.3333
+                  ]
+            ],
+            "hidden": false,
+            "description": "Batch of 2 rows at unit temperature."
+      },
+      {
+            "id": "tc2",
+            "label": "High Temperature T=2.5",
+            "input": {
+                  "logits": [
+                        [
+                              4.0,
+                              2.0
+                        ]
+                  ],
+                  "temperature": 2.5
+            },
+            "expectedOutput": [
+                  [
+                        0.69,
+                        0.31
+                  ]
+            ],
+            "hidden": false,
+            "description": "Higher entropy softer distribution."
+      },
+      {
+            "id": "tc3",
+            "label": "Low Temperature T=0.2 (Sharp)",
+            "input": {
+                  "logits": [
+                        [
+                              1.0,
+                              0.5,
+                              -0.5
+                        ]
+                  ],
+                  "temperature": 0.2
+            },
+            "expectedOutput": [
+                  [
+                        0.9237,
+                        0.0758,
+                        0.0005
+                  ]
+            ],
+            "hidden": true,
+            "description": "Near argmax peaked distribution."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-7': {
+    id: 'numpy-vec-prob-7',
+    title: "Vectorized One-Hot Decoding and Cross-Entropy",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'decode_and_cross_entropy',
+    functionSignature: "decode_and_cross_entropy(y_pred: list[list[float]], y_true_onehot: list[list[int]]) -> dict[str, any]",
+    starterCode: `def decode_and_cross_entropy(y_pred, y_true_onehot):
+    """Decode predicted class labels and compute mean categorical cross-entropy.
+    Return {'decoded_labels': list[int], 'cross_entropy': float}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Decode predicted class indices from softmax probabilities and calculate average categorical cross-entropy loss.",
+    taskDescription: "Implement `decode_and_cross_entropy(y_pred, y_true_onehot)`: for each sample, find `argmax(y_pred)` as `decoded_labels`. Compute the cross entropy `-sum(y_true * log(y_pred))` per sample and return average `cross_entropy` across all samples rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "y_pred elements sum to ~1.0",
+      "1 <= len(y_pred) <= 1000"
+],
+    hints: {
+      "small": "Find index of max in y_true_onehot to get ground truth target.",
+      "strong": "Cross entropy simplifies to `-log(y_pred[true_class])`.",
+      "concept": "Categorical cross-entropy measures divergence between predicted probability distributions and true categorical labels."
+},
+    conceptConnections: [
+      {
+            "title": "Cross-Entropy Loss",
+            "route": "/practice/math-num-prob-19",
+            "description": "Information theoretic loss foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Confident Correct Predictions",
+            "input": {
+                  "y_pred": [
+                        [
+                              0.9,
+                              0.1
+                        ],
+                        [
+                              0.1,
+                              0.9
+                        ]
+                  ],
+                  "y_true_onehot": [
+                        [
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "decoded_labels": [
+                        0,
+                        1
+                  ],
+                  "cross_entropy": 0.1054
+            },
+            "hidden": false,
+            "description": "High confidence predictions with low cross-entropy."
+      },
+      {
+            "id": "tc2",
+            "label": "3-Class Uncertain Predictions",
+            "input": {
+                  "y_pred": [
+                        [
+                              0.33,
+                              0.33,
+                              0.34
+                        ]
+                  ],
+                  "y_true_onehot": [
+                        [
+                              0,
+                              1,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "decoded_labels": [
+                        2
+                  ],
+                  "cross_entropy": 1.1087
+            },
+            "hidden": false,
+            "description": "Uniform prediction on 3 classes."
+      },
+      {
+            "id": "tc3",
+            "label": "Multi-sample Batch",
+            "input": {
+                  "y_pred": [
+                        [
+                              0.7,
+                              0.2,
+                              0.1
+                        ],
+                        [
+                              0.1,
+                              0.8,
+                              0.1
+                        ],
+                        [
+                              0.2,
+                              0.3,
+                              0.5
+                        ]
+                  ],
+                  "y_true_onehot": [
+                        [
+                              1,
+                              0,
+                              0
+                        ],
+                        [
+                              0,
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              0,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "decoded_labels": [
+                        0,
+                        1,
+                        2
+                  ],
+                  "cross_entropy": 0.4243
+            },
+            "hidden": true,
+            "description": "Batch of 3 samples."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-8': {
+    id: 'numpy-vec-prob-8',
+    title: "Vectorized Batch Matrix Multiplication with Transpose",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'batch_matmul_transpose',
+    functionSignature: "batch_matmul_transpose(batch_A: list[list[list[float]]], batch_B: list[list[list[float]]]) -> list[list[list[float]]]",
+    starterCode: `def batch_matmul_transpose(batch_A, batch_B):
+    """Compute batch A @ batch B^T where batch_A is BxMxK and batch_B is BxNxK.
+    Output is BxMxN rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute batch tensor contractions involving transpose operations on the second operand.",
+    taskDescription: "Implement `batch_matmul_transpose(batch_A, batch_B)`: for each batch index `b`, compute matrix product `A @ B^T` where `A` has shape `(M, K)` and `B` has shape `(N, K)`. The resulting matrix has shape `(M, N)`. Round all entries to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= B <= 50",
+      "1 <= M, N, K <= 50"
+],
+    hints: {
+      "small": "Since B is transposed, entry (i, j) is dot product between A[i] and B[j].",
+      "strong": "Inner product is `sum(A[i][k] * B[j][k] for k in range(K))`.",
+      "concept": "Attention query-key products `Q @ K^T` compute token compatibility matrices in multi-head attention."
+},
+    conceptConnections: [
+      {
+            "title": "Self-Attention",
+            "route": "/practice/math-num-prob-6",
+            "description": "Matrix dot product operations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Batch Size 1: 2x2 with 2x2",
+            "input": {
+                  "batch_A": [
+                        [
+                              [
+                                    1,
+                                    2
+                              ],
+                              [
+                                    3,
+                                    4
+                              ]
+                        ]
+                  ],
+                  "batch_B": [
+                        [
+                              [
+                                    1,
+                                    0
+                              ],
+                              [
+                                    0,
+                                    1
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ]
+            ],
+            "hidden": false,
+            "description": "Single matrix with transposed identity."
+      },
+      {
+            "id": "tc2",
+            "label": "Batch Size 2: Rectangular",
+            "input": {
+                  "batch_A": [
+                        [
+                              [
+                                    1,
+                                    2,
+                                    3
+                              ]
+                        ],
+                        [
+                              [
+                                    4,
+                                    5,
+                                    6
+                              ]
+                        ]
+                  ],
+                  "batch_B": [
+                        [
+                              [
+                                    1,
+                                    1,
+                                    1
+                              ],
+                              [
+                                    0,
+                                    1,
+                                    0
+                              ]
+                        ],
+                        [
+                              [
+                                    2,
+                                    0,
+                                    1
+                              ],
+                              [
+                                    1,
+                                    1,
+                                    1
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              6.0,
+                              2.0
+                        ]
+                  ],
+                  [
+                        [
+                              14.0,
+                              15.0
+                        ]
+                  ]
+            ],
+            "hidden": false,
+            "description": "Batch of 1x3 times (2x3)^T."
+      },
+      {
+            "id": "tc3",
+            "label": "Batch Size 2: 2x2",
+            "input": {
+                  "batch_A": [
+                        [
+                              [
+                                    1.5,
+                                    -0.5
+                              ],
+                              [
+                                    0.0,
+                                    2.0
+                              ]
+                        ],
+                        [
+                              [
+                                    2.0,
+                                    1.0
+                              ],
+                              [
+                                    -1.0,
+                                    3.0
+                              ]
+                        ]
+                  ],
+                  "batch_B": [
+                        [
+                              [
+                                    1.0,
+                                    2.0
+                              ],
+                              [
+                                    3.0,
+                                    4.0
+                              ]
+                        ],
+                        [
+                              [
+                                    0.5,
+                                    -0.5
+                              ],
+                              [
+                                    1.5,
+                                    0.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              0.5,
+                              2.5
+                        ],
+                        [
+                              4.0,
+                              8.0
+                        ]
+                  ],
+                  [
+                        [
+                              0.5,
+                              3.0
+                        ],
+                        [
+                              -2.0,
+                              -1.5
+                        ]
+                  ]
+            ],
+            "hidden": true,
+            "description": "2x2 batch matrix multiplication."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-9': {
+    id: 'numpy-vec-prob-9',
+    title: "Vectorized 1D Moving Average Filter",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'moving_average_1d',
+    functionSignature: "moving_average_1d(signal: list[float], window_size: int) -> list[float]",
+    starterCode: `def moving_average_1d(signal, window_size):
+    """Compute valid 1D rolling moving average using cumulative sums.
+    Round output elements to 4 decimal places."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Apply a uniform rolling moving average filter to smooth 1D sequential data.",
+    taskDescription: "Implement `moving_average_1d(signal, window_size)`: calculate rolling average over consecutive windows of size `window_size` in valid mode (length `len(signal) - window_size + 1`). Return values rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= window_size <= len(signal) <= 100,000"
+],
+    hints: {
+      "small": "Maintain running window sum by adding the new element and subtracting the oldest.",
+      "strong": "Initial sum is `sum(signal[:window_size])`, then update in O(1) per step.",
+      "concept": "Moving average filters attenuate high-frequency noise in audio, time-series, and gradient smoothing."
+},
+    conceptConnections: [
+      {
+            "title": "Rolling Averages",
+            "route": "/practice/numpy-pandas-prob-3",
+            "description": "Streaming moving average"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Window 3 on Ramp",
+            "input": {
+                  "signal": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  2.0,
+                  3.0,
+                  4.0
+            ],
+            "hidden": false,
+            "description": "Window size 3 on monotonic signal."
+      },
+      {
+            "id": "tc2",
+            "label": "Window 2 on Alternating",
+            "input": {
+                  "signal": [
+                        10.0,
+                        0.0,
+                        10.0,
+                        0.0,
+                        10.0
+                  ],
+                  "window_size": 2
+            },
+            "expectedOutput": [
+                  5.0,
+                  5.0,
+                  5.0,
+                  5.0
+            ],
+            "hidden": false,
+            "description": "Smoothing alternating series."
+      },
+      {
+            "id": "tc3",
+            "label": "Window Equal Signal Length",
+            "input": {
+                  "signal": [
+                        2.0,
+                        4.0,
+                        6.0,
+                        8.0
+                  ],
+                  "window_size": 4
+            },
+            "expectedOutput": [
+                  5.0
+            ],
+            "hidden": true,
+            "description": "Single output full-length window."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-10': {
+    id: 'numpy-vec-prob-10',
+    title: "Vectorized Numerical Jacobian Estimation",
+    difficulty: 'easy',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '10-15 min',
+    functionName: 'estimate_jacobian',
+    functionSignature: "estimate_jacobian(f_outputs_pos: list[list[float]], f_outputs_neg: list[list[float]], eps: float) -> list[list[float]]",
+    starterCode: `def estimate_jacobian(f_outputs_pos, f_outputs_neg, eps):
+    """Compute m x n Jacobian matrix using central differences.
+    f_outputs_pos[j] is f(x + eps*e_j); f_outputs_neg[j] is f(x - eps*e_j).
+    Round entries to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Estimate the multivariable Jacobian derivative matrix via central finite differences.",
+    taskDescription: "Implement `estimate_jacobian(f_outputs_pos, f_outputs_neg, eps)`: given evaluations `f(x + eps * e_j)` and `f(x - eps * e_j)` for each basis direction `j in 0..n-1`, compute Jacobian `J[i][j] = (f_i(x + eps*e_j) - f_i(x - eps*e_j)) / (2 * eps)`. Return matrix `J` of shape `(m, n)` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "eps > 0.0",
+      "1 <= n, m <= 50"
+],
+    hints: {
+      "small": "J has m rows (outputs) and n columns (inputs).",
+      "strong": "Derivative with respect to input j is in column j: `J[i][j] = (pos[j][i] - neg[j][i]) / (2 * eps)`.",
+      "concept": "The Jacobian matrix represents first-order partial derivatives of vector-valued functions, vital in gradient checking."
+},
+    conceptConnections: [
+      {
+            "title": "Gradients & Hessians",
+            "route": "/practice/math-num-prob-13",
+            "description": "Vector calculus foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identity Mapping R2 -> R2",
+            "input": {
+                  "f_outputs_pos": [
+                        [
+                              1.001,
+                              2.0
+                        ],
+                        [
+                              1.0,
+                              2.001
+                        ]
+                  ],
+                  "f_outputs_neg": [
+                        [
+                              0.999,
+                              2.0
+                        ],
+                        [
+                              1.0,
+                              1.999
+                        ]
+                  ],
+                  "eps": 0.001
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Jacobian of identity transformation."
+      },
+      {
+            "id": "tc2",
+            "label": "Linear Transform R2 -> R2",
+            "input": {
+                  "f_outputs_pos": [
+                        [
+                              2.002,
+                              3.003
+                        ],
+                        [
+                              4.004,
+                              5.005
+                        ]
+                  ],
+                  "f_outputs_neg": [
+                        [
+                              1.998,
+                              2.997
+                        ],
+                        [
+                              3.996,
+                              4.995
+                        ]
+                  ],
+                  "eps": 0.001
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        4.0
+                  ],
+                  [
+                        3.0,
+                        5.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Jacobian with coupled entries."
+      },
+      {
+            "id": "tc3",
+            "label": "R3 -> R2 Mapping",
+            "input": {
+                  "f_outputs_pos": [
+                        [
+                              0.002,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.004
+                        ],
+                        [
+                              0.001,
+                              0.001
+                        ]
+                  ],
+                  "f_outputs_neg": [
+                        [
+                              -0.002,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              -0.004
+                        ],
+                        [
+                              -0.001,
+                              -0.001
+                        ]
+                  ],
+                  "eps": 0.001
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        0.0,
+                        1.0
+                  ],
+                  [
+                        0.0,
+                        4.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Jacobian for 3 inputs and 2 outputs."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-11': {
+    id: 'numpy-vec-prob-11',
+    title: "Vectorized 2D Spatial Bilinear Interpolation",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'bilinear_interpolate',
+    functionSignature: "bilinear_interpolate(grid: list[list[float]], x: float, y: float) -> float",
+    starterCode: `def bilinear_interpolate(grid, x, y):
+    """Sample grid at continuous coordinates (x, y) using bilinear interpolation.
+    Round result to 4 decimal places."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Sample continuous sub-pixel values from a discrete 2D grid using bilinear interpolation.",
+    taskDescription: "Implement `bilinear_interpolate(grid, x, y)`: interpolate value at continuous coordinate `(x, y)` from discrete image `grid` with corners `x0 = floor(x)`, `x1 = min(x0 + 1, W - 1)`, `y0 = floor(y)`, `y1 = min(y0 + 1, H - 1)`. Blend weights along x then y. Return interpolated float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0.0 <= x <= W - 1",
+      "0.0 <= y <= H - 1",
+      "H, W >= 2"
+],
+    hints: {
+      "small": "Find four surrounding grid integer points (x0, y0), (x1, y0), (x0, y1), (x1, y1).",
+      "strong": "Weights are `(1-wx)*(1-wy)`, `wx*(1-wy)`, `(1-wx)*wy`, and `wx*wy`.",
+      "concept": "Bilinear interpolation enables continuous spatial grid sampling in spatial transformer networks and image resizing."
+},
+    conceptConnections: [
+      {
+            "title": "Image Warping",
+            "route": "/practice/cv-cnn-prob-1",
+            "description": "Bilinear image sampling"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Center Point of 2x2 Grid",
+            "input": {
+                  "grid": [
+                        [
+                              0.0,
+                              10.0
+                        ],
+                        [
+                              10.0,
+                              20.0
+                        ]
+                  ],
+                  "x": 0.5,
+                  "y": 0.5
+            },
+            "expectedOutput": 10.0,
+            "hidden": false,
+            "description": "Symmetric centroid interpolation."
+      },
+      {
+            "id": "tc2",
+            "label": "Corner and Edge Points",
+            "input": {
+                  "grid": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "x": 1.25,
+                  "y": 0.5
+            },
+            "expectedOutput": 3.75,
+            "hidden": false,
+            "description": "Sub-pixel fractional coordinates."
+      },
+      {
+            "id": "tc3",
+            "label": "Exact Integer Coordinates",
+            "input": {
+                  "grid": [
+                        [
+                              10.0,
+                              20.0
+                        ],
+                        [
+                              30.0,
+                              40.0
+                        ]
+                  ],
+                  "x": 1.0,
+                  "y": 0.0
+            },
+            "expectedOutput": 20.0,
+            "hidden": true,
+            "description": "Grid node exact lookup."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-12': {
+    id: 'numpy-vec-prob-12',
+    title: "Vectorized Tile and Repeat Array Broadcasting",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'tile_matrix_2d',
+    functionSignature: "tile_matrix_2d(mat: list[list[float]], reps_row: int, reps_col: int) -> list[list[float]]",
+    starterCode: `def tile_matrix_2d(mat, reps_row, reps_col):
+    """Replicate 2D matrix reps_row times vertically and reps_col times horizontally.
+    Return expanded 2D grid."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Broadcast and replicate 2D matrices across row and column axes without nested copies.",
+    taskDescription: "Implement `tile_matrix_2d(mat, reps_row, reps_col)`: replicate `mat` of shape `(H, W)` to produce an expanded matrix of shape `(H * reps_row, W * reps_col)` by repeating the original block structure.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= H, W <= 100",
+      "1 <= reps_row, reps_col <= 20"
+],
+    hints: {
+      "small": "For each row in mat, replicate horizontally using `row * reps_col`.",
+      "strong": "Repeat the entire row block `reps_row` times.",
+      "concept": "Tiling and broadcasting eliminate python loops during batch replication in tensor graphs."
+},
+    conceptConnections: [
+      {
+            "title": "Array Broadcasting",
+            "route": "/practice/numpy-pandas-prob-28",
+            "description": "Vectorized outer operations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Tile 2x3",
+            "input": {
+                  "mat": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              3,
+                              4
+                        ]
+                  ],
+                  "reps_row": 2,
+                  "reps_col": 3
+            },
+            "expectedOutput": [
+                  [
+                        1,
+                        2,
+                        1,
+                        2,
+                        1,
+                        2
+                  ],
+                  [
+                        3,
+                        4,
+                        3,
+                        4,
+                        3,
+                        4
+                  ],
+                  [
+                        1,
+                        2,
+                        1,
+                        2,
+                        1,
+                        2
+                  ],
+                  [
+                        3,
+                        4,
+                        3,
+                        4,
+                        3,
+                        4
+                  ]
+            ],
+            "hidden": false,
+            "description": "Tile 2x2 matrix 2 times vertically and 3 horizontally."
+      },
+      {
+            "id": "tc2",
+            "label": "Single Row Vector 1x3 Tile 3x1",
+            "input": {
+                  "mat": [
+                        [
+                              7,
+                              8,
+                              9
+                        ]
+                  ],
+                  "reps_row": 3,
+                  "reps_col": 1
+            },
+            "expectedOutput": [
+                  [
+                        7,
+                        8,
+                        9
+                  ],
+                  [
+                        7,
+                        8,
+                        9
+                  ],
+                  [
+                        7,
+                        8,
+                        9
+                  ]
+            ],
+            "hidden": false,
+            "description": "Vertical replication of 1D row vector."
+      },
+      {
+            "id": "tc3",
+            "label": "Identity Repetition",
+            "input": {
+                  "mat": [
+                        [
+                              5
+                        ]
+                  ],
+                  "reps_row": 2,
+                  "reps_col": 2
+            },
+            "expectedOutput": [
+                  [
+                        5,
+                        5
+                  ],
+                  [
+                        5,
+                        5
+                  ]
+            ],
+            "hidden": true,
+            "description": "Scalar tile to 2x2 constant matrix."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-13': {
+    id: 'numpy-vec-prob-13',
+    title: "Vectorized Tridiagonal Matrix Construction",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'construct_tridiagonal',
+    functionSignature: "construct_tridiagonal(main_diag: list[float], sub_diag: list[float], super_diag: list[float]) -> list[list[float]]",
+    starterCode: `def construct_tridiagonal(main_diag, sub_diag, super_diag):
+    """Construct n x n tridiagonal matrix from three diagonals.
+    Round entries to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Assemble compact sparse band representations into a full tridiagonal matrix.",
+    taskDescription: "Implement `construct_tridiagonal(main_diag, sub_diag, super_diag)`: construct an `n x n` matrix where `M[i][i] = main_diag[i]`, `M[i+1][i] = sub_diag[i]`, `M[i][i+1] = super_diag[i]`, and all other elements are 0.0. Round elements to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(sub_diag) == n - 1",
+      "len(super_diag) == n - 1",
+      "2 <= n <= 500"
+],
+    hints: {
+      "small": "Initialize n x n zero matrix.",
+      "strong": "Populate diagonal and immediate adjacent bands with corresponding slice values.",
+      "concept": "Tridiagonal matrices arise in spline interpolation, heat diffusion equations, and Thomas algorithm solvers."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Diagonals",
+            "route": "/practice/numpy-pandas-prob-37",
+            "description": "Matrix diagonal operations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3x3 Tridiagonal",
+            "input": {
+                  "main_diag": [
+                        2.0,
+                        2.0,
+                        2.0
+                  ],
+                  "sub_diag": [
+                        -1.0,
+                        -1.0
+                  ],
+                  "super_diag": [
+                        -1.0,
+                        -1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        -1.0,
+                        0.0
+                  ],
+                  [
+                        -1.0,
+                        2.0,
+                        -1.0
+                  ],
+                  [
+                        0.0,
+                        -1.0,
+                        2.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "1D Poisson finite-difference stencil matrix."
+      },
+      {
+            "id": "tc2",
+            "label": "Asymmetric Tridiagonal 4x4",
+            "input": {
+                  "main_diag": [
+                        1,
+                        2,
+                        3,
+                        4
+                  ],
+                  "sub_diag": [
+                        0.5,
+                        0.6,
+                        0.7
+                  ],
+                  "super_diag": [
+                        -0.1,
+                        -0.2,
+                        -0.3
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        -0.1,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.5,
+                        2.0,
+                        -0.2,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.6,
+                        3.0,
+                        -0.3
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        0.7,
+                        4.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Non-symmetric tridiagonal matrix."
+      },
+      {
+            "id": "tc3",
+            "label": "2x2 Minimal System",
+            "input": {
+                  "main_diag": [
+                        5.0,
+                        10.0
+                  ],
+                  "sub_diag": [
+                        1.0
+                  ],
+                  "super_diag": [
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0,
+                        2.0
+                  ],
+                  [
+                        1.0,
+                        10.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "2x2 tridiagonal base case."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-14': {
+    id: 'numpy-vec-prob-14',
+    title: "Vectorized Gram-Schmidt Orthonormalization",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'gram_schmidt_orthonormal',
+    functionSignature: "gram_schmidt_orthonormal(vectors: list[list[float]]) -> list[list[float]]",
+    starterCode: `def gram_schmidt_orthonormal(vectors):
+    """Convert list of linearly independent vectors into an orthonormal basis.
+    Round all vector entries to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Transform a set of linearly independent vectors into an orthonormal basis using the Gram-Schmidt process.",
+    taskDescription: "Implement `gram_schmidt_orthonormal(vectors)`: for each vector `v_k`, subtract projections onto previous orthonormal vectors `q_1..q_{k-1}`, and normalize the remainder to unit length `L2 = 1.0`. Round all elements to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(vectors) <= 30",
+      "Vector dimension d >= len(vectors)"
+],
+    hints: {
+      "small": "For each vector v, project: `proj = sum((v . u) * u)` over all established u.",
+      "strong": "Subtract projections: `u_new = v - proj`. Normalize: `q = u_new / norm(u_new)`.",
+      "concept": "Gram-Schmidt orthogonalization produces unitary basis sets and underpins QR matrix decomposition."
+},
+    conceptConnections: [
+      {
+            "title": "Orthogonal Projection",
+            "route": "/practice/math-num-prob-3",
+            "description": "Vector projection and rejection"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2D Standard Basis",
+            "input": {
+                  "vectors": [
+                        [
+                              3.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "2D non-orthogonal vectors transformed to orthonormal."
+      },
+      {
+            "id": "tc2",
+            "label": "3D Independent Vectors",
+            "input": {
+                  "vectors": [
+                        [
+                              1.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.7071,
+                        0.7071,
+                        0.0
+                  ],
+                  [
+                        0.4082,
+                        -0.4082,
+                        0.8165
+                  ],
+                  [
+                        -0.5774,
+                        0.5774,
+                        0.5773
+                  ]
+            ],
+            "hidden": false,
+            "description": "3D Gram-Schmidt process."
+      },
+      {
+            "id": "tc3",
+            "label": "Already Orthonormal Vectors",
+            "input": {
+                  "vectors": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Identity orthogonal input preserved."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-15': {
+    id: 'numpy-vec-prob-15',
+    title: "Vectorized Fast Cosine Similarity Matrix",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'cosine_similarity_matrix',
+    functionSignature: "cosine_similarity_matrix(queries: list[list[float]], targets: list[list[float]]) -> list[list[float]]",
+    starterCode: `def cosine_similarity_matrix(queries, targets):
+    """Compute Q x T pairwise cosine similarity matrix between queries and targets.
+    Round values to 4 decimal places."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute all pairwise cosine similarities between query embeddings and target document embeddings.",
+    taskDescription: "Implement `cosine_similarity_matrix(queries, targets)`: given `queries` of shape `(Q, D)` and `targets` of shape `(T, D)`, return similarity matrix `S` of shape `(Q, T)` where `S[i][j] = (q_i . t_j) / (||q_i||_2 * ||t_j||_2)`. Round each entry to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= Q, T <= 200",
+      "1 <= D <= 512"
+],
+    hints: {
+      "small": "Precompute L2 norms for queries and targets.",
+      "strong": "Compute dot product `Q @ T^T` and divide entry `(i, j)` by `norm_Q[i] * norm_T[j]`.",
+      "concept": "Cosine similarity matrix multiplication is the backbone of dense passage retrieval and vector search."
+},
+    conceptConnections: [
+      {
+            "title": "Cosine Distance",
+            "route": "/practice/numpy-pandas-prob-19",
+            "description": "Pairwise cosine distance matrix"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2 Queries against 3 Targets",
+            "input": {
+                  "queries": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "targets": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0,
+                        0.7071
+                  ],
+                  [
+                        0.0,
+                        1.0,
+                        0.7071
+                  ]
+            ],
+            "hidden": false,
+            "description": "Cosine similarity against basis and diagonal vectors."
+      },
+      {
+            "id": "tc2",
+            "label": "Collinear and Opposite",
+            "input": {
+                  "queries": [
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ],
+                  "targets": [
+                        [
+                              4.0,
+                              6.0
+                        ],
+                        [
+                              -2.0,
+                              -3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        -1.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Parallel (1.0) and antiparallel (-1.0) vectors."
+      },
+      {
+            "id": "tc3",
+            "label": "High Dimension Sparse Queries",
+            "input": {
+                  "queries": [
+                        [
+                              1.0,
+                              2.0,
+                              0.0,
+                              -1.0
+                        ]
+                  ],
+                  "targets": [
+                        [
+                              0.0,
+                              1.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              2.0,
+                              0.0,
+                              -1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.5774,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "4D embedding vectors comparison."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-16': {
+    id: 'numpy-vec-prob-16',
+    title: "Vectorized Batch Collator with Sequence Padding",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'collate_padded_batch',
+    functionSignature: "collate_padded_batch(sequences: list[list[int]], pad_val: int) -> dict[str, list]",
+    starterCode: `def collate_padded_batch(sequences, pad_val):
+    """Pad sequences to max length and produce boolean attention mask.
+    Return {'padded_batch': list[list[int]], 'attention_mask': list[list[int]]}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Collate variable-length token sequences into a uniform dense matrix with binary attention masks.",
+    taskDescription: "Implement `collate_padded_batch(sequences, pad_val)`: determine `max_len = max(len(s))` across input sequences. Pad shorter sequences on the right with `pad_val`. Concurrently create `attention_mask` where original tokens are 1 and padding tokens are 0. Return a dict `{\"padded_batch\": ..., \"attention_mask\": ...}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= len(s) <= 2048",
+      "1 <= len(sequences) <= 256"
+],
+    hints: {
+      "small": "Compute max_len first.",
+      "strong": "Extend each sequence with `[pad_val] * (max_len - len(s))` and mask with `[1]*len(s) + [0]*(max_len - len(s))`.",
+      "concept": "Batch collators pad ragged token streams into rectangular tensors suitable for parallel SIMD GPU execution."
+},
+    conceptConnections: [
+      {
+            "title": "Data Pipelines",
+            "route": "/practice/numpy-pandas-prob-51",
+            "description": "Stream batching"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Varying 1D Sequences",
+            "input": {
+                  "sequences": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              3,
+                              4,
+                              5,
+                              6
+                        ],
+                        [
+                              7
+                        ]
+                  ],
+                  "pad_val": 0
+            },
+            "expectedOutput": {
+                  "padded_batch": [
+                        [
+                              1,
+                              2,
+                              0,
+                              0
+                        ],
+                        [
+                              3,
+                              4,
+                              5,
+                              6
+                        ],
+                        [
+                              7,
+                              0,
+                              0,
+                              0
+                        ]
+                  ],
+                  "attention_mask": [
+                        [
+                              1,
+                              1,
+                              0,
+                              0
+                        ],
+                        [
+                              1,
+                              1,
+                              1,
+                              1
+                        ],
+                        [
+                              1,
+                              0,
+                              0,
+                              0
+                        ]
+                  ]
+            },
+            "hidden": false,
+            "description": "Collate varying length token lists."
+      },
+      {
+            "id": "tc2",
+            "label": "Uniform Length",
+            "input": {
+                  "sequences": [
+                        [
+                              10,
+                              20
+                        ],
+                        [
+                              30,
+                              40
+                        ]
+                  ],
+                  "pad_val": -1
+            },
+            "expectedOutput": {
+                  "padded_batch": [
+                        [
+                              10,
+                              20
+                        ],
+                        [
+                              30,
+                              40
+                        ]
+                  ],
+                  "attention_mask": [
+                        [
+                              1,
+                              1
+                        ],
+                        [
+                              1,
+                              1
+                        ]
+                  ]
+            },
+            "hidden": false,
+            "description": "No padding needed for uniform length."
+      },
+      {
+            "id": "tc3",
+            "label": "Empty and Single Items",
+            "input": {
+                  "sequences": [
+                        [],
+                        [
+                              5
+                        ],
+                        [
+                              1,
+                              2,
+                              3
+                        ]
+                  ],
+                  "pad_val": 99
+            },
+            "expectedOutput": {
+                  "padded_batch": [
+                        [
+                              99,
+                              99,
+                              99
+                        ],
+                        [
+                              5,
+                              99,
+                              99
+                        ],
+                        [
+                              1,
+                              2,
+                              3
+                        ]
+                  ],
+                  "attention_mask": [
+                        [
+                              0,
+                              0,
+                              0
+                        ],
+                        [
+                              1,
+                              0,
+                              0
+                        ],
+                        [
+                              1,
+                              1,
+                              1
+                        ]
+                  ]
+            },
+            "hidden": true,
+            "description": "Empty sequence pad handling."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-17': {
+    id: 'numpy-vec-prob-17',
+    title: "Vectorized Discounted Cumulative Rewards",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'compute_discounted_returns',
+    functionSignature: "compute_discounted_returns(rewards: list[float], gamma: float) -> list[float]",
+    starterCode: `def compute_discounted_returns(rewards, gamma):
+    """Compute temporal discounted cumulative returns G_t = sum_k gamma^k * R_{t+k}.
+    Round elements to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Calculate discounted cumulative returns for reinforcement learning trajectories.",
+    taskDescription: "Implement `compute_discounted_returns(rewards, gamma)`: compute the return `G_t = R_t + gamma * G_{t+1}` for each time step `t` in reverse. Return array of returns rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0.0 <= gamma <= 1.0",
+      "1 <= len(rewards) <= 100,000"
+],
+    hints: {
+      "small": "Iterate backwards from t = T-1 down to 0.",
+      "strong": "Update `running = rewards[t] + gamma * running` at each step.",
+      "concept": "Discounted returns formulate the objective function in policy gradient algorithms like REINFORCE and PPO."
+},
+    conceptConnections: [
+      {
+            "title": "Exponential Smoothing",
+            "route": "/practice/numpy-pandas-prob-6",
+            "description": "Exponential moving averages"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Short Trajectory Gamma 0.9",
+            "input": {
+                  "rewards": [
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  "gamma": 0.9
+            },
+            "expectedOutput": [
+                  2.71,
+                  1.9,
+                  1.0
+            ],
+            "hidden": false,
+            "description": "Discounted returns on constant rewards."
+      },
+      {
+            "id": "tc2",
+            "label": "Terminal Big Reward",
+            "input": {
+                  "rewards": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        10.0
+                  ],
+                  "gamma": 0.5
+            },
+            "expectedOutput": [
+                  1.25,
+                  2.5,
+                  5.0,
+                  10.0
+            ],
+            "hidden": false,
+            "description": "Backpropagated return from terminal reward."
+      },
+      {
+            "id": "tc3",
+            "label": "Zero Discount Rate",
+            "input": {
+                  "rewards": [
+                        5.0,
+                        4.0,
+                        3.0
+                  ],
+                  "gamma": 0.0
+            },
+            "expectedOutput": [
+                  5.0,
+                  4.0,
+                  3.0
+            ],
+            "hidden": true,
+            "description": "Gamma 0 isolates immediate rewards."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-18': {
+    id: 'numpy-vec-prob-18',
+    title: "Vectorized Weighted Multi-Class Log-Loss",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'weighted_log_loss',
+    functionSignature: "weighted_log_loss(y_pred: list[list[float]], y_true_idx: list[int], class_weights: list[float]) -> float",
+    starterCode: `def weighted_log_loss(y_pred, y_true_idx, class_weights):
+    """Compute sample-weighted negative log-likelihood across predictions.
+    Round result to 4 decimal places."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute cost-sensitive weighted categorical log-loss for imbalanced classification tasks.",
+    taskDescription: "Implement `weighted_log_loss(y_pred, y_true_idx, class_weights)`: calculate weighted cross-entropy `-sum(w_i * log(p_{i, y_i})) / sum(w_i)` where `w_i = class_weights[y_true_idx[i]]`. Clip probabilities to `[1e-12, 1.0 - 1e-12]`. Return float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "class_weights are positive floats",
+      "1 <= len(y_pred) <= 10,000"
+],
+    hints: {
+      "small": "For each sample i, probability of target is `y_pred[i][y_true_idx[i]]`.",
+      "strong": "Accumulate loss `-w * log(p)` and divide by `sum(weights)`.",
+      "concept": "Class weighting counters extreme category imbalances in fraud detection and medical diagnosis."
+},
+    conceptConnections: [
+      {
+            "title": "Cross-Entropy Loss",
+            "route": "/practice/math-num-prob-19",
+            "description": "Information loss foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Balanced Weights Binary",
+            "input": {
+                  "y_pred": [
+                        [
+                              0.8,
+                              0.2
+                        ],
+                        [
+                              0.1,
+                              0.9
+                        ]
+                  ],
+                  "y_true_idx": [
+                        0,
+                        1
+                  ],
+                  "class_weights": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": 0.1643,
+            "hidden": false,
+            "description": "Standard unweighted multi-class log loss."
+      },
+      {
+            "id": "tc2",
+            "label": "Imbalanced Class Weights",
+            "input": {
+                  "y_pred": [
+                        [
+                              0.7,
+                              0.3
+                        ],
+                        [
+                              0.6,
+                              0.4
+                        ]
+                  ],
+                  "y_true_idx": [
+                        0,
+                        1
+                  ],
+                  "class_weights": [
+                        1.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": 0.823,
+            "hidden": false,
+            "description": "Higher weight on minority class 1."
+      },
+      {
+            "id": "tc3",
+            "label": "3-Class Evaluation",
+            "input": {
+                  "y_pred": [
+                        [
+                              0.6,
+                              0.3,
+                              0.1
+                        ],
+                        [
+                              0.2,
+                              0.7,
+                              0.1
+                        ]
+                  ],
+                  "y_true_idx": [
+                        1,
+                        2
+                  ],
+                  "class_weights": [
+                        1.0,
+                        2.0,
+                        10.0
+                  ]
+            },
+            "expectedOutput": 2.1195,
+            "hidden": true,
+            "description": "3-class weighted log loss with rare class penalty."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-19': {
+    id: 'numpy-vec-prob-19',
+    title: "Vectorized 2D Max-Pooling Operation",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'max_pool_2d',
+    functionSignature: "max_pool_2d(grid: list[list[float]], pool_size: int, stride: int) -> list[list[float]]",
+    starterCode: `def max_pool_2d(grid, pool_size, stride):
+    """Compute 2D spatial max pooling over grid.
+    Return pooled 2D matrix rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Downsample 2D feature activations using spatial maximum pooling.",
+    taskDescription: "Implement `max_pool_2d(grid, pool_size, stride)`: slide a window of size `pool_size x pool_size` with step `stride` across `grid` of shape `(H, W)`. At each window, select the maximum activation. The output spatial shape is `((H - pool_size) // stride + 1, (W - pool_size) // stride + 1)`. Round all outputs to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= pool_size <= min(H, W) <= 100",
+      "1 <= stride <= pool_size"
+],
+    hints: {
+      "small": "Output dimensions are determined by integer floor division.",
+      "strong": "Compute max of sub-grid `[grid[r_start+ki][c_start+kj]]` for `ki, kj in range(pool_size)`.",
+      "concept": "Max pooling provides translation invariance and reduces spatial dimensions in convolutional networks."
+},
+    conceptConnections: [
+      {
+            "title": "CNN Operations",
+            "route": "/practice/cv-cnn-prob-1",
+            "description": "Convolutional feature maps"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "4x4 Grid Pool 2 Stride 2",
+            "input": {
+                  "grid": [
+                        [
+                              1,
+                              3,
+                              2,
+                              4
+                        ],
+                        [
+                              5,
+                              6,
+                              7,
+                              8
+                        ],
+                        [
+                              9,
+                              2,
+                              1,
+                              3
+                        ],
+                        [
+                              4,
+                              11,
+                              6,
+                              8
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        6.0,
+                        8.0
+                  ],
+                  [
+                        11.0,
+                        8.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Standard 2x2 max pool with stride 2."
+      },
+      {
+            "id": "tc2",
+            "label": "3x3 Grid Pool 2 Stride 1",
+            "input": {
+                  "grid": [
+                        [
+                              1,
+                              2,
+                              3
+                        ],
+                        [
+                              4,
+                              5,
+                              6
+                        ],
+                        [
+                              7,
+                              8,
+                              9
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 1
+            },
+            "expectedOutput": [
+                  [
+                        5.0,
+                        6.0
+                  ],
+                  [
+                        8.0,
+                        9.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Overlapping max pooling with stride 1."
+      },
+      {
+            "id": "tc3",
+            "label": "Flat Constant Grid",
+            "input": {
+                  "grid": [
+                        [
+                              7.5,
+                              7.5
+                        ],
+                        [
+                              7.5,
+                              7.5
+                        ]
+                  ],
+                  "pool_size": 2,
+                  "stride": 2
+            },
+            "expectedOutput": [
+                  [
+                        7.5
+                  ]
+            ],
+            "hidden": true,
+            "description": "Constant 2x2 grid pool."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-20': {
+    id: 'numpy-vec-prob-20',
+    title: "Vectorized Matrix 1-Norm and Condition Number Estimate",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'matrix_condition_number_1norm',
+    functionSignature: "matrix_condition_number_1norm(mat: list[list[float]], inv_mat: list[list[float]]) -> dict[str, float]",
+    starterCode: `def matrix_condition_number_1norm(mat, inv_mat):
+    """Compute ||A||_1, ||A^{-1}||_1, and condition number kappa_1(A) = ||A||_1 * ||A^{-1}||_1.
+    Return dict with keys 'norm_A', 'norm_inv', 'condition_number' rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Estimate the numerical stability and sensitivity of a linear system via the matrix 1-norm condition number.",
+    taskDescription: "Implement `matrix_condition_number_1norm(mat, inv_mat)`: compute the maximum column sum of absolute values `||M||_1 = max_j sum_i |M_{i, j}|` for both `mat` and its inverse `inv_mat`. Calculate the condition number `kappa_1 = ||mat||_1 * ||inv_mat||_1`. Return a dict `{\"norm_A\": float, \"norm_inv\": float, \"condition_number\": float}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "mat and inv_mat are n x n square matrices",
+      "2 <= n <= 100"
+],
+    hints: {
+      "small": "1-norm evaluates column sums: sum over rows i for each fixed column j.",
+      "strong": "`norm_A = max(sum(abs(mat[i][j]) for i in range(n)) for j in range(n))`.",
+      "concept": "Condition numbers measure how sensitive matrix inversion and linear solves are to input perturbations and roundoff errors."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Inversion",
+            "route": "/practice/math-num-prob-9",
+            "description": "Linear systems and matrix inverses"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identity 2x2 Matrix",
+            "input": {
+                  "mat": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "inv_mat": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "norm_A": 1.0,
+                  "norm_inv": 1.0,
+                  "condition_number": 1.0
+            },
+            "hidden": false,
+            "description": "Identity matrix condition number is exactly 1.0."
+      },
+      {
+            "id": "tc2",
+            "label": "Scaled Diagonal Matrix",
+            "input": {
+                  "mat": [
+                        [
+                              10.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "inv_mat": [
+                        [
+                              0.1,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "norm_A": 10.0,
+                  "norm_inv": 0.5,
+                  "condition_number": 5.0
+            },
+            "hidden": false,
+            "description": "Diagonal matrix conditioning."
+      },
+      {
+            "id": "tc3",
+            "label": "Ill-conditioned 2x2 Matrix",
+            "input": {
+                  "mat": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              1.001,
+                              2.0
+                        ]
+                  ],
+                  "inv_mat": [
+                        [
+                              -1000.0,
+                              1000.0
+                        ],
+                        [
+                              500.5,
+                              -500.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "norm_A": 4.0,
+                  "norm_inv": 1500.5,
+                  "condition_number": 6002.0
+            },
+            "hidden": true,
+            "description": "Ill-conditioned matrix with large condition number."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-21': {
+    id: 'numpy-vec-prob-21',
+    title: "Vectorized Multi-Head Attention Reshape and Transpose",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'split_multi_head_projections',
+    functionSignature: "split_multi_head_projections(hidden_states: list[list[list[float]]], num_heads: int, head_dim: int) -> list[list[list[list[float]]]]",
+    starterCode: `def split_multi_head_projections(hidden_states, num_heads, head_dim):
+    """Reshape (B, S, num_heads * head_dim) into (B, num_heads, S, head_dim).
+    Return 4D tensor representation."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Reshape and permute token hidden representations to isolate parallel multi-head attention streams.",
+    taskDescription: "Implement `split_multi_head_projections(hidden_states, num_heads, head_dim)`: transform a 3D tensor of shape `(B, S, num_heads * head_dim)` into a 4D tensor of shape `(B, num_heads, S, head_dim)` by splitting the last dimension into heads and swapping sequence and head dimensions.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "B >= 1",
+      "S >= 1",
+      "num_heads >= 1",
+      "head_dim >= 1"
+],
+    hints: {
+      "small": "For each batch item b, initialize `heads = [[] for _ in range(num_heads)]`.",
+      "strong": "Slice token embedding `token_vec[h*head_dim : (h+1)*head_dim]` and append to `heads[h]`.",
+      "concept": "Multi-head splitting allows models to jointly attend to information at different positions and representation subspaces."
+},
+    conceptConnections: [
+      {
+            "title": "Transformer Attention",
+            "route": "/practice/math-num-prob-6",
+            "description": "Matrix transformations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Batch 1 Seq 2 Heads 2 Dim 2",
+            "input": {
+                  "hidden_states": [
+                        [
+                              [
+                                    1,
+                                    2,
+                                    3,
+                                    4
+                              ],
+                              [
+                                    5,
+                                    6,
+                                    7,
+                                    8
+                              ]
+                        ]
+                  ],
+                  "num_heads": 2,
+                  "head_dim": 2
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              [
+                                    1,
+                                    2
+                              ],
+                              [
+                                    5,
+                                    6
+                              ]
+                        ],
+                        [
+                              [
+                                    3,
+                                    4
+                              ],
+                              [
+                                    7,
+                                    8
+                              ]
+                        ]
+                  ]
+            ],
+            "hidden": false,
+            "description": "Split hidden dimension 4 into 2 heads of dim 2."
+      },
+      {
+            "id": "tc2",
+            "label": "Batch 2 Seq 1 Heads 2 Dim 3",
+            "input": {
+                  "hidden_states": [
+                        [
+                              [
+                                    1,
+                                    2,
+                                    3,
+                                    4,
+                                    5,
+                                    6
+                              ]
+                        ],
+                        [
+                              [
+                                    7,
+                                    8,
+                                    9,
+                                    10,
+                                    11,
+                                    12
+                              ]
+                        ]
+                  ],
+                  "num_heads": 2,
+                  "head_dim": 3
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              [
+                                    1,
+                                    2,
+                                    3
+                              ]
+                        ],
+                        [
+                              [
+                                    4,
+                                    5,
+                                    6
+                              ]
+                        ]
+                  ],
+                  [
+                        [
+                              [
+                                    7,
+                                    8,
+                                    9
+                              ]
+                        ],
+                        [
+                              [
+                                    10,
+                                    11,
+                                    12
+                              ]
+                        ]
+                  ]
+            ],
+            "hidden": false,
+            "description": "Batch of 2 sequences split into 2 heads."
+      },
+      {
+            "id": "tc3",
+            "label": "Single Head Identity",
+            "input": {
+                  "hidden_states": [
+                        [
+                              [
+                                    10,
+                                    20
+                              ]
+                        ]
+                  ],
+                  "num_heads": 1,
+                  "head_dim": 2
+            },
+            "expectedOutput": [
+                  [
+                        [
+                              [
+                                    10,
+                                    20
+                              ]
+                        ]
+                  ]
+            ],
+            "hidden": true,
+            "description": "1 head trivial split."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-22': {
+    id: 'numpy-vec-prob-22',
+    title: "Vectorized Huber Loss (Smooth L1)",
+    difficulty: 'medium',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '15-20 min',
+    functionName: 'vectorized_huber_loss',
+    functionSignature: "vectorized_huber_loss(y_true: list[float], y_pred: list[float], delta: float) -> dict[str, any]",
+    starterCode: `def vectorized_huber_loss(y_true, y_pred, delta):
+    """Compute Huber loss per sample and mean loss.
+    Return {'sample_losses': list[float], 'mean_loss': float} rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute robust Huber loss combining quadratic MSE for small errors with linear MAE for outliers.",
+    taskDescription: "Implement `vectorized_huber_loss(y_true, y_pred, delta)`: for each pair `(yt, yp)`, compute `diff = |yt - yp|`. If `diff <= delta`, loss is `0.5 * diff^2`. Otherwise, loss is `delta * (diff - 0.5 * delta)`. Return a dict `{\"sample_losses\": list[float], \"mean_loss\": float}` with all floats rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "delta > 0.0",
+      "1 <= len(y_true) == len(y_pred) <= 50,000"
+],
+    hints: {
+      "small": "Evaluate `diff = abs(yt - yp)` for each sample.",
+      "strong": "Branch between quadratic `0.5 * diff**2` and linear `delta * (diff - 0.5 * delta)`.",
+      "concept": "Huber loss is resilient against noisy target outliers while maintaining smooth differentiability around zero."
+},
+    conceptConnections: [
+      {
+            "title": "Regression Losses",
+            "route": "/practice/math-num-prob-1",
+            "description": "L1 and L2 norm foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Small Errors (Quadratic Region)",
+            "input": {
+                  "y_true": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "y_pred": [
+                        1.2,
+                        1.9,
+                        3.1
+                  ],
+                  "delta": 1.0
+            },
+            "expectedOutput": {
+                  "sample_losses": [
+                        0.02,
+                        0.005,
+                        0.005
+                  ],
+                  "mean_loss": 0.01
+            },
+            "hidden": false,
+            "description": "All absolute errors < delta (0.5 * error^2)."
+      },
+      {
+            "id": "tc2",
+            "label": "Outliers (Linear Region)",
+            "input": {
+                  "y_true": [
+                        0.0,
+                        0.0
+                  ],
+                  "y_pred": [
+                        5.0,
+                        -10.0
+                  ],
+                  "delta": 1.0
+            },
+            "expectedOutput": {
+                  "sample_losses": [
+                        4.5,
+                        9.5
+                  ],
+                  "mean_loss": 7.0
+            },
+            "hidden": false,
+            "description": "Large outlier errors handled in linear penalty regime."
+      },
+      {
+            "id": "tc3",
+            "label": "Mixed Regime Delta 1.5",
+            "input": {
+                  "y_true": [
+                        10.0,
+                        20.0,
+                        30.0
+                  ],
+                  "y_pred": [
+                        11.0,
+                        25.0,
+                        31.5
+                  ],
+                  "delta": 1.5
+            },
+            "expectedOutput": {
+                  "sample_losses": [
+                        0.5,
+                        6.375,
+                        1.125
+                  ],
+                  "mean_loss": 2.6667
+            },
+            "hidden": true,
+            "description": "Boundary and above-threshold sample points."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-23': {
+    id: 'numpy-vec-prob-23',
+    title: "Vectorized Layer Normalization with Learnable Affine",
+    difficulty: 'hard',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '20-25 min',
+    functionName: 'layer_norm',
+    functionSignature: "layer_norm(features: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]",
+    starterCode: `def layer_norm(features, gamma, beta, eps=1e-5):
+    """Compute layer normalization over feature dimension.
+    y = ((x - mean) / sqrt(var + eps)) * gamma + beta.
+    Round entries to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Normalize activations across feature dimensions per sample with learnable scale and bias.",
+    taskDescription: "Implement `layer_norm(features, gamma, beta, eps)`: for each sample row `x` of dimension `D`, compute mean `mu = sum(x) / D` and variance `sigma^2 = sum((x - mu)^2) / D`. Standardize and apply affine transform `y = ((x - mu) / sqrt(sigma^2 + eps)) * gamma + beta`. Round each element to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(gamma) == len(beta) == D",
+      "1 <= len(features) <= 1000",
+      "eps > 0.0"
+],
+    hints: {
+      "small": "Mean and variance are computed independently across each sample's features.",
+      "strong": "Denominator is `math.sqrt(var + eps)`.",
+      "concept": "Layer normalization stabilizes hidden state dynamics in Transformer models independently of batch size."
+},
+    conceptConnections: [
+      {
+            "title": "Z-Score Standardization",
+            "route": "/practice/numpy-pandas-prob-4",
+            "description": "Vectorized standardization"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Batch Size 2 Dim 2 Unit Affine",
+            "input": {
+                  "features": [
+                        [
+                              2.0,
+                              4.0
+                        ],
+                        [
+                              10.0,
+                              20.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0
+                  ],
+                  "beta": [
+                        0.0,
+                        0.0
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": [
+                  [
+                        -1.0,
+                        1.0
+                  ],
+                  [
+                        -1.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Layer norm across features with identity affine parameters."
+      },
+      {
+            "id": "tc2",
+            "label": "Scaled and Shifted Affine",
+            "input": {
+                  "features": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ]
+                  ],
+                  "gamma": [
+                        2.0,
+                        0.5,
+                        1.0
+                  ],
+                  "beta": [
+                        -1.0,
+                        0.0,
+                        1.0
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": [
+                  [
+                        -3.4495,
+                        0.0,
+                        2.2247
+                  ]
+            ],
+            "hidden": false,
+            "description": "Non-trivial learnable gamma and beta."
+      },
+      {
+            "id": "tc3",
+            "label": "Constant Features (Zero Variance)",
+            "input": {
+                  "features": [
+                        [
+                              5.0,
+                              5.0,
+                              5.0
+                        ]
+                  ],
+                  "gamma": [
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  "beta": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "eps": 1e-05
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Zero variance protected by epsilon."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-24': {
+    id: 'numpy-vec-prob-24',
+    title: "Vectorized Causal Triangular Attention Masking",
+    difficulty: 'hard',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '20-25 min',
+    functionName: 'apply_causal_mask',
+    functionSignature: "apply_causal_mask(scores: list[list[float]], mask_val: float = -10000.0) -> list[list[float]]",
+    starterCode: `def apply_causal_mask(scores, mask_val=-10000.0):
+    """Mask upper triangular future positions (j > i) with large negative mask_val.
+    Round output matrix entries to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Prevent autoregressive models from attending to future sequence tokens via upper-triangular masking.",
+    taskDescription: "Implement `apply_causal_mask(scores, mask_val)`: for a square attention score matrix `scores` of shape `(S, S)`, replace all upper-triangular elements `scores[i][j]` where `j > i` with `mask_val`. Keep elements where `j <= i` intact. Round all elements to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= S <= 2048",
+      "mask_val is large negative float (e.g. -1e4)"
+],
+    hints: {
+      "small": "Causal condition: token at position i can only attend to tokens at j `<=` i.",
+      "strong": "If `j > i`, assign `mask_val`; else retain `scores[i][j]`.",
+      "concept": "Causal masking enforces autoregressive ordering so language models generate text without looking ahead."
+},
+    conceptConnections: [
+      {
+            "title": "Transformer Attention",
+            "route": "/practice/numpy-vec-prob-8",
+            "description": "Batch matrix multiplication"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3x3 Attention Scores",
+            "input": {
+                  "scores": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "mask_val": -10000.0
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        -10000.0,
+                        -10000.0
+                  ],
+                  [
+                        4.0,
+                        5.0,
+                        -10000.0
+                  ],
+                  [
+                        7.0,
+                        8.0,
+                        9.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Mask upper triangular future positions."
+      },
+      {
+            "id": "tc2",
+            "label": "2x2 Minimal Sequence",
+            "input": {
+                  "scores": [
+                        [
+                              0.5,
+                              0.8
+                        ],
+                        [
+                              0.2,
+                              0.4
+                        ]
+                  ],
+                  "mask_val": -1000000000.0
+            },
+            "expectedOutput": [
+                  [
+                        0.5,
+                        -1000000000.0
+                  ],
+                  [
+                        0.2,
+                        0.4
+                  ]
+            ],
+            "hidden": false,
+            "description": "Causal mask on 2-token sequence."
+      },
+      {
+            "id": "tc3",
+            "label": "Diagonal Preservation",
+            "input": {
+                  "scores": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "mask_val": -100.0
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        -100.0
+                  ],
+                  [
+                        1.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Self-attention token at diagonal is retained."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-25': {
+    id: 'numpy-vec-prob-25',
+    title: "Vectorized Rotary Position Embedding (RoPE) Rotation",
+    difficulty: 'hard',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '20-25 min',
+    functionName: 'apply_rope_rotation',
+    functionSignature: "apply_rope_rotation(x: list[float], pos: int, theta: float = 10000.0) -> list[float]",
+    starterCode: `def apply_rope_rotation(x, pos, theta=10000.0):
+    """Rotate even-dimensional embedding vector x by RoPE angle at sequence position pos.
+    Round entries to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Encode relative token positions using complex rotary coordinate transformations.",
+    taskDescription: "Implement `apply_rope_rotation(x, pos, theta)`: for even-dimension vector `x` of length `D`, iterate over coordinate pairs `(x[2k], x[2k+1])` for `k in 0..D//2 - 1`. Compute angle `theta_k = pos / (theta ** (2k / D))`. Rotate pair: `x0' = x0*cos(theta_k) - x1*sin(theta_k)` and `x1' = x0*sin(theta_k) + x1*cos(theta_k)`. Return transformed vector rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(x) is even",
+      "pos >= 0",
+      "theta > 1.0"
+],
+    hints: {
+      "small": "For pair k, angle is `pos * (1.0 / (theta ** (2*k / D)))`.",
+      "strong": "Apply 2D rotation matrix `[[cos, -sin], [sin, cos]]` to each pair `(x[2k], x[2k+1])`.",
+      "concept": "RoPE encodes relative distance naturally via inner products of complex rotated key-query vectors in LLaMA and Mistral."
+},
+    conceptConnections: [
+      {
+            "title": "LLM Internals",
+            "route": "/practice/math-num-prob-2",
+            "description": "Vector dot products and angles"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Position 0 (Identity Rotation)",
+            "input": {
+                  "x": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0
+                  ],
+                  "pos": 0,
+                  "theta": 10000.0
+            },
+            "expectedOutput": [
+                  1.0,
+                  2.0,
+                  3.0,
+                  4.0
+            ],
+            "hidden": false,
+            "description": "At pos=0, cos(0)=1 and sin(0)=0 so vector is unchanged."
+      },
+      {
+            "id": "tc2",
+            "label": "Position 1 with D=2",
+            "input": {
+                  "x": [
+                        1.0,
+                        0.0
+                  ],
+                  "pos": 1,
+                  "theta": 100.0
+            },
+            "expectedOutput": [
+                  0.5403,
+                  0.8415
+            ],
+            "hidden": false,
+            "description": "2D vector rotated by frequency angle."
+      },
+      {
+            "id": "tc3",
+            "label": "Position 5 with D=4",
+            "input": {
+                  "x": [
+                        0.5,
+                        -0.5,
+                        1.2,
+                        0.8
+                  ],
+                  "pos": 5,
+                  "theta": 10000.0
+            },
+            "expectedOutput": [
+                  -0.3376,
+                  -0.6213,
+                  1.1585,
+                  0.859
+            ],
+            "hidden": true,
+            "description": "Multi-channel frequency rotation."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-26': {
+    id: 'numpy-vec-prob-26',
+    title: "Vectorized Low-Rank SVD Reconstruction",
+    difficulty: 'hard',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '20-25 min',
+    functionName: 'low_rank_svd_reconstruct',
+    functionSignature: "low_rank_svd_reconstruct(U: list[list[float]], S: list[float], Vt: list[list[float]], rank_k: int) -> list[list[float]]",
+    starterCode: `def low_rank_svd_reconstruct(U, S, Vt, rank_k):
+    """Reconstruct rank-k matrix approximation from truncated SVD components.
+    Return reconstructed matrix rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compress and reconstruct a matrix using Eckart-Young optimal rank-k truncated SVD.",
+    taskDescription: "Implement `low_rank_svd_reconstruct(U, S, Vt, rank_k)`: reconstruct matrix `A_k = sum_{i=0}^{rank_k - 1} S[i] * (U[:, i] (x) Vt[i, :])`. Return the `(M, N)` reconstructed matrix with all entries rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= rank_k <= len(S)",
+      "U is M x K, Vt is K x N"
+],
+    hints: {
+      "small": "For each singular component i in 0..rank_k-1, compute outer product of column U[:, i] and row Vt[i, :].",
+      "strong": "Accumulate `s_i * u_{r, i} * vt_{i, c}` into matrix entry `(r, c)`.",
+      "concept": "Low-rank matrix approximation via SVD is the foundation of PCA, latent semantic analysis, and LoRA parameter-efficient fine-tuning."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Outer Product",
+            "route": "/practice/numpy-pandas-prob-28",
+            "description": "Outer product operations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Rank 1 Reconstruction of 2x2",
+            "input": {
+                  "U": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "S": [
+                        10.0,
+                        2.0
+                  ],
+                  "Vt": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "rank_k": 1
+            },
+            "expectedOutput": [
+                  [
+                        10.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Retain top singular component only."
+      },
+      {
+            "id": "tc2",
+            "label": "Full Rank Reconstruction",
+            "input": {
+                  "U": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "S": [
+                        10.0,
+                        2.0
+                  ],
+                  "Vt": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "rank_k": 2
+            },
+            "expectedOutput": [
+                  [
+                        10.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        2.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Sum of both components reproduces original matrix."
+      },
+      {
+            "id": "tc3",
+            "label": "Rank 1 on Rectangular 3x2",
+            "input": {
+                  "U": [
+                        [
+                              0.5,
+                              0.1
+                        ],
+                        [
+                              0.5,
+                              -0.1
+                        ],
+                        [
+                              0.707,
+                              0.0
+                        ]
+                  ],
+                  "S": [
+                        4.0,
+                        1.0
+                  ],
+                  "Vt": [
+                        [
+                              0.6,
+                              0.8
+                        ],
+                        [
+                              -0.8,
+                              0.6
+                        ]
+                  ],
+                  "rank_k": 1
+            },
+            "expectedOutput": [
+                  [
+                        1.2,
+                        1.6
+                  ],
+                  [
+                        1.2,
+                        1.6
+                  ],
+                  [
+                        1.6968,
+                        2.2624
+                  ]
+            ],
+            "hidden": true,
+            "description": "Rectangular matrix low-rank outer product."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-27': {
+    id: 'numpy-vec-prob-27',
+    title: "Vectorized Householder Reflection Transformation",
+    difficulty: 'hard',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '20-25 min',
+    functionName: 'apply_householder_reflection',
+    functionSignature: "apply_householder_reflection(v: list[float], x: list[float]) -> list[float]",
+    starterCode: `def apply_householder_reflection(v, x):
+    """Compute Householder reflection H*x where H = I - 2 * (v v^T) / (v^T v).
+    Round resulting vector to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Apply an elementary Householder reflection to a vector without explicitly building the full projection matrix.",
+    taskDescription: "Implement `apply_householder_reflection(v, x)`: compute `H x = x - 2 * (v^T x / v^T v) * v`. If `v^T v < 1e-12`, return `x`. Round entries of the reflected vector to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(v) == len(x)",
+      "1 <= len(x) <= 5000"
+],
+    hints: {
+      "small": "Avoid constructing the n x n matrix H.",
+      "strong": "Compute dot products `v.x` and `v.v`, then subtract scaled vector `scalar * v`.",
+      "concept": "Householder reflections zero out matrix sub-columns stably during QR decomposition and tridiagonal reduction."
+},
+    conceptConnections: [
+      {
+            "title": "Orthogonal Projections",
+            "route": "/practice/math-num-prob-3",
+            "description": "Vector projection foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Reflection of Vector across Normal",
+            "input": {
+                  "v": [
+                        1.0,
+                        0.0
+                  ],
+                  "x": [
+                        2.0,
+                        3.0
+                  ]
+            },
+            "expectedOutput": [
+                  -2.0,
+                  3.0
+            ],
+            "hidden": false,
+            "description": "Reflect across x-axis normal: x becomes -2, y remains 3."
+      },
+      {
+            "id": "tc2",
+            "label": "Diagonal Normal Reflection",
+            "input": {
+                  "v": [
+                        1.0,
+                        1.0
+                  ],
+                  "x": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  -1.0
+            ],
+            "hidden": false,
+            "description": "Swap coordinate axes through diagonal reflection."
+      },
+      {
+            "id": "tc3",
+            "label": "3D Householder Vector",
+            "input": {
+                  "v": [
+                        0.0,
+                        1.0,
+                        1.0
+                  ],
+                  "x": [
+                        5.0,
+                        2.0,
+                        -2.0
+                  ]
+            },
+            "expectedOutput": [
+                  5.0,
+                  2.0,
+                  -2.0
+            ],
+            "hidden": true,
+            "description": "Orthogonal vector reflection."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-28': {
+    id: 'numpy-vec-prob-28',
+    title: "Vectorized SwiGLU Feed-Forward Activation",
+    difficulty: 'hard',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '20-25 min',
+    functionName: 'swiglu_activation',
+    functionSignature: "swiglu_activation(gate_proj: list[list[float]], up_proj: list[list[float]]) -> list[list[float]]",
+    starterCode: `def swiglu_activation(gate_proj, up_proj):
+    """Compute SwiGLU(gate, up) = (gate * sigmoid(gate)) * up.
+    Round entries to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Apply the SwiGLU non-linear gating mechanism utilized in modern LLM feed-forward layers.",
+    taskDescription: "Implement `swiglu_activation(gate_proj, up_proj)`: for each element `(g, u)` at matching coordinates, calculate `swish(g) = g * (1 / (1 + exp(-g)))`, and multiply by `u`: `output = swish(g) * u`. Round all outputs to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "gate_proj and up_proj have identical dimensions (B, D)",
+      "1 <= B <= 1000"
+],
+    hints: {
+      "small": "Sigmoid is `1.0 / (1.0 + math.exp(-g))`.",
+      "strong": "Multiply swish activation element-wise with up_proj.",
+      "concept": "SwiGLU (Swish Gated Linear Unit) outperforms standard ReLU and GeLU in modern LLM architectures like LLaMA."
+},
+    conceptConnections: [
+      {
+            "title": "Neural Activations",
+            "route": "/practice/math-num-prob-1",
+            "description": "Non-linear functions"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard SwiGLU Positive Inputs",
+            "input": {
+                  "gate_proj": [
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "up_proj": [
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        2.1932
+                  ]
+            ],
+            "hidden": false,
+            "description": "SwiGLU with moderate positive values."
+      },
+      {
+            "id": "tc2",
+            "label": "Negative Gate (Gating Suppression)",
+            "input": {
+                  "gate_proj": [
+                        [
+                              -5.0,
+                              -10.0
+                        ]
+                  ],
+                  "up_proj": [
+                        [
+                              10.0,
+                              20.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -0.3346,
+                        -0.0091
+                  ]
+            ],
+            "hidden": false,
+            "description": "Gate suppression attenuates negative activations."
+      },
+      {
+            "id": "tc3",
+            "label": "Batch of 2 Hidden Vectors",
+            "input": {
+                  "gate_proj": [
+                        [
+                              2.0,
+                              -1.0
+                        ],
+                        [
+                              0.5,
+                              0.0
+                        ]
+                  ],
+                  "up_proj": [
+                        [
+                              1.0,
+                              4.0
+                        ],
+                        [
+                              -2.0,
+                              5.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.7616,
+                        -1.0758
+                  ],
+                  [
+                        -0.6225,
+                        0.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Batch 2x2 SwiGLU feedforward output."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-29': {
+    id: 'numpy-vec-prob-29',
+    title: "Vectorized 2D Affine Point Transformation",
+    difficulty: 'hard',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '20-25 min',
+    functionName: 'apply_affine_2d',
+    functionSignature: "apply_affine_2d(points: list[list[float]], transform_mat: list[list[float]], translation: list[float]) -> list[list[float]]",
+    starterCode: `def apply_affine_2d(points, transform_mat, translation):
+    """Apply 2D affine transformation p' = M @ p + t to a batch of 2D points.
+    Round transformed coordinates to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Vectorize 2D affine geometric mappings (rotation, scaling, translation) over batches of coordinates.",
+    taskDescription: "Implement `apply_affine_2d(points, transform_mat, translation)`: given `points` of shape `(N, 2)`, 2x2 matrix `transform_mat`, and translation vector `[tx, ty]`, compute `p_new = transform_mat @ p + translation` for each point. Return the list of transformed `[x', y']` points rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(points) <= 50,000",
+      "transform_mat is 2x2",
+      "translation has length 2"
+],
+    hints: {
+      "small": "For each [px, py], compute `x' = M[0][0]*px + M[0][1]*py + tx`.",
+      "strong": "Compute `y' = M[1][0]*px + M[1][1]*py + ty`.",
+      "concept": "Affine transformations warp coordinate frames in computer vision data augmentation and spatial transformer networks."
+},
+    conceptConnections: [
+      {
+            "title": "Affine Transforms",
+            "route": "/practice/numpy-pandas-prob-31",
+            "description": "Vectorized batch affine transform"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Translation Only",
+            "input": {
+                  "points": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "transform_mat": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "translation": [
+                        5.0,
+                        10.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0,
+                        10.0
+                  ],
+                  [
+                        6.0,
+                        11.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Pure translation by (5, 10)."
+      },
+      {
+            "id": "tc2",
+            "label": "90-degree Rotation and Shift",
+            "input": {
+                  "points": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "transform_mat": [
+                        [
+                              0.0,
+                              -1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "translation": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        3.0
+                  ],
+                  [
+                        0.0,
+                        2.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Counter-clockwise rotation followed by translation."
+      },
+      {
+            "id": "tc3",
+            "label": "Scale and Shear",
+            "input": {
+                  "points": [
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ],
+                  "transform_mat": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "translation": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        7.0,
+                        6.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Scaling and shear transform."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-vec-prob-30': {
+    id: 'numpy-vec-prob-30',
+    title: "FlashAttention Online Softmax Block Accumulator",
+    difficulty: 'hard',
+    topic: "NumPy & Vectorized Computation",
+    estimatedTime: '20-25 min',
+    functionName: 'merge_online_softmax_blocks',
+    functionSignature: "merge_online_softmax_blocks(block_maxes: list[float], block_sums: list[float], block_weights: list[list[float]]) -> dict[str, any]",
+    starterCode: `def merge_online_softmax_blocks(block_maxes, block_sums, block_weights):
+    """Merge two tiled partial softmax blocks using online rescaling.
+    Return {'merged_max': float, 'merged_sum': float, 'merged_output': list[float]} rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Merge two partitioned attention blocks using online softmax rescaling without materializing the full attention matrix.",
+    taskDescription: "Implement `merge_online_softmax_blocks(block_maxes, block_sums, block_weights)`: given two blocks with max logits `m_1, m_2`, exponential sums `l_1, l_2`, and unnormalized output accumulators `O_1, O_2`, calculate new maximum `m_new = max(m_1, m_2)`. Rescale factors `alpha_1 = exp(m_1 - m_new)` and `alpha_2 = exp(m_2 - m_new)`. Compute merged sum `l_new = alpha_1 * l_1 + alpha_2 * l_2` and output `O_new = (alpha_1 * O_1 + alpha_2 * O_2) / l_new`. Return dict with keys `merged_max`, `merged_sum`, and `merged_output` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "block_maxes and block_sums have length 2",
+      "block_weights has 2 rows of dimension D"
+],
+    hints: {
+      "small": "Find common maximum `m_new = max(m_1, m_2)`.",
+      "strong": "Scale previous statistics by `exp(m_i - m_new)` before summing.",
+      "concept": "Online softmax updates allow FlashAttention to compute attention within fast GPU SRAM memory without high-bandwidth memory roundtrips."
+},
+    conceptConnections: [
+      {
+            "title": "Log-Sum-Exp",
+            "route": "/practice/numpy-pandas-prob-55",
+            "description": "Vectorized log-sum-exp"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Merging Two Identical Blocks",
+            "input": {
+                  "block_maxes": [
+                        2.0,
+                        2.0
+                  ],
+                  "block_sums": [
+                        1.0,
+                        1.0
+                  ],
+                  "block_weights": [
+                        [
+                              0.5,
+                              0.5
+                        ],
+                        [
+                              0.5,
+                              0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "merged_max": 2.0,
+                  "merged_sum": 2.0,
+                  "merged_output": [
+                        0.5,
+                        0.5
+                  ]
+            },
+            "hidden": false,
+            "description": "Merge identical partial softmax blocks."
+      },
+      {
+            "id": "tc2",
+            "label": "One Dominant Block",
+            "input": {
+                  "block_maxes": [
+                        10.0,
+                        1.0
+                  ],
+                  "block_sums": [
+                        2.0,
+                        5.0
+                  ],
+                  "block_weights": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "merged_max": 10.0,
+                  "merged_sum": 2.0006,
+                  "merged_output": [
+                        0.4998,
+                        0.0001
+                  ]
+            },
+            "hidden": false,
+            "description": "Block with high maximum dominates weighted average."
+      },
+      {
+            "id": "tc3",
+            "label": "General Partial Blocks",
+            "input": {
+                  "block_maxes": [
+                        3.5,
+                        4.0
+                  ],
+                  "block_sums": [
+                        1.2,
+                        0.8
+                  ],
+                  "block_weights": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              3.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "merged_max": 4.0,
+                  "merged_sum": 1.5278,
+                  "merged_output": [
+                        2.7575,
+                        1.706
+                  ]
+            },
+            "hidden": true,
+            "description": "Typical FlashAttention tiling block resynchronization."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-1': {
+    id: 'pandas-proc-prob-1',
+    title: "DataFrame Schema Validation and Coercion Pipeline",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'validate_and_coerce_schema',
+    functionSignature: "validate_and_coerce_schema(records: list[dict], schema: dict[str, str]) -> list[dict]",
+    starterCode: `def validate_and_coerce_schema(records, schema):
+    """Validate schema and coerce types for records according to schema.
+    Fallback: int -> 0, float -> 0.0, bool -> False, str -> ''.
+    Round floats to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Enforce strict schema types and graceful type coercion across ingested semi-structured records.",
+    taskDescription: "Implement `validate_and_coerce_schema(records, schema)`: iterate over each record dictionary. For each column in `schema` (mapping column name to `'int'`, `'float'`, `'str'`, or `'bool'`), coerce the value. If missing or invalid, substitute standard defaults: `0` for int, `0.0` for float, `False` for bool, `\"\"` for str. Round floats to 4 decimals. Return the list of validated record dictionaries.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(records) <= 1000",
+      "schema types: int, float, str, bool"
+],
+    hints: {
+      "small": "Try type conversion in a try/except block.",
+      "strong": "On ValueError or TypeError, fallback to the default for that column type.",
+      "concept": "Strict schema validation protects production feature pipelines from silent corruption and type drift."
+},
+    conceptConnections: [
+      {
+            "title": "Data Pipelines",
+            "route": "/practice/numpy-pandas-prob-2",
+            "description": "Data cleaning and validation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Valid String Formats",
+            "input": {
+                  "records": [
+                        {
+                              "id": "101",
+                              "price": "19.99",
+                              "name": "Widget",
+                              "in_stock": "True"
+                        }
+                  ],
+                  "schema": {
+                        "id": "int",
+                        "price": "float",
+                        "name": "str",
+                        "in_stock": "bool"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "id": 101,
+                        "price": 19.99,
+                        "name": "Widget",
+                        "in_stock": true
+                  }
+            ],
+            "hidden": false,
+            "description": "Coerce numeric strings to ints and floats."
+      },
+      {
+            "id": "tc2",
+            "label": "Corrupted and Missing Fields",
+            "input": {
+                  "records": [
+                        {
+                              "id": "bad",
+                              "name": 123
+                        },
+                        {
+                              "price": "not_float",
+                              "in_stock": "no"
+                        }
+                  ],
+                  "schema": {
+                        "id": "int",
+                        "price": "float",
+                        "name": "str",
+                        "in_stock": "bool"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "id": 0,
+                        "price": 0.0,
+                        "name": "123",
+                        "in_stock": false
+                  },
+                  {
+                        "id": 0,
+                        "price": 0.0,
+                        "name": "",
+                        "in_stock": false
+                  }
+            ],
+            "hidden": false,
+            "description": "Default fallbacks on parse failure."
+      },
+      {
+            "id": "tc3",
+            "label": "Empty Records",
+            "input": {
+                  "records": [
+                        {}
+                  ],
+                  "schema": {
+                        "id": "int",
+                        "price": "float",
+                        "name": "str",
+                        "in_stock": "bool"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "id": 0,
+                        "price": 0.0,
+                        "name": "",
+                        "in_stock": false
+                  }
+            ],
+            "hidden": true,
+            "description": "Entirely missing record populated with defaults."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-2': {
+    id: 'pandas-proc-prob-2',
+    title: "Multi-Column Conditional Imputation Pipeline",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'impute_dataframe_columns',
+    functionSignature: "impute_dataframe_columns(records: list[dict], strategies: dict[str, str]) -> list[dict]",
+    starterCode: `def impute_dataframe_columns(records, strategies):
+    """Impute missing values using column strategies: 'mean', 'median', or 'mode'.
+    Round numerical fill values to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Impute missing values across heterogeneous tabular columns using column-specific statistical aggregations.",
+    taskDescription: "Implement `impute_dataframe_columns(records, strategies)`: for each column in `strategies`, compute the fill value from non-null values. Supported strategies: `'mean'` (arithmetic average), `'median'` (50th percentile), and `'mode'` (most frequent value; tie break by lexicographically smallest). Replace missing / `None` values and return updated records.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "strategies maps column names to 'mean', 'median', or 'mode'",
+      "1 <= len(records) <= 10,000"
+],
+    hints: {
+      "small": "First pass: calculate fill value per column from non-null entries.",
+      "strong": "Second pass: replace missing keys or None values with the precomputed fill value.",
+      "concept": "Appropriate imputation prevents bias: median is robust to outliers, while mode preserves categorical integrity."
+},
+    conceptConnections: [
+      {
+            "title": "Missing Value Imputation",
+            "route": "/practice/numpy-pandas-prob-2",
+            "description": "Imputation pipelines"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Mean Median Mode Mix",
+            "input": {
+                  "records": [
+                        {
+                              "age": 25,
+                              "salary": 50000,
+                              "department": "Sales"
+                        },
+                        {
+                              "age": 35,
+                              "salary": null,
+                              "department": "Sales"
+                        },
+                        {
+                              "age": null,
+                              "salary": 70000,
+                              "department": "IT"
+                        }
+                  ],
+                  "strategies": {
+                        "age": "median",
+                        "salary": "mean",
+                        "department": "mode"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "age": 25,
+                        "salary": 50000,
+                        "department": "Sales"
+                  },
+                  {
+                        "age": 35,
+                        "salary": 60000.0,
+                        "department": "Sales"
+                  },
+                  {
+                        "age": 30.0,
+                        "salary": 70000,
+                        "department": "IT"
+                  }
+            ],
+            "hidden": false,
+            "description": "Impute missing age with median, salary with mean, department with mode."
+      },
+      {
+            "id": "tc2",
+            "label": "All Present No Nones",
+            "input": {
+                  "records": [
+                        {
+                              "a": 10,
+                              "b": 20
+                        },
+                        {
+                              "a": 30,
+                              "b": 40
+                        }
+                  ],
+                  "strategies": {
+                        "a": "mean",
+                        "b": "median"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "a": 10,
+                        "b": 20
+                  },
+                  {
+                        "a": 30,
+                        "b": 40
+                  }
+            ],
+            "hidden": false,
+            "description": "No values changed when data is complete."
+      },
+      {
+            "id": "tc3",
+            "label": "Tied Mode Selection",
+            "input": {
+                  "records": [
+                        {
+                              "tag": "beta"
+                        },
+                        {
+                              "tag": "alpha"
+                        }
+                  ],
+                  "strategies": {
+                        "tag": "mode"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "tag": "beta"
+                  },
+                  {
+                        "tag": "alpha"
+                  }
+            ],
+            "hidden": true,
+            "description": "Tie breaking mode imputation."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-3': {
+    id: 'pandas-proc-prob-3',
+    title: "GroupBy Multi-Metric Statistical Aggregation",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'groupby_multi_metric',
+    functionSignature: "groupby_multi_metric(records: list[dict], group_col: str, target_col: str) -> dict[str, dict[str, float]]",
+    starterCode: `def groupby_multi_metric(records, group_col, target_col):
+    """Compute count, sum, mean, and sample std of target_col grouped by group_col.
+    Round floats to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute grouped statistical metrics (count, sum, mean, sample standard deviation) across tabular records.",
+    taskDescription: "Implement `groupby_multi_metric(records, group_col, target_col)`: partition records by `group_col`. For each group, compute `count`, `sum`, `mean`, and sample `std` (`sqrt(sum((x - mean)^2) / (count - 1))`, or `0.0` if count `<` 2). Return a dictionary mapping group names to their metric summaries with values rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(records) <= 50,000",
+      "target_col values are numeric"
+],
+    hints: {
+      "small": "Collect target values into lists per group using defaultdict(list).",
+      "strong": "Use N-1 degrees of freedom for sample standard deviation when count `>=` 2.",
+      "concept": "GroupBy aggregations form the core of feature engineering tables and summary dashboards."
+},
+    conceptConnections: [
+      {
+            "title": "GroupBy Aggregations",
+            "route": "/practice/numpy-pandas-prob-5",
+            "description": "Pandas group-by pipelines"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Engineering and Sales",
+            "input": {
+                  "records": [
+                        {
+                              "dept": "Engineering",
+                              "salary": 100000
+                        },
+                        {
+                              "dept": "Engineering",
+                              "salary": 120000
+                        },
+                        {
+                              "dept": "Sales",
+                              "salary": 80000
+                        },
+                        {
+                              "dept": "Sales",
+                              "salary": 90000
+                        },
+                        {
+                              "dept": "Sales",
+                              "salary": 85000
+                        }
+                  ],
+                  "group_col": "dept",
+                  "target_col": "salary"
+            },
+            "expectedOutput": {
+                  "Engineering": {
+                        "count": 2,
+                        "sum": 220000.0,
+                        "mean": 110000.0,
+                        "std": 14142.1356
+                  },
+                  "Sales": {
+                        "count": 3,
+                        "sum": 255000.0,
+                        "mean": 85000.0,
+                        "std": 5000.0
+                  }
+            },
+            "hidden": false,
+            "description": "Compute count, sum, mean, sample std by dept."
+      },
+      {
+            "id": "tc2",
+            "label": "Single Observation Group",
+            "input": {
+                  "records": [
+                        {
+                              "cat": "A",
+                              "val": 42.0
+                        }
+                  ],
+                  "group_col": "cat",
+                  "target_col": "val"
+            },
+            "expectedOutput": {
+                  "A": {
+                        "count": 1,
+                        "sum": 42.0,
+                        "mean": 42.0,
+                        "std": 0.0
+                  }
+            },
+            "hidden": false,
+            "description": "Single element group returns std of 0.0."
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple Disjoint Categories",
+            "input": {
+                  "records": [
+                        {
+                              "k": "x",
+                              "v": 10
+                        },
+                        {
+                              "k": "y",
+                              "v": 20
+                        },
+                        {
+                              "k": "x",
+                              "v": 30
+                        }
+                  ],
+                  "group_col": "k",
+                  "target_col": "v"
+            },
+            "expectedOutput": {
+                  "x": {
+                        "count": 2,
+                        "sum": 40.0,
+                        "mean": 20.0,
+                        "std": 14.1421
+                  },
+                  "y": {
+                        "count": 1,
+                        "sum": 20.0,
+                        "mean": 20.0,
+                        "std": 0.0
+                  }
+            },
+            "hidden": true,
+            "description": "Grouped metrics across disjoint keys."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-4': {
+    id: 'pandas-proc-prob-4',
+    title: "Time-Series Gap Detection and Realignment",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'realign_timeseries_grid',
+    functionSignature: "realign_timeseries_grid(timestamps: list[int], values: list[float], step: int) -> dict[str, list]",
+    starterCode: `def realign_timeseries_grid(timestamps, values, step):
+    """Realign irregularly sampled time series onto regular grid using forward-fill.
+    Return {'timestamps': list[int], 'values': list[float]}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Resample and forward-fill irregular temporal series onto a uniform time grid.",
+    taskDescription: "Implement `realign_timeseries_grid(timestamps, values, step)`: construct a regular timestamp sequence starting at `timestamps[0]` up to `timestamps[-1]` with increment `step`. Realize values by assigning observed values when present or forward-filling the most recently observed value for gaps. Return `{\"timestamps\": list[int], \"values\": list[float]}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "timestamps is strictly increasing",
+      "step > 0",
+      "1 <= len(timestamps) <= 50,000"
+],
+    hints: {
+      "small": "Generate grid timestamps with a while loop from start to end.",
+      "strong": "Keep track of `last_val` and update it whenever current timestamp exists in the input series.",
+      "concept": "Realignment onto uniform time grids is required before feeding sensor data or financial ticks into recurrent neural networks."
+},
+    conceptConnections: [
+      {
+            "title": "Resampling & Gap Fill",
+            "route": "/practice/numpy-pandas-prob-14",
+            "description": "Time-series gap filling"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Hourly Gaps Realignment",
+            "input": {
+                  "timestamps": [
+                        0,
+                        2,
+                        5
+                  ],
+                  "values": [
+                        10.0,
+                        20.0,
+                        50.0
+                  ],
+                  "step": 1
+            },
+            "expectedOutput": {
+                  "timestamps": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                  ],
+                  "values": [
+                        10.0,
+                        10.0,
+                        20.0,
+                        20.0,
+                        20.0,
+                        50.0
+                  ]
+            },
+            "hidden": false,
+            "description": "Fill missing step 1, 3, 4 with forward fill."
+      },
+      {
+            "id": "tc2",
+            "label": "Already Regular Grid",
+            "input": {
+                  "timestamps": [
+                        10,
+                        20,
+                        30
+                  ],
+                  "values": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "step": 10
+            },
+            "expectedOutput": {
+                  "timestamps": [
+                        10,
+                        20,
+                        30
+                  ],
+                  "values": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ]
+            },
+            "hidden": false,
+            "description": "No gaps present."
+      },
+      {
+            "id": "tc3",
+            "label": "Large Step Jump",
+            "input": {
+                  "timestamps": [
+                        100,
+                        400
+                  ],
+                  "values": [
+                        5.5,
+                        9.9
+                  ],
+                  "step": 100
+            },
+            "expectedOutput": {
+                  "timestamps": [
+                        100,
+                        200,
+                        300,
+                        400
+                  ],
+                  "values": [
+                        5.5,
+                        5.5,
+                        5.5,
+                        9.9
+                  ]
+            },
+            "hidden": true,
+            "description": "Multi-step forward fill across gap."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-5': {
+    id: 'pandas-proc-prob-5',
+    title: "Vectorized Outlier Clipping via Rolling Bands",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'clip_rolling_bollinger_outliers',
+    functionSignature: "clip_rolling_bollinger_outliers(series: list[float], window: int, num_std: float) -> list[float]",
+    starterCode: `def clip_rolling_bollinger_outliers(series, window, num_std):
+    """Clip values exceeding rolling mean +/- num_std * rolling std.
+    Round clipped values to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Detect and clip anomalous values exceeding dynamic local rolling volatility thresholds.",
+    taskDescription: "Implement `clip_rolling_bollinger_outliers(series, window, num_std)`: for each index `i`, evaluate rolling mean `mu` and sample `std` over window `series[max(0, i - window + 1) : i + 1]`. Compute bounds `[mu - num_std * std, mu + num_std * std]`. Clip `series[i]` to lie within bounds. Return clipped values rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "window >= 1",
+      "num_std >= 0.0",
+      "1 <= len(series) <= 10,000"
+],
+    hints: {
+      "small": "For each element i, slice `sub = series[max(0, i - window + 1) : i + 1]`.",
+      "strong": "Compute sample std with divisor len(sub)-1 when len(sub) `>=` 2, else 0.0.",
+      "concept": "Rolling bands dynamically adapt to volatility regimes, avoiding rigid static thresholding."
+},
+    conceptConnections: [
+      {
+            "title": "Outlier Detection",
+            "route": "/practice/numpy-pandas-prob-10",
+            "description": "IQR outlier detection"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Window 3 Spike Clipping",
+            "input": {
+                  "series": [
+                        10.0,
+                        10.0,
+                        10.0,
+                        100.0,
+                        10.0
+                  ],
+                  "window": 3,
+                  "num_std": 2.0
+            },
+            "expectedOutput": [
+                  10.0,
+                  10.0,
+                  10.0,
+                  100.0,
+                  10.0
+            ],
+            "hidden": false,
+            "description": "Clip sudden 100.0 spike within 2 standard deviations."
+      },
+      {
+            "id": "tc2",
+            "label": "Constant Series No Outliers",
+            "input": {
+                  "series": [
+                        5.0,
+                        5.0,
+                        5.0,
+                        5.0
+                  ],
+                  "window": 2,
+                  "num_std": 1.5
+            },
+            "expectedOutput": [
+                  5.0,
+                  5.0,
+                  5.0,
+                  5.0
+            ],
+            "hidden": false,
+            "description": "Constant series remains untouched."
+      },
+      {
+            "id": "tc3",
+            "label": "Dip Below Lower Band",
+            "input": {
+                  "series": [
+                        20.0,
+                        21.0,
+                        19.0,
+                        0.0,
+                        20.0
+                  ],
+                  "window": 4,
+                  "num_std": 2.0
+            },
+            "expectedOutput": [
+                  20.0,
+                  21.0,
+                  19.0,
+                  0.0,
+                  20.0
+            ],
+            "hidden": true,
+            "description": "Lower band clipping of negative anomaly."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-6': {
+    id: 'pandas-proc-prob-6',
+    title: "Categorical Target Encoding with Empirical Bayes Smoothing",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'smooth_target_encoding',
+    functionSignature: "smooth_target_encoding(categories: list[str], targets: list[float], m_prior: float) -> dict[str, any]",
+    starterCode: `def smooth_target_encoding(categories, targets, m_prior):
+    """Compute smoothed target encoding S_c = (n*mean_c + m*global_mean) / (n + m).
+    Return {'global_mean': float, 'encoding_map': dict[str, float], 'encoded_series': list[float]}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Encode high-cardinality categorical features using empirical Bayes smoothed target statistics.",
+    taskDescription: "Implement `smooth_target_encoding(categories, targets, m_prior)`: calculate the global target mean. For each category `c`, compute sample count `n_c` and empirical target mean `mean_c`. Compute smoothed score `S_c = (n_c * mean_c + m_prior * global_mean) / (n_c + m_prior)`. Return a dictionary containing `global_mean`, `encoding_map`, and `encoded_series` with all float values rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "m_prior >= 0.0",
+      "1 <= len(categories) == len(targets) <= 50,000"
+],
+    hints: {
+      "small": "Compute global mean as `sum(targets) / len(targets)`.",
+      "strong": "For rare categories where n_c is small, the prior m_prior pulls the estimate toward the global mean.",
+      "concept": "Target encoding maps categories directly to target conditional expectations, while smoothing prevents target leakage and overfitting."
+},
+    conceptConnections: [
+      {
+            "title": "Rare Categories",
+            "route": "/practice/numpy-pandas-prob-47",
+            "description": "Categorical encoding"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3 Categories Prior 10",
+            "input": {
+                  "categories": [
+                        "cat",
+                        "cat",
+                        "dog",
+                        "dog",
+                        "dog"
+                  ],
+                  "targets": [
+                        1.0,
+                        0.0,
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  "m_prior": 10.0
+            },
+            "expectedOutput": {
+                  "global_mean": 0.8,
+                  "encoding_map": {
+                        "cat": 0.75,
+                        "dog": 0.8462
+                  },
+                  "encoded_series": [
+                        0.75,
+                        0.75,
+                        0.8462,
+                        0.8462,
+                        0.8462
+                  ]
+            },
+            "hidden": false,
+            "description": "Target encoding smoothed with prior weight 10."
+      },
+      {
+            "id": "tc2",
+            "label": "Zero Prior Weight (Pure Empirical)",
+            "input": {
+                  "categories": [
+                        "A",
+                        "B",
+                        "A"
+                  ],
+                  "targets": [
+                        10.0,
+                        20.0,
+                        30.0
+                  ],
+                  "m_prior": 0.0
+            },
+            "expectedOutput": {
+                  "global_mean": 20.0,
+                  "encoding_map": {
+                        "A": 20.0,
+                        "B": 20.0
+                  },
+                  "encoded_series": [
+                        20.0,
+                        20.0,
+                        20.0
+                  ]
+            },
+            "hidden": false,
+            "description": "Pure empirical mean encoding."
+      },
+      {
+            "id": "tc3",
+            "label": "Single Dominant Category",
+            "input": {
+                  "categories": [
+                        "X",
+                        "X",
+                        "X",
+                        "Y"
+                  ],
+                  "targets": [
+                        5.0,
+                        5.0,
+                        5.0,
+                        1.0
+                  ],
+                  "m_prior": 2.0
+            },
+            "expectedOutput": {
+                  "global_mean": 4.0,
+                  "encoding_map": {
+                        "X": 4.6,
+                        "Y": 3.0
+                  },
+                  "encoded_series": [
+                        4.6,
+                        4.6,
+                        4.6,
+                        3.0
+                  ]
+            },
+            "hidden": true,
+            "description": "Imbalanced class target encoding."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-7': {
+    id: 'pandas-proc-prob-7',
+    title: "Hierarchical Pivot Table with Margins",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'pivot_table_with_margins',
+    functionSignature: "pivot_table_with_margins(records: list[dict], index_col: str, col_col: str, val_col: str) -> dict[str, dict[str, float]]",
+    starterCode: `def pivot_table_with_margins(records, index_col, col_col, val_col):
+    """Create 2D pivot table (sum of val_col) with 'ALL' total row and column.
+    Round entries to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Reshape flat relational rows into a cross-tabulated 2D summary matrix with grand margin totals.",
+    taskDescription: "Implement `pivot_table_with_margins(records, index_col, col_col, val_col)`: aggregate `val_col` sums across unique row keys `index_col` and column keys `col_col`. Add an `'ALL'` total column for each row and an `'ALL'` total row across all rows. Return nested dict `{row_key: {col_key: sum, 'ALL': row_sum}, 'ALL': {...}}` with numbers rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(records) <= 10,000"
+],
+    hints: {
+      "small": "Find distinct sorted row keys and column keys first.",
+      "strong": "Accumulate sums into a defaultdict with tuple keys `(row_k, col_k)`.",
+      "concept": "Pivot tables reshape data from tall to wide format for multi-dimensional business reporting."
+},
+    conceptConnections: [
+      {
+            "title": "Pivot Table Reshaping",
+            "route": "/practice/numpy-pandas-prob-8",
+            "description": "Dataframe pivoting"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Region vs Product",
+            "input": {
+                  "records": [
+                        {
+                              "region": "North",
+                              "prod": "A",
+                              "sales": 100
+                        },
+                        {
+                              "region": "North",
+                              "prod": "B",
+                              "sales": 150
+                        },
+                        {
+                              "region": "South",
+                              "prod": "A",
+                              "sales": 200
+                        },
+                        {
+                              "region": "South",
+                              "prod": "B",
+                              "sales": 50
+                        }
+                  ],
+                  "index_col": "region",
+                  "col_col": "prod",
+                  "val_col": "sales"
+            },
+            "expectedOutput": {
+                  "North": {
+                        "A": 100.0,
+                        "B": 150.0,
+                        "ALL": 250.0
+                  },
+                  "South": {
+                        "A": 200.0,
+                        "B": 50.0,
+                        "ALL": 250.0
+                  },
+                  "ALL": {
+                        "A": 300.0,
+                        "B": 200.0,
+                        "ALL": 500.0
+                  }
+            },
+            "hidden": false,
+            "description": "Pivot table with row and col margins."
+      },
+      {
+            "id": "tc2",
+            "label": "Missing Combinations",
+            "input": {
+                  "records": [
+                        {
+                              "r": "X",
+                              "c": "1",
+                              "v": 10
+                        },
+                        {
+                              "r": "Y",
+                              "c": "2",
+                              "v": 20
+                        }
+                  ],
+                  "index_col": "r",
+                  "col_col": "c",
+                  "val_col": "v"
+            },
+            "expectedOutput": {
+                  "X": {
+                        "1": 10.0,
+                        "2": 0.0,
+                        "ALL": 10.0
+                  },
+                  "Y": {
+                        "1": 0.0,
+                        "2": 20.0,
+                        "ALL": 20.0
+                  },
+                  "ALL": {
+                        "1": 10.0,
+                        "2": 20.0,
+                        "ALL": 30.0
+                  }
+            },
+            "hidden": false,
+            "description": "Empty cells filled with 0.0."
+      },
+      {
+            "id": "tc3",
+            "label": "Single Cell Matrix",
+            "input": {
+                  "records": [
+                        {
+                              "a": "row1",
+                              "b": "col1",
+                              "v": 42.5
+                        }
+                  ],
+                  "index_col": "a",
+                  "col_col": "b",
+                  "val_col": "v"
+            },
+            "expectedOutput": {
+                  "row1": {
+                        "col1": 42.5,
+                        "ALL": 42.5
+                  },
+                  "ALL": {
+                        "col1": 42.5,
+                        "ALL": 42.5
+                  }
+            },
+            "hidden": true,
+            "description": "1x1 table with margin totals."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-8': {
+    id: 'pandas-proc-prob-8',
+    title: "DataFrame As-Of Merge for Temporal Joins",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'merge_asof_temporal',
+    functionSignature: "merge_asof_temporal(left_events: list[dict], right_quotes: list[dict], tolerance: int) -> list[dict]",
+    starterCode: `def merge_asof_temporal(left_events, right_quotes, tolerance):
+    """Perform as-of join matching each event with latest quote where quote_t <= event_t.
+    Prefix quote keys with 'quote_'. If unmatched, set to None."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Join disparate time-series events onto asynchronously arriving quote streams based on backward temporal proximity.",
+    taskDescription: "Implement `merge_asof_temporal(left_events, right_quotes, tolerance)`: for each event in `left_events` at timestamp `t`, find the right record with the maximum `quote_t <= t` such that `t - quote_t <= tolerance`. Add quote fields prefixed with `'quote_'`. If no quote matches within tolerance, populate quote fields with `None`. Return merged event records.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "timestamps are non-negative integers",
+      "1 <= len(left_events), len(right_quotes) <= 5000"
+],
+    hints: {
+      "small": "Find candidates where `quote['timestamp'] <= t` and `t - quote['timestamp'] <= tolerance`.",
+      "strong": "Select candidate with maximum timestamp `max(candidates, key=lambda q: q['timestamp'])`.",
+      "concept": "As-of joins prevent lookahead data leakage when attaching market prices or sensor readings to event streams."
+},
+    conceptConnections: [
+      {
+            "title": "Time-Series Joins",
+            "route": "/practice/numpy-pandas-prob-11",
+            "description": "Dataframe reconciliation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Within Tolerance Merge",
+            "input": {
+                  "left_events": [
+                        {
+                              "timestamp": 10,
+                              "action": "click"
+                        },
+                        {
+                              "timestamp": 25,
+                              "action": "buy"
+                        }
+                  ],
+                  "right_quotes": [
+                        {
+                              "timestamp": 8,
+                              "price": 100.0
+                        },
+                        {
+                              "timestamp": 20,
+                              "price": 105.0
+                        },
+                        {
+                              "timestamp": 30,
+                              "price": 110.0
+                        }
+                  ],
+                  "tolerance": 10
+            },
+            "expectedOutput": [
+                  {
+                        "timestamp": 10,
+                        "action": "click",
+                        "quote_price": 100.0
+                  },
+                  {
+                        "timestamp": 25,
+                        "action": "buy",
+                        "quote_price": 105.0
+                  }
+            ],
+            "hidden": false,
+            "description": "Merge latest price prior to event within tolerance 10."
+      },
+      {
+            "id": "tc2",
+            "label": "Exceeded Tolerance Unmatched",
+            "input": {
+                  "left_events": [
+                        {
+                              "timestamp": 50,
+                              "action": "view"
+                        }
+                  ],
+                  "right_quotes": [
+                        {
+                              "timestamp": 8,
+                              "price": 100.0
+                        },
+                        {
+                              "timestamp": 20,
+                              "price": 105.0
+                        },
+                        {
+                              "timestamp": 30,
+                              "price": 110.0
+                        }
+                  ],
+                  "tolerance": 5
+            },
+            "expectedOutput": [
+                  {
+                        "timestamp": 50,
+                        "action": "view",
+                        "quote_price": null
+                  }
+            ],
+            "hidden": false,
+            "description": "Last quote too far in the past returns None."
+      },
+      {
+            "id": "tc3",
+            "label": "Exact Timestamp Match",
+            "input": {
+                  "left_events": [
+                        {
+                              "timestamp": 20,
+                              "id": 1
+                        }
+                  ],
+                  "right_quotes": [
+                        {
+                              "timestamp": 8,
+                              "price": 100.0
+                        },
+                        {
+                              "timestamp": 20,
+                              "price": 105.0
+                        },
+                        {
+                              "timestamp": 30,
+                              "price": 110.0
+                        }
+                  ],
+                  "tolerance": 0
+            },
+            "expectedOutput": [
+                  {
+                        "timestamp": 20,
+                        "id": 1,
+                        "quote_price": 105.0
+                  }
+            ],
+            "hidden": true,
+            "description": "Exact timestamp match tolerance 0."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-9': {
+    id: 'pandas-proc-prob-9',
+    title: "Expanding Window Percentile Ranking",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'expanding_percentile_rank',
+    functionSignature: "expanding_percentile_rank(series: list[float]) -> list[float]",
+    starterCode: `def expanding_percentile_rank(series):
+    """Compute expanding cumulative percentile rank count(x <= current) / total * 100.0.
+    Round percentages to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Calculate the cumulative empirical percentile ranking of each incoming data point relative to historical context.",
+    taskDescription: "Implement `expanding_percentile_rank(series)`: for each index `i` from `0` to `len(series)-1`, compute the percentage of points in `series[0..i]` that are less than or equal to `series[i]`: `(count(x <= series[i]) / (i + 1)) * 100.0`. Return array of percentage values rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(series) <= 10,000"
+],
+    hints: {
+      "small": "For index i, inspect prefix slice `series[:i+1]`.",
+      "strong": "Count how many items in the slice are `<= series[i]` and divide by `i + 1`.",
+      "concept": "Expanding percentile ranking tracks whether current readings represent unprecedented spikes or normal baseline behavior."
+},
+    conceptConnections: [
+      {
+            "title": "eCDF Ranking",
+            "route": "/practice/numpy-pandas-prob-43",
+            "description": "Empirical cumulative distribution function"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Ascending Stream",
+            "input": {
+                  "series": [
+                        10.0,
+                        20.0,
+                        30.0,
+                        40.0
+                  ]
+            },
+            "expectedOutput": [
+                  100.0,
+                  100.0,
+                  100.0,
+                  100.0
+            ],
+            "hidden": false,
+            "description": "All points in strictly ascending series have 100% percentile rank."
+      },
+      {
+            "id": "tc2",
+            "label": "Oscillating Values",
+            "input": {
+                  "series": [
+                        50.0,
+                        10.0,
+                        30.0,
+                        100.0,
+                        20.0
+                  ]
+            },
+            "expectedOutput": [
+                  100.0,
+                  50.0,
+                  66.6667,
+                  100.0,
+                  40.0
+            ],
+            "hidden": false,
+            "description": "Percentile ranking of fluctuating readings."
+      },
+      {
+            "id": "tc3",
+            "label": "Tied Values",
+            "input": {
+                  "series": [
+                        5.0,
+                        5.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": [
+                  100.0,
+                  100.0,
+                  100.0
+            ],
+            "hidden": true,
+            "description": "Tied series ranks at 100%."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-10': {
+    id: 'pandas-proc-prob-10',
+    title: "Fuzzy Jaccard Record Deduplication",
+    difficulty: 'easy',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '10-15 min',
+    functionName: 'deduplicate_fuzzy_records',
+    functionSignature: "deduplicate_fuzzy_records(records: list[dict], key_field: str, threshold: float = 0.6) -> list[list[dict]]",
+    starterCode: `def deduplicate_fuzzy_records(records, key_field, threshold=0.6):
+    """Group duplicate records where word-level Jaccard similarity of key_field >= threshold.
+    Return list of clustered record lists."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Cluster near-duplicate tabular records using tokenized set Jaccard similarity metrics.",
+    taskDescription: "Implement `deduplicate_fuzzy_records(records, key_field, threshold)`: partition records into clusters. For each candidate record, compare its lower-cased word set in `key_field` against the representative (first item) of each existing cluster. If Jaccard similarity `|w1 & w2| / |w1 | w2| >= threshold`, add to that cluster; otherwise create a new cluster. Return list of clusters.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0.0 <= threshold <= 1.0",
+      "1 <= len(records) <= 1,000"
+],
+    hints: {
+      "small": "Split text into lowercase word tokens: `set(text.lower().split())`.",
+      "strong": "Calculate Jaccard similarity: `len(w1 & w2) / len(w1 | w2)` (or 1.0 if both empty).",
+      "concept": "Entity resolution and fuzzy deduplication consolidate dirty customer or product records across enterprise databases."
+},
+    conceptConnections: [
+      {
+            "title": "Jaccard Similarity",
+            "route": "/practice/numpy-pandas-prob-46",
+            "description": "Vectorized Jaccard similarity"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Group Similar Titles",
+            "input": {
+                  "records": [
+                        {
+                              "id": 1,
+                              "title": "Machine Learning in Python"
+                        },
+                        {
+                              "id": 2,
+                              "title": "python machine learning"
+                        },
+                        {
+                              "id": 3,
+                              "title": "Deep Neural Networks"
+                        },
+                        {
+                              "id": 4,
+                              "title": "Deep Convolutional Neural Networks"
+                        }
+                  ],
+                  "key_field": "title",
+                  "threshold": 0.5
+            },
+            "expectedOutput": [
+                  [
+                        {
+                              "id": 1,
+                              "title": "Machine Learning in Python"
+                        },
+                        {
+                              "id": 2,
+                              "title": "python machine learning"
+                        }
+                  ],
+                  [
+                        {
+                              "id": 3,
+                              "title": "Deep Neural Networks"
+                        },
+                        {
+                              "id": 4,
+                              "title": "Deep Convolutional Neural Networks"
+                        }
+                  ]
+            ],
+            "hidden": false,
+            "description": "Fuzzy token Jaccard clusters equivalent titles."
+      },
+      {
+            "id": "tc2",
+            "label": "Strict Threshold 1.0",
+            "input": {
+                  "records": [
+                        {
+                              "id": 1,
+                              "title": "Machine Learning in Python"
+                        },
+                        {
+                              "id": 2,
+                              "title": "python machine learning"
+                        },
+                        {
+                              "id": 3,
+                              "title": "Deep Neural Networks"
+                        },
+                        {
+                              "id": 4,
+                              "title": "Deep Convolutional Neural Networks"
+                        }
+                  ],
+                  "key_field": "title",
+                  "threshold": 1.0
+            },
+            "expectedOutput": [
+                  [
+                        {
+                              "id": 1,
+                              "title": "Machine Learning in Python"
+                        }
+                  ],
+                  [
+                        {
+                              "id": 2,
+                              "title": "python machine learning"
+                        }
+                  ],
+                  [
+                        {
+                              "id": 3,
+                              "title": "Deep Neural Networks"
+                        }
+                  ],
+                  [
+                        {
+                              "id": 4,
+                              "title": "Deep Convolutional Neural Networks"
+                        }
+                  ]
+            ],
+            "hidden": false,
+            "description": "Strict threshold isolates distinct token sets."
+      },
+      {
+            "id": "tc3",
+            "label": "Empty Records Input",
+            "input": {
+                  "records": [],
+                  "key_field": "title",
+                  "threshold": 0.6
+            },
+            "expectedOutput": [],
+            "hidden": true,
+            "description": "Empty input handles gracefully."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-11': {
+    id: 'pandas-proc-prob-11',
+    title: "Hierarchical Multi-Index DataFrame Unstacking",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'unstack_multilevel_index',
+    functionSignature: "unstack_multilevel_index(rows: list[tuple[str, str, str, float]]) -> dict[str, dict[str, dict[str, float]]]",
+    starterCode: `def unstack_multilevel_index(rows):
+    """Pivot multi-index tuples (entity, date, metric, val) into nested dict {entity: {date: {metric: val}}}.
+    Round values to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Unstack innermost categorical hierarchy levels from rows into column attributes.",
+    taskDescription: "Implement `unstack_multilevel_index(rows)`: given a list of tuples `(entity, date, metric, value)`, unstack the `metric` level into a columnar dictionary. Return nested dictionary structure `{entity: {date: {metric: value}}}` sorted by entity name with float values rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(rows) <= 50,000"
+],
+    hints: {
+      "small": "Build a nested dictionary with `defaultdict(lambda: defaultdict(dict))`.",
+      "strong": "Assign `res[entity][date][metric] = round(float(val), 4)`.",
+      "concept": "Unstacking transposes index levels into columns, transforming long format series into wide feature matrices."
+},
+    conceptConnections: [
+      {
+            "title": "Dataframe Melting",
+            "route": "/practice/numpy-pandas-prob-32",
+            "description": "Melting wide to long format"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2 Users Multi-Metric Unstack",
+            "input": {
+                  "rows": [
+                        [
+                              "user_1",
+                              "2026-01-01",
+                              "clicks",
+                              5
+                        ],
+                        [
+                              "user_1",
+                              "2026-01-01",
+                              "impressions",
+                              20
+                        ],
+                        [
+                              "user_2",
+                              "2026-01-01",
+                              "clicks",
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "user_1": {
+                        "2026-01-01": {
+                              "clicks": 5.0,
+                              "impressions": 20.0
+                        }
+                  },
+                  "user_2": {
+                        "2026-01-01": {
+                              "clicks": 1.0
+                        }
+                  }
+            },
+            "hidden": false,
+            "description": "Unstack multi-index tuple records into nested dictionary."
+      },
+      {
+            "id": "tc2",
+            "label": "Single Measurement",
+            "input": {
+                  "rows": [
+                        [
+                              "A",
+                              "D1",
+                              "M1",
+                              10.5
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "A": {
+                        "D1": {
+                              "M1": 10.5
+                        }
+                  }
+            },
+            "hidden": false,
+            "description": "Single record unstacking."
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple Dates per Entity",
+            "input": {
+                  "rows": [
+                        [
+                              "X",
+                              "2026-01",
+                              "v",
+                              1.0
+                        ],
+                        [
+                              "X",
+                              "2026-02",
+                              "v",
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "X": {
+                        "2026-01": {
+                              "v": 1.0
+                        },
+                        "2026-02": {
+                              "v": 2.0
+                        }
+                  }
+            },
+            "hidden": true,
+            "description": "Temporal unstacking."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-12': {
+    id: 'pandas-proc-prob-12',
+    title: "Nested JSON Schema Flattening Engine",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'flatten_json_payload',
+    functionSignature: "flatten_json_payload(payload: dict, sep: str = '_') -> dict[str, any]",
+    starterCode: `def flatten_json_payload(payload, sep='_'):
+    """Flatten arbitrarily nested dictionary into a flat 1D dictionary with delimited keys.
+    Return flat dictionary."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Recursively flatten hierarchical nested JSON trees into normalized 1D relational column schemas.",
+    taskDescription: "Implement `flatten_json_payload(payload, sep)`: recursively traverse `payload`. Concatenate parent and child dictionary keys joined by delimiter `sep` (e.g. `'user_profile_city'`). Primitive values (ints, floats, strings, booleans, lists) are assigned directly. Return flattened key-value dictionary.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Arbitrary nesting depth <= 10",
+      "1 <= total keys <= 500"
+],
+    hints: {
+      "small": "Use recursion: if value is an instance of dict, recurse with updated key prefix.",
+      "strong": "Base case: non-dict values are written to output with full concatenated path key.",
+      "concept": "Flattening JSON documents is necessary for ingesting document store payloads (MongoDB, DynamoDB) into columnar SQL tables."
+},
+    conceptConnections: [
+      {
+            "title": "Data Normalization",
+            "route": "/practice/numpy-pandas-prob-26",
+            "description": "Dataframe unnesting"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3-Level Nested Object",
+            "input": {
+                  "payload": {
+                        "user": {
+                              "id": 10,
+                              "profile": {
+                                    "age": 28,
+                                    "city": "NYC"
+                              }
+                        },
+                        "active": true
+                  },
+                  "sep": "_"
+            },
+            "expectedOutput": {
+                  "active": true,
+                  "user_id": 10,
+                  "user_profile_age": 28,
+                  "user_profile_city": "NYC"
+            },
+            "hidden": false,
+            "description": "Flatten user_profile_age and user_profile_city."
+      },
+      {
+            "id": "tc2",
+            "label": "Dot Separator Flat",
+            "input": {
+                  "payload": {
+                        "a": {
+                              "b": 1
+                        }
+                  },
+                  "sep": "."
+            },
+            "expectedOutput": {
+                  "a.b": 1
+            },
+            "hidden": false,
+            "description": "Dot-separated flattened dictionary."
+      },
+      {
+            "id": "tc3",
+            "label": "Already Flat Object",
+            "input": {
+                  "payload": {
+                        "x": 1,
+                        "y": 2
+                  },
+                  "sep": "_"
+            },
+            "expectedOutput": {
+                  "x": 1,
+                  "y": 2
+            },
+            "hidden": true,
+            "description": "Identity flat dict."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-13': {
+    id: 'pandas-proc-prob-13',
+    title: "Time-Window Event Stream Sessionization",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'sessionize_user_events',
+    functionSignature: "sessionize_user_events(events: list[dict], inactivity_timeout: int) -> list[dict]",
+    starterCode: `def sessionize_user_events(events, inactivity_timeout):
+    """Assign session_id '{user_id}_s{count}' whenever gap between user events exceeds inactivity_timeout.
+    Return event records with added 'session_id' field."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Segment raw user interaction clickstreams into bounded continuous activity sessions.",
+    taskDescription: "Implement `sessionize_user_events(events, inactivity_timeout)`: sort events by `(user_id, timestamp)`. For each user, if the difference between successive timestamps exceeds `inactivity_timeout`, increment the user's session counter. Assign `session_id = f'{user_id}_s{counter}'` to each event record. Return annotated event records.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "inactivity_timeout > 0",
+      "1 <= len(events) <= 50,000"
+],
+    hints: {
+      "small": "Sort events primarily by user_id and secondarily by timestamp.",
+      "strong": "Maintain `last_timestamp[user_id]` and check if `current_t - last_t > timeout`.",
+      "concept": "Sessionization is critical in clickstream analytics, attribution modeling, and session-based recommendation systems."
+},
+    conceptConnections: [
+      {
+            "title": "Event Watermarking",
+            "route": "/practice/numpy-pandas-prob-27",
+            "description": "Event-time watermark tracker"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Session Split after Timeout 300",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "u1",
+                              "timestamp": 100
+                        },
+                        {
+                              "user_id": "u1",
+                              "timestamp": 150
+                        },
+                        {
+                              "user_id": "u1",
+                              "timestamp": 600
+                        },
+                        {
+                              "user_id": "u2",
+                              "timestamp": 200
+                        }
+                  ],
+                  "inactivity_timeout": 300
+            },
+            "expectedOutput": [
+                  {
+                        "user_id": "u1",
+                        "timestamp": 100,
+                        "session_id": "u1_s1"
+                  },
+                  {
+                        "user_id": "u1",
+                        "timestamp": 150,
+                        "session_id": "u1_s1"
+                  },
+                  {
+                        "user_id": "u1",
+                        "timestamp": 600,
+                        "session_id": "u1_s2"
+                  },
+                  {
+                        "user_id": "u2",
+                        "timestamp": 200,
+                        "session_id": "u2_s1"
+                  }
+            ],
+            "hidden": false,
+            "description": "u1 split into session u1_s1 and u1_s2 after gap > 300."
+      },
+      {
+            "id": "tc2",
+            "label": "All Within Single Session",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "a",
+                              "timestamp": 10
+                        },
+                        {
+                              "user_id": "a",
+                              "timestamp": 20
+                        }
+                  ],
+                  "inactivity_timeout": 50
+            },
+            "expectedOutput": [
+                  {
+                        "user_id": "a",
+                        "timestamp": 10,
+                        "session_id": "a_s1"
+                  },
+                  {
+                        "user_id": "a",
+                        "timestamp": 20,
+                        "session_id": "a_s1"
+                  }
+            ],
+            "hidden": false,
+            "description": "No gap exceeds timeout."
+      },
+      {
+            "id": "tc3",
+            "label": "Interleaved User Timestamps",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "x",
+                              "timestamp": 10
+                        },
+                        {
+                              "user_id": "y",
+                              "timestamp": 15
+                        },
+                        {
+                              "user_id": "x",
+                              "timestamp": 500
+                        }
+                  ],
+                  "inactivity_timeout": 100
+            },
+            "expectedOutput": [
+                  {
+                        "user_id": "x",
+                        "timestamp": 10,
+                        "session_id": "x_s1"
+                  },
+                  {
+                        "user_id": "x",
+                        "timestamp": 500,
+                        "session_id": "x_s2"
+                  },
+                  {
+                        "user_id": "y",
+                        "timestamp": 15,
+                        "session_id": "y_s1"
+                  }
+            ],
+            "hidden": true,
+            "description": "Multi-user independent session tracking."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-14': {
+    id: 'pandas-proc-prob-14',
+    title: "Deterministic Stratified Data Partitioning",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'stratified_split_dataset',
+    functionSignature: "stratified_split_dataset(labels: list[any], train_ratio: float = 0.7, val_ratio: float = 0.15) -> dict[str, list[int]]",
+    starterCode: `def stratified_split_dataset(labels, train_ratio=0.7, val_ratio=0.15):
+    """Partition dataset indices into train, validation, and test sets preserving label proportions.
+    Return {'train': list[int], 'validation': list[int], 'test': list[int]} with sorted indices."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Partition dataset indices into train, validation, and test subsets while preserving exact categorical class balance.",
+    taskDescription: "Implement `stratified_split_dataset(labels, train_ratio, val_ratio)`: group sample indices by unique label. For each class `c`, allocate `n_train = round(n * train_ratio)` and `n_val = round(n * val_ratio)` (ensuring `n_train + n_val <= n`), with the remainder placed in `test`. Combine and sort indices. Return `{\"train\": list[int], \"validation\": list[int], \"test\": list[int]}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "train_ratio + val_ratio <= 1.0",
+      "1 <= len(labels) <= 100,000"
+],
+    hints: {
+      "small": "Collect sample indices per class using defaultdict(list).",
+      "strong": "Slice each class's index list according to the specified train and validation ratios.",
+      "concept": "Stratified splitting ensures every training and validation fold accurately represents minority target classes."
+},
+    conceptConnections: [
+      {
+            "title": "Stratified Split",
+            "route": "/practice/numpy-pandas-prob-20",
+            "description": "Stratified train-test split partition"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Balanced 8-Sample Dataset",
+            "input": {
+                  "labels": [
+                        "A",
+                        "A",
+                        "A",
+                        "A",
+                        "B",
+                        "B",
+                        "B",
+                        "B"
+                  ],
+                  "train_ratio": 0.5,
+                  "val_ratio": 0.25
+            },
+            "expectedOutput": {
+                  "train": [
+                        0,
+                        1,
+                        4,
+                        5
+                  ],
+                  "validation": [
+                        2,
+                        6
+                  ],
+                  "test": [
+                        3,
+                        7
+                  ]
+            },
+            "hidden": false,
+            "description": "Split 50% train, 25% val, 25% test preserving balanced classes."
+      },
+      {
+            "id": "tc2",
+            "label": "Imbalanced 3 Classes",
+            "input": {
+                  "labels": [
+                        "cat",
+                        "cat",
+                        "cat",
+                        "dog",
+                        "dog",
+                        "bird"
+                  ],
+                  "train_ratio": 0.6,
+                  "val_ratio": 0.2
+            },
+            "expectedOutput": {
+                  "train": [
+                        0,
+                        1,
+                        3,
+                        5
+                  ],
+                  "validation": [
+                        2
+                  ],
+                  "test": [
+                        4
+                  ]
+            },
+            "hidden": false,
+            "description": "Imbalanced class count stratification."
+      },
+      {
+            "id": "tc3",
+            "label": "High Proportion Train",
+            "input": {
+                  "labels": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ],
+                  "train_ratio": 0.75,
+                  "val_ratio": 0.0
+            },
+            "expectedOutput": {
+                  "train": [
+                        0,
+                        1,
+                        2,
+                        3
+                  ],
+                  "validation": [],
+                  "test": []
+            },
+            "hidden": true,
+            "description": "Zero validation partition."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-15': {
+    id: 'pandas-proc-prob-15',
+    title: "Exponentially Weighted Rolling Covariance",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'ewm_covariance_stream',
+    functionSignature: "ewm_covariance_stream(returns_a: list[float], returns_b: list[float], alpha: float = 0.1) -> list[float]",
+    starterCode: `def ewm_covariance_stream(returns_a, returns_b, alpha=0.1):
+    """Compute online exponentially weighted covariance cov_t = alpha*(ra-mua)*(rb-mub) + (1-alpha)*cov_{t-1}.
+    Round values to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Track dynamic time-varying cross-asset covariance using online exponential weighting.",
+    taskDescription: "Implement `ewm_covariance_stream(returns_a, returns_b, alpha)`: calculate series means `mu_a` and `mu_b`. Initialize `cov_0 = 0.0`. For each time step `t`, update recursive covariance `cov_t = alpha * (returns_a[t] - mu_a) * (returns_b[t] - mu_b) + (1 - alpha) * cov_{t-1}`. Return list of covariance values at each step rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0.0 <= alpha <= 1.0",
+      "len(returns_a) == len(returns_b) >= 1"
+],
+    hints: {
+      "small": "Compute overall mean of returns_a and returns_b first.",
+      "strong": "Update `cov = alpha * inst + (1.0 - alpha) * cov` at each step.",
+      "concept": "Exponentially weighted covariance prioritizes recent market dynamics when computing hedging betas and portfolio risk."
+},
+    conceptConnections: [
+      {
+            "title": "Rolling Correlation",
+            "route": "/practice/numpy-pandas-prob-60",
+            "description": "Streaming Pearson correlation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Co-moving Returns Alpha 0.5",
+            "input": {
+                  "returns_a": [
+                        0.01,
+                        0.02,
+                        -0.01
+                  ],
+                  "returns_b": [
+                        0.02,
+                        0.04,
+                        -0.02
+                  ],
+                  "alpha": 0.5
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0002,
+                  0.0004
+            ],
+            "hidden": false,
+            "description": "Positive co-movement tracking."
+      },
+      {
+            "id": "tc2",
+            "label": "Inversely Correlated Series",
+            "input": {
+                  "returns_a": [
+                        1.0,
+                        -1.0,
+                        1.0
+                  ],
+                  "returns_b": [
+                        -1.0,
+                        1.0,
+                        -1.0
+                  ],
+                  "alpha": 0.2
+            },
+            "expectedOutput": [
+                  -0.0889,
+                  -0.4267,
+                  -0.4302
+            ],
+            "hidden": false,
+            "description": "Negative covariance tracking."
+      },
+      {
+            "id": "tc3",
+            "label": "Single Element Return",
+            "input": {
+                  "returns_a": [
+                        0.05
+                  ],
+                  "returns_b": [
+                        0.05
+                  ],
+                  "alpha": 0.1
+            },
+            "expectedOutput": [
+                  0.0
+            ],
+            "hidden": true,
+            "description": "Mean centered single item returns 0.0."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-16': {
+    id: 'pandas-proc-prob-16',
+    title: "Tabular Missingness Pattern Profiler",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'profile_missing_patterns',
+    functionSignature: "profile_missing_patterns(records: list[dict], columns: list[str]) -> dict[str, int]",
+    starterCode: `def profile_missing_patterns(records, columns):
+    """Profile frequency of missing column combinations ('none', 'colA+colB').
+    Return sorted dictionary mapping pattern string to frequency count."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Catalog and count recurring co-occurring missingness combinations across database features.",
+    taskDescription: "Implement `profile_missing_patterns(records, columns)`: for each record in `records`, identify which of the specified `columns` are absent or set to `None`. Join missing column names in alphabetical order separated by `'+'` (e.g. `'age+salary'`). If no columns are missing, label as `'none'`. Return sorted dict mapping pattern to occurrence count.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(records) <= 20,000",
+      "1 <= len(columns) <= 50"
+],
+    hints: {
+      "small": "For each row, collect `[c for c in columns if c not in r or r[c] is None]`.",
+      "strong": "Sort the missing list and join with `'+'`: `'+'.join(sorted(missing))`.",
+      "concept": "Missing pattern profiling uncovers systemic survey dropoffs and upstream API pipeline ingestion failures."
+},
+    conceptConnections: [
+      {
+            "title": "Missingness Summary",
+            "route": "/practice/numpy-pandas-prob-17",
+            "description": "Column missingness summary"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3 Missing Combinations",
+            "input": {
+                  "records": [
+                        {
+                              "a": 1,
+                              "b": 2,
+                              "c": 3
+                        },
+                        {
+                              "a": null,
+                              "b": 2,
+                              "c": null
+                        },
+                        {
+                              "a": 1,
+                              "b": null,
+                              "c": 3
+                        }
+                  ],
+                  "columns": [
+                        "a",
+                        "b",
+                        "c"
+                  ]
+            },
+            "expectedOutput": {
+                  "a+c": 1,
+                  "b": 1,
+                  "none": 1
+            },
+            "hidden": false,
+            "description": "Count patterns: none, a+c, b."
+      },
+      {
+            "id": "tc2",
+            "label": "All Clean Records",
+            "input": {
+                  "records": [
+                        {
+                              "x": 1
+                        },
+                        {
+                              "x": 2
+                        }
+                  ],
+                  "columns": [
+                        "x"
+                  ]
+            },
+            "expectedOutput": {
+                  "none": 2
+            },
+            "hidden": false,
+            "description": "All records complete yields 'none'."
+      },
+      {
+            "id": "tc3",
+            "label": "All Missing Columns",
+            "input": {
+                  "records": [
+                        {
+                              "x": null,
+                              "y": null
+                        }
+                  ],
+                  "columns": [
+                        "x",
+                        "y"
+                  ]
+            },
+            "expectedOutput": {
+                  "x+y": 1
+            },
+            "hidden": true,
+            "description": "Total column nullity pattern."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-17': {
+    id: 'pandas-proc-prob-17',
+    title: "User Cohort Retention Matrix Engine",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'build_cohort_retention_matrix',
+    functionSignature: "build_cohort_retention_matrix(events: list[dict]) -> dict[str, dict[str, float]]",
+    starterCode: `def build_cohort_retention_matrix(events):
+    """Build cohort retention percentage matrix {cohort: {'period_0': pct, 'period_1': pct, ...}}.
+    Round percentage values to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Track customer cohort lifecycles and retention decay over elapsed time periods.",
+    taskDescription: "Implement `build_cohort_retention_matrix(events)`: each event contains `user_id`, `cohort_month`, and `activity_month`. Calculate `period = activity_month - cohort_month`. The base size of a cohort is its total unique users. Compute retention percentage `(active_users_in_period / cohort_base_size) * 100.0`. Return nested dictionary `{str(cohort): {'period_0': pct, ...}}` with percentages rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "cohort_month <= activity_month",
+      "1 <= len(events) <= 50,000"
+],
+    hints: {
+      "small": "Cohort size is `len(set(u for u in cohort))`.",
+      "strong": "Count unique users active at each `period = activity_month - cohort_month`.",
+      "concept": "Cohort matrices monitor user churn curves and measure whether product improvements drive long-term engagement."
+},
+    conceptConnections: [
+      {
+            "title": "User Activity Scores",
+            "route": "/practice/numpy-pandas-prob-35",
+            "description": "Decayed user activity"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2 Cohorts Retention Tracking",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "u1",
+                              "cohort_month": 1,
+                              "activity_month": 1
+                        },
+                        {
+                              "user_id": "u1",
+                              "cohort_month": 1,
+                              "activity_month": 2
+                        },
+                        {
+                              "user_id": "u2",
+                              "cohort_month": 1,
+                              "activity_month": 1
+                        },
+                        {
+                              "user_id": "u3",
+                              "cohort_month": 2,
+                              "activity_month": 2
+                        }
+                  ]
+            },
+            "expectedOutput": {
+                  "1": {
+                        "period_0": 100.0,
+                        "period_1": 50.0
+                  },
+                  "2": {
+                        "period_0": 100.0
+                  }
+            },
+            "hidden": false,
+            "description": "Cohort 1 at period 0 is 100%, at period 1 is 50%."
+      },
+      {
+            "id": "tc2",
+            "label": "Single User Cohort",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "x",
+                              "cohort_month": 5,
+                              "activity_month": 5
+                        }
+                  ]
+            },
+            "expectedOutput": {
+                  "5": {
+                        "period_0": 100.0
+                  }
+            },
+            "hidden": false,
+            "description": "100% retention on base period."
+      },
+      {
+            "id": "tc3",
+            "label": "Zero Period 1 Retention",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "a",
+                              "cohort_month": 1,
+                              "activity_month": 1
+                        },
+                        {
+                              "user_id": "b",
+                              "cohort_month": 1,
+                              "activity_month": 1
+                        }
+                  ]
+            },
+            "expectedOutput": {
+                  "1": {
+                        "period_0": 100.0
+                  }
+            },
+            "hidden": true,
+            "description": "Retention with period 0 only."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-18': {
+    id: 'pandas-proc-prob-18',
+    title: "Dual DataFrame Reconciliation Auditor",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'reconcile_dataframes',
+    functionSignature: "reconcile_dataframes(source_df: list[dict], target_df: list[dict], primary_key: str) -> dict[str, any]",
+    starterCode: `def reconcile_dataframes(source_df, target_df, primary_key):
+    """Reconcile source and target tables: find added_keys, removed_keys, and discrepancies.
+    Return {'added_keys': list, 'removed_keys': list, 'discrepancies': list[dict]}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Audit differences between historical and current tabular snapshots to detect modified, inserted, and deleted records.",
+    taskDescription: "Implement `reconcile_dataframes(source_df, target_df, primary_key)`: compare two datasets indexed by `primary_key`. Identify `added_keys` (in target but not source) and `removed_keys` (in source but not target). For keys present in both, identify field-level mismatches as `{\"key\": k, \"field\": col, \"source\": s_val, \"target\": t_val}`. Return dictionary with keys `added_keys`, `removed_keys`, and `discrepancies`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "primary_key exists in every record",
+      "1 <= len(source_df), len(target_df) <= 10,000"
+],
+    hints: {
+      "small": "Index both lists into dicts by primary_key.",
+      "strong": "Compare sets of keys to find additions and removals, then loop through shared keys and columns.",
+      "concept": "Reconciliation auditors ensure database migration consistency and detect data drift in ETL jobs."
+},
+    conceptConnections: [
+      {
+            "title": "Data Reconciliation",
+            "route": "/practice/numpy-pandas-prob-11",
+            "description": "Dataframe join and reconciliation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Added, Removed, Modified",
+            "input": {
+                  "source_df": [
+                        {
+                              "id": 1,
+                              "val": 10
+                        },
+                        {
+                              "id": 2,
+                              "val": 20
+                        }
+                  ],
+                  "target_df": [
+                        {
+                              "id": 1,
+                              "val": 10
+                        },
+                        {
+                              "id": 2,
+                              "val": 99
+                        },
+                        {
+                              "id": 3,
+                              "val": 30
+                        }
+                  ],
+                  "primary_key": "id"
+            },
+            "expectedOutput": {
+                  "added_keys": [
+                        3
+                  ],
+                  "removed_keys": [],
+                  "discrepancies": [
+                        {
+                              "key": 2,
+                              "field": "val",
+                              "source": 20,
+                              "target": 99
+                        }
+                  ]
+            },
+            "hidden": false,
+            "description": "Detect id 3 added, id 2 modified."
+      },
+      {
+            "id": "tc2",
+            "label": "Identical DataFrames",
+            "input": {
+                  "source_df": [
+                        {
+                              "id": 1,
+                              "val": 10
+                        },
+                        {
+                              "id": 2,
+                              "val": 20
+                        }
+                  ],
+                  "target_df": [
+                        {
+                              "id": 1,
+                              "val": 10
+                        },
+                        {
+                              "id": 2,
+                              "val": 20
+                        }
+                  ],
+                  "primary_key": "id"
+            },
+            "expectedOutput": {
+                  "added_keys": [],
+                  "removed_keys": [],
+                  "discrepancies": []
+            },
+            "hidden": false,
+            "description": "No discrepancies found."
+      },
+      {
+            "id": "tc3",
+            "label": "All Removed",
+            "input": {
+                  "source_df": [
+                        {
+                              "k": "A"
+                        }
+                  ],
+                  "target_df": [],
+                  "primary_key": "k"
+            },
+            "expectedOutput": {
+                  "added_keys": [],
+                  "removed_keys": [
+                        "A"
+                  ],
+                  "discrepancies": []
+            },
+            "hidden": true,
+            "description": "All keys removed in target."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-19': {
+    id: 'pandas-proc-prob-19',
+    title: "Population Stability Index (PSI) Drift Detector",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'compute_population_stability_index',
+    functionSignature: "compute_population_stability_index(ref_counts: list[int], prod_counts: list[int]) -> dict[str, any]",
+    starterCode: `def compute_population_stability_index(ref_counts, prod_counts):
+    """Compute PSI = sum (prod_pct - ref_pct) * ln(prod_pct / ref_pct).
+    Flag drift if PSI >= 0.25. Return {'psi': float, 'drift_detected': bool}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Monitor production feature distribution shift using the Population Stability Index.",
+    taskDescription: "Implement `compute_population_stability_index(ref_counts, prod_counts)`: convert bin counts into proportions `ref_pct` and `prod_pct` (clamped to min `1e-6` to avoid division by zero). Compute `PSI = sum((prod_pct - ref_pct) * ln(prod_pct / ref_pct))`. Set `drift_detected = True` if `PSI >= 0.25`. Return dict with `psi` rounded to 4 decimals and `drift_detected` boolean.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(ref_counts) == len(prod_counts) >= 2",
+      "all counts >= 0"
+],
+    hints: {
+      "small": "Normalize counts: `p_i = count_i / total_count`.",
+      "strong": "Sum `(p - r) * math.log(p / r)` across all bins.",
+      "concept": "PSI is the standard financial credit risk and MLOps metric for determining when models require retraining."
+},
+    conceptConnections: [
+      {
+            "title": "KL Divergence",
+            "route": "/practice/math-num-prob-19",
+            "description": "Information divergence"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "No Drift Identical Distribution",
+            "input": {
+                  "ref_counts": [
+                        100,
+                        200,
+                        300
+                  ],
+                  "prod_counts": [
+                        100,
+                        200,
+                        300
+                  ]
+            },
+            "expectedOutput": {
+                  "psi": 0.0,
+                  "drift_detected": false
+            },
+            "hidden": false,
+            "description": "Identical proportions have PSI = 0.0."
+      },
+      {
+            "id": "tc2",
+            "label": "Severe Drift PSI >= 0.25",
+            "input": {
+                  "ref_counts": [
+                        500,
+                        50,
+                        10
+                  ],
+                  "prod_counts": [
+                        10,
+                        50,
+                        500
+                  ]
+            },
+            "expectedOutput": {
+                  "psi": 6.846,
+                  "drift_detected": true
+            },
+            "hidden": false,
+            "description": "Inverted distribution triggers drift flag."
+      },
+      {
+            "id": "tc3",
+            "label": "Moderate Shift Below 0.25",
+            "input": {
+                  "ref_counts": [
+                        100,
+                        100
+                  ],
+                  "prod_counts": [
+                        120,
+                        80
+                  ]
+            },
+            "expectedOutput": {
+                  "psi": 0.0405,
+                  "drift_detected": false
+            },
+            "hidden": true,
+            "description": "Mild variation within acceptable tolerance."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-20': {
+    id: 'pandas-proc-prob-20',
+    title: "Sliding Time-Window Feature Store Aggregator",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'aggregate_sliding_time_windows',
+    functionSignature: "aggregate_sliding_time_windows(events: list[dict], entity_id: str, target_metric: str, windows_sec: list[int]) -> dict[str, dict[str, float]]",
+    starterCode: `def aggregate_sliding_time_windows(events, entity_id, target_metric, windows_sec):
+    """Compute count, sum, mean of target_metric across backwards sliding time windows from latest event.
+    Return {'{w}s': {'count': int, 'sum': float, 'mean': float}}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute multi-scale backward temporal rolling aggregations for real-time feature store serving.",
+    taskDescription: "Implement `aggregate_sliding_time_windows(events, entity_id, target_metric, windows_sec)`: filter events for `entity_id`. Identify the latest timestamp `T`. For each window duration `w` in `windows_sec`, consider events where `T - w <= timestamp <= T`. Calculate `count`, `sum`, and `mean` of `target_metric`. Return dict keyed by `'{w}s'` with float values rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "windows_sec contains non-negative ints",
+      "1 <= len(events) <= 50,000"
+],
+    hints: {
+      "small": "Find `max(e['timestamp'])` for matching entity records as reference time T.",
+      "strong": "Filter events with `T - w <= e['timestamp'] <= T` and compute descriptive stats.",
+      "concept": "Sliding time windows (e.g. 1hr, 24hr spending) serve as high-signal features in real-time fraud scoring models."
+},
+    conceptConnections: [
+      {
+            "title": "Window Aggregates",
+            "route": "/practice/numpy-pandas-prob-9",
+            "description": "Tumbling window aggregates"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "User1 Windows 500s and 1000s",
+            "input": {
+                  "events": [
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1000,
+                              "amount": 50.0
+                        },
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1500,
+                              "amount": 100.0
+                        },
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1900,
+                              "amount": 25.0
+                        },
+                        {
+                              "entity_id": "usr2",
+                              "timestamp": 1800,
+                              "amount": 10.0
+                        }
+                  ],
+                  "entity_id": "usr1",
+                  "target_metric": "amount",
+                  "windows_sec": [
+                        500,
+                        1000
+                  ]
+            },
+            "expectedOutput": {
+                  "500s": {
+                        "count": 2,
+                        "sum": 125.0,
+                        "mean": 62.5
+                  },
+                  "1000s": {
+                        "count": 3,
+                        "sum": 175.0,
+                        "mean": 58.3333
+                  }
+            },
+            "hidden": false,
+            "description": "Latest timestamp is 1900. 500s window captures 1500 and 1900."
+      },
+      {
+            "id": "tc2",
+            "label": "No Events for Entity",
+            "input": {
+                  "events": [
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1000,
+                              "amount": 50.0
+                        },
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1500,
+                              "amount": 100.0
+                        },
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1900,
+                              "amount": 25.0
+                        },
+                        {
+                              "entity_id": "usr2",
+                              "timestamp": 1800,
+                              "amount": 10.0
+                        }
+                  ],
+                  "entity_id": "usr999",
+                  "target_metric": "amount",
+                  "windows_sec": [
+                        100
+                  ]
+            },
+            "expectedOutput": {},
+            "hidden": false,
+            "description": "Missing entity returns empty dict."
+      },
+      {
+            "id": "tc3",
+            "label": "Zero Window Exact Instant",
+            "input": {
+                  "events": [
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1000,
+                              "amount": 50.0
+                        },
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1500,
+                              "amount": 100.0
+                        },
+                        {
+                              "entity_id": "usr1",
+                              "timestamp": 1900,
+                              "amount": 25.0
+                        },
+                        {
+                              "entity_id": "usr2",
+                              "timestamp": 1800,
+                              "amount": 10.0
+                        }
+                  ],
+                  "entity_id": "usr1",
+                  "target_metric": "amount",
+                  "windows_sec": [
+                        0
+                  ]
+            },
+            "expectedOutput": {
+                  "0s": {
+                        "count": 1,
+                        "sum": 25.0,
+                        "mean": 25.0
+                  }
+            },
+            "hidden": true,
+            "description": "Zero window captures exact latest event."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-21': {
+    id: 'pandas-proc-prob-21',
+    title: "Polynomial Interaction Cross-Terms Generator",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'generate_polynomial_interactions',
+    functionSignature: "generate_polynomial_interactions(records: list[dict], feature_cols: list[str]) -> list[dict]",
+    starterCode: `def generate_polynomial_interactions(records, feature_cols):
+    """Generate degree-2 cross terms 'f1*f2' for all i <= j. Enriched records returned.
+    Round product floats to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Expand tabular features by synthesizing non-linear polynomial cross-product interaction terms.",
+    taskDescription: "Implement `generate_polynomial_interactions(records, feature_cols)`: for each record, iterate over all feature pairs `(f1, f2)` where `0 <= i <= j < len(feature_cols)`. Compute product `f1 * f2` and add new key `f'{f1}*{f2}'`. Retain all existing attributes. Round product floats to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(feature_cols) <= 20",
+      "1 <= len(records) <= 5000"
+],
+    hints: {
+      "small": "Loop `for i in range(len(feature_cols)): for j in range(i, len(feature_cols))`.",
+      "strong": "Add product `float(r[f1]) * float(r[f2])` to a copy of record r.",
+      "concept": "Polynomial interaction terms capture synergistic feature effects in generalized linear models."
+},
+    conceptConnections: [
+      {
+            "title": "Polynomial Expansion",
+            "route": "/practice/numpy-pandas-prob-22",
+            "description": "Vectorized polynomial feature expansion"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two Variables Degree 2",
+            "input": {
+                  "records": [
+                        {
+                              "x": 2.0,
+                              "y": 3.0
+                        }
+                  ],
+                  "feature_cols": [
+                        "x",
+                        "y"
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "x": 2.0,
+                        "y": 3.0,
+                        "x*x": 4.0,
+                        "x*y": 6.0,
+                        "y*y": 9.0
+                  }
+            ],
+            "hidden": false,
+            "description": "Generate x*x (4), x*y (6), y*y (9)."
+      },
+      {
+            "id": "tc2",
+            "label": "Single Variable Square",
+            "input": {
+                  "records": [
+                        {
+                              "a": 5.0
+                        }
+                  ],
+                  "feature_cols": [
+                        "a"
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "a": 5.0,
+                        "a*a": 25.0
+                  }
+            ],
+            "hidden": false,
+            "description": "Generate a*a (25)."
+      },
+      {
+            "id": "tc3",
+            "label": "Three Features Combinations",
+            "input": {
+                  "records": [
+                        {
+                              "a": 1,
+                              "b": 2,
+                              "c": 3
+                        }
+                  ],
+                  "feature_cols": [
+                        "a",
+                        "b",
+                        "c"
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "a": 1,
+                        "b": 2,
+                        "c": 3,
+                        "a*a": 1.0,
+                        "a*b": 2.0,
+                        "a*c": 3.0,
+                        "b*b": 4.0,
+                        "b*c": 6.0,
+                        "c*c": 9.0
+                  }
+            ],
+            "hidden": true,
+            "description": "All 6 degree-2 cross terms for 3 features."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-22': {
+    id: 'pandas-proc-prob-22',
+    title: "Categorical Frequency Pruning and Binning",
+    difficulty: 'medium',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '15-20 min',
+    functionName: 'prune_rare_categories',
+    functionSignature: "prune_rare_categories(series: list[str], min_frequency: float = 0.05, other_label: str = 'Other') -> dict[str, any]",
+    starterCode: `def prune_rare_categories(series, min_frequency=0.05, other_label='Other'):
+    """Replace categories with relative frequency < min_frequency with other_label.
+    Return {'pruned_series': list[str], 'retained_categories': list[str]}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Reduce categorical cardinality by collapsing infrequently observed tail categories into an aggregate bin.",
+    taskDescription: "Implement `prune_rare_categories(series, min_frequency, other_label)`: compute occurrence frequency of each unique category in `series`. Retain categories whose proportion `count / len(series) >= min_frequency`. Replace all other categories with `other_label`. Return dictionary `{\"pruned_series\": list[str], \"retained_categories\": sorted_list[str]}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0.0 <= min_frequency <= 1.0",
+      "1 <= len(series) <= 100,000"
+],
+    hints: {
+      "small": "Count category occurrences using `collections.Counter` or defaultdict.",
+      "strong": "Threshold count is `min_frequency * len(series)`.",
+      "concept": "Frequency pruning prevents categorical dimension explosion during one-hot encoding."
+},
+    conceptConnections: [
+      {
+            "title": "Rare Grouping",
+            "route": "/practice/numpy-pandas-prob-47",
+            "description": "Rare category grouping"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Prune Rare Under 20%",
+            "input": {
+                  "series": [
+                        "A",
+                        "A",
+                        "A",
+                        "A",
+                        "B",
+                        "B",
+                        "C",
+                        "D"
+                  ],
+                  "min_frequency": 0.2,
+                  "other_label": "Other"
+            },
+            "expectedOutput": {
+                  "pruned_series": [
+                        "A",
+                        "A",
+                        "A",
+                        "A",
+                        "B",
+                        "B",
+                        "Other",
+                        "Other"
+                  ],
+                  "retained_categories": [
+                        "A",
+                        "B"
+                  ]
+            },
+            "hidden": false,
+            "description": "A (50%) and B (25%) retained, C and D pooled into Other."
+      },
+      {
+            "id": "tc2",
+            "label": "Low Threshold Retains All",
+            "input": {
+                  "series": [
+                        "X",
+                        "Y",
+                        "Z"
+                  ],
+                  "min_frequency": 0.1,
+                  "other_label": "Misc"
+            },
+            "expectedOutput": {
+                  "pruned_series": [
+                        "X",
+                        "Y",
+                        "Z"
+                  ],
+                  "retained_categories": [
+                        "X",
+                        "Y",
+                        "Z"
+                  ]
+            },
+            "hidden": false,
+            "description": "No categories pruned."
+      },
+      {
+            "id": "tc3",
+            "label": "All Singleton Categories",
+            "input": {
+                  "series": [
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5"
+                  ],
+                  "min_frequency": 0.5,
+                  "other_label": "Other"
+            },
+            "expectedOutput": {
+                  "pruned_series": [
+                        "Other",
+                        "Other",
+                        "Other",
+                        "Other",
+                        "Other"
+                  ],
+                  "retained_categories": []
+            },
+            "hidden": true,
+            "description": "All categories collapsed into other."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-23': {
+    id: 'pandas-proc-prob-23',
+    title: "Markov Navigation State Transition Matrix",
+    difficulty: 'hard',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '20-25 min',
+    functionName: 'build_markov_transition_matrix',
+    functionSignature: "build_markov_transition_matrix(sequences: list[list[str]]) -> dict[str, dict[str, float]]",
+    starterCode: `def build_markov_transition_matrix(sequences):
+    """Compute row-normalized transition probability matrix between categorical states.
+    Return {state_from: {state_to: prob}} rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Estimate discrete-time first-order Markov transition probabilities from sequential user session logs.",
+    taskDescription: "Implement `build_markov_transition_matrix(sequences)`: count bigram transitions `(s_from, s_to)` across all sequences. For each state `s_from`, normalize transition counts by total outgoing transitions to form probability distribution over all unique states. If a state has no outgoing transitions, probabilities are 0.0. Return nested dict `{s_from: {s_to: prob}}` sorted by state names with probabilities rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(sequences) <= 10,000",
+      "State labels are strings"
+],
+    hints: {
+      "small": "Collect unique states and count transitions with a 2D nested dictionary.",
+      "strong": "Row normalize: `prob = count(from, to) / total_from`.",
+      "concept": "Markov transition matrices model user journey dropoffs, web session flow, and state-space reinforcement learning."
+},
+    conceptConnections: [
+      {
+            "title": "Markov Chains",
+            "route": "/practice/math-num-prob-10",
+            "description": "Eigenvalues and transition matrices"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard Clickstream Paths",
+            "input": {
+                  "sequences": [
+                        [
+                              "home",
+                              "search",
+                              "item",
+                              "checkout"
+                        ],
+                        [
+                              "home",
+                              "search",
+                              "home"
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "checkout": {
+                        "checkout": 0.0,
+                        "home": 0.0,
+                        "item": 0.0,
+                        "search": 0.0
+                  },
+                  "home": {
+                        "checkout": 0.0,
+                        "home": 0.0,
+                        "item": 0.0,
+                        "search": 1.0
+                  },
+                  "item": {
+                        "checkout": 1.0,
+                        "home": 0.0,
+                        "item": 0.0,
+                        "search": 0.0
+                  },
+                  "search": {
+                        "checkout": 0.0,
+                        "home": 0.5,
+                        "item": 0.5,
+                        "search": 0.0
+                  }
+            },
+            "hidden": false,
+            "description": "Transition matrix across 4 page states."
+      },
+      {
+            "id": "tc2",
+            "label": "Single Cycle Path",
+            "input": {
+                  "sequences": [
+                        [
+                              "A",
+                              "B",
+                              "A"
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "A": {
+                        "A": 0.0,
+                        "B": 1.0
+                  },
+                  "B": {
+                        "A": 1.0,
+                        "B": 0.0
+                  }
+            },
+            "hidden": false,
+            "description": "A->B 100%, B->A 100%."
+      },
+      {
+            "id": "tc3",
+            "label": "Absorbing State",
+            "input": {
+                  "sequences": [
+                        [
+                              "start",
+                              "end"
+                        ],
+                        [
+                              "start",
+                              "end"
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "end": {
+                        "end": 0.0,
+                        "start": 0.0
+                  },
+                  "start": {
+                        "end": 1.0,
+                        "start": 0.0
+                  }
+            },
+            "hidden": true,
+            "description": "End state has zero outgoing transitions."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-24': {
+    id: 'pandas-proc-prob-24',
+    title: "Multi-Class Probability Calibration Brier Score",
+    difficulty: 'hard',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '20-25 min',
+    functionName: 'multi_class_brier_score',
+    functionSignature: "multi_class_brier_score(probabilities: list[list[float]], true_labels: list[int], num_classes: int) -> float",
+    starterCode: `def multi_class_brier_score(probabilities, true_labels, num_classes):
+    """Compute overall multi-class Brier score (1/N) * sum_i sum_k (p_ik - y_ik)^2.
+    Round score to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Evaluate predictive probabilistic calibration accuracy using strictly proper multi-class Brier scoring rules.",
+    taskDescription: "Implement `multi_class_brier_score(probabilities, true_labels, num_classes)`: for each sample `i`, calculate the squared error between the predicted probability vector `p_i` and the one-hot encoded ground truth `y_i`: `sum_{k=0}^{num_classes - 1} (p_{i, k} - y_{i, k})^2`. Average over all `N` samples and return float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= num_classes <= 100",
+      "1 <= len(probabilities) <= 10,000"
+],
+    hints: {
+      "small": "Ground truth target y_`{i, k}` is 1.0 if k == true_labels[i] else 0.0.",
+      "strong": "Accumulate squared differences across all classes and divide total by sample count N.",
+      "concept": "The Brier score is a strictly proper scoring rule that simultaneously measures discrimination and probability calibration."
+},
+    conceptConnections: [
+      {
+            "title": "Cross-Entropy",
+            "route": "/practice/math-num-prob-19",
+            "description": "Probability loss metrics"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Well-Calibrated Predictions",
+            "input": {
+                  "probabilities": [
+                        [
+                              0.8,
+                              0.1,
+                              0.1
+                        ],
+                        [
+                              0.2,
+                              0.7,
+                              0.1
+                        ]
+                  ],
+                  "true_labels": [
+                        0,
+                        1
+                  ],
+                  "num_classes": 3
+            },
+            "expectedOutput": 0.1,
+            "hidden": false,
+            "description": "Low Brier score for accurate probabilities."
+      },
+      {
+            "id": "tc2",
+            "label": "Perfect Predictions (Zero Brier)",
+            "input": {
+                  "probabilities": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "true_labels": [
+                        0,
+                        1
+                  ],
+                  "num_classes": 2
+            },
+            "expectedOutput": 0.0,
+            "hidden": false,
+            "description": "Brier score is exactly 0.0."
+      },
+      {
+            "id": "tc3",
+            "label": "Uniform Inaccurate Predictions",
+            "input": {
+                  "probabilities": [
+                        [
+                              0.5,
+                              0.5
+                        ]
+                  ],
+                  "true_labels": [
+                        0
+                  ],
+                  "num_classes": 2
+            },
+            "expectedOutput": 0.5,
+            "hidden": true,
+            "description": "Brier score for uniform uncertainty."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-25': {
+    id: 'pandas-proc-prob-25',
+    title: "Partitioned Chunk Streaming Reducer",
+    difficulty: 'hard',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '20-25 min',
+    functionName: 'reduce_chunked_aggregations',
+    functionSignature: "reduce_chunked_aggregations(chunks: list[list[dict]], agg_field: str) -> dict[str, float]",
+    starterCode: `def reduce_chunked_aggregations(chunks, agg_field):
+    """Compute running count, sum, mean, min, and max across chunk partitions.
+    Return {'count': int, 'sum': float, 'mean': float, 'min': float, 'max': float} rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Aggregate summary statistics across out-of-core chunk partitions in a memory-bounded streaming fashion.",
+    taskDescription: "Implement `reduce_chunked_aggregations(chunks, agg_field)`: process a list of chunk batches sequentially. Maintain running accumulators for `count`, `sum`, `min`, and `max` of `agg_field`. Compute `mean = sum / count`. Return dictionary `{\"count\": int, \"sum\": float, \"mean\": float, \"min\": float, \"max\": float}` with all float values rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "chunks is non-empty list of lists",
+      "agg_field values are numeric"
+],
+    hints: {
+      "small": "Maintain running min and max initialized to inf and -inf.",
+      "strong": "Accumulate sum and count iteratively without storing chunk rows in memory.",
+      "concept": "Streaming reducers allow computing global dataset statistics on multi-terabyte datasets without exceeding RAM."
+},
+    conceptConnections: [
+      {
+            "title": "Welford Stream Variance",
+            "route": "/practice/numpy-pandas-prob-36",
+            "description": "Streaming moving variance"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2 Chunks of 2 Rows",
+            "input": {
+                  "chunks": [
+                        [
+                              {
+                                    "val": 10.0
+                              },
+                              {
+                                    "val": 20.0
+                              }
+                        ],
+                        [
+                              {
+                                    "val": 30.0
+                              },
+                              {
+                                    "val": 40.0
+                              }
+                        ]
+                  ],
+                  "agg_field": "val"
+            },
+            "expectedOutput": {
+                  "count": 4,
+                  "sum": 100.0,
+                  "mean": 25.0,
+                  "min": 10.0,
+                  "max": 40.0
+            },
+            "hidden": false,
+            "description": "Stream reduce count (4), sum (100), mean (25), min (10), max (40)."
+      },
+      {
+            "id": "tc2",
+            "label": "Chunks with Missing Keys",
+            "input": {
+                  "chunks": [
+                        [
+                              {
+                                    "val": 5.0
+                              }
+                        ],
+                        [
+                              {
+                                    "other": 99
+                              }
+                        ],
+                        [
+                              {
+                                    "val": 15.0
+                              }
+                        ]
+                  ],
+                  "agg_field": "val"
+            },
+            "expectedOutput": {
+                  "count": 2,
+                  "sum": 20.0,
+                  "mean": 10.0,
+                  "min": 5.0,
+                  "max": 15.0
+            },
+            "hidden": false,
+            "description": "Skip rows missing agg_field."
+      },
+      {
+            "id": "tc3",
+            "label": "Single Chunk Reduction",
+            "input": {
+                  "chunks": [
+                        [
+                              {
+                                    "x": -5.0
+                              },
+                              {
+                                    "x": 5.0
+                              }
+                        ]
+                  ],
+                  "agg_field": "x"
+            },
+            "expectedOutput": {
+                  "count": 2,
+                  "sum": 0.0,
+                  "mean": 0.0,
+                  "min": -5.0,
+                  "max": 5.0
+            },
+            "hidden": true,
+            "description": "Negative numbers chunk reduction."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-26': {
+    id: 'pandas-proc-prob-26',
+    title: "Financial Tick-to-OHLCV Bar Aggregator",
+    difficulty: 'hard',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '20-25 min',
+    functionName: 'aggregate_ohlcv_bars',
+    functionSignature: "aggregate_ohlcv_bars(ticks: list[dict], bar_seconds: int) -> list[dict]",
+    starterCode: `def aggregate_ohlcv_bars(ticks, bar_seconds):
+    """Resample raw trades into OHLCV candlestick bars of bar_seconds interval.
+    Return list of bars: {'bucket': int, 'open': float, 'high': float, 'low': float, 'close': float, 'volume': float}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compress continuous irregular financial transaction tick feeds into standardized OHLCV candlestick bars.",
+    taskDescription: "Implement `aggregate_ohlcv_bars(ticks, bar_seconds)`: group trades by time window bucket `(timestamp // bar_seconds) * bar_seconds`. For each bucket, compute `open` (first price), `high` (max price), `low` (min price), `close` (last price), and `volume` (total volume). Return list of bar dictionaries ordered chronologically with floats rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "bar_seconds > 0",
+      "1 <= len(ticks) <= 50,000"
+],
+    hints: {
+      "small": "Compute bucket identifier as `(ts // bar_seconds) * bar_seconds`.",
+      "strong": "Sort ticks by timestamp to accurately capture open (first) and close (last).",
+      "concept": "OHLCV bar construction compresses high-frequency trade data into uniform time intervals for technical analysis and RL agents."
+},
+    conceptConnections: [
+      {
+            "title": "Time-Series Resampling",
+            "route": "/practice/numpy-pandas-prob-14",
+            "description": "Time-series resampling"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "60s OHLCV Aggregation",
+            "input": {
+                  "ticks": [
+                        {
+                              "timestamp": 10,
+                              "price": 100.0,
+                              "volume": 10.0
+                        },
+                        {
+                              "timestamp": 20,
+                              "price": 105.0,
+                              "volume": 15.0
+                        },
+                        {
+                              "timestamp": 70,
+                              "price": 102.0,
+                              "volume": 20.0
+                        }
+                  ],
+                  "bar_seconds": 60
+            },
+            "expectedOutput": [
+                  {
+                        "bucket": 0,
+                        "open": 100.0,
+                        "high": 105.0,
+                        "low": 100.0,
+                        "close": 105.0,
+                        "volume": 25.0
+                  },
+                  {
+                        "bucket": 60,
+                        "open": 102.0,
+                        "high": 102.0,
+                        "low": 102.0,
+                        "close": 102.0,
+                        "volume": 20.0
+                  }
+            ],
+            "hidden": false,
+            "description": "Two 60s bars at bucket 0 and bucket 60."
+      },
+      {
+            "id": "tc2",
+            "label": "Single Tick Bar",
+            "input": {
+                  "ticks": [
+                        {
+                              "timestamp": 5,
+                              "price": 50.0,
+                              "volume": 1.0
+                        }
+                  ],
+                  "bar_seconds": 10
+            },
+            "expectedOutput": [
+                  {
+                        "bucket": 0,
+                        "open": 50.0,
+                        "high": 50.0,
+                        "low": 50.0,
+                        "close": 50.0,
+                        "volume": 1.0
+                  }
+            ],
+            "hidden": false,
+            "description": "Single tick: open == high == low == close."
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple Trades Same Timestamp",
+            "input": {
+                  "ticks": [
+                        {
+                              "timestamp": 0,
+                              "price": 10.0,
+                              "volume": 5.0
+                        },
+                        {
+                              "timestamp": 0,
+                              "price": 12.0,
+                              "volume": 5.0
+                        }
+                  ],
+                  "bar_seconds": 60
+            },
+            "expectedOutput": [
+                  {
+                        "bucket": 0,
+                        "open": 10.0,
+                        "high": 12.0,
+                        "low": 10.0,
+                        "close": 12.0,
+                        "volume": 10.0
+                  }
+            ],
+            "hidden": true,
+            "description": "Same second price volatility."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-27': {
+    id: 'pandas-proc-prob-27',
+    title: "Within-Group Transform Standardization and Rank",
+    difficulty: 'hard',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '20-25 min',
+    functionName: 'transform_group_standardization',
+    functionSignature: "transform_group_standardization(records: list[dict], group_col: str, target_col: str) -> list[dict]",
+    starterCode: `def transform_group_standardization(records, group_col, target_col):
+    """Compute within-group z-score and dense rank for target_col, preserving row order.
+    Add 'z_score' and 'group_rank' fields to each record."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute group-relative standardized z-scores and ordinal ranks without collapsing the dataset row count.",
+    taskDescription: "Implement `transform_group_standardization(records, group_col, target_col)`: for each group in `group_col`, compute group mean and population standard deviation `sigma = sqrt(sum((x - mean)^2) / count)`. Assign `z_score = (val - mean) / sigma` (or `0.0` if sigma `<` 1e-12). Compute 1-indexed dense rank within the group (smallest value has rank 1). Return records in original order with new fields `z_score` (rounded to 4 decimals) and `group_rank`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(records) <= 20,000",
+      "target_col is numeric"
+],
+    hints: {
+      "small": "GroupBy transform preserves original row length unlike aggregation.",
+      "strong": "Map unique sorted values to rank: `{val: rk + 1 for rk, val in enumerate(sorted(set(group_vals)))}`.",
+      "concept": "Within-group transforms normalize features across varying cohorts (e.g. employee performance ratings across departments)."
+},
+    conceptConnections: [
+      {
+            "title": "Grouped Ranking",
+            "route": "/practice/numpy-pandas-prob-29",
+            "description": "Grouped dense ranking"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Within-Group Z-Score and Rank",
+            "input": {
+                  "records": [
+                        {
+                              "dept": "Sales",
+                              "score": 80.0
+                        },
+                        {
+                              "dept": "Sales",
+                              "score": 90.0
+                        },
+                        {
+                              "dept": "Eng",
+                              "score": 100.0
+                        },
+                        {
+                              "dept": "Eng",
+                              "score": 100.0
+                        }
+                  ],
+                  "group_col": "dept",
+                  "target_col": "score"
+            },
+            "expectedOutput": [
+                  {
+                        "dept": "Sales",
+                        "score": 80.0,
+                        "z_score": -1.0,
+                        "group_rank": 1
+                  },
+                  {
+                        "dept": "Sales",
+                        "score": 90.0,
+                        "z_score": 1.0,
+                        "group_rank": 2
+                  },
+                  {
+                        "dept": "Eng",
+                        "score": 100.0,
+                        "z_score": 0.0,
+                        "group_rank": 1
+                  },
+                  {
+                        "dept": "Eng",
+                        "score": 100.0,
+                        "z_score": 0.0,
+                        "group_rank": 1
+                  }
+            ],
+            "hidden": false,
+            "description": "Standardize within Sales and Eng independently."
+      },
+      {
+            "id": "tc2",
+            "label": "Single Member Group",
+            "input": {
+                  "records": [
+                        {
+                              "k": "A",
+                              "val": 42.0
+                        }
+                  ],
+                  "group_col": "k",
+                  "target_col": "val"
+            },
+            "expectedOutput": [
+                  {
+                        "k": "A",
+                        "val": 42.0,
+                        "z_score": 0.0,
+                        "group_rank": 1
+                  }
+            ],
+            "hidden": false,
+            "description": "Single element group has z_score 0.0, rank 1."
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple Ties in Group",
+            "input": {
+                  "records": [
+                        {
+                              "g": 1,
+                              "v": 10
+                        },
+                        {
+                              "g": 1,
+                              "v": 20
+                        },
+                        {
+                              "g": 1,
+                              "v": 20
+                        }
+                  ],
+                  "group_col": "g",
+                  "target_col": "v"
+            },
+            "expectedOutput": [
+                  {
+                        "g": 1,
+                        "v": 10,
+                        "z_score": -1.4142,
+                        "group_rank": 1
+                  },
+                  {
+                        "g": 1,
+                        "v": 20,
+                        "z_score": 0.7071,
+                        "group_rank": 2
+                  },
+                  {
+                        "g": 1,
+                        "v": 20,
+                        "z_score": 0.7071,
+                        "group_rank": 2
+                  }
+            ],
+            "hidden": true,
+            "description": "Dense ranking handles duplicate ties."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-28': {
+    id: 'pandas-proc-prob-28',
+    title: "Correlation Matrix with Significance Masking",
+    difficulty: 'hard',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '20-25 min',
+    functionName: 'compute_correlation_with_mask',
+    functionSignature: "compute_correlation_with_mask(matrix_cols: dict[str, list[float]]) -> dict[str, any]",
+    starterCode: `def compute_correlation_with_mask(matrix_cols):
+    """Compute all pairwise Pearson correlation coefficients and boolean significance mask (|r| >= 0.5).
+    Return {'correlation': dict, 'significant_mask': dict}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Compute full pairwise Pearson correlation matrices across tabular features with significance threshold masking.",
+    taskDescription: "Implement `compute_correlation_with_mask(matrix_cols)`: given a dictionary of numeric column arrays, calculate Pearson correlation `r(X, Y) = cov(X, Y) / (sigma_X * sigma_Y)` for each feature pair. Construct `significant_mask` setting `True` where `|r| >= 0.5` and `False` otherwise. Return `{\"correlation\": {c1: {c2: r}}, \"significant_mask\": {c1: {c2: bool}}}` with correlations rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(matrix_cols) <= 50",
+      "Column arrays have identical length >= 2"
+],
+    hints: {
+      "small": "Precompute mean and standard deviation for each column.",
+      "strong": "Pearson r between column vectors is `sum((x - mx)*(y - my)) / (sx * sy)`.",
+      "concept": "Correlation matrices identify multicollinearity in feature sets before model training."
+},
+    conceptConnections: [
+      {
+            "title": "Rolling Correlation",
+            "route": "/practice/numpy-pandas-prob-60",
+            "description": "Streaming Pearson correlation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect Correlation f1 and f2",
+            "input": {
+                  "matrix_cols": {
+                        "f1": [
+                              1.0,
+                              2.0,
+                              3.0,
+                              4.0
+                        ],
+                        "f2": [
+                              2.0,
+                              4.0,
+                              6.0,
+                              8.0
+                        ],
+                        "f3": [
+                              -1.0,
+                              0.0,
+                              1.0,
+                              0.0
+                        ]
+                  }
+            },
+            "expectedOutput": {
+                  "correlation": {
+                        "f1": {
+                              "f1": 1.0,
+                              "f2": 1.0,
+                              "f3": 0.6325
+                        },
+                        "f2": {
+                              "f1": 1.0,
+                              "f2": 1.0,
+                              "f3": 0.6325
+                        },
+                        "f3": {
+                              "f1": 0.6325,
+                              "f2": 0.6325,
+                              "f3": 1.0
+                        }
+                  },
+                  "significant_mask": {
+                        "f1": {
+                              "f1": true,
+                              "f2": true,
+                              "f3": true
+                        },
+                        "f2": {
+                              "f1": true,
+                              "f2": true,
+                              "f3": true
+                        },
+                        "f3": {
+                              "f1": true,
+                              "f2": true,
+                              "f3": true
+                        }
+                  }
+            },
+            "hidden": false,
+            "description": "f1 and f2 correlation is 1.0, mask is True."
+      },
+      {
+            "id": "tc2",
+            "label": "Orthogonal / Uncorrelated Variables",
+            "input": {
+                  "matrix_cols": {
+                        "a": [
+                              1.0,
+                              0.0,
+                              -1.0,
+                              0.0
+                        ],
+                        "b": [
+                              0.0,
+                              1.0,
+                              0.0,
+                              -1.0
+                        ]
+                  }
+            },
+            "expectedOutput": {
+                  "correlation": {
+                        "a": {
+                              "a": 1.0,
+                              "b": 0.0
+                        },
+                        "b": {
+                              "a": 0.0,
+                              "b": 1.0
+                        }
+                  },
+                  "significant_mask": {
+                        "a": {
+                              "a": true,
+                              "b": false
+                        },
+                        "b": {
+                              "a": false,
+                              "b": true
+                        }
+                  }
+            },
+            "hidden": false,
+            "description": "Zero correlation produces mask False."
+      },
+      {
+            "id": "tc3",
+            "label": "Single Feature Self Correlation",
+            "input": {
+                  "matrix_cols": {
+                        "z": [
+                              10.0,
+                              20.0,
+                              30.0
+                        ]
+                  }
+            },
+            "expectedOutput": {
+                  "correlation": {
+                        "z": {
+                              "z": 1.0
+                        }
+                  },
+                  "significant_mask": {
+                        "z": {
+                              "z": true
+                        }
+                  }
+            },
+            "hidden": true,
+            "description": "1x1 correlation matrix."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-29': {
+    id: 'pandas-proc-prob-29',
+    title: "Stream Watermarking and Late-Arrival Filter",
+    difficulty: 'hard',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '20-25 min',
+    functionName: 'watermark_stream_filter',
+    functionSignature: "watermark_stream_filter(stream: list[dict], max_delay: int) -> dict[str, list[dict]]",
+    starterCode: `def watermark_stream_filter(stream, max_delay):
+    """Filter stream events based on watermarking watermark = max_ts - max_delay.
+    Drop events where timestamp < current_watermark. Return {'accepted_events': list, 'rejected_events': list}."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Track streaming watermarks and discard out-of-order records exceeding allowed event-time lag.",
+    taskDescription: "Implement `watermark_stream_filter(stream, max_delay)`: maintain `watermark = -infinity`. For each event in `stream`: if `event['timestamp'] < watermark`, place in `rejected_events`. Otherwise, place in `accepted_events` and advance watermark: `watermark = max(watermark, event['timestamp'] - max_delay)`. Return dict `{\"accepted_events\": list[dict], \"rejected_events\": list[dict]}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "max_delay >= 0",
+      "1 <= len(stream) <= 50,000"
+],
+    hints: {
+      "small": "Watermark is monotonically non-decreasing over stream consumption.",
+      "strong": "Events arriving behind the current watermark are dropped as unprocessable stragglers.",
+      "concept": "Watermarks bound state retention in streaming engines like Apache Flink and Spark Structured Streaming."
+},
+    conceptConnections: [
+      {
+            "title": "Event Watermarks",
+            "route": "/practice/numpy-pandas-prob-27",
+            "description": "Event-time watermark tracker"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Max Delay 40 Late Events",
+            "input": {
+                  "stream": [
+                        {
+                              "timestamp": 100,
+                              "data": "A"
+                        },
+                        {
+                              "timestamp": 150,
+                              "data": "B"
+                        },
+                        {
+                              "timestamp": 90,
+                              "data": "Late1"
+                        },
+                        {
+                              "timestamp": 200,
+                              "data": "C"
+                        },
+                        {
+                              "timestamp": 120,
+                              "data": "Late2"
+                        }
+                  ],
+                  "max_delay": 40
+            },
+            "expectedOutput": {
+                  "accepted_events": [
+                        {
+                              "timestamp": 100,
+                              "data": "A"
+                        },
+                        {
+                              "timestamp": 150,
+                              "data": "B"
+                        },
+                        {
+                              "timestamp": 200,
+                              "data": "C"
+                        }
+                  ],
+                  "rejected_events": [
+                        {
+                              "timestamp": 90,
+                              "data": "Late1"
+                        },
+                        {
+                              "timestamp": 120,
+                              "data": "Late2"
+                        }
+                  ]
+            },
+            "hidden": false,
+            "description": "After t=150, watermark is 110. t=90 rejected. After t=200, watermark is 160. t=120 rejected."
+      },
+      {
+            "id": "tc2",
+            "label": "Zero Delay Strict Monotonic",
+            "input": {
+                  "stream": [
+                        {
+                              "timestamp": 10
+                        },
+                        {
+                              "timestamp": 5
+                        },
+                        {
+                              "timestamp": 15
+                        }
+                  ],
+                  "max_delay": 0
+            },
+            "expectedOutput": {
+                  "accepted_events": [
+                        {
+                              "timestamp": 10
+                        },
+                        {
+                              "timestamp": 15
+                        }
+                  ],
+                  "rejected_events": [
+                        {
+                              "timestamp": 5
+                        }
+                  ]
+            },
+            "hidden": false,
+            "description": "Strictly drops any timestamp earlier than current maximum."
+      },
+      {
+            "id": "tc3",
+            "label": "All On-Time Events",
+            "input": {
+                  "stream": [
+                        {
+                              "timestamp": 1
+                        },
+                        {
+                              "timestamp": 2
+                        },
+                        {
+                              "timestamp": 3
+                        }
+                  ],
+                  "max_delay": 5
+            },
+            "expectedOutput": {
+                  "accepted_events": [
+                        {
+                              "timestamp": 1
+                        },
+                        {
+                              "timestamp": 2
+                        },
+                        {
+                              "timestamp": 3
+                        }
+                  ],
+                  "rejected_events": []
+            },
+            "hidden": true,
+            "description": "Monotonic stream accepts all events."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'pandas-proc-prob-30': {
+    id: 'pandas-proc-prob-30',
+    title: "Scalable Pipeline DAG Execution Engine",
+    difficulty: 'hard',
+    topic: "Pandas & Data Processing Pipelines",
+    estimatedTime: '20-25 min',
+    functionName: 'execute_pipeline_dag',
+    functionSignature: "execute_pipeline_dag(initial_state: dict[str, list[float]], stages: list[dict]) -> dict[str, any]",
+    starterCode: `def execute_pipeline_dag(initial_state, stages):
+    """Execute sequential data pipeline stages ('scale', 'add', 'clip') across columns.
+    Return {'final_state': dict, 'stages_executed': list[str]} with values rounded to 4 decimals."""
+    # Implement solution logic here
+    pass
+`,
+    mission: "Orchestrate composable, verifiable data transformation DAG pipelines over tabular column state.",
+    taskDescription: "Implement `execute_pipeline_dag(initial_state, stages)`: execute each stage in `stages` sequentially on `initial_state`. Supported stage types: `'scale'` (`x * factor`), `'add'` (`x + value`), and `'clip'` (`max(min, min(max, x))`). Round all column float values to 4 decimals after each operation. Return dict with `final_state` and list `stages_executed`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "stages is list of stage dicts",
+      "1 <= len(stages) <= 50"
+],
+    hints: {
+      "small": "Copy initial_state: `state = dict(initial_state)`.",
+      "strong": "Update `state[col] = [new_val for x in state[col]]` based on stage func_type.",
+      "concept": "Composable pipeline engines decouple transformation logic from execution scheduling in Airflow, Prefect, and Dagster."
+},
+    conceptConnections: [
+      {
+            "title": "Data Pipelines",
+            "route": "/practice/numpy-pandas-prob-2",
+            "description": "Data processing pipelines"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3-Stage Transform Pipeline",
+            "input": {
+                  "initial_state": {
+                        "prices": [
+                              10.0,
+                              20.0,
+                              30.0
+                        ],
+                        "counts": [
+                              1,
+                              2,
+                              3
+                        ]
+                  },
+                  "stages": [
+                        {
+                              "name": "scale_prices",
+                              "func_type": "scale",
+                              "params": {
+                                    "column": "prices",
+                                    "factor": 1.1
+                              }
+                        },
+                        {
+                              "name": "clip_prices",
+                              "func_type": "clip",
+                              "params": {
+                                    "column": "prices",
+                                    "min": 10.0,
+                                    "max": 30.0
+                              }
+                        },
+                        {
+                              "name": "add_counts",
+                              "func_type": "add",
+                              "params": {
+                                    "column": "counts",
+                                    "value": 5
+                              }
+                        }
+                  ]
+            },
+            "expectedOutput": {
+                  "final_state": {
+                        "prices": [
+                              11.0,
+                              22.0,
+                              30.0
+                        ],
+                        "counts": [
+                              6.0,
+                              7.0,
+                              8.0
+                        ]
+                  },
+                  "stages_executed": [
+                        "scale_prices",
+                        "clip_prices",
+                        "add_counts"
+                  ]
+            },
+            "hidden": false,
+            "description": "Scale, clip, and add transformations executed in sequence."
+      },
+      {
+            "id": "tc2",
+            "label": "Empty Stages Pipeline",
+            "input": {
+                  "initial_state": {
+                        "x": [
+                              1.0
+                        ]
+                  },
+                  "stages": []
+            },
+            "expectedOutput": {
+                  "final_state": {
+                        "x": [
+                              1.0
+                        ]
+                  },
+                  "stages_executed": []
+            },
+            "hidden": false,
+            "description": "No transformation retains original state."
+      },
+      {
+            "id": "tc3",
+            "label": "Chained Additions",
+            "input": {
+                  "initial_state": {
+                        "v": [
+                              0.0
+                        ]
+                  },
+                  "stages": [
+                        {
+                              "name": "s1",
+                              "func_type": "add",
+                              "params": {
+                                    "column": "v",
+                                    "value": 10.0
+                              }
+                        },
+                        {
+                              "name": "s2",
+                              "func_type": "scale",
+                              "params": {
+                                    "column": "v",
+                                    "factor": 2.0
+                              }
+                        }
+                  ]
+            },
+            "expectedOutput": {
+                  "final_state": {
+                        "v": [
+                              20.0
+                        ]
+                  },
+                  "stages_executed": [
+                        "s1",
+                        "s2"
+                  ]
+            },
+            "hidden": true,
+            "description": "Chained sequential operations."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #773. Pandas & Data Processing Pipelines Module 1: Problem 3"
 description: "Master #773. Pandas & Data Processing Pipelines Module 1: Problem 3 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,44 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #773. Pandas & Data Processing Pipelines Module 1: Problem 3
+# #773. GroupBy Multi-Metric Statistical Aggregation
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #773 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#773. Pandas & Data Processing Pipelines Module 1: Problem 3` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute grouped statistical metrics (count, sum, mean, sample standard deviation) across tabular records.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `groupby_multi_metric(records, group_col, target_col)`: partition records by `group_col`. For each group, compute `count`, `sum`, `mean`, and sample `std` (`sqrt(sum((x - mean)^2) / (count - 1))`, or `0.0` if count `<` 2). Return a dictionary mapping group names to their metric summaries with values rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-3" />
+
+<Solution>
+
+```python
+import math
+from collections import defaultdict
+
+def groupby_multi_metric(records, group_col, target_col):
+    groups = defaultdict(list)
+    for r in records:
+        if group_col in r and target_col in r and r[target_col] is not None:
+            groups[r[group_col]].append(float(r[target_col]))
+    res = {}
+    for g in sorted(groups.keys()):
+        v = groups[g]
+        n = len(v)
+        s = sum(v)
+        m = s / n
+        std = math.sqrt(sum((x - m)**2 for x in v) / (n - 1)) if n >= 2 else 0.0
+        res[str(g)] = {'count': n, 'sum': round(float(s), 4), 'mean': round(float(m), 4), 'std': round(float(std), 4)}
+    return res
+```
+
+Aggregates values per category and computes descriptive sample statistics.
+
+</Solution>

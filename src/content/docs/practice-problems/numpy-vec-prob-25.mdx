@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #765. NumPy & Vectorized Computation Module 5: Problem 25"
 description: "Master #765. NumPy & Vectorized Computation Module 5: Problem 25 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,39 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #765. NumPy & Vectorized Computation Module 5: Problem 25
+# #765. Vectorized Rotary Position Embedding (RoPE) Rotation
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #765 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#765. NumPy & Vectorized Computation Module 5: Problem 25` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Encode relative token positions using complex rotary coordinate transformations.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `apply_rope_rotation(x, pos, theta)`: for even-dimension vector `x` of length `D`, iterate over coordinate pairs `(x[2k], x[2k+1])` for `k in 0..D//2 - 1`. Compute angle `theta_k = pos / (theta ** (2k / D))`. Rotate pair: `x0' = x0*cos(theta_k) - x1*sin(theta_k)` and `x1' = x0*sin(theta_k) + x1*cos(theta_k)`. Return transformed vector rounded to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-25" />
+
+<Solution>
+
+```python
+import math
+
+def apply_rope_rotation(x, pos, theta=10000.0):
+    D = len(x)
+    out = [0.0] * D
+    for k in range(D // 2):
+        angle = pos / (theta ** (2.0 * k / D))
+        cos_a, sin_a = math.cos(angle), math.sin(angle)
+        x0, x1 = x[2 * k], x[2 * k + 1]
+        out[2 * k] = round(float(x0 * cos_a - x1 * sin_a), 4)
+        out[2 * k + 1] = round(float(x0 * sin_a + x1 * cos_a), 4)
+    return out
+```
+
+Applies 2D Givens rotation to consecutive coordinate pairs scaled by position frequencies.
+
+</Solution>

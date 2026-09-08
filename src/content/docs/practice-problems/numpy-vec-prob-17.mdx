@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #757. NumPy & Vectorized Computation Module 4: Problem 17"
 description: "Master #757. NumPy & Vectorized Computation Module 4: Problem 17 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,35 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #757. NumPy & Vectorized Computation Module 4: Problem 17
+# #757. Vectorized Discounted Cumulative Rewards
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #757 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#757. NumPy & Vectorized Computation Module 4: Problem 17` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate discounted cumulative returns for reinforcement learning trajectories.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `compute_discounted_returns(rewards, gamma)`: compute the return `G_t = R_t + gamma * G_{t+1}` for each time step `t` in reverse. Return array of returns rounded to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-17" />
+
+<Solution>
+
+```python
+def compute_discounted_returns(rewards, gamma):
+    n = len(rewards)
+    returns = [0.0] * n
+    running = 0.0
+    for t in reversed(range(n)):
+        running = rewards[t] + gamma * running
+        returns[t] = round(float(running), 4)
+    return returns
+```
+
+Sweeps backwards through time applying Bellman recursive return formulation.
+
+</Solution>

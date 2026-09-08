@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #756. NumPy & Vectorized Computation Module 4: Problem 16"
 description: "Master #756. NumPy & Vectorized Computation Module 4: Problem 16 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,36 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #756. NumPy & Vectorized Computation Module 4: Problem 16
+# #756. Vectorized Batch Collator with Sequence Padding
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #756 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#756. NumPy & Vectorized Computation Module 4: Problem 16` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Collate variable-length token sequences into a uniform dense matrix with binary attention masks.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `collate_padded_batch(sequences, pad_val)`: determine `max_len = max(len(s))` across input sequences. Pad shorter sequences on the right with `pad_val`. Concurrently create `attention_mask` where original tokens are 1 and padding tokens are 0. Return a dict `{"padded_batch": ..., "attention_mask": ...}`.
 
 <PracticePlayground problemId="numpy-vec-prob-16" />
+
+<Solution>
+
+```python
+def collate_padded_batch(sequences, pad_val):
+    max_len = max(len(s) for s in sequences) if sequences else 0
+    padded = []
+    masks = []
+    for s in sequences:
+        p = max_len - len(s)
+        padded.append(list(s) + [pad_val] * p)
+        masks.append([1] * len(s) + [0] * p)
+    return {'padded_batch': padded, 'attention_mask': masks}
+```
+
+Pads each list with pad_val to max sequence length and creates corresponding binary indicator mask.
+
+</Solution>

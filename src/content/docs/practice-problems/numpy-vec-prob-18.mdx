@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #758. NumPy & Vectorized Computation Module 4: Problem 18"
 description: "Master #758. NumPy & Vectorized Computation Module 4: Problem 18 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,38 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #758. NumPy & Vectorized Computation Module 4: Problem 18
+# #758. Vectorized Weighted Multi-Class Log-Loss
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #758 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#758. NumPy & Vectorized Computation Module 4: Problem 18` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute cost-sensitive weighted categorical log-loss for imbalanced classification tasks.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `weighted_log_loss(y_pred, y_true_idx, class_weights)`: calculate weighted cross-entropy `-sum(w_i * log(p_{i, y_i})) / sum(w_i)` where `w_i = class_weights[y_true_idx[i]]`. Clip probabilities to `[1e-12, 1.0 - 1e-12]`. Return float rounded to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-18" />
+
+<Solution>
+
+```python
+import math
+
+def weighted_log_loss(y_pred, y_true_idx, class_weights):
+    total_loss = 0.0
+    total_w = 0.0
+    for p_row, target in zip(y_pred, y_true_idx):
+        prob = max(1e-12, min(1.0 - 1e-12, p_row[target]))
+        w = class_weights[target]
+        total_loss -= w * math.log(prob)
+        total_w += w
+    return round(float(total_loss / total_w), 4) if total_w > 0 else 0.0
+```
+
+Extracts true class probability, applies class weight, and computes normalized weighted negative log likelihood.
+
+</Solution>

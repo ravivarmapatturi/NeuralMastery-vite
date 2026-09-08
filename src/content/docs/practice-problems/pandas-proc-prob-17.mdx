@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #787. Pandas & Data Processing Pipelines Module 4: Problem 17"
 description: "Master #787. Pandas & Data Processing Pipelines Module 4: Problem 17 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,46 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #787. Pandas & Data Processing Pipelines Module 4: Problem 17
+# #787. User Cohort Retention Matrix Engine
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #787 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#787. Pandas & Data Processing Pipelines Module 4: Problem 17` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Track customer cohort lifecycles and retention decay over elapsed time periods.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `build_cohort_retention_matrix(events)`: each event contains `user_id`, `cohort_month`, and `activity_month`. Calculate `period = activity_month - cohort_month`. The base size of a cohort is its total unique users. Compute retention percentage `(active_users_in_period / cohort_base_size) * 100.0`. Return nested dictionary `{str(cohort): {'period_0': pct, ...}}` with percentages rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-17" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def build_cohort_retention_matrix(events):
+    cohort_users = defaultdict(set)
+    cohort_period = defaultdict(lambda: defaultdict(set))
+    for ev in events:
+        u, c, a = ev['user_id'], ev['cohort_month'], ev['activity_month']
+        p = a - c
+        cohort_users[c].add(u)
+        cohort_period[c][p].add(u)
+    table = {}
+    for c in sorted(cohort_users.keys()):
+        base = len(cohort_users[c])
+        p_dict = {}
+        for p in sorted(cohort_period[c].keys()):
+            pct = (len(cohort_period[c][p]) / base) * 100.0 if base else 0.0
+            p_dict[f'period_{p}'] = round(float(pct), 4)
+        table[str(c)] = p_dict
+    return table
+```
+
+Groups unique users per cohort and relative elapsed period, dividing by initial cohort size.
+
+</Solution>

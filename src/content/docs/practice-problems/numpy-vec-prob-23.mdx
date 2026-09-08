@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #763. NumPy & Vectorized Computation Module 5: Problem 23"
 description: "Master #763. NumPy & Vectorized Computation Module 5: Problem 23 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,39 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #763. NumPy & Vectorized Computation Module 5: Problem 23
+# #763. Vectorized Layer Normalization with Learnable Affine
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #763 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#763. NumPy & Vectorized Computation Module 5: Problem 23` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Normalize activations across feature dimensions per sample with learnable scale and bias.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `layer_norm(features, gamma, beta, eps)`: for each sample row `x` of dimension `D`, compute mean `mu = sum(x) / D` and variance `sigma^2 = sum((x - mu)^2) / D`. Standardize and apply affine transform `y = ((x - mu) / sqrt(sigma^2 + eps)) * gamma + beta`. Round each element to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-23" />
+
+<Solution>
+
+```python
+import math
+
+def layer_norm(features, gamma, beta, eps=1e-5):
+    out = []
+    for row in features:
+        D = len(row)
+        mu = sum(row) / D
+        var = sum((x - mu) ** 2 for x in row) / D
+        denom = math.sqrt(var + eps)
+        normed = [round(float(((x - mu) / denom) * g + b), 4) for x, g, b in zip(row, gamma, beta)]
+        out.append(normed)
+    return out
+```
+
+Computes mean and variance across feature axis, scales by inverse standard deviation, and applies affine parameters.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #761. NumPy & Vectorized Computation Module 5: Problem 21"
 description: "Master #761. NumPy & Vectorized Computation Module 5: Problem 21 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,39 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #761. NumPy & Vectorized Computation Module 5: Problem 21
+# #761. Vectorized Multi-Head Attention Reshape and Transpose
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #761 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#761. NumPy & Vectorized Computation Module 5: Problem 21` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Reshape and permute token hidden representations to isolate parallel multi-head attention streams.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `split_multi_head_projections(hidden_states, num_heads, head_dim)`: transform a 3D tensor of shape `(B, S, num_heads * head_dim)` into a 4D tensor of shape `(B, num_heads, S, head_dim)` by splitting the last dimension into heads and swapping sequence and head dimensions.
 
 <PracticePlayground problemId="numpy-vec-prob-21" />
+
+<Solution>
+
+```python
+def split_multi_head_projections(hidden_states, num_heads, head_dim):
+    B = len(hidden_states)
+    S = len(hidden_states[0]) if B > 0 else 0
+    out = []
+    for b in range(B):
+        heads = [[] for _ in range(num_heads)]
+        for s in range(S):
+            token = hidden_states[b][s]
+            for h in range(num_heads):
+                heads[h].append(token[h * head_dim:(h + 1) * head_dim])
+        out.append(heads)
+    return out
+```
+
+Iterates through tokens, slices head segments, and organizes by batch and head.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #762. NumPy & Vectorized Computation Module 5: Problem 22"
 description: "Master #762. NumPy & Vectorized Computation Module 5: Problem 22 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,35 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #762. NumPy & Vectorized Computation Module 5: Problem 22
+# #762. Vectorized Huber Loss (Smooth L1)
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #762 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#762. NumPy & Vectorized Computation Module 5: Problem 22` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute robust Huber loss combining quadratic MSE for small errors with linear MAE for outliers.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `vectorized_huber_loss(y_true, y_pred, delta)`: for each pair `(yt, yp)`, compute `diff = |yt - yp|`. If `diff <= delta`, loss is `0.5 * diff^2`. Otherwise, loss is `delta * (diff - 0.5 * delta)`. Return a dict `{"sample_losses": list[float], "mean_loss": float}` with all floats rounded to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-22" />
+
+<Solution>
+
+```python
+def vectorized_huber_loss(y_true, y_pred, delta):
+    losses = []
+    for yt, yp in zip(y_true, y_pred):
+        diff = abs(yt - yp)
+        l = 0.5 * (diff ** 2) if diff <= delta else delta * (diff - 0.5 * delta)
+        losses.append(round(float(l), 4))
+    mean_l = sum(losses) / len(losses) if losses else 0.0
+    return {'sample_losses': losses, 'mean_loss': round(float(mean_l), 4)}
+```
+
+Calculates piecewise smooth L1 loss for each target prediction pair and averages across samples.
+
+</Solution>

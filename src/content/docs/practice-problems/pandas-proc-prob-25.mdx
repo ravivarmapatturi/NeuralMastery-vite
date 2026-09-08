@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #795. Pandas & Data Processing Pipelines Module 5: Problem 25"
 description: "Master #795. Pandas & Data Processing Pipelines Module 5: Problem 25 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,42 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #795. Pandas & Data Processing Pipelines Module 5: Problem 25
+# #795. Partitioned Chunk Streaming Reducer
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #795 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#795. Pandas & Data Processing Pipelines Module 5: Problem 25` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Aggregate summary statistics across out-of-core chunk partitions in a memory-bounded streaming fashion.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `reduce_chunked_aggregations(chunks, agg_field)`: process a list of chunk batches sequentially. Maintain running accumulators for `count`, `sum`, `min`, and `max` of `agg_field`. Compute `mean = sum / count`. Return dictionary `{"count": int, "sum": float, "mean": float, "min": float, "max": float}` with all float values rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-25" />
+
+<Solution>
+
+```python
+def reduce_chunked_aggregations(chunks, agg_field):
+    cnt = 0
+    s = 0.0
+    min_v, max_v = float('inf'), float('-inf')
+    for ch in chunks:
+        for r in ch:
+            if agg_field in r and r[agg_field] is not None:
+                v = float(r[agg_field])
+                cnt += 1
+                s += v
+                if v < min_v: min_v = v
+                if v > max_v: max_v = v
+    if cnt == 0:
+        return {'count': 0, 'sum': 0.0, 'mean': 0.0, 'min': 0.0, 'max': 0.0}
+    return {'count': cnt, 'sum': round(float(s), 4), 'mean': round(float(s / cnt), 4), 'min': round(float(min_v), 4), 'max': round(float(max_v), 4)}
+```
+
+Updates running totals across batch chunks without materializing the full dataset.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #785. Pandas & Data Processing Pipelines Module 3: Problem 15"
 description: "Master #785. Pandas & Data Processing Pipelines Module 3: Problem 15 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,38 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #785. Pandas & Data Processing Pipelines Module 3: Problem 15
+# #785. Exponentially Weighted Rolling Covariance
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #785 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#785. Pandas & Data Processing Pipelines Module 3: Problem 15` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Track dynamic time-varying cross-asset covariance using online exponential weighting.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `ewm_covariance_stream(returns_a, returns_b, alpha)`: calculate series means `mu_a` and `mu_b`. Initialize `cov_0 = 0.0`. For each time step `t`, update recursive covariance `cov_t = alpha * (returns_a[t] - mu_a) * (returns_b[t] - mu_b) + (1 - alpha) * cov_{t-1}`. Return list of covariance values at each step rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-15" />
+
+<Solution>
+
+```python
+def ewm_covariance_stream(returns_a, returns_b, alpha=0.1):
+    n = len(returns_a)
+    ma = sum(returns_a) / n if n else 0.0
+    mb = sum(returns_b) / n if n else 0.0
+    cov = 0.0
+    res = []
+    for ra, rb in zip(returns_a, returns_b):
+        inst = (ra - ma) * (rb - mb)
+        cov = alpha * inst + (1.0 - alpha) * cov
+        res.append(round(float(cov), 4))
+    return res
+```
+
+Applies recursive exponential smoothing to instantaneous cross-products of demeaned returns.
+
+</Solution>

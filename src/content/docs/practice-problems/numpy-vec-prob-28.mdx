@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #768. NumPy & Vectorized Computation Module 6: Problem 28"
 description: "Master #768. NumPy & Vectorized Computation Module 6: Problem 28 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,38 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #768. NumPy & Vectorized Computation Module 6: Problem 28
+# #768. Vectorized SwiGLU Feed-Forward Activation
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #768 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#768. NumPy & Vectorized Computation Module 6: Problem 28` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Apply the SwiGLU non-linear gating mechanism utilized in modern LLM feed-forward layers.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `swiglu_activation(gate_proj, up_proj)`: for each element `(g, u)` at matching coordinates, calculate `swish(g) = g * (1 / (1 + exp(-g)))`, and multiply by `u`: `output = swish(g) * u`. Round all outputs to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-28" />
+
+<Solution>
+
+```python
+import math
+
+def swiglu_activation(gate_proj, up_proj):
+    out = []
+    for g_row, u_row in zip(gate_proj, up_proj):
+        row = []
+        for g, u in zip(g_row, u_row):
+            sig = 1.0 / (1.0 + math.exp(-g)) if g >= -20 else 0.0
+            row.append(round(float(g * sig * u), 4))
+        out.append(row)
+    return out
+```
+
+Applies swish activation to gate projection and modulates up projection element-wise.
+
+</Solution>

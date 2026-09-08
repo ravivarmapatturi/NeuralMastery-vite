@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #764. NumPy & Vectorized Computation Module 5: Problem 24"
 description: "Master #764. NumPy & Vectorized Computation Module 5: Problem 24 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,30 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #764. NumPy & Vectorized Computation Module 5: Problem 24
+# #764. Vectorized Causal Triangular Attention Masking
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #764 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#764. NumPy & Vectorized Computation Module 5: Problem 24` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Prevent autoregressive models from attending to future sequence tokens via upper-triangular masking.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `apply_causal_mask(scores, mask_val)`: for a square attention score matrix `scores` of shape `(S, S)`, replace all upper-triangular elements `scores[i][j]` where `j > i` with `mask_val`. Keep elements where `j <= i` intact. Round all elements to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-24" />
+
+<Solution>
+
+```python
+def apply_causal_mask(scores, mask_val=-10000.0):
+    S = len(scores)
+    return [[round(float(mask_val), 4) if j > i else round(float(scores[i][j]), 4) for j in range(S)] for i in range(S)]
+```
+
+Substitutes mask_val at indices where column index exceeds row index.
+
+</Solution>

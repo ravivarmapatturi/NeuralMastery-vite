@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #742. NumPy & Vectorized Computation Module 1: Problem 2"
 description: "Master #742. NumPy & Vectorized Computation Module 1: Problem 2 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,32 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #742. NumPy & Vectorized Computation Module 1: Problem 2
+# #742. Vectorized Matrix Kronecker Product
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #742 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#742. NumPy & Vectorized Computation Module 1: Problem 2` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the tensor block Kronecker product between two matrices.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `kronecker_product(A, B)`: given matrix `A` of shape `(m, n)` and matrix `B` of shape `(p, q)`, return their Kronecker product `A (x) B` of shape `(m*p, n*q)` where block `(i, j)` is `A[i][j] * B`. Round entries to 4 decimals.
 
 <PracticePlayground problemId="numpy-vec-prob-2" />
+
+<Solution>
+
+```python
+def kronecker_product(A, B):
+    m, n = len(A), len(A[0])
+    p, q = len(B), len(B[0])
+    res = [[round(float(A[i][j] * B[k][l]), 4) for j in range(n) for l in range(q)] for i in range(m) for k in range(p)]
+    return res
+```
+
+Each entry of A scales matrix B into an expanded sub-block.
+
+</Solution>

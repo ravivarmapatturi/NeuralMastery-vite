@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #786. Pandas & Data Processing Pipelines Module 4: Problem 16"
 description: "Master #786. Pandas & Data Processing Pipelines Module 4: Problem 16 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,36 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #786. Pandas & Data Processing Pipelines Module 4: Problem 16
+# #786. Tabular Missingness Pattern Profiler
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #786 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#786. Pandas & Data Processing Pipelines Module 4: Problem 16` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Catalog and count recurring co-occurring missingness combinations across database features.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `profile_missing_patterns(records, columns)`: for each record in `records`, identify which of the specified `columns` are absent or set to `None`. Join missing column names in alphabetical order separated by `'+'` (e.g. `'age+salary'`). If no columns are missing, label as `'none'`. Return sorted dict mapping pattern to occurrence count.
 
 <PracticePlayground problemId="pandas-proc-prob-16" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def profile_missing_patterns(records, columns):
+    patterns = defaultdict(int)
+    for r in records:
+        missing = [c for c in columns if c not in r or r[c] is None]
+        k = '+'.join(sorted(missing)) if missing else 'none'
+        patterns[k] += 1
+    return {k: patterns[k] for k in sorted(patterns.keys())}
+```
+
+Determines missing column sets per row and groups them by sorted canonical pattern strings.
+
+</Solution>

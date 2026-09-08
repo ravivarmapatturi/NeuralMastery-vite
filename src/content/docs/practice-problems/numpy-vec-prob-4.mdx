@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #744. NumPy & Vectorized Computation Module 1: Problem 4"
 description: "Master #744. NumPy & Vectorized Computation Module 1: Problem 4 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,34 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #744. NumPy & Vectorized Computation Module 1: Problem 4
+# #744. Vectorized Strided 2D Window Extraction
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #744 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#744. NumPy & Vectorized Computation Module 1: Problem 4` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Extract 2D sliding image patches across a grid with specified stride.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `extract_patches_2d(grid, patch_size, stride)`: slide a window of size `patch_size x patch_size` across `grid` in row-major order with step `stride`. Only include fully contained patches. Return a list of 2D patches.
 
 <PracticePlayground problemId="numpy-vec-prob-4" />
+
+<Solution>
+
+```python
+def extract_patches_2d(grid, patch_size, stride):
+    H, W = len(grid), len(grid[0]) if grid else 0
+    patches = []
+    for i in range(0, H - patch_size + 1, stride):
+        for j in range(0, W - patch_size + 1, stride):
+            patches.append([row[j:j + patch_size] for row in grid[i:i + patch_size]])
+    return patches
+```
+
+Step through grid row and column offsets by stride, extracting sub-grids.
+
+</Solution>

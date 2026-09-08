@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #784. Pandas & Data Processing Pipelines Module 3: Problem 14"
 description: "Master #784. Pandas & Data Processing Pipelines Module 3: Problem 14 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,44 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #784. Pandas & Data Processing Pipelines Module 3: Problem 14
+# #784. Deterministic Stratified Data Partitioning
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #784 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#784. Pandas & Data Processing Pipelines Module 3: Problem 14` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Partition dataset indices into train, validation, and test subsets while preserving exact categorical class balance.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `stratified_split_dataset(labels, train_ratio, val_ratio)`: group sample indices by unique label. For each class `c`, allocate `n_train = round(n * train_ratio)` and `n_val = round(n * val_ratio)` (ensuring `n_train + n_val <= n`), with the remainder placed in `test`. Combine and sort indices. Return `{"train": list[int], "validation": list[int], "test": list[int]}`.
 
 <PracticePlayground problemId="pandas-proc-prob-14" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def stratified_split_dataset(labels, train_ratio=0.7, val_ratio=0.15):
+    class_map = defaultdict(list)
+    for i, l in enumerate(labels):
+        class_map[l].append(i)
+    train, val, test = [], [], []
+    for l in sorted(class_map.keys()):
+        idxs = class_map[l]
+        n = len(idxs)
+        nt = int(round(n * train_ratio))
+        nv = int(round(n * val_ratio))
+        if nt + nv > n: nv = n - nt
+        train.extend(idxs[:nt])
+        val.extend(idxs[nt:nt + nv])
+        test.extend(idxs[nt + nv:])
+    return {'train': sorted(train), 'validation': sorted(val), 'test': sorted(test)}
+```
+
+Splits each class independently according to requested proportions and aggregates sorted indices.
+
+</Solution>

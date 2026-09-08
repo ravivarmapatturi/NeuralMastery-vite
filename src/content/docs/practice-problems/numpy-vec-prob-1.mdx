@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #741. NumPy & Vectorized Computation Module 1: Problem 1"
 description: "Master #741. NumPy & Vectorized Computation Module 1: Problem 1 in the NumPy & Vectorized Computation track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,40 @@ topic: "NumPy & Vectorized Computation"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #741. NumPy & Vectorized Computation Module 1: Problem 1
+# #741. Vectorized 2D Convolution Operation
 
 **Track**: NumPy & Vectorized Computation | **Rank**: #741 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#741. NumPy & Vectorized Computation Module 1: Problem 1` to advance your mastery in **NumPy & Vectorized Computation**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute 2D discrete convolution cross-correlation in valid mode across a 2D matrix.
 
 ## Task
 
-Implement the function `numpy_and_vectorized_computation_module_1_problem_1`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `conv2d_valid(image, kernel)`: compute the valid 2D convolution between `image` of shape `H x W` and `kernel` of shape `kH x kW`. The output spatial dimensions are `(H - kH + 1) x (W - kW + 1)`. Each pixel `(i, j)` is the sum of element-wise products over the receptive field. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="numpy-vec-prob-1" />
+
+<Solution>
+
+```python
+def conv2d_valid(image, kernel):
+    H = len(image)
+    W = len(image[0]) if H > 0 else 0
+    kH = len(kernel)
+    kW = len(kernel[0]) if kH > 0 else 0
+    out = []
+    for i in range(H - kH + 1):
+        row = []
+        for j in range(W - kW + 1):
+            val = sum(image[i + ki][j + kj] * kernel[ki][kj] for ki in range(kH) for kj in range(kW))
+            row.append(round(float(val), 4))
+        out.append(row)
+    return out
+```
+
+Iterate across all valid window placements and compute Frobenius inner products with the kernel.
+
+</Solution>

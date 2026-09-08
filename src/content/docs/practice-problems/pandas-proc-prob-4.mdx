@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #774. Pandas & Data Processing Pipelines Module 1: Problem 4"
 description: "Master #774. Pandas & Data Processing Pipelines Module 1: Problem 4 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,40 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #774. Pandas & Data Processing Pipelines Module 1: Problem 4
+# #774. Time-Series Gap Detection and Realignment
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #774 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#774. Pandas & Data Processing Pipelines Module 1: Problem 4` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Resample and forward-fill irregular temporal series onto a uniform time grid.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `realign_timeseries_grid(timestamps, values, step)`: construct a regular timestamp sequence starting at `timestamps[0]` up to `timestamps[-1]` with increment `step`. Realize values by assigning observed values when present or forward-filling the most recently observed value for gaps. Return `{"timestamps": list[int], "values": list[float]}` rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-4" />
+
+<Solution>
+
+```python
+def realign_timeseries_grid(timestamps, values, step):
+    mapping = dict(zip(timestamps, values))
+    curr = timestamps[0] if timestamps else 0
+    end = timestamps[-1] if timestamps else 0
+    ts_out, val_out = [], []
+    last_val = values[0] if values else 0.0
+    while curr <= end:
+        ts_out.append(curr)
+        if curr in mapping:
+            last_val = mapping[curr]
+        val_out.append(round(float(last_val), 4))
+        curr += step
+    return {'timestamps': ts_out, 'values': val_out}
+```
+
+Iterates on uniform time intervals and forward-fills latest observed readings.
+
+</Solution>

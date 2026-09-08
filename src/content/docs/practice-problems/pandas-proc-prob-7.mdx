@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #777. Pandas & Data Processing Pipelines Module 2: Problem 7"
 description: "Master #777. Pandas & Data Processing Pipelines Module 2: Problem 7 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,51 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #777. Pandas & Data Processing Pipelines Module 2: Problem 7
+# #777. Hierarchical Pivot Table with Margins
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #777 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#777. Pandas & Data Processing Pipelines Module 2: Problem 7` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Reshape flat relational rows into a cross-tabulated 2D summary matrix with grand margin totals.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `pivot_table_with_margins(records, index_col, col_col, val_col)`: aggregate `val_col` sums across unique row keys `index_col` and column keys `col_col`. Add an `'ALL'` total column for each row and an `'ALL'` total row across all rows. Return nested dict `{row_key: {col_key: sum, 'ALL': row_sum}, 'ALL': {...}}` with numbers rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-7" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def pivot_table_with_margins(records, index_col, col_col, val_col):
+    r_keys = sorted(list(set(r[index_col] for r in records)))
+    c_keys = sorted(list(set(r[col_col] for r in records)))
+    sums = defaultdict(float)
+    for r in records:
+        sums[(r[index_col], r[col_col])] += float(r[val_col])
+    table = {}
+    c_totals = defaultdict(float)
+    for rk in r_keys:
+        row_dict = {}
+        r_tot = 0.0
+        for ck in c_keys:
+            val = sums[(rk, ck)]
+            row_dict[ck] = round(float(val), 4)
+            r_tot += val
+            c_totals[ck] += val
+        row_dict['ALL'] = round(float(r_tot), 4)
+        table[rk] = row_dict
+    all_row = {ck: round(float(c_totals[ck]), 4) for ck in c_keys}
+    all_row['ALL'] = round(float(sum(c_totals.values())), 4)
+    table['ALL'] = all_row
+    return table
+```
+
+Pivots records into 2D dict and appends row, column, and grand totals.
+
+</Solution>

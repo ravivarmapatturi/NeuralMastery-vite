@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #800. Pandas & Data Processing Pipelines Module 6: Problem 30"
 description: "Master #800. Pandas & Data Processing Pipelines Module 6: Problem 30 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,42 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #800. Pandas & Data Processing Pipelines Module 6: Problem 30
+# #800. Scalable Pipeline DAG Execution Engine
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #800 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#800. Pandas & Data Processing Pipelines Module 6: Problem 30` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Orchestrate composable, verifiable data transformation DAG pipelines over tabular column state.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_6_problem_30`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `execute_pipeline_dag(initial_state, stages)`: execute each stage in `stages` sequentially on `initial_state`. Supported stage types: `'scale'` (`x * factor`), `'add'` (`x + value`), and `'clip'` (`max(min, min(max, x))`). Round all column float values to 4 decimals after each operation. Return dict with `final_state` and list `stages_executed`.
 
 <PracticePlayground problemId="pandas-proc-prob-30" />
+
+<Solution>
+
+```python
+def execute_pipeline_dag(initial_state, stages):
+    state = dict(initial_state)
+    executed = []
+    for st in stages:
+        p = st['params']
+        col = p['column']
+        ft = st['func_type']
+        if ft == 'scale':
+            state[col] = [round(float(x * p['factor']), 4) for x in state[col]]
+        elif ft == 'add':
+            state[col] = [round(float(x + p['value']), 4) for x in state[col]]
+        elif ft == 'clip':
+            state[col] = [round(float(max(p['min'], min(p['max'], x))), 4) for x in state[col]]
+        executed.append(st['name'])
+    return {'final_state': state, 'stages_executed': executed}
+```
+
+Executes series of parameterized column-wise transformations in topological sequence.
+
+</Solution>

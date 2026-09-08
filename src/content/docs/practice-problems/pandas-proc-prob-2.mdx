@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #772. Pandas & Data Processing Pipelines Module 1: Problem 2"
 description: "Master #772. Pandas & Data Processing Pipelines Module 1: Problem 2 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,51 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #772. Pandas & Data Processing Pipelines Module 1: Problem 2
+# #772. Multi-Column Conditional Imputation Pipeline
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #772 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#772. Pandas & Data Processing Pipelines Module 1: Problem 2` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Impute missing values across heterogeneous tabular columns using column-specific statistical aggregations.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `impute_dataframe_columns(records, strategies)`: for each column in `strategies`, compute the fill value from non-null values. Supported strategies: `'mean'` (arithmetic average), `'median'` (50th percentile), and `'mode'` (most frequent value; tie break by lexicographically smallest). Replace missing / `None` values and return updated records.
 
 <PracticePlayground problemId="pandas-proc-prob-2" />
+
+<Solution>
+
+```python
+from collections import defaultdict
+
+def impute_dataframe_columns(records, strategies):
+    fill_values = {}
+    for col, strat in strategies.items():
+        vals = [r[col] for r in records if col in r and r[col] is not None]
+        if strat == 'mean':
+            fill_values[col] = round(float(sum(vals) / len(vals)), 4) if vals else 0.0
+        elif strat == 'median':
+            s = sorted(vals)
+            n = len(s)
+            fill_values[col] = round(float(s[n//2] if n % 2 == 1 else (s[n//2 - 1] + s[n//2]) / 2.0), 4) if vals else 0.0
+        elif strat == 'mode':
+            counts = defaultdict(int)
+            for v in vals: counts[v] += 1
+            fill_values[col] = min(counts.keys(), key=lambda k: (-counts[k], k)) if vals else None
+    out = []
+    for r in records:
+        row = dict(r)
+        for col, fv in fill_values.items():
+            if col not in row or row[col] is None:
+                row[col] = fv
+        out.append(row)
+    return out
+```
+
+Precomputes summary metrics across valid column entries and fills missing entries.
+
+</Solution>

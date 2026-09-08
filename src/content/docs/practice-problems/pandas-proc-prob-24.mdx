@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #794. Pandas & Data Processing Pipelines Module 5: Problem 24"
 description: "Master #794. Pandas & Data Processing Pipelines Module 5: Problem 24 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,35 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #794. Pandas & Data Processing Pipelines Module 5: Problem 24
+# #794. Multi-Class Probability Calibration Brier Score
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #794 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#794. Pandas & Data Processing Pipelines Module 5: Problem 24` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Evaluate predictive probabilistic calibration accuracy using strictly proper multi-class Brier scoring rules.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `multi_class_brier_score(probabilities, true_labels, num_classes)`: for each sample `i`, calculate the squared error between the predicted probability vector `p_i` and the one-hot encoded ground truth `y_i`: `sum_{k=0}^{num_classes - 1} (p_{i, k} - y_{i, k})^2`. Average over all `N` samples and return float rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-24" />
+
+<Solution>
+
+```python
+def multi_class_brier_score(probabilities, true_labels, num_classes):
+    n = len(probabilities)
+    tot = 0.0
+    for p_row, target in zip(probabilities, true_labels):
+        for k in range(num_classes):
+            y = 1.0 if k == target else 0.0
+            tot += (p_row[k] - y) ** 2
+    return round(float(tot / n), 4) if n else 0.0
+```
+
+Measures mean squared difference between predicted class probability distributions and actual one-hot targets.
+
+</Solution>

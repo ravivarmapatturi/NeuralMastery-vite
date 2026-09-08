@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #789. Pandas & Data Processing Pipelines Module 4: Problem 19"
 description: "Master #789. Pandas & Data Processing Pipelines Module 4: Problem 19 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,39 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #789. Pandas & Data Processing Pipelines Module 4: Problem 19
+# #789. Population Stability Index (PSI) Drift Detector
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #789 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#789. Pandas & Data Processing Pipelines Module 4: Problem 19` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Monitor production feature distribution shift using the Population Stability Index.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `compute_population_stability_index(ref_counts, prod_counts)`: convert bin counts into proportions `ref_pct` and `prod_pct` (clamped to min `1e-6` to avoid division by zero). Compute `PSI = sum((prod_pct - ref_pct) * ln(prod_pct / ref_pct))`. Set `drift_detected = True` if `PSI >= 0.25`. Return dict with `psi` rounded to 4 decimals and `drift_detected` boolean.
 
 <PracticePlayground problemId="pandas-proc-prob-19" />
+
+<Solution>
+
+```python
+import math
+
+def compute_population_stability_index(ref_counts, prod_counts):
+    tot_r = sum(ref_counts)
+    tot_p = sum(prod_counts)
+    eps = 1e-6
+    psi = 0.0
+    for rc, pc in zip(ref_counts, prod_counts):
+        r = max(eps, rc / tot_r) if tot_r else eps
+        p = max(eps, pc / tot_p) if tot_p else eps
+        psi += (p - r) * math.log(p / r)
+    return {'psi': round(float(psi), 4), 'drift_detected': psi >= 0.25}
+```
+
+Normalizes frequencies and sums symmetric relative entropy across empirical bins.
+
+</Solution>

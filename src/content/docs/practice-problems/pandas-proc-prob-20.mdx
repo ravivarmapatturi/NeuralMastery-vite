@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #790. Pandas & Data Processing Pipelines Module 4: Problem 20"
 description: "Master #790. Pandas & Data Processing Pipelines Module 4: Problem 20 in the Pandas & Data Processing Pipelines track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,39 @@ topic: "Pandas & Data Processing Pipelines"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #790. Pandas & Data Processing Pipelines Module 4: Problem 20
+# #790. Sliding Time-Window Feature Store Aggregator
 
 **Track**: Pandas & Data Processing Pipelines | **Rank**: #790 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#790. Pandas & Data Processing Pipelines Module 4: Problem 20` to advance your mastery in **Pandas & Data Processing Pipelines**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute multi-scale backward temporal rolling aggregations for real-time feature store serving.
 
 ## Task
 
-Implement the function `pandas_and_data_processing_pipelines_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `aggregate_sliding_time_windows(events, entity_id, target_metric, windows_sec)`: filter events for `entity_id`. Identify the latest timestamp `T`. For each window duration `w` in `windows_sec`, consider events where `T - w <= timestamp <= T`. Calculate `count`, `sum`, and `mean` of `target_metric`. Return dict keyed by `'{w}s'` with float values rounded to 4 decimals.
 
 <PracticePlayground problemId="pandas-proc-prob-20" />
+
+<Solution>
+
+```python
+def aggregate_sliding_time_windows(events, entity_id, target_metric, windows_sec):
+    matched = [e for e in events if e['entity_id'] == entity_id]
+    if not matched: return {}
+    matched.sort(key=lambda x: x['timestamp'])
+    latest = matched[-1]['timestamp']
+    res = {}
+    for w in windows_sec:
+        vals = [e[target_metric] for e in matched if latest - w <= e['timestamp'] <= latest]
+        n = len(vals)
+        s = sum(vals)
+        res[f'{w}s'] = {'count': n, 'sum': round(float(s), 4), 'mean': round(float(s / n if n else 0.0), 4)}
+    return res
+```
+
+Filters by entity, identifies anchor timestamp, and aggregates backward window intervals.
+
+</Solution>
