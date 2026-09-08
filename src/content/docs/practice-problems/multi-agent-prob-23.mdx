@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #378. Agent Heartbeat Protocol"
-description: "Master #378. Agent Heartbeat Protocol in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Distributed Lock Lease Expiry Check"
+description: "Implement distributed-lock lease-expiry checking, the real safety mechanism preventing a crashed agent from holding a lock forever."
+difficulty: "easy"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #378. Agent Heartbeat Protocol
+# Distributed Lock Lease Expiry Check
 
-**Track**: Multi-Agent Systems | **Rank**: #378 of 1072 | **Points**: 90 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#378. Agent Heartbeat Protocol` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement distributed-lock lease-expiry checking, the real safety mechanism preventing a crashed agent from holding a lock forever.
 
 ## Task
 
-Implement the function `agent_heartbeat_protocol`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_lease_expired(acquired_at, current_time, lease_duration_s)`: return `True` if `(current_time - acquired_at) >= lease_duration_s`.
 
 <PracticePlayground problemId="multi-agent-prob-23" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #250. RAG Production Engineering Module 3: Problem 11"
-description: "Master #250. RAG Production Engineering Module 3: Problem 11 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: RAG Answer Confidence Blending"
+description: "Implement a real confidence-blending formula combining retrieval quality and generation certainty into one usable RAG answer-confidence score."
 difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #250. RAG Production Engineering Module 3: Problem 11
+# RAG Answer Confidence Blending
 
-**Track**: RAG Production Engineering | **Rank**: #250 of 1072 | **Points**: 60 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#250. RAG Production Engineering Module 3: Problem 11` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real confidence-blending formula combining retrieval quality and generation certainty into one usable RAG answer-confidence score.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `answer_confidence(top_retrieval_score, generation_logprob, w_retrieval)`. Convert `generation_logprob` to a probability via `exp(generation_logprob)` (clip the log-prob to a max of 0 first, since logprobs are always `<= 0`). Return `w_retrieval*top_retrieval_score + (1-w_retrieval)*generation_probability`.
 
 <PracticePlayground problemId="rag-prod-prob-11" />

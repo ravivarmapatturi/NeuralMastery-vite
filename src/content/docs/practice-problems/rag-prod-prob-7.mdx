@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #246. RAG Production Engineering Module 2: Problem 7"
-description: "Master #246. RAG Production Engineering Module 2: Problem 7 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Query Expansion via Synonym Injection"
+description: "Implement simple synonym-based query expansion, a real technique to improve sparse (keyword) retrieval recall."
 difficulty: "easy"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #246. RAG Production Engineering Module 2: Problem 7
+# Query Expansion via Synonym Injection
 
-**Track**: RAG Production Engineering | **Rank**: #246 of 1072 | **Points**: 40 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#246. RAG Production Engineering Module 2: Problem 7` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement simple synonym-based query expansion, a real technique to improve sparse (keyword) retrieval recall.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `expand_query(query, synonyms)`. Tokenize `query` on whitespace. For each token that's a key in `synonyms`, append all of its synonym values (space-separated) after the original query. Return the expanded query string with original tokens first, then all appended synonyms in token order.
 
 <PracticePlayground problemId="rag-prod-prob-7" />

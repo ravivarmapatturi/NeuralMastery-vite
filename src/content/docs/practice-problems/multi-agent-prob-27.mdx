@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #382. Agent Role Permission Matrix"
-description: "Master #382. Agent Role Permission Matrix in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Ant Colony Pheromone Trail Update"
+description: "Implement the real pheromone-update rule from Ant Colony Optimization, the mechanism that lets a swarm of simple agents collectively discover good paths without any central coordinator."
+difficulty: "medium"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #382. Agent Role Permission Matrix
+# Ant Colony Pheromone Trail Update
 
-**Track**: Multi-Agent Systems | **Rank**: #382 of 1072 | **Points**: 90 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#382. Agent Role Permission Matrix` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the real pheromone-update rule from Ant Colony Optimization, the mechanism that lets a swarm of simple agents collectively discover good paths without any central coordinator.
 
 ## Task
 
-Implement the function `agent_role_permission_matrix`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `update_pheromone(current_level, evaporation_rate, deposit_amount)`. Return `current_level * (1 - evaporation_rate) + deposit_amount` -- evaporate the existing trail proportionally, then add any new deposit from agents that just traversed it.
 
 <PracticePlayground problemId="multi-agent-prob-27" />

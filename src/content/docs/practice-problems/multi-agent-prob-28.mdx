@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #383. Agent Resource Locking Protocol"
-description: "Master #383. Agent Resource Locking Protocol in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Quorum Check for Distributed Consensus"
+description: "Implement a real majority-quorum check, the precondition every distributed consensus protocol (Raft, Paxos, etc.) uses before committing a decision."
+difficulty: "easy"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #383. Agent Resource Locking Protocol
+# Quorum Check for Distributed Consensus
 
-**Track**: Multi-Agent Systems | **Rank**: #383 of 1072 | **Points**: 90 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#383. Agent Resource Locking Protocol` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real majority-quorum check, the precondition every distributed consensus protocol (Raft, Paxos, etc.) uses before committing a decision.
 
 ## Task
 
-Implement the function `agent_resource_locking_protocol`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_quorum(votes_received, total_nodes)`: return `True` if `votes_received > total_nodes // 2` (a strict majority).
 
 <PracticePlayground problemId="multi-agent-prob-28" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #263. RAG Production Engineering Module 5: Problem 24"
-description: "Master #263. RAG Production Engineering Module 5: Problem 24 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Proportional Token Budget Allocation"
+description: "Implement proportional token-budget allocation across multiple retrieval sources (e.g. docs, code, chat history) in a multi-source RAG system."
+difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #263. RAG Production Engineering Module 5: Problem 24
+# Proportional Token Budget Allocation
 
-**Track**: RAG Production Engineering | **Rank**: #263 of 1072 | **Points**: 90 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#263. RAG Production Engineering Module 5: Problem 24` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement proportional token-budget allocation across multiple retrieval sources (e.g. docs, code, chat history) in a multi-source RAG system.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `allocate_token_budget(source_weights, total_budget)`. Each source's allocated tokens is `floor(total_budget * weight / sum(all_weights))`. Any leftover tokens (from flooring) go to the source with the LARGEST weight (ties broken alphabetically by source name). Return a dict of source -> allocated tokens; all allocations must sum to exactly `total_budget`.
 
 <PracticePlayground problemId="rag-prod-prob-24" />

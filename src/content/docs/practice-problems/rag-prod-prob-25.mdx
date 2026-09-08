@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #264. RAG Production Engineering Module 5: Problem 25"
-description: "Master #264. RAG Production Engineering Module 5: Problem 25 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Maximal Marginal Relevance (MMR) Selection Step"
+description: "Implement one selection step of Maximal Marginal Relevance, the real re-ranking algorithm that balances relevance against redundancy when building a diverse retrieved set."
 difficulty: "hard"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #264. RAG Production Engineering Module 5: Problem 25
+# Maximal Marginal Relevance (MMR) Selection Step
 
-**Track**: RAG Production Engineering | **Rank**: #264 of 1072 | **Points**: 90 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#264. RAG Production Engineering Module 5: Problem 25` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement one selection step of Maximal Marginal Relevance, the real re-ranking algorithm that balances relevance against redundancy when building a diverse retrieved set.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `mmr_select_next(query_sims, selected, doc_sims, lambda_param)`. Among candidate doc ids NOT already in `selected`, each candidate `d`'s MMR score is `lambda_param * query_sims[d] - (1-lambda_param) * max(pairwise_sim(d,s) for s in selected)` (if `selected` is empty, the second term is 0). Pairwise similarity between two ids is looked up in `doc_sims` under the key `f'{a},{b}'` OR `f'{b},{a}'` (whichever exists). Return the id of the candidate with the HIGHEST MMR score; ties broken by id ascending.
 
 <PracticePlayground problemId="rag-prod-prob-25" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #375. Multi-Agent Shared Token Budget"
-description: "Master #375. Multi-Agent Shared Token Budget in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Last-Writer-Wins State Sync Merge"
+description: "Implement last-writer-wins state merging, a real, simple conflict-resolution strategy for synchronizing two agents' independently-updated shared state."
 difficulty: "medium"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #375. Multi-Agent Shared Token Budget
+# Last-Writer-Wins State Sync Merge
 
-**Track**: Multi-Agent Systems | **Rank**: #375 of 1072 | **Points**: 60 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#375. Multi-Agent Shared Token Budget` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement last-writer-wins state merging, a real, simple conflict-resolution strategy for synchronizing two agents' independently-updated shared state.
 
 ## Task
 
-Implement the function `multi_agent_shared_token_budget`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_agent_states(state_a, timestamp_a, state_b, timestamp_b)`. Merge the two dicts key by key. For a key present in only one, keep that value. For a key in BOTH, keep the value from whichever state has the LATER (larger) timestamp.
 
 <PracticePlayground problemId="multi-agent-prob-20" />

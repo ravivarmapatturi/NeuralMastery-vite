@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #268. RAG Production Engineering Module 6: Problem 29"
-description: "Master #268. RAG Production Engineering Module 6: Problem 29 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Streaming Token Buffer Until Stop Sequence"
+description: "Implement streaming-token buffering with stop-sequence detection, needed because a stop sequence can be split across multiple streamed tokens and must be detected on the growing buffer, not per-token."
+difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #268. RAG Production Engineering Module 6: Problem 29
+# Streaming Token Buffer Until Stop Sequence
 
-**Track**: RAG Production Engineering | **Rank**: #268 of 1072 | **Points**: 90 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#268. RAG Production Engineering Module 6: Problem 29` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement streaming-token buffering with stop-sequence detection, needed because a stop sequence can be split across multiple streamed tokens and must be detected on the growing buffer, not per-token.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `buffer_until_stop(tokens, stop_sequence)`. Concatenate `tokens` one at a time into a running buffer. The moment the buffer CONTAINS `stop_sequence` as a substring, stop consuming further tokens. Return a tuple `(text_before_stop_sequence, stopped: bool)` -- the buffer content up to (not including) the stop sequence, and whether it was found at all. If never found, return `(full_concatenated_text, False)`.
 
 <PracticePlayground problemId="rag-prod-prob-29" />

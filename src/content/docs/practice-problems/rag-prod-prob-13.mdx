@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #252. RAG Production Engineering Module 3: Problem 13"
-description: "Master #252. RAG Production Engineering Module 3: Problem 13 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Near-Duplicate Chunk Detection"
+description: "Implement near-duplicate chunk detection via Jaccard similarity of word sets, needed to prevent a RAG index from retrieving multiple nearly-identical chunks that waste context budget."
 difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #252. RAG Production Engineering Module 3: Problem 13
+# Near-Duplicate Chunk Detection
 
-**Track**: RAG Production Engineering | **Rank**: #252 of 1072 | **Points**: 60 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#252. RAG Production Engineering Module 3: Problem 13` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement near-duplicate chunk detection via Jaccard similarity of word sets, needed to prevent a RAG index from retrieving multiple nearly-identical chunks that waste context budget.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_near_duplicates(chunks, threshold)`. `chunks` maps chunk id -> a set of its words. For every UNIQUE pair of chunk ids (i, j) with `i < j` alphabetically, compute Jaccard similarity `|A∩B|/|A∪B|`. Return the sorted list of `(id_i, id_j)` tuples whose similarity is `>= threshold`.
 
 <PracticePlayground problemId="rag-prod-prob-13" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #368. Multi-Agent Auction Protocol"
-description: "Master #368. Multi-Agent Auction Protocol in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Two-Agent Shapley Value Contribution"
+description: "Implement the exact Shapley value for a 2-agent coalition, the real, principled way to fairly attribute a joint outcome's value to each contributing agent."
+difficulty: "hard"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #368. Multi-Agent Auction Protocol
+# Two-Agent Shapley Value Contribution
 
-**Track**: Multi-Agent Systems | **Rank**: #368 of 1072 | **Points**: 60 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#368. Multi-Agent Auction Protocol` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the exact Shapley value for a 2-agent coalition, the real, principled way to fairly attribute a joint outcome's value to each contributing agent.
 
 ## Task
 
-Implement the function `multi_agent_auction_protocol`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `shapley_two_agents(v_empty, v_a, v_b, v_ab)` where `v_X` is the value the coalition `X` achieves. For 2 players, agent A's Shapley value is the average of its marginal contribution across both possible join orders: `0.5*(v_a - v_empty) + 0.5*(v_ab - v_b)`. Agent B's is symmetric: `0.5*(v_b - v_empty) + 0.5*(v_ab - v_a)`. Return `(shapley_a, shapley_b)`.
 
 <PracticePlayground problemId="multi-agent-prob-13" />

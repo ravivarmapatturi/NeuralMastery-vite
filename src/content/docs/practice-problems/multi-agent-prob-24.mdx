@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #379. Multi-Agent Interrupt Handler"
-description: "Master #379. Multi-Agent Interrupt Handler in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Agent Heartbeat Liveness Check"
+description: "Implement heartbeat-based liveness detection, the real, standard technique a multi-agent orchestrator uses to detect a crashed or hung agent."
+difficulty: "easy"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #379. Multi-Agent Interrupt Handler
+# Agent Heartbeat Liveness Check
 
-**Track**: Multi-Agent Systems | **Rank**: #379 of 1072 | **Points**: 90 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#379. Multi-Agent Interrupt Handler` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement heartbeat-based liveness detection, the real, standard technique a multi-agent orchestrator uses to detect a crashed or hung agent.
 
 ## Task
 
-Implement the function `multi_agent_interrupt_handler`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_agent_alive(last_heartbeat_ts, current_ts, timeout_s)`: return `True` if `(current_ts - last_heartbeat_ts) < timeout_s`, else `False` (considered dead).
 
 <PracticePlayground problemId="multi-agent-prob-24" />

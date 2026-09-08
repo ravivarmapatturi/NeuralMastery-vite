@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #365. Hierarchical Agent Network"
-description: "Master #365. Hierarchical Agent Network in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Deadlock Detection via Wait-For Graph Cycle"
+description: "Implement cycle detection in a wait-for graph, the real, standard technique for detecting deadlock among agents holding and requesting shared resources."
+difficulty: "hard"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #365. Hierarchical Agent Network
+# Deadlock Detection via Wait-For Graph Cycle
 
-**Track**: Multi-Agent Systems | **Rank**: #365 of 1072 | **Points**: 40 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#365. Hierarchical Agent Network` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement cycle detection in a wait-for graph, the real, standard technique for detecting deadlock among agents holding and requesting shared resources.
 
 ## Task
 
-Implement the function `hierarchical_agent_network`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_deadlock(wait_for)`. `wait_for[a]` lists the agents that agent `a` is waiting on. Return `True` if the directed graph contains ANY cycle (a deadlock), else `False`. Use DFS with recursion-stack tracking.
 
 <PracticePlayground problemId="multi-agent-prob-10" />

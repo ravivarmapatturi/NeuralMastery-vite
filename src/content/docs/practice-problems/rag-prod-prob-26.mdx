@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #265. RAG Production Engineering Module 6: Problem 26"
-description: "Master #265. RAG Production Engineering Module 6: Problem 26 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Count Distinct Cited Sources"
+description: "Implement distinct-source counting, a real signal for evaluating whether a RAG answer synthesized information from multiple sources or just one."
+difficulty: "easy"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #265. RAG Production Engineering Module 6: Problem 26
+# Count Distinct Cited Sources
 
-**Track**: RAG Production Engineering | **Rank**: #265 of 1072 | **Points**: 90 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#265. RAG Production Engineering Module 6: Problem 26` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement distinct-source counting, a real signal for evaluating whether a RAG answer synthesized information from multiple sources or just one.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `count_distinct_sources(citations, chunk_to_source)`. `chunk_to_source` maps a chunk number to its source document name. Return the count of DISTINCT source documents among the cited chunk numbers (a citation not present in `chunk_to_source` is ignored).
 
 <PracticePlayground problemId="rag-prod-prob-26" />

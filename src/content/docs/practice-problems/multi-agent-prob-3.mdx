@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #358. Critic-Executor"
-description: "Master #358. Critic-Executor in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Weighted Deterministic Agent Selection"
+description: "Implement deterministic weighted agent selection using cumulative weight ranges, the real mechanism behind weighted load distribution across agents."
+difficulty: "medium"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #358. Critic-Executor
+# Weighted Deterministic Agent Selection
 
-**Track**: Multi-Agent Systems | **Rank**: #358 of 1072 | **Points**: 40 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#358. Critic-Executor` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement deterministic weighted agent selection using cumulative weight ranges, the real mechanism behind weighted load distribution across agents.
 
 ## Task
 
-Implement the function `critic_executor`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `weighted_select(agent_weights, threshold)`. Sort agent names alphabetically. Walk their weights, accumulating a running total; return the FIRST agent whose cumulative weight (as a fraction of the total weight) is `>= threshold`. `threshold` is in `[0,1)`.
 
 <PracticePlayground problemId="multi-agent-prob-3" />

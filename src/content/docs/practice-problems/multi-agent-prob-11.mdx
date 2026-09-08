@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #366. Peer to Peer Agent Chat"
-description: "Master #366. Peer to Peer Agent Chat in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: ACK-Timeout Message Delivery State Machine"
+description: "Implement a real message-delivery state classifier used by reliable agent-to-agent communication (deciding when to retry a message)."
 difficulty: "medium"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #366. Peer to Peer Agent Chat
+# ACK-Timeout Message Delivery State Machine
 
-**Track**: Multi-Agent Systems | **Rank**: #366 of 1072 | **Points**: 60 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#366. Peer to Peer Agent Chat` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real message-delivery state classifier used by reliable agent-to-agent communication (deciding when to retry a message).
 
 ## Task
 
-Implement the function `peer_to_peer_agent_chat`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `message_delivery_state(sent, ack_received, elapsed_ms, timeout_ms)`. Return `'not_sent'` if `not sent`. If `sent` and `ack_received`, return `'delivered'`. If `sent`, not acked, and `elapsed_ms >= timeout_ms`, return `'timed_out'`. Otherwise return `'pending'`.
 
 <PracticePlayground problemId="multi-agent-prob-11" />

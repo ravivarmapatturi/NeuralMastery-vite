@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #258. RAG Production Engineering Module 4: Problem 19"
-description: "Master #258. RAG Production Engineering Module 4: Problem 19 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Retrieval Recall@K"
+description: "Implement Recall@K for the retrieval stage specifically, evaluating whether the retriever found the known-relevant documents at all (a prerequisite for the generator to ever use them)."
 difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #258. RAG Production Engineering Module 4: Problem 19
+# Retrieval Recall@K
 
-**Track**: RAG Production Engineering | **Rank**: #258 of 1072 | **Points**: 60 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#258. RAG Production Engineering Module 4: Problem 19` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Recall@K for the retrieval stage specifically, evaluating whether the retriever found the known-relevant documents at all (a prerequisite for the generator to ever use them).
 
 ## Task
 
-Implement the function `rag_production_engineering_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `retrieval_recall_at_k(retrieved_ids, relevant_ids, k)`. Return `|set(retrieved_ids[:k]) intersect relevant_ids| / len(relevant_ids)`. Return `0.0` if `relevant_ids` is empty.
 
 <PracticePlayground problemId="rag-prod-prob-19" />

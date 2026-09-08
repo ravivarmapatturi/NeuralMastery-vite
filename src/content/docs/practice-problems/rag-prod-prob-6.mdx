@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #245. RAG Production Engineering Module 2: Problem 6"
-description: "Master #245. RAG Production Engineering Module 2: Problem 6 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Grounding Check via N-Gram Overlap"
+description: "Implement a real, simple hallucination check: whether a generated sentence's words are actually supported by any retrieved source chunk."
+difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #245. RAG Production Engineering Module 2: Problem 6
+# Grounding Check via N-Gram Overlap
 
-**Track**: RAG Production Engineering | **Rank**: #245 of 1072 | **Points**: 40 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#245. RAG Production Engineering Module 2: Problem 6` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real, simple hallucination check: whether a generated sentence's words are actually supported by any retrieved source chunk.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_grounded(answer_sentence, source_chunks, min_overlap)`. Tokenize `answer_sentence` into lowercase words (split on whitespace). For each chunk, compute the fraction of the sentence's words that also appear (as whole words, case-insensitive) in that chunk. Return `True` if ANY chunk's overlap fraction is `>= min_overlap`.
 
 <PracticePlayground problemId="rag-prod-prob-6" />

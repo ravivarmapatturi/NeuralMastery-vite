@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #369. Agent Capability Router"
-description: "Master #369. Agent Capability Router in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Task-Category Hierarchical Delegation"
+description: "Implement hierarchical delegation lookup, the real routing logic a supervisor agent uses to hand a task off to the right specialist sub-agent."
+difficulty: "easy"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #369. Agent Capability Router
+# Task-Category Hierarchical Delegation
 
-**Track**: Multi-Agent Systems | **Rank**: #369 of 1072 | **Points**: 60 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#369. Agent Capability Router` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement hierarchical delegation lookup, the real routing logic a supervisor agent uses to hand a task off to the right specialist sub-agent.
 
 ## Task
 
-Implement the function `agent_capability_router`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `delegate_to_subagent(task_category, delegation_map, default_agent)`: return `delegation_map[task_category]` if `task_category` is a key, otherwise return `default_agent`.
 
 <PracticePlayground problemId="multi-agent-prob-14" />

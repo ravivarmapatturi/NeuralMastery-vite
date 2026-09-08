@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #376. Agent Swarm Router"
-description: "Master #376. Agent Swarm Router in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Token Ring Mutex Passing"
+description: "Implement token-ring mutex passing, the real distributed-mutual-exclusion protocol where a single token circulates and only its holder may access the shared resource."
+difficulty: "easy"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #376. Agent Swarm Router
+# Token Ring Mutex Passing
 
-**Track**: Multi-Agent Systems | **Rank**: #376 of 1072 | **Points**: 60 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#376. Agent Swarm Router` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement token-ring mutex passing, the real distributed-mutual-exclusion protocol where a single token circulates and only its holder may access the shared resource.
 
 ## Task
 
-Implement the function `agent_swarm_router`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `pass_token(ring_order, current_holder, want_token)`. Starting from the position AFTER `current_holder` in `ring_order` (wrapping around), find the first agent whose `want_token` value is `True`. If none want it, return `current_holder` unchanged (token stays put).
 
 <PracticePlayground problemId="multi-agent-prob-21" />

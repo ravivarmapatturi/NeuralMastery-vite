@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #360. Shared Blackboard Memory"
-description: "Master #360. Shared Blackboard Memory in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Broadcast Fanout Excluding Sender"
+description: "Implement broadcast fanout, the basic real message-distribution primitive in any multi-agent communication layer."
 difficulty: "easy"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #360. Shared Blackboard Memory
+# Broadcast Fanout Excluding Sender
 
-**Track**: Multi-Agent Systems | **Rank**: #360 of 1072 | **Points**: 40 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#360. Shared Blackboard Memory` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement broadcast fanout, the basic real message-distribution primitive in any multi-agent communication layer.
 
 ## Task
 
-Implement the function `shared_blackboard_memory`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `broadcast_fanout(all_agents, sender)`: return `all_agents` with `sender` excluded (preserve original order, remove ALL occurrences of `sender` if duplicated).
 
 <PracticePlayground problemId="multi-agent-prob-5" />

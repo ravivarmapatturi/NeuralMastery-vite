@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #253. RAG Production Engineering Module 3: Problem 14"
-description: "Master #253. RAG Production Engineering Module 3: Problem 14 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Retrieval Latency SLA Check"
+description: "Implement a real end-to-end RAG latency SLA check, summing every pipeline stage's latency and comparing against a budget."
+difficulty: "easy"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #253. RAG Production Engineering Module 3: Problem 14
+# Retrieval Latency SLA Check
 
-**Track**: RAG Production Engineering | **Rank**: #253 of 1072 | **Points**: 60 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#253. RAG Production Engineering Module 3: Problem 14` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real end-to-end RAG latency SLA check, summing every pipeline stage's latency and comparing against a budget.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `meets_latency_sla(stage_latencies_ms, sla_ms)`: return `True` if the SUM of all values in `stage_latencies_ms` is `<= sla_ms`, else `False`.
 
 <PracticePlayground problemId="rag-prod-prob-14" />

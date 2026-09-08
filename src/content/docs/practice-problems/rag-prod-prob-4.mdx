@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #243. RAG Production Engineering Module 1: Problem 4"
-description: "Master #243. RAG Production Engineering Module 1: Problem 4 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Dense + Sparse Score Fusion"
+description: "Implement weighted score fusion between dense (embedding) and sparse (BM25-style) retrieval, the real backbone of hybrid search."
+difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #243. RAG Production Engineering Module 1: Problem 4
+# Dense + Sparse Score Fusion
 
-**Track**: RAG Production Engineering | **Rank**: #243 of 1072 | **Points**: 40 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#243. RAG Production Engineering Module 1: Problem 4` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement weighted score fusion between dense (embedding) and sparse (BM25-style) retrieval, the real backbone of hybrid search.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `fuse_scores(dense_scores, sparse_scores, alpha)`. For every doc id in either dict, fused score is `alpha*dense_scores.get(id,0) + (1-alpha)*sparse_scores.get(id,0)`. Return a dict of id -> fused score.
 
 <PracticePlayground problemId="rag-prod-prob-4" />

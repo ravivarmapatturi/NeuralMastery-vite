@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #241. RAG Production Engineering Module 1: Problem 2"
-description: "Master #241. RAG Production Engineering Module 1: Problem 2 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Sentence-Boundary-Aware Chunking"
+description: "Implement sentence-boundary-respecting chunking -- a real improvement over blind fixed-size chunking that never splits mid-sentence."
+difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #241. RAG Production Engineering Module 1: Problem 2
+# Sentence-Boundary-Aware Chunking
 
-**Track**: RAG Production Engineering | **Rank**: #241 of 1072 | **Points**: 40 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#241. RAG Production Engineering Module 1: Problem 2` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement sentence-boundary-respecting chunking -- a real improvement over blind fixed-size chunking that never splits mid-sentence.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `semantic_chunk(sentences, max_chunk_chars)`. Greedily pack consecutive sentences (joined with a single space) into a chunk as long as adding the next sentence keeps the chunk's total length `<= max_chunk_chars`. Start a new chunk when the next sentence would exceed the limit. A single sentence longer than `max_chunk_chars` becomes its own chunk unchanged.
 
 <PracticePlayground problemId="rag-prod-prob-2" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #255. RAG Production Engineering Module 4: Problem 16"
-description: "Master #255. RAG Production Engineering Module 4: Problem 16 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Extract Most Relevant Sentence Span"
+description: "Implement extractive-span selection, picking the single most relevant sentence from a retrieved chunk to show as a highlighted snippet."
 difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #255. RAG Production Engineering Module 4: Problem 16
+# Extract Most Relevant Sentence Span
 
-**Track**: RAG Production Engineering | **Rank**: #255 of 1072 | **Points**: 60 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#255. RAG Production Engineering Module 4: Problem 16` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement extractive-span selection, picking the single most relevant sentence from a retrieved chunk to show as a highlighted snippet.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `extractive_span(query, chunk_sentences)`. Tokenize `query` into a lowercase word set. For each sentence, score it by the count of query words it contains (lowercase word match). Return the sentence with the HIGHEST score; ties broken by earliest position in the list.
 
 <PracticePlayground problemId="rag-prod-prob-16" />

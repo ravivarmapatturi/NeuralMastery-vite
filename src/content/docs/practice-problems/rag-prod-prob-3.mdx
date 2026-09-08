@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #242. RAG Production Engineering Module 1: Problem 3"
-description: "Master #242. RAG Production Engineering Module 1: Problem 3 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Context Window Token Budget Fitting"
+description: "Implement context-window budget fitting: greedily including the highest-scored retrieved chunks until the token budget runs out."
+difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #242. RAG Production Engineering Module 1: Problem 3
+# Context Window Token Budget Fitting
 
-**Track**: RAG Production Engineering | **Rank**: #242 of 1072 | **Points**: 40 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#242. RAG Production Engineering Module 1: Problem 3` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement context-window budget fitting: greedily including the highest-scored retrieved chunks until the token budget runs out.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `fit_context_budget(chunks, token_budget)`. `chunks` is a list of `{"id": str, "text": str, "score": float, "tokens": int}`. Sort by score descending, then greedily include chunks (in that order) as long as the running token total stays `<= token_budget`. Return the included chunks' `id`s in the order they were included.
 
 <PracticePlayground problemId="rag-prod-prob-3" />

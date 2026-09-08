@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #260. RAG Production Engineering Module 5: Problem 21"
-description: "Master #260. RAG Production Engineering Module 5: Problem 21 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Deterministic Embedding Cache Key"
+description: "Implement a real embedding cache key, correctly scoped so a cache never serves a stale embedding computed by a different model or model version."
+difficulty: "easy"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #260. RAG Production Engineering Module 5: Problem 21
+# Deterministic Embedding Cache Key
 
-**Track**: RAG Production Engineering | **Rank**: #260 of 1072 | **Points**: 60 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#260. RAG Production Engineering Module 5: Problem 21` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real embedding cache key, correctly scoped so a cache never serves a stale embedding computed by a different model or model version.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `embedding_cache_key(text, model_name, model_version)`. Return the hex `hashlib.sha256` digest of the string `f'{model_name}:{model_version}:{text}'` (UTF-8 encoded).
 
 <PracticePlayground problemId="rag-prod-prob-21" />

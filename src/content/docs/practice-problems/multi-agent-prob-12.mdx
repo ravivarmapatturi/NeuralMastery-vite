@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #367. Agent Role Switcher"
-description: "Master #367. Agent Role Switcher in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Swarm Flocking: Average Heading Alignment"
+description: "Implement circular-mean heading averaging, the real 'alignment' rule of Reynolds' boids flocking model (a naive arithmetic mean of angles is mathematically wrong)."
 difficulty: "medium"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #367. Agent Role Switcher
+# Swarm Flocking: Average Heading Alignment
 
-**Track**: Multi-Agent Systems | **Rank**: #367 of 1072 | **Points**: 60 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#367. Agent Role Switcher` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement circular-mean heading averaging, the real 'alignment' rule of Reynolds' boids flocking model (a naive arithmetic mean of angles is mathematically wrong).
 
 ## Task
 
-Implement the function `agent_role_switcher`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `average_heading(headings_rad)`. Convert each heading to a unit vector `(cos(theta), sin(theta))`, average the vectors component-wise, then return `atan2(avg_y, avg_x)` -- the circular mean, which correctly handles wraparound (e.g. averaging 0.1 rad and 2*pi-0.1 rad gives ~0, not ~pi).
 
 <PracticePlayground problemId="multi-agent-prob-12" />

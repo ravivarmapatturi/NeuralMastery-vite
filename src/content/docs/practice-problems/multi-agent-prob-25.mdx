@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #380. Agent Conversation Summarizer"
-description: "Master #380. Agent Conversation Summarizer in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Supervisor Restart Policy Decision"
+description: "Implement a real supervisor restart-policy decision (matching Erlang/OTP-style supervision trees), deciding whether a failed agent process should be restarted."
+difficulty: "medium"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #380. Agent Conversation Summarizer
+# Supervisor Restart Policy Decision
 
-**Track**: Multi-Agent Systems | **Rank**: #380 of 1072 | **Points**: 90 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#380. Agent Conversation Summarizer` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real supervisor restart-policy decision (matching Erlang/OTP-style supervision trees), deciding whether a failed agent process should be restarted.
 
 ## Task
 
-Implement the function `agent_conversation_summarizer`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `should_restart_agent(failure_count, max_retries, strategy)`. If `strategy == 'always'`, always return `True`. If `strategy == 'never'`, always return `False`. If `strategy == 'max_retries'`, return `True` only if `failure_count < max_retries`.
 
 <PracticePlayground problemId="multi-agent-prob-25" />

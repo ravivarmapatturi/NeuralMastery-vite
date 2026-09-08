@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #261. RAG Production Engineering Module 5: Problem 22"
-description: "Master #261. RAG Production Engineering Module 5: Problem 22 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Rule-Based Query Routing"
+description: "Implement a real, simple query router deciding between a cheap keyword-search path and an expensive dense-retrieval path -- a genuine cost-optimization pattern in production RAG."
+difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #261. RAG Production Engineering Module 5: Problem 22
+# Rule-Based Query Routing
 
-**Track**: RAG Production Engineering | **Rank**: #261 of 1072 | **Points**: 90 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#261. RAG Production Engineering Module 5: Problem 22` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real, simple query router deciding between a cheap keyword-search path and an expensive dense-retrieval path -- a genuine cost-optimization pattern in production RAG.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `route_query(query, keyword_threshold)`. Count `query`'s words (split on whitespace). If the word count is `<= keyword_threshold`, return `'sparse'` (short queries route to cheap keyword search); otherwise return `'dense'` (longer, more semantic queries route to embedding search).
 
 <PracticePlayground problemId="rag-prod-prob-22" />

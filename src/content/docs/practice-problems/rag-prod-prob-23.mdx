@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #262. RAG Production Engineering Module 5: Problem 23"
-description: "Master #262. RAG Production Engineering Module 5: Problem 23 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Merge Duplicate Retrieved Chunk IDs"
+description: "Implement duplicate-result merging, needed when the same chunk is returned by multiple retrieval passes (e.g. both dense and sparse legs of a hybrid search) with different scores."
+difficulty: "medium"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #262. RAG Production Engineering Module 5: Problem 23
+# Merge Duplicate Retrieved Chunk IDs
 
-**Track**: RAG Production Engineering | **Rank**: #262 of 1072 | **Points**: 90 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#262. RAG Production Engineering Module 5: Problem 23` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement duplicate-result merging, needed when the same chunk is returned by multiple retrieval passes (e.g. both dense and sparse legs of a hybrid search) with different scores.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_dedup_results(results)`. `results` is a list of `(chunk_id, score)` tuples, possibly with the same `chunk_id` appearing more than once. For each unique `chunk_id`, keep only its HIGHEST score. Return the deduplicated list sorted by score descending, ties broken by `chunk_id` ascending.
 
 <PracticePlayground problemId="rag-prod-prob-23" />

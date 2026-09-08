@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #371. Agent Voting Mechanism"
-description: "Master #371. Agent Voting Mechanism in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Gossip Protocol Convergence Check"
+description: "Implement gossip-protocol convergence detection: whether all nodes' locally-averaged values have settled close enough to agree."
+difficulty: "easy"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #371. Agent Voting Mechanism
+# Gossip Protocol Convergence Check
 
-**Track**: Multi-Agent Systems | **Rank**: #371 of 1072 | **Points**: 60 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#371. Agent Voting Mechanism` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement gossip-protocol convergence detection: whether all nodes' locally-averaged values have settled close enough to agree.
 
 ## Task
 
-Implement the function `agent_voting_mechanism`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_converged(node_values, tolerance)`: return `True` if `(max(node_values.values()) - min(node_values.values())) <= tolerance`, else `False`.
 
 <PracticePlayground problemId="multi-agent-prob-16" />

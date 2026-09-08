@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #373. Agent Dispute Resolution"
-description: "Master #373. Agent Dispute Resolution in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Multi-Agent Path Conflict Detection"
+description: "Implement space-time path conflict detection for multi-agent pathfinding, checking whether two agents' planned paths collide."
 difficulty: "medium"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #373. Agent Dispute Resolution
+# Multi-Agent Path Conflict Detection
 
-**Track**: Multi-Agent Systems | **Rank**: #373 of 1072 | **Points**: 60 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#373. Agent Dispute Resolution` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement space-time path conflict detection for multi-agent pathfinding, checking whether two agents' planned paths collide.
 
 ## Task
 
-Implement the function `agent_dispute_resolution`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_path_conflict(path_a, path_b)`. Each path is a list of `(x, y)` cells, one per timestep. Return `True` if EITHER (a) both agents occupy the same cell at the same timestep, or (b) they SWAP cells between consecutive timesteps (agent A moves to where B just was and vice versa -- an edge/'crossing' collision). Compare only up to the length of the shorter path.
 
 <PracticePlayground problemId="multi-agent-prob-18" />

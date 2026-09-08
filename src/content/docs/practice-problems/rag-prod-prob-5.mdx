@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #244. RAG Production Engineering Module 1: Problem 5"
-description: "Master #244. RAG Production Engineering Module 1: Problem 5 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Extract Citation Markers From a Generated Answer"
+description: "Implement citation-marker extraction, needed to map an LLM's generated answer back to the specific source chunks it claims to have used."
 difficulty: "easy"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #244. RAG Production Engineering Module 1: Problem 5
+# Extract Citation Markers From a Generated Answer
 
-**Track**: RAG Production Engineering | **Rank**: #244 of 1072 | **Points**: 40 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#244. RAG Production Engineering Module 1: Problem 5` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement citation-marker extraction, needed to map an LLM's generated answer back to the specific source chunks it claims to have used.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_1_problem_5`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `extract_citations(answer)`. Find every `[N]` marker (N is one or more digits) in `answer`, and return the sorted list of unique integers found.
 
 <PracticePlayground problemId="rag-prod-prob-5" />

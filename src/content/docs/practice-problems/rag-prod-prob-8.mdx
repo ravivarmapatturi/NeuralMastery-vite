@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #247. RAG Production Engineering Module 2: Problem 8"
-description: "Master #247. RAG Production Engineering Module 2: Problem 8 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Embedding Cache Hit Ratio"
+description: "Implement embedding-cache hit-ratio computation, a real, standard metric for evaluating how much a RAG pipeline is saving on repeated embedding-API costs."
 difficulty: "easy"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #247. RAG Production Engineering Module 2: Problem 8
+# Embedding Cache Hit Ratio
 
-**Track**: RAG Production Engineering | **Rank**: #247 of 1072 | **Points**: 40 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#247. RAG Production Engineering Module 2: Problem 8` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement embedding-cache hit-ratio computation, a real, standard metric for evaluating how much a RAG pipeline is saving on repeated embedding-API costs.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cache_hit_ratio(requests, cache_keys)`: return the fraction of `requests` that are present in `cache_keys`. Return `0.0` for an empty request list.
 
 <PracticePlayground problemId="rag-prod-prob-8" />

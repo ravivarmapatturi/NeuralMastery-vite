@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #251. RAG Production Engineering Module 3: Problem 12"
-description: "Master #251. RAG Production Engineering Module 3: Problem 12 in the RAG Production Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Document Recency Decay Score"
+description: "Implement recency-weighted relevance decay, a real technique to make RAG retrieval prefer fresher documents (e.g. news, changing docs) without discarding older ones entirely."
+difficulty: "easy"
 topic: "RAG Production Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #251. RAG Production Engineering Module 3: Problem 12
+# Document Recency Decay Score
 
-**Track**: RAG Production Engineering | **Rank**: #251 of 1072 | **Points**: 60 XP
+**Track**: RAG Production Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#251. RAG Production Engineering Module 3: Problem 12` to advance your mastery in **RAG Production Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement recency-weighted relevance decay, a real technique to make RAG retrieval prefer fresher documents (e.g. news, changing docs) without discarding older ones entirely.
 
 ## Task
 
-Implement the function `rag_production_engineering_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `recency_decay_score(relevance_score, days_old, half_life_days)`. Return `relevance_score * (0.5 ** (days_old / half_life_days))` -- an exponential half-life decay applied to the base relevance score.
 
 <PracticePlayground problemId="rag-prod-prob-12" />

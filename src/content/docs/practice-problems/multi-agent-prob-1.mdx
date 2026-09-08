@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #356. Supervisor-Agent Architecture"
-description: "Master #356. Supervisor-Agent Architecture in the Multi-Agent Systems track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Round-Robin Agent Scheduler"
+description: "Implement round-robin scheduling, the simplest real fair-turn-taking policy for a multi-agent system."
 difficulty: "easy"
 topic: "Multi-Agent Systems"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #356. Supervisor-Agent Architecture
+# Round-Robin Agent Scheduler
 
-**Track**: Multi-Agent Systems | **Rank**: #356 of 1072 | **Points**: 40 XP
+**Track**: Multi-Agent Systems | **Points**: 40 XP
 
 ## Overview
 
-Implement `#356. Supervisor-Agent Architecture` to advance your mastery in **Multi-Agent Systems**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement round-robin scheduling, the simplest real fair-turn-taking policy for a multi-agent system.
 
 ## Task
 
-Implement the function `supervisor_agent_architecture`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `next_agent_round_robin(agents, last_index)`. Return `(agent_id, new_index)` for the agent after `last_index` (wrapping to 0 past the end). `last_index` of `-1` means no agent has run yet.
 
 <PracticePlayground problemId="multi-agent-prob-1" />
