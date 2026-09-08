@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #019. Transformer Internals Module 4: Problem 19"
 description: "Master #019. Transformer Internals Module 4: Problem 19 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#019. Transformer Internals Module 4: Problem 19` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the learning rate at a given training step using a Cosine Annealing learning rate schedule. Cosine annealing smoothly decreases the learning rate from an initial maximum down to a minimum value over the course of training.
 
 ## Task
 
-Implement the function `transformer_internals_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cosine_lr(step, total_steps, base_lr, min_lr=0.0)`: for `step <= total_steps`, compute `lr = min_lr + 0.5 * (base_lr - min_lr) * (1 + cos(pi * step / total_steps))`. If `step > total_steps`, return `min_lr`. Return the learning rate rounded to 6 decimal places.
 
 <PracticePlayground problemId="transformer-prob-19" />

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #029. Transformer Internals Module 6: Problem 29"
 description: "Master #029. Transformer Internals Module 6: Problem 29 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#029. Transformer Internals Module 6: Problem 29` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate evaluation perplexity from a sequence of per-token natural log-probabilities. Perplexity is the standard evaluation metric for language models, representing the exponentiated negative mean log-likelihood of test sequences.
 
 ## Task
 
-Implement the function `transformer_internals_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `compute_perplexity(log_probs)`: given a non-empty list of token natural log-probabilities `log_probs`, compute `exp(-mean(log_probs)) = exp(-sum(log_probs) / len(log_probs))`. Return the perplexity rounded to 4 decimal places. If `log_probs` is empty, raise `ValueError`.
 
 <PracticePlayground problemId="transformer-prob-29" />

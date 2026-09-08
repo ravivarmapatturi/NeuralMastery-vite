@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #002. Transformer Internals Module 1: Problem 2"
 description: "Master #002. Transformer Internals Module 1: Problem 2 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#002. Transformer Internals Module 1: Problem 2` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Convert unnormalized attention logits into a valid probability distribution using the softmax function. In transformer self-attention, softmax produces attention weights that sum to 1.0 across all key positions.
 
 ## Task
 
-Implement the function `transformer_internals_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `softmax(x)`: compute `exp(x_i - max(x)) / sum(exp(x_j - max(x)))` for each element in `x`. Subtracting the maximum logit ensures numerical stability against floating-point overflow. Return the probabilities rounded to 4 decimal places. If `x` is empty, raise `ValueError`.
 
 <PracticePlayground problemId="transformer-prob-2" />

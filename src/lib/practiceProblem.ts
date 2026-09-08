@@ -36700,6 +36700,1544 @@ def cross_entropy_loss(logits, target_idx):
 ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  // ==================== TRANSFORMER INTERNALS ====================
+  'transformer-prob-1': {
+    id: 'transformer-prob-1',
+    title: 'Scaled Dot-Product Attention Score',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–15 min',
+    functionName: 'attention_score',
+    functionSignature: 'attention_score(q: list[float], k: list[float]) -> float',
+    starterCode: `def attention_score(q, k):
+    """Compute the scaled dot-product attention score between query q and key k.
+    
+    Score = dot(q, k) / sqrt(d_k) where d_k = len(q).
+    
+    Args:
+        q: Query vector (list of floats).
+        k: Key vector of same length as q (list of floats).
+    Returns:
+        float: The scaled attention score.
+    Raises:
+        ValueError: If q and k have different lengths.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the core scaled dot-product similarity score that powers transformer attention.',
+    taskDescription: 'Implement `attention_score(q, k)` that computes `dot(q, k) / sqrt(d_k)`. This is the fundamental score in every transformer attention layer.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'q and k must have equal length, else raise ValueError.',
+      'Use math.sqrt for the scaling factor.',
+      'Pure Python earns +10 Bonus XP.',
+    ],
+    hints: {
+      small: 'Compute dot product with sum(qi*ki for qi,ki in zip(q,k)), then divide by math.sqrt(len(q)).',
+      strong: 'Check len(q) != len(k) first. Return sum(qi*ki for qi,ki in zip(q,k)) / math.sqrt(len(q)).',
+      concept: 'Scaling by sqrt(d_k) prevents dot products from growing large in high dimensions, which would push softmax into near-zero-gradient saturation regions.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Full multi-head attention mechanism' },
+      { title: 'Linear Algebra — Vectors', route: '/docs/mathematics-for-ai/linear-algebra#vectors', description: 'Dot product as similarity measure' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Basic 4-dim vectors', input: { q: [1.0, 0.0, 1.0, 0.0], k: [1.0, 1.0, 0.0, 0.0] }, expectedOutput: 0.5, hidden: false },
+      { id: 'two_dim', label: 'Two-dim vectors', input: { q: [1.0, 2.0], k: [3.0, 4.0] }, expectedOutput: 7.7781745930520225, hidden: false },
+      { id: 'zero_query', label: 'Zero query vector', input: { q: [0.0, 0.0], k: [1.0, 1.0] }, expectedOutput: 0.0, hidden: false },
+      { id: 'mismatch', label: 'Length mismatch raises error', input: { q: [1.0, 2.0], k: [1.0] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-2': {
+    id: 'transformer-prob-2',
+    title: 'Softmax Over Attention Logits',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–15 min',
+    functionName: 'softmax',
+    functionSignature: 'softmax(x: list[float]) -> list[float]',
+    starterCode: `def softmax(x):
+    """Compute numerically stable softmax of a list of floats.
+    
+    Uses the max-subtraction trick to avoid overflow.
+    
+    Args:
+        x: List of real-valued logits.
+    Returns:
+        list[float]: Probability distribution summing to 1.0.
+    Raises:
+        ValueError: If x is empty.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement numerically stable softmax — the operation that converts raw attention scores into a probability distribution over positions.',
+    taskDescription: 'Implement `softmax(x)` using the max-subtraction trick: subtract max(x) before exponentiating for numerical stability.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Output must sum to 1.0 (within floating-point tolerance).',
+      'Must use max-subtraction for numerical stability.',
+      'Raise ValueError on empty input.',
+    ],
+    hints: {
+      small: 'Subtract max(x) from all elements before calling math.exp to prevent overflow.',
+      strong: 'mx = max(x); exps = [math.exp(v - mx) for v in x]; s = sum(exps); return [e/s for e in exps].',
+      concept: 'Softmax is the "attention distribution selector": it sharpens high scores and suppresses low ones. The temperature scaling in attention is directly linked to softmax sharpness.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Softmax in attention weight computation' },
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Temperature-scaled softmax in token sampling' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three logits', input: { x: [1.0, 2.0, 3.0] }, expectedOutput: [0.09003057317038046, 0.24472847105479764, 0.6652409557748218], hidden: false },
+      { id: 'uniform', label: 'Uniform logits', input: { x: [0.0, 0.0, 0.0] }, expectedOutput: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333], hidden: false },
+      { id: 'single', label: 'Single element', input: { x: [1.0] }, expectedOutput: [1.0], hidden: false },
+      { id: 'negative', label: 'Negative logits', input: { x: [-1.0, 0.0, 1.0] }, expectedOutput: [0.09003057317038046, 0.24472847105479764, 0.6652409557748218], hidden: true },
+      { id: 'empty', label: 'Empty input raises error', input: { x: [] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-3': {
+    id: 'transformer-prob-3',
+    title: 'Layer Normalization',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–15 min',
+    functionName: 'layer_norm',
+    functionSignature: 'layer_norm(x: list[float], eps: float = 1e-5) -> list[float]',
+    starterCode: `def layer_norm(x, eps=1e-5):
+    """Apply Layer Normalization to vector x.
+    
+    Computes: (x - mean(x)) / sqrt(var(x) + eps)
+    No learnable gamma/beta in this baseline version.
+    
+    Args:
+        x: Input vector (list of floats).
+        eps: Small constant for numerical stability.
+    Returns:
+        list[float]: Normalized vector with mean ~0 and std ~1.
+    Raises:
+        ValueError: If x is empty.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Layer Normalization — a key stabilizer in every transformer block that normalizes per-token activation vectors.',
+    taskDescription: 'Implement `layer_norm(x, eps=1e-5)` computing `(x - mean) / sqrt(variance + eps)` over all elements.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Normalize using per-vector mean and variance (not batch statistics).',
+      'Add eps inside the square root for numerical stability.',
+      'Raise ValueError on empty x.',
+    ],
+    hints: {
+      small: 'Compute mean = sum(x)/len(x), then variance = sum((xi-mean)^2 for xi in x)/len(x). Return [(xi-mean)/sqrt(var+eps) for xi in x].',
+      strong: 'LayerNorm output has zero mean and unit variance (approximately). A constant vector will produce all zeros.',
+      concept: 'Layer normalization stabilizes training by normalizing activations along the feature dimension, unlike batch norm which normalizes across the batch. Transformers use LayerNorm before or after attention/FFN sub-layers (Pre-LN vs Post-LN).',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Residual connections and layer norm in transformer blocks' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three-element vector', input: { x: [1.0, 2.0, 3.0] }, expectedOutput: [-1.2247356859083902, 0.0, 1.2247356859083902], hidden: false },
+      { id: 'constant', label: 'Constant vector returns zeros', input: { x: [0.0, 0.0, 0.0] }, expectedOutput: [0.0, 0.0, 0.0], hidden: false },
+      { id: 'empty_err', label: 'Empty input raises error', input: { x: [] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-4': {
+    id: 'transformer-prob-4',
+    title: 'GELU Activation Function',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–12 min',
+    functionName: 'gelu',
+    functionSignature: 'gelu(x: float) -> float',
+    starterCode: `def gelu(x):
+    """Compute the GELU (Gaussian Error Linear Unit) activation.
+    
+    Uses the tanh approximation:
+      GELU(x) = 0.5 * x * (1 + tanh(sqrt(2/pi) * (x + 0.044715 * x^3)))
+    
+    Args:
+        x: Input scalar float.
+    Returns:
+        float: GELU activation value.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the GELU activation used in GPT, BERT, and most modern transformers as the nonlinearity in feed-forward layers.',
+    taskDescription: 'Implement `gelu(x)` using the tanh approximation formula. GELU is the standard activation in transformer FFN layers.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Use the tanh approximation: 0.5 * x * (1 + tanh(sqrt(2/pi) * (x + 0.044715 * x**3))).',
+      'Use math.tanh and math.sqrt from the standard library.',
+    ],
+    hints: {
+      small: 'Import math. The constant sqrt(2/pi) ≈ 0.7978845608. The formula is: 0.5*x*(1+math.tanh(math.sqrt(2/math.pi)*(x+0.044715*x**3))).',
+      strong: 'GELU(0)=0, GELU(1)≈0.841, GELU(-1)≈-0.159. Negative inputs are not fully zeroed (unlike ReLU).',
+      concept: 'GELU weights inputs by their CDF under a standard Gaussian distribution. For large positive x, GELU ≈ x; for large negative x, GELU ≈ 0. The smooth, probabilistic gating helps gradients flow better than hard ReLU.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'FFN sub-layer with GELU activation in GPT-series models' },
+    ],
+    testCases: [
+      { id: 'zero', label: 'GELU(0) = 0', input: { x: 0.0 }, expectedOutput: 0.0, hidden: false },
+      { id: 'one', label: 'GELU(1)', input: { x: 1.0 }, expectedOutput: 0.8411919906082768, hidden: false },
+      { id: 'neg_one', label: 'GELU(-1)', input: { x: -1.0 }, expectedOutput: -0.15880800939172324, hidden: false },
+      { id: 'two', label: 'GELU(2)', input: { x: 2.0 }, expectedOutput: 1.954597694087775, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-5': {
+    id: 'transformer-prob-5',
+    title: 'Sinusoidal Positional Encoding',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '12–15 min',
+    functionName: 'positional_encoding',
+    functionSignature: 'positional_encoding(max_len: int, d_model: int) -> list[list[float]]',
+    starterCode: `def positional_encoding(max_len, d_model):
+    """Generate sinusoidal positional encodings.
+    
+    PE[pos][2i]   = sin(pos / 10000^(2i/d_model))
+    PE[pos][2i+1] = cos(pos / 10000^(2i/d_model))
+    
+    Args:
+        max_len: Number of positions (rows).
+        d_model: Embedding dimension (must be even).
+    Returns:
+        list[list[float]]: Shape (max_len, d_model) positional encoding matrix.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the original sinusoidal positional encoding from "Attention Is All You Need" that injects position information into embeddings without learned parameters.',
+    taskDescription: 'Implement `positional_encoding(max_len, d_model)` that returns the (max_len, d_model) PE matrix using sin/cos alternating pattern.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'd_model must be even (pairs of sin/cos).',
+      'Even indices use sin, odd indices use cos.',
+      'Frequency divider is 10000^(2i/d_model).',
+    ],
+    hints: {
+      small: 'For each position pos and each pair i (0 to d_model//2): PE[pos][2i] = sin(pos / 10000^(2i/d_model)), PE[pos][2i+1] = cos(pos / 10000^(2i/d_model)).',
+      strong: 'At pos=0, all sin entries = 0, all cos entries = 1. At pos=1 with d_model=4: PE = [sin(1), cos(1), sin(0.01), cos(0.01)].',
+      concept: 'Sinusoidal PE is position-invariant to relative offsets: PE(pos+k) can be expressed as a linear function of PE(pos). This allows models to generalize to longer sequences than seen in training.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Positional encoding in the original Transformer architecture' },
+    ],
+    testCases: [
+      { id: 'pos0', label: 'Position 0, d_model=4', input: { max_len: 1, d_model: 4 }, expectedOutput: [[0.0, 1.0, 0.0, 1.0]], hidden: false },
+      { id: 'pos1', label: 'Position 1, d_model=4', input: { max_len: 2, d_model: 4 }, expectedOutput: [[0.0, 1.0, 0.0, 1.0], [0.8414709848078965, 0.5403023058681398, 0.009999833334166664, 0.9999500004166653]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-6': {
+    id: 'transformer-prob-6',
+    title: 'Multi-Head Attention: Split Heads',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–12 min',
+    functionName: 'split_heads',
+    functionSignature: 'split_heads(x: list[float], num_heads: int) -> list[list[float]]',
+    starterCode: `def split_heads(x, num_heads):
+    """Split an embedding vector into num_heads equal-sized head vectors.
+    
+    Args:
+        x: Embedding vector of length d_model (list of floats).
+        num_heads: Number of attention heads. Must divide len(x) evenly.
+    Returns:
+        list[list[float]]: List of num_heads vectors, each of length d_model // num_heads.
+    Raises:
+        ValueError: If len(x) is not divisible by num_heads.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the head-splitting operation in multi-head attention, dividing the embedding dimension into parallel attention sub-spaces.',
+    taskDescription: 'Implement `split_heads(x, num_heads)` that splits vector x (length d_model) into num_heads chunks of size d_model // num_heads.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'len(x) must be divisible by num_heads, else raise ValueError.',
+      'Return a list of num_heads sub-vectors.',
+    ],
+    hints: {
+      small: 'head_dim = len(x) // num_heads. Use slices: x[i*head_dim:(i+1)*head_dim] for i in range(num_heads).',
+      strong: 'Check len(x) % num_heads != 0 first. Then return [x[i*head_dim:(i+1)*head_dim] for i in range(num_heads)].',
+      concept: 'Multi-head attention projects Q/K/V into multiple smaller subspaces, letting each head focus on different positional or semantic relationships. The split is purely dimensional slicing — no parameters here.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Multi-head attention architecture' },
+    ],
+    testCases: [
+      { id: 'two_heads', label: 'Split 8-dim into 2 heads', input: { x: [1, 2, 3, 4, 5, 6, 7, 8], num_heads: 2 }, expectedOutput: [[1, 2, 3, 4], [5, 6, 7, 8]], hidden: false },
+      { id: 'four_heads', label: 'Split 4-dim into 4 heads', input: { x: [1, 2, 3, 4], num_heads: 4 }, expectedOutput: [[1], [2], [3], [4]], hidden: false },
+      { id: 'invalid', label: 'Non-divisible raises error', input: { x: [1, 2, 3], num_heads: 2 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-7': {
+    id: 'transformer-prob-7',
+    title: 'RMS Normalization',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–12 min',
+    functionName: 'rms_norm',
+    functionSignature: 'rms_norm(x: list[float], eps: float = 1e-8) -> list[float]',
+    starterCode: `def rms_norm(x, eps=1e-8):
+    """Apply Root Mean Square Layer Normalization.
+    
+    RMSNorm(x) = x / sqrt(mean(x^2) + eps)
+    
+    Used in LLaMA, Mistral, Gemma instead of LayerNorm.
+    No centering (no mean subtraction), no learnable params here.
+    
+    Args:
+        x: Input vector (list of floats).
+        eps: Small constant for numerical stability.
+    Returns:
+        list[float]: RMS-normalized vector.
+    Raises:
+        ValueError: If x is empty.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement RMSNorm — the computationally lighter normalization used in LLaMA, Mistral, and Qwen models instead of standard LayerNorm.',
+    taskDescription: 'Implement `rms_norm(x, eps=1e-8)` that normalizes x by its root mean square: x / sqrt(mean(x^2) + eps).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Compute RMS as sqrt(mean(x_i^2) + eps).',
+      'No mean subtraction (unlike LayerNorm).',
+      'Raise ValueError on empty input.',
+    ],
+    hints: {
+      small: 'rms = math.sqrt(sum(xi**2 for xi in x) / len(x) + eps). Return [xi/rms for xi in x].',
+      strong: 'For x=[1,2,3]: mean_sq=(1+4+9)/3=14/3, rms=sqrt(14/3+eps)≈2.160. Output: [1/2.160, 2/2.160, 3/2.160].',
+      concept: 'RMSNorm is simpler than LayerNorm (no mean subtraction) and roughly equivalent in practice. The RMS serves as a scale normalization, ensuring activations have consistent magnitude regardless of input scale.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Layer normalization variants in LLMs' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three-element vector', input: { x: [1.0, 2.0, 3.0] }, expectedOutput: [0.4629100493903007, 0.9258200987806015, 1.3887301481709022], hidden: false },
+      { id: 'zeros_err', label: 'Empty input raises error', input: { x: [] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-8': {
+    id: 'transformer-prob-8',
+    title: 'Transformer Feed-Forward Network',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '12–15 min',
+    functionName: 'ffn_forward',
+    functionSignature: 'ffn_forward(x: list[float], W1: list[list[float]], b1: list[float], W2: list[list[float]], b2: list[float]) -> list[float]',
+    starterCode: `def ffn_forward(x, W1, b1, W2, b2):
+    """Compute one forward pass of a two-layer FFN with ReLU activation.
+    
+    h = ReLU(W1 @ x + b1)
+    out = W2 @ h + b2
+    
+    Args:
+        x: Input vector (d_model,).
+        W1: First weight matrix (d_ff x d_model).
+        b1: First bias (d_ff,).
+        W2: Second weight matrix (d_model x d_ff).
+        b2: Second bias (d_model,).
+    Returns:
+        list[float]: Output vector (d_model,).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the two-layer feed-forward sub-network that processes each token position independently in every transformer block.',
+    taskDescription: 'Implement `ffn_forward(x, W1, b1, W2, b2)` computing h=ReLU(W1@x+b1) then W2@h+b2. This is the position-wise FFN in each transformer layer.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Use ReLU (max(0, v)) as the activation function.',
+      'First projection expands to d_ff (typically 4x d_model).',
+      'Second projection contracts back to d_model.',
+    ],
+    hints: {
+      small: 'h[j] = max(0, sum(x[k]*W1[j][k] for k in range(d_model)) + b1[j]). Then out[j] = sum(h[k]*W2[j][k] for k in range(d_ff)) + b2[j].',
+      strong: 'This is a standard two-layer MLP. The FFN dimension d_ff is typically 4x the model dimension. Modern transformers use SwiGLU or GELU instead of ReLU.',
+      concept: 'The FFN in each transformer block has 2x more parameters than attention (roughly). It acts as a key-value memory store: attention routes, FFN retrieves stored knowledge.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Position-wise FFN sub-layer in transformer blocks' },
+    ],
+    testCases: [
+      { id: 'identity', label: 'Identity-like weights', input: { x: [1.0, 2.0], W1: [[1.0, 0.0], [0.0, 1.0]], b1: [0.0, 0.0], W2: [[1.0, 0.0], [0.0, 1.0]], b2: [0.0, 0.0] }, expectedOutput: [1.0, 2.0], hidden: false },
+      { id: 'relu_zero', label: 'ReLU zeros negative hidden', input: { x: [1.0, -1.0], W1: [[1.0, 0.0], [0.0, 1.0]], b1: [0.0, 0.0], W2: [[1.0, 0.0], [0.0, 1.0]], b2: [0.0, 0.0] }, expectedOutput: [1.0, 0.0], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-9': {
+    id: 'transformer-prob-9',
+    title: 'Causal Attention Mask',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–12 min',
+    functionName: 'causal_attention_weights',
+    functionSignature: 'causal_attention_weights(scores: list[list[float]]) -> list[list[float]]',
+    starterCode: `def causal_attention_weights(scores):
+    """Apply causal mask and softmax to an n x n score matrix.
+    
+    Masks future positions (upper triangle) with -inf, then applies
+    row-wise softmax to produce the causal attention weight matrix.
+    
+    Args:
+        scores: n x n raw attention score matrix (list of lists).
+    Returns:
+        list[list[float]]: n x n causal attention weight matrix.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement causal (autoregressive) masking with softmax — the core mechanism that prevents decoder positions from attending to future tokens.',
+    taskDescription: 'Implement `causal_attention_weights(scores)` that masks upper triangle with -inf then applies row-wise softmax to produce causal attention weights.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Position i can attend to positions j where j <= i only.',
+      'Upper triangle (j > i) is masked with -inf before softmax.',
+      'Each row must sum to 1.0.',
+    ],
+    hints: {
+      small: 'For position i, set score[i][j] = -inf if j > i, then apply softmax to each row ignoring -inf entries.',
+      strong: 'Use float("-inf") for masking. In softmax, when computing exp, handle -inf by producing 0. The first token always attends only to itself (row 0 = [1.0, 0.0, ...]).',
+      concept: 'Causal masking is what turns a bidirectional encoder into a left-to-right language model. Without the mask, every token "peeks" at future tokens, breaking the autoregressive generation assumption.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Masked self-attention in GPT-style decoders' },
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Autoregressive generation' },
+    ],
+    testCases: [
+      { id: 'three_by_three', label: '3x3 uniform scores', input: { scores: [[1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]] }, expectedOutput: [[1.0, 0.0, 0.0], [0.2689414213699951, 0.7310585786300049, 0.0], [0.09003057317038046, 0.24472847105479764, 0.6652409557748218]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-10': {
+    id: 'transformer-prob-10',
+    title: 'KV Cache Update',
+    difficulty: 'easy',
+    topic: 'Transformer Internals',
+    estimatedTime: '8–10 min',
+    functionName: 'update_kv_cache',
+    functionSignature: 'update_kv_cache(keys: list[list[float]], values: list[list[float]], new_key: list[float], new_value: list[float]) -> tuple',
+    starterCode: `def update_kv_cache(keys, values, new_key, new_value):
+    """Append a new key-value pair to the KV cache.
+    
+    During autoregressive generation, each new token produces one
+    new key and value vector that are added to the growing cache.
+    
+    Args:
+        keys: Existing key cache (list of key vectors).
+        values: Existing value cache (list of value vectors).
+        new_key: New key vector to append.
+        new_value: New value vector to append.
+    Returns:
+        tuple: (updated_keys, updated_values) with new entry appended.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the KV cache update operation — the mechanism that makes autoregressive generation efficient by reusing past attention keys and values.',
+    taskDescription: 'Implement `update_kv_cache(keys, values, new_key, new_value)` returning updated (keys, values) with the new pair appended.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Return a tuple (updated_keys, updated_values).',
+      'Append new_key to keys, new_value to values.',
+      'Do not mutate the input lists.',
+    ],
+    hints: {
+      small: 'Return (keys + [new_key], values + [new_value]) without modifying the originals.',
+      strong: 'The KV cache grows by 1 entry per new token. In production, this cache occupies significant GPU memory: num_layers * num_kv_heads * head_dim * seq_len * 2 bytes per token.',
+      concept: 'Without KV caching, generating each new token requires recomputing all past key/value projections — O(n^2) work per step. KV cache reduces this to O(n) per step by storing past results.',
+    },
+    conceptConnections: [
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'KV cache for efficient autoregressive generation' },
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Key-Value projection in attention layers' },
+    ],
+    testCases: [
+      { id: 'append_one', label: 'Append to existing cache', input: { keys: [[1, 2], [3, 4]], values: [[5, 6], [7, 8]], new_key: [9, 10], new_value: [11, 12] }, expectedOutput: [[[1, 2], [3, 4], [9, 10]], [[5, 6], [7, 8], [11, 12]]], hidden: false },
+      { id: 'empty_cache', label: 'Start from empty cache', input: { keys: [], values: [], new_key: [1.0, 2.0], new_value: [3.0, 4.0] }, expectedOutput: [[[1.0, 2.0]], [[3.0, 4.0]]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-11': {
+    id: 'transformer-prob-11',
+    title: 'Full Scaled Dot-Product Attention',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '15–20 min',
+    functionName: 'scaled_dot_product_attention',
+    functionSignature: 'scaled_dot_product_attention(Q: list[list[float]], K: list[list[float]], V: list[list[float]]) -> list[list[float]]',
+    starterCode: `def scaled_dot_product_attention(Q, K, V):
+    """Compute full scaled dot-product attention.
+    
+    Attention(Q, K, V) = softmax(Q @ K.T / sqrt(d_k)) @ V
+    
+    Args:
+        Q: Query matrix (n x d_k).
+        K: Key matrix (m x d_k).
+        V: Value matrix (m x d_v).
+    Returns:
+        list[list[float]]: Output matrix (n x d_v).
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the complete scaled dot-product attention mechanism — the fundamental operation that defines the transformer architecture.',
+    taskDescription: 'Implement `scaled_dot_product_attention(Q, K, V)` computing softmax(Q @ K.T / sqrt(d_k)) @ V in full.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Q and K must have the same d_k dimension.',
+      'K and V must have the same number of rows (same sequence length m).',
+      'Apply softmax row-wise over the score matrix.',
+    ],
+    hints: {
+      small: 'Three steps: (1) scores[i][j] = dot(Q[i], K[j]) / sqrt(d_k), (2) apply softmax per row, (3) output[i] = weighted sum of V rows.',
+      strong: 'This is the core of every attention layer. The output has shape (n, d_v). Each output row is a convex combination of value vectors, weighted by attention scores.',
+      concept: 'SDP attention has O(n*m) time complexity. For self-attention n=m=seq_len, giving O(seq_len^2) — the quadratic bottleneck that flash attention and linear attention approximations aim to resolve.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Complete attention mechanism' },
+      { title: 'Transformer Internals', route: '/docs/deep-learning/attention-transformers#multi-head-attention', description: 'Multi-head attention architecture' },
+    ],
+    testCases: [
+      { id: 'single_query', label: 'Single query, two keys', input: { Q: [[1.0, 0.0]], K: [[1.0, 0.0], [0.0, 1.0]], V: [[1.0, 2.0], [3.0, 4.0]] }, expectedOutput: [[1.6604769013466862, 2.6604769013466862]], hidden: false },
+      { id: 'two_queries', label: 'Two queries', input: { Q: [[1.0, 0.0], [0.0, 1.0]], K: [[1.0, 0.0], [0.0, 1.0]], V: [[1.0, 2.0], [3.0, 4.0]] }, expectedOutput: [[1.6604769013466862, 2.6604769013466862], [2.3395230986533138, 3.3395230986533138]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-12': {
+    id: 'transformer-prob-12',
+    title: 'Token Embedding Lookup',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–12 min',
+    functionName: 'token_embedding',
+    functionSignature: 'token_embedding(token_ids: list[int], embedding_table: list[list[float]]) -> list[list[float]]',
+    starterCode: `def token_embedding(token_ids, embedding_table):
+    """Look up embeddings for a sequence of token IDs.
+    
+    Args:
+        token_ids: List of integer token IDs.
+        embedding_table: Vocabulary embedding matrix (vocab_size x d_model).
+    Returns:
+        list[list[float]]: Sequence of embedding vectors.
+    Raises:
+        ValueError: If any token_id is out of range.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the token embedding lookup that converts discrete token IDs into continuous vector representations — the first step in every transformer forward pass.',
+    taskDescription: 'Implement `token_embedding(token_ids, embedding_table)` that looks up each token ID in the embedding table and returns the sequence of embedding vectors.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'token_ids must be in range [0, vocab_size-1], else raise ValueError.',
+      'Return list of embedding vectors in the same order as token_ids.',
+    ],
+    hints: {
+      small: 'Return [embedding_table[tid] for tid in token_ids]. Validate tid < len(embedding_table) and tid >= 0.',
+      strong: 'This is O(n) in sequence length. In production, the embedding table is the largest matrix in many models (vocab_size * d_model parameters).',
+      concept: 'Token embedding tables are shared between input and output layers in some architectures (weight tying). The final logits = h @ embedding_table.T maps back to vocabulary probabilities.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Input embedding and output projection layers' },
+      { title: 'Word Embeddings', route: '/docs/nlp/word-embeddings', description: 'Semantic vector representations' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three tokens from table', input: { token_ids: [0, 2, 1], embedding_table: [[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]] }, expectedOutput: [[0.1, 0.2], [0.5, 0.6], [0.3, 0.4]], hidden: false },
+      { id: 'out_of_range', label: 'Out-of-range ID raises error', input: { token_ids: [5], embedding_table: [[0.1, 0.2], [0.3, 0.4]] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-13': {
+    id: 'transformer-prob-13',
+    title: 'Causal Attention Mask Matrix',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–12 min',
+    functionName: 'create_causal_mask',
+    functionSignature: 'create_causal_mask(seq_len: int) -> list[list[int]]',
+    starterCode: `def create_causal_mask(seq_len):
+    """Create a causal (lower-triangular) attention mask matrix.
+    
+    mask[i][j] = 1 if position i can attend to position j (j <= i), else 0.
+    
+    Args:
+        seq_len: Sequence length (number of tokens).
+    Returns:
+        list[list[int]]: seq_len x seq_len binary mask matrix.
+    Raises:
+        ValueError: If seq_len <= 0.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Generate the causal attention mask matrix used in GPT-style decoders to enforce the autoregressive left-to-right constraint.',
+    taskDescription: 'Implement `create_causal_mask(seq_len)` returning a lower-triangular binary matrix where 1 means "can attend" and 0 means "cannot attend".',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Result is a seq_len x seq_len matrix.',
+      'mask[i][j] = 1 if j <= i, else 0.',
+      'seq_len must be > 0, else raise ValueError.',
+    ],
+    hints: {
+      small: 'return [[1 if j <= i else 0 for j in range(seq_len)] for i in range(seq_len)].',
+      strong: 'Row 0 = [1, 0, 0, ...] (only attends to itself). Row n-1 = [1, 1, 1, ..., 1] (attends to all past tokens). This is a lower-triangular matrix of ones.',
+      concept: 'Causal masking is implemented via additive masking: multiply mask by a large negative value and add to scores before softmax. This produces near-zero attention weight for masked positions.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Causal/autoregressive masking in decoder-only models' },
+    ],
+    testCases: [
+      { id: 'three', label: 'seq_len=3', input: { seq_len: 3 }, expectedOutput: [[1, 0, 0], [1, 1, 0], [1, 1, 1]], hidden: false },
+      { id: 'four', label: 'seq_len=4', input: { seq_len: 4 }, expectedOutput: [[1, 0, 0, 0], [1, 1, 0, 0], [1, 1, 1, 0], [1, 1, 1, 1]], hidden: false },
+      { id: 'invalid', label: 'seq_len=0 raises error', input: { seq_len: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-14': {
+    id: 'transformer-prob-14',
+    title: 'Cross-Entropy Loss for Language Modeling',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '12–15 min',
+    functionName: 'cross_entropy_loss',
+    functionSignature: 'cross_entropy_loss(logits: list[float], target: int) -> float',
+    starterCode: `def cross_entropy_loss(logits, target):
+    """Compute cross-entropy loss for a single token prediction.
+    
+    CE = -log(softmax(logits)[target])
+    
+    Uses numerically stable softmax (max-subtraction).
+    
+    Args:
+        logits: Unnormalized vocabulary scores (list of floats).
+        target: Ground-truth token index.
+    Returns:
+        float: Cross-entropy loss (non-negative).
+    Raises:
+        ValueError: If target is out of range.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the cross-entropy loss used to train language models — the negative log probability of the correct next token under the model distribution.',
+    taskDescription: 'Implement `cross_entropy_loss(logits, target)` computing -log(softmax(logits)[target]) with numerically stable softmax.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Use the log-sum-exp trick to compute log-softmax stably.',
+      'Target must be in [0, len(logits)-1], else raise ValueError.',
+      'Return a non-negative float.',
+    ],
+    hints: {
+      small: 'Compute softmax first (with max subtraction), then return -math.log(probs[target]).',
+      strong: 'Numerically stable: log_softmax[i] = logits[i] - max - log(sum(exp(logits[j]-max))). Then return -log_softmax[target].',
+      concept: 'Cross-entropy loss is the standard LM training objective: maximize P(correct_token | context). Perplexity = exp(average CE loss). Perfect prediction = loss 0, random prediction = log(vocab_size) ≈ 10–12.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Language model training objective' },
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Perplexity as model quality measure' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three logits, target=2', input: { logits: [1.0, 2.0, 3.0], target: 2 }, expectedOutput: 0.40760596444438046, hidden: false },
+      { id: 'uniform', label: 'Uniform logits, target=1', input: { logits: [0.0, 0.0, 0.0], target: 1 }, expectedOutput: 1.0986122886681098, hidden: false },
+      { id: 'out_of_range', label: 'Out-of-range target', input: { logits: [1.0, 2.0], target: 5 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-15': {
+    id: 'transformer-prob-15',
+    title: 'Grouped Query Attention Head Assignment',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '12–15 min',
+    functionName: 'assign_kv_groups',
+    functionSignature: 'assign_kv_groups(num_heads: int, num_kv_heads: int) -> list[int]',
+    starterCode: `def assign_kv_groups(num_heads, num_kv_heads):
+    """Assign each query head to its corresponding KV head index (GQA).
+    
+    In Grouped Query Attention, query heads are divided into groups,
+    each sharing one KV head. Returns the KV head index for each query head.
+    
+    Args:
+        num_heads: Total number of query attention heads (H).
+        num_kv_heads: Number of KV heads (G, must divide H evenly).
+    Returns:
+        list[int]: Length num_heads, where entry h = KV head index for query head h.
+    Raises:
+        ValueError: If num_heads is not divisible by num_kv_heads.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement GQA head assignment — the technique used in Llama 3, Mistral, Gemma and others that reduces KV cache size by sharing key/value heads across groups of query heads.',
+    taskDescription: 'Implement `assign_kv_groups(num_heads, num_kv_heads)` that assigns each query head to a KV head group index.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'num_heads must be divisible by num_kv_heads, else raise ValueError.',
+      'group_size = num_heads // num_kv_heads. Query head h maps to KV head h // group_size.',
+      'num_kv_heads=num_heads is MHA, num_kv_heads=1 is MQA.',
+    ],
+    hints: {
+      small: 'group_size = num_heads // num_kv_heads. Return [h // group_size for h in range(num_heads)].',
+      strong: 'For 8 heads, 2 KV heads: group_size=4, so heads 0-3 use KV head 0, heads 4-7 use KV head 1. GQA reduces KV cache by a factor of num_heads/num_kv_heads.',
+      concept: 'GQA (Grouped Query Attention) dramatically reduces KV cache memory: Llama 3 70B uses 8 KV heads vs 64 query heads — an 8x KV cache reduction. MQA (num_kv_heads=1) is even more aggressive.',
+    },
+    conceptConnections: [
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'KV cache optimization with GQA/MQA' },
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Multi-head vs grouped-query attention' },
+    ],
+    testCases: [
+      { id: 'gqa_8_2', label: '8 heads, 2 KV heads', input: { num_heads: 8, num_kv_heads: 2 }, expectedOutput: [0, 0, 0, 0, 1, 1, 1, 1], hidden: false },
+      { id: 'gqa_4_2', label: '4 heads, 2 KV heads', input: { num_heads: 4, num_kv_heads: 2 }, expectedOutput: [0, 0, 1, 1], hidden: false },
+      { id: 'mha', label: 'MHA: 8 heads, 8 KV heads', input: { num_heads: 8, num_kv_heads: 8 }, expectedOutput: [0, 1, 2, 3, 4, 5, 6, 7], hidden: false },
+      { id: 'mqa', label: 'MQA: 8 heads, 1 KV head', input: { num_heads: 8, num_kv_heads: 1 }, expectedOutput: [0, 0, 0, 0, 0, 0, 0, 0], hidden: true },
+      { id: 'invalid', label: 'Non-divisible raises error', input: { num_heads: 7, num_kv_heads: 2 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-16': {
+    id: 'transformer-prob-16',
+    title: 'Rotary Positional Embedding (RoPE)',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '15–20 min',
+    functionName: 'rope_embedding',
+    functionSignature: 'rope_embedding(x: list[float], position: int, theta: float = 10000.0) -> list[float]',
+    starterCode: `def rope_embedding(x, position, theta=10000.0):
+    """Apply Rotary Positional Embedding (RoPE) to vector x at given position.
+    
+    Rotates consecutive pairs (x[2i], x[2i+1]) by angle position * theta^(-2i/d).
+    
+    Args:
+        x: Input vector (must have even length d).
+        position: Token position index.
+        theta: RoPE base frequency (default 10000.0).
+    Returns:
+        list[float]: Rotated vector of same length.
+    Raises:
+        ValueError: If len(x) is odd.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement RoPE (Rotary Positional Embedding) — the position encoding used in LLaMA, Mistral, GPT-NeoX, and most modern LLMs instead of learned or sinusoidal PE.',
+    taskDescription: 'Implement `rope_embedding(x, position, theta=10000.0)` that rotates consecutive pairs of x by frequency-scaled angles based on the token position.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'len(x) must be even, else raise ValueError.',
+      'For pair i: angle = position * theta^(-2i/d). Rotate: new[2i] = x[2i]*cos(angle) - x[2i+1]*sin(angle), new[2i+1] = x[2i]*sin(angle) + x[2i+1]*cos(angle).',
+    ],
+    hints: {
+      small: 'For each pair index i (0 to d//2-1): freq = theta^(-2*i/d), angle = position*freq. Apply 2D rotation matrix to (x[2i], x[2i+1]).',
+      strong: 'At position=0, all angles are 0, so cos=1, sin=0 and the vector is unchanged. At position=1 with d=4: pair 0 uses freq=1 (theta^0), pair 1 uses freq=0.01 (theta^(-1/2)).',
+      concept: 'RoPE encodes position into the query and key vectors directly via rotation. The inner product between RoPE-rotated Q and K naturally depends on the relative position (pos_q - pos_k), giving translation-equivariant attention.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Positional encoding in modern LLMs' },
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Extending context length with RoPE scaling' },
+    ],
+    testCases: [
+      { id: 'pos0', label: 'Position 0 — no rotation', input: { x: [1.0, 0.0, 1.0, 0.0], position: 0 }, expectedOutput: [1.0, 0.0, 1.0, 0.0], hidden: false },
+      { id: 'pos1', label: 'Position 1', input: { x: [1.0, 0.0, 1.0, 0.0], position: 1 }, expectedOutput: [0.5403023058681398, 0.8414709848078965, 0.9999500004166653, 0.009999833334166664], hidden: false },
+      { id: 'odd_len', label: 'Odd length raises error', input: { x: [1.0, 2.0, 3.0], position: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-17': {
+    id: 'transformer-prob-17',
+    title: 'Label Smoothing',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–12 min',
+    functionName: 'label_smoothed_targets',
+    functionSignature: 'label_smoothed_targets(target: int, num_classes: int, epsilon: float = 0.1) -> list[float]',
+    starterCode: `def label_smoothed_targets(target, num_classes, epsilon=0.1):
+    """Generate label-smoothed soft target distribution.
+    
+    True label gets probability (1 - epsilon).
+    Other labels share epsilon uniformly: epsilon / (num_classes - 1) each.
+    
+    Args:
+        target: Ground-truth class index.
+        num_classes: Total number of classes.
+        epsilon: Smoothing factor (0 = hard labels, default 0.1).
+    Returns:
+        list[float]: Soft target distribution summing to 1.0.
+    Raises:
+        ValueError: If target >= num_classes or target < 0.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement label smoothing — a regularization technique used in training language models that prevents overconfident predictions and improves calibration.',
+    taskDescription: 'Implement `label_smoothed_targets(target, num_classes, epsilon=0.1)` generating the soft target distribution where true label gets 1-epsilon and others share epsilon.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Distribution must sum to exactly 1.0.',
+      'target must be in [0, num_classes-1], else raise ValueError.',
+      'Each non-target class gets epsilon / (num_classes - 1).',
+    ],
+    hints: {
+      small: 'Start with all entries = epsilon/(num_classes-1), then set targets[target] = 1.0 - epsilon.',
+      strong: 'With epsilon=0.1, num_classes=4: non-target prob = 0.1/3 ≈ 0.0333, target prob = 0.9. Sum = 3*0.0333 + 0.9 = 1.0.',
+      concept: 'Label smoothing prevents the model from assigning probability 1.0 to correct tokens, encouraging better calibration. Originally from "Rethinking the Inception Architecture" (2016), now standard in LLM training.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Language model training with label smoothing' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'target=2, 4 classes, eps=0.1', input: { target: 2, num_classes: 4, epsilon: 0.1 }, expectedOutput: [0.03333333333333333, 0.03333333333333333, 0.9, 0.03333333333333333], hidden: false },
+      { id: 'no_smooth', label: 'epsilon=0 gives hard labels', input: { target: 0, num_classes: 3, epsilon: 0.0 }, expectedOutput: [1.0, 0.0, 0.0], hidden: false },
+      { id: 'invalid', label: 'Out-of-range target raises error', input: { target: 5, num_classes: 3, epsilon: 0.1 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-18': {
+    id: 'transformer-prob-18',
+    title: 'Gradient Clipping by Global Norm',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '12–15 min',
+    functionName: 'clip_grad_norm',
+    functionSignature: 'clip_grad_norm(grads: list[list[float]], max_norm: float) -> tuple',
+    starterCode: `def clip_grad_norm(grads, max_norm):
+    """Clip gradients by global norm.
+    
+    Computes global norm = sqrt(sum of squares of all gradients).
+    If global_norm > max_norm, scales all gradients by max_norm / global_norm.
+    
+    Args:
+        grads: List of gradient tensors (each is a list of floats).
+        max_norm: Maximum allowed gradient norm.
+    Returns:
+        tuple: (clipped_grads, global_norm) where clipped_grads is scaled if needed.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement gradient clipping by global norm — a critical training stability technique for transformer models that prevents exploding gradients.',
+    taskDescription: 'Implement `clip_grad_norm(grads, max_norm)` that computes global norm across all gradients and scales them down if the norm exceeds max_norm.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Compute global norm = sqrt(sum of all g^2 across all gradient tensors).',
+      'If global_norm > max_norm, scale = max_norm / global_norm, else scale = 1.0.',
+      'Return (clipped_grads, global_norm).',
+    ],
+    hints: {
+      small: 'global_norm = math.sqrt(sum(g**2 for tensor in grads for g in tensor)). scale = min(1.0, max_norm / (global_norm + 1e-8)).',
+      strong: 'Clipping: [[g*scale for g in tensor] for tensor in grads]. The original norm is always returned even if clipping did not occur.',
+      concept: 'Gradient clipping is essential in transformer training: gradients can spike thousands of times larger than normal due to the residual + layer-norm structure. PyTorch uses torch.nn.utils.clip_grad_norm_. max_norm=1.0 is a common default.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Stable transformer training techniques' },
+    ],
+    testCases: [
+      { id: 'clip_needed', label: 'Norm=5 clipped to 1', input: { grads: [[3.0, 4.0]], max_norm: 1.0 }, expectedOutput: [[[0.5999999988, 0.7999999984]], 5.0], hidden: false },
+      { id: 'no_clip', label: 'Small norm unchanged', input: { grads: [[0.1, 0.1]], max_norm: 10.0 }, expectedOutput: [[[0.1, 0.1]], 0.14142135623730953], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-19': {
+    id: 'transformer-prob-19',
+    title: 'Cosine Learning Rate Schedule',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '10–12 min',
+    functionName: 'cosine_lr',
+    functionSignature: 'cosine_lr(step: int, total_steps: int, base_lr: float, min_lr: float = 0.0) -> float',
+    starterCode: `def cosine_lr(step, total_steps, base_lr, min_lr=0.0):
+    """Compute learning rate using cosine annealing schedule.
+    
+    LR = min_lr + 0.5 * (base_lr - min_lr) * (1 + cos(pi * step/total_steps))
+    
+    Args:
+        step: Current training step (0-indexed).
+        total_steps: Total number of training steps.
+        base_lr: Peak learning rate.
+        min_lr: Minimum learning rate at end of schedule.
+    Returns:
+        float: Learning rate at the given step.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the cosine annealing learning rate schedule used in most modern LLM training runs to smoothly decay the learning rate.',
+    taskDescription: 'Implement `cosine_lr(step, total_steps, base_lr, min_lr=0.0)` that returns the learning rate following a cosine decay curve from base_lr to min_lr.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'At step=0, return base_lr. At step=total_steps, return min_lr.',
+      'Use formula: min_lr + 0.5*(base_lr-min_lr)*(1+cos(pi*step/total_steps)).',
+      'Return min_lr for any step >= total_steps.',
+    ],
+    hints: {
+      small: 'At progress=0: cos(0)=1, LR=base_lr. At progress=0.5: cos(pi/2)=0, LR=midpoint. At progress=1: cos(pi)=-1, LR=min_lr.',
+      strong: 'If step >= total_steps: return min_lr. Else: progress = step/total_steps; return min_lr + 0.5*(base_lr-min_lr)*(1+math.cos(math.pi*progress)).',
+      concept: 'Cosine scheduling avoids the abrupt LR drop of step schedules. The half-cosine curve gives fast early decay then slow final annealing. Used in GPT-4, LLaMA, and most SOTA pretraining runs.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'LLM pretraining optimization techniques' },
+      { title: 'MLOps & Data Systems', route: '/docs/mlops/training', description: 'Training schedules and optimization' },
+    ],
+    testCases: [
+      { id: 'start', label: 'Step 0 = base_lr', input: { step: 0, total_steps: 100, base_lr: 1.0, min_lr: 0.0 }, expectedOutput: 1.0, hidden: false },
+      { id: 'mid', label: 'Step 50 = 0.5', input: { step: 50, total_steps: 100, base_lr: 1.0, min_lr: 0.0 }, expectedOutput: 0.5, hidden: false },
+      { id: 'end', label: 'Step 100 = min_lr', input: { step: 100, total_steps: 100, base_lr: 1.0, min_lr: 0.0 }, expectedOutput: 0.0, hidden: false },
+      { id: 'quarter', label: 'Step 25', input: { step: 25, total_steps: 100, base_lr: 1.0, min_lr: 0.0 }, expectedOutput: 0.8535533905932737, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-20': {
+    id: 'transformer-prob-20',
+    title: 'Linear Warmup + Cosine LR Schedule',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '12–15 min',
+    functionName: 'warmup_cosine_lr',
+    functionSignature: 'warmup_cosine_lr(step: int, warmup_steps: int, total_steps: int, base_lr: float) -> float',
+    starterCode: `def warmup_cosine_lr(step, warmup_steps, total_steps, base_lr):
+    """Compute LR with linear warmup followed by cosine decay.
+    
+    During warmup (step < warmup_steps): LR = base_lr * step / warmup_steps
+    After warmup: cosine decay from base_lr to 0 over remaining steps.
+    
+    Args:
+        step: Current step (0-indexed).
+        warmup_steps: Number of linear warmup steps.
+        total_steps: Total training steps.
+        base_lr: Peak learning rate (reached at end of warmup).
+    Returns:
+        float: Learning rate at current step.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the warmup + cosine schedule used in virtually every modern LLM pretraining run: linear ramp-up prevents instability, then cosine decay for smooth convergence.',
+    taskDescription: 'Implement `warmup_cosine_lr(step, warmup_steps, total_steps, base_lr)` combining linear warmup with cosine decay.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'During warmup: LR = base_lr * step / warmup_steps.',
+      'After warmup: cosine from base_lr to 0 over (total_steps - warmup_steps) steps.',
+      'At step=warmup_steps, LR = base_lr.',
+    ],
+    hints: {
+      small: 'Two cases: step < warmup_steps → linear ramp, else → cosine decay with adjusted progress = (step-warmup_steps)/(total_steps-warmup_steps).',
+      strong: 'if step < warmup_steps: return base_lr * step / warmup_steps. else: progress = (step-warmup_steps)/(total_steps-warmup_steps); return 0.5*base_lr*(1+cos(pi*progress)).',
+      concept: 'Warmup is critical: large LR at step 0 causes gradient explosions before the model has settled. Starting at LR=0 and ramping over a few hundred steps (or even 2000 steps for large models) dramatically stabilizes early training.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Training optimization for large language models' },
+      { title: 'MLOps & Data Systems', route: '/docs/mlops/training', description: 'LR schedulers in production training runs' },
+    ],
+    testCases: [
+      { id: 'warmup_mid', label: 'Mid-warmup step=5', input: { step: 5, warmup_steps: 10, total_steps: 100, base_lr: 1.0 }, expectedOutput: 0.5, hidden: false },
+      { id: 'warmup_start', label: 'Step 0 = 0', input: { step: 0, warmup_steps: 10, total_steps: 100, base_lr: 1.0 }, expectedOutput: 0.0, hidden: false },
+      { id: 'warmup_end', label: 'Step 10 = base_lr', input: { step: 10, warmup_steps: 10, total_steps: 100, base_lr: 1.0 }, expectedOutput: 1.0, hidden: false },
+      { id: 'cosine_end', label: 'Final step = 0', input: { step: 100, warmup_steps: 10, total_steps: 100, base_lr: 1.0 }, expectedOutput: 0.0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-21': {
+    id: 'transformer-prob-21',
+    title: 'Beam Search Step',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '15–20 min',
+    functionName: 'beam_search_step',
+    functionSignature: 'beam_search_step(beam_scores: list[float], log_probs: list[list[float]], beam_width: int) -> list[tuple]',
+    starterCode: `def beam_search_step(beam_scores, log_probs, beam_width):
+    """Perform one beam search expansion step.
+    
+    Expands each beam state with all possible next tokens, selects top beam_width
+    candidates by cumulative score.
+    
+    Args:
+        beam_scores: Current cumulative log-prob scores for each beam (length B).
+        log_probs: Per-beam log-probabilities for next token (B x vocab_size).
+        beam_width: Number of beams to keep.
+    Returns:
+        list[tuple]: Top beam_width (cumulative_score, beam_idx, token_idx) tuples,
+                     sorted descending by score.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement one step of beam search — the deterministic decoding algorithm that maintains multiple candidate sequences to find high-probability completions.',
+    taskDescription: 'Implement `beam_search_step(beam_scores, log_probs, beam_width)` that expands all beams, scores candidates, and returns the top beam_width results.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Expand each beam by all vocab tokens: candidate score = beam_score + log_prob.',
+      'Return top beam_width candidates sorted descending by cumulative score.',
+      'Return as (cumulative_score, beam_idx, token_idx) tuples.',
+    ],
+    hints: {
+      small: 'Create all (beam_score + log_prob, beam_idx, token_idx) candidates. Sort descending, take first beam_width.',
+      strong: 'candidates = [(beam_scores[i] + log_probs[i][j], i, j) for i in range(B) for j in range(V)]. Sort by score descending, return first beam_width.',
+      concept: 'Beam search trades compute for higher-quality outputs vs greedy decoding. But it suffers from length bias (shorter sequences score higher) and mode collapse (beams converge to similar sequences). DIVERSE beam search and nucleus sampling were invented to address these.',
+    },
+    conceptConnections: [
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Beam search vs greedy vs sampling decoding strategies' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Two beams, three vocab', input: { beam_scores: [0.0, 0.0], log_probs: [[-1.0, -2.0, -0.5], [-0.8, -1.5, -3.0]], beam_width: 2 }, expectedOutput: [[-0.5, 0, 2], [-0.8, 1, 0]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-22': {
+    id: 'transformer-prob-22',
+    title: 'Sliding Window Attention Mask',
+    difficulty: 'medium',
+    topic: 'Transformer Internals',
+    estimatedTime: '12–15 min',
+    functionName: 'sliding_window_attention_mask',
+    functionSignature: 'sliding_window_attention_mask(seq_len: int, window_size: int) -> list[list[int]]',
+    starterCode: `def sliding_window_attention_mask(seq_len, window_size):
+    """Create a sliding window causal attention mask.
+    
+    Position i can attend to positions in [i - window_size, i] (causal window).
+    
+    Args:
+        seq_len: Total sequence length.
+        window_size: Number of past positions each token can attend to (plus itself).
+    Returns:
+        list[list[int]]: seq_len x seq_len mask (1=attend, 0=mask).
+    Raises:
+        ValueError: If window_size <= 0.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement sliding window attention masking — the key mechanism in Mistral 7B and Longformer that reduces attention complexity from O(n^2) to O(n*w).',
+    taskDescription: 'Implement `sliding_window_attention_mask(seq_len, window_size)` where each position attends only to the window_size most recent positions (plus itself).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Position i can attend to positions j where max(0, i-window_size) <= j <= i.',
+      'Future positions (j > i) are always masked.',
+      'window_size must be > 0, else raise ValueError.',
+    ],
+    hints: {
+      small: 'mask[i][j] = 1 if i - window_size <= j <= i else 0.',
+      strong: '[[1 if i - window_size <= j <= i else 0 for j in range(seq_len)] for i in range(seq_len)].',
+      concept: 'Sliding window attention reduces compute from O(n^2) to O(n*w) per layer. Mistral 7B uses window_size=4096. Combined with grouped query attention, it makes efficient 32K context inference practical.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Efficient attention mechanisms for long sequences' },
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Long-context LLM techniques' },
+    ],
+    testCases: [
+      { id: 'window2', label: 'seq_len=4, window=2', input: { seq_len: 4, window_size: 2 }, expectedOutput: [[1, 0, 0, 0], [1, 1, 0, 0], [1, 1, 1, 0], [0, 1, 1, 1]], hidden: false },
+      { id: 'full', label: 'Large window = full causal', input: { seq_len: 3, window_size: 10 }, expectedOutput: [[1, 0, 0], [1, 1, 0], [1, 1, 1]], hidden: false },
+      { id: 'invalid', label: 'window_size=0 raises error', input: { seq_len: 4, window_size: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-23': {
+    id: 'transformer-prob-23',
+    title: 'Online Softmax for Flash Attention',
+    difficulty: 'hard',
+    topic: 'Transformer Internals',
+    estimatedTime: '20–30 min',
+    functionName: 'flash_attention_online',
+    functionSignature: 'flash_attention_online(Q: list[list[float]], K: list[list[float]], V: list[list[float]]) -> list[list[float]]',
+    starterCode: `def flash_attention_online(Q, K, V):
+    """Compute scaled dot-product attention using online (tiled) softmax.
+    
+    Implements the Flash Attention memory-efficient algorithm:
+    processes KV blocks sequentially, maintaining running max and sum
+    for numerically stable output without materializing the full n x n matrix.
+    
+    Args:
+        Q: Query matrix (n x d_k).
+        K: Key matrix (m x d_k).
+        V: Value matrix (m x d_v).
+    Returns:
+        list[list[float]]: Attention output (n x d_v), identical to standard SDP attention.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Flash Attention\'s online softmax algorithm — the tile-based approach that computes attention without materializing the O(n^2) score matrix, enabling long-context training.',
+    taskDescription: 'Implement `flash_attention_online(Q, K, V)` that computes exact SDP attention using the online softmax trick (maintaining running max and running sum across KV chunks).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Output must match standard SDP attention exactly (same floating-point result).',
+      'Maintain running_max, running_sum, running_output per query for online update.',
+      'When processing a new score against current running_max, rescale existing sum and output.',
+    ],
+    hints: {
+      small: 'For each query i and each key j: new_max = max(running_max, score). Scale factor = exp(running_max - new_max). Update running_sum *= scale + exp(score - new_max). Update running_out *= scale + exp(score-new_max)*V[j].',
+      strong: 'For each query i: init running_max=-inf, running_sum=0, running_out=[0]*d_v. For each j: score=dot(Q[i],K[j])/sqrt(d_k); new_max=max(running_max,score); scale=exp(running_max-new_max); running_sum=running_sum*scale+exp(score-new_max); running_out[d]=running_out[d]*scale+exp(score-new_max)*V[j][d]; running_max=new_max. Final: [o/running_sum for o in running_out].',
+      concept: 'Flash Attention (Dao et al. 2022) reduces attention memory from O(n^2) to O(n) by tiling the computation. GPU SRAM is used for blocks; HBM reads are minimized. This enables training with much longer sequences than standard attention allows.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Flash Attention and memory-efficient training' },
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Efficient inference with Flash Attention-2' },
+    ],
+    testCases: [
+      { id: 'two_by_two', label: '2 queries, 2 keys/values', input: { Q: [[1.0, 0.0], [0.0, 1.0]], K: [[1.0, 0.0], [0.0, 1.0]], V: [[1.0, 2.0], [3.0, 4.0]] }, expectedOutput: [[1.6604769013466862, 2.6604769013466862], [2.3395230986533138, 3.3395230986533138]], hidden: false },
+      { id: 'single_query', label: 'Single query', input: { Q: [[1.0, 0.0]], K: [[1.0, 0.0], [0.0, 1.0]], V: [[1.0, 2.0], [3.0, 4.0]] }, expectedOutput: [[1.6604769013466862, 2.6604769013466862]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-24': {
+    id: 'transformer-prob-24',
+    title: 'LoRA Adapter Forward Pass',
+    difficulty: 'hard',
+    topic: 'Transformer Internals',
+    estimatedTime: '20–25 min',
+    functionName: 'lora_linear',
+    functionSignature: 'lora_linear(x: list[float], W: list[list[float]], A: list[list[float]], B: list[list[float]], r: int, alpha: float) -> list[float]',
+    starterCode: `def lora_linear(x, W, A, B, r, alpha):
+    """Compute LoRA-augmented linear layer output.
+    
+    output = W @ x + (alpha / r) * B @ A @ x
+    
+    Where A (r x d_in) and B (d_out x r) are low-rank adapter matrices.
+    W (d_out x d_in) is the frozen pretrained weight.
+    
+    Args:
+        x: Input vector (d_in,).
+        W: Frozen pretrained weight matrix (d_out x d_in).
+        A: LoRA down-projection (r x d_in).
+        B: LoRA up-projection (d_out x r).
+        r: LoRA rank.
+        alpha: LoRA scaling factor (typically 16 or 32).
+    Returns:
+        list[float]: Output vector (d_out,).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement LoRA (Low-Rank Adaptation) forward pass — the parameter-efficient fine-tuning technique that adapts pretrained LLMs by injecting trainable low-rank matrices.',
+    taskDescription: 'Implement `lora_linear(x, W, A, B, r, alpha)` computing the LoRA-augmented linear layer: base output W@x plus low-rank adapter (alpha/r)*B@A@x.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Base output: [sum(x[j]*W[i][j] for j in range(d_in)) for i in range(d_out)].',
+      'LoRA hidden h = A @ x (length r), then lora_out = B @ h (length d_out).',
+      'Scaling: (alpha / r) * lora_out added to base output.',
+    ],
+    hints: {
+      small: 'Step 1: base = W @ x. Step 2: h = A @ x (r-dim). Step 3: lora = B @ h (d_out-dim). Step 4: return base + (alpha/r) * lora.',
+      strong: 'A is initialized with random Gaussian, B is initialized to zero. At training start, the LoRA term is zero, preserving original model behavior. Only A and B are trained, not W.',
+      concept: 'LoRA enables fine-tuning with 3-10x fewer trainable parameters. For a 7B model with 4096-dim hidden states and r=16: each attention weight matrix has 4096^2=16M params, LoRA adds only 2*4096*16=131K params (0.8% of original). QLoRA extends this to 4-bit quantized base weights.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Parameter-efficient fine-tuning with LoRA' },
+      { title: 'MLOps & Data Systems', route: '/docs/mlops/training', description: 'PEFT methods for large model adaptation' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Simple LoRA with rank=1', input: { x: [1.0, 0.0], W: [[1.0, 0.0], [0.0, 1.0]], A: [[1.0, 0.0]], B: [[0.5], [0.5]], r: 1, alpha: 2.0 }, expectedOutput: [2.0, 1.0], hidden: false },
+      { id: 'zero_lora', label: 'Zero B = base output only', input: { x: [1.0, 1.0], W: [[2.0, 0.0], [0.0, 2.0]], A: [[1.0, 0.0]], B: [[0.0], [0.0]], r: 1, alpha: 1.0 }, expectedOutput: [2.0, 2.0], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-25': {
+    id: 'transformer-prob-25',
+    title: 'Mixture of Experts Top-K Routing',
+    difficulty: 'hard',
+    topic: 'Transformer Internals',
+    estimatedTime: '20–25 min',
+    functionName: 'moe_router',
+    functionSignature: 'moe_router(x: list[float], W_gate: list[list[float]], k: int) -> tuple',
+    starterCode: `def moe_router(x, W_gate, k):
+    """Compute Mixture of Experts (MoE) top-k routing for a single token.
+    
+    Computes gate logits = W_gate @ x, selects top-k experts,
+    returns their indices and normalized softmax weights.
+    
+    Args:
+        x: Token embedding (d_model,).
+        W_gate: Gating weight matrix (num_experts x d_model).
+        k: Number of experts to route to.
+    Returns:
+        tuple: (expert_indices, weights) where expert_indices is list[int]
+               of length k and weights is list[float] summing to 1.0.
+    Raises:
+        ValueError: If k > num_experts.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement MoE top-k routing — the mechanism that activates only k of N expert sub-networks per token in models like Mixtral, DeepSeek, and GPT-4.',
+    taskDescription: 'Implement `moe_router(x, W_gate, k)` that computes gate logits, selects top-k experts, and returns their indices with softmax-normalized routing weights.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Gate logits = W_gate @ x (num_experts,).',
+      'Select top-k experts by logit value (highest first).',
+      'Apply softmax to the k selected logits to get routing weights.',
+      'k must be <= num_experts, else raise ValueError.',
+    ],
+    hints: {
+      small: 'logits[i] = dot(W_gate[i], x). Sort (logit, expert_idx) descending, take first k. Apply softmax to the k logits for weights.',
+      strong: 'Expert load balancing loss (not implemented here) penalizes routing all tokens to the same expert. Mixtral 8x7B uses k=2 of 8 experts, activating only 14B of 56B parameters per forward pass.',
+      concept: 'MoE models scale parameter count without proportionally scaling compute. Selecting k=2 of 8 experts means each token uses 25% of parameters. The routing decision is differentiable via softmax, allowing end-to-end training of the gating network.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Mixture of Experts architecture in Mixtral' },
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Sparse MoE inference' },
+    ],
+    testCases: [
+      { id: 'basic_moe', label: '4 experts, k=2', input: { x: [1.0, 0.0, 1.0], W_gate: [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.5, 0.5, 0.0], [0.0, 0.0, 1.0]], k: 2 }, expectedOutput: [[0, 3], [0.5, 0.5]], hidden: false },
+      { id: 'invalid_k', label: 'k > num_experts raises error', input: { x: [1.0, 0.0], W_gate: [[1.0, 0.0], [0.0, 1.0]], k: 5 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-26': {
+    id: 'transformer-prob-26',
+    title: 'Speculative Decoding Acceptance Probability',
+    difficulty: 'hard',
+    topic: 'Transformer Internals',
+    estimatedTime: '20–25 min',
+    functionName: 'speculative_acceptance_prob',
+    functionSignature: 'speculative_acceptance_prob(draft_probs: list[float], target_probs: list[float], draft_token: int) -> float',
+    starterCode: `def speculative_acceptance_prob(draft_probs, target_probs, draft_token):
+    """Compute speculative decoding acceptance probability for a draft token.
+    
+    The acceptance probability is: min(1, target_prob[t] / draft_prob[t])
+    where t is the draft token index.
+    
+    Args:
+        draft_probs: Draft model probability distribution (sums to 1).
+        target_probs: Target model probability distribution (sums to 1).
+        draft_token: The token proposed by the draft model.
+    Returns:
+        float: Acceptance probability in [0, 1].
+    Raises:
+        ValueError: If draft_token is out of range or draft_prob[draft_token] == 0.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the acceptance probability formula for speculative decoding — the technique that uses a small draft model to propose tokens, verified by a large target model, achieving 2-3x faster inference.',
+    taskDescription: 'Implement `speculative_acceptance_prob(draft_probs, target_probs, draft_token)` that returns min(1, target_prob[t] / draft_prob[t]) for the draft token.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Return min(1.0, target_probs[draft_token] / draft_probs[draft_token]).',
+      'Raise ValueError if draft_token is out of range or draft_prob is zero.',
+    ],
+    hints: {
+      small: 'return min(1.0, target_probs[draft_token] / draft_probs[draft_token]). Check edge cases first.',
+      strong: 'If target_prob >= draft_prob: accept always (prob=1.0). If target_prob < draft_prob: accept with probability = target_prob/draft_prob. This ensures the token distribution matches the target model exactly in expectation.',
+      concept: 'Speculative decoding (Chen et al. 2023) achieves the same output distribution as target-only decoding. A 7B draft model proposes 4-8 tokens, the 70B target validates in one forward pass. Mean acceptance rates of 75-85% give 2.5-3x throughput improvement.',
+    },
+    conceptConnections: [
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Speculative decoding for faster LLM inference' },
+    ],
+    testCases: [
+      { id: 'accept_always', label: 'Target prob > draft: accept=1.0', input: { draft_probs: [0.3, 0.7], target_probs: [0.5, 0.5], draft_token: 0 }, expectedOutput: 1.0, hidden: false },
+      { id: 'partial_accept', label: 'Target prob < draft: partial accept', input: { draft_probs: [0.3, 0.7], target_probs: [0.5, 0.5], draft_token: 1 }, expectedOutput: 0.7142857142857143, hidden: false },
+      { id: 'zero_draft', label: 'Zero draft prob raises error', input: { draft_probs: [0.0, 1.0], target_probs: [0.5, 0.5], draft_token: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-27': {
+    id: 'transformer-prob-27',
+    title: 'KV Cache Memory Estimation',
+    difficulty: 'hard',
+    topic: 'Transformer Internals',
+    estimatedTime: '15–20 min',
+    functionName: 'kv_cache_memory_bytes',
+    functionSignature: 'kv_cache_memory_bytes(seq_len: int, num_layers: int, num_kv_heads: int, head_dim: int, precision_bytes: int = 2) -> int',
+    starterCode: `def kv_cache_memory_bytes(seq_len, num_layers, num_kv_heads, head_dim, precision_bytes=2):
+    """Estimate KV cache memory usage in bytes for one sequence.
+    
+    KV cache stores K and V tensors per layer, per KV head, per token.
+    
+    Args:
+        seq_len: Context length (number of tokens).
+        num_layers: Number of transformer layers.
+        num_kv_heads: Number of KV heads (with GQA, often < num_heads).
+        head_dim: Dimension of each attention head.
+        precision_bytes: Bytes per float (2 for fp16/bf16, 4 for fp32).
+    Returns:
+        int: Total KV cache memory in bytes.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement KV cache memory estimation — a critical calculation for sizing GPU memory requirements for LLM inference deployments with long contexts.',
+    taskDescription: 'Implement `kv_cache_memory_bytes(seq_len, num_layers, num_kv_heads, head_dim, precision_bytes=2)` that computes the total bytes needed for K and V caches.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Total = 2 (K+V) * num_layers * num_kv_heads * head_dim * seq_len * precision_bytes.',
+      'All parameters are positive integers.',
+    ],
+    hints: {
+      small: 'return 2 * num_layers * num_kv_heads * head_dim * seq_len * precision_bytes. Factor 2 is for both K and V.',
+      strong: 'For Llama 3 70B (80 layers, 8 KV heads, 128 head_dim, seq_len=128K, fp16): 2*80*8*128*131072*2 = 34GB just for KV cache.',
+      concept: 'KV cache is the primary GPU memory bottleneck for inference serving. GQA reduces it by num_heads/num_kv_heads. PagedAttention (vLLM) manages KV cache in fixed-size pages to reduce fragmentation and enable continuous batching.',
+    },
+    conceptConnections: [
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'KV cache optimization and PagedAttention' },
+      { title: 'Agent Performance & Production', route: '/docs/agents/performance', description: 'LLM serving system design' },
+    ],
+    testCases: [
+      { id: 'llama_like', label: 'Llama-like: 32L, 8KV, 128d, 1024t', input: { seq_len: 1024, num_layers: 32, num_kv_heads: 8, head_dim: 128, precision_bytes: 2 }, expectedOutput: 134217728, hidden: false },
+      { id: 'small', label: 'Small model: 2L, 2KV, 64d, 512t', input: { seq_len: 512, num_layers: 2, num_kv_heads: 2, head_dim: 64, precision_bytes: 2 }, expectedOutput: 262144, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-28': {
+    id: 'transformer-prob-28',
+    title: 'Attention Sink Fraction',
+    difficulty: 'hard',
+    topic: 'Transformer Internals',
+    estimatedTime: '15–20 min',
+    functionName: 'attention_sink_fraction',
+    functionSignature: 'attention_sink_fraction(attn_weights: list[list[float]], sink_tokens: int = 1) -> float',
+    starterCode: `def attention_sink_fraction(attn_weights, sink_tokens=1):
+    """Compute the average fraction of attention mass on initial "sink" tokens.
+    
+    Attention sinks are the first few tokens that receive disproportionate
+    attention regardless of content (discovered in StreamingLLM paper).
+    
+    Args:
+        attn_weights: Per-token attention distributions (n x seq_len).
+        sink_tokens: Number of initial tokens counted as sinks.
+    Returns:
+        float: Average fraction of attention mass on first sink_tokens positions.
+    Raises:
+        ValueError: If attn_weights is empty or sink_tokens <= 0.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement the attention sink fraction metric — a measurement from the StreamingLLM paper that quantifies how much attention mass flows to initial tokens as a streaming inference indicator.',
+    taskDescription: 'Implement `attention_sink_fraction(attn_weights, sink_tokens=1)` that computes the average fraction of attention mass on the first sink_tokens positions across all query tokens.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'fraction_i = sum(attn_weights[i][:sink_tokens]) / sum(attn_weights[i]).',
+      'Return the mean of fraction_i across all rows.',
+      'Raise ValueError if attn_weights is empty or sink_tokens <= 0.',
+    ],
+    hints: {
+      small: 'For each row, sink_mass = sum(row[:sink_tokens]), total_mass = sum(row). fraction = sink_mass/total_mass. Return mean fraction.',
+      strong: 'In practice, sink fraction of 0.3-0.8 is common in long sequences. StreamingLLM (Xiao et al. 2023) retains sink tokens in the KV cache to enable infinite-context streaming without quality degradation.',
+      concept: 'Attention sinks emerge because the initial BOS token accumulates large attention due to softmax normalization needs: when all queries are irrelevant, scores distribute to "absorbers" to avoid softmax entropy collapse.',
+    },
+    conceptConnections: [
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Streaming inference and attention sink phenomenon' },
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Attention pattern analysis' },
+    ],
+    testCases: [
+      { id: 'high_sink', label: 'High attention on token 0', input: { attn_weights: [[0.8, 0.1, 0.1], [0.7, 0.2, 0.1], [0.6, 0.3, 0.1]], sink_tokens: 1 }, expectedOutput: 0.7000000000000001, hidden: false },
+      { id: 'uniform', label: 'Uniform attention', input: { attn_weights: [[0.33, 0.33, 0.34], [0.33, 0.33, 0.34]], sink_tokens: 1 }, expectedOutput: 0.33, hidden: false },
+      { id: 'invalid', label: 'Empty input raises error', input: { attn_weights: [], sink_tokens: 1 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-29': {
+    id: 'transformer-prob-29',
+    title: 'Perplexity from Token Log-Probabilities',
+    difficulty: 'hard',
+    topic: 'Transformer Internals',
+    estimatedTime: '15–20 min',
+    functionName: 'compute_perplexity',
+    functionSignature: 'compute_perplexity(log_probs: list[float]) -> float',
+    starterCode: `def compute_perplexity(log_probs):
+    """Compute perplexity from per-token log-probabilities (natural log).
+    
+    Perplexity = exp(-mean(log_probs))
+    
+    A lower perplexity means the model is less "surprised" by the text.
+    
+    Args:
+        log_probs: List of per-token log-probabilities (natural log, non-positive).
+    Returns:
+        float: Perplexity of the sequence.
+    Raises:
+        ValueError: If log_probs is empty.
+    """
+    import math
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement perplexity computation — the standard metric for evaluating language model quality, measuring how well the model predicts held-out text.',
+    taskDescription: 'Implement `compute_perplexity(log_probs)` that computes exp(-mean(log_probs)) from per-token natural log-probabilities.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Use natural logarithm (math.log base e).',
+      'Perplexity = exp(-sum(log_probs) / len(log_probs)).',
+      'Raise ValueError on empty input.',
+    ],
+    hints: {
+      small: 'avg_nll = -sum(log_probs)/len(log_probs). return math.exp(avg_nll).',
+      strong: 'If all probs are 1/vocab (random model): log_prob = -log(vocab_size). Perplexity = vocab_size. GPT-2 on WikiText-103: PPL~18. LLaMA 3 70B: PPL~3 on standard benchmarks.',
+      concept: 'Perplexity is the exponential of cross-entropy. It measures the effective branching factor: PPL=10 means the model is as uncertain as a uniform distribution over 10 choices per token. Lower is better — GPT-2 medium: PPL~26, GPT-3: PPL~20, GPT-4 class: PPL~5.',
+    },
+    conceptConnections: [
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Perplexity as language model quality metric' },
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'Language model evaluation benchmarks' },
+    ],
+    testCases: [
+      { id: 'uniform_vocab', label: 'Uniform probs over 10-way (PPL=10)', input: { log_probs: [-2.302585092994046, -2.302585092994046, -2.302585092994046, -2.302585092994046, -2.302585092994046] }, expectedOutput: 10.000000000000002, hidden: false },
+      { id: 'perfect', label: 'Perfect predictions (PPL=1)', input: { log_probs: [0.0, 0.0, 0.0, 0.0, 0.0] }, expectedOutput: 1.0, hidden: false },
+      { id: 'mixed', label: 'Mixed probs', input: { log_probs: [-0.6931471805599453, -1.3862943611198906] }, expectedOutput: 2.82842712474619, hidden: true },
+      { id: 'empty', label: 'Empty raises error', input: { log_probs: [] }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'transformer-prob-30': {
+    id: 'transformer-prob-30',
+    title: 'ALiBi Positional Bias Slopes',
+    difficulty: 'hard',
+    topic: 'Transformer Internals',
+    estimatedTime: '20–25 min',
+    functionName: 'alibi_slopes',
+    functionSignature: 'alibi_slopes(num_heads: int) -> list[float]',
+    starterCode: `def alibi_slopes(num_heads):
+    """Compute ALiBi (Attention with Linear Biases) slopes for each head.
+    
+    Slope for head h (1-indexed): slope_h = 2^(-8h/num_heads)
+    These slopes multiply negative relative distances to create linear
+    positional bias in attention scores.
+    
+    Args:
+        num_heads: Number of attention heads.
+    Returns:
+        list[float]: Length num_heads list of slopes, one per head.
+    Raises:
+        ValueError: If num_heads <= 0.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement ALiBi slope computation — the alternative to learned positional embeddings that enables zero-shot length generalization beyond training context, used in BLOOM and MPT models.',
+    taskDescription: 'Implement `alibi_slopes(num_heads)` that computes the per-head slope parameters for ALiBi: slope_h = 2^(-8h/num_heads) for h in 1..num_heads.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'slope_h = 2^(-8*(h+1)/num_heads) for h in 0..num_heads-1 (0-indexed h).',
+      'Slopes are monotonically decreasing from head 0 to head num_heads-1.',
+      'Raise ValueError if num_heads <= 0.',
+    ],
+    hints: {
+      small: 'return [2 ** (-8 * (h + 1) / num_heads) for h in range(num_heads)].',
+      strong: 'For 4 heads: slopes = [2^(-2), 2^(-4), 2^(-6), 2^(-8)] = [0.25, 0.0625, 0.015625, 0.00390625]. In attention: score[i][j] -= slope_h * (i - j) (additive bias, no parameters, no training).',
+      concept: 'ALiBi (Press et al. 2021) replaces positional embeddings with a learned-free linear penalty: closer tokens get less penalty. Crucially, the model generalizes to longer contexts without seeing them in training (unlike sinusoidal PE), making it practical for long-document processing.',
+    },
+    conceptConnections: [
+      { title: 'Attention & Transformers', route: '/docs/deep-learning/attention-transformers', description: 'ALiBi positional encoding for long context generalization' },
+      { title: 'LLM Inference & Decoding', route: '/docs/llms/inference-decoding', description: 'Length generalization beyond training context' },
+    ],
+    testCases: [
+      { id: 'four_heads', label: '4 heads', input: { num_heads: 4 }, expectedOutput: [0.25, 0.0625, 0.015625, 0.00390625], hidden: false },
+      { id: 'eight_heads', label: '8 heads', input: { num_heads: 8 }, expectedOutput: [0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625], hidden: false },
+      { id: 'invalid', label: 'num_heads=0 raises error', input: { num_heads: 0 }, expectError: 'ValueError', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

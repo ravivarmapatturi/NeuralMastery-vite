@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #022. Transformer Internals Module 5: Problem 22"
 description: "Master #022. Transformer Internals Module 5: Problem 22 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#022. Transformer Internals Module 5: Problem 22` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Generate a sliding window causal attention mask matrix. Sliding window attention (used in Mistral and Longformer) restricts self-attention to a local receptive field of `window_size` preceding tokens, reducing memory and computation from quadratic to linear.
 
 ## Task
 
-Implement the function `transformer_internals_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `sliding_window_attention_mask(seq_len, window_size)`: return a binary matrix of shape `seq_len x seq_len` where element `[i][j]` is `1` if `max(0, i - window_size + 1) <= j <= i`, and `0` otherwise. Raise `ValueError` if `seq_len <= 0` or `window_size <= 0`.
 
 <PracticePlayground problemId="transformer-prob-22" />

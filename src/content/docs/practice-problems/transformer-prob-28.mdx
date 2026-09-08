@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #028. Transformer Internals Module 6: Problem 28"
 description: "Master #028. Transformer Internals Module 6: Problem 28 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#028. Transformer Internals Module 6: Problem 28` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Measure the Attention Sink Fraction across generated token sequences. In streaming LLMs, initial tokens (attention sinks) absorb an outsized portion of attention mass regardless of their semantic relevance; measuring this fraction guides cache eviction policies.
 
 ## Task
 
-Implement the function `transformer_internals_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `attention_sink_fraction(attn_weights, sink_tokens=1)`: given an `N x N` attention weight matrix, compute the sum of attention weights on the first `sink_tokens` keys for each query token, and return the average fraction across all query positions rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-28" />

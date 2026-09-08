@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #009. Transformer Internals Module 2: Problem 9"
 description: "Master #009. Transformer Internals Module 2: Problem 9 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#009. Transformer Internals Module 2: Problem 9` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Apply causal attention masking to a matrix of raw attention logits. In autoregressive decoders, causal masking prevents tokens from attending to subsequent future positions by setting attention weights to 0.0 for all `j > i`.
 
 ## Task
 
-Implement the function `transformer_internals_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `causal_attention_weights(scores)`: for an `N x N` attention score matrix, mask all future positions `j > i` with `-inf`, then apply softmax along each row so that masked positions receive an attention weight of `0.0` and valid prior positions sum to `1.0`. Return probabilities rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-9" />

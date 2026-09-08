@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #025. Transformer Internals Module 5: Problem 25"
 description: "Master #025. Transformer Internals Module 5: Problem 25 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#025. Transformer Internals Module 5: Problem 25` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Top-K expert routing for Mixture-of-Experts (MoE) architectures. MoE routers compute gating logits across candidate experts, select the top `k` experts with highest scores, and normalize their weights via softmax.
 
 ## Task
 
-Implement the function `transformer_internals_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `moe_router(x, W_gate, k)`: compute routing logits `g = x @ W_gate`, identify the indices of the `k` largest logits, and apply softmax over these `k` selected logits to compute their routing weights. Return `(selected_expert_indices, routing_weights)` rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-25" />

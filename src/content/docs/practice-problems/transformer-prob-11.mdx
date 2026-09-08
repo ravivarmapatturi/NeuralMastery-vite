@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #011. Transformer Internals Module 3: Problem 11"
 description: "Master #011. Transformer Internals Module 3: Problem 11 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#011. Transformer Internals Module 3: Problem 11` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the complete Scaled Dot-Product Attention mechanism across multiple sequence positions. Scaled Dot-Product Attention maps queries and keys to attention weights via softmax, then uses these weights to form a weighted sum over value vectors.
 
 ## Task
 
-Implement the function `transformer_internals_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `scaled_dot_product_attention(Q, K, V)`: compute raw attention scores `S = (Q @ K.T) / sqrt(d_k)`, apply softmax along each row to obtain attention weights `A`, and compute context representations `A @ V`. Return the resulting 2D matrix rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-11" />

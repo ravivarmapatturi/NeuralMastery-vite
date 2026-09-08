@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #023. Transformer Internals Module 5: Problem 23"
 description: "Master #023. Transformer Internals Module 5: Problem 23 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#023. Transformer Internals Module 5: Problem 23` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute scaled dot-product attention using the Online Softmax algorithm that powers Flash Attention. Online Softmax maintains running maximums and normalizers across chunks, eliminating the need to store the full quadratic attention matrix in memory.
 
 ## Task
 
-Implement the function `transformer_internals_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `flash_attention_online(Q, K, V)`: compute exact attention output for queries `Q` over keys `K` and values `V` by iterating through key-value pairs sequentially, updating running maximums `m_i`, running sums `l_i`, and running unnormalized accumulators `o_i`. Return the final normalized output matrix rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-23" />

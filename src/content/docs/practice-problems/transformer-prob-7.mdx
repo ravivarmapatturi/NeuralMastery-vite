@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #007. Transformer Internals Module 2: Problem 7"
 description: "Master #007. Transformer Internals Module 2: Problem 7 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#007. Transformer Internals Module 2: Problem 7` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute Root Mean Square Normalization (RMSNorm), the efficient normalization layer used in LLaMA, Mistral, and Gemma. RMSNorm modifies LayerNorm by omitting the mean centering step, reducing memory bandwidth requirements while retaining training stability.
 
 ## Task
 
-Implement the function `transformer_internals_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `rms_norm(x, eps=1e-8)`: compute `RMS(x) = sqrt(mean(x_i**2) + eps)`, then normalize each element as `x_i / RMS(x)`. Return the normalized vector with elements rounded to 4 decimal places. If `x` is empty, raise `ValueError`.
 
 <PracticePlayground problemId="transformer-prob-7" />

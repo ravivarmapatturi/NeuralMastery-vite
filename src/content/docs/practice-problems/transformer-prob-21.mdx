@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #021. Transformer Internals Module 5: Problem 21"
 description: "Master #021. Transformer Internals Module 5: Problem 21 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#021. Transformer Internals Module 5: Problem 21` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Perform one step of Beam Search decoding across candidate token hypotheses. Beam search expands each active beam hypothesis with candidate tokens, scores cumulative log-probabilities, and retains the top `beam_width` sequences.
 
 ## Task
 
-Implement the function `transformer_internals_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `beam_search_step(beam_scores, log_probs, beam_width)`: for each existing beam score `beam_scores[b]` and candidate next-token log-probability `log_probs[b][v]`, compute candidate score `beam_scores[b] + log_probs[b][v]`. Return the top `beam_width` candidates as a list of `(new_score, beam_index, token_index)` tuples sorted in descending order of score.
 
 <PracticePlayground problemId="transformer-prob-21" />

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #001. Transformer Internals Module 1: Problem 1"
 description: "Master #001. Transformer Internals Module 1: Problem 1 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#001. Transformer Internals Module 1: Problem 1` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute scaled dot-product attention scores between query and key vectors. Scaling dot products by the square root of the head dimension prevents attention logits from growing excessively large in high dimensions, keeping softmax gradients stable during training.
 
 ## Task
 
-Implement the function `transformer_internals_module_1_problem_1`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `attention_score(q, k)`: compute `dot(q, k) / sqrt(len(q))` where `q` and `k` are float vectors of equal length. Return the resulting float rounded to 4 decimal places. If `q` and `k` have differing lengths or are empty, raise `ValueError`.
 
 <PracticePlayground problemId="transformer-prob-1" />

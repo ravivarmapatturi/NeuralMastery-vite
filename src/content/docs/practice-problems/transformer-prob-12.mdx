@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #012. Transformer Internals Module 3: Problem 12"
 description: "Master #012. Transformer Internals Module 3: Problem 12 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#012. Transformer Internals Module 3: Problem 12` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Perform token embedding table lookups for an input sequence of token IDs. In transformer architectures, the embedding matrix maps discrete vocabulary indices into continuous dense vector representations.
 
 ## Task
 
-Implement the function `transformer_internals_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `token_embedding(token_ids, embedding_table)`: for each integer in `token_ids`, retrieve the corresponding row from `embedding_table`. Return the list of embedding vectors. If any token ID is negative or `>= len(embedding_table)`, raise `ValueError` or `IndexError`.
 
 <PracticePlayground problemId="transformer-prob-12" />

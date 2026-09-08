@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #018. Transformer Internals Module 4: Problem 18"
 description: "Master #018. Transformer Internals Module 4: Problem 18 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#018. Transformer Internals Module 4: Problem 18` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Clip gradient tensors by global Euclidean norm. Gradient clipping limits the maximum norm of parameter updates, preventing exploding gradients during training of deep transformer networks.
 
 ## Task
 
-Implement the function `transformer_internals_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `clip_grad_norm(grads, max_norm)`: compute global norm `total_norm = sqrt(sum(g_i**2))` across all elements in `grads`. If `total_norm > max_norm`, scale all gradients by `max_norm / total_norm`. Return `(clipped_grads, total_norm)` with values rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-18" />

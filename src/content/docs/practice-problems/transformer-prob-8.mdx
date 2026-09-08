@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #008. Transformer Internals Module 2: Problem 8"
 description: "Master #008. Transformer Internals Module 2: Problem 8 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#008. Transformer Internals Module 2: Problem 8` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Execute the forward pass of a transformer Position-wise Feed-Forward Network (FFN). The FFN consists of two linear transformations with a non-linear activation (ReLU) in between, applied independently to each sequence token representation.
 
 ## Task
 
-Implement the function `transformer_internals_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `ffn_forward(x, W1, b1, W2, b2)`: compute hidden activations `h = relu(x @ W1 + b1)`, then output `y = h @ W2 + b2`. Return the output vector rounded to 4 decimal places. Validate dimensions and raise `ValueError` on shape mismatches.
 
 <PracticePlayground problemId="transformer-prob-8" />

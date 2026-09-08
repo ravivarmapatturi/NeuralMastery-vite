@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #026. Transformer Internals Module 6: Problem 26"
 description: "Master #026. Transformer Internals Module 6: Problem 26 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#026. Transformer Internals Module 6: Problem 26` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the acceptance probability of speculative tokens in Speculative Decoding. Speculative decoding speeds up LLM inference by generating draft tokens with a small model and verifying them in parallel with a larger target model.
 
 ## Task
 
-Implement the function `transformer_internals_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `speculative_acceptance_prob(draft_probs, target_probs, draft_token)`: given draft and target probability distributions over the vocabulary, compute acceptance probability `min(1.0, target_probs[draft_token] / draft_probs[draft_token])`. Return the probability float rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-26" />

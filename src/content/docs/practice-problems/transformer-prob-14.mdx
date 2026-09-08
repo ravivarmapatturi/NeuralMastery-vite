@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #014. Transformer Internals Module 3: Problem 14"
 description: "Master #014. Transformer Internals Module 3: Problem 14 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#014. Transformer Internals Module 3: Problem 14` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the cross-entropy loss between predicted model logits and a ground truth target token. Cross-entropy loss measures the negative log-probability of the true target token under the predicted probability distribution.
 
 ## Task
 
-Implement the function `transformer_internals_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cross_entropy_loss(logits, target)`: compute `-log(softmax(logits)[target])` using numerically stable log-sum-exp arithmetic: `loss = max(logits) + log(sum(exp(l_i - max(logits)))) - logits[target]`. Return the loss rounded to 4 decimal places. If `target` is out of bounds or `logits` is empty, raise `ValueError`.
 
 <PracticePlayground problemId="transformer-prob-14" />

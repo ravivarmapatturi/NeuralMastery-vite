@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #020. Transformer Internals Module 4: Problem 20"
 description: "Master #020. Transformer Internals Module 4: Problem 20 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#020. Transformer Internals Module 4: Problem 20` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a combined Linear Warmup with Cosine Decay learning rate schedule. Warmup increases the learning rate linearly from 0 to `base_lr` to stabilize early optimization, followed by cosine decay for smooth final convergence.
 
 ## Task
 
-Implement the function `transformer_internals_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `warmup_cosine_lr(step, warmup_steps, total_steps, base_lr)`: if `step < warmup_steps`, return `base_lr * (step / warmup_steps)`. If `step >= warmup_steps`, decay `base_lr` using cosine decay down to 0 at `total_steps`. Return the computed learning rate rounded to 6 decimal places.
 
 <PracticePlayground problemId="transformer-prob-20" />

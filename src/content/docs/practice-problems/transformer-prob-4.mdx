@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #004. Transformer Internals Module 1: Problem 4"
 description: "Master #004. Transformer Internals Module 1: Problem 4 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#004. Transformer Internals Module 1: Problem 4` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the Gaussian Error Linear Unit (GELU) activation function commonly used in modern transformer models such as BERT, GPT-2, and RoBERTa. GELU weights inputs by their probability under a Gaussian distribution rather than gating strictly at zero.
 
 ## Task
 
-Implement the function `transformer_internals_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `gelu(x)`: compute the standard GELU approximation `0.5 * x * (1.0 + tanh(sqrt(2.0 / pi) * (x + 0.044715 * x**3)))`. Return the result rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-4" />

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #024. Transformer Internals Module 5: Problem 24"
 description: "Master #024. Transformer Internals Module 5: Problem 24 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#024. Transformer Internals Module 5: Problem 24` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the forward pass of a LoRA (Low-Rank Adaptation) linear layer. LoRA decomposes weight updates into two low-rank matrices `A` and `B`, drastically reducing trainable parameters while maintaining the capabilities of pretrained base weights.
 
 ## Task
 
-Implement the function `transformer_internals_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `lora_linear(x, W, A, B, r, alpha)`: compute output `y = W @ x + (alpha / r) * (B @ (A @ x))`. `W` is the base weight matrix, `A` maps from input dimension to rank `r`, and `B` maps from `r` to output dimension. Return the resulting vector rounded to 4 decimal places.
 
 <PracticePlayground problemId="transformer-prob-24" />

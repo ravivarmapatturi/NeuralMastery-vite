@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #015. Transformer Internals Module 3: Problem 15"
 description: "Master #015. Transformer Internals Module 3: Problem 15 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#015. Transformer Internals Module 3: Problem 15` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Map query attention heads to their corresponding Key-Value (KV) heads in Grouped Query Attention (GQA). GQA shares KV heads across multiple query heads, cutting KV cache memory requirements while preserving model expressive power.
 
 ## Task
 
-Implement the function `transformer_internals_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `assign_kv_groups(num_heads, num_kv_heads)`: assign each query head index `0 <= h < num_heads` to a KV head index `0 <= g < num_kv_heads` where group size is `group_size = num_heads // num_kv_heads` and `g = h // group_size`. Return the list of assigned KV head indices. If `num_heads % num_kv_heads != 0` or parameters are non-positive, raise `ValueError`.
 
 <PracticePlayground problemId="transformer-prob-15" />

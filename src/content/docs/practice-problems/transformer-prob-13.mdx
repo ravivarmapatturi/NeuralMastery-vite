@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #013. Transformer Internals Module 3: Problem 13"
 description: "Master #013. Transformer Internals Module 3: Problem 13 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#013. Transformer Internals Module 3: Problem 13` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Construct a causal (lower-triangular) binary attention mask matrix. Causal masking ensures autoregressive language models obey the temporal constraint that prediction at position `i` depends only on tokens at positions `j <= i`.
 
 ## Task
 
-Implement the function `transformer_internals_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `create_causal_mask(seq_len)`: return an `seq_len x seq_len` matrix where element `[i][j]` is `1` if `j <= i` and `0` if `j > i`. If `seq_len <= 0`, raise `ValueError`.
 
 <PracticePlayground problemId="transformer-prob-13" />

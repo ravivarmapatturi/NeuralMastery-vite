@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #017. Transformer Internals Module 4: Problem 17"
 description: "Master #017. Transformer Internals Module 4: Problem 17 in the Transformer Internals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#017. Transformer Internals Module 4: Problem 17` to advance your mastery in **Transformer Internals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Construct a smoothed target probability distribution for classification and language modeling regularization. Label smoothing distributes a small probability mass `epsilon` uniformly across incorrect classes to prevent overconfidence and improve generalization.
 
 ## Task
 
-Implement the function `transformer_internals_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `label_smoothed_targets(target, num_classes, epsilon=0.1)`: return a probability distribution of length `num_classes` where the true `target` index receives `(1.0 - epsilon) + (epsilon / num_classes)` and all other classes receive `epsilon / num_classes`. Return floats rounded to 4 decimal places. If inputs are invalid, raise `ValueError`.
 
 <PracticePlayground problemId="transformer-prob-17" />
