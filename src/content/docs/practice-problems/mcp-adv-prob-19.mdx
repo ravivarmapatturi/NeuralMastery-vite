@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #316. MCP Advanced & Agent Integration Module 4: Problem 19"
-description: "Master #316. MCP Advanced & Agent Integration Module 4: Problem 19 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Fallback Tool Chain Resolution"
+description: "Implement fallback-tool-chain resolution, letting an agent gracefully degrade to a lower-priority tool when its preferred one is unavailable."
 difficulty: "medium"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #316. MCP Advanced & Agent Integration Module 4: Problem 19
+# Fallback Tool Chain Resolution
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #316 of 1072 | **Points**: 60 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#316. MCP Advanced & Agent Integration Module 4: Problem 19` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement fallback-tool-chain resolution, letting an agent gracefully degrade to a lower-priority tool when its preferred one is unavailable.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `resolve_fallback_tool(tool_priority_list, tool_availability)`: return the FIRST tool name in `tool_priority_list` (in order) whose `tool_availability` value is `True`. Return `''` if none are available.
 
 <PracticePlayground problemId="mcp-adv-prob-19" />

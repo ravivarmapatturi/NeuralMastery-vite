@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #314. MCP Advanced & Agent Integration Module 4: Problem 17"
-description: "Master #314. MCP Advanced & Agent Integration Module 4: Problem 17 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Aggregate Health Across Multiple MCP Servers"
+description: "Implement multi-server health aggregation, the real status-rollup logic an agent's server-management UI needs to show one overall health indicator."
+difficulty: "easy"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #314. MCP Advanced & Agent Integration Module 4: Problem 17
+# Aggregate Health Across Multiple MCP Servers
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #314 of 1072 | **Points**: 60 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#314. MCP Advanced & Agent Integration Module 4: Problem 17` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement multi-server health aggregation, the real status-rollup logic an agent's server-management UI needs to show one overall health indicator.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `aggregate_health(server_statuses)`. Each value is `'healthy'`, `'degraded'`, or `'down'`. Return `'down'` if ANY server is `'down'`; else `'degraded'` if ANY is `'degraded'`; else `'healthy'`.
 
 <PracticePlayground problemId="mcp-adv-prob-17" />

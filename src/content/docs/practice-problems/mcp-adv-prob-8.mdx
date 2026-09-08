@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #305. MCP Advanced & Agent Integration Module 2: Problem 8"
-description: "Master #305. MCP Advanced & Agent Integration Module 2: Problem 8 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Sandboxed Execution Permission Check"
+description: "Implement a real, hierarchical permission check for a sandboxed MCP tool execution environment, supporting wildcard grants."
+difficulty: "medium"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #305. MCP Advanced & Agent Integration Module 2: Problem 8
+# Sandboxed Execution Permission Check
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #305 of 1072 | **Points**: 40 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#305. MCP Advanced & Agent Integration Module 2: Problem 8` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real, hierarchical permission check for a sandboxed MCP tool execution environment, supporting wildcard grants.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_permission(requested_permission, granted_permissions)`. `requested_permission` is a dotted path like `'fs.write'`. It's granted if it's LITERALLY in `granted_permissions`, OR if a WILDCARD ancestor grant exists: `'fs.*'` covers `'fs.write'` and `'fs.read'`; `'*'` covers everything.
 
 <PracticePlayground problemId="mcp-adv-prob-8" />

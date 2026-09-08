@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #280. MCP Stdio Transport Layer"
-description: "Master #280. MCP Stdio Transport Layer in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Render an MCP Prompt Template"
+description: "Implement MCP prompt-template rendering, substituting user-supplied arguments into a server-defined reusable prompt."
+difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #280. MCP Stdio Transport Layer
+# Render an MCP Prompt Template
 
-**Track**: MCP Core Engineering | **Rank**: #280 of 1072 | **Points**: 60 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#280. MCP Stdio Transport Layer` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement MCP prompt-template rendering, substituting user-supplied arguments into a server-defined reusable prompt.
 
 ## Task
 
-Implement the function `mcp_stdio_transport_layer`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `render_prompt_template(template, arguments)`. Replace every `{{key}}` placeholder in `template` with `str(arguments[key])`. Raise `KeyError` if a placeholder references a key not present in `arguments`.
 
 <PracticePlayground problemId="mcp-core-prob-12" />

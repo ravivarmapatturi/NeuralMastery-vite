@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #276. MCP Tool Canary Release"
-description: "Master #276. MCP Tool Canary Release in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Correlate JSON-RPC Response to Pending Request"
+description: "Implement request/response correlation by id, the real mechanism an MCP client uses to route an async response back to the code that's waiting for it."
 difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #276. MCP Tool Canary Release
+# Correlate JSON-RPC Response to Pending Request
 
-**Track**: MCP Core Engineering | **Rank**: #276 of 1072 | **Points**: 40 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#276. MCP Tool Canary Release` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement request/response correlation by id, the real mechanism an MCP client uses to route an async response back to the code that's waiting for it.
 
 ## Task
 
-Implement the function `mcp_tool_canary_release`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `correlate_response(pending_requests, response_id)`. `pending_requests` maps request id -> the method name that was called. Return the method name for `response_id`, or `'unknown'` if `response_id` isn't a pending request.
 
 <PracticePlayground problemId="mcp-core-prob-8" />

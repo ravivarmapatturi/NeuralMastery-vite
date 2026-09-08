@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #291. MCP Error Code Standardizer"
-description: "Master #291. MCP Error Code Standardizer in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Check Tool Annotations for Destructive Hints"
+description: "Implement destructive-tool-call gating based on MCP tool annotations, a real safety check before letting an agent auto-execute a risky tool."
+difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #291. MCP Error Code Standardizer
+# Check Tool Annotations for Destructive Hints
 
-**Track**: MCP Core Engineering | **Rank**: #291 of 1072 | **Points**: 90 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#291. MCP Error Code Standardizer` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement destructive-tool-call gating based on MCP tool annotations, a real safety check before letting an agent auto-execute a risky tool.
 
 ## Task
 
-Implement the function `mcp_error_code_standardizer`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `requires_confirmation(annotations)`. `annotations` may contain `readOnlyHint` and `destructiveHint` (both booleans, default `False` if absent). Return `True` (needs human confirmation) if `destructiveHint` is `True` AND `readOnlyHint` is `False`. Otherwise `False`.
 
 <PracticePlayground problemId="mcp-core-prob-23" />

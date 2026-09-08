@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #292. MCP Request ID Correlation"
-description: "Master #292. MCP Request ID Correlation in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Validate Elicitation Response Against Schema"
+description: "Implement elicitation-response validation, checking that user-supplied answers to a server's elicitation request match the fields and types it actually asked for."
+difficulty: "medium"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #292. MCP Request ID Correlation
+# Validate Elicitation Response Against Schema
 
-**Track**: MCP Core Engineering | **Rank**: #292 of 1072 | **Points**: 90 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#292. MCP Request ID Correlation` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement elicitation-response validation, checking that user-supplied answers to a server's elicitation request match the fields and types it actually asked for.
 
 ## Task
 
-Implement the function `mcp_request_id_correlation`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `validate_elicitation_response(response, requested_fields)`. `requested_fields` maps field name -> expected type (`'str'`,`'int'`,`'bool'`). Return `True` only if `response` has EXACTLY the same set of keys as `requested_fields` (no extra, none missing) and every value's Python type matches.
 
 <PracticePlayground problemId="mcp-core-prob-24" />

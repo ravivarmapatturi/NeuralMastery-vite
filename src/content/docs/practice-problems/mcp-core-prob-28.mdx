@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #296. MCP Stateless Request Router"
-description: "Master #296. MCP Stateless Request Router in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Client Reconnect Backoff Schedule"
+description: "Implement exponential reconnect backoff for an MCP client that's lost its transport connection to a server, avoiding a hot retry loop."
+difficulty: "medium"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #296. MCP Stateless Request Router
+# Client Reconnect Backoff Schedule
 
-**Track**: MCP Core Engineering | **Rank**: #296 of 1072 | **Points**: 90 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#296. MCP Stateless Request Router` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement exponential reconnect backoff for an MCP client that's lost its transport connection to a server, avoiding a hot retry loop.
 
 ## Task
 
-Implement the function `mcp_stateless_request_router`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `reconnect_delay(attempt, base_delay_s, max_delay_s)`: return `min(base_delay_s * (2 ** attempt), max_delay_s)`.
 
 <PracticePlayground problemId="mcp-core-prob-28" />

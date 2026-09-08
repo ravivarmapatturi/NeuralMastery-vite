@@ -97506,6 +97506,5035 @@ def average_heading(headings_rad):
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  "mcp-core-prob-1": {
+    id: "mcp-core-prob-1",
+    title: "MCP Tool Schema Field Type Validation",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "validate_tool_schema",
+    functionSignature: "validate_tool_schema(arguments: dict, schema: dict) -> list[str]",
+    starterCode: `def validate_tool_schema(arguments, schema):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement MCP tool-call argument validation against a declared JSON-schema-style type map, the real gate a server must run before executing any tool call.",
+    taskDescription: "Implement `validate_tool_schema(arguments, schema)`. `schema` maps arg name -> expected Python type name (`'str'`,`'int'`,`'float'`,`'bool'`,`'list'`,`'dict'`). Return a sorted list of error strings: `\"missing: <name>\"` if a schema field is absent from `arguments`, `\"wrong type: <name>\"` if present with the wrong type. Empty list means valid.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "schema non-empty"
+      ],
+    hints: {
+  "small": "Same pattern as any schema validator: check presence, then check type.",
+        "strong": "for name, t in schema.items(): if name not in arguments: errors.append(f'missing: {name}'); elif type(arguments[name]).__name__ != t: errors.append(f'wrong type: {name}').",
+        "concept": "A real MCP server MUST validate tool arguments before execution -- an unvalidated call reaching a tool handler with a wrong-typed argument is a real crash/security surface, not just a UX nicety."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "fully valid",
+          "input": {
+            "arguments": {
+              "path": "/tmp",
+              "recursive": true
+            },
+            "schema": {
+              "path": "str",
+              "recursive": "bool"
+            }
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "missing field",
+          "input": {
+            "arguments": {
+              "path": "/tmp"
+            },
+            "schema": {
+              "path": "str",
+              "recursive": "bool"
+            }
+          },
+          "expectedOutput": [
+            "missing: recursive"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "wrong type",
+          "input": {
+            "arguments": {
+              "path": 5
+            },
+            "schema": {
+              "path": "str"
+            }
+          },
+          "expectedOutput": [
+            "wrong type: path"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple errors",
+          "input": {
+            "arguments": {},
+            "schema": {
+              "a": "str",
+              "b": "int"
+            }
+          },
+          "expectedOutput": [
+            "missing: a",
+            "missing: b"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-2": {
+    id: "mcp-core-prob-2",
+    title: "JSON-RPC 2.0 Request Shape Validation",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "is_valid_jsonrpc_request",
+    functionSignature: "is_valid_jsonrpc_request(message: dict) -> bool",
+    starterCode: `def is_valid_jsonrpc_request(message):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement JSON-RPC 2.0 request validation, the transport-level contract MCP is built directly on top of.",
+    taskDescription: "Implement `is_valid_jsonrpc_request(message)`. A valid request has EXACTLY: `jsonrpc` equal to the string `'2.0'`, a `method` key whose value is a non-empty string, and (if present) a `params` key that is a `dict` or `list`. `id` is optional (its absence marks it a notification) but if present must be a `str`, `int`, or `None`. Return `True` only if all present fields satisfy these rules.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "message is a dict"
+      ],
+    hints: {
+  "small": "Check each field's presence and type against the spec.",
+        "strong": "if message.get('jsonrpc') != '2.0': return False; if not isinstance(message.get('method'), str) or not message['method']: return False; if 'params' in message and not isinstance(message['params'], (dict, list)): return False; if 'id' in message and not isinstance(message['id'], (str, int, type(None))): return False; return True.",
+        "concept": "Getting this validation exactly right matters because JSON-RPC's `id` presence/absence is the ONLY thing distinguishing a request (expects a response) from a notification (fire-and-forget) -- a server that gets this wrong will send responses nobody's waiting for, or silently drop real requests."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "valid request with id",
+          "input": {
+            "message": {
+              "jsonrpc": "2.0",
+              "method": "tools/list",
+              "id": 1
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "valid notification no id",
+          "input": {
+            "message": {
+              "jsonrpc": "2.0",
+              "method": "notifications/ping"
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "wrong jsonrpc version",
+          "input": {
+            "message": {
+              "jsonrpc": "1.0",
+              "method": "x",
+              "id": 1
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty method string invalid",
+          "input": {
+            "message": {
+              "jsonrpc": "2.0",
+              "method": "",
+              "id": 1
+            }
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-3": {
+    id: "mcp-core-prob-3",
+    title: "Tool Discovery Capability Filtering",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "filter_tools_by_tag",
+    functionSignature: "filter_tools_by_tag(tools: list[dict], required_tag: str) -> list[str]",
+    starterCode: `def filter_tools_by_tag(tools, required_tag):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement tool-discovery filtering by capability tag, letting a client or orchestrator narrow a large tool catalog to only relevant tools.",
+    taskDescription: "Implement `filter_tools_by_tag(tools, required_tag)`. `tools` is a list of `{\"name\": str, \"tags\": list[str]}`. Return the sorted list of tool names whose `tags` list contains `required_tag`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "tools may be empty"
+      ],
+    hints: {
+  "small": "Filter tools by tag membership.",
+        "strong": "sorted(t['name'] for t in tools if required_tag in t['tags']).",
+        "concept": "A real MCP client can be connected to dozens of servers exposing hundreds of tools -- tag-based filtering (or a semantic-search equivalent) is what keeps 'select the right tool' tractable rather than dumping every tool description into every LLM prompt."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one tool matches",
+          "input": {
+            "tools": [
+              {
+                "name": "read_file",
+                "tags": [
+                  "fs",
+                  "read"
+                ]
+              },
+              {
+                "name": "send_email",
+                "tags": [
+                  "comm"
+                ]
+              }
+            ],
+            "required_tag": "fs"
+          },
+          "expectedOutput": [
+            "read_file"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no matches",
+          "input": {
+            "tools": [
+              {
+                "name": "a",
+                "tags": [
+                  "x"
+                ]
+              }
+            ],
+            "required_tag": "y"
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple matches sorted",
+          "input": {
+            "tools": [
+              {
+                "name": "z",
+                "tags": [
+                  "net"
+                ]
+              },
+              {
+                "name": "a",
+                "tags": [
+                  "net"
+                ]
+              }
+            ],
+            "required_tag": "net"
+          },
+          "expectedOutput": [
+            "a",
+            "z"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty tools list",
+          "input": {
+            "tools": [],
+            "required_tag": "x"
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-4": {
+    id: "mcp-core-prob-4",
+    title: "Parse a Resource URI Into Components",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "parse_resource_uri",
+    functionSignature: "parse_resource_uri(uri: str) -> dict",
+    starterCode: `def parse_resource_uri(uri):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement MCP resource URI parsing, breaking a `scheme://path?query` resource identifier into its structural parts.",
+    taskDescription: "Implement `parse_resource_uri(uri)`. Split on `'://'` to get `scheme` and the rest. Split the rest on the first `'?'` to separate `path` from a query string (`''` if no `?`). Parse the query string into a dict by splitting on `'&'` then `'='` per pair (empty dict if the query string is empty). Return `{\"scheme\": str, \"path\": str, \"query\": dict}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "uri contains '://' exactly once"
+      ],
+    hints: {
+  "small": "Three sequential splits: scheme, path, then query pairs.",
+        "strong": "scheme, rest = uri.split('://', 1); path, _, qs = rest.partition('?'); query = dict(p.split('=',1) for p in qs.split('&')) if qs else {}.",
+        "concept": "MCP resources are identified by URIs precisely so they can point at anything (files, database rows, API endpoints) behind one uniform addressing scheme -- correctly parsing the scheme is literally how a client knows which resource provider should handle a given URI."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple file uri no query",
+          "input": {
+            "uri": "file:///home/user/doc.txt"
+          },
+          "expectedOutput": {
+            "scheme": "file",
+            "path": "/home/user/doc.txt",
+            "query": {}
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "uri with single query param",
+          "input": {
+            "uri": "db://records/table?limit=10"
+          },
+          "expectedOutput": {
+            "scheme": "db",
+            "path": "records/table",
+            "query": {
+              "limit": "10"
+            }
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "uri with multiple query params",
+          "input": {
+            "uri": "api://users?page=2&size=50"
+          },
+          "expectedOutput": {
+            "scheme": "api",
+            "path": "users",
+            "query": {
+              "page": "2",
+              "size": "50"
+            }
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "custom scheme",
+          "input": {
+            "uri": "mcp-mem://cache/key1"
+          },
+          "expectedOutput": {
+            "scheme": "mcp-mem",
+            "path": "cache/key1",
+            "query": {}
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-5": {
+    id: "mcp-core-prob-5",
+    title: "Batch Rapid Notifications Within a Window",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "batch_notifications",
+    functionSignature: "batch_notifications(notifications: list[dict], window_ms: float) -> list[list]",
+    starterCode: `def batch_notifications(notifications, window_ms):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement notification batching (distinct from single-notification debouncing): grouping rapid-fire MCP notifications arriving within a rolling time window into batches, to reduce client-side handler churn.",
+    taskDescription: "Implement `batch_notifications(notifications, window_ms)`. `notifications` is a list of `{\"id\": str, \"ts\": float}` sorted by `ts` ascending. Start a new batch whenever a notification's `ts` is MORE than `window_ms` after the CURRENT batch's first notification's `ts`. Return a list of batches, each a list of notification ids.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "notifications sorted by ts ascending",
+        "window_ms > 0"
+      ],
+    hints: {
+  "small": "Compare each notification's timestamp against the current batch's anchor (first) timestamp, not the previous notification's timestamp.",
+        "strong": "batches=[]; cur=[]; anchor=None; for n in notifications: if anchor is None or n['ts']-anchor<=window_ms: cur.append(n['id']); anchor = anchor if anchor is not None else n['ts'] else: batches.append(cur); cur=[n['id']]; anchor=n['ts']. Append final cur if non-empty.",
+        "concept": "Anchoring to the BATCH's first timestamp (not a rolling last-seen check) prevents 'batch drift' -- a naive rolling-window implementation could keep extending one batch indefinitely if notifications arrive just-under-the-window apart continuously, defeating the whole point of bounding batch size in time."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all within one window",
+          "input": {
+            "notifications": [
+              {
+                "id": "a",
+                "ts": 0
+              },
+              {
+                "id": "b",
+                "ts": 50
+              }
+            ],
+            "window_ms": 100
+          },
+          "expectedOutput": [
+            [
+              "a",
+              "b"
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "two separate batches",
+          "input": {
+            "notifications": [
+              {
+                "id": "a",
+                "ts": 0
+              },
+              {
+                "id": "b",
+                "ts": 200
+              }
+            ],
+            "window_ms": 100
+          },
+          "expectedOutput": [
+            [
+              "a"
+            ],
+            [
+              "b"
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single notification",
+          "input": {
+            "notifications": [
+              {
+                "id": "a",
+                "ts": 0
+              }
+            ],
+            "window_ms": 100
+          },
+          "expectedOutput": [
+            [
+              "a"
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "anchor prevents drift beyond window",
+          "input": {
+            "notifications": [
+              {
+                "id": "a",
+                "ts": 0
+              },
+              {
+                "id": "b",
+                "ts": 90
+              },
+              {
+                "id": "c",
+                "ts": 150
+              }
+            ],
+            "window_ms": 100
+          },
+          "expectedOutput": [
+            [
+              "a",
+              "b"
+            ],
+            [
+              "c"
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-6": {
+    id: "mcp-core-prob-6",
+    title: "Client/Server Capability Negotiation",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "negotiate_capabilities",
+    functionSignature: "negotiate_capabilities(client_caps: set, server_caps: set) -> list[str]",
+    starterCode: `def negotiate_capabilities(client_caps, server_caps):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement MCP capability negotiation, the real handshake step determining which protocol features both sides can actually use.",
+    taskDescription: "Implement `negotiate_capabilities(client_caps, server_caps)`: return the sorted list of capabilities present in BOTH sets.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both sets of strings"
+      ],
+    hints: {
+  "small": "Set intersection, sorted.",
+        "strong": "sorted(client_caps & server_caps).",
+        "concept": "Neither side can safely use a capability the other doesn't support -- negotiation is what lets MCP evolve its protocol over time (adding new capabilities) without breaking older clients or servers that predate them."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "partial overlap",
+          "input": {
+            "client_caps": [
+              "sampling",
+              "roots",
+              "logging"
+            ],
+            "server_caps": [
+              "sampling",
+              "logging"
+            ]
+          },
+          "expectedOutput": [
+            "logging",
+            "sampling"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "full overlap",
+          "input": {
+            "client_caps": [
+              "a",
+              "b"
+            ],
+            "server_caps": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no overlap",
+          "input": {
+            "client_caps": [
+              "x"
+            ],
+            "server_caps": [
+              "y"
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty client caps",
+          "input": {
+            "client_caps": [],
+            "server_caps": [
+              "a"
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-7": {
+    id: "mcp-core-prob-7",
+    title: "Classify JSON-RPC Error Code",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "classify_error_code",
+    functionSignature: "classify_error_code(code: int) -> str",
+    starterCode: `def classify_error_code(code):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement JSON-RPC error-code classification per the real reserved-range convention MCP inherits from JSON-RPC 2.0.",
+    taskDescription: "Implement `classify_error_code(code)`. Return `'parse_error'` for `-32700`, `'invalid_request'` for `-32600`, `'method_not_found'` for `-32601`, `'invalid_params'` for `-32602`, `'internal_error'` for `-32603`. For any other code in `[-32099, -32000]`, return `'server_error'`. For anything else, return `'application_error'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "code is an int"
+      ],
+    hints: {
+  "small": "Five exact reserved codes, one reserved range, one fallback.",
+        "strong": "exact = {-32700:'parse_error', -32600:'invalid_request', -32601:'method_not_found', -32602:'invalid_params', -32603:'internal_error'}; if code in exact: return exact[code]; if -32099 <= code <= -32000: return 'server_error'; return 'application_error'.",
+        "concept": "These exact reserved codes/ranges are defined by the JSON-RPC 2.0 spec itself, not an MCP-specific convention -- a compliant server or client MUST recognize them correctly to interoperate with any other JSON-RPC-based tool, not just other MCP implementations."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "parse error",
+          "input": {
+            "code": -32700
+          },
+          "expectedOutput": "parse_error",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "method not found",
+          "input": {
+            "code": -32601
+          },
+          "expectedOutput": "method_not_found",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "server error range",
+          "input": {
+            "code": -32050
+          },
+          "expectedOutput": "server_error",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "application-defined error",
+          "input": {
+            "code": -1
+          },
+          "expectedOutput": "application_error",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-8": {
+    id: "mcp-core-prob-8",
+    title: "Correlate JSON-RPC Response to Pending Request",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "correlate_response",
+    functionSignature: "correlate_response(pending_requests: dict[str, str], response_id: str) -> str",
+    starterCode: `def correlate_response(pending_requests, response_id):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement request/response correlation by id, the real mechanism an MCP client uses to route an async response back to the code that's waiting for it.",
+    taskDescription: "Implement `correlate_response(pending_requests, response_id)`. `pending_requests` maps request id -> the method name that was called. Return the method name for `response_id`, or `'unknown'` if `response_id` isn't a pending request.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "pending_requests is a dict"
+      ],
+    hints: {
+  "small": "A direct dict lookup with a fallback default.",
+        "strong": "return pending_requests.get(response_id, 'unknown').",
+        "concept": "Because MCP transports allow concurrent in-flight requests, a client MUST track pending request ids to know which awaiting caller a given response belongs to -- an id it doesn't recognize (e.g. a duplicate or late response after a timeout already cleaned it up) is a real, expected case to handle gracefully, not crash on."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "known pending request",
+          "input": {
+            "pending_requests": {
+              "1": "tools/call",
+              "2": "resources/read"
+            },
+            "response_id": "1"
+          },
+          "expectedOutput": "tools/call",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "unknown response id",
+          "input": {
+            "pending_requests": {
+              "1": "tools/call"
+            },
+            "response_id": "99"
+          },
+          "expectedOutput": "unknown",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single pending request",
+          "input": {
+            "pending_requests": {
+              "a": "ping"
+            },
+            "response_id": "a"
+          },
+          "expectedOutput": "ping",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty pending requests",
+          "input": {
+            "pending_requests": {},
+            "response_id": "1"
+          },
+          "expectedOutput": "unknown",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-9": {
+    id: "mcp-core-prob-9",
+    title: "Tool Call Timeout Check",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "is_tool_call_timed_out",
+    functionSignature: "is_tool_call_timed_out(started_at: float, current_time: float, timeout_s: float) -> bool",
+    starterCode: `def is_tool_call_timed_out(started_at, current_time, timeout_s):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real tool-call timeout check, protecting an MCP client from hanging forever on a server tool call that never responds.",
+    taskDescription: "Implement `is_tool_call_timed_out(started_at, current_time, timeout_s)`: return `True` if `(current_time - started_at) >= timeout_s`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "current_time >= started_at",
+        "timeout_s > 0"
+      ],
+    hints: {
+  "small": "Elapsed time versus the timeout.",
+        "strong": "return (current_time - started_at) >= timeout_s.",
+        "concept": "A tool call invokes arbitrary server-side code (a file read, a network call, a long-running computation) -- a client without a timeout on tool calls can hang indefinitely on any single misbehaving or slow tool."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "well within timeout",
+          "input": {
+            "started_at": 0,
+            "current_time": 5,
+            "timeout_s": 30
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "exactly at timeout",
+          "input": {
+            "started_at": 0,
+            "current_time": 30,
+            "timeout_s": 30
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "timed out",
+          "input": {
+            "started_at": 0,
+            "current_time": 60,
+            "timeout_s": 30
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "just started",
+          "input": {
+            "started_at": 10,
+            "current_time": 10,
+            "timeout_s": 5
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-10": {
+    id: "mcp-core-prob-10",
+    title: "Parse Content-Length Stdio Framing",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "parse_stdio_frame",
+    functionSignature: "parse_stdio_frame(raw_bytes: str) -> tuple",
+    starterCode: `def parse_stdio_frame(raw_bytes):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Content-Length-prefixed message framing parsing, the real wire format MCP's stdio transport uses (identical in shape to LSP's framing).",
+    taskDescription: "Implement `parse_stdio_frame(raw_bytes)`. The format is a header line `'Content-Length: N\\r\\n'`, a blank line `'\\r\\n'`, then exactly N bytes of body. Parse `N` from the header, extract the body of that exact length, and return `(body, remainder)` where `remainder` is whatever bytes come after the frame (may be `''`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "raw_bytes contains at least one complete, well-formed frame"
+      ],
+    hints: {
+  "small": "Find the header/body separator, extract N, then slice exactly N chars for the body.",
+        "strong": "header_end = raw_bytes.index('\\r\\n\\r\\n'); header = raw_bytes[:header_end]; n = int(header.split(':')[1].strip()); body_start = header_end+4; body = raw_bytes[body_start:body_start+n]; remainder = raw_bytes[body_start+n:]; return (body, remainder).",
+        "concept": "Content-Length framing (not newline-delimited JSON) exists specifically because a JSON payload can legitimately contain embedded newlines -- without an explicit length prefix, a naive line-based reader would incorrectly split one message into pieces."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single complete frame",
+          "input": {
+            "raw_bytes": "Content-Length: 13\r\n\r\n{\"a\": \"bcd\"}\n"
+          },
+          "expectedOutput": [
+            "{\"a\": \"bcd\"}\n",
+            ""
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "frame with remainder",
+          "input": {
+            "raw_bytes": "Content-Length: 5\r\n\r\nhelloEXTRA"
+          },
+          "expectedOutput": [
+            "hello",
+            "EXTRA"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "minimal empty-ish body",
+          "input": {
+            "raw_bytes": "Content-Length: 2\r\n\r\n{}"
+          },
+          "expectedOutput": [
+            "{}",
+            ""
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "larger json body",
+          "input": {
+            "raw_bytes": "Content-Length: 16\r\n\r\n{\"jsonrpc\":\"2\"}\n"
+          },
+          "expectedOutput": [
+            "{\"jsonrpc\":\"2\"}\n",
+            ""
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-11": {
+    id: "mcp-core-prob-11",
+    title: "MCP Session Lifecycle State Transition",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "session_transition",
+    functionSignature: "session_transition(current_state: str, event: str) -> str",
+    starterCode: `def session_transition(current_state, event):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real MCP session lifecycle state machine, governing valid connection state transitions between a client and server.",
+    taskDescription: "Implement `session_transition(current_state, event)` with these valid transitions: `('uninitialized','initialize')->'initializing'`; `('initializing','initialized')->'ready'`; `('ready','shutdown')->'shutting_down'`; `('shutting_down','exit')->'closed'`; from ANY state, event `'error'` transitions to `'closed'`. Any other `(state, event)` pair is invalid -- return `current_state` unchanged.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "current_state and event are strings"
+      ],
+    hints: {
+  "small": "A lookup table of valid (state,event)->new_state pairs, plus a special-cased global error transition.",
+        "strong": "if event == 'error': return 'closed'; table = {('uninitialized','initialize'):'initializing', ('initializing','initialized'):'ready', ('ready','shutdown'):'shutting_down', ('shutting_down','exit'):'closed'}; return table.get((current_state,event), current_state).",
+        "concept": "Enforcing valid state transitions explicitly (not just trusting whatever message arrives) is a real correctness requirement -- e.g. a tool call arriving before 'initialized' is a protocol violation, and a well-behaved server should reject it rather than process it in an undefined session state."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "normal init sequence step 1",
+          "input": {
+            "current_state": "uninitialized",
+            "event": "initialize"
+          },
+          "expectedOutput": "initializing",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "normal init sequence step 2",
+          "input": {
+            "current_state": "initializing",
+            "event": "initialized"
+          },
+          "expectedOutput": "ready",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "error from any state closes",
+          "input": {
+            "current_state": "ready",
+            "event": "error"
+          },
+          "expectedOutput": "closed",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "invalid transition stays put",
+          "input": {
+            "current_state": "uninitialized",
+            "event": "shutdown"
+          },
+          "expectedOutput": "uninitialized",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-12": {
+    id: "mcp-core-prob-12",
+    title: "Render an MCP Prompt Template",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "render_prompt_template",
+    functionSignature: "render_prompt_template(template: str, arguments: dict) -> str",
+    starterCode: `def render_prompt_template(template, arguments):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement MCP prompt-template rendering, substituting user-supplied arguments into a server-defined reusable prompt.",
+    taskDescription: "Implement `render_prompt_template(template, arguments)`. Replace every `{{key}}` placeholder in `template` with `str(arguments[key])`. Raise `KeyError` if a placeholder references a key not present in `arguments`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "template contains zero or more {{key}} placeholders"
+      ],
+    hints: {
+  "small": "Find each {{...}} placeholder, look up its key, substitute.",
+        "strong": "import re; def repl(m): return str(arguments[m.group(1)]); return re.sub(r'\\{\\{(\\w+)\\}\\}', repl, template) -- re.sub's replacement function naturally raises if arguments[key] fails on a missing key.",
+        "concept": "MCP prompts are meant to be reusable templates a server author writes once and a client fills in per-use -- this substitution mechanism is exactly what makes that reuse possible, similar in spirit to a Jinja/Mustache template but intentionally much simpler."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single substitution",
+          "input": {
+            "template": "Hello {{name}}!",
+            "arguments": {
+              "name": "World"
+            }
+          },
+          "expectedOutput": "Hello World!",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "multiple substitutions",
+          "input": {
+            "template": "{{a}} and {{b}}",
+            "arguments": {
+              "a": "cats",
+              "b": "dogs"
+            }
+          },
+          "expectedOutput": "cats and dogs",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no placeholders",
+          "input": {
+            "template": "static text",
+            "arguments": {}
+          },
+          "expectedOutput": "static text",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "numeric argument coerced to string",
+          "input": {
+            "template": "count: {{n}}",
+            "arguments": {
+              "n": 5
+            }
+          },
+          "expectedOutput": "count: 5",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-13": {
+    id: "mcp-core-prob-13",
+    title: "Deduplicate Overlapping Resource Subscriptions",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "dedupe_subscriptions",
+    functionSignature: "dedupe_subscriptions(subscription_requests: list[str]) -> list[str]",
+    starterCode: `def dedupe_subscriptions(subscription_requests):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement subscription deduplication, avoiding a server sending duplicate resource-change notifications to a client that subscribed to the same URI more than once.",
+    taskDescription: "Implement `dedupe_subscriptions(subscription_requests)`: return the DISTINCT URIs in `subscription_requests`, preserving the order of FIRST appearance.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "subscription_requests is a list of strings"
+      ],
+    hints: {
+  "small": "Keep the first occurrence of each URI, in original order.",
+        "strong": "seen=set(); out=[]; for uri in subscription_requests: if uri not in seen: seen.add(uri); out.append(uri).",
+        "concept": "A client might legitimately (if redundantly) subscribe to the same resource twice across different code paths -- deduplicating on the server side prevents that client from receiving the SAME update notification multiple times per actual change."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one duplicate",
+          "input": {
+            "subscription_requests": [
+              "file://a",
+              "file://b",
+              "file://a"
+            ]
+          },
+          "expectedOutput": [
+            "file://a",
+            "file://b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no duplicates",
+          "input": {
+            "subscription_requests": [
+              "file://a",
+              "file://b"
+            ]
+          },
+          "expectedOutput": [
+            "file://a",
+            "file://b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all same uri",
+          "input": {
+            "subscription_requests": [
+              "file://x",
+              "file://x",
+              "file://x"
+            ]
+          },
+          "expectedOutput": [
+            "file://x"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty list",
+          "input": {
+            "subscription_requests": []
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-14": {
+    id: "mcp-core-prob-14",
+    title: "Split a JSON-RPC Batch Request",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "split_batch_request",
+    functionSignature: "split_batch_request(payload) -> list[dict]",
+    starterCode: `def split_batch_request(payload):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement JSON-RPC batch-request splitting, normalizing a message that may be a single request or an array of requests into a uniform list.",
+    taskDescription: "Implement `split_batch_request(payload)`: if `payload` is a `list`, return it as-is; if it's a `dict` (a single request), return `[payload]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "payload is a dict or a list of dicts"
+      ],
+    hints: {
+  "small": "Normalize both accepted shapes into a list.",
+        "strong": "return payload if isinstance(payload, list) else [payload].",
+        "concept": "JSON-RPC 2.0 explicitly allows batching multiple requests into one array to save round-trips -- a server handling both single and batched requests uniformly (rather than special-casing) is real, standard-compliant behavior."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single request dict",
+          "input": {
+            "payload": {
+              "jsonrpc": "2.0",
+              "method": "ping",
+              "id": 1
+            }
+          },
+          "expectedOutput": [
+            {
+              "jsonrpc": "2.0",
+              "method": "ping",
+              "id": 1
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "batch of two requests",
+          "input": {
+            "payload": [
+              {
+                "jsonrpc": "2.0",
+                "method": "a",
+                "id": 1
+              },
+              {
+                "jsonrpc": "2.0",
+                "method": "b",
+                "id": 2
+              }
+            ]
+          },
+          "expectedOutput": [
+            {
+              "jsonrpc": "2.0",
+              "method": "a",
+              "id": 1
+            },
+            {
+              "jsonrpc": "2.0",
+              "method": "b",
+              "id": 2
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty batch",
+          "input": {
+            "payload": []
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single-element batch stays a list",
+          "input": {
+            "payload": [
+              {
+                "jsonrpc": "2.0",
+                "method": "x",
+                "id": 1
+              }
+            ]
+          },
+          "expectedOutput": [
+            {
+              "jsonrpc": "2.0",
+              "method": "x",
+              "id": 1
+            }
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-15": {
+    id: "mcp-core-prob-15",
+    title: "Filter Log Messages by Level Threshold",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "filter_logs_by_level",
+    functionSignature: "filter_logs_by_level(logs: list[dict], min_level: str) -> list[str]",
+    starterCode: `def filter_logs_by_level(logs, min_level):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement MCP log-level filtering, respecting the client's requested minimum log verbosity for a server's `notifications/message` stream.",
+    taskDescription: "Implement `filter_logs_by_level(logs, min_level)`. `logs` is a list of `{\"message\": str, \"level\": str}`. Severity order (low to high) is `debug < info < warning < error`. Return the `message`s (in original order) of every log whose `level` is at or above `min_level`'s severity.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "level values are one of the 4 named levels"
+      ],
+    hints: {
+  "small": "Map each level to a rank, keep entries whose rank meets the minimum.",
+        "strong": "order = {'debug':0,'info':1,'warning':2,'error':3}; threshold = order[min_level]; [l['message'] for l in logs if order[l['level']] >= threshold].",
+        "concept": "MCP lets a client dynamically set its desired log level -- filtering server-side (not sending everything and letting the client discard it) is the real, bandwidth-conscious way this is meant to work."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "info threshold filters debug",
+          "input": {
+            "logs": [
+              {
+                "message": "d",
+                "level": "debug"
+              },
+              {
+                "message": "i",
+                "level": "info"
+              }
+            ],
+            "min_level": "info"
+          },
+          "expectedOutput": [
+            "i"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "debug threshold keeps all",
+          "input": {
+            "logs": [
+              {
+                "message": "d",
+                "level": "debug"
+              },
+              {
+                "message": "e",
+                "level": "error"
+              }
+            ],
+            "min_level": "debug"
+          },
+          "expectedOutput": [
+            "d",
+            "e"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "error threshold keeps only errors",
+          "input": {
+            "logs": [
+              {
+                "message": "w",
+                "level": "warning"
+              },
+              {
+                "message": "e",
+                "level": "error"
+              }
+            ],
+            "min_level": "error"
+          },
+          "expectedOutput": [
+            "e"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no logs meet threshold",
+          "input": {
+            "logs": [
+              {
+                "message": "d",
+                "level": "debug"
+              }
+            ],
+            "min_level": "error"
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-16": {
+    id: "mcp-core-prob-16",
+    title: "Track Progress From Token Updates",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "progress_percentage",
+    functionSignature: "progress_percentage(progress: float, total: float) -> float",
+    starterCode: `def progress_percentage(progress, total):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement MCP progress-token percentage computation, converting a raw progress/total pair from a long-running tool call into a displayable percentage.",
+    taskDescription: "Implement `progress_percentage(progress, total)`. Return `(progress/total)*100`, clamped to the range `[0, 100]`. If `total` is 0, return `0.0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "progress >= 0"
+      ],
+    hints: {
+  "small": "Simple ratio, but clamp and guard division by zero.",
+        "strong": "if total == 0: return 0.0; return max(0.0, min(100.0, (progress/total)*100)).",
+        "concept": "Clamping matters because a real long-running tool can legitimately report `progress > total` (a bad estimate corrected mid-flight) -- a UI showing 140% progress is a real, visible bug this guard prevents."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "halfway",
+          "input": {
+            "progress": 50,
+            "total": 100
+          },
+          "expectedOutput": 50,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "complete",
+          "input": {
+            "progress": 100,
+            "total": 100
+          },
+          "expectedOutput": 100,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "overshoot clamped",
+          "input": {
+            "progress": 150,
+            "total": 100
+          },
+          "expectedOutput": 100,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero total guarded",
+          "input": {
+            "progress": 0,
+            "total": 0
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-17": {
+    id: "mcp-core-prob-17",
+    title: "Validate a Sampling Request Shape",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "validate_sampling_request",
+    functionSignature: "validate_sampling_request(request: dict) -> bool",
+    starterCode: `def validate_sampling_request(request):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement sampling-request validation, the check an MCP client runs before honoring a server's request to sample (call an LLM) on the client's behalf.",
+    taskDescription: "Implement `validate_sampling_request(request)`. Required: `messages` is a non-empty list, `maxTokens` is a positive int. If present, `temperature` must be a number in `[0, 2]`. Return `True` only if all present/required constraints hold.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "request is a dict"
+      ],
+    hints: {
+  "small": "Check the two required fields first, then the optional constrained field if present.",
+        "strong": "if not isinstance(request.get('messages'), list) or not request['messages']: return False; if not isinstance(request.get('maxTokens'), int) or request['maxTokens'] <= 0: return False; if 'temperature' in request and not (0 <= request['temperature'] <= 2): return False; return True.",
+        "concept": "MCP's sampling feature lets a SERVER ask the CLIENT to run an LLM call (inverting the usual direction) -- validating the request shape client-side is a real safety boundary, since the client is trusting a potentially untrusted server's request."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "valid minimal request",
+          "input": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "hi"
+                }
+              ],
+              "maxTokens": 100
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "empty messages invalid",
+          "input": {
+            "request": {
+              "messages": [],
+              "maxTokens": 100
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "negative maxTokens invalid",
+          "input": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user"
+                }
+              ],
+              "maxTokens": -1
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "temperature out of range invalid",
+          "input": {
+            "request": {
+              "messages": [
+                {
+                  "role": "user"
+                }
+              ],
+              "maxTokens": 10,
+              "temperature": 3
+            }
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-18": {
+    id: "mcp-core-prob-18",
+    title: "Root Directory Scope Enforcement",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "is_path_within_roots",
+    functionSignature: "is_path_within_roots(path: str, allowed_roots: list[str]) -> bool",
+    starterCode: `def is_path_within_roots(path, allowed_roots):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement filesystem-root scope enforcement, a real security boundary check for an MCP server exposing filesystem tools.",
+    taskDescription: "Implement `is_path_within_roots(path, allowed_roots)`. Normalize `path` via `os.path.normpath`. Return `True` if the normalized path starts with any normalized root in `allowed_roots` followed by a path separator (or equals it exactly) -- i.e. the path is genuinely inside (or equal to) an allowed root, not just string-prefixed by it (e.g. `/home/user2` must NOT match root `/home/user`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "paths are absolute-style strings"
+      ],
+    hints: {
+  "small": "Compare normalized paths with a path-boundary check, not a raw string prefix check.",
+        "strong": "import os; np = os.path.normpath(path); for root in allowed_roots: nr = os.path.normpath(root); if np == nr or np.startswith(nr + os.sep): return True. Return False.",
+        "concept": "A naive `path.startswith(root)` string check is a real, classic path-traversal-adjacent bug -- `/home/user2/file` would incorrectly match root `/home/user` under plain prefix matching, exposing a directory that was never meant to be in scope."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "path within a root",
+          "input": {
+            "path": "/home/user/docs/file.txt",
+            "allowed_roots": [
+              "/home/user"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "path outside all roots",
+          "input": {
+            "path": "/etc/passwd",
+            "allowed_roots": [
+              "/home/user"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "sibling directory with similar prefix rejected",
+          "input": {
+            "path": "/home/user2/file",
+            "allowed_roots": [
+              "/home/user"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "path equals root exactly",
+          "input": {
+            "path": "/home/user",
+            "allowed_roots": [
+              "/home/user"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-19": {
+    id: "mcp-core-prob-19",
+    title: "Coerce String Arguments to Declared Types",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "coerce_arguments",
+    functionSignature: "coerce_arguments(raw_args: dict[str, str], schema: dict[str, str]) -> dict",
+    starterCode: `def coerce_arguments(raw_args, schema):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement argument type coercion, converting a raw string-typed argument map (e.g. from a CLI or URL query) into the properly-typed values a tool's schema expects.",
+    taskDescription: "Implement `coerce_arguments(raw_args, schema)`. `schema` maps arg name -> target type (`'int'`,`'float'`,`'bool'`,`'str'`). For each key in `schema` present in `raw_args`, convert: `'int'`->`int(v)`, `'float'`->`float(v)`, `'bool'`-> `True` if `v.lower()=='true'` else `False`, `'str'`-> unchanged. Return the coerced dict (only keys present in both).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "raw_args values are strings"
+      ],
+    hints: {
+  "small": "Dispatch on the schema's declared type per key.",
+        "strong": "out={}; for k,t in schema.items(): if k in raw_args: v=raw_args[k]; out[k] = int(v) if t=='int' else float(v) if t=='float' else (v.lower()=='true') if t=='bool' else v.",
+        "concept": "This exact coercion step is what an MCP server needs when arguments arrive as raw strings (very common from CLI-invoked or HTTP-query-based clients) but the tool's schema declares real typed parameters -- skipping it means every tool has to do its own ad-hoc string parsing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "mixed types",
+          "input": {
+            "raw_args": {
+              "count": "5",
+              "ratio": "1.5",
+              "active": "true"
+            },
+            "schema": {
+              "count": "int",
+              "ratio": "float",
+              "active": "bool"
+            }
+          },
+          "expectedOutput": {
+            "count": 5,
+            "ratio": 1.5,
+            "active": true
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "false boolean",
+          "input": {
+            "raw_args": {
+              "flag": "false"
+            },
+            "schema": {
+              "flag": "bool"
+            }
+          },
+          "expectedOutput": {
+            "flag": false
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "string type unchanged",
+          "input": {
+            "raw_args": {
+              "name": "hello"
+            },
+            "schema": {
+              "name": "str"
+            }
+          },
+          "expectedOutput": {
+            "name": "hello"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "schema key missing from raw_args skipped",
+          "input": {
+            "raw_args": {},
+            "schema": {
+              "x": "int"
+            }
+          },
+          "expectedOutput": {},
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-20": {
+    id: "mcp-core-prob-20",
+    title: "Build Server Capabilities Advertisement",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "build_capabilities",
+    functionSignature: "build_capabilities(enabled_features: dict[str, bool]) -> dict",
+    starterCode: `def build_capabilities(enabled_features):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement server capability advertisement, converting internal feature flags into the capabilities object a server sends during initialization.",
+    taskDescription: "Implement `build_capabilities(enabled_features)`. Return a dict containing ONLY the keys from `enabled_features` whose value is `True`, each mapped to an empty dict `{}` (matching MCP's real `{\"tools\": {}, \"resources\": {}}`-style capabilities shape).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "enabled_features maps feature name -> bool"
+      ],
+    hints: {
+  "small": "Keep only the truthy feature flags, replace each value with an empty dict.",
+        "strong": "{k: {} for k,v in enabled_features.items() if v}.",
+        "concept": "Advertising ONLY genuinely-supported capabilities (never claiming one you don't implement) is what lets a client safely decide what features it can rely on -- claiming a capability you don't support is a real interoperability bug, not a harmless overstatement."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two enabled features",
+          "input": {
+            "enabled_features": {
+              "tools": true,
+              "resources": true,
+              "prompts": false
+            }
+          },
+          "expectedOutput": {
+            "tools": {},
+            "resources": {}
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no features enabled",
+          "input": {
+            "enabled_features": {
+              "tools": false
+            }
+          },
+          "expectedOutput": {},
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all enabled",
+          "input": {
+            "enabled_features": {
+              "a": true,
+              "b": true,
+              "c": true
+            }
+          },
+          "expectedOutput": {
+            "a": {},
+            "b": {},
+            "c": {}
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single feature",
+          "input": {
+            "enabled_features": {
+              "logging": true
+            }
+          },
+          "expectedOutput": {
+            "logging": {}
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-21": {
+    id: "mcp-core-prob-21",
+    title: "Message Size Limit Enforcement",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "exceeds_size_limit",
+    functionSignature: "exceeds_size_limit(message_bytes: int, max_bytes: int) -> bool",
+    starterCode: `def exceeds_size_limit(message_bytes, max_bytes):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement message-size limit enforcement, a real, simple defense against a malformed or malicious oversized MCP message exhausting server memory.",
+    taskDescription: "Implement `exceeds_size_limit(message_bytes, max_bytes)`: return `True` if `message_bytes > max_bytes`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both values >= 0"
+      ],
+    hints: {
+  "small": "Simple comparison.",
+        "strong": "return message_bytes > max_bytes.",
+        "concept": "Without an explicit size cap, a single misbehaving client could send a multi-gigabyte payload and exhaust server memory before the message is even parsed enough to reject it on content grounds -- this check has to happen BEFORE full parsing, on the raw byte count."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "within limit",
+          "input": {
+            "message_bytes": 1000,
+            "max_bytes": 10000
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "exceeds limit",
+          "input": {
+            "message_bytes": 20000,
+            "max_bytes": 10000
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at limit",
+          "input": {
+            "message_bytes": 10000,
+            "max_bytes": 10000
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero size message",
+          "input": {
+            "message_bytes": 0,
+            "max_bytes": 100
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-22": {
+    id: "mcp-core-prob-22",
+    title: "Infer MIME Type From Resource Extension",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "infer_mime_type",
+    functionSignature: "infer_mime_type(uri: str) -> str",
+    starterCode: `def infer_mime_type(uri):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement MIME-type inference from a resource URI's file extension, needed so an MCP server can populate a resource's `mimeType` field correctly.",
+    taskDescription: "Implement `infer_mime_type(uri)`. Extract the extension (text after the last `'.'`, lowercase). Map: `txt->'text/plain'`, `json->'application/json'`, `md->'text/markdown'`, `py->'text/x-python'`, `html->'text/html'`, `csv->'text/csv'`. Any other or missing extension returns `'application/octet-stream'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "uri is a non-empty string"
+      ],
+    hints: {
+  "small": "Extract the extension, look it up in a small fixed table.",
+        "strong": "ext = uri.rsplit('.',1)[-1].lower() if '.' in uri else ''; table = {'txt':'text/plain','json':'application/json','md':'text/markdown','py':'text/x-python','html':'text/html','csv':'text/csv'}; return table.get(ext, 'application/octet-stream').",
+        "concept": "'application/octet-stream' is the correct, standard fallback for an unrecognized type -- it honestly signals 'binary/unknown data' rather than guessing wrong, which matters because a client may render or process content differently based on this field."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "json file",
+          "input": {
+            "uri": "file:///data/config.json"
+          },
+          "expectedOutput": "application/json",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "markdown file",
+          "input": {
+            "uri": "file:///docs/readme.md"
+          },
+          "expectedOutput": "text/markdown",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unknown extension",
+          "input": {
+            "uri": "file:///data/thing.xyz"
+          },
+          "expectedOutput": "application/octet-stream",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no extension at all",
+          "input": {
+            "uri": "file:///data/noext"
+          },
+          "expectedOutput": "application/octet-stream",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-23": {
+    id: "mcp-core-prob-23",
+    title: "Check Tool Annotations for Destructive Hints",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "requires_confirmation",
+    functionSignature: "requires_confirmation(annotations: dict) -> bool",
+    starterCode: `def requires_confirmation(annotations):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement destructive-tool-call gating based on MCP tool annotations, a real safety check before letting an agent auto-execute a risky tool.",
+    taskDescription: "Implement `requires_confirmation(annotations)`. `annotations` may contain `readOnlyHint` and `destructiveHint` (both booleans, default `False` if absent). Return `True` (needs human confirmation) if `destructiveHint` is `True` AND `readOnlyHint` is `False`. Otherwise `False`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "annotations is a dict, keys optional"
+      ],
+    hints: {
+  "small": "A tool needs confirmation only if it's flagged destructive AND not simultaneously flagged read-only (a real, if edge-case, override).",
+        "strong": "destructive = annotations.get('destructiveHint', False); readonly = annotations.get('readOnlyHint', False); return destructive and not readonly.",
+        "concept": "MCP's tool annotation hints exist so a client/agent orchestrator can apply real policy (e.g. 'always confirm destructive actions with the user') WITHOUT needing to understand what each specific tool actually does -- this is the real gate an autonomous agent should check before calling a tool unsupervised."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "destructive tool needs confirmation",
+          "input": {
+            "annotations": {
+              "destructiveHint": true
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "read-only tool never needs confirmation",
+          "input": {
+            "annotations": {
+              "readOnlyHint": true
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no annotations, safe default",
+          "input": {
+            "annotations": {}
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "destructive but also read-only edge case",
+          "input": {
+            "annotations": {
+              "destructiveHint": true,
+              "readOnlyHint": true
+            }
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-24": {
+    id: "mcp-core-prob-24",
+    title: "Validate Elicitation Response Against Schema",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "validate_elicitation_response",
+    functionSignature: "validate_elicitation_response(response: dict, requested_fields: dict[str, str]) -> bool",
+    starterCode: `def validate_elicitation_response(response, requested_fields):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement elicitation-response validation, checking that user-supplied answers to a server's elicitation request match the fields and types it actually asked for.",
+    taskDescription: "Implement `validate_elicitation_response(response, requested_fields)`. `requested_fields` maps field name -> expected type (`'str'`,`'int'`,`'bool'`). Return `True` only if `response` has EXACTLY the same set of keys as `requested_fields` (no extra, none missing) and every value's Python type matches.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "requested_fields non-empty"
+      ],
+    hints: {
+  "small": "Check the key sets match exactly first, then check each value's type.",
+        "strong": "if set(response.keys()) != set(requested_fields.keys()): return False; return all(type(response[k]).__name__ == t for k,t in requested_fields.items()).",
+        "concept": "Elicitation lets a server ask the CLIENT's user for structured input mid-conversation -- requiring an EXACT key match (not just 'at least these fields') catches a client returning a malformed or tampered response before the server trusts and acts on it."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "valid matching response",
+          "input": {
+            "response": {
+              "name": "Alice",
+              "age": 30
+            },
+            "requested_fields": {
+              "name": "str",
+              "age": "int"
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "extra field invalid",
+          "input": {
+            "response": {
+              "name": "Alice",
+              "age": 30,
+              "extra": true
+            },
+            "requested_fields": {
+              "name": "str",
+              "age": "int"
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "missing field invalid",
+          "input": {
+            "response": {
+              "name": "Alice"
+            },
+            "requested_fields": {
+              "name": "str",
+              "age": "int"
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "wrong type invalid",
+          "input": {
+            "response": {
+              "age": "30"
+            },
+            "requested_fields": {
+              "age": "int"
+            }
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-25": {
+    id: "mcp-core-prob-25",
+    title: "Select Transport Based on Environment",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "select_transport",
+    functionSignature: "select_transport(has_tty: bool, http_url_configured: bool) -> str",
+    starterCode: `def select_transport(has_tty, http_url_configured):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real transport-selection rule for an MCP client deciding between stdio and HTTP/SSE transports based on its runtime environment.",
+    taskDescription: "Implement `select_transport(has_tty, http_url_configured)`. If `http_url_configured` is `True`, return `'http'` (explicit configuration wins). Otherwise, if `has_tty` is `False` (i.e. running as a subprocess with piped stdio, the common local-server case), return `'stdio'`. Otherwise return `'stdio'` as well -- stdio is the safe default whenever no explicit HTTP URL is configured.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both inputs are booleans"
+      ],
+    hints: {
+  "small": "Explicit HTTP configuration always wins; otherwise default to stdio.",
+        "strong": "return 'http' if http_url_configured else 'stdio'.",
+        "concept": "This mirrors the real, common MCP deployment pattern: local tool servers launched as a subprocess communicate over stdio (no network setup needed), while remote/hosted servers need an explicit HTTP endpoint -- the client picks based on what's actually configured, not guessing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "explicit http configured",
+          "input": {
+            "has_tty": false,
+            "http_url_configured": true
+          },
+          "expectedOutput": "http",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no http, defaults to stdio",
+          "input": {
+            "has_tty": false,
+            "http_url_configured": false
+          },
+          "expectedOutput": "stdio",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "tty present still defaults to stdio without http",
+          "input": {
+            "has_tty": true,
+            "http_url_configured": false
+          },
+          "expectedOutput": "stdio",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "http wins even with tty",
+          "input": {
+            "has_tty": true,
+            "http_url_configured": true
+          },
+          "expectedOutput": "http",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-26": {
+    id: "mcp-core-prob-26",
+    title: "Token Bucket Rate Limiter Check",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "allow_request",
+    functionSignature: "allow_request(tokens_available: float, tokens_needed: float, refill_rate: float, elapsed_s: float, bucket_capacity: float) -> tuple",
+    starterCode: `def allow_request(tokens_available, tokens_needed, refill_rate, elapsed_s, bucket_capacity):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a token-bucket rate limiter, the real, standard algorithm an MCP server uses to bound how fast a client can issue tool calls.",
+    taskDescription: "Implement `allow_request(tokens_available, tokens_needed, refill_rate, elapsed_s, bucket_capacity)`. First refill: `refilled = min(bucket_capacity, tokens_available + refill_rate*elapsed_s)`. If `refilled >= tokens_needed`, the request is allowed: return `(True, refilled - tokens_needed)`. Otherwise return `(False, refilled)` (denied, bucket unchanged by the failed request).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all inputs >= 0",
+        "bucket_capacity >= 0"
+      ],
+    hints: {
+  "small": "Refill first (capped at capacity), then check if enough tokens exist for this request.",
+        "strong": "refilled = min(bucket_capacity, tokens_available + refill_rate*elapsed_s); if refilled >= tokens_needed: return (True, refilled-tokens_needed); return (False, refilled).",
+        "concept": "Token bucket (unlike a fixed request-count-per-window limiter) naturally allows real, legitimate bursts up to the bucket capacity while still enforcing a real long-run average rate -- this is why it's the standard choice for API rate limiting broadly, not just MCP specifically."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "enough tokens allows request",
+          "input": {
+            "tokens_available": 10,
+            "tokens_needed": 5,
+            "refill_rate": 1,
+            "elapsed_s": 0,
+            "bucket_capacity": 20
+          },
+          "expectedOutput": [
+            true,
+            5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "not enough tokens denies request",
+          "input": {
+            "tokens_available": 2,
+            "tokens_needed": 5,
+            "refill_rate": 0,
+            "elapsed_s": 0,
+            "bucket_capacity": 20
+          },
+          "expectedOutput": [
+            false,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "refill enables previously-denied request",
+          "input": {
+            "tokens_available": 0,
+            "tokens_needed": 5,
+            "refill_rate": 1,
+            "elapsed_s": 10,
+            "bucket_capacity": 20
+          },
+          "expectedOutput": [
+            true,
+            5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "refill capped at bucket capacity",
+          "input": {
+            "tokens_available": 19,
+            "tokens_needed": 5,
+            "refill_rate": 10,
+            "elapsed_s": 10,
+            "bucket_capacity": 20
+          },
+          "expectedOutput": [
+            true,
+            15
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-27": {
+    id: "mcp-core-prob-27",
+    title: "Filter Completion Suggestions by Prefix",
+    difficulty: "easy",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "filter_completions",
+    functionSignature: "filter_completions(candidates: list[str], prefix: str) -> list[str]",
+    starterCode: `def filter_completions(candidates, prefix):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement MCP argument-completion filtering, powering the real-time suggestion list a client shows while a user types a tool/prompt argument.",
+    taskDescription: "Implement `filter_completions(candidates, prefix)`: return the sorted list of `candidates` that start with `prefix` (case-insensitive match).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "candidates is a list of strings"
+      ],
+    hints: {
+  "small": "Case-insensitive prefix filter, then sort.",
+        "strong": "sorted(c for c in candidates if c.lower().startswith(prefix.lower())).",
+        "concept": "Real MCP completion is meant to be fast and responsive as a user types -- filtering client-visible candidates by prefix (rather than fuzzy-matching everything) is the simple, standard first implementation before adding smarter ranking."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic prefix match",
+          "input": {
+            "candidates": [
+              "apple",
+              "apricot",
+              "banana"
+            ],
+            "prefix": "ap"
+          },
+          "expectedOutput": [
+            "apple",
+            "apricot"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "case insensitive match",
+          "input": {
+            "candidates": [
+              "Apple",
+              "apricot"
+            ],
+            "prefix": "AP"
+          },
+          "expectedOutput": [
+            "Apple",
+            "apricot"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no matches",
+          "input": {
+            "candidates": [
+              "banana"
+            ],
+            "prefix": "z"
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty prefix matches all",
+          "input": {
+            "candidates": [
+              "b",
+              "a",
+              "c"
+            ],
+            "prefix": ""
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-28": {
+    id: "mcp-core-prob-28",
+    title: "Client Reconnect Backoff Schedule",
+    difficulty: "medium",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "reconnect_delay",
+    functionSignature: "reconnect_delay(attempt: int, base_delay_s: float, max_delay_s: float) -> float",
+    starterCode: `def reconnect_delay(attempt, base_delay_s, max_delay_s):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement exponential reconnect backoff for an MCP client that's lost its transport connection to a server, avoiding a hot retry loop.",
+    taskDescription: "Implement `reconnect_delay(attempt, base_delay_s, max_delay_s)`: return `min(base_delay_s * (2 ** attempt), max_delay_s)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "attempt >= 0",
+        "base_delay_s > 0"
+      ],
+    hints: {
+  "small": "Standard doubling backoff, capped.",
+        "strong": "min(base_delay_s*(2**attempt), max_delay_s).",
+        "concept": "A client that retries a dead connection immediately and repeatedly (no backoff) can genuinely make a server's recovery harder by adding reconnection-storm load right as it's trying to come back up -- backoff is what gives a recovering server breathing room."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "first attempt",
+          "input": {
+            "attempt": 0,
+            "base_delay_s": 1,
+            "max_delay_s": 60
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "several attempts growing",
+          "input": {
+            "attempt": 4,
+            "base_delay_s": 1,
+            "max_delay_s": 60
+          },
+          "expectedOutput": 16,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "capped at max",
+          "input": {
+            "attempt": 10,
+            "base_delay_s": 1,
+            "max_delay_s": 30
+          },
+          "expectedOutput": 30,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large base delay",
+          "input": {
+            "attempt": 2,
+            "base_delay_s": 5,
+            "max_delay_s": 100
+          },
+          "expectedOutput": 20,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-core-prob-29": {
+    id: "mcp-core-prob-29",
+    title: "Detect Cyclic Tool Call Chain",
+    difficulty: "hard",
+    topic: "MCP Core Engineering",
+    estimatedTime: '15 min',
+    functionName: "has_cyclic_tool_chain",
+    functionSignature: "has_cyclic_tool_chain(call_chain: list[str]) -> bool",
+    starterCode: `def has_cyclic_tool_chain(call_chain):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement cyclic tool-call chain detection, a real safety check preventing an agent from getting stuck in an infinite tool-calling loop (tool A triggers tool B triggers tool A again).",
+    taskDescription: "Implement `has_cyclic_tool_chain(call_chain)`. `call_chain` is the ORDERED sequence of tool names called so far in the current agent turn. Return `True` if any CONSECUTIVE, CONTIGUOUS subsequence of length >= 2 repeats immediately after itself (e.g. `[A,B,A,B]` has `[A,B]` repeating -- a real detected loop). Check repeat-unit lengths from 1 up to `len(call_chain)//2`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "call_chain is a list of tool names"
+      ],
+    hints: {
+  "small": "For each possible repeating-unit length, check if the chain's second half (of that length, from the end) exactly matches the half before it.",
+        "strong": "n = len(call_chain); for unit_len in range(1, n//2+1): tail = call_chain[-unit_len:]; prev = call_chain[-2*unit_len:-unit_len]; if tail == prev: return True. Return False.",
+        "concept": "A real, common autonomous-agent failure mode is an oscillating tool-call loop (e.g. read_file then write_file then read_file again, forever) -- detecting an immediately-repeating pattern at the tail of the call history is a real, practical circuit-breaker an orchestrator can act on (abort, ask for human input) before burning unbounded API cost."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple two-step loop",
+          "input": {
+            "call_chain": [
+              "A",
+              "B",
+              "A",
+              "B"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no loop, all distinct",
+          "input": {
+            "call_chain": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "immediate single-tool repeat",
+          "input": {
+            "call_chain": [
+              "A",
+              "A"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three-step loop",
+          "input": {
+            "call_chain": [
+              "A",
+              "B",
+              "C",
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-1": {
+    id: "mcp-adv-prob-1",
+    title: "Route a Tool Call to Its Backend Server",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "route_tool_call",
+    functionSignature: "route_tool_call(tool_name: str, tool_to_server: dict[str, str]) -> str",
+    starterCode: `def route_tool_call(tool_name, tool_to_server):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement tool-to-server routing, the core dispatch step of an MCP client aggregating multiple servers into one unified tool surface.",
+    taskDescription: "Implement `route_tool_call(tool_name, tool_to_server)`: return `tool_to_server[tool_name]`, or raise `KeyError` if `tool_name` isn't registered by any connected server.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "tool_to_server maps tool name -> server id"
+      ],
+    hints: {
+  "small": "A direct dict lookup.",
+        "strong": "return tool_to_server[tool_name].",
+        "concept": "When a client aggregates tools from multiple MCP servers, this exact routing table is what makes the aggregation transparent to the agent -- the agent just calls a tool by name, unaware of which physical server actually implements it."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "known tool routes correctly",
+          "input": {
+            "tool_name": "read_file",
+            "tool_to_server": {
+              "read_file": "fs-server",
+              "send_email": "mail-server"
+            }
+          },
+          "expectedOutput": "fs-server",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "another known tool",
+          "input": {
+            "tool_name": "send_email",
+            "tool_to_server": {
+              "read_file": "fs-server",
+              "send_email": "mail-server"
+            }
+          },
+          "expectedOutput": "mail-server",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single server registry",
+          "input": {
+            "tool_name": "only_tool",
+            "tool_to_server": {
+              "only_tool": "server1"
+            }
+          },
+          "expectedOutput": "server1",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "different registration",
+          "input": {
+            "tool_name": "query_db",
+            "tool_to_server": {
+              "query_db": "db-server"
+            }
+          },
+          "expectedOutput": "db-server",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-2": {
+    id: "mcp-adv-prob-2",
+    title: "Score Tool Relevance to a Task",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "score_tool_relevance",
+    functionSignature: "score_tool_relevance(task_description: str, tool_description: str) -> float",
+    starterCode: `def score_tool_relevance(task_description, tool_description):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, simple keyword-overlap relevance scorer for tool selection, used when an agent has too many available tools to fit all descriptions in context.",
+    taskDescription: "Implement `score_tool_relevance(task_description, tool_description)`. Tokenize both into lowercase word sets. Return the Jaccard similarity `|A∩B|/|A∪B|` (0.0 if both empty).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "strings may be empty"
+      ],
+    hints: {
+  "small": "Word-set Jaccard similarity between the task and tool descriptions.",
+        "strong": "a = set(task_description.lower().split()); b = set(tool_description.lower().split()); 0.0 if not(a or b) else len(a&b)/len(a|b).",
+        "concept": "This is a deliberately crude proxy for real semantic tool retrieval (real systems use embedding similarity) -- but it's a genuine, zero-dependency starting point for pre-filtering a large tool catalog before an LLM ever sees the full list."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear overlap",
+          "input": {
+            "task_description": "read a file from disk",
+            "tool_description": "reads a file from the local disk"
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no overlap",
+          "input": {
+            "task_description": "send an email",
+            "tool_description": "query a database table"
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "identical descriptions",
+          "input": {
+            "task_description": "list files",
+            "tool_description": "list files"
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty tool description",
+          "input": {
+            "task_description": "do something",
+            "tool_description": ""
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-3": {
+    id: "mcp-adv-prob-3",
+    title: "Runtime Tool Registry Add/Remove",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "update_tool_registry",
+    functionSignature: "update_tool_registry(registry: dict, tool_name: str, action: str) -> dict",
+    starterCode: `def update_tool_registry(registry, tool_name, action):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement dynamic tool registration, letting an MCP server add or remove tools at runtime (e.g. tools that only become available once a user connects an integration).",
+    taskDescription: "Implement `update_tool_registry(registry, tool_name, action)`. If `action == 'add'`, add `tool_name` as a key with value `True` (no-op if already present). If `action == 'remove'`, delete `tool_name` if present (no-op if absent). Return the mutated registry.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "action in {'add','remove'}"
+      ],
+    hints: {
+  "small": "Two branches: dict assignment for add, dict.pop with a default for remove.",
+        "strong": "if action == 'add': registry[tool_name] = True; elif action == 'remove': registry.pop(tool_name, None); return registry.",
+        "concept": "MCP genuinely supports a `notifications/tools/list_changed` event exactly because tool availability isn't static -- an OAuth-gated integration tool might only appear in the registry after the user completes auth, which this dynamic add/remove models."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "add new tool",
+          "input": {
+            "registry": {
+              "a": true,
+              "b": true
+            },
+            "tool_name": "b",
+            "action": "add"
+          },
+          "expectedOutput": {
+            "a": true,
+            "b": true
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "remove existing tool",
+          "input": {
+            "registry": {
+              "a": true
+            },
+            "tool_name": "b",
+            "action": "remove"
+          },
+          "expectedOutput": {
+            "a": true
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "remove nonexistent tool is no-op",
+          "input": {
+            "registry": {
+              "a": true
+            },
+            "tool_name": "z",
+            "action": "remove"
+          },
+          "expectedOutput": {
+            "a": true
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "add already-present tool is no-op",
+          "input": {
+            "registry": {
+              "a": true
+            },
+            "tool_name": "a",
+            "action": "add"
+          },
+          "expectedOutput": {
+            "a": true
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-4": {
+    id: "mcp-adv-prob-4",
+    title: "Cache Key From Tool Call Signature",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "tool_call_cache_key",
+    functionSignature: "tool_call_cache_key(tool_name: str, arguments: dict) -> str",
+    starterCode: `import hashlib
+import json
+
+def tool_call_cache_key(tool_name, arguments):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a deterministic tool-call cache key, letting an agent orchestrator skip a redundant tool call whose exact same arguments were already made.",
+    taskDescription: "Implement `tool_call_cache_key(tool_name, arguments)`. Serialize `arguments` with `json.dumps(arguments, sort_keys=True)` (so key order never affects the hash), combine with `tool_name`, and return the hex `hashlib.sha256` digest of `f'{tool_name}:{serialized}'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "arguments is a JSON-serializable dict"
+      ],
+    hints: {
+  "small": "Sort keys before serializing so equivalent dicts always produce the same string.",
+        "strong": "serialized = json.dumps(arguments, sort_keys=True); hashlib.sha256(f'{tool_name}:{serialized}'.encode()).hexdigest().",
+        "concept": "Only tools with real, safe-to-cache semantics (read-only, per their `readOnlyHint` annotation) should ever be cached this way -- caching a destructive tool's 'result' would silently skip re-executing a real side effect."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "deterministic for same call",
+          "input": {
+            "tool_name": "search",
+            "arguments": {
+              "q": "python",
+              "limit": 10
+            }
+          },
+          "expectedOutput": "23468e83d798fb2a4628d5cce4224601815182ffb9b1463724731e1a47816cb4",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "key order does not affect hash",
+          "input": {
+            "tool_name": "search",
+            "arguments": {
+              "limit": 10,
+              "q": "python"
+            }
+          },
+          "expectedOutput": "23468e83d798fb2a4628d5cce4224601815182ffb9b1463724731e1a47816cb4",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "different arguments different key",
+          "input": {
+            "tool_name": "search",
+            "arguments": {
+              "q": "rust",
+              "limit": 10
+            }
+          },
+          "expectedOutput": "f406187bda25433b028319090c1bff39980ccdc1cce4d03dafec382067720a20",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no arguments",
+          "input": {
+            "tool_name": "ping",
+            "arguments": {}
+          },
+          "expectedOutput": "d5c348c77b005971a51ff37935043fd81ad4ddf5b7ab03e4eca2c42b0e3d5504",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-5": {
+    id: "mcp-adv-prob-5",
+    title: "Union Capabilities Across Multiple Servers",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "union_server_capabilities",
+    functionSignature: "union_server_capabilities(server_caps: list[list[str]]) -> list[str]",
+    starterCode: `def union_server_capabilities(server_caps):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement multi-server capability aggregation, computing the full effective capability set an MCP client gains from connecting to several servers at once.",
+    taskDescription: "Implement `union_server_capabilities(server_caps)`: return the sorted list of DISTINCT capabilities across all servers' lists.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "server_caps is a list of lists of strings"
+      ],
+    hints: {
+  "small": "Union all lists, sort.",
+        "strong": "sorted(set().union(*server_caps)) if server_caps else [].",
+        "concept": "A client aggregating multiple MCP servers effectively gets the UNION of everything they offer -- this is the real capability surface an orchestrator has available, distinct from any single server's own advertised capabilities."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two servers different caps",
+          "input": {
+            "server_caps": [
+              [
+                "tools",
+                "resources"
+              ],
+              [
+                "prompts"
+              ]
+            ]
+          },
+          "expectedOutput": [
+            "prompts",
+            "resources",
+            "tools"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "overlapping caps deduped",
+          "input": {
+            "server_caps": [
+              [
+                "tools"
+              ],
+              [
+                "tools",
+                "resources"
+              ]
+            ]
+          },
+          "expectedOutput": [
+            "resources",
+            "tools"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single server",
+          "input": {
+            "server_caps": [
+              [
+                "logging"
+              ]
+            ]
+          },
+          "expectedOutput": [
+            "logging"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no servers",
+          "input": {
+            "server_caps": []
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-6": {
+    id: "mcp-adv-prob-6",
+    title: "Tool Description Budget Fitting for Context Window",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "fit_tool_budget",
+    functionSignature: "fit_tool_budget(tools: list[dict], token_budget: int) -> list[str]",
+    starterCode: `def fit_tool_budget(tools, token_budget):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement tool-description context-budget fitting, deciding how many of an agent's available tool descriptions actually fit in its system prompt.",
+    taskDescription: "Implement `fit_tool_budget(tools, token_budget)`. `tools` is a list of `{\"name\": str, \"priority\": float, \"tokens\": int}`, sorted here by you in DESCENDING priority. Greedily include tools in that order while the running token total stays `<= token_budget`. Return the included tool names in the order they were included.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "token_budget >= 0"
+      ],
+    hints: {
+  "small": "Sort by priority descending, greedily pack under the budget.",
+        "strong": "ranked = sorted(tools, key=lambda t: -t['priority']); running=0; names=[]; for t in ranked: if running+t['tokens']<=token_budget: names.append(t['name']); running+=t['tokens'].",
+        "concept": "This is a real, practical constraint -- an agent connected to many MCP servers can easily have more tool descriptions than fit in its context window, and SOME prioritization (not just 'include the first N alphabetically') is needed to keep the most useful tools visible."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all fit",
+          "input": {
+            "tools": [
+              {
+                "name": "a",
+                "priority": 0.9,
+                "tokens": 50
+              },
+              {
+                "name": "b",
+                "priority": 0.5,
+                "tokens": 50
+              }
+            ],
+            "token_budget": 200
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "budget forces exclusion of low priority",
+          "input": {
+            "tools": [
+              {
+                "name": "a",
+                "priority": 0.9,
+                "tokens": 100
+              },
+              {
+                "name": "b",
+                "priority": 0.1,
+                "tokens": 100
+              }
+            ],
+            "token_budget": 100
+          },
+          "expectedOutput": [
+            "a"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero budget includes nothing",
+          "input": {
+            "tools": [
+              {
+                "name": "a",
+                "priority": 1,
+                "tokens": 1
+              }
+            ],
+            "token_budget": 0
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "smaller tool fits after larger skipped",
+          "input": {
+            "tools": [
+              {
+                "name": "a",
+                "priority": 0.9,
+                "tokens": 500
+              },
+              {
+                "name": "b",
+                "priority": 0.5,
+                "tokens": 50
+              }
+            ],
+            "token_budget": 100
+          },
+          "expectedOutput": [
+            "b"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-7": {
+    id: "mcp-adv-prob-7",
+    title: "Tool Schema Version Compatibility Check",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "is_schema_compatible",
+    functionSignature: "is_schema_compatible(client_supported_version: str, server_schema_version: str) -> bool",
+    starterCode: `def is_schema_compatible(client_supported_version, server_schema_version):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement tool-schema version compatibility checking using semantic versioning rules, deciding whether a client can safely call a tool exposed under a given schema version.",
+    taskDescription: "Implement `is_schema_compatible(client_supported_version, server_schema_version)`. Both are `'MAJOR.MINOR'` strings. Compatible means SAME major version AND `client_supported_version`'s minor `>= server_schema_version`'s minor (the client understands at least as many fields as the server's schema uses).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both strings match MAJOR.MINOR with integer parts"
+      ],
+    hints: {
+  "small": "Parse both into (major, minor) integer pairs, compare major for equality and minor for >=.",
+        "strong": "cm, cn = map(int, client_supported_version.split('.')); sm, sn = map(int, server_schema_version.split('.')); return cm == sm and cn >= sn.",
+        "concept": "A major-version bump signals a breaking schema change (incompatible regardless of minor), while a minor-version bump signals additive-only changes -- this is the exact real semver contract that makes 'client understands >= server's minor' a sound compatibility check."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "compatible same version",
+          "input": {
+            "client_supported_version": "1.2",
+            "server_schema_version": "1.2"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "client ahead on minor, compatible",
+          "input": {
+            "client_supported_version": "1.5",
+            "server_schema_version": "1.2"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "client behind on minor, incompatible",
+          "input": {
+            "client_supported_version": "1.1",
+            "server_schema_version": "1.2"
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "different major, incompatible",
+          "input": {
+            "client_supported_version": "2.0",
+            "server_schema_version": "1.0"
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-8": {
+    id: "mcp-adv-prob-8",
+    title: "Sandboxed Execution Permission Check",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "has_permission",
+    functionSignature: "has_permission(requested_permission: str, granted_permissions: set) -> bool",
+    starterCode: `def has_permission(requested_permission, granted_permissions):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, hierarchical permission check for a sandboxed MCP tool execution environment, supporting wildcard grants.",
+    taskDescription: "Implement `has_permission(requested_permission, granted_permissions)`. `requested_permission` is a dotted path like `'fs.write'`. It's granted if it's LITERALLY in `granted_permissions`, OR if a WILDCARD ancestor grant exists: `'fs.*'` covers `'fs.write'` and `'fs.read'`; `'*'` covers everything.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "requested_permission is a non-empty dotted string"
+      ],
+    hints: {
+  "small": "Check exact match, then check increasingly-general wildcard prefixes.",
+        "strong": "if requested_permission in granted_permissions or '*' in granted_permissions: return True; parts = requested_permission.split('.'); for i in range(len(parts)): wildcard = '.'.join(parts[:i]) + ('.' if i else '') + '*'; if wildcard in granted_permissions: return True. Return False.",
+        "concept": "Wildcard grants (`fs.*` rather than enumerating `fs.read`, `fs.write`, `fs.delete` individually) are what makes a real permission system usable at scale -- but they also mean 'does this exact permission not appear in the list' is NOT sufficient to deny access, a real, common security-check bug."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "exact grant matches",
+          "input": {
+            "requested_permission": "fs.read",
+            "granted_permissions": [
+              "fs.read"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "wildcard grant covers specific permission",
+          "input": {
+            "requested_permission": "fs.write",
+            "granted_permissions": [
+              "fs.*"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no matching grant denies",
+          "input": {
+            "requested_permission": "net.send",
+            "granted_permissions": [
+              "fs.*"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "global wildcard grants everything",
+          "input": {
+            "requested_permission": "anything.at.all",
+            "granted_permissions": [
+              "*"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-9": {
+    id: "mcp-adv-prob-9",
+    title: "Resolve a Resource Link Reference",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "resolve_resource_link",
+    functionSignature: "resolve_resource_link(base_uri: str, relative_ref: str) -> str",
+    starterCode: `def resolve_resource_link(base_uri, relative_ref):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement resource-link resolution, expanding a relative reference found inside one resource's content into a fully-qualified URI another tool can fetch.",
+    taskDescription: "Implement `resolve_resource_link(base_uri, relative_ref)`. If `relative_ref` already contains `'://'` (it's already absolute), return it unchanged. Otherwise, take everything in `base_uri` up to and including the LAST `'/'`, and append `relative_ref` to it.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "base_uri contains at least one '/' after its scheme"
+      ],
+    hints: {
+  "small": "Absolute references pass through unchanged; relative ones resolve against the base's directory.",
+        "strong": "if '://' in relative_ref: return relative_ref; base_dir = base_uri.rsplit('/', 1)[0] + '/'; return base_dir + relative_ref.",
+        "concept": "This is the exact same relative-URL resolution logic browsers use for HTML links -- MCP resources supporting relative references means a document can reference 'sibling' resources without hardcoding the full base URI, which matters if the same content is ever mounted under a different root."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "relative reference resolves",
+          "input": {
+            "base_uri": "file:///docs/guide/intro.md",
+            "relative_ref": "setup.md"
+          },
+          "expectedOutput": "file:///docs/guide/setup.md",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "already absolute reference unchanged",
+          "input": {
+            "base_uri": "file:///docs/intro.md",
+            "relative_ref": "http://other.com/x"
+          },
+          "expectedOutput": "http://other.com/x",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "nested relative path",
+          "input": {
+            "base_uri": "file:///a/b/c.md",
+            "relative_ref": "d.md"
+          },
+          "expectedOutput": "file:///a/b/d.md",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "custom scheme base",
+          "input": {
+            "base_uri": "db://schema/tableA",
+            "relative_ref": "tableB"
+          },
+          "expectedOutput": "db://schema/tableB",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-10": {
+    id: "mcp-adv-prob-10",
+    title: "Agent Recursive Delegation Depth Limit",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "can_delegate",
+    functionSignature: "can_delegate(current_depth: int, max_depth: int) -> bool",
+    starterCode: `def can_delegate(current_depth, max_depth):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement recursive delegation depth limiting, a real safety bound preventing an agent-calling-agent chain from recursing indefinitely.",
+    taskDescription: "Implement `can_delegate(current_depth, max_depth)`: return `True` if `current_depth < max_depth`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both non-negative ints"
+      ],
+    hints: {
+  "small": "Simple depth comparison.",
+        "strong": "return current_depth < max_depth.",
+        "concept": "Without a hard depth limit, an agent that can delegate to sub-agents (which can themselves delegate) has no structural guarantee against unbounded recursion -- a real, necessary safety bound distinct from a timeout, since a fast infinite loop could still burn enormous cost before any wall-clock timeout triggers."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "within depth limit",
+          "input": {
+            "current_depth": 2,
+            "max_depth": 5
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "at depth limit, cannot delegate further",
+          "input": {
+            "current_depth": 5,
+            "max_depth": 5
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "root level always allowed with positive max",
+          "input": {
+            "current_depth": 0,
+            "max_depth": 3
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero max depth never allows delegation",
+          "input": {
+            "current_depth": 0,
+            "max_depth": 0
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-11": {
+    id: "mcp-adv-prob-11",
+    title: "Truncate Oversized Tool Output",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "truncate_tool_output",
+    functionSignature: "truncate_tool_output(output: str, max_chars: int) -> str",
+    starterCode: `def truncate_tool_output(output, max_chars):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement tool-output truncation with a clear indicator, protecting an agent's context window from being consumed by one oversized tool result.",
+    taskDescription: "Implement `truncate_tool_output(output, max_chars)`. If `len(output) <= max_chars`, return it unchanged. Otherwise return the first `max_chars` characters followed by the literal string `'... [truncated N more chars]'` where N is the number of characters that were cut.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "max_chars >= 0"
+      ],
+    hints: {
+  "small": "Only modify the output if it's actually over the limit; report exactly how much was cut.",
+        "strong": "if len(output) <= max_chars: return output; cut = len(output) - max_chars; return output[:max_chars] + f'... [truncated {cut} more chars]'.",
+        "concept": "Silently truncating with no indicator is a real, deceptive failure mode -- the agent (or the user) needs to KNOW output was cut, both so it doesn't mistake a truncated result for the complete one and so it can decide whether to ask for the rest."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "under limit unchanged",
+          "input": {
+            "output": "short",
+            "max_chars": 100
+          },
+          "expectedOutput": "short",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "over limit truncated with indicator",
+          "input": {
+            "output": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "max_chars": 100
+          },
+          "expectedOutput": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa... [truncated 50 more chars]",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at limit unchanged",
+          "input": {
+            "output": "1234567890",
+            "max_chars": 10
+          },
+          "expectedOutput": "1234567890",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero max_chars truncates everything",
+          "input": {
+            "output": "hello",
+            "max_chars": 0
+          },
+          "expectedOutput": "... [truncated 5 more chars]",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-12": {
+    id: "mcp-adv-prob-12",
+    title: "Merge Streamed Partial Tool Results",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "merge_streamed_results",
+    functionSignature: "merge_streamed_results(partial_results: list[dict]) -> dict",
+    starterCode: `def merge_streamed_results(partial_results):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement streamed partial-result merging, assembling a tool's incrementally-delivered output chunks (by sequence number) into the final complete result.",
+    taskDescription: "Implement `merge_streamed_results(partial_results)`. Each element is `{\"seq\": int, \"text\": str, \"is_final\": bool}`. Sort by `seq` ascending, concatenate all `text` fields in that order. Raise `ValueError` if no element has `is_final == True`, or if the sorted `seq` values aren't a contiguous range starting at 0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "partial_results non-empty"
+      ],
+    hints: {
+  "small": "Sort by seq, validate contiguity and presence of a final marker, then concatenate.",
+        "strong": "ranked = sorted(partial_results, key=lambda r: r['seq']); seqs = [r['seq'] for r in ranked]; if seqs != list(range(len(seqs))): raise ValueError('gap in sequence'); if not any(r['is_final'] for r in ranked): raise ValueError('missing final chunk'); return ''.join(r['text'] for r in ranked).",
+        "concept": "Real streamed delivery can arrive out of order or with a dropped chunk (a real transport-layer failure mode) -- validating contiguity BEFORE concatenating is what catches a genuinely incomplete stream rather than silently assembling a corrupted result with a gap in it."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "in-order chunks merge",
+          "input": {
+            "partial_results": [
+              {
+                "seq": 0,
+                "text": "hello ",
+                "is_final": false
+              },
+              {
+                "seq": 1,
+                "text": "world",
+                "is_final": true
+              }
+            ]
+          },
+          "expectedOutput": "hello world",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "out-of-order chunks sorted before merge",
+          "input": {
+            "partial_results": [
+              {
+                "seq": 1,
+                "text": "world",
+                "is_final": true
+              },
+              {
+                "seq": 0,
+                "text": "hello ",
+                "is_final": false
+              }
+            ]
+          },
+          "expectedOutput": "hello world",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single final chunk",
+          "input": {
+            "partial_results": [
+              {
+                "seq": 0,
+                "text": "done",
+                "is_final": true
+              }
+            ]
+          },
+          "expectedOutput": "done",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three chunks",
+          "input": {
+            "partial_results": [
+              {
+                "seq": 0,
+                "text": "a",
+                "is_final": false
+              },
+              {
+                "seq": 1,
+                "text": "b",
+                "is_final": false
+              },
+              {
+                "seq": 2,
+                "text": "c",
+                "is_final": true
+              }
+            ]
+          },
+          "expectedOutput": "abc",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-13": {
+    id: "mcp-adv-prob-13",
+    title: "Build a Tool-Call Audit Log Entry",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "build_audit_entry",
+    functionSignature: "build_audit_entry(tool_name: str, arguments: dict, result_status: str, timestamp: float) -> dict",
+    starterCode: `def build_audit_entry(tool_name, arguments, result_status, timestamp):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement audit-log entry construction, the real record-keeping every production agent system needs for tool calls it makes on a user's behalf.",
+    taskDescription: "Implement `build_audit_entry(tool_name, arguments, result_status, timestamp)`. Return `{\"tool\": tool_name, \"args\": arguments, \"status\": result_status, \"ts\": timestamp}` -- exactly these 4 keys, no more, no less.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "result_status is a string like 'success' or 'error'"
+      ],
+    hints: {
+  "small": "A direct dict construction with the exact 4 fields.",
+        "strong": "return {'tool': tool_name, 'args': arguments, 'status': result_status, 'ts': timestamp}.",
+        "concept": "A real, minimal, structured audit entry (not a free-text log line) is what makes an agent's action history queryable and reviewable after the fact -- e.g. 'show me every destructive tool call in the last hour,' which a plain log string can't support without re-parsing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "successful call entry",
+          "input": {
+            "tool_name": "read_file",
+            "arguments": {
+              "path": "/tmp/x"
+            },
+            "result_status": "success",
+            "timestamp": 1000
+          },
+          "expectedOutput": {
+            "tool": "read_file",
+            "args": {
+              "path": "/tmp/x"
+            },
+            "status": "success",
+            "ts": 1000
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "failed call entry",
+          "input": {
+            "tool_name": "send_email",
+            "arguments": {},
+            "result_status": "error",
+            "timestamp": 2000
+          },
+          "expectedOutput": {
+            "tool": "send_email",
+            "args": {},
+            "status": "error",
+            "ts": 2000
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no arguments",
+          "input": {
+            "tool_name": "ping",
+            "arguments": {},
+            "result_status": "success",
+            "timestamp": 0
+          },
+          "expectedOutput": {
+            "tool": "ping",
+            "args": {},
+            "status": "success",
+            "ts": 0
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "nested arguments",
+          "input": {
+            "tool_name": "query",
+            "arguments": {
+              "filter": {
+                "active": true
+              }
+            },
+            "result_status": "success",
+            "timestamp": 500
+          },
+          "expectedOutput": {
+            "tool": "query",
+            "args": {
+              "filter": {
+                "active": true
+              }
+            },
+            "status": "success",
+            "ts": 500
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-14": {
+    id: "mcp-adv-prob-14",
+    title: "Per-Resource Tool Execution Lock",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "try_acquire_tool_lock",
+    functionSignature: "try_acquire_tool_lock(resource_id: str, locked_resources: set) -> bool",
+    starterCode: `def try_acquire_tool_lock(resource_id, locked_resources):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a per-resource execution lock, preventing two concurrent tool calls from racing on the same underlying resource (e.g. two agents editing the same file simultaneously).",
+    taskDescription: "Implement `try_acquire_tool_lock(resource_id, locked_resources)`. If `resource_id` is already in `locked_resources`, return `False` (lock denied, resource busy) WITHOUT modifying the set. Otherwise add it to `locked_resources` and return `True` (lock acquired).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "locked_resources is a mutable set"
+      ],
+    hints: {
+  "small": "Check membership first, only mutate the set on a successful acquire.",
+        "strong": "if resource_id in locked_resources: return False; locked_resources.add(resource_id); return True.",
+        "concept": "This is a real, minimal mutual-exclusion primitive -- when multiple agents (or multiple tool calls within one agent's parallel tool-use) could touch the same real resource, a lock like this is what prevents a genuine race condition (e.g. two writes to the same file interleaving)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "acquire unlocked resource",
+          "input": {
+            "resource_id": "file-a",
+            "locked_resources": []
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "acquire already-locked resource fails",
+          "input": {
+            "resource_id": "file-a",
+            "locked_resources": [
+              "file-a"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "different resource unaffected by other lock",
+          "input": {
+            "resource_id": "file-b",
+            "locked_resources": [
+              "file-a"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty locked set",
+          "input": {
+            "resource_id": "x",
+            "locked_resources": []
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-15": {
+    id: "mcp-adv-prob-15",
+    title: "Idempotency-Aware Retry Safety Check",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "is_safe_to_retry",
+    functionSignature: "is_safe_to_retry(annotations: dict, failure_reason: str) -> bool",
+    starterCode: `def is_safe_to_retry(annotations, failure_reason):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real retry-safety check combining a tool's declared idempotency with the actual failure mode, deciding whether an agent orchestrator may automatically retry a failed tool call.",
+    taskDescription: "Implement `is_safe_to_retry(annotations, failure_reason)`. Retry is safe if EITHER: (a) `annotations.get('idempotentHint', False)` is `True` (repeating it has no additional effect), OR (b) `failure_reason == 'timeout'` AND `annotations.get('readOnlyHint', False)` is `True` (a read that may not have even reached the server is safe to redo). Otherwise return `False`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "failure_reason is a string"
+      ],
+    hints: {
+  "small": "Two independent conditions that each justify a safe retry, combined with OR.",
+        "strong": "if annotations.get('idempotentHint', False): return True; if failure_reason == 'timeout' and annotations.get('readOnlyHint', False): return True; return False.",
+        "concept": "Blindly retrying a NON-idempotent tool call after a real (non-timeout) failure risks a genuine duplicate side effect (e.g. sending a payment twice) -- this is exactly the real distinction between 'safe to auto-retry' and 'must ask a human or check state first' that a production agent orchestrator has to get right."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "idempotent tool always safe",
+          "input": {
+            "annotations": {
+              "idempotentHint": true
+            },
+            "failure_reason": "server_error"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "read-only tool safe on timeout",
+          "input": {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "failure_reason": "timeout"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "read-only tool unsafe on non-timeout failure",
+          "input": {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "failure_reason": "server_error"
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "non-idempotent non-readonly never safe",
+          "input": {
+            "annotations": {},
+            "failure_reason": "timeout"
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-16": {
+    id: "mcp-adv-prob-16",
+    title: "Check Plan Step Dependencies Satisfied",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "step_ready",
+    functionSignature: "step_ready(step_id: str, dependencies: dict[str, list[str]], completed_steps: set) -> bool",
+    starterCode: `def step_ready(step_id, dependencies, completed_steps):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement plan-step readiness checking, deciding whether an agent's multi-step tool-call plan can execute a given step yet.",
+    taskDescription: "Implement `step_ready(step_id, dependencies, completed_steps)`. `dependencies` maps step id -> list of step ids it depends on. A step is ready if ALL of its dependencies (if any) are present in `completed_steps`. A step with no listed dependencies is always ready.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "completed_steps is a set of step ids"
+      ],
+    hints: {
+  "small": "Check every dependency is already completed.",
+        "strong": "deps = dependencies.get(step_id, []); return all(d in completed_steps for d in deps).",
+        "concept": "This is the real per-step readiness check underlying any DAG-based agent plan execution -- executing a step before its dependencies finish would use stale or missing intermediate results."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no dependencies always ready",
+          "input": {
+            "step_id": "a",
+            "dependencies": {},
+            "completed_steps": []
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "dependency satisfied",
+          "input": {
+            "step_id": "b",
+            "dependencies": {
+              "b": [
+                "a"
+              ]
+            },
+            "completed_steps": [
+              "a"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "dependency not yet satisfied",
+          "input": {
+            "step_id": "b",
+            "dependencies": {
+              "b": [
+                "a"
+              ]
+            },
+            "completed_steps": []
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple dependencies partially satisfied",
+          "input": {
+            "step_id": "c",
+            "dependencies": {
+              "c": [
+                "a",
+                "b"
+              ]
+            },
+            "completed_steps": [
+              "a"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-17": {
+    id: "mcp-adv-prob-17",
+    title: "Aggregate Health Across Multiple MCP Servers",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "aggregate_health",
+    functionSignature: "aggregate_health(server_statuses: dict[str, str]) -> str",
+    starterCode: `def aggregate_health(server_statuses):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement multi-server health aggregation, the real status-rollup logic an agent's server-management UI needs to show one overall health indicator.",
+    taskDescription: "Implement `aggregate_health(server_statuses)`. Each value is `'healthy'`, `'degraded'`, or `'down'`. Return `'down'` if ANY server is `'down'`; else `'degraded'` if ANY is `'degraded'`; else `'healthy'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "server_statuses non-empty"
+      ],
+    hints: {
+  "small": "Worst-status-wins aggregation, in priority order down > degraded > healthy.",
+        "strong": "statuses = set(server_statuses.values()); if 'down' in statuses: return 'down'; if 'degraded' in statuses: return 'degraded'; return 'healthy'.",
+        "concept": "Worst-status-wins is the correct, conservative aggregation for a health rollup -- if even ONE connected server an agent depends on is down, reporting overall 'healthy' would be actively misleading."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all healthy",
+          "input": {
+            "server_statuses": {
+              "a": "healthy",
+              "b": "healthy"
+            }
+          },
+          "expectedOutput": "healthy",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one degraded",
+          "input": {
+            "server_statuses": {
+              "a": "healthy",
+              "b": "degraded"
+            }
+          },
+          "expectedOutput": "degraded",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "one down overrides degraded",
+          "input": {
+            "server_statuses": {
+              "a": "degraded",
+              "b": "down"
+            }
+          },
+          "expectedOutput": "down",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single server down",
+          "input": {
+            "server_statuses": {
+              "a": "down"
+            }
+          },
+          "expectedOutput": "down",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-18": {
+    id: "mcp-adv-prob-18",
+    title: "Track Cumulative Tool Call Cost Against Budget",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "within_cost_budget",
+    functionSignature: "within_cost_budget(cost_so_far: float, next_call_cost: float, budget: float) -> bool",
+    starterCode: `def within_cost_budget(cost_so_far, next_call_cost, budget):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement tool-call cost budgeting, a real spend guardrail preventing an autonomous agent from running up unbounded API/compute cost.",
+    taskDescription: "Implement `within_cost_budget(cost_so_far, next_call_cost, budget)`: return `True` if `(cost_so_far + next_call_cost) <= budget`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 0"
+      ],
+    hints: {
+  "small": "Check if adding the next call's cost would exceed the budget.",
+        "strong": "return (cost_so_far + next_call_cost) <= budget.",
+        "concept": "A real production agent framework needs a hard spend cap independent of any single tool's own rate limiting -- an agent that's individually well-behaved per-call can still spiral into runaway total cost across a long autonomous session without this check."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "well within budget",
+          "input": {
+            "cost_so_far": 1,
+            "next_call_cost": 0.5,
+            "budget": 10
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "would exceed budget",
+          "input": {
+            "cost_so_far": 9,
+            "next_call_cost": 2,
+            "budget": 10
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at budget",
+          "input": {
+            "cost_so_far": 8,
+            "next_call_cost": 2,
+            "budget": 10
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero cost so far",
+          "input": {
+            "cost_so_far": 0,
+            "next_call_cost": 5,
+            "budget": 10
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-19": {
+    id: "mcp-adv-prob-19",
+    title: "Fallback Tool Chain Resolution",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "resolve_fallback_tool",
+    functionSignature: "resolve_fallback_tool(tool_priority_list: list[str], tool_availability: dict[str, bool]) -> str",
+    starterCode: `def resolve_fallback_tool(tool_priority_list, tool_availability):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement fallback-tool-chain resolution, letting an agent gracefully degrade to a lower-priority tool when its preferred one is unavailable.",
+    taskDescription: "Implement `resolve_fallback_tool(tool_priority_list, tool_availability)`: return the FIRST tool name in `tool_priority_list` (in order) whose `tool_availability` value is `True`. Return `''` if none are available.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "tool_priority_list non-empty"
+      ],
+    hints: {
+  "small": "Walk the priority list in order, return the first available one.",
+        "strong": "for name in tool_priority_list: if tool_availability.get(name, False): return name. Return ''.",
+        "concept": "A real agent shouldn't hard-fail just because its #1-preferred tool (e.g. a premium web-search API) is temporarily down -- a priority-ordered fallback chain (to a free-tier search, say) is real production resilience, not just a nice-to-have."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "first choice available",
+          "input": {
+            "tool_priority_list": [
+              "premium_search",
+              "free_search"
+            ],
+            "tool_availability": {
+              "premium_search": true,
+              "free_search": true
+            }
+          },
+          "expectedOutput": "premium_search",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "first choice down, falls back",
+          "input": {
+            "tool_priority_list": [
+              "premium_search",
+              "free_search"
+            ],
+            "tool_availability": {
+              "premium_search": false,
+              "free_search": true
+            }
+          },
+          "expectedOutput": "free_search",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "none available",
+          "input": {
+            "tool_priority_list": [
+              "a",
+              "b"
+            ],
+            "tool_availability": {
+              "a": false,
+              "b": false
+            }
+          },
+          "expectedOutput": "",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single option available",
+          "input": {
+            "tool_priority_list": [
+              "only"
+            ],
+            "tool_availability": {
+              "only": true
+            }
+          },
+          "expectedOutput": "only",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-20": {
+    id: "mcp-adv-prob-20",
+    title: "Merge Trace Context Across Tool Calls",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "propagate_trace_context",
+    functionSignature: "propagate_trace_context(parent_trace_id: str, parent_span_id: str, new_span_id: str) -> dict",
+    starterCode: `def propagate_trace_context(parent_trace_id, parent_span_id, new_span_id):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement distributed trace context propagation, letting an observability system follow one logical agent operation across multiple chained tool calls.",
+    taskDescription: "Implement `propagate_trace_context(parent_trace_id, parent_span_id, new_span_id)`. Return `{\"trace_id\": parent_trace_id, \"span_id\": new_span_id, \"parent_span_id\": parent_span_id}` -- the trace id stays constant across the whole chain, while each hop gets its own span id linked to its parent.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all inputs are non-empty strings"
+      ],
+    hints: {
+  "small": "Trace id propagates unchanged; a new span id is created each hop, linked back to the parent span.",
+        "strong": "return {'trace_id': parent_trace_id, 'span_id': new_span_id, 'parent_span_id': parent_span_id}.",
+        "concept": "This is exactly OpenTelemetry's real trace-context propagation model -- a shared trace_id lets you reconstruct the FULL causal chain of tool calls triggered by one user request, which is essential for debugging a slow or failed multi-hop agent workflow."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic propagation",
+          "input": {
+            "parent_trace_id": "trace-1",
+            "parent_span_id": "span-1",
+            "new_span_id": "span-2"
+          },
+          "expectedOutput": {
+            "trace_id": "trace-1",
+            "span_id": "span-2",
+            "parent_span_id": "span-1"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "different trace",
+          "input": {
+            "parent_trace_id": "trace-99",
+            "parent_span_id": "span-a",
+            "new_span_id": "span-b"
+          },
+          "expectedOutput": {
+            "trace_id": "trace-99",
+            "span_id": "span-b",
+            "parent_span_id": "span-a"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "trace id preserved regardless of span names",
+          "input": {
+            "parent_trace_id": "abc",
+            "parent_span_id": "x",
+            "new_span_id": "y"
+          },
+          "expectedOutput": {
+            "trace_id": "abc",
+            "span_id": "y",
+            "parent_span_id": "x"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "another hop in the same chain",
+          "input": {
+            "parent_trace_id": "trace-1",
+            "parent_span_id": "span-2",
+            "new_span_id": "span-3"
+          },
+          "expectedOutput": {
+            "trace_id": "trace-1",
+            "span_id": "span-3",
+            "parent_span_id": "span-2"
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-21": {
+    id: "mcp-adv-prob-21",
+    title: "Decide If a Tool Result Needs Summarization",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "needs_summarization",
+    functionSignature: "needs_summarization(result_char_count: int, summarize_threshold: int) -> bool",
+    starterCode: `def needs_summarization(result_char_count, summarize_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, simple summarization trigger for tool results, deciding when a raw result is too large to keep verbatim in the agent's working memory.",
+    taskDescription: "Implement `needs_summarization(result_char_count, summarize_threshold)`: return `True` if `result_char_count > summarize_threshold`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both values >= 0"
+      ],
+    hints: {
+  "small": "A straightforward size threshold check.",
+        "strong": "return result_char_count > summarize_threshold.",
+        "concept": "This is a real, practical tradeoff decision an agent memory system makes constantly -- keeping every tool result verbatim exhausts context fast, but summarizing EVERYTHING (even small results) wastes an LLM call for no real benefit; a size threshold is the simplest real policy."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "small result no summarization",
+          "input": {
+            "result_char_count": 200,
+            "summarize_threshold": 2000
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "large result needs summarization",
+          "input": {
+            "result_char_count": 5000,
+            "summarize_threshold": 2000
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at threshold",
+          "input": {
+            "result_char_count": 2000,
+            "summarize_threshold": 2000
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero threshold always summarizes",
+          "input": {
+            "result_char_count": 1,
+            "summarize_threshold": 0
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-22": {
+    id: "mcp-adv-prob-22",
+    title: "Detect Breaking Changes Between Schema Versions",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "has_breaking_change",
+    functionSignature: "has_breaking_change(old_required_fields: set, new_required_fields: set) -> bool",
+    starterCode: `def has_breaking_change(old_required_fields, new_required_fields):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, minimal breaking-change detector for a tool schema diff, checking whether newly-required fields would break existing clients.",
+    taskDescription: "Implement `has_breaking_change(old_required_fields, new_required_fields)`: return `True` if `new_required_fields` contains any field NOT present in `old_required_fields` (a NEW required field is breaking -- existing callers won't be sending it). Adding a new OPTIONAL field, or removing a required field, is never breaking by this rule.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both are sets of field names"
+      ],
+    hints: {
+  "small": "Check if new_required_fields has anything old_required_fields doesn't.",
+        "strong": "return not new_required_fields.issubset(old_required_fields).",
+        "concept": "Making a previously-optional (or nonexistent) field newly REQUIRED is the single most common real breaking-schema-change pattern -- existing client code that never sent that field will now fail validation, exactly the case this check is designed to catch before a server ships the change."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no new required fields, not breaking",
+          "input": {
+            "old_required_fields": [
+              "a",
+              "b"
+            ],
+            "new_required_fields": [
+              "a"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "new required field is breaking",
+          "input": {
+            "old_required_fields": [
+              "a"
+            ],
+            "new_required_fields": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "identical requirements",
+          "input": {
+            "old_required_fields": [
+              "a",
+              "b"
+            ],
+            "new_required_fields": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "entirely new required field set",
+          "input": {
+            "old_required_fields": [],
+            "new_required_fields": [
+              "x"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-23": {
+    id: "mcp-adv-prob-23",
+    title: "Count Subtasks in a Decomposed Plan",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "count_plan_steps",
+    functionSignature: "count_plan_steps(plan_text: str) -> int",
+    starterCode: `def count_plan_steps(plan_text):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, simple plan-step counter for an agent's task-decomposition output, parsing a numbered-list plan format.",
+    taskDescription: "Implement `count_plan_steps(plan_text)`. Count the number of lines that start (after stripping leading whitespace) with a digit followed by a period, e.g. `'1. Do X'`. Lines not matching this pattern are ignored.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "plan_text is a multi-line string"
+      ],
+    hints: {
+  "small": "Check each line's stripped form for a leading 'digit(s).' pattern.",
+        "strong": "import re; sum(1 for line in plan_text.split(chr(10)) if re.match(r'^\\d+\\.', line.strip())).",
+        "concept": "This is a real, if simple, structural check on an agent's own plan-generation output -- a plan with a suspiciously low or zero step count is a real signal the LLM didn't actually decompose the task the way it was asked to, worth flagging before the agent starts executing it."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "three-step plan",
+          "input": {
+            "plan_text": "1. First step\n2. Second step\n3. Third step"
+          },
+          "expectedOutput": 3,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "plan with non-step lines mixed in",
+          "input": {
+            "plan_text": "Plan:\n1. Do this\nsome note\n2. Do that"
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no numbered steps",
+          "input": {
+            "plan_text": "Just a paragraph, no list."
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single step",
+          "input": {
+            "plan_text": "1. Only step"
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-24": {
+    id: "mcp-adv-prob-24",
+    title: "Server Discovery Registry Lookup",
+    difficulty: "easy",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "lookup_server_endpoint",
+    functionSignature: "lookup_server_endpoint(server_name: str, registry: dict[str, str]) -> str",
+    starterCode: `def lookup_server_endpoint(server_name, registry):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement server-discovery registry lookup, resolving a logical MCP server name to its actual connection endpoint.",
+    taskDescription: "Implement `lookup_server_endpoint(server_name, registry)`: return `registry[server_name]`, or raise `KeyError` if not registered.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "registry maps server name -> endpoint string"
+      ],
+    hints: {
+  "small": "Direct dict lookup.",
+        "strong": "return registry[server_name].",
+        "concept": "Naming servers logically (e.g. 'filesystem', 'github') rather than hardcoding endpoints everywhere is what lets an operator swap out or relocate a server's actual deployment without touching every place that references it by name."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "known server",
+          "input": {
+            "server_name": "filesystem",
+            "registry": {
+              "filesystem": "stdio://fs-server",
+              "github": "https://mcp.github.com"
+            }
+          },
+          "expectedOutput": "stdio://fs-server",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "another known server",
+          "input": {
+            "server_name": "github",
+            "registry": {
+              "filesystem": "stdio://fs-server",
+              "github": "https://mcp.github.com"
+            }
+          },
+          "expectedOutput": "https://mcp.github.com",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single-entry registry",
+          "input": {
+            "server_name": "only",
+            "registry": {
+              "only": "endpoint1"
+            }
+          },
+          "expectedOutput": "endpoint1",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "different registry contents",
+          "input": {
+            "server_name": "db",
+            "registry": {
+              "db": "postgres://host"
+            }
+          },
+          "expectedOutput": "postgres://host",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-25": {
+    id: "mcp-adv-prob-25",
+    title: "Confidence-Gated Human Confirmation",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "should_ask_human",
+    functionSignature: "should_ask_human(agent_confidence: float, action_is_destructive: bool, confidence_threshold: float) -> bool",
+    starterCode: `def should_ask_human(agent_confidence, action_is_destructive, confidence_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement confidence-gated human-in-the-loop escalation, a real policy deciding when an autonomous agent should pause and ask for human confirmation before proceeding.",
+    taskDescription: "Implement `should_ask_human(agent_confidence, action_is_destructive, confidence_threshold)`. Return `True` (ask a human) if `action_is_destructive` is `True` AND `agent_confidence < confidence_threshold`. A non-destructive action never needs to ask, regardless of confidence.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= agent_confidence <= 1",
+        "0 <= confidence_threshold <= 1"
+      ],
+    hints: {
+  "small": "Two conditions combined with AND -- destructiveness gates the check at all, confidence gates the actual decision.",
+        "strong": "return action_is_destructive and agent_confidence < confidence_threshold.",
+        "concept": "Gating on destructiveness first (not asking about every low-confidence READ, only low-confidence WRITES/deletes) is what keeps a real human-in-the-loop system usable -- asking for confirmation on every uncertain-but-harmless action would make the agent unbearably chatty and train the human to rubber-stamp everything."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "low confidence destructive action asks",
+          "input": {
+            "agent_confidence": 0.3,
+            "action_is_destructive": true,
+            "confidence_threshold": 0.7
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "high confidence destructive action proceeds",
+          "input": {
+            "agent_confidence": 0.9,
+            "action_is_destructive": true,
+            "confidence_threshold": 0.7
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "low confidence non-destructive never asks",
+          "input": {
+            "agent_confidence": 0.1,
+            "action_is_destructive": false,
+            "confidence_threshold": 0.7
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at threshold does not ask",
+          "input": {
+            "agent_confidence": 0.7,
+            "action_is_destructive": true,
+            "confidence_threshold": 0.7
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-26": {
+    id: "mcp-adv-prob-26",
+    title: "Validate Multi-Step Plan References Known Tools",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "validate_plan_tools",
+    functionSignature: "validate_plan_tools(plan_steps: list[dict], known_tools: set) -> list[str]",
+    starterCode: `def validate_plan_tools(plan_steps, known_tools):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement plan-validation against the real available tool set, catching an agent-generated plan that hallucinated a tool name before any execution is attempted.",
+    taskDescription: "Implement `validate_plan_tools(plan_steps, known_tools)`. `plan_steps` is a list of `{\"step\": int, \"tool\": str}`. Return the sorted list of DISTINCT tool names referenced in the plan that are NOT in `known_tools` (the hallucinated ones). Empty list means the plan is fully valid.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "plan_steps may be empty"
+      ],
+    hints: {
+  "small": "Collect all referenced tool names, keep the ones not in the known set.",
+        "strong": "referenced = set(s['tool'] for s in plan_steps); sorted(referenced - known_tools).",
+        "concept": "An LLM-generated plan can genuinely reference a tool name that doesn't exist (a real, common hallucination failure mode) -- validating the ENTIRE plan against the real tool registry BEFORE executing step 1 catches this upfront, rather than failing mid-execution after some steps already had real side effects."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all tools known, valid plan",
+          "input": {
+            "plan_steps": [
+              {
+                "step": 1,
+                "tool": "read_file"
+              },
+              {
+                "step": 2,
+                "tool": "write_file"
+              }
+            ],
+            "known_tools": [
+              "read_file",
+              "write_file"
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one hallucinated tool",
+          "input": {
+            "plan_steps": [
+              {
+                "step": 1,
+                "tool": "read_file"
+              },
+              {
+                "step": 2,
+                "tool": "teleport"
+              }
+            ],
+            "known_tools": [
+              "read_file"
+            ]
+          },
+          "expectedOutput": [
+            "teleport"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty plan trivially valid",
+          "input": {
+            "plan_steps": [],
+            "known_tools": [
+              "a"
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "duplicate hallucinated tool deduped",
+          "input": {
+            "plan_steps": [
+              {
+                "step": 1,
+                "tool": "fake"
+              },
+              {
+                "step": 2,
+                "tool": "fake"
+              }
+            ],
+            "known_tools": []
+          },
+          "expectedOutput": [
+            "fake"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-27": {
+    id: "mcp-adv-prob-27",
+    title: "Compute Per-Tool Usage Statistics",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "tool_usage_stats",
+    functionSignature: "tool_usage_stats(call_log: list[dict]) -> dict",
+    starterCode: `def tool_usage_stats(call_log):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement per-tool usage statistics aggregation, real operational monitoring data for understanding which tools an agent actually relies on and how reliably.",
+    taskDescription: "Implement `tool_usage_stats(call_log)`. `call_log` is a list of `{\"tool\": str, \"success\": bool}`. Return a dict mapping each distinct tool name to `{\"calls\": int, \"success_rate\": float}` (successes / total calls for that tool).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "call_log may be empty"
+      ],
+    hints: {
+  "small": "Group by tool name, count total and successful calls per group.",
+        "strong": "stats = {}; for c in call_log: t = c['tool']; stats.setdefault(t, {'calls':0,'success_rate':0.0}); for t in set(c['tool'] for c in call_log): entries = [c for c in call_log if c['tool']==t]; stats[t] = {'calls': len(entries), 'success_rate': sum(e['success'] for e in entries)/len(entries)}.",
+        "concept": "This is real, actionable operational data -- a tool with a low success_rate and high call count is a concrete signal worth investigating (a flaky integration, a schema mismatch, a genuinely unreliable external API), not just abstract telemetry for its own sake."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single tool all successful",
+          "input": {
+            "call_log": [
+              {
+                "tool": "a",
+                "success": true
+              },
+              {
+                "tool": "a",
+                "success": true
+              }
+            ]
+          },
+          "expectedOutput": {
+            "a": {
+              "calls": 2,
+              "success_rate": 1
+            }
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single tool mixed results",
+          "input": {
+            "call_log": [
+              {
+                "tool": "a",
+                "success": true
+              },
+              {
+                "tool": "a",
+                "success": false
+              }
+            ]
+          },
+          "expectedOutput": {
+            "a": {
+              "calls": 2,
+              "success_rate": 0.5
+            }
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "two distinct tools",
+          "input": {
+            "call_log": [
+              {
+                "tool": "a",
+                "success": true
+              },
+              {
+                "tool": "b",
+                "success": false
+              }
+            ]
+          },
+          "expectedOutput": {
+            "b": {
+              "calls": 1,
+              "success_rate": 0
+            },
+            "a": {
+              "calls": 1,
+              "success_rate": 1
+            }
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty call log",
+          "input": {
+            "call_log": []
+          },
+          "expectedOutput": {},
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-28": {
+    id: "mcp-adv-prob-28",
+    title: "Tool Chain Output-to-Input Piping",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "pipe_tool_chain",
+    functionSignature: "pipe_tool_chain(chain: list[str], initial_value: float) -> list",
+    starterCode: `def pipe_tool_chain(chain, initial_value):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement tool-chaining, where one tool call's real output becomes the next tool call's real input -- the actual execution pattern behind an agent's multi-step plan.",
+    taskDescription: "Implement `pipe_tool_chain(chain, initial_value)`. `chain` is a list of operation names, each one of `'increment'` (add 1), `'double'` (multiply by 2), or `'negate'` (multiply by -1), representing a sequence of tool calls. Starting from `initial_value`, apply each named operation in order, feeding each one's output as the next one's input. Return the list of ALL intermediate outputs (including the final one), in order -- NOT including `initial_value` itself.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "every entry in chain is one of 'increment', 'double', 'negate'"
+      ],
+    hints: {
+  "small": "Fold over the chain, applying each named operation to the running value and recording each result.",
+        "strong": "ops = {'increment': lambda x: x+1, 'double': lambda x: x*2, 'negate': lambda x: -x}; current = initial_value; outputs = []; for name in chain: current = ops[name](current); outputs.append(current). Return outputs.",
+        "concept": "This is the real execution semantics of a linear agent plan: 'search, then summarize the search results, then extract entities from the summary' -- each step's real output is literally the next step's real input, not just a conceptual pipeline diagram."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two-step chain",
+          "input": {
+            "chain": [
+              "increment",
+              "double"
+            ],
+            "initial_value": 5
+          },
+          "expectedOutput": [
+            6,
+            12
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single operation",
+          "input": {
+            "chain": [
+              "negate"
+            ],
+            "initial_value": 3
+          },
+          "expectedOutput": [
+            -3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty chain returns empty list",
+          "input": {
+            "chain": [],
+            "initial_value": 10
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three-step chain",
+          "input": {
+            "chain": [
+              "increment",
+              "increment",
+              "double"
+            ],
+            "initial_value": 0
+          },
+          "expectedOutput": [
+            1,
+            2,
+            4
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "mcp-adv-prob-29": {
+    id: "mcp-adv-prob-29",
+    title: "Tool Cost-Latency Tradeoff Selection",
+    difficulty: "medium",
+    topic: "MCP Advanced & Agent Integration",
+    estimatedTime: '15 min',
+    functionName: "select_cheapest_within_latency",
+    functionSignature: "select_cheapest_within_latency(tool_options: list[dict], max_latency_ms: float) -> str",
+    starterCode: `def select_cheapest_within_latency(tool_options, max_latency_ms):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real cost-latency tradeoff selection, picking the cheapest tool variant among several that all satisfy a hard latency requirement (e.g. a fast expensive API vs. a slow cheap one).",
+    taskDescription: "Implement `select_cheapest_within_latency(tool_options, max_latency_ms)`. `tool_options` is a list of `{\"name\": str, \"cost\": float, \"latency_ms\": float}`. Among options with `latency_ms <= max_latency_ms`, return the name of the one with the LOWEST cost (ties broken by name ascending). If none satisfy the latency constraint, return `''`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "tool_options non-empty"
+      ],
+    hints: {
+  "small": "Filter by the hard latency constraint first, then minimize cost among survivors.",
+        "strong": "eligible = [t for t in tool_options if t['latency_ms'] <= max_latency_ms]; if not eligible: return ''; return min(sorted(eligible, key=lambda t: t['name']), key=lambda t: t['cost'])['name'].",
+        "concept": "This is a real, practical multi-objective decision an agent orchestrator faces constantly: when several tool variants exist for the same task (a fast/expensive API vs. a slow/cheap one), a hard latency SLA plus a cost-minimization objective is the right framing, not a single blended score that could silently violate the latency requirement."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear cheapest within latency",
+          "input": {
+            "tool_options": [
+              {
+                "name": "fast",
+                "cost": 5,
+                "latency_ms": 100
+              },
+              {
+                "name": "cheap",
+                "cost": 1,
+                "latency_ms": 500
+              }
+            ],
+            "max_latency_ms": 1000
+          },
+          "expectedOutput": "cheap",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "latency constraint excludes cheaper option",
+          "input": {
+            "tool_options": [
+              {
+                "name": "fast",
+                "cost": 5,
+                "latency_ms": 100
+              },
+              {
+                "name": "cheap",
+                "cost": 1,
+                "latency_ms": 500
+              }
+            ],
+            "max_latency_ms": 200
+          },
+          "expectedOutput": "fast",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "none satisfy latency",
+          "input": {
+            "tool_options": [
+              {
+                "name": "slow",
+                "cost": 1,
+                "latency_ms": 5000
+              }
+            ],
+            "max_latency_ms": 100
+          },
+          "expectedOutput": "",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "tie broken by name",
+          "input": {
+            "tool_options": [
+              {
+                "name": "z",
+                "cost": 1,
+                "latency_ms": 50
+              },
+              {
+                "name": "a",
+                "cost": 1,
+                "latency_ms": 50
+              }
+            ],
+            "max_latency_ms": 100
+          },
+          "expectedOutput": "a",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

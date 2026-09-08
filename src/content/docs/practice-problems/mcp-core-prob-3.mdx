@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #271. MCP Tool Permission Policy"
-description: "Master #271. MCP Tool Permission Policy in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Tool Discovery Capability Filtering"
+description: "Implement tool-discovery filtering by capability tag, letting a client or orchestrator narrow a large tool catalog to only relevant tools."
 difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #271. MCP Tool Permission Policy
+# Tool Discovery Capability Filtering
 
-**Track**: MCP Core Engineering | **Rank**: #271 of 1072 | **Points**: 40 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#271. MCP Tool Permission Policy` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement tool-discovery filtering by capability tag, letting a client or orchestrator narrow a large tool catalog to only relevant tools.
 
 ## Task
 
-Implement the function `mcp_tool_permission_policy`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `filter_tools_by_tag(tools, required_tag)`. `tools` is a list of `{"name": str, "tags": list[str]}`. Return the sorted list of tool names whose `tags` list contains `required_tag`.
 
 <PracticePlayground problemId="mcp-core-prob-3" />

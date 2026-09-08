@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #300. MCP Advanced & Agent Integration Module 1: Problem 3"
-description: "Master #300. MCP Advanced & Agent Integration Module 1: Problem 3 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Runtime Tool Registry Add/Remove"
+description: "Implement dynamic tool registration, letting an MCP server add or remove tools at runtime (e.g. tools that only become available once a user connects an integration)."
 difficulty: "easy"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #300. MCP Advanced & Agent Integration Module 1: Problem 3
+# Runtime Tool Registry Add/Remove
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #300 of 1072 | **Points**: 40 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#300. MCP Advanced & Agent Integration Module 1: Problem 3` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement dynamic tool registration, letting an MCP server add or remove tools at runtime (e.g. tools that only become available once a user connects an integration).
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `update_tool_registry(registry, tool_name, action)`. If `action == 'add'`, add `tool_name` as a key with value `True` (no-op if already present). If `action == 'remove'`, delete `tool_name` if present (no-op if absent). Return the mutated registry.
 
 <PracticePlayground problemId="mcp-adv-prob-3" />

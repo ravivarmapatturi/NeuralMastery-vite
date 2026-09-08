@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #299. MCP Advanced & Agent Integration Module 1: Problem 2"
-description: "Master #299. MCP Advanced & Agent Integration Module 1: Problem 2 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Score Tool Relevance to a Task"
+description: "Implement a real, simple keyword-overlap relevance scorer for tool selection, used when an agent has too many available tools to fit all descriptions in context."
+difficulty: "medium"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #299. MCP Advanced & Agent Integration Module 1: Problem 2
+# Score Tool Relevance to a Task
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #299 of 1072 | **Points**: 40 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#299. MCP Advanced & Agent Integration Module 1: Problem 2` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real, simple keyword-overlap relevance scorer for tool selection, used when an agent has too many available tools to fit all descriptions in context.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `score_tool_relevance(task_description, tool_description)`. Tokenize both into lowercase word sets. Return the Jaccard similarity `|A∩B|/|A∪B|` (0.0 if both empty).
 
 <PracticePlayground problemId="mcp-adv-prob-2" />

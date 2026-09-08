@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #270. MCP Capability Negotiation"
-description: "Master #270. MCP Capability Negotiation in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: JSON-RPC 2.0 Request Shape Validation"
+description: "Implement JSON-RPC 2.0 request validation, the transport-level contract MCP is built directly on top of."
+difficulty: "medium"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #270. MCP Capability Negotiation
+# JSON-RPC 2.0 Request Shape Validation
 
-**Track**: MCP Core Engineering | **Rank**: #270 of 1072 | **Points**: 40 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#270. MCP Capability Negotiation` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement JSON-RPC 2.0 request validation, the transport-level contract MCP is built directly on top of.
 
 ## Task
 
-Implement the function `mcp_capability_negotiation`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_valid_jsonrpc_request(message)`. A valid request has EXACTLY: `jsonrpc` equal to the string `'2.0'`, a `method` key whose value is a non-empty string, and (if present) a `params` key that is a `dict` or `list`. `id` is optional (its absence marks it a notification) but if present must be a `str`, `int`, or `None`. Return `True` only if all present fields satisfy these rules.
 
 <PracticePlayground problemId="mcp-core-prob-2" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #282. MCP Resource Reader"
-description: "Master #282. MCP Resource Reader in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Split a JSON-RPC Batch Request"
+description: "Implement JSON-RPC batch-request splitting, normalizing a message that may be a single request or an array of requests into a uniform list."
+difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #282. MCP Resource Reader
+# Split a JSON-RPC Batch Request
 
-**Track**: MCP Core Engineering | **Rank**: #282 of 1072 | **Points**: 60 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#282. MCP Resource Reader` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement JSON-RPC batch-request splitting, normalizing a message that may be a single request or an array of requests into a uniform list.
 
 ## Task
 
-Implement the function `mcp_resource_reader`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `split_batch_request(payload)`: if `payload` is a `list`, return it as-is; if it's a `dict` (a single request), return `[payload]`.
 
 <PracticePlayground problemId="mcp-core-prob-14" />

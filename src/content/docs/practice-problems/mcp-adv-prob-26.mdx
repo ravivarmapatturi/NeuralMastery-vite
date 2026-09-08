@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #323. MCP Advanced & Agent Integration Module 6: Problem 26"
-description: "Master #323. MCP Advanced & Agent Integration Module 6: Problem 26 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Validate Multi-Step Plan References Known Tools"
+description: "Implement plan-validation against the real available tool set, catching an agent-generated plan that hallucinated a tool name before any execution is attempted."
+difficulty: "medium"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #323. MCP Advanced & Agent Integration Module 6: Problem 26
+# Validate Multi-Step Plan References Known Tools
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #323 of 1072 | **Points**: 90 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#323. MCP Advanced & Agent Integration Module 6: Problem 26` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement plan-validation against the real available tool set, catching an agent-generated plan that hallucinated a tool name before any execution is attempted.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `validate_plan_tools(plan_steps, known_tools)`. `plan_steps` is a list of `{"step": int, "tool": str}`. Return the sorted list of DISTINCT tool names referenced in the plan that are NOT in `known_tools` (the hallucinated ones). Empty list means the plan is fully valid.
 
 <PracticePlayground problemId="mcp-adv-prob-26" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #272. MCP Tool Circuit Breaker"
-description: "Master #272. MCP Tool Circuit Breaker in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Parse a Resource URI Into Components"
+description: "Implement MCP resource URI parsing, breaking a `scheme://path?query` resource identifier into its structural parts."
+difficulty: "medium"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #272. MCP Tool Circuit Breaker
+# Parse a Resource URI Into Components
 
-**Track**: MCP Core Engineering | **Rank**: #272 of 1072 | **Points**: 40 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#272. MCP Tool Circuit Breaker` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement MCP resource URI parsing, breaking a `scheme://path?query` resource identifier into its structural parts.
 
 ## Task
 
-Implement the function `mcp_tool_circuit_breaker`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `parse_resource_uri(uri)`. Split on `'://'` to get `scheme` and the rest. Split the rest on the first `'?'` to separate `path` from a query string (`''` if no `?`). Parse the query string into a dict by splitting on `'&'` then `'='` per pair (empty dict if the query string is empty). Return `{"scheme": str, "path": str, "query": dict}`.
 
 <PracticePlayground problemId="mcp-core-prob-4" />

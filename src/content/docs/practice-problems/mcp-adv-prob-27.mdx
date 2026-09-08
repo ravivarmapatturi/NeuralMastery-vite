@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #324. MCP Advanced & Agent Integration Module 6: Problem 27"
-description: "Master #324. MCP Advanced & Agent Integration Module 6: Problem 27 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Compute Per-Tool Usage Statistics"
+description: "Implement per-tool usage statistics aggregation, real operational monitoring data for understanding which tools an agent actually relies on and how reliably."
+difficulty: "medium"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #324. MCP Advanced & Agent Integration Module 6: Problem 27
+# Compute Per-Tool Usage Statistics
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #324 of 1072 | **Points**: 90 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#324. MCP Advanced & Agent Integration Module 6: Problem 27` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement per-tool usage statistics aggregation, real operational monitoring data for understanding which tools an agent actually relies on and how reliably.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `tool_usage_stats(call_log)`. `call_log` is a list of `{"tool": str, "success": bool}`. Return a dict mapping each distinct tool name to `{"calls": int, "success_rate": float}` (successes / total calls for that tool).
 
 <PracticePlayground problemId="mcp-adv-prob-27" />

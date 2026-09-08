@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #273. MCP Multi-Server Client"
-description: "Master #273. MCP Multi-Server Client in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Batch Rapid Notifications Within a Window"
+description: "Implement notification batching (distinct from single-notification debouncing): grouping rapid-fire MCP notifications arriving within a rolling time window into batches, to reduce client-side handler churn."
+difficulty: "medium"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #273. MCP Multi-Server Client
+# Batch Rapid Notifications Within a Window
 
-**Track**: MCP Core Engineering | **Rank**: #273 of 1072 | **Points**: 40 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#273. MCP Multi-Server Client` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement notification batching (distinct from single-notification debouncing): grouping rapid-fire MCP notifications arriving within a rolling time window into batches, to reduce client-side handler churn.
 
 ## Task
 
-Implement the function `mcp_multi_server_client`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `batch_notifications(notifications, window_ms)`. `notifications` is a list of `{"id": str, "ts": float}` sorted by `ts` ascending. Start a new batch whenever a notification's `ts` is MORE than `window_ms` after the CURRENT batch's first notification's `ts`. Return a list of batches, each a list of notification ids.
 
 <PracticePlayground problemId="mcp-core-prob-5" />

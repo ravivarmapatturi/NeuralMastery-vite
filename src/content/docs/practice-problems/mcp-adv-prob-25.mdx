@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #322. MCP Advanced & Agent Integration Module 5: Problem 25"
-description: "Master #322. MCP Advanced & Agent Integration Module 5: Problem 25 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Confidence-Gated Human Confirmation"
+description: "Implement confidence-gated human-in-the-loop escalation, a real policy deciding when an autonomous agent should pause and ask for human confirmation before proceeding."
+difficulty: "medium"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #322. MCP Advanced & Agent Integration Module 5: Problem 25
+# Confidence-Gated Human Confirmation
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #322 of 1072 | **Points**: 90 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#322. MCP Advanced & Agent Integration Module 5: Problem 25` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement confidence-gated human-in-the-loop escalation, a real policy deciding when an autonomous agent should pause and ask for human confirmation before proceeding.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `should_ask_human(agent_confidence, action_is_destructive, confidence_threshold)`. Return `True` (ask a human) if `action_is_destructive` is `True` AND `agent_confidence < confidence_threshold`. A non-destructive action never needs to ask, regardless of confidence.
 
 <PracticePlayground problemId="mcp-adv-prob-25" />

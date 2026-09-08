@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #278. MCP Agentic Server Loop"
-description: "Master #278. MCP Agentic Server Loop in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Parse Content-Length Stdio Framing"
+description: "Implement Content-Length-prefixed message framing parsing, the real wire format MCP's stdio transport uses (identical in shape to LSP's framing)."
+difficulty: "medium"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #278. MCP Agentic Server Loop
+# Parse Content-Length Stdio Framing
 
-**Track**: MCP Core Engineering | **Rank**: #278 of 1072 | **Points**: 40 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#278. MCP Agentic Server Loop` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Content-Length-prefixed message framing parsing, the real wire format MCP's stdio transport uses (identical in shape to LSP's framing).
 
 ## Task
 
-Implement the function `mcp_agentic_server_loop`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `parse_stdio_frame(raw_bytes)`. The format is a header line `'Content-Length: N\r\n'`, a blank line `'\r\n'`, then exactly N bytes of body. Parse `N` from the header, extract the body of that exact length, and return `(body, remainder)` where `remainder` is whatever bytes come after the frame (may be `''`).
 
 <PracticePlayground problemId="mcp-core-prob-10" />

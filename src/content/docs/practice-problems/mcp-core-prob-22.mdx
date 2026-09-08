@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #290. MCP Context Window Injection"
-description: "Master #290. MCP Context Window Injection in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Infer MIME Type From Resource Extension"
+description: "Implement MIME-type inference from a resource URI's file extension, needed so an MCP server can populate a resource's `mimeType` field correctly."
+difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #290. MCP Context Window Injection
+# Infer MIME Type From Resource Extension
 
-**Track**: MCP Core Engineering | **Rank**: #290 of 1072 | **Points**: 90 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#290. MCP Context Window Injection` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement MIME-type inference from a resource URI's file extension, needed so an MCP server can populate a resource's `mimeType` field correctly.
 
 ## Task
 
-Implement the function `mcp_context_window_injection`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `infer_mime_type(uri)`. Extract the extension (text after the last `'.'`, lowercase). Map: `txt->'text/plain'`, `json->'application/json'`, `md->'text/markdown'`, `py->'text/x-python'`, `html->'text/html'`, `csv->'text/csv'`. Any other or missing extension returns `'application/octet-stream'`.
 
 <PracticePlayground problemId="mcp-core-prob-22" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #279. MCP JSON-RPC Protocol Handler"
-description: "Master #279. MCP JSON-RPC Protocol Handler in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: MCP Session Lifecycle State Transition"
+description: "Implement the real MCP session lifecycle state machine, governing valid connection state transitions between a client and server."
 difficulty: "medium"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #279. MCP JSON-RPC Protocol Handler
+# MCP Session Lifecycle State Transition
 
-**Track**: MCP Core Engineering | **Rank**: #279 of 1072 | **Points**: 60 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#279. MCP JSON-RPC Protocol Handler` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the real MCP session lifecycle state machine, governing valid connection state transitions between a client and server.
 
 ## Task
 
-Implement the function `mcp_json_rpc_protocol_handler`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `session_transition(current_state, event)` with these valid transitions: `('uninitialized','initialize')->'initializing'`; `('initializing','initialized')->'ready'`; `('ready','shutdown')->'shutting_down'`; `('shutting_down','exit')->'closed'`; from ANY state, event `'error'` transitions to `'closed'`. Any other `(state, event)` pair is invalid -- return `current_state` unchanged.
 
 <PracticePlayground problemId="mcp-core-prob-11" />

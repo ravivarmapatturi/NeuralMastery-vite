@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #326. MCP Advanced & Agent Integration Module 6: Problem 29"
-description: "Master #326. MCP Advanced & Agent Integration Module 6: Problem 29 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Tool Cost-Latency Tradeoff Selection"
+description: "Implement a real cost-latency tradeoff selection, picking the cheapest tool variant among several that all satisfy a hard latency requirement (e.g. a fast expensive API vs. a slow cheap one)."
+difficulty: "medium"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #326. MCP Advanced & Agent Integration Module 6: Problem 29
+# Tool Cost-Latency Tradeoff Selection
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #326 of 1072 | **Points**: 90 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#326. MCP Advanced & Agent Integration Module 6: Problem 29` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real cost-latency tradeoff selection, picking the cheapest tool variant among several that all satisfy a hard latency requirement (e.g. a fast expensive API vs. a slow cheap one).
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `select_cheapest_within_latency(tool_options, max_latency_ms)`. `tool_options` is a list of `{"name": str, "cost": float, "latency_ms": float}`. Among options with `latency_ms <= max_latency_ms`, return the name of the one with the LOWEST cost (ties broken by name ascending). If none satisfy the latency constraint, return `''`.
 
 <PracticePlayground problemId="mcp-adv-prob-29" />

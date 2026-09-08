@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #285. MCP Roots List Provider"
-description: "Master #285. MCP Roots List Provider in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Validate a Sampling Request Shape"
+description: "Implement sampling-request validation, the check an MCP client runs before honoring a server's request to sample (call an LLM) on the client's behalf."
 difficulty: "medium"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #285. MCP Roots List Provider
+# Validate a Sampling Request Shape
 
-**Track**: MCP Core Engineering | **Rank**: #285 of 1072 | **Points**: 60 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#285. MCP Roots List Provider` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement sampling-request validation, the check an MCP client runs before honoring a server's request to sample (call an LLM) on the client's behalf.
 
 ## Task
 
-Implement the function `mcp_roots_list_provider`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `validate_sampling_request(request)`. Required: `messages` is a non-empty list, `maxTokens` is a positive int. If present, `temperature` must be a number in `[0, 2]`. Return `True` only if all present/required constraints hold.
 
 <PracticePlayground problemId="mcp-core-prob-17" />

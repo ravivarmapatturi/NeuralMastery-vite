@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #306. MCP Advanced & Agent Integration Module 2: Problem 9"
-description: "Master #306. MCP Advanced & Agent Integration Module 2: Problem 9 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Resolve a Resource Link Reference"
+description: "Implement resource-link resolution, expanding a relative reference found inside one resource's content into a fully-qualified URI another tool can fetch."
 difficulty: "easy"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #306. MCP Advanced & Agent Integration Module 2: Problem 9
+# Resolve a Resource Link Reference
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #306 of 1072 | **Points**: 40 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#306. MCP Advanced & Agent Integration Module 2: Problem 9` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement resource-link resolution, expanding a relative reference found inside one resource's content into a fully-qualified URI another tool can fetch.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `resolve_resource_link(base_uri, relative_ref)`. If `relative_ref` already contains `'://'` (it's already absolute), return it unchanged. Otherwise, take everything in `base_uri` up to and including the LAST `'/'`, and append `relative_ref` to it.
 
 <PracticePlayground problemId="mcp-adv-prob-9" />

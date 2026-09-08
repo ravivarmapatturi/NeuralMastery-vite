@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #311. MCP Advanced & Agent Integration Module 3: Problem 14"
-description: "Master #311. MCP Advanced & Agent Integration Module 3: Problem 14 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Per-Resource Tool Execution Lock"
+description: "Implement a per-resource execution lock, preventing two concurrent tool calls from racing on the same underlying resource (e.g. two agents editing the same file simultaneously)."
 difficulty: "medium"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #311. MCP Advanced & Agent Integration Module 3: Problem 14
+# Per-Resource Tool Execution Lock
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #311 of 1072 | **Points**: 60 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#311. MCP Advanced & Agent Integration Module 3: Problem 14` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a per-resource execution lock, preventing two concurrent tool calls from racing on the same underlying resource (e.g. two agents editing the same file simultaneously).
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `try_acquire_tool_lock(resource_id, locked_resources)`. If `resource_id` is already in `locked_resources`, return `False` (lock denied, resource busy) WITHOUT modifying the set. Otherwise add it to `locked_resources` and return `True` (lock acquired).
 
 <PracticePlayground problemId="mcp-adv-prob-14" />

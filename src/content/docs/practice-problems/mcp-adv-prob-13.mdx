@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #310. MCP Advanced & Agent Integration Module 3: Problem 13"
-description: "Master #310. MCP Advanced & Agent Integration Module 3: Problem 13 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Build a Tool-Call Audit Log Entry"
+description: "Implement audit-log entry construction, the real record-keeping every production agent system needs for tool calls it makes on a user's behalf."
+difficulty: "easy"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #310. MCP Advanced & Agent Integration Module 3: Problem 13
+# Build a Tool-Call Audit Log Entry
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #310 of 1072 | **Points**: 60 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#310. MCP Advanced & Agent Integration Module 3: Problem 13` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement audit-log entry construction, the real record-keeping every production agent system needs for tool calls it makes on a user's behalf.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `build_audit_entry(tool_name, arguments, result_status, timestamp)`. Return `{"tool": tool_name, "args": arguments, "status": result_status, "ts": timestamp}` -- exactly these 4 keys, no more, no less.
 
 <PracticePlayground problemId="mcp-adv-prob-13" />

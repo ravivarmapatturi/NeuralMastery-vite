@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #293. MCP Tool Input Schema Engine"
-description: "Master #293. MCP Tool Input Schema Engine in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Select Transport Based on Environment"
+description: "Implement a real transport-selection rule for an MCP client deciding between stdio and HTTP/SSE transports based on its runtime environment."
+difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #293. MCP Tool Input Schema Engine
+# Select Transport Based on Environment
 
-**Track**: MCP Core Engineering | **Rank**: #293 of 1072 | **Points**: 90 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#293. MCP Tool Input Schema Engine` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real transport-selection rule for an MCP client deciding between stdio and HTTP/SSE transports based on its runtime environment.
 
 ## Task
 
-Implement the function `mcp_tool_input_schema_engine`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `select_transport(has_tty, http_url_configured)`. If `http_url_configured` is `True`, return `'http'` (explicit configuration wins). Otherwise, if `has_tty` is `False` (i.e. running as a subprocess with piped stdio, the common local-server case), return `'stdio'`. Otherwise return `'stdio'` as well -- stdio is the safe default whenever no explicit HTTP URL is configured.
 
 <PracticePlayground problemId="mcp-core-prob-25" />

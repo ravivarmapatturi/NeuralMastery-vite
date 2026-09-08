@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #283. MCP Prompt Template Provider"
-description: "Master #283. MCP Prompt Template Provider in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Filter Log Messages by Level Threshold"
+description: "Implement MCP log-level filtering, respecting the client's requested minimum log verbosity for a server's `notifications/message` stream."
+difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #283. MCP Prompt Template Provider
+# Filter Log Messages by Level Threshold
 
-**Track**: MCP Core Engineering | **Rank**: #283 of 1072 | **Points**: 60 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#283. MCP Prompt Template Provider` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement MCP log-level filtering, respecting the client's requested minimum log verbosity for a server's `notifications/message` stream.
 
 ## Task
 
-Implement the function `mcp_prompt_template_provider`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `filter_logs_by_level(logs, min_level)`. `logs` is a list of `{"message": str, "level": str}`. Severity order (low to high) is `debug < info < warning < error`. Return the `message`s (in original order) of every log whose `level` is at or above `min_level`'s severity.
 
 <PracticePlayground problemId="mcp-core-prob-15" />

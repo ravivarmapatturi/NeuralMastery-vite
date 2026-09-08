@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #308. MCP Advanced & Agent Integration Module 3: Problem 11"
-description: "Master #308. MCP Advanced & Agent Integration Module 3: Problem 11 in the MCP Advanced & Agent Integration track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Truncate Oversized Tool Output"
+description: "Implement tool-output truncation with a clear indicator, protecting an agent's context window from being consumed by one oversized tool result."
+difficulty: "easy"
 topic: "MCP Advanced & Agent Integration"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #308. MCP Advanced & Agent Integration Module 3: Problem 11
+# Truncate Oversized Tool Output
 
-**Track**: MCP Advanced & Agent Integration | **Rank**: #308 of 1072 | **Points**: 60 XP
+**Track**: MCP Advanced & Agent Integration | **Points**: 40 XP
 
 ## Overview
 
-Implement `#308. MCP Advanced & Agent Integration Module 3: Problem 11` to advance your mastery in **MCP Advanced & Agent Integration**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement tool-output truncation with a clear indicator, protecting an agent's context window from being consumed by one oversized tool result.
 
 ## Task
 
-Implement the function `mcp_advanced_and_agent_integration_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `truncate_tool_output(output, max_chars)`. If `len(output) <= max_chars`, return it unchanged. Otherwise return the first `max_chars` characters followed by the literal string `'... [truncated N more chars]'` where N is the number of characters that were cut.
 
 <PracticePlayground problemId="mcp-adv-prob-11" />

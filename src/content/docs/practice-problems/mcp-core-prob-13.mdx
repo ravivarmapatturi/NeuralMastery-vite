@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #281. MCP SSE Transport Layer"
-description: "Master #281. MCP SSE Transport Layer in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Deduplicate Overlapping Resource Subscriptions"
+description: "Implement subscription deduplication, avoiding a server sending duplicate resource-change notifications to a client that subscribed to the same URI more than once."
+difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #281. MCP SSE Transport Layer
+# Deduplicate Overlapping Resource Subscriptions
 
-**Track**: MCP Core Engineering | **Rank**: #281 of 1072 | **Points**: 60 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#281. MCP SSE Transport Layer` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement subscription deduplication, avoiding a server sending duplicate resource-change notifications to a client that subscribed to the same URI more than once.
 
 ## Task
 
-Implement the function `mcp_sse_transport_layer`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dedupe_subscriptions(subscription_requests)`: return the DISTINCT URIs in `subscription_requests`, preserving the order of FIRST appearance.
 
 <PracticePlayground problemId="mcp-core-prob-13" />

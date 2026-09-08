@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #275. MCP Tool Shadow Execution"
-description: "Master #275. MCP Tool Shadow Execution in the MCP Core Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Classify JSON-RPC Error Code"
+description: "Implement JSON-RPC error-code classification per the real reserved-range convention MCP inherits from JSON-RPC 2.0."
 difficulty: "easy"
 topic: "MCP Core Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #275. MCP Tool Shadow Execution
+# Classify JSON-RPC Error Code
 
-**Track**: MCP Core Engineering | **Rank**: #275 of 1072 | **Points**: 40 XP
+**Track**: MCP Core Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#275. MCP Tool Shadow Execution` to advance your mastery in **MCP Core Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement JSON-RPC error-code classification per the real reserved-range convention MCP inherits from JSON-RPC 2.0.
 
 ## Task
 
-Implement the function `mcp_tool_shadow_execution`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `classify_error_code(code)`. Return `'parse_error'` for `-32700`, `'invalid_request'` for `-32600`, `'method_not_found'` for `-32601`, `'invalid_params'` for `-32602`, `'internal_error'` for `-32603`. For any other code in `[-32099, -32000]`, return `'server_error'`. For anything else, return `'application_error'`.
 
 <PracticePlayground problemId="mcp-core-prob-7" />
