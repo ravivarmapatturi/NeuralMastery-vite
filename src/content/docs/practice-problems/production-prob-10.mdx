@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #481. Agent Capacity Planning"
-description: "Master #481. Agent Capacity Planning in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Graceful Degradation Model Fallback Selection"
+description: "Implement graceful-degradation model selection, deciding whether to use the primary (usually higher-quality) model or fall back to a faster/cheaper one under real production constraints."
+difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #481. Agent Capacity Planning
+# Graceful Degradation Model Fallback Selection
 
-**Track**: Agent Performance & Production | **Rank**: #481 of 1072 | **Points**: 40 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#481. Agent Capacity Planning` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement graceful-degradation model selection, deciding whether to use the primary (usually higher-quality) model or fall back to a faster/cheaper one under real production constraints.
 
 ## Task
 
-Implement the function `agent_capacity_planning`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `select_fallback_model(primary_available, primary_latency_ms, latency_budget_ms, fallback_model, primary_model)`. Return `fallback_model` if EITHER `not primary_available` OR `primary_latency_ms > latency_budget_ms`. Otherwise return `primary_model`.
 
 <PracticePlayground problemId="production-prob-10" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #350. Graph Execution Visualizer State"
-description: "Master #350. Graph Execution Visualizer State in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Determine Remaining Nodes to Execute From a Checkpoint"
+description: "Implement checkpoint-resume node selection, determining exactly which nodes still need to run after resuming an agent graph from a saved checkpoint (avoiding re-running completed work)."
+difficulty: "medium"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #350. Graph Execution Visualizer State
+# Determine Remaining Nodes to Execute From a Checkpoint
 
-**Track**: Agent Graph Engineering | **Rank**: #350 of 1072 | **Points**: 90 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#350. Graph Execution Visualizer State` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement checkpoint-resume node selection, determining exactly which nodes still need to run after resuming an agent graph from a saved checkpoint (avoiding re-running completed work).
 
 ## Task
 
-Implement the function `graph_execution_visualizer_state`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `remaining_from_checkpoint(execution_order, resume_from)`. `execution_order` is the full planned sequence. Return the sublist STARTING FROM (and including) `resume_from`. Return an empty list if `resume_from` isn't in `execution_order`.
 
 <PracticePlayground problemId="agent-graph-prob-24" />

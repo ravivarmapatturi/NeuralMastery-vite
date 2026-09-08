@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #494. Agent Graceful Shutdown Handler"
-description: "Master #494. Agent Graceful Shutdown Handler in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Health Check Failure Debouncing"
+description: "Implement health-check failure debouncing, a real requirement to avoid a load balancer flapping an instance in and out of rotation on a single transient failed check."
+difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #494. Agent Graceful Shutdown Handler
+# Health Check Failure Debouncing
 
-**Track**: Agent Performance & Production | **Rank**: #494 of 1072 | **Points**: 90 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#494. Agent Graceful Shutdown Handler` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement health-check failure debouncing, a real requirement to avoid a load balancer flapping an instance in and out of rotation on a single transient failed check.
 
 ## Task
 
-Implement the function `agent_graceful_shutdown_handler`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_unhealthy(consecutive_failed_checks, unhealthy_threshold)`: return `True` if `consecutive_failed_checks >= unhealthy_threshold`.
 
 <PracticePlayground problemId="production-prob-23" />

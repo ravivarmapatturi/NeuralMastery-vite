@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #335. Graph Dead-End Detection"
-description: "Master #335. Graph Dead-End Detection in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Inline a Subgraph Into the Parent Graph"
+description: "Implement subgraph inlining, composing a reusable sub-workflow's nodes into a parent agent graph with namespaced node ids to avoid collisions."
+difficulty: "medium"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #335. Graph Dead-End Detection
+# Inline a Subgraph Into the Parent Graph
 
-**Track**: Agent Graph Engineering | **Rank**: #335 of 1072 | **Points**: 40 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#335. Graph Dead-End Detection` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement subgraph inlining, composing a reusable sub-workflow's nodes into a parent agent graph with namespaced node ids to avoid collisions.
 
 ## Task
 
-Implement the function `graph_dead_end_detection`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `inline_subgraph(parent_edges, subgraph_edges, prefix)`. Rename every subgraph node and edge target by prepending `f'{prefix}.'`. Merge the renamed subgraph edges into `parent_edges` (a copy, don't mutate the input) and return the combined dict.
 
 <PracticePlayground problemId="agent-graph-prob-9" />

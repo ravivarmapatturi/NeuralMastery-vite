@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #475. Agent Shadow Traffic"
-description: "Master #475. Agent Shadow Traffic in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Cold-Start Latency Amortization"
+description: "Implement cold-start latency amortization, the real calculation behind deciding how much a serverless agent deployment's cold-start penalty actually matters at scale."
+difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #475. Agent Shadow Traffic
+# Cold-Start Latency Amortization
 
-**Track**: Agent Performance & Production | **Rank**: #475 of 1072 | **Points**: 40 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#475. Agent Shadow Traffic` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement cold-start latency amortization, the real calculation behind deciding how much a serverless agent deployment's cold-start penalty actually matters at scale.
 
 ## Task
 
-Implement the function `agent_shadow_traffic`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `amortized_latency(cold_start_ms, warm_latency_ms, requests_per_container_lifetime)`. The cold start happens once per container lifetime; amortize its cost across all requests served by that container: return `warm_latency_ms + (cold_start_ms / requests_per_container_lifetime)`.
 
 <PracticePlayground problemId="production-prob-4" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #345. Graph Node Failure Retry Policy"
-description: "Master #345. Graph Node Failure Retry Policy in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Evaluate END-Condition on State"
+description: "Implement the graph's real termination-condition check, deciding whether the current state means the agent workflow is genuinely done."
+difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #345. Graph Node Failure Retry Policy
+# Evaluate END-Condition on State
 
-**Track**: Agent Graph Engineering | **Rank**: #345 of 1072 | **Points**: 60 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#345. Graph Node Failure Retry Policy` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the graph's real termination-condition check, deciding whether the current state means the agent workflow is genuinely done.
 
 ## Task
 
-Implement the function `graph_node_failure_retry_policy`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `should_end(state)`: return `True` if `state.get('status') == 'complete'` OR `state.get('error') is not None`.
 
 <PracticePlayground problemId="agent-graph-prob-19" />

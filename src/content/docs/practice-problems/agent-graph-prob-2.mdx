@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #328. Conditional Edge Router"
-description: "Master #328. Conditional Edge Router in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Conditional Edge Routing by State Predicate"
+description: "Implement conditional-edge routing, the core mechanism letting an agent graph branch to different next nodes based on the current state (e.g. LangGraph's conditional edges)."
 difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #328. Conditional Edge Router
+# Conditional Edge Routing by State Predicate
 
-**Track**: Agent Graph Engineering | **Rank**: #328 of 1072 | **Points**: 40 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#328. Conditional Edge Router` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement conditional-edge routing, the core mechanism letting an agent graph branch to different next nodes based on the current state (e.g. LangGraph's conditional edges).
 
 ## Task
 
-Implement the function `conditional_edge_router`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `route_conditional_edge(state, routes)`. `routes` is an ordered list of `{"key": str, "equals": value, "target": str}`. Return the `target` of the FIRST route where `state.get(key) == equals`. If none match, return `'__default__'`.
 
 <PracticePlayground problemId="agent-graph-prob-2" />

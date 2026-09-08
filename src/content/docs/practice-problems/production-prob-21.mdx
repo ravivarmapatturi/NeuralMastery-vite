@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #492. Agent Memory Leak Detector"
-description: "Master #492. Agent Memory Leak Detector in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Request Deduplication Window Check"
+description: "Implement idempotency-key-based request deduplication, a real production safeguard against a client's retry (after a timeout, before it got the original response) causing a duplicate side effect."
+difficulty: "easy"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #492. Agent Memory Leak Detector
+# Request Deduplication Window Check
 
-**Track**: Agent Performance & Production | **Rank**: #492 of 1072 | **Points**: 60 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#492. Agent Memory Leak Detector` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement idempotency-key-based request deduplication, a real production safeguard against a client's retry (after a timeout, before it got the original response) causing a duplicate side effect.
 
 ## Task
 
-Implement the function `agent_memory_leak_detector`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_duplicate_request(idempotency_key, seen_keys_with_ts, current_time, dedup_window_s)`. Return `True` if `idempotency_key` is in `seen_keys_with_ts` AND `(current_time - seen_keys_with_ts[idempotency_key]) < dedup_window_s` (seen recently enough to still count as a duplicate).
 
 <PracticePlayground problemId="production-prob-21" />

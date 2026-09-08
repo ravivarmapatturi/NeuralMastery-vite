@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #479. Model Routing by SLA"
-description: "Master #479. Model Routing by SLA in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Warm Pool Sizing for Predictable Load"
+description: "Implement warm-pool sizing with a safety margin, the real capacity-planning calculation for keeping enough pre-warmed agent instances ready before a predictable traffic peak (avoiding cold-start penalties during it)."
+difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #479. Model Routing by SLA
+# Warm Pool Sizing for Predictable Load
 
-**Track**: Agent Performance & Production | **Rank**: #479 of 1072 | **Points**: 40 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#479. Model Routing by SLA` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement warm-pool sizing with a safety margin, the real capacity-planning calculation for keeping enough pre-warmed agent instances ready before a predictable traffic peak (avoiding cold-start penalties during it).
 
 ## Task
 
-Implement the function `model_routing_by_sla`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `warm_pool_size(peak_qps, qps_per_instance, safety_margin_pct)`. Base need is `peak_qps / qps_per_instance`. Apply the safety margin: `base * (1 + safety_margin_pct/100)`. Return `ceil()` of that.
 
 <PracticePlayground problemId="production-prob-8" />

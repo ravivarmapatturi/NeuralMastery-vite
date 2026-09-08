@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #500. BUILD A PRODUCTION AGENT"
-description: "Master #500. BUILD A PRODUCTION AGENT in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Shadow Traffic Comparison Divergence Rate"
+description: "Implement shadow-traffic divergence rate calculation, the real metric measuring how often a candidate model version's output actually differs from production when tested on mirrored live traffic (with no user-visible effect)."
+difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #500. BUILD A PRODUCTION AGENT
+# Shadow Traffic Comparison Divergence Rate
 
-**Track**: Agent Performance & Production | **Rank**: #500 of 1072 | **Points**: 200 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#500. BUILD A PRODUCTION AGENT` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement shadow-traffic divergence rate calculation, the real metric measuring how often a candidate model version's output actually differs from production when tested on mirrored live traffic (with no user-visible effect).
 
 ## Task
 
-Implement the function `build_a_production_agent`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `divergence_rate(matching_responses, total_shadow_requests)`: return `1 - (matching_responses / total_shadow_requests)`. Return `0.0` if `total_shadow_requests` is 0.
 
 <PracticePlayground problemId="production-prob-29" />

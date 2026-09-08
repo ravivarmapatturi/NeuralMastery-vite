@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #332. Graph Resume After Crash"
-description: "Master #332. Graph Resume After Crash in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Serialize State at a Checkpoint"
+description: "Implement checkpoint state serialization, the real mechanism letting an agent graph resume from a saved point instead of restarting from scratch after an interruption."
 difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #332. Graph Resume After Crash
+# Serialize State at a Checkpoint
 
-**Track**: Agent Graph Engineering | **Rank**: #332 of 1072 | **Points**: 40 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#332. Graph Resume After Crash` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement checkpoint state serialization, the real mechanism letting an agent graph resume from a saved point instead of restarting from scratch after an interruption.
 
 ## Task
 
-Implement the function `graph_resume_after_crash`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `checkpoint_state(state, step_id, checkpoints)`. Store a SHALLOW COPY of `state` under `checkpoints[step_id]` (so future mutations of `state` don't affect the saved checkpoint), and return the updated `checkpoints` dict.
 
 <PracticePlayground problemId="agent-graph-prob-6" />

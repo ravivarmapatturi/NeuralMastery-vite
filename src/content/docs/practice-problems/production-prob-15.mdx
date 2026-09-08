@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #486. Agent Fallback Model Switcher"
-description: "Master #486. Agent Fallback Model Switcher in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Retry Budget Enforcement"
+description: "Implement retry-budget enforcement, a real, system-wide safeguard preventing retries themselves from becoming the cause of an overload cascade during a partial outage."
 difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #486. Agent Fallback Model Switcher
+# Retry Budget Enforcement
 
-**Track**: Agent Performance & Production | **Rank**: #486 of 1072 | **Points**: 60 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#486. Agent Fallback Model Switcher` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement retry-budget enforcement, a real, system-wide safeguard preventing retries themselves from becoming the cause of an overload cascade during a partial outage.
 
 ## Task
 
-Implement the function `agent_fallback_model_switcher`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_retry_budget(retries_used, requests_in_window, max_retry_ratio)`: return `True` (retry allowed) if `requests_in_window == 0` OR `(retries_used / requests_in_window) < max_retry_ratio`.
 
 <PracticePlayground problemId="production-prob-15" />

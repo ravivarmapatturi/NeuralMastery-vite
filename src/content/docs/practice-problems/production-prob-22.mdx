@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #493. Agent Cost Cap Circuit Breaker"
-description: "Master #493. Agent Cost Cap Circuit Breaker in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Model Serving Cost Per Successful Request"
+description: "Implement real cost-per-successful-request calculation, a metric that (unlike raw cost-per-request) correctly accounts for wasted spend on failed requests."
+difficulty: "easy"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #493. Agent Cost Cap Circuit Breaker
+# Model Serving Cost Per Successful Request
 
-**Track**: Agent Performance & Production | **Rank**: #493 of 1072 | **Points**: 90 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#493. Agent Cost Cap Circuit Breaker` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement real cost-per-successful-request calculation, a metric that (unlike raw cost-per-request) correctly accounts for wasted spend on failed requests.
 
 ## Task
 
-Implement the function `agent_cost_cap_circuit_breaker`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cost_per_success(total_cost, total_requests, error_rate)`. Successful requests: `total_requests * (1 - error_rate)`. Return `total_cost / successful_requests`. Return `float('inf')` if there are zero successful requests.
 
 <PracticePlayground problemId="production-prob-22" />

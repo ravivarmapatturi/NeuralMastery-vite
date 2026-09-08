@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #351. Graph State Time Travel Engine"
-description: "Master #351. Graph State Time Travel Engine in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Command-Pattern Node Dispatch"
+description: "Implement command-pattern dispatch, mapping a node's returned command type to the actual handler node it should invoke next -- a real, common indirection layer in agent graph frameworks."
+difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #351. Graph State Time Travel Engine
+# Command-Pattern Node Dispatch
 
-**Track**: Agent Graph Engineering | **Rank**: #351 of 1072 | **Points**: 90 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#351. Graph State Time Travel Engine` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement command-pattern dispatch, mapping a node's returned command type to the actual handler node it should invoke next -- a real, common indirection layer in agent graph frameworks.
 
 ## Task
 
-Implement the function `graph_state_time_travel_engine`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dispatch_command(command_type, handlers)`: return `handlers[command_type]`, or `'__unhandled__'` if `command_type` isn't a key.
 
 <PracticePlayground problemId="agent-graph-prob-25" />

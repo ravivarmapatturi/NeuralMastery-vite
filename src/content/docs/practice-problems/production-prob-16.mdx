@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #487. Agent Rate Limit Backoff Handler"
-description: "Master #487. Agent Rate Limit Backoff Handler in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: GPU Memory Fragmentation Estimate"
+description: "Implement a real GPU-memory fragmentation estimate, explaining a genuinely confusing real production symptom: an out-of-memory error despite plenty of TOTAL free memory reported."
 difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #487. Agent Rate Limit Backoff Handler
+# GPU Memory Fragmentation Estimate
 
-**Track**: Agent Performance & Production | **Rank**: #487 of 1072 | **Points**: 60 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#487. Agent Rate Limit Backoff Handler` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real GPU-memory fragmentation estimate, explaining a genuinely confusing real production symptom: an out-of-memory error despite plenty of TOTAL free memory reported.
 
 ## Task
 
-Implement the function `agent_rate_limit_backoff_handler`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `estimate_fragmentation(total_free_mb, largest_free_block_mb)`. Return `1 - (largest_free_block_mb / total_free_mb)` -- the fraction of free memory that is NOT usable as one contiguous allocation. Return `0.0` if `total_free_mb` is 0.
 
 <PracticePlayground problemId="production-prob-16" />

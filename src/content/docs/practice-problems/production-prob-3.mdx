@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #474. Agent Canary Deployment"
-description: "Master #474. Agent Canary Deployment in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Autoscaling Target Replica Count"
+description: "Implement real autoscaling target computation for an agent-serving deployment, the direct arithmetic behind a Kubernetes HPA-style scaling decision."
+difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #474. Agent Canary Deployment
+# Autoscaling Target Replica Count
 
-**Track**: Agent Performance & Production | **Rank**: #474 of 1072 | **Points**: 40 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#474. Agent Canary Deployment` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement real autoscaling target computation for an agent-serving deployment, the direct arithmetic behind a Kubernetes HPA-style scaling decision.
 
 ## Task
 
-Implement the function `agent_canary_deployment`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `target_replicas(current_qps, qps_per_replica, min_replicas, max_replicas)`. Raw target is `ceil(current_qps / qps_per_replica)`. Clamp the result to `[min_replicas, max_replicas]`.
 
 <PracticePlayground problemId="production-prob-3" />

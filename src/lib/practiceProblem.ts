@@ -107752,6 +107752,5183 @@ def is_audit_chain_intact(log_entries):
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  "production-prob-1": {
+    id: "production-prob-1",
+    title: "Compute p50/p95/p99 Agent Response Latency",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "agent_latency_percentile",
+    functionSignature: "agent_latency_percentile(samples_ms: list[float], p: float) -> float",
+    starterCode: `def agent_latency_percentile(samples_ms, p):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement latency-percentile computation for agent response times, the real metric a production agent's SLO is actually measured against.",
+    taskDescription: "Implement `agent_latency_percentile(samples_ms, p)`. Sort ascending. Using the nearest-rank method, index is `ceil(p/100 * n) - 1`, clamped to `[0, n-1]`. Return the value there.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "samples_ms non-empty",
+        "0 <= p <= 100"
+      ],
+    hints: {
+  "small": "Sort, then pick the nearest-rank index.",
+        "strong": "import math; s=sorted(samples_ms); n=len(s); idx=max(0,min(n-1, math.ceil(p/100*n)-1)); return s[idx].",
+        "concept": "An agent's p99 latency (dominated by its slowest tool calls or a retry) is what a real user actually experiences at the tail -- average latency systematically hides exactly this, which is why SLOs are defined on percentiles, not means."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "p50 of a list",
+          "input": {
+            "samples_ms": [
+              10,
+              20,
+              30,
+              40
+            ],
+            "p": 50
+          },
+          "expectedOutput": 20,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "p99 of larger list",
+          "input": {
+            "samples_ms": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73,
+              74,
+              75,
+              76,
+              77,
+              78,
+              79,
+              80,
+              81,
+              82,
+              83,
+              84,
+              85,
+              86,
+              87,
+              88,
+              89,
+              90,
+              91,
+              92,
+              93,
+              94,
+              95,
+              96,
+              97,
+              98,
+              99,
+              100
+            ],
+            "p": 99
+          },
+          "expectedOutput": 99,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "p0 minimum",
+          "input": {
+            "samples_ms": [
+              5,
+              1,
+              3
+            ],
+            "p": 0
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "p100 maximum",
+          "input": {
+            "samples_ms": [
+              5,
+              1,
+              3
+            ],
+            "p": 100
+          },
+          "expectedOutput": 5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-2": {
+    id: "production-prob-2",
+    title: "Prompt Caching Cost Savings Calculation",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "cache_savings",
+    functionSignature: "cache_savings(cached_tokens: int, uncached_tokens: int, full_price_per_1k: float, cached_price_per_1k: float) -> float",
+    starterCode: `def cache_savings(cached_tokens, uncached_tokens, full_price_per_1k, cached_price_per_1k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real prompt-caching cost-savings computation, a genuine, common production optimization for agents that repeat large system prompts across many calls.",
+    taskDescription: "Implement `cache_savings(cached_tokens, uncached_tokens, full_price_per_1k, cached_price_per_1k)`. Cost WITHOUT caching: `(cached_tokens+uncached_tokens)/1000 * full_price_per_1k`. Cost WITH caching: `cached_tokens/1000*cached_price_per_1k + uncached_tokens/1000*full_price_per_1k`. Return the difference (savings, without_cost - with_cost).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 0"
+      ],
+    hints: {
+  "small": "Compute both real costs, subtract.",
+        "strong": "without = (cached_tokens+uncached_tokens)/1000*full_price_per_1k; with_cache = cached_tokens/1000*cached_price_per_1k + uncached_tokens/1000*full_price_per_1k; return without - with_cache.",
+        "concept": "Prompt caching (a real, common feature across major LLM APIs) can genuinely cut cost 50-90% for agents with a large stable system prompt reused across many calls -- this is the actual arithmetic behind deciding if it's worth restructuring a prompt to maximize the cacheable prefix."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "large cached prefix saves real money",
+          "input": {
+            "cached_tokens": 10000,
+            "uncached_tokens": 500,
+            "full_price_per_1k": 0.01,
+            "cached_price_per_1k": 0.001
+          },
+          "expectedOutput": 0.09,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no caching benefit if prices equal",
+          "input": {
+            "cached_tokens": 1000,
+            "uncached_tokens": 100,
+            "full_price_per_1k": 0.01,
+            "cached_price_per_1k": 0.01
+          },
+          "expectedOutput": 1.734723475976807e-18,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero cached tokens no savings",
+          "input": {
+            "cached_tokens": 0,
+            "uncached_tokens": 1000,
+            "full_price_per_1k": 0.01,
+            "cached_price_per_1k": 0.001
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all cached",
+          "input": {
+            "cached_tokens": 5000,
+            "uncached_tokens": 0,
+            "full_price_per_1k": 0.01,
+            "cached_price_per_1k": 0.001
+          },
+          "expectedOutput": 0.045000000000000005,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-3": {
+    id: "production-prob-3",
+    title: "Autoscaling Target Replica Count",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "target_replicas",
+    functionSignature: "target_replicas(current_qps: float, qps_per_replica: float, min_replicas: int, max_replicas: int) -> int",
+    starterCode: `import math
+
+def target_replicas(current_qps, qps_per_replica, min_replicas, max_replicas):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real autoscaling target computation for an agent-serving deployment, the direct arithmetic behind a Kubernetes HPA-style scaling decision.",
+    taskDescription: "Implement `target_replicas(current_qps, qps_per_replica, min_replicas, max_replicas)`. Raw target is `ceil(current_qps / qps_per_replica)`. Clamp the result to `[min_replicas, max_replicas]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "qps_per_replica > 0",
+        "min_replicas <= max_replicas"
+      ],
+    hints: {
+  "small": "Ceiling-divide to get raw replica need, then clamp to the configured bounds.",
+        "strong": "raw = math.ceil(current_qps/qps_per_replica); return max(min_replicas, min(max_replicas, raw)).",
+        "concept": "Using ceil (not round or floor) matters because under-provisioning by even a fraction of a replica means real requests queue or fail -- this is the actual real formula a horizontal pod autoscaler uses, generalized from CPU-percentage-based scaling to a direct throughput-based target."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "normal load within bounds",
+          "input": {
+            "current_qps": 45,
+            "qps_per_replica": 10,
+            "min_replicas": 1,
+            "max_replicas": 20
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "low load clamped to minimum",
+          "input": {
+            "current_qps": 2,
+            "qps_per_replica": 10,
+            "min_replicas": 3,
+            "max_replicas": 20
+          },
+          "expectedOutput": 3,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "high load clamped to maximum",
+          "input": {
+            "current_qps": 1000,
+            "qps_per_replica": 10,
+            "min_replicas": 1,
+            "max_replicas": 20
+          },
+          "expectedOutput": 20,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exact division no rounding needed",
+          "input": {
+            "current_qps": 50,
+            "qps_per_replica": 10,
+            "min_replicas": 1,
+            "max_replicas": 20
+          },
+          "expectedOutput": 5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-4": {
+    id: "production-prob-4",
+    title: "Cold-Start Latency Amortization",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "amortized_latency",
+    functionSignature: "amortized_latency(cold_start_ms: float, warm_latency_ms: float, requests_per_container_lifetime: int) -> float",
+    starterCode: `def amortized_latency(cold_start_ms, warm_latency_ms, requests_per_container_lifetime):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement cold-start latency amortization, the real calculation behind deciding how much a serverless agent deployment's cold-start penalty actually matters at scale.",
+    taskDescription: "Implement `amortized_latency(cold_start_ms, warm_latency_ms, requests_per_container_lifetime)`. The cold start happens once per container lifetime; amortize its cost across all requests served by that container: return `warm_latency_ms + (cold_start_ms / requests_per_container_lifetime)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "requests_per_container_lifetime >= 1"
+      ],
+    hints: {
+  "small": "Spread the one-time cold-start cost evenly across every request the container will ever serve.",
+        "strong": "warm_latency_ms + (cold_start_ms/requests_per_container_lifetime).",
+        "concept": "A container serving thousands of requests before recycling makes cold start amortize to nearly zero per-request impact, while one serving only 1-2 requests (common in bursty, low-traffic serverless deployments) makes cold start the DOMINANT cost -- this is the real reason 'serverless cold starts' matters enormously for some workloads and not at all for others."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "long-lived container amortizes well",
+          "input": {
+            "cold_start_ms": 2000,
+            "warm_latency_ms": 100,
+            "requests_per_container_lifetime": 10000
+          },
+          "expectedOutput": 100.2,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "short-lived container dominated by cold start",
+          "input": {
+            "cold_start_ms": 2000,
+            "warm_latency_ms": 100,
+            "requests_per_container_lifetime": 1
+          },
+          "expectedOutput": 2100,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "moderate lifetime",
+          "input": {
+            "cold_start_ms": 1000,
+            "warm_latency_ms": 50,
+            "requests_per_container_lifetime": 10
+          },
+          "expectedOutput": 150,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero cold start no penalty",
+          "input": {
+            "cold_start_ms": 0,
+            "warm_latency_ms": 100,
+            "requests_per_container_lifetime": 5
+          },
+          "expectedOutput": 100,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-5": {
+    id: "production-prob-5",
+    title: "Batch Inference Throughput vs Latency Tradeoff",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "batch_throughput",
+    functionSignature: "batch_throughput(batch_size: int, per_batch_latency_ms: float) -> float",
+    starterCode: `def batch_throughput(batch_size, per_batch_latency_ms):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement batch-inference throughput calculation, the real arithmetic behind sizing a production LLM serving batch for maximum requests-per-second.",
+    taskDescription: "Implement `batch_throughput(batch_size, per_batch_latency_ms)`: return `(batch_size / per_batch_latency_ms) * 1000` -- requests served per second, given that a whole batch of `batch_size` requests takes `per_batch_latency_ms` to complete together.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "batch_size >= 1",
+        "per_batch_latency_ms > 0"
+      ],
+    hints: {
+  "small": "Requests per batch, batches per second (converting ms to seconds).",
+        "strong": "(batch_size/per_batch_latency_ms)*1000.",
+        "concept": "Larger batches increase per-batch latency (more work per forward pass) but generally increase TOTAL throughput up to a hardware-saturation point -- this is the real, fundamental throughput/latency tradeoff every production LLM serving system (vLLM, TGI, etc.) has to navigate via its batching policy."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "small batch baseline",
+          "input": {
+            "batch_size": 1,
+            "per_batch_latency_ms": 100
+          },
+          "expectedOutput": 10,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "larger batch higher throughput",
+          "input": {
+            "batch_size": 16,
+            "per_batch_latency_ms": 200
+          },
+          "expectedOutput": 80,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "very large batch",
+          "input": {
+            "batch_size": 64,
+            "per_batch_latency_ms": 500
+          },
+          "expectedOutput": 128,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "batch size 1 with fast latency",
+          "input": {
+            "batch_size": 1,
+            "per_batch_latency_ms": 50
+          },
+          "expectedOutput": 20,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-6": {
+    id: "production-prob-6",
+    title: "Circuit Breaker State Transition",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "circuit_breaker_state",
+    functionSignature: "circuit_breaker_state(current_state: str, consecutive_failures: int, failure_threshold: int, cooldown_elapsed: bool) -> str",
+    starterCode: `def circuit_breaker_state(current_state, consecutive_failures, failure_threshold, cooldown_elapsed):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real circuit-breaker state machine, protecting a production agent from repeatedly hammering a failing downstream dependency (a tool API, a model endpoint).",
+    taskDescription: "Implement `circuit_breaker_state(current_state, consecutive_failures, failure_threshold, cooldown_elapsed)`. States are `'closed'` (normal), `'open'` (blocking calls), `'half_open'` (testing recovery). From `'closed'`: go to `'open'` if `consecutive_failures >= failure_threshold`, else stay `'closed'`. From `'open'`: go to `'half_open'` if `cooldown_elapsed`, else stay `'open'`. From `'half_open'`: go to `'closed'` if `consecutive_failures == 0`, else go back to `'open'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "current_state in {'closed','open','half_open'}"
+      ],
+    hints: {
+  "small": "Three states, each with its own transition rule based on the given signals.",
+        "strong": "if current_state=='closed': return 'open' if consecutive_failures>=failure_threshold else 'closed'; if current_state=='open': return 'half_open' if cooldown_elapsed else 'open'; return 'closed' if consecutive_failures==0 else 'open'.",
+        "concept": "This is the real, standard circuit-breaker pattern (from Netflix's Hystrix and equivalents) -- 'open' fails fast without even attempting the call, giving a struggling downstream dependency real breathing room to recover, while 'half_open' cautiously tests recovery with limited traffic before fully trusting it again."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "closed stays closed under threshold",
+          "input": {
+            "current_state": "closed",
+            "consecutive_failures": 1,
+            "failure_threshold": 5,
+            "cooldown_elapsed": false
+          },
+          "expectedOutput": "closed",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "closed trips to open at threshold",
+          "input": {
+            "current_state": "closed",
+            "consecutive_failures": 5,
+            "failure_threshold": 5,
+            "cooldown_elapsed": false
+          },
+          "expectedOutput": "open",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "open transitions to half_open after cooldown",
+          "input": {
+            "current_state": "open",
+            "consecutive_failures": 5,
+            "failure_threshold": 5,
+            "cooldown_elapsed": true
+          },
+          "expectedOutput": "half_open",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "half_open recovers to closed on success",
+          "input": {
+            "current_state": "half_open",
+            "consecutive_failures": 0,
+            "failure_threshold": 5,
+            "cooldown_elapsed": false
+          },
+          "expectedOutput": "closed",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-7": {
+    id: "production-prob-7",
+    title: "Estimate Monthly Agent API Spend",
+    difficulty: "easy",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "estimate_monthly_spend",
+    functionSignature: "estimate_monthly_spend(avg_daily_requests: float, avg_tokens_per_request: float, price_per_1k_tokens: float) -> float",
+    starterCode: `def estimate_monthly_spend(avg_daily_requests, avg_tokens_per_request, price_per_1k_tokens):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real monthly-spend estimator for an agent deployment, the direct budgeting calculation before signing off on a production launch.",
+    taskDescription: "Implement `estimate_monthly_spend(avg_daily_requests, avg_tokens_per_request, price_per_1k_tokens)`: return `avg_daily_requests * avg_tokens_per_request / 1000 * price_per_1k_tokens * 30`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 0"
+      ],
+    hints: {
+  "small": "Daily token volume, converted to cost, times 30 days.",
+        "strong": "avg_daily_requests * avg_tokens_per_request / 1000 * price_per_1k_tokens * 30.",
+        "concept": "This simple projection is the real first number a team computes before launching any LLM-backed product feature -- getting the per-request token estimate wrong by even 2x directly doubles or halves the real monthly bill, so it's worth measuring from real traffic rather than guessing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "moderate traffic estimate",
+          "input": {
+            "avg_daily_requests": 10000,
+            "avg_tokens_per_request": 500,
+            "price_per_1k_tokens": 0.01
+          },
+          "expectedOutput": 1500,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "low traffic estimate",
+          "input": {
+            "avg_daily_requests": 100,
+            "avg_tokens_per_request": 200,
+            "price_per_1k_tokens": 0.01
+          },
+          "expectedOutput": 6,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "high token usage per request",
+          "input": {
+            "avg_daily_requests": 1000,
+            "avg_tokens_per_request": 5000,
+            "price_per_1k_tokens": 0.02
+          },
+          "expectedOutput": 3000,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero traffic zero spend",
+          "input": {
+            "avg_daily_requests": 0,
+            "avg_tokens_per_request": 500,
+            "price_per_1k_tokens": 0.01
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-8": {
+    id: "production-prob-8",
+    title: "Warm Pool Sizing for Predictable Load",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "warm_pool_size",
+    functionSignature: "warm_pool_size(peak_qps: float, qps_per_instance: float, safety_margin_pct: float) -> int",
+    starterCode: `import math
+
+def warm_pool_size(peak_qps, qps_per_instance, safety_margin_pct):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement warm-pool sizing with a safety margin, the real capacity-planning calculation for keeping enough pre-warmed agent instances ready before a predictable traffic peak (avoiding cold-start penalties during it).",
+    taskDescription: "Implement `warm_pool_size(peak_qps, qps_per_instance, safety_margin_pct)`. Base need is `peak_qps / qps_per_instance`. Apply the safety margin: `base * (1 + safety_margin_pct/100)`. Return `ceil()` of that.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "qps_per_instance > 0",
+        "safety_margin_pct >= 0"
+      ],
+    hints: {
+  "small": "Compute the base instance count, inflate by the safety margin, round up.",
+        "strong": "import math; base = peak_qps/qps_per_instance; return math.ceil(base * (1 + safety_margin_pct/100)).",
+        "concept": "A safety margin above the exact computed need is real, deliberate over-provisioning -- traffic estimates are never perfectly precise, and running exactly at capacity with zero headroom means any estimation error becomes a real outage, not just a rounding error."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "moderate margin",
+          "input": {
+            "peak_qps": 100,
+            "qps_per_instance": 10,
+            "safety_margin_pct": 20
+          },
+          "expectedOutput": 12,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no safety margin",
+          "input": {
+            "peak_qps": 50,
+            "qps_per_instance": 10,
+            "safety_margin_pct": 0
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "large safety margin",
+          "input": {
+            "peak_qps": 100,
+            "qps_per_instance": 10,
+            "safety_margin_pct": 50
+          },
+          "expectedOutput": 15,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "rounds up fractional need",
+          "input": {
+            "peak_qps": 33,
+            "qps_per_instance": 10,
+            "safety_margin_pct": 0
+          },
+          "expectedOutput": 4,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-9": {
+    id: "production-prob-9",
+    title: "Streaming Time-to-First-Token Measurement",
+    difficulty: "easy",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "time_to_first_token",
+    functionSignature: "time_to_first_token(request_sent_ts: float, first_token_ts: float) -> float",
+    starterCode: `def time_to_first_token(request_sent_ts, first_token_ts):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement time-to-first-token (TTFT) measurement, a real, distinct latency metric from total completion time that matters enormously for perceived responsiveness in a streaming agent UI.",
+    taskDescription: "Implement `time_to_first_token(request_sent_ts, first_token_ts)`: return `first_token_ts - request_sent_ts`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "first_token_ts >= request_sent_ts"
+      ],
+    hints: {
+  "small": "Simple time difference.",
+        "strong": "return first_token_ts - request_sent_ts.",
+        "concept": "TTFT and total generation time are genuinely different, separately-optimized metrics -- a user perceives a fast-starting-but-slow-finishing stream as much more responsive than the reverse, even at identical TOTAL latency, which is why production systems track and optimize TTFT specifically."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "fast first token",
+          "input": {
+            "request_sent_ts": 1000,
+            "first_token_ts": 1000.3
+          },
+          "expectedOutput": 0.2999999999999545,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "slow first token",
+          "input": {
+            "request_sent_ts": 1000,
+            "first_token_ts": 1002.5
+          },
+          "expectedOutput": 2.5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "instant response edge case",
+          "input": {
+            "request_sent_ts": 500,
+            "first_token_ts": 500
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "typical value",
+          "input": {
+            "request_sent_ts": 0,
+            "first_token_ts": 0.15
+          },
+          "expectedOutput": 0.15,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-10": {
+    id: "production-prob-10",
+    title: "Graceful Degradation Model Fallback Selection",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "select_fallback_model",
+    functionSignature: "select_fallback_model(primary_available: bool, primary_latency_ms: float, latency_budget_ms: float, fallback_model: str, primary_model: str) -> str",
+    starterCode: `def select_fallback_model(primary_available, primary_latency_ms, latency_budget_ms, fallback_model, primary_model):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement graceful-degradation model selection, deciding whether to use the primary (usually higher-quality) model or fall back to a faster/cheaper one under real production constraints.",
+    taskDescription: "Implement `select_fallback_model(primary_available, primary_latency_ms, latency_budget_ms, fallback_model, primary_model)`. Return `fallback_model` if EITHER `not primary_available` OR `primary_latency_ms > latency_budget_ms`. Otherwise return `primary_model`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "latency values in ms"
+      ],
+    hints: {
+  "small": "Fall back on unavailability OR a latency budget breach.",
+        "strong": "if not primary_available or primary_latency_ms > latency_budget_ms: return fallback_model; return primary_model.",
+        "concept": "A real production agent needs BOTH an availability check (is the primary provider even up) AND a latency-based check (is it currently too slow, even if technically 'up') -- either condition alone misses a real degraded-but-not-fully-down failure mode."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "primary healthy and fast",
+          "input": {
+            "primary_available": true,
+            "primary_latency_ms": 200,
+            "latency_budget_ms": 500,
+            "fallback_model": "fast-model",
+            "primary_model": "best-model"
+          },
+          "expectedOutput": "best-model",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "primary down falls back",
+          "input": {
+            "primary_available": false,
+            "primary_latency_ms": 200,
+            "latency_budget_ms": 500,
+            "fallback_model": "fast-model",
+            "primary_model": "best-model"
+          },
+          "expectedOutput": "fast-model",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "primary up but too slow falls back",
+          "input": {
+            "primary_available": true,
+            "primary_latency_ms": 800,
+            "latency_budget_ms": 500,
+            "fallback_model": "fast-model",
+            "primary_model": "best-model"
+          },
+          "expectedOutput": "fast-model",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at budget uses primary",
+          "input": {
+            "primary_available": true,
+            "primary_latency_ms": 500,
+            "latency_budget_ms": 500,
+            "fallback_model": "fast-model",
+            "primary_model": "best-model"
+          },
+          "expectedOutput": "best-model",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-11": {
+    id: "production-prob-11",
+    title: "Connection Pool Saturation Check",
+    difficulty: "easy",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "is_pool_saturated",
+    functionSignature: "is_pool_saturated(active_connections: int, pool_size: int, saturation_threshold_pct: float) -> bool",
+    starterCode: `def is_pool_saturated(active_connections, pool_size, saturation_threshold_pct):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement connection-pool saturation detection, a real early-warning signal before a production agent's outbound HTTP client pool fully exhausts and starts queueing or rejecting new calls.",
+    taskDescription: "Implement `is_pool_saturated(active_connections, pool_size, saturation_threshold_pct)`: return `True` if `(active_connections / pool_size * 100) >= saturation_threshold_pct`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "pool_size > 0"
+      ],
+    hints: {
+  "small": "Compute the pool's utilization percentage, compare to the threshold.",
+        "strong": "return (active_connections/pool_size*100) >= saturation_threshold_pct.",
+        "concept": "Alerting at, say, 80% saturation (not waiting for 100%) is what gives an operator real time to react (scale up, investigate a leak) before requests actually start queueing or failing -- this is a real, standard early-warning pattern, not just an arbitrary threshold choice."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "well below saturation",
+          "input": {
+            "active_connections": 20,
+            "pool_size": 100,
+            "saturation_threshold_pct": 80
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "above saturation threshold",
+          "input": {
+            "active_connections": 85,
+            "pool_size": 100,
+            "saturation_threshold_pct": 80
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at threshold",
+          "input": {
+            "active_connections": 80,
+            "pool_size": 100,
+            "saturation_threshold_pct": 80
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "fully saturated pool",
+          "input": {
+            "active_connections": 100,
+            "pool_size": 100,
+            "saturation_threshold_pct": 80
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-12": {
+    id: "production-prob-12",
+    title: "Blue-Green Deployment Traffic Cutover Check",
+    difficulty: "easy",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "cutover_ready",
+    functionSignature: "cutover_ready(green_error_rate: float, green_p99_ms: float, max_error_rate: float, max_p99_ms: float) -> bool",
+    starterCode: `def cutover_ready(green_error_rate, green_p99_ms, max_error_rate, max_p99_ms):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement blue-green deployment readiness checking, the real, automated gate deciding whether a new agent deployment version is healthy enough to receive full production traffic.",
+    taskDescription: "Implement `cutover_ready(green_error_rate, green_p99_ms, max_error_rate, max_p99_ms)`: return `True` only if BOTH `green_error_rate <= max_error_rate` AND `green_p99_ms <= max_p99_ms`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 0"
+      ],
+    hints: {
+  "small": "Both quality dimensions must independently pass.",
+        "strong": "return green_error_rate <= max_error_rate and green_p99_ms <= max_p99_ms.",
+        "concept": "Requiring BOTH error rate AND latency to pass (not just one) is what catches a real, common deployment failure mode where a new version is functionally correct (low error rate) but has genuinely regressed performance (high p99) -- a rollout gate checking only correctness would ship that regression."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "healthy deployment ready",
+          "input": {
+            "green_error_rate": 0.001,
+            "green_p99_ms": 300,
+            "max_error_rate": 0.01,
+            "max_p99_ms": 500
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "high error rate not ready",
+          "input": {
+            "green_error_rate": 0.05,
+            "green_p99_ms": 300,
+            "max_error_rate": 0.01,
+            "max_p99_ms": 500
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "high latency not ready",
+          "input": {
+            "green_error_rate": 0.001,
+            "green_p99_ms": 800,
+            "max_error_rate": 0.01,
+            "max_p99_ms": 500
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at both thresholds ready",
+          "input": {
+            "green_error_rate": 0.01,
+            "green_p99_ms": 500,
+            "max_error_rate": 0.01,
+            "max_p99_ms": 500
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-13": {
+    id: "production-prob-13",
+    title: "Token Streaming Buffer Flush Timing",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "should_flush_buffer",
+    functionSignature: "should_flush_buffer(buffer_size: int, max_buffer_size: int, time_since_last_flush_ms: float, max_flush_interval_ms: float) -> bool",
+    starterCode: `def should_flush_buffer(buffer_size, max_buffer_size, time_since_last_flush_ms, max_flush_interval_ms):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement streaming-buffer flush timing, the real dual-trigger policy (size OR time) balancing network efficiency against perceived streaming responsiveness.",
+    taskDescription: "Implement `should_flush_buffer(buffer_size, max_buffer_size, time_since_last_flush_ms, max_flush_interval_ms)`: return `True` if EITHER `buffer_size >= max_buffer_size` OR `time_since_last_flush_ms >= max_flush_interval_ms`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 0"
+      ],
+    hints: {
+  "small": "Flush on whichever condition triggers first -- size or time.",
+        "strong": "return buffer_size >= max_buffer_size or time_since_last_flush_ms >= max_flush_interval_ms.",
+        "concept": "A size-only flush policy can make streaming feel laggy under slow token generation (buffer never fills); a time-only policy sends tiny, network-inefficient chunks under fast generation -- the real, standard fix combines both triggers, exactly like Nagle's algorithm's interaction with TCP_NODELAY in classic network programming."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "size trigger fires",
+          "input": {
+            "buffer_size": 100,
+            "max_buffer_size": 100,
+            "time_since_last_flush_ms": 10,
+            "max_flush_interval_ms": 200
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "time trigger fires",
+          "input": {
+            "buffer_size": 5,
+            "max_buffer_size": 100,
+            "time_since_last_flush_ms": 250,
+            "max_flush_interval_ms": 200
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "neither trigger fires",
+          "input": {
+            "buffer_size": 5,
+            "max_buffer_size": 100,
+            "time_since_last_flush_ms": 10,
+            "max_flush_interval_ms": 200
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "both triggers fire simultaneously",
+          "input": {
+            "buffer_size": 100,
+            "max_buffer_size": 100,
+            "time_since_last_flush_ms": 200,
+            "max_flush_interval_ms": 200
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-14": {
+    id: "production-prob-14",
+    title: "Model Endpoint Load-Balancing Weight",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "weighted_endpoint_score",
+    functionSignature: "weighted_endpoint_score(current_load: float, capacity: float, base_priority: float) -> float",
+    starterCode: `def weighted_endpoint_score(current_load, capacity, base_priority):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real load-aware endpoint scoring function, used to route each new agent request to the least-loaded of several model-serving endpoints (rather than pure round-robin).",
+    taskDescription: "Implement `weighted_endpoint_score(current_load, capacity, base_priority)`. Compute utilization `current_load/capacity`. Return `base_priority * (1 - utilization)` -- higher score means more preferred (lower utilization, higher base priority). Return `0.0` if utilization `>= 1` (at or over capacity, never route here).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "capacity > 0",
+        "current_load >= 0"
+      ],
+    hints: {
+  "small": "Score decreases as utilization rises, and hits zero once at/over capacity.",
+        "strong": "utilization = current_load/capacity; if utilization >= 1: return 0.0; return base_priority*(1-utilization).",
+        "concept": "A least-loaded-first (rather than round-robin) routing policy directly accounts for the real fact that not all endpoints are equally busy at any given moment -- this is a real, simple version of the weighted-least-connections algorithm production load balancers actually implement."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "lightly loaded endpoint high score",
+          "input": {
+            "current_load": 10,
+            "capacity": 100,
+            "base_priority": 1
+          },
+          "expectedOutput": 0.9,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "heavily loaded endpoint low score",
+          "input": {
+            "current_load": 90,
+            "capacity": 100,
+            "base_priority": 1
+          },
+          "expectedOutput": 0.09999999999999998,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "at capacity zero score",
+          "input": {
+            "current_load": 100,
+            "capacity": 100,
+            "base_priority": 1
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "over capacity zero score",
+          "input": {
+            "current_load": 150,
+            "capacity": 100,
+            "base_priority": 1
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-15": {
+    id: "production-prob-15",
+    title: "Retry Budget Enforcement",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "has_retry_budget",
+    functionSignature: "has_retry_budget(retries_used: int, requests_in_window: int, max_retry_ratio: float) -> bool",
+    starterCode: `def has_retry_budget(retries_used, requests_in_window, max_retry_ratio):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement retry-budget enforcement, a real, system-wide safeguard preventing retries themselves from becoming the cause of an overload cascade during a partial outage.",
+    taskDescription: "Implement `has_retry_budget(retries_used, requests_in_window, max_retry_ratio)`: return `True` (retry allowed) if `requests_in_window == 0` OR `(retries_used / requests_in_window) < max_retry_ratio`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "retries_used >= 0",
+        "requests_in_window >= 0",
+        "max_retry_ratio > 0"
+      ],
+    hints: {
+  "small": "A ratio-based cap on retries relative to real traffic volume, with a zero-traffic guard.",
+        "strong": "if requests_in_window == 0: return True; return (retries_used/requests_in_window) < max_retry_ratio.",
+        "concept": "Capping retries as a RATIO of real request volume (not an absolute count) is the real, standard 'retry budget' pattern -- during a partial outage, unlimited per-request retries can genuinely amplify load on an already-struggling downstream service into a full cascading failure, which a system-wide retry budget directly prevents."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "well within retry budget",
+          "input": {
+            "retries_used": 5,
+            "requests_in_window": 100,
+            "max_retry_ratio": 0.1
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "exceeds retry budget",
+          "input": {
+            "retries_used": 20,
+            "requests_in_window": 100,
+            "max_retry_ratio": 0.1
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no traffic yet allows retry",
+          "input": {
+            "retries_used": 0,
+            "requests_in_window": 0,
+            "max_retry_ratio": 0.1
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at ratio boundary denies",
+          "input": {
+            "retries_used": 10,
+            "requests_in_window": 100,
+            "max_retry_ratio": 0.1
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-16": {
+    id: "production-prob-16",
+    title: "GPU Memory Fragmentation Estimate",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "estimate_fragmentation",
+    functionSignature: "estimate_fragmentation(total_free_mb: float, largest_free_block_mb: float) -> float",
+    starterCode: `def estimate_fragmentation(total_free_mb, largest_free_block_mb):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real GPU-memory fragmentation estimate, explaining a genuinely confusing real production symptom: an out-of-memory error despite plenty of TOTAL free memory reported.",
+    taskDescription: "Implement `estimate_fragmentation(total_free_mb, largest_free_block_mb)`. Return `1 - (largest_free_block_mb / total_free_mb)` -- the fraction of free memory that is NOT usable as one contiguous allocation. Return `0.0` if `total_free_mb` is 0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "largest_free_block_mb <= total_free_mb"
+      ],
+    hints: {
+  "small": "The gap between total free memory and the largest single contiguous block IS the fragmentation.",
+        "strong": "if total_free_mb == 0: return 0.0; return 1 - (largest_free_block_mb/total_free_mb).",
+        "concept": "A GPU can genuinely report 8GB free total while being unable to satisfy a 2GB contiguous allocation request if that 8GB is fragmented across many small non-contiguous blocks -- this is a real, common source of confusing OOM errors in long-running inference servers that allocate/free memory of varying sizes repeatedly."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no fragmentation, one big block",
+          "input": {
+            "total_free_mb": 8000,
+            "largest_free_block_mb": 8000
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "heavy fragmentation",
+          "input": {
+            "total_free_mb": 8000,
+            "largest_free_block_mb": 500
+          },
+          "expectedOutput": 0.9375,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "moderate fragmentation",
+          "input": {
+            "total_free_mb": 4000,
+            "largest_free_block_mb": 2000
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero free memory",
+          "input": {
+            "total_free_mb": 0,
+            "largest_free_block_mb": 0
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-17": {
+    id: "production-prob-17",
+    title: "Request Queue Wait-Time Estimate (Little's Law)",
+    difficulty: "hard",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "estimate_wait_time",
+    functionSignature: "estimate_wait_time(queue_length: int, avg_service_time_ms: float, num_servers: int) -> float",
+    starterCode: `def estimate_wait_time(queue_length, avg_service_time_ms, num_servers):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a queueing-theory wait-time estimate using Little's Law, giving a production agent-serving system a real basis for predicting how long a newly-arrived request will wait.",
+    taskDescription: "Implement `estimate_wait_time(queue_length, avg_service_time_ms, num_servers)`. Assuming requests are served `num_servers` at a time in parallel, the expected wait for a request at the BACK of the queue is `(queue_length / num_servers) * avg_service_time_ms`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "num_servers >= 1"
+      ],
+    hints: {
+  "small": "How many full rounds of parallel service happen before this request is served, times each round's duration.",
+        "strong": "(queue_length/num_servers) * avg_service_time_ms.",
+        "concept": "This is a simplified, real application of queueing theory (related to Little's Law, L = lambda*W) -- it's the actual basis for a production system showing a user a real 'estimated wait time,' not a guess, and it directly shows why adding servers (not just optimizing per-request latency) is often the right lever for a growing queue."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single server queue",
+          "input": {
+            "queue_length": 10,
+            "avg_service_time_ms": 100,
+            "num_servers": 1
+          },
+          "expectedOutput": 1000,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "parallel servers reduce wait",
+          "input": {
+            "queue_length": 10,
+            "avg_service_time_ms": 100,
+            "num_servers": 5
+          },
+          "expectedOutput": 200,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty queue no wait",
+          "input": {
+            "queue_length": 0,
+            "avg_service_time_ms": 100,
+            "num_servers": 1
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "long queue few servers",
+          "input": {
+            "queue_length": 100,
+            "avg_service_time_ms": 50,
+            "num_servers": 2
+          },
+          "expectedOutput": 2500,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-18": {
+    id: "production-prob-18",
+    title: "Speculative Decoding Acceptance Rate",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "spec_decode_speedup",
+    functionSignature: "spec_decode_speedup(acceptance_rate: float, draft_tokens_per_step: int) -> float",
+    starterCode: `def spec_decode_speedup(acceptance_rate, draft_tokens_per_step):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real speedup estimate for speculative decoding, a production LLM-serving optimization where a small draft model proposes tokens a larger model verifies in parallel.",
+    taskDescription: "Implement `spec_decode_speedup(acceptance_rate, draft_tokens_per_step)`: return the EXPECTED number of tokens accepted per verification step: `sum(acceptance_rate**i for i in range(1, draft_tokens_per_step+1)) + 1` -- the `+1` accounts for the guaranteed token the main model always produces even if all drafts are rejected.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= acceptance_rate <= 1",
+        "draft_tokens_per_step >= 1"
+      ],
+    hints: {
+  "small": "Each additional draft token is accepted only if ALL prior ones in the chain were also accepted -- a geometric decay.",
+        "strong": "return sum(acceptance_rate**i for i in range(1, draft_tokens_per_step+1)) + 1.",
+        "concept": "Speculative decoding's REAL speedup depends entirely on how well-calibrated the draft model is to the main model -- a high acceptance_rate (the draft model 'agrees' with the main model often) gives close to `draft_tokens_per_step+1`x speedup per step, while a low rate gives almost no benefit over standard autoregressive decoding, which is exactly what this formula makes explicit."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "high acceptance rate near-full speedup",
+          "input": {
+            "acceptance_rate": 0.9,
+            "draft_tokens_per_step": 4
+          },
+          "expectedOutput": 4.0951,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "low acceptance rate minimal speedup",
+          "input": {
+            "acceptance_rate": 0.1,
+            "draft_tokens_per_step": 4
+          },
+          "expectedOutput": 1.1111,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero acceptance rate baseline only",
+          "input": {
+            "acceptance_rate": 0,
+            "draft_tokens_per_step": 4
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "perfect acceptance maximum speedup",
+          "input": {
+            "acceptance_rate": 1,
+            "draft_tokens_per_step": 3
+          },
+          "expectedOutput": 4,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-19": {
+    id: "production-prob-19",
+    title: "KV-Cache Memory Footprint Estimate",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "kv_cache_memory_mb",
+    functionSignature: "kv_cache_memory_mb(num_layers: int, num_heads: int, head_dim: int, seq_len: int, batch_size: int, bytes_per_value: float = 2.0) -> float",
+    starterCode: `def kv_cache_memory_mb(num_layers, num_heads, head_dim, seq_len, batch_size, bytes_per_value=2.0):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement KV-cache memory estimation, the real, standard calculation an LLM-serving engineer runs before deciding how many concurrent sequences fit on a given GPU.",
+    taskDescription: "Implement `kv_cache_memory_mb(num_layers, num_heads, head_dim, seq_len, batch_size, bytes_per_value=2.0)`. Total elements: `2 (K and V) * num_layers * num_heads * head_dim * seq_len * batch_size`. Multiply by `bytes_per_value`, convert bytes to MB (divide by `1024*1024`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all inputs positive"
+      ],
+    hints: {
+  "small": "Count K and V separately, multiply through every dimension, then convert to MB.",
+        "strong": "elements = 2 * num_layers * num_heads * head_dim * seq_len * batch_size; return (elements*bytes_per_value)/(1024*1024).",
+        "concept": "The KV cache (not model weights) is often the REAL memory bottleneck limiting concurrent request count in production LLM serving -- it grows linearly with both sequence length AND batch size, which is exactly why techniques like PagedAttention exist specifically to manage this cost efficiently."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "small model short sequence",
+          "input": {
+            "num_layers": 12,
+            "num_heads": 12,
+            "head_dim": 64,
+            "seq_len": 512,
+            "batch_size": 1,
+            "bytes_per_value": 2
+          },
+          "expectedOutput": 18,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "larger batch scales linearly",
+          "input": {
+            "num_layers": 12,
+            "num_heads": 12,
+            "head_dim": 64,
+            "seq_len": 512,
+            "batch_size": 8,
+            "bytes_per_value": 2
+          },
+          "expectedOutput": 144,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "longer sequence scales linearly",
+          "input": {
+            "num_layers": 12,
+            "num_heads": 12,
+            "head_dim": 64,
+            "seq_len": 4096,
+            "batch_size": 1,
+            "bytes_per_value": 2
+          },
+          "expectedOutput": 144,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "fp32 doubles memory vs fp16",
+          "input": {
+            "num_layers": 12,
+            "num_heads": 12,
+            "head_dim": 64,
+            "seq_len": 512,
+            "batch_size": 1,
+            "bytes_per_value": 4
+          },
+          "expectedOutput": 36,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-20": {
+    id: "production-prob-20",
+    title: "Canary Deployment Error Budget Burn Rate",
+    difficulty: "hard",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "error_budget_burn_rate",
+    functionSignature: "error_budget_burn_rate(observed_error_rate: float, slo_error_rate: float) -> float",
+    starterCode: `def error_budget_burn_rate(observed_error_rate, slo_error_rate):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement error-budget burn-rate calculation, the real SRE metric quantifying how fast a deployment is consuming its allowed error budget relative to its SLO.",
+    taskDescription: "Implement `error_budget_burn_rate(observed_error_rate, slo_error_rate)`: return `observed_error_rate / slo_error_rate` (a burn rate of `1.0` means errors are occurring exactly at the SLO's allowed rate; `> 1.0` means burning the budget faster than sustainable). Return `0.0` if `slo_error_rate` is 0 and `observed_error_rate` is also 0; otherwise if `slo_error_rate` is 0, treat any observed error as an infinite burn rate represented by returning `float('inf')`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "observed_error_rate >= 0",
+        "slo_error_rate >= 0"
+      ],
+    hints: {
+  "small": "A direct ratio, with explicit handling for a zero-tolerance SLO.",
+        "strong": "if slo_error_rate == 0: return 0.0 if observed_error_rate == 0 else float('inf'); return observed_error_rate/slo_error_rate.",
+        "concept": "This is the real, standard SRE 'burn rate' concept (from Google's SRE workbook) -- a burn rate of 10x means the error budget for an entire month would be exhausted in about 3 days at the current rate, which is exactly the kind of urgency-calibrated alerting real production on-call policies are built around, rather than alerting on raw error count alone."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "burning exactly at SLO rate",
+          "input": {
+            "observed_error_rate": 0.01,
+            "slo_error_rate": 0.01
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "burning faster than SLO allows",
+          "input": {
+            "observed_error_rate": 0.05,
+            "slo_error_rate": 0.01
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "burning slower than budget, healthy",
+          "input": {
+            "observed_error_rate": 0.001,
+            "slo_error_rate": 0.01
+          },
+          "expectedOutput": 0.1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero-tolerance slo with real errors",
+          "input": {
+            "observed_error_rate": 0.001,
+            "slo_error_rate": 0
+          },
+          "expectedOutput": Infinity,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-21": {
+    id: "production-prob-21",
+    title: "Request Deduplication Window Check",
+    difficulty: "easy",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "is_duplicate_request",
+    functionSignature: "is_duplicate_request(idempotency_key: str, seen_keys_with_ts: dict[str, float], current_time: float, dedup_window_s: float) -> bool",
+    starterCode: `def is_duplicate_request(idempotency_key, seen_keys_with_ts, current_time, dedup_window_s):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement idempotency-key-based request deduplication, a real production safeguard against a client's retry (after a timeout, before it got the original response) causing a duplicate side effect.",
+    taskDescription: "Implement `is_duplicate_request(idempotency_key, seen_keys_with_ts, current_time, dedup_window_s)`. Return `True` if `idempotency_key` is in `seen_keys_with_ts` AND `(current_time - seen_keys_with_ts[idempotency_key]) < dedup_window_s` (seen recently enough to still count as a duplicate).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "current_time >= any stored timestamp"
+      ],
+    hints: {
+  "small": "A key only counts as duplicate if it was seen AND still within the dedup window.",
+        "strong": "if idempotency_key not in seen_keys_with_ts: return False; return (current_time - seen_keys_with_ts[idempotency_key]) < dedup_window_s.",
+        "concept": "This is exactly the real mechanism behind idempotency keys in payment APIs and similar -- a client that times out and retries the SAME logical request (with the same key) gets deduplicated server-side, preventing a real double-charge or double-write, without the client needing any special retry-awareness itself."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "recent duplicate within window",
+          "input": {
+            "idempotency_key": "key1",
+            "seen_keys_with_ts": {
+              "key1": 1000
+            },
+            "current_time": 1010,
+            "dedup_window_s": 60
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "old key outside window not duplicate",
+          "input": {
+            "idempotency_key": "key1",
+            "seen_keys_with_ts": {
+              "key1": 1000
+            },
+            "current_time": 2000,
+            "dedup_window_s": 60
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unseen key not duplicate",
+          "input": {
+            "idempotency_key": "key2",
+            "seen_keys_with_ts": {
+              "key1": 1000
+            },
+            "current_time": 1010,
+            "dedup_window_s": 60
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at window boundary not duplicate",
+          "input": {
+            "idempotency_key": "key1",
+            "seen_keys_with_ts": {
+              "key1": 1000
+            },
+            "current_time": 1060,
+            "dedup_window_s": 60
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-22": {
+    id: "production-prob-22",
+    title: "Model Serving Cost Per Successful Request",
+    difficulty: "easy",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "cost_per_success",
+    functionSignature: "cost_per_success(total_cost: float, total_requests: int, error_rate: float) -> float",
+    starterCode: `def cost_per_success(total_cost, total_requests, error_rate):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real cost-per-successful-request calculation, a metric that (unlike raw cost-per-request) correctly accounts for wasted spend on failed requests.",
+    taskDescription: "Implement `cost_per_success(total_cost, total_requests, error_rate)`. Successful requests: `total_requests * (1 - error_rate)`. Return `total_cost / successful_requests`. Return `float('inf')` if there are zero successful requests.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= error_rate <= 1",
+        "total_requests >= 0"
+      ],
+    hints: {
+  "small": "Divide total cost by the count of requests that actually succeeded, not total requests.",
+        "strong": "successes = total_requests*(1-error_rate); return float('inf') if successes == 0 else total_cost/successes.",
+        "concept": "A high error rate makes the TRUE cost of getting a useful result much higher than the naive cost-per-request suggests, since failed calls still cost money (API charges, compute) but deliver nothing -- this metric is what actually reflects the real unit economics of a flaky integration."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "low error rate near-normal cost",
+          "input": {
+            "total_cost": 100,
+            "total_requests": 1000,
+            "error_rate": 0.01
+          },
+          "expectedOutput": 0.10101010101010101,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "high error rate inflates real cost",
+          "input": {
+            "total_cost": 100,
+            "total_requests": 1000,
+            "error_rate": 0.5
+          },
+          "expectedOutput": 0.2,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero error rate baseline",
+          "input": {
+            "total_cost": 100,
+            "total_requests": 1000,
+            "error_rate": 0
+          },
+          "expectedOutput": 0.1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "total failure infinite cost per success",
+          "input": {
+            "total_cost": 100,
+            "total_requests": 1000,
+            "error_rate": 1
+          },
+          "expectedOutput": Infinity,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-23": {
+    id: "production-prob-23",
+    title: "Health Check Failure Debouncing",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "is_unhealthy",
+    functionSignature: "is_unhealthy(consecutive_failed_checks: int, unhealthy_threshold: int) -> bool",
+    starterCode: `def is_unhealthy(consecutive_failed_checks, unhealthy_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement health-check failure debouncing, a real requirement to avoid a load balancer flapping an instance in and out of rotation on a single transient failed check.",
+    taskDescription: "Implement `is_unhealthy(consecutive_failed_checks, unhealthy_threshold)`: return `True` if `consecutive_failed_checks >= unhealthy_threshold`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both values >= 0"
+      ],
+    hints: {
+  "small": "Require several consecutive failures, not just one.",
+        "strong": "return consecutive_failed_checks >= unhealthy_threshold.",
+        "concept": "A threshold of 1 (mark unhealthy on any single failed check) is a real, common production mistake -- one dropped health-check packet from normal network jitter shouldn't yank a perfectly healthy instance out of rotation, which is exactly why real load balancers require multiple consecutive failures before acting."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single failure not yet unhealthy",
+          "input": {
+            "consecutive_failed_checks": 1,
+            "unhealthy_threshold": 3
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "reaches threshold marked unhealthy",
+          "input": {
+            "consecutive_failed_checks": 3,
+            "unhealthy_threshold": 3
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no failures healthy",
+          "input": {
+            "consecutive_failed_checks": 0,
+            "unhealthy_threshold": 3
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exceeds threshold unhealthy",
+          "input": {
+            "consecutive_failed_checks": 10,
+            "unhealthy_threshold": 3
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-24": {
+    id: "production-prob-24",
+    title: "Adaptive Timeout From Historical Latency",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "adaptive_timeout",
+    functionSignature: "adaptive_timeout(p99_latency_ms: float, safety_multiplier: float, floor_ms: float) -> float",
+    starterCode: `def adaptive_timeout(p99_latency_ms, safety_multiplier, floor_ms):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement adaptive timeout calculation derived from real observed latency, avoiding both a too-tight timeout (killing legitimately slow-but-successful calls) and a too-loose one (holding resources on genuinely hung calls far too long).",
+    taskDescription: "Implement `adaptive_timeout(p99_latency_ms, safety_multiplier, floor_ms)`: return `max(floor_ms, p99_latency_ms * safety_multiplier)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "safety_multiplier > 1",
+        "floor_ms >= 0"
+      ],
+    hints: {
+  "small": "Scale the real observed p99 by a safety factor, but never go below a sane floor.",
+        "strong": "return max(floor_ms, p99_latency_ms*safety_multiplier).",
+        "concept": "A hardcoded fixed timeout (e.g. 'always 5 seconds') is a real, common anti-pattern -- it's either too tight for a genuinely-recovering-from-cold-start service or too loose once the service is well-optimized; deriving the timeout from the service's OWN real recent p99 latency adapts automatically as performance characteristics change."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "normal latency scaled timeout",
+          "input": {
+            "p99_latency_ms": 500,
+            "safety_multiplier": 2,
+            "floor_ms": 1000
+          },
+          "expectedOutput": 1000,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "very low latency uses floor",
+          "input": {
+            "p99_latency_ms": 50,
+            "safety_multiplier": 2,
+            "floor_ms": 1000
+          },
+          "expectedOutput": 1000,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "high latency exceeds floor",
+          "input": {
+            "p99_latency_ms": 5000,
+            "safety_multiplier": 1.5,
+            "floor_ms": 1000
+          },
+          "expectedOutput": 7500,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at floor boundary",
+          "input": {
+            "p99_latency_ms": 500,
+            "safety_multiplier": 2,
+            "floor_ms": 1000
+          },
+          "expectedOutput": 1000,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-25": {
+    id: "production-prob-25",
+    title: "Multi-Region Failover Target Selection",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "select_failover_region",
+    functionSignature: "select_failover_region(primary_region: str, region_health: dict[str, bool], region_priority: list[str]) -> str",
+    starterCode: `def select_failover_region(primary_region, region_health, region_priority):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement multi-region failover selection, choosing the next healthy region to route traffic to in priority order when the primary region fails.",
+    taskDescription: "Implement `select_failover_region(primary_region, region_health, region_priority)`. `region_priority` is the ordered list of candidate regions (may or may not include `primary_region`). If `region_health.get(primary_region, False)` is `True`, return `primary_region` unchanged. Otherwise return the FIRST region in `region_priority` (excluding `primary_region`) that is healthy. Return `''` if none are healthy.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "region_health maps region -> bool"
+      ],
+    hints: {
+  "small": "Prefer the primary if healthy; otherwise walk the priority list for the first healthy alternative.",
+        "strong": "if region_health.get(primary_region, False): return primary_region; for r in region_priority: if r != primary_region and region_health.get(r, False): return r. Return ''.",
+        "concept": "This is the real, standard active-passive failover pattern -- always prefer the primary when healthy (avoiding unnecessary cross-region latency/cost), and only fail over in priority order when it genuinely goes down, rather than load-balancing across regions all the time."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "primary healthy stays primary",
+          "input": {
+            "primary_region": "us-east",
+            "region_health": {
+              "us-east": true,
+              "us-west": true
+            },
+            "region_priority": [
+              "us-west",
+              "eu-west"
+            ]
+          },
+          "expectedOutput": "us-east",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "primary down fails over to first healthy",
+          "input": {
+            "primary_region": "us-east",
+            "region_health": {
+              "us-east": false,
+              "us-west": true
+            },
+            "region_priority": [
+              "us-west",
+              "eu-west"
+            ]
+          },
+          "expectedOutput": "us-west",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no healthy regions",
+          "input": {
+            "primary_region": "us-east",
+            "region_health": {
+              "us-east": false,
+              "us-west": false
+            },
+            "region_priority": [
+              "us-west"
+            ]
+          },
+          "expectedOutput": "",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "skips unhealthy candidate to next",
+          "input": {
+            "primary_region": "us-east",
+            "region_health": {
+              "us-east": false,
+              "us-west": false,
+              "eu-west": true
+            },
+            "region_priority": [
+              "us-west",
+              "eu-west"
+            ]
+          },
+          "expectedOutput": "eu-west",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-26": {
+    id: "production-prob-26",
+    title: "Log Sampling Rate for High-Volume Agent Traffic",
+    difficulty: "easy",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "should_sample_log",
+    functionSignature: "should_sample_log(request_id_hash: int, sample_rate: float) -> bool",
+    starterCode: `def should_sample_log(request_id_hash, sample_rate):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement deterministic log sampling, a real technique for keeping observability cost manageable on high-volume production agent traffic without losing statistical visibility.",
+    taskDescription: "Implement `should_sample_log(request_id_hash, sample_rate)`: return `True` if `(request_id_hash % 10000) < (sample_rate * 10000)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= sample_rate <= 1",
+        "request_id_hash is a non-negative int"
+      ],
+    hints: {
+  "small": "Bucket the hash into a fixed-resolution range, compare against the sample rate's threshold.",
+        "strong": "return (request_id_hash % 10000) < (sample_rate*10000).",
+        "concept": "Deterministic (hash-based) sampling, not random sampling, means the SAME request always gets the same sampling decision across every log line it produces -- essential for being able to reconstruct one request's FULL trace from sampled logs, rather than getting fragments of many different requests."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "100% sampling always logs",
+          "input": {
+            "request_id_hash": 5000,
+            "sample_rate": 1
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "0% sampling never logs",
+          "input": {
+            "request_id_hash": 5000,
+            "sample_rate": 0
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "10% sampling low hash logs",
+          "input": {
+            "request_id_hash": 500,
+            "sample_rate": 0.1
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "10% sampling high hash does not log",
+          "input": {
+            "request_id_hash": 9500,
+            "sample_rate": 0.1
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-27": {
+    id: "production-prob-27",
+    title: "Startup Readiness Probe Aggregation",
+    difficulty: "easy",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "is_ready",
+    functionSignature: "is_ready(checks: dict[str, bool]) -> bool",
+    starterCode: `def is_ready(checks):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement readiness-probe aggregation, the real gate deciding when a newly-started agent instance should start receiving production traffic.",
+    taskDescription: "Implement `is_ready(checks)`: return `True` only if EVERY value in `checks` (e.g. `{\"model_loaded\": True, \"db_connected\": True}`) is `True`. An empty `checks` dict is vacuously ready.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "checks maps check name -> bool"
+      ],
+    hints: {
+  "small": "All checks must pass.",
+        "strong": "return all(checks.values()).",
+        "concept": "A real production readiness probe (distinct from a liveness probe) exists specifically so a load balancer doesn't route traffic to an instance that's technically running but not yet fully initialized (model still loading, cache still warming) -- routing to a not-actually-ready instance causes real request failures during every rolling deployment without this."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all checks pass",
+          "input": {
+            "checks": {
+              "model_loaded": true,
+              "db_connected": true
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one check fails",
+          "input": {
+            "checks": {
+              "model_loaded": true,
+              "db_connected": false
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no checks configured vacuously ready",
+          "input": {
+            "checks": {}
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all checks fail",
+          "input": {
+            "checks": {
+              "a": false,
+              "b": false
+            }
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-28": {
+    id: "production-prob-28",
+    title: "Cost-Aware Model Tier Selection",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "select_model_tier",
+    functionSignature: "select_model_tier(task_complexity_score: float, low_threshold: float, high_threshold: float) -> str",
+    starterCode: `def select_model_tier(task_complexity_score, low_threshold, high_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement cost-aware model-tier routing, a real production pattern sending simple requests to a cheap small model and only complex ones to an expensive large model.",
+    taskDescription: "Implement `select_model_tier(task_complexity_score, low_threshold, high_threshold)`. Return `'small'` if `task_complexity_score < low_threshold`. Return `'large'` if `task_complexity_score >= high_threshold`. Otherwise return `'medium'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "low_threshold < high_threshold"
+      ],
+    hints: {
+  "small": "Three tiers via two threshold comparisons.",
+        "strong": "if task_complexity_score < low_threshold: return 'small'; if task_complexity_score >= high_threshold: return 'large'; return 'medium'.",
+        "concept": "This is a real, common real production cost-optimization: a classifier or heuristic complexity score routes the bulk of simple queries to a cheap model while reserving the expensive model for genuinely hard cases -- at scale this can cut real inference cost substantially without materially hurting quality on the easy majority of traffic."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple task uses small model",
+          "input": {
+            "task_complexity_score": 0.1,
+            "low_threshold": 0.3,
+            "high_threshold": 0.7
+          },
+          "expectedOutput": "small",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "complex task uses large model",
+          "input": {
+            "task_complexity_score": 0.9,
+            "low_threshold": 0.3,
+            "high_threshold": 0.7
+          },
+          "expectedOutput": "large",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "moderate task uses medium model",
+          "input": {
+            "task_complexity_score": 0.5,
+            "low_threshold": 0.3,
+            "high_threshold": 0.7
+          },
+          "expectedOutput": "medium",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at high threshold uses large",
+          "input": {
+            "task_complexity_score": 0.7,
+            "low_threshold": 0.3,
+            "high_threshold": 0.7
+          },
+          "expectedOutput": "large",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "production-prob-29": {
+    id: "production-prob-29",
+    title: "Shadow Traffic Comparison Divergence Rate",
+    difficulty: "medium",
+    topic: "Agent Performance & Production",
+    estimatedTime: '15 min',
+    functionName: "divergence_rate",
+    functionSignature: "divergence_rate(matching_responses: int, total_shadow_requests: int) -> float",
+    starterCode: `def divergence_rate(matching_responses, total_shadow_requests):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement shadow-traffic divergence rate calculation, the real metric measuring how often a candidate model version's output actually differs from production when tested on mirrored live traffic (with no user-visible effect).",
+    taskDescription: "Implement `divergence_rate(matching_responses, total_shadow_requests)`: return `1 - (matching_responses / total_shadow_requests)`. Return `0.0` if `total_shadow_requests` is 0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "matching_responses <= total_shadow_requests"
+      ],
+    hints: {
+  "small": "The fraction that DIDN'T match is the divergence rate.",
+        "strong": "0.0 if total_shadow_requests == 0 else 1 - (matching_responses/total_shadow_requests).",
+        "concept": "Shadow testing (mirroring real production traffic to a candidate version without serving its response to users) is a real, powerful pre-deployment validation technique precisely because it tests against genuine live traffic distribution, not a synthetic eval set -- divergence rate is the direct signal for 'is this new version's behavior meaningfully different' before it ever affects a real user."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "mostly matching low divergence",
+          "input": {
+            "matching_responses": 950,
+            "total_shadow_requests": 1000
+          },
+          "expectedOutput": 0.050000000000000044,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "significant divergence",
+          "input": {
+            "matching_responses": 500,
+            "total_shadow_requests": 1000
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "perfect match zero divergence",
+          "input": {
+            "matching_responses": 1000,
+            "total_shadow_requests": 1000
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no shadow traffic yet",
+          "input": {
+            "matching_responses": 0,
+            "total_shadow_requests": 0
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-1": {
+    id: "agent-graph-prob-1",
+    title: "Topological Execution Order of Agent Workflow Nodes",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "topo_execution_order",
+    functionSignature: "topo_execution_order(dependencies: dict[str, list[str]]) -> list[str]",
+    starterCode: `def topo_execution_order(dependencies):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement topological execution ordering for an agent workflow graph (LangGraph-style), determining a valid node execution sequence from declared dependencies.",
+    taskDescription: "Implement `topo_execution_order(dependencies)` via Kahn's algorithm. `dependencies` maps each node to the list of nodes it depends on. Among nodes with zero remaining dependencies at any point, pick alphabetically smallest. Assume the graph is acyclic.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all referenced nodes appear as dict keys"
+      ],
+    hints: {
+  "small": "Kahn's algorithm: repeatedly take the alphabetically smallest zero-remaining-dependency node.",
+        "strong": "remaining = {n: set(deps) for n,deps in dependencies.items()}; result=[]; done=set(); while len(result)<len(dependencies): avail = sorted(n for n in remaining if n not in done and not (remaining[n]-done)); n=avail[0]; result.append(n); done.add(n).",
+        "concept": "This is the exact real algorithm a graph-based agent orchestration framework runs to determine a valid single-threaded execution order from a declared node dependency graph before any parallel-branch optimization is applied."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "linear chain",
+          "input": {
+            "dependencies": {
+              "c": [
+                "b"
+              ],
+              "b": [
+                "a"
+              ],
+              "a": []
+            }
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "diamond dependency",
+          "input": {
+            "dependencies": {
+              "d": [
+                "b",
+                "c"
+              ],
+              "b": [
+                "a"
+              ],
+              "c": [
+                "a"
+              ],
+              "a": []
+            }
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "independent nodes alphabetical",
+          "input": {
+            "dependencies": {
+              "c": [],
+              "a": [],
+              "b": []
+            }
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single node",
+          "input": {
+            "dependencies": {
+              "only": []
+            }
+          },
+          "expectedOutput": [
+            "only"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-2": {
+    id: "agent-graph-prob-2",
+    title: "Conditional Edge Routing by State Predicate",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "route_conditional_edge",
+    functionSignature: "route_conditional_edge(state: dict, routes: list[dict]) -> str",
+    starterCode: `def route_conditional_edge(state, routes):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement conditional-edge routing, the core mechanism letting an agent graph branch to different next nodes based on the current state (e.g. LangGraph's conditional edges).",
+    taskDescription: "Implement `route_conditional_edge(state, routes)`. `routes` is an ordered list of `{\"key\": str, \"equals\": value, \"target\": str}`. Return the `target` of the FIRST route where `state.get(key) == equals`. If none match, return `'__default__'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "routes is a list, checked in order"
+      ],
+    hints: {
+  "small": "Check each route's condition in order, first match wins.",
+        "strong": "for r in routes: if state.get(r['key']) == r['equals']: return r['target']. Return '__default__'.",
+        "concept": "Checking routes IN ORDER (not evaluating all and picking one arbitrarily) matters because real routing rules are often deliberately overlapping with an intended priority -- e.g. 'error state' should route before a more general 'needs_review' check even if both technically match."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "first route matches",
+          "input": {
+            "state": {
+              "status": "error"
+            },
+            "routes": [
+              {
+                "key": "status",
+                "equals": "error",
+                "target": "error_handler"
+              },
+              {
+                "key": "status",
+                "equals": "done",
+                "target": "end"
+              }
+            ]
+          },
+          "expectedOutput": "error_handler",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no route matches, default",
+          "input": {
+            "state": {
+              "status": "pending"
+            },
+            "routes": [
+              {
+                "key": "status",
+                "equals": "error",
+                "target": "error_handler"
+              }
+            ]
+          },
+          "expectedOutput": "__default__",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "second route matches after first fails",
+          "input": {
+            "state": {
+              "status": "done"
+            },
+            "routes": [
+              {
+                "key": "status",
+                "equals": "error",
+                "target": "error_handler"
+              },
+              {
+                "key": "status",
+                "equals": "done",
+                "target": "end"
+              }
+            ]
+          },
+          "expectedOutput": "end",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty routes always default",
+          "input": {
+            "state": {
+              "status": "x"
+            },
+            "routes": []
+          },
+          "expectedOutput": "__default__",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-3": {
+    id: "agent-graph-prob-3",
+    title: "State Update Merge Reducer",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "merge_state_update",
+    functionSignature: "merge_state_update(current_state: dict, update: dict, list_keys: list[str]) -> dict",
+    starterCode: `def merge_state_update(current_state, update, list_keys):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a state-merge reducer, the real mechanism graph-based agent frameworks use to combine a node's partial output into the shared workflow state (some fields append, some overwrite).",
+    taskDescription: "Implement `merge_state_update(current_state, update, list_keys)`. For keys in `list_keys`, the merged value is `current_state.get(key, []) + update[key]` (append/extend, list-valued fields like message history). For all other keys in `update`, simply overwrite `current_state`'s value. Return the new merged dict (don't mutate `current_state`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "update may contain keys not in current_state"
+      ],
+    hints: {
+  "small": "Two merge strategies depending on whether a key is declared list-appending.",
+        "strong": "result = dict(current_state); for k,v in update.items(): if k in list_keys: result[k] = current_state.get(k,[]) + v; else: result[k] = v. Return result.",
+        "concept": "This exact append-vs-overwrite distinction is LangGraph's real reducer concept -- a 'messages' field needs to ACCUMULATE across every node's contribution (conversation history), while most other fields (like a 'current_step' field) should simply be replaced by whichever node last wrote to them."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "list field appends",
+          "input": {
+            "current_state": {
+              "messages": [
+                "hi"
+              ]
+            },
+            "update": {
+              "messages": [
+                "there"
+              ]
+            },
+            "list_keys": [
+              "messages"
+            ]
+          },
+          "expectedOutput": {
+            "messages": [
+              "hi",
+              "there"
+            ]
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "scalar field overwrites",
+          "input": {
+            "current_state": {
+              "step": 1
+            },
+            "update": {
+              "step": 2
+            },
+            "list_keys": [
+              "messages"
+            ]
+          },
+          "expectedOutput": {
+            "step": 2
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "new list field starts empty then appends",
+          "input": {
+            "current_state": {},
+            "update": {
+              "messages": [
+                "first"
+              ]
+            },
+            "list_keys": [
+              "messages"
+            ]
+          },
+          "expectedOutput": {
+            "messages": [
+              "first"
+            ]
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "mixed update",
+          "input": {
+            "current_state": {
+              "messages": [
+                "a"
+              ],
+              "step": 1
+            },
+            "update": {
+              "messages": [
+                "b"
+              ],
+              "step": 2
+            },
+            "list_keys": [
+              "messages"
+            ]
+          },
+          "expectedOutput": {
+            "messages": [
+              "a",
+              "b"
+            ],
+            "step": 2
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-4": {
+    id: "agent-graph-prob-4",
+    title: "Bounded Cycle Iteration Check",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "cycle_within_bound",
+    functionSignature: "cycle_within_bound(current_iteration: int, max_iterations: int) -> bool",
+    starterCode: `def cycle_within_bound(current_iteration, max_iterations):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement bounded-cycle checking, allowing an agent graph's real, intentional loop (e.g. a 'retry until valid' cycle) while guaranteeing termination.",
+    taskDescription: "Implement `cycle_within_bound(current_iteration, max_iterations)`: return `True` (allowed to loop again) if `current_iteration < max_iterations`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both values >= 0"
+      ],
+    hints: {
+  "small": "A simple bound check.",
+        "strong": "return current_iteration < max_iterations.",
+        "concept": "Unlike a generic DAG workflow, an agent graph often WANTS cycles (a self-correcting retry loop) -- the real engineering requirement isn't 'no cycles allowed' but 'every cycle has a hard bound,' which is exactly this check applied at each loop-back edge."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "within bound continues looping",
+          "input": {
+            "current_iteration": 2,
+            "max_iterations": 5
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "at bound stops looping",
+          "input": {
+            "current_iteration": 5,
+            "max_iterations": 5
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "first iteration always allowed",
+          "input": {
+            "current_iteration": 0,
+            "max_iterations": 3
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exceeded bound stops",
+          "input": {
+            "current_iteration": 10,
+            "max_iterations": 5
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-5": {
+    id: "agent-graph-prob-5",
+    title: "Identify Parallelizable Branches",
+    difficulty: "hard",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "find_parallel_branches",
+    functionSignature: "find_parallel_branches(dependencies: dict[str, list[str]]) -> list[list[str]]",
+    starterCode: `def find_parallel_branches(dependencies):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement parallel-branch identification, grouping agent graph nodes into execution \"waves\" where every node in the same wave can run concurrently.",
+    taskDescription: "Implement `find_parallel_branches(dependencies)`. Return a list of waves (each a sorted list of node names), where wave 0 contains all nodes with no dependencies, wave 1 contains nodes whose dependencies are all satisfied by wave 0 (and not already placed), and so on. Each node appears in exactly one wave -- the EARLIEST wave where its dependencies are already satisfied.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "graph is acyclic, all referenced nodes are keys"
+      ],
+    hints: {
+  "small": "Repeatedly collect the set of not-yet-placed nodes whose dependencies are all in already-placed waves.",
+        "strong": "placed=set(); waves=[]; while len(placed)<len(dependencies): wave = sorted(n for n in dependencies if n not in placed and set(dependencies[n])<=placed); waves.append(wave); placed.update(wave). Return waves.",
+        "concept": "This wave-grouping is exactly what a real agent-graph executor uses to maximize parallelism -- nodes in the same wave have no data dependency on each other and can genuinely run as concurrent tool/LLM calls, cutting real wall-clock latency versus naive sequential execution."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two independent nodes then a joining node",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [],
+              "c": [
+                "a",
+                "b"
+              ]
+            }
+          },
+          "expectedOutput": [
+            [
+              "a",
+              "b"
+            ],
+            [
+              "c"
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "fully linear chain",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [
+                "a"
+              ],
+              "c": [
+                "b"
+              ]
+            }
+          },
+          "expectedOutput": [
+            [
+              "a"
+            ],
+            [
+              "b"
+            ],
+            [
+              "c"
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all independent one wave",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [],
+              "c": []
+            }
+          },
+          "expectedOutput": [
+            [
+              "a",
+              "b",
+              "c"
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "mixed depths",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [
+                "a"
+              ],
+              "c": [],
+              "d": [
+                "b",
+                "c"
+              ]
+            }
+          },
+          "expectedOutput": [
+            [
+              "a",
+              "c"
+            ],
+            [
+              "b"
+            ],
+            [
+              "d"
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-6": {
+    id: "agent-graph-prob-6",
+    title: "Serialize State at a Checkpoint",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "checkpoint_state",
+    functionSignature: "checkpoint_state(state: dict, step_id: str, checkpoints: dict) -> dict",
+    starterCode: `def checkpoint_state(state, step_id, checkpoints):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement checkpoint state serialization, the real mechanism letting an agent graph resume from a saved point instead of restarting from scratch after an interruption.",
+    taskDescription: "Implement `checkpoint_state(state, step_id, checkpoints)`. Store a SHALLOW COPY of `state` under `checkpoints[step_id]` (so future mutations of `state` don't affect the saved checkpoint), and return the updated `checkpoints` dict.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "checkpoints is a dict of step_id -> saved state"
+      ],
+    hints: {
+  "small": "A shallow copy, not a reference, is what makes the checkpoint immune to later state mutation.",
+        "strong": "checkpoints[step_id] = dict(state); return checkpoints.",
+        "concept": "Storing a direct reference (not a copy) is a real, subtle bug here -- if the graph continues mutating the SAME dict object after checkpointing, the 'saved' checkpoint would silently reflect the CURRENT state instead of the state at the time it was actually saved, defeating the entire point of checkpointing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "save first checkpoint",
+          "input": {
+            "state": {
+              "x": 1
+            },
+            "step_id": "step1",
+            "checkpoints": {
+              "step1": {
+                "x": 1
+              }
+            }
+          },
+          "expectedOutput": {
+            "step1": {
+              "x": 1
+            }
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "save second checkpoint alongside first",
+          "input": {
+            "state": {
+              "x": 2
+            },
+            "step_id": "step2",
+            "checkpoints": {
+              "step1": {
+                "x": 1
+              },
+              "step2": {
+                "x": 2
+              }
+            }
+          },
+          "expectedOutput": {
+            "step1": {
+              "x": 1
+            },
+            "step2": {
+              "x": 2
+            }
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "overwrite existing checkpoint",
+          "input": {
+            "state": {
+              "x": 99
+            },
+            "step_id": "step1",
+            "checkpoints": {
+              "step1": {
+                "x": 99
+              }
+            }
+          },
+          "expectedOutput": {
+            "step1": {
+              "x": 99
+            }
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty state checkpoint",
+          "input": {
+            "state": {},
+            "step_id": "start",
+            "checkpoints": {
+              "start": {}
+            }
+          },
+          "expectedOutput": {
+            "start": {}
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-7": {
+    id: "agent-graph-prob-7",
+    title: "Validate Single Entry Point",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "has_single_entry_point",
+    functionSignature: "has_single_entry_point(dependencies: dict[str, list[str]]) -> bool",
+    starterCode: `def has_single_entry_point(dependencies):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement entry-point validation, a real structural check ensuring an agent graph has exactly one well-defined starting node.",
+    taskDescription: "Implement `has_single_entry_point(dependencies)`: return `True` if EXACTLY ONE node has an empty dependency list (zero incoming structural requirement).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "dependencies maps node -> list of its dependencies"
+      ],
+    hints: {
+  "small": "Count nodes with no dependencies, check it equals exactly one.",
+        "strong": "return sum(1 for deps in dependencies.values() if not deps) == 1.",
+        "concept": "A graph with zero entry points can never start executing at all; one with multiple entry points has ambiguous starting semantics -- a real agent-graph compiler should reject both cases at BUILD time, not fail unpredictably at run time."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single valid entry point",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [
+                "a"
+              ],
+              "c": [
+                "b"
+              ]
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no entry point",
+          "input": {
+            "dependencies": {
+              "a": [
+                "b"
+              ],
+              "b": [
+                "a"
+              ]
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple entry points",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [],
+              "c": [
+                "a",
+                "b"
+              ]
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single node graph",
+          "input": {
+            "dependencies": {
+              "only": []
+            }
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-8": {
+    id: "agent-graph-prob-8",
+    title: "Find All Terminal Nodes",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "find_terminal_nodes",
+    functionSignature: "find_terminal_nodes(edges: dict[str, list[str]]) -> list[str]",
+    starterCode: `def find_terminal_nodes(edges):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement terminal-node detection, finding every real exit point of an agent graph (nodes with no outgoing edges, where execution naturally ends).",
+    taskDescription: "Implement `find_terminal_nodes(edges)`: return the sorted list of node names whose outgoing edge list is empty.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "edges maps node -> list of outgoing targets"
+      ],
+    hints: {
+  "small": "Nodes with an empty outgoing list.",
+        "strong": "sorted(n for n, targets in edges.items() if not targets).",
+        "concept": "A graph with ZERO terminal nodes structurally can never finish executing (every path loops forever) -- validating that at least one terminal node exists (and is actually reachable) is a real correctness check before deploying an agent graph."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one terminal node",
+          "input": {
+            "edges": {
+              "a": [
+                "b"
+              ],
+              "b": []
+            }
+          },
+          "expectedOutput": [
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "multiple terminal nodes",
+          "input": {
+            "edges": {
+              "a": [
+                "b",
+                "c"
+              ],
+              "b": [],
+              "c": []
+            }
+          },
+          "expectedOutput": [
+            "b",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no terminal nodes",
+          "input": {
+            "edges": {
+              "a": [
+                "b"
+              ],
+              "b": [
+                "a"
+              ]
+            }
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single isolated node",
+          "input": {
+            "edges": {
+              "only": []
+            }
+          },
+          "expectedOutput": [
+            "only"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-9": {
+    id: "agent-graph-prob-9",
+    title: "Inline a Subgraph Into the Parent Graph",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "inline_subgraph",
+    functionSignature: "inline_subgraph(parent_edges: dict[str, list[str]], subgraph_edges: dict[str, list[str]], prefix: str) -> dict[str, list[str]]",
+    starterCode: `def inline_subgraph(parent_edges, subgraph_edges, prefix):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement subgraph inlining, composing a reusable sub-workflow's nodes into a parent agent graph with namespaced node ids to avoid collisions.",
+    taskDescription: "Implement `inline_subgraph(parent_edges, subgraph_edges, prefix)`. Rename every subgraph node and edge target by prepending `f'{prefix}.'`. Merge the renamed subgraph edges into `parent_edges` (a copy, don't mutate the input) and return the combined dict.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "subgraph_edges maps node -> list of its own outgoing targets"
+      ],
+    hints: {
+  "small": "Prefix every subgraph node NAME and every target it points to, then merge into a copy of the parent.",
+        "strong": "result = dict(parent_edges); for node, targets in subgraph_edges.items(): result[f'{prefix}.{node}'] = [f'{prefix}.{t}' for t in targets]; return result.",
+        "concept": "Namespacing (prefixing) subgraph node ids is what makes reusable sub-workflows composable -- without it, two different parent graphs both inlining the same subgraph template would collide on identical node names, corrupting both graphs' structure."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic inlining with prefix",
+          "input": {
+            "parent_edges": {
+              "start": [
+                "mid"
+              ]
+            },
+            "subgraph_edges": {
+              "a": [
+                "b"
+              ],
+              "b": []
+            },
+            "prefix": "sub1"
+          },
+          "expectedOutput": {
+            "start": [
+              "mid"
+            ],
+            "sub1.a": [
+              "sub1.b"
+            ],
+            "sub1.b": []
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "empty parent graph",
+          "input": {
+            "parent_edges": {},
+            "subgraph_edges": {
+              "x": []
+            },
+            "prefix": "sg"
+          },
+          "expectedOutput": {
+            "sg.x": []
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "subgraph with multiple edges",
+          "input": {
+            "parent_edges": {
+              "a": []
+            },
+            "subgraph_edges": {
+              "n1": [
+                "n2",
+                "n3"
+              ],
+              "n2": [],
+              "n3": []
+            },
+            "prefix": "p"
+          },
+          "expectedOutput": {
+            "a": [],
+            "p.n1": [
+              "p.n2",
+              "p.n3"
+            ],
+            "p.n2": [],
+            "p.n3": []
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "parent unaffected keys stay",
+          "input": {
+            "parent_edges": {
+              "keep": [
+                "me"
+              ]
+            },
+            "subgraph_edges": {
+              "x": []
+            },
+            "prefix": "s"
+          },
+          "expectedOutput": {
+            "keep": [
+              "me"
+            ],
+            "s.x": []
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-10": {
+    id: "agent-graph-prob-10",
+    title: "Evaluate an Edge Condition Against State",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "evaluate_edge_condition",
+    functionSignature: "evaluate_edge_condition(state: dict, field: str, operator: str, value) -> bool",
+    starterCode: `def evaluate_edge_condition(state, field, operator, value):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement edge-condition evaluation, the real predicate-checking primitive behind conditional routing in an agent graph.",
+    taskDescription: "Implement `evaluate_edge_condition(state, field, operator, value)`. Get `state.get(field)`. Support operators: `'eq'` (equals), `'ne'` (not equals), `'gt'`, `'lt'`, `'contains'` (value is `in` the field's value, e.g. a substring or list membership). Return the boolean result. If `field` is missing from `state`, `'eq'`/`'ne'` still work against `None`; other operators return `False`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "operator in {'eq','ne','gt','lt','contains'}"
+      ],
+    hints: {
+  "small": "Dispatch on operator, defaulting missing state to None for eq/ne only.",
+        "strong": "actual = state.get(field); if operator=='eq': return actual==value; if operator=='ne': return actual!=value; if field not in state: return False; if operator=='gt': return actual>value; if operator=='lt': return actual<value; if operator=='contains': return value in actual.",
+        "concept": "This is the real, minimal predicate DSL underlying LangGraph-style conditional edges -- a small fixed operator set (rather than arbitrary code execution) is what keeps a graph definition statically analyzable and safe to visualize/validate before running it."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "equals true",
+          "input": {
+            "state": {
+              "status": "done"
+            },
+            "field": "status",
+            "operator": "eq",
+            "value": "done"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "greater than comparison",
+          "input": {
+            "state": {
+              "score": 0.9
+            },
+            "field": "score",
+            "operator": "gt",
+            "value": 0.5
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "contains check on a list",
+          "input": {
+            "state": {
+              "tags": [
+                "a",
+                "b"
+              ]
+            },
+            "field": "tags",
+            "operator": "contains",
+            "value": "a"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "missing field with ne returns true",
+          "input": {
+            "state": {},
+            "field": "status",
+            "operator": "ne",
+            "value": "done"
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-11": {
+    id: "agent-graph-prob-11",
+    title: "Build an Ordered Execution Trace",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "build_execution_trace",
+    functionSignature: "build_execution_trace(visited_nodes: list[str], timestamps: list[float]) -> list[dict]",
+    starterCode: `def build_execution_trace(visited_nodes, timestamps):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement execution-trace construction, the real, minimal record-keeping needed to debug or visualize how an agent graph actually executed for one run.",
+    taskDescription: "Implement `build_execution_trace(visited_nodes, timestamps)`. Both lists have the same length. Return a list of `{\"step\": int, \"node\": str, \"timestamp\": float}` dicts, `step` being the 0-indexed position.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(visited_nodes) == len(timestamps)"
+      ],
+    hints: {
+  "small": "Zip the two lists with a running step counter.",
+        "strong": "[{'step': i, 'node': n, 'timestamp': t} for i, (n, t) in enumerate(zip(visited_nodes, timestamps))].",
+        "concept": "A real execution trace (not just the final output) is what makes a multi-node agent graph run actually debuggable -- when a graph produces a wrong final answer, the trace is what lets you find exactly which node's output first went wrong."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "three-node trace",
+          "input": {
+            "visited_nodes": [
+              "a",
+              "b",
+              "c"
+            ],
+            "timestamps": [
+              0,
+              0.5,
+              1.2
+            ]
+          },
+          "expectedOutput": [
+            {
+              "step": 0,
+              "node": "a",
+              "timestamp": 0
+            },
+            {
+              "step": 1,
+              "node": "b",
+              "timestamp": 0.5
+            },
+            {
+              "step": 2,
+              "node": "c",
+              "timestamp": 1.2
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single node trace",
+          "input": {
+            "visited_nodes": [
+              "start"
+            ],
+            "timestamps": [
+              0
+            ]
+          },
+          "expectedOutput": [
+            {
+              "step": 0,
+              "node": "start",
+              "timestamp": 0
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty trace",
+          "input": {
+            "visited_nodes": [],
+            "timestamps": []
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "repeated node visited twice",
+          "input": {
+            "visited_nodes": [
+              "a",
+              "b",
+              "a"
+            ],
+            "timestamps": [
+              0,
+              0.5,
+              1
+            ]
+          },
+          "expectedOutput": [
+            {
+              "step": 0,
+              "node": "a",
+              "timestamp": 0
+            },
+            {
+              "step": 1,
+              "node": "b",
+              "timestamp": 0.5
+            },
+            {
+              "step": 2,
+              "node": "a",
+              "timestamp": 1
+            }
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-12": {
+    id: "agent-graph-prob-12",
+    title: "Detect Human-in-the-Loop Interrupt Point",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "is_interrupt_point",
+    functionSignature: "is_interrupt_point(node_name: str, interrupt_before: list[str]) -> bool",
+    starterCode: `def is_interrupt_point(node_name, interrupt_before):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement interrupt-point detection, the real check a graph executor runs before each node to decide whether to pause for human review.",
+    taskDescription: "Implement `is_interrupt_point(node_name, interrupt_before)`: return `True` if `node_name` is in `interrupt_before`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "interrupt_before is a list of node names configured to pause before execution"
+      ],
+    hints: {
+  "small": "Simple membership check.",
+        "strong": "return node_name in interrupt_before.",
+        "concept": "This is the real mechanism behind human-in-the-loop agent graphs (e.g. LangGraph's `interrupt_before`) -- declaring interrupt points structurally in the graph definition means the pause behavior is a config-level decision, not something scattered through node implementation code."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "configured interrupt point",
+          "input": {
+            "node_name": "send_email",
+            "interrupt_before": [
+              "send_email",
+              "delete_data"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "not an interrupt point",
+          "input": {
+            "node_name": "read_data",
+            "interrupt_before": [
+              "send_email"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no interrupts configured",
+          "input": {
+            "node_name": "any_node",
+            "interrupt_before": []
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "another configured interrupt",
+          "input": {
+            "node_name": "delete_data",
+            "interrupt_before": [
+              "send_email",
+              "delete_data"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-13": {
+    id: "agent-graph-prob-13",
+    title: "Validate State Against Expected Schema Keys",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "validate_state_schema",
+    functionSignature: "validate_state_schema(state: dict, required_keys: set) -> list[str]",
+    starterCode: `def validate_state_schema(state, required_keys):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement state-schema validation, a real check catching a node that forgot to populate a required state field before the graph proceeds to a downstream node depending on it.",
+    taskDescription: "Implement `validate_state_schema(state, required_keys)`: return the sorted list of keys in `required_keys` that are MISSING from `state`. Empty list means the state is fully valid.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "required_keys is a set of strings"
+      ],
+    hints: {
+  "small": "Set difference between required keys and what's actually present.",
+        "strong": "sorted(set(required_keys) - set(state.keys())).",
+        "concept": "A real agent graph's state schema is effectively an implicit contract between nodes -- validating it explicitly at each node boundary catches a genuine, common bug (a node that silently omits a field a LATER node assumes exists) much closer to its actual source than a downstream KeyError would."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "fully valid state",
+          "input": {
+            "state": {
+              "a": 1,
+              "b": 2
+            },
+            "required_keys": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one missing key",
+          "input": {
+            "state": {
+              "a": 1
+            },
+            "required_keys": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": [
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "extra keys present but not missing anything",
+          "input": {
+            "state": {
+              "a": 1,
+              "b": 2,
+              "c": 3
+            },
+            "required_keys": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all keys missing",
+          "input": {
+            "state": {},
+            "required_keys": [
+              "x",
+              "y"
+            ]
+          },
+          "expectedOutput": [
+            "x",
+            "y"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-14": {
+    id: "agent-graph-prob-14",
+    title: "Loop Iteration Counter With Max Bound",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "increment_loop_counter",
+    functionSignature: "increment_loop_counter(counters: dict[str, int], loop_node: str, max_iterations: int) -> tuple",
+    starterCode: `def increment_loop_counter(counters, loop_node, max_iterations):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement per-node loop-iteration counting, the real state a graph executor tracks to enforce each individual loop's own bound (distinct loops in the same graph need independent counters).",
+    taskDescription: "Implement `increment_loop_counter(counters, loop_node, max_iterations)`. Increment `counters.get(loop_node, 0)` by 1. Return `(updated_counters, still_allowed)` where `still_allowed` is `True` if the NEW count is `<= max_iterations`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "max_iterations >= 0"
+      ],
+    hints: {
+  "small": "Increment first, then check the new count against the bound.",
+        "strong": "new_count = counters.get(loop_node, 0) + 1; updated = dict(counters); updated[loop_node] = new_count; return (updated, new_count <= max_iterations).",
+        "concept": "Per-node (not global) loop counters are what let a real agent graph with MULTIPLE independent loops (e.g. a 'retry parsing' loop and a separate 'refine answer' loop) enforce each one's own bound correctly, rather than one shared counter conflating two unrelated loops."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "first iteration allowed",
+          "input": {
+            "counters": {},
+            "loop_node": "retry",
+            "max_iterations": 3
+          },
+          "expectedOutput": [
+            {
+              "retry": 1
+            },
+            true
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "within bound continues",
+          "input": {
+            "counters": {
+              "retry": 1
+            },
+            "loop_node": "retry",
+            "max_iterations": 3
+          },
+          "expectedOutput": [
+            {
+              "retry": 2
+            },
+            true
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "reaches bound still allowed at exact limit",
+          "input": {
+            "counters": {
+              "retry": 2
+            },
+            "loop_node": "retry",
+            "max_iterations": 3
+          },
+          "expectedOutput": [
+            {
+              "retry": 3
+            },
+            true
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exceeds bound not allowed",
+          "input": {
+            "counters": {
+              "retry": 3
+            },
+            "loop_node": "retry",
+            "max_iterations": 3
+          },
+          "expectedOutput": [
+            {
+              "retry": 4
+            },
+            false
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-15": {
+    id: "agent-graph-prob-15",
+    title: "Detect Unreachable Nodes From Entry",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "find_unreachable_nodes",
+    functionSignature: "find_unreachable_nodes(edges: dict[str, list[str]], entry_node: str) -> list[str]",
+    starterCode: `def find_unreachable_nodes(edges):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement unreachable-node detection via BFS/DFS from the entry point, a real structural validation check catching dead code in an agent graph definition.",
+    taskDescription: "Implement `find_unreachable_nodes(edges, entry_node)`. Return the sorted list of node names that CANNOT be reached from `entry_node` by following edges. All keys of `edges` are candidate nodes.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "entry_node is a key in edges"
+      ],
+    hints: {
+  "small": "BFS/DFS from entry_node, then set-difference against all node names.",
+        "strong": "visited={entry_node}; stack=[entry_node]; while stack: n=stack.pop(); for nxt in edges.get(n,[]): if nxt not in visited: visited.add(nxt); stack.append(nxt); return sorted(set(edges.keys())-visited).",
+        "concept": "An unreachable node in a real agent graph definition is genuinely dead configuration -- it was probably meant to be wired in but the connecting edge was forgotten, and this exact kind of structural validation catches it at graph-compile time rather than leaving silently-dead functionality in a shipped agent."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "fully connected graph none unreachable",
+          "input": {
+            "edges": {
+              "a": [
+                "b"
+              ],
+              "b": [
+                "c"
+              ],
+              "c": []
+            },
+            "entry_node": "a"
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one unreachable node",
+          "input": {
+            "edges": {
+              "a": [
+                "b"
+              ],
+              "b": [],
+              "orphan": []
+            },
+            "entry_node": "a"
+          },
+          "expectedOutput": [
+            "orphan"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "entry node isolated everything else unreachable",
+          "input": {
+            "edges": {
+              "a": [],
+              "b": [],
+              "c": []
+            },
+            "entry_node": "a"
+          },
+          "expectedOutput": [
+            "b",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple unreachable nodes",
+          "input": {
+            "edges": {
+              "a": [
+                "b"
+              ],
+              "b": [],
+              "x": [
+                "y"
+              ],
+              "y": []
+            },
+            "entry_node": "a"
+          },
+          "expectedOutput": [
+            "x",
+            "y"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-16": {
+    id: "agent-graph-prob-16",
+    title: "Supervisor Worker Routing Decision",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "supervisor_route",
+    functionSignature: "supervisor_route(task_category: str, worker_specialties: dict[str, list[str]], default_worker: str) -> str",
+    starterCode: `def supervisor_route(task_category, worker_specialties, default_worker):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement supervisor-worker routing, the decision logic behind a real supervisor-pattern multi-agent graph directing each incoming task to the right specialist worker node.",
+    taskDescription: "Implement `supervisor_route(task_category, worker_specialties, default_worker)`. Find the first worker (checking `worker_specialties` keys in sorted order for determinism) whose specialty list contains `task_category`. Return that worker's name, or `default_worker` if none match.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "worker_specialties maps worker name -> list of handled categories"
+      ],
+    hints: {
+  "small": "Check each worker's specialty list, sorted by worker name for a deterministic result.",
+        "strong": "for w in sorted(worker_specialties): if task_category in worker_specialties[w]: return w. Return default_worker.",
+        "concept": "This is the real routing logic behind the supervisor-agent pattern (a coordinator LLM node that dispatches to specialist sub-agents) -- structurally the SAME shape as a rule-based router, but the input category is often itself produced by an upstream classification/LLM node rather than being pre-known."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "matched to specialist",
+          "input": {
+            "task_category": "coding",
+            "worker_specialties": {
+              "coder": [
+                "coding",
+                "debugging"
+              ],
+              "researcher": [
+                "search"
+              ]
+            },
+            "default_worker": "general"
+          },
+          "expectedOutput": "coder",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no match uses default",
+          "input": {
+            "task_category": "cooking",
+            "worker_specialties": {
+              "coder": [
+                "coding"
+              ]
+            },
+            "default_worker": "general"
+          },
+          "expectedOutput": "general",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple workers alphabetical priority",
+          "input": {
+            "task_category": "x",
+            "worker_specialties": {
+              "zeta": [
+                "x"
+              ],
+              "alpha": [
+                "x"
+              ]
+            },
+            "default_worker": "general"
+          },
+          "expectedOutput": "alpha",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty worker specialties uses default",
+          "input": {
+            "task_category": "y",
+            "worker_specialties": {},
+            "default_worker": "fallback"
+          },
+          "expectedOutput": "fallback",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-17": {
+    id: "agent-graph-prob-17",
+    title: "Per-Node Retry vs Fail Decision",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "node_retry_decision",
+    functionSignature: "node_retry_decision(node_name: str, attempt: int, retry_config: dict[str, int]) -> str",
+    starterCode: `def node_retry_decision(node_name, attempt, retry_config):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement per-node retry policy resolution, letting different nodes in the same agent graph have different real retry tolerances based on their own risk profile.",
+    taskDescription: "Implement `node_retry_decision(node_name, attempt, retry_config)`. `retry_config` maps node name -> its max retry count (default `0` if not configured). Return `'retry'` if `attempt <= retry_config.get(node_name, 0)`, else `'fail'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "attempt is 1-indexed (attempt=1 is the first try)"
+      ],
+    hints: {
+  "small": "Compare the current attempt number against that specific node's configured max.",
+        "strong": "max_retries = retry_config.get(node_name, 0); return 'retry' if attempt <= max_retries else 'fail'.",
+        "concept": "A per-node retry policy (not one global setting) is the real requirement -- a read-only lookup node might tolerate 5 retries cheaply, while a node that sends a real email should probably have max_retries=0 (given the idempotency risk of retrying a non-idempotent side effect)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "within retry budget",
+          "input": {
+            "node_name": "fetch_data",
+            "attempt": 1,
+            "retry_config": {
+              "fetch_data": 3
+            }
+          },
+          "expectedOutput": "retry",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "exceeds retry budget",
+          "input": {
+            "node_name": "fetch_data",
+            "attempt": 5,
+            "retry_config": {
+              "fetch_data": 3
+            }
+          },
+          "expectedOutput": "fail",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unconfigured node no retries",
+          "input": {
+            "node_name": "send_email",
+            "attempt": 1,
+            "retry_config": {}
+          },
+          "expectedOutput": "fail",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at retry budget boundary",
+          "input": {
+            "node_name": "fetch_data",
+            "attempt": 3,
+            "retry_config": {
+              "fetch_data": 3
+            }
+          },
+          "expectedOutput": "retry",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-18": {
+    id: "agent-graph-prob-18",
+    title: "Diff Two State Checkpoints",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "diff_checkpoints",
+    functionSignature: "diff_checkpoints(before: dict, after: dict) -> dict",
+    starterCode: `def diff_checkpoints(before, after):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement checkpoint diffing, a real debugging tool showing exactly what a specific node changed in the agent graph's shared state.",
+    taskDescription: "Implement `diff_checkpoints(before, after)`. Return `{\"added\": {...}, \"changed\": {...}, \"removed\": [...]}`: `added` = keys in `after` not in `before`; `changed` = keys in both with different values (mapped to their NEW value); `removed` = sorted list of keys in `before` not in `after`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both are flat dicts"
+      ],
+    hints: {
+  "small": "Three separate comparisons: new keys, changed keys, deleted keys.",
+        "strong": "added = {k:v for k,v in after.items() if k not in before}; changed = {k:v for k,v in after.items() if k in before and before[k]!=v}; removed = sorted(set(before)-set(after)); return {'added':added,'changed':changed,'removed':removed}.",
+        "concept": "This exact before/after diff is what a real agent-graph debugging UI shows for each node execution step -- being able to see precisely what one node's execution changed (not just the final combined state) is what makes tracing down a bug to its origin node actually tractable."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one added one changed",
+          "input": {
+            "before": {
+              "x": 1
+            },
+            "after": {
+              "x": 2,
+              "y": 3
+            }
+          },
+          "expectedOutput": {
+            "added": {
+              "y": 3
+            },
+            "changed": {
+              "x": 2
+            },
+            "removed": []
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one removed",
+          "input": {
+            "before": {
+              "x": 1,
+              "y": 2
+            },
+            "after": {
+              "x": 1
+            }
+          },
+          "expectedOutput": {
+            "added": {},
+            "changed": {},
+            "removed": [
+              "y"
+            ]
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no changes",
+          "input": {
+            "before": {
+              "x": 1
+            },
+            "after": {
+              "x": 1
+            }
+          },
+          "expectedOutput": {
+            "added": {},
+            "changed": {},
+            "removed": []
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "complete replacement",
+          "input": {
+            "before": {
+              "a": 1
+            },
+            "after": {
+              "b": 2
+            }
+          },
+          "expectedOutput": {
+            "added": {
+              "b": 2
+            },
+            "changed": {},
+            "removed": [
+              "a"
+            ]
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-19": {
+    id: "agent-graph-prob-19",
+    title: "Evaluate END-Condition on State",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "should_end",
+    functionSignature: "should_end(state: dict) -> bool",
+    starterCode: `def should_end(state):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the graph's real termination-condition check, deciding whether the current state means the agent workflow is genuinely done.",
+    taskDescription: "Implement `should_end(state)`: return `True` if `state.get('status') == 'complete'` OR `state.get('error') is not None`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "state is a dict"
+      ],
+    hints: {
+  "small": "Two independent conditions, either of which ends the graph.",
+        "strong": "return state.get('status') == 'complete' or state.get('error') is not None.",
+        "concept": "A real agent graph needs to end on BOTH success (complete) and failure (error) paths, not just success -- a graph that only checks for 'complete' would loop forever on a genuine unrecoverable error instead of terminating gracefully."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "completed status ends",
+          "input": {
+            "state": {
+              "status": "complete"
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "error present ends",
+          "input": {
+            "state": {
+              "error": "something failed"
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "in-progress does not end",
+          "input": {
+            "state": {
+              "status": "running"
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty state does not end",
+          "input": {
+            "state": {}
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-20": {
+    id: "agent-graph-prob-20",
+    title: "Fan-In Aggregation of Parallel Branch Results",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "fan_in_aggregate",
+    functionSignature: "fan_in_aggregate(branch_results: dict[str, dict], aggregation_key: str) -> list",
+    starterCode: `def fan_in_aggregate(branch_results, aggregation_key):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement fan-in aggregation, collecting multiple parallel branches' results back into one combined value when they rejoin at a shared downstream node.",
+    taskDescription: "Implement `fan_in_aggregate(branch_results, aggregation_key)`. `branch_results` maps branch name -> that branch's partial state dict. Return the list of `aggregation_key` values from each branch (only including branches that actually have that key), sorted by branch name for determinism.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "branch_results is a dict of dicts"
+      ],
+    hints: {
+  "small": "Walk branches in sorted order, collect the target key's value where present.",
+        "strong": "[branch_results[b][aggregation_key] for b in sorted(branch_results) if aggregation_key in branch_results[b]].",
+        "concept": "Fan-in is the real, necessary counterpart to fan-out (parallel branches) in an agent graph -- every parallel-branch structure needs a defined, deterministic way to recombine results at the join point, or the graph's overall output becomes non-deterministic depending on branch completion order."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "three branches all with the key",
+          "input": {
+            "branch_results": {
+              "b": {
+                "score": 2
+              },
+              "a": {
+                "score": 1
+              },
+              "c": {
+                "score": 3
+              }
+            },
+            "aggregation_key": "score"
+          },
+          "expectedOutput": [
+            1,
+            2,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one branch missing the key",
+          "input": {
+            "branch_results": {
+              "a": {
+                "score": 1
+              },
+              "b": {}
+            },
+            "aggregation_key": "score"
+          },
+          "expectedOutput": [
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single branch",
+          "input": {
+            "branch_results": {
+              "only": {
+                "score": 5
+              }
+            },
+            "aggregation_key": "score"
+          },
+          "expectedOutput": [
+            5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no branches have the key",
+          "input": {
+            "branch_results": {
+              "a": {},
+              "b": {}
+            },
+            "aggregation_key": "score"
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-21": {
+    id: "agent-graph-prob-21",
+    title: "Per-Node Execution Timeout Policy",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "node_timed_out",
+    functionSignature: "node_timed_out(node_start_ts: float, current_ts: float, node_timeout_s: dict[str, float], node_name: str, default_timeout_s: float) -> bool",
+    starterCode: `def node_timed_out(node_start_ts, current_ts, node_timeout_s, node_name, default_timeout_s):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement per-node timeout enforcement, letting different agent-graph nodes have different real time budgets (a fast lookup node vs. a slow multi-step reasoning node).",
+    taskDescription: "Implement `node_timed_out(node_start_ts, current_ts, node_timeout_s, node_name, default_timeout_s)`. Look up `node_name`'s timeout in `node_timeout_s`, falling back to `default_timeout_s`. Return `True` if `(current_ts - node_start_ts) >= that_timeout`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "current_ts >= node_start_ts"
+      ],
+    hints: {
+  "small": "Look up the node-specific timeout with a fallback, then compare elapsed time.",
+        "strong": "timeout = node_timeout_s.get(node_name, default_timeout_s); return (current_ts - node_start_ts) >= timeout.",
+        "concept": "A single global timeout across all nodes is a real, common over-simplification -- a node that calls a slow external API genuinely needs more budget than one doing a fast local computation, and per-node configuration is what a production agent graph needs to avoid both false timeouts and wasted waiting."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "within node-specific timeout",
+          "input": {
+            "node_start_ts": 0,
+            "current_ts": 5,
+            "node_timeout_s": {
+              "slow_node": 30
+            },
+            "node_name": "slow_node",
+            "default_timeout_s": 10
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "unconfigured node uses default and times out",
+          "input": {
+            "node_start_ts": 0,
+            "current_ts": 15,
+            "node_timeout_s": {},
+            "node_name": "fast_node",
+            "default_timeout_s": 10
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "configured node exceeds its own timeout",
+          "input": {
+            "node_start_ts": 0,
+            "current_ts": 35,
+            "node_timeout_s": {
+              "slow_node": 30
+            },
+            "node_name": "slow_node",
+            "default_timeout_s": 10
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at timeout boundary",
+          "input": {
+            "node_start_ts": 0,
+            "current_ts": 10,
+            "node_timeout_s": {},
+            "node_name": "x",
+            "default_timeout_s": 10
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-22": {
+    id: "agent-graph-prob-22",
+    title: "Assign Nodes to Visualization Layers",
+    difficulty: "hard",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "assign_layers",
+    functionSignature: "assign_layers(dependencies: dict[str, list[str]]) -> dict[str, int]",
+    starterCode: `def assign_layers(dependencies):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement layer assignment for agent-graph visualization, computing each node's vertical position (its longest-path depth from any entry node) for a clean layered layout.",
+    taskDescription: "Implement `assign_layers(dependencies)`. Each node's layer is `0` if it has no dependencies, otherwise `1 + max(layer of each dependency)`. Return a dict of node -> layer (int).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "graph is acyclic, all referenced nodes are dict keys"
+      ],
+    hints: {
+  "small": "This is a DP problem: a node's layer depends on the max layer among its own dependencies, computed bottom-up.",
+        "strong": "layers={}; def layer_of(n): if n in layers: return layers[n]; deps=dependencies[n]; layers[n] = 0 if not deps else 1+max(layer_of(d) for d in deps); return layers[n]; for n in dependencies: layer_of(n); return layers.",
+        "concept": "Using the LONGEST path (not shortest) to an entry node is what a real graph-visualization tool needs -- placing a node at its shortest-path layer could put it visually BEFORE a dependency it actually needs to wait on via a longer chain, producing edges that point backward on the diagram."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "linear chain increasing layers",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [
+                "a"
+              ],
+              "c": [
+                "b"
+              ]
+            }
+          },
+          "expectedOutput": {
+            "a": 0,
+            "b": 1,
+            "c": 2
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "diamond shares final layer correctly via longest path",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [
+                "a"
+              ],
+              "c": [
+                "a",
+                "b"
+              ],
+              "d": [
+                "c"
+              ]
+            }
+          },
+          "expectedOutput": {
+            "a": 0,
+            "b": 1,
+            "c": 2,
+            "d": 3
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all independent same layer",
+          "input": {
+            "dependencies": {
+              "a": [],
+              "b": [],
+              "c": []
+            }
+          },
+          "expectedOutput": {
+            "a": 0,
+            "b": 0,
+            "c": 0
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single node layer zero",
+          "input": {
+            "dependencies": {
+              "only": []
+            }
+          },
+          "expectedOutput": {
+            "only": 0
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-23": {
+    id: "agent-graph-prob-23",
+    title: "Validate Dynamically Added Node Has No Orphan Successors",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "validates_dynamic_addition",
+    functionSignature: "validates_dynamic_addition(existing_edges: dict[str, list[str]], new_node: str, new_node_targets: list[str]) -> bool",
+    starterCode: `def validates_dynamic_addition(existing_edges, new_node, new_node_targets):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement dynamic-node-addition validation, checking that adding a new node at runtime doesn't introduce a dangling reference to a node that doesn't exist in the graph.",
+    taskDescription: "Implement `validates_dynamic_addition(existing_edges, new_node, new_node_targets)`: return `True` only if `new_node` is NOT already a key in `existing_edges` (no duplicate) AND every entry in `new_node_targets` IS already a key in `existing_edges` (no dangling edge to a nonexistent node).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "new_node_targets is a list of node names"
+      ],
+    hints: {
+  "small": "Two checks: the new node id must be genuinely new, and every edge it points to must already exist.",
+        "strong": "if new_node in existing_edges: return False; return all(t in existing_edges for t in new_node_targets).",
+        "concept": "Some real agent frameworks allow runtime graph modification (adding a node discovered dynamically, e.g. a newly-registered tool) -- validating this exactly like a static graph build (no duplicate ids, no dangling edges) is what prevents a dynamic addition from silently corrupting the graph's structural invariants."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "valid new node all targets exist",
+          "input": {
+            "existing_edges": {
+              "a": [],
+              "b": []
+            },
+            "new_node": "c",
+            "new_node_targets": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "duplicate node id invalid",
+          "input": {
+            "existing_edges": {
+              "a": []
+            },
+            "new_node": "a",
+            "new_node_targets": []
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "dangling target invalid",
+          "input": {
+            "existing_edges": {
+              "a": []
+            },
+            "new_node": "b",
+            "new_node_targets": [
+              "nonexistent"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "new node with no targets valid",
+          "input": {
+            "existing_edges": {
+              "a": []
+            },
+            "new_node": "b",
+            "new_node_targets": []
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-24": {
+    id: "agent-graph-prob-24",
+    title: "Determine Remaining Nodes to Execute From a Checkpoint",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "remaining_from_checkpoint",
+    functionSignature: "remaining_from_checkpoint(execution_order: list[str], resume_from: str) -> list[str]",
+    starterCode: `def remaining_from_checkpoint(execution_order, resume_from):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement checkpoint-resume node selection, determining exactly which nodes still need to run after resuming an agent graph from a saved checkpoint (avoiding re-running completed work).",
+    taskDescription: "Implement `remaining_from_checkpoint(execution_order, resume_from)`. `execution_order` is the full planned sequence. Return the sublist STARTING FROM (and including) `resume_from`. Return an empty list if `resume_from` isn't in `execution_order`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "execution_order is a list of node names"
+      ],
+    hints: {
+  "small": "Find the resume point's index, slice from there.",
+        "strong": "if resume_from not in execution_order: return []; idx = execution_order.index(resume_from); return execution_order[idx:].",
+        "concept": "Correctly resuming from a checkpoint (not re-running already-completed nodes, but also not skipping the checkpoint node itself if it needs to re-verify) is exactly what makes checkpointing actually save real work after an interruption, rather than just being a debugging aid."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "resume from middle",
+          "input": {
+            "execution_order": [
+              "a",
+              "b",
+              "c",
+              "d"
+            ],
+            "resume_from": "c"
+          },
+          "expectedOutput": [
+            "c",
+            "d"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "resume from start",
+          "input": {
+            "execution_order": [
+              "a",
+              "b",
+              "c"
+            ],
+            "resume_from": "a"
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "resume node not found",
+          "input": {
+            "execution_order": [
+              "a",
+              "b"
+            ],
+            "resume_from": "z"
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "resume from last node",
+          "input": {
+            "execution_order": [
+              "a",
+              "b",
+              "c"
+            ],
+            "resume_from": "c"
+          },
+          "expectedOutput": [
+            "c"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-25": {
+    id: "agent-graph-prob-25",
+    title: "Command-Pattern Node Dispatch",
+    difficulty: "easy",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "dispatch_command",
+    functionSignature: "dispatch_command(command_type: str, handlers: dict[str, str]) -> str",
+    starterCode: `def dispatch_command(command_type, handlers):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement command-pattern dispatch, mapping a node's returned command type to the actual handler node it should invoke next -- a real, common indirection layer in agent graph frameworks.",
+    taskDescription: "Implement `dispatch_command(command_type, handlers)`: return `handlers[command_type]`, or `'__unhandled__'` if `command_type` isn't a key.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "handlers maps command type -> target node name"
+      ],
+    hints: {
+  "small": "A direct dict lookup with a sentinel fallback.",
+        "strong": "return handlers.get(command_type, '__unhandled__').",
+        "concept": "This indirection (a node returns an abstract command type, a separate dispatch table resolves it to a concrete target) is what lets the SAME node's logic be reused across different graph configurations that wire its output to different downstream handlers -- the node itself doesn't need to know concrete node names."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "known command dispatches",
+          "input": {
+            "command_type": "search",
+            "handlers": {
+              "search": "search_node",
+              "write": "write_node"
+            }
+          },
+          "expectedOutput": "search_node",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "unknown command unhandled",
+          "input": {
+            "command_type": "unknown",
+            "handlers": {
+              "search": "search_node"
+            }
+          },
+          "expectedOutput": "__unhandled__",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "another known command",
+          "input": {
+            "command_type": "write",
+            "handlers": {
+              "search": "search_node",
+              "write": "write_node"
+            }
+          },
+          "expectedOutput": "write_node",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty handlers always unhandled",
+          "input": {
+            "command_type": "x",
+            "handlers": {}
+          },
+          "expectedOutput": "__unhandled__",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-26": {
+    id: "agent-graph-prob-26",
+    title: "Compute Total Cost of an Execution Path",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "path_total_cost",
+    functionSignature: "path_total_cost(path: list[str], node_costs: dict[str, float]) -> float",
+    starterCode: `def path_total_cost(path, node_costs):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement execution-path cost totaling, the real calculation behind comparing two alternative routes through an agent graph by their cumulative real API/compute cost.",
+    taskDescription: "Implement `path_total_cost(path, node_costs)`: return the sum of `node_costs[n]` for every node `n` in `path` (a node visited twice, e.g. via a loop, is counted each time it appears).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "every node in path is a key in node_costs"
+      ],
+    hints: {
+  "small": "Sum the cost of every node in the path, including repeats.",
+        "strong": "return sum(node_costs[n] for n in path).",
+        "concept": "Counting a REPEATED node's cost each time (not deduping) is the correct real accounting -- if a graph looped through a node 3 times before terminating, that's 3 real LLM calls' worth of cost incurred, not 1, and any cost-comparison between alternative graph configurations needs to reflect that."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple three-node path",
+          "input": {
+            "path": [
+              "a",
+              "b",
+              "c"
+            ],
+            "node_costs": {
+              "a": 0.01,
+              "b": 0.02,
+              "c": 0.01
+            }
+          },
+          "expectedOutput": 0.04,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "path with a repeated node from a loop",
+          "input": {
+            "path": [
+              "a",
+              "b",
+              "a",
+              "c"
+            ],
+            "node_costs": {
+              "a": 0.01,
+              "b": 0.02,
+              "c": 0.01
+            }
+          },
+          "expectedOutput": 0.05,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single node path",
+          "input": {
+            "path": [
+              "only"
+            ],
+            "node_costs": {
+              "only": 0.05
+            }
+          },
+          "expectedOutput": 0.05,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero cost nodes",
+          "input": {
+            "path": [
+              "free1",
+              "free2"
+            ],
+            "node_costs": {
+              "free1": 0,
+              "free2": 0
+            }
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-27": {
+    id: "agent-graph-prob-27",
+    title: "Detect State Mutation Instead of Immutable Update",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "state_was_mutated",
+    functionSignature: "state_was_mutated(original_snapshot: dict, state_after_node: dict, state_object_id_before: int, state_object_id_after: int) -> bool",
+    starterCode: `def state_was_mutated(original_snapshot, state_after_node, state_object_id_before, state_object_id_after):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real mutation-detection check, catching a node that illegally mutated the shared state object in place instead of returning a proper immutable update (a genuine, subtle bug class in graph frameworks that assume immutable state).",
+    taskDescription: "Implement `state_was_mutated(original_snapshot, state_after_node, state_object_id_before, state_object_id_after)`: return `True` (a violation occurred) if the object identity is UNCHANGED (`state_object_id_before == state_object_id_after`) BUT the actual content differs from the original snapshot (`state_after_node != original_snapshot`) -- i.e. the SAME object was modified in place rather than a new one being returned.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "ids represent Python id() values captured by the caller"
+      ],
+    hints: {
+  "small": "A violation is: same object identity, but different content -- proof of an in-place mutation.",
+        "strong": "return state_object_id_before == state_object_id_after and state_after_node != original_snapshot.",
+        "concept": "Many real graph-execution frameworks (and React-style state management generally) rely on IMMUTABLE state updates for correctness (e.g. detecting 'did state actually change' via a cheap identity comparison rather than a deep value comparison) -- a node that mutates state in place silently breaks that assumption, and this is exactly the check that would catch it in a test harness."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "proper immutable update no violation",
+          "input": {
+            "original_snapshot": {
+              "x": 1
+            },
+            "state_after_node": {
+              "x": 2
+            },
+            "state_object_id_before": 100,
+            "state_object_id_after": 200
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "in-place mutation detected",
+          "input": {
+            "original_snapshot": {
+              "x": 1
+            },
+            "state_after_node": {
+              "x": 2
+            },
+            "state_object_id_before": 100,
+            "state_object_id_after": 100
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "same object same content no real change",
+          "input": {
+            "original_snapshot": {
+              "x": 1
+            },
+            "state_after_node": {
+              "x": 1
+            },
+            "state_object_id_before": 100,
+            "state_object_id_after": 100
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "new object same content also fine",
+          "input": {
+            "original_snapshot": {
+              "x": 1
+            },
+            "state_after_node": {
+              "x": 1
+            },
+            "state_object_id_before": 100,
+            "state_object_id_after": 200
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-28": {
+    id: "agent-graph-prob-28",
+    title: "Enforce Maximum Graph Depth From Entry",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "exceeds_max_depth",
+    functionSignature: "exceeds_max_depth(current_depth: int, max_depth: int) -> bool",
+    starterCode: `def exceeds_max_depth(current_depth, max_depth):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a maximum-depth enforcement check, a real structural safety bound distinct from a loop-iteration bound -- limiting how many total sequential nodes a graph execution may traverse from entry before being forcibly halted.",
+    taskDescription: "Implement `exceeds_max_depth(current_depth, max_depth)`: return `True` if `current_depth > max_depth`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both values >= 0"
+      ],
+    hints: {
+  "small": "A simple bound check on total traversal depth.",
+        "strong": "return current_depth > max_depth.",
+        "concept": "Max-depth is a real, coarser safety net complementary to per-loop bounds -- it catches a pathological case a per-loop check might miss (many DIFFERENT loops each individually within their own small bound, but combining into an unexpectedly long overall execution), giving a genuine last-resort circuit breaker."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "within max depth",
+          "input": {
+            "current_depth": 10,
+            "max_depth": 50
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "exceeds max depth",
+          "input": {
+            "current_depth": 60,
+            "max_depth": 50
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at max depth not exceeded",
+          "input": {
+            "current_depth": 50,
+            "max_depth": 50
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero depth at entry",
+          "input": {
+            "current_depth": 0,
+            "max_depth": 50
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agent-graph-prob-29": {
+    id: "agent-graph-prob-29",
+    title: "Synthesize Final Answer From Worker Results",
+    difficulty: "medium",
+    topic: "Agent Graph Engineering",
+    estimatedTime: '15 min',
+    functionName: "synthesize_worker_results",
+    functionSignature: "synthesize_worker_results(worker_outputs: dict[str, str]) -> str",
+    starterCode: `def synthesize_worker_results(worker_outputs):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement worker-result synthesis, the real final aggregation step of a supervisor-worker multi-agent graph combining each specialist worker's contribution into one coherent labeled answer.",
+    taskDescription: "Implement `synthesize_worker_results(worker_outputs)`. For each worker (sorted by name for determinism), format `f'[{worker}]: {output}'`, and join all lines with `'\\n'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "worker_outputs is a dict of worker name -> its text output"
+      ],
+    hints: {
+  "small": "Format each worker's contribution with a clear label, sorted for determinism, joined by newlines.",
+        "strong": "'\\n'.join(f'[{w}]: {worker_outputs[w]}' for w in sorted(worker_outputs)).",
+        "concept": "Labeling each worker's contribution explicitly (rather than silently concatenating raw text) is what makes a real supervisor's synthesized answer traceable back to which specialist actually produced which claim -- important for both debugging and for a user who might want to weight or verify specific sub-claims differently."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two workers combined",
+          "input": {
+            "worker_outputs": {
+              "researcher": "Found 3 relevant papers.",
+              "coder": "Implemented the fix."
+            }
+          },
+          "expectedOutput": "[coder]: Implemented the fix.\n[researcher]: Found 3 relevant papers.",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single worker",
+          "input": {
+            "worker_outputs": {
+              "only": "Done."
+            }
+          },
+          "expectedOutput": "[only]: Done.",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty worker outputs",
+          "input": {
+            "worker_outputs": {}
+          },
+          "expectedOutput": "",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three workers alphabetical order",
+          "input": {
+            "worker_outputs": {
+              "c": "third",
+              "a": "first",
+              "b": "second"
+            }
+          },
+          "expectedOutput": "[a]: first\n[b]: second\n[c]: third",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

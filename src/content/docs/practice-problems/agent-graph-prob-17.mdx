@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #343. Graph State Diff Engine"
-description: "Master #343. Graph State Diff Engine in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Per-Node Retry vs Fail Decision"
+description: "Implement per-node retry policy resolution, letting different nodes in the same agent graph have different real retry tolerances based on their own risk profile."
 difficulty: "medium"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #343. Graph State Diff Engine
+# Per-Node Retry vs Fail Decision
 
-**Track**: Agent Graph Engineering | **Rank**: #343 of 1072 | **Points**: 60 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#343. Graph State Diff Engine` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement per-node retry policy resolution, letting different nodes in the same agent graph have different real retry tolerances based on their own risk profile.
 
 ## Task
 
-Implement the function `graph_state_diff_engine`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `node_retry_decision(node_name, attempt, retry_config)`. `retry_config` maps node name -> its max retry count (default `0` if not configured). Return `'retry'` if `attempt <= retry_config.get(node_name, 0)`, else `'fail'`.
 
 <PracticePlayground problemId="agent-graph-prob-17" />

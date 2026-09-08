@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #348. Graph State Schema Validator"
-description: "Master #348. Graph State Schema Validator in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Assign Nodes to Visualization Layers"
+description: "Implement layer assignment for agent-graph visualization, computing each node's vertical position (its longest-path depth from any entry node) for a clean layered layout."
 difficulty: "hard"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #348. Graph State Schema Validator
+# Assign Nodes to Visualization Layers
 
-**Track**: Agent Graph Engineering | **Rank**: #348 of 1072 | **Points**: 90 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#348. Graph State Schema Validator` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement layer assignment for agent-graph visualization, computing each node's vertical position (its longest-path depth from any entry node) for a clean layered layout.
 
 ## Task
 
-Implement the function `graph_state_schema_validator`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `assign_layers(dependencies)`. Each node's layer is `0` if it has no dependencies, otherwise `1 + max(layer of each dependency)`. Return a dict of node -> layer (int).
 
 <PracticePlayground problemId="agent-graph-prob-22" />

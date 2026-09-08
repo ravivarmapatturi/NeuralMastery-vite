@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #349. Dynamic Graph Route Generator"
-description: "Master #349. Dynamic Graph Route Generator in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Validate Dynamically Added Node Has No Orphan Successors"
+description: "Implement dynamic-node-addition validation, checking that adding a new node at runtime doesn't introduce a dangling reference to a node that doesn't exist in the graph."
+difficulty: "medium"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #349. Dynamic Graph Route Generator
+# Validate Dynamically Added Node Has No Orphan Successors
 
-**Track**: Agent Graph Engineering | **Rank**: #349 of 1072 | **Points**: 90 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#349. Dynamic Graph Route Generator` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement dynamic-node-addition validation, checking that adding a new node at runtime doesn't introduce a dangling reference to a node that doesn't exist in the graph.
 
 ## Task
 
-Implement the function `dynamic_graph_route_generator`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `validates_dynamic_addition(existing_edges, new_node, new_node_targets)`: return `True` only if `new_node` is NOT already a key in `existing_edges` (no duplicate) AND every entry in `new_node_targets` IS already a key in `existing_edges` (no dangling edge to a nonexistent node).
 
 <PracticePlayground problemId="agent-graph-prob-23" />

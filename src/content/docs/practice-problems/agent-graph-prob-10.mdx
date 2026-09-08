@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #336. Graph Concurrency Limit"
-description: "Master #336. Graph Concurrency Limit in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Evaluate an Edge Condition Against State"
+description: "Implement edge-condition evaluation, the real predicate-checking primitive behind conditional routing in an agent graph."
 difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #336. Graph Concurrency Limit
+# Evaluate an Edge Condition Against State
 
-**Track**: Agent Graph Engineering | **Rank**: #336 of 1072 | **Points**: 40 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#336. Graph Concurrency Limit` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement edge-condition evaluation, the real predicate-checking primitive behind conditional routing in an agent graph.
 
 ## Task
 
-Implement the function `graph_concurrency_limit`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `evaluate_edge_condition(state, field, operator, value)`. Get `state.get(field)`. Support operators: `'eq'` (equals), `'ne'` (not equals), `'gt'`, `'lt'`, `'contains'` (value is `in` the field's value, e.g. a substring or list membership). Return the boolean result. If `field` is missing from `state`, `'eq'`/`'ne'` still work against `None`; other operators return `False`.
 
 <PracticePlayground problemId="agent-graph-prob-10" />

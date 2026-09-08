@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #347. Graph Topological Execution Order"
-description: "Master #347. Graph Topological Execution Order in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Per-Node Execution Timeout Policy"
+description: "Implement per-node timeout enforcement, letting different agent-graph nodes have different real time budgets (a fast lookup node vs. a slow multi-step reasoning node)."
+difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #347. Graph Topological Execution Order
+# Per-Node Execution Timeout Policy
 
-**Track**: Agent Graph Engineering | **Rank**: #347 of 1072 | **Points**: 60 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#347. Graph Topological Execution Order` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement per-node timeout enforcement, letting different agent-graph nodes have different real time budgets (a fast lookup node vs. a slow multi-step reasoning node).
 
 ## Task
 
-Implement the function `graph_topological_execution_order`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `node_timed_out(node_start_ts, current_ts, node_timeout_s, node_name, default_timeout_s)`. Look up `node_name`'s timeout in `node_timeout_s`, falling back to `default_timeout_s`. Return `True` if `(current_ts - node_start_ts) >= that_timeout`.
 
 <PracticePlayground problemId="agent-graph-prob-21" />

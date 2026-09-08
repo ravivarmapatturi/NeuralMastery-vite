@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #496. Agent Configuration Hot Reloader"
-description: "Master #496. Agent Configuration Hot Reloader in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Multi-Region Failover Target Selection"
+description: "Implement multi-region failover selection, choosing the next healthy region to route traffic to in priority order when the primary region fails."
+difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #496. Agent Configuration Hot Reloader
+# Multi-Region Failover Target Selection
 
-**Track**: Agent Performance & Production | **Rank**: #496 of 1072 | **Points**: 90 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#496. Agent Configuration Hot Reloader` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement multi-region failover selection, choosing the next healthy region to route traffic to in priority order when the primary region fails.
 
 ## Task
 
-Implement the function `agent_configuration_hot_reloader`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `select_failover_region(primary_region, region_health, region_priority)`. `region_priority` is the ordered list of candidate regions (may or may not include `primary_region`). If `region_health.get(primary_region, False)` is `True`, return `primary_region` unchanged. Otherwise return the FIRST region in `region_priority` (excluding `primary_region`) that is healthy. Return `''` if none are healthy.
 
 <PracticePlayground problemId="production-prob-25" />

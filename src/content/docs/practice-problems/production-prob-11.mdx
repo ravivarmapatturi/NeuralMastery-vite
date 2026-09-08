@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #482. Agent Token Cost Monitor"
-description: "Master #482. Agent Token Cost Monitor in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Connection Pool Saturation Check"
+description: "Implement connection-pool saturation detection, a real early-warning signal before a production agent's outbound HTTP client pool fully exhausts and starts queueing or rejecting new calls."
+difficulty: "easy"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #482. Agent Token Cost Monitor
+# Connection Pool Saturation Check
 
-**Track**: Agent Performance & Production | **Rank**: #482 of 1072 | **Points**: 60 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#482. Agent Token Cost Monitor` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement connection-pool saturation detection, a real early-warning signal before a production agent's outbound HTTP client pool fully exhausts and starts queueing or rejecting new calls.
 
 ## Task
 
-Implement the function `agent_token_cost_monitor`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_pool_saturated(active_connections, pool_size, saturation_threshold_pct)`: return `True` if `(active_connections / pool_size * 100) >= saturation_threshold_pct`.
 
 <PracticePlayground problemId="production-prob-11" />

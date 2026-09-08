@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #337. Stateful Graph Node Runner"
-description: "Master #337. Stateful Graph Node Runner in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Build an Ordered Execution Trace"
+description: "Implement execution-trace construction, the real, minimal record-keeping needed to debug or visualize how an agent graph actually executed for one run."
+difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #337. Stateful Graph Node Runner
+# Build an Ordered Execution Trace
 
-**Track**: Agent Graph Engineering | **Rank**: #337 of 1072 | **Points**: 60 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#337. Stateful Graph Node Runner` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement execution-trace construction, the real, minimal record-keeping needed to debug or visualize how an agent graph actually executed for one run.
 
 ## Task
 
-Implement the function `stateful_graph_node_runner`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `build_execution_trace(visited_nodes, timestamps)`. Both lists have the same length. Return a list of `{"step": int, "node": str, "timestamp": float}` dicts, `step` being the 0-indexed position.
 
 <PracticePlayground problemId="agent-graph-prob-11" />

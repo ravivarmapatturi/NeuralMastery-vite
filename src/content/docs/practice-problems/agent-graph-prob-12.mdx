@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #338. Cyclic Graph Execution Controller"
-description: "Master #338. Cyclic Graph Execution Controller in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Detect Human-in-the-Loop Interrupt Point"
+description: "Implement interrupt-point detection, the real check a graph executor runs before each node to decide whether to pause for human review."
+difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #338. Cyclic Graph Execution Controller
+# Detect Human-in-the-Loop Interrupt Point
 
-**Track**: Agent Graph Engineering | **Rank**: #338 of 1072 | **Points**: 60 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#338. Cyclic Graph Execution Controller` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement interrupt-point detection, the real check a graph executor runs before each node to decide whether to pause for human review.
 
 ## Task
 
-Implement the function `cyclic_graph_execution_controller`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_interrupt_point(node_name, interrupt_before)`: return `True` if `node_name` is in `interrupt_before`.
 
 <PracticePlayground problemId="agent-graph-prob-12" />

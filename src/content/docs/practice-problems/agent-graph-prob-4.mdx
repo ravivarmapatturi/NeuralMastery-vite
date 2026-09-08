@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #330. Graph State Reducer"
-description: "Master #330. Graph State Reducer in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Bounded Cycle Iteration Check"
+description: "Implement bounded-cycle checking, allowing an agent graph's real, intentional loop (e.g. a 'retry until valid' cycle) while guaranteeing termination."
 difficulty: "easy"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #330. Graph State Reducer
+# Bounded Cycle Iteration Check
 
-**Track**: Agent Graph Engineering | **Rank**: #330 of 1072 | **Points**: 40 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#330. Graph State Reducer` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement bounded-cycle checking, allowing an agent graph's real, intentional loop (e.g. a 'retry until valid' cycle) while guaranteeing termination.
 
 ## Task
 
-Implement the function `graph_state_reducer`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cycle_within_bound(current_iteration, max_iterations)`: return `True` (allowed to loop again) if `current_iteration < max_iterations`.
 
 <PracticePlayground problemId="agent-graph-prob-4" />

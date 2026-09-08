@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #327. Agent State Graph"
-description: "Master #327. Agent State Graph in the Agent Graph Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Topological Execution Order of Agent Workflow Nodes"
+description: "Implement topological execution ordering for an agent workflow graph (LangGraph-style), determining a valid node execution sequence from declared dependencies."
+difficulty: "medium"
 topic: "Agent Graph Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #327. Agent State Graph
+# Topological Execution Order of Agent Workflow Nodes
 
-**Track**: Agent Graph Engineering | **Rank**: #327 of 1072 | **Points**: 40 XP
+**Track**: Agent Graph Engineering | **Points**: 40 XP
 
 ## Overview
 
-Implement `#327. Agent State Graph` to advance your mastery in **Agent Graph Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement topological execution ordering for an agent workflow graph (LangGraph-style), determining a valid node execution sequence from declared dependencies.
 
 ## Task
 
-Implement the function `agent_state_graph`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `topo_execution_order(dependencies)` via Kahn's algorithm. `dependencies` maps each node to the list of nodes it depends on. Among nodes with zero remaining dependencies at any point, pick alphabetically smallest. Assume the graph is acyclic.
 
 <PracticePlayground problemId="agent-graph-prob-1" />

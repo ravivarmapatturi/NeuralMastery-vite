@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #483. Agent Execution Telemetry Tracer"
-description: "Master #483. Agent Execution Telemetry Tracer in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Blue-Green Deployment Traffic Cutover Check"
+description: "Implement blue-green deployment readiness checking, the real, automated gate deciding whether a new agent deployment version is healthy enough to receive full production traffic."
+difficulty: "easy"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #483. Agent Execution Telemetry Tracer
+# Blue-Green Deployment Traffic Cutover Check
 
-**Track**: Agent Performance & Production | **Rank**: #483 of 1072 | **Points**: 60 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#483. Agent Execution Telemetry Tracer` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement blue-green deployment readiness checking, the real, automated gate deciding whether a new agent deployment version is healthy enough to receive full production traffic.
 
 ## Task
 
-Implement the function `agent_execution_telemetry_tracer`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cutover_ready(green_error_rate, green_p99_ms, max_error_rate, max_p99_ms)`: return `True` only if BOTH `green_error_rate <= max_error_rate` AND `green_p99_ms <= max_p99_ms`.
 
 <PracticePlayground problemId="production-prob-12" />

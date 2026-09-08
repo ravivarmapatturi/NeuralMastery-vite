@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #480. Agent Autoscaling"
-description: "Master #480. Agent Autoscaling in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Streaming Time-to-First-Token Measurement"
+description: "Implement time-to-first-token (TTFT) measurement, a real, distinct latency metric from total completion time that matters enormously for perceived responsiveness in a streaming agent UI."
 difficulty: "easy"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #480. Agent Autoscaling
+# Streaming Time-to-First-Token Measurement
 
-**Track**: Agent Performance & Production | **Rank**: #480 of 1072 | **Points**: 40 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#480. Agent Autoscaling` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement time-to-first-token (TTFT) measurement, a real, distinct latency metric from total completion time that matters enormously for perceived responsiveness in a streaming agent UI.
 
 ## Task
 
-Implement the function `agent_autoscaling`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `time_to_first_token(request_sent_ts, first_token_ts)`: return `first_token_ts - request_sent_ts`.
 
 <PracticePlayground problemId="production-prob-9" />

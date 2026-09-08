@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #477. Tool Failure Chaos Test"
-description: "Master #477. Tool Failure Chaos Test in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Circuit Breaker State Transition"
+description: "Implement the real circuit-breaker state machine, protecting a production agent from repeatedly hammering a failing downstream dependency (a tool API, a model endpoint)."
+difficulty: "medium"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #477. Tool Failure Chaos Test
+# Circuit Breaker State Transition
 
-**Track**: Agent Performance & Production | **Rank**: #477 of 1072 | **Points**: 40 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#477. Tool Failure Chaos Test` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the real circuit-breaker state machine, protecting a production agent from repeatedly hammering a failing downstream dependency (a tool API, a model endpoint).
 
 ## Task
 
-Implement the function `tool_failure_chaos_test`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `circuit_breaker_state(current_state, consecutive_failures, failure_threshold, cooldown_elapsed)`. States are `'closed'` (normal), `'open'` (blocking calls), `'half_open'` (testing recovery). From `'closed'`: go to `'open'` if `consecutive_failures >= failure_threshold`, else stay `'closed'`. From `'open'`: go to `'half_open'` if `cooldown_elapsed`, else stay `'open'`. From `'half_open'`: go to `'closed'` if `consecutive_failures == 0`, else go back to `'open'`.
 
 <PracticePlayground problemId="production-prob-6" />

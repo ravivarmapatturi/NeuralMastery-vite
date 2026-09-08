@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #498. Agent Feature Flag Evaluator"
-description: "Master #498. Agent Feature Flag Evaluator in the Agent Performance & Production track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Startup Readiness Probe Aggregation"
+description: "Implement readiness-probe aggregation, the real gate deciding when a newly-started agent instance should start receiving production traffic."
+difficulty: "easy"
 topic: "Agent Performance & Production"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #498. Agent Feature Flag Evaluator
+# Startup Readiness Probe Aggregation
 
-**Track**: Agent Performance & Production | **Rank**: #498 of 1072 | **Points**: 90 XP
+**Track**: Agent Performance & Production | **Points**: 40 XP
 
 ## Overview
 
-Implement `#498. Agent Feature Flag Evaluator` to advance your mastery in **Agent Performance & Production**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement readiness-probe aggregation, the real gate deciding when a newly-started agent instance should start receiving production traffic.
 
 ## Task
 
-Implement the function `agent_feature_flag_evaluator`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_ready(checks)`: return `True` only if EVERY value in `checks` (e.g. `{"model_loaded": True, "db_connected": True}`) is `True`. An empty `checks` dict is vacuously ready.
 
 <PracticePlayground problemId="production-prob-27" />
