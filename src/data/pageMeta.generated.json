@@ -15528,7 +15528,7 @@
       "description": "Master #181. Multi-Hop Retrieval in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-10": {
       "slug": "practice-problems/rag-fund-prob-10",
@@ -15538,7 +15538,7 @@
       "description": "Master #190. Dense-Sparse Hybrid Ranker in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-11": {
       "slug": "practice-problems/rag-fund-prob-11",
@@ -15548,7 +15548,7 @@
       "description": "Master #191. Parent Document Retriever in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-12": {
       "slug": "practice-problems/rag-fund-prob-12",
@@ -15558,7 +15558,7 @@
       "description": "Master #192. Hypothetical Document Embeddings (HyDE) in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-13": {
       "slug": "practice-problems/rag-fund-prob-13",
@@ -15568,7 +15568,7 @@
       "description": "Master #193. Contextual Compression Retriever in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-14": {
       "slug": "practice-problems/rag-fund-prob-14",
@@ -15578,7 +15578,7 @@
       "description": "Master #194. Multi-Query Translation Generator in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-15": {
       "slug": "practice-problems/rag-fund-prob-15",
@@ -15588,7 +15588,7 @@
       "description": "Master #195. Reciprocal Rank Fusion (RRF) in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-16": {
       "slug": "practice-problems/rag-fund-prob-16",
@@ -15598,7 +15598,7 @@
       "description": "Master #196. Cross-Encoder Re-ranker in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-17": {
       "slug": "practice-problems/rag-fund-prob-17",
@@ -15608,7 +15608,7 @@
       "description": "Master #197. Vector Index HNSW Tuner in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-18": {
       "slug": "practice-problems/rag-fund-prob-18",
@@ -15618,7 +15618,7 @@
       "description": "Master #198. Chunk Boundary Aware Splitter in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-19": {
       "slug": "practice-problems/rag-fund-prob-19",
@@ -15628,7 +15628,7 @@
       "description": "Master #199. Semantic Chunking Engine in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-2": {
       "slug": "practice-problems/rag-fund-prob-2",
@@ -15638,7 +15638,7 @@
       "description": "Master #182. Retrieve-Read-Retrieve Loop in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-20": {
       "slug": "practice-problems/rag-fund-prob-20",
@@ -15648,7 +15648,7 @@
       "description": "Master #200. Metadata Filtering Router in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-21": {
       "slug": "practice-problems/rag-fund-prob-21",
@@ -15658,7 +15658,7 @@
       "description": "Master #201. Document Freshness Invalidator in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-22": {
       "slug": "practice-problems/rag-fund-prob-22",
@@ -15668,7 +15668,7 @@
       "description": "Master #202. Embedding Cache Layer in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-23": {
       "slug": "practice-problems/rag-fund-prob-23",
@@ -15678,7 +15678,7 @@
       "description": "Master #203. Hierarchical Index Search in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-24": {
       "slug": "practice-problems/rag-fund-prob-24",
@@ -15688,7 +15688,7 @@
       "description": "Master #204. RAG Noise Reduction Filter in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-25": {
       "slug": "practice-problems/rag-fund-prob-25",
@@ -15698,7 +15698,7 @@
       "description": "Master #205. Document Summarization Index in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-26": {
       "slug": "practice-problems/rag-fund-prob-26",
@@ -15708,7 +15708,7 @@
       "description": "Master #206. Query Rewriting Pipeline in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-27": {
       "slug": "practice-problems/rag-fund-prob-27",
@@ -15718,7 +15718,7 @@
       "description": "Master #207. Vector Distance Threshold Filter in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-28": {
       "slug": "practice-problems/rag-fund-prob-28",
@@ -15728,7 +15728,7 @@
       "description": "Master #208. Retrieval Recall Calculator in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-29": {
       "slug": "practice-problems/rag-fund-prob-29",
@@ -15738,7 +15738,7 @@
       "description": "Master #209. Multimodal RAG Ingestion in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-3": {
       "slug": "practice-problems/rag-fund-prob-3",
@@ -15748,7 +15748,7 @@
       "description": "Master #183. Corrective RAG in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-30": {
       "slug": "practice-problems/rag-fund-prob-30",
@@ -15758,7 +15758,7 @@
       "description": "Master #210. RAG Triad Evaluator in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-4": {
       "slug": "practice-problems/rag-fund-prob-4",
@@ -15768,7 +15768,7 @@
       "description": "Master #184. Self-RAG Decision Loop in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-5": {
       "slug": "practice-problems/rag-fund-prob-5",
@@ -15778,7 +15778,7 @@
       "description": "Master #185. Agentic RAG Planner in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-6": {
       "slug": "practice-problems/rag-fund-prob-6",
@@ -15788,7 +15788,7 @@
       "description": "Master #186. GraphRAG Local Search in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-7": {
       "slug": "practice-problems/rag-fund-prob-7",
@@ -15798,7 +15798,7 @@
       "description": "Master #187. GraphRAG Global Search in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-8": {
       "slug": "practice-problems/rag-fund-prob-8",
@@ -15808,7 +15808,7 @@
       "description": "Master #188. Evidence Sufficiency Check in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-9": {
       "slug": "practice-problems/rag-fund-prob-9",
@@ -15818,7 +15818,7 @@
       "description": "Master #189. Citation Validation in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "RAG Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-prod-prob-1": {
       "slug": "practice-problems/rag-prod-prob-1",

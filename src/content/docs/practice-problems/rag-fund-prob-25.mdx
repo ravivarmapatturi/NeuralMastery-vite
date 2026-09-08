@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #205. Document Summarization Index"
 description: "Master #205. Document Summarization Index in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#205. Document Summarization Index` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Index high-level summaries for fast semantic routing while returning complete context for synthesis.
 
 ## Task
 
-Implement the function `document_summarization_index`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `document_summarization_index(documents, query_vector, top_k=2)`. For each document, compute the cosine similarity between `query_vector` and `doc["summary_vector"]`. Sort matching documents descending by similarity score (rounded to 4 decimal places), breaking ties alphabetically by `doc_id`. Return the top `top_k` documents formatted with `{"doc_id": id, "summary": summary, "full_text": full_text, "score": score}`.
 
 <PracticePlayground problemId="rag-fund-prob-25" />

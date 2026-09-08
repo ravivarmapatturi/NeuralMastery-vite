@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #190. Dense-Sparse Hybrid Ranker"
 description: "Master #190. Dense-Sparse Hybrid Ranker in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#190. Dense-Sparse Hybrid Ranker` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Fuse semantic dense embeddings with lexical BM25 keyword search using normalized hybrid ranking.
 
 ## Task
 
-Implement the function `dense_sparse_hybrid_ranker`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dense_sparse_hybrid_ranker(dense_scores, sparse_scores, alpha=0.5)`. Apply min-max normalization independently to `dense_scores` and `sparse_scores` scaling them to `[0.0, 1.0]` (if min == max, assign 1.0 if `value > 0` else 0.0). For every document across both sets, compute `score = round(alpha * norm_dense + (1 - alpha) * norm_sparse, 4)` (missing scores default to 0.0). Return the list of `[doc_id, score]` pairs sorted descending by score, breaking ties by `doc_id` alphabetically.
 
 <PracticePlayground problemId="rag-fund-prob-10" />

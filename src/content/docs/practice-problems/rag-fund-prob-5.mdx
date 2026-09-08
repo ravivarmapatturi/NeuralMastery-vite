@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #185. Agentic RAG Planner"
 description: "Master #185. Agentic RAG Planner in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#185. Agentic RAG Planner` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Decompose complex user questions into executable multi-step retrieval plans.
 
 ## Task
 
-Implement the function `agentic_rag_planner`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `agentic_rag_planner(complex_query, available_tools)`. If the query contains " vs " or " compare ... and ...", break it into three steps: Step 1 retrieves the first entity via `vector_search`, Step 2 retrieves the second entity via `vector_search`, and Step 3 synthesizes using `comparison_synthesizer` (if in `available_tools`, else `llm_synthesis`). If the query contains temporal words ("latest", "recent", "current", "2024", "2025"), route to `recency_search` if available, else `web_search`, else `vector_search`. Otherwise, plan a single step with `vector_search`.
 
 <PracticePlayground problemId="rag-fund-prob-5" />

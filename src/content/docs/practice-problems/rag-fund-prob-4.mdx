@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #184. Self-RAG Decision Loop"
 description: "Master #184. Self-RAG Decision Loop in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#184. Self-RAG Decision Loop` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Self-RAG reflection tokens to dynamically decide when to retrieve and critique output quality.
 
 ## Task
 
-Implement the function `self_rag_decision_loop`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `self_rag_decision_loop(retrieval_need_score, initial_generation, candidate_generations, retrieval_threshold=0.5)`. If `retrieval_need_score < retrieval_threshold`, return `{"retrieved": False, "chosen_generation": initial_generation, "support_score": 1.0, "usefulness_score": 1.0}`. Otherwise set `retrieved = True` and score each candidate using composite score `round(0.6 * support_score + 0.4 * usefulness_score, 4)`. Select the candidate with the highest composite score (breaking ties with higher support score).
 
 <PracticePlayground problemId="rag-fund-prob-4" />

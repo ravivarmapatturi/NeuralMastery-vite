@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #199. Semantic Chunking Engine"
 description: "Master #199. Semantic Chunking Engine in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#199. Semantic Chunking Engine` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Split documents dynamically at natural semantic transitions rather than arbitrary character lengths.
 
 ## Task
 
-Implement the function `semantic_chunking_engine`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `semantic_chunking_engine(sentences, sentence_embeddings, similarity_threshold=0.75)`. Raise `ValueError` if `len(sentences) != len(sentence_embeddings)`. If `sentences` is empty, return `[]`. Compute cosine similarity between each consecutive pair of sentence embeddings `(i, i+1)`. If `cosine_sim < similarity_threshold`, split and begin a new chunk. Return the list of chunks, where each chunk is a list of its sentences.
 
 <PracticePlayground problemId="rag-fund-prob-19" />

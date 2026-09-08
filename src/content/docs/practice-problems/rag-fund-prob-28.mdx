@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #208. Retrieval Recall Calculator"
 description: "Master #208. Retrieval Recall Calculator in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#208. Retrieval Recall Calculator` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Quantify retriever performance across benchmark evaluation datasets using standard IR metrics.
 
 ## Task
 
-Implement the function `retrieval_recall_calculator`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `retrieval_recall_calculator(ground_truth, retrieved, k_values=None)`. Default `k_values` to `[1, 3, 5]` if None. For each query, `Recall@K = len(relevant & retrieved[:K]) / len(relevant)`. For MRR, find the 1-based rank of the first relevant document in `retrieved` (or 0 if none found) and add `1.0 / rank`. Average all metrics across queries in `ground_truth`. Return a dictionary containing `"Recall@K"` for each K in `k_values` and `"MRR"`, all rounded to 4 decimal places.
 
 <PracticePlayground problemId="rag-fund-prob-28" />

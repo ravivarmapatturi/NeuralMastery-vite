@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #202. Embedding Cache Layer"
 description: "Master #202. Embedding Cache Layer in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#202. Embedding Cache Layer` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement an LRU embedding cache layer to save latency and inference cost on repeated search queries.
 
 ## Task
 
-Implement the function `embedding_cache_layer`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `embedding_cache_layer(queries, precomputed_embeddings, max_cache_size=3)`. Process queries sequentially. Normalize each query via `query.strip().lower()`. If the normalized query is in cache, record a cache hit and move it to the most recently used position. Otherwise, record a cache miss; if the cache has reached `max_cache_size`, evict the least recently used item (`evictions += 1`) and add the query. Return `{"results": {q_norm: embedding}, "hits": hits, "misses": misses, "evictions": evictions, "cached_queries": list(cache)}`.
 
 <PracticePlayground problemId="rag-fund-prob-22" />

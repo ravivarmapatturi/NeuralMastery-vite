@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #198. Chunk Boundary Aware Splitter"
 description: "Master #198. Chunk Boundary Aware Splitter in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#198. Chunk Boundary Aware Splitter` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Split documents at clean linguistic token boundaries without cutting words in half.
 
 ## Task
 
-Implement the function `chunk_boundary_aware_splitter`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `chunk_boundary_aware_splitter(text, max_chunk_size=150, overlap=30)`. Split `text` into words on whitespace. Accumulate words into chunks such that the joined chunk length `" ".join(chunk_words)` does not exceed `max_chunk_size` (unless a single word exceeds it alone). When a chunk is full, emit it and prime the next chunk with the trailing words from the previous chunk whose joined length does not exceed `overlap`. Return the resulting list of chunk strings.
 
 <PracticePlayground problemId="rag-fund-prob-18" />

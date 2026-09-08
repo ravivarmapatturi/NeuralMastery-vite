@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #193. Contextual Compression Retriever"
 description: "Master #193. Contextual Compression Retriever in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#193. Contextual Compression Retriever` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Strip conversational fluff and extraneous context to pack dense, relevant evidence into prompt windows.
 
 ## Task
 
-Implement the function `contextual_compression_retriever`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `contextual_compression_retriever(query, documents, min_relevance=0.5)`. For each document, segment `text` into sentences using sentence punctuation boundaries (`.`, `!`, `?`). For each sentence, compute its query keyword overlap ratio `len(query_words & sentence_words) / len(query_words)`. Retain only sentences where this ratio is `>= min_relevance`. If any sentences are retained, join them with spaces and record `{"id": doc_id, "compressed_text": joined_text, "retained_count": len(retained)}`. Discard documents with zero retained sentences.
 
 <PracticePlayground problemId="rag-fund-prob-13" />

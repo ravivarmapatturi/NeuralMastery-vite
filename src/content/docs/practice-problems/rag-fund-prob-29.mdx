@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #209. Multimodal RAG Ingestion"
 description: "Master #209. Multimodal RAG Ingestion in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#209. Multimodal RAG Ingestion` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Normalize, validate, and enrich multimodal assets into a unified multimodal vector space.
 
 ## Task
 
-Implement the function `multimodal_rag_ingestion`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `multimodal_rag_ingestion(elements, expected_dim=4)`. For each element, verify `len(elem["vector"]) == expected_dim` (raising `ValueError` on mismatch). Normalize the vector to unit L2 length `[round(x / norm, 4) for x in vec]`. If `type == "table"`, count lines containing `"|"` in `content` and record `"table_row_count"` in metadata. Return the list of standardized element dicts.
 
 <PracticePlayground problemId="rag-fund-prob-29" />

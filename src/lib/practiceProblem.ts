@@ -44159,6 +44159,1497 @@ def rolling_pearson_correlation(series_x, series_y, window_size):
 ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  'rag-fund-prob-1': {
+    id: 'rag-fund-prob-1',
+    title: "Multi-Hop Retrieval",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'multi_hop_retrieval',
+    functionSignature: "multi_hop_retrieval(query: str, corpus: dict, max_hops: int = 2) -> list[str]",
+    starterCode: `def multi_hop_retrieval(query: str, corpus: dict, max_hops: int = 2) -> list:
+    """Perform multi-hop retrieval traversing document link graphs.
+    
+    Args:
+        query: Query search string.
+        corpus: Dict mapping doc_id to {'text': str, 'links': list[str]}.
+        max_hops: Maximum BFS exploration depth from initial match docs.
+    Returns:
+        list of doc_ids visited in BFS order.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Retrieve connected evidence across multiple hops to answer relational, multi-document questions.",
+    taskDescription: "Implement `multi_hop_retrieval(query, corpus, max_hops=2)`. Identify initial seed documents matching any query keyword (case-insensitive), sorted descending by keyword match count (ties broken alphabetically by doc ID). From these seeds, perform a breadth-first search traversing `links` up to `max_hops` depth. Return the ordered list of unique document IDs visited.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Query words and document texts are matched case-insensitively using alphanumeric tokens.",
+      "Document links not present in corpus must be ignored.",
+      "BFS must avoid visiting already-visited document IDs.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Extract alphanumeric words with re.findall(r\"\\w+\", text.lower()). Count intersection with query words.",
+      strong: "Queue entries can store (doc_id, current_hop). When current_hop < max_hops, iterate through sorted links and enqueue unseen docs.",
+      concept: "Multi-hop retrieval overcomes single-step semantic bottlenecks by following references between interconnected knowledge sources.",
+    },
+    conceptConnections: [
+      { title: "Knowledge Graphs & GraphRAG", route: "/docs/agentic-rag/knowledge-graphs", description: "Relational document retrieval" },
+      { title: "RAG Architectures", route: "/docs/rag-production/architectures", description: "Multi-step retrieval strategies" },
+    ],
+    testCases: [
+      { id: "basic_hops", label: "Basic 2-hop traversal", input: {"query": "quantum entanglement", "corpus": {"docA": {"text": "Quantum computing utilizes quantum entanglement.", "links": ["docB"]}, "docB": {"text": "Entanglement connects particles over distances.", "links": ["docC"]}, "docC": {"text": "Bell inequalities test entanglement properties.", "links": []}, "docD": {"text": "Classical mechanics and Newton laws.", "links": []}}, "max_hops": 2}, expectedOutput: ["docA", "docB", "docC"], hidden: false },
+      { id: "no_hops", label: "Max hops = 0 (seed documents only)", input: {"query": "transformers attention", "corpus": {"doc1": {"text": "Transformers rely on self attention layers.", "links": ["doc2"]}, "doc2": {"text": "BERT is a masked language model.", "links": ["doc3"]}, "doc3": {"text": "GPT models use autoregressive decoding.", "links": []}}, "max_hops": 0}, expectedOutput: ["doc1"], hidden: false },
+      { id: "no_match", label: "Query with no matching keywords", input: {"query": "cryptocurrency blockchain", "corpus": {"doc1": {"text": "Python is a high-level programming language.", "links": ["doc2"]}, "doc2": {"text": "Compilers optimize machine bytecode.", "links": []}}, "max_hops": 2}, expectedOutput: [], hidden: false },
+      { id: "branching", label: "Multiple branches and shared links", input: {"query": "neural networks", "corpus": {"d1": {"text": "Neural networks learn representations.", "links": ["d2", "d3"]}, "d2": {"text": "Backpropagation computes gradients.", "links": ["d4"]}, "d3": {"text": "Activation functions introduce non-linearity.", "links": ["d4"]}, "d4": {"text": "Optimizers like Adam update weights.", "links": []}}, "max_hops": 2}, expectedOutput: ["d1", "d2", "d3", "d4"], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-2': {
+    id: 'rag-fund-prob-2',
+    title: "Retrieve-Read-Retrieve Loop",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'retrieve_read_retrieve_loop',
+    functionSignature: "retrieve_read_retrieve_loop(question: str, step_data: list[dict], max_steps: int = 3) -> dict",
+    starterCode: `def retrieve_read_retrieve_loop(question: str, step_data: list, max_steps: int = 3) -> dict:
+    """Simulate an iterative Retrieve-Read-Retrieve reasoning loop.
+    
+    Args:
+        question: Starting user question.
+        step_data: List of dicts mapping queries to found_answer or next_query.
+        max_steps: Maximum reasoning loop iterations allowed.
+    Returns:
+        dict with status ('success' or 'incomplete'), steps taken, answer, and history.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Orchestrate iterative multi-turn RAG reasoning to resolve queries requiring intermediate evidence.",
+    taskDescription: "Implement `retrieve_read_retrieve_loop(question, step_data, max_steps=3)`. Begin with `current_query = question`. For each step up to `max_steps`, look up `current_query` in `step_data` (case-insensitive query match). If `found_answer` is present, return `{\"status\": \"success\", \"steps\": current_step, \"answer\": found_answer, \"history\": history}`. If `next_query` is present and not already in `history`, update `current_query` and iterate. If unresolvable or looping, terminate and return status `\"incomplete\"`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Query matching against step_data is case-insensitive with whitespace stripped.",
+      "Cycles in next_query must be detected to avoid infinite loops.",
+      "max_steps bounds the maximum number of retrieval steps.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Keep a list `history` tracking each query executed.",
+      strong: "Before assigning `current_query = next_query`, check if `next_query.lower()` is in `[h.lower() for h in history]`. If so, break early.",
+      concept: "Iterative RAG alternates between reading retrieved passages and formulating follow-up queries until information sufficiency is reached.",
+    },
+    conceptConnections: [
+      { title: "Agent Loops & Tool Calling", route: "/docs/agentic-rag/agent-loop", description: "Iterative execution patterns" },
+      { title: "Query Expansion & Decomposition", route: "/docs/rag-production/query-transformations", description: "Stepwise query refinement" },
+    ],
+    testCases: [
+      { id: "two_step_success", label: "Success after 2 iterations", input: {"question": "Who directed Inception?", "step_data": [{"query": "Who directed Inception?", "found_answer": null, "next_query": "Christopher Nolan filmography"}, {"query": "Christopher Nolan filmography", "found_answer": "Christopher Nolan", "next_query": null}], "max_steps": 3}, expectedOutput: {"status": "success", "steps": 2, "answer": "Christopher Nolan", "history": ["Who directed Inception?", "Christopher Nolan filmography"]}, hidden: false },
+      { id: "immediate_success", label: "Success on first step", input: {"question": "What is the capital of France?", "step_data": [{"query": "What is the capital of France?", "found_answer": "Paris", "next_query": null}], "max_steps": 2}, expectedOutput: {"status": "success", "steps": 1, "answer": "Paris", "history": ["What is the capital of France?"]}, hidden: false },
+      { id: "exhausted_steps", label: "Incomplete after max steps reached", input: {"question": "What is dark energy composed of?", "step_data": [{"query": "What is dark energy composed of?", "found_answer": null, "next_query": "Cosmological constant properties"}, {"query": "Cosmological constant properties", "found_answer": null, "next_query": "Vacuum energy density"}, {"query": "Vacuum energy density", "found_answer": null, "next_query": "Quantum field theory vacuum"}], "max_steps": 2}, expectedOutput: {"status": "incomplete", "steps": 2, "answer": null, "history": ["What is dark energy composed of?", "Cosmological constant properties"]}, hidden: false },
+      { id: "loop_detection", label: "Terminates when cycle detected", input: {"question": "Origin of language", "step_data": [{"query": "Origin of language", "found_answer": null, "next_query": "Proto-human tongue"}, {"query": "Proto-human tongue", "found_answer": null, "next_query": "Origin of language"}], "max_steps": 5}, expectedOutput: {"status": "incomplete", "steps": 2, "answer": null, "history": ["Origin of language", "Proto-human tongue"]}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-3': {
+    id: 'rag-fund-prob-3',
+    title: "Corrective RAG",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'corrective_rag',
+    functionSignature: "corrective_rag(query: str, retrieved_docs: list[dict], confidence_threshold: float = 0.7, web_fallback_docs: list[str] = None) -> dict",
+    starterCode: `def corrective_rag(query: str, retrieved_docs: list, confidence_threshold: float = 0.7, web_fallback_docs: list = None) -> dict:
+    """Evaluate retrieved documents and apply corrective fallbacks (CRAG).
+    
+    Args:
+        query: User input query.
+        retrieved_docs: List of dicts with 'id', 'text', and 'relevance_score'.
+        confidence_threshold: Min score for 'correct' classification (default 0.7).
+        web_fallback_docs: Optional list of fallback document strings from web search.
+    Returns:
+        dict with actions, filtered_doc_ids, final_context, and triggered_web_fallback.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Corrective RAG (CRAG) document grading and autonomous web fallback routing.",
+    taskDescription: "Implement `corrective_rag(query, retrieved_docs, confidence_threshold=0.7, web_fallback_docs=None)`. Grade each document by its `relevance_score`: score >= confidence_threshold is \"correct\", score in [0.4, confidence_threshold) is \"ambiguous\", and score < 0.4 is \"incorrect\". Filter to keep only \"correct\" documents. If any document is ambiguous or if zero documents are correct, trigger web fallback: append `web_fallback_docs` to the final context, and include `\"web_search\"` in `actions`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "web_fallback_docs defaults to empty list if None.",
+      "Ambiguous documents are NOT retained in filtered_doc_ids.",
+      "Actions order when fallback triggers is [\"evaluate\", \"web_search\", \"synthesize\"].",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Check both conditions: len(filtered_docs) == 0 OR any doc score is between 0.4 and confidence_threshold.",
+      strong: "final_context combines filtered docs texts followed by web_fallback_docs when fallback triggers.",
+      concept: "Corrective RAG guards against hallucinations by grading internal retrieval confidence and fetching external web evidence when confidence is shaky.",
+    },
+    conceptConnections: [
+      { title: "Corrective & Adaptive RAG", route: "/docs/agentic-rag/crag-adaptive", description: "Self-correcting retrieval patterns" },
+      { title: "RAG Guardrails & Safety", route: "/docs/rag-production/guardrails", description: "Hallucination prevention" },
+    ],
+    testCases: [
+      { id: "clean_correct", label: "High confidence docs, no fallback needed", input: {"query": "Python GIL internals", "retrieved_docs": [{"id": "d1", "text": "The Global Interpreter Lock synchronizes thread execution.", "relevance_score": 0.85}, {"id": "d2", "text": "Cooking recipes for pasta.", "relevance_score": 0.1}], "confidence_threshold": 0.7, "web_fallback_docs": ["Web snippet on PEP 703"]}, expectedOutput: {"actions": ["evaluate", "synthesize"], "filtered_doc_ids": ["d1"], "final_context": ["The Global Interpreter Lock synchronizes thread execution."], "triggered_web_fallback": false}, hidden: false },
+      { id: "ambiguous_fallback", label: "Ambiguous doc triggers web fallback", input: {"query": "Latest release of PyTorch", "retrieved_docs": [{"id": "d1", "text": "PyTorch is an open source deep learning framework.", "relevance_score": 0.55}], "confidence_threshold": 0.7, "web_fallback_docs": ["PyTorch 2.4 released with torch.compile improvements"]}, expectedOutput: {"actions": ["evaluate", "web_search", "synthesize"], "filtered_doc_ids": [], "final_context": ["PyTorch 2.4 released with torch.compile improvements"], "triggered_web_fallback": true}, hidden: false },
+      { id: "all_incorrect_fallback", label: "Zero relevant docs triggers web fallback", input: {"query": "Quantum key distribution protocols", "retrieved_docs": [{"id": "d1", "text": "Stock market trends in 2023.", "relevance_score": 0.12}, {"id": "d2", "text": "Weather forecasts in Seattle.", "relevance_score": 0.22}], "confidence_threshold": 0.7, "web_fallback_docs": ["BB84 and E91 are foundational QKD protocols"]}, expectedOutput: {"actions": ["evaluate", "web_search", "synthesize"], "filtered_doc_ids": [], "final_context": ["BB84 and E91 are foundational QKD protocols"], "triggered_web_fallback": true}, hidden: false },
+      { id: "empty_retrieval", label: "Empty retrieved docs list", input: {"query": "Exoplanet atmospheres", "retrieved_docs": [], "confidence_threshold": 0.7, "web_fallback_docs": ["JWST detects carbon dioxide on WASP-39b"]}, expectedOutput: {"actions": ["evaluate", "web_search", "synthesize"], "filtered_doc_ids": [], "final_context": ["JWST detects carbon dioxide on WASP-39b"], "triggered_web_fallback": true}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-4': {
+    id: 'rag-fund-prob-4',
+    title: "Self-RAG Decision Loop",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'self_rag_decision_loop',
+    functionSignature: "self_rag_decision_loop(retrieval_need_score: float, initial_generation: str, candidate_generations: list[dict], retrieval_threshold: float = 0.5) -> dict",
+    starterCode: `def self_rag_decision_loop(retrieval_need_score: float, initial_generation: str, candidate_generations: list, retrieval_threshold: float = 0.5) -> dict:
+    """Evaluate Self-RAG reflection tokens and select optimal output.
+    
+    Args:
+        retrieval_need_score: Model-predicted retrieval necessity score [0, 1].
+        initial_generation: Generation produced without retrieval.
+        candidate_generations: List of dicts with 'text', 'support_score', and 'usefulness_score'.
+        retrieval_threshold: Threshold above which retrieval is executed.
+    Returns:
+        dict with 'retrieved', 'chosen_generation', 'support_score', and 'usefulness_score'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Self-RAG reflection tokens to dynamically decide when to retrieve and critique output quality.",
+    taskDescription: "Implement `self_rag_decision_loop(retrieval_need_score, initial_generation, candidate_generations, retrieval_threshold=0.5)`. If `retrieval_need_score < retrieval_threshold`, return `{\"retrieved\": False, \"chosen_generation\": initial_generation, \"support_score\": 1.0, \"usefulness_score\": 1.0}`. Otherwise set `retrieved = True` and score each candidate using composite score `round(0.6 * support_score + 0.4 * usefulness_score, 4)`. Select the candidate with the highest composite score (breaking ties with higher support score).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Scores are floats in [0.0, 1.0].",
+      "If candidate_generations is empty when retrieval is triggered, fallback to initial_generation with 0.0 scores.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Calculate 0.6 * cand[\"support_score\"] + 0.4 * cand[\"usefulness_score\"].",
+      strong: "Sort or track max using key: (composite_score, cand[\"support_score\"]).",
+      concept: "Self-RAG trains models to generate special critique tokens (Retrieve, IsSupported, IsUseful) to govern adaptive external knowledge access.",
+    },
+    conceptConnections: [
+      { title: "Self-RAG & Adaptive Retrieval", route: "/docs/agentic-rag/self-rag", description: "Reflection tokens in generation" },
+      { title: "Agent Evaluation & Observability", route: "/docs/agent-evaluation/metrics", description: "Faithfulness and utility" },
+    ],
+    testCases: [
+      { id: "no_retrieval_needed", label: "Parametric memory sufficient, no retrieval triggered", input: {"retrieval_need_score": 0.2, "initial_generation": "Photosynthesis converts light into chemical energy.", "candidate_generations": [], "retrieval_threshold": 0.5}, expectedOutput: {"retrieved": false, "chosen_generation": "Photosynthesis converts light into chemical energy.", "support_score": 1.0, "usefulness_score": 1.0}, hidden: false },
+      { id: "retrieval_needed_candidates", label: "Retrieval triggered and best candidate chosen", input: {"retrieval_need_score": 0.85, "initial_generation": "The latest quantum processor has some number of qubits.", "candidate_generations": [{"text": "Candidate A mentions 1121 superconducting qubits.", "support_score": 0.9, "usefulness_score": 0.8}, {"text": "Candidate B claims 5000 qubits without evidence.", "support_score": 0.3, "usefulness_score": 0.6}], "retrieval_threshold": 0.5}, expectedOutput: {"retrieved": true, "chosen_generation": "Candidate A mentions 1121 superconducting qubits.", "support_score": 0.9, "usefulness_score": 0.8}, hidden: false },
+      { id: "tie_breaking", label: "Tie broken by higher support score", input: {"retrieval_need_score": 0.6, "initial_generation": "Default answer.", "candidate_generations": [{"text": "Text X", "support_score": 0.7, "usefulness_score": 0.55}, {"text": "Text Y", "support_score": 0.8, "usefulness_score": 0.4}], "retrieval_threshold": 0.5}, expectedOutput: {"retrieved": true, "chosen_generation": "Text Y", "support_score": 0.8, "usefulness_score": 0.4}, hidden: false },
+      { id: "empty_candidates_fallback", label: "Fallback to initial generation when candidates empty", input: {"retrieval_need_score": 0.9, "initial_generation": "Fallback text.", "candidate_generations": [], "retrieval_threshold": 0.5}, expectedOutput: {"retrieved": true, "chosen_generation": "Fallback text.", "support_score": 0.0, "usefulness_score": 0.0}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-5': {
+    id: 'rag-fund-prob-5',
+    title: "Agentic RAG Planner",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'agentic_rag_planner',
+    functionSignature: "agentic_rag_planner(complex_query: str, available_tools: list[str]) -> list[dict]",
+    starterCode: `def agentic_rag_planner(complex_query: str, available_tools: list) -> list:
+    """Decompose complex queries into structured multi-step retrieval plans.
+    
+    Args:
+        complex_query: Natural language query string.
+        available_tools: List of enabled tool names.
+    Returns:
+        list of step dicts with 'step', 'sub_query', and 'tool'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Decompose complex user questions into executable multi-step retrieval plans.",
+    taskDescription: "Implement `agentic_rag_planner(complex_query, available_tools)`. If the query contains \" vs \" or \" compare ... and ...\", break it into three steps: Step 1 retrieves the first entity via `vector_search`, Step 2 retrieves the second entity via `vector_search`, and Step 3 synthesizes using `comparison_synthesizer` (if in `available_tools`, else `llm_synthesis`). If the query contains temporal words (\"latest\", \"recent\", \"current\", \"2024\", \"2025\"), route to `recency_search` if available, else `web_search`, else `vector_search`. Otherwise, plan a single step with `vector_search`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Tool selection must prioritize available tools strictly according to priority hierarchy.",
+      "Entity extractions should strip whitespace cleanly.",
+      "Step indices start at 1.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Check for \" vs \" first. Split query on the delimiter and format sub-queries.",
+      strong: "For temporal queries: check if \"recency_search\" in available_tools, elif \"web_search\" in available_tools, else \"vector_search\".",
+      concept: "Agentic RAG replaces naive single-shot retrieval with an autonomous planner that decides which tools and sub-queries to execute.",
+    },
+    conceptConnections: [
+      { title: "Agent Planning & Reasoning", route: "/docs/agent-planning/reasoning-patterns", description: "Decomposition pipelines" },
+      { title: "RAG Query Transformation", route: "/docs/rag-production/query-transformations", description: "Query routing techniques" },
+    ],
+    testCases: [
+      { id: "comparison_vs", label: "Comparison query with vs keyword", input: {"complex_query": "PyTorch vs JAX", "available_tools": ["vector_search", "comparison_synthesizer", "web_search"]}, expectedOutput: [{"step": 1, "sub_query": "retrieve PyTorch", "tool": "vector_search"}, {"step": 2, "sub_query": "retrieve JAX", "tool": "vector_search"}, {"step": 3, "sub_query": "synthesize comparison between PyTorch and JAX", "tool": "comparison_synthesizer"}], hidden: false },
+      { id: "comparison_compare", label: "Comparison query with compare keyword", input: {"complex_query": "compare Redis and Memcached", "available_tools": ["vector_search", "llm_synthesis"]}, expectedOutput: [{"step": 1, "sub_query": "compare Redis and Memcached", "tool": "vector_search"}], hidden: false },
+      { id: "recency_routing", label: "Temporal query routed to recency tool", input: {"complex_query": "latest breakthroughs in nuclear fusion", "available_tools": ["vector_search", "recency_search", "web_search"]}, expectedOutput: [{"step": 1, "sub_query": "latest breakthroughs in nuclear fusion", "tool": "recency_search"}], hidden: false },
+      { id: "simple_default", label: "Standard query defaults to vector search", input: {"complex_query": "how backpropagation works", "available_tools": ["vector_search", "web_search"]}, expectedOutput: [{"step": 1, "sub_query": "how backpropagation works", "tool": "vector_search"}], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-6': {
+    id: 'rag-fund-prob-6',
+    title: "GraphRAG Local Search",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'graphrag_local_search',
+    functionSignature: "graphrag_local_search(seed_entities: list[str], graph: dict, max_depth: int = 1) -> dict",
+    starterCode: `def graphrag_local_search(seed_entities: list, graph: dict, max_depth: int = 1) -> dict:
+    """Explore entity neighborhoods in knowledge graphs for local contextual search.
+    
+    Args:
+        seed_entities: List of starting entity names.
+        graph: Dict with 'nodes' and 'edges'.
+        max_depth: Maximum hops from seed entities (default 1).
+    Returns:
+        dict with sorted 'entities' and sorted 'relationships'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Extract localized entity subgraphs to ground RAG answers in structured domain relationships.",
+    taskDescription: "Implement `graphrag_local_search(seed_entities, graph, max_depth=1)`. Initialize visited nodes with seed entities present in `graph[\"nodes\"]`. Traverse edges bidirectionally up to `max_depth` hops. Return a dictionary with sorted list of all unique visited `entities` and a sorted list of unique formatted `relationships` between visited nodes formatted as `\"{source} -[{relation}]-> {target}: {description}\"`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Seed entities not present in graph[\"nodes\"] must be ignored.",
+      "Relationships are only included if both endpoints are in visited entities.",
+      "Both entities and relationships lists must be sorted alphabetically.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Traverse edges bidirectionally: if either source or target is in the current level, add the other.",
+      strong: "Format relationships with f\"{edge['source']} -[{edge['relation']}]-> {edge['target']}: {edge['description']}\". Use set() to eliminate duplicates.",
+      concept: "GraphRAG local search navigates extracted knowledge graphs to assemble entity neighborhoods that standard dense retrieval often fragments.",
+    },
+    conceptConnections: [
+      { title: "GraphRAG & Knowledge Graphs", route: "/docs/agentic-rag/knowledge-graphs", description: "Entity-centric retrieval" },
+      { title: "Data Structures for AI", route: "/docs/data-structures-ai/graphs", description: "Graph traversal fundamentals" },
+    ],
+    testCases: [
+      { id: "single_hop", label: "Single hop exploration from seed entity", input: {"seed_entities": ["Transformers"], "graph": {"nodes": {"Transformers": {"type": "architecture", "description": "Self-attention based model"}, "SelfAttention": {"type": "mechanism", "description": "O(N^2) pairwise interaction"}, "BERT": {"type": "model", "description": "Encoder-only transformer"}}, "edges": [{"source": "Transformers", "target": "SelfAttention", "relation": "uses", "description": "Scales token interactions"}, {"source": "BERT", "target": "Transformers", "relation": "is_a", "description": "Pre-trained bidirectional encoder"}]}, "max_depth": 1}, expectedOutput: {"entities": ["BERT", "SelfAttention", "Transformers"], "relationships": ["BERT -[is_a]-> Transformers: Pre-trained bidirectional encoder", "Transformers -[uses]-> SelfAttention: Scales token interactions"]}, hidden: false },
+      { id: "two_hop_traversal", label: "Two-hop traversal discovering distant entity", input: {"seed_entities": ["NodeA"], "graph": {"nodes": {"NodeA": {"type": "seed"}, "NodeB": {"type": "intermediate"}, "NodeC": {"type": "target"}}, "edges": [{"source": "NodeA", "target": "NodeB", "relation": "connects_to", "description": "Step 1"}, {"source": "NodeB", "target": "NodeC", "relation": "connects_to", "description": "Step 2"}]}, "max_depth": 2}, expectedOutput: {"entities": ["NodeA", "NodeB", "NodeC"], "relationships": ["NodeA -[connects_to]-> NodeB: Step 1", "NodeB -[connects_to]-> NodeC: Step 2"]}, hidden: false },
+      { id: "empty_seed", label: "Unknown seed entity", input: {"seed_entities": ["NonExistent"], "graph": {"nodes": {"NodeA": {"type": "seed"}}, "edges": []}, "max_depth": 1}, expectedOutput: {"entities": [], "relationships": []}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-7': {
+    id: 'rag-fund-prob-7',
+    title: "GraphRAG Global Search",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'graphrag_global_search',
+    functionSignature: "graphrag_global_search(query: str, community_reports: list[dict], min_weight: float = 0.3) -> list[dict]",
+    starterCode: `def graphrag_global_search(query: str, community_reports: list, min_weight: float = 0.3) -> list:
+    """Perform global community report ranking for high-level corpus queries.
+    
+    Args:
+        query: User input query.
+        community_reports: List of dicts with 'community_id', 'title', 'summary', and 'weight'.
+        min_weight: Minimum score threshold for inclusion.
+    Returns:
+        list of dicts with 'community_id', 'title', and 'score', sorted descending by score.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Aggregate high-level community summaries across knowledge graphs to answer corpus-wide questions.",
+    taskDescription: "Implement `graphrag_global_search(query, community_reports, min_weight=0.3)`. Tokenize `query` into alphanumeric lowercased tokens. For each report, tokenize `title + \" \" + summary`, calculate `overlap_ratio = len(query_tokens & report_tokens) / len(query_tokens)`, and compute `score = round(overlap_ratio * report[\"weight\"], 4)`. Filter reports with `score >= min_weight`, and return matching reports sorted descending by score (ties broken ascending by `community_id`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Tokens are matched case-insensitively using re.findall(r\"\\w+\", text.lower()).",
+      "Score is rounded to 4 decimal places.",
+      "Returns empty list if query has no tokens or no reports meet the threshold.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Calculate overlap_ratio = len(query_tokens & rep_tokens) / len(query_tokens).",
+      strong: "Sort with key=lambda x: (-x[\"score\"], x[\"community_id\"]).",
+      concept: "Global search in GraphRAG operates over hierarchical community summaries, allowing systems to answer broad thematic queries that point lookups miss.",
+    },
+    conceptConnections: [
+      { title: "GraphRAG Global Search", route: "/docs/agentic-rag/graphrag-global", description: "Community summarization" },
+      { title: "Hierarchical Indexing", route: "/docs/rag-production/hierarchical-search", description: "Multi-level document clustering" },
+    ],
+    testCases: [
+      { id: "ranked_reports", label: "Matches ranked by score descending", input: {"query": "machine learning optimization techniques", "community_reports": [{"community_id": 1, "title": "Optimization Algorithms", "summary": "Covers machine learning optimization gradient descent and adam.", "weight": 1.0}, {"community_id": 2, "title": "Computer Hardware", "summary": "GPU clusters and tensor cores.", "weight": 0.8}, {"community_id": 3, "title": "Statistical Learning", "summary": "Machine learning theory and techniques.", "weight": 0.9}], "min_weight": 0.3}, expectedOutput: [{"community_id": 1, "title": "Optimization Algorithms", "score": 0.75}, {"community_id": 3, "title": "Statistical Learning", "score": 0.675}], hidden: false },
+      { id: "filtered_out", label: "Reports below min_weight threshold are excluded", input: {"query": "protein folding simulations", "community_reports": [{"community_id": 10, "title": "Biochemistry", "summary": "General cellular biology.", "weight": 0.2}], "min_weight": 0.5}, expectedOutput: [], hidden: false },
+      { id: "tie_breaking_id", label: "Ties broken by community_id ascending", input: {"query": "vector databases", "community_reports": [{"community_id": 5, "title": "Vector Search", "summary": "Vector databases for AI.", "weight": 1.0}, {"community_id": 2, "title": "Vector Indexes", "summary": "Vector databases and HNSW.", "weight": 1.0}], "min_weight": 0.3}, expectedOutput: [{"community_id": 2, "title": "Vector Indexes", "score": 1.0}, {"community_id": 5, "title": "Vector Search", "score": 1.0}], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-8': {
+    id: 'rag-fund-prob-8',
+    title: "Evidence Sufficiency Check",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'evidence_sufficiency_check',
+    functionSignature: "evidence_sufficiency_check(claims: list[str], passages: list[str], overlap_threshold: float = 0.5) -> dict",
+    starterCode: `def evidence_sufficiency_check(claims: list, passages: list, overlap_threshold: float = 0.5) -> dict:
+    """Verify whether retrieved passages provide sufficient evidence for claims.
+    
+    Args:
+        claims: List of factual claim strings.
+        passages: List of retrieved context passage strings.
+        overlap_threshold: Jaccard word similarity threshold to support a claim.
+    Returns:
+        dict with 'sufficient', 'supported_claims', 'missing_claims', and 'coverage'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Audit retrieval sufficiency to ensure claims can be substantiated before generating answers.",
+    taskDescription: "Implement `evidence_sufficiency_check(claims, passages, overlap_threshold=0.5)`. For each claim, check whether any passage achieves Jaccard token similarity `>= overlap_threshold` with the claim words (case-insensitive alphanumeric tokens). A claim is supported if at least one passage matches. Return `{\"sufficient\": bool, \"supported_claims\": list, \"missing_claims\": list, \"coverage\": float}` where coverage is `round(len(supported) / len(claims), 4)` (or 1.0 if claims is empty).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Jaccard similarity = len(A & B) / len(A | B).",
+      "coverage is rounded to 4 decimal places.",
+      "sufficient is True if and only if len(missing_claims) == 0.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Extract tokens with set(re.findall(r\"\\w+\", text.lower())).",
+      strong: "For each claim, iterate through all passages; break early as soon as any passage meets overlap_threshold.",
+      concept: "Evidence sufficiency checking prevents hallucination by ensuring models refuse to answer or trigger fallback retrieval when evidence is incomplete.",
+    },
+    conceptConnections: [
+      { title: "RAG Evaluation & Triad", route: "/docs/rag-production/evaluation", description: "Evidence grounding metrics" },
+      { title: "Agent Safety & Guardrails", route: "/docs/agent-security/guardrails", description: "Hallucination defenses" },
+    ],
+    testCases: [
+      { id: "all_supported", label: "All claims supported by passages", input: {"claims": ["Photosynthesis converts sunlight into glucose.", "Chlorophyll absorbs blue and red light."], "passages": ["Photosynthesis converts sunlight into glucose in plant cells.", "Chlorophyll pigments absorb blue and red light effectively."], "overlap_threshold": 0.5}, expectedOutput: {"sufficient": true, "supported_claims": ["Photosynthesis converts sunlight into glucose.", "Chlorophyll absorbs blue and red light."], "missing_claims": [], "coverage": 1.0}, hidden: false },
+      { id: "missing_claim", label: "One claim missing sufficient evidence", input: {"claims": ["Python was released in 1991.", "Python was created by James Gosling."], "passages": ["Guido van Rossum released Python in 1991."], "overlap_threshold": 0.4}, expectedOutput: {"sufficient": false, "supported_claims": ["Python was released in 1991."], "missing_claims": ["Python was created by James Gosling."], "coverage": 0.5}, hidden: false },
+      { id: "empty_passages", label: "No passages retrieved", input: {"claims": ["Water freezes at zero degrees."], "passages": [], "overlap_threshold": 0.3}, expectedOutput: {"sufficient": false, "supported_claims": [], "missing_claims": ["Water freezes at zero degrees."], "coverage": 0.0}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-9': {
+    id: 'rag-fund-prob-9',
+    title: "Citation Validation",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'citation_validation',
+    functionSignature: "citation_validation(generated_text: str, source_docs: dict[str, str]) -> dict",
+    starterCode: `def citation_validation(generated_text: str, source_docs: dict) -> dict:
+    """Validate bracketed citations in generated responses against source documents.
+    
+    Args:
+        generated_text: Text containing citations like [doc1].
+        source_docs: Dict mapping doc_id to source text string.
+    Returns:
+        dict with valid_citations, invalid_ids, unsupported_citations, and is_valid flag.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Verify that generated answer citations exist in retrieved sources and genuinely support cited sentences.",
+    taskDescription: "Implement `citation_validation(generated_text, source_docs)`. Find all citations matching `\\[([a-zA-Z0-9_-]+)\\]`. If a cited ID is missing from `source_docs`, add it to `invalid_ids`. If the ID exists, check whether the sentence containing the citation shares at least 2 non-stopword tokens with the source document. If fewer than 2 words match, record it in `unsupported_citations`; otherwise record in `valid_citations`. Return sorted unique lists for each category and `is_valid: bool`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Stopwords to exclude: {\"the\", \"is\", \"at\", \"which\", \"on\", \"a\", \"an\", \"and\", \"or\", \"in\", \"of\", \"to\", \"for\", \"with\", \"by\", \"as\", \"this\", \"that\"}.",
+      "Citation outputs must be unique and sorted alphabetically.",
+      "is_valid is True only if invalid_ids and unsupported_citations are both empty.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Extract citation tags using re.findall(r\"\\[([a-zA-Z0-9_-]+)\\]\", sentence).",
+      strong: "Subtract stopwords from both sentence and document token sets before computing set intersection size.",
+      concept: "Citation validation prevents citation hallucination by verifying that source documents actually substantiate the assertions referencing them.",
+    },
+    conceptConnections: [
+      { title: "RAG Evaluation & Attribution", route: "/docs/rag-production/evaluation", description: "Citation attribution checking" },
+      { title: "Agent Factuality Guardrails", route: "/docs/agent-security/guardrails", description: "Faithfulness enforcement" },
+    ],
+    testCases: [
+      { id: "clean_citations", label: "All citations valid and grounded", input: {"generated_text": "Transformers utilize self-attention mechanisms [doc1]. FlashAttention reduces memory bandwidth overhead [doc2].", "source_docs": {"doc1": "Transformers introduce multi-head self-attention mechanisms.", "doc2": "FlashAttention reduces GPU memory bandwidth overhead through tiling."}}, expectedOutput: {"valid_citations": ["doc1", "doc2"], "invalid_ids": [], "unsupported_citations": [], "is_valid": true}, hidden: false },
+      { id: "invalid_and_unsupported", label: "Detects both hallucinated ID and unsupported claim", input: {"generated_text": "Quantum computers crack RSA encryption [doc99]. Neural networks require immense energy [doc1].", "source_docs": {"doc1": "Cooking recipes for baking sourdough bread at home."}}, expectedOutput: {"valid_citations": [], "invalid_ids": ["doc99"], "unsupported_citations": ["doc1"], "is_valid": false}, hidden: false },
+      { id: "no_citations", label: "Text with no citations", input: {"generated_text": "A plain statement without brackets.", "source_docs": {"doc1": "Reference text."}}, expectedOutput: {"valid_citations": [], "invalid_ids": [], "unsupported_citations": [], "is_valid": true}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-10': {
+    id: 'rag-fund-prob-10',
+    title: "Dense-Sparse Hybrid Ranker",
+    difficulty: 'easy',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '15–20 min',
+    functionName: 'dense_sparse_hybrid_ranker',
+    functionSignature: "dense_sparse_hybrid_ranker(dense_scores: dict[str, float], sparse_scores: dict[str, float], alpha: float = 0.5) -> list[tuple[str, float]]",
+    starterCode: `def dense_sparse_hybrid_ranker(dense_scores: dict, sparse_scores: dict, alpha: float = 0.5) -> list:
+    """Combine dense embedding scores and sparse BM25 scores via min-max normalization.
+    
+    Args:
+        dense_scores: Dict mapping doc_id to dense cosine similarity.
+        sparse_scores: Dict mapping doc_id to sparse lexical BM25 score.
+        alpha: Weight parameter in [0.0, 1.0] for dense component.
+    Returns:
+        list of [doc_id, combined_score] sorted descending by score.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Fuse semantic dense embeddings with lexical BM25 keyword search using normalized hybrid ranking.",
+    taskDescription: "Implement `dense_sparse_hybrid_ranker(dense_scores, sparse_scores, alpha=0.5)`. Apply min-max normalization independently to `dense_scores` and `sparse_scores` scaling them to `[0.0, 1.0]` (if min == max, assign 1.0 if value > 0 else 0.0). For every document across both sets, compute `score = round(alpha * norm_dense + (1 - alpha) * norm_sparse, 4)` (missing scores default to 0.0). Return the list of `[doc_id, score]` pairs sorted descending by score, breaking ties by `doc_id` alphabetically.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "alpha is between 0.0 and 1.0.",
+      "Combined score is rounded to 4 decimal places.",
+      "Missing document entries in either retriever default to normalized score 0.0.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Normalize each dictionary: (val - min_val) / (max_val - min_val) when max_val > min_val.",
+      strong: "Union keys with set(dense_scores.keys()) | set(sparse_scores.keys()). Sort with key=lambda x: (-x[1], x[0]).",
+      concept: "Hybrid search combines the semantic generalization of dense embeddings with the exact keyword precision of sparse BM25 retrieval.",
+    },
+    conceptConnections: [
+      { title: "Hybrid Search & Fusion", route: "/docs/rag-production/hybrid-search", description: "Dense-sparse retrieval combination" },
+      { title: "Vector Search Optimization", route: "/docs/vector-search/indexing", description: "Multi-index retrieval" },
+    ],
+    testCases: [
+      { id: "balanced_hybrid", label: "Equal 50/50 weighting of dense and sparse", input: {"dense_scores": {"docA": 0.9, "docB": 0.7, "docC": 0.2}, "sparse_scores": {"docA": 10.0, "docB": 25.0, "docC": 5.0}, "alpha": 0.5}, expectedOutput: [["docB", 0.8571], ["docA", 0.625], ["docC", 0.0]], hidden: false },
+      { id: "dense_only", label: "Pure dense weighting alpha = 1.0", input: {"dense_scores": {"d1": 0.8, "d2": 0.4}, "sparse_scores": {"d1": 5.0, "d2": 20.0}, "alpha": 1.0}, expectedOutput: [["d1", 1.0], ["d2", 0.0]], hidden: false },
+      { id: "disjoint_documents", label: "Documents present in only one retriever", input: {"dense_scores": {"doc1": 0.8}, "sparse_scores": {"doc2": 15.0}, "alpha": 0.5}, expectedOutput: [["doc1", 0.5], ["doc2", 0.5]], hidden: false },
+      { id: "uniform_scores", label: "Uniform scores where min equals max", input: {"dense_scores": {"d1": 0.5, "d2": 0.5}, "sparse_scores": {"d1": 10.0, "d2": 10.0}, "alpha": 0.5}, expectedOutput: [["d1", 1.0], ["d2", 1.0]], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-11': {
+    id: 'rag-fund-prob-11',
+    title: "Parent Document Retriever",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'parent_document_retriever',
+    functionSignature: "parent_document_retriever(child_matches: list[dict], child_to_parent: dict[str, str], parent_docs: dict[str, str], top_k: int = 3) -> list[dict]",
+    starterCode: `def parent_document_retriever(child_matches: list, child_to_parent: dict, parent_docs: dict, top_k: int = 3) -> list:
+    """Retrieve full parent documents corresponding to granular child chunk vector matches.
+    
+    Args:
+        child_matches: List of dicts with 'child_id' and 'score'.
+        child_to_parent: Mapping from child_id to parent_id.
+        parent_docs: Mapping from parent_id to full document text.
+        top_k: Number of parent documents to return.
+    Returns:
+        list of dicts with 'parent_id', 'text', and 'score' (rounded to 4 decimals).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Map high-granularity vector search hits back to comprehensive parent context documents.",
+    taskDescription: "Implement `parent_document_retriever(child_matches, child_to_parent, parent_docs, top_k=3)`. Given a list of granular chunk search hits `child_matches`, map each chunk to its parent document via `child_to_parent`. Aggregate each parent's score as the maximum score among its matched child chunks. Sort unique parent documents descending by score (ties broken by `parent_id` ascending), and return the top `top_k` documents formatted with `parent_id`, `text`, and `score` (rounded to 4 decimal places).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Children not found in child_to_parent or parent_docs are ignored.",
+      "Parent scores are the max child score rounded to 4 decimal places.",
+      "Returns at most top_k items.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Use a dictionary to store max(score) seen for each parent_id.",
+      strong: "Sort parent items with key=lambda x: (-x[1], x[0]). Slice [:top_k].",
+      concept: "Parent document retrieval decouples indexing granularity (small chunks for precise semantic embedding) from generation context (full documents for coherent synthesis).",
+    },
+    conceptConnections: [
+      { title: "Chunking & Hierarchical Documents", route: "/docs/rag-production/chunking", description: "Parent-child document hierarchies" },
+      { title: "Context Window Management", route: "/docs/llm-application/context-window", description: "Balancing context size and relevance" },
+    ],
+    testCases: [
+      { id: "multi_child_aggregation", label: "Aggregates multiple child matches under same parent", input: {"child_matches": [{"child_id": "c1_1", "score": 0.85}, {"child_id": "c1_2", "score": 0.92}, {"child_id": "c2_1", "score": 0.78}], "child_to_parent": {"c1_1": "p1", "c1_2": "p1", "c2_1": "p2"}, "parent_docs": {"p1": "Parent document 1 full chapter on deep learning.", "p2": "Parent document 2 full chapter on reinforcement learning."}, "top_k": 2}, expectedOutput: [{"parent_id": "p1", "text": "Parent document 1 full chapter on deep learning.", "score": 0.92}, {"parent_id": "p2", "text": "Parent document 2 full chapter on reinforcement learning.", "score": 0.78}], hidden: false },
+      { id: "top_k_truncation", label: "Truncates to requested top_k", input: {"child_matches": [{"child_id": "c1", "score": 0.9}, {"child_id": "c2", "score": 0.8}, {"child_id": "c3", "score": 0.7}], "child_to_parent": {"c1": "p1", "c2": "p2", "c3": "p3"}, "parent_docs": {"p1": "Doc 1", "p2": "Doc 2", "p3": "Doc 3"}, "top_k": 1}, expectedOutput: [{"parent_id": "p1", "text": "Doc 1", "score": 0.9}], hidden: false },
+      { id: "unmapped_children", label: "Ignores children without parent mapping", input: {"child_matches": [{"child_id": "unknown", "score": 0.99}], "child_to_parent": {}, "parent_docs": {"p1": "Doc 1"}, "top_k": 2}, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-12': {
+    id: 'rag-fund-prob-12',
+    title: "Hypothetical Document Embeddings (HyDE)",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'hypothetical_document_embeddings_hyde',
+    functionSignature: "hypothetical_document_embeddings_hyde(query_vector: list[float], hypothetical_vectors: list[list[float]], corpus_vectors: dict[str, list[float]], top_k: int = 3) -> list[dict]",
+    starterCode: `def hypothetical_document_embeddings_hyde(query_vector: list, hypothetical_vectors: list, corpus_vectors: dict, top_k: int = 3) -> list:
+    """Compute composite HyDE embedding vector and retrieve top corpus documents.
+    
+    Args:
+        query_vector: List of floats representing original query embedding.
+        hypothetical_vectors: List of embedding vectors for hallucinated answer documents.
+        corpus_vectors: Mapping from doc_id to embedding vector.
+        top_k: Number of nearest documents to return.
+    Returns:
+        list of dicts with 'doc_id' and 'similarity' (rounded to 4 decimals).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Bridge query-document embedding distribution gaps using hypothetical document embeddings (HyDE).",
+    taskDescription: "Implement `hypothetical_document_embeddings_hyde(query_vector, hypothetical_vectors, corpus_vectors, top_k=3)`. Average `query_vector` together with all `hypothetical_vectors` element-wise to form the composite HyDE vector. Compute cosine similarity between the HyDE vector and every document vector in `corpus_vectors`. Return the top `top_k` documents sorted descending by similarity (rounded to 4 decimal places), breaking ties alphabetically by `doc_id`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "All vectors have identical dimension length.",
+      "Cosine similarity is rounded to 4 decimal places.",
+      "Similarity is dot(a, b) / (norm(a) * norm(b)).",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Calculate element-wise mean across all vectors: sum(v[i] for v in all_vectors) / len(all_vectors).",
+      strong: "Cosine similarity helper: dot / (math.sqrt(sum(a*a)) * math.sqrt(sum(b*b))).",
+      concept: "HyDE maps queries to pseudo-document space where embeddings share stylistic and lexical characteristics with corpus documents rather than short questions.",
+    },
+    conceptConnections: [
+      { title: "Query Transformations & HyDE", route: "/docs/rag-production/query-transformations", description: "Hypothetical embeddings" },
+      { title: "Vector Similarity & Metrics", route: "/docs/vector-search/similarity-metrics", description: "Cosine similarity and indexing" },
+    ],
+    testCases: [
+      { id: "basic_hyde", label: "Average hypothetical vectors and retrieve closest match", input: {"query_vector": [1.0, 0.0, 0.0], "hypothetical_vectors": [[0.8, 0.6, 0.0], [0.9, 0.4, 0.1]], "corpus_vectors": {"docA": [0.95, 0.31, 0.0], "docB": [0.0, 1.0, 0.0], "docC": [0.0, 0.0, 1.0]}, "top_k": 2}, expectedOutput: [{"doc_id": "docA", "similarity": 0.9986}, {"doc_id": "docB", "similarity": 0.3471}], hidden: false },
+      { id: "no_hypotheticals", label: "Zero hypothetical vectors defaults to query vector alone", input: {"query_vector": [0.0, 1.0], "hypothetical_vectors": [], "corpus_vectors": {"doc1": [0.0, 1.0], "doc2": [1.0, 0.0]}, "top_k": 1}, expectedOutput: [{"doc_id": "doc1", "similarity": 1.0}], hidden: false },
+      { id: "tie_breaking_sim", label: "Ties broken alphabetically by doc_id", input: {"query_vector": [1.0, 1.0], "hypothetical_vectors": [[1.0, 1.0]], "corpus_vectors": {"docZ": [1.0, 1.0], "docA": [1.0, 1.0]}, "top_k": 2}, expectedOutput: [{"doc_id": "docA", "similarity": 1.0}, {"doc_id": "docZ", "similarity": 1.0}], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-13': {
+    id: 'rag-fund-prob-13',
+    title: "Contextual Compression Retriever",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'contextual_compression_retriever',
+    functionSignature: "contextual_compression_retriever(query: str, documents: list[dict], min_relevance: float = 0.5) -> list[dict]",
+    starterCode: `def contextual_compression_retriever(query: str, documents: list, min_relevance: float = 0.5) -> list:
+    """Filter retrieved documents sentence-by-sentence to compress context.
+    
+    Args:
+        query: User input query string.
+        documents: List of dicts with 'id' and 'text'.
+        min_relevance: Minimum query keyword overlap ratio per sentence.
+    Returns:
+        list of dicts with 'id', 'compressed_text', and 'retained_count'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Strip conversational fluff and extraneous context to pack dense, relevant evidence into prompt windows.",
+    taskDescription: "Implement `contextual_compression_retriever(query, documents, min_relevance=0.5)`. For each document, segment `text` into sentences using sentence punctuation boundaries (`.`, `!`, `?`). For each sentence, compute its query keyword overlap ratio `len(query_words & sentence_words) / len(query_words)`. Retain only sentences where this ratio is `>= min_relevance`. If any sentences are retained, join them with spaces and record `{\"id\": doc_id, \"compressed_text\": joined_text, \"retained_count\": len(retained)}`. Discard documents with zero retained sentences.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Sentence splitting matches sentence ends followed by whitespace: re.split(r\"(?<=[.!?])\\s+\", text).",
+      "Case-insensitive word matching using alphanumeric tokens.",
+      "Returns empty list if no document has retained sentences.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Calculate overlap = len(query_words & sentence_words) / len(query_words).",
+      strong: "Join retained sentences with \" \".join(retained). Check if retained is truthy before appending to output.",
+      concept: "Contextual compression shrinks prompt tokens by discarding irrelevant passages within otherwise relevant documents before passing them to the generator.",
+    },
+    conceptConnections: [
+      { title: "Context Window & Compression", route: "/docs/llm-application/context-window", description: "Context budget optimization" },
+      { title: "Post-Retrieval Processing", route: "/docs/rag-production/reranking", description: "Filtering and compression techniques" },
+    ],
+    testCases: [
+      { id: "filters_irrelevant_sentences", label: "Keeps only query-relevant sentences", input: {"query": "transformer self attention mechanism", "documents": [{"id": "doc1", "text": "The transformer self attention mechanism scales quadratically. Outside the weather was sunny and clear. It optimizes token routing."}], "min_relevance": 0.5}, expectedOutput: [{"id": "doc1", "compressed_text": "The transformer self attention mechanism scales quadratically.", "retained_count": 1}], hidden: false },
+      { id: "discards_entire_doc", label: "Discards document when no sentence meets threshold", input: {"query": "deep reinforcement learning", "documents": [{"id": "doc2", "text": "Baking bread requires flour and yeast. Knead the dough thoroughly."}], "min_relevance": 0.4}, expectedOutput: [], hidden: false },
+      { id: "multi_sentence_retention", label: "Retains multiple relevant sentences", input: {"query": "gradient descent learning rate", "documents": [{"id": "doc3", "text": "Gradient descent updates weights using learning rate. High learning rate causes divergence in gradient descent. Irrelevant filler text."}], "min_relevance": 0.5}, expectedOutput: [{"id": "doc3", "compressed_text": "Gradient descent updates weights using learning rate. High learning rate causes divergence in gradient descent.", "retained_count": 2}], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-14': {
+    id: 'rag-fund-prob-14',
+    title: "Multi-Query Translation Generator",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'multi_query_translation_generator',
+    functionSignature: "multi_query_translation_generator(query: str, query_variants: list[str], retrieval_results: dict[str, list[str]], top_k: int = 5) -> list[str]",
+    starterCode: `def multi_query_translation_generator(query: str, query_variants: list, retrieval_results: dict, top_k: int = 5) -> list:
+    """Fuse document retrieval results across multi-query reformulations.
+    
+    Args:
+        query: Original input query.
+        query_variants: List of paraphrased or translated alternative queries.
+        retrieval_results: Dict mapping each query string to its retrieved doc_ids.
+        top_k: Maximum number of merged document IDs to return.
+    Returns:
+        list of top_k unique document IDs.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Fuse retrieval results across multiple generated query perspectives to mitigate semantic variance.",
+    taskDescription: "Implement `multi_query_translation_generator(query, query_variants, retrieval_results, top_k=5)`. Combine `query` and all distinct `query_variants`. For each document retrieved across these queries, track its frequency count (how many queries retrieved it) and its best (minimum 0-based) rank. Compute each document's composite score as `round(count + 1.0 / (best_rank + 1), 4)`. Return the top `top_k` unique document IDs sorted descending by score, breaking ties alphabetically by document ID.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Queries without entries in retrieval_results are treated as returning empty lists.",
+      "Best rank is 0-based minimum index across all lists where the doc appears.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Build a dictionary mapping doc_id to {\"count\": c, \"best_rank\": r}.",
+      strong: "Score = round(count + 1.0 / (best_rank + 1), 4). Sort with key=lambda x: (-x[0], x[1]).",
+      concept: "Multi-query expansion generates diverse prompt angles using an LLM to retrieve from distinct vector clusters before merging candidates.",
+    },
+    conceptConnections: [
+      { title: "Query Expansion & Reformulation", route: "/docs/rag-production/query-transformations", description: "Multi-query generation" },
+      { title: "Reciprocal Rank Fusion", route: "/docs/rag-production/hybrid-search", description: "Candidate fusion algorithms" },
+    ],
+    testCases: [
+      { id: "variant_aggregation", label: "Aggregate across 3 query perspectives", input: {"query": "climate change impacts", "query_variants": ["global warming consequences", "rising sea levels effects"], "retrieval_results": {"climate change impacts": ["doc1", "doc2", "doc3"], "global warming consequences": ["doc2", "doc4", "doc1"], "rising sea levels effects": ["doc2", "doc5", "doc6"]}, "top_k": 3}, expectedOutput: ["doc2", "doc1", "doc4"], hidden: false },
+      { id: "tie_breaking_docs", label: "Ties broken alphabetically by doc ID", input: {"query": "python async", "query_variants": ["python asyncio concurrency"], "retrieval_results": {"python async": ["docB"], "python asyncio concurrency": ["docA"]}, "top_k": 2}, expectedOutput: ["docA", "docB"], hidden: false },
+      { id: "empty_retrieval_dict", label: "No documents found for queries", input: {"query": "obscure term", "query_variants": ["another term"], "retrieval_results": {}, "top_k": 5}, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-15': {
+    id: 'rag-fund-prob-15',
+    title: "Reciprocal Rank Fusion (RRF)",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'reciprocal_rank_fusion_rrf',
+    functionSignature: "reciprocal_rank_fusion_rrf(ranked_lists: list[list[str]], k: int = 60) -> list[dict]",
+    starterCode: `def reciprocal_rank_fusion_rrf(ranked_lists: list, k: int = 60) -> list:
+    """Merge ranked document lists using Reciprocal Rank Fusion (RRF).
+    
+    Args:
+        ranked_lists: List of document ID lists, each sorted by retriever rank.
+        k: Smoothing constant parameter (default 60).
+    Returns:
+        list of dicts with 'doc_id' and 'rrf_score' (rounded to 6 decimals), sorted descending.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Reciprocal Rank Fusion (RRF) to merge heterogeneously scaled retrieval rankings.",
+    taskDescription: "Implement `reciprocal_rank_fusion_rrf(ranked_lists, k=60)`. For each document `d` across all ranked lists, compute its RRF score: `score(d) = sum(1.0 / (k + rank))` where `rank` is the 1-based position of document `d` in each list it appears in. Return a list of dictionaries with `doc_id` and `rrf_score` (rounded to 6 decimal places), sorted descending by `rrf_score`, breaking ties alphabetically by `doc_id`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "rank is 1-based: rank = index + 1.",
+      "rrf_score is rounded to 6 decimal places.",
+      "Sorted descending by rrf_score, tie-broken ascending by doc_id.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Remember to use 1-based ranks: enumerate(r_list, start=1).",
+      strong: "Accumulate score in a dictionary: scores[doc] += 1.0 / (k + rank).",
+      concept: "RRF combines ranked lists without requiring comparable raw score scales, making it ideal for merging sparse BM25 and dense vector results.",
+    },
+    conceptConnections: [
+      { title: "Reciprocal Rank Fusion in Production", route: "/docs/rag-production/hybrid-search", description: "RRF algorithm mechanics" },
+      { title: "Dense-Sparse Ranking", route: "/docs/vector-search/hybrid-search", description: "Combining disparate search scoring methods" },
+    ],
+    testCases: [
+      { id: "standard_rrf", label: "Standard 2-list reciprocal rank fusion", input: {"ranked_lists": [["docA", "docB", "docC"], ["docB", "docD", "docA"]], "k": 60}, expectedOutput: [{"doc_id": "docB", "rrf_score": 0.032522}, {"doc_id": "docA", "rrf_score": 0.032266}, {"doc_id": "docD", "rrf_score": 0.016129}, {"doc_id": "docC", "rrf_score": 0.015873}], hidden: false },
+      { id: "single_list", label: "Single ranked list", input: {"ranked_lists": [["doc1", "doc2", "doc3"]], "k": 60}, expectedOutput: [{"doc_id": "doc1", "rrf_score": 0.016393}, {"doc_id": "doc2", "rrf_score": 0.016129}, {"doc_id": "doc3", "rrf_score": 0.015873}], hidden: false },
+      { id: "tie_breaking_rrf", label: "Tie breaking with identical ranks", input: {"ranked_lists": [["docZ", "docA"]], "k": 10}, expectedOutput: [{"doc_id": "docZ", "rrf_score": 0.090909}, {"doc_id": "docA", "rrf_score": 0.083333}], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-16': {
+    id: 'rag-fund-prob-16',
+    title: "Cross-Encoder Re-ranker",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'cross_encoder_re_ranker',
+    functionSignature: "cross_encoder_re_ranker(query: str, candidate_docs: list[dict], weights: dict[str, float], top_n: int = 3) -> list[dict]",
+    starterCode: `def cross_encoder_re_ranker(query: str, candidate_docs: list, weights: dict, top_n: int = 3) -> list:
+    """Re-score candidate documents using cross-attention query-document feature fusion.
+    
+    Args:
+        query: Query string.
+        candidate_docs: List of dicts with 'id', 'title', and 'text'.
+        weights: Dict with float weights for 'exact', 'title', and 'length'.
+        top_n: Number of top documents to return.
+    Returns:
+        list of candidate dicts with 'rerank_score' added, sorted descending by score.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Re-rank candidate documents using full joint query-document interaction features.",
+    taskDescription: "Implement `cross_encoder_re_ranker(query, candidate_docs, weights, top_n=3)`. For each candidate document, compute three features: `exact_ratio` (fraction of query tokens present in text), `title_match` (1.0 if any query token is in doc title, else 0.0), and `length_factor` (`min(1.0, len(text.split()) / 50.0)`). Compute `rerank_score = round(weights['exact'] * exact_ratio + weights['title'] * title_match + weights['length'] * length_factor, 4)`. Return top `top_n` documents sorted descending by `rerank_score` (ties broken ascending by `id`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "weights dict contains float keys \"exact\", \"title\", \"length\".",
+      "Tokens are matched case-insensitively using re.findall(r\"\\w+\", text.lower()).",
+      "rerank_score is rounded to 4 decimal places.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Calculate exact_ratio = len(q_words & text_words) / len(q_words).",
+      strong: "Add \"rerank_score\" to a copy of each candidate dict. Sort with key=lambda x: (-x[\"rerank_score\"], x[\"id\"]).",
+      concept: "Cross-encoder re-ranking evaluates query-document pairs simultaneously, capturing full cross-attention interactions that dual-encoder bi-encoders miss.",
+    },
+    conceptConnections: [
+      { title: "Cross-Encoders & Re-ranking", route: "/docs/rag-production/reranking", description: "Neural re-ranking models" },
+      { title: "Transformer Cross-Attention", route: "/docs/deep-learning/attention-transformers", description: "Joint sequence encoding" },
+    ],
+    testCases: [
+      { id: "rerank_candidates", label: "Re-ranks candidates by exact, title, and length", input: {"query": "GPU tensor memory", "candidate_docs": [{"id": "d1", "title": "CPU Caching", "text": "General memory architectures for desktop CPUs."}, {"id": "d2", "title": "GPU Hardware", "text": "GPU tensor memory bandwidth and high memory capacity for neural training."}, {"id": "d3", "title": "Tensor Cores", "text": "Tensor operations execute on specialized hardware matrix units."}], "weights": {"exact": 0.5, "title": 0.3, "length": 0.2}, "top_n": 2}, expectedOutput: [{"id": "d2", "title": "GPU Hardware", "text": "GPU tensor memory bandwidth and high memory capacity for neural training.", "rerank_score": 0.844}, {"id": "d3", "title": "Tensor Cores", "text": "Tensor operations execute on specialized hardware matrix units.", "rerank_score": 0.4987}], hidden: false },
+      { id: "title_weight_dominance", label: "Title match elevates ranking when title weight high", input: {"query": "quantum", "candidate_docs": [{"id": "doc1", "title": "Quantum Computing Guide", "text": "Introductory text."}, {"id": "doc2", "title": "Classical Algorithms", "text": "Quantum references mentioned inside body."}], "weights": {"exact": 0.1, "title": 0.8, "length": 0.1}, "top_n": 1}, expectedOutput: [{"id": "doc1", "title": "Quantum Computing Guide", "text": "Introductory text.", "rerank_score": 0.804}], hidden: false },
+      { id: "empty_candidate_list", label: "Empty candidate list", input: {"query": "search term", "candidate_docs": [], "weights": {"exact": 0.5, "title": 0.3, "length": 0.2}, "top_n": 3}, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-17': {
+    id: 'rag-fund-prob-17',
+    title: "Vector Index HNSW Tuner",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'vector_index_hnsw_tuner',
+    functionSignature: "vector_index_hnsw_tuner(dataset_size: int, target_recall: float, latency_budget_ms: float) -> dict",
+    starterCode: `def vector_index_hnsw_tuner(dataset_size: int, target_recall: float, latency_budget_ms: float) -> dict:
+    """Calculate optimized HNSW vector index construction and search hyperparameters.
+    
+    Args:
+        dataset_size: Total number of vectors in index.
+        target_recall: Desired recall fraction in [0.5, 1.0].
+        latency_budget_ms: Target query search latency in milliseconds (> 0).
+    Returns:
+        dict with 'M', 'ef_construction', 'ef_search', and 'estimated_memory_mb'.
+    Raises:
+        ValueError: If target_recall not in [0.5, 1.0] or latency_budget_ms <= 0.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Tune HNSW graph parameters to navigate speed-accuracy-memory trade-offs in vector retrieval.",
+    taskDescription: "Implement `vector_index_hnsw_tuner(dataset_size, target_recall, latency_budget_ms)`. If `target_recall` is not in `[0.5, 1.0]` or `latency_budget_ms <= 0`, raise `ValueError`. Choose `M`: 64 if target_recall >= 0.98, 32 if target_recall >= 0.95, else 16. Compute `ef_construction = min(512, max(64, int(M * 2 * (1 + target_recall))))`. Compute `ef_search = min(ef_construction, max(16, int(M * (target_recall / (1.0001 - target_recall)) * min(1.0, latency_budget_ms / 20.0))))`. Estimate index memory in MB as `round(dataset_size * (M * 8 + 128 * 4) / (1024 * 1024), 2)`. Return dict with all four values.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Raise ValueError if target_recall < 0.5 or target_recall > 1.0.",
+      "Raise ValueError if latency_budget_ms <= 0.",
+      "estimated_memory_mb is rounded to 2 decimal places.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Check parameter validation bounds first before computing values.",
+      strong: "Clamp ef_construction between 64 and 512, and ef_search between 16 and ef_construction.",
+      concept: "Hierarchical Navigable Small World (HNSW) graphs trade index build time and RAM footprint for logarithmic search complexity.",
+    },
+    conceptConnections: [
+      { title: "Vector Indexing & HNSW", route: "/docs/vector-search/hnsw-indexing", description: "HNSW graph mechanics" },
+      { title: "Production Vector Systems", route: "/docs/vector-search/performance-tuning", description: "Recall and latency optimization" },
+    ],
+    testCases: [
+      { id: "high_recall_budget", label: "High recall target with generous latency budget", input: {"dataset_size": 100000, "target_recall": 0.98, "latency_budget_ms": 50.0}, expectedOutput: {"M": 64, "ef_construction": 253, "ef_search": 253, "estimated_memory_mb": 97.66}, hidden: false },
+      { id: "low_latency_budget", label: "Strict latency budget constraining ef_search", input: {"dataset_size": 50000, "target_recall": 0.9, "latency_budget_ms": 5.0}, expectedOutput: {"M": 16, "ef_construction": 64, "ef_search": 35, "estimated_memory_mb": 30.52}, hidden: false },
+      { id: "invalid_recall_error", label: "Invalid target recall raises ValueError", input: {"dataset_size": 10000, "target_recall": 0.3, "latency_budget_ms": 10.0}, expectError: "ValueError", hidden: false },
+      { id: "large_dataset_memory", label: "Large dataset memory estimation", input: {"dataset_size": 1000000, "target_recall": 0.96, "latency_budget_ms": 20.0}, expectedOutput: {"M": 32, "ef_construction": 125, "ef_search": 125, "estimated_memory_mb": 732.42}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-18': {
+    id: 'rag-fund-prob-18',
+    title: "Chunk Boundary Aware Splitter",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'chunk_boundary_aware_splitter',
+    functionSignature: "chunk_boundary_aware_splitter(text: str, max_chunk_size: int = 150, overlap: int = 30) -> list[str]",
+    starterCode: `def chunk_boundary_aware_splitter(text: str, max_chunk_size: int = 150, overlap: int = 30) -> list:
+    """Split text into chunks respecting word boundaries and target overlap.
+    
+    Args:
+        text: Input text string.
+        max_chunk_size: Maximum character count per chunk.
+        overlap: Target character overlap between consecutive chunks.
+    Returns:
+        list of chunk strings.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Split documents at clean linguistic token boundaries without cutting words in half.",
+    taskDescription: "Implement `chunk_boundary_aware_splitter(text, max_chunk_size=150, overlap=30)`. Split `text` into words on whitespace. Accumulate words into chunks such that the joined chunk length `\" \".join(chunk_words)` does not exceed `max_chunk_size` (unless a single word exceeds it alone). When a chunk is full, emit it and prime the next chunk with the trailing words from the previous chunk whose joined length does not exceed `overlap`. Return the resulting list of chunk strings.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Never split inside a word.",
+      "Chunks are joined with a single space.",
+      "Empty input returns [].",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Split words = text.split(). Greedily append words until \" \".join(words) exceeds max_chunk_size.",
+      strong: "For overlap: traverse curr_words in reverse, accumulating words as long as their joined length <= overlap.",
+      concept: "Naively cutting text by raw character counts truncates mid-word, producing broken subword tokens that harm embedding quality.",
+    },
+    conceptConnections: [
+      { title: "Document Chunking Strategies", route: "/docs/rag-production/chunking", description: "Boundary-aware text chunking" },
+      { title: "Tokenization & Embeddings", route: "/docs/deep-learning/tokenization", description: "Subword segmentation" },
+    ],
+    testCases: [
+      { id: "standard_chunking", label: "Chunking text with natural word boundaries", input: {"text": "Transformers are deep learning models designed for processing sequential data like natural language and audio.", "max_chunk_size": 50, "overlap": 15}, expectedOutput: ["Transformers are deep learning models designed for", "designed for processing sequential data like", "data like natural language and audio."], hidden: false },
+      { id: "single_chunk_fits", label: "Short text fitting completely in one chunk", input: {"text": "Short document snippet.", "max_chunk_size": 100, "overlap": 20}, expectedOutput: ["Short document snippet."], hidden: false },
+      { id: "empty_text", label: "Empty string returns empty list", input: {"text": "", "max_chunk_size": 50, "overlap": 10}, expectedOutput: [], hidden: false },
+      { id: "long_paragraph", label: "Multi-sentence text with exact word boundary splits", input: {"text": "AlphaFold predicts 3D protein structures directly from primary amino acid sequences. This revolutionizes biological research across academia and pharmaceutical medicine.", "max_chunk_size": 60, "overlap": 20}, expectedOutput: ["AlphaFold predicts 3D protein structures directly from", "directly from primary amino acid sequences. This", "acid sequences. This revolutionizes biological research", "biological research across academia and pharmaceutical", "and pharmaceutical medicine."], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-19': {
+    id: 'rag-fund-prob-19',
+    title: "Semantic Chunking Engine",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'semantic_chunking_engine',
+    functionSignature: "semantic_chunking_engine(sentences: list[str], sentence_embeddings: list[list[float]], similarity_threshold: float = 0.75) -> list[list[str]]",
+    starterCode: `def semantic_chunking_engine(sentences: list, sentence_embeddings: list, similarity_threshold: float = 0.75) -> list:
+    """Group contiguous sentences into chunks at semantic topic shift boundaries.
+    
+    Args:
+        sentences: List of sentence strings.
+        sentence_embeddings: Parallel list of embedding vectors.
+        similarity_threshold: Cosine similarity cutoff for chunk splitting.
+    Returns:
+        list of sentence lists (chunks).
+    Raises:
+        ValueError: If len(sentences) != len(sentence_embeddings).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Split documents dynamically at natural semantic transitions rather than arbitrary character lengths.",
+    taskDescription: "Implement `semantic_chunking_engine(sentences, sentence_embeddings, similarity_threshold=0.75)`. Raise `ValueError` if `len(sentences) != len(sentence_embeddings)`. If `sentences` is empty, return `[]`. Compute cosine similarity between each consecutive pair of sentence embeddings `(i, i+1)`. If `cosine_sim < similarity_threshold`, split and begin a new chunk. Return the list of chunks, where each chunk is a list of its sentences.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Raise ValueError on sentence and embedding count mismatch.",
+      "Cosine similarity: dot(a, b) / (norm(a) * norm(b)).",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Iterate through range(len(sentences) - 1) and calculate cosine similarity between consecutive vectors.",
+      strong: "When similarity < threshold, append curr_chunk to chunks and reset curr_chunk = [sentences[i+1]]. Don't forget to append the final curr_chunk.",
+      concept: "Semantic chunking places chunk boundaries precisely where topic coherence drops, preventing relevant thoughts from being arbitrarily split.",
+    },
+    conceptConnections: [
+      { title: "Semantic Chunking Techniques", route: "/docs/rag-production/chunking", description: "Embedding distance chunking" },
+      { title: "Sentence Embeddings", route: "/docs/deep-learning/embeddings", description: "Dense representations of sentences" },
+    ],
+    testCases: [
+      { id: "clear_topic_split", label: "Splits when adjacent sentence similarity drops below threshold", input: {"sentences": ["Convolutional layers extract spatial image features.", "Pooling layers downsample feature maps.", "The Federal Reserve increased benchmark interest rates.", "Inflation trends shifted in global bond markets."], "sentence_embeddings": [[0.9, 0.1, 0.0], [0.85, 0.15, 0.0], [0.0, 0.8, 0.2], [0.0, 0.85, 0.15]], "similarity_threshold": 0.7}, expectedOutput: [["Convolutional layers extract spatial image features.", "Pooling layers downsample feature maps."], ["The Federal Reserve increased benchmark interest rates.", "Inflation trends shifted in global bond markets."]], hidden: false },
+      { id: "homogeneous_topic", label: "All sentences remain in a single chunk", input: {"sentences": ["Sentence 1.", "Sentence 2."], "sentence_embeddings": [[1.0, 0.0], [0.99, 0.01]], "similarity_threshold": 0.8}, expectedOutput: [["Sentence 1.", "Sentence 2."]], hidden: false },
+      { id: "length_mismatch_error", label: "Mismatched list lengths raises ValueError", input: {"sentences": ["S1", "S2"], "sentence_embeddings": [[1.0, 0.0]], "similarity_threshold": 0.5}, expectError: "ValueError", hidden: false },
+      { id: "empty_sentences", label: "Empty sentence list returns empty list", input: {"sentences": [], "sentence_embeddings": [], "similarity_threshold": 0.75}, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-20': {
+    id: 'rag-fund-prob-20',
+    title: "Metadata Filtering Router",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'metadata_filtering_router',
+    functionSignature: "metadata_filtering_router(query: str, available_filters: dict[str, str]) -> dict",
+    starterCode: `def metadata_filtering_router(query: str, available_filters: dict) -> dict:
+    """Parse structured metadata filter constraints from natural language search queries.
+    
+    Args:
+        query: Raw user query string potentially containing filter patterns like field:value.
+        available_filters: Dict mapping allowed field names to expected types ('int', 'float', 'bool', 'string').
+    Returns:
+        dict with 'filters' (list of filter dicts sorted by field) and 'clean_query' (str).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Extract structured SQL-like metadata constraints from search queries to filter vector databases.",
+    taskDescription: "Implement `metadata_filtering_router(query, available_filters)`. Scan `query` for filter expressions matching `field[op]value` where operator is one of `:`, `>`, `<`, `=`. If `field` is present in `available_filters`, parse `value` into its declared type (`int`, `float`, `bool`, or `string`), and record `{\"field\": field, \"operator\": op, \"value\": parsed_value}`. Strip all recognized filter tokens from the query, normalize excess whitespace in `clean_query`, and return `{\"filters\": filters, \"clean_query\": clean_query}` sorted alphabetically by field.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Operators supported: \":\", \">\", \"<\", \"=\".",
+      "Filters with fields not present in available_filters remain in clean_query.",
+      "Filters list is sorted alphabetically by field name.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Regex pattern r\"(\\b[a-zA-Z_]\\w*)([:><=])([a-zA-Z0-9_.-]+)\" finds candidate filter tokens.",
+      strong: "Remove matched filter spans from right to left using reversed span indices to keep string offsets valid.",
+      concept: "Self-querying retrieval extracts structured metadata filters to execute pre-filtering in vector stores before performing ANN search.",
+    },
+    conceptConnections: [
+      { title: "Metadata Filtering & Hybrid Search", route: "/docs/vector-search/metadata-filtering", description: "Pre/post-filtering vector indices" },
+      { title: "Query Routing & Intent Parsing", route: "/docs/rag-production/query-transformations", description: "Extracting structured intents" },
+    ],
+    testCases: [
+      { id: "extract_int_and_str", label: "Extracts year integer filter and category string filter", input: {"query": "find research papers year>2022 category:ai on transformers", "available_filters": {"year": "int", "category": "string"}}, expectedOutput: {"filters": [{"field": "category", "operator": ":", "value": "ai"}, {"field": "year", "operator": ">", "value": 2022}], "clean_query": "find research papers on transformers"}, hidden: false },
+      { id: "ignore_unknown_filter", label: "Ignores fields not in available_filters", input: {"query": "query with unknown:filter and year:2024", "available_filters": {"year": "int"}}, expectedOutput: {"filters": [{"field": "year", "operator": ":", "value": 2024}], "clean_query": "query with unknown:filter and"}, hidden: false },
+      { id: "no_filters_present", label: "Plain query without filter syntax", input: {"query": "how does self attention work", "available_filters": {"year": "int", "department": "string"}}, expectedOutput: {"filters": [], "clean_query": "how does self attention work"}, hidden: false },
+      { id: "boolean_filter_extraction", label: "Boolean filter parsing", input: {"query": "list active employees is_active:true department:finance", "available_filters": {"is_active": "bool", "department": "string"}}, expectedOutput: {"filters": [{"field": "department", "operator": ":", "value": "finance"}, {"field": "is_active", "operator": ":", "value": true}], "clean_query": "list active employees"}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-21': {
+    id: 'rag-fund-prob-21',
+    title: "Document Freshness Invalidator",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'document_freshness_invalidator',
+    functionSignature: "document_freshness_invalidator(documents: list[dict], current_timestamp: int, ttl_seconds: int) -> dict",
+    starterCode: `def document_freshness_invalidator(documents: list, current_timestamp: int, ttl_seconds: int) -> dict:
+    """Invalidate expired documents and supersede obsolete versions in RAG corpora.
+    
+    Args:
+        documents: List of dicts with 'id', 'doc_id', 'version', and 'timestamp'.
+        current_timestamp: Current epoch integer timestamp.
+        ttl_seconds: Time-to-live expiration window in seconds.
+    Returns:
+        dict with sorted lists for 'active', 'expired', and 'superseded'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Maintain index currency by purging stale chunks and superseding outdated document versions.",
+    taskDescription: "Implement `document_freshness_invalidator(documents, current_timestamp, ttl_seconds)`. A document is expired if `current_timestamp - doc[\"timestamp\"] > ttl_seconds`. Among non-expired documents sharing the same `doc_id`, the one with the highest `version` is active; any lower-version non-expired documents for that `doc_id` are superseded. Return `{\"active\": sorted(active_ids), \"expired\": sorted(expired_ids), \"superseded\": sorted(superseded_ids)}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Each output list must be sorted alphabetically by id.",
+      "Expired documents cannot be active or superseded.",
+      "Timestamps are positive integers.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Filter documents into expired (current_timestamp - ts > ttl) and valid.",
+      strong: "Group valid documents by root doc_id. Sort versions descending; first is active, rest are superseded.",
+      concept: "Continuous document ingestion pipelines must handle TTL expiration and deduplicate versioned document updates.",
+    },
+    conceptConnections: [
+      { title: "RAG Data Lifecycle & Freshness", route: "/docs/rag-production/data-pipelines", description: "Corpus freshness management" },
+      { title: "Vector Database Operations", route: "/docs/vector-search/lifecycle", description: "Index updates and deletions" },
+    ],
+    testCases: [
+      { id: "freshness_lifecycle", label: "Separates active, expired, and superseded documents", input: {"documents": [{"id": "d1_v1", "doc_id": "d1", "version": 1, "timestamp": 1000}, {"id": "d1_v2", "doc_id": "d1", "version": 2, "timestamp": 1500}, {"id": "d2_v1", "doc_id": "d2", "version": 1, "timestamp": 200}, {"id": "d3_v1", "doc_id": "d3", "version": 1, "timestamp": 1800}], "current_timestamp": 2000, "ttl_seconds": 1000}, expectedOutput: {"active": ["d1_v2", "d3_v1"], "expired": ["d2_v1"], "superseded": ["d1_v1"]}, hidden: false },
+      { id: "all_fresh_unique", label: "All documents fresh and distinct", input: {"documents": [{"id": "docA", "doc_id": "docA", "version": 1, "timestamp": 900}, {"id": "docB", "doc_id": "docB", "version": 1, "timestamp": 950}], "current_timestamp": 1000, "ttl_seconds": 500}, expectedOutput: {"active": ["docA", "docB"], "expired": [], "superseded": []}, hidden: false },
+      { id: "all_expired", label: "All documents older than TTL", input: {"documents": [{"id": "old1", "doc_id": "old1", "version": 1, "timestamp": 100}], "current_timestamp": 2000, "ttl_seconds": 500}, expectedOutput: {"active": [], "expired": ["old1"], "superseded": []}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-22': {
+    id: 'rag-fund-prob-22',
+    title: "Embedding Cache Layer",
+    difficulty: 'medium',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '20–25 min',
+    functionName: 'embedding_cache_layer',
+    functionSignature: "embedding_cache_layer(queries: list[str], precomputed_embeddings: dict[str, list[float]], max_cache_size: int = 3) -> dict",
+    starterCode: `def embedding_cache_layer(queries: list, precomputed_embeddings: dict, max_cache_size: int = 3) -> dict:
+    """Simulate an LRU embedding cache to eliminate redundant vector embedding calls.
+    
+    Args:
+        queries: Sequential stream of query strings.
+        precomputed_embeddings: Mapping from normalized query to embedding vector.
+        max_cache_size: Maximum entries the LRU cache holds before eviction.
+    Returns:
+        dict with 'results', 'hits', 'misses', 'evictions', and 'cached_queries'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement an LRU embedding cache layer to save latency and inference cost on repeated search queries.",
+    taskDescription: "Implement `embedding_cache_layer(queries, precomputed_embeddings, max_cache_size=3)`. Process queries sequentially. Normalize each query via `query.strip().lower()`. If the normalized query is in cache, record a cache hit and move it to the most recently used position. Otherwise, record a cache miss; if the cache has reached `max_cache_size`, evict the least recently used item (`evictions += 1`) and add the query. Return `{\"results\": {q_norm: embedding}, \"hits\": hits, \"misses\": misses, \"evictions\": evictions, \"cached_queries\": list(cache)}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Normalization is strip() followed by lower().",
+      "Cache follows strict Least Recently Used (LRU) eviction.",
+      "max_cache_size >= 1.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Maintain an ordered list of keys representing cache order from oldest (index 0) to newest.",
+      strong: "On hit: cache.remove(key); cache.append(key). On miss: if len(cache) >= max_cache_size: cache.pop(0); cache.append(key).",
+      concept: "Embedding generation accounts for a major portion of retrieval latency; semantic and exact caching drastically reduces end-to-end response times.",
+    },
+    conceptConnections: [
+      { title: "Inference Optimization & Caching", route: "/docs/llm-inference/kv-cache", description: "Caching strategies in AI systems" },
+      { title: "RAG Performance & Latency", route: "/docs/rag-production/performance", description: "Vector cache architectures" },
+    ],
+    testCases: [
+      { id: "lru_cache_lifecycle", label: "Cache hits, misses, and LRU eviction sequence", input: {"queries": ["what is rag", "dense retrieval", "what is rag", "sparse bm25", "reranking"], "precomputed_embeddings": {"what is rag": [0.1, 0.2], "dense retrieval": [0.3, 0.4], "sparse bm25": [0.5, 0.6], "reranking": [0.7, 0.8]}, "max_cache_size": 3}, expectedOutput: {"results": {"what is rag": [0.1, 0.2], "dense retrieval": [0.3, 0.4], "sparse bm25": [0.5, 0.6], "reranking": [0.7, 0.8]}, "hits": 1, "misses": 4, "evictions": 1, "cached_queries": ["what is rag", "sparse bm25", "reranking"]}, hidden: false },
+      { id: "all_hits", label: "Repeated query generates pure hits after initial miss", input: {"queries": ["query A", "Query A", "QUERY a"], "precomputed_embeddings": {"query a": [1.0, 0.0]}, "max_cache_size": 2}, expectedOutput: {"results": {"query a": [1.0, 0.0]}, "hits": 2, "misses": 1, "evictions": 0, "cached_queries": ["query a"]}, hidden: false },
+      { id: "single_capacity_evictions", label: "Cache capacity of 1 evicts on every new query", input: {"queries": ["q1", "q2", "q3"], "precomputed_embeddings": {"q1": [1.0], "q2": [2.0], "q3": [3.0]}, "max_cache_size": 1}, expectedOutput: {"results": {"q1": [1.0], "q2": [2.0], "q3": [3.0]}, "hits": 0, "misses": 3, "evictions": 2, "cached_queries": ["q3"]}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-23': {
+    id: 'rag-fund-prob-23',
+    title: "Hierarchical Index Search",
+    difficulty: 'hard',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '30–35 min',
+    functionName: 'hierarchical_index_search',
+    functionSignature: "hierarchical_index_search(query_vector: list[float], cluster_centroids: dict[str, list[float]], cluster_docs: dict[str, dict[str, list[float]]], top_clusters: int = 2, top_k: int = 3) -> list[dict]",
+    starterCode: `def hierarchical_index_search(query_vector: list, cluster_centroids: dict, cluster_docs: dict, top_clusters: int = 2, top_k: int = 3) -> list:
+    """Perform two-level hierarchical vector search (IVF-style cluster pruning).
+    
+    Args:
+        query_vector: Embedding vector of query.
+        cluster_centroids: Mapping from cluster_id to centroid embedding.
+        cluster_docs: Mapping from cluster_id to dict of {doc_id: embedding}.
+        top_clusters: Number of nearest cluster centroids to explore (nprobe).
+        top_k: Number of nearest overall documents to return.
+    Returns:
+        list of dicts with 'doc_id', 'cluster_id', and 'similarity' (rounded to 4 decimals).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement two-stage inverted file (IVF) hierarchical search to prune large vector search spaces.",
+    taskDescription: "Implement `hierarchical_index_search(query_vector, cluster_centroids, cluster_docs, top_clusters=2, top_k=3)`. Stage 1: Compute cosine similarity between `query_vector` and all centroids in `cluster_centroids`. Select the top `top_clusters` centroids (ties broken by cluster ID string). Stage 2: Compare `query_vector` against only the document vectors belonging to those selected clusters in `cluster_docs`. Return the top `top_k` documents sorted descending by cosine similarity (rounded to 4 decimal places), breaking ties by `doc_id` alphabetically.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Cosine similarity: dot(a, b) / (norm(a) * norm(b)).",
+      "Similarity is rounded to 4 decimal places.",
+      "Stage 1 selects at most top_clusters clusters.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Level 1: sort cluster centroids descending by similarity, slice [:top_clusters].",
+      strong: "Level 2: only iterate over doc vectors in cluster_docs[cid] for cid in selected_clusters.",
+      concept: "Hierarchical clustering (like IVF in Faiss) prunes 90%+ of the vector candidate pool by restricting exhaustive comparisons to the closest coarse centroids.",
+    },
+    conceptConnections: [
+      { title: "IVF Vector Indexing", route: "/docs/vector-search/ivf-indexing", description: "Inverted file vector search" },
+      { title: "Vector Quantization", route: "/docs/vector-search/quantization", description: "Clustering and centroid search" },
+    ],
+    testCases: [
+      { id: "two_level_search", label: "Two-level cluster prune and nearest doc retrieval", input: {"query_vector": [1.0, 0.0, 0.0], "cluster_centroids": {"c1": [0.9, 0.1, 0.0], "c2": [0.0, 1.0, 0.0], "c3": [0.8, 0.2, 0.1]}, "cluster_docs": {"c1": {"doc1": [0.95, 0.05, 0.0], "doc2": [0.85, 0.15, 0.0]}, "c2": {"doc3": [0.0, 0.95, 0.05]}, "c3": {"doc4": [0.82, 0.18, 0.08]}}, "top_clusters": 2, "top_k": 2}, expectedOutput: [{"doc_id": "doc1", "cluster_id": "c1", "similarity": 0.9986}, {"doc_id": "doc2", "cluster_id": "c1", "similarity": 0.9848}], hidden: false },
+      { id: "single_cluster_prune", label: "Prunes search space to a single cluster", input: {"query_vector": [0.0, 1.0], "cluster_centroids": {"c1": [1.0, 0.0], "c2": [0.0, 1.0]}, "cluster_docs": {"c1": {"d1": [1.0, 0.0]}, "c2": {"d2": [0.0, 1.0], "d3": [0.1, 0.9]}}, "top_clusters": 1, "top_k": 1}, expectedOutput: [{"doc_id": "d2", "cluster_id": "c2", "similarity": 1.0}], hidden: false },
+      { id: "tie_breaking_clusters", label: "Tie-breaking cluster centroids", input: {"query_vector": [1.0, 1.0], "cluster_centroids": {"clusterB": [1.0, 1.0], "clusterA": [1.0, 1.0]}, "cluster_docs": {"clusterA": {"docA": [1.0, 1.0]}, "clusterB": {"docB": [1.0, 1.0]}}, "top_clusters": 1, "top_k": 1}, expectedOutput: [{"doc_id": "docA", "cluster_id": "clusterA", "similarity": 1.0}], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-24': {
+    id: 'rag-fund-prob-24',
+    title: "RAG Noise Reduction Filter",
+    difficulty: 'hard',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '30–35 min',
+    functionName: 'rag_noise_reduction_filter',
+    functionSignature: "rag_noise_reduction_filter(query: str, retrieved_passages: list[str], min_relevance: float = 0.4, max_similarity: float = 0.8) -> dict",
+    starterCode: `def rag_noise_reduction_filter(query: str, retrieved_passages: list, min_relevance: float = 0.4, max_similarity: float = 0.8) -> dict:
+    """Filter out noisy, irrelevant passages and deduplicate near-identical contexts.
+    
+    Args:
+        query: User input query string.
+        retrieved_passages: List of candidate context passage strings.
+        min_relevance: Minimum query keyword overlap fraction.
+        max_similarity: Maximum allowable Jaccard similarity between accepted passages.
+    Returns:
+        dict with 'accepted' (list), 'rejected_count' (int), and 'deduped_count' (int).
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Filter irrelevant and redundant text to protect generation context from distraction and degradation.",
+    taskDescription: "Implement `rag_noise_reduction_filter(query, retrieved_passages, min_relevance=0.4, max_similarity=0.8)`. For each passage, compute query keyword overlap `len(query_words & passage_words) / len(query_words)`. If overlap `< min_relevance`, increment `rejected_count`. Otherwise, check Jaccard token similarity `len(p & acc) / len(p | acc)` against all already accepted passages. If similarity `> max_similarity`, increment `deduped_count`. If not duplicate, accept the passage. Return `{\"accepted\": accepted, \"rejected_count\": rejected_count, \"deduped_count\": deduped_count}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Tokens are parsed case-insensitively using re.findall(r\"\\w+\", text.lower()).",
+      "Jaccard similarity = len(A & B) / len(A | B).",
+      "Deduplication only checks against already accepted passages.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Calculate relevance first: discard if rel < min_relevance before checking deduplication.",
+      strong: "Compute Jaccard similarity against each passage in accepted. Break early if similarity > max_similarity.",
+      concept: "Context noise degrades LLM attention (\"lost in the middle\"); filtering and deduplication ensure high signal-to-noise ratio in prompts.",
+    },
+    conceptConnections: [
+      { title: "Reranking & Context Selection", route: "/docs/rag-production/reranking", description: "Context filtering strategies" },
+      { title: "Context Window Engineering", route: "/docs/llm-application/context-window", description: "Information density optimization" },
+    ],
+    testCases: [
+      { id: "noise_and_dedup_filtering", label: "Filters irrelevant noise and deduplicates near-duplicate passage", input: {"query": "gradient descent learning rate optimization", "retrieved_passages": ["Gradient descent learning rate optimization updates model weights iteratively.", "Gradient descent learning rate optimization updates neural network weights iteratively.", "A recipe for homemade chocolate chip cookies with butter and sugar."], "min_relevance": 0.5, "max_similarity": 0.75}, expectedOutput: {"accepted": ["Gradient descent learning rate optimization updates model weights iteratively.", "Gradient descent learning rate optimization updates neural network weights iteratively."], "rejected_count": 1, "deduped_count": 0}, hidden: false },
+      { id: "clean_passages_all_kept", label: "Distinct relevant passages all accepted", input: {"query": "neural network architectures", "retrieved_passages": ["Convolutional neural network architectures process spatial grids.", "Transformer neural network architectures utilize multihead self attention."], "min_relevance": 0.4, "max_similarity": 0.8}, expectedOutput: {"accepted": ["Convolutional neural network architectures process spatial grids.", "Transformer neural network architectures utilize multihead self attention."], "rejected_count": 0, "deduped_count": 0}, hidden: false },
+      { id: "all_passages_noise", label: "All passages rejected for low relevance", input: {"query": "cryptographic hash functions", "retrieved_passages": ["Gardening tips for springtime roses."], "min_relevance": 0.5, "max_similarity": 0.8}, expectedOutput: {"accepted": [], "rejected_count": 1, "deduped_count": 0}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-25': {
+    id: 'rag-fund-prob-25',
+    title: "Document Summarization Index",
+    difficulty: 'hard',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '30–35 min',
+    functionName: 'document_summarization_index',
+    functionSignature: "document_summarization_index(documents: list[dict], query_vector: list[float], top_k: int = 2) -> list[dict]",
+    starterCode: `def document_summarization_index(documents: list, query_vector: list, top_k: int = 2) -> list:
+    """Retrieve full documents by searching over high-density document summary embeddings.
+    
+    Args:
+        documents: List of dicts with 'doc_id', 'summary', 'summary_vector', and 'full_text'.
+        query_vector: Query embedding vector.
+        top_k: Number of top documents to retrieve.
+    Returns:
+        list of dicts with 'doc_id', 'summary', 'full_text', and 'score'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Index high-level summaries for fast semantic routing while returning complete context for synthesis.",
+    taskDescription: "Implement `document_summarization_index(documents, query_vector, top_k=2)`. For each document, compute the cosine similarity between `query_vector` and `doc[\"summary_vector\"]`. Sort matching documents descending by similarity score (rounded to 4 decimal places), breaking ties alphabetically by `doc_id`. Return the top `top_k` documents formatted with `{\"doc_id\": id, \"summary\": summary, \"full_text\": full_text, \"score\": score}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Cosine similarity: dot(a, b) / (norm(a) * norm(b)).",
+      "score is rounded to 4 decimal places.",
+      "Documents are returned with full_text intact.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Compute cosine similarity between query_vector and doc[\"summary_vector\"].",
+      strong: "Sort with key=lambda x: (-x[\"score\"], x[\"doc_id\"]). Slice [:top_k].",
+      concept: "Summary indexing embeds concise abstracts instead of full book chapters, improving semantic search accuracy while still retrieving the complete original source.",
+    },
+    conceptConnections: [
+      { title: "Hierarchical & Summary Indices", route: "/docs/rag-production/hierarchical-search", description: "Summary-based retrieval" },
+      { title: "Context Window Management", route: "/docs/llm-application/context-window", description: "Full text context loading" },
+    ],
+    testCases: [
+      { id: "summary_index_match", label: "Matches query vector against summary vector and returns full text", input: {"documents": [{"doc_id": "paper1", "summary": "Summary of self-attention transformers.", "summary_vector": [0.95, 0.05, 0.0], "full_text": "Detailed multi-page derivation of scaled dot product attention and multihead projections..."}, {"doc_id": "paper2", "summary": "Summary of diffusion generative models.", "summary_vector": [0.05, 0.95, 0.0], "full_text": "Comprehensive review of forward SDEs and reverse score-based diffusion sampling..."}], "query_vector": [0.9, 0.1, 0.0], "top_k": 1}, expectedOutput: [{"doc_id": "paper1", "summary": "Summary of self-attention transformers.", "full_text": "Detailed multi-page derivation of scaled dot product attention and multihead projections...", "score": 0.9983}], hidden: false },
+      { id: "top_k_multi_match", label: "Returns top 2 documents sorted by summary score", input: {"documents": [{"doc_id": "d1", "summary": "S1", "summary_vector": [1.0, 0.0], "full_text": "Full 1"}, {"doc_id": "d2", "summary": "S2", "summary_vector": [0.8, 0.2], "full_text": "Full 2"}, {"doc_id": "d3", "summary": "S3", "summary_vector": [0.1, 0.9], "full_text": "Full 3"}], "query_vector": [1.0, 0.0], "top_k": 2}, expectedOutput: [{"doc_id": "d1", "summary": "S1", "full_text": "Full 1", "score": 1.0}, {"doc_id": "d2", "summary": "S2", "full_text": "Full 2", "score": 0.9701}], hidden: false },
+      { id: "empty_documents_index", label: "Empty document index returns empty list", input: {"documents": [], "query_vector": [1.0, 0.0], "top_k": 2}, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-26': {
+    id: 'rag-fund-prob-26',
+    title: "Query Rewriting Pipeline",
+    difficulty: 'hard',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '30–35 min',
+    functionName: 'query_rewriting_pipeline',
+    functionSignature: "query_rewriting_pipeline(chat_history: list[dict], current_query: str, entity_aliases: dict[str, str]) -> dict",
+    starterCode: `def query_rewriting_pipeline(chat_history: list, current_query: str, entity_aliases: dict) -> dict:
+    """Rewrite ambiguous multi-turn queries by resolving pronouns and expanding entity aliases.
+    
+    Args:
+        chat_history: List of conversation turns with 'role' and 'content'.
+        current_query: Latest user prompt needing contextual resolution.
+        entity_aliases: Mapping from slang/acronyms to formal entity names.
+    Returns:
+        dict with 'original_query', 'rewritten_query', and 'resolved_entities'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Disambiguate conversational queries by resolving anaphora and expanding domain aliases for standalone retrieval.",
+    taskDescription: "Implement `query_rewriting_pipeline(chat_history, current_query, entity_aliases)`. First, scan `current_query` for acronyms or aliases in `entity_aliases` (sorted descending by length) and replace them with their formal names. Second, if any pronoun (`it`, `they`, `its`, `their`, `that`) remains and `chat_history` is non-empty, identify the most recent capitalized entity in `chat_history` and replace the first occurring pronoun with that entity. Return `{\"original_query\": current_query, \"rewritten_query\": rewritten, \"resolved_entities\": resolved_list}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Entity alias matching is case-insensitive using word boundaries \\b.",
+      "Capitalized entities are matched using r\"[A-Z][a-zA-Z0-9_-]+(?:\\s+[A-Z][a-zA-Z0-9_-]+)*\".",
+      "At most one pronoun is substituted using the latest identified entity.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Sort entity_aliases keys by len descending to avoid partial substring collisions.",
+      strong: "Extract entities from reversed(chat_history). Replace the first matching pronoun with re.sub(r\"\\b\" + p + r\"\\b\", entity, rewritten, count=1).",
+      concept: "Query rewriting converts conversational multi-turn follow-ups (\"how fast is it?\") into standalone search queries (\"how fast is Kubernetes?\") suitable for vector retrieval.",
+    },
+    conceptConnections: [
+      { title: "Query Transformations & De-contextualization", route: "/docs/rag-production/query-transformations", description: "Conversational RAG rewriting" },
+      { title: "Agent Memory & Context", route: "/docs/agent-memory/chat-history", description: "Multi-turn context management" },
+    ],
+    testCases: [
+      { id: "pronoun_and_alias_rewrite", label: "Resolves pronoun from history and expands domain alias", input: {"chat_history": [{"role": "user", "content": "Tell me about Kubernetes architecture."}, {"role": "assistant", "content": "Kubernetes is a container orchestration platform managed by the CNCF."}], "current_query": "What are its core components in k8s?", "entity_aliases": {"k8s": "Kubernetes"}}, expectedOutput: {"original_query": "What are its core components in k8s?", "rewritten_query": "What are CNCF core components in Kubernetes?", "resolved_entities": [{"alias": "k8s", "resolved_to": "Kubernetes"}, {"pronoun": "its", "resolved_to": "CNCF"}]}, hidden: false },
+      { id: "alias_only_rewrite", label: "Expands acronym without pronoun substitution", input: {"chat_history": [], "current_query": "How does RAG differ from fine-tuning?", "entity_aliases": {"RAG": "Retrieval-Augmented Generation"}}, expectedOutput: {"original_query": "How does RAG differ from fine-tuning?", "rewritten_query": "How does Retrieval-Augmented Generation differ from fine-tuning?", "resolved_entities": [{"alias": "RAG", "resolved_to": "Retrieval-Augmented Generation"}]}, hidden: false },
+      { id: "no_rewrite_needed", label: "Self-contained query left unchanged", input: {"chat_history": [{"role": "user", "content": "Hello"}], "current_query": "What is Python programming language?", "entity_aliases": {}}, expectedOutput: {"original_query": "What is Python programming language?", "rewritten_query": "What is Python programming language?", "resolved_entities": []}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-27': {
+    id: 'rag-fund-prob-27',
+    title: "Vector Distance Threshold Filter",
+    difficulty: 'hard',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '30–35 min',
+    functionName: 'vector_distance_threshold_filter',
+    functionSignature: "vector_distance_threshold_filter(query_vector: list[float], doc_vectors: dict[str, list[float]], metric: str = \"cosine\", threshold: float = 0.5) -> list[dict]",
+    starterCode: `def vector_distance_threshold_filter(query_vector: list, doc_vectors: dict, metric: str = 'cosine', threshold: float = 0.5) -> list:
+    """Filter vectors against distance threshold across cosine, euclidean, or dot product metrics.
+    
+    Args:
+        query_vector: Query vector.
+        doc_vectors: Mapping from doc_id to document vector.
+        metric: Distance metric ('cosine', 'euclidean', 'dot_product').
+        threshold: Cutoff value for distance/similarity filtering.
+    Returns:
+        list of dicts with 'doc_id' and 'distance', sorted by closest match.
+    Raises:
+        ValueError: If metric is unsupported or vector dimensions mismatch.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Implement score threshold pruning to eliminate low-confidence vector search noise.",
+    taskDescription: "Implement `vector_distance_threshold_filter(query_vector, doc_vectors, metric=\"cosine\", threshold=0.5)`. Raise `ValueError` if metric is not one of `\"cosine\"`, `\"euclidean\"`, `\"dot_product\"`, or if any vector dimension differs from `len(query_vector)`. Compute distance: for `\"cosine\"`, `dist = 1 - cosine_sim` (keep `dist <= threshold`); for `\"euclidean\"`, `dist = sqrt(sum((a-b)^2))` (keep `dist <= threshold`); for `\"dot_product\"`, `score = sum(a*b)` (keep `score >= threshold`). Return matching entries with `{\"doc_id\": id, \"distance\": round(val, 4)}` sorted best-match first (ascending for distances, descending for dot product).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Raise ValueError if metric not in [\"cosine\", \"euclidean\", \"dot_product\"].",
+      "Raise ValueError on vector dimension mismatch.",
+      "distance is rounded to 4 decimal places.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Verify metric name and vector dimensions for all items before performing distance calculations.",
+      strong: "Cosine distance is 1.0 - (dot / (norm1 * norm2)). Euclidean is math.sqrt(sum((a-b)**2)).",
+      concept: "Top-K search always returns K items even if they are completely irrelevant; threshold filtering ensures only semantically close documents enter context.",
+    },
+    conceptConnections: [
+      { title: "Vector Distance Metrics", route: "/docs/vector-search/similarity-metrics", description: "Cosine, L2, and IP distance" },
+      { title: "RAG Retrieval Guardrails", route: "/docs/rag-production/guardrails", description: "Relevance threshold filtering" },
+    ],
+    testCases: [
+      { id: "cosine_threshold_filtering", label: "Filters documents where cosine distance <= 0.3", input: {"query_vector": [1.0, 0.0, 0.0], "doc_vectors": {"doc1": [0.95, 0.31, 0.0], "doc2": [0.5, 0.86, 0.0], "doc3": [0.0, 1.0, 0.0]}, "metric": "cosine", "threshold": 0.3}, expectedOutput: [{"doc_id": "doc1", "distance": 0.0493}], hidden: false },
+      { id: "euclidean_distance_filter", label: "Euclidean distance filtering", input: {"query_vector": [0.0, 0.0], "doc_vectors": {"d1": [1.0, 1.0], "d2": [0.2, 0.2]}, "metric": "euclidean", "threshold": 1.0}, expectedOutput: [{"doc_id": "d2", "distance": 0.2828}], hidden: false },
+      { id: "invalid_metric_error", label: "Unsupported metric raises ValueError", input: {"query_vector": [1.0, 0.0], "doc_vectors": {"d1": [1.0, 0.0]}, "metric": "manhattan", "threshold": 0.5}, expectError: "ValueError", hidden: false },
+      { id: "dimension_mismatch_error", label: "Vector dimension mismatch raises ValueError", input: {"query_vector": [1.0, 0.0], "doc_vectors": {"d1": [1.0, 0.0, 0.0]}, "metric": "cosine", "threshold": 0.5}, expectError: "ValueError", hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-28': {
+    id: 'rag-fund-prob-28',
+    title: "Retrieval Recall Calculator",
+    difficulty: 'hard',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '30–35 min',
+    functionName: 'retrieval_recall_calculator',
+    functionSignature: "retrieval_recall_calculator(ground_truth: dict[str, list[str]], retrieved: dict[str, list[str]], k_values: list[int] = [1, 3, 5]) -> dict[str, float]",
+    starterCode: `def retrieval_recall_calculator(ground_truth: dict, retrieved: dict, k_values: list = None) -> dict:
+    """Evaluate retrieval benchmark accuracy computing Recall@K and Mean Reciprocal Rank (MRR).
+    
+    Args:
+        ground_truth: Dict mapping query string to list of relevant doc_ids.
+        retrieved: Dict mapping query string to list of retrieved doc_ids in rank order.
+        k_values: List of integers K to compute Recall@K (defaults to [1, 3, 5]).
+    Returns:
+        dict with 'Recall@K' for each K and 'MRR', rounded to 4 decimals.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Quantify retriever performance across benchmark evaluation datasets using standard IR metrics.",
+    taskDescription: "Implement `retrieval_recall_calculator(ground_truth, retrieved, k_values=None)`. Default `k_values` to `[1, 3, 5]` if None. For each query, `Recall@K = len(relevant & retrieved[:K]) / len(relevant)`. For MRR, find the 1-based rank of the first relevant document in `retrieved` (or 0 if none found) and add `1.0 / rank`. Average all metrics across queries in `ground_truth`. Return a dictionary containing `\"Recall@K\"` for each K in `k_values` and `\"MRR\"`, all rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "k_values defaults to [1, 3, 5] if None.",
+      "MRR uses 1-based rank of first relevant doc.",
+      "All metric values rounded to 4 decimal places.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "For each query, overlap = len(rel_set & set(retrieved[:k])). Divide by len(rel_set).",
+      strong: "MRR reciprocal rank is 1.0 / (first_idx + 1) for the first doc appearing in rel_set.",
+      concept: "Recall@K measures retrieval completeness within context budget constraints, while MRR measures how early the first pertinent answer appears.",
+    },
+    conceptConnections: [
+      { title: "RAG Benchmark Evaluation", route: "/docs/rag-production/evaluation", description: "IR metrics Recall and MRR" },
+      { title: "Search Relevance Measurement", route: "/docs/vector-search/evaluation", description: "Offline relevance tuning" },
+    ],
+    testCases: [
+      { id: "standard_evaluation_metrics", label: "Compute Recall@1, Recall@3, and MRR across two queries", input: {"ground_truth": {"q1": ["d1", "d2"], "q2": ["d3"]}, "retrieved": {"q1": ["d1", "d4", "d2"], "q2": ["d5", "d6", "d3"]}, "k_values": [1, 3]}, expectedOutput: {"Recall@1": 0.25, "Recall@3": 1.0, "MRR": 0.6667}, hidden: false },
+      { id: "zero_recall_misses", label: "Zero retrieval overlap returns 0.0 metrics", input: {"ground_truth": {"q1": ["target"]}, "retrieved": {"q1": ["wrong1", "wrong2"]}, "k_values": [1, 2]}, expectedOutput: {"Recall@1": 0.0, "Recall@2": 0.0, "MRR": 0.0}, hidden: false },
+      { id: "perfect_recall", label: "Perfect top-1 retrieval yields 1.0 across all metrics", input: {"ground_truth": {"q1": ["d1"]}, "retrieved": {"q1": ["d1"]}, "k_values": [1, 5]}, expectedOutput: {"Recall@1": 1.0, "Recall@5": 1.0, "MRR": 1.0}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-29': {
+    id: 'rag-fund-prob-29',
+    title: "Multimodal RAG Ingestion",
+    difficulty: 'hard',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '30–35 min',
+    functionName: 'multimodal_rag_ingestion',
+    functionSignature: "multimodal_rag_ingestion(elements: list[dict], expected_dim: int = 4) -> list[dict]",
+    starterCode: `def multimodal_rag_ingestion(elements: list, expected_dim: int = 4) -> list:
+    """Ingest, validate, and normalize multimodal documents (text, images, tables) for vector search.
+    
+    Args:
+        elements: List of dicts with 'id', 'type', 'content', 'vector', and 'metadata'.
+        expected_dim: Required vector embedding dimensionality.
+    Returns:
+        list of processed element dicts with normalized vectors and enriched metadata.
+    Raises:
+        ValueError: If any element vector length does not match expected_dim.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Normalize, validate, and enrich multimodal assets into a unified multimodal vector space.",
+    taskDescription: "Implement `multimodal_rag_ingestion(elements, expected_dim=4)`. For each element, verify `len(elem[\"vector\"]) == expected_dim` (raising `ValueError` on mismatch). Normalize the vector to unit L2 length `[round(x / norm, 4) for x in vec]`. If `type == \"table\"`, count lines containing `\"|\"` in `content` and record `\"table_row_count\"` in metadata. Return the list of standardized element dicts.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Raise ValueError if any element vector dimension != expected_dim.",
+      "Normalized vector elements are rounded to 4 decimal places.",
+      "Original metadata is preserved and non-destructively updated.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Check len(elem[\"vector\"]) == expected_dim first for each item.",
+      strong: "L2 norm = math.sqrt(sum(x*x for x in vec)). Normalize each component: round(x / norm, 4).",
+      concept: "Multimodal RAG aligns diverse modalities (charts, text, tables) into joint vector spaces using contrastive encoders (e.g. CLIP).",
+    },
+    conceptConnections: [
+      { title: "Multimodal Retrieval & CLIP", route: "/docs/deep-learning/multimodal", description: "Multimodal embeddings" },
+      { title: "Document Ingestion Pipelines", route: "/docs/rag-production/data-pipelines", description: "Table and image parsing" },
+    ],
+    testCases: [
+      { id: "normalize_and_enrich", label: "Normalizes vectors and enriches table row count metadata", input: {"elements": [{"id": "t1", "type": "text", "content": "Neural network fundamentals.", "vector": [3.0, 4.0, 0.0, 0.0], "metadata": {"source": "intro.pdf"}}, {"id": "tbl1", "type": "table", "content": "| Metric | Value |\n| Accuracy | 94.2% |\n| F1 | 0.91 |", "vector": [0.0, 0.0, 5.0, 12.0], "metadata": {"source": "results.pdf"}}], "expected_dim": 4}, expectedOutput: [{"id": "t1", "type": "text", "content": "Neural network fundamentals.", "vector": [0.6, 0.8, 0.0, 0.0], "metadata": {"source": "intro.pdf"}}, {"id": "tbl1", "type": "table", "content": "| Metric | Value |\n| Accuracy | 94.2% |\n| F1 | 0.91 |", "vector": [0.0, 0.0, 0.3846, 0.9231], "metadata": {"source": "results.pdf", "table_row_count": 3}}], hidden: false },
+      { id: "dim_mismatch_error", label: "Dimension mismatch raises ValueError", input: {"elements": [{"id": "e1", "type": "text", "content": "Text", "vector": [1.0, 2.0]}], "expected_dim": 4}, expectError: "ValueError", hidden: false },
+      { id: "image_element_normalization", label: "Normalizes image vector accurately", input: {"elements": [{"id": "img1", "type": "image", "content": "diagram.png", "vector": [1.0, 1.0, 1.0, 1.0], "metadata": {}}], "expected_dim": 4}, expectedOutput: [{"id": "img1", "type": "image", "content": "diagram.png", "vector": [0.5, 0.5, 0.5, 0.5], "metadata": {}}], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rag-fund-prob-30': {
+    id: 'rag-fund-prob-30',
+    title: "RAG Triad Evaluator",
+    difficulty: 'hard',
+    topic: 'RAG Fundamentals',
+    estimatedTime: '30–35 min',
+    functionName: 'rag_triad_evaluator',
+    functionSignature: "rag_triad_evaluator(query: str, retrieved_context: str, response: str) -> dict",
+    starterCode: `def rag_triad_evaluator(query: str, retrieved_context: str, response: str) -> dict:
+    """Evaluate RAG execution quality across Context Relevance, Groundedness, and Answer Relevance.
+    
+    Args:
+        query: User input query.
+        retrieved_context: Retrieved document text provided to LLM.
+        response: Generated answer text produced by LLM.
+    Returns:
+        dict with 'context_relevance', 'groundedness', 'answer_relevance', 'composite_score', and 'passed'.
+    """
+    # Your implementation here
+    pass
+`,
+    mission: "Audit RAG pipeline health by computing the RAG Triad: Context Relevance, Groundedness, and Answer Relevance.",
+    taskDescription: "Implement `rag_triad_evaluator(query, retrieved_context, response)`. Tokenize all three texts into lowercased words using `re.findall(r\"\\w+\", text.lower())`. Compute: 1) `context_relevance = len(query_words & context_words) / len(query_words)` (0.0 if query empty), 2) `groundedness = len(response_words & context_words) / len(response_words)` (0.0 if response empty), 3) `answer_relevance = len(query_words & response_words) / len(query_words)`. Compute `composite_score = round((context_relevance + groundedness + answer_relevance) / 3.0, 4)`. Set `passed = True` if `context_relevance >= 0.4`, `groundedness >= 0.5`, and `answer_relevance >= 0.4`. Return dictionary with all five metrics rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Tokens are parsed case-insensitively using re.findall(r\"\\w+\", text.lower()).",
+      "Scores are rounded to 4 decimal places.",
+      "passed requires meeting all three component thresholds simultaneously.",
+      "Pure Python earns +10 Bonus XP.",
+    ],
+    hints: {
+      small: "Extract word sets: set(re.findall(r\"\\w+\", text.lower())).",
+      strong: "context_relevance = len(q & c) / len(q); groundedness = len(r & c) / len(r); answer_relevance = len(q & r) / len(q).",
+      concept: "The RAG Triad isolates the three failure modes in RAG: bad retrieval (low context relevance), hallucination (low groundedness), and answering the wrong question (low answer relevance).",
+    },
+    conceptConnections: [
+      { title: "RAG Triad & Evaluation", route: "/docs/rag-production/evaluation", description: "TruLens RAG Triad methodology" },
+      { title: "Agent Observability & Tracing", route: "/docs/agent-evaluation/observability", description: "Automated quality grading" },
+    ],
+    testCases: [
+      { id: "high_quality_triad", label: "High quality RAG execution passing all quality gates", input: {"query": "what causes overfitting in deep learning models", "retrieved_context": "Overfitting in deep learning models is caused by excessive model parameters and limited training data.", "response": "In deep learning models, overfitting occurs when excessive parameters memorize limited training data."}, expectedOutput: {"context_relevance": 0.7143, "groundedness": 0.7692, "answer_relevance": 0.7143, "composite_score": 0.7326, "passed": true}, hidden: false },
+      { id: "hallucinated_answer", label: "Hallucinated response failing groundedness quality gate", input: {"query": "photosynthesis stages", "retrieved_context": "Photosynthesis takes place in chloroplasts using light reactions and the Calvin cycle.", "response": "The internal combustion engine operates via four strokes: intake, compression, power, and exhaust."}, expectedOutput: {"context_relevance": 0.5, "groundedness": 0.1538, "answer_relevance": 0.0, "composite_score": 0.2179, "passed": false}, hidden: false },
+      { id: "irrelevant_retrieval", label: "Retriever returns unrelated document context", input: {"query": "quantum superposition principles", "retrieved_context": "Chocolate chip cookies require baking powder and granulated brown sugar at 350 degrees.", "response": "Quantum superposition allows particles to exist in multiple linear states simultaneously."}, expectedOutput: {"context_relevance": 0.0, "groundedness": 0.0, "answer_relevance": 0.6667, "composite_score": 0.2222, "passed": false}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #207. Vector Distance Threshold Filter"
 description: "Master #207. Vector Distance Threshold Filter in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#207. Vector Distance Threshold Filter` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement score threshold pruning to eliminate low-confidence vector search noise.
 
 ## Task
 
-Implement the function `vector_distance_threshold_filter`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `vector_distance_threshold_filter(query_vector, doc_vectors, metric="cosine", threshold=0.5)`. Raise `ValueError` if metric is not one of `"cosine"`, `"euclidean"`, `"dot_product"`, or if any vector dimension differs from `len(query_vector)`. Compute distance: for `"cosine"`, `dist = 1 - cosine_sim` (keep `dist <= threshold`); for `"euclidean"`, `dist = sqrt(sum((a-b)^2))` (keep `dist <= threshold`); for `"dot_product"`, `score = sum(a*b)` (keep `score >= threshold`). Return matching entries with `{"doc_id": id, "distance": round(val, 4)}` sorted best-match first (ascending for distances, descending for dot product).
 
 <PracticePlayground problemId="rag-fund-prob-27" />

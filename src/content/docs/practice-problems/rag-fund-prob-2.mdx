@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #182. Retrieve-Read-Retrieve Loop"
 description: "Master #182. Retrieve-Read-Retrieve Loop in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#182. Retrieve-Read-Retrieve Loop` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Orchestrate iterative multi-turn RAG reasoning to resolve queries requiring intermediate evidence.
 
 ## Task
 
-Implement the function `retrieve_read_retrieve_loop`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `retrieve_read_retrieve_loop(question, step_data, max_steps=3)`. Begin with `current_query = question`. For each step up to `max_steps`, look up `current_query` in `step_data` (case-insensitive query match). If `found_answer` is present, return `{"status": "success", "steps": current_step, "answer": found_answer, "history": history}`. If `next_query` is present and not already in `history`, update `current_query` and iterate. If unresolvable or looping, terminate and return status `"incomplete"`.
 
 <PracticePlayground problemId="rag-fund-prob-2" />

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #210. RAG Triad Evaluator"
 description: "Master #210. RAG Triad Evaluator in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#210. RAG Triad Evaluator` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Audit RAG pipeline health by computing the RAG Triad: Context Relevance, Groundedness, and Answer Relevance.
 
 ## Task
 
-Implement the function `rag_triad_evaluator`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `rag_triad_evaluator(query, retrieved_context, response)`. Tokenize all three texts into lowercased words using `re.findall(r"\w+", text.lower())`. Compute: 1) `context_relevance = len(query_words & context_words) / len(query_words)` (0.0 if query empty), 2) `groundedness = len(response_words & context_words) / len(response_words)` (0.0 if response empty), 3) `answer_relevance = len(query_words & response_words) / len(query_words)`. Compute `composite_score = round((context_relevance + groundedness + answer_relevance) / 3.0, 4)`. Set `passed = True` if `context_relevance >= 0.4`, `groundedness >= 0.5`, and `answer_relevance >= 0.4`. Return dictionary with all five metrics rounded to 4 decimal places.
 
 <PracticePlayground problemId="rag-fund-prob-30" />

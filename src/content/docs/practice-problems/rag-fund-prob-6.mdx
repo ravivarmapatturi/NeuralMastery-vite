@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #186. GraphRAG Local Search"
 description: "Master #186. GraphRAG Local Search in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#186. GraphRAG Local Search` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Extract localized entity subgraphs to ground RAG answers in structured domain relationships.
 
 ## Task
 
-Implement the function `graphrag_local_search`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `graphrag_local_search(seed_entities, graph, max_depth=1)`. Initialize visited nodes with seed entities present in `graph["nodes"]`. Traverse edges bidirectionally up to `max_depth` hops. Return a dictionary with sorted list of all unique visited `entities` and a sorted list of unique formatted `relationships` between visited nodes formatted as `"{source} -[{relation}]-> {target}: {description}"`.
 
 <PracticePlayground problemId="rag-fund-prob-6" />

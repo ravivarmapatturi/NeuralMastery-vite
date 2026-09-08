@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #191. Parent Document Retriever"
 description: "Master #191. Parent Document Retriever in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#191. Parent Document Retriever` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Map high-granularity vector search hits back to comprehensive parent context documents.
 
 ## Task
 
-Implement the function `parent_document_retriever`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `parent_document_retriever(child_matches, child_to_parent, parent_docs, top_k=3)`. Given a list of granular chunk search hits `child_matches`, map each chunk to its parent document via `child_to_parent`. Aggregate each parent's score as the maximum score among its matched child chunks. Sort unique parent documents descending by score (ties broken by `parent_id` ascending), and return the top `top_k` documents formatted with `parent_id`, `text`, and `score` (rounded to 4 decimal places).
 
 <PracticePlayground problemId="rag-fund-prob-11" />

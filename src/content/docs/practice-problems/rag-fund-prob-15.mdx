@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #195. Reciprocal Rank Fusion (RRF)"
 description: "Master #195. Reciprocal Rank Fusion (RRF) in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#195. Reciprocal Rank Fusion (RRF)` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Reciprocal Rank Fusion (RRF) to merge heterogeneously scaled retrieval rankings.
 
 ## Task
 
-Implement the function `reciprocal_rank_fusion_rrf`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `reciprocal_rank_fusion_rrf(ranked_lists, k=60)`. For each document `d` across all ranked lists, compute its RRF score: `score(d) = sum(1.0 / (k + rank))` where `rank` is the 1-based position of document `d` in each list it appears in. Return a list of dictionaries with `doc_id` and `rrf_score` (rounded to 6 decimal places), sorted descending by `rrf_score`, breaking ties alphabetically by `doc_id`.
 
 <PracticePlayground problemId="rag-fund-prob-15" />

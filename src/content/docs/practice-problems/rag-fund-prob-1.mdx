@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #181. Multi-Hop Retrieval"
 description: "Master #181. Multi-Hop Retrieval in the RAG Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -14,10 +13,10 @@ import PracticePlayground from '../../../components/content/PracticePlayground';
 
 ## Overview
 
-Implement `#181. Multi-Hop Retrieval` to advance your mastery in **RAG Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Retrieve connected evidence across multiple hops to answer relational, multi-document questions.
 
 ## Task
 
-Implement the function `multi_hop_retrieval`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `multi_hop_retrieval(query, corpus, max_hops=2)`. Identify initial seed documents matching any query keyword (case-insensitive), sorted descending by keyword match count (ties broken alphabetically by doc ID). From these seeds, perform a breadth-first search traversing `links` up to `max_hops` depth. Return the ordered list of unique document IDs visited.
 
 <PracticePlayground problemId="rag-fund-prob-1" />
