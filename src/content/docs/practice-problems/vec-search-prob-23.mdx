@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #998. Vector Search & Index Optimization Module 5: Problem 23"
-description: "Master #998. Vector Search & Index Optimization Module 5: Problem 23 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: HNSW Greedy Search Single Hop"
+description: "Implement one greedy-descent step of HNSW's real search algorithm: from the current node, move to whichever unvisited neighbor is closest to the query, or stop if none improves."
+difficulty: "medium"
 topic: "Vector Search & Index Optimization"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #998. Vector Search & Index Optimization Module 5: Problem 23
+# HNSW Greedy Search Single Hop
 
-**Track**: Vector Search & Index Optimization | **Rank**: #998 of 1072 | **Points**: 90 XP
+**Track**: Vector Search & Index Optimization | **Points**: 40 XP
 
 ## Overview
 
-Implement `#998. Vector Search & Index Optimization Module 5: Problem 23` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement one greedy-descent step of HNSW's real search algorithm: from the current node, move to whichever unvisited neighbor is closest to the query, or stop if none improves.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `hnsw_greedy_hop(current_dist, neighbor_dists, visited)`. `neighbor_dists` maps neighbor id -> its distance to the query. Among neighbors NOT in `visited`, find the one with the smallest distance. If that smallest distance is `< current_dist`, return that neighbor's id (the hop to take); otherwise return `None` (local minimum reached, search stops). Ties among equally-close neighbors broken by id ascending.
 
 <PracticePlayground problemId="vec-search-prob-23" />

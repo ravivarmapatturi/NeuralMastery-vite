@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #997. Vector Search & Index Optimization Module 5: Problem 22"
-description: "Master #997. Vector Search & Index Optimization Module 5: Problem 22 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Filtered ANN Search With Metadata Predicate"
+description: "Implement pre-filtered ANN search: real vector search almost always needs to combine similarity ranking with a metadata constraint (e.g. 'only in-stock items')."
+difficulty: "medium"
 topic: "Vector Search & Index Optimization"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #997. Vector Search & Index Optimization Module 5: Problem 22
+# Filtered ANN Search With Metadata Predicate
 
-**Track**: Vector Search & Index Optimization | **Rank**: #997 of 1072 | **Points**: 90 XP
+**Track**: Vector Search & Index Optimization | **Points**: 40 XP
 
 ## Overview
 
-Implement `#997. Vector Search & Index Optimization Module 5: Problem 22` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement pre-filtered ANN search: real vector search almost always needs to combine similarity ranking with a metadata constraint (e.g. 'only in-stock items').
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `filtered_topk(query, items, k, category)`. `items` is a list of `{"id": str, "vector": list[float], "category": str}` dicts. First filter to items whose `category` matches exactly, then rank the survivors by cosine similarity to `query` descending, and return the top-`k` ids. Ties broken by id ascending. If fewer than `k` items survive the filter, return all of them.
 
 <PracticePlayground problemId="vec-search-prob-22" />

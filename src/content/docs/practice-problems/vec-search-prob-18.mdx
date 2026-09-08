@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #993. Vector Search & Index Optimization Module 4: Problem 18"
-description: "Master #993. Vector Search & Index Optimization Module 4: Problem 18 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Random Projection Dimensionality Reduction"
+description: "Implement the core linear-algebra step behind Johnson-Lindenstrauss random projection, used to cheaply shrink embedding dimensionality while approximately preserving pairwise distances."
 difficulty: "medium"
 topic: "Vector Search & Index Optimization"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #993. Vector Search & Index Optimization Module 4: Problem 18
+# Random Projection Dimensionality Reduction
 
-**Track**: Vector Search & Index Optimization | **Rank**: #993 of 1072 | **Points**: 60 XP
+**Track**: Vector Search & Index Optimization | **Points**: 40 XP
 
 ## Overview
 
-Implement `#993. Vector Search & Index Optimization Module 4: Problem 18` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the core linear-algebra step behind Johnson-Lindenstrauss random projection, used to cheaply shrink embedding dimensionality while approximately preserving pairwise distances.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `random_project(v, projection)`. `projection` is a `k x d` matrix (k output dims, d input dims, given as a list of k rows). Return `projection @ v` as a list of k floats.
 
 <PracticePlayground problemId="vec-search-prob-18" />

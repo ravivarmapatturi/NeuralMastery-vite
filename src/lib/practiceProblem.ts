@@ -88618,6 +88618,1390 @@ def nmi_clustering(labels_true, labels_pred):
 ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  "vec-search-prob-14": {
+    id: "vec-search-prob-14",
+    title: "HNSW Probabilistic Level Assignment",
+    difficulty: "medium",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "hnsw_assign_level",
+    functionSignature: "hnsw_assign_level(u: float, m_l: float) -> int",
+    starterCode: `import math
+
+def hnsw_assign_level(u: float, m_l: float) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Reproduce HNSW's real probabilistic level-assignment rule, which gives the graph its logarithmic navigable-small-world layer structure.",
+    taskDescription: "Implement `hnsw_assign_level(u, m_l)`. HNSW assigns each inserted point a layer via `level = floor(-ln(u) * m_l)`, where `u` is a uniform(0,1) random draw and `m_l` is the level-normalization constant (typically `1/ln(M)`). Return the integer level. `u` is passed in directly (not generated) so the result is deterministic and testable.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 < u < 1",
+        "m_l > 0",
+        "Return a non-negative integer"
+      ],
+    hints: {
+  "small": "level = floor(-ln(u) * m_l).",
+        "strong": "Use math.log (natural log) and math.floor; result must be an int, never negative for u in (0,1).",
+        "concept": "Smaller u values (rarer) produce higher levels, giving HNSW its exponentially-shrinking layer population -- the same structure a skip list uses."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "u=0.5, m_l=1/ln(32)",
+          "input": {
+            "u": 0.5,
+            "m_l": 0.28853900817779266
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "u close to 1 -> level 0",
+          "input": {
+            "u": 0.99,
+            "m_l": 1
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "small u -> higher level",
+          "input": {
+            "u": 0.01,
+            "m_l": 1
+          },
+          "expectedOutput": 4,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "u=0.1, m_l=2.0",
+          "input": {
+            "u": 0.1,
+            "m_l": 2
+          },
+          "expectedOutput": 4,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-15": {
+    id: "vec-search-prob-15",
+    title: "Binary Quantization and Hamming Distance",
+    difficulty: "easy",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "binary_quantize_hamming",
+    functionSignature: "binary_quantize_hamming(a: list[float], b: list[float]) -> int",
+    starterCode: `def binary_quantize_hamming(a: list[float], b: list[float]) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement sign-based binary quantization, a cheap first-pass filter real vector databases use before exact re-ranking.",
+    taskDescription: "Implement `binary_quantize_hamming(a, b)`. Quantize each vector to a bit per dimension (`1` if the component is `>= 0`, else `0`), then return the Hamming distance (count of differing bits) between the two quantized vectors.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(a) == len(b)",
+        "1 <= len(a) <= 4096"
+      ],
+    hints: {
+  "small": "Quantize each component to 0/1 by sign, then XOR-count.",
+        "strong": "bit(x) = 1 if x >= 0 else 0; sum(1 for x,y in zip(qa,qb) if x != y).",
+        "concept": "Binary/scalar quantization trades a small recall loss for a large speed/memory win -- Hamming distance is a few CPU cycles versus a full float dot product."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical sign patterns",
+          "input": {
+            "a": [
+              1,
+              -2,
+              3
+            ],
+            "b": [
+              0.5,
+              -0.1,
+              4
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "fully opposite signs",
+          "input": {
+            "a": [
+              1,
+              1,
+              1
+            ],
+            "b": [
+              -1,
+              -1,
+              -1
+            ]
+          },
+          "expectedOutput": 3,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero counts as positive",
+          "input": {
+            "a": [
+              0,
+              -1
+            ],
+            "b": [
+              0,
+              1
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "4-dim mixed",
+          "input": {
+            "a": [
+              1,
+              -1,
+              2,
+              -2
+            ],
+            "b": [
+              -1,
+              -1,
+              -2,
+              -2
+            ]
+          },
+          "expectedOutput": 2,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-16": {
+    id: "vec-search-prob-16",
+    title: "Max Inner Product Search (MIPS) Top-K",
+    difficulty: "easy",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "mips_topk",
+    functionSignature: "mips_topk(query: list[float], vectors: dict[str, list[float]], k: int) -> list[str]",
+    starterCode: `def mips_topk(query: list[float], vectors: dict[str, list[float]], k: int) -> list[str]:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Max Inner Product Search ranking, the similarity metric behind most modern dense retrieval systems (unlike cosine, it rewards vector magnitude too).",
+    taskDescription: "Implement `mips_topk(query, vectors, k)`. Compute the dot product between `query` and every vector in `vectors`, and return the `k` ids with the HIGHEST dot product, sorted descending by score. Ties broken by id ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "1 <= k <= len(vectors)",
+        "all vectors share query's dimensionality"
+      ],
+    hints: {
+  "small": "score(v) = sum(q_i * v_i).",
+        "strong": "Sort by (-score, id) and take the first k ids.",
+        "concept": "MIPS is exact for magnitude-sensitive relevance signals (e.g. popularity-weighted embeddings) where cosine would discard useful magnitude information."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic top-2",
+          "input": {
+            "query": [
+              1,
+              0
+            ],
+            "vectors": {
+              "a": [
+                2,
+                0
+              ],
+              "b": [
+                1,
+                1
+              ],
+              "c": [
+                -1,
+                0
+              ]
+            },
+            "k": 2
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "tie broken by id",
+          "input": {
+            "query": [
+              1
+            ],
+            "vectors": {
+              "z": [
+                1
+              ],
+              "a": [
+                1
+              ]
+            },
+            "k": 2
+          },
+          "expectedOutput": [
+            "a",
+            "z"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "k=1",
+          "input": {
+            "query": [
+              0,
+              1,
+              0
+            ],
+            "vectors": {
+              "x": [
+                1,
+                0,
+                0
+              ],
+              "y": [
+                0,
+                2,
+                0
+              ]
+            },
+            "k": 1
+          },
+          "expectedOutput": [
+            "y"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all negative scores",
+          "input": {
+            "query": [
+              1
+            ],
+            "vectors": {
+              "a": [
+                -3
+              ],
+              "b": [
+                -1
+              ]
+            },
+            "k": 1
+          },
+          "expectedOutput": [
+            "b"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-17": {
+    id: "vec-search-prob-17",
+    title: "ColBERT-Style Multi-Vector MaxSim Score",
+    difficulty: "medium",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "maxsim_score",
+    functionSignature: "maxsim_score(query_vecs: list[list[float]], doc_vecs: list[list[float]]) -> float",
+    starterCode: `def maxsim_score(query_vecs: list[list[float]], doc_vecs: list[list[float]]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement ColBERT's late-interaction MaxSim scoring, which keeps a per-token embedding for finer-grained relevance than a single pooled vector.",
+    taskDescription: "Implement `maxsim_score(query_vecs, doc_vecs)`: for each query token vector, compute its max cosine similarity against ALL document token vectors, then sum those per-token maxima to get the document's total score.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "1 <= len(query_vecs), len(doc_vecs) <= 64",
+        "all vectors non-zero, equal dimensionality"
+      ],
+    hints: {
+  "small": "For each query vector, take the max cosine similarity over all doc vectors, then sum.",
+        "strong": "cosine(a,b) = dot(a,b) / (|a| * |b|); score = sum(max(cosine(q, d) for d in doc_vecs) for q in query_vecs).",
+        "concept": "Late interaction (score after independent encoding) is far cheaper than early cross-attention while recovering much of its accuracy -- this is the core mechanism, not an implementation detail."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single token each, identical",
+          "input": {
+            "query_vecs": [
+              [
+                1,
+                0
+              ]
+            ],
+            "doc_vecs": [
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "2 query tokens, 2 doc tokens",
+          "input": {
+            "query_vecs": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "doc_vecs": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "orthogonal query token contributes 0",
+          "input": {
+            "query_vecs": [
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "doc_vecs": [
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3 query tokens picking best match each",
+          "input": {
+            "query_vecs": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "doc_vecs": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": 2.7071067811865475,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-18": {
+    id: "vec-search-prob-18",
+    title: "Random Projection Dimensionality Reduction",
+    difficulty: "medium",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "random_project",
+    functionSignature: "random_project(v: list[float], projection: list[list[float]]) -> list[float]",
+    starterCode: `def random_project(v: list[float], projection: list[list[float]]) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the core linear-algebra step behind Johnson-Lindenstrauss random projection, used to cheaply shrink embedding dimensionality while approximately preserving pairwise distances.",
+    taskDescription: "Implement `random_project(v, projection)`. `projection` is a `k x d` matrix (k output dims, d input dims, given as a list of k rows). Return `projection @ v` as a list of k floats.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(v) == len(projection[0]) for all rows",
+        "1 <= k, d <= 64"
+      ],
+    hints: {
+  "small": "Each output component is the dot product of one projection row with v.",
+        "strong": "out[i] = sum(projection[i][j] * v[j] for j in range(len(v))).",
+        "concept": "The Johnson-Lindenstrauss lemma guarantees this random linear map preserves pairwise distances within a small distortion factor, with high probability, independent of the original dimensionality."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identity-like 2x2",
+          "input": {
+            "v": [
+              1,
+              2
+            ],
+            "projection": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": [
+            1,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "3d -> 2d reduction",
+          "input": {
+            "v": [
+              1,
+              2,
+              3
+            ],
+            "projection": [
+              [
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                1,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": [
+            3,
+            5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "3d -> 1d",
+          "input": {
+            "v": [
+              2,
+              0,
+              -1
+            ],
+            "projection": [
+              [
+                0.5,
+                0.5,
+                0.5
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0.5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "negative weights",
+          "input": {
+            "v": [
+              1,
+              1
+            ],
+            "projection": [
+              [
+                -1,
+                1
+              ],
+              [
+                1,
+                -1
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0,
+            0
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-19": {
+    id: "vec-search-prob-19",
+    title: "Vector Index Memory Footprint Estimator",
+    difficulty: "easy",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "index_memory_bytes",
+    functionSignature: "index_memory_bytes(num_vectors: int, dim: int, bytes_per_component: float, hnsw_m: int = 0) -> int",
+    starterCode: `def index_memory_bytes(num_vectors: int, dim: int, bytes_per_component: float, hnsw_m: int = 0) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Estimate a real vector index's memory footprint before building it -- a genuine capacity-planning step for any production ANN deployment.",
+    taskDescription: "Implement `index_memory_bytes(num_vectors, dim, bytes_per_component, hnsw_m=0)`. Raw vector storage is `num_vectors * dim * bytes_per_component`. If `hnsw_m > 0`, add graph-link overhead: each vector stores roughly `hnsw_m * 2` neighbor pointers (8 bytes each, accounting for the base layer plus upper layers) per vector: `num_vectors * hnsw_m * 2 * 8`. Return the total as an integer (floor).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "num_vectors, dim >= 1",
+        "bytes_per_component > 0",
+        "hnsw_m >= 0"
+      ],
+    hints: {
+  "small": "raw = num_vectors * dim * bytes_per_component.",
+        "strong": "graph_overhead = num_vectors * hnsw_m * 2 * 8 if hnsw_m > 0 else 0; return int(raw + graph_overhead).",
+        "concept": "HNSW's real memory cost isn't just the vectors -- the graph's adjacency lists are a genuine, often-underestimated multiplier at scale (millions of vectors)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "flat float32 index, no graph",
+          "input": {
+            "num_vectors": 1000,
+            "dim": 128,
+            "bytes_per_component": 4,
+            "hnsw_m": 0
+          },
+          "expectedOutput": 512000,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "HNSW with M=16",
+          "input": {
+            "num_vectors": 1000,
+            "dim": 128,
+            "bytes_per_component": 4,
+            "hnsw_m": 16
+          },
+          "expectedOutput": 768000,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "quantized int8",
+          "input": {
+            "num_vectors": 10000,
+            "dim": 768,
+            "bytes_per_component": 1,
+            "hnsw_m": 0
+          },
+          "expectedOutput": 7680000,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large HNSW deployment",
+          "input": {
+            "num_vectors": 1000000,
+            "dim": 384,
+            "bytes_per_component": 4,
+            "hnsw_m": 32
+          },
+          "expectedOutput": 2048000000,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-20": {
+    id: "vec-search-prob-20",
+    title: "Consistent-Hashing Shard Routing",
+    difficulty: "medium",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "route_shard",
+    functionSignature: "route_shard(vector_id: str, num_shards: int) -> int",
+    starterCode: `def route_shard(vector_id: str, num_shards: int) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement deterministic shard routing for a distributed vector index -- every write and query must independently agree on which shard owns a given vector.",
+    taskDescription: "Implement `route_shard(vector_id, num_shards)`. Compute a stable hash of `vector_id` using Python's `hashlib.md5` on its UTF-8 bytes, interpret the first 8 bytes of the digest as an unsigned big-endian integer, and return `that_integer % num_shards`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "num_shards >= 1",
+        "vector_id is a non-empty string"
+      ],
+    hints: {
+  "small": "Use hashlib.md5(vector_id.encode()).digest(), take the first 8 bytes.",
+        "strong": "int.from_bytes(digest[:8], 'big') % num_shards.",
+        "concept": "A cryptographic hash gives a uniform, deterministic shard assignment independent of insertion order -- critical so a query router and a writer never disagree about ownership."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "deterministic for a fixed id",
+          "input": {
+            "vector_id": "doc-001",
+            "num_shards": 4
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single shard always 0",
+          "input": {
+            "vector_id": "anything",
+            "num_shards": 1
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "different id",
+          "input": {
+            "vector_id": "doc-002",
+            "num_shards": 4
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large shard count",
+          "input": {
+            "vector_id": "user-embedding-42",
+            "num_shards": 128
+          },
+          "expectedOutput": 97,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-21": {
+    id: "vec-search-prob-21",
+    title: "Merge Top-K Results From Multiple Shards",
+    difficulty: "medium",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "merge_shard_topk",
+    functionSignature: "merge_shard_topk(shard_results: list[list[tuple]], k: int) -> list[tuple]",
+    starterCode: `def merge_shard_topk(shard_results: list[list[tuple]], k: int) -> list[tuple]:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the scatter-gather merge step every distributed vector search does: each shard returns its own top-k, and the query router must merge them into one global top-k.",
+    taskDescription: "Implement `merge_shard_topk(shard_results, k)`. Each element of `shard_results` is a list of `(id, score)` tuples, already sorted descending by score within its shard (higher score = more relevant). Merge all shards' results and return the global top-`k` `(id, score)` tuples sorted descending by score; ties broken by id ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "each shard's list is individually pre-sorted descending",
+        "1 <= k"
+      ],
+    hints: {
+  "small": "Flatten everything, then sort once by (-score, id) and take k.",
+        "strong": "flat = [t for shard in shard_results for t in shard]; flat.sort(key=lambda t: (-t[1], t[0])).",
+        "concept": "This is the real 'gather' half of scatter-gather search -- correctness only needs a full merge-and-resort; a smarter k-way merge is a pure performance optimization, not a correctness requirement."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two shards, simple merge",
+          "input": {
+            "shard_results": [
+              [
+                [
+                  "a",
+                  0.9
+                ],
+                [
+                  "b",
+                  0.5
+                ]
+              ],
+              [
+                [
+                  "c",
+                  0.8
+                ],
+                [
+                  "d",
+                  0.3
+                ]
+              ]
+            ],
+            "k": 3
+          },
+          "expectedOutput": [
+            [
+              "a",
+              0.9
+            ],
+            [
+              "c",
+              0.8
+            ],
+            [
+              "b",
+              0.5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "tie broken by id",
+          "input": {
+            "shard_results": [
+              [
+                [
+                  "z",
+                  0.5
+                ]
+              ],
+              [
+                [
+                  "a",
+                  0.5
+                ]
+              ]
+            ],
+            "k": 2
+          },
+          "expectedOutput": [
+            [
+              "a",
+              0.5
+            ],
+            [
+              "z",
+              0.5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "k smaller than total results",
+          "input": {
+            "shard_results": [
+              [
+                [
+                  "a",
+                  0.9
+                ],
+                [
+                  "b",
+                  0.8
+                ],
+                [
+                  "c",
+                  0.7
+                ]
+              ]
+            ],
+            "k": 1
+          },
+          "expectedOutput": [
+            [
+              "a",
+              0.9
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three shards",
+          "input": {
+            "shard_results": [
+              [
+                [
+                  "a",
+                  0.1
+                ]
+              ],
+              [
+                [
+                  "b",
+                  0.9
+                ]
+              ],
+              [
+                [
+                  "c",
+                  0.5
+                ]
+              ]
+            ],
+            "k": 2
+          },
+          "expectedOutput": [
+            [
+              "b",
+              0.9
+            ],
+            [
+              "c",
+              0.5
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-22": {
+    id: "vec-search-prob-22",
+    title: "Filtered ANN Search With Metadata Predicate",
+    difficulty: "medium",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "filtered_topk",
+    functionSignature: "filtered_topk(query: list[float], items: list[dict], k: int, category: str) -> list[str]",
+    starterCode: `def filtered_topk(query: list[float], items: list[dict], k: int, category: str) -> list[str]:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement pre-filtered ANN search: real vector search almost always needs to combine similarity ranking with a metadata constraint (e.g. 'only in-stock items').",
+    taskDescription: "Implement `filtered_topk(query, items, k, category)`. `items` is a list of `{\"id\": str, \"vector\": list[float], \"category\": str}` dicts. First filter to items whose `category` matches exactly, then rank the survivors by cosine similarity to `query` descending, and return the top-`k` ids. Ties broken by id ascending. If fewer than `k` items survive the filter, return all of them.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "1 <= k",
+        "all vectors share query's dimensionality and are non-zero"
+      ],
+    hints: {
+  "small": "Filter first, then rank only the survivors.",
+        "strong": "cosine(a,b) = dot(a,b) / (|a|*|b|); sort filtered items by (-cosine, id).",
+        "concept": "Filtering before ranking (pre-filtering) is simple but can be slow if the filter is very selective against a huge index -- real systems sometimes need filter-aware graph traversal instead, but correctness-wise this is the reference behavior."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic filter+rank",
+          "input": {
+            "query": [
+              1,
+              0
+            ],
+            "items": [
+              {
+                "id": "a",
+                "vector": [
+                  1,
+                  0
+                ],
+                "category": "shoes"
+              },
+              {
+                "id": "b",
+                "vector": [
+                  0,
+                  1
+                ],
+                "category": "hats"
+              }
+            ],
+            "k": 2,
+            "category": "shoes"
+          },
+          "expectedOutput": [
+            "a"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "fewer survivors than k",
+          "input": {
+            "query": [
+              1,
+              0
+            ],
+            "items": [
+              {
+                "id": "a",
+                "vector": [
+                  1,
+                  0
+                ],
+                "category": "x"
+              }
+            ],
+            "k": 5,
+            "category": "x"
+          },
+          "expectedOutput": [
+            "a"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no survivors",
+          "input": {
+            "query": [
+              1,
+              0
+            ],
+            "items": [
+              {
+                "id": "a",
+                "vector": [
+                  1,
+                  0
+                ],
+                "category": "x"
+              }
+            ],
+            "k": 5,
+            "category": "y"
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "tie in ranking",
+          "input": {
+            "query": [
+              1,
+              0
+            ],
+            "items": [
+              {
+                "id": "z",
+                "vector": [
+                  2,
+                  0
+                ],
+                "category": "x"
+              },
+              {
+                "id": "a",
+                "vector": [
+                  1,
+                  0
+                ],
+                "category": "x"
+              }
+            ],
+            "k": 2,
+            "category": "x"
+          },
+          "expectedOutput": [
+            "a",
+            "z"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-23": {
+    id: "vec-search-prob-23",
+    title: "HNSW Greedy Search Single Hop",
+    difficulty: "medium",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "hnsw_greedy_hop",
+    functionSignature: "hnsw_greedy_hop(current_dist: float, neighbor_dists: dict[str, float], visited: set) -> str | None",
+    starterCode: `def hnsw_greedy_hop(current_dist: float, neighbor_dists: dict[str, float], visited: set) -> str | None:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement one greedy-descent step of HNSW's real search algorithm: from the current node, move to whichever unvisited neighbor is closest to the query, or stop if none improves.",
+    taskDescription: "Implement `hnsw_greedy_hop(current_dist, neighbor_dists, visited)`. `neighbor_dists` maps neighbor id -> its distance to the query. Among neighbors NOT in `visited`, find the one with the smallest distance. If that smallest distance is `< current_dist`, return that neighbor's id (the hop to take); otherwise return `None` (local minimum reached, search stops). Ties among equally-close neighbors broken by id ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "current_dist >= 0",
+        "distances >= 0"
+      ],
+    hints: {
+  "small": "Filter out visited neighbors, find the minimum distance one, compare against current_dist.",
+        "strong": "candidates = {id: d for id, d in neighbor_dists.items() if id not in visited}; if empty return None; find min by (d, id); return its id only if d < current_dist else None.",
+        "concept": "This greedy local-minimum stopping rule is exactly what makes HNSW's search sublinear -- and exactly why it's approximate: a true global nearest neighbor might be reachable only via a temporarily-worse hop."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "improving hop exists",
+          "input": {
+            "current_dist": 5,
+            "neighbor_dists": {
+              "a": 3,
+              "b": 4
+            },
+            "visited": []
+          },
+          "expectedOutput": "a",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "local minimum, no improvement",
+          "input": {
+            "current_dist": 1,
+            "neighbor_dists": {
+              "a": 2,
+              "b": 3
+            },
+            "visited": []
+          },
+          "expectedOutput": null,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all neighbors visited",
+          "input": {
+            "current_dist": 5,
+            "neighbor_dists": {
+              "a": 1
+            },
+            "visited": [
+              "a"
+            ]
+          },
+          "expectedOutput": null,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "tie broken by id",
+          "input": {
+            "current_dist": 5,
+            "neighbor_dists": {
+              "z": 2,
+              "a": 2
+            },
+            "visited": []
+          },
+          "expectedOutput": "a",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-24": {
+    id: "vec-search-prob-24",
+    title: "Rocchio Query Vector Expansion",
+    difficulty: "medium",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "rocchio_expand",
+    functionSignature: "rocchio_expand(query: list[float], relevant: list[list[float]], irrelevant: list[list[float]], alpha: float, beta: float, gamma: float) -> list[float]",
+    starterCode: `def rocchio_expand(query, relevant, irrelevant, alpha, beta, gamma):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real Rocchio algorithm for pseudo-relevance-feedback query expansion, a classic IR technique still used to refine vector queries from user click signal.",
+    taskDescription: "Implement `rocchio_expand(query, relevant, irrelevant, alpha, beta, gamma)`. The updated query is `alpha*query + beta*mean(relevant) - gamma*mean(irrelevant)`, computed element-wise. If `relevant` is empty, treat its mean as the zero vector; same for `irrelevant`. Return the resulting vector as a list of floats.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all vectors share the same dimensionality",
+        "alpha, beta, gamma >= 0"
+      ],
+    hints: {
+  "small": "Compute the centroid (mean) of relevant and irrelevant separately, then combine.",
+        "strong": "new_q[i] = alpha*query[i] + beta*mean_rel[i] - gamma*mean_irrel[i]; mean of an empty list is 0 for every component.",
+        "concept": "Rocchio literally moves the query vector toward the centroid of known-relevant results and away from known-irrelevant ones -- the same intuition behind modern embedding-based relevance feedback."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no feedback, alpha=1 returns query unchanged",
+          "input": {
+            "query": [
+              1,
+              2
+            ],
+            "relevant": [],
+            "irrelevant": [],
+            "alpha": 1,
+            "beta": 0.5,
+            "gamma": 0.25
+          },
+          "expectedOutput": [
+            1,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "with one relevant doc",
+          "input": {
+            "query": [
+              1,
+              0
+            ],
+            "relevant": [
+              [
+                3,
+                0
+              ]
+            ],
+            "irrelevant": [],
+            "alpha": 1,
+            "beta": 1,
+            "gamma": 1
+          },
+          "expectedOutput": [
+            4,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "with relevant and irrelevant",
+          "input": {
+            "query": [
+              0,
+              0
+            ],
+            "relevant": [
+              [
+                2,
+                2
+              ]
+            ],
+            "irrelevant": [
+              [
+                1,
+                1
+              ]
+            ],
+            "alpha": 1,
+            "beta": 1,
+            "gamma": 1
+          },
+          "expectedOutput": [
+            1,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple relevant docs averaged",
+          "input": {
+            "query": [
+              1,
+              1
+            ],
+            "relevant": [
+              [
+                2,
+                2
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "irrelevant": [],
+            "alpha": 0.5,
+            "beta": 0.5,
+            "gamma": 0
+          },
+          "expectedOutput": [
+            2,
+            2
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "vec-search-prob-25": {
+    id: "vec-search-prob-25",
+    title: "Triangle-Inequality Candidate Pruning",
+    difficulty: "hard",
+    topic: "Vector Search & Index Optimization",
+    estimatedTime: '15 min',
+    functionName: "prune_by_triangle_inequality",
+    functionSignature: "prune_by_triangle_inequality(query_to_pivot: float, candidate_to_pivot: dict[str, float], kth_best_dist: float) -> list[str]",
+    starterCode: `def prune_by_triangle_inequality(query_to_pivot, candidate_to_pivot, kth_best_dist):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real metric-space pruning rule used by pivot-based exact search indexes (e.g. VP-trees) to skip distance computations that provably cannot beat the current top-k.",
+    taskDescription: "Implement `prune_by_triangle_inequality(query_to_pivot, candidate_to_pivot, kth_best_dist)`. By the triangle inequality, `|d(query, candidate) - d(query, pivot)| <= d(candidate, pivot)`, so a lower bound on `d(query, candidate)` is `abs(query_to_pivot - candidate_to_pivot[c])`. Return the sorted list of candidate ids whose lower bound is `< kth_best_dist` (i.e. cannot yet be safely pruned -- they still need a real distance check). Sort the returned ids ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all distances >= 0"
+      ],
+    hints: {
+  "small": "lower_bound(c) = abs(query_to_pivot - candidate_to_pivot[c]); keep c if lower_bound < kth_best_dist.",
+        "strong": "Return sorted([c for c, d in candidate_to_pivot.items() if abs(query_to_pivot - d) < kth_best_dist]).",
+        "concept": "This is exactly how metric trees achieve sub-linear EXACT search (not approximate) -- the lower bound is mathematically guaranteed, so pruned candidates are provably not in the true top-k, unlike HNSW's heuristic pruning."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all survive, loose bound",
+          "input": {
+            "query_to_pivot": 5,
+            "candidate_to_pivot": {
+              "a": 4,
+              "b": 6
+            },
+            "kth_best_dist": 100
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "all pruned, tight bound",
+          "input": {
+            "query_to_pivot": 5,
+            "candidate_to_pivot": {
+              "a": 100,
+              "b": 200
+            },
+            "kth_best_dist": 1
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "mixed pruning",
+          "input": {
+            "query_to_pivot": 10,
+            "candidate_to_pivot": {
+              "a": 9,
+              "b": 50,
+              "c": 10.5
+            },
+            "kth_best_dist": 2
+          },
+          "expectedOutput": [
+            "a",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "sorted output order",
+          "input": {
+            "query_to_pivot": 0,
+            "candidate_to_pivot": {
+              "z": 0.5,
+              "a": 0.5
+            },
+            "kth_best_dist": 5
+          },
+          "expectedOutput": [
+            "a",
+            "z"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

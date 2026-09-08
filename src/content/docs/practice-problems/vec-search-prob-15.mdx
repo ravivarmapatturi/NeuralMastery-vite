@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #990. Vector Search & Index Optimization Module 3: Problem 15"
-description: "Master #990. Vector Search & Index Optimization Module 3: Problem 15 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Binary Quantization and Hamming Distance"
+description: "Implement sign-based binary quantization, a cheap first-pass filter real vector databases use before exact re-ranking."
+difficulty: "easy"
 topic: "Vector Search & Index Optimization"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #990. Vector Search & Index Optimization Module 3: Problem 15
+# Binary Quantization and Hamming Distance
 
-**Track**: Vector Search & Index Optimization | **Rank**: #990 of 1072 | **Points**: 60 XP
+**Track**: Vector Search & Index Optimization | **Points**: 40 XP
 
 ## Overview
 
-Implement `#990. Vector Search & Index Optimization Module 3: Problem 15` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement sign-based binary quantization, a cheap first-pass filter real vector databases use before exact re-ranking.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `binary_quantize_hamming(a, b)`. Quantize each vector to a bit per dimension (`1` if the component is `>= 0`, else `0`), then return the Hamming distance (count of differing bits) between the two quantized vectors.
 
 <PracticePlayground problemId="vec-search-prob-15" />

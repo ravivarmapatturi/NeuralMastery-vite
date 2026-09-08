@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #994. Vector Search & Index Optimization Module 4: Problem 19"
-description: "Master #994. Vector Search & Index Optimization Module 4: Problem 19 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Vector Index Memory Footprint Estimator"
+description: "Estimate a real vector index's memory footprint before building it -- a genuine capacity-planning step for any production ANN deployment."
+difficulty: "easy"
 topic: "Vector Search & Index Optimization"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #994. Vector Search & Index Optimization Module 4: Problem 19
+# Vector Index Memory Footprint Estimator
 
-**Track**: Vector Search & Index Optimization | **Rank**: #994 of 1072 | **Points**: 90 XP
+**Track**: Vector Search & Index Optimization | **Points**: 40 XP
 
 ## Overview
 
-Implement `#994. Vector Search & Index Optimization Module 4: Problem 19` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Estimate a real vector index's memory footprint before building it -- a genuine capacity-planning step for any production ANN deployment.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `index_memory_bytes(num_vectors, dim, bytes_per_component, hnsw_m=0)`. Raw vector storage is `num_vectors * dim * bytes_per_component`. If `hnsw_m > 0`, add graph-link overhead: each vector stores roughly `hnsw_m * 2` neighbor pointers (8 bytes each, accounting for the base layer plus upper layers) per vector: `num_vectors * hnsw_m * 2 * 8`. Return the total as an integer (floor).
 
 <PracticePlayground problemId="vec-search-prob-19" />

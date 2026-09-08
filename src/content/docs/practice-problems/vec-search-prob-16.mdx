@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #991. Vector Search & Index Optimization Module 4: Problem 16"
-description: "Master #991. Vector Search & Index Optimization Module 4: Problem 16 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Max Inner Product Search (MIPS) Top-K"
+description: "Implement Max Inner Product Search ranking, the similarity metric behind most modern dense retrieval systems (unlike cosine, it rewards vector magnitude too)."
+difficulty: "easy"
 topic: "Vector Search & Index Optimization"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #991. Vector Search & Index Optimization Module 4: Problem 16
+# Max Inner Product Search (MIPS) Top-K
 
-**Track**: Vector Search & Index Optimization | **Rank**: #991 of 1072 | **Points**: 60 XP
+**Track**: Vector Search & Index Optimization | **Points**: 40 XP
 
 ## Overview
 
-Implement `#991. Vector Search & Index Optimization Module 4: Problem 16` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Max Inner Product Search ranking, the similarity metric behind most modern dense retrieval systems (unlike cosine, it rewards vector magnitude too).
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `mips_topk(query, vectors, k)`. Compute the dot product between `query` and every vector in `vectors`, and return the `k` ids with the HIGHEST dot product, sorted descending by score. Ties broken by id ascending.
 
 <PracticePlayground problemId="vec-search-prob-16" />

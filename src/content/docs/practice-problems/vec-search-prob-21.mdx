@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #996. Vector Search & Index Optimization Module 5: Problem 21"
-description: "Master #996. Vector Search & Index Optimization Module 5: Problem 21 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Merge Top-K Results From Multiple Shards"
+description: "Implement the scatter-gather merge step every distributed vector search does: each shard returns its own top-k, and the query router must merge them into one global top-k."
+difficulty: "medium"
 topic: "Vector Search & Index Optimization"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #996. Vector Search & Index Optimization Module 5: Problem 21
+# Merge Top-K Results From Multiple Shards
 
-**Track**: Vector Search & Index Optimization | **Rank**: #996 of 1072 | **Points**: 90 XP
+**Track**: Vector Search & Index Optimization | **Points**: 40 XP
 
 ## Overview
 
-Implement `#996. Vector Search & Index Optimization Module 5: Problem 21` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement the scatter-gather merge step every distributed vector search does: each shard returns its own top-k, and the query router must merge them into one global top-k.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_shard_topk(shard_results, k)`. Each element of `shard_results` is a list of `(id, score)` tuples, already sorted descending by score within its shard (higher score = more relevant). Merge all shards' results and return the global top-`k` `(id, score)` tuples sorted descending by score; ties broken by id ascending.
 
 <PracticePlayground problemId="vec-search-prob-21" />

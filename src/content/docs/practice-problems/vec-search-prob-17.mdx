@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #992. Vector Search & Index Optimization Module 4: Problem 17"
-description: "Master #992. Vector Search & Index Optimization Module 4: Problem 17 in the Vector Search & Index Optimization track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: ColBERT-Style Multi-Vector MaxSim Score"
+description: "Implement ColBERT's late-interaction MaxSim scoring, which keeps a per-token embedding for finer-grained relevance than a single pooled vector."
 difficulty: "medium"
 topic: "Vector Search & Index Optimization"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #992. Vector Search & Index Optimization Module 4: Problem 17
+# ColBERT-Style Multi-Vector MaxSim Score
 
-**Track**: Vector Search & Index Optimization | **Rank**: #992 of 1072 | **Points**: 60 XP
+**Track**: Vector Search & Index Optimization | **Points**: 40 XP
 
 ## Overview
 
-Implement `#992. Vector Search & Index Optimization Module 4: Problem 17` to advance your mastery in **Vector Search & Index Optimization**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement ColBERT's late-interaction MaxSim scoring, which keeps a per-token embedding for finer-grained relevance than a single pooled vector.
 
 ## Task
 
-Implement the function `vector_search_and_index_optimization_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `maxsim_score(query_vecs, doc_vecs)`: for each query token vector, compute its max cosine similarity against ALL document token vectors, then sum those per-token maxima to get the document's total score.
 
 <PracticePlayground problemId="vec-search-prob-17" />
