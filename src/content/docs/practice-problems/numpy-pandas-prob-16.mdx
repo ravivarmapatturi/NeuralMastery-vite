@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 16: Problem 196"
 sidebar_position: 196
 description: "Curriculum Problem 196 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,34 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #196** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-15`.
+## Overview
+
+Compute numerically stable softmax probabilities across rows of a 2D matrix of logits.
+
+## Task
+
+Implement `vectorized_softmax(scores)` to compute row-wise softmax probabilities. For each row, subtract the row maximum before exponentiating to prevent numerical overflow, then divide by the row exponential sum. Round each probability to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-16" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p16(data):
-    # Reference implementation
-    return data
+import math
+
+def vectorized_softmax(scores):
+    res = []
+    for row in scores:
+        if not row:
+            res.append([])
+            continue
+        max_val = max(row)
+        exps = [math.exp(x - max_val) for x in row]
+        sum_exps = sum(exps)
+        res.append([round(e / sum_exps, 4) for e in exps])
+    return res
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Subtracting the row maximum ensures exponents do not exceed zero, avoiding floating point overflow while preserving relative probability ratios.
 
 </Solution>

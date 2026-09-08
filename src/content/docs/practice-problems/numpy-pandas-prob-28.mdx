@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 28: Problem 208"
 sidebar_position: 208
 description: "Curriculum Problem 208 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,23 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #208** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-27`.
+## Overview
+
+Compute an outer difference matrix using broadcasting principles.
+
+## Task
+
+Implement `broadcast_outer_difference(a, b)`: return an N x M matrix `M` where `M[i][j] = a[i] - b[j]`. Round each value to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-28" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p28(data):
-    # Reference implementation
-    return data
+def broadcast_outer_difference(a, b):
+    return [[round(float(x - y), 4) for y in b] for x in a]
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Broadcasting vector a as a column vector and b as a row vector evaluates all pairwise element subtractions simultaneously.
 
 </Solution>

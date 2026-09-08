@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 60: Problem 240"
 sidebar_position: 240
 description: "Curriculum Problem 240 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,41 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #240** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-59`.
+## Overview
+
+Compute real-time rolling Pearson correlation between two streaming series.
+
+## Task
+
+Implement `rolling_pearson_correlation(series_x, series_y, window_size)`: for each sliding window of size `window_size` (for index `i >= window_size - 1`), compute the Pearson correlation coefficient `r = sum((x - mean_x)*(y - mean_y)) / sqrt(sum((x - mean_x)**2) * sum((y - mean_y)**2))`. If either series has 0 variance within the window, emit 0.0. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-60" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p60(data):
-    # Reference implementation
-    return data
+import math
+
+def rolling_pearson_correlation(series_x, series_y, window_size):
+    if len(series_x) != len(series_y) or len(series_x) < window_size or window_size <= 1:
+        return []
+    out = []
+    for i in range(window_size - 1, len(series_x)):
+        wx = series_x[i - window_size + 1 : i + 1]
+        wy = series_y[i - window_size + 1 : i + 1]
+        mx = sum(wx) / window_size
+        my = sum(wy) / window_size
+        cov = sum((a - mx) * (b - my) for a, b in zip(wx, wy))
+        var_x = sum((a - mx) ** 2 for a, b in zip(wx, wy))
+        var_y = sum((b - my) ** 2 for a, b in zip(wx, wy))
+        if var_x == 0.0 or var_y == 0.0:
+            out.append(0.0)
+        else:
+            r = cov / math.sqrt(var_x * var_y)
+            out.append(round(float(r), 4))
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Rolling correlation captures dynamic linear coupling and regime shifts between correlated data streams.
 
 </Solution>

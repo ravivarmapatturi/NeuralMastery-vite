@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 43: Problem 223"
 sidebar_position: 223
 description: "Curriculum Problem 223 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #223** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-42`.
+## Overview
+
+Evaluate the non-parametric empirical CDF from observed data samples.
+
+## Task
+
+Implement `empirical_cdf(samples, query_points)`: for each query point `q`, evaluate `F(q) = (count of samples <= q) / len(samples)`. Return list of probabilities rounded to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-43" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p43(data):
-    # Reference implementation
-    return data
+import bisect
+
+def empirical_cdf(samples, query_points):
+    if not samples:
+        return [0.0] * len(query_points)
+    n = len(samples)
+    sorted_s = sorted(samples)
+    out = []
+    for q in query_points:
+        count = bisect.bisect_right(sorted_s, q)
+        out.append(round(count / n, 4))
+    return out
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+The empirical CDF converges uniformly to the true underlying CDF by the Glivenko-Cantelli theorem, providing non-parametric quantile estimation.
 
 </Solution>

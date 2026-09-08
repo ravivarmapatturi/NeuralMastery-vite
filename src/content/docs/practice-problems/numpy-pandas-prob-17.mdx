@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 17: Problem 197"
 sidebar_position: 197
 description: "Curriculum Problem 197 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #197** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-16`.
+## Overview
+
+Profile missing data rates across tabular record columns.
+
+## Task
+
+Implement `missingness_report(records, column_names)`: compute the count and ratio of missing values for each column. A value is considered missing if the key is not in the record, or if its value is `None` or empty string `""`. Round ratio to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-17" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p17(data):
-    # Reference implementation
-    return data
+def missingness_report(records, column_names):
+    n = len(records)
+    out = {}
+    for col in column_names:
+        missing = 0
+        for r in records:
+            if col not in r or r[col] is None or r[col] == "":
+                missing += 1
+        ratio = round(missing / n, 4) if n > 0 else 0.0
+        out[col] = {"missing_count": missing, "missing_ratio": ratio}
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Iterate through all columns and records, flagging absent keys, None values, and empty strings to compute exact column-level missingness metrics.
 
 </Solution>

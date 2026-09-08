@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 24: Problem 204"
 sidebar_position: 204
 description: "Curriculum Problem 204 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #204** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-23`.
+## Overview
+
+Maintain a uniform random sample of size k over an unbounded streaming sequence.
+
+## Task
+
+Implement `deterministic_reservoir_sample(stream, k, random_floats)`. First k elements of stream populate the reservoir. For each subsequent element at index `i` (from k to len(stream)-1), let `p = random_floats[i - k]`. If `p < k / (i + 1)`, replace reservoir element at `int(p * (i + 1))` with `stream[i]`. Return the final reservoir.
 
 <PracticePlayground problemId="numpy-pandas-prob-24" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p24(data):
-    # Reference implementation
-    return data
+def deterministic_reservoir_sample(stream, k, random_floats):
+    if not stream or k <= 0:
+        return []
+    res = list(stream[:k])
+    for i in range(k, len(stream)):
+        p = random_floats[i - k]
+        if p < (k / (i + 1)):
+            target_idx = int(p * (i + 1))
+            if target_idx < k:
+                res[target_idx] = stream[i]
+    return res
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Algorithm R guarantees every stream element has equal probability k/N of selection without knowing total stream length N in advance.
 
 </Solution>

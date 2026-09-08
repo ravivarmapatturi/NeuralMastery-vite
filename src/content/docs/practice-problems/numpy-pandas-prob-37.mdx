@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 37: Problem 217"
 sidebar_position: 217
 description: "Curriculum Problem 217 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,44 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #217** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-36`.
+## Overview
+
+Extract primary and offset matrix diagonals and compute matrix trace.
+
+## Task
+
+Implement `matrix_diagonal_summary(matrix, k)`: extract the main diagonal `(i == j)`, the offset diagonal at offset `k` (where `j == i + k`), and compute the matrix trace (sum of main diagonal elements). Round trace and extracted floats to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-37" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p37(data):
-    # Reference implementation
-    return data
+def matrix_diagonal_summary(matrix, k):
+    if not matrix or not matrix[0]:
+        return {"main_diagonal": [], "k_diagonal": [], "trace": 0.0}
+    rows = len(matrix)
+    cols = len(matrix[0])
+    main_diag = [round(float(matrix[i][i]), 4) for i in range(min(rows, cols))]
+    k_diag = []
+    if k >= 0:
+        for i in range(rows):
+            j = i + k
+            if j < cols:
+                k_diag.append(round(float(matrix[i][j]), 4))
+    else:
+        for i in range(-k, rows):
+            j = i + k
+            if 0 <= j < cols:
+                k_diag.append(round(float(matrix[i][j]), 4))
+    trace = round(float(sum(main_diag)), 4)
+    return {
+        "main_diagonal": main_diag,
+        "k_diagonal": k_diag,
+        "trace": trace
+    }
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Matrix trace is invariant under cyclic permutations and equals the sum of eigenvalues in linear algebraic representations.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 46: Problem 226"
 sidebar_position: 226
 description: "Curriculum Problem 226 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #226** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-45`.
+## Overview
+
+Compute the pairwise Jaccard similarity matrix between binary attribute vectors.
+
+## Task
+
+Implement `pairwise_jaccard_similarity(matrix_a, matrix_b)`: for binary 0/1 matrices A (N x D) and B (M x D), return the (N, M) similarity matrix `|A_i & B_j| / |A_i | B_j|`. If both vectors are all zeros, similarity is 1.0. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-46" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p46(data):
-    # Reference implementation
-    return data
+def pairwise_jaccard_similarity(matrix_a, matrix_b):
+    res = []
+    for u in matrix_a:
+        row = []
+        for v in matrix_b:
+            intersection = sum(1 for a, b in zip(u, v) if a == 1 and b == 1)
+            union = sum(1 for a, b in zip(u, v) if a == 1 or b == 1)
+            sim = (intersection / union) if union > 0 else 1.0
+            row.append(round(float(sim), 4))
+        res.append(row)
+    return res
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Jaccard similarity measures the ratio of shared binary attributes over total active attributes, insensitive to shared absent features.
 
 </Solution>

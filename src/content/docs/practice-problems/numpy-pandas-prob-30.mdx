@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 30: Problem 210"
 sidebar_position: 210
 description: "Curriculum Problem 210 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #210** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-29`.
+## Overview
+
+Measure sliding window event arrival velocity in a real-time event stream.
+
+## Task
+
+Implement `sliding_window_event_rate(timestamps, window_seconds)`: given sorted timestamps, for each event arrival calculate the number of events in the half-open interval `(timestamp - window_seconds, timestamp]`.
 
 <PracticePlayground problemId="numpy-pandas-prob-30" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p30(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def sliding_window_event_rate(timestamps, window_seconds):
+    q = deque()
+    out = []
+    for t in timestamps:
+        q.append(t)
+        cutoff = t - window_seconds
+        while q and q[0] <= cutoff:
+            q.popleft()
+        out.append(len(q))
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+A monotonic timestamp queue efficiently maintains sliding window membership by evicting timestamps older than the window cutoff.
 
 </Solution>

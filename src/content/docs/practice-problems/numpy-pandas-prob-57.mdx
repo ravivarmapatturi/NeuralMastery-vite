@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 57: Problem 237"
 sidebar_position: 237
 description: "Curriculum Problem 237 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,35 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #237** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-56`.
+## Overview
+
+Simulate a leaky bucket buffer to smooth out bursty traffic streams.
+
+## Task
+
+Implement `simulate_leaky_bucket(packets, capacity, leak_rate)`. Water level starts at 0.0 at time 0.0. Between arrivals, water leaks by `elapsed * leak_rate`, bounded below by 0.0. If `current_level + packet_size <= capacity`, accept packet and add size to level; otherwise drop packet. Return list of `[timestamp, packet_size, accepted]`.
 
 <PracticePlayground problemId="numpy-pandas-prob-57" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p57(data):
-    # Reference implementation
-    return data
+def simulate_leaky_bucket(packets, capacity, leak_rate):
+    level = 0.0
+    last_time = 0.0
+    out = []
+    for ts, size in packets:
+        elapsed = ts - last_time
+        level = max(0.0, level - elapsed * leak_rate)
+        last_time = ts
+        if level + size <= capacity:
+            level += size
+            out.append([ts, size, True])
+        else:
+            out.append([ts, size, False])
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Leaky bucket buffers incoming traffic and discharges at a constant rate, eliminating burst spikes to protect downstream backends.
 
 </Solution>

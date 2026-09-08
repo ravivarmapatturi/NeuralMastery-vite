@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 56: Problem 236"
 sidebar_position: 236
 description: "Curriculum Problem 236 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,37 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #236** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-55`.
+## Overview
+
+Parse and structure raw access log text records into typed tabular records.
+
+## Task
+
+Implement `extract_log_features(log_lines)`: for each log line formatted like `'IP - - [TIMESTAMP] "METHOD PATH PROTOCOL" STATUS BYTES'`, extract `ip` (str), `timestamp` (str), `method` (str), `status` (int), and `bytes` (int). Skip non-matching lines.
 
 <PracticePlayground problemId="numpy-pandas-prob-56" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p56(data):
-    # Reference implementation
-    return data
+import re
+
+def extract_log_features(log_lines):
+    pattern = re.compile(r'^(\S+) - - \[(\S+)\] "([A-Z]+) [^"]*" (\d+) (\d+)')
+    out = []
+    for line in log_lines:
+        m = pattern.match(line.strip())
+        if m:
+            out.append({
+                "ip": m.group(1),
+                "timestamp": m.group(2),
+                "method": m.group(3),
+                "status": int(m.group(4)),
+                "bytes": int(m.group(5))
+            })
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Regex extraction pipelines ingest unstructured log text directly into structured tabular records for downstream ML feature engineering.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 47: Problem 227"
 sidebar_position: 227
 description: "Curriculum Problem 227 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,28 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #227** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-46`.
+## Overview
+
+Group low-frequency categorical levels into a consolidated rare label.
+
+## Task
+
+Implement `encode_with_rare_grouping(categories, min_count, rare_label)`: count the occurrences of each category string. Replace any category whose frequency is strictly less than `min_count` with `rare_label`. Return the transformed list.
 
 <PracticePlayground problemId="numpy-pandas-prob-47" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p47(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def encode_with_rare_grouping(categories, min_count, rare_label):
+    counts = defaultdict(int)
+    for c in categories:
+        counts[c] += 1
+    return [c if counts[c] >= min_count else rare_label for c in categories]
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Rare category grouping prevents high-cardinality explosion and protects models against overfitting to sparse categories.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 55: Problem 235"
 sidebar_position: 235
 description: "Curriculum Problem 235 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,34 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #235** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-54`.
+## Overview
+
+Compute numerically robust log-sum-exp reductions across matrix rows.
+
+## Task
+
+Implement `vectorized_log_sum_exp(matrix)`: for each row, compute `max_x + log(sum(exp(x_i - max_x)))`. If a row is empty, return 0.0. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-55" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p55(data):
-    # Reference implementation
-    return data
+import math
+
+def vectorized_log_sum_exp(matrix):
+    res = []
+    for row in matrix:
+        if not row:
+            res.append(0.0)
+            continue
+        max_val = max(row)
+        s = sum(math.exp(x - max_val) for x in row)
+        val = max_val + math.log(s)
+        res.append(round(float(val), 4))
+    return res
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Factoring out the row maximum transforms exponent inputs into non-positive values, avoiding numerical overflow and underflow.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 34: Problem 214"
 sidebar_position: 214
 description: "Curriculum Problem 214 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #214** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-33`.
+## Overview
+
+Extract the top-k highest values and their column indices for each matrix row.
+
+## Task
+
+Implement `row_top_k(matrix, k)`: for each row, extract the top `min(k, len(row))` largest elements, sorted descending by value (tie-break by smaller column index). Return a list of dicts with `"values"` and `"indices"`, rounding values to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-34" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p34(data):
-    # Reference implementation
-    return data
+def row_top_k(matrix, k):
+    res = []
+    for row in matrix:
+        indexed = [(val, idx) for idx, val in enumerate(row)]
+        indexed.sort(key=lambda x: (-x[0], x[1]))
+        top = indexed[:k]
+        res.append({
+            "values": [round(float(x[0]), 4) for x in top],
+            "indices": [x[1] for x in top]
+        })
+    return res
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Top-K selection across row embeddings extracts candidate nearest neighbors or highest classification logits.
 
 </Solution>

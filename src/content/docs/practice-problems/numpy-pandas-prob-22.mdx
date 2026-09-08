@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 22: Problem 202"
 sidebar_position: 202
 description: "Curriculum Problem 202 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,27 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #202** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-21`.
+## Overview
+
+Transform a 1D feature array into polynomial power basis features.
+
+## Task
+
+Implement `polynomial_features_1d(x, degree)`: for each float in `x`, generate powers `[val**0, val**1, ..., val**degree]`. Round each value to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-22" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p22(data):
-    # Reference implementation
-    return data
+def polynomial_features_1d(x, degree):
+    out = []
+    for val in x:
+        row = [round(float(val ** d), 4) for d in range(degree + 1)]
+        out.append(row)
+    return out
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Polynomial feature transformation allows linear models to capture non-linear relationships by computing explicit power interaction terms.
 
 </Solution>

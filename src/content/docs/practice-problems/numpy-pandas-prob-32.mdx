@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 32: Problem 212"
 sidebar_position: 212
 description: "Curriculum Problem 212 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #212** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-31`.
+## Overview
+
+Unpivot tabular records from wide format to tidy long format.
+
+## Task
+
+Implement `melt_dataframe(records, id_vars, value_vars, var_name, value_name)`: for each row, retain keys in `id_vars`, and unpivot each column in `value_vars` into a new row with `var_name` set to the column name and `value_name` set to the value.
 
 <PracticePlayground problemId="numpy-pandas-prob-32" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p32(data):
-    # Reference implementation
-    return data
+def melt_dataframe(records, id_vars, value_vars, var_name, value_name):
+    out = []
+    for r in records:
+        base = {k: r[k] for k in id_vars if k in r}
+        for vcol in value_vars:
+            if vcol in r:
+                c = dict(base)
+                c[var_name] = vcol
+                c[value_name] = r[vcol]
+                out.append(c)
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Melting transforms columns into key-value observations, enabling tidy data manipulation and faceted visualizations.
 
 </Solution>

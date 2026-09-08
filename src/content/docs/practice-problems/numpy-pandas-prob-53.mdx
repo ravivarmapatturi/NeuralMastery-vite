@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 53: Problem 233"
 sidebar_position: 233
 description: "Curriculum Problem 233 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,28 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #233** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-52`.
+## Overview
+
+Compute a two-way contingency table of co-occurrence frequencies between categorical series.
+
+## Task
+
+Implement `contingency_table(row_labels, col_labels)`: count joint occurrences of pairs `(r, c)`. Return a dictionary mapping sorted unique row labels to dictionaries of sorted unique column labels with integer counts (0 for non-occurring combinations).
 
 <PracticePlayground problemId="numpy-pandas-prob-53" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p53(data):
-    # Reference implementation
-    return data
+def contingency_table(row_labels, col_labels):
+    rows = sorted(list(set(row_labels)))
+    cols = sorted(list(set(col_labels)))
+    table = {r: {c: 0 for c in cols} for r in rows}
+    for r, c in zip(row_labels, col_labels):
+        table[r][c] += 1
+    return table
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Two-way cross-tabulation analyzes dependency and interaction between two categorical variables, forming the basis of Chi-squared tests.
 
 </Solution>

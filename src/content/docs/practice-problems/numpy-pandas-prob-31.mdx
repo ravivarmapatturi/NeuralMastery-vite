@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 31: Problem 211"
 sidebar_position: 211
 description: "Curriculum Problem 211 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #211** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-30`.
+## Overview
+
+Compute a vectorized linear transformation X @ W + b across a batch of samples.
+
+## Task
+
+Implement `batch_affine_transform(x, w, b)`: evaluate matrix multiplication `X @ W` and add bias vector `b` across all rows. Input `x` has shape (B, D_in), `w` has shape (D_in, D_out), and `b` has length D_out. Round each element to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-31" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p31(data):
-    # Reference implementation
-    return data
+def batch_affine_transform(x, w, b):
+    b_rows = len(x)
+    d_in = len(w)
+    d_out = len(w[0]) if d_in > 0 else 0
+    res = []
+    for row in x:
+        out_row = []
+        for j in range(d_out):
+            s = sum(row[i] * w[i][j] for i in range(d_in)) + b[j]
+            out_row.append(round(float(s), 4))
+        res.append(out_row)
+    return res
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Matrix-vector multiplication computes linear projections across neural network layers and linear model estimators.
 
 </Solution>

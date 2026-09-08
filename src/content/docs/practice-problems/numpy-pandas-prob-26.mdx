@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 26: Problem 206"
 sidebar_position: 206
 description: "Curriculum Problem 206 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #206** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-25`.
+## Overview
+
+Unnest a list-valued column across tabular records into separate rows.
+
+## Task
+
+Implement `explode_column(records, list_column)`: for each record, create a new record for every element in the list under `list_column`, copying all other key-value pairs. Rows with empty lists are omitted.
 
 <PracticePlayground problemId="numpy-pandas-prob-26" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p26(data):
-    # Reference implementation
-    return data
+def explode_column(records, list_column):
+    out = []
+    for r in records:
+        items = r.get(list_column, [])
+        for item in items:
+            c = dict(r)
+            c[list_column] = item
+            out.append(c)
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Exploding list columns flattens nested one-to-many relationship structures into standard first normal form relational records.
 
 </Solution>

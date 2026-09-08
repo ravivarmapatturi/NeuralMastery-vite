@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 48: Problem 228"
 sidebar_position: 228
 description: "Curriculum Problem 228 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,44 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #228** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-47`.
+## Overview
+
+Track the exact number of distinct elements across a fixed-length sliding stream window.
+
+## Task
+
+Implement `sliding_window_distinct_count(stream, window_size)`: for each window of length `window_size` (from index `window_size - 1` to `len(stream) - 1`), return the number of distinct elements in the window.
 
 <PracticePlayground problemId="numpy-pandas-prob-48" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p48(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def sliding_window_distinct_count(stream, window_size):
+    if not stream or window_size <= 0:
+        return []
+    freq = defaultdict(int)
+    distinct = 0
+    for x in stream[:window_size]:
+        if freq[x] == 0:
+            distinct += 1
+        freq[x] += 1
+    out = [distinct]
+    for i in range(window_size, len(stream)):
+        old_val = stream[i - window_size]
+        new_val = stream[i]
+        freq[old_val] -= 1
+        if freq[old_val] == 0:
+            distinct -= 1
+        if freq[new_val] == 0:
+            distinct += 1
+        freq[new_val] += 1
+        out.append(distinct)
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+A frequency hash table maintains running distinct counts in O(1) time per sliding step as old items expire and new ones arrive.
 
 </Solution>

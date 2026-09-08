@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 38: Problem 218"
 sidebar_position: 218
 description: "Curriculum Problem 218 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #218** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-37`.
+## Overview
+
+Engineer autoregressive lag and lead feature columns for sequential time-series modeling.
+
+## Task
+
+Implement `create_lag_lead_features(records, order_col, val_col, lags, leads)`: sort records by `order_col`. For each record, create columns `"{val_col}_lag_{k}"` (value from k positions prior, or `None` if out of bounds) and `"{val_col}_lead_{m}"` (value from m positions ahead, or `None`). Return the updated records.
 
 <PracticePlayground problemId="numpy-pandas-prob-38" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p38(data):
-    # Reference implementation
-    return data
+def create_lag_lead_features(records, order_col, val_col, lags, leads):
+    sorted_recs = sorted(records, key=lambda x: x[order_col])
+    n = len(sorted_recs)
+    out = []
+    for idx, r in enumerate(sorted_recs):
+        c = dict(r)
+        for lg in lags:
+            c[f"{val_col}_lag_{lg}"] = sorted_recs[idx - lg][val_col] if idx - lg >= 0 else None
+        for ld in leads:
+            c[f"{val_col}_lead_{ld}"] = sorted_recs[idx + ld][val_col] if idx + ld < n else None
+        out.append(c)
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Lag features expose prior time step values to autoregressive models, while lead features provide future target horizons for supervised training.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 49: Problem 229"
 sidebar_position: 229
 description: "Curriculum Problem 229 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,31 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #229** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-48`.
+## Overview
+
+Extract strided sub-windows from a 1D sequence using sliding view principles.
+
+## Task
+
+Implement `rolling_window_strides(values, window_size, step)`: extract sub-windows of length `window_size` starting at offsets `0, step, 2*step, ...` as long as `offset + window_size <= len(values)`. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-49" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p49(data):
-    # Reference implementation
-    return data
+def rolling_window_strides(values, window_size, step):
+    if not values or window_size <= 0 or step <= 0:
+        return []
+    out = []
+    i = 0
+    while i + window_size <= len(values):
+        win = [round(float(x), 4) for x in values[i : i + window_size]]
+        out.append(win)
+        i += step
+    return out
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Strided window views partition continuous 1D signals into overlapping segments for spectral analysis and 1D convolutions.
 
 </Solution>

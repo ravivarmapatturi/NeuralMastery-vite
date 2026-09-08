@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 40: Problem 220"
 sidebar_position: 220
 description: "Curriculum Problem 220 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #220** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-39`.
+## Overview
+
+Compute the pairwise L1 Manhattan distance matrix between two feature sets.
+
+## Task
+
+Implement `pairwise_manhattan_distance(x, y)`: for matrix x of shape (N, D) and matrix y of shape (M, D), return the (N, M) matrix of pairwise Manhattan distances `sum(abs(x[i][k] - y[j][k]) for k in range(D))`. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-40" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p40(data):
-    # Reference implementation
-    return data
+def pairwise_manhattan_distance(x, y):
+    res = []
+    for u in x:
+        row = []
+        for v in y:
+            d = sum(abs(a - b) for a, b in zip(u, v))
+            row.append(round(float(d), 4))
+        res.append(row)
+    return res
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Manhattan distance measures city-block distance along coordinate axes, less sensitive to extreme coordinate outliers than Euclidean distance.
 
 </Solution>

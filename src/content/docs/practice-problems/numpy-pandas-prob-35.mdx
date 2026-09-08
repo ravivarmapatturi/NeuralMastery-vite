@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 35: Problem 215"
 sidebar_position: 215
 description: "Curriculum Problem 215 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #215** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-34`.
+## Overview
+
+Score recency-weighted user engagement using exponential half-life decay.
+
+## Task
+
+Implement `exponential_decay_activity(events, half_life_seconds, current_time)`: each event has `user_id`, `timestamp`, and optional `weight` (default 1.0). Each event contributes `weight * 2 ** (-(current_time - timestamp) / half_life_seconds)`. Return dict of total decayed scores per user, rounded to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-35" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p35(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def exponential_decay_activity(events, half_life_seconds, current_time):
+    scores = defaultdict(float)
+    for ev in events:
+        uid = ev["user_id"]
+        ts = ev["timestamp"]
+        wt = ev.get("weight", 1.0)
+        dt = current_time - ts
+        decay = 2.0 ** (-dt / half_life_seconds)
+        scores[uid] += wt * decay
+    return {k: round(v, 4) for k, v in sorted(scores.items())}
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Half-life decay provides continuous temporal weighting where activity value halves after every elapsed half-life window.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 29: Problem 209"
 sidebar_position: 209
 description: "Curriculum Problem 209 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,39 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #209** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-28`.
+## Overview
+
+Calculate dense ranks for numeric scores within groups.
+
+## Task
+
+Implement `grouped_dense_rank(records, group_col, score_col, descending)`. For each group, rank unique scores starting from 1 (no rank gaps for ties). Attach `"dense_rank"` to each record while keeping original record order.
 
 <PracticePlayground problemId="numpy-pandas-prob-29" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p29(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def grouped_dense_rank(records, group_col, score_col, descending):
+    groups = defaultdict(list)
+    for idx, r in enumerate(records):
+        groups[r[group_col]].append((idx, r[score_col]))
+    rank_map = {}
+    for grp, items in groups.items():
+        unique_scores = sorted(list({s for _, s in items}), reverse=descending)
+        score_to_rank = {s: rank + 1 for rank, s in enumerate(unique_scores)}
+        for idx, s in items:
+            rank_map[idx] = score_to_rank[s]
+    out = []
+    for idx, r in enumerate(records):
+        c = dict(r)
+        c["dense_rank"] = rank_map[idx]
+        out.append(c)
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Dense ranking assigns consecutive integer ranks to unique values without skipping numbers when ties occur.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 23: Problem 203"
 sidebar_position: 203
 description: "Curriculum Problem 203 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,38 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #203** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-22`.
+## Overview
+
+Compute running cumulative sum and cumulative max partitioned by categorical group.
+
+## Task
+
+Implement `cumulative_metrics_by_group(records, group_key, val_key)`: iterate through records in order, maintaining running cumulative sum and running maximum for each group. Return new records containing original fields plus `cum_sum` and `cum_max`, rounded to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-23" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p23(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def cumulative_metrics_by_group(records, group_key, val_key):
+    group_sum = defaultdict(float)
+    group_max = defaultdict(lambda: float('-inf'))
+    out = []
+    for r in records:
+        grp = r[group_key]
+        v = r[val_key]
+        group_sum[grp] += v
+        if v > group_max[grp]:
+            group_max[grp] = v
+        copy_r = dict(r)
+        copy_r["cum_sum"] = round(group_sum[grp], 4)
+        copy_r["cum_max"] = round(group_max[grp], 4)
+        out.append(copy_r)
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Partitioned cumulative aggregates maintain separate running states per group key, analogous to SQL window functions over partitioned series.
 
 </Solution>

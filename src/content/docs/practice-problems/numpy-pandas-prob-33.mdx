@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 33: Problem 213"
 sidebar_position: 213
 description: "Curriculum Problem 213 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,38 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #213** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-32`.
+## Overview
+
+Identify heavy hitters in a streaming sequence using the Misra-Gries summary algorithm.
+
+## Task
+
+Implement `misra_gries_frequent_items(stream, k)`: maintain a dictionary of at most `k - 1` tracked candidates. If item exists, increment count. Else if size `<` `k - 1`, insert with count 1. Else decrement all counts by 1, removing any reaching 0. Return the final candidate dictionary.
 
 <PracticePlayground problemId="numpy-pandas-prob-33" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p33(data):
-    # Reference implementation
-    return data
+def misra_gries_frequent_items(stream, k):
+    counts = {}
+    cap = k - 1
+    for item in stream:
+        if item in counts:
+            counts[item] += 1
+        elif len(counts) < cap:
+            counts[item] = 1
+        else:
+            to_delete = []
+            for key in list(counts.keys()):
+                counts[key] -= 1
+                if counts[key] == 0:
+                    to_delete.append(key)
+            for key in to_delete:
+                del counts[key]
+    return counts
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Misra-Gries guarantees that any item occurring more than N/k times in a stream of N elements will remain in the candidate set.
 
 </Solution>

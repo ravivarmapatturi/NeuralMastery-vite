@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 18: Problem 198"
 sidebar_position: 198
 description: "Curriculum Problem 198 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,35 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #198** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-17`.
+## Overview
+
+Simulate a token bucket rate limiter over an incoming stream of requests.
+
+## Task
+
+Implement `simulate_token_bucket(events, capacity, refill_rate)`. The bucket starts full with `capacity` tokens at time 0.0. For each `(timestamp, cost)` event, tokens refill by `elapsed * refill_rate`, bounded by `capacity`. If available tokens `>=` cost, deduct cost and append `True`; else append `False`.
 
 <PracticePlayground problemId="numpy-pandas-prob-18" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p18(data):
-    # Reference implementation
-    return data
+def simulate_token_bucket(events, capacity, refill_rate):
+    tokens = float(capacity)
+    last_time = 0.0
+    res = []
+    for ts, cost in events:
+        elapsed = ts - last_time
+        tokens = min(float(capacity), tokens + elapsed * refill_rate)
+        last_time = ts
+        if tokens >= cost:
+            tokens -= cost
+            res.append(True)
+        else:
+            res.append(False)
+    return res
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Token buckets accumulate tokens continuously up to capacity; incoming requests consume tokens if available, otherwise they are dropped without deducting tokens.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 51: Problem 231"
 sidebar_position: 231
 description: "Curriculum Problem 231 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,39 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #231** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-50`.
+## Overview
+
+Group streaming events into micro-batches bounded by item count or elapsed latency.
+
+## Task
+
+Implement `batch_stream_events(events, max_batch_size, max_latency)`: process `(timestamp, item)` stream events in order. Start a new batch with the first item. Flush and emit the batch when `len(cur_batch) == max_batch_size` or when `event_timestamp - batch_start_timestamp >= max_latency`. Emit any trailing non-empty batch.
 
 <PracticePlayground problemId="numpy-pandas-prob-51" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p51(data):
-    # Reference implementation
-    return data
+def batch_stream_events(events, max_batch_size, max_latency):
+    batches = []
+    cur_batch = []
+    batch_start = None
+    for ts, item in events:
+        if not cur_batch:
+            cur_batch.append(item)
+            batch_start = ts
+        else:
+            if len(cur_batch) >= max_batch_size or (ts - batch_start) >= max_latency:
+                batches.append(cur_batch)
+                cur_batch = [item]
+                batch_start = ts
+            else:
+                cur_batch.append(item)
+    if cur_batch:
+        batches.append(cur_batch)
+    return batches
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Micro-batching balances network throughput and end-to-end latency by flushing when either capacity or latency thresholds trigger.
 
 </Solution>

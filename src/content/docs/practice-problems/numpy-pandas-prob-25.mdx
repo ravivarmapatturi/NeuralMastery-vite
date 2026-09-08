@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 25: Problem 205"
 sidebar_position: 205
 description: "Curriculum Problem 205 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,40 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #205** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-24`.
+## Overview
+
+Normalize each column of a 2D matrix to unit Euclidean length.
+
+## Task
+
+Implement `normalize_columns_l2(matrix)`: normalize each column by dividing by its Euclidean L2 norm `sqrt(sum(col**2))`. If a column norm is 0, leave all column values as 0.0. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-25" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p25(data):
-    # Reference implementation
-    return data
+import math
+
+def normalize_columns_l2(matrix):
+    if not matrix or not matrix[0]:
+        return []
+    rows = len(matrix)
+    cols = len(matrix[0])
+    col_norms = []
+    for c in range(cols):
+        s = sum(matrix[r][c] ** 2 for r in range(rows))
+        col_norms.append(math.sqrt(s))
+    res = []
+    for r in range(rows):
+        row = []
+        for c in range(cols):
+            val = matrix[r][c] / col_norms[c] if col_norms[c] > 0.0 else 0.0
+            row.append(round(val, 4))
+        res.append(row)
+    return res
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Column normalization standardizes feature variances and scales in multi-feature regression and dimensionality reduction.
 
 </Solution>

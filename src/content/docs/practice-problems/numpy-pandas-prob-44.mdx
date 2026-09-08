@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 44: Problem 224"
 sidebar_position: 224
 description: "Curriculum Problem 224 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,50 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #224** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-43`.
+## Overview
+
+Aggregate tabular data across multiple group dimensions and flatten the resulting hierarchical metrics.
+
+## Task
+
+Implement `flatten_groupby_agg(records, group_cols, agg_specs)`: group by `group_cols`. For each group and each column in `agg_specs`, compute requested aggregations from (`"sum"`, `"mean"`, `"min"`, `"max"`, `"count"`). Return flat records sorted by group keys with keys formatted as `"{col}_{agg}"`, rounding numerical values to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-44" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p44(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def flatten_groupby_agg(records, group_cols, agg_specs):
+    groups = defaultdict(list)
+    for r in records:
+        key = tuple(r[c] for c in group_cols)
+        groups[key].append(r)
+    out = []
+    for key in sorted(groups.keys()):
+        row = {col: key[i] for i, col in enumerate(group_cols)}
+        rows_in_grp = groups[key]
+        for col, ops in agg_specs.items():
+            vals = [r[col] for r in rows_in_grp if col in r and r[col] is not None]
+            for op in ops:
+                field_name = f"{col}_{op}"
+                if not vals:
+                    row[field_name] = None
+                elif op == "sum":
+                    row[field_name] = round(float(sum(vals)), 4)
+                elif op == "mean":
+                    row[field_name] = round(float(sum(vals) / len(vals)), 4)
+                elif op == "min":
+                    row[field_name] = round(float(min(vals)), 4)
+                elif op == "max":
+                    row[field_name] = round(float(max(vals)), 4)
+                elif op == "count":
+                    row[field_name] = len(vals)
+        out.append(row)
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Flattening hierarchical multi-index column headers produces clean, single-level column names for downstream feature stores.
 
 </Solution>

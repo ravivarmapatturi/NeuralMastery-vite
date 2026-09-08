@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 20: Problem 200"
 sidebar_position: 200
 description: "Curriculum Problem 200 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,36 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #200** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-19`.
+## Overview
+
+Partition dataset indices into train and test sets while preserving class label proportions.
+
+## Task
+
+Implement `stratified_split_indices(labels, test_size)`. Group indices by label (processed in alphabetical order of labels). For each label with indices C, calculate `n_test = round(len(C) * test_size)` and `n_train = len(C) - n_test`. Put the first `n_train` indices into train and the remaining `n_test` into test. Return `(sorted(train_indices), sorted(test_indices))`.
 
 <PracticePlayground problemId="numpy-pandas-prob-20" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p20(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def stratified_split_indices(labels, test_size):
+    groups = defaultdict(list)
+    for idx, lab in enumerate(labels):
+        groups[lab].append(idx)
+    train_idx = []
+    test_idx = []
+    for lab in sorted(groups.keys()):
+        idxs = groups[lab]
+        n_test = round(len(idxs) * test_size)
+        n_train = len(idxs) - n_test
+        train_idx.extend(idxs[:n_train])
+        test_idx.extend(idxs[n_train:])
+    return sorted(train_idx), sorted(test_idx)
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Stratification ensures every class is represented in train and test sets proportionally to prevent evaluation bias on imbalanced targets.
 
 </Solution>

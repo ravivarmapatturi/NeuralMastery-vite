@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 45: Problem 225"
 sidebar_position: 225
 description: "Curriculum Problem 225 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #225** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-44`.
+## Overview
+
+Compute deterministic exponential backoff delays for resilient stream event retries.
+
+## Task
+
+Implement `schedule_stream_retries(attempts, base_delay, factor, max_delay)`: for each attempt number (1-indexed), delay is `min(max_delay, base_delay * (factor ** (attempt - 1)))`. Return list of delays rounded to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-45" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p45(data):
-    # Reference implementation
-    return data
+def schedule_stream_retries(attempts, base_delay, factor, max_delay):
+    out = []
+    for att in attempts:
+        if att <= 0:
+            out.append(0.0)
+        else:
+            delay = min(max_delay, base_delay * (factor ** (att - 1)))
+            out.append(round(float(delay), 4))
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Exponential backoff dampens traffic floods during downstream service degradation by exponentially spacing retransmission requests.
 
 </Solution>

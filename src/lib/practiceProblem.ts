@@ -38238,6 +38238,5927 @@ def cross_entropy_loss(logits, target_idx):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  'numpy-pandas-prob-16': {
+    id: 'numpy-pandas-prob-16',
+    title: "Vectorized Softmax Normalization",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'vectorized_softmax',
+    functionSignature: "vectorized_softmax(scores: list[list[float]]) -> list[list[float]]",
+    starterCode: `import math
+
+def vectorized_softmax(scores):
+    """Compute row-wise numerically stable softmax probabilities.
+    Round each float to 4 decimal places.
+    Empty rows return empty lists.
+    """
+    pass
+`,
+    mission: "Compute numerically stable softmax probabilities across rows of a 2D matrix of logits.",
+    taskDescription: "Implement `vectorized_softmax(scores)` to compute row-wise softmax probabilities. For each row, subtract the row maximum before exponentiating to prevent numerical overflow, then divide by the row exponential sum. Round each probability to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "scores is a list of rows of floats",
+      "Row lengths are consistent within each test case"
+],
+    hints: {
+      "small": "Find the maximum value in each row first.",
+      "strong": "Calculate exp(x - max_val) for each element and normalize by their sum.",
+      "concept": "Subtracting the maximum value before exponentiation prevents numerical overflow in softmax."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 4",
+            "route": "/practice/numpy-pandas-prob-4",
+            "description": "Practice module: Numpy Pandas Prob 4"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard 2x3 logits",
+            "input": {
+                  "scores": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.09,
+                        0.2447,
+                        0.6652
+                  ],
+                  [
+                        0.3333,
+                        0.3333,
+                        0.3333
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Large magnitude logits",
+            "input": {
+                  "scores": [
+                        [
+                              1000.0,
+                              1001.0,
+                              1002.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.09,
+                        0.2447,
+                        0.6652
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Negative logits",
+            "input": {
+                  "scores": [
+                        [
+                              -10.0,
+                              -20.0
+                        ],
+                        [
+                              -1.0,
+                              -2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.7311,
+                        0.2689
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-17': {
+    id: 'numpy-pandas-prob-17',
+    title: "Tabular Column Missingness Summary",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'missingness_report',
+    functionSignature: "missingness_report(records: list[dict], column_names: list[str]) -> dict[str, dict]",
+    starterCode: `def missingness_report(records, column_names):
+    """Compute missing_count and missing_ratio for each specified column.
+    Missing is defined as missing key, None, or empty string.
+    Round missing_ratio to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Profile missing data rates across tabular record columns.",
+    taskDescription: "Implement `missingness_report(records, column_names)`: compute the count and ratio of missing values for each column. A value is considered missing if the key is not in the record, or if its value is `None` or empty string `\"\"`. Round ratio to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "records is a list of dicts",
+      "column_names is a list of strings"
+],
+    hints: {
+      "small": "Check if col in r and whether r[col] is None or empty string.",
+      "strong": "Divide missing count by total record count and round to 4 decimals.",
+      "concept": "Missingness profiling is the initial step in any tabular data pipeline before imputation."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 2",
+            "route": "/practice/numpy-pandas-prob-2",
+            "description": "Practice module: Numpy Pandas Prob 2"
+      },
+      {
+            "title": "Numpy Pandas Prob 11",
+            "route": "/practice/numpy-pandas-prob-11",
+            "description": "Practice module: Numpy Pandas Prob 11"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Sample customer records",
+            "input": {
+                  "records": [
+                        {
+                              "age": 25,
+                              "name": "Alice"
+                        },
+                        {
+                              "age": null,
+                              "name": "Bob"
+                        },
+                        {
+                              "name": ""
+                        }
+                  ],
+                  "column_names": [
+                        "age",
+                        "name",
+                        "city"
+                  ]
+            },
+            "expectedOutput": {
+                  "age": {
+                        "missing_count": 2,
+                        "missing_ratio": 0.6667
+                  },
+                  "name": {
+                        "missing_count": 1,
+                        "missing_ratio": 0.3333
+                  },
+                  "city": {
+                        "missing_count": 3,
+                        "missing_ratio": 1.0
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Empty records list",
+            "input": {
+                  "records": [],
+                  "column_names": [
+                        "col1",
+                        "col2"
+                  ]
+            },
+            "expectedOutput": {
+                  "col1": {
+                        "missing_count": 0,
+                        "missing_ratio": 0.0
+                  },
+                  "col2": {
+                        "missing_count": 0,
+                        "missing_ratio": 0.0
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "No missing values",
+            "input": {
+                  "records": [
+                        {
+                              "a": 1,
+                              "b": 2
+                        },
+                        {
+                              "a": 3,
+                              "b": 4
+                        }
+                  ],
+                  "column_names": [
+                        "a",
+                        "b"
+                  ]
+            },
+            "expectedOutput": {
+                  "a": {
+                        "missing_count": 0,
+                        "missing_ratio": 0.0
+                  },
+                  "b": {
+                        "missing_count": 0,
+                        "missing_ratio": 0.0
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-18': {
+    id: 'numpy-pandas-prob-18',
+    title: "Streaming Token Bucket Rate Limiter",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'simulate_token_bucket',
+    functionSignature: "simulate_token_bucket(events: list[tuple[float, int]], capacity: int, refill_rate: float) -> list[bool]",
+    starterCode: `def simulate_token_bucket(events, capacity, refill_rate):
+    """Simulate token bucket rate limiter on stream of (timestamp, cost).
+    Returns list of booleans indicating whether each request was accepted.
+    """
+    pass
+`,
+    mission: "Simulate a token bucket rate limiter over an incoming stream of requests.",
+    taskDescription: "Implement `simulate_token_bucket(events, capacity, refill_rate)`. The bucket starts full with `capacity` tokens at time 0.0. For each `(timestamp, cost)` event, tokens refill by `elapsed * refill_rate`, bounded by `capacity`. If available tokens `>=` cost, deduct cost and append `True`; else append `False`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "events is a list of (timestamp, cost) tuples sorted by timestamp",
+      "capacity > 0, refill_rate > 0"
+],
+    hints: {
+      "small": "Track the last event timestamp and current token count.",
+      "strong": "Compute elapsed time between consecutive events, add tokens, and clamp with min.",
+      "concept": "Token bucket allows controlled bursts while enforcing an average sustained throughput."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 3",
+            "route": "/practice/numpy-pandas-prob-3",
+            "description": "Practice module: Numpy Pandas Prob 3"
+      },
+      {
+            "title": "Numpy Pandas Prob 15",
+            "route": "/practice/numpy-pandas-prob-15",
+            "description": "Practice module: Numpy Pandas Prob 15"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Basic arrivals",
+            "input": {
+                  "events": [
+                        [
+                              0.0,
+                              5
+                        ],
+                        [
+                              0.5,
+                              6
+                        ],
+                        [
+                              1.0,
+                              2
+                        ]
+                  ],
+                  "capacity": 10,
+                  "refill_rate": 2.0
+            },
+            "expectedOutput": [
+                  true,
+                  true,
+                  false
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Burst exceeding capacity",
+            "input": {
+                  "events": [
+                        [
+                              0.0,
+                              8
+                        ],
+                        [
+                              0.0,
+                              8
+                        ]
+                  ],
+                  "capacity": 10,
+                  "refill_rate": 1.0
+            },
+            "expectedOutput": [
+                  true,
+                  false
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Refilled bucket",
+            "input": {
+                  "events": [
+                        [
+                              0.0,
+                              10
+                        ],
+                        [
+                              5.0,
+                              5
+                        ],
+                        [
+                              5.1,
+                              10
+                        ]
+                  ],
+                  "capacity": 10,
+                  "refill_rate": 2.0
+            },
+            "expectedOutput": [
+                  true,
+                  true,
+                  false
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-19': {
+    id: 'numpy-pandas-prob-19',
+    title: "Pairwise Cosine Distance Matrix",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'pairwise_cosine_distance',
+    functionSignature: "pairwise_cosine_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]",
+    starterCode: `import math
+
+def pairwise_cosine_distance(x, y):
+    """Compute N x M cosine distance matrix between vectors in x and y.
+    Round each distance to 4 decimal places.
+    Zero-norm vectors have distance 1.0.
+    """
+    pass
+`,
+    mission: "Compute the pairwise cosine distance matrix between two feature sets.",
+    taskDescription: "Implement `pairwise_cosine_distance(x, y)`: given matrix x of shape (N, D) and y of shape (M, D), return the (N, M) matrix of cosine distances defined as `1.0 - (u . v) / (||u|| * ||v||)`. If either vector has zero L2 norm, distance is 1.0. Round to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "x has shape N x D, y has shape M x D",
+      "D >= 1"
+],
+    hints: {
+      "small": "Calculate L2 norms and dot products between all pairs.",
+      "strong": "Handle zero norm vectors safely by returning 1.0.",
+      "concept": "Cosine distance is standard for semantic search, embeddings, and clustering."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 7",
+            "route": "/practice/numpy-pandas-prob-7",
+            "description": "Practice module: Numpy Pandas Prob 7"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Orthogonal and identical vectors",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "y": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Arbitrary 2D vectors",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "y": [
+                        [
+                              2.0,
+                              4.0
+                        ],
+                        [
+                              2.0,
+                              -1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero norm vector check",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "y": [
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-20': {
+    id: 'numpy-pandas-prob-20',
+    title: "Stratified Train-Test Split Partition",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'stratified_split_indices',
+    functionSignature: "stratified_split_indices(labels: list[str], test_size: float) -> tuple[list[int], list[int]]",
+    starterCode: `def stratified_split_indices(labels, test_size):
+    """Split sample indices into train and test preserving class balance.
+    Returns (train_indices, test_indices) both sorted ascending.
+    """
+    pass
+`,
+    mission: "Partition dataset indices into train and test sets while preserving class label proportions.",
+    taskDescription: "Implement `stratified_split_indices(labels, test_size)`. Group indices by label (processed in alphabetical order of labels). For each label with indices C, calculate `n_test = round(len(C) * test_size)` and `n_train = len(C) - n_test`. Put the first `n_train` indices into train and the remaining `n_test` into test. Return `(sorted(train_indices), sorted(test_indices))`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "labels is a list of strings",
+      "0.0 < test_size < 1.0"
+],
+    hints: {
+      "small": "Group indices by class label using a dictionary.",
+      "strong": "Compute round(len(idxs) * test_size) for test allocation per class.",
+      "concept": "Stratified sampling maintains identical target distributions across cross-validation folds."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 5",
+            "route": "/practice/numpy-pandas-prob-5",
+            "description": "Practice module: Numpy Pandas Prob 5"
+      },
+      {
+            "title": "Numpy Pandas Prob 10",
+            "route": "/practice/numpy-pandas-prob-10",
+            "description": "Practice module: Numpy Pandas Prob 10"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Balanced binary labels",
+            "input": {
+                  "labels": [
+                        "cat",
+                        "dog",
+                        "cat",
+                        "dog",
+                        "cat",
+                        "dog"
+                  ],
+                  "test_size": 0.33
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        2,
+                        3
+                  ],
+                  [
+                        4,
+                        5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Imbalanced classes",
+            "input": {
+                  "labels": [
+                        "a",
+                        "a",
+                        "a",
+                        "a",
+                        "b",
+                        "b"
+                  ],
+                  "test_size": 0.5
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        4
+                  ],
+                  [
+                        2,
+                        3,
+                        5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Three classes",
+            "input": {
+                  "labels": [
+                        "x",
+                        "y",
+                        "z",
+                        "x",
+                        "y",
+                        "z",
+                        "x"
+                  ],
+                  "test_size": 0.25
+            },
+            "expectedOutput": [
+                  [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                  ],
+                  [
+                        6
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-21': {
+    id: 'numpy-pandas-prob-21',
+    title: "Count-Min Sketch Stream Frequency Estimator",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'count_min_sketch',
+    functionSignature: "count_min_sketch(stream: list[str], queries: list[str], width: int, depth: int, seeds: list[int]) -> list[int]",
+    starterCode: `def count_min_sketch(stream, queries, width, depth, seeds):
+    """Estimate frequencies of queries in stream using Count-Min Sketch.
+    Uses polynomial rolling hash with given seeds.
+    """
+    pass
+`,
+    mission: "Implement a Count-Min Sketch to estimate item frequencies in a data stream in sub-linear space.",
+    taskDescription: "Implement `count_min_sketch(stream, queries, width, depth, seeds)`. Initialize a 2D table of size `depth x width` with 0. For each item in stream and row `d` (from 0 to depth-1), compute hash index `(polynomial_hash(item) ^ seeds[d]) % width` where `polynomial_hash(item) = sum(ord(c) * (31 ** i) for i, c in enumerate(item))`, and increment that cell. For each query, return the minimum count across all `depth` rows.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "width >= 1, depth >= 1",
+      "len(seeds) == depth"
+],
+    hints: {
+      "small": "Create a 2D array of zeros with dimensions depth x width.",
+      "strong": "Compute the polynomial hash value once per word, then XOR with seeds[d].",
+      "concept": "Count-Min Sketch provides an overestimation-only frequency guarantee in streaming analytics."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 9",
+            "route": "/practice/numpy-pandas-prob-9",
+            "description": "Practice module: Numpy Pandas Prob 9"
+      },
+      {
+            "title": "Numpy Pandas Prob 15",
+            "route": "/practice/numpy-pandas-prob-15",
+            "description": "Practice module: Numpy Pandas Prob 15"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Basic word stream",
+            "input": {
+                  "stream": [
+                        "apple",
+                        "banana",
+                        "apple",
+                        "cherry",
+                        "apple",
+                        "banana"
+                  ],
+                  "queries": [
+                        "apple",
+                        "banana",
+                        "cherry",
+                        "date"
+                  ],
+                  "width": 10,
+                  "depth": 3,
+                  "seeds": [
+                        17,
+                        31,
+                        79
+                  ]
+            },
+            "expectedOutput": [
+                  3,
+                  2,
+                  1,
+                  0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Single item stream",
+            "input": {
+                  "stream": [
+                        "x"
+                  ],
+                  "queries": [
+                        "x",
+                        "y"
+                  ],
+                  "width": 5,
+                  "depth": 2,
+                  "seeds": [
+                        3,
+                        7
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Repeated tokens",
+            "input": {
+                  "stream": [
+                        "token",
+                        "token",
+                        "token",
+                        "token",
+                        "token",
+                        "token",
+                        "token",
+                        "token",
+                        "token",
+                        "token"
+                  ],
+                  "queries": [
+                        "token"
+                  ],
+                  "width": 8,
+                  "depth": 4,
+                  "seeds": [
+                        1,
+                        2,
+                        3,
+                        4
+                  ]
+            },
+            "expectedOutput": [
+                  10
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-22': {
+    id: 'numpy-pandas-prob-22',
+    title: "Vectorized Polynomial Feature Expansion",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'polynomial_features_1d',
+    functionSignature: "polynomial_features_1d(x: list[float], degree: int) -> list[list[float]]",
+    starterCode: `def polynomial_features_1d(x, degree):
+    """Generate polynomial feature matrix of powers 0 through degree.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Transform a 1D feature array into polynomial power basis features.",
+    taskDescription: "Implement `polynomial_features_1d(x, degree)`: for each float in `x`, generate powers `[val**0, val**1, ..., val**degree]`. Round each value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "x is a list of floats",
+      "degree >= 0"
+],
+    hints: {
+      "small": "Loop d from 0 up to degree inclusive.",
+      "strong": "Compute val ** d and round to 4 decimal places for each column.",
+      "concept": "Polynomial regression projects input features into a higher-dimensional linear feature space."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 4",
+            "route": "/practice/numpy-pandas-prob-4",
+            "description": "Practice module: Numpy Pandas Prob 4"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Degree 2 expansion",
+            "input": {
+                  "x": [
+                        2.0,
+                        3.0
+                  ],
+                  "degree": 2
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        2.0,
+                        4.0
+                  ],
+                  [
+                        1.0,
+                        3.0,
+                        9.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Degree 0 expansion",
+            "input": {
+                  "x": [
+                        5.0,
+                        10.0
+                  ],
+                  "degree": 0
+            },
+            "expectedOutput": [
+                  [
+                        1.0
+                  ],
+                  [
+                        1.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Negative values degree 3",
+            "input": {
+                  "x": [
+                        -1.0,
+                        0.5,
+                        2.0
+                  ],
+                  "degree": 3
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        -1.0,
+                        1.0,
+                        -1.0
+                  ],
+                  [
+                        1.0,
+                        0.5,
+                        0.25,
+                        0.125
+                  ],
+                  [
+                        1.0,
+                        2.0,
+                        4.0,
+                        8.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-23': {
+    id: 'numpy-pandas-prob-23',
+    title: "Cumulative Aggregates by Category",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'cumulative_metrics_by_group',
+    functionSignature: "cumulative_metrics_by_group(records: list[dict], group_key: str, val_key: str) -> list[dict]",
+    starterCode: `def cumulative_metrics_by_group(records, group_key, val_key):
+    """Compute running cum_sum and cum_max per group in arrival order.
+    Returns list of augmented dicts.
+    """
+    pass
+`,
+    mission: "Compute running cumulative sum and cumulative max partitioned by categorical group.",
+    taskDescription: "Implement `cumulative_metrics_by_group(records, group_key, val_key)`: iterate through records in order, maintaining running cumulative sum and running maximum for each group. Return new records containing original fields plus `cum_sum` and `cum_max`, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "records is a list of dicts",
+      "group_key and val_key exist in all records"
+],
+    hints: {
+      "small": "Keep running sums and maxes in dictionary maps indexed by group.",
+      "strong": "Copy each record dict before appending new keys to avoid mutating input.",
+      "concept": "Cumulative group metrics reveal running totals and peaks for user event streams."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 5",
+            "route": "/practice/numpy-pandas-prob-5",
+            "description": "Practice module: Numpy Pandas Prob 5"
+      },
+      {
+            "title": "Numpy Pandas Prob 8",
+            "route": "/practice/numpy-pandas-prob-8",
+            "description": "Practice module: Numpy Pandas Prob 8"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two user transactions",
+            "input": {
+                  "records": [
+                        {
+                              "user": "u1",
+                              "amt": 10
+                        },
+                        {
+                              "user": "u2",
+                              "amt": 5
+                        },
+                        {
+                              "user": "u1",
+                              "amt": 15
+                        }
+                  ],
+                  "group_key": "user",
+                  "val_key": "amt"
+            },
+            "expectedOutput": [
+                  {
+                        "user": "u1",
+                        "amt": 10,
+                        "cum_sum": 10.0,
+                        "cum_max": 10
+                  },
+                  {
+                        "user": "u2",
+                        "amt": 5,
+                        "cum_sum": 5.0,
+                        "cum_max": 5
+                  },
+                  {
+                        "user": "u1",
+                        "amt": 15,
+                        "cum_sum": 25.0,
+                        "cum_max": 15
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Decreasing values check max",
+            "input": {
+                  "records": [
+                        {
+                              "dept": "eng",
+                              "val": 100
+                        },
+                        {
+                              "dept": "eng",
+                              "val": 50
+                        }
+                  ],
+                  "group_key": "dept",
+                  "val_key": "val"
+            },
+            "expectedOutput": [
+                  {
+                        "dept": "eng",
+                        "val": 100,
+                        "cum_sum": 100.0,
+                        "cum_max": 100
+                  },
+                  {
+                        "dept": "eng",
+                        "val": 50,
+                        "cum_sum": 150.0,
+                        "cum_max": 100
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Single group multiple steps",
+            "input": {
+                  "records": [
+                        {
+                              "g": "a",
+                              "val": 1.5
+                        },
+                        {
+                              "g": "a",
+                              "val": -0.5
+                        },
+                        {
+                              "g": "a",
+                              "val": 3.0
+                        }
+                  ],
+                  "group_key": "g",
+                  "val_key": "val"
+            },
+            "expectedOutput": [
+                  {
+                        "g": "a",
+                        "val": 1.5,
+                        "cum_sum": 1.5,
+                        "cum_max": 1.5
+                  },
+                  {
+                        "g": "a",
+                        "val": -0.5,
+                        "cum_sum": 1.0,
+                        "cum_max": 1.5
+                  },
+                  {
+                        "g": "a",
+                        "val": 3.0,
+                        "cum_sum": 4.0,
+                        "cum_max": 3.0
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-24': {
+    id: 'numpy-pandas-prob-24',
+    title: "Reservoir Sampling Stream Selection",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'deterministic_reservoir_sample',
+    functionSignature: "deterministic_reservoir_sample(stream: list[str], k: int, random_floats: list[float]) -> list[str]",
+    starterCode: `def deterministic_reservoir_sample(stream, k, random_floats):
+    """Implement Algorithm R reservoir sampling with provided random probabilities.
+    Returns list of selected elements.
+    """
+    pass
+`,
+    mission: "Maintain a uniform random sample of size k over an unbounded streaming sequence.",
+    taskDescription: "Implement `deterministic_reservoir_sample(stream, k, random_floats)`. First k elements of stream populate the reservoir. For each subsequent element at index `i` (from k to len(stream)-1), let `p = random_floats[i - k]`. If `p < k / (i + 1)`, replace reservoir element at `int(p * (i + 1))` with `stream[i]`. Return the final reservoir.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "stream is a list of strings",
+      "len(random_floats) >= max(0, len(stream) - k)"
+],
+    hints: {
+      "small": "Initialize reservoir with first k elements.",
+      "strong": "For each index i `>=` k, replace item at int(p * (i + 1)) if p `<` k / (i + 1).",
+      "concept": "Reservoir sampling allows unbiased subset extraction from single-pass large-scale data streams."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 9",
+            "route": "/practice/numpy-pandas-prob-9",
+            "description": "Practice module: Numpy Pandas Prob 9"
+      },
+      {
+            "title": "Numpy Pandas Prob 12",
+            "route": "/practice/numpy-pandas-prob-12",
+            "description": "Practice module: Numpy Pandas Prob 12"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Sample 2 from 4",
+            "input": {
+                  "stream": [
+                        "a",
+                        "b",
+                        "c",
+                        "d"
+                  ],
+                  "k": 2,
+                  "random_floats": [
+                        0.1,
+                        0.9
+                  ]
+            },
+            "expectedOutput": [
+                  "c",
+                  "b"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Stream smaller than k",
+            "input": {
+                  "stream": [
+                        "x",
+                        "y"
+                  ],
+                  "k": 5,
+                  "random_floats": []
+            },
+            "expectedOutput": [
+                  "x",
+                  "y"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Replacement at boundary",
+            "input": {
+                  "stream": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4"
+                  ],
+                  "k": 2,
+                  "random_floats": [
+                        0.4,
+                        0.1,
+                        0.05
+                  ]
+            },
+            "expectedOutput": [
+                  "4",
+                  "2"
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-25': {
+    id: 'numpy-pandas-prob-25',
+    title: "Vectorized Matrix Column Normalization (L2 Norm)",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'normalize_columns_l2',
+    functionSignature: "normalize_columns_l2(matrix: list[list[float]]) -> list[list[float]]",
+    starterCode: `import math
+
+def normalize_columns_l2(matrix):
+    """Normalize matrix columns to unit L2 length.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Normalize each column of a 2D matrix to unit Euclidean length.",
+    taskDescription: "Implement `normalize_columns_l2(matrix)`: normalize each column by dividing by its Euclidean L2 norm `sqrt(sum(col**2))`. If a column norm is 0, leave all column values as 0.0. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "matrix is a non-empty 2D list of floats",
+      "all rows have identical length"
+],
+    hints: {
+      "small": "Calculate the sum of squares down each column index first.",
+      "strong": "Take square root for column norm and divide each element in that column.",
+      "concept": "L2 column normalization ensures features contribute equally to Euclidean distance metrics."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 4",
+            "route": "/practice/numpy-pandas-prob-4",
+            "description": "Practice module: Numpy Pandas Prob 4"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Simple 2x2 matrix",
+            "input": {
+                  "matrix": [
+                        [
+                              3.0,
+                              0.0
+                        ],
+                        [
+                              4.0,
+                              5.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.6,
+                        0.0
+                  ],
+                  [
+                        0.8,
+                        1.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero column matrix",
+            "input": {
+                  "matrix": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.7071
+                  ],
+                  [
+                        0.0,
+                        0.7071
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 matrix",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.1231,
+                        0.2074,
+                        0.2673
+                  ],
+                  [
+                        0.4924,
+                        0.5185,
+                        0.5345
+                  ],
+                  [
+                        0.8616,
+                        0.8296,
+                        0.8018
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-26': {
+    id: 'numpy-pandas-prob-26',
+    title: "Dataframe Column Explode / Unnest",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'explode_column',
+    functionSignature: "explode_column(records: list[dict], list_column: str) -> list[dict]",
+    starterCode: `def explode_column(records, list_column):
+    """Explode list_column into individual records.
+    Empty list rows are excluded.
+    """
+    pass
+`,
+    mission: "Unnest a list-valued column across tabular records into separate rows.",
+    taskDescription: "Implement `explode_column(records, list_column)`: for each record, create a new record for every element in the list under `list_column`, copying all other key-value pairs. Rows with empty lists are omitted.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "records is a list of dicts",
+      "list_column contains lists"
+],
+    hints: {
+      "small": "Iterate over records and loop through items in r[list_column].",
+      "strong": "Create a shallow copy of the record for each unnested item.",
+      "concept": "Exploding is equivalent to pandas DataFrame.explode() or SQL unnest()."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 8",
+            "route": "/practice/numpy-pandas-prob-8",
+            "description": "Practice module: Numpy Pandas Prob 8"
+      },
+      {
+            "title": "Numpy Pandas Prob 11",
+            "route": "/practice/numpy-pandas-prob-11",
+            "description": "Practice module: Numpy Pandas Prob 11"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Post tags unnesting",
+            "input": {
+                  "records": [
+                        {
+                              "post_id": 1,
+                              "tags": [
+                                    "python",
+                                    "ai"
+                              ]
+                        },
+                        {
+                              "post_id": 2,
+                              "tags": [
+                                    "sql"
+                              ]
+                        }
+                  ],
+                  "list_column": "tags"
+            },
+            "expectedOutput": [
+                  {
+                        "post_id": 1,
+                        "tags": "python"
+                  },
+                  {
+                        "post_id": 1,
+                        "tags": "ai"
+                  },
+                  {
+                        "post_id": 2,
+                        "tags": "sql"
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Empty list filtering",
+            "input": {
+                  "records": [
+                        {
+                              "id": 1,
+                              "tags": []
+                        },
+                        {
+                              "id": 2,
+                              "tags": [
+                                    "ml"
+                              ]
+                        }
+                  ],
+                  "list_column": "tags"
+            },
+            "expectedOutput": [
+                  {
+                        "id": 2,
+                        "tags": "ml"
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple rows and items",
+            "input": {
+                  "records": [
+                        {
+                              "id": "a",
+                              "vals": [
+                                    1,
+                                    2,
+                                    3
+                              ]
+                        },
+                        {
+                              "id": "b",
+                              "vals": [
+                                    4
+                              ]
+                        }
+                  ],
+                  "list_column": "vals"
+            },
+            "expectedOutput": [
+                  {
+                        "id": "a",
+                        "vals": 1
+                  },
+                  {
+                        "id": "a",
+                        "vals": 2
+                  },
+                  {
+                        "id": "a",
+                        "vals": 3
+                  },
+                  {
+                        "id": "b",
+                        "vals": 4
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-27': {
+    id: 'numpy-pandas-prob-27',
+    title: "Event-Time Watermark Tracker",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'track_event_watermarks',
+    functionSignature: "track_event_watermarks(event_times: list[int], max_lateness: int) -> list[int]",
+    starterCode: `def track_event_watermarks(event_times, max_lateness):
+    """Track event watermarks as max(0, max_observed_timestamp - max_lateness).
+    Returns list of watermarks corresponding to each event.
+    """
+    pass
+`,
+    mission: "Track event-time progression and emit monotonic watermarks for out-of-order streams.",
+    taskDescription: "Implement `track_event_watermarks(event_times, max_lateness)`: process events in order. Maintain the maximum observed timestamp. At each event, calculate the watermark as `max(0, current_max - max_lateness)`. Return the watermark after each event.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "event_times is a list of non-negative integers",
+      "max_lateness >= 0"
+],
+    hints: {
+      "small": "Keep a running maximum of timestamps seen so far.",
+      "strong": "Watermark equals max(0, cur_max - max_lateness).",
+      "concept": "Watermarking allows streaming systems to handle late-arriving events deterministically."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 9",
+            "route": "/practice/numpy-pandas-prob-9",
+            "description": "Practice module: Numpy Pandas Prob 9"
+      },
+      {
+            "title": "Numpy Pandas Prob 15",
+            "route": "/practice/numpy-pandas-prob-15",
+            "description": "Practice module: Numpy Pandas Prob 15"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Monotonic arrivals",
+            "input": {
+                  "event_times": [
+                        10,
+                        20,
+                        30,
+                        40
+                  ],
+                  "max_lateness": 5
+            },
+            "expectedOutput": [
+                  5,
+                  15,
+                  25,
+                  35
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Out-of-order arrivals",
+            "input": {
+                  "event_times": [
+                        50,
+                        40,
+                        60,
+                        30
+                  ],
+                  "max_lateness": 10
+            },
+            "expectedOutput": [
+                  40,
+                  40,
+                  50,
+                  50
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Lateness exceeds timestamps",
+            "input": {
+                  "event_times": [
+                        5,
+                        8,
+                        12
+                  ],
+                  "max_lateness": 20
+            },
+            "expectedOutput": [
+                  0,
+                  0,
+                  0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-28': {
+    id: 'numpy-pandas-prob-28',
+    title: "Vectorized Broadcasted Outer Difference",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'broadcast_outer_difference',
+    functionSignature: "broadcast_outer_difference(a: list[float], b: list[float]) -> list[list[float]]",
+    starterCode: `def broadcast_outer_difference(a, b):
+    """Compute outer difference matrix M[i][j] = a[i] - b[j].
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute an outer difference matrix using broadcasting principles.",
+    taskDescription: "Implement `broadcast_outer_difference(a, b)`: return an N x M matrix `M` where `M[i][j] = a[i] - b[j]`. Round each value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "a and b are lists of floats",
+      "len(a) >= 0, len(b) >= 0"
+],
+    hints: {
+      "small": "Row i corresponds to a[i], column j corresponds to b[j].",
+      "strong": "Use list comprehension or nested loops computing x - y.",
+      "concept": "Broadcasting extends dimensions automatically without explicit data copying."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 7",
+            "route": "/practice/numpy-pandas-prob-7",
+            "description": "Practice module: Numpy Pandas Prob 7"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3x2 vectors",
+            "input": {
+                  "a": [
+                        10.0,
+                        20.0,
+                        30.0
+                  ],
+                  "b": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        9.0,
+                        8.0
+                  ],
+                  [
+                        19.0,
+                        18.0
+                  ],
+                  [
+                        29.0,
+                        28.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Identical vectors",
+            "input": {
+                  "a": [
+                        5.0,
+                        15.0
+                  ],
+                  "b": [
+                        5.0,
+                        15.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        -10.0
+                  ],
+                  [
+                        10.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Negative coordinates",
+            "input": {
+                  "a": [
+                        -2.5,
+                        0.0,
+                        2.5
+                  ],
+                  "b": [
+                        1.0,
+                        -1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -3.5,
+                        -1.5
+                  ],
+                  [
+                        -1.0,
+                        1.0
+                  ],
+                  [
+                        1.5,
+                        3.5
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-29': {
+    id: 'numpy-pandas-prob-29',
+    title: "Grouped Dense Ranking",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'grouped_dense_rank',
+    functionSignature: "grouped_dense_rank(records: list[dict], group_col: str, score_col: str, descending: bool) -> list[dict]",
+    starterCode: `def grouped_dense_rank(records, group_col, score_col, descending):
+    """Compute dense rank per group.
+    Returns records with added dense_rank key.
+    """
+    pass
+`,
+    mission: "Calculate dense ranks for numeric scores within groups.",
+    taskDescription: "Implement `grouped_dense_rank(records, group_col, score_col, descending)`. For each group, rank unique scores starting from 1 (no rank gaps for ties). Attach `\"dense_rank\"` to each record while keeping original record order.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "records is a list of dicts",
+      "group_col and score_col exist in all records"
+],
+    hints: {
+      "small": "Collect unique scores per group and sort them.",
+      "strong": "Map unique score to index + 1, then lookup for each record.",
+      "concept": "Dense ranking is essential for top-N ranking within cohorts and competition tiers."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 5",
+            "route": "/practice/numpy-pandas-prob-5",
+            "description": "Practice module: Numpy Pandas Prob 5"
+      },
+      {
+            "title": "Numpy Pandas Prob 11",
+            "route": "/practice/numpy-pandas-prob-11",
+            "description": "Practice module: Numpy Pandas Prob 11"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Tied scores descending",
+            "input": {
+                  "records": [
+                        {
+                              "cohort": "A",
+                              "score": 90
+                        },
+                        {
+                              "cohort": "A",
+                              "score": 90
+                        },
+                        {
+                              "cohort": "A",
+                              "score": 80
+                        }
+                  ],
+                  "group_col": "cohort",
+                  "score_col": "score",
+                  "descending": true
+            },
+            "expectedOutput": [
+                  {
+                        "cohort": "A",
+                        "score": 90,
+                        "dense_rank": 1
+                  },
+                  {
+                        "cohort": "A",
+                        "score": 90,
+                        "dense_rank": 1
+                  },
+                  {
+                        "cohort": "A",
+                        "score": 80,
+                        "dense_rank": 2
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Ascending ranking across cohorts",
+            "input": {
+                  "records": [
+                        {
+                              "dept": "sales",
+                              "val": 10
+                        },
+                        {
+                              "dept": "eng",
+                              "val": 20
+                        },
+                        {
+                              "dept": "sales",
+                              "val": 5
+                        }
+                  ],
+                  "group_col": "dept",
+                  "score_col": "val",
+                  "descending": false
+            },
+            "expectedOutput": [
+                  {
+                        "dept": "sales",
+                        "val": 10,
+                        "dense_rank": 2
+                  },
+                  {
+                        "dept": "eng",
+                        "val": 20,
+                        "dense_rank": 1
+                  },
+                  {
+                        "dept": "sales",
+                        "val": 5,
+                        "dense_rank": 1
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple ties",
+            "input": {
+                  "records": [
+                        {
+                              "g": "x",
+                              "v": 5
+                        },
+                        {
+                              "g": "x",
+                              "v": 10
+                        },
+                        {
+                              "g": "x",
+                              "v": 5
+                        },
+                        {
+                              "g": "x",
+                              "v": 10
+                        }
+                  ],
+                  "group_col": "g",
+                  "score_col": "v",
+                  "descending": true
+            },
+            "expectedOutput": [
+                  {
+                        "g": "x",
+                        "v": 5,
+                        "dense_rank": 2
+                  },
+                  {
+                        "g": "x",
+                        "v": 10,
+                        "dense_rank": 1
+                  },
+                  {
+                        "g": "x",
+                        "v": 5,
+                        "dense_rank": 2
+                  },
+                  {
+                        "g": "x",
+                        "v": 10,
+                        "dense_rank": 1
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-30': {
+    id: 'numpy-pandas-prob-30',
+    title: "Sliding Window Event Rate Meter",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'sliding_window_event_rate',
+    functionSignature: "sliding_window_event_rate(timestamps: list[float], window_seconds: float) -> list[int]",
+    starterCode: `from collections import deque
+
+def sliding_window_event_rate(timestamps, window_seconds):
+    """Compute count of events within the preceding window_seconds for each arrival.
+    Returns list of event counts.
+    """
+    pass
+`,
+    mission: "Measure sliding window event arrival velocity in a real-time event stream.",
+    taskDescription: "Implement `sliding_window_event_rate(timestamps, window_seconds)`: given sorted timestamps, for each event arrival calculate the number of events in the half-open interval `(timestamp - window_seconds, timestamp]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "timestamps is sorted ascending",
+      "window_seconds > 0.0"
+],
+    hints: {
+      "small": "Push each timestamp onto a queue.",
+      "strong": "Pop from left while timestamp is `<=` current_timestamp - window_seconds.",
+      "concept": "Sliding window rate meters detect traffic spikes and throttle bursty clients."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 3",
+            "route": "/practice/numpy-pandas-prob-3",
+            "description": "Practice module: Numpy Pandas Prob 3"
+      },
+      {
+            "title": "Numpy Pandas Prob 12",
+            "route": "/practice/numpy-pandas-prob-12",
+            "description": "Practice module: Numpy Pandas Prob 12"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Events within 2s window",
+            "input": {
+                  "timestamps": [
+                        1.0,
+                        1.5,
+                        2.8,
+                        3.2,
+                        5.0
+                  ],
+                  "window_seconds": 2.0
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3,
+                  3,
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Simultaneous timestamps",
+            "input": {
+                  "timestamps": [
+                        10.0,
+                        10.0,
+                        10.0
+                  ],
+                  "window_seconds": 1.0
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Widely spaced events",
+            "input": {
+                  "timestamps": [
+                        1.0,
+                        10.0,
+                        20.0,
+                        30.0
+                  ],
+                  "window_seconds": 5.0
+            },
+            "expectedOutput": [
+                  1,
+                  1,
+                  1,
+                  1
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-31': {
+    id: 'numpy-pandas-prob-31',
+    title: "Vectorized Batch Affine Transform",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'batch_affine_transform',
+    functionSignature: "batch_affine_transform(x: list[list[float]], w: list[list[float]], b: list[float]) -> list[list[float]]",
+    starterCode: `def batch_affine_transform(x, w, b):
+    """Compute X @ W + b for batch X with weight matrix W and bias b.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute a vectorized linear transformation X @ W + b across a batch of samples.",
+    taskDescription: "Implement `batch_affine_transform(x, w, b)`: evaluate matrix multiplication `X @ W` and add bias vector `b` across all rows. Input `x` has shape (B, D_in), `w` has shape (D_in, D_out), and `b` has length D_out. Round each element to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(w) == len(x[0])",
+      "len(b) == len(w[0])"
+],
+    hints: {
+      "small": "For each sample row, compute dot product with each column of W.",
+      "strong": "Add the corresponding bias element b[j] to each dot product before rounding.",
+      "concept": "Affine transformation forms the core forward computation of Dense / Linear layers."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 16",
+            "route": "/practice/numpy-pandas-prob-16",
+            "description": "Practice module: Numpy Pandas Prob 16"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 transform with bias",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "b": [
+                        0.5,
+                        -0.5
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.5,
+                        1.5
+                  ],
+                  [
+                        3.5,
+                        3.5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Projection from 3D to 2D",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              3.0
+                        ],
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "b": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        3.0,
+                        3.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero weights test",
+            "input": {
+                  "x": [
+                        [
+                              5.0,
+                              10.0
+                        ]
+                  ],
+                  "w": [
+                        [
+                              0.0
+                        ],
+                        [
+                              0.0
+                        ]
+                  ],
+                  "b": [
+                        42.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        42.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-32': {
+    id: 'numpy-pandas-prob-32',
+    title: "Melt Wide Dataframe to Long Format",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'melt_dataframe',
+    functionSignature: "melt_dataframe(records: list[dict], id_vars: list[str], value_vars: list[str], var_name: str, value_name: str) -> list[dict]",
+    starterCode: `def melt_dataframe(records, id_vars, value_vars, var_name, value_name):
+    """Unpivot wide records into long format preserving id_vars.
+    Returns list of long-format dicts.
+    """
+    pass
+`,
+    mission: "Unpivot tabular records from wide format to tidy long format.",
+    taskDescription: "Implement `melt_dataframe(records, id_vars, value_vars, var_name, value_name)`: for each row, retain keys in `id_vars`, and unpivot each column in `value_vars` into a new row with `var_name` set to the column name and `value_name` set to the value.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "records is a list of dicts",
+      "id_vars and value_vars are lists of strings"
+],
+    hints: {
+      "small": "Extract id_vars into a base dictionary for each record.",
+      "strong": "Loop over each column in value_vars to create unpivoted rows.",
+      "concept": "Melting is the inverse operation of pivoting in relational and pandas transformations."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 8",
+            "route": "/practice/numpy-pandas-prob-8",
+            "description": "Practice module: Numpy Pandas Prob 8"
+      },
+      {
+            "title": "Numpy Pandas Prob 26",
+            "route": "/practice/numpy-pandas-prob-26",
+            "description": "Practice module: Numpy Pandas Prob 26"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Quarterly metrics melt",
+            "input": {
+                  "records": [
+                        {
+                              "dept": "sales",
+                              "Q1": 100,
+                              "Q2": 150
+                        }
+                  ],
+                  "id_vars": [
+                        "dept"
+                  ],
+                  "value_vars": [
+                        "Q1",
+                        "Q2"
+                  ],
+                  "var_name": "quarter",
+                  "value_name": "revenue"
+            },
+            "expectedOutput": [
+                  {
+                        "dept": "sales",
+                        "quarter": "Q1",
+                        "revenue": 100
+                  },
+                  {
+                        "dept": "sales",
+                        "quarter": "Q2",
+                        "revenue": 150
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Multiple IDs multiple values",
+            "input": {
+                  "records": [
+                        {
+                              "id": 1,
+                              "name": "A",
+                              "x": 10,
+                              "y": 20
+                        }
+                  ],
+                  "id_vars": [
+                        "id",
+                        "name"
+                  ],
+                  "value_vars": [
+                        "x",
+                        "y"
+                  ],
+                  "var_name": "metric",
+                  "value_name": "val"
+            },
+            "expectedOutput": [
+                  {
+                        "id": 1,
+                        "name": "A",
+                        "metric": "x",
+                        "val": 10
+                  },
+                  {
+                        "id": 1,
+                        "name": "A",
+                        "metric": "y",
+                        "val": 20
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Empty records list",
+            "input": {
+                  "records": [],
+                  "id_vars": [
+                        "id"
+                  ],
+                  "value_vars": [
+                        "a",
+                        "b"
+                  ],
+                  "var_name": "k",
+                  "value_name": "v"
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-33': {
+    id: 'numpy-pandas-prob-33',
+    title: "Streaming Frequent Items with Misra-Gries",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'misra_gries_frequent_items',
+    functionSignature: "misra_gries_frequent_items(stream: list[str], k: int) -> dict[str, int]",
+    starterCode: `def misra_gries_frequent_items(stream, k):
+    """Find frequent items in a stream using Misra-Gries algorithm with capacity k-1.
+    Returns dictionary of surviving candidate items and their counts.
+    """
+    pass
+`,
+    mission: "Identify heavy hitters in a streaming sequence using the Misra-Gries summary algorithm.",
+    taskDescription: "Implement `misra_gries_frequent_items(stream, k)`: maintain a dictionary of at most `k - 1` tracked candidates. If item exists, increment count. Else if size `<` `k - 1`, insert with count 1. Else decrement all counts by 1, removing any reaching 0. Return the final candidate dictionary.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "k >= 2",
+      "stream is a list of strings"
+],
+    hints: {
+      "small": "Capacity of tracked items is k - 1.",
+      "strong": "When a new item arrives and capacity is full, decrement all existing counts by 1.",
+      "concept": "Misra-Gries is a classic deterministic frequency estimation algorithm for data streams."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 9",
+            "route": "/practice/numpy-pandas-prob-9",
+            "description": "Practice module: Numpy Pandas Prob 9"
+      },
+      {
+            "title": "Numpy Pandas Prob 21",
+            "route": "/practice/numpy-pandas-prob-21",
+            "description": "Practice module: Numpy Pandas Prob 21"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Dominant majority item",
+            "input": {
+                  "stream": [
+                        "a",
+                        "a",
+                        "b",
+                        "a",
+                        "c",
+                        "a"
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": {
+                  "a": 3
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Diverse items without heavy hitters",
+            "input": {
+                  "stream": [
+                        "a",
+                        "b",
+                        "c",
+                        "d"
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": {},
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Tied heavy hitters",
+            "input": {
+                  "stream": [
+                        "x",
+                        "y",
+                        "x",
+                        "y",
+                        "z",
+                        "x",
+                        "y"
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": {
+                  "x": 2,
+                  "y": 2
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-34': {
+    id: 'numpy-pandas-prob-34',
+    title: "Vectorized Row-wise Top-K Elements",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'row_top_k',
+    functionSignature: "row_top_k(matrix: list[list[float]], k: int) -> list[dict]",
+    starterCode: `def row_top_k(matrix, k):
+    """Find top k values and column indices for each row.
+    Returns list of dicts with 'values' and 'indices'.
+    """
+    pass
+`,
+    mission: "Extract the top-k highest values and their column indices for each matrix row.",
+    taskDescription: "Implement `row_top_k(matrix, k)`: for each row, extract the top `min(k, len(row))` largest elements, sorted descending by value (tie-break by smaller column index). Return a list of dicts with `\"values\"` and `\"indices\"`, rounding values to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "matrix is a list of rows of floats",
+      "k >= 1"
+],
+    hints: {
+      "small": "Enumerate each row to retain original column indices.",
+      "strong": "Sort by (-val, idx) to handle value descending order and index tie-breaking.",
+      "concept": "Row top-k filtering is standard in multi-class prediction and retrieval re-ranking."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 16",
+            "route": "/practice/numpy-pandas-prob-16",
+            "description": "Practice module: Numpy Pandas Prob 16"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Top 2 from 4 elements",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              4.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              10.0,
+                              5.0,
+                              8.0,
+                              2.0
+                        ]
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": [
+                  {
+                        "values": [
+                              4.0,
+                              3.0
+                        ],
+                        "indices": [
+                              1,
+                              3
+                        ]
+                  },
+                  {
+                        "values": [
+                              10.0,
+                              8.0
+                        ],
+                        "indices": [
+                              0,
+                              2
+                        ]
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Tied values pick lowest index",
+            "input": {
+                  "matrix": [
+                        [
+                              5.0,
+                              5.0,
+                              3.0
+                        ]
+                  ],
+                  "k": 1
+            },
+            "expectedOutput": [
+                  {
+                        "values": [
+                              5.0
+                        ],
+                        "indices": [
+                              0
+                        ]
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "k exceeds row length",
+            "input": {
+                  "matrix": [
+                        [
+                              2.5,
+                              1.5
+                        ]
+                  ],
+                  "k": 5
+            },
+            "expectedOutput": [
+                  {
+                        "values": [
+                              2.5,
+                              1.5
+                        ],
+                        "indices": [
+                              0,
+                              1
+                        ]
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-35': {
+    id: 'numpy-pandas-prob-35',
+    title: "Exponentially Decayed User Activity Score",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'exponential_decay_activity',
+    functionSignature: "exponential_decay_activity(events: list[dict], half_life_seconds: float, current_time: float) -> dict[str, float]",
+    starterCode: `def exponential_decay_activity(events, half_life_seconds, current_time):
+    """Calculate half-life exponentially decayed activity score per user.
+    Returns dict mapping user_id to score rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Score recency-weighted user engagement using exponential half-life decay.",
+    taskDescription: "Implement `exponential_decay_activity(events, half_life_seconds, current_time)`: each event has `user_id`, `timestamp`, and optional `weight` (default 1.0). Each event contributes `weight * 2 ** (-(current_time - timestamp) / half_life_seconds)`. Return dict of total decayed scores per user, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "half_life_seconds > 0.0",
+      "current_time >= event timestamps"
+],
+    hints: {
+      "small": "Calculate dt = current_time - timestamp.",
+      "strong": "Weight multiplier is 2 ** (-dt / half_life_seconds).",
+      "concept": "Exponential decay prevents stale historical interactions from skewing real-time recommender systems."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 6",
+            "route": "/practice/numpy-pandas-prob-6",
+            "description": "Practice module: Numpy Pandas Prob 6"
+      },
+      {
+            "title": "Numpy Pandas Prob 14",
+            "route": "/practice/numpy-pandas-prob-14",
+            "description": "Practice module: Numpy Pandas Prob 14"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single event at current time",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "u1",
+                              "timestamp": 100.0,
+                              "weight": 2.0
+                        }
+                  ],
+                  "half_life_seconds": 50.0,
+                  "current_time": 100.0
+            },
+            "expectedOutput": {
+                  "u1": 2.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Event exactly one half life prior",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "u1",
+                              "timestamp": 50.0
+                        }
+                  ],
+                  "half_life_seconds": 50.0,
+                  "current_time": 100.0
+            },
+            "expectedOutput": {
+                  "u1": 0.5
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple users and past events",
+            "input": {
+                  "events": [
+                        {
+                              "user_id": "alice",
+                              "timestamp": 0.0
+                        },
+                        {
+                              "user_id": "bob",
+                              "timestamp": 10.0
+                        }
+                  ],
+                  "half_life_seconds": 10.0,
+                  "current_time": 20.0
+            },
+            "expectedOutput": {
+                  "alice": 0.25,
+                  "bob": 0.5
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-36': {
+    id: 'numpy-pandas-prob-36',
+    title: "Streaming Moving Variance (Welford)",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'streaming_moving_variance',
+    functionSignature: "streaming_moving_variance(stream: list[float]) -> list[dict]",
+    starterCode: `def streaming_moving_variance(stream):
+    """Compute running count, mean, and sample variance using Welford's algorithm.
+    Returns list of dicts with keys 'count', 'mean', 'variance'.
+    """
+    pass
+`,
+    mission: "Compute running sample mean and sample variance in a single pass using Welfords algorithm.",
+    taskDescription: "Implement `streaming_moving_variance(stream)`: for each incoming float, maintain running count `n`, mean, and sum of squared differences `M2` via Welfords algorithm. Sample variance is `M2 / (n - 1)` for `n >= 2` (and 0.0 for `n <= 1`). Return list of dicts with `\"count\"`, `\"mean\"`, and `\"variance\"`, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "stream is a list of floats"
+],
+    hints: {
+      "small": "Update delta = x - mean, mean += delta / n.",
+      "strong": "Update m2 += delta * (x - mean) and divide by n - 1 for sample variance.",
+      "concept": "Welfords method guarantees numerical precision for online metric tracking."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 3",
+            "route": "/practice/numpy-pandas-prob-3",
+            "description": "Practice module: Numpy Pandas Prob 3"
+      },
+      {
+            "title": "Numpy Pandas Prob 6",
+            "route": "/practice/numpy-pandas-prob-6",
+            "description": "Practice module: Numpy Pandas Prob 6"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Three integers stream",
+            "input": {
+                  "stream": [
+                        2.0,
+                        4.0,
+                        4.0
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "count": 1,
+                        "mean": 2.0,
+                        "variance": 0.0
+                  },
+                  {
+                        "count": 2,
+                        "mean": 3.0,
+                        "variance": 2.0
+                  },
+                  {
+                        "count": 3,
+                        "mean": 3.3333,
+                        "variance": 1.3333
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Constant stream variance zero",
+            "input": {
+                  "stream": [
+                        5.0,
+                        5.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "count": 1,
+                        "mean": 5.0,
+                        "variance": 0.0
+                  },
+                  {
+                        "count": 2,
+                        "mean": 5.0,
+                        "variance": 0.0
+                  },
+                  {
+                        "count": 3,
+                        "mean": 5.0,
+                        "variance": 0.0
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "High mean with tiny variance",
+            "input": {
+                  "stream": [
+                        1000000.0,
+                        1000001.0,
+                        1000002.0
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "count": 1,
+                        "mean": 1000000.0,
+                        "variance": 0.0
+                  },
+                  {
+                        "count": 2,
+                        "mean": 1000000.5,
+                        "variance": 0.5
+                  },
+                  {
+                        "count": 3,
+                        "mean": 1000001.0,
+                        "variance": 1.0
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-37': {
+    id: 'numpy-pandas-prob-37',
+    title: "Matrix Diagonal Operations & Trace",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'matrix_diagonal_summary',
+    functionSignature: "matrix_diagonal_summary(matrix: list[list[float]], k: int) -> dict",
+    starterCode: `def matrix_diagonal_summary(matrix, k):
+    """Extract main diagonal, offset k diagonal, and compute trace.
+    Returns dict with 'main_diagonal', 'k_diagonal', and 'trace'.
+    """
+    pass
+`,
+    mission: "Extract primary and offset matrix diagonals and compute matrix trace.",
+    taskDescription: "Implement `matrix_diagonal_summary(matrix, k)`: extract the main diagonal `(i == j)`, the offset diagonal at offset `k` (where `j == i + k`), and compute the matrix trace (sum of main diagonal elements). Round trace and extracted floats to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "matrix is a 2D list of floats",
+      "all rows have equal length"
+],
+    hints: {
+      "small": "Main diagonal has indices i == j for i in range(min(rows, cols)).",
+      "strong": "For offset k, check bounds 0 `<=` i `<` rows and 0 `<=` i + k `<` cols.",
+      "concept": "Offset diagonals represent sub-diagonals (k `<` 0) and super-diagonals (k `>` 0)."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 13",
+            "route": "/practice/numpy-pandas-prob-13",
+            "description": "Practice module: Numpy Pandas Prob 13"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3x3 matrix k=1 superdiagonal",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "k": 1
+            },
+            "expectedOutput": {
+                  "main_diagonal": [
+                        1.0,
+                        5.0,
+                        9.0
+                  ],
+                  "k_diagonal": [
+                        2.0,
+                        6.0
+                  ],
+                  "trace": 15.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "3x3 matrix k=-1 subdiagonal",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "k": -1
+            },
+            "expectedOutput": {
+                  "main_diagonal": [
+                        1.0,
+                        5.0,
+                        9.0
+                  ],
+                  "k_diagonal": [
+                        4.0,
+                        8.0
+                  ],
+                  "trace": 15.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Rectangular matrix",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              6.0
+                        ]
+                  ],
+                  "k": 0
+            },
+            "expectedOutput": {
+                  "main_diagonal": [
+                        1.0,
+                        4.0
+                  ],
+                  "k_diagonal": [
+                        1.0,
+                        4.0
+                  ],
+                  "trace": 5.0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-38': {
+    id: 'numpy-pandas-prob-38',
+    title: "Time-Series Lag and Lead Feature Creation",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'create_lag_lead_features',
+    functionSignature: "create_lag_lead_features(records: list[dict], order_col: str, val_col: str, lags: list[int], leads: list[int]) -> list[dict]",
+    starterCode: `def create_lag_lead_features(records, order_col, val_col, lags, leads):
+    """Sort records by order_col and attach lag and lead features.
+    Out of bounds shifts should be None.
+    """
+    pass
+`,
+    mission: "Engineer autoregressive lag and lead feature columns for sequential time-series modeling.",
+    taskDescription: "Implement `create_lag_lead_features(records, order_col, val_col, lags, leads)`: sort records by `order_col`. For each record, create columns `\"{val_col}_lag_{k}\"` (value from k positions prior, or `None` if out of bounds) and `\"{val_col}_lead_{m}\"` (value from m positions ahead, or `None`). Return the updated records.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "records is a list of dicts",
+      "all lag and lead offsets are positive integers"
+],
+    hints: {
+      "small": "Sort records by order_col first.",
+      "strong": "For lag k at index i, check if i - k `>=` 0; for lead m, check if i + m `<` len(records).",
+      "concept": "Lag and lead creation converts continuous sequential series into tabular feature matrices."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 14",
+            "route": "/practice/numpy-pandas-prob-14",
+            "description": "Practice module: Numpy Pandas Prob 14"
+      },
+      {
+            "title": "Numpy Pandas Prob 23",
+            "route": "/practice/numpy-pandas-prob-23",
+            "description": "Practice module: Numpy Pandas Prob 23"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Lag 1 and Lead 1 on sales",
+            "input": {
+                  "records": [
+                        {
+                              "day": 1,
+                              "sales": 10
+                        },
+                        {
+                              "day": 2,
+                              "sales": 20
+                        },
+                        {
+                              "day": 3,
+                              "sales": 30
+                        }
+                  ],
+                  "order_col": "day",
+                  "val_col": "sales",
+                  "lags": [
+                        1
+                  ],
+                  "leads": [
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "day": 1,
+                        "sales": 10,
+                        "sales_lag_1": null,
+                        "sales_lead_1": 20
+                  },
+                  {
+                        "day": 2,
+                        "sales": 20,
+                        "sales_lag_1": 10,
+                        "sales_lead_1": 30
+                  },
+                  {
+                        "day": 3,
+                        "sales": 30,
+                        "sales_lag_1": 20,
+                        "sales_lead_1": null
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Unsorted input records",
+            "input": {
+                  "records": [
+                        {
+                              "t": 2,
+                              "v": 200
+                        },
+                        {
+                              "t": 1,
+                              "v": 100
+                        }
+                  ],
+                  "order_col": "t",
+                  "val_col": "v",
+                  "lags": [
+                        1
+                  ],
+                  "leads": []
+            },
+            "expectedOutput": [
+                  {
+                        "t": 1,
+                        "v": 100,
+                        "v_lag_1": null
+                  },
+                  {
+                        "t": 2,
+                        "v": 200,
+                        "v_lag_1": 100
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple lags",
+            "input": {
+                  "records": [
+                        {
+                              "step": 0,
+                              "x": 5
+                        },
+                        {
+                              "step": 1,
+                              "x": 10
+                        },
+                        {
+                              "step": 2,
+                              "x": 15
+                        }
+                  ],
+                  "order_col": "step",
+                  "val_col": "x",
+                  "lags": [
+                        1,
+                        2
+                  ],
+                  "leads": [
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "step": 0,
+                        "x": 5,
+                        "x_lag_1": null,
+                        "x_lag_2": null,
+                        "x_lead_1": 10
+                  },
+                  {
+                        "step": 1,
+                        "x": 10,
+                        "x_lag_1": 5,
+                        "x_lag_2": null,
+                        "x_lead_1": 15
+                  },
+                  {
+                        "step": 2,
+                        "x": 15,
+                        "x_lag_1": 10,
+                        "x_lag_2": 5,
+                        "x_lead_1": null
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-39': {
+    id: 'numpy-pandas-prob-39',
+    title: "Streaming HyperLogLog Cardinality Approximation",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'simulate_hyperloglog',
+    functionSignature: "simulate_hyperloglog(stream: list[str], num_buckets_log2: int) -> int",
+    starterCode: `def simulate_hyperloglog(stream, num_buckets_log2):
+    """Estimate cardinality of stream using HyperLogLog algorithm.
+    Returns integer estimate.
+    """
+    pass
+`,
+    mission: "Estimate stream distinct element count using the HyperLogLog probabilistic algorithm.",
+    taskDescription: "Implement `simulate_hyperloglog(stream, num_buckets_log2)`. Set `m = 2 ** num_buckets_log2` buckets with 0. For each string, compute 32-bit hash: `val = 0; for c in item: val = (val * 31 + ord(c)) & 0xFFFFFFFF`. Use top `p = num_buckets_log2` bits for bucket index, and remaining `32 - p` bits to count leading zeros + 1. Store the max count per bucket. Return the rounded harmonic mean estimate `round(alpha_m * m * m / sum(2 ** (-R)))`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "num_buckets_log2 in [4, 5, 6]",
+      "stream is a list of strings"
+],
+    hints: {
+      "small": "Extract bucket index from the top p bits of the 32-bit hash.",
+      "strong": "Count leading zeros in the remaining 32 - p bits and update the bucket maximum.",
+      "concept": "HyperLogLog uses harmonic mean across register buckets to mitigate outlier hash values."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 9",
+            "route": "/practice/numpy-pandas-prob-9",
+            "description": "Practice module: Numpy Pandas Prob 9"
+      },
+      {
+            "title": "Numpy Pandas Prob 21",
+            "route": "/practice/numpy-pandas-prob-21",
+            "description": "Practice module: Numpy Pandas Prob 21"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Diverse stream 16 buckets",
+            "input": {
+                  "stream": [
+                        "user_0",
+                        "user_1",
+                        "user_2",
+                        "user_3",
+                        "user_4",
+                        "user_5",
+                        "user_6",
+                        "user_7",
+                        "user_8",
+                        "user_9",
+                        "user_10",
+                        "user_11",
+                        "user_12",
+                        "user_13",
+                        "user_14",
+                        "user_15",
+                        "user_16",
+                        "user_17",
+                        "user_18",
+                        "user_19",
+                        "user_20",
+                        "user_21",
+                        "user_22",
+                        "user_23",
+                        "user_24",
+                        "user_25",
+                        "user_26",
+                        "user_27",
+                        "user_28",
+                        "user_29",
+                        "user_30",
+                        "user_31",
+                        "user_32",
+                        "user_33",
+                        "user_34",
+                        "user_35",
+                        "user_36",
+                        "user_37",
+                        "user_38",
+                        "user_39",
+                        "user_40",
+                        "user_41",
+                        "user_42",
+                        "user_43",
+                        "user_44",
+                        "user_45",
+                        "user_46",
+                        "user_47",
+                        "user_48",
+                        "user_49",
+                        "user_50",
+                        "user_51",
+                        "user_52",
+                        "user_53",
+                        "user_54",
+                        "user_55",
+                        "user_56",
+                        "user_57",
+                        "user_58",
+                        "user_59",
+                        "user_60",
+                        "user_61",
+                        "user_62",
+                        "user_63",
+                        "user_64",
+                        "user_65",
+                        "user_66",
+                        "user_67",
+                        "user_68",
+                        "user_69",
+                        "user_70",
+                        "user_71",
+                        "user_72",
+                        "user_73",
+                        "user_74",
+                        "user_75",
+                        "user_76",
+                        "user_77",
+                        "user_78",
+                        "user_79",
+                        "user_80",
+                        "user_81",
+                        "user_82",
+                        "user_83",
+                        "user_84",
+                        "user_85",
+                        "user_86",
+                        "user_87",
+                        "user_88",
+                        "user_89",
+                        "user_90",
+                        "user_91",
+                        "user_92",
+                        "user_93",
+                        "user_94",
+                        "user_95",
+                        "user_96",
+                        "user_97",
+                        "user_98",
+                        "user_99"
+                  ],
+                  "num_buckets_log2": 4
+            },
+            "expectedOutput": 12,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Repeated tokens cardinality test",
+            "input": {
+                  "stream": [
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item",
+                        "same_item"
+                  ],
+                  "num_buckets_log2": 4
+            },
+            "expectedOutput": 11,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "32 buckets stream",
+            "input": {
+                  "stream": [
+                        "item_0",
+                        "item_3",
+                        "item_6",
+                        "item_9",
+                        "item_12",
+                        "item_15",
+                        "item_18",
+                        "item_21",
+                        "item_24",
+                        "item_27",
+                        "item_30",
+                        "item_33",
+                        "item_36",
+                        "item_39",
+                        "item_42",
+                        "item_45",
+                        "item_48",
+                        "item_51",
+                        "item_54",
+                        "item_57",
+                        "item_60",
+                        "item_63",
+                        "item_66",
+                        "item_69",
+                        "item_72",
+                        "item_75",
+                        "item_78",
+                        "item_81",
+                        "item_84",
+                        "item_87",
+                        "item_90",
+                        "item_93",
+                        "item_96",
+                        "item_99",
+                        "item_102",
+                        "item_105",
+                        "item_108",
+                        "item_111",
+                        "item_114",
+                        "item_117",
+                        "item_120",
+                        "item_123",
+                        "item_126",
+                        "item_129",
+                        "item_132",
+                        "item_135",
+                        "item_138",
+                        "item_141",
+                        "item_144",
+                        "item_147",
+                        "item_150",
+                        "item_153",
+                        "item_156",
+                        "item_159",
+                        "item_162",
+                        "item_165",
+                        "item_168",
+                        "item_171",
+                        "item_174",
+                        "item_177"
+                  ],
+                  "num_buckets_log2": 5
+            },
+            "expectedOutput": 24,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-40': {
+    id: 'numpy-pandas-prob-40',
+    title: "Vectorized Manhattan (L1) Pairwise Distance",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'pairwise_manhattan_distance',
+    functionSignature: "pairwise_manhattan_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]",
+    starterCode: `def pairwise_manhattan_distance(x, y):
+    """Compute pairwise Manhattan (L1) distance matrix between vectors in x and y.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the pairwise L1 Manhattan distance matrix between two feature sets.",
+    taskDescription: "Implement `pairwise_manhattan_distance(x, y)`: for matrix x of shape (N, D) and matrix y of shape (M, D), return the (N, M) matrix of pairwise Manhattan distances `sum(abs(x[i][k] - y[j][k]) for k in range(D))`. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "x has shape N x D, y has shape M x D",
+      "D >= 1"
+],
+    hints: {
+      "small": "Sum absolute differences between corresponding dimensions.",
+      "strong": "Iterate through all pairs u in x and v in y, computing sum(abs(a - b)).",
+      "concept": "L1 Manhattan metric is commonly used in Lasso regression and robust distance metrics."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 19",
+            "route": "/practice/numpy-pandas-prob-19",
+            "description": "Practice module: Numpy Pandas Prob 19"
+      },
+      {
+            "title": "Numpy Pandas Prob 28",
+            "route": "/practice/numpy-pandas-prob-28",
+            "description": "Practice module: Numpy Pandas Prob 28"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2D grid points",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "y": [
+                        [
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        7.0,
+                        0.0
+                  ],
+                  [
+                        4.0,
+                        3.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Single vector pair",
+            "input": {
+                  "x": [
+                        [
+                              10.5,
+                              -2.5
+                        ]
+                  ],
+                  "y": [
+                        [
+                              5.5,
+                              2.5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        10.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "3D vectors pairwise",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ]
+                  ],
+                  "y": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        9.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-41': {
+    id: 'numpy-pandas-prob-41',
+    title: "Equal-Frequency Quantile Binning",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'quantile_bin_data',
+    functionSignature: "quantile_bin_data(values: list[float], num_bins: int) -> list[int]",
+    starterCode: `def quantile_bin_data(values, num_bins):
+    """Discretize values into num_bins quantile bins (0 to num_bins - 1).
+    Returns list of integer bin indices.
+    """
+    pass
+`,
+    mission: "Discretize continuous numerical features into equal-frequency quantile bins.",
+    taskDescription: "Implement `quantile_bin_data(values, num_bins)`: partition sorted values into `num_bins` bins. For each bin cutoff `b` from 1 to `num_bins - 1`, the threshold is `sorted_vals[ceil(b * N / num_bins) - 1]`. Assign each original value the count of thresholds it strictly exceeds (bin index `0 .. num_bins - 1`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "values is a list of floats",
+      "num_bins >= 2"
+],
+    hints: {
+      "small": "Find bin quantile split points from the sorted values array.",
+      "strong": "Compute ceil(b * N / num_bins) - 1 for each threshold, then count thresholds exceeded.",
+      "concept": "Quantile discretization is equivalent to pandas qcut for uniform frequency binning."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 4",
+            "route": "/practice/numpy-pandas-prob-4",
+            "description": "Practice module: Numpy Pandas Prob 4"
+      },
+      {
+            "title": "Numpy Pandas Prob 10",
+            "route": "/practice/numpy-pandas-prob-10",
+            "description": "Practice module: Numpy Pandas Prob 10"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "4 items into 2 bins",
+            "input": {
+                  "values": [
+                        10.0,
+                        20.0,
+                        30.0,
+                        40.0
+                  ],
+                  "num_bins": 2
+            },
+            "expectedOutput": [
+                  0,
+                  0,
+                  1,
+                  1
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Unsorted items into 3 bins",
+            "input": {
+                  "values": [
+                        50.0,
+                        10.0,
+                        30.0,
+                        20.0,
+                        40.0,
+                        60.0
+                  ],
+                  "num_bins": 3
+            },
+            "expectedOutput": [
+                  2,
+                  0,
+                  1,
+                  0,
+                  1,
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Tied values binning",
+            "input": {
+                  "values": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        2.0
+                  ],
+                  "num_bins": 2
+            },
+            "expectedOutput": [
+                  0,
+                  0,
+                  0,
+                  1
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-42': {
+    id: 'numpy-pandas-prob-42',
+    title: "Sliding Window Median from Stream",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'sliding_window_median',
+    functionSignature: "sliding_window_median(stream: list[float], window_size: int) -> list[float]",
+    starterCode: `def sliding_window_median(stream, window_size):
+    """Compute rolling median over sliding window of size window_size.
+    Returns list of medians rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Track the running median over a fixed-length sliding window in a real-time data stream.",
+    taskDescription: "Implement `sliding_window_median(stream, window_size)`: for each window of length `window_size` ending at index `i` (for `i >= window_size - 1`), compute the median of the current window. For even window size, average the two middle values. Round each median to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "stream is a list of floats",
+      "window_size >= 1"
+],
+    hints: {
+      "small": "Extract slice stream[i - window_size + 1 : i + 1] and sort.",
+      "strong": "Find middle element for odd window size, average middle two for even size.",
+      "concept": "Median filtering preserves step edges while eliminating outlier noise."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 3",
+            "route": "/practice/numpy-pandas-prob-3",
+            "description": "Practice module: Numpy Pandas Prob 3"
+      },
+      {
+            "title": "Numpy Pandas Prob 12",
+            "route": "/practice/numpy-pandas-prob-12",
+            "description": "Practice module: Numpy Pandas Prob 12"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Odd window size 3",
+            "input": {
+                  "stream": [
+                        1.0,
+                        3.0,
+                        -1.0,
+                        -3.0,
+                        5.0,
+                        3.0,
+                        6.0,
+                        7.0
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  1.0,
+                  -1.0,
+                  -1.0,
+                  3.0,
+                  5.0,
+                  6.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Even window size 4",
+            "input": {
+                  "stream": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0
+                  ],
+                  "window_size": 4
+            },
+            "expectedOutput": [
+                  2.5,
+                  3.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Window size 1 identity",
+            "input": {
+                  "stream": [
+                        10.0,
+                        20.0,
+                        30.0
+                  ],
+                  "window_size": 1
+            },
+            "expectedOutput": [
+                  10.0,
+                  20.0,
+                  30.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-43': {
+    id: 'numpy-pandas-prob-43',
+    title: "Empirical Cumulative Distribution Function (eCDF)",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'empirical_cdf',
+    functionSignature: "empirical_cdf(samples: list[float], query_points: list[float]) -> list[float]",
+    starterCode: `def empirical_cdf(samples, query_points):
+    """Compute empirical CDF F(q) = P(X <= q) for each query point.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Evaluate the non-parametric empirical CDF from observed data samples.",
+    taskDescription: "Implement `empirical_cdf(samples, query_points)`: for each query point `q`, evaluate `F(q) = (count of samples <= q) / len(samples)`. Return list of probabilities rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "samples is a list of floats",
+      "query_points is a list of floats"
+],
+    hints: {
+      "small": "Sort samples and use binary search (bisect_right).",
+      "strong": "bisect_right finds the count of sample elements less than or equal to q.",
+      "concept": "eCDF forms the foundation of Kolmogorov-Smirnov goodness-of-fit hypothesis testing."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 1",
+            "route": "/practice/numpy-pandas-prob-1",
+            "description": "Practice module: Numpy Pandas Prob 1"
+      },
+      {
+            "title": "Numpy Pandas Prob 10",
+            "route": "/practice/numpy-pandas-prob-10",
+            "description": "Practice module: Numpy Pandas Prob 10"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Four sample points",
+            "input": {
+                  "samples": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0
+                  ],
+                  "query_points": [
+                        0.5,
+                        2.0,
+                        2.5,
+                        5.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.5,
+                  0.5,
+                  1.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Repeated values in sample",
+            "input": {
+                  "samples": [
+                        5.0,
+                        5.0,
+                        10.0
+                  ],
+                  "query_points": [
+                        4.0,
+                        5.0,
+                        10.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.6667,
+                  1.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Negative sample values",
+            "input": {
+                  "samples": [
+                        -10.0,
+                        -5.0,
+                        0.0
+                  ],
+                  "query_points": [
+                        -6.0,
+                        -5.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.3333,
+                  0.6667,
+                  1.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-44': {
+    id: 'numpy-pandas-prob-44',
+    title: "Flattening Multi-Level GroupBy Aggregations",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'flatten_groupby_agg',
+    functionSignature: "flatten_groupby_agg(records: list[dict], group_cols: list[str], agg_specs: dict[str, list[str]]) -> list[dict]",
+    starterCode: `def flatten_groupby_agg(records, group_cols, agg_specs):
+    """Group by group_cols, aggregate by agg_specs, and return flat records.
+    Columns formatted as f'{col}_{agg}'.
+    """
+    pass
+`,
+    mission: "Aggregate tabular data across multiple group dimensions and flatten the resulting hierarchical metrics.",
+    taskDescription: "Implement `flatten_groupby_agg(records, group_cols, agg_specs)`: group by `group_cols`. For each group and each column in `agg_specs`, compute requested aggregations from (`\"sum\"`, `\"mean\"`, `\"min\"`, `\"max\"`, `\"count\"`). Return flat records sorted by group keys with keys formatted as `\"{col}_{agg}\"`, rounding numerical values to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "records is a list of dicts",
+      "agg_specs maps column name to list of operations"
+],
+    hints: {
+      "small": "Group records using a tuple key of group_cols values.",
+      "strong": "Iterate through agg_specs to compute each metric on non-None column values.",
+      "concept": "Flattening multi-index columns avoids complex nested schema headaches in pipeline hand-offs."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 5",
+            "route": "/practice/numpy-pandas-prob-5",
+            "description": "Practice module: Numpy Pandas Prob 5"
+      },
+      {
+            "title": "Numpy Pandas Prob 23",
+            "route": "/practice/numpy-pandas-prob-23",
+            "description": "Practice module: Numpy Pandas Prob 23"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Sum and mean aggregation",
+            "input": {
+                  "records": [
+                        {
+                              "dept": "eng",
+                              "salary": 100
+                        },
+                        {
+                              "dept": "eng",
+                              "salary": 200
+                        },
+                        {
+                              "dept": "sales",
+                              "salary": 150
+                        }
+                  ],
+                  "group_cols": [
+                        "dept"
+                  ],
+                  "agg_specs": {
+                        "salary": [
+                              "sum",
+                              "mean"
+                        ]
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "dept": "eng",
+                        "salary_sum": 300.0,
+                        "salary_mean": 150.0
+                  },
+                  {
+                        "dept": "sales",
+                        "salary_sum": 150.0,
+                        "salary_mean": 150.0
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Two group columns",
+            "input": {
+                  "records": [
+                        {
+                              "dept": "eng",
+                              "team": "ml",
+                              "score": 10
+                        },
+                        {
+                              "dept": "eng",
+                              "team": "ml",
+                              "score": 20
+                        }
+                  ],
+                  "group_cols": [
+                        "dept",
+                        "team"
+                  ],
+                  "agg_specs": {
+                        "score": [
+                              "min",
+                              "max",
+                              "count"
+                        ]
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "dept": "eng",
+                        "team": "ml",
+                        "score_min": 10.0,
+                        "score_max": 20.0,
+                        "score_count": 2
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple metric columns",
+            "input": {
+                  "records": [
+                        {
+                              "g": "a",
+                              "x": 5,
+                              "y": 10
+                        },
+                        {
+                              "g": "a",
+                              "x": 15,
+                              "y": 20
+                        }
+                  ],
+                  "group_cols": [
+                        "g"
+                  ],
+                  "agg_specs": {
+                        "x": [
+                              "sum"
+                        ],
+                        "y": [
+                              "mean"
+                        ]
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "g": "a",
+                        "x_sum": 20.0,
+                        "y_mean": 15.0
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-45': {
+    id: 'numpy-pandas-prob-45',
+    title: "Exponential Backoff Stream Retry Scheduler",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'schedule_stream_retries',
+    functionSignature: "schedule_stream_retries(attempts: list[int], base_delay: float, factor: float, max_delay: float) -> list[float]",
+    starterCode: `def schedule_stream_retries(attempts, base_delay, factor, max_delay):
+    """Calculate scheduled retry delay for each attempt count.
+    Delay = min(max_delay, base_delay * factor**(attempt - 1)).
+    Round floats to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute deterministic exponential backoff delays for resilient stream event retries.",
+    taskDescription: "Implement `schedule_stream_retries(attempts, base_delay, factor, max_delay)`: for each attempt number (1-indexed), delay is `min(max_delay, base_delay * (factor ** (attempt - 1)))`. Return list of delays rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "base_delay > 0.0, factor >= 1.0, max_delay > 0.0"
+],
+    hints: {
+      "small": "Attempt 1 corresponds to power 0 (factor ** 0 == 1).",
+      "strong": "Clamp with min(max_delay, base_delay * factor**(att - 1)).",
+      "concept": "Exponential backoff prevents thundering herd failures in streaming message pipelines."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 18",
+            "route": "/practice/numpy-pandas-prob-18",
+            "description": "Practice module: Numpy Pandas Prob 18"
+      },
+      {
+            "title": "Numpy Pandas Prob 27",
+            "route": "/practice/numpy-pandas-prob-27",
+            "description": "Practice module: Numpy Pandas Prob 27"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Attempts 1 through 4",
+            "input": {
+                  "attempts": [
+                        1,
+                        2,
+                        3,
+                        4
+                  ],
+                  "base_delay": 1.0,
+                  "factor": 2.0,
+                  "max_delay": 10.0
+            },
+            "expectedOutput": [
+                  1.0,
+                  2.0,
+                  4.0,
+                  8.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Max delay capping",
+            "input": {
+                  "attempts": [
+                        5,
+                        6,
+                        10
+                  ],
+                  "base_delay": 1.0,
+                  "factor": 2.0,
+                  "max_delay": 8.0
+            },
+            "expectedOutput": [
+                  8.0,
+                  8.0,
+                  8.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Fractional base delay and factor",
+            "input": {
+                  "attempts": [
+                        1,
+                        2,
+                        3
+                  ],
+                  "base_delay": 0.5,
+                  "factor": 1.5,
+                  "max_delay": 5.0
+            },
+            "expectedOutput": [
+                  0.5,
+                  0.75,
+                  1.125
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-46': {
+    id: 'numpy-pandas-prob-46',
+    title: "Vectorized Jaccard Similarity for Binary Vectors",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'pairwise_jaccard_similarity',
+    functionSignature: "pairwise_jaccard_similarity(matrix_a: list[list[int]], matrix_b: list[list[int]]) -> list[list[float]]",
+    starterCode: `def pairwise_jaccard_similarity(matrix_a, matrix_b):
+    """Compute pairwise Jaccard similarity between binary matrices A and B.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the pairwise Jaccard similarity matrix between binary attribute vectors.",
+    taskDescription: "Implement `pairwise_jaccard_similarity(matrix_a, matrix_b)`: for binary 0/1 matrices A (N x D) and B (M x D), return the (N, M) similarity matrix `|A_i & B_j| / |A_i | B_j|`. If both vectors are all zeros, similarity is 1.0. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "matrix_a has shape N x D, matrix_b has shape M x D",
+      "Elements are 0 or 1"
+],
+    hints: {
+      "small": "Count shared 1s for intersection and occurrences of 1 in either vector for union.",
+      "strong": "Handle empty union (both all zeros) by returning 1.0.",
+      "concept": "Jaccard similarity is standard for document bag-of-words and recommendation user overlap."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 7",
+            "route": "/practice/numpy-pandas-prob-7",
+            "description": "Practice module: Numpy Pandas Prob 7"
+      },
+      {
+            "title": "Numpy Pandas Prob 19",
+            "route": "/practice/numpy-pandas-prob-19",
+            "description": "Practice module: Numpy Pandas Prob 19"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard binary vectors",
+            "input": {
+                  "matrix_a": [
+                        [
+                              1,
+                              1,
+                              0
+                        ],
+                        [
+                              0,
+                              1,
+                              1
+                        ]
+                  ],
+                  "matrix_b": [
+                        [
+                              1,
+                              0,
+                              0
+                        ],
+                        [
+                              1,
+                              1,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.5,
+                        0.6667
+                  ],
+                  [
+                        0.0,
+                        0.6667
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "All zeros edge case",
+            "input": {
+                  "matrix_a": [
+                        [
+                              0,
+                              0
+                        ]
+                  ],
+                  "matrix_b": [
+                        [
+                              0,
+                              0
+                        ],
+                        [
+                              1,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Identical binary sets",
+            "input": {
+                  "matrix_a": [
+                        [
+                              1,
+                              0,
+                              1,
+                              0
+                        ]
+                  ],
+                  "matrix_b": [
+                        [
+                              1,
+                              0,
+                              1,
+                              0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-47': {
+    id: 'numpy-pandas-prob-47',
+    title: "Categorical Encoding with Rare Category Grouping",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'encode_with_rare_grouping',
+    functionSignature: "encode_with_rare_grouping(categories: list[str], min_count: int, rare_label: str) -> list[str]",
+    starterCode: `def encode_with_rare_grouping(categories, min_count, rare_label):
+    """Replace categories with count < min_count with rare_label.
+    Returns list of updated strings.
+    """
+    pass
+`,
+    mission: "Group low-frequency categorical levels into a consolidated rare label.",
+    taskDescription: "Implement `encode_with_rare_grouping(categories, min_count, rare_label)`: count the occurrences of each category string. Replace any category whose frequency is strictly less than `min_count` with `rare_label`. Return the transformed list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "categories is a list of strings",
+      "min_count >= 1"
+],
+    hints: {
+      "small": "Count frequencies across categories with a dictionary or Counter.",
+      "strong": "Map elements to rare_label if counts[c] `<` min_count.",
+      "concept": "Collapsing infrequent tail categories improves generalizability on unseen data."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 2",
+            "route": "/practice/numpy-pandas-prob-2",
+            "description": "Practice module: Numpy Pandas Prob 2"
+      },
+      {
+            "title": "Numpy Pandas Prob 7",
+            "route": "/practice/numpy-pandas-prob-7",
+            "description": "Practice module: Numpy Pandas Prob 7"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Filter rare cities",
+            "input": {
+                  "categories": [
+                        "NYC",
+                        "NYC",
+                        "LA",
+                        "SF",
+                        "NYC",
+                        "LA"
+                  ],
+                  "min_count": 2,
+                  "rare_label": "Other"
+            },
+            "expectedOutput": [
+                  "NYC",
+                  "NYC",
+                  "LA",
+                  "Other",
+                  "NYC",
+                  "LA"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "High threshold all rare",
+            "input": {
+                  "categories": [
+                        "a",
+                        "b",
+                        "c"
+                  ],
+                  "min_count": 5,
+                  "rare_label": "Misc"
+            },
+            "expectedOutput": [
+                  "Misc",
+                  "Misc",
+                  "Misc"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "All pass threshold",
+            "input": {
+                  "categories": [
+                        "x",
+                        "x",
+                        "y",
+                        "y"
+                  ],
+                  "min_count": 2,
+                  "rare_label": "Other"
+            },
+            "expectedOutput": [
+                  "x",
+                  "x",
+                  "y",
+                  "y"
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-48': {
+    id: 'numpy-pandas-prob-48',
+    title: "Sliding Window Distinct Element Count",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'sliding_window_distinct_count',
+    functionSignature: "sliding_window_distinct_count(stream: list[str], window_size: int) -> list[int]",
+    starterCode: `def sliding_window_distinct_count(stream, window_size):
+    """Compute number of distinct elements in each sliding window of size window_size.
+    Returns list of distinct element counts.
+    """
+    pass
+`,
+    mission: "Track the exact number of distinct elements across a fixed-length sliding stream window.",
+    taskDescription: "Implement `sliding_window_distinct_count(stream, window_size)`: for each window of length `window_size` (from index `window_size - 1` to `len(stream) - 1`), return the number of distinct elements in the window.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "stream is a list of strings",
+      "1 <= window_size <= len(stream)"
+],
+    hints: {
+      "small": "Initialize frequency map for the first window.",
+      "strong": "Increment frequency for the new element and decrement for the expired element.",
+      "concept": "Sliding distinct counting monitors real-time user diversity in clickstreams."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 12",
+            "route": "/practice/numpy-pandas-prob-12",
+            "description": "Practice module: Numpy Pandas Prob 12"
+      },
+      {
+            "title": "Numpy Pandas Prob 15",
+            "route": "/practice/numpy-pandas-prob-15",
+            "description": "Practice module: Numpy Pandas Prob 15"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Window size 3 repeating chars",
+            "input": {
+                  "stream": [
+                        "a",
+                        "b",
+                        "a",
+                        "c",
+                        "c",
+                        "d"
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  2,
+                  3,
+                  2,
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "All identical stream",
+            "input": {
+                  "stream": [
+                        "x",
+                        "x",
+                        "x",
+                        "x"
+                  ],
+                  "window_size": 2
+            },
+            "expectedOutput": [
+                  1,
+                  1,
+                  1
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Window size equal to stream length",
+            "input": {
+                  "stream": [
+                        "1",
+                        "2",
+                        "3",
+                        "2"
+                  ],
+                  "window_size": 4
+            },
+            "expectedOutput": [
+                  3
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-49': {
+    id: 'numpy-pandas-prob-49',
+    title: "Vectorized 1D Rolling Window Strides",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'rolling_window_strides',
+    functionSignature: "rolling_window_strides(values: list[float], window_size: int, step: int) -> list[list[float]]",
+    starterCode: `def rolling_window_strides(values, window_size, step):
+    """Extract rolling sub-windows with given window_size and step stride.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Extract strided sub-windows from a 1D sequence using sliding view principles.",
+    taskDescription: "Implement `rolling_window_strides(values, window_size, step)`: extract sub-windows of length `window_size` starting at offsets `0, step, 2*step, ...` as long as `offset + window_size <= len(values)`. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "values is a list of floats",
+      "window_size >= 1, step >= 1"
+],
+    hints: {
+      "small": "Loop while i + window_size `<=` len(values).",
+      "strong": "Advance index i by step on each iteration.",
+      "concept": "NumPys as_strided creates zero-copy window views by manipulating stride step pointers."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 3",
+            "route": "/practice/numpy-pandas-prob-3",
+            "description": "Practice module: Numpy Pandas Prob 3"
+      },
+      {
+            "title": "Numpy Pandas Prob 12",
+            "route": "/practice/numpy-pandas-prob-12",
+            "description": "Practice module: Numpy Pandas Prob 12"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Window 3 step 1",
+            "input": {
+                  "values": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0
+                  ],
+                  "window_size": 3,
+                  "step": 1
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  [
+                        2.0,
+                        3.0,
+                        4.0
+                  ],
+                  [
+                        3.0,
+                        4.0,
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Non-overlapping window 2 step 2",
+            "input": {
+                  "values": [
+                        10.0,
+                        20.0,
+                        30.0,
+                        40.0
+                  ],
+                  "window_size": 2,
+                  "step": 2
+            },
+            "expectedOutput": [
+                  [
+                        10.0,
+                        20.0
+                  ],
+                  [
+                        30.0,
+                        40.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Step larger than window",
+            "input": {
+                  "values": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0,
+                        6.0
+                  ],
+                  "window_size": 2,
+                  "step": 3
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        2.0
+                  ],
+                  [
+                        4.0,
+                        5.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-50': {
+    id: 'numpy-pandas-prob-50',
+    title: "Forward-Fill with Maximum Gap Constraint",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'ffill_with_limit',
+    functionSignature: "ffill_with_limit(series: list[any], limit: int) -> list[any]",
+    starterCode: `def ffill_with_limit(series, limit):
+    """Forward-fill None values with a maximum consecutive fill limit.
+    Returns list with imputed values.
+    """
+    pass
+`,
+    mission: "Impute missing values using forward-fill restricted by a maximum consecutive gap limit.",
+    taskDescription: "Implement `ffill_with_limit(series, limit)`: forward-fill `None` entries with the preceding valid non-None value, filling at most `limit` consecutive `None` entries. Any subsequent consecutive `None` values beyond `limit` remain `None`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "series is a list containing values or None",
+      "limit >= 0"
+],
+    hints: {
+      "small": "Keep track of the last seen non-None value and a consecutive None counter.",
+      "strong": "Reset consecutive counter to 0 when encountering a non-None value.",
+      "concept": "Pandas Series.ffill(limit=k) avoids extrapolating outdated telemetry indefinitely."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 2",
+            "route": "/practice/numpy-pandas-prob-2",
+            "description": "Practice module: Numpy Pandas Prob 2"
+      },
+      {
+            "title": "Numpy Pandas Prob 14",
+            "route": "/practice/numpy-pandas-prob-14",
+            "description": "Practice module: Numpy Pandas Prob 14"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Limit 2 consecutive gap",
+            "input": {
+                  "series": [
+                        1,
+                        null,
+                        null,
+                        null,
+                        2
+                  ],
+                  "limit": 2
+            },
+            "expectedOutput": [
+                  1,
+                  1,
+                  1,
+                  null,
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Leading Nones untouched",
+            "input": {
+                  "series": [
+                        null,
+                        null,
+                        5,
+                        null
+                  ],
+                  "limit": 1
+            },
+            "expectedOutput": [
+                  null,
+                  null,
+                  5,
+                  5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero limit no fill",
+            "input": {
+                  "series": [
+                        10,
+                        null,
+                        20
+                  ],
+                  "limit": 0
+            },
+            "expectedOutput": [
+                  10,
+                  null,
+                  20
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-51': {
+    id: 'numpy-pandas-prob-51',
+    title: "Stream Batcher with Size and Timeout Thresholds",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'batch_stream_events',
+    functionSignature: "batch_stream_events(events: list[tuple[float, str]], max_batch_size: int, max_latency: float) -> list[list[str]]",
+    starterCode: `def batch_stream_events(events, max_batch_size, max_latency):
+    """Batch stream events by count or max latency threshold.
+    Returns list of batches (lists of items).
+    """
+    pass
+`,
+    mission: "Group streaming events into micro-batches bounded by item count or elapsed latency.",
+    taskDescription: "Implement `batch_stream_events(events, max_batch_size, max_latency)`: process `(timestamp, item)` stream events in order. Start a new batch with the first item. Flush and emit the batch when `len(cur_batch) == max_batch_size` or when `event_timestamp - batch_start_timestamp >= max_latency`. Emit any trailing non-empty batch.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "events is sorted by timestamp",
+      "max_batch_size >= 1, max_latency > 0.0"
+],
+    hints: {
+      "small": "Store the timestamp of the first event in the current batch.",
+      "strong": "Flush when len(cur_batch) `>=` max_batch_size or (ts - batch_start) `>=` max_latency.",
+      "concept": "Micro-batching is standard in Kafka consumers and streaming LLM inference servers."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 9",
+            "route": "/practice/numpy-pandas-prob-9",
+            "description": "Practice module: Numpy Pandas Prob 9"
+      },
+      {
+            "title": "Numpy Pandas Prob 18",
+            "route": "/practice/numpy-pandas-prob-18",
+            "description": "Practice module: Numpy Pandas Prob 18"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Flush by batch size",
+            "input": {
+                  "events": [
+                        [
+                              0.0,
+                              "a"
+                        ],
+                        [
+                              0.1,
+                              "b"
+                        ],
+                        [
+                              0.2,
+                              "c"
+                        ]
+                  ],
+                  "max_batch_size": 2,
+                  "max_latency": 5.0
+            },
+            "expectedOutput": [
+                  [
+                        "a",
+                        "b"
+                  ],
+                  [
+                        "c"
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Flush by latency timeout",
+            "input": {
+                  "events": [
+                        [
+                              0.0,
+                              "x"
+                        ],
+                        [
+                              10.0,
+                              "y"
+                        ]
+                  ],
+                  "max_batch_size": 5,
+                  "max_latency": 5.0
+            },
+            "expectedOutput": [
+                  [
+                        "x"
+                  ],
+                  [
+                        "y"
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Single event batch",
+            "input": {
+                  "events": [
+                        [
+                              1.0,
+                              "single"
+                        ]
+                  ],
+                  "max_batch_size": 3,
+                  "max_latency": 2.0
+            },
+            "expectedOutput": [
+                  [
+                        "single"
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-52': {
+    id: 'numpy-pandas-prob-52',
+    title: "Vectorized Euclidean Distance Matrix via Gram Matrix",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'pairwise_euclidean_distance',
+    functionSignature: "pairwise_euclidean_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]",
+    starterCode: `import math
+
+def pairwise_euclidean_distance(x, y):
+    """Compute N x M Euclidean distance matrix between vectors in x and y.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the complete pairwise Euclidean distance matrix between two feature sets.",
+    taskDescription: "Implement `pairwise_euclidean_distance(x, y)`: given matrices x (N x D) and y (M x D), compute the (N, M) matrix of L2 Euclidean distances `sqrt(sum((x_i - y_j)**2))`. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "x has shape N x D, y has shape M x D",
+      "D >= 1"
+],
+    hints: {
+      "small": "Sum squared differences across dimensions and take square root.",
+      "strong": "Clamp squared sum to 0.0 before sqrt to avoid negative zero floating artifacts.",
+      "concept": "Pairwise Euclidean distances drive k-Nearest Neighbors and radial basis kernel evaluations."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 19",
+            "route": "/practice/numpy-pandas-prob-19",
+            "description": "Practice module: Numpy Pandas Prob 19"
+      },
+      {
+            "title": "Numpy Pandas Prob 40",
+            "route": "/practice/numpy-pandas-prob-40",
+            "description": "Practice module: Numpy Pandas Prob 40"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3-4-5 right triangle points",
+            "input": {
+                  "x": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "y": [
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Identical points zero distance",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "y": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              4.0,
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        5.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Multi-dimensional vectors",
+            "input": {
+                  "x": [
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "y": [
+                        [
+                              2.0,
+                              2.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.7321
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-53': {
+    id: 'numpy-pandas-prob-53',
+    title: "Two-Way Frequency Cross-Tabulation",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'contingency_table',
+    functionSignature: "contingency_table(row_labels: list[str], col_labels: list[str]) -> dict[str, dict[str, int]]",
+    starterCode: `def contingency_table(row_labels, col_labels):
+    """Compute two-way frequency contingency table.
+    Returns nested dict table[row][col] = count.
+    """
+    pass
+`,
+    mission: "Compute a two-way contingency table of co-occurrence frequencies between categorical series.",
+    taskDescription: "Implement `contingency_table(row_labels, col_labels)`: count joint occurrences of pairs `(r, c)`. Return a dictionary mapping sorted unique row labels to dictionaries of sorted unique column labels with integer counts (0 for non-occurring combinations).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(row_labels) == len(col_labels)"
+],
+    hints: {
+      "small": "Extract sorted unique values for rows and columns.",
+      "strong": "Initialize grid with 0 for all row-col pairs before counting.",
+      "concept": "Contingency tables correspond to pandas.crosstab for bivariate categorical exploration."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 8",
+            "route": "/practice/numpy-pandas-prob-8",
+            "description": "Practice module: Numpy Pandas Prob 8"
+      },
+      {
+            "title": "Numpy Pandas Prob 13",
+            "route": "/practice/numpy-pandas-prob-13",
+            "description": "Practice module: Numpy Pandas Prob 13"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Gender and preference cross-tab",
+            "input": {
+                  "row_labels": [
+                        "M",
+                        "F",
+                        "M",
+                        "F"
+                  ],
+                  "col_labels": [
+                        "Yes",
+                        "No",
+                        "No",
+                        "No"
+                  ]
+            },
+            "expectedOutput": {
+                  "F": {
+                        "No": 2,
+                        "Yes": 0
+                  },
+                  "M": {
+                        "No": 1,
+                        "Yes": 1
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "All combinations present",
+            "input": {
+                  "row_labels": [
+                        "A",
+                        "A",
+                        "B",
+                        "B"
+                  ],
+                  "col_labels": [
+                        "X",
+                        "Y",
+                        "X",
+                        "Y"
+                  ]
+            },
+            "expectedOutput": {
+                  "A": {
+                        "X": 1,
+                        "Y": 1
+                  },
+                  "B": {
+                        "X": 1,
+                        "Y": 1
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Single class row",
+            "input": {
+                  "row_labels": [
+                        "all",
+                        "all"
+                  ],
+                  "col_labels": [
+                        "c1",
+                        "c2"
+                  ]
+            },
+            "expectedOutput": {
+                  "all": {
+                        "c1": 1,
+                        "c2": 1
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-54': {
+    id: 'numpy-pandas-prob-54',
+    title: "Streaming Moving Average Convergence Divergence (MACD)",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'streaming_macd',
+    functionSignature: "streaming_macd(prices: list[float], fast_period: int, slow_period: int, signal_period: int) -> list[dict]",
+    starterCode: `def streaming_macd(prices, fast_period, slow_period, signal_period):
+    """Compute streaming MACD line and signal EMA for prices.
+    Returns list of dicts with 'fast_ema', 'slow_ema', 'macd', 'signal'.
+    """
+    pass
+`,
+    mission: "Compute real-time MACD indicator indicators over an incoming financial price stream.",
+    taskDescription: "Implement `streaming_macd(prices, fast_period, slow_period, signal_period)`. For `period N`, EMA smoothing factor is `alpha = 2.0 / (N + 1.0)`. Fast and slow EMAs initialize to `prices[0]`. MACD is `fast_ema - slow_ema`. Signal EMA initializes to the initial MACD. For each price, update EMAs and return list of dicts with `\"fast_ema\"`, `\"slow_ema\"`, `\"macd\"`, `\"signal\"`, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "prices is a list of floats",
+      "fast_period < slow_period"
+],
+    hints: {
+      "small": "Calculate smoothing alpha as 2 / (period + 1).",
+      "strong": "Update fast and slow EMAs first, then macd = fast - slow, then signal EMA on macd.",
+      "concept": "MACD crossovers serve as classic trend-following triggers in algorithmic trading."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 6",
+            "route": "/practice/numpy-pandas-prob-6",
+            "description": "Practice module: Numpy Pandas Prob 6"
+      },
+      {
+            "title": "Numpy Pandas Prob 14",
+            "route": "/practice/numpy-pandas-prob-14",
+            "description": "Practice module: Numpy Pandas Prob 14"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Short price stream fast=2 slow=5 signal=2",
+            "input": {
+                  "prices": [
+                        10.0,
+                        11.0,
+                        12.0,
+                        11.0
+                  ],
+                  "fast_period": 2,
+                  "slow_period": 5,
+                  "signal_period": 2
+            },
+            "expectedOutput": [
+                  {
+                        "fast_ema": 10.0,
+                        "slow_ema": 10.0,
+                        "macd": 0.0,
+                        "signal": 0.0
+                  },
+                  {
+                        "fast_ema": 10.6667,
+                        "slow_ema": 10.3333,
+                        "macd": 0.3333,
+                        "signal": 0.2222
+                  },
+                  {
+                        "fast_ema": 11.5556,
+                        "slow_ema": 10.8889,
+                        "macd": 0.6667,
+                        "signal": 0.5185
+                  },
+                  {
+                        "fast_ema": 11.1852,
+                        "slow_ema": 10.9259,
+                        "macd": 0.2593,
+                        "signal": 0.3457
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Constant price series",
+            "input": {
+                  "prices": [
+                        50.0,
+                        50.0,
+                        50.0
+                  ],
+                  "fast_period": 3,
+                  "slow_period": 6,
+                  "signal_period": 2
+            },
+            "expectedOutput": [
+                  {
+                        "fast_ema": 50.0,
+                        "slow_ema": 50.0,
+                        "macd": 0.0,
+                        "signal": 0.0
+                  },
+                  {
+                        "fast_ema": 50.0,
+                        "slow_ema": 50.0,
+                        "macd": 0.0,
+                        "signal": 0.0
+                  },
+                  {
+                        "fast_ema": 50.0,
+                        "slow_ema": 50.0,
+                        "macd": 0.0,
+                        "signal": 0.0
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Steep drop price series",
+            "input": {
+                  "prices": [
+                        100.0,
+                        90.0,
+                        80.0,
+                        70.0
+                  ],
+                  "fast_period": 2,
+                  "slow_period": 4,
+                  "signal_period": 2
+            },
+            "expectedOutput": [
+                  {
+                        "fast_ema": 100.0,
+                        "slow_ema": 100.0,
+                        "macd": 0.0,
+                        "signal": 0.0
+                  },
+                  {
+                        "fast_ema": 93.3333,
+                        "slow_ema": 96.0,
+                        "macd": -2.6667,
+                        "signal": -1.7778
+                  },
+                  {
+                        "fast_ema": 84.4444,
+                        "slow_ema": 89.6,
+                        "macd": -5.1556,
+                        "signal": -4.0296
+                  },
+                  {
+                        "fast_ema": 74.8148,
+                        "slow_ema": 81.76,
+                        "macd": -6.9452,
+                        "signal": -5.9733
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-55': {
+    id: 'numpy-pandas-prob-55',
+    title: "Vectorized Numerically Stable Log-Sum-Exp",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'vectorized_log_sum_exp',
+    functionSignature: "vectorized_log_sum_exp(matrix: list[list[float]]) -> list[float]",
+    starterCode: `import math
+
+def vectorized_log_sum_exp(matrix):
+    """Compute row-wise numerically stable log-sum-exp.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute numerically robust log-sum-exp reductions across matrix rows.",
+    taskDescription: "Implement `vectorized_log_sum_exp(matrix)`: for each row, compute `max_x + log(sum(exp(x_i - max_x)))`. If a row is empty, return 0.0. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "matrix is a list of rows of floats"
+],
+    hints: {
+      "small": "Extract the row maximum max_val.",
+      "strong": "Evaluate max_val + math.log(sum(math.exp(x - max_val) for x in row)).",
+      "concept": "The log-sum-exp trick is universal in cross-entropy loss, normalizing constants, and hidden Markov models."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 16",
+            "route": "/practice/numpy-pandas-prob-16",
+            "description": "Practice module: Numpy Pandas Prob 16"
+      },
+      {
+            "title": "Numpy Pandas Prob 28",
+            "route": "/practice/numpy-pandas-prob-28",
+            "description": "Practice module: Numpy Pandas Prob 28"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard small values",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  3.4076,
+                  0.6931
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Very large values overflow protection",
+            "input": {
+                  "matrix": [
+                        [
+                              1000.0,
+                              1001.0,
+                              1002.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  1002.4076
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Large negative values",
+            "input": {
+                  "matrix": [
+                        [
+                              -500.0,
+                              -501.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  -499.6867
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-56': {
+    id: 'numpy-pandas-prob-56',
+    title: "Tabular Text Cleaning and Regex Extractor",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'extract_log_features',
+    functionSignature: "extract_log_features(log_lines: list[str]) -> list[dict]",
+    starterCode: `import re
+
+def extract_log_features(log_lines):
+    """Parse HTTP access log lines into structured dicts.
+    Returns list of dicts with ip, timestamp, method, status, bytes.
+    """
+    pass
+`,
+    mission: "Parse and structure raw access log text records into typed tabular records.",
+    taskDescription: "Implement `extract_log_features(log_lines)`: for each log line formatted like `'IP - - [TIMESTAMP] \"METHOD PATH PROTOCOL\" STATUS BYTES'`, extract `ip` (str), `timestamp` (str), `method` (str), `status` (int), and `bytes` (int). Skip non-matching lines.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "log_lines is a list of strings"
+],
+    hints: {
+      "small": "Use regex with capture groups for IP, timestamp, method, status, and bytes.",
+      "strong": "Cast status and bytes to int before constructing the record dict.",
+      "concept": "Pandas Series.str.extract applies regular expressions to convert raw text into structured feature columns."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 11",
+            "route": "/practice/numpy-pandas-prob-11",
+            "description": "Practice module: Numpy Pandas Prob 11"
+      },
+      {
+            "title": "Numpy Pandas Prob 26",
+            "route": "/practice/numpy-pandas-prob-26",
+            "description": "Practice module: Numpy Pandas Prob 26"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Valid GET log line",
+            "input": {
+                  "log_lines": [
+                        "192.168.1.1 - - [10/Oct/2026:12:00:00] \"GET /index.html HTTP/1.1\" 200 1024"
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "ip": "192.168.1.1",
+                        "timestamp": "10/Oct/2026:12:00:00",
+                        "method": "GET",
+                        "status": 200,
+                        "bytes": 1024
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "POST log and invalid line",
+            "input": {
+                  "log_lines": [
+                        "10.0.0.2 - - [10/Oct/2026:12:01:00] \"POST /api/predict HTTP/1.1\" 201 512",
+                        "corrupt log string"
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "ip": "10.0.0.2",
+                        "timestamp": "10/Oct/2026:12:01:00",
+                        "method": "POST",
+                        "status": 201,
+                        "bytes": 512
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple status codes",
+            "input": {
+                  "log_lines": [
+                        "172.16.0.1 - - [11/Oct/2026:08:30:00] \"DELETE /item/5 HTTP/1.1\" 404 0"
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "ip": "172.16.0.1",
+                        "timestamp": "11/Oct/2026:08:30:00",
+                        "method": "DELETE",
+                        "status": 404,
+                        "bytes": 0
+                  }
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-57': {
+    id: 'numpy-pandas-prob-57',
+    title: "Leaky Bucket Stream Traffic Shaper",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'simulate_leaky_bucket',
+    functionSignature: "simulate_leaky_bucket(packets: list[tuple[float, int]], capacity: int, leak_rate: float) -> list[tuple[float, int, bool]]",
+    starterCode: `def simulate_leaky_bucket(packets, capacity, leak_rate):
+    """Simulate leaky bucket buffer traffic shaper.
+    Returns list of [timestamp, size, accepted].
+    """
+    pass
+`,
+    mission: "Simulate a leaky bucket buffer to smooth out bursty traffic streams.",
+    taskDescription: "Implement `simulate_leaky_bucket(packets, capacity, leak_rate)`. Water level starts at 0.0 at time 0.0. Between arrivals, water leaks by `elapsed * leak_rate`, bounded below by 0.0. If `current_level + packet_size <= capacity`, accept packet and add size to level; otherwise drop packet. Return list of `[timestamp, packet_size, accepted]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "packets is sorted by timestamp",
+      "capacity > 0, leak_rate > 0.0"
+],
+    hints: {
+      "small": "Calculate water drained as elapsed * leak_rate since the last arrival.",
+      "strong": "Check if level + size `<=` capacity before accepting.",
+      "concept": "Leaky bucket provides deterministic traffic shaping with fixed output rate."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 18",
+            "route": "/practice/numpy-pandas-prob-18",
+            "description": "Practice module: Numpy Pandas Prob 18"
+      },
+      {
+            "title": "Numpy Pandas Prob 30",
+            "route": "/practice/numpy-pandas-prob-30",
+            "description": "Practice module: Numpy Pandas Prob 30"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Smooth arrivals",
+            "input": {
+                  "packets": [
+                        [
+                              0.0,
+                              10
+                        ],
+                        [
+                              1.0,
+                              10
+                        ],
+                        [
+                              2.0,
+                              10
+                        ]
+                  ],
+                  "capacity": 20,
+                  "leak_rate": 10.0
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        10,
+                        true
+                  ],
+                  [
+                        1.0,
+                        10,
+                        true
+                  ],
+                  [
+                        2.0,
+                        10,
+                        true
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Burst exceeding capacity",
+            "input": {
+                  "packets": [
+                        [
+                              0.0,
+                              15
+                        ],
+                        [
+                              0.1,
+                              15
+                        ]
+                  ],
+                  "capacity": 20,
+                  "leak_rate": 5.0
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        15,
+                        true
+                  ],
+                  [
+                        0.1,
+                        15,
+                        false
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Full drain recovery",
+            "input": {
+                  "packets": [
+                        [
+                              0.0,
+                              20
+                        ],
+                        [
+                              5.0,
+                              20
+                        ]
+                  ],
+                  "capacity": 20,
+                  "leak_rate": 4.0
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        20,
+                        true
+                  ],
+                  [
+                        5.0,
+                        20,
+                        true
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-58': {
+    id: 'numpy-pandas-prob-58',
+    title: "Masked Array Mean and Standard Deviation",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'masked_array_stats',
+    functionSignature: "masked_array_stats(values: list[float], mask: list[bool]) -> dict[str, float]",
+    starterCode: `import math
+
+def masked_array_stats(values, mask):
+    """Compute count, mean, and population std ignoring masked (True) elements.
+    Returns dict with keys 'count', 'mean', 'std'.
+    """
+    pass
+`,
+    mission: "Compute summary statistics over an array while ignoring masked/invalid entries.",
+    taskDescription: "Implement `masked_array_stats(values, mask)`: values where `mask[i] is True` are considered invalid and excluded. Calculate valid count, mean, and population standard deviation `sqrt(sum((x - mean)**2) / count)`. If no valid values, return `{\"count\": 0, \"mean\": 0.0, \"std\": 0.0}`. Round mean and std to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(values) == len(mask)"
+],
+    hints: {
+      "small": "Filter elements where mask is False.",
+      "strong": "Use population variance (divide by N) for standard deviation.",
+      "concept": "NumPy numpy.ma module provides first-class masked arrays for robust scientific computing."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 4",
+            "route": "/practice/numpy-pandas-prob-4",
+            "description": "Practice module: Numpy Pandas Prob 4"
+      },
+      {
+            "title": "Numpy Pandas Prob 10",
+            "route": "/practice/numpy-pandas-prob-10",
+            "description": "Practice module: Numpy Pandas Prob 10"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Alternating mask",
+            "input": {
+                  "values": [
+                        10.0,
+                        999.0,
+                        20.0,
+                        999.0
+                  ],
+                  "mask": [
+                        false,
+                        true,
+                        false,
+                        true
+                  ]
+            },
+            "expectedOutput": {
+                  "count": 2,
+                  "mean": 15.0,
+                  "std": 5.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "All masked empty set",
+            "input": {
+                  "values": [
+                        1.0,
+                        2.0
+                  ],
+                  "mask": [
+                        true,
+                        true
+                  ]
+            },
+            "expectedOutput": {
+                  "count": 0,
+                  "mean": 0.0,
+                  "std": 0.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "No masked values",
+            "input": {
+                  "values": [
+                        2.0,
+                        4.0,
+                        4.0,
+                        4.0,
+                        5.0,
+                        5.0,
+                        7.0,
+                        9.0
+                  ],
+                  "mask": [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                  ]
+            },
+            "expectedOutput": {
+                  "count": 8,
+                  "mean": 5.0,
+                  "std": 2.0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-59': {
+    id: 'numpy-pandas-prob-59',
+    title: "Cyclical Temporal Feature Encoding (Sin/Cos)",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'encode_cyclical_time',
+    functionSignature: "encode_cyclical_time(hours: list[float], period: float) -> list[tuple[float, float]]",
+    starterCode: `import math
+
+def encode_cyclical_time(hours, period):
+    """Encode periodic values into [sin, cos] circular coordinates.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Encode periodic temporal features into continuous sinusoidal coordinates.",
+    taskDescription: "Implement `encode_cyclical_time(hours, period)`: for each value `h`, map onto the unit circle via angle `theta = 2 * pi * (h % period) / period`. Return `[sin(theta), cos(theta)]` for each hour, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "period > 0.0",
+      "hours is a list of floats"
+],
+    hints: {
+      "small": "Calculate angle as 2 * math.pi * (h % period) / period.",
+      "strong": "Compute math.sin(angle) and math.cos(angle) rounded to 4 decimals.",
+      "concept": "Trigonometric cyclical encoding is essential for hours, days of week, and seasonal signals in ML models."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 14",
+            "route": "/practice/numpy-pandas-prob-14",
+            "description": "Practice module: Numpy Pandas Prob 14"
+      },
+      {
+            "title": "Numpy Pandas Prob 38",
+            "route": "/practice/numpy-pandas-prob-38",
+            "description": "Practice module: Numpy Pandas Prob 38"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "24-hour cycle at 0, 6, 12, 18",
+            "input": {
+                  "hours": [
+                        0.0,
+                        6.0,
+                        12.0,
+                        18.0
+                  ],
+                  "period": 24.0
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        -1.0
+                  ],
+                  [
+                        -1.0,
+                        -0.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Hour exceeding period wrapping",
+            "input": {
+                  "hours": [
+                        24.0,
+                        25.0
+                  ],
+                  "period": 24.0
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        1.0
+                  ],
+                  [
+                        0.2588,
+                        0.9659
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "7-day weekly cycle",
+            "input": {
+                  "hours": [
+                        0.0,
+                        3.5
+                  ],
+                  "period": 7.0
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        1.0
+                  ],
+                  [
+                        0.0,
+                        -1.0
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'numpy-pandas-prob-60': {
+    id: 'numpy-pandas-prob-60',
+    title: "Streaming Rolling Pearson Correlation",
+    difficulty: 'easy',
+    topic: "NumPy & Pandas",
+    estimatedTime: '10–15 min',
+    functionName: 'rolling_pearson_correlation',
+    functionSignature: "rolling_pearson_correlation(series_x: list[float], series_y: list[float], window_size: int) -> list[float]",
+    starterCode: `import math
+
+def rolling_pearson_correlation(series_x, series_y, window_size):
+    """Compute rolling Pearson correlation between two aligned series over window_size.
+    Returns list of correlations rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute real-time rolling Pearson correlation between two streaming series.",
+    taskDescription: "Implement `rolling_pearson_correlation(series_x, series_y, window_size)`: for each sliding window of size `window_size` (for index `i >= window_size - 1`), compute the Pearson correlation coefficient `r = sum((x - mean_x)*(y - mean_y)) / sqrt(sum((x - mean_x)**2) * sum((y - mean_y)**2))`. If either series has 0 variance within the window, emit 0.0. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(series_x) == len(series_y)",
+      "window_size >= 2"
+],
+    hints: {
+      "small": "Extract slices wx and wy of length window_size.",
+      "strong": "Compute window means, covariance, and standard deviations.",
+      "concept": "Rolling correlation tracks temporal relationship changes in multi-sensor and financial pairs trading."
+},
+    conceptConnections: [
+      {
+            "title": "Numpy Pandas Prob 3",
+            "route": "/practice/numpy-pandas-prob-3",
+            "description": "Practice module: Numpy Pandas Prob 3"
+      },
+      {
+            "title": "Numpy Pandas Prob 36",
+            "route": "/practice/numpy-pandas-prob-36",
+            "description": "Practice module: Numpy Pandas Prob 36"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect positive linear correlation",
+            "input": {
+                  "series_x": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0
+                  ],
+                  "series_y": [
+                        2.0,
+                        4.0,
+                        6.0,
+                        8.0
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Perfect negative linear correlation",
+            "input": {
+                  "series_x": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "series_y": [
+                        3.0,
+                        2.0,
+                        1.0
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  -1.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Constant series zero variance",
+            "input": {
+                  "series_x": [
+                        5.0,
+                        5.0,
+                        5.0,
+                        5.0
+                  ],
+                  "series_y": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0
+                  ],
+                  "window_size": 3
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

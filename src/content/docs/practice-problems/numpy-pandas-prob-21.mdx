@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 21: Problem 201"
 sidebar_position: 201
 description: "Curriculum Problem 201 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,34 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #201** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-20`.
+## Overview
+
+Implement a Count-Min Sketch to estimate item frequencies in a data stream in sub-linear space.
+
+## Task
+
+Implement `count_min_sketch(stream, queries, width, depth, seeds)`. Initialize a 2D table of size `depth x width` with 0. For each item in stream and row `d` (from 0 to depth-1), compute hash index `(polynomial_hash(item) ^ seeds[d]) % width` where `polynomial_hash(item) = sum(ord(c) * (31 ** i) for i, c in enumerate(item))`, and increment that cell. For each query, return the minimum count across all `depth` rows.
 
 <PracticePlayground problemId="numpy-pandas-prob-21" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p21(data):
-    # Reference implementation
-    return data
+def count_min_sketch(stream, queries, width, depth, seeds):
+    table = [[0] * width for _ in range(depth)]
+    for item in stream:
+        val = sum(ord(c) * (31 ** i) for i, c in enumerate(item))
+        for d in range(depth):
+            h = (val ^ seeds[d]) % width
+            table[d][h] += 1
+    out = []
+    for q in queries:
+        val = sum(ord(c) * (31 ** i) for i, c in enumerate(q))
+        min_c = min(table[d][(val ^ seeds[d]) % width] for d in range(depth))
+        out.append(min_c)
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Count-Min sketch uses multiple independent hash functions; the minimum cell value provides an upper bound with probabilistic accuracy guarantees.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 19: Problem 199"
 sidebar_position: 199
 description: "Curriculum Problem 199 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,39 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #199** · Difficulty: **Easy** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-18`.
+## Overview
+
+Compute the pairwise cosine distance matrix between two feature sets.
+
+## Task
+
+Implement `pairwise_cosine_distance(x, y)`: given matrix x of shape (N, D) and y of shape (M, D), return the (N, M) matrix of cosine distances defined as `1.0 - (u . v) / (||u|| * ||v||)`. If either vector has zero L2 norm, distance is 1.0. Round to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-19" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p19(data):
-    # Reference implementation
-    return data
+import math
+
+def pairwise_cosine_distance(x, y):
+    res = []
+    for u in x:
+        norm_u = math.sqrt(sum(a * a for a in u))
+        row = []
+        for v in y:
+            norm_v = math.sqrt(sum(b * b for b in v))
+            if norm_u == 0.0 or norm_v == 0.0:
+                row.append(1.0)
+            else:
+                dot = sum(a * b for a, b in zip(u, v))
+                cos_sim = dot / (norm_u * norm_v)
+                cos_dist = max(0.0, min(2.0, 1.0 - cos_sim))
+                row.append(round(cos_dist, 4))
+        res.append(row)
+    return res
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Cosine distance equals one minus cosine similarity, measuring angular divergence independent of vector magnitude.
 
 </Solution>

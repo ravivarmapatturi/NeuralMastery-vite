@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 54: Problem 234"
 sidebar_position: 234
 description: "Curriculum Problem 234 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,52 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #234** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-53`.
+## Overview
+
+Compute real-time MACD indicator indicators over an incoming financial price stream.
+
+## Task
+
+Implement `streaming_macd(prices, fast_period, slow_period, signal_period)`. For `period N`, EMA smoothing factor is `alpha = 2.0 / (N + 1.0)`. Fast and slow EMAs initialize to `prices[0]`. MACD is `fast_ema - slow_ema`. Signal EMA initializes to the initial MACD. For each price, update EMAs and return list of dicts with `"fast_ema"`, `"slow_ema"`, `"macd"`, `"signal"`, rounded to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-54" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p54(data):
-    # Reference implementation
-    return data
+def streaming_macd(prices, fast_period, slow_period, signal_period):
+    if not prices:
+        return []
+    alpha_fast = 2.0 / (fast_period + 1.0)
+    alpha_slow = 2.0 / (slow_period + 1.0)
+    alpha_signal = 2.0 / (signal_period + 1.0)
+
+    fast_ema = prices[0]
+    slow_ema = prices[0]
+    macd = fast_ema - slow_ema
+    signal_ema = macd
+
+    out = [{
+        "fast_ema": round(fast_ema, 4),
+        "slow_ema": round(slow_ema, 4),
+        "macd": round(macd, 4),
+        "signal": round(signal_ema, 4)
+    }]
+
+    for p in prices[1:]:
+        fast_ema = alpha_fast * p + (1.0 - alpha_fast) * fast_ema
+        slow_ema = alpha_slow * p + (1.0 - alpha_slow) * slow_ema
+        macd = fast_ema - slow_ema
+        signal_ema = alpha_signal * macd + (1.0 - alpha_signal) * signal_ema
+        out.append({
+            "fast_ema": round(fast_ema, 4),
+            "slow_ema": round(slow_ema, 4),
+            "macd": round(macd, 4),
+            "signal": round(signal_ema, 4)
+        })
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+MACD reveals momentum shifts by contrasting short-term and long-term exponential moving averages against an exponential signal baseline.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 39: Problem 219"
 sidebar_position: 219
 description: "Curriculum Problem 219 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,48 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #219** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-38`.
+## Overview
+
+Estimate stream distinct element count using the HyperLogLog probabilistic algorithm.
+
+## Task
+
+Implement `simulate_hyperloglog(stream, num_buckets_log2)`. Set `m = 2 ** num_buckets_log2` buckets with 0. For each string, compute 32-bit hash: `val = 0; for c in item: val = (val * 31 + ord(c)) & 0xFFFFFFFF`. Use top `p = num_buckets_log2` bits for bucket index, and remaining `32 - p` bits to count leading zeros + 1. Store the max count per bucket. Return the rounded harmonic mean estimate `round(alpha_m * m * m / sum(2 ** (-R)))`.
 
 <PracticePlayground problemId="numpy-pandas-prob-39" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p39(data):
-    # Reference implementation
-    return data
+def simulate_hyperloglog(stream, num_buckets_log2):
+    m = 1 << num_buckets_log2
+    buckets = [0] * m
+    for item in stream:
+        val = 0
+        for i, c in enumerate(item):
+            val = (val * 31 + ord(c)) & 0xFFFFFFFF
+        bucket_idx = val >> (32 - num_buckets_log2)
+        w = val & ((1 << (32 - num_buckets_log2)) - 1)
+        lz = 1
+        shift = (32 - num_buckets_log2) - 1
+        while shift >= 0 and not (w & (1 << shift)):
+            lz += 1
+            shift -= 1
+        if lz > buckets[bucket_idx]:
+            buckets[bucket_idx] = lz
+    if m == 16:
+        alpha = 0.673
+    elif m == 32:
+        alpha = 0.697
+    elif m == 64:
+        alpha = 0.709
+    else:
+        alpha = 0.7213 / (1.0 + 1.079 / m)
+    z = sum(2.0 ** (-val) for val in buckets)
+    raw_estimate = alpha * m * m / z
+    return round(raw_estimate)
 ```
 
-This problem tests fundamental skills in Streaming systems.
+HyperLogLog approximates cardinality with low memory by tracking the maximum number of leading zeros in hashed stream elements.
 
 </Solution>

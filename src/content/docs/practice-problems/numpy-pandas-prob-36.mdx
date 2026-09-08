@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 36: Problem 216"
 sidebar_position: 216
 description: "Curriculum Problem 216 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,39 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #216** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-35`.
+## Overview
+
+Compute running sample mean and sample variance in a single pass using Welfords algorithm.
+
+## Task
+
+Implement `streaming_moving_variance(stream)`: for each incoming float, maintain running count `n`, mean, and sum of squared differences `M2` via Welfords algorithm. Sample variance is `M2 / (n - 1)` for `n >= 2` (and 0.0 for `n <= 1`). Return list of dicts with `"count"`, `"mean"`, and `"variance"`, rounded to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-36" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p36(data):
-    # Reference implementation
-    return data
+def streaming_moving_variance(stream):
+    out = []
+    n = 0
+    mean = 0.0
+    m2 = 0.0
+    for x in stream:
+        n += 1
+        delta = x - mean
+        mean += delta / n
+        delta2 = x - mean
+        m2 += delta * delta2
+        var = (m2 / (n - 1)) if n > 1 else 0.0
+        out.append({
+            "count": n,
+            "mean": round(mean, 4),
+            "variance": round(var, 4)
+        })
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Welfords algorithm calculates online variance stably without suffering catastrophic cancellation from squaring large sums.
 
 </Solution>

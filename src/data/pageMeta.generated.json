@@ -12888,7 +12888,7 @@
       "description": "Curriculum Problem 196 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-17": {
       "slug": "practice-problems/numpy-pandas-prob-17",
@@ -12898,7 +12898,7 @@
       "description": "Curriculum Problem 197 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-18": {
       "slug": "practice-problems/numpy-pandas-prob-18",
@@ -12908,7 +12908,7 @@
       "description": "Curriculum Problem 198 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-19": {
       "slug": "practice-problems/numpy-pandas-prob-19",
@@ -12918,7 +12918,7 @@
       "description": "Curriculum Problem 199 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-2": {
       "slug": "practice-problems/numpy-pandas-prob-2",
@@ -12938,7 +12938,7 @@
       "description": "Curriculum Problem 200 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-21": {
       "slug": "practice-problems/numpy-pandas-prob-21",
@@ -12948,7 +12948,7 @@
       "description": "Curriculum Problem 201 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "easy",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-22": {
       "slug": "practice-problems/numpy-pandas-prob-22",
@@ -12958,7 +12958,7 @@
       "description": "Curriculum Problem 202 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-23": {
       "slug": "practice-problems/numpy-pandas-prob-23",
@@ -12968,7 +12968,7 @@
       "description": "Curriculum Problem 203 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-24": {
       "slug": "practice-problems/numpy-pandas-prob-24",
@@ -12978,7 +12978,7 @@
       "description": "Curriculum Problem 204 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-25": {
       "slug": "practice-problems/numpy-pandas-prob-25",
@@ -12988,7 +12988,7 @@
       "description": "Curriculum Problem 205 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-26": {
       "slug": "practice-problems/numpy-pandas-prob-26",
@@ -12998,7 +12998,7 @@
       "description": "Curriculum Problem 206 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-27": {
       "slug": "practice-problems/numpy-pandas-prob-27",
@@ -13008,7 +13008,7 @@
       "description": "Curriculum Problem 207 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-28": {
       "slug": "practice-problems/numpy-pandas-prob-28",
@@ -13018,7 +13018,7 @@
       "description": "Curriculum Problem 208 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-29": {
       "slug": "practice-problems/numpy-pandas-prob-29",
@@ -13028,7 +13028,7 @@
       "description": "Curriculum Problem 209 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-3": {
       "slug": "practice-problems/numpy-pandas-prob-3",
@@ -13048,7 +13048,7 @@
       "description": "Curriculum Problem 210 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-31": {
       "slug": "practice-problems/numpy-pandas-prob-31",
@@ -13058,7 +13058,7 @@
       "description": "Curriculum Problem 211 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-32": {
       "slug": "practice-problems/numpy-pandas-prob-32",
@@ -13068,7 +13068,7 @@
       "description": "Curriculum Problem 212 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-33": {
       "slug": "practice-problems/numpy-pandas-prob-33",
@@ -13078,7 +13078,7 @@
       "description": "Curriculum Problem 213 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-34": {
       "slug": "practice-problems/numpy-pandas-prob-34",
@@ -13088,7 +13088,7 @@
       "description": "Curriculum Problem 214 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-35": {
       "slug": "practice-problems/numpy-pandas-prob-35",
@@ -13098,7 +13098,7 @@
       "description": "Curriculum Problem 215 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-36": {
       "slug": "practice-problems/numpy-pandas-prob-36",
@@ -13108,7 +13108,7 @@
       "description": "Curriculum Problem 216 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-37": {
       "slug": "practice-problems/numpy-pandas-prob-37",
@@ -13118,7 +13118,7 @@
       "description": "Curriculum Problem 217 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-38": {
       "slug": "practice-problems/numpy-pandas-prob-38",
@@ -13128,7 +13128,7 @@
       "description": "Curriculum Problem 218 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-39": {
       "slug": "practice-problems/numpy-pandas-prob-39",
@@ -13138,7 +13138,7 @@
       "description": "Curriculum Problem 219 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-4": {
       "slug": "practice-problems/numpy-pandas-prob-4",
@@ -13158,7 +13158,7 @@
       "description": "Curriculum Problem 220 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-41": {
       "slug": "practice-problems/numpy-pandas-prob-41",
@@ -13168,7 +13168,7 @@
       "description": "Curriculum Problem 221 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-42": {
       "slug": "practice-problems/numpy-pandas-prob-42",
@@ -13178,7 +13178,7 @@
       "description": "Curriculum Problem 222 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-43": {
       "slug": "practice-problems/numpy-pandas-prob-43",
@@ -13188,7 +13188,7 @@
       "description": "Curriculum Problem 223 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-44": {
       "slug": "practice-problems/numpy-pandas-prob-44",
@@ -13198,7 +13198,7 @@
       "description": "Curriculum Problem 224 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-45": {
       "slug": "practice-problems/numpy-pandas-prob-45",
@@ -13208,7 +13208,7 @@
       "description": "Curriculum Problem 225 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-46": {
       "slug": "practice-problems/numpy-pandas-prob-46",
@@ -13218,7 +13218,7 @@
       "description": "Curriculum Problem 226 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-47": {
       "slug": "practice-problems/numpy-pandas-prob-47",
@@ -13228,7 +13228,7 @@
       "description": "Curriculum Problem 227 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-48": {
       "slug": "practice-problems/numpy-pandas-prob-48",
@@ -13238,7 +13238,7 @@
       "description": "Curriculum Problem 228 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "medium",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-49": {
       "slug": "practice-problems/numpy-pandas-prob-49",
@@ -13248,7 +13248,7 @@
       "description": "Curriculum Problem 229 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-5": {
       "slug": "practice-problems/numpy-pandas-prob-5",
@@ -13268,7 +13268,7 @@
       "description": "Curriculum Problem 230 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-51": {
       "slug": "practice-problems/numpy-pandas-prob-51",
@@ -13278,7 +13278,7 @@
       "description": "Curriculum Problem 231 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-52": {
       "slug": "practice-problems/numpy-pandas-prob-52",
@@ -13288,7 +13288,7 @@
       "description": "Curriculum Problem 232 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-53": {
       "slug": "practice-problems/numpy-pandas-prob-53",
@@ -13298,7 +13298,7 @@
       "description": "Curriculum Problem 233 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-54": {
       "slug": "practice-problems/numpy-pandas-prob-54",
@@ -13308,7 +13308,7 @@
       "description": "Curriculum Problem 234 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-55": {
       "slug": "practice-problems/numpy-pandas-prob-55",
@@ -13318,7 +13318,7 @@
       "description": "Curriculum Problem 235 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-56": {
       "slug": "practice-problems/numpy-pandas-prob-56",
@@ -13328,7 +13328,7 @@
       "description": "Curriculum Problem 236 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-57": {
       "slug": "practice-problems/numpy-pandas-prob-57",
@@ -13338,7 +13338,7 @@
       "description": "Curriculum Problem 237 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-58": {
       "slug": "practice-problems/numpy-pandas-prob-58",
@@ -13348,7 +13348,7 @@
       "description": "Curriculum Problem 238 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-59": {
       "slug": "practice-problems/numpy-pandas-prob-59",
@@ -13358,7 +13358,7 @@
       "description": "Curriculum Problem 239 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-6": {
       "slug": "practice-problems/numpy-pandas-prob-6",
@@ -13378,7 +13378,7 @@
       "description": "Curriculum Problem 240 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems.",
       "difficulty": "hard",
       "topic": "numpy-pandas",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/numpy-pandas-prob-7": {
       "slug": "practice-problems/numpy-pandas-prob-7",

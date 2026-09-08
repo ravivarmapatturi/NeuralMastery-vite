@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Streaming systems Module 27: Problem 207"
 sidebar_position: 207
 description: "Curriculum Problem 207 (Stage 4: NumPy & Vectorized Data Processing): Master Streaming systems."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #207** · Difficulty: **Medium** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-26`.
+## Overview
+
+Track event-time progression and emit monotonic watermarks for out-of-order streams.
+
+## Task
+
+Implement `track_event_watermarks(event_times, max_lateness)`: process events in order. Maintain the maximum observed timestamp. At each event, calculate the watermark as `max(0, current_max - max_lateness)`. Return the watermark after each event.
 
 <PracticePlayground problemId="numpy-pandas-prob-27" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p27(data):
-    # Reference implementation
-    return data
+def track_event_watermarks(event_times, max_lateness):
+    cur_max = -1
+    out = []
+    for t in event_times:
+        if t > cur_max:
+            cur_max = t
+        wm = max(0, cur_max - max_lateness)
+        out.append(wm)
+    return out
 ```
 
-This problem tests fundamental skills in Streaming systems.
+Watermarks inform streaming stream window engines that no further events older than the watermark are expected to arrive.
 
 </Solution>

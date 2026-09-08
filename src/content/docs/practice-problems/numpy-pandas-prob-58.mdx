@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: NumPy Module 58: Problem 238"
 sidebar_position: 238
 description: "Curriculum Problem 238 (Stage 4: NumPy & Vectorized Data Processing): Master NumPy / vectorization."
@@ -14,18 +13,36 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #238** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-57`.
+## Overview
+
+Compute summary statistics over an array while ignoring masked/invalid entries.
+
+## Task
+
+Implement `masked_array_stats(values, mask)`: values where `mask[i] is True` are considered invalid and excluded. Calculate valid count, mean, and population standard deviation `sqrt(sum((x - mean)**2) / count)`. If no valid values, return `{"count": 0, "mean": 0.0, "std": 0.0}`. Round mean and std to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-58" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p58(data):
-    # Reference implementation
-    return data
+import math
+
+def masked_array_stats(values, mask):
+    valid = [v for v, m in zip(values, mask) if not m]
+    if not valid:
+        return {"count": 0, "mean": 0.0, "std": 0.0}
+    n = len(valid)
+    mean = sum(valid) / n
+    variance = sum((x - mean) ** 2 for x in valid) / n
+    std = math.sqrt(variance)
+    return {
+        "count": n,
+        "mean": round(float(mean), 4),
+        "std": round(float(std), 4)
+    }
 ```
 
-This problem tests fundamental skills in NumPy / vectorization.
+Masked arrays allow mathematical reductions over partially invalid datasets without altering array shapes or copying memory unnecessarily.
 
 </Solution>

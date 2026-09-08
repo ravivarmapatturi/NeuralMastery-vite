@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Pandas Module 59: Problem 239"
 sidebar_position: 239
 description: "Curriculum Problem 239 (Stage 4: NumPy & Vectorized Data Processing): Master Pandas / data processing."
@@ -14,18 +13,31 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #239** · Difficulty: **Hard** · Stage: **Stage 4: NumPy & Vectorized Data Processing** · Category: **NumPy & Pandas**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `numpy-pandas-prob-58`.
+## Overview
+
+Encode periodic temporal features into continuous sinusoidal coordinates.
+
+## Task
+
+Implement `encode_cyclical_time(hours, period)`: for each value `h`, map onto the unit circle via angle `theta = 2 * pi * (h % period) / period`. Return `[sin(theta), cos(theta)]` for each hour, rounded to 4 decimal places.
 
 <PracticePlayground problemId="numpy-pandas-prob-59" />
 
 <Solution>
 
 ```python
-def numpy_pandas_p59(data):
-    # Reference implementation
-    return data
+import math
+
+def encode_cyclical_time(hours, period):
+    out = []
+    for h in hours:
+        angle = 2.0 * math.pi * (h % period) / period
+        sin_val = round(float(math.sin(angle)), 4)
+        cos_val = round(float(math.cos(angle)), 4)
+        out.append([sin_val, cos_val])
+    return out
 ```
 
-This problem tests fundamental skills in Pandas / data processing.
+Cyclical sine/cosine transformation preserves the boundary continuity of periodic variables such that hour 23 and hour 0 remain adjacent in Euclidean feature space.
 
 </Solution>
