@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #035. LLM Inference & Decoding Module 1: Problem 5"
-description: "Master #035. LLM Inference & Decoding Module 1: Problem 5 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #035. Top-P (Nucleus) Filtering"
+description: "Master #035. Top-P (Nucleus) Filtering in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
 topic: "LLM Inference & Decoding"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #035. LLM Inference & Decoding Module 1: Problem 5
+# #035. Top-P (Nucleus) Filtering
 
 **Track**: LLM Inference & Decoding | **Rank**: #35 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#035. LLM Inference & Decoding Module 1: Problem 5` to advance your mastery in **LLM Inference & Decoding**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Dynamically adapt sampling vocabulary width using Holtzman et al. Nucleus (Top-P) filtering. Autoregressive language models generate sequences token by token, evaluating next-token probability distributions at each decoding step.
 
 ## Task
 
-Implement the function `llm_inference_and_decoding_module_1_problem_5`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `top_p_filter(logits, p, filter_value=-float('inf'))`. Compute softmax probabilities. Sort token indices descending by probability (breaking ties by lower index). Accumulate probabilities until the cumulative sum is `\ge p`. Retain this nucleus of tokens and mask all other tokens with `filter_value`. If `p \le 0.0` or `p > 1.0`, raise `ValueError`. At least one token (the top token) must always be retained.
 
 <PracticePlayground problemId="inference-prob-5" />

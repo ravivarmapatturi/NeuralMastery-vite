@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #049. LLM Inference & Decoding Module 4: Problem 19"
-description: "Master #049. LLM Inference & Decoding Module 4: Problem 19 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #049. JSON Structure Token Filter"
+description: "Master #049. JSON Structure Token Filter in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
 topic: "LLM Inference & Decoding"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #049. LLM Inference & Decoding Module 4: Problem 19
+# #049. JSON Structure Token Filter
 
 **Track**: LLM Inference & Decoding | **Rank**: #49 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#049. LLM Inference & Decoding Module 4: Problem 19` to advance your mastery in **LLM Inference & Decoding**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Guarantee syntactically valid JSON output by validating bracket and quote balance across candidate tokens. Autoregressive language models generate sequences token by token, evaluating next-token probability distributions at each decoding step.
 
 ## Task
 
-Implement the function `llm_inference_and_decoding_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `filter_valid_json_tokens(partial_json, candidate_tokens)`. For each candidate token, evaluate whether `partial_json + candidate_token` preserves structural validity: track string literal state (toggled by unescaped `"` and respecting `\\` escapes) and verify delimiter matching (`{` with `}` and `[` with `]`). Reject any candidate that closes an unopened delimiter or mismatches closing bracket types when outside of a string literal. Return the list of valid candidate tokens in their original order.
 
 <PracticePlayground problemId="inference-prob-19" />

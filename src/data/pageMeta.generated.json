@@ -8903,302 +8903,302 @@
     "/docs/practice-problems/inference-prob-1": {
       "slug": "practice-problems/inference-prob-1",
       "section": "practice-problems",
-      "title": "Practice: #031. LLM Inference & Decoding Module 1: Problem 1",
+      "title": "Practice: #031. Greedy Decoding Step",
       "sidebarPosition": null,
-      "description": "Master #031. LLM Inference & Decoding Module 1: Problem 1 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #031. Greedy Decoding Step in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-10": {
       "slug": "practice-problems/inference-prob-10",
       "section": "practice-problems",
-      "title": "Practice: #040. LLM Inference & Decoding Module 2: Problem 10",
+      "title": "Practice: #040. Multi-Condition Stopping Criteria",
       "sidebarPosition": null,
-      "description": "Master #040. LLM Inference & Decoding Module 2: Problem 10 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #040. Multi-Condition Stopping Criteria in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-11": {
       "slug": "practice-problems/inference-prob-11",
       "section": "practice-problems",
-      "title": "Practice: #041. LLM Inference & Decoding Module 3: Problem 11",
+      "title": "Practice: #041. KV Cache State Manager",
       "sidebarPosition": null,
-      "description": "Master #041. LLM Inference & Decoding Module 3: Problem 11 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #041. KV Cache State Manager in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-12": {
       "slug": "practice-problems/inference-prob-12",
       "section": "practice-problems",
-      "title": "Practice: #042. LLM Inference & Decoding Module 3: Problem 12",
+      "title": "Practice: #042. PagedAttention Block Allocator",
       "sidebarPosition": null,
-      "description": "Master #042. LLM Inference & Decoding Module 3: Problem 12 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #042. PagedAttention Block Allocator in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-13": {
       "slug": "practice-problems/inference-prob-13",
       "section": "practice-problems",
-      "title": "Practice: #043. LLM Inference & Decoding Module 3: Problem 13",
+      "title": "Practice: #043. Prefill vs Decode FLOPs & Bandwidth",
       "sidebarPosition": null,
-      "description": "Master #043. LLM Inference & Decoding Module 3: Problem 13 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #043. Prefill vs Decode FLOPs & Bandwidth in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-14": {
       "slug": "practice-problems/inference-prob-14",
       "section": "practice-problems",
-      "title": "Practice: #044. LLM Inference & Decoding Module 3: Problem 14",
+      "title": "Practice: #044. Speculative Decoding Rejection Sampler",
       "sidebarPosition": null,
-      "description": "Master #044. LLM Inference & Decoding Module 3: Problem 14 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #044. Speculative Decoding Rejection Sampler in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-15": {
       "slug": "practice-problems/inference-prob-15",
       "section": "practice-problems",
-      "title": "Practice: #045. LLM Inference & Decoding Module 3: Problem 15",
+      "title": "Practice: #045. Beam Search Step with Pruning",
       "sidebarPosition": null,
-      "description": "Master #045. LLM Inference & Decoding Module 3: Problem 15 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #045. Beam Search Step with Pruning in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-16": {
       "slug": "practice-problems/inference-prob-16",
       "section": "practice-problems",
-      "title": "Practice: #046. LLM Inference & Decoding Module 4: Problem 16",
+      "title": "Practice: #046. Contrastive Decoding Mask & Score",
       "sidebarPosition": null,
-      "description": "Master #046. LLM Inference & Decoding Module 4: Problem 16 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #046. Contrastive Decoding Mask & Score in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-17": {
       "slug": "practice-problems/inference-prob-17",
       "section": "practice-problems",
-      "title": "Practice: #047. LLM Inference & Decoding Module 4: Problem 17",
+      "title": "Practice: #047. Length-Normalized Beam Ranker",
       "sidebarPosition": null,
-      "description": "Master #047. LLM Inference & Decoding Module 4: Problem 17 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #047. Length-Normalized Beam Ranker in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-18": {
       "slug": "practice-problems/inference-prob-18",
       "section": "practice-problems",
-      "title": "Practice: #048. LLM Inference & Decoding Module 4: Problem 18",
+      "title": "Practice: #048. Grammar-Constrained Token Mask",
       "sidebarPosition": null,
-      "description": "Master #048. LLM Inference & Decoding Module 4: Problem 18 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #048. Grammar-Constrained Token Mask in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-19": {
       "slug": "practice-problems/inference-prob-19",
       "section": "practice-problems",
-      "title": "Practice: #049. LLM Inference & Decoding Module 4: Problem 19",
+      "title": "Practice: #049. JSON Structure Token Filter",
       "sidebarPosition": null,
-      "description": "Master #049. LLM Inference & Decoding Module 4: Problem 19 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #049. JSON Structure Token Filter in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-2": {
       "slug": "practice-problems/inference-prob-2",
       "section": "practice-problems",
-      "title": "Practice: #032. LLM Inference & Decoding Module 1: Problem 2",
+      "title": "Practice: #032. Temperature Scaled Softmax",
       "sidebarPosition": null,
-      "description": "Master #032. LLM Inference & Decoding Module 1: Problem 2 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #032. Temperature Scaled Softmax in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-20": {
       "slug": "practice-problems/inference-prob-20",
       "section": "practice-problems",
-      "title": "Practice: #050. LLM Inference & Decoding Module 4: Problem 20",
+      "title": "Practice: #050. Statistical Green-List Watermarking",
       "sidebarPosition": null,
-      "description": "Master #050. LLM Inference & Decoding Module 4: Problem 20 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #050. Statistical Green-List Watermarking in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-21": {
       "slug": "practice-problems/inference-prob-21",
       "section": "practice-problems",
-      "title": "Practice: #051. LLM Inference & Decoding Module 5: Problem 21",
+      "title": "Practice: #051. Continuous Batching Iteration Scheduler",
       "sidebarPosition": null,
-      "description": "Master #051. LLM Inference & Decoding Module 5: Problem 21 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #051. Continuous Batching Iteration Scheduler in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-22": {
       "slug": "practice-problems/inference-prob-22",
       "section": "practice-problems",
-      "title": "Practice: #052. LLM Inference & Decoding Module 5: Problem 22",
+      "title": "Practice: #052. Speculative Tree Verification",
       "sidebarPosition": null,
-      "description": "Master #052. LLM Inference & Decoding Module 5: Problem 22 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #052. Speculative Tree Verification in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-23": {
       "slug": "practice-problems/inference-prob-23",
       "section": "practice-problems",
-      "title": "Practice: #053. LLM Inference & Decoding Module 5: Problem 23",
+      "title": "Practice: #053. Multi-Query & Grouped-Query KV Footprint",
       "sidebarPosition": null,
-      "description": "Master #053. LLM Inference & Decoding Module 5: Problem 23 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #053. Multi-Query & Grouped-Query KV Footprint in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-24": {
       "slug": "practice-problems/inference-prob-24",
       "section": "practice-problems",
-      "title": "Practice: #054. LLM Inference & Decoding Module 5: Problem 24",
+      "title": "Practice: #054. Chunked Prefill Scheduler",
       "sidebarPosition": null,
-      "description": "Master #054. LLM Inference & Decoding Module 5: Problem 24 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #054. Chunked Prefill Scheduler in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-25": {
       "slug": "practice-problems/inference-prob-25",
       "section": "practice-problems",
-      "title": "Practice: #055. LLM Inference & Decoding Module 5: Problem 25",
+      "title": "Practice: #055. Radix Tree Prefix Cache Lookup",
       "sidebarPosition": null,
-      "description": "Master #055. LLM Inference & Decoding Module 5: Problem 25 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #055. Radix Tree Prefix Cache Lookup in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-26": {
       "slug": "practice-problems/inference-prob-26",
       "section": "practice-problems",
-      "title": "Practice: #056. LLM Inference & Decoding Module 6: Problem 26",
+      "title": "Practice: #056. Tensor Parallel Communication Volume",
       "sidebarPosition": null,
-      "description": "Master #056. LLM Inference & Decoding Module 6: Problem 26 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #056. Tensor Parallel Communication Volume in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-27": {
       "slug": "practice-problems/inference-prob-27",
       "section": "practice-problems",
-      "title": "Practice: #057. LLM Inference & Decoding Module 6: Problem 27",
+      "title": "Practice: #057. Medusa Multi-Head Speculative Acceptance",
       "sidebarPosition": null,
-      "description": "Master #057. LLM Inference & Decoding Module 6: Problem 27 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #057. Medusa Multi-Head Speculative Acceptance in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-28": {
       "slug": "practice-problems/inference-prob-28",
       "section": "practice-problems",
-      "title": "Practice: #058. LLM Inference & Decoding Module 6: Problem 28",
+      "title": "Practice: #058. INT8 Symmetric KV Cache Quantizer",
       "sidebarPosition": null,
-      "description": "Master #058. LLM Inference & Decoding Module 6: Problem 28 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #058. INT8 Symmetric KV Cache Quantizer in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-29": {
       "slug": "practice-problems/inference-prob-29",
       "section": "practice-problems",
-      "title": "Practice: #059. LLM Inference & Decoding Module 6: Problem 29",
+      "title": "Practice: #059. FlashDecoding Split-K Work Partition",
       "sidebarPosition": null,
-      "description": "Master #059. LLM Inference & Decoding Module 6: Problem 29 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #059. FlashDecoding Split-K Work Partition in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-3": {
       "slug": "practice-problems/inference-prob-3",
       "section": "practice-problems",
-      "title": "Practice: #033. LLM Inference & Decoding Module 1: Problem 3",
+      "title": "Practice: #033. Repetition Penalty Scaling",
       "sidebarPosition": null,
-      "description": "Master #033. LLM Inference & Decoding Module 1: Problem 3 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #033. Repetition Penalty Scaling in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-30": {
       "slug": "practice-problems/inference-prob-30",
       "section": "practice-problems",
-      "title": "Practice: #060. LLM Inference & Decoding Module 6: Problem 30",
+      "title": "Practice: #060. Inference Latency & Arithmetic Intensity Profiler",
       "sidebarPosition": null,
-      "description": "Master #060. LLM Inference & Decoding Module 6: Problem 30 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #060. Inference Latency & Arithmetic Intensity Profiler in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-4": {
       "slug": "practice-problems/inference-prob-4",
       "section": "practice-problems",
-      "title": "Practice: #034. LLM Inference & Decoding Module 1: Problem 4",
+      "title": "Practice: #034. Top-K Logit Filtering",
       "sidebarPosition": null,
-      "description": "Master #034. LLM Inference & Decoding Module 1: Problem 4 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #034. Top-K Logit Filtering in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-5": {
       "slug": "practice-problems/inference-prob-5",
       "section": "practice-problems",
-      "title": "Practice: #035. LLM Inference & Decoding Module 1: Problem 5",
+      "title": "Practice: #035. Top-P (Nucleus) Filtering",
       "sidebarPosition": null,
-      "description": "Master #035. LLM Inference & Decoding Module 1: Problem 5 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #035. Top-P (Nucleus) Filtering in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-6": {
       "slug": "practice-problems/inference-prob-6",
       "section": "practice-problems",
-      "title": "Practice: #036. LLM Inference & Decoding Module 2: Problem 6",
+      "title": "Practice: #036. Frequency and Presence Penalties",
       "sidebarPosition": null,
-      "description": "Master #036. LLM Inference & Decoding Module 2: Problem 6 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #036. Frequency and Presence Penalties in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-7": {
       "slug": "practice-problems/inference-prob-7",
       "section": "practice-problems",
-      "title": "Practice: #037. LLM Inference & Decoding Module 2: Problem 7",
+      "title": "Practice: #037. Min-P Sampling Mask",
       "sidebarPosition": null,
-      "description": "Master #037. LLM Inference & Decoding Module 2: Problem 7 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #037. Min-P Sampling Mask in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-8": {
       "slug": "practice-problems/inference-prob-8",
       "section": "practice-problems",
-      "title": "Practice: #038. LLM Inference & Decoding Module 2: Problem 8",
+      "title": "Practice: #038. Typical Sampling Filtering",
       "sidebarPosition": null,
-      "description": "Master #038. LLM Inference & Decoding Module 2: Problem 8 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #038. Typical Sampling Filtering in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/inference-prob-9": {
       "slug": "practice-problems/inference-prob-9",
       "section": "practice-problems",
-      "title": "Practice: #039. LLM Inference & Decoding Module 2: Problem 9",
+      "title": "Practice: #039. Token Ban and Suppress Filter",
       "sidebarPosition": null,
-      "description": "Master #039. LLM Inference & Decoding Module 2: Problem 9 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #039. Token Ban and Suppress Filter in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Inference & Decoding",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/int8-quantization": {
       "slug": "practice-problems/int8-quantization",

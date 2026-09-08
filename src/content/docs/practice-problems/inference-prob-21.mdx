@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #051. LLM Inference & Decoding Module 5: Problem 21"
-description: "Master #051. LLM Inference & Decoding Module 5: Problem 21 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #051. Continuous Batching Iteration Scheduler"
+description: "Master #051. Continuous Batching Iteration Scheduler in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
 topic: "LLM Inference & Decoding"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #051. LLM Inference & Decoding Module 5: Problem 21
+# #051. Continuous Batching Iteration Scheduler
 
 **Track**: LLM Inference & Decoding | **Rank**: #51 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#051. LLM Inference & Decoding Module 5: Problem 21` to advance your mastery in **LLM Inference & Decoding**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Maximize GPU compute utilization and eliminate idle bubble time using iteration-level continuous batching. Autoregressive language models generate sequences token by token, evaluating next-token probability distributions at each decoding step.
 
 ## Task
 
-Implement the function `llm_inference_and_decoding_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `schedule_continuous_batch(active_requests, waiting_queue, max_batch_size, max_total_tokens)`. Step 1: For each active request, increment `current_tokens` by 1. If `current_tokens >= max_tokens`, add its ID to `completed_ids`. Otherwise retain it in active and accumulate its tokens. Step 2: In FIFO order, admit requests from `waiting_queue` into active as long as `len(active) < max_batch_size` AND `current_tokens_used + prompt_tokens <= max_total_tokens`. Return dict with `scheduled_active_ids`, `completed_ids`, `remaining_waiting_ids`, and `batch_token_budget_used`. Raise `ValueError` if `max_batch_size <= 0` or `max_total_tokens <= 0`.
 
 <PracticePlayground problemId="inference-prob-21" />

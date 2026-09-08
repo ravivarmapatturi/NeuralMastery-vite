@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #038. LLM Inference & Decoding Module 2: Problem 8"
-description: "Master #038. LLM Inference & Decoding Module 2: Problem 8 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #038. Typical Sampling Filtering"
+description: "Master #038. Typical Sampling Filtering in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
 topic: "LLM Inference & Decoding"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #038. LLM Inference & Decoding Module 2: Problem 8
+# #038. Typical Sampling Filtering
 
 **Track**: LLM Inference & Decoding | **Rank**: #38 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#038. LLM Inference & Decoding Module 2: Problem 8` to advance your mastery in **LLM Inference & Decoding**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Select tokens whose information content matches the conditional entropy of the model using Typical Sampling. Autoregressive language models generate sequences token by token, evaluating next-token probability distributions at each decoding step.
 
 ## Task
 
-Implement the function `llm_inference_and_decoding_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `typical_sampling_filter(logits, mass, filter_value=-float('inf'))`. Compute softmax probabilities `P`. Compute sequence entropy `H = -\sum P_i \log_2 P_i`. For each token, compute deviation `\Delta_i = |-\log_2 P_i - H|`. Sort tokens ascending by `\Delta_i` (breaking ties by lower index). Accumulate tokens until cumulative probability is `\ge mass`. Mask unselected tokens with `filter_value`. If `mass \le 0.0` or `mass > 1.0`, raise `ValueError`.
 
 <PracticePlayground problemId="inference-prob-8" />

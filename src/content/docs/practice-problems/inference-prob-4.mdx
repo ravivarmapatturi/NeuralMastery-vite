@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #034. LLM Inference & Decoding Module 1: Problem 4"
-description: "Master #034. LLM Inference & Decoding Module 1: Problem 4 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #034. Top-K Logit Filtering"
+description: "Master #034. Top-K Logit Filtering in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
 topic: "LLM Inference & Decoding"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #034. LLM Inference & Decoding Module 1: Problem 4
+# #034. Top-K Logit Filtering
 
 **Track**: LLM Inference & Decoding | **Rank**: #34 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#034. LLM Inference & Decoding Module 1: Problem 4` to advance your mastery in **LLM Inference & Decoding**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Filter vocabulary logits to the top-K highest scoring tokens before sampling. Autoregressive language models generate sequences token by token, evaluating next-token probability distributions at each decoding step.
 
 ## Task
 
-Implement the function `llm_inference_and_decoding_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `top_k_filter(logits, k, filter_value=-float('inf'))`. Retain only the `k` tokens with the highest logits. Replace all other logits with `filter_value`. If multiple tokens tie at the cutoff, prioritize lower token indices. If `k \ge \text{len}(logits)`, return an unmasked copy of `logits`. If `k \le 0`, raise `ValueError`.
 
 <PracticePlayground problemId="inference-prob-4" />

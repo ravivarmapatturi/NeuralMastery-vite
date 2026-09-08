@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #056. LLM Inference & Decoding Module 6: Problem 26"
-description: "Master #056. LLM Inference & Decoding Module 6: Problem 26 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #056. Tensor Parallel Communication Volume"
+description: "Master #056. Tensor Parallel Communication Volume in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
 topic: "LLM Inference & Decoding"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #056. LLM Inference & Decoding Module 6: Problem 26
+# #056. Tensor Parallel Communication Volume
 
 **Track**: LLM Inference & Decoding | **Rank**: #56 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#056. LLM Inference & Decoding Module 6: Problem 26` to advance your mastery in **LLM Inference & Decoding**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate inter-GPU interconnect bandwidth overheads for Megatron-style Tensor Parallel decoding. Autoregressive language models generate sequences token by token, evaluating next-token probability distributions at each decoding step.
 
 ## Task
 
-Implement the function `llm_inference_and_decoding_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `compute_tensor_parallel_comm(batch_size, seq_len, hidden_dim, num_layers, tp_size, dtype_bytes=2)`. If `tp_size == 1`, return 0 communication. Otherwise, Megatron-style tensor parallelism performs 2 All-Reduces per layer (one after attention row-parallel projection, one after MLP row-parallel projection). Each ring All-Reduce transfers `2 \times \frac{tp\_size - 1}{tp\_size} \times (\text{batch\_size} \times \text{seq\_len} \times \text{hidden\_dim} \times \text{dtype\_bytes})` bytes per GPU. Calculate total communication bytes across all layers. Return dict with `all_reduces_per_forward_pass`, `bytes_per_all_reduce`, `total_communication_bytes`, and `comm_to_comp_ratio` (comm bytes / tokens, rounded to 2 decimals). Raise `ValueError` on non-positive arguments.
 
 <PracticePlayground problemId="inference-prob-26" />

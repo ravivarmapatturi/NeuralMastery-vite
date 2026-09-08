@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #037. LLM Inference & Decoding Module 2: Problem 7"
-description: "Master #037. LLM Inference & Decoding Module 2: Problem 7 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #037. Min-P Sampling Mask"
+description: "Master #037. Min-P Sampling Mask in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
 topic: "LLM Inference & Decoding"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #037. LLM Inference & Decoding Module 2: Problem 7
+# #037. Min-P Sampling Mask
 
 **Track**: LLM Inference & Decoding | **Rank**: #37 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#037. LLM Inference & Decoding Module 2: Problem 7` to advance your mastery in **LLM Inference & Decoding**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Apply dynamic relative probability thresholding using the Min-P sampling heuristic. Autoregressive language models generate sequences token by token, evaluating next-token probability distributions at each decoding step.
 
 ## Task
 
-Implement the function `llm_inference_and_decoding_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `min_p_filter(logits, min_p, filter_value=-float('inf'))`. Compute softmax probabilities. Let `p_{max}` be the maximum probability across vocabulary. Filter out (set to `filter_value`) any token `i` whose softmax probability is strictly less than `p_{max} \times min\_p`. If `min\_p < 0.0` or `min\_p > 1.0`, raise `ValueError`. Return the filtered logits.
 
 <PracticePlayground problemId="inference-prob-7" />

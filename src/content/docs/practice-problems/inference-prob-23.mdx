@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #053. LLM Inference & Decoding Module 5: Problem 23"
-description: "Master #053. LLM Inference & Decoding Module 5: Problem 23 in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #053. Multi-Query & Grouped-Query KV Footprint"
+description: "Master #053. Multi-Query & Grouped-Query KV Footprint in the LLM Inference & Decoding track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
 topic: "LLM Inference & Decoding"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #053. LLM Inference & Decoding Module 5: Problem 23
+# #053. Multi-Query & Grouped-Query KV Footprint
 
 **Track**: LLM Inference & Decoding | **Rank**: #53 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#053. LLM Inference & Decoding Module 5: Problem 23` to advance your mastery in **LLM Inference & Decoding**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Quantify KV cache memory savings enabled by Grouped-Query Attention (GQA) and Multi-Query Attention (MQA). Autoregressive language models generate sequences token by token, evaluating next-token probability distributions at each decoding step.
 
 ## Task
 
-Implement the function `llm_inference_and_decoding_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `calculate_kv_cache_memory(num_layers, seq_len, batch_size, hidden_dim, num_query_heads, num_kv_heads, dtype_bytes=2)`. Compute head dimension `d_k = \text{hidden\_dim} / \text{num\_query\_heads}`. KV elements per token across all layers is `2 \times \text{num\_layers} \times \text{num\_kv\_heads} \times d_k`. Total cache bytes is elements `\times \text{batch\_size} \times \text{seq\_len} \times \text{dtype\_bytes}`. Compute baseline MHA cache size where `\text{num\_kv\_heads} = \text{num\_query\_heads}`. Calculate `memory_savings_percent` as `(1.0 - \text{total\_kv\_bytes} / \text{mha\_baseline}) \times 100.0`, rounded to 2 decimal places. Raise `ValueError` if arguments are non-positive or if dimensions are not cleanly divisible.
 
 <PracticePlayground problemId="inference-prob-23" />
