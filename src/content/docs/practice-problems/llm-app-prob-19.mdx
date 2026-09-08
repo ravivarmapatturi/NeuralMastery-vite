@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #079. LLM Application Engineering Module 4: Problem 19"
-description: "Master #079. LLM Application Engineering Module 4: Problem 19 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #079. Multi-Metric Output Guardrail Gate"
+description: "Master #079. Multi-Metric Output Guardrail Gate in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
 topic: "LLM Application Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #079. LLM Application Engineering Module 4: Problem 19
+# #079. Multi-Metric Output Guardrail Gate
 
 **Track**: LLM Application Engineering | **Rank**: #79 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#079. LLM Application Engineering Module 4: Problem 19` to advance your mastery in **LLM Application Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Enforce production safety and formatting policies on generated responses before returning them to client applications. In production LLM application engineering, reliable system components, deterministic interfaces, and defensive validation are paramount for production stability and cost efficiency.
 
 ## Task
 
-Implement the function `llm_application_engineering_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `evaluate_guardrail_gate(text, rules)`. Split `text` into words using `text.split()`. Evaluate rules: `min_words` (violation `'word_count_below_min_{min_words}'`), `max_words` (violation `'word_count_above_max_{max_words}'`), `prohibited_terms` (case-insensitive substring check, violation `'contains_prohibited_term_{term}'`), `must_contain_terms` (case-insensitive substring check, violation `'missing_required_term_{term}'`), and `max_repetition_ratio` where ratio is `1.0 - len(unique_words)/len(words)` (violation `'repetition_ratio_{ratio}_exceeds_{max}'`). Return `{'passed': bool, 'violations': sorted_violations, 'word_count': int, 'metrics': {'repetition_ratio': float}}`.
 
 <PracticePlayground problemId="llm-app-prob-19" />

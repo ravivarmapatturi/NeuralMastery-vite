@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #085. LLM Application Engineering Module 5: Problem 25"
-description: "Master #085. LLM Application Engineering Module 5: Problem 25 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #085. Sliding Window Multi-Tenant Rate Limiter"
+description: "Master #085. Sliding Window Multi-Tenant Rate Limiter in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
 topic: "LLM Application Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #085. LLM Application Engineering Module 5: Problem 25
+# #085. Sliding Window Multi-Tenant Rate Limiter
 
 **Track**: LLM Application Engineering | **Rank**: #85 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#085. LLM Application Engineering Module 5: Problem 25` to advance your mastery in **LLM Application Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Enforce fair multi-tenant API access and quota limits using sliding-window request and token rate limiters. In production LLM application engineering, reliable system components, deterministic interfaces, and defensive validation are paramount for production stability and cost efficiency.
 
 ## Task
 
-Implement the function `llm_application_engineering_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `check_sliding_window_rate_limit(requests_log, client_id, current_timestamp_sec, window_sec=60, max_requests=10, max_tokens=1000)`. Filter events belonging to `client_id` with timestamps in `[current_timestamp_sec - window_sec + 1, current_timestamp_sec]`. Sum requests count and tokens used. A new request is `allowed: True` if `current_requests < max_requests` and `current_tokens < max_tokens`. If not allowed, compute `retry_after_sec = max(1, (oldest_event_timestamp + window_sec) - current_timestamp_sec)`. Return `{'allowed': bool, 'current_requests': int, 'current_tokens': int, 'retry_after_sec': int}`. Raise `ValueError` if `window_sec <= 0`, `max_requests <= 0`, or `max_tokens <= 0`.
 
 <PracticePlayground problemId="llm-app-prob-25" />

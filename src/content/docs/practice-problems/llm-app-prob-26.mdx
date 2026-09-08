@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #086. LLM Application Engineering Module 6: Problem 26"
-description: "Master #086. LLM Application Engineering Module 6: Problem 26 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #086. LLM-as-a-Judge Weighted Rubric Evaluator"
+description: "Master #086. LLM-as-a-Judge Weighted Rubric Evaluator in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
 topic: "LLM Application Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #086. LLM Application Engineering Module 6: Problem 26
+# #086. LLM-as-a-Judge Weighted Rubric Evaluator
 
 **Track**: LLM Application Engineering | **Rank**: #86 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#086. LLM Application Engineering Module 6: Problem 26` to advance your mastery in **LLM Application Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Standardize and aggregate qualitative model assessments across multiple LLM judges using weighted rubric criteria. In production LLM application engineering, reliable system components, deterministic interfaces, and defensive validation are paramount for production stability and cost efficiency.
 
 ## Task
 
-Implement the function `llm_application_engineering_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `evaluate_llm_judge_rubric(judge_outputs, rubric_weights)`. Verify that `sum(rubric_weights.values()) == 1.0` (tolerance 1e-4). For each judge, compute their individual weighted score `sum(score[c] * weight[c])`. Average each criterion score across judges. Calculate overall weighted score `sum(criterion_avg[c] * weight[c])`, and inter-judge variance across individual judges' weighted scores. Round all float metrics to 4 decimal places. Set `passed: True` if `overall_score >= 3.5`. Raise `ValueError` if `judge_outputs` is empty, weights do not sum to 1.0, or any judge is missing a required criterion.
 
 <PracticePlayground problemId="llm-app-prob-26" />

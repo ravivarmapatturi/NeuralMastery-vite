@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #074. LLM Application Engineering Module 3: Problem 14"
-description: "Master #074. LLM Application Engineering Module 3: Problem 14 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #074. Exponential Backoff Schedule Calculator"
+description: "Master #074. Exponential Backoff Schedule Calculator in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
 topic: "LLM Application Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #074. LLM Application Engineering Module 3: Problem 14
+# #074. Exponential Backoff Schedule Calculator
 
 **Track**: LLM Application Engineering | **Rank**: #74 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#074. LLM Application Engineering Module 3: Problem 14` to advance your mastery in **LLM Application Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Calculate deterministic retry backoff intervals with jitter multipliers and latency ceilings for robust API client calls. In production LLM application engineering, reliable system components, deterministic interfaces, and defensive validation are paramount for production stability and cost efficiency.
 
 ## Task
 
-Implement the function `llm_application_engineering_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `compute_backoff_schedule(max_retries, base_delay_ms=500, max_delay_ms=10000, factor=2.0, jitter_fractions=None)`. For each attempt `k` in `0..max_retries-1`, calculate raw delay as `min(max_delay_ms, base_delay_ms * (factor ** k))`. If `jitter_fractions` is provided, multiply raw delay by `(1.0 + jitter_fractions[k])` and cast to `int`. Return `{'delays_ms': delays, 'total_wait_ms': sum(delays), 'max_retries': max_retries}`. Raise `ValueError` if `max_retries < 0` or `base_delay_ms <= 0`.
 
 <PracticePlayground problemId="llm-app-prob-14" />

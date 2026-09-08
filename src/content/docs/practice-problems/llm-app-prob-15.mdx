@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #075. LLM Application Engineering Module 3: Problem 15"
-description: "Master #075. LLM Application Engineering Module 3: Problem 15 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #075. Multi-Model Token Cost Meter"
+description: "Master #075. Multi-Model Token Cost Meter in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
 topic: "LLM Application Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #075. LLM Application Engineering Module 3: Problem 15
+# #075. Multi-Model Token Cost Meter
 
 **Track**: LLM Application Engineering | **Rank**: #75 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#075. LLM Application Engineering Module 3: Problem 15` to advance your mastery in **LLM Application Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Track financial expenditure across multi-model LLM architectures using per-token pricing matrices. In production LLM application engineering, reliable system components, deterministic interfaces, and defensive validation are paramount for production stability and cost efficiency.
 
 ## Task
 
-Implement the function `llm_application_engineering_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `calculate_llm_costs(usage_logs, model_pricing)`. Sum `prompt_tokens` and `completion_tokens` across all logs. Calculate cost as `(prompt_tokens / 1e6) * prompt_per_million + (completion_tokens / 1e6) * completion_per_million`. Group by model and aggregate total USD cost, rounding all costs to 6 decimal places. Return `{'total_prompt_tokens': int, 'total_completion_tokens': int, 'total_cost_usd': float, 'by_model': dict}`. If a log references a model missing from `model_pricing`, raise `KeyError`.
 
 <PracticePlayground problemId="llm-app-prob-15" />

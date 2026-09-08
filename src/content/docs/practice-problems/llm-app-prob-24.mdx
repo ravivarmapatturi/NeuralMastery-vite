@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #084. LLM Application Engineering Module 5: Problem 24"
-description: "Master #084. LLM Application Engineering Module 5: Problem 24 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #084. Map-Reduce Document Summarizer Planner"
+description: "Master #084. Map-Reduce Document Summarizer Planner in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
 topic: "LLM Application Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #084. LLM Application Engineering Module 5: Problem 24
+# #084. Map-Reduce Document Summarizer Planner
 
 **Track**: LLM Application Engineering | **Rank**: #84 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#084. LLM Application Engineering Module 5: Problem 24` to advance your mastery in **LLM Application Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Partition large texts into overlapping map chunks and compute hierarchical tree reduction plans for scalable document summarization. In production LLM application engineering, reliable system components, deterministic interfaces, and defensive validation are paramount for production stability and cost efficiency.
 
 ## Task
 
-Implement the function `llm_application_engineering_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `plan_map_reduce_summarization(document_text, chunk_size_words=200, overlap_words=20, max_reduce_tokens=500)`. Split `document_text` into words. Slide a window of `chunk_size_words` with step `chunk_size_words - overlap_words` to produce chunk descriptors `{'chunk_id': int, 'start_word': int, 'end_word': int, 'word_count': int}`. Assuming each chunk produces ~50 summary tokens, calculate `branch_factor = max(2, max_reduce_tokens // 50)`. If `total_chunks > 1`, compute reduction tree levels and reduce calls until 1 item remains. Return `{'chunks': list, 'total_chunks': int, 'reduce_levels': int, 'estimated_llm_calls': total_chunks + reduce_calls}`. Raise `ValueError` if `chunk_size_words <= overlap_words`, `overlap_words < 0`, or `max_reduce_tokens <= 0`.
 
 <PracticePlayground problemId="llm-app-prob-24" />

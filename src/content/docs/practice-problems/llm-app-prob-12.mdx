@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #072. LLM Application Engineering Module 3: Problem 12"
-description: "Master #072. LLM Application Engineering Module 3: Problem 12 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #072. Provider Fallback Cascade"
+description: "Master #072. Provider Fallback Cascade in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
 topic: "LLM Application Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #072. LLM Application Engineering Module 3: Problem 12
+# #072. Provider Fallback Cascade
 
 **Track**: LLM Application Engineering | **Rank**: #72 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#072. LLM Application Engineering Module 3: Problem 12` to advance your mastery in **LLM Application Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Maintain high availability across LLM APIs by automatically failing over across primary and secondary model providers. In production LLM application engineering, reliable system components, deterministic interfaces, and defensive validation are paramount for production stability and cost efficiency.
 
 ## Task
 
-Implement the function `llm_application_engineering_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `execute_fallback_cascade(providers, request)`. Iterate through `providers` in order. For each provider, accumulate `latency_ms`. If `fail_rate_limit` or `fail_server_error` is True, record the failure attempt and proceed to the next provider. On the first provider without failure flags, record successful attempt and return `{'successful_provider': name, 'response': response_text, 'attempts': attempts, 'total_latency_ms': total_latency}`. If all fail, raise `RuntimeError('All providers in fallback cascade failed')`. If `providers` is empty, raise `ValueError`.
 
 <PracticePlayground problemId="llm-app-prob-12" />

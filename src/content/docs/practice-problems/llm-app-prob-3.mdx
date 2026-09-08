@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #063. LLM Application Engineering Module 1: Problem 3"
-description: "Master #063. LLM Application Engineering Module 1: Problem 3 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: #063. Chat History Role Validator"
+description: "Master #063. Chat History Role Validator in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
 topic: "LLM Application Engineering"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #063. LLM Application Engineering Module 1: Problem 3
+# #063. Chat History Role Validator
 
 **Track**: LLM Application Engineering | **Rank**: #63 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#063. LLM Application Engineering Module 1: Problem 3` to advance your mastery in **LLM Application Engineering**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Validate chat message turn structure, allowed role sets, and conversation alternation rules. In production LLM application engineering, reliable system components, deterministic interfaces, and defensive validation are paramount for production stability and cost efficiency.
 
 ## Task
 
-Implement the function `llm_application_engineering_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `validate_chat_history(messages)`. Verify that every message has a `role` among `{'system', 'user', 'assistant', 'tool'}`. A `system` message may only appear at index 0. Check that consecutive messages do not repeat `'user'` or `'assistant'`. Return a dict `{'valid': bool, 'turns': int, 'system_present': bool}` where `turns` is the count of conversation turns after any system message.
 
 <PracticePlayground problemId="llm-app-prob-3" />

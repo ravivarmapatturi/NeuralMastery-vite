@@ -9573,302 +9573,302 @@
     "/docs/practice-problems/llm-app-prob-1": {
       "slug": "practice-problems/llm-app-prob-1",
       "section": "practice-problems",
-      "title": "Practice: #061. LLM Application Engineering Module 1: Problem 1",
+      "title": "Practice: #061. Prompt Template Variable Interpolation",
       "sidebarPosition": null,
-      "description": "Master #061. LLM Application Engineering Module 1: Problem 1 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #061. Prompt Template Variable Interpolation in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-10": {
       "slug": "practice-problems/llm-app-prob-10",
       "section": "practice-problems",
-      "title": "Practice: #070. LLM Application Engineering Module 2: Problem 10",
+      "title": "Practice: #070. Logprob Confidence Scorer",
       "sidebarPosition": null,
-      "description": "Master #070. LLM Application Engineering Module 2: Problem 10 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #070. Logprob Confidence Scorer in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-11": {
       "slug": "practice-problems/llm-app-prob-11",
       "section": "practice-problems",
-      "title": "Practice: #071. LLM Application Engineering Module 3: Problem 11",
+      "title": "Practice: #071. Sequential LLM Pipeline Step Executor",
       "sidebarPosition": null,
-      "description": "Master #071. LLM Application Engineering Module 3: Problem 11 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #071. Sequential LLM Pipeline Step Executor in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-12": {
       "slug": "practice-problems/llm-app-prob-12",
       "section": "practice-problems",
-      "title": "Practice: #072. LLM Application Engineering Module 3: Problem 12",
+      "title": "Practice: #072. Provider Fallback Cascade",
       "sidebarPosition": null,
-      "description": "Master #072. LLM Application Engineering Module 3: Problem 12 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #072. Provider Fallback Cascade in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-13": {
       "slug": "practice-problems/llm-app-prob-13",
       "section": "practice-problems",
-      "title": "Practice: #073. LLM Application Engineering Module 3: Problem 13",
+      "title": "Practice: #073. Semantic Query Intent Router",
       "sidebarPosition": null,
-      "description": "Master #073. LLM Application Engineering Module 3: Problem 13 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #073. Semantic Query Intent Router in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-14": {
       "slug": "practice-problems/llm-app-prob-14",
       "section": "practice-problems",
-      "title": "Practice: #074. LLM Application Engineering Module 3: Problem 14",
+      "title": "Practice: #074. Exponential Backoff Schedule Calculator",
       "sidebarPosition": null,
-      "description": "Master #074. LLM Application Engineering Module 3: Problem 14 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #074. Exponential Backoff Schedule Calculator in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-15": {
       "slug": "practice-problems/llm-app-prob-15",
       "section": "practice-problems",
-      "title": "Practice: #075. LLM Application Engineering Module 3: Problem 15",
+      "title": "Practice: #075. Multi-Model Token Cost Meter",
       "sidebarPosition": null,
-      "description": "Master #075. LLM Application Engineering Module 3: Problem 15 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #075. Multi-Model Token Cost Meter in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-16": {
       "slug": "practice-problems/llm-app-prob-16",
       "section": "practice-problems",
-      "title": "Practice: #076. LLM Application Engineering Module 4: Problem 16",
+      "title": "Practice: #076. Prompt Injection Rule & Keyword Scanner",
       "sidebarPosition": null,
-      "description": "Master #076. LLM Application Engineering Module 4: Problem 16 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #076. Prompt Injection Rule & Keyword Scanner in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-17": {
       "slug": "practice-problems/llm-app-prob-17",
       "section": "practice-problems",
-      "title": "Practice: #077. LLM Application Engineering Module 4: Problem 17",
+      "title": "Practice: #077. PII Detection and Token Anonymizer",
       "sidebarPosition": null,
-      "description": "Master #077. LLM Application Engineering Module 4: Problem 17 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #077. PII Detection and Token Anonymizer in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-18": {
       "slug": "practice-problems/llm-app-prob-18",
       "section": "practice-problems",
-      "title": "Practice: #078. LLM Application Engineering Module 4: Problem 18",
+      "title": "Practice: #078. Sentence Grounding Attribution Check",
       "sidebarPosition": null,
-      "description": "Master #078. LLM Application Engineering Module 4: Problem 18 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #078. Sentence Grounding Attribution Check in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-19": {
       "slug": "practice-problems/llm-app-prob-19",
       "section": "practice-problems",
-      "title": "Practice: #079. LLM Application Engineering Module 4: Problem 19",
+      "title": "Practice: #079. Multi-Metric Output Guardrail Gate",
       "sidebarPosition": null,
-      "description": "Master #079. LLM Application Engineering Module 4: Problem 19 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #079. Multi-Metric Output Guardrail Gate in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-2": {
       "slug": "practice-problems/llm-app-prob-2",
       "section": "practice-problems",
-      "title": "Practice: #062. LLM Application Engineering Module 1: Problem 2",
+      "title": "Practice: #062. Few-Shot Demonstration Formatter",
       "sidebarPosition": null,
-      "description": "Master #062. LLM Application Engineering Module 1: Problem 2 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #062. Few-Shot Demonstration Formatter in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-20": {
       "slug": "practice-problems/llm-app-prob-20",
       "section": "practice-problems",
-      "title": "Practice: #080. LLM Application Engineering Module 4: Problem 20",
+      "title": "Practice: #080. Self-Consistency Majority Voting",
       "sidebarPosition": null,
-      "description": "Master #080. LLM Application Engineering Module 4: Problem 20 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #080. Self-Consistency Majority Voting in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-21": {
       "slug": "practice-problems/llm-app-prob-21",
       "section": "practice-problems",
-      "title": "Practice: #081. LLM Application Engineering Module 5: Problem 21",
+      "title": "Practice: #081. Exact Match Semantic Prompt Cache",
       "sidebarPosition": null,
-      "description": "Master #081. LLM Application Engineering Module 5: Problem 21 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #081. Exact Match Semantic Prompt Cache in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-22": {
       "slug": "practice-problems/llm-app-prob-22",
       "section": "practice-problems",
-      "title": "Practice: #082. LLM Application Engineering Module 5: Problem 22",
+      "title": "Practice: #082. SSE Delta Token Stream Reassembler",
       "sidebarPosition": null,
-      "description": "Master #082. LLM Application Engineering Module 5: Problem 22 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #082. SSE Delta Token Stream Reassembler in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-23": {
       "slug": "practice-problems/llm-app-prob-23",
       "section": "practice-problems",
-      "title": "Practice: #083. LLM Application Engineering Module 5: Problem 23",
+      "title": "Practice: #083. Sliding Window Conversation Summarizer",
       "sidebarPosition": null,
-      "description": "Master #083. LLM Application Engineering Module 5: Problem 23 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #083. Sliding Window Conversation Summarizer in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-24": {
       "slug": "practice-problems/llm-app-prob-24",
       "section": "practice-problems",
-      "title": "Practice: #084. LLM Application Engineering Module 5: Problem 24",
+      "title": "Practice: #084. Map-Reduce Document Summarizer Planner",
       "sidebarPosition": null,
-      "description": "Master #084. LLM Application Engineering Module 5: Problem 24 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #084. Map-Reduce Document Summarizer Planner in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-25": {
       "slug": "practice-problems/llm-app-prob-25",
       "section": "practice-problems",
-      "title": "Practice: #085. LLM Application Engineering Module 5: Problem 25",
+      "title": "Practice: #085. Sliding Window Multi-Tenant Rate Limiter",
       "sidebarPosition": null,
-      "description": "Master #085. LLM Application Engineering Module 5: Problem 25 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #085. Sliding Window Multi-Tenant Rate Limiter in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-26": {
       "slug": "practice-problems/llm-app-prob-26",
       "section": "practice-problems",
-      "title": "Practice: #086. LLM Application Engineering Module 6: Problem 26",
+      "title": "Practice: #086. LLM-as-a-Judge Weighted Rubric Evaluator",
       "sidebarPosition": null,
-      "description": "Master #086. LLM Application Engineering Module 6: Problem 26 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #086. LLM-as-a-Judge Weighted Rubric Evaluator in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-27": {
       "slug": "practice-problems/llm-app-prob-27",
       "section": "practice-problems",
-      "title": "Practice: #087. LLM Application Engineering Module 6: Problem 27",
+      "title": "Practice: #087. DAG Tool Call Dependency Dispatcher",
       "sidebarPosition": null,
-      "description": "Master #087. LLM Application Engineering Module 6: Problem 27 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #087. DAG Tool Call Dependency Dispatcher in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-28": {
       "slug": "practice-problems/llm-app-prob-28",
       "section": "practice-problems",
-      "title": "Practice: #088. LLM Application Engineering Module 6: Problem 28",
+      "title": "Practice: #088. Speculative Decoding Token Verifier",
       "sidebarPosition": null,
-      "description": "Master #088. LLM Application Engineering Module 6: Problem 28 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #088. Speculative Decoding Token Verifier in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-29": {
       "slug": "practice-problems/llm-app-prob-29",
       "section": "practice-problems",
-      "title": "Practice: #089. LLM Application Engineering Module 6: Problem 29",
+      "title": "Practice: #089. Entropy-Based Dynamic Temperature Controller",
       "sidebarPosition": null,
-      "description": "Master #089. LLM Application Engineering Module 6: Problem 29 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #089. Entropy-Based Dynamic Temperature Controller in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-3": {
       "slug": "practice-problems/llm-app-prob-3",
       "section": "practice-problems",
-      "title": "Practice: #063. LLM Application Engineering Module 1: Problem 3",
+      "title": "Practice: #063. Chat History Role Validator",
       "sidebarPosition": null,
-      "description": "Master #063. LLM Application Engineering Module 1: Problem 3 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #063. Chat History Role Validator in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-30": {
       "slug": "practice-problems/llm-app-prob-30",
       "section": "practice-problems",
-      "title": "Practice: #090. LLM Application Engineering Module 6: Problem 30",
+      "title": "Practice: #090. Production LLM Application Gateway",
       "sidebarPosition": null,
-      "description": "Master #090. LLM Application Engineering Module 6: Problem 30 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #090. Production LLM Application Gateway in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-4": {
       "slug": "practice-problems/llm-app-prob-4",
       "section": "practice-problems",
-      "title": "Practice: #064. LLM Application Engineering Module 1: Problem 4",
+      "title": "Practice: #064. Token Budget Context Truncation",
       "sidebarPosition": null,
-      "description": "Master #064. LLM Application Engineering Module 1: Problem 4 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #064. Token Budget Context Truncation in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-5": {
       "slug": "practice-problems/llm-app-prob-5",
       "section": "practice-problems",
-      "title": "Practice: #065. LLM Application Engineering Module 1: Problem 5",
+      "title": "Practice: #065. Targeted Markdown Tag Extractor",
       "sidebarPosition": null,
-      "description": "Master #065. LLM Application Engineering Module 1: Problem 5 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #065. Targeted Markdown Tag Extractor in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-6": {
       "slug": "practice-problems/llm-app-prob-6",
       "section": "practice-problems",
-      "title": "Practice: #066. LLM Application Engineering Module 2: Problem 6",
+      "title": "Practice: #066. Robust JSON Fence Parser",
       "sidebarPosition": null,
-      "description": "Master #066. LLM Application Engineering Module 2: Problem 6 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #066. Robust JSON Fence Parser in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-7": {
       "slug": "practice-problems/llm-app-prob-7",
       "section": "practice-problems",
-      "title": "Practice: #067. LLM Application Engineering Module 2: Problem 7",
+      "title": "Practice: #067. JSON Schema Type & Required Field Validator",
       "sidebarPosition": null,
-      "description": "Master #067. LLM Application Engineering Module 2: Problem 7 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #067. JSON Schema Type & Required Field Validator in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-8": {
       "slug": "practice-problems/llm-app-prob-8",
       "section": "practice-problems",
-      "title": "Practice: #068. LLM Application Engineering Module 2: Problem 8",
+      "title": "Practice: #068. Tool Call Payload Parser",
       "sidebarPosition": null,
-      "description": "Master #068. LLM Application Engineering Module 2: Problem 8 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #068. Tool Call Payload Parser in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-9": {
       "slug": "practice-problems/llm-app-prob-9",
       "section": "practice-problems",
-      "title": "Practice: #069. LLM Application Engineering Module 2: Problem 9",
+      "title": "Practice: #069. Streaming Stop Sequence Cutter",
       "sidebarPosition": null,
-      "description": "Master #069. LLM Application Engineering Module 2: Problem 9 in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
+      "description": "Master #069. Streaming Stop Sequence Cutter in the LLM Application Engineering track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "LLM Application Engineering",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-1": {
       "slug": "practice-problems/llm-internals-prob-1",
