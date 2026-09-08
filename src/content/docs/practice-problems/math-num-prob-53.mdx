@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 53: Problem 173"
 sidebar_position: 173
 description: "Curriculum Problem 173 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,41 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #173** · Difficulty: **Hard** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-52`.
+## Overview
+
+Compute the Fast Fourier Transform using the divide-and-conquer Cooley-Tukey algorithm.
+
+## Task
+
+Implement `fft_radix2(x)`: for input sequence `x` whose length is a power of 2, compute the DFT `X_k = sum_{n=0}^{N-1} x_n * exp(-2*pi*i*k*n / N)`. Use recursive Cooley-Tukey splitting into even and odd index sub-sequences. Return a list of `[real, imag]` pairs rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-53" />
 
 <Solution>
 
 ```python
-def math_num_p53(data):
-    # Reference implementation
-    return data
+import math
+
+def fft_radix2(x):
+    def fft_recurse(seq):
+        n = len(seq)
+        if n <= 1:
+            return seq
+        even = fft_recurse(seq[0::2])
+        odd = fft_recurse(seq[1::2])
+        out = [0.0] * n
+        for k in range(n // 2):
+            angle = -2.0 * math.pi * k / n
+            w = complex(math.cos(angle), math.sin(angle))
+            t = w * odd[k]
+            out[k] = even[k] + t
+            out[k + n // 2] = even[k] - t
+        return out
+    complex_seq = [complex(v, 0.0) for v in x]
+    res = fft_recurse(complex_seq)
+    return [[round(float(c.real), 4), round(float(c.imag), 4)] for c in res]
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Recursively decomposes problem into sub-problems of half-size using twiddle factor symmetry.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 32: Problem 152"
 sidebar_position: 152
 description: "Curriculum Problem 152 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #152** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-31`.
+## Overview
+
+Verify whether a square linear transform preserves vector lengths and angles.
+
+## Task
+
+Implement `is_orthogonal_matrix(A, tol=1e-5)`: check whether `A^T * A` equals the identity matrix `I` within entry-wise absolute tolerance `tol`. Return True if orthogonal, else False.
 
 <PracticePlayground problemId="math-num-prob-32" />
 
 <Solution>
 
 ```python
-def math_num_p32(data):
-    # Reference implementation
-    return data
+def is_orthogonal_matrix(A, tol=1e-5):
+    n = len(A)
+    for i in range(n):
+        for j in range(n):
+            dot = sum(A[k][i] * A[k][j] for k in range(n))
+            expected = 1.0 if i == j else 0.0
+            if abs(dot - expected) > tol:
+                return False
+    return True
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Verifies that all columns form an orthonormal system via pairwise dot products.
 
 </Solution>

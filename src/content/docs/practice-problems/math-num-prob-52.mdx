@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 52: Problem 172"
 sidebar_position: 172
 description: "Curriculum Problem 172 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,46 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #172** · Difficulty: **Hard** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-51`.
+## Overview
+
+Implement two-dimensional discrete cross-correlation filtering with spatial padding and striding.
+
+## Task
+
+Implement `conv2d_discrete(image, kernel, stride=1, padding=0)`: pad 2D `image` with `padding` rows and columns of zeros. Compute the Frobenius inner product of `kernel` with each valid spatial window `image_padded[i*s : i*s + kh, j*s : j*s + kw]`. Return 2D grid rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-52" />
 
 <Solution>
 
 ```python
-def math_num_p52(data):
-    # Reference implementation
-    return data
+def conv2d_discrete(image, kernel, stride=1, padding=0):
+    h = len(image)
+    w = len(image[0])
+    kh = len(kernel)
+    kw = len(kernel[0])
+    if padding > 0:
+        padded = [[0.0] * (w + 2 * padding) for _ in range(padding)]
+        for row in image:
+            padded.append([0.0] * padding + list(row) + [0.0] * padding)
+        for _ in range(padding):
+            padded.append([0.0] * (w + 2 * padding))
+    else:
+        padded = image
+    out_h = (len(padded) - kh) // stride + 1
+    out_w = (len(padded[0]) - kw) // stride + 1
+    result = []
+    for i in range(out_h):
+        row = []
+        for j in range(out_w):
+            r_start = i * stride
+            c_start = j * stride
+            val = sum(padded[r_start + p][c_start + q] * kernel[p][q] for p in range(kh) for q in range(kw))
+            row.append(round(float(val), 4))
+        result.append(row)
+    return result
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Pads outer border of image matrix and computes spatial dot products across all stride offsets.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 41: Problem 161"
 sidebar_position: 161
 description: "Curriculum Problem 161 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #161** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-40`.
+## Overview
+
+Compute the optimal transport Earth Mover's distance between two discrete 1D probability histograms.
+
+## Task
+
+Implement `wasserstein_1d(p, q)`: compute cumulative distribution functions `CDF_p` and `CDF_q`. Calculate `W_1 = sum_i |CDF_p[i] - CDF_q[i]|`. Return float rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-41" />
 
 <Solution>
 
 ```python
-def math_num_p41(data):
-    # Reference implementation
-    return data
+def wasserstein_1d(p, q):
+    cdf_p = 0.0
+    cdf_q = 0.0
+    w1 = 0.0
+    for i in range(len(p)):
+        cdf_p += p[i]
+        cdf_q += q[i]
+        w1 += abs(cdf_p - cdf_q)
+    return round(float(w1), 4)
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Evaluates cumulative distribution functions and integrates absolute discrepancy along the real line.
 
 </Solution>

@@ -51573,6 +51573,9101 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  'math-num-prob-1': {
+    id: 'math-num-prob-1',
+    title: "Euclidean and Manhattan Vector Norms",
+    difficulty: 'easy',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'vector_norms',
+    functionSignature: "vector_norms(v: list[float]) -> dict[str, float]",
+    starterCode: `def vector_norms(v):
+    """Compute L1, L2, and Linf norms of vector v.
+    Return {'l1': float, 'l2': float, 'linf': float} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute L1, L2, and L-infinity norms of an n-dimensional vector.",
+    taskDescription: "Implement `vector_norms(v)`: calculate the Manhattan norm (sum of absolute values), Euclidean norm (square root of sum of squares), and Chebyshev/L-infinity norm (maximum absolute value). Return a dict `{\"l1\": float, \"l2\": float, \"linf\": float}` with all values rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Vectors have length 1 to 1,000.",
+      "Elements are real numbers."
+],
+    hints: {
+      "small": "Use sum(abs(x) for x in v) and math.sqrt.",
+      "strong": "max(abs(x) for x in v) gives Linf.",
+      "concept": "Vector norms measure vector magnitude and form the mathematical foundation of distance metrics and regularizers."
+},
+    conceptConnections: [
+      {
+            "title": "Vectors & Norms",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "L1 and L2 regularization foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard Vector",
+            "input": {
+                  "v": [
+                        3.0,
+                        -4.0
+                  ]
+            },
+            "expectedOutput": {
+                  "l1": 7.0,
+                  "l2": 5.0,
+                  "linf": 4.0
+            },
+            "hidden": false,
+            "description": "3-4 triangle vector norms."
+      },
+      {
+            "id": "tc2",
+            "label": "3D Positive Vector",
+            "input": {
+                  "v": [
+                        1.0,
+                        2.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": {
+                  "l1": 5.0,
+                  "l2": 3.0,
+                  "linf": 2.0
+            },
+            "hidden": false,
+            "description": "3D unit integer norms."
+      },
+      {
+            "id": "tc3",
+            "label": "Zero Vector",
+            "input": {
+                  "v": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "l1": 0.0,
+                  "l2": 0.0,
+                  "linf": 0.0
+            },
+            "hidden": true,
+            "description": "Zero vector boundary case."
+      },
+      {
+            "id": "tc4",
+            "label": "Mixed Signs 4D",
+            "input": {
+                  "v": [
+                        -2.5,
+                        4.0,
+                        -1.5,
+                        3.0
+                  ]
+            },
+            "expectedOutput": {
+                  "l1": 11.0,
+                  "l2": 5.7879,
+                  "linf": 4.0
+            },
+            "hidden": true,
+            "description": "4D vector with mixed signs."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-2': {
+    id: 'math-num-prob-2',
+    title: "Vector Dot Product and Angular Separation",
+    difficulty: 'easy',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'vector_dot_and_angle',
+    functionSignature: "vector_dot_and_angle(u: list[float], v: list[float]) -> dict[str, Any]",
+    starterCode: `def vector_dot_and_angle(u, v):
+    """Compute dot product, angle in radians, and whether u and v are orthogonal.
+    Return {'dot': float, 'angle_radians': float, 'orthogonal': bool}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute vector inner product and angular separation in radians.",
+    taskDescription: "Implement `vector_dot_and_angle(u, v)`: compute the dot product, the angle in radians between `u` and `v` (via `acos(dot / (||u|| * ||v||))`), and boolean `orthogonal` (true if `abs(dot) < 1e-7`). Round float values to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "u and v have matching lengths >= 1.",
+      "Non-zero norm vectors."
+],
+    hints: {
+      "small": "Clamp cos theta to [-1.0, 1.0] before calling math.acos to avoid floating point domain errors.",
+      "strong": "dot = sum(x*y for x,y in zip(u,v)).",
+      "concept": "The inner product geometry determines orthogonality and projection operations across machine learning."
+},
+    conceptConnections: [
+      {
+            "title": "Inner Products",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Orthogonality and cosine angle"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perpendicular Vectors",
+            "input": {
+                  "u": [
+                        1.0,
+                        0.0
+                  ],
+                  "v": [
+                        0.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": {
+                  "dot": 0.0,
+                  "angle_radians": 1.5708,
+                  "orthogonal": true
+            },
+            "hidden": false,
+            "description": "Orthogonal basis vectors."
+      },
+      {
+            "id": "tc2",
+            "label": "Collinear Vectors",
+            "input": {
+                  "u": [
+                        2.0,
+                        2.0
+                  ],
+                  "v": [
+                        3.0,
+                        3.0
+                  ]
+            },
+            "expectedOutput": {
+                  "dot": 12.0,
+                  "angle_radians": 0.0,
+                  "orthogonal": false
+            },
+            "hidden": false,
+            "description": "Parallel vectors with angle 0."
+      },
+      {
+            "id": "tc3",
+            "label": "General 3D Vectors",
+            "input": {
+                  "u": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "v": [
+                        4.0,
+                        5.0,
+                        6.0
+                  ]
+            },
+            "expectedOutput": {
+                  "dot": 32.0,
+                  "angle_radians": 0.2257,
+                  "orthogonal": false
+            },
+            "hidden": true,
+            "description": "Acute angle 3D vectors."
+      },
+      {
+            "id": "tc4",
+            "label": "Opposite Vectors",
+            "input": {
+                  "u": [
+                        1.0,
+                        0.0
+                  ],
+                  "v": [
+                        -2.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "dot": -2.0,
+                  "angle_radians": 3.1416,
+                  "orthogonal": false
+            },
+            "hidden": true,
+            "description": "Anti-parallel vectors angle pi."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-3': {
+    id: 'math-num-prob-3',
+    title: "Vector Projection and Rejection",
+    difficulty: 'easy',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'vector_projection',
+    functionSignature: "vector_projection(u: list[float], v: list[float]) -> dict[str, list[float]]",
+    starterCode: `def vector_projection(u, v):
+    """Decompose vector u into parallel projection along v and perpendicular rejection.
+    Return {'proj': list[float], 'rej': list[float]} with coordinates rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Decompose vector u into orthogonal components parallel and perpendicular to v.",
+    taskDescription: "Implement `vector_projection(u, v)`: compute `proj = (u . v / (v . v)) * v` and `rej = u - proj`. Return `{\"proj\": list[float], \"rej\": list[float]}` with all numbers rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "u and v have matching lengths.",
+      "v is non-zero."
+],
+    hints: {
+      "small": "Scalar factor is dot(u, v) / dot(v, v).",
+      "strong": "Rejection is simply u - proj component-wise.",
+      "concept": "Orthogonal decomposition is the core mechanism behind Gram-Schmidt, QR factorization, and least squares."
+},
+    conceptConnections: [
+      {
+            "title": "Orthogonal Projections",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Decomposing vectors into orthogonal subspaces"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Projection onto Axis",
+            "input": {
+                  "u": [
+                        3.0,
+                        4.0
+                  ],
+                  "v": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "proj": [
+                        3.0,
+                        0.0
+                  ],
+                  "rej": [
+                        0.0,
+                        4.0
+                  ]
+            },
+            "hidden": false,
+            "description": "Projection onto horizontal axis."
+      },
+      {
+            "id": "tc2",
+            "label": "Diagonal Projection",
+            "input": {
+                  "u": [
+                        2.0,
+                        0.0
+                  ],
+                  "v": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": {
+                  "proj": [
+                        1.0,
+                        1.0
+                  ],
+                  "rej": [
+                        1.0,
+                        -1.0
+                  ]
+            },
+            "hidden": false,
+            "description": "Projection onto diagonal vector."
+      },
+      {
+            "id": "tc3",
+            "label": "3D General Vector",
+            "input": {
+                  "u": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "v": [
+                        1.0,
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": {
+                  "proj": [
+                        2.0,
+                        2.0,
+                        2.0
+                  ],
+                  "rej": [
+                        -1.0,
+                        0.0,
+                        1.0
+                  ]
+            },
+            "hidden": true,
+            "description": "3D projection decomposition."
+      },
+      {
+            "id": "tc4",
+            "label": "Orthogonal Vectors",
+            "input": {
+                  "u": [
+                        0.0,
+                        5.0
+                  ],
+                  "v": [
+                        2.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": {
+                  "proj": [
+                        0.0,
+                        0.0
+                  ],
+                  "rej": [
+                        0.0,
+                        5.0
+                  ]
+            },
+            "hidden": true,
+            "description": "Orthogonal vectors have zero projection."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-4': {
+    id: 'math-num-prob-4',
+    title: "Cosine Distance Matrix",
+    difficulty: 'easy',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'cosine_distance_matrix',
+    functionSignature: "cosine_distance_matrix(matrix: list[list[float]]) -> list[list[float]]",
+    starterCode: `def cosine_distance_matrix(matrix):
+    """Compute pairwise cosine distance matrix D where D[i][j] = 1 - cosine_similarity(matrix[i], matrix[j]).
+    Round values to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the pairwise cosine distance matrix between rows of a feature matrix.",
+    taskDescription: "Implement `cosine_distance_matrix(matrix)`: given an n x d matrix, return an n x n matrix of pairwise cosine distances where `D[i][j] = 1 - (u . v) / (||u|| * ||v||)`. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "matrix has dimensions n x d with 1 <= n <= 50, 1 <= d <= 50."
+],
+    hints: {
+      "small": "Precompute row L2 norms to avoid repeated work.",
+      "strong": "Cosine distance is 1.0 - cosine similarity.",
+      "concept": "Cosine distance measures directional divergence irrespective of vector magnitude, crucial in embedding retrieval."
+},
+    conceptConnections: [
+      {
+            "title": "Vector Embeddings & Distance",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Pairwise metrics in latent spaces"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identical Vectors",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Identical vectors have zero distance."
+      },
+      {
+            "id": "tc2",
+            "label": "Orthogonal Basis",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Orthogonal vectors have cosine distance 1.0."
+      },
+      {
+            "id": "tc3",
+            "label": "3 Vectors in 3D",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.5,
+                        0.5
+                  ],
+                  [
+                        0.5,
+                        0.0,
+                        0.5
+                  ],
+                  [
+                        0.5,
+                        0.5,
+                        0.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Pairwise distance matrix for 3 points."
+      },
+      {
+            "id": "tc4",
+            "label": "Opposite Vectors",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              -1.0,
+                              -2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        2.0
+                  ],
+                  [
+                        2.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Opposite vectors have distance 2.0."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-5': {
+    id: 'math-num-prob-5',
+    title: "Gram-Schmidt Orthonormalization",
+    difficulty: 'easy',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'gram_schmidt',
+    functionSignature: "gram_schmidt(vectors: list[list[float]]) -> list[list[float]]",
+    starterCode: `def gram_schmidt(vectors):
+    """Produce an orthonormal basis from linearly independent vectors using Gram-Schmidt.
+    Discard vectors with norm < 1e-7. Round coordinates to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Construct an orthonormal basis using the classical Gram-Schmidt orthogonalization process.",
+    taskDescription: "Implement `gram_schmidt(vectors)`: sequentially project each vector onto the span of previously computed basis vectors, subtract projections to get orthogonal vector w, normalize w to unit length, and append to basis. Discard vectors whose remaining norm is `<` 1e-7. Round coordinates to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(vectors) <= 10.",
+      "Dimension 1 <= d <= 10."
+],
+    hints: {
+      "small": "For each vector v, subtract (v . u)*u for all preceding orthonormal basis vectors u.",
+      "strong": "After subtracting projections, check math.sqrt(sum(x**2 for x in w)) `>` 1e-7 before dividing by norm.",
+      "concept": "Gram-Schmidt generates orthonormal coordinate frames fundamental to QR decomposition and eigensolvers."
+},
+    conceptConnections: [
+      {
+            "title": "Gram-Schmidt Process",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Orthonormal basis construction"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2D Standard Basis",
+            "input": {
+                  "vectors": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.7071,
+                        0.7071
+                  ],
+                  [
+                        -0.7071,
+                        0.7071
+                  ]
+            ],
+            "hidden": false,
+            "description": "Orthogonalizing 2D plane vectors."
+      },
+      {
+            "id": "tc2",
+            "label": "Already Orthogonal",
+            "input": {
+                  "vectors": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Normalizes already orthogonal inputs."
+      },
+      {
+            "id": "tc3",
+            "label": "3D Vectors",
+            "input": {
+                  "vectors": [
+                        [
+                              1.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "3D triangular vector set."
+      },
+      {
+            "id": "tc4",
+            "label": "Dependent Vectors",
+            "input": {
+                  "vectors": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.4472,
+                        0.8944
+                  ]
+            ],
+            "hidden": true,
+            "description": "Linearly dependent vector is discarded."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-6': {
+    id: 'math-num-prob-6',
+    title: "Matrix Multiplication from Scratch",
+    difficulty: 'easy',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'matrix_multiply',
+    functionSignature: "matrix_multiply(A: list[list[float]], B: list[list[float]]) -> list[list[float]]",
+    starterCode: `def matrix_multiply(A, B):
+    """Multiply matrix A (n x m) and B (m x k). Return n x k matrix rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement matrix-matrix multiplication without third-party numerical packages.",
+    taskDescription: "Implement `matrix_multiply(A, B)`: given an n x m matrix A and an m x k matrix B, return their product C = A x B of dimension n x k. Round each element to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A and B have compatible inner dimensions m.",
+      "Dimensions between 1 and 50."
+],
+    hints: {
+      "small": "C[i][j] = sum(A[i][p] * B[p][j] for p in range(m)).",
+      "strong": "Outer loops iterate over n and k, inner loop accumulates over m.",
+      "concept": "Matrix multiplication is the fundamental computational primitive of neural network forward and backward passes."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Operations",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Linear transforms and compositions"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Multiplication",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "B": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        4.0,
+                        4.0
+                  ],
+                  [
+                        10.0,
+                        8.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Simple 2x2 matrix product."
+      },
+      {
+            "id": "tc2",
+            "label": "Identity Product",
+            "input": {
+                  "A": [
+                        [
+                              5.0,
+                              -1.0
+                        ],
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ],
+                  "B": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0,
+                        -1.0
+                  ],
+                  [
+                        2.0,
+                        3.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Multiplying by identity leaves matrix invariant."
+      },
+      {
+            "id": "tc3",
+            "label": "Rectangular 2x3 and 3x2",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ]
+                  ],
+                  "B": [
+                        [
+                              7.0,
+                              8.0
+                        ],
+                        [
+                              9.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        31.0,
+                        19.0
+                  ],
+                  [
+                        85.0,
+                        55.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Rectangular matrix multiplication yielding 2x2."
+      },
+      {
+            "id": "tc4",
+            "label": "Vector Outer Product",
+            "input": {
+                  "A": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ],
+                        [
+                              3.0
+                        ]
+                  ],
+                  "B": [
+                        [
+                              4.0,
+                              5.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        4.0,
+                        5.0
+                  ],
+                  [
+                        8.0,
+                        10.0
+                  ],
+                  [
+                        12.0,
+                        15.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "3x1 by 1x2 outer product."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-7': {
+    id: 'math-num-prob-7',
+    title: "Matrix Invariants: Trace, Frobenius Norm, and Symmetry",
+    difficulty: 'easy',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'matrix_properties',
+    functionSignature: "matrix_properties(A: list[list[float]]) -> dict[str, Any]",
+    starterCode: `def matrix_properties(A):
+    """Compute trace, Frobenius norm, and symmetry of square matrix A.
+    Return {'trace': float, 'frobenius': float, 'symmetric': bool}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute key algebraic and geometric matrix invariants.",
+    taskDescription: "Implement `matrix_properties(A)`: for an n x n matrix A, return `{\"trace\": float, \"frobenius\": float, \"symmetric\": bool}` where trace is sum of diagonal entries, Frobenius norm is sqrt of sum of squared entries, and symmetric is True iff `abs(A[i][j] - A[j][i]) < 1e-6` for all i, j. Round floats to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n with 1 <= n <= 50."
+],
+    hints: {
+      "small": "Trace is sum(A[i][i] for i in range(n)).",
+      "strong": "Frobenius norm is Euclidean norm of flattened matrix entries.",
+      "concept": "Matrix trace equals the sum of eigenvalues and Frobenius norm bounds spectral norms."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Invariants",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Spectral properties and norms"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Symmetric Matrix",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              5.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "trace": 6.0,
+                  "frobenius": 5.831,
+                  "symmetric": true
+            },
+            "hidden": false,
+            "description": "2x2 symmetric matrix."
+      },
+      {
+            "id": "tc2",
+            "label": "Non-Symmetric 2x2",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              3.0
+                        ],
+                        [
+                              0.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "trace": 5.0,
+                  "frobenius": 5.099,
+                  "symmetric": false
+            },
+            "hidden": false,
+            "description": "Upper triangular non-symmetric."
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 Identity",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "trace": 3.0,
+                  "frobenius": 1.7321,
+                  "symmetric": true
+            },
+            "hidden": true,
+            "description": "Identity matrix properties."
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 General Matrix",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              -1.0,
+                              0.0
+                        ],
+                        [
+                              -1.0,
+                              2.0,
+                              -1.0
+                        ],
+                        [
+                              0.0,
+                              -1.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "trace": 6.0,
+                  "frobenius": 4.0,
+                  "symmetric": true
+            },
+            "hidden": true,
+            "description": "Tridiagonal symmetric matrix."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-8': {
+    id: 'math-num-prob-8',
+    title: "Matrix Determinant for Low-Order Systems",
+    difficulty: 'easy',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'matrix_determinant',
+    functionSignature: "matrix_determinant(A: list[list[float]]) -> float",
+    starterCode: `def matrix_determinant(A):
+    """Compute determinant of 1x1, 2x2, or 3x3 matrix A.
+    Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the determinant of 1x1, 2x2, or 3x3 square matrices.",
+    taskDescription: "Implement `matrix_determinant(A)`: calculate det(A) for matrices of dimension up to 3x3 using direct algebraic formulas / Laplace cofactor expansion. Round result to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Matrix dimension n in {1, 2, 3}."
+],
+    hints: {
+      "small": "For 2x2: a11*a22 - a12*a21.",
+      "strong": "For 3x3: expand along the first row with 2x2 minors.",
+      "concept": "The determinant quantifies volume scaling of linear maps and determines invertibility."
+},
+    conceptConnections: [
+      {
+            "title": "Determinants & Invertibility",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Volume scaling and singular systems"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Determinant",
+            "input": {
+                  "A": [
+                        [
+                              3.0,
+                              8.0
+                        ],
+                        [
+                              4.0,
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": -14.0,
+            "hidden": false,
+            "description": "Standard 2x2 determinant ad - bc."
+      },
+      {
+            "id": "tc2",
+            "label": "3x3 Triangular",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              3.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              4.0,
+                              5.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 48.0,
+            "hidden": false,
+            "description": "Upper triangular product of diagonals."
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 General Matrix",
+            "input": {
+                  "A": [
+                        [
+                              6.0,
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              4.0,
+                              -2.0,
+                              5.0
+                        ],
+                        [
+                              2.0,
+                              8.0,
+                              7.0
+                        ]
+                  ]
+            },
+            "expectedOutput": -306.0,
+            "hidden": true,
+            "description": "3x3 cofactor expansion determinant."
+      },
+      {
+            "id": "tc4",
+            "label": "Singular Matrix",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true,
+            "description": "Linearly dependent rows have determinant 0."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-9': {
+    id: 'math-num-prob-9',
+    title: "Matrix Inverse via Gauss-Jordan Elimination",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'matrix_inverse',
+    functionSignature: "matrix_inverse(A: list[list[float]]) -> list[list[float]] | None",
+    starterCode: `def matrix_inverse(A):
+    """Compute inverse of square matrix A using Gauss-Jordan elimination with partial pivoting.
+    Return None if singular (pivot < 1e-9). Round values to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Invert a square matrix using row operations and partial pivoting.",
+    taskDescription: "Implement `matrix_inverse(A)`: augment A with the identity matrix `[A | I]` and perform Gauss-Jordan elimination with partial pivoting. If at any step the maximal pivot element is `< 1e-9`, return `None`. Otherwise return the inverse matrix with entries rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n with 1 <= n <= 10."
+],
+    hints: {
+      "small": "Form augmented matrix of width 2n.",
+      "strong": "Swap rows to pick the largest magnitude pivot before scaling the row to 1.",
+      "concept": "Gauss-Jordan elimination systematically diagonalizes the augmented system, revealing invertibility."
+},
+    conceptConnections: [
+      {
+            "title": "Gaussian Elimination",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Solving linear systems and matrix inversion"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Invertible",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              7.0
+                        ],
+                        [
+                              2.0,
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.6,
+                        -0.7
+                  ],
+                  [
+                        -0.2,
+                        0.4
+                  ]
+            ],
+            "hidden": false,
+            "description": "Standard 2x2 inverse."
+      },
+      {
+            "id": "tc2",
+            "label": "2x2 Singular",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": null,
+            "hidden": false,
+            "description": "Singular matrix returns None."
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 Identity",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Identity matrix is self-inverse."
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 Invertible",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              6.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -24.0,
+                        18.0,
+                        5.0
+                  ],
+                  [
+                        20.0,
+                        -15.0,
+                        -4.0
+                  ],
+                  [
+                        -5.0,
+                        4.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Full 3x3 Gauss-Jordan elimination."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-10': {
+    id: 'math-num-prob-10',
+    title: "Power Iteration for Dominant Eigenpair",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'power_iteration',
+    functionSignature: "power_iteration(A: list[list[float]], num_iters: int = 20) -> dict[str, Any]",
+    starterCode: `def power_iteration(A, num_iters=20):
+    """Compute dominant eigenvalue and normalized eigenvector using power iteration.
+    Initialize with all-ones vector [1.0, ..., 1.0]. Return {'eigenvalue': float, 'eigenvector': list[float]}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Estimate the dominant eigenvalue and eigenvector of a matrix via repeated matrix-vector multiplication.",
+    taskDescription: "Implement `power_iteration(A, num_iters=20)`: initialize vector `b = [1.0]*n`. At each iteration compute `b_next = A * b` and normalize `b = b_next / ||b_next||`. After `num_iters`, compute the Rayleigh quotient eigenvalue `lambda = (b . A*b) / (b . b)`. Return `{\"eigenvalue\": float, \"eigenvector\": list[float]}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n with 1 <= n <= 20.",
+      "num_iters >= 1."
+],
+    hints: {
+      "small": "Normalize b by Euclidean norm at each iteration to avoid overflow.",
+      "strong": "Rayleigh quotient gives eigenvalue estimate from eigenvector.",
+      "concept": "Power iteration is the computational bedrock of PageRank and principal component analysis."
+},
+    conceptConnections: [
+      {
+            "title": "Eigenvalues & Spectral Methods",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Iterative eigensolvers"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Diagonal Matrix",
+            "input": {
+                  "A": [
+                        [
+                              3.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "num_iters": 20
+            },
+            "expectedOutput": {
+                  "eigenvalue": 3.0,
+                  "eigenvector": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "hidden": false,
+            "description": "Diagonal matrix dominant eigenvalue is 3.0."
+      },
+      {
+            "id": "tc2",
+            "label": "Positive Symmetric",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "num_iters": 25
+            },
+            "expectedOutput": {
+                  "eigenvalue": 3.0,
+                  "eigenvector": [
+                        0.7071,
+                        0.7071
+                  ]
+            },
+            "hidden": false,
+            "description": "Dominant eigenvalue 3.0 and eigenvector [0.7071, 0.7071]."
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 Dominant",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              3.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "num_iters": 30
+            },
+            "expectedOutput": {
+                  "eigenvalue": 4.7321,
+                  "eigenvector": [
+                        0.7887,
+                        0.5774,
+                        0.2113
+                  ]
+            },
+            "hidden": true,
+            "description": "3x3 tridiagonal matrix power iteration."
+      },
+      {
+            "id": "tc4",
+            "label": "Few Iterations",
+            "input": {
+                  "A": [
+                        [
+                              5.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              2.0
+                        ]
+                  ],
+                  "num_iters": 10
+            },
+            "expectedOutput": {
+                  "eigenvalue": 6.0,
+                  "eigenvector": [
+                        0.8944,
+                        0.4472
+                  ]
+            },
+            "hidden": true,
+            "description": "10 iterations on positive matrix."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-11': {
+    id: 'math-num-prob-11',
+    title: "Quadratic Form Gradient",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'quadratic_form_gradient',
+    functionSignature: "quadratic_form_gradient(A: list[list[float]], b: list[float], x: list[float]) -> list[float]",
+    starterCode: `def quadratic_form_gradient(A, b, x):
+    """Compute gradient of f(x) = 0.5 * x^T A x - b^T x for symmetric matrix A.
+    Return gradient vector Ax - b rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the exact analytical gradient vector of a multivariable quadratic objective.",
+    taskDescription: "Implement `quadratic_form_gradient(A, b, x)`: for symmetric matrix A and linear coefficient vector b, compute the gradient `nabla f(x) = A x - b`. Round each coordinate to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is symmetric n x n, b and x have length n."
+],
+    hints: {
+      "small": "For each coordinate i, (Ax)[i] = sum(A[i][j] * x[j] for j in range(n)).",
+      "strong": "Subtract b[i] from each coordinate.",
+      "concept": "Quadratic objectives model linear least squares and locally approximate smooth loss surfaces in optimization."
+},
+    conceptConnections: [
+      {
+            "title": "Multivariable Calculus",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Gradients of quadratic forms"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2D Identity Hessian",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "b": [
+                        1.0,
+                        1.0
+                  ],
+                  "x": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.0
+            ],
+            "hidden": false,
+            "description": "Gradient of uncoupled paraboloid."
+      },
+      {
+            "id": "tc2",
+            "label": "Coupled 2D Quadratic",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "b": [
+                        0.0,
+                        0.0
+                  ],
+                  "x": [
+                        1.0,
+                        -1.0
+                  ]
+            },
+            "expectedOutput": [
+                  3.0,
+                  -1.0
+            ],
+            "hidden": false,
+            "description": "Coupled quadratic at non-zero point."
+      },
+      {
+            "id": "tc3",
+            "label": "Minimum Point",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              4.0
+                        ]
+                  ],
+                  "b": [
+                        2.0,
+                        8.0
+                  ],
+                  "x": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0
+            ],
+            "hidden": true,
+            "description": "Gradient at optimum is [0.0, 0.0]."
+      },
+      {
+            "id": "tc4",
+            "label": "3D Quadratic Form",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              3.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              5.0
+                        ]
+                  ],
+                  "b": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "x": [
+                        2.0,
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.0,
+                  -3.0
+            ],
+            "hidden": true,
+            "description": "3D quadratic form gradient."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-12': {
+    id: 'math-num-prob-12',
+    title: "Jacobian Matrix Evaluation",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'nonlinear_jacobian',
+    functionSignature: "nonlinear_jacobian(W: list[list[float]], x: list[float], b: list[float]) -> list[list[float]]",
+    starterCode: `def nonlinear_jacobian(W, x, b):
+    """Compute Jacobian matrix of map f_i(x) = sum_j (W_ij * x_j^2) + b_i.
+    Return m x n Jacobian matrix where J_ij = 2 * W_ij * x_j rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Jacobian matrix of a vector-valued nonlinear mapping.",
+    taskDescription: "Implement `nonlinear_jacobian(W, x, b)`: for a component-wise quadratic map `f_i(x) = sum_j (W_ij * x_j^2) + b_i`, compute the m x n Jacobian matrix where `J_ij = d f_i / d x_j = 2 * W_ij * x_j`. Round each float to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "W is m x n, x has length n, b has length m."
+],
+    hints: {
+      "small": "The partial derivative d f_i / d x_j is simply 2 * W[i][j] * x[j].",
+      "strong": "Result is an m x n matrix where row i corresponds to output f_i.",
+      "concept": "The Jacobian linearizes multidimensional transformations and is the core tensor in backpropagation."
+},
+    conceptConnections: [
+      {
+            "title": "Jacobian & Chain Rule",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Vector-valued derivatives"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Nonlinear Map",
+            "input": {
+                  "W": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "x": [
+                        1.0,
+                        1.0
+                  ],
+                  "b": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        4.0
+                  ],
+                  [
+                        6.0,
+                        8.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Jacobian at [1.0, 1.0]."
+      },
+      {
+            "id": "tc2",
+            "label": "Zero Coordinate Point",
+            "input": {
+                  "W": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              5.0
+                        ]
+                  ],
+                  "x": [
+                        0.0,
+                        2.0
+                  ],
+                  "b": [
+                        1.0,
+                        -1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        4.0
+                  ],
+                  [
+                        0.0,
+                        20.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "First column of Jacobian is zero when x[0]=0."
+      },
+      {
+            "id": "tc3",
+            "label": "Rectangular 3x2 Map",
+            "input": {
+                  "W": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              0.0,
+                              4.0
+                        ]
+                  ],
+                  "x": [
+                        2.0,
+                        -1.0
+                  ],
+                  "b": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        4.0,
+                        -0.0
+                  ],
+                  [
+                        8.0,
+                        -6.0
+                  ],
+                  [
+                        0.0,
+                        -8.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "3x2 Jacobian matrix."
+      },
+      {
+            "id": "tc4",
+            "label": "Negative Coordinates",
+            "input": {
+                  "W": [
+                        [
+                              -1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              -2.0
+                        ]
+                  ],
+                  "x": [
+                        -2.0,
+                        3.0
+                  ],
+                  "b": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        4.0,
+                        12.0
+                  ],
+                  [
+                        -12.0,
+                        -12.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Mixed signs in weights and points."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-13': {
+    id: 'math-num-prob-13',
+    title: "Hessian Matrix of Quadratic Objective",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'quadratic_hessian',
+    functionSignature: "quadratic_hessian(A: list[list[float]]) -> list[list[float]]",
+    starterCode: `def quadratic_hessian(A):
+    """Compute Hessian matrix H of quadratic form f(x) = 0.5 * x^T A x.
+    H = 0.5 * (A + A^T). Return n x n matrix rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the symmetric Hessian matrix of second-order partial derivatives for a quadratic objective.",
+    taskDescription: "Implement `quadratic_hessian(A)`: for objective `f(x) = 0.5 * x^T A x`, the Hessian matrix of second partial derivatives is `H = 0.5 * (A + A^T)`. Return the n x n Hessian matrix with entries rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n with 1 <= n <= 30."
+],
+    hints: {
+      "small": "Entry H[i][j] = 0.5 * (A[i][j] + A[j][i]).",
+      "strong": "Diagonal entries are unchanged: H[i][i] = A[i][i].",
+      "concept": "The Hessian captures curvature; positive definiteness guarantees a local minimum."
+},
+    conceptConnections: [
+      {
+            "title": "Second-Order Optimization",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Hessian curvature and Newton's method"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Symmetric Input",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        4.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Already symmetric matrix."
+      },
+      {
+            "id": "tc2",
+            "label": "Asymmetric Input",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              1.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        2.0
+                  ],
+                  [
+                        2.0,
+                        4.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Symmetrization 0.5*(A + A^T)."
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 Asymmetric",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              2.0,
+                              0.0,
+                              5.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        3.0,
+                        2.0
+                  ],
+                  [
+                        1.0,
+                        2.0,
+                        5.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "3x3 Hessian symmetrization."
+      },
+      {
+            "id": "tc4",
+            "label": "Zero Off-Diagonals",
+            "input": {
+                  "A": [
+                        [
+                              5.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              -3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        -3.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Diagonal matrix Hessian."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-14': {
+    id: 'math-num-prob-14',
+    title: "Multivariable Taylor Polynomial Approximation",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'multivariable_taylor_approx',
+    functionSignature: "multivariable_taylor_approx(f0: float, grad0: list[float], H0: list[list[float]], delta_x: list[float]) -> float",
+    starterCode: `def multivariable_taylor_approx(f0, grad0, H0, delta_x):
+    """Compute second-order Taylor approximation f(x0 + dx) ~ f0 + grad0^T dx + 0.5 * dx^T H0 dx.
+    Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Evaluate the second-order Taylor expansion around an expansion point.",
+    taskDescription: "Implement `multivariable_taylor_approx(f0, grad0, H0, delta_x)`: evaluate the quadratic approximation `T_2(x0 + dx) = f0 + sum(grad0[i]*dx[i]) + 0.5 * sum_ij (dx[i]*H0[i][j]*dx[j])`. Round output to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "grad0 and delta_x have length n.",
+      "H0 is n x n."
+],
+    hints: {
+      "small": "Compute linear term as sum(g * d for g, d in zip(grad0, delta_x)).",
+      "strong": "Compute H0 * delta_x vector first, then dot with delta_x, and multiply by 0.5.",
+      "concept": "Second-order Taylor approximations form the basis of Newton's method and trust-region algorithms."
+},
+    conceptConnections: [
+      {
+            "title": "Taylor Expansions",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Local polynomial approximations in optimization"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Linear Approximation Only",
+            "input": {
+                  "f0": 10.0,
+                  "grad0": [
+                        2.0,
+                        -1.0
+                  ],
+                  "H0": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "delta_x": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": 10.0,
+            "hidden": false,
+            "description": "Zero curvature reduces to tangent hyperplane."
+      },
+      {
+            "id": "tc2",
+            "label": "Standard 2D Taylor Step",
+            "input": {
+                  "f0": 5.0,
+                  "grad0": [
+                        1.0,
+                        2.0
+                  ],
+                  "H0": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "delta_x": [
+                        0.1,
+                        -0.2
+                  ]
+            },
+            "expectedOutput": 4.74,
+            "hidden": false,
+            "description": "2D quadratic approximation step."
+      },
+      {
+            "id": "tc3",
+            "label": "Zero Step",
+            "input": {
+                  "f0": 42.0,
+                  "grad0": [
+                        3.0,
+                        4.0
+                  ],
+                  "H0": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "delta_x": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": 42.0,
+            "hidden": true,
+            "description": "Delta x is zero."
+      },
+      {
+            "id": "tc4",
+            "label": "3D Second Order Step",
+            "input": {
+                  "f0": 1.0,
+                  "grad0": [
+                        0.5,
+                        -0.5,
+                        1.0
+                  ],
+                  "H0": [
+                        [
+                              2.0,
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0,
+                              3.0
+                        ]
+                  ],
+                  "delta_x": [
+                        0.2,
+                        0.1,
+                        -0.1
+                  ]
+            },
+            "expectedOutput": 0.995,
+            "hidden": true,
+            "description": "3D Taylor polynomial."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-15': {
+    id: 'math-num-prob-15',
+    title: "Directional Derivative along Unit Vector",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'directional_derivative',
+    functionSignature: "directional_derivative(grad: list[float], direction: list[float]) -> float",
+    starterCode: `def directional_derivative(grad, direction):
+    """Compute directional derivative nabla f(x) . u where u is normalized direction.
+    Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the rate of change of a multivariable function along an arbitrary vector direction.",
+    taskDescription: "Implement `directional_derivative(grad, direction)`: normalize `direction` to unit vector `u = direction / ||direction||` and calculate the inner product `grad . u`. If `||direction|| < 1e-9`, return `0.0`. Round result to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "grad and direction have identical length n >= 1."
+],
+    hints: {
+      "small": "Remember to normalize direction: norm = math.sqrt(sum(d**2 for d in direction)).",
+      "strong": "The dot product with the unit vector yields the scalar slope.",
+      "concept": "Directional derivatives test descent conditions in line search and verify gradient correctness."
+},
+    conceptConnections: [
+      {
+            "title": "Directional Derivatives",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Rates of change along search rays"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Direction Along Gradient",
+            "input": {
+                  "grad": [
+                        3.0,
+                        4.0
+                  ],
+                  "direction": [
+                        3.0,
+                        4.0
+                  ]
+            },
+            "expectedOutput": 5.0,
+            "hidden": false,
+            "description": "Derivative in gradient direction equals gradient norm."
+      },
+      {
+            "id": "tc2",
+            "label": "Perpendicular Direction",
+            "input": {
+                  "grad": [
+                        2.0,
+                        5.0
+                  ],
+                  "direction": [
+                        -5.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": -0.0,
+            "hidden": false,
+            "description": "Orthogonal direction has zero derivative."
+      },
+      {
+            "id": "tc3",
+            "label": "Unit Axis Direction",
+            "input": {
+                  "grad": [
+                        1.5,
+                        -2.5,
+                        4.0
+                  ],
+                  "direction": [
+                        0.0,
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": -2.5,
+            "hidden": true,
+            "description": "Directional derivative along axis equals partial derivative."
+      },
+      {
+            "id": "tc4",
+            "label": "Opposite Direction",
+            "input": {
+                  "grad": [
+                        1.0,
+                        1.0
+                  ],
+                  "direction": [
+                        -1.0,
+                        -1.0
+                  ]
+            },
+            "expectedOutput": -1.4142,
+            "hidden": true,
+            "description": "Direction of steepest descent."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-16': {
+    id: 'math-num-prob-16',
+    title: "Sample Covariance Matrix",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'sample_covariance_matrix',
+    functionSignature: "sample_covariance_matrix(data: list[list[float]]) -> list[list[float]]",
+    starterCode: `def sample_covariance_matrix(data):
+    """Compute d x d sample covariance matrix from n x d data matrix with denominator (n - 1).
+    Return d x d matrix rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the unbiased empirical sample covariance matrix from multidimensional observations.",
+    taskDescription: "Implement `sample_covariance_matrix(data)`: given an n x d matrix of observations (n rows, d columns), calculate the d x d sample covariance matrix using Bessel's correction `Cov(j1, j2) = sum_i ((x_i,j1 - mu_j1)*(x_i,j2 - mu_j2)) / (n - 1)`. If n `<` 2, return all zeros. Round each entry to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "data has shape n x d with 2 <= n <= 100, 1 <= d <= 20."
+],
+    hints: {
+      "small": "First calculate feature means mu_j = sum(row[j] for row in data) / n.",
+      "strong": "Divide cross-product deviations by n - 1.",
+      "concept": "The covariance matrix defines the ellipsoid of dispersion and parameterizes Gaussian distributions and PCA."
+},
+    conceptConnections: [
+      {
+            "title": "Probability & Statistics",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Covariance and multidimensional variance"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2D Two Points",
+            "input": {
+                  "data": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        4.0
+                  ],
+                  [
+                        4.0,
+                        8.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Covariance with sample size 2."
+      },
+      {
+            "id": "tc2",
+            "label": "Uncorrelated Features",
+            "input": {
+                  "data": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              -1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              -1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.6667,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.6667
+                  ]
+            ],
+            "hidden": false,
+            "description": "Symmetric zero covariance off-diagonals."
+      },
+      {
+            "id": "tc3",
+            "label": "3 Features 4 Samples",
+            "input": {
+                  "data": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ],
+                        [
+                              10.0,
+                              11.0,
+                              12.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        15.0,
+                        15.0,
+                        15.0
+                  ],
+                  [
+                        15.0,
+                        15.0,
+                        15.0
+                  ],
+                  [
+                        15.0,
+                        15.0,
+                        15.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Collinear features high covariance."
+      },
+      {
+            "id": "tc4",
+            "label": "Single Feature Column",
+            "input": {
+                  "data": [
+                        [
+                              2.0
+                        ],
+                        [
+                              4.0
+                        ],
+                        [
+                              4.0
+                        ],
+                        [
+                              4.0
+                        ],
+                        [
+                              5.0
+                        ],
+                        [
+                              5.0
+                        ],
+                        [
+                              7.0
+                        ],
+                        [
+                              9.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        4.5714
+                  ]
+            ],
+            "hidden": true,
+            "description": "1D variance matrix."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-17': {
+    id: 'math-num-prob-17',
+    title: "Multivariate Diagonal Gaussian Log-Likelihood",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'gaussian_log_likelihood',
+    functionSignature: "gaussian_log_likelihood(x: list[float], mean: list[float], variances: list[float]) -> float",
+    starterCode: `def gaussian_log_likelihood(x, mean, variances):
+    """Compute log-likelihood log p(x) under diagonal covariance Gaussian.
+    log p(x) = -0.5 * sum(log(2*pi*sigma_i^2) + (x_i - mu_i)^2 / sigma_i^2).
+    Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the exact log-probability density of an observation under a multivariate normal distribution.",
+    taskDescription: "Implement `gaussian_log_likelihood(x, mean, variances)`: for a d-dimensional Gaussian with independent dimensions, compute `log p(x) = -0.5 * sum_i (log(2 * pi * variances[i]) + (x[i] - mean[i])^2 / variances[i])`. Round to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "All inputs have matching length d >= 1.",
+      "variances[i] > 0."
+],
+    hints: {
+      "small": "Use math.log and math.pi.",
+      "strong": "Accumulate the normalization term and Mahalanobis term over all dimensions.",
+      "concept": "Log-likelihood prevents numerical underflow in continuous probabilistic models and maximum likelihood estimation."
+},
+    conceptConnections: [
+      {
+            "title": "Gaussian Density",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Continuous probability models and generative AI"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Mean Center Point",
+            "input": {
+                  "x": [
+                        0.0,
+                        0.0
+                  ],
+                  "mean": [
+                        0.0,
+                        0.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": -1.8379,
+            "hidden": false,
+            "description": "Log likelihood of standard normal at mean."
+      },
+      {
+            "id": "tc2",
+            "label": "One Standard Deviation",
+            "input": {
+                  "x": [
+                        1.0,
+                        0.0
+                  ],
+                  "mean": [
+                        0.0,
+                        0.0
+                  ],
+                  "variances": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": -2.6845,
+            "hidden": false,
+            "description": "Point offset by 1 unit."
+      },
+      {
+            "id": "tc3",
+            "label": "3D Independent Gaussian",
+            "input": {
+                  "x": [
+                        1.5,
+                        -0.5,
+                        2.0
+                  ],
+                  "mean": [
+                        1.0,
+                        0.0,
+                        2.0
+                  ],
+                  "variances": [
+                        0.5,
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": -3.1318,
+            "hidden": true,
+            "description": "3D diagonal covariance log likelihood."
+      },
+      {
+            "id": "tc4",
+            "label": "Far Tail Point",
+            "input": {
+                  "x": [
+                        5.0,
+                        5.0
+                  ],
+                  "mean": [
+                        0.0,
+                        0.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": -26.8379,
+            "hidden": true,
+            "description": "Tail evaluation penalty."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-18': {
+    id: 'math-num-prob-18',
+    title: "Bayes' Rule Categorical Posterior",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'bayes_posterior',
+    functionSignature: "bayes_posterior(priors: list[float], likelihoods: list[float]) -> list[float]",
+    starterCode: `def bayes_posterior(priors, likelihoods):
+    """Compute posterior probabilities P(H_k | E) = P(E | H_k) * P(H_k) / sum_j P(E | H_j) * P(H_j).
+    Return list of posterior probabilities rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the exact posterior distribution over discrete hypotheses using Bayes' rule.",
+    taskDescription: "Implement `bayes_posterior(priors, likelihoods)`: given prior probabilities `P(H_k)` and likelihoods of evidence `P(E | H_k)`, compute unnormalized products `u_k = priors[k] * likelihoods[k]`. Normalize by `sum(u)` so that posteriors sum to 1. Return list of posterior probabilities rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "priors and likelihoods have length K >= 2.",
+      "Sum of priors is ~1.0."
+],
+    hints: {
+      "small": "Unnormalized weight is p * l for each class.",
+      "strong": "Divide each weight by the sum of all weights to form a valid probability distribution.",
+      "concept": "Bayes theorem inverts conditional probabilities and underpins Bayesian learning, active learning, and probabilistic agents."
+},
+    conceptConnections: [
+      {
+            "title": "Bayesian Inference",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Posterior distributions from conditional evidence"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Uniform Prior Two Hypotheses",
+            "input": {
+                  "priors": [
+                        0.5,
+                        0.5
+                  ],
+                  "likelihoods": [
+                        0.8,
+                        0.2
+                  ]
+            },
+            "expectedOutput": [
+                  0.8,
+                  0.2
+            ],
+            "hidden": false,
+            "description": "Symmetric prior Bayesian update."
+      },
+      {
+            "id": "tc2",
+            "label": "Biased Medical Test",
+            "input": {
+                  "priors": [
+                        0.01,
+                        0.99
+                  ],
+                  "likelihoods": [
+                        0.95,
+                        0.05
+                  ]
+            },
+            "expectedOutput": [
+                  0.161,
+                  0.839
+            ],
+            "hidden": false,
+            "description": "Classic base rate fallacy test update."
+      },
+      {
+            "id": "tc3",
+            "label": "Three Hypotheses",
+            "input": {
+                  "priors": [
+                        0.2,
+                        0.5,
+                        0.3
+                  ],
+                  "likelihoods": [
+                        0.1,
+                        0.4,
+                        0.9
+                  ]
+            },
+            "expectedOutput": [
+                  0.0408,
+                  0.4082,
+                  0.551
+            ],
+            "hidden": true,
+            "description": "3-class posterior computation."
+      },
+      {
+            "id": "tc4",
+            "label": "Certain Evidence",
+            "input": {
+                  "priors": [
+                        0.3,
+                        0.7
+                  ],
+                  "likelihoods": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  1.0,
+                  0.0
+            ],
+            "hidden": true,
+            "description": "Zero likelihood eliminates hypothesis."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-19': {
+    id: 'math-num-prob-19',
+    title: "Shannon Entropy, Cross-Entropy, and KL Divergence",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'shannon_and_cross_entropy',
+    functionSignature: "shannon_and_cross_entropy(p: list[float], q: list[float]) -> dict[str, float]",
+    starterCode: `def shannon_and_cross_entropy(p, q):
+    """Compute Shannon entropy H(p), cross-entropy H(p, q), and KL divergence D_KL(p || q) in base 2 bits.
+    Return {'entropy_p': float, 'cross_entropy': float, 'kl_div': float} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Evaluate fundamental information-theoretic metrics on discrete probability distributions.",
+    taskDescription: "Implement `shannon_and_cross_entropy(p, q)`: compute base-2 Shannon entropy `H(p) = -sum(p_i * log2(p_i))`, cross-entropy `H(p, q) = -sum(p_i * log2(q_i))`, and Kullback-Leibler divergence `D_KL(p || q) = H(p, q) - H(p)`. Skip terms where `p_i < 1e-12`. Return `{\"entropy_p\": float, \"cross_entropy\": float, \"kl_div\": float}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "p and q are valid probability vectors summing to 1.0.",
+      "q_i > 0 whenever p_i > 0."
+],
+    hints: {
+      "small": "Use math.log2 for bit-based information quantities.",
+      "strong": "Remember the identity: D_KL(P || Q) = H(P, Q) - H(P).",
+      "concept": "Cross-entropy loss in deep learning minimizes the KL divergence between empirical data and model predictions."
+},
+    conceptConnections: [
+      {
+            "title": "Information Theory",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Entropy and relative entropy foundations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identical Distributions",
+            "input": {
+                  "p": [
+                        0.5,
+                        0.5
+                  ],
+                  "q": [
+                        0.5,
+                        0.5
+                  ]
+            },
+            "expectedOutput": {
+                  "entropy_p": 1.0,
+                  "cross_entropy": 1.0,
+                  "kl_div": 0.0
+            },
+            "hidden": false,
+            "description": "Identical distributions have KL divergence 0."
+      },
+      {
+            "id": "tc2",
+            "label": "Shifted Binary Distributions",
+            "input": {
+                  "p": [
+                        0.9,
+                        0.1
+                  ],
+                  "q": [
+                        0.5,
+                        0.5
+                  ]
+            },
+            "expectedOutput": {
+                  "entropy_p": 0.469,
+                  "cross_entropy": 1.0,
+                  "kl_div": 0.531
+            },
+            "hidden": false,
+            "description": "Biased coin vs fair coin."
+      },
+      {
+            "id": "tc3",
+            "label": "4-Outcome Categorical",
+            "input": {
+                  "p": [
+                        0.4,
+                        0.3,
+                        0.2,
+                        0.1
+                  ],
+                  "q": [
+                        0.25,
+                        0.25,
+                        0.25,
+                        0.25
+                  ]
+            },
+            "expectedOutput": {
+                  "entropy_p": 1.8464,
+                  "cross_entropy": 2.0,
+                  "kl_div": 0.1536
+            },
+            "hidden": true,
+            "description": "Relative entropy to uniform."
+      },
+      {
+            "id": "tc4",
+            "label": "3-Outcome Non-Uniform",
+            "input": {
+                  "p": [
+                        0.6,
+                        0.3,
+                        0.1
+                  ],
+                  "q": [
+                        0.3,
+                        0.4,
+                        0.3
+                  ]
+            },
+            "expectedOutput": {
+                  "entropy_p": 1.2955,
+                  "cross_entropy": 1.6125,
+                  "kl_div": 0.317
+            },
+            "hidden": true,
+            "description": "Cross-entropy and KL divergence."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-20': {
+    id: 'math-num-prob-20',
+    title: "Jensen-Shannon Divergence",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'jensen_shannon_divergence',
+    functionSignature: "jensen_shannon_divergence(p: list[float], q: list[float]) -> float",
+    starterCode: `def jensen_shannon_divergence(p, q):
+    """Compute symmetric Jensen-Shannon divergence JSD(p || q) in base 2 bits.
+    M = 0.5*(p + q), JSD = 0.5*KL(p || M) + 0.5*KL(q || M). Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the bounded, symmetric Jensen-Shannon divergence between two distributions.",
+    taskDescription: "Implement `jensen_shannon_divergence(p, q)`: compute midpoint distribution `M = 0.5*(p + q)`, then evaluate `JSD(p || q) = 0.5 * D_KL(p || M) + 0.5 * D_KL(q || M)` in base-2 bits. Return float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "p and q sum to 1.0.",
+      "0.0 <= JSD <= 1.0."
+],
+    hints: {
+      "small": "M_i = 0.5 * (p[i] + q[i]). Since M_i `>` 0 whenever p_i `>` 0 or q_i `>` 0, KL to M is always finite.",
+      "strong": "KL(p || M) = sum(pi * log2(pi / mi)) for pi `>` 0.",
+      "concept": "Unlike KL divergence, Jensen-Shannon divergence is symmetric, always finite, and its square root is a true metric."
+},
+    conceptConnections: [
+      {
+            "title": "Distribution Metrics",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Symmetric probability metrics and GAN objectives"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identical Distributions",
+            "input": {
+                  "p": [
+                        0.5,
+                        0.5
+                  ],
+                  "q": [
+                        0.5,
+                        0.5
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false,
+            "description": "Zero divergence between identical distributions."
+      },
+      {
+            "id": "tc2",
+            "label": "Disjoint Distributions",
+            "input": {
+                  "p": [
+                        1.0,
+                        0.0
+                  ],
+                  "q": [
+                        0.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": false,
+            "description": "Maximal Jensen-Shannon divergence is 1.0 bit."
+      },
+      {
+            "id": "tc3",
+            "label": "Overlapping Distributions",
+            "input": {
+                  "p": [
+                        0.7,
+                        0.3
+                  ],
+                  "q": [
+                        0.3,
+                        0.7
+                  ]
+            },
+            "expectedOutput": 0.1187,
+            "hidden": true,
+            "description": "Symmetric divergence between mirror distributions."
+      },
+      {
+            "id": "tc4",
+            "label": "3-Outcome Distributions",
+            "input": {
+                  "p": [
+                        0.5,
+                        0.3,
+                        0.2
+                  ],
+                  "q": [
+                        0.2,
+                        0.5,
+                        0.3
+                  ]
+            },
+            "expectedOutput": 0.0734,
+            "hidden": true,
+            "description": "Multinomial JSD."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-21': {
+    id: 'math-num-prob-21',
+    title: "Classical Momentum Gradient Descent Step",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'momentum_gd_step',
+    functionSignature: "momentum_gd_step(w: list[float], grad: list[float], v: list[float], lr: float = 0.01, beta: float = 0.9) -> dict[str, list[float]]",
+    starterCode: `def momentum_gd_step(w, grad, v, lr=0.01, beta=0.9):
+    """Compute single step of gradient descent with classical Polyak momentum.
+    v_next = beta * v + lr * grad; w_next = w - v_next. Return {'w': list, 'v': list}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a single parameter update under Polyak momentum acceleration.",
+    taskDescription: "Implement `momentum_gd_step(w, grad, v, lr=0.01, beta=0.9)`: compute `v_next = beta * v + lr * grad` and `w_next = w - v_next`. Return `{\"w\": list[float], \"v\": list[float]}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "w, grad, v have matching length d >= 1.",
+      "0 <= beta < 1.0, lr > 0."
+],
+    hints: {
+      "small": "Update velocity vector first before subtracting from weight vector.",
+      "strong": "Component-wise: v_next[i] = beta * v[i] + lr * grad[i].",
+      "concept": "Momentum accumulates directional velocity to accelerate across flat plateaus and damp ravines."
+},
+    conceptConnections: [
+      {
+            "title": "Optimization Algorithms",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Accelerated first-order methods"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Zero Initial Velocity",
+            "input": {
+                  "w": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad": [
+                        0.5,
+                        -0.5
+                  ],
+                  "v": [
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.1,
+                  "beta": 0.9
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.95,
+                        2.05
+                  ],
+                  "v": [
+                        0.05,
+                        -0.05
+                  ]
+            },
+            "hidden": false,
+            "description": "First step with zero momentum."
+      },
+      {
+            "id": "tc2",
+            "label": "Continuing Momentum",
+            "input": {
+                  "w": [
+                        0.95,
+                        2.05
+                  ],
+                  "grad": [
+                        0.4,
+                        -0.4
+                  ],
+                  "v": [
+                        0.05,
+                        -0.05
+                  ],
+                  "lr": 0.1,
+                  "beta": 0.9
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.865,
+                        2.135
+                  ],
+                  "v": [
+                        0.085,
+                        -0.085
+                  ]
+            },
+            "hidden": false,
+            "description": "Second step accumulating momentum."
+      },
+      {
+            "id": "tc3",
+            "label": "Oscillating Gradient",
+            "input": {
+                  "w": [
+                        0.0
+                  ],
+                  "grad": [
+                        -2.0
+                  ],
+                  "v": [
+                        1.5
+                  ],
+                  "lr": 0.05,
+                  "beta": 0.9
+            },
+            "expectedOutput": {
+                  "w": [
+                        -1.25
+                  ],
+                  "v": [
+                        1.25
+                  ]
+            },
+            "hidden": true,
+            "description": "Opposing gradient damps velocity."
+      },
+      {
+            "id": "tc4",
+            "label": "3D Parameter Step",
+            "input": {
+                  "w": [
+                        1.0,
+                        0.0,
+                        -1.0
+                  ],
+                  "grad": [
+                        0.1,
+                        0.2,
+                        -0.3
+                  ],
+                  "v": [
+                        0.01,
+                        0.02,
+                        -0.03
+                  ],
+                  "lr": 0.01,
+                  "beta": 0.95
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.9895,
+                        -0.021,
+                        -0.9685
+                  ],
+                  "v": [
+                        0.0105,
+                        0.021,
+                        -0.0315
+                  ]
+            },
+            "hidden": true,
+            "description": "3D momentum update."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-22': {
+    id: 'math-num-prob-22',
+    title: "Nesterov Accelerated Gradient Step",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'nesterov_momentum_step',
+    functionSignature: "nesterov_momentum_step(w: list[float], grad_lookahead: list[float], v: list[float], lr: float = 0.01, beta: float = 0.9) -> dict[str, list[float]]",
+    starterCode: `def nesterov_momentum_step(w, grad_lookahead, v, lr=0.01, beta=0.9):
+    """Compute NAG step given gradient evaluated at lookahead point w - beta * v.
+    v_next = beta * v + lr * grad_lookahead; w_next = w - v_next. Return {'w': list, 'v': list}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Apply Nesterov accelerated gradient update using lookahead gradient evaluation.",
+    taskDescription: "Implement `nesterov_momentum_step(w, grad_lookahead, v, lr=0.01, beta=0.9)`: given the gradient evaluated at the lookahead point `w - beta * v`, calculate `v_next = beta * v + lr * grad_lookahead` and `w_next = w - v_next`. Return `{\"w\": list[float], \"v\": list[float]}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Matching vector length d >= 1."
+],
+    hints: {
+      "small": "NAG uses the gradient at the projected point w - beta*v to anticipate future slope.",
+      "strong": "The update equation given the lookahead gradient matches classical momentum formula.",
+      "concept": "Nesterov momentum achieves optimal O(1/k^2) convergence rate for convex smooth objectives."
+},
+    conceptConnections: [
+      {
+            "title": "Nesterov Acceleration",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Optimal first-order convergence rates"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Lookahead Step",
+            "input": {
+                  "w": [
+                        2.0,
+                        3.0
+                  ],
+                  "grad_lookahead": [
+                        0.4,
+                        0.6
+                  ],
+                  "v": [
+                        0.1,
+                        0.1
+                  ],
+                  "lr": 0.05,
+                  "beta": 0.9
+            },
+            "expectedOutput": {
+                  "w": [
+                        1.89,
+                        2.88
+                  ],
+                  "v": [
+                        0.11,
+                        0.12
+                  ]
+            },
+            "hidden": false,
+            "description": "Standard Nesterov step from lookahead gradient."
+      },
+      {
+            "id": "tc2",
+            "label": "Zero Initial Velocity",
+            "input": {
+                  "w": [
+                        1.0
+                  ],
+                  "grad_lookahead": [
+                        1.0
+                  ],
+                  "v": [
+                        0.0
+                  ],
+                  "lr": 0.1,
+                  "beta": 0.9
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.9
+                  ],
+                  "v": [
+                        0.1
+                  ]
+            },
+            "hidden": false,
+            "description": "Nesterov with zero starting velocity."
+      },
+      {
+            "id": "tc3",
+            "label": "Opposing Lookahead",
+            "input": {
+                  "w": [
+                        0.5,
+                        -0.5
+                  ],
+                  "grad_lookahead": [
+                        -0.8,
+                        0.8
+                  ],
+                  "v": [
+                        0.2,
+                        -0.2
+                  ],
+                  "lr": 0.1,
+                  "beta": 0.8
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.42,
+                        -0.42
+                  ],
+                  "v": [
+                        0.08,
+                        -0.08
+                  ]
+            },
+            "hidden": true,
+            "description": "Opposing gradient stabilizes step."
+      },
+      {
+            "id": "tc4",
+            "label": "High Friction Beta",
+            "input": {
+                  "w": [
+                        3.0,
+                        4.0
+                  ],
+                  "grad_lookahead": [
+                        0.1,
+                        0.1
+                  ],
+                  "v": [
+                        0.5,
+                        0.5
+                  ],
+                  "lr": 0.01,
+                  "beta": 0.99
+            },
+            "expectedOutput": {
+                  "w": [
+                        2.504,
+                        3.504
+                  ],
+                  "v": [
+                        0.496,
+                        0.496
+                  ]
+            },
+            "hidden": true,
+            "description": "High inertia parameter update."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-23': {
+    id: 'math-num-prob-23',
+    title: "AdaGrad Adaptive Gradient Step",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'adagrad_step',
+    functionSignature: "adagrad_step(w: list[float], grad: list[float], accum: list[float], lr: float = 0.01, eps: float = 1e-8) -> dict[str, list[float]]",
+    starterCode: `def adagrad_step(w, grad, accum, lr=0.01, eps=1e-8):
+    """Compute single step of AdaGrad optimizer.
+    accum_next = accum + grad^2; w_next = w - (lr / (sqrt(accum_next) + eps)) * grad.
+    Return {'w': list, 'accum': list}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Apply coordinate-wise adaptive learning rate scaling based on historical sum of squared gradients.",
+    taskDescription: "Implement `adagrad_step(w, grad, accum, lr=0.01, eps=1e-8)`: update accumulator `accum_next[i] = accum[i] + grad[i]^2` and parameter `w_next[i] = w[i] - (lr / (sqrt(accum_next[i]) + eps)) * grad[i]`. Return `{\"w\": list[float], \"accum\": list[float]}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "w, grad, accum matching length d >= 1.",
+      "accum entries >= 0.0."
+],
+    hints: {
+      "small": "Add grad[i]**2 to accum[i] before computing square root.",
+      "strong": "Divide lr by (math.sqrt(accum_next[i]) + eps).",
+      "concept": "AdaGrad automatically scales down learning rates for frequently occurring features."
+},
+    conceptConnections: [
+      {
+            "title": "Adaptive Learning Rates",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Subgradient methods with diagonal preconditioners"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "First Step from Zero",
+            "input": {
+                  "w": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad": [
+                        0.4,
+                        0.3
+                  ],
+                  "accum": [
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.1,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.9,
+                        1.9
+                  ],
+                  "accum": [
+                        0.16,
+                        0.09
+                  ]
+            },
+            "hidden": false,
+            "description": "Initial AdaGrad step accumulating squared gradients."
+      },
+      {
+            "id": "tc2",
+            "label": "Asymmetric Gradients",
+            "input": {
+                  "w": [
+                        0.0,
+                        0.0
+                  ],
+                  "grad": [
+                        10.0,
+                        0.1
+                  ],
+                  "accum": [
+                        100.0,
+                        0.01
+                  ],
+                  "lr": 0.01,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        -0.0071,
+                        -0.0071
+                  ],
+                  "accum": [
+                        200.0,
+                        0.02
+                  ]
+            },
+            "hidden": false,
+            "description": "AdaGrad scales down frequent large gradients."
+      },
+      {
+            "id": "tc3",
+            "label": "Sparse Features",
+            "input": {
+                  "w": [
+                        5.0,
+                        5.0
+                  ],
+                  "grad": [
+                        0.0,
+                        2.0
+                  ],
+                  "accum": [
+                        4.0,
+                        1.0
+                  ],
+                  "lr": 0.05,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        5.0,
+                        4.9553
+                  ],
+                  "accum": [
+                        4.0,
+                        5.0
+                  ]
+            },
+            "hidden": true,
+            "description": "Zero gradient dimension remains unchanged."
+      },
+      {
+            "id": "tc4",
+            "label": "Small Eps Protection",
+            "input": {
+                  "w": [
+                        0.0
+                  ],
+                  "grad": [
+                        0.0
+                  ],
+                  "accum": [
+                        0.0
+                  ],
+                  "lr": 0.01,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.0
+                  ],
+                  "accum": [
+                        0.0
+                  ]
+            },
+            "hidden": true,
+            "description": "Zero gradient stability with epsilon."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-24': {
+    id: 'math-num-prob-24',
+    title: "RMSprop Exponential Moving Average Step",
+    difficulty: 'medium',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'rmsprop_step',
+    functionSignature: "rmsprop_step(w: list[float], grad: list[float], v: list[float], lr: float = 0.001, beta: float = 0.9, eps: float = 1e-8) -> dict[str, list[float]]",
+    starterCode: `def rmsprop_step(w, grad, v, lr=0.001, beta=0.9, eps=1e-8):
+    """Compute single step of RMSprop optimizer with leaky second moment.
+    v_next = beta * v + (1 - beta) * grad^2; w_next = w - (lr / (sqrt(v_next) + eps)) * grad.
+    Return {'w': list, 'v': list}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Apply leaky exponential moving average scaling to prevent AdaGrad's diminishing learning rates.",
+    taskDescription: "Implement `rmsprop_step(w, grad, v, lr=0.001, beta=0.9, eps=1e-8)`: update variance `v_next[i] = beta * v[i] + (1 - beta) * grad[i]^2` and weights `w_next[i] = w[i] - (lr / (sqrt(v_next[i]) + eps)) * grad[i]`. Return `{\"w\": list[float], \"v\": list[float]}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Vectors have matching length d >= 1.",
+      "0 <= beta < 1.0."
+],
+    hints: {
+      "small": "v_next uses convex combination beta*v + (1-beta)*grad^2.",
+      "strong": "Remember to add eps inside the denominator before dividing.",
+      "concept": "RMSprop uses an exponentially decaying average of squared gradients to resolve AdaGrad's diminishing step size problem in non-convex optimization."
+},
+    conceptConnections: [
+      {
+            "title": "RMSprop",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Exponential moving averages of second moments"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Exponential Moving Average Initial Step",
+            "input": {
+                  "w": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad": [
+                        0.5,
+                        0.5
+                  ],
+                  "v": [
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.01,
+                  "beta": 0.9,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.9684,
+                        1.9684
+                  ],
+                  "v": [
+                        0.025,
+                        0.025
+                  ]
+            },
+            "hidden": false,
+            "description": "First step of RMSprop."
+      },
+      {
+            "id": "tc2",
+            "label": "Continuing Exponential Moving Average",
+            "input": {
+                  "w": [
+                        0.9684,
+                        1.9684
+                  ],
+                  "grad": [
+                        0.5,
+                        0.5
+                  ],
+                  "v": [
+                        0.025,
+                        0.025
+                  ],
+                  "lr": 0.01,
+                  "beta": 0.9,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.9455,
+                        1.9455
+                  ],
+                  "v": [
+                        0.0475,
+                        0.0475
+                  ]
+            },
+            "hidden": false,
+            "description": "Subsequent step with existing second moment."
+      },
+      {
+            "id": "tc3",
+            "label": "Decaying Second Moment",
+            "input": {
+                  "w": [
+                        0.0
+                  ],
+                  "grad": [
+                        0.01
+                  ],
+                  "v": [
+                        1.0
+                  ],
+                  "lr": 0.001,
+                  "beta": 0.9,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        -0.0
+                  ],
+                  "v": [
+                        0.9
+                  ]
+            },
+            "hidden": true,
+            "description": "Decaying second moment prevents step freezing."
+      },
+      {
+            "id": "tc4",
+            "label": "3D Parameter Vector",
+            "input": {
+                  "w": [
+                        1.0,
+                        -1.0,
+                        0.5
+                  ],
+                  "grad": [
+                        1.0,
+                        2.0,
+                        -1.5
+                  ],
+                  "v": [
+                        0.5,
+                        1.0,
+                        0.8
+                  ],
+                  "lr": 0.005,
+                  "beta": 0.95,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.9931,
+                        -1.0093,
+                        0.508
+                  ],
+                  "v": [
+                        0.525,
+                        1.15,
+                        0.8725
+                  ]
+            },
+            "hidden": true,
+            "description": "3D RMSprop update step."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-25': {
+    id: 'math-num-prob-25',
+    title: "Adam Optimizer Single Step Update",
+    difficulty: 'hard',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '20-25 min',
+    functionName: 'adam_step',
+    functionSignature: "adam_step(w: list[float], grad: list[float], m: list[float], v: list[float], t: int = 1, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict[str, list[float]]",
+    starterCode: `def adam_step(w, grad, m, v, t=1, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8):
+    """Compute single step of Adam optimizer with first and second moment bias corrections.
+    Return {'w': list, 'm': list, 'v': list} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a complete Adam optimizer update with analytical bias correction.",
+    taskDescription: "Implement `adam_step(w, grad, m, v, t, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8)`: update biased first moment `m_next = beta1*m + (1-beta1)*grad`, biased second moment `v_next = beta2*v + (1-beta2)*grad^2`. Correct biases: `m_hat = m_next / (1 - beta1^t)` and `v_hat = v_next / (1 - beta2^t)`. Update `w_next = w - (lr / (sqrt(v_hat) + eps)) * m_hat`. Return `{\"w\": list, \"m\": list, \"v\": list}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "t >= 1.",
+      "0 < beta1, beta2 < 1.0.",
+      "Matching vector lengths."
+],
+    hints: {
+      "small": "Bias correction divides m by (1 - beta1**t) and v by (1 - beta2**t).",
+      "strong": "Update m and v in the return dictionary as uncorrected m_next and v_next.",
+      "concept": "Adam combines momentum and RMSprop with bias correction to handle sparse gradients and non-stationary objectives."
+},
+    conceptConnections: [
+      {
+            "title": "Adam Optimizer",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Adaptive moment estimation in deep learning"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Step 1 Initial Adam",
+            "input": {
+                  "w": [
+                        0.5,
+                        -0.5
+                  ],
+                  "grad": [
+                        0.1,
+                        -0.2
+                  ],
+                  "m": [
+                        0.0,
+                        0.0
+                  ],
+                  "v": [
+                        0.0,
+                        0.0
+                  ],
+                  "t": 1,
+                  "lr": 0.001,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.499,
+                        -0.499
+                  ],
+                  "m": [
+                        0.01,
+                        -0.02
+                  ],
+                  "v": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "hidden": false,
+            "description": "Bias-corrected first Adam step."
+      },
+      {
+            "id": "tc2",
+            "label": "Step 100 Adam",
+            "input": {
+                  "w": [
+                        0.4,
+                        -0.4
+                  ],
+                  "grad": [
+                        0.05,
+                        -0.05
+                  ],
+                  "m": [
+                        0.04,
+                        -0.04
+                  ],
+                  "v": [
+                        0.002,
+                        0.002
+                  ],
+                  "t": 100,
+                  "lr": 0.001,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.3997,
+                        -0.3997
+                  ],
+                  "m": [
+                        0.041,
+                        -0.041
+                  ],
+                  "v": [
+                        0.002,
+                        0.002
+                  ]
+            },
+            "hidden": false,
+            "description": "Late stage Adam where bias corrections approach 1.0."
+      },
+      {
+            "id": "tc3",
+            "label": "Single Parameter",
+            "input": {
+                  "w": [
+                        1.0
+                  ],
+                  "grad": [
+                        1.0
+                  ],
+                  "m": [
+                        0.0
+                  ],
+                  "v": [
+                        0.0
+                  ],
+                  "t": 2,
+                  "lr": 0.01,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        0.9926
+                  ],
+                  "m": [
+                        0.1
+                  ],
+                  "v": [
+                        0.001
+                  ]
+            },
+            "hidden": true,
+            "description": "Single coordinate t=2 step."
+      },
+      {
+            "id": "tc4",
+            "label": "High Gradient Outlier",
+            "input": {
+                  "w": [
+                        0.0,
+                        0.0
+                  ],
+                  "grad": [
+                        50.0,
+                        -50.0
+                  ],
+                  "m": [
+                        0.1,
+                        -0.1
+                  ],
+                  "v": [
+                        0.01,
+                        0.01
+                  ],
+                  "t": 5,
+                  "lr": 0.001,
+                  "beta1": 0.9,
+                  "beta2": 0.999,
+                  "eps": 1e-08
+            },
+            "expectedOutput": {
+                  "w": [
+                        -0.0006,
+                        0.0006
+                  ],
+                  "m": [
+                        5.09,
+                        -5.09
+                  ],
+                  "v": [
+                        2.51,
+                        2.51
+                  ]
+            },
+            "hidden": true,
+            "description": "Adam normalization dampens large gradient spikes."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-26': {
+    id: 'math-num-prob-26',
+    title: "Numerically Stable Softmax and Cross-Entropy",
+    difficulty: 'hard',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'stable_softmax_and_ce',
+    functionSignature: "stable_softmax_and_ce(logits: list[float], target_idx: int) -> dict[str, Any]",
+    starterCode: `def stable_softmax_and_ce(logits, target_idx):
+    """Compute numerically stable softmax probabilities and cross-entropy loss.
+    Subtract max(logits) before exponentiating. Return {'probs': list[float], 'loss': float}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the softmax probability vector and negative log likelihood loss without floating-point overflow.",
+    taskDescription: "Implement `stable_softmax_and_ce(logits, target_idx)`: subtract `m = max(logits)` to calculate `p_i = exp(z_i - m) / sum_j exp(z_j - m)`. Compute cross entropy `loss = -log(max(p_target, 1e-15))`. Return `{\"probs\": list[float], \"loss\": float}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0 <= target_idx < len(logits).",
+      "Logits can be arbitrarily large or small."
+],
+    hints: {
+      "small": "Subtracting max(logits) makes the maximum exponent 0, completely eliminating OverflowError.",
+      "strong": "loss is -math.log(probs[target_idx]).",
+      "concept": "Shifting by max prevents IEEE-754 double precision overflow when computing exponentials of raw model scores."
+},
+    conceptConnections: [
+      {
+            "title": "Numerical Stability",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Log-sum-exp and safe softmax"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Small Logits Binary",
+            "input": {
+                  "logits": [
+                        2.0,
+                        1.0
+                  ],
+                  "target_idx": 0
+            },
+            "expectedOutput": {
+                  "probs": [
+                        0.7311,
+                        0.2689
+                  ],
+                  "loss": 0.3133
+            },
+            "hidden": false,
+            "description": "Binary classification softmax."
+      },
+      {
+            "id": "tc2",
+            "label": "Large Overflowing Logits",
+            "input": {
+                  "logits": [
+                        1000.0,
+                        1001.0,
+                        999.0
+                  ],
+                  "target_idx": 1
+            },
+            "expectedOutput": {
+                  "probs": [
+                        0.2447,
+                        0.6652,
+                        0.09
+                  ],
+                  "loss": 0.4076
+            },
+            "hidden": false,
+            "description": "Logits exceeding exp(709) without overflow."
+      },
+      {
+            "id": "tc3",
+            "label": "Deep Negative Underflowing Logits",
+            "input": {
+                  "logits": [
+                        -500.0,
+                        -502.0,
+                        -501.0
+                  ],
+                  "target_idx": 0
+            },
+            "expectedOutput": {
+                  "probs": [
+                        0.6652,
+                        0.09,
+                        0.2447
+                  ],
+                  "loss": 0.4076
+            },
+            "hidden": true,
+            "description": "Negative logits numerical stability."
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-Class 5 Logits",
+            "input": {
+                  "logits": [
+                        10.0,
+                        5.0,
+                        2.0,
+                        0.0,
+                        -5.0
+                  ],
+                  "target_idx": 0
+            },
+            "expectedOutput": {
+                  "probs": [
+                        0.9929,
+                        0.0067,
+                        0.0003,
+                        0.0,
+                        0.0
+                  ],
+                  "loss": 0.0071
+            },
+            "hidden": true,
+            "description": "5-class softmax distribution and cross-entropy loss."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-27': {
+    id: 'math-num-prob-27',
+    title: "Log-Sum-Exp Numerical Function",
+    difficulty: 'hard',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '10-15 min',
+    functionName: 'log_sum_exp',
+    functionSignature: "log_sum_exp(logits: list[float]) -> float",
+    starterCode: `def log_sum_exp(logits):
+    """Compute log(sum(exp(x_i))) in a numerically stable way.
+    LSE(x) = max(x) + log(sum(exp(x_i - max(x)))). Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the smooth maximum log-sum-exp function without overflow or catastrophic cancellation.",
+    taskDescription: "Implement `log_sum_exp(logits)`: evaluate `LSE(x) = m + log(sum_i exp(x_i - m))` where `m = max(logits)`. Return float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(logits) >= 1.",
+      "Logits between -1e6 and 1e6."
+],
+    hints: {
+      "small": "Factor out m = max(logits) from the logarithm.",
+      "strong": "LSE(x) = m + math.log(sum(math.exp(z - m) for z in logits)).",
+      "concept": "Log-sum-exp is a smooth approximation to the max function and is the normalization constant in Boltzmann distributions."
+},
+    conceptConnections: [
+      {
+            "title": "Log-Sum-Exp Trick",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Smooth max and partition functions"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Small Positive Numbers",
+            "input": {
+                  "logits": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ]
+            },
+            "expectedOutput": 3.4076,
+            "hidden": false,
+            "description": "Standard log-sum-exp value."
+      },
+      {
+            "id": "tc2",
+            "label": "Huge Numbers",
+            "input": {
+                  "logits": [
+                        1000.0,
+                        1000.5,
+                        1001.0
+                  ]
+            },
+            "expectedOutput": 1001.6803,
+            "hidden": false,
+            "description": "Large values without overflow."
+      },
+      {
+            "id": "tc3",
+            "label": "Very Negative Numbers",
+            "input": {
+                  "logits": [
+                        -800.0,
+                        -799.0,
+                        -801.0
+                  ]
+            },
+            "expectedOutput": -798.5924,
+            "hidden": true,
+            "description": "Subnormal and negative logits."
+      },
+      {
+            "id": "tc4",
+            "label": "Single Element",
+            "input": {
+                  "logits": [
+                        42.0
+                  ]
+            },
+            "expectedOutput": 42.0,
+            "hidden": true,
+            "description": "Log-sum-exp of single element is the element itself."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-28': {
+    id: 'math-num-prob-28',
+    title: "Cholesky Decomposition of Positive-Definite Matrices",
+    difficulty: 'hard',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '20-25 min',
+    functionName: 'cholesky_decomposition',
+    functionSignature: "cholesky_decomposition(A: list[list[float]]) -> list[list[float]] | None",
+    starterCode: `def cholesky_decomposition(A):
+    """Compute lower triangular matrix L such that A = L * L^T for symmetric positive-definite A.
+    Return None if A is not positive-definite. Round entries to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Decompose a symmetric positive-definite matrix into the product of a lower triangular matrix and its transpose.",
+    taskDescription: "Implement `cholesky_decomposition(A)`: for symmetric positive-definite matrix A, compute lower triangular matrix L where `L[j][j] = sqrt(A[j][j] - sum_{k<j} L[j][k]^2)` and `L[i][j] = (A[i][j] - sum_{k<j} L[i][k]*L[j][k]) / L[j][j]`. If any diagonal term `<=` 0, return `None`. Return n x n lower triangular matrix rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n with 1 <= n <= 20."
+],
+    hints: {
+      "small": "Fill L column-by-column: diagonal entry first, then lower entries in column j.",
+      "strong": "If A[j][j] - sum(L[j][k]**2 for k in range(j)) `<=` 0, matrix is not positive-definite.",
+      "concept": "Cholesky factorization is twice as fast as LU decomposition and numerically ultra-stable for covariance matrices and Gaussian processes."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Factorizations",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Cholesky decomposition and Gaussian processes"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Positive Definite",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              12.0
+                        ],
+                        [
+                              12.0,
+                              45.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        0.0
+                  ],
+                  [
+                        6.0,
+                        3.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Classic 2x2 Cholesky factor."
+      },
+      {
+            "id": "tc2",
+            "label": "3x3 Symmetric Positive Definite",
+            "input": {
+                  "A": [
+                        [
+                              25.0,
+                              15.0,
+                              -5.0
+                        ],
+                        [
+                              15.0,
+                              18.0,
+                              0.0
+                        ],
+                        [
+                              -5.0,
+                              0.0,
+                              11.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        3.0,
+                        3.0,
+                        0.0
+                  ],
+                  [
+                        -1.0,
+                        1.0,
+                        3.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "3x3 Cholesky decomposition."
+      },
+      {
+            "id": "tc3",
+            "label": "Non-Positive Definite",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": null,
+            "hidden": true,
+            "description": "Indefinite matrix returns None."
+      },
+      {
+            "id": "tc4",
+            "label": "Identity Matrix",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Identity decomposes into identity."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-29': {
+    id: 'math-num-prob-29',
+    title: "Solving Triangular Systems via Forward and Backward Substitution",
+    difficulty: 'hard',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '15-20 min',
+    functionName: 'solve_triangular_system',
+    functionSignature: "solve_triangular_system(L: list[list[float]], b: list[float], lower: bool = True) -> list[float]",
+    starterCode: `def solve_triangular_system(L, b, lower=True):
+    """Solve triangular linear system L * x = b.
+    If lower is True, use forward substitution; if False, use backward substitution.
+    Return solution vector x rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Solve triangular systems in O(n^2) operations via forward or backward substitution.",
+    taskDescription: "Implement `solve_triangular_system(L, b, lower=True)`: if `lower` is True, perform forward substitution: `x[i] = (b[i] - sum_{j<i} L[i][j]*x[j]) / L[i][i]`. If `lower` is False, perform backward substitution from row n-1 down to 0: `x[i] = (b[i] - sum_{j>i} L[i][j]*x[j]) / L[i][i]`. Return solution vector x rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "L is square n x n, diagonal entries non-zero.",
+      "b has length n."
+],
+    hints: {
+      "small": "For forward substitution, iterate i from 0 to n-1.",
+      "strong": "For backward substitution, iterate i from n-1 down to 0, accumulating sum of L[i][j]*x[j] for j `>` i.",
+      "concept": "Triangular solvers are the fast second phase of Gaussian elimination, LU, and Cholesky solvers."
+},
+    conceptConnections: [
+      {
+            "title": "Triangular Solvers",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Exact triangular elimination algorithms"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Lower Triangular 2x2",
+            "input": {
+                  "L": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "b": [
+                        4.0,
+                        14.0
+                  ],
+                  "lower": true
+            },
+            "expectedOutput": [
+                  2.0,
+                  2.0
+            ],
+            "hidden": false,
+            "description": "Forward substitution 2x2 system."
+      },
+      {
+            "id": "tc2",
+            "label": "Upper Triangular 2x2",
+            "input": {
+                  "L": [
+                        [
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              0.0,
+                              4.0
+                        ]
+                  ],
+                  "b": [
+                        11.0,
+                        8.0
+                  ],
+                  "lower": false
+            },
+            "expectedOutput": [
+                  2.5,
+                  2.0
+            ],
+            "hidden": false,
+            "description": "Back substitution 2x2 system."
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 Lower Triangular",
+            "input": {
+                  "L": [
+                        [
+                              1.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              2.0,
+                              3.0,
+                              0.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ]
+                  ],
+                  "b": [
+                        2.0,
+                        13.0,
+                        41.0
+                  ],
+                  "lower": true
+            },
+            "expectedOutput": [
+                  2.0,
+                  3.0,
+                  3.0
+            ],
+            "hidden": true,
+            "description": "Forward substitution 3x3."
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 Upper Triangular",
+            "input": {
+                  "L": [
+                        [
+                              3.0,
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              2.0,
+                              4.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              5.0
+                        ]
+                  ],
+                  "b": [
+                        10.0,
+                        12.0,
+                        10.0
+                  ],
+                  "lower": false
+            },
+            "expectedOutput": [
+                  1.3333,
+                  2.0,
+                  2.0
+            ],
+            "hidden": true,
+            "description": "Back substitution 3x3."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-30': {
+    id: 'math-num-prob-30',
+    title: "Conjugate Gradient Method Single Iteration",
+    difficulty: 'hard',
+    topic: "Mathematics & Numerical Computing",
+    estimatedTime: '20-25 min',
+    functionName: 'conjugate_gradient_step',
+    functionSignature: "conjugate_gradient_step(A: list[list[float]], b: list[float], x: list[float], r: list[float], p: list[float]) -> dict[str, list[float]]",
+    starterCode: `def conjugate_gradient_step(A, b, x, r, p):
+    """Compute a single iteration of the Conjugate Gradient algorithm for A x = b.
+    alpha = (r^T r) / (p^T A p); x_next = x + alpha * p; r_next = r - alpha * A p.
+    beta = (r_next^T r_next) / (r^T r); p_next = r_next + beta * p.
+    Return {'x': list, 'r': list, 'p': list} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Execute a single iteration of the linear Conjugate Gradient algorithm for symmetric positive-definite systems.",
+    taskDescription: "Implement `conjugate_gradient_step(A, b, x, r, p)`: calculate matrix-vector product `A p`, step size `alpha = (r . r) / (p . A p)`, updated solution `x_next = x + alpha * p`, updated residual `r_next = r - alpha * A p`, conjugate direction factor `beta = (r_next . r_next) / (r . r)`, and new search direction `p_next = r_next + beta * p`. Return `{\"x\": list, \"r\": list, \"p\": list}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is symmetric positive-definite n x n.",
+      "x, b, r, p have length n."
+],
+    hints: {
+      "small": "Compute dot products: rr = sum(ri**2 for ri in r) and pAp = sum(pi * Api for pi, Api in zip(p, Ap)).",
+      "strong": "p_next is a linear combination of r_next and the previous direction p.",
+      "concept": "Conjugate gradient converges in at most n iterations for an n x n SPD system by searching mutually orthogonal directions with respect to A."
+},
+    conceptConnections: [
+      {
+            "title": "Conjugate Gradient",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Krylov subspace methods and large-scale solvers"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Initial 2x2 Iteration",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              3.0
+                        ]
+                  ],
+                  "b": [
+                        1.0,
+                        2.0
+                  ],
+                  "x": [
+                        0.0,
+                        0.0
+                  ],
+                  "r": [
+                        1.0,
+                        2.0
+                  ],
+                  "p": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": {
+                  "x": [
+                        0.25,
+                        0.5
+                  ],
+                  "r": [
+                        -0.5,
+                        0.25
+                  ],
+                  "p": [
+                        -0.4375,
+                        0.375
+                  ]
+            },
+            "hidden": false,
+            "description": "First iteration of CG algorithm."
+      },
+      {
+            "id": "tc2",
+            "label": "Diagonal Matrix Step",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              5.0
+                        ]
+                  ],
+                  "b": [
+                        2.0,
+                        5.0
+                  ],
+                  "x": [
+                        0.0,
+                        0.0
+                  ],
+                  "r": [
+                        2.0,
+                        5.0
+                  ],
+                  "p": [
+                        2.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": {
+                  "x": [
+                        0.4361,
+                        1.0902
+                  ],
+                  "r": [
+                        1.1278,
+                        -0.4511
+                  ],
+                  "p": [
+                        1.2296,
+                        -0.1967
+                  ]
+            },
+            "hidden": false,
+            "description": "Diagonal matrix CG step."
+      },
+      {
+            "id": "tc3",
+            "label": "Second Iteration Progress",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              3.0
+                        ]
+                  ],
+                  "b": [
+                        1.0,
+                        2.0
+                  ],
+                  "x": [
+                        0.25,
+                        0.5
+                  ],
+                  "r": [
+                        -0.5,
+                        0.25
+                  ],
+                  "p": [
+                        -0.4,
+                        0.3
+                  ]
+            },
+            "expectedOutput": {
+                  "x": [
+                        0.0634,
+                        0.6399
+                  ],
+                  "r": [
+                        0.1063,
+                        0.0168
+                  ],
+                  "p": [
+                        0.0915,
+                        0.0279
+                  ]
+            },
+            "hidden": true,
+            "description": "Second CG step with non-initial residual."
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 System Iteration",
+            "input": {
+                  "A": [
+                        [
+                              3.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0,
+                              3.0
+                        ]
+                  ],
+                  "b": [
+                        1.0,
+                        0.0,
+                        1.0
+                  ],
+                  "x": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "r": [
+                        1.0,
+                        0.0,
+                        1.0
+                  ],
+                  "p": [
+                        1.0,
+                        0.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": {
+                  "x": [
+                        0.3333,
+                        0.0,
+                        0.3333
+                  ],
+                  "r": [
+                        0.0,
+                        -0.6667,
+                        0.0
+                  ],
+                  "p": [
+                        0.2222,
+                        -0.6667,
+                        0.2222
+                  ]
+            },
+            "hidden": true,
+            "description": "Tridiagonal 3x3 single step."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-31': {
+    id: 'math-num-prob-31',
+    title: "Minkowski Distance and p-Norm Metric",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'minkowski_distance',
+    functionSignature: "minkowski_distance(p_order: float, u: list[float], v: list[float]) -> float",
+    starterCode: `def minkowski_distance(p_order, u, v):
+    """Compute Minkowski distance (sum(|u_i - v_i|^p))^(1/p) between vectors u and v.
+    Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the generalized Minkowski p-norm metric between two points.",
+    taskDescription: "Implement `minkowski_distance(p_order, u, v)`: calculate `D(u, v) = (sum_i |u_i - v_i|^p)^(1/p)` where `p = float(p_order) >= 1.0`. Return result rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "p_order >= 1.0.",
+      "u and v have matching lengths."
+],
+    hints: {
+      "small": "Raise absolute coordinate differences abs(a - b) to power p.",
+      "strong": "Take the (1.0 / p)-th power of the sum.",
+      "concept": "Minkowski distance generalizes Manhattan (p=1) and Euclidean (p=2) metrics into a unified parameterized distance family."
+},
+    conceptConnections: [
+      {
+            "title": "Metric Spaces",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Minkowski and generalized norms"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "p=1 Manhattan",
+            "input": {
+                  "p_order": 1.0,
+                  "u": [
+                        1.0,
+                        2.0
+                  ],
+                  "v": [
+                        4.0,
+                        6.0
+                  ]
+            },
+            "expectedOutput": 7.0,
+            "hidden": false,
+            "description": "p=1 L1 Manhattan distance."
+      },
+      {
+            "id": "tc2",
+            "label": "p=2 Euclidean",
+            "input": {
+                  "p_order": 2.0,
+                  "u": [
+                        0.0,
+                        0.0
+                  ],
+                  "v": [
+                        3.0,
+                        4.0
+                  ]
+            },
+            "expectedOutput": 5.0,
+            "hidden": false,
+            "description": "p=2 L2 Euclidean distance."
+      },
+      {
+            "id": "tc3",
+            "label": "p=3 Cubic Norm",
+            "input": {
+                  "p_order": 3.0,
+                  "u": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "v": [
+                        2.0,
+                        0.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": 2.5713,
+            "hidden": true,
+            "description": "p=3 metric in 3D."
+      },
+      {
+            "id": "tc4",
+            "label": "Identical Points",
+            "input": {
+                  "p_order": 4.0,
+                  "u": [
+                        5.0,
+                        -1.0
+                  ],
+                  "v": [
+                        5.0,
+                        -1.0
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true,
+            "description": "Zero distance between identical points."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-32': {
+    id: 'math-num-prob-32',
+    title: "Orthogonal Matrix Verification",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'is_orthogonal_matrix',
+    functionSignature: "is_orthogonal_matrix(A: list[list[float]], tol: float = 1e-5) -> bool",
+    starterCode: `def is_orthogonal_matrix(A, tol=1e-5):
+    """Check if square matrix A is orthogonal (A^T * A = I within tolerance tol).
+    Return bool."""
+    # Your implementation here
+    pass
+`,
+    mission: "Verify whether a square linear transform preserves vector lengths and angles.",
+    taskDescription: "Implement `is_orthogonal_matrix(A, tol=1e-5)`: check whether `A^T * A` equals the identity matrix `I` within entry-wise absolute tolerance `tol`. Return True if orthogonal, else False.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n with 1 <= n <= 30."
+],
+    hints: {
+      "small": "Entry (A^T A)[i][j] is the dot product of column i and column j of A.",
+      "strong": "Diagonal entries must be within tol of 1.0; off-diagonals within tol of 0.0.",
+      "concept": "Orthogonal matrices represent rigid rotations and reflections, preserving distances and inner products perfectly."
+},
+    conceptConnections: [
+      {
+            "title": "Orthogonal Transformations",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Isometries and unitary operators"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2D Rotation Matrix",
+            "input": {
+                  "A": [
+                        [
+                              0.0,
+                              -1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "tol": 1e-05
+            },
+            "expectedOutput": true,
+            "hidden": false,
+            "description": "90 degree rotation is orthogonal."
+      },
+      {
+            "id": "tc2",
+            "label": "Non-Orthogonal 2x2",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "tol": 1e-05
+            },
+            "expectedOutput": false,
+            "hidden": false,
+            "description": "Shear matrix is not orthogonal."
+      },
+      {
+            "id": "tc3",
+            "label": "3D Permutation Matrix",
+            "input": {
+                  "A": [
+                        [
+                              0.0,
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "tol": 1e-05
+            },
+            "expectedOutput": true,
+            "hidden": true,
+            "description": "Permutations are orthogonal."
+      },
+      {
+            "id": "tc4",
+            "label": "Scaled Identity",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "tol": 1e-05
+            },
+            "expectedOutput": false,
+            "hidden": true,
+            "description": "Scaled matrix fails unit norm condition."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-33': {
+    id: 'math-num-prob-33',
+    title: "Householder Reflection Matrix",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'householder_reflection',
+    functionSignature: "householder_reflection(v: list[float]) -> list[list[float]]",
+    starterCode: `def householder_reflection(v):
+    """Construct Householder reflection matrix H = I - 2 * (v v^T) / (v^T v).
+    Return n x n matrix rounded to 4 decimals. If ||v|| == 0, return identity."""
+    # Your implementation here
+    pass
+`,
+    mission: "Construct the elementary orthogonal Householder reflection operator reflecting across a hyperplane.",
+    taskDescription: "Implement `householder_reflection(v)`: for normal vector v of length n, compute `H = I - 2 * (v * v^T) / (v^T * v)`. If `v` is zero, return identity matrix `I`. Return n x n matrix rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= len(v) <= 20."
+],
+    hints: {
+      "small": "v v^T is the outer product matrix whose (i, j) entry is v[i]*v[j].",
+      "strong": "Divide by dot product sum(x**2 for x in v).",
+      "concept": "Householder reflections zero out subdiagonal columns in QR factorizations with optimal numerical stability."
+},
+    conceptConnections: [
+      {
+            "title": "Householder Transformations",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Elementary reflectors in numerical linear algebra"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2D Unit Normal",
+            "input": {
+                  "v": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Reflection across x-axis."
+      },
+      {
+            "id": "tc2",
+            "label": "Diagonal Normal",
+            "input": {
+                  "v": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        -1.0
+                  ],
+                  [
+                        -1.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Reflection across line x + y = 0."
+      },
+      {
+            "id": "tc3",
+            "label": "3D Normal Vector",
+            "input": {
+                  "v": [
+                        0.0,
+                        0.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        -1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Reflection across z-plane."
+      },
+      {
+            "id": "tc4",
+            "label": "Zero Vector",
+            "input": {
+                  "v": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Zero normal defaults to identity."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-34': {
+    id: 'math-num-prob-34',
+    title: "QR Decomposition via Gram-Schmidt",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '20-25 min',
+    functionName: 'qr_decomposition',
+    functionSignature: "qr_decomposition(A: list[list[float]]) -> dict[str, list[list[float]]]",
+    starterCode: `def qr_decomposition(A):
+    """Decompose m x n matrix A into Q (m x n orthonormal columns) and R (n x n upper triangular).
+    Return {'Q': list[list], 'R': list[list]} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Decompose matrix A into orthogonal Q and upper triangular R factors.",
+    taskDescription: "Implement `qr_decomposition(A)`: for an m x n matrix A with m `>=` n, compute `Q` (m x n) and `R` (n x n) such that `A = Q * R` using Gram-Schmidt orthogonalization. Return `{\"Q\": list[list[float]], \"R\": list[list[float]]}` with entries rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A has shape m x n with m >= n >= 1."
+],
+    hints: {
+      "small": "Columns of Q are the normalized orthogonal vectors from Gram-Schmidt.",
+      "strong": "R[i][j] is dot product of Q[:, i] and A[:, j] for i `<=` j.",
+      "concept": "QR factorization solves least-squares problems without squaring condition numbers as in normal equations."
+},
+    conceptConnections: [
+      {
+            "title": "QR Factorization",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Orthogonal triangular factorizations"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Upper Triangular Input",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              0.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "Q": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "R": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              0.0,
+                              3.0
+                        ]
+                  ]
+            },
+            "hidden": false,
+            "description": "QR of upper triangular matrix."
+      },
+      {
+            "id": "tc2",
+            "label": "2x2 Full Rank",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "Q": [
+                        [
+                              0.7071,
+                              0.7071
+                        ],
+                        [
+                              0.7071,
+                              -0.7071
+                        ]
+                  ],
+                  "R": [
+                        [
+                              1.4142,
+                              0.7071
+                        ],
+                        [
+                              0.0,
+                              0.7071
+                        ]
+                  ]
+            },
+            "hidden": false,
+            "description": "Standard 2x2 QR factorization."
+      },
+      {
+            "id": "tc3",
+            "label": "3x2 Rectangular",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "Q": [
+                        [
+                              0.7071,
+                              -0.4082
+                        ],
+                        [
+                              0.7071,
+                              0.4082
+                        ],
+                        [
+                              0.0,
+                              0.8165
+                        ]
+                  ],
+                  "R": [
+                        [
+                              1.4142,
+                              0.7071
+                        ],
+                        [
+                              0.0,
+                              1.2247
+                        ]
+                  ]
+            },
+            "hidden": true,
+            "description": "Rectangular 3x2 QR decomposition."
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 General",
+            "input": {
+                  "A": [
+                        [
+                              12.0,
+                              -51.0,
+                              4.0
+                        ],
+                        [
+                              6.0,
+                              167.0,
+                              -68.0
+                        ],
+                        [
+                              -4.0,
+                              24.0,
+                              -41.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "Q": [
+                        [
+                              0.8571,
+                              -0.3943,
+                              -0.3314
+                        ],
+                        [
+                              0.4286,
+                              0.9029,
+                              0.0343
+                        ],
+                        [
+                              -0.2857,
+                              0.1714,
+                              -0.9429
+                        ]
+                  ],
+                  "R": [
+                        [
+                              14.0,
+                              21.0,
+                              -14.0
+                        ],
+                        [
+                              0.0,
+                              175.0,
+                              -70.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              35.0
+                        ]
+                  ]
+            },
+            "hidden": true,
+            "description": "Standard test matrix for QR factorization."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-35': {
+    id: 'math-num-prob-35',
+    title: "SVD Rank-1 Outer Product Approximation",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'rank_one_svd_approx',
+    functionSignature: "rank_one_svd_approx(u: list[float], s: float, v: list[float]) -> list[list[float]]",
+    starterCode: `def rank_one_svd_approx(u, s, v):
+    """Construct rank-1 matrix approximation A_1 = s * (u v^T) from singular vectors u, v and singular value s.
+    Return m x n matrix rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Reconstruct a rank-1 outer product matrix component from SVD factors.",
+    taskDescription: "Implement `rank_one_svd_approx(u, s, v)`: given left singular vector u of length m, singular value s, and right singular vector v of length n, compute matrix `A_1 = s * (u v^T)`. Return m x n matrix with entries rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "u has length m, v has length n, s >= 0."
+],
+    hints: {
+      "small": "Entry A_1[i][j] = s * u[i] * v[j].",
+      "strong": "Loop over rows i in range(m) and cols j in range(n).",
+      "concept": "By the Eckart-Young-Mirsky theorem, the sum of top k rank-1 SVD terms forms the optimal low-rank matrix approximation under Frobenius norm."
+},
+    conceptConnections: [
+      {
+            "title": "Singular Value Decomposition",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Low-rank approximations and Eckart-Young theorem"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Rank-1 Outer Product",
+            "input": {
+                  "u": [
+                        0.6,
+                        0.8
+                  ],
+                  "s": 10.0,
+                  "v": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        6.0,
+                        0.0
+                  ],
+                  [
+                        8.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Rank-1 matrix s * u * v^T."
+      },
+      {
+            "id": "tc2",
+            "label": "Symmetric Rank-1",
+            "input": {
+                  "u": [
+                        0.7071,
+                        0.7071
+                  ],
+                  "s": 4.0,
+                  "v": [
+                        0.7071,
+                        0.7071
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        2.0,
+                        2.0
+                  ],
+                  [
+                        2.0,
+                        2.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Symmetric outer product rank-1."
+      },
+      {
+            "id": "tc3",
+            "label": "3x2 Rectangular SVD Term",
+            "input": {
+                  "u": [
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  "s": 5.0,
+                  "v": [
+                        0.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        5.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Sparse singular component."
+      },
+      {
+            "id": "tc4",
+            "label": "Negative Singular Vector Entries",
+            "input": {
+                  "u": [
+                        -0.5,
+                        0.5
+                  ],
+                  "s": 2.5,
+                  "v": [
+                        0.8,
+                        -0.6
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        -1.0,
+                        0.75
+                  ],
+                  [
+                        1.0,
+                        -0.75
+                  ]
+            ],
+            "hidden": true,
+            "description": "Mixed sign SVD approximation."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-36': {
+    id: 'math-num-prob-36',
+    title: "Matrix Condition Number Estimation via Frobenius Norm",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'condition_number_frobenius',
+    functionSignature: "condition_number_frobenius(A: list[list[float]]) -> float",
+    starterCode: `def condition_number_frobenius(A):
+    """Compute condition number kappa_F(A) = ||A||_F * ||A^-1||_F.
+    Return -1.0 if A is singular. Round result to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Evaluate the numerical sensitivity of a linear system using the Frobenius condition number.",
+    taskDescription: "Implement `condition_number_frobenius(A)`: calculate `kappa_F(A) = ||A||_F * ||A^-1||_F`. If A is singular (invertible check fails), return `-1.0`. Round result to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n with 1 <= n <= 10."
+],
+    hints: {
+      "small": "Invert A using Gauss-Jordan elimination, then compute Frobenius norms of A and A^-1.",
+      "strong": "Frobenius norm is sqrt(sum(entry**2)).",
+      "concept": "Condition numbers measure how much perturbations in inputs are magnified in linear system solutions."
+},
+    conceptConnections: [
+      {
+            "title": "Condition Numbers",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Sensitivity and numerical error magnification"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identity Matrix",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 2.0,
+            "hidden": false,
+            "description": "Identity matrix condition number is n."
+      },
+      {
+            "id": "tc2",
+            "label": "Well Conditioned 2x2",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 2.0,
+            "hidden": false,
+            "description": "Scaled identity condition number."
+      },
+      {
+            "id": "tc3",
+            "label": "Ill Conditioned 2x2",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.001
+                        ]
+                  ]
+            },
+            "expectedOutput": 4002.001,
+            "hidden": true,
+            "description": "Nearly singular matrix high condition number."
+      },
+      {
+            "id": "tc4",
+            "label": "Singular Matrix",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": -1.0,
+            "hidden": true,
+            "description": "Singular matrix returns -1.0."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-37': {
+    id: 'math-num-prob-37',
+    title: "Central Finite Difference Gradient Approximation",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'finite_difference_gradient',
+    functionSignature: "finite_difference_gradient(f_center: float, f_plus: list[float], f_minus: list[float], h: float = 0.0001) -> list[float]",
+    starterCode: `def finite_difference_gradient(f_center, f_plus, f_minus, h=0.0001):
+    """Compute numerical gradient using central differences g_i = (f(x0 + h e_i) - f(x0 - h e_i)) / (2 * h).
+    Return gradient vector rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Approximate the multivariable gradient vector using second-order accurate central finite differences.",
+    taskDescription: "Implement `finite_difference_gradient(f_center, f_plus, f_minus, h=0.0001)`: given perturbed function values `f_plus` (evaluated at `x + h*e_i`) and `f_minus` (evaluated at `x - h*e_i`), compute `g_i = (f_plus[i] - f_minus[i]) / (2 * h)`. Return gradient vector rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "f_plus and f_minus have matching length d.",
+      "h > 0."
+],
+    hints: {
+      "small": "Central differences cancel out first-order error terms, achieving O(h^2) truncation error.",
+      "strong": "Divide (f_plus[i] - f_minus[i]) by (2.0 * h).",
+      "concept": "Finite differences provide an independent numerical gradient check to verify backpropagation and autodiff implementations."
+},
+    conceptConnections: [
+      {
+            "title": "Numerical Differentiation",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Finite differences and gradient checking"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Quadratic 1D Finite Difference",
+            "input": {
+                  "f_center": 4.0,
+                  "f_plus": [
+                        4.0401
+                  ],
+                  "f_minus": [
+                        3.9601
+                  ],
+                  "h": 0.01
+            },
+            "expectedOutput": [
+                  4.0
+            ],
+            "hidden": false,
+            "description": "Central difference of x^2 at x=2."
+      },
+      {
+            "id": "tc2",
+            "label": "2D Multivariable Gradients",
+            "input": {
+                  "f_center": 5.0,
+                  "f_plus": [
+                        5.02,
+                        5.06
+                  ],
+                  "f_minus": [
+                        4.98,
+                        4.94
+                  ],
+                  "h": 0.01
+            },
+            "expectedOutput": [
+                  2.0,
+                  6.0
+            ],
+            "hidden": false,
+            "description": "2D gradient central differences."
+      },
+      {
+            "id": "tc3",
+            "label": "3D High-Precision Step",
+            "input": {
+                  "f_center": 1.0,
+                  "f_plus": [
+                        1.0002,
+                        1.0004,
+                        1.0006
+                  ],
+                  "f_minus": [
+                        0.9998,
+                        0.9996,
+                        0.9994
+                  ],
+                  "h": 0.0001
+            },
+            "expectedOutput": [
+                  2.0,
+                  4.0,
+                  6.0
+            ],
+            "hidden": true,
+            "description": "3D gradient estimation."
+      },
+      {
+            "id": "tc4",
+            "label": "Zero Slope Peak",
+            "input": {
+                  "f_center": 10.0,
+                  "f_plus": [
+                        9.999,
+                        9.999
+                  ],
+                  "f_minus": [
+                        9.999,
+                        9.999
+                  ],
+                  "h": 0.01
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0
+            ],
+            "hidden": true,
+            "description": "Symmetric peak has zero gradient."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-38': {
+    id: 'math-num-prob-38',
+    title: "Newton-Raphson Optimization Step",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'newton_raphson_step',
+    functionSignature: "newton_raphson_step(x: float, f_prime: float, f_double_prime: float) -> float",
+    starterCode: `def newton_raphson_step(x, f_prime, f_double_prime):
+    """Compute single Newton-Raphson minimization step x_next = x - f'(x) / f''(x).
+    If |f''(x)| < 1e-9, return x unchanged. Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Execute a second-order Newton-Raphson optimization step.",
+    taskDescription: "Implement `newton_raphson_step(x, f_prime, f_double_prime)`: calculate `x_next = x - f_prime / f_double_prime`. If `abs(f_double_prime) < 1e-9`, return `x` unchanged. Return float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Scalar values."
+],
+    hints: {
+      "small": "Newton's method fits an osculating parabola and jumps to its vertex.",
+      "strong": "Subtract f_prime / f_double_prime from x.",
+      "concept": "Newton's method achieves quadratic convergence near the optimum by utilizing exact curvature."
+},
+    conceptConnections: [
+      {
+            "title": "Newton's Method",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Second-order optimization and curvature"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Simple Parabola Optimum",
+            "input": {
+                  "x": 2.0,
+                  "f_prime": 4.0,
+                  "f_double_prime": 2.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": false,
+            "description": "One step to minimum of x^2."
+      },
+      {
+            "id": "tc2",
+            "label": "Cubic Descent",
+            "input": {
+                  "x": 1.0,
+                  "f_prime": 3.0,
+                  "f_double_prime": 6.0
+            },
+            "expectedOutput": 0.5,
+            "hidden": false,
+            "description": "Newton step on cubic function."
+      },
+      {
+            "id": "tc3",
+            "label": "Zero Curvature Inflection",
+            "input": {
+                  "x": 0.0,
+                  "f_prime": 1.0,
+                  "f_double_prime": 0.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": true,
+            "description": "Zero second derivative safeguard."
+      },
+      {
+            "id": "tc4",
+            "label": "Negative Curvature Step",
+            "input": {
+                  "x": 1.5,
+                  "f_prime": -2.0,
+                  "f_double_prime": 4.0
+            },
+            "expectedOutput": 2.0,
+            "hidden": true,
+            "description": "Positive second derivative step toward minimum."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-39': {
+    id: 'math-num-prob-39',
+    title: "Armijo Backtracking Line Search",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'armijo_line_search',
+    functionSignature: "armijo_line_search(f_curr: float, grad_norm_sq: float, candidate_evals: list[float], alpha: float = 1.0, beta: float = 0.5, c: float = 0.0001) -> float",
+    starterCode: `def armijo_line_search(f_curr, grad_norm_sq, candidate_evals, alpha=1.0, beta=0.5, c=1e-4):
+    """Find step size alpha satisfying Armijo sufficient decrease: f(x + alpha*d) <= f(x) - c * alpha * ||grad||^2.
+    candidate_evals contains evaluations for alpha, beta*alpha, beta^2*alpha, etc. Return accepted alpha."""
+    # Your implementation here
+    pass
+`,
+    mission: "Select a step size satisfying the Armijo condition to guarantee global convergence in line search.",
+    taskDescription: "Implement `armijo_line_search(f_curr, grad_norm_sq, candidate_evals, alpha=1.0, beta=0.5, c=1e-4)`: iterate through candidate objective evaluations `f_step`. At each step, test if `f_step <= f_curr - c * curr_alpha * grad_norm_sq`. If satisfied, return `curr_alpha`. Otherwise multiply `curr_alpha *= beta`. Round return value to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "candidate_evals length >= 1.",
+      "alpha > 0, 0 < beta < 1, c > 0."
+],
+    hints: {
+      "small": "Armijo condition tests sufficient decrease proportional to gradient norm squared.",
+      "strong": "Multiply curr_alpha by beta each time the condition fails.",
+      "concept": "Backtracking line search prevents gradient descent from overshooting or oscillating while guaranteeing descent."
+},
+    conceptConnections: [
+      {
+            "title": "Line Search & Wolfe Conditions",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Step size selection and convergence criteria"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Full Step Accepted",
+            "input": {
+                  "f_curr": 10.0,
+                  "grad_norm_sq": 4.0,
+                  "candidate_evals": [
+                        9.9995
+                  ],
+                  "alpha": 1.0,
+                  "beta": 0.5,
+                  "c": 0.0001
+            },
+            "expectedOutput": 1.0,
+            "hidden": false,
+            "description": "First candidate passes Armijo sufficient decrease."
+      },
+      {
+            "id": "tc2",
+            "label": "Backtracked One Step",
+            "input": {
+                  "f_curr": 10.0,
+                  "grad_norm_sq": 4.0,
+                  "candidate_evals": [
+                        10.5,
+                        9.999
+                  ],
+                  "alpha": 1.0,
+                  "beta": 0.5,
+                  "c": 0.0001
+            },
+            "expectedOutput": 0.5,
+            "hidden": false,
+            "description": "First candidate rejected, second accepted."
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple Backtracks",
+            "input": {
+                  "f_curr": 5.0,
+                  "grad_norm_sq": 2.0,
+                  "candidate_evals": [
+                        6.0,
+                        5.5,
+                        4.999
+                  ],
+                  "alpha": 1.0,
+                  "beta": 0.5,
+                  "c": 0.0001
+            },
+            "expectedOutput": 0.25,
+            "hidden": true,
+            "description": "Backtracks twice to alpha = 0.25."
+      },
+      {
+            "id": "tc4",
+            "label": "Exhausted Candidates",
+            "input": {
+                  "f_curr": 5.0,
+                  "grad_norm_sq": 1.0,
+                  "candidate_evals": [
+                        6.0,
+                        5.5
+                  ],
+                  "alpha": 1.0,
+                  "beta": 0.5,
+                  "c": 0.0001
+            },
+            "expectedOutput": 0.25,
+            "hidden": true,
+            "description": "Returns smallest tested alpha."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-40': {
+    id: 'math-num-prob-40',
+    title: "Mahalanobis Distance with Precision Matrix",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'mahalanobis_distance',
+    functionSignature: "mahalanobis_distance(u: list[float], v: list[float], inv_cov: list[list[float]]) -> float",
+    starterCode: `def mahalanobis_distance(u, v, inv_cov):
+    """Compute Mahalanobis distance D_M(u, v) = sqrt((u - v)^T * inv_cov * (u - v)).
+    Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the statistical distance between vectors weighted by an inverse covariance precision matrix.",
+    taskDescription: "Implement `mahalanobis_distance(u, v, inv_cov)`: for vectors u, v of length d and inverse covariance (precision) matrix `inv_cov` (d x d), compute quadratic form `D_M = sqrt((u - v)^T * inv_cov * (u - v))`. Return float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "u and v have length d, inv_cov is d x d."
+],
+    hints: {
+      "small": "First compute difference vector diff = [a - b for a, b in zip(u, v)].",
+      "strong": "Multiply inv_cov by diff, then take dot product with diff and sqrt.",
+      "concept": "Mahalanobis distance accounts for variance and correlation between features, transforming Euclidean balls into covariance ellipsoids."
+},
+    conceptConnections: [
+      {
+            "title": "Statistical Distance Metrics",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Mahalanobis distance and Gaussian geometry"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identity Precision (Euclidean)",
+            "input": {
+                  "u": [
+                        1.0,
+                        2.0
+                  ],
+                  "v": [
+                        4.0,
+                        6.0
+                  ],
+                  "inv_cov": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 5.0,
+            "hidden": false,
+            "description": "Mahalanobis distance with identity precision is Euclidean."
+      },
+      {
+            "id": "tc2",
+            "label": "Diagonal Precision Anisotropic",
+            "input": {
+                  "u": [
+                        0.0,
+                        0.0
+                  ],
+                  "v": [
+                        2.0,
+                        4.0
+                  ],
+                  "inv_cov": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.25
+                        ]
+                  ]
+            },
+            "expectedOutput": 2.8284,
+            "hidden": false,
+            "description": "Anisotropic axis-scaled Mahalanobis distance."
+      },
+      {
+            "id": "tc3",
+            "label": "Correlated Precision Matrix",
+            "input": {
+                  "u": [
+                        1.0,
+                        1.0
+                  ],
+                  "v": [
+                        2.0,
+                        3.0
+                  ],
+                  "inv_cov": [
+                        [
+                              2.0,
+                              -1.0
+                        ],
+                        [
+                              -1.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 2.4495,
+            "hidden": true,
+            "description": "Correlated precision matrix."
+      },
+      {
+            "id": "tc4",
+            "label": "Identical Points",
+            "input": {
+                  "u": [
+                        3.0,
+                        -1.0
+                  ],
+                  "v": [
+                        3.0,
+                        -1.0
+                  ],
+                  "inv_cov": [
+                        [
+                              5.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true,
+            "description": "Identical points distance is zero."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-41': {
+    id: 'math-num-prob-41',
+    title: "1D Discrete Wasserstein Distance (Earth Mover's Distance)",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'wasserstein_1d',
+    functionSignature: "wasserstein_1d(p: list[float], q: list[float]) -> float",
+    starterCode: `def wasserstein_1d(p, q):
+    """Compute 1D Wasserstein distance W_1(p, q) = sum_i |CDF_p(i) - CDF_q(i)| on discrete bins.
+    Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the optimal transport Earth Mover's distance between two discrete 1D probability histograms.",
+    taskDescription: "Implement `wasserstein_1d(p, q)`: compute cumulative distribution functions `CDF_p` and `CDF_q`. Calculate `W_1 = sum_i |CDF_p[i] - CDF_q[i]|`. Return float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "p and q sum to 1.0, identical length n >= 2."
+],
+    hints: {
+      "small": "Maintain cumulative sums cdf_p and cdf_q in a single pass.",
+      "strong": "Accumulate abs(cdf_p - cdf_q) at each index.",
+      "concept": "In 1D, optimal transport admits an exact closed-form solution via the L1 norm between CDFs, powering Wasserstein GANs."
+},
+    conceptConnections: [
+      {
+            "title": "Optimal Transport",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Wasserstein distance and geometry of probability distributions"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identical Distributions",
+            "input": {
+                  "p": [
+                        0.5,
+                        0.5
+                  ],
+                  "q": [
+                        0.5,
+                        0.5
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false,
+            "description": "Wasserstein distance is zero."
+      },
+      {
+            "id": "tc2",
+            "label": "Unit Shift",
+            "input": {
+                  "p": [
+                        1.0,
+                        0.0
+                  ],
+                  "q": [
+                        0.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": false,
+            "description": "Complete probability mass transfer of distance 1."
+      },
+      {
+            "id": "tc3",
+            "label": "3-Bin Distributions",
+            "input": {
+                  "p": [
+                        0.6,
+                        0.4,
+                        0.0
+                  ],
+                  "q": [
+                        0.0,
+                        0.4,
+                        0.6
+                  ]
+            },
+            "expectedOutput": 1.2,
+            "hidden": true,
+            "description": "Symmetric 3-bin Wasserstein distance."
+      },
+      {
+            "id": "tc4",
+            "label": "Multi-Bin Step",
+            "input": {
+                  "p": [
+                        0.2,
+                        0.3,
+                        0.5
+                  ],
+                  "q": [
+                        0.5,
+                        0.3,
+                        0.2
+                  ]
+            },
+            "expectedOutput": 0.6,
+            "hidden": true,
+            "description": "Non-uniform mass transfer."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-42': {
+    id: 'math-num-prob-42',
+    title: "Gaussian Mixture Model Expectation Step (E-step)",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'gmm_e_step',
+    functionSignature: "gmm_e_step(X: list[float], weights: list[float], means: list[float], variances: list[float]) -> list[list[float]]",
+    starterCode: `def gmm_e_step(X, weights, means, variances):
+    """Compute responsibility matrix gamma_ik = P(Z_i = k | x_i).
+    Return N x K matrix rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute posterior cluster assignment responsibilities in the Expectation step of EM for GMMs.",
+    taskDescription: "Implement `gmm_e_step(X, weights, means, variances)`: for N points and K components, compute Gaussian density `d_ik = weights[k] * (1 / sqrt(2*pi*var_k)) * exp(-0.5 * (x_i - mean_k)^2 / var_k)`. Normalize row-wise so `sum_k gamma_ik = 1.0`. Return N x K matrix rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "N >= 1, K >= 2, variances > 0."
+],
+    hints: {
+      "small": "Gaussian PDF is norm_const * exp(-0.5*(x-m)^2 / v).",
+      "strong": "Multiply by prior weight weights[k] and divide by sum across all k components.",
+      "concept": "The E-step soft-assigns data points to latent clusters under the current generative distribution hypothesis."
+},
+    conceptConnections: [
+      {
+            "title": "Expectation-Maximization",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "EM algorithm and mixture modeling"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two Well-Separated Components",
+            "input": {
+                  "X": [
+                        0.0,
+                        10.0
+                  ],
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        0.0,
+                        10.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Near 1.0 and 0.0 responsibilities for separated clusters."
+      },
+      {
+            "id": "tc2",
+            "label": "Midpoint Equal Responsibility",
+            "input": {
+                  "X": [
+                        5.0
+                  ],
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        0.0,
+                        10.0
+                  ],
+                  "variances": [
+                        4.0,
+                        4.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.5,
+                        0.5
+                  ]
+            ],
+            "hidden": false,
+            "description": "Equidistant point has equal responsibility 0.5."
+      },
+      {
+            "id": "tc3",
+            "label": "Unequal Weights and Variances",
+            "input": {
+                  "X": [
+                        1.0,
+                        2.0
+                  ],
+                  "weights": [
+                        0.7,
+                        0.3
+                  ],
+                  "means": [
+                        0.0,
+                        3.0
+                  ],
+                  "variances": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.8447,
+                        0.1553
+                  ],
+                  [
+                        0.3644,
+                        0.6356
+                  ]
+            ],
+            "hidden": true,
+            "description": "Asymmetric component responsibilities."
+      },
+      {
+            "id": "tc4",
+            "label": "Three Clusters",
+            "input": {
+                  "X": [
+                        -5.0,
+                        0.0,
+                        5.0
+                  ],
+                  "weights": [
+                        0.3333,
+                        0.3334,
+                        0.3333
+                  ],
+                  "means": [
+                        -5.0,
+                        0.0,
+                        5.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "3-component mixture responsibility matrix."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-43': {
+    id: 'math-num-prob-43',
+    title: "Gaussian Mixture Model Maximization Step (M-step)",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'gmm_m_step',
+    functionSignature: "gmm_m_step(X: list[float], responsibilities: list[list[float]]) -> dict[str, list[float]]",
+    starterCode: `def gmm_m_step(X, responsibilities):
+    """Re-estimate GMM weights, means, and variances given responsibilities.
+    Return {'weights': list, 'means': list, 'variances': list} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Re-estimate Gaussian Mixture Model parameters via maximum likelihood in the M-step.",
+    taskDescription: "Implement `gmm_m_step(X, responsibilities)`: for each component k, compute effective sample size `N_k = sum_i gamma_ik`. Update `weights[k] = N_k / N`, `means[k] = sum_i (gamma_ik * x_i) / N_k`, and `variances[k] = sum_i (gamma_ik * (x_i - means[k])^2) / N_k`. Return `{\"weights\": list, \"means\": list, \"variances\": list}` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "responsibilities is N x K, X has length N."
+],
+    hints: {
+      "small": "N_k is the sum of column k in responsibilities.",
+      "strong": "Update means[k] before computing variances[k] using the newly computed mean.",
+      "concept": "The M-step analytically maximizes the expected complete-data log-likelihood given posterior cluster weights."
+},
+    conceptConnections: [
+      {
+            "title": "EM Maximization",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Parameter re-estimation under soft assignments"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Equal Split Responsibilities",
+            "input": {
+                  "X": [
+                        0.0,
+                        10.0
+                  ],
+                  "responsibilities": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        0.0,
+                        10.0
+                  ],
+                  "variances": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "hidden": false,
+            "description": "Hard assignments recover discrete clusters."
+      },
+      {
+            "id": "tc2",
+            "label": "Soft Fractional Split",
+            "input": {
+                  "X": [
+                        0.0,
+                        2.0
+                  ],
+                  "responsibilities": [
+                        [
+                              0.5,
+                              0.5
+                        ],
+                        [
+                              0.5,
+                              0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        1.0,
+                        1.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "hidden": false,
+            "description": "Uniform soft assignments merge parameters."
+      },
+      {
+            "id": "tc3",
+            "label": "3 Points 2 Clusters",
+            "input": {
+                  "X": [
+                        1.0,
+                        2.0,
+                        9.0
+                  ],
+                  "responsibilities": [
+                        [
+                              0.9,
+                              0.1
+                        ],
+                        [
+                              0.8,
+                              0.2
+                        ],
+                        [
+                              0.1,
+                              0.9
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.6,
+                        0.4
+                  ],
+                  "means": [
+                        1.8889,
+                        7.1667
+                  ],
+                  "variances": [
+                        3.2099,
+                        10.1389
+                  ]
+            },
+            "hidden": true,
+            "description": "Weighted parameter updates."
+      },
+      {
+            "id": "tc4",
+            "label": "4 Points Equal Mixture",
+            "input": {
+                  "X": [
+                        -2.0,
+                        -1.0,
+                        1.0,
+                        2.0
+                  ],
+                  "responsibilities": [
+                        [
+                              0.8,
+                              0.2
+                        ],
+                        [
+                              0.7,
+                              0.3
+                        ],
+                        [
+                              0.3,
+                              0.7
+                        ],
+                        [
+                              0.2,
+                              0.8
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        -0.8,
+                        0.8
+                  ],
+                  "variances": [
+                        1.86,
+                        1.86
+                  ]
+            },
+            "hidden": true,
+            "description": "Symmetric 4-point M-step."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-44': {
+    id: 'math-num-prob-44',
+    title: "Monte Carlo Numerical Integration and Standard Error",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'monte_carlo_integrate',
+    functionSignature: "monte_carlo_integrate(samples_f: list[float], a: float, b: float) -> dict[str, float]",
+    starterCode: `def monte_carlo_integrate(samples_f, a, b):
+    """Compute Monte Carlo integral estimate and standard error from function evaluations on [a, b].
+    Return {'estimate': float, 'standard_error': float} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Estimate a definite integral and quantify its stochastic uncertainty via Monte Carlo sampling.",
+    taskDescription: "Implement `monte_carlo_integrate(samples_f, a, b)`: given N function evaluations at uniform random samples on `[a, b]`, compute `estimate = (b - a) * mean(samples_f)`. Compute sample variance `s^2 = sum((x - mean)^2) / (N - 1)` and `standard_error = (b - a) * sqrt(s^2 / N)`. If N `<=` 1, standard error is 0.0. Return dict rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(samples_f) >= 1.",
+      "b >= a."
+],
+    hints: {
+      "small": "Mean evaluation is sum(samples_f) / N.",
+      "strong": "Scale mean and standard deviation by the interval width (b - a).",
+      "concept": "Monte Carlo integration breaks the curse of dimensionality, with convergence rate O(1/sqrt(N)) independent of dimension d."
+},
+    conceptConnections: [
+      {
+            "title": "Monte Carlo Methods",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Stochastic integration and error quantification"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Constant Function",
+            "input": {
+                  "samples_f": [
+                        3.0,
+                        3.0,
+                        3.0,
+                        3.0
+                  ],
+                  "a": 0.0,
+                  "b": 2.0
+            },
+            "expectedOutput": {
+                  "estimate": 6.0,
+                  "standard_error": 0.0
+            },
+            "hidden": false,
+            "description": "Constant integral with 0 standard error."
+      },
+      {
+            "id": "tc2",
+            "label": "Linear Gradient Function",
+            "input": {
+                  "samples_f": [
+                        0.0,
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "a": 0.0,
+                  "b": 1.0
+            },
+            "expectedOutput": {
+                  "estimate": 1.5,
+                  "standard_error": 0.6455
+            },
+            "hidden": false,
+            "description": "Monte Carlo estimate and standard error."
+      },
+      {
+            "id": "tc3",
+            "label": "Single Sample",
+            "input": {
+                  "samples_f": [
+                        5.0
+                  ],
+                  "a": 1.0,
+                  "b": 3.0
+            },
+            "expectedOutput": {
+                  "estimate": 10.0,
+                  "standard_error": 0.0
+            },
+            "hidden": true,
+            "description": "Single sample estimate has zero SE."
+      },
+      {
+            "id": "tc4",
+            "label": "Zero Interval",
+            "input": {
+                  "samples_f": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "a": 2.0,
+                  "b": 2.0
+            },
+            "expectedOutput": {
+                  "estimate": 0.0,
+                  "standard_error": 0.0
+            },
+            "hidden": true,
+            "description": "Zero length interval returns zero."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-45': {
+    id: 'math-num-prob-45',
+    title: "Importance Sampling Estimation and Effective Sample Size",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'importance_sampling',
+    functionSignature: "importance_sampling(f_evals: list[float], p_densities: list[float], q_densities: list[float]) -> dict[str, float]",
+    starterCode: `def importance_sampling(f_evals, p_densities, q_densities):
+    """Compute self-normalized importance sampling expectation and effective sample size (ESS).
+    Return {'estimate': float, 'effective_sample_size': float} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Estimate expected values under an intractable target distribution using proposal samples and likelihood ratios.",
+    taskDescription: "Implement `importance_sampling(f_evals, p_densities, q_densities)`: compute likelihood ratio weights `w_i = p_i / q_i`. Calculate self-normalized estimate `mu_hat = sum(w_i * f_i) / sum(w_i)` and Kish's effective sample size `ESS = (sum(w_i))^2 / sum(w_i^2)`. Return dict rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Matching input lengths N >= 1.",
+      "p_densities >= 0, q_densities > 0."
+],
+    hints: {
+      "small": "Importance weight is w_i = p_densities[i] / q_densities[i].",
+      "strong": "ESS measures the equivalent number of independent samples from target p.",
+      "concept": "Importance sampling allows computing expectations over distributions that can be evaluated up to a constant but cannot be directly sampled from."
+},
+    conceptConnections: [
+      {
+            "title": "Importance Sampling",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Proposal re-weighting and variance reduction"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Identity Proposal (Standard MC)",
+            "input": {
+                  "f_evals": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "p_densities": [
+                        0.5,
+                        0.5,
+                        0.5
+                  ],
+                  "q_densities": [
+                        0.5,
+                        0.5,
+                        0.5
+                  ]
+            },
+            "expectedOutput": {
+                  "estimate": 2.0,
+                  "effective_sample_size": 3.0
+            },
+            "hidden": false,
+            "description": "When proposal equals target, weights are 1 and ESS equals N."
+      },
+      {
+            "id": "tc2",
+            "label": "Unequal Proposal Weights",
+            "input": {
+                  "f_evals": [
+                        10.0,
+                        20.0
+                  ],
+                  "p_densities": [
+                        0.8,
+                        0.2
+                  ],
+                  "q_densities": [
+                        0.4,
+                        0.4
+                  ]
+            },
+            "expectedOutput": {
+                  "estimate": 12.0,
+                  "effective_sample_size": 1.4706
+            },
+            "hidden": false,
+            "description": "Importance weights 2.0 and 0.5."
+      },
+      {
+            "id": "tc3",
+            "label": "Skewed Proposal Degenerate ESS",
+            "input": {
+                  "f_evals": [
+                        5.0,
+                        5.0,
+                        5.0
+                  ],
+                  "p_densities": [
+                        0.99,
+                        0.005,
+                        0.005
+                  ],
+                  "q_densities": [
+                        0.01,
+                        0.495,
+                        0.495
+                  ]
+            },
+            "expectedOutput": {
+                  "estimate": 5.0,
+                  "effective_sample_size": 1.0004
+            },
+            "hidden": true,
+            "description": "Low effective sample size due to weight concentration."
+      },
+      {
+            "id": "tc4",
+            "label": "4-Sample General Expectation",
+            "input": {
+                  "f_evals": [
+                        1.0,
+                        -1.0,
+                        2.0,
+                        0.0
+                  ],
+                  "p_densities": [
+                        0.3,
+                        0.2,
+                        0.4,
+                        0.1
+                  ],
+                  "q_densities": [
+                        0.25,
+                        0.25,
+                        0.25,
+                        0.25
+                  ]
+            },
+            "expectedOutput": {
+                  "estimate": 0.9,
+                  "effective_sample_size": 3.3333
+            },
+            "hidden": true,
+            "description": "General importance sampling estimate."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-46': {
+    id: 'math-num-prob-46',
+    title: "Lasso Coordinate Descent Soft-Thresholding Step",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'lasso_coordinate_descent_step',
+    functionSignature: "lasso_coordinate_descent_step(rho_j: float, z_j: float, l1_lambda: float) -> float",
+    starterCode: `def lasso_coordinate_descent_step(rho_j, z_j, l1_lambda):
+    """Compute updated weight w_j using the soft-thresholding operator S(rho_j, lambda) / z_j.
+    Return float rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Apply the closed-form coordinate-wise soft-thresholding update for L1-regularized Lasso regression.",
+    taskDescription: "Implement `lasso_coordinate_descent_step(rho_j, z_j, l1_lambda)`: evaluate soft-thresholding `S(rho, lambda) = rho + lambda` if `rho < -lambda`, `rho - lambda` if `rho > lambda`, else `0.0`. Return `w_j = S(rho_j, l1_lambda) / z_j` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "z_j > 0, l1_lambda >= 0."
+],
+    hints: {
+      "small": "If abs(rho_j) `<=` l1_lambda, the soft-thresholded value is 0.0.",
+      "strong": "Otherwise, shrink the magnitude of rho_j by l1_lambda and divide by z_j.",
+      "concept": "Soft-thresholding produces exact sparsity by setting coefficients to zero when marginal correlation is weaker than lambda."
+},
+    conceptConnections: [
+      {
+            "title": "Coordinate Descent",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Lasso and proximal gradient updates"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Active Positive Coefficient",
+            "input": {
+                  "rho_j": 5.0,
+                  "z_j": 2.0,
+                  "l1_lambda": 1.0
+            },
+            "expectedOutput": 2.0,
+            "hidden": false,
+            "description": "Positive correlation exceeds threshold."
+      },
+      {
+            "id": "tc2",
+            "label": "Thresholded to Zero",
+            "input": {
+                  "rho_j": 0.5,
+                  "z_j": 2.0,
+                  "l1_lambda": 1.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": false,
+            "description": "Small correlation shrunken to exactly 0."
+      },
+      {
+            "id": "tc3",
+            "label": "Active Negative Coefficient",
+            "input": {
+                  "rho_j": -4.0,
+                  "z_j": 2.0,
+                  "l1_lambda": 1.0
+            },
+            "expectedOutput": -1.5,
+            "hidden": true,
+            "description": "Negative correlation exceeds threshold."
+      },
+      {
+            "id": "tc4",
+            "label": "Boundary Threshold Value",
+            "input": {
+                  "rho_j": 2.5,
+                  "z_j": 1.0,
+                  "l1_lambda": 2.5
+            },
+            "expectedOutput": 0.0,
+            "hidden": true,
+            "description": "Exact threshold boundary yields 0.0."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-47': {
+    id: 'math-num-prob-47',
+    title: "Subgradient of Elastic Net Regularization",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'elastic_net_subgradient',
+    functionSignature: "elastic_net_subgradient(w: list[float], grad_loss: list[float], l1_ratio: float = 0.5, alpha: float = 0.1) -> list[float]",
+    starterCode: `def elastic_net_subgradient(w, grad_loss, l1_ratio=0.5, alpha=0.1):
+    """Compute subgradient of regularized loss: grad_loss + alpha * (1 - l1_ratio) * w + alpha * l1_ratio * sign(w).
+    Set sign(0) = 0.0. Return list rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the generalized subgradient of an Elastic Net regularized objective function.",
+    taskDescription: "Implement `elastic_net_subgradient(w, grad_loss, l1_ratio=0.5, alpha=0.1)`: calculate coordinate-wise subgradient `g_i = grad_loss[i] + alpha * (1 - l1_ratio) * w[i] + alpha * l1_ratio * sgn(w[i])` where `sgn(x) = 1.0 if x > 0 else (-1.0 if x < 0 else 0.0)`. Return list rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "w and grad_loss have matching length.",
+      "0.0 <= l1_ratio <= 1.0, alpha >= 0."
+],
+    hints: {
+      "small": "L1 penalty contributes alpha * l1_ratio * sign(w_i).",
+      "strong": "L2 penalty contributes alpha * (1 - l1_ratio) * w_i.",
+      "concept": "Elastic Net balances sparsity from L1 with group selection and numerical conditioning from L2."
+},
+    conceptConnections: [
+      {
+            "title": "Subgradient Calculus",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Nonsmooth convex optimization and Elastic Net"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Positive Weight Vector",
+            "input": {
+                  "w": [
+                        1.0,
+                        2.0
+                  ],
+                  "grad_loss": [
+                        0.5,
+                        0.5
+                  ],
+                  "l1_ratio": 0.5,
+                  "alpha": 0.2
+            },
+            "expectedOutput": [
+                  0.7,
+                  0.8
+            ],
+            "hidden": false,
+            "description": "Both weights positive."
+      },
+      {
+            "id": "tc2",
+            "label": "Zero Weight Coordinate",
+            "input": {
+                  "w": [
+                        0.0,
+                        -1.0
+                  ],
+                  "grad_loss": [
+                        0.3,
+                        -0.4
+                  ],
+                  "l1_ratio": 0.5,
+                  "alpha": 0.2
+            },
+            "expectedOutput": [
+                  0.3,
+                  -0.6
+            ],
+            "hidden": false,
+            "description": "Zero coordinate has subgradient sign 0."
+      },
+      {
+            "id": "tc3",
+            "label": "Pure L1 Regularization",
+            "input": {
+                  "w": [
+                        -2.0,
+                        3.0
+                  ],
+                  "grad_loss": [
+                        0.1,
+                        -0.1
+                  ],
+                  "l1_ratio": 1.0,
+                  "alpha": 0.5
+            },
+            "expectedOutput": [
+                  -0.4,
+                  0.4
+            ],
+            "hidden": true,
+            "description": "Pure L1 subgradient."
+      },
+      {
+            "id": "tc4",
+            "label": "Pure L2 Regularization",
+            "input": {
+                  "w": [
+                        4.0,
+                        -2.0
+                  ],
+                  "grad_loss": [
+                        1.0,
+                        -1.0
+                  ],
+                  "l1_ratio": 0.0,
+                  "alpha": 0.1
+            },
+            "expectedOutput": [
+                  1.4,
+                  -1.2
+            ],
+            "hidden": true,
+            "description": "Pure L2 Ridge gradient."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-48': {
+    id: 'math-num-prob-48',
+    title: "Linear Dynamical System State Space Rollout",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'linear_system_rollout',
+    functionSignature: "linear_system_rollout(A: list[list[float]], B: list[list[float]], x0: list[float], U: list[list[float]]) -> list[list[float]]",
+    starterCode: `def linear_system_rollout(A, B, x0, U):
+    """Simulate discrete linear dynamical system x_{t+1} = A x_t + B u_t.
+    Return list of state vectors [x0, x1, ..., xT] rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate the discrete state-space trajectory of a linear time-invariant dynamical system.",
+    taskDescription: "Implement `linear_system_rollout(A, B, x0, U)`: starting from state `x0` at t=0, sequentially compute `x_{t+1} = A * x_t + B * u_t` for each control vector in `U`. Return the full state trajectory `[x0, x1, ..., xT]` with coordinates rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is n x n, B is n x m, x0 has length n, each u in U has length m."
+],
+    hints: {
+      "small": "Append x0 first to the trajectory before looping.",
+      "strong": "Multiply A by current state and B by control vector, summing coordinates.",
+      "concept": "State-space models formalize linear time-invariant systems in control theory, reinforcement learning, and Kalman filtering."
+},
+    conceptConnections: [
+      {
+            "title": "State-Space Models",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Dynamical systems and Markov decision processes"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "1D Linear System",
+            "input": {
+                  "A": [
+                        [
+                              0.5
+                        ]
+                  ],
+                  "B": [
+                        [
+                              1.0
+                        ]
+                  ],
+                  "x0": [
+                        10.0
+                  ],
+                  "U": [
+                        [
+                              1.0
+                        ],
+                        [
+                              0.0
+                        ],
+                        [
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        10.0
+                  ],
+                  [
+                        6.0
+                  ],
+                  [
+                        3.0
+                  ],
+                  [
+                        1.5
+                  ]
+            ],
+            "hidden": false,
+            "description": "Scalar linear decay with initial control."
+      },
+      {
+            "id": "tc2",
+            "label": "2D State Space Step",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "B": [
+                        [
+                              0.0
+                        ],
+                        [
+                              1.0
+                        ]
+                  ],
+                  "x0": [
+                        0.0,
+                        0.0
+                  ],
+                  "U": [
+                        [
+                              1.0
+                        ],
+                        [
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ],
+                  [
+                        1.0,
+                        2.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Double integrator kinematic state update."
+      },
+      {
+            "id": "tc3",
+            "label": "Zero Control Rollout",
+            "input": {
+                  "A": [
+                        [
+                              0.9,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.9
+                        ]
+                  ],
+                  "B": [
+                        [
+                              1.0
+                        ],
+                        [
+                              1.0
+                        ]
+                  ],
+                  "x0": [
+                        5.0,
+                        5.0
+                  ],
+                  "U": [
+                        [
+                              0.0
+                        ],
+                        [
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        5.0,
+                        5.0
+                  ],
+                  [
+                        4.5,
+                        4.5
+                  ],
+                  [
+                        4.05,
+                        4.05
+                  ]
+            ],
+            "hidden": true,
+            "description": "Autonomous decay trajectory."
+      },
+      {
+            "id": "tc4",
+            "label": "3-Step Multivariable Control",
+            "input": {
+                  "A": [
+                        [
+                              1.0,
+                              0.5
+                        ],
+                        [
+                              -0.5,
+                              1.0
+                        ]
+                  ],
+                  "B": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "x0": [
+                        1.0,
+                        1.0
+                  ],
+                  "U": [
+                        [
+                              0.5,
+                              -0.5
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              -0.5,
+                              0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        1.0
+                  ],
+                  [
+                        2.0,
+                        0.0
+                  ],
+                  [
+                        2.0,
+                        -1.0
+                  ],
+                  [
+                        1.0,
+                        -1.5
+                  ]
+            ],
+            "hidden": true,
+            "description": "Rotational 2D state-space trajectory."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-49': {
+    id: 'math-num-prob-49',
+    title: "Scalar Kalman Filter Measurement Update",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'kalman_filter_step',
+    functionSignature: "kalman_filter_step(x_prior: float, P_prior: float, measurement: float, H: float = 1.0, R: float = 1.0) -> dict[str, float]",
+    starterCode: `def kalman_filter_step(x_prior, P_prior, measurement, H=1.0, R=1.0):
+    """Compute 1D Kalman filter measurement update step.
+    Return {'x_post': float, 'P_post': float, 'K': float} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Execute the optimal measurement update step for a one-dimensional linear Gaussian state estimator.",
+    taskDescription: "Implement `kalman_filter_step(x_prior, P_prior, measurement, H=1.0, R=1.0)`: calculate innovation `y = measurement - H * x_prior`, innovation covariance `S = H * P_prior * H + R`, Kalman gain `K = (P_prior * H) / S`, posterior state `x_post = x_prior + K * y`, and posterior covariance `P_post = (1 - K * H) * P_prior`. Return dict rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "P_prior > 0, R > 0."
+],
+    hints: {
+      "small": "Innovation covariance S = H**2 * P_prior + R.",
+      "strong": "Kalman gain K blends prior estimate with incoming noisy measurement.",
+      "concept": "The Kalman filter is the optimal linear minimum mean-squared error estimator for Gaussian systems."
+},
+    conceptConnections: [
+      {
+            "title": "Kalman Filtering",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Bayesian recursive state estimation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard Observation Update",
+            "input": {
+                  "x_prior": 10.0,
+                  "P_prior": 4.0,
+                  "measurement": 12.0,
+                  "H": 1.0,
+                  "R": 4.0
+            },
+            "expectedOutput": {
+                  "x_post": 11.0,
+                  "P_post": 2.0,
+                  "K": 0.5
+            },
+            "hidden": false,
+            "description": "Equal prior and measurement variance yields K = 0.5."
+      },
+      {
+            "id": "tc2",
+            "label": "Noisy Sensor Small Gain",
+            "input": {
+                  "x_prior": 0.0,
+                  "P_prior": 1.0,
+                  "measurement": 10.0,
+                  "H": 1.0,
+                  "R": 99.0
+            },
+            "expectedOutput": {
+                  "x_post": 0.1,
+                  "P_post": 0.99,
+                  "K": 0.01
+            },
+            "hidden": false,
+            "description": "High measurement noise leads to small Kalman gain."
+      },
+      {
+            "id": "tc3",
+            "label": "High Confidence Sensor",
+            "input": {
+                  "x_prior": 5.0,
+                  "P_prior": 10.0,
+                  "measurement": 2.0,
+                  "H": 1.0,
+                  "R": 0.1
+            },
+            "expectedOutput": {
+                  "x_post": 2.0297,
+                  "P_post": 0.099,
+                  "K": 0.9901
+            },
+            "hidden": true,
+            "description": "Accurate sensor strongly shifts state."
+      },
+      {
+            "id": "tc4",
+            "label": "Scaled Observation Matrix",
+            "input": {
+                  "x_prior": 1.0,
+                  "P_prior": 2.0,
+                  "measurement": 4.0,
+                  "H": 2.0,
+                  "R": 1.0
+            },
+            "expectedOutput": {
+                  "x_post": 1.8889,
+                  "P_post": 0.2222,
+                  "K": 0.4444
+            },
+            "hidden": true,
+            "description": "Non-unity observation factor H=2.0."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-50': {
+    id: 'math-num-prob-50',
+    title: "PageRank Power Iteration Step",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'pagerank_step',
+    functionSignature: "pagerank_step(adj_matrix: list[list[float]], p: list[float], damping: float = 0.85) -> list[float]",
+    starterCode: `def pagerank_step(adj_matrix, p, damping=0.85):
+    """Perform a single PageRank power iteration step p_next = damping * M * p + (1 - damping) / n.
+    Return list rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Execute a single PageRank transition step over a directed link graph.",
+    taskDescription: "Implement `pagerank_step(adj_matrix, p, damping=0.85)`: normalize columns of `adj_matrix` (where `adj[i][j]` is link from j to i) so column sums are 1. If a column sum is 0 (dangling node), replace column entries with `1/n`. Compute `p_next = damping * M * p + (1 - damping) / n`. Return probability vector rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "adj_matrix is n x n, p sums to 1.0, 0 < damping < 1."
+],
+    hints: {
+      "small": "Column j represents outgoing links from page j to all other pages i.",
+      "strong": "If sum of column j is 0, each row receives 1.0 / n.",
+      "concept": "PageRank forms a stationary distribution of a random walk with teleportation, preventing dead-ends and spider traps."
+},
+    conceptConnections: [
+      {
+            "title": "Markov Chains",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Stationary distributions and link analysis"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2-Node Cycle",
+            "input": {
+                  "adj_matrix": [
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "p": [
+                        0.5,
+                        0.5
+                  ],
+                  "damping": 0.85
+            },
+            "expectedOutput": [
+                  0.5,
+                  0.5
+            ],
+            "hidden": false,
+            "description": "Symmetric 2-node cycle equilibrium."
+      },
+      {
+            "id": "tc2",
+            "label": "Source-Sink Graph",
+            "input": {
+                  "adj_matrix": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "p": [
+                        0.5,
+                        0.5
+                  ],
+                  "damping": 0.85
+            },
+            "expectedOutput": [
+                  0.2875,
+                  0.7125
+            ],
+            "hidden": false,
+            "description": "Node 0 points to node 1; node 1 is a dead end dangling node."
+      },
+      {
+            "id": "tc3",
+            "label": "3-Node Star Graph",
+            "input": {
+                  "adj_matrix": [
+                        [
+                              0.0,
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "p": [
+                        0.3333,
+                        0.3333,
+                        0.3334
+                  ],
+                  "damping": 0.85
+            },
+            "expectedOutput": [
+                  0.7111,
+                  0.1444,
+                  0.1444
+            ],
+            "hidden": true,
+            "description": "Hub node collects inbound citations."
+      },
+      {
+            "id": "tc4",
+            "label": "Fully Disconnected Graph",
+            "input": {
+                  "adj_matrix": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "p": [
+                        0.8,
+                        0.2
+                  ],
+                  "damping": 0.85
+            },
+            "expectedOutput": [
+                  0.5,
+                  0.5
+            ],
+            "hidden": true,
+            "description": "Dangling nodes distribute mass uniformly."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-51': {
+    id: 'math-num-prob-51',
+    title: "Discrete 1D Convolution with Padding and Stride",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'conv1d_discrete',
+    functionSignature: "conv1d_discrete(signal: list[float], kernel: list[float], stride: int = 1, padding: int = 0) -> list[float]",
+    starterCode: `def conv1d_discrete(signal, kernel, stride=1, padding=0):
+    """Compute discrete 1D convolution of signal with kernel using given stride and zero-padding.
+    Return list of output values rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement discrete 1D cross-correlation convolution with customizable padding and stride.",
+    taskDescription: "Implement `conv1d_discrete(signal, kernel, stride=1, padding=0)`: pad `signal` with `padding` zeros on both sides. Slide `kernel` across the padded signal with step `stride`. At each step i, compute `sum(padded[i * stride + k] * kernel[k])`. Return output list rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(signal) >= len(kernel) >= 1.",
+      "stride >= 1, padding >= 0."
+],
+    hints: {
+      "small": "Construct padded array: [0.0]*padding + signal + [0.0]*padding.",
+      "strong": "Output length is (len(padded) - len(kernel)) // stride + 1.",
+      "concept": "Convolution translates translation-equivariant weight sharing into efficient linear filtering for sequence and audio modeling."
+},
+    conceptConnections: [
+      {
+            "title": "Convolutional Operations",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Toeplitz matrices and convolutional filters"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "No Padding Stride 1",
+            "input": {
+                  "signal": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0
+                  ],
+                  "kernel": [
+                        1.0,
+                        -1.0
+                  ],
+                  "stride": 1,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  -1.0,
+                  -1.0,
+                  -1.0
+            ],
+            "hidden": false,
+            "description": "Difference filter on 1D signal."
+      },
+      {
+            "id": "tc2",
+            "label": "Padding 1 Same Size",
+            "input": {
+                  "signal": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "kernel": [
+                        0.5,
+                        1.0,
+                        0.5
+                  ],
+                  "stride": 1,
+                  "padding": 1
+            },
+            "expectedOutput": [
+                  2.0,
+                  4.0,
+                  4.0
+            ],
+            "hidden": false,
+            "description": "Padded smoothing kernel."
+      },
+      {
+            "id": "tc3",
+            "label": "Strided Convolution",
+            "input": {
+                  "signal": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0,
+                        6.0
+                  ],
+                  "kernel": [
+                        1.0,
+                        1.0
+                  ],
+                  "stride": 2,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  3.0,
+                  7.0,
+                  11.0
+            ],
+            "hidden": true,
+            "description": "Downsampling stride of 2."
+      },
+      {
+            "id": "tc4",
+            "label": "Identity Kernel",
+            "input": {
+                  "signal": [
+                        5.0,
+                        -3.0,
+                        8.0
+                  ],
+                  "kernel": [
+                        1.0
+                  ],
+                  "stride": 1,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  5.0,
+                  -3.0,
+                  8.0
+            ],
+            "hidden": true,
+            "description": "Unit impulse response."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-52': {
+    id: 'math-num-prob-52',
+    title: "2D Matrix Convolution / Cross-Correlation",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '20-25 min',
+    functionName: 'conv2d_discrete',
+    functionSignature: "conv2d_discrete(image: list[list[float]], kernel: list[list[float]], stride: int = 1, padding: int = 0) -> list[list[float]]",
+    starterCode: `def conv2d_discrete(image, kernel, stride=1, padding=0):
+    """Compute 2D cross-correlation of image with kernel using given stride and zero-padding.
+    Return 2D output matrix rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement two-dimensional discrete cross-correlation filtering with spatial padding and striding.",
+    taskDescription: "Implement `conv2d_discrete(image, kernel, stride=1, padding=0)`: pad 2D `image` with `padding` rows and columns of zeros. Compute the Frobenius inner product of `kernel` with each valid spatial window `image_padded[i*s : i*s + kh, j*s : j*s + kw]`. Return 2D grid rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "kh <= h_pad, kw <= w_pad.",
+      "stride >= 1, padding >= 0."
+],
+    hints: {
+      "small": "Construct padded 2D grid of size (h + 2*pad) x (w + 2*pad).",
+      "strong": "Slide window in row i and column j, accumulating padded[i*stride + p][j*stride + q] * kernel[p][q].",
+      "concept": "2D spatial convolutions extract translation-invariant visual features in convolutional neural networks."
+},
+    conceptConnections: [
+      {
+            "title": "2D Convolutions",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Spatial filtering and feature extraction"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "3x3 Image 2x2 Kernel Valid",
+            "input": {
+                  "image": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "stride": 1,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  [
+                        6.0,
+                        8.0
+                  ],
+                  [
+                        12.0,
+                        14.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "2x2 diagonal filter on 3x3 grid."
+      },
+      {
+            "id": "tc2",
+            "label": "Same Padding Smoothing",
+            "input": {
+                  "image": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              0.25,
+                              0.25
+                        ],
+                        [
+                              0.25,
+                              0.25
+                        ]
+                  ],
+                  "stride": 1,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  [
+                        1.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Averaging kernel."
+      },
+      {
+            "id": "tc3",
+            "label": "Zero-Padded 2D Conv",
+            "input": {
+                  "image": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "stride": 1,
+                  "padding": 1
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        3.0,
+                        2.0
+                  ],
+                  [
+                        4.0,
+                        10.0,
+                        6.0
+                  ],
+                  [
+                        3.0,
+                        7.0,
+                        4.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Padded 2D convolution."
+      },
+      {
+            "id": "tc4",
+            "label": "Strided 2D Conv",
+            "input": {
+                  "image": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0,
+                              4.0
+                        ],
+                        [
+                              5.0,
+                              6.0,
+                              7.0,
+                              8.0
+                        ],
+                        [
+                              9.0,
+                              10.0,
+                              11.0,
+                              12.0
+                        ],
+                        [
+                              13.0,
+                              14.0,
+                              15.0,
+                              16.0
+                        ]
+                  ],
+                  "kernel": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "stride": 2,
+                  "padding": 0
+            },
+            "expectedOutput": [
+                  [
+                        14.0,
+                        22.0
+                  ],
+                  [
+                        46.0,
+                        54.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Stride 2 downsampling convolution."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-53': {
+    id: 'math-num-prob-53',
+    title: "Cooley-Tukey Radix-2 Fast Fourier Transform",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '20-25 min',
+    functionName: 'fft_radix2',
+    functionSignature: "fft_radix2(x: list[float]) -> list[list[float]]",
+    starterCode: `def fft_radix2(x):
+    """Compute Discrete Fourier Transform of real vector x (length power of 2) in O(N log N).
+    Return list of [real, imag] pairs rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Fast Fourier Transform using the divide-and-conquer Cooley-Tukey algorithm.",
+    taskDescription: "Implement `fft_radix2(x)`: for input sequence `x` whose length is a power of 2, compute the DFT `X_k = sum_{n=0}^{N-1} x_n * exp(-2*pi*i*k*n / N)`. Use recursive Cooley-Tukey splitting into even and odd index sub-sequences. Return a list of `[real, imag]` pairs rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(x) is a power of 2 (2, 4, 8, 16, ...)."
+],
+    hints: {
+      "small": "Twiddle factors are w_k = exp(-2*pi*i*k / N) = cos(-2*pi*k/N) + i*sin(-2*pi*k/N).",
+      "strong": "X[k] = even[k] + w_k * odd[k], X[k + N/2] = even[k] - w_k * odd[k].",
+      "concept": "The Cooley-Tukey FFT reduces DFT complexity from O(N^2) to O(N log N), foundational to spectral analysis and fast convolutions."
+},
+    conceptConnections: [
+      {
+            "title": "Fourier Transforms",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Frequency domain representations and FFT"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2-Point Impulse",
+            "input": {
+                  "x": [
+                        1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        1.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "FFT of delta impulse is constant."
+      },
+      {
+            "id": "tc2",
+            "label": "4-Point DC Signal",
+            "input": {
+                  "x": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        4.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Constant DC signal concentrates in bin 0."
+      },
+      {
+            "id": "tc3",
+            "label": "4-Point Cosine Wave",
+            "input": {
+                  "x": [
+                        1.0,
+                        0.0,
+                        -1.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        2.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        0.0
+                  ],
+                  [
+                        2.0,
+                        0.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Single frequency cosine wave."
+      },
+      {
+            "id": "tc4",
+            "label": "8-Point Signal",
+            "input": {
+                  "x": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0,
+                        5.0,
+                        6.0,
+                        7.0,
+                        8.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        36.0,
+                        0.0
+                  ],
+                  [
+                        -4.0,
+                        9.6569
+                  ],
+                  [
+                        -4.0,
+                        4.0
+                  ],
+                  [
+                        -4.0,
+                        1.6569
+                  ],
+                  [
+                        -4.0,
+                        0.0
+                  ],
+                  [
+                        -4.0,
+                        -1.6569
+                  ],
+                  [
+                        -4.0,
+                        -4.0
+                  ],
+                  [
+                        -4.0,
+                        -9.6569
+                  ]
+            ],
+            "hidden": true,
+            "description": "8-point ramp signal FFT."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-54': {
+    id: 'math-num-prob-54',
+    title: "Runge-Kutta 4th Order (RK4) ODE Integration Step",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'rk4_step',
+    functionSignature: "rk4_step(t0: float, y0: float, dt: float, a: float = 1.0, b: float = 0.0) -> float",
+    starterCode: `def rk4_step(t0, y0, dt, a=1.0, b=0.0):
+    """Compute single RK4 step for dy/dt = a*y + b*t.
+    Return y_{t+dt} rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Integrate an initial value ordinary differential equation step with fourth-order accuracy.",
+    taskDescription: "Implement `rk4_step(t0, y0, dt, a=1.0, b=0.0)`: for differential equation `dy/dt = a*y + b*t`, evaluate intermediate slopes: `k1 = f(t0, y0)`, `k2 = f(t0 + dt/2, y0 + dt*k1/2)`, `k3 = f(t0 + dt/2, y0 + dt*k2/2)`, and `k4 = f(t0 + dt, y0 + dt*k3)`. Update `y_next = y0 + (dt / 6) * (k1 + 2*k2 + 2*k3 + k4)`. Return float rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "dt > 0."
+],
+    hints: {
+      "small": "Define helper f(t, y) = a * y + b * t.",
+      "strong": "The middle slopes k2 and k3 have weight 2, k1 and k4 have weight 1; sum divided by 6.",
+      "concept": "RK4 matches the Taylor expansion up to order dt^4 without computing explicit higher-order derivatives, crucial for continuous neural ODEs."
+},
+    conceptConnections: [
+      {
+            "title": "Numerical ODE Integration",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Runge-Kutta schemes and neural ODEs"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Exponential Decay dy/dt = -y",
+            "input": {
+                  "t0": 0.0,
+                  "y0": 1.0,
+                  "dt": 0.1,
+                  "a": -1.0,
+                  "b": 0.0
+            },
+            "expectedOutput": 0.9048,
+            "hidden": false,
+            "description": "Single RK4 step on exp(-t)."
+      },
+      {
+            "id": "tc2",
+            "label": "Linear Growth dy/dt = 2",
+            "input": {
+                  "t0": 0.0,
+                  "y0": 0.0,
+                  "dt": 0.5,
+                  "a": 0.0,
+                  "b": 2.0
+            },
+            "expectedOutput": 0.25,
+            "hidden": false,
+            "description": "Constant slope integrates exactly."
+      },
+      {
+            "id": "tc3",
+            "label": "Coupled Time & State dy/dt = y + t",
+            "input": {
+                  "t0": 1.0,
+                  "y0": 2.0,
+                  "dt": 0.05,
+                  "a": 1.0,
+                  "b": 1.0
+            },
+            "expectedOutput": 2.1551,
+            "hidden": true,
+            "description": "Linear ODE step."
+      },
+      {
+            "id": "tc4",
+            "label": "Larger Step Exponential",
+            "input": {
+                  "t0": 0.0,
+                  "y0": 1.0,
+                  "dt": 0.2,
+                  "a": 0.5,
+                  "b": 0.0
+            },
+            "expectedOutput": 1.1052,
+            "hidden": true,
+            "description": "Growth ODE with dt=0.2."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-55': {
+    id: 'math-num-prob-55',
+    title: "Equality Constrained Quadratic Optimization via KKT System",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '20-25 min',
+    functionName: 'lagrange_quadratic_equality',
+    functionSignature: "lagrange_quadratic_equality(A: list[list[float]], b: list[float], C: list[list[float]], d: list[float]) -> list[float]",
+    starterCode: `def lagrange_quadratic_equality(A, b, C, d):
+    """Solve equality constrained QP: min 0.5 * x^T A x - b^T x s.t. C x = d via (n+m) x (n+m) KKT system.
+    Return optimal primal vector x rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Solve an equality-constrained quadratic program by forming and solving the Karush-Kuhn-Tucker linear block system.",
+    taskDescription: "Implement `lagrange_quadratic_equality(A, b, C, d)`: form the augmented `(n + m) x (n + m)` KKT system `[[A, C^T], [C, 0]] * [x, lambda]^T = [b, d]^T`. Invert the KKT matrix via Gauss-Jordan elimination and extract the primal solution vector `x`. Return `x` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is positive definite n x n, C is m x n with m < n."
+],
+    hints: {
+      "small": "Top-left block is A, top-right is C^T, bottom-left is C, bottom-right is m x m zeros.",
+      "strong": "Right-hand side vector is b followed by d.",
+      "concept": "The KKT system expresses stationarity and primal feasibility, transforming constrained continuous optimization into linear algebra."
+},
+    conceptConnections: [
+      {
+            "title": "Constrained Optimization",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "KKT conditions and Lagrange multipliers"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single Equality Constraint",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "b": [
+                        0.0,
+                        0.0
+                  ],
+                  "C": [
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "d": [
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.0
+            ],
+            "hidden": false,
+            "description": "Min x^2 + y^2 s.t. x + y = 2 yields (1, 1)."
+      },
+      {
+            "id": "tc2",
+            "label": "Off-Center Minimum",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              4.0
+                        ]
+                  ],
+                  "b": [
+                        2.0,
+                        4.0
+                  ],
+                  "C": [
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "d": [
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  2.0,
+                  1.0
+            ],
+            "hidden": false,
+            "description": "Fixed coordinate constraint."
+      },
+      {
+            "id": "tc3",
+            "label": "Coupled Quadratic Objective",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "b": [
+                        1.0,
+                        0.0
+                  ],
+                  "C": [
+                        [
+                              1.0,
+                              -1.0
+                        ]
+                  ],
+                  "d": [
+                        0.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.125,
+                  0.125
+            ],
+            "hidden": true,
+            "description": "Diagonal equality line x = y."
+      },
+      {
+            "id": "tc4",
+            "label": "3D System 1 Constraint",
+            "input": {
+                  "A": [
+                        [
+                              2.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "b": [
+                        1.0,
+                        2.0,
+                        3.0
+                  ],
+                  "C": [
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "d": [
+                        3.0
+                  ]
+            },
+            "expectedOutput": [
+                  0.4997,
+                  0.9997,
+                  1.4997
+            ],
+            "hidden": true,
+            "description": "Hyperplane constraint in 3D."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-56': {
+    id: 'math-num-prob-56',
+    title: "Projected Gradient Descent onto L2 Ball",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '10-15 min',
+    functionName: 'projected_gradient_descent_step',
+    functionSignature: "projected_gradient_descent_step(w: list[float], grad: list[float], lr: float = 0.1, radius: float = 1.0) -> list[float]",
+    starterCode: `def projected_gradient_descent_step(w, grad, lr=0.1, radius=1.0):
+    """Compute single step of projected gradient descent w_next = Proj_Ball(w - lr * grad).
+    Return list rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Apply a projected gradient descent update constrained to an L2 Euclidean ball.",
+    taskDescription: "Implement `projected_gradient_descent_step(w, grad, lr=0.1, radius=1.0)`: compute unconstrained update `u = w - lr * grad`. If `||u||_2 > radius`, project to boundary `w_next = (radius / ||u||_2) * u`; otherwise `w_next = u`. Return `w_next` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "radius > 0, lr > 0.",
+      "Matching vector lengths."
+],
+    hints: {
+      "small": "Compute unprojected vector u[i] = w[i] - lr * grad[i].",
+      "strong": "If sqrt(sum(x**2 for x in u)) `>` radius, scale all entries by radius / norm.",
+      "concept": "Projected gradient descent solves constrained optimization by iteratively stepping and projecting onto convex feasible sets."
+},
+    conceptConnections: [
+      {
+            "title": "Projected Gradient Methods",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Constrained optimization and Euclidean projection"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Step Remains Inside Ball",
+            "input": {
+                  "w": [
+                        0.2,
+                        0.2
+                  ],
+                  "grad": [
+                        0.1,
+                        0.1
+                  ],
+                  "lr": 0.5,
+                  "radius": 1.0
+            },
+            "expectedOutput": [
+                  0.15,
+                  0.15
+            ],
+            "hidden": false,
+            "description": "Unprojected step norm < 1.0 is unchanged."
+      },
+      {
+            "id": "tc2",
+            "label": "Step Exceeds Ball Projected to Boundary",
+            "input": {
+                  "w": [
+                        0.8,
+                        0.8
+                  ],
+                  "grad": [
+                        -0.5,
+                        -0.5
+                  ],
+                  "lr": 1.0,
+                  "radius": 1.0
+            },
+            "expectedOutput": [
+                  0.7071,
+                  0.7071
+            ],
+            "hidden": false,
+            "description": "Vector projected back to unit circle."
+      },
+      {
+            "id": "tc3",
+            "label": "Large Gradient Step",
+            "input": {
+                  "w": [
+                        0.0,
+                        0.0
+                  ],
+                  "grad": [
+                        -10.0,
+                        0.0
+                  ],
+                  "lr": 1.0,
+                  "radius": 2.0
+            },
+            "expectedOutput": [
+                  2.0,
+                  0.0
+            ],
+            "hidden": true,
+            "description": "Projects to (2.0, 0.0)."
+      },
+      {
+            "id": "tc4",
+            "label": "3D Ball Projection",
+            "input": {
+                  "w": [
+                        1.0,
+                        1.0,
+                        1.0
+                  ],
+                  "grad": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "lr": 0.1,
+                  "radius": 1.0
+            },
+            "expectedOutput": [
+                  0.5774,
+                  0.5774,
+                  0.5774
+            ],
+            "hidden": true,
+            "description": "Initial point exceeds radius and is scaled."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-57': {
+    id: 'math-num-prob-57',
+    title: "Simplex Algorithm Tableau Pivot Step",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'simplex_pivot_step',
+    functionSignature: "simplex_pivot_step(tableau: list[list[float]], pivot_row: int, pivot_col: int) -> list[list[float]]",
+    starterCode: `def simplex_pivot_step(tableau, pivot_row, pivot_col):
+    """Perform an elementary row pivot operation on a Simplex tableau.
+    Scale pivot_row so tableau[pivot_row][pivot_col] = 1, then zero out all other entries in pivot_col.
+    Return updated tableau rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Execute an elementary basis change pivot step on a linear programming Simplex tableau.",
+    taskDescription: "Implement `simplex_pivot_step(tableau, pivot_row, pivot_col)`: divide `pivot_row` by pivot element `p = tableau[pivot_row][pivot_col]`. For every other row `i != pivot_row`, subtract `tableau[i][pivot_col] * tableau[pivot_row]` from row i so column `pivot_col` becomes a unit vector. Return updated tableau rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "tableau[pivot_row][pivot_col] != 0."
+],
+    hints: {
+      "small": "First scale the pivot row so the pivot entry becomes 1.0.",
+      "strong": "Subtract factor * pivot_row from each other row to zero out the pivot column.",
+      "concept": "Pivoting exchanges basic and non-basic variables, traversing adjacent vertices of the polyhedral feasible region in linear programming."
+},
+    conceptConnections: [
+      {
+            "title": "Linear Programming",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Simplex method and polyhedral optimization"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x3 Simplex Tableau Pivot",
+            "input": {
+                  "tableau": [
+                        [
+                              2.0,
+                              1.0,
+                              10.0
+                        ],
+                        [
+                              1.0,
+                              3.0,
+                              15.0
+                        ]
+                  ],
+                  "pivot_row": 0,
+                  "pivot_col": 0
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.5,
+                        5.0
+                  ],
+                  [
+                        0.0,
+                        2.5,
+                        10.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Standard elementary pivot operation."
+      },
+      {
+            "id": "tc2",
+            "label": "Already Unit Pivot",
+            "input": {
+                  "tableau": [
+                        [
+                              1.0,
+                              2.0,
+                              4.0
+                        ],
+                        [
+                              3.0,
+                              1.0,
+                              9.0
+                        ]
+                  ],
+                  "pivot_row": 0,
+                  "pivot_col": 0
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        2.0,
+                        4.0
+                  ],
+                  [
+                        0.0,
+                        -5.0,
+                        -3.0
+                  ]
+            ],
+            "hidden": false,
+            "description": "Pivot element is 1.0."
+      },
+      {
+            "id": "tc3",
+            "label": "3x4 Tableau Pivot",
+            "input": {
+                  "tableau": [
+                        [
+                              1.0,
+                              2.0,
+                              1.0,
+                              8.0
+                        ],
+                        [
+                              3.0,
+                              1.0,
+                              0.0,
+                              12.0
+                        ],
+                        [
+                              -2.0,
+                              -3.0,
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "pivot_row": 0,
+                  "pivot_col": 1
+            },
+            "expectedOutput": [
+                  [
+                        0.5,
+                        1.0,
+                        0.5,
+                        4.0
+                  ],
+                  [
+                        2.5,
+                        0.0,
+                        -0.5,
+                        8.0
+                  ],
+                  [
+                        -0.5,
+                        0.0,
+                        1.5,
+                        12.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Pivoting on column 1 in 3-row tableau."
+      },
+      {
+            "id": "tc4",
+            "label": "Negative Pivot Element",
+            "input": {
+                  "tableau": [
+                        [
+                              -2.0,
+                              4.0,
+                              6.0
+                        ],
+                        [
+                              1.0,
+                              2.0,
+                              4.0
+                        ]
+                  ],
+                  "pivot_row": 0,
+                  "pivot_col": 0
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        -2.0,
+                        -3.0
+                  ],
+                  [
+                        0.0,
+                        4.0,
+                        7.0
+                  ]
+            ],
+            "hidden": true,
+            "description": "Pivoting with negative scalar."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-58': {
+    id: 'math-num-prob-58',
+    title: "Gauss-Seidel Method for Linear Systems",
+    difficulty: 'medium',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'gauss_seidel_iteration',
+    functionSignature: "gauss_seidel_iteration(A: list[list[float]], b: list[float], x0: list[float], num_iters: int = 5) -> list[float]",
+    starterCode: `def gauss_seidel_iteration(A, b, x0, num_iters=5):
+    """Solve A x = b using num_iters of the Gauss-Seidel iterative method.
+    Update coordinates immediately in place: x_i = (b_i - sum_{j!=i} A_ij x_j) / A_ii.
+    Return solution vector x rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Solve a diagonally dominant linear system iteratively using immediate in-place Gauss-Seidel updates.",
+    taskDescription: "Implement `gauss_seidel_iteration(A, b, x0, num_iters=5)`: for `num_iters` cycles, update each coordinate `i` from 0 to n-1 via `x[i] = (b[i] - sum_{j != i} A[i][j] * x[j]) / A[i][i]`, immediately utilizing updated values `x[j]` for `j < i`. Return solution vector `x` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n, diagonal entries non-zero.",
+      "num_iters >= 1."
+],
+    hints: {
+      "small": "Unlike Jacobi, Gauss-Seidel modifies the vector x directly in place.",
+      "strong": "x[i] = (b[i] - sum(A[i][j]*x[j] for j in range(n) if j != i)) / A[i][i].",
+      "concept": "Gauss-Seidel converges faster than Jacobi for strictly diagonally dominant or symmetric positive-definite matrices."
+},
+    conceptConnections: [
+      {
+            "title": "Iterative Linear Solvers",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Gauss-Seidel and relaxation methods"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Diagonally Dominant",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              5.0
+                        ]
+                  ],
+                  "b": [
+                        9.0,
+                        12.0
+                  ],
+                  "x0": [
+                        0.0,
+                        0.0
+                  ],
+                  "num_iters": 5
+            },
+            "expectedOutput": [
+                  1.8334,
+                  1.6666
+            ],
+            "hidden": false,
+            "description": "5 iterations of Gauss-Seidel on 2x2 system."
+      },
+      {
+            "id": "tc2",
+            "label": "Converged Equilibrium",
+            "input": {
+                  "A": [
+                        [
+                              3.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "b": [
+                        6.0,
+                        4.0
+                  ],
+                  "x0": [
+                        2.0,
+                        2.0
+                  ],
+                  "num_iters": 3
+            },
+            "expectedOutput": [
+                  2.0,
+                  2.0
+            ],
+            "hidden": false,
+            "description": "Diagonal system stays at exact solution."
+      },
+      {
+            "id": "tc3",
+            "label": "3x3 Tridiagonal Matrix",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              -1.0,
+                              0.0
+                        ],
+                        [
+                              -1.0,
+                              4.0,
+                              -1.0
+                        ],
+                        [
+                              0.0,
+                              -1.0,
+                              4.0
+                        ]
+                  ],
+                  "b": [
+                        2.0,
+                        6.0,
+                        2.0
+                  ],
+                  "x0": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "num_iters": 10
+            },
+            "expectedOutput": [
+                  1.0,
+                  2.0,
+                  1.0
+            ],
+            "hidden": true,
+            "description": "3x3 tridiagonal system iteration."
+      },
+      {
+            "id": "tc4",
+            "label": "Single Iteration",
+            "input": {
+                  "A": [
+                        [
+                              5.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              5.0
+                        ]
+                  ],
+                  "b": [
+                        6.0,
+                        6.0
+                  ],
+                  "x0": [
+                        0.0,
+                        0.0
+                  ],
+                  "num_iters": 1
+            },
+            "expectedOutput": [
+                  1.2,
+                  0.96
+            ],
+            "hidden": true,
+            "description": "Single pass verifies immediate in-place replacement."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-59': {
+    id: 'math-num-prob-59',
+    title: "Successive Over-Relaxation (SOR) Iteration",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '15-20 min',
+    functionName: 'sor_iteration',
+    functionSignature: "sor_iteration(A: list[list[float]], b: list[float], x0: list[float], omega: float = 1.2, num_iters: int = 5) -> list[float]",
+    starterCode: `def sor_iteration(A, b, x0, omega=1.2, num_iters=5):
+    """Solve A x = b using Successive Over-Relaxation (SOR) with relaxation parameter omega.
+    x_i = (1 - omega)*x_i + omega * ((b_i - sum_{j!=i} A_ij x_j) / A_ii).
+    Return solution vector x rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Accelerate linear system convergence via parameterized Successive Over-Relaxation.",
+    taskDescription: "Implement `sor_iteration(A, b, x0, omega=1.2, num_iters=5)`: for `num_iters` cycles, calculate the raw Gauss-Seidel candidate `gs = (b[i] - sum_{j != i} A[i][j] * x[j]) / A[i][i]`, then blend with previous coordinate: `x[i] = (1 - omega) * x[i] + omega * gs`. Return solution vector `x` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "A is square n x n, diagonal non-zero.",
+      "0 < omega < 2.0."
+],
+    hints: {
+      "small": "When omega=1.0, SOR reduces to standard Gauss-Seidel.",
+      "strong": "For omega in (1, 2), over-relaxation extrapolates along the correction vector to accelerate convergence.",
+      "concept": "With an optimally chosen relaxation factor omega, SOR achieves an order-of-magnitude faster convergence rate on elliptic PDEs and large sparse systems."
+},
+    conceptConnections: [
+      {
+            "title": "Successive Over-Relaxation",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Extrapolation and spectral radius minimization"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Over-Relaxation Accelerated 2x2",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              5.0
+                        ]
+                  ],
+                  "b": [
+                        9.0,
+                        12.0
+                  ],
+                  "x0": [
+                        0.0,
+                        0.0
+                  ],
+                  "omega": 1.1,
+                  "num_iters": 5
+            },
+            "expectedOutput": [
+                  1.8333,
+                  1.6667
+            ],
+            "hidden": false,
+            "description": "Over-relaxation with omega=1.1."
+      },
+      {
+            "id": "tc2",
+            "label": "Under-Relaxation Damped 2x2",
+            "input": {
+                  "A": [
+                        [
+                              3.0,
+                              2.0
+                        ],
+                        [
+                              1.0,
+                              4.0
+                        ]
+                  ],
+                  "b": [
+                        7.0,
+                        9.0
+                  ],
+                  "x0": [
+                        0.0,
+                        0.0
+                  ],
+                  "omega": 0.8,
+                  "num_iters": 4
+            },
+            "expectedOutput": [
+                  1.0863,
+                  1.966
+            ],
+            "hidden": false,
+            "description": "Damped SOR with omega=0.8."
+      },
+      {
+            "id": "tc3",
+            "label": "Standard Gauss-Seidel Equivalence (omega=1.0)",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              5.0
+                        ]
+                  ],
+                  "b": [
+                        9.0,
+                        12.0
+                  ],
+                  "x0": [
+                        0.0,
+                        0.0
+                  ],
+                  "omega": 1.0,
+                  "num_iters": 5
+            },
+            "expectedOutput": [
+                  1.8334,
+                  1.6666
+            ],
+            "hidden": true,
+            "description": "omega=1.0 matches Gauss-Seidel exactly."
+      },
+      {
+            "id": "tc4",
+            "label": "3x3 System Iterations",
+            "input": {
+                  "A": [
+                        [
+                              4.0,
+                              -1.0,
+                              0.0
+                        ],
+                        [
+                              -1.0,
+                              4.0,
+                              -1.0
+                        ],
+                        [
+                              0.0,
+                              -1.0,
+                              4.0
+                        ]
+                  ],
+                  "b": [
+                        2.0,
+                        6.0,
+                        2.0
+                  ],
+                  "x0": [
+                        0.0,
+                        0.0,
+                        0.0
+                  ],
+                  "omega": 1.15,
+                  "num_iters": 8
+            },
+            "expectedOutput": [
+                  1.0,
+                  2.0,
+                  1.0
+            ],
+            "hidden": true,
+            "description": "Accelerated tridiagonal solution."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'math-num-prob-60': {
+    id: 'math-num-prob-60',
+    title: "Levenberg-Marquardt Damped Least Squares Step",
+    difficulty: 'hard',
+    topic: "math-numerical",
+    estimatedTime: '20-25 min',
+    functionName: 'levenberg_marquardt_step',
+    functionSignature: "levenberg_marquardt_step(J: list[list[float]], r: list[float], damping: float = 0.01) -> list[float]",
+    starterCode: `def levenberg_marquardt_step(J, r, damping=0.01):
+    """Compute single Levenberg-Marquardt step delta solving (J^T J + damping * I) * delta = -J^T r.
+    Return delta vector rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the damped Gauss-Newton parameter update step for nonlinear least-squares regression.",
+    taskDescription: "Implement `levenberg_marquardt_step(J, r, damping=0.01)`: for m x n Jacobian J and residual vector r of length m, form the normal equations matrix `H = J^T * J + damping * I_n` and gradient `g = -J^T * r`. Solve `H * delta = g` for step `delta`. Return `delta` rounded to 4 decimals.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "J is m x n with m >= n.",
+      "damping > 0."
+],
+    hints: {
+      "small": "J^T J is n x n, r is length m, J^T r is length n.",
+      "strong": "Add damping to diagonal elements of J^T J before solving via matrix inversion.",
+      "concept": "The Levenberg-Marquardt algorithm dynamically interpolates between gradient descent (when far from optimum) and Gauss-Newton (near optimum)."
+},
+    conceptConnections: [
+      {
+            "title": "Nonlinear Least Squares",
+            "route": "/docs/math-numerical/vectors-norms",
+            "description": "Levenberg-Marquardt and trust-region methods"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 Jacobian Single Step",
+            "input": {
+                  "J": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "r": [
+                        1.0,
+                        2.0
+                  ],
+                  "damping": 0.1
+            },
+            "expectedOutput": [
+                  -0.9091,
+                  -0.9756
+            ],
+            "hidden": false,
+            "description": "Damped least-squares step on diagonal Jacobian."
+      },
+      {
+            "id": "tc2",
+            "label": "Zero Residual Equilibrium",
+            "input": {
+                  "J": [
+                        [
+                              2.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "r": [
+                        0.0,
+                        0.0
+                  ],
+                  "damping": 0.01
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0
+            ],
+            "hidden": false,
+            "description": "Zero residual produces zero step delta."
+      },
+      {
+            "id": "tc3",
+            "label": "Overdetermined 3x2 System",
+            "input": {
+                  "J": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "r": [
+                        2.0,
+                        1.0,
+                        1.0
+                  ],
+                  "damping": 0.5
+            },
+            "expectedOutput": [
+                  -0.8571,
+                  -0.8571
+            ],
+            "hidden": true,
+            "description": "Overdetermined nonlinear least squares step."
+      },
+      {
+            "id": "tc4",
+            "label": "Large Damping (Steepest Descent Regime)",
+            "input": {
+                  "J": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ],
+                  "r": [
+                        1.0,
+                        1.0
+                  ],
+                  "damping": 100.0
+            },
+            "expectedOutput": [
+                  -0.0302,
+                  -0.0466
+            ],
+            "hidden": true,
+            "description": "High damping transitions toward gradient descent."
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

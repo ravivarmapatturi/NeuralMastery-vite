@@ -1,23 +1,38 @@
 ---
-placeholder: true
 title: "Practice: #734. Mathematics & Numerical Computing Module 5: Problem 24"
 description: "Master #734. Mathematics & Numerical Computing Module 5: Problem 24 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+difficulty: "medium"
 topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #734. Mathematics & Numerical Computing Module 5: Problem 24
+# #734. RMSprop Exponential Moving Average Step
 
-**Track**: Mathematics & Numerical Computing | **Rank**: #734 of 1072 | **Points**: 90 XP
+**Track**: Mathematics & Numerical Computing | **Rank**: #734 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#734. Mathematics & Numerical Computing Module 5: Problem 24` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Apply leaky exponential moving average scaling to prevent AdaGrad's diminishing learning rates.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `rmsprop_step(w, grad, v, lr=0.001, beta=0.9, eps=1e-8)`: update variance `v_next[i] = beta * v[i] + (1 - beta) * grad[i]^2` and weights `w_next[i] = w[i] - (lr / (sqrt(v_next[i]) + eps)) * grad[i]`. Return `{"w": list[float], "v": list[float]}` rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-24" />
+
+<Solution>
+
+```python
+import math
+
+def rmsprop_step(w, grad, v, lr=0.001, beta=0.9, eps=1e-8):
+    v_next = [beta * vi + (1.0 - beta) * (g ** 2) for vi, g in zip(v, grad)]
+    w_next = [wi - (lr / (math.sqrt(vi_n) + eps)) * g for wi, vi_n, g in zip(w, v_next, grad)]
+    return {'w': [round(float(x), 4) for x in w_next], 'v': [round(float(x), 4) for x in v_next]}
+```
+
+Weights recent squared gradients exponentially heavier to maintain responsive step sizes.
+
+</Solution>

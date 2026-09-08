@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #740. Mathematics & Numerical Computing Module 6: Problem 30"
 description: "Master #740. Mathematics & Numerical Computing Module 6: Problem 30 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,39 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #740. Mathematics & Numerical Computing Module 6: Problem 30
+# #740. Conjugate Gradient Method Single Iteration
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #740 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#740. Mathematics & Numerical Computing Module 6: Problem 30` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Execute a single iteration of the linear Conjugate Gradient algorithm for symmetric positive-definite systems.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_6_problem_30`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `conjugate_gradient_step(A, b, x, r, p)`: calculate matrix-vector product `A p`, step size `alpha = (r . r) / (p . A p)`, updated solution `x_next = x + alpha * p`, updated residual `r_next = r - alpha * A p`, conjugate direction factor `beta = (r_next . r_next) / (r . r)`, and new search direction `p_next = r_next + beta * p`. Return `{"x": list, "r": list, "p": list}` rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-30" />
+
+<Solution>
+
+```python
+def conjugate_gradient_step(A, b, x, r, p):
+    n = len(x)
+    Ap = [sum(A[i][j] * p[j] for j in range(n)) for i in range(n)]
+    pAp = sum(p[i] * Ap[i] for i in range(n))
+    rr = sum(r[i] ** 2 for i in range(n))
+    alpha = rr / pAp if abs(pAp) > 1e-12 else 0.0
+    x_next = [x[i] + alpha * p[i] for i in range(n)]
+    r_next = [r[i] - alpha * Ap[i] for i in range(n)]
+    rr_next = sum(r_next[i] ** 2 for i in range(n))
+    beta = rr_next / rr if rr > 1e-12 else 0.0
+    p_next = [r_next[i] + beta * p[i] for i in range(n)]
+    return {'x': [round(float(val), 4) for val in x_next], 'r': [round(float(val), 4) for val in r_next], 'p': [round(float(val), 4) for val in p_next]}
+```
+
+Updates solution along A-conjugate direction and computes next residual and conjugate search direction.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 40: Problem 160"
 sidebar_position: 160
 description: "Curriculum Problem 160 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #160** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-39`.
+## Overview
+
+Compute the statistical distance between vectors weighted by an inverse covariance precision matrix.
+
+## Task
+
+Implement `mahalanobis_distance(u, v, inv_cov)`: for vectors u, v of length d and inverse covariance (precision) matrix `inv_cov` (d x d), compute quadratic form `D_M = sqrt((u - v)^T * inv_cov * (u - v))`. Return float rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-40" />
 
 <Solution>
 
 ```python
-def math_num_p40(data):
-    # Reference implementation
-    return data
+import math
+
+def mahalanobis_distance(u, v, inv_cov):
+    diff = [a - b for a, b in zip(u, v)]
+    n = len(diff)
+    M_diff = [sum(inv_cov[i][j] * diff[j] for j in range(n)) for i in range(n)]
+    d_sq = sum(diff[i] * M_diff[i] for i in range(n))
+    dist = math.sqrt(max(0.0, d_sq))
+    return round(float(dist), 4)
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Evaluates the bilinear form (u-v)^T inv_cov (u-v) and takes the square root.
 
 </Solution>

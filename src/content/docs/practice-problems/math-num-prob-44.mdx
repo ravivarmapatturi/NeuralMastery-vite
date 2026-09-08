@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 44: Problem 164"
 sidebar_position: 164
 description: "Curriculum Problem 164 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,36 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #164** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-43`.
+## Overview
+
+Estimate a definite integral and quantify its stochastic uncertainty via Monte Carlo sampling.
+
+## Task
+
+Implement `monte_carlo_integrate(samples_f, a, b)`: given N function evaluations at uniform random samples on `[a, b]`, compute `estimate = (b - a) * mean(samples_f)`. Compute sample variance `s^2 = sum((x - mean)^2) / (N - 1)` and `standard_error = (b - a) * sqrt(s^2 / N)`. If N `<=` 1, standard error is 0.0. Return dict rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-44" />
 
 <Solution>
 
 ```python
-def math_num_p44(data):
-    # Reference implementation
-    return data
+import math
+
+def monte_carlo_integrate(samples_f, a, b):
+    N = len(samples_f)
+    if N == 0:
+        return {'estimate': 0.0, 'standard_error': 0.0}
+    mean_f = sum(samples_f) / N
+    interval = b - a
+    estimate = interval * mean_f
+    if N > 1:
+        sample_var = sum((x - mean_f) ** 2 for x in samples_f) / (N - 1)
+        se = interval * math.sqrt(sample_var / N)
+    else:
+        se = 0.0
+    return {'estimate': round(float(estimate), 4), 'standard_error': round(float(se), 4)}
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Evaluates the sample mean scaled by domain volume and estimates error via central limit theorem.
 
 </Solution>

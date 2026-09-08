@@ -1,9 +1,8 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 36: Problem 156"
 sidebar_position: 156
 description: "Curriculum Problem 156 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
-difficulty: medium
+difficulty: hard
 topic: math-numerical
 ---
 
@@ -12,20 +11,43 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Mathematics Module 36: Problem 156
 
-**Rank #156** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
+**Rank #156** · Difficulty: **Hard** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-35`.
+## Overview
+
+Evaluate the numerical sensitivity of a linear system using the Frobenius condition number.
+
+## Task
+
+Implement `condition_number_frobenius(A)`: calculate `kappa_F(A) = ||A||_F * ||A^-1||_F`. If A is singular (invertible check fails), return `-1.0`. Round result to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-36" />
 
 <Solution>
 
 ```python
-def math_num_p36(data):
-    # Reference implementation
-    return data
+import math
+
+def condition_number_frobenius(A):
+    n = len(A)
+    aug = [list(A[i]) + [1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
+    for col in range(n):
+        pivot = max(range(col, n), key=lambda r: abs(aug[r][col]))
+        if abs(aug[pivot][col]) < 1e-9:
+            return -1.0
+        aug[col], aug[pivot] = aug[pivot], aug[col]
+        pivot_val = aug[col][col]
+        aug[col] = [x / pivot_val for x in aug[col]]
+        for r in range(n):
+            if r != col:
+                factor = aug[r][col]
+                aug[r] = [aug[r][c] - factor * aug[col][c] for c in range(2 * n)]
+    inv_A = [[aug[i][n + j] for j in range(n)] for i in range(n)]
+    frob_A = math.sqrt(sum(A[i][j] ** 2 for i in range(n) for j in range(n)))
+    frob_inv = math.sqrt(sum(inv_A[i][j] ** 2 for i in range(n) for j in range(n)))
+    return round(float(frob_A * frob_inv), 4)
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Inverts A via Gauss-Jordan elimination and evaluates the product of Frobenius norms.
 
 </Solution>

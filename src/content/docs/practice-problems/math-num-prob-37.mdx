@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 37: Problem 157"
 sidebar_position: 157
 description: "Curriculum Problem 157 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,24 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #157** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-36`.
+## Overview
+
+Approximate the multivariable gradient vector using second-order accurate central finite differences.
+
+## Task
+
+Implement `finite_difference_gradient(f_center, f_plus, f_minus, h=0.0001)`: given perturbed function values `f_plus` (evaluated at `x + h*e_i`) and `f_minus` (evaluated at `x - h*e_i`), compute `g_i = (f_plus[i] - f_minus[i]) / (2 * h)`. Return gradient vector rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-37" />
 
 <Solution>
 
 ```python
-def math_num_p37(data):
-    # Reference implementation
-    return data
+def finite_difference_gradient(f_center, f_plus, f_minus, h=0.0001):
+    grad = [(fp - fm) / (2.0 * h) for fp, fm in zip(f_plus, f_minus)]
+    return [round(float(g), 4) for g in grad]
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Evaluates O(h^2) symmetric quotient for each coordinate axis.
 
 </Solution>

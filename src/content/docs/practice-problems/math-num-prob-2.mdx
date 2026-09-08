@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #712. Mathematics & Numerical Computing Module 1: Problem 2"
 description: "Master #712. Mathematics & Numerical Computing Module 1: Problem 2 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,40 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #712. Mathematics & Numerical Computing Module 1: Problem 2
+# #712. Vector Dot Product and Angular Separation
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #712 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#712. Mathematics & Numerical Computing Module 1: Problem 2` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute vector inner product and angular separation in radians.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `vector_dot_and_angle(u, v)`: compute the dot product, the angle in radians between `u` and `v` (via `acos(dot / (||u|| * ||v||))`), and boolean `orthogonal` (true if `abs(dot) < 1e-7`). Round float values to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-2" />
+
+<Solution>
+
+```python
+import math
+
+def vector_dot_and_angle(u, v):
+    dot = sum(x * y for x, y in zip(u, v))
+    norm_u = math.sqrt(sum(x ** 2 for x in u))
+    norm_v = math.sqrt(sum(y ** 2 for y in v))
+    if norm_u == 0 or norm_v == 0:
+        angle = 0.0
+    else:
+        cos_val = max(-1.0, min(1.0, dot / (norm_u * norm_v)))
+        angle = math.acos(cos_val)
+    orthogonal = abs(dot) < 1e-7
+    return {'dot': round(float(dot), 4), 'angle_radians': round(float(angle), 4), 'orthogonal': orthogonal}
+```
+
+Computes the inner product and normalized cosine angle, clamped to [-1, 1] for numerical stability.
+
+</Solution>

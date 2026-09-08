@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #714. Mathematics & Numerical Computing Module 1: Problem 4"
 description: "Master #714. Mathematics & Numerical Computing Module 1: Problem 4 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,45 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #714. Mathematics & Numerical Computing Module 1: Problem 4
+# #714. Cosine Distance Matrix
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #714 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#714. Mathematics & Numerical Computing Module 1: Problem 4` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the pairwise cosine distance matrix between rows of a feature matrix.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cosine_distance_matrix(matrix)`: given an n x d matrix, return an n x n matrix of pairwise cosine distances where `D[i][j] = 1 - (u . v) / (||u|| * ||v||)`. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="math-num-prob-4" />
+
+<Solution>
+
+```python
+import math
+
+def cosine_distance_matrix(matrix):
+    n = len(matrix)
+    norms = [math.sqrt(sum(x ** 2 for x in row)) for row in matrix]
+    dist_mat = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            if norms[i] == 0 or norms[j] == 0:
+                sim = 0.0
+            else:
+                dot = sum(a * b for a, b in zip(matrix[i], matrix[j]))
+                sim = dot / (norms[i] * norms[j])
+            dist = 1.0 - sim
+            row.append(round(float(dist), 4))
+        dist_mat.append(row)
+    return dist_mat
+```
+
+Precomputes Euclidean norms for all rows, then computes dot products to evaluate 1 - sim.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 35: Problem 155"
 sidebar_position: 155
 description: "Curriculum Problem 155 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #155** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-34`.
+## Overview
+
+Reconstruct a rank-1 outer product matrix component from SVD factors.
+
+## Task
+
+Implement `rank_one_svd_approx(u, s, v)`: given left singular vector u of length m, singular value s, and right singular vector v of length n, compute matrix `A_1 = s * (u v^T)`. Return m x n matrix with entries rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-35" />
 
 <Solution>
 
 ```python
-def math_num_p35(data):
-    # Reference implementation
-    return data
+def rank_one_svd_approx(u, s, v):
+    m = len(u)
+    n = len(v)
+    A = []
+    for i in range(m):
+        row = []
+        for j in range(n):
+            val = s * u[i] * v[j]
+            row.append(round(float(val), 4))
+        A.append(row)
+    return A
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Scales outer product matrix u v^T by singular value s.
 
 </Solution>

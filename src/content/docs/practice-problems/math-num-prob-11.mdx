@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #721. Mathematics & Numerical Computing Module 3: Problem 11"
 description: "Master #721. Mathematics & Numerical Computing Module 3: Problem 11 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,32 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #721. Mathematics & Numerical Computing Module 3: Problem 11
+# #721. Quadratic Form Gradient
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #721 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#721. Mathematics & Numerical Computing Module 3: Problem 11` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the exact analytical gradient vector of a multivariable quadratic objective.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `quadratic_form_gradient(A, b, x)`: for symmetric matrix A and linear coefficient vector b, compute the gradient `nabla f(x) = A x - b`. Round each coordinate to 4 decimal places.
 
 <PracticePlayground problemId="math-num-prob-11" />
+
+<Solution>
+
+```python
+def quadratic_form_gradient(A, b, x):
+    n = len(x)
+    Ax = [sum(A[i][j] * x[j] for j in range(n)) for i in range(n)]
+    grad = [Ax[i] - b[i] for i in range(n)]
+    return [round(float(g), 4) for g in grad]
+```
+
+Computes matrix-vector product Ax and subtracts b according to vector calculus rules.
+
+</Solution>

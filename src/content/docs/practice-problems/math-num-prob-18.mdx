@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #728. Mathematics & Numerical Computing Module 4: Problem 18"
 description: "Master #728. Mathematics & Numerical Computing Module 4: Problem 18 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,34 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #728. Mathematics & Numerical Computing Module 4: Problem 18
+# #728. Bayes' Rule Categorical Posterior
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #728 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#728. Mathematics & Numerical Computing Module 4: Problem 18` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the exact posterior distribution over discrete hypotheses using Bayes' rule.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `bayes_posterior(priors, likelihoods)`: given prior probabilities `P(H_k)` and likelihoods of evidence `P(E | H_k)`, compute unnormalized products `u_k = priors[k] * likelihoods[k]`. Normalize by `sum(u)` so that posteriors sum to 1. Return list of posterior probabilities rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-18" />
+
+<Solution>
+
+```python
+def bayes_posterior(priors, likelihoods):
+    unnorm = [p * l for p, l in zip(priors, likelihoods)]
+    total = sum(unnorm)
+    if total < 1e-12:
+        return [1.0 / len(priors)] * len(priors)
+    post = [round(float(u / total), 4) for u in unnorm]
+    return post
+```
+
+Calculates unnormalized joint probabilities and divides by the marginal evidence sum.
+
+</Solution>

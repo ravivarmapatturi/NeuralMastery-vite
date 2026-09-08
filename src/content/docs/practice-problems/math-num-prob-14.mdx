@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #724. Mathematics & Numerical Computing Module 3: Problem 14"
 description: "Master #724. Mathematics & Numerical Computing Module 3: Problem 14 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,34 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #724. Mathematics & Numerical Computing Module 3: Problem 14
+# #724. Multivariable Taylor Polynomial Approximation
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #724 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#724. Mathematics & Numerical Computing Module 3: Problem 14` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Evaluate the second-order Taylor expansion around an expansion point.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `multivariable_taylor_approx(f0, grad0, H0, delta_x)`: evaluate the quadratic approximation `T_2(x0 + dx) = f0 + sum(grad0[i]*dx[i]) + 0.5 * sum_ij (dx[i]*H0[i][j]*dx[j])`. Round output to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-14" />
+
+<Solution>
+
+```python
+def multivariable_taylor_approx(f0, grad0, H0, delta_x):
+    linear_term = sum(g * dx for g, dx in zip(grad0, delta_x))
+    n = len(delta_x)
+    H_dx = [sum(H0[i][j] * delta_x[j] for j in range(n)) for i in range(n)]
+    quad_term = 0.5 * sum(dx * h for dx, h in zip(delta_x, H_dx))
+    approx = f0 + linear_term + quad_term
+    return round(float(approx), 4)
+```
+
+Combines zeroth, first, and second-order directional increments.
+
+</Solution>

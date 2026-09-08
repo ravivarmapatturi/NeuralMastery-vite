@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 57: Problem 177"
 sidebar_position: 177
 description: "Curriculum Problem 177 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,34 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #177** · Difficulty: **Hard** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-56`.
+## Overview
+
+Execute an elementary basis change pivot step on a linear programming Simplex tableau.
+
+## Task
+
+Implement `simplex_pivot_step(tableau, pivot_row, pivot_col)`: divide `pivot_row` by pivot element `p = tableau[pivot_row][pivot_col]`. For every other row `i != pivot_row`, subtract `tableau[i][pivot_col] * tableau[pivot_row]` from row i so column `pivot_col` becomes a unit vector. Return updated tableau rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-57" />
 
 <Solution>
 
 ```python
-def math_num_p57(data):
-    # Reference implementation
-    return data
+def simplex_pivot_step(tableau, pivot_row, pivot_col):
+    m = len(tableau)
+    n = len(tableau[0])
+    T = [[tableau[i][j] for j in range(n)] for i in range(m)]
+    pivot_val = T[pivot_row][pivot_col]
+    if abs(pivot_val) < 1e-12:
+        return T
+    T[pivot_row] = [x / pivot_val for x in T[pivot_row]]
+    for i in range(m):
+        if i != pivot_row:
+            factor = T[i][pivot_col]
+            T[i] = [T[i][j] - factor * T[pivot_row][j] for j in range(n)]
+    return [[round(float(x), 4) for x in row] for row in T]
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Normalizes pivot row and eliminates entries in pivot column across all other rows.
 
 </Solution>

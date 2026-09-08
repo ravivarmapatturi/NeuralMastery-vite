@@ -10628,7 +10628,7 @@
       "description": "Master #711. Mathematics & Numerical Computing Module 1: Problem 1 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-10": {
       "slug": "practice-problems/math-num-prob-10",
@@ -10636,9 +10636,9 @@
       "title": "Practice: #720. Mathematics & Numerical Computing Module 2: Problem 10",
       "sidebarPosition": null,
       "description": "Master #720. Mathematics & Numerical Computing Module 2: Problem 10 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-11": {
       "slug": "practice-problems/math-num-prob-11",
@@ -10648,7 +10648,7 @@
       "description": "Master #721. Mathematics & Numerical Computing Module 3: Problem 11 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-12": {
       "slug": "practice-problems/math-num-prob-12",
@@ -10658,7 +10658,7 @@
       "description": "Master #722. Mathematics & Numerical Computing Module 3: Problem 12 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-13": {
       "slug": "practice-problems/math-num-prob-13",
@@ -10668,7 +10668,7 @@
       "description": "Master #723. Mathematics & Numerical Computing Module 3: Problem 13 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-14": {
       "slug": "practice-problems/math-num-prob-14",
@@ -10678,7 +10678,7 @@
       "description": "Master #724. Mathematics & Numerical Computing Module 3: Problem 14 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-15": {
       "slug": "practice-problems/math-num-prob-15",
@@ -10688,7 +10688,7 @@
       "description": "Master #725. Mathematics & Numerical Computing Module 3: Problem 15 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-16": {
       "slug": "practice-problems/math-num-prob-16",
@@ -10698,7 +10698,7 @@
       "description": "Master #726. Mathematics & Numerical Computing Module 4: Problem 16 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-17": {
       "slug": "practice-problems/math-num-prob-17",
@@ -10708,7 +10708,7 @@
       "description": "Master #727. Mathematics & Numerical Computing Module 4: Problem 17 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-18": {
       "slug": "practice-problems/math-num-prob-18",
@@ -10718,7 +10718,7 @@
       "description": "Master #728. Mathematics & Numerical Computing Module 4: Problem 18 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-19": {
       "slug": "practice-problems/math-num-prob-19",
@@ -10728,7 +10728,7 @@
       "description": "Master #729. Mathematics & Numerical Computing Module 4: Problem 19 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-2": {
       "slug": "practice-problems/math-num-prob-2",
@@ -10738,7 +10738,7 @@
       "description": "Master #712. Mathematics & Numerical Computing Module 1: Problem 2 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-20": {
       "slug": "practice-problems/math-num-prob-20",
@@ -10748,7 +10748,7 @@
       "description": "Master #730. Mathematics & Numerical Computing Module 4: Problem 20 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-21": {
       "slug": "practice-problems/math-num-prob-21",
@@ -10758,7 +10758,7 @@
       "description": "Master #731. Mathematics & Numerical Computing Module 5: Problem 21 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-22": {
       "slug": "practice-problems/math-num-prob-22",
@@ -10768,7 +10768,7 @@
       "description": "Master #732. Mathematics & Numerical Computing Module 5: Problem 22 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-23": {
       "slug": "practice-problems/math-num-prob-23",
@@ -10776,9 +10776,9 @@
       "title": "Practice: #733. Mathematics & Numerical Computing Module 5: Problem 23",
       "sidebarPosition": null,
       "description": "Master #733. Mathematics & Numerical Computing Module 5: Problem 23 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-24": {
       "slug": "practice-problems/math-num-prob-24",
@@ -10786,9 +10786,9 @@
       "title": "Practice: #734. Mathematics & Numerical Computing Module 5: Problem 24",
       "sidebarPosition": null,
       "description": "Master #734. Mathematics & Numerical Computing Module 5: Problem 24 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-25": {
       "slug": "practice-problems/math-num-prob-25",
@@ -10798,7 +10798,7 @@
       "description": "Master #735. Mathematics & Numerical Computing Module 5: Problem 25 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-26": {
       "slug": "practice-problems/math-num-prob-26",
@@ -10808,7 +10808,7 @@
       "description": "Master #736. Mathematics & Numerical Computing Module 6: Problem 26 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-27": {
       "slug": "practice-problems/math-num-prob-27",
@@ -10818,7 +10818,7 @@
       "description": "Master #737. Mathematics & Numerical Computing Module 6: Problem 27 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-28": {
       "slug": "practice-problems/math-num-prob-28",
@@ -10828,7 +10828,7 @@
       "description": "Master #738. Mathematics & Numerical Computing Module 6: Problem 28 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-29": {
       "slug": "practice-problems/math-num-prob-29",
@@ -10838,7 +10838,7 @@
       "description": "Master #739. Mathematics & Numerical Computing Module 6: Problem 29 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-3": {
       "slug": "practice-problems/math-num-prob-3",
@@ -10848,7 +10848,7 @@
       "description": "Master #713. Mathematics & Numerical Computing Module 1: Problem 3 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-30": {
       "slug": "practice-problems/math-num-prob-30",
@@ -10858,7 +10858,7 @@
       "description": "Master #740. Mathematics & Numerical Computing Module 6: Problem 30 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-31": {
       "slug": "practice-problems/math-num-prob-31",
@@ -10868,7 +10868,7 @@
       "description": "Curriculum Problem 151 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-32": {
       "slug": "practice-problems/math-num-prob-32",
@@ -10878,7 +10878,7 @@
       "description": "Curriculum Problem 152 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-33": {
       "slug": "practice-problems/math-num-prob-33",
@@ -10888,7 +10888,7 @@
       "description": "Curriculum Problem 153 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-34": {
       "slug": "practice-problems/math-num-prob-34",
@@ -10896,9 +10896,9 @@
       "title": "Practice: Mathematics Module 34: Problem 154",
       "sidebarPosition": 154,
       "description": "Curriculum Problem 154 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-35": {
       "slug": "practice-problems/math-num-prob-35",
@@ -10908,7 +10908,7 @@
       "description": "Curriculum Problem 155 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-36": {
       "slug": "practice-problems/math-num-prob-36",
@@ -10916,9 +10916,9 @@
       "title": "Practice: Mathematics Module 36: Problem 156",
       "sidebarPosition": 156,
       "description": "Curriculum Problem 156 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-37": {
       "slug": "practice-problems/math-num-prob-37",
@@ -10928,7 +10928,7 @@
       "description": "Curriculum Problem 157 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-38": {
       "slug": "practice-problems/math-num-prob-38",
@@ -10938,7 +10938,7 @@
       "description": "Curriculum Problem 158 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-39": {
       "slug": "practice-problems/math-num-prob-39",
@@ -10948,7 +10948,7 @@
       "description": "Curriculum Problem 159 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-4": {
       "slug": "practice-problems/math-num-prob-4",
@@ -10958,7 +10958,7 @@
       "description": "Master #714. Mathematics & Numerical Computing Module 1: Problem 4 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-40": {
       "slug": "practice-problems/math-num-prob-40",
@@ -10968,7 +10968,7 @@
       "description": "Curriculum Problem 160 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-41": {
       "slug": "practice-problems/math-num-prob-41",
@@ -10978,7 +10978,7 @@
       "description": "Curriculum Problem 161 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-42": {
       "slug": "practice-problems/math-num-prob-42",
@@ -10988,7 +10988,7 @@
       "description": "Curriculum Problem 162 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-43": {
       "slug": "practice-problems/math-num-prob-43",
@@ -10998,7 +10998,7 @@
       "description": "Curriculum Problem 163 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-44": {
       "slug": "practice-problems/math-num-prob-44",
@@ -11008,7 +11008,7 @@
       "description": "Curriculum Problem 164 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-45": {
       "slug": "practice-problems/math-num-prob-45",
@@ -11018,7 +11018,7 @@
       "description": "Curriculum Problem 165 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-46": {
       "slug": "practice-problems/math-num-prob-46",
@@ -11028,7 +11028,7 @@
       "description": "Curriculum Problem 166 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-47": {
       "slug": "practice-problems/math-num-prob-47",
@@ -11038,7 +11038,7 @@
       "description": "Curriculum Problem 167 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-48": {
       "slug": "practice-problems/math-num-prob-48",
@@ -11048,7 +11048,7 @@
       "description": "Curriculum Problem 168 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-49": {
       "slug": "practice-problems/math-num-prob-49",
@@ -11056,9 +11056,9 @@
       "title": "Practice: Mathematics Module 49: Problem 169",
       "sidebarPosition": 169,
       "description": "Curriculum Problem 169 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-5": {
       "slug": "practice-problems/math-num-prob-5",
@@ -11068,7 +11068,7 @@
       "description": "Master #715. Mathematics & Numerical Computing Module 1: Problem 5 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-50": {
       "slug": "practice-problems/math-num-prob-50",
@@ -11076,9 +11076,9 @@
       "title": "Practice: Mathematics Module 50: Problem 170",
       "sidebarPosition": 170,
       "description": "Curriculum Problem 170 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-51": {
       "slug": "practice-problems/math-num-prob-51",
@@ -11086,9 +11086,9 @@
       "title": "Practice: Mathematics Module 51: Problem 171",
       "sidebarPosition": 171,
       "description": "Curriculum Problem 171 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-52": {
       "slug": "practice-problems/math-num-prob-52",
@@ -11098,7 +11098,7 @@
       "description": "Curriculum Problem 172 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-53": {
       "slug": "practice-problems/math-num-prob-53",
@@ -11108,7 +11108,7 @@
       "description": "Curriculum Problem 173 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-54": {
       "slug": "practice-problems/math-num-prob-54",
@@ -11118,7 +11118,7 @@
       "description": "Curriculum Problem 174 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-55": {
       "slug": "practice-problems/math-num-prob-55",
@@ -11128,7 +11128,7 @@
       "description": "Curriculum Problem 175 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-56": {
       "slug": "practice-problems/math-num-prob-56",
@@ -11136,9 +11136,9 @@
       "title": "Practice: Mathematics Module 56: Problem 176",
       "sidebarPosition": 176,
       "description": "Curriculum Problem 176 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-57": {
       "slug": "practice-problems/math-num-prob-57",
@@ -11148,7 +11148,7 @@
       "description": "Curriculum Problem 177 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-58": {
       "slug": "practice-problems/math-num-prob-58",
@@ -11156,9 +11156,9 @@
       "title": "Practice: Mathematics Module 58: Problem 178",
       "sidebarPosition": 178,
       "description": "Curriculum Problem 178 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-59": {
       "slug": "practice-problems/math-num-prob-59",
@@ -11168,7 +11168,7 @@
       "description": "Curriculum Problem 179 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-6": {
       "slug": "practice-problems/math-num-prob-6",
@@ -11178,7 +11178,7 @@
       "description": "Master #716. Mathematics & Numerical Computing Module 2: Problem 6 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-60": {
       "slug": "practice-problems/math-num-prob-60",
@@ -11188,7 +11188,7 @@
       "description": "Curriculum Problem 180 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing.",
       "difficulty": "hard",
       "topic": "math-numerical",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-7": {
       "slug": "practice-problems/math-num-prob-7",
@@ -11198,7 +11198,7 @@
       "description": "Master #717. Mathematics & Numerical Computing Module 2: Problem 7 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-8": {
       "slug": "practice-problems/math-num-prob-8",
@@ -11208,7 +11208,7 @@
       "description": "Master #718. Mathematics & Numerical Computing Module 2: Problem 8 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/math-num-prob-9": {
       "slug": "practice-problems/math-num-prob-9",
@@ -11216,9 +11216,9 @@
       "title": "Practice: #719. Mathematics & Numerical Computing Module 2: Problem 9",
       "sidebarPosition": null,
       "description": "Master #719. Mathematics & Numerical Computing Module 2: Problem 9 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "topic": "Mathematics & Numerical Computing",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/matrix-multiplication": {
       "slug": "practice-problems/matrix-multiplication",

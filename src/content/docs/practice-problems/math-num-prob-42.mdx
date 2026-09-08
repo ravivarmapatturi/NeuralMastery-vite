@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 42: Problem 162"
 sidebar_position: 162
 description: "Curriculum Problem 162 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,44 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #162** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-41`.
+## Overview
+
+Compute posterior cluster assignment responsibilities in the Expectation step of EM for GMMs.
+
+## Task
+
+Implement `gmm_e_step(X, weights, means, variances)`: for N points and K components, compute Gaussian density `d_ik = weights[k] * (1 / sqrt(2*pi*var_k)) * exp(-0.5 * (x_i - mean_k)^2 / var_k)`. Normalize row-wise so `sum_k gamma_ik = 1.0`. Return N x K matrix rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-42" />
 
 <Solution>
 
 ```python
-def math_num_p42(data):
-    # Reference implementation
-    return data
+import math
+
+def gmm_e_step(X, weights, means, variances):
+    N = len(X)
+    K = len(weights)
+    resp = []
+    for i in range(N):
+        x = X[i]
+        densities = []
+        for k in range(K):
+            w = weights[k]
+            m = means[k]
+            v = variances[k]
+            norm_const = 1.0 / math.sqrt(2.0 * math.pi * v)
+            density = w * norm_const * math.exp(-0.5 * ((x - m) ** 2) / v)
+            densities.append(density)
+        total = sum(densities)
+        if total < 1e-15:
+            row = [1.0 / K] * K
+        else:
+            row = [d / total for d in densities]
+        resp.append([round(float(r), 4) for r in row])
+    return resp
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Calculates weighted Gaussian densities and normalizes per row to form posterior distributions.
 
 </Solution>

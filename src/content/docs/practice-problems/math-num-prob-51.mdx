@@ -1,9 +1,8 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 51: Problem 171"
 sidebar_position: 171
 description: "Curriculum Problem 171 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
-difficulty: hard
+difficulty: medium
 topic: math-numerical
 ---
 
@@ -12,20 +11,36 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Mathematics Module 51: Problem 171
 
-**Rank #171** · Difficulty: **Hard** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
+**Rank #171** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-50`.
+## Overview
+
+Implement discrete 1D cross-correlation convolution with customizable padding and stride.
+
+## Task
+
+Implement `conv1d_discrete(signal, kernel, stride=1, padding=0)`: pad `signal` with `padding` zeros on both sides. Slide `kernel` across the padded signal with step `stride`. At each step i, compute `sum(padded[i * stride + k] * kernel[k])`. Return output list rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-51" />
 
 <Solution>
 
 ```python
-def math_num_p51(data):
-    # Reference implementation
-    return data
+def conv1d_discrete(signal, kernel, stride=1, padding=0):
+    if padding > 0:
+        padded = [0.0] * padding + signal + [0.0] * padding
+    else:
+        padded = list(signal)
+    k_len = len(kernel)
+    out_len = (len(padded) - k_len) // stride + 1
+    out = []
+    for i in range(out_len):
+        start = i * stride
+        val = sum(padded[start + k] * kernel[k] for k in range(k_len))
+        out.append(round(float(val), 4))
+    return out
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Pads input array and slides kernel with stride, computing inner products at each valid window.
 
 </Solution>

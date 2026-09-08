@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #729. Mathematics & Numerical Computing Module 4: Problem 19"
 description: "Master #729. Mathematics & Numerical Computing Module 4: Problem 19 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,34 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #729. Mathematics & Numerical Computing Module 4: Problem 19
+# #729. Shannon Entropy, Cross-Entropy, and KL Divergence
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #729 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#729. Mathematics & Numerical Computing Module 4: Problem 19` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Evaluate fundamental information-theoretic metrics on discrete probability distributions.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `shannon_and_cross_entropy(p, q)`: compute base-2 Shannon entropy `H(p) = -sum(p_i * log2(p_i))`, cross-entropy `H(p, q) = -sum(p_i * log2(q_i))`, and Kullback-Leibler divergence `D_KL(p || q) = H(p, q) - H(p)`. Skip terms where `p_i < 1e-12`. Return `{"entropy_p": float, "cross_entropy": float, "kl_div": float}` rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-19" />
+
+<Solution>
+
+```python
+import math
+
+def shannon_and_cross_entropy(p, q):
+    entropy_p = -sum(pi * math.log2(pi) for pi in p if pi > 1e-12)
+    cross_entropy = -sum(pi * math.log2(qi) for pi, qi in zip(p, q) if pi > 1e-12 and qi > 1e-12)
+    kl_div = cross_entropy - entropy_p
+    return {'entropy_p': round(float(entropy_p), 4), 'cross_entropy': round(float(cross_entropy), 4), 'kl_div': round(float(kl_div), 4)}
+```
+
+Computes self-information expectation for entropy and relative entropy via logarithmic differences in base 2.
+
+</Solution>

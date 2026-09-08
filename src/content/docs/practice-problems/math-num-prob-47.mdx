@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 47: Problem 167"
 sidebar_position: 167
 description: "Curriculum Problem 167 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,35 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #167** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-46`.
+## Overview
+
+Compute the generalized subgradient of an Elastic Net regularized objective function.
+
+## Task
+
+Implement `elastic_net_subgradient(w, grad_loss, l1_ratio=0.5, alpha=0.1)`: calculate coordinate-wise subgradient `g_i = grad_loss[i] + alpha * (1 - l1_ratio) * w[i] + alpha * l1_ratio * sgn(w[i])` where `sgn(x) = 1.0 if x > 0 else (-1.0 if x < 0 else 0.0)`. Return list rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-47" />
 
 <Solution>
 
 ```python
-def math_num_p47(data):
-    # Reference implementation
-    return data
+def elastic_net_subgradient(w, grad_loss, l1_ratio=0.5, alpha=0.1):
+    g = []
+    l2_coeff = alpha * (1.0 - l1_ratio)
+    l1_coeff = alpha * l1_ratio
+    for wi, gli in zip(w, grad_loss):
+        if wi > 0:
+            sgn = 1.0
+        elif wi < 0:
+            sgn = -1.0
+        else:
+            sgn = 0.0
+        subgrad = gli + l2_coeff * wi + l1_coeff * sgn
+        g.append(round(float(subgrad), 4))
+    return g
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Combines smooth L2 gradient with the canonical minimal-norm subgradient of the L1 norm.
 
 </Solution>

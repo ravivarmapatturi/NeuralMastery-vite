@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 54: Problem 174"
 sidebar_position: 174
 description: "Curriculum Problem 174 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #174** · Difficulty: **Hard** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-53`.
+## Overview
+
+Integrate an initial value ordinary differential equation step with fourth-order accuracy.
+
+## Task
+
+Implement `rk4_step(t0, y0, dt, a=1.0, b=0.0)`: for differential equation `dy/dt = a*y + b*t`, evaluate intermediate slopes: `k1 = f(t0, y0)`, `k2 = f(t0 + dt/2, y0 + dt*k1/2)`, `k3 = f(t0 + dt/2, y0 + dt*k2/2)`, and `k4 = f(t0 + dt, y0 + dt*k3)`. Update `y_next = y0 + (dt / 6) * (k1 + 2*k2 + 2*k3 + k4)`. Return float rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-54" />
 
 <Solution>
 
 ```python
-def math_num_p54(data):
-    # Reference implementation
-    return data
+def rk4_step(t0, y0, dt, a=1.0, b=0.0):
+    def f(t, y):
+        return a * y + b * t
+    k1 = f(t0, y0)
+    k2 = f(t0 + 0.5 * dt, y0 + 0.5 * dt * k1)
+    k3 = f(t0 + 0.5 * dt, y0 + 0.5 * dt * k2)
+    k4 = f(t0 + dt, y0 + dt * k3)
+    y_next = y0 + (dt / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+    return round(float(y_next), 4)
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Averages four probe slopes across interval to achieve fourth-order global truncation error.
 
 </Solution>

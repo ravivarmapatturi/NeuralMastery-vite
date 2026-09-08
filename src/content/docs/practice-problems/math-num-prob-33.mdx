@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 33: Problem 153"
 sidebar_position: 153
 description: "Curriculum Problem 153 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,35 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #153** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-32`.
+## Overview
+
+Construct the elementary orthogonal Householder reflection operator reflecting across a hyperplane.
+
+## Task
+
+Implement `householder_reflection(v)`: for normal vector v of length n, compute `H = I - 2 * (v * v^T) / (v^T * v)`. If `v` is zero, return identity matrix `I`. Return n x n matrix rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-33" />
 
 <Solution>
 
 ```python
-def math_num_p33(data):
-    # Reference implementation
-    return data
+def householder_reflection(v):
+    norm_sq = sum(x ** 2 for x in v)
+    n = len(v)
+    if norm_sq < 1e-12:
+        return [[1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
+    H = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            delta = 1.0 if i == j else 0.0
+            val = delta - 2.0 * (v[i] * v[j]) / norm_sq
+            row.append(round(float(val), 4))
+        H.append(row)
+    return H
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Constructs outer product rank-1 projection and scales by 2 to create the isometric reflection.
 
 </Solution>

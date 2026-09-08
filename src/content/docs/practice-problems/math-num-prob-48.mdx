@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 48: Problem 168"
 sidebar_position: 168
 description: "Curriculum Problem 168 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #168** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-47`.
+## Overview
+
+Simulate the discrete state-space trajectory of a linear time-invariant dynamical system.
+
+## Task
+
+Implement `linear_system_rollout(A, B, x0, U)`: starting from state `x0` at t=0, sequentially compute `x_{t+1} = A * x_t + B * u_t` for each control vector in `U`. Return the full state trajectory `[x0, x1, ..., xT]` with coordinates rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-48" />
 
 <Solution>
 
 ```python
-def math_num_p48(data):
-    # Reference implementation
-    return data
+def linear_system_rollout(A, B, x0, U):
+    trajectory = [list(x0)]
+    curr_x = list(x0)
+    n = len(x0)
+    for u in U:
+        m = len(u)
+        Ax = [sum(A[i][j] * curr_x[j] for j in range(n)) for i in range(n)]
+        Bu = [sum(B[i][j] * u[j] for j in range(m)) for i in range(n)]
+        next_x = [Ax[i] + Bu[i] for i in range(n)]
+        curr_x = next_x
+        trajectory.append([round(float(v), 4) for v in curr_x])
+    return trajectory
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Iterates forward in discrete time applying linear state and control transitions.
 
 </Solution>

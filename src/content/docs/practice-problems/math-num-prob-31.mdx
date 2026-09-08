@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 31: Problem 151"
 sidebar_position: 151
 description: "Curriculum Problem 151 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,25 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #151** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-30`.
+## Overview
+
+Compute the generalized Minkowski p-norm metric between two points.
+
+## Task
+
+Implement `minkowski_distance(p_order, u, v)`: calculate `D(u, v) = (sum_i |u_i - v_i|^p)^(1/p)` where `p = float(p_order) >= 1.0`. Return result rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-31" />
 
 <Solution>
 
 ```python
-def math_num_p31(data):
-    # Reference implementation
-    return data
+def minkowski_distance(p_order, u, v):
+    p = float(p_order)
+    dist = sum(abs(a - b) ** p for a, b in zip(u, v)) ** (1.0 / p)
+    return round(float(dist), 4)
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Evaluates component-wise p-powers and inverts with exponent 1/p.
 
 </Solution>

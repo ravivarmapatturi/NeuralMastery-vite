@@ -1,23 +1,48 @@
 ---
-placeholder: true
 title: "Practice: #719. Mathematics & Numerical Computing Module 2: Problem 9"
 description: "Master #719. Mathematics & Numerical Computing Module 2: Problem 9 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+difficulty: "medium"
 topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #719. Mathematics & Numerical Computing Module 2: Problem 9
+# #719. Matrix Inverse via Gauss-Jordan Elimination
 
-**Track**: Mathematics & Numerical Computing | **Rank**: #719 of 1072 | **Points**: 40 XP
+**Track**: Mathematics & Numerical Computing | **Rank**: #719 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#719. Mathematics & Numerical Computing Module 2: Problem 9` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Invert a square matrix using row operations and partial pivoting.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `matrix_inverse(A)`: augment A with the identity matrix `[A | I]` and perform Gauss-Jordan elimination with partial pivoting. If at any step the maximal pivot element is `< 1e-9`, return `None`. Otherwise return the inverse matrix with entries rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-9" />
+
+<Solution>
+
+```python
+def matrix_inverse(A):
+    n = len(A)
+    aug = [list(A[i]) + [1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
+    for col in range(n):
+        pivot = max(range(col, n), key=lambda r: abs(aug[r][col]))
+        if abs(aug[pivot][col]) < 1e-9:
+            return None
+        aug[col], aug[pivot] = aug[pivot], aug[col]
+        pivot_val = aug[col][col]
+        aug[col] = [x / pivot_val for x in aug[col]]
+        for r in range(n):
+            if r != col:
+                factor = aug[r][col]
+                aug[r] = [aug[r][c] - factor * aug[col][c] for c in range(2 * n)]
+    inv = [[round(float(aug[i][n + j]), 4) for j in range(n)] for i in range(n)]
+    return inv
+```
+
+Applies Gauss-Jordan row reductions with column partial pivoting to transform [A | I] into [I | A^-1].
+
+</Solution>

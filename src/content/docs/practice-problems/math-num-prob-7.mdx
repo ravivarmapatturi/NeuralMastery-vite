@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #717. Mathematics & Numerical Computing Module 2: Problem 7"
 description: "Master #717. Mathematics & Numerical Computing Module 2: Problem 7 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,35 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #717. Mathematics & Numerical Computing Module 2: Problem 7
+# #717. Matrix Invariants: Trace, Frobenius Norm, and Symmetry
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #717 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#717. Mathematics & Numerical Computing Module 2: Problem 7` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute key algebraic and geometric matrix invariants.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `matrix_properties(A)`: for an n x n matrix A, return `{"trace": float, "frobenius": float, "symmetric": bool}` where trace is sum of diagonal entries, Frobenius norm is sqrt of sum of squared entries, and symmetric is True iff `abs(A[i][j] - A[j][i]) < 1e-6` for all i, j. Round floats to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-7" />
+
+<Solution>
+
+```python
+import math
+
+def matrix_properties(A):
+    n = len(A)
+    trace = sum(A[i][i] for i in range(n))
+    frobenius = math.sqrt(sum(A[i][j] ** 2 for i in range(n) for j in range(n)))
+    symmetric = all(abs(A[i][j] - A[j][i]) < 1e-6 for i in range(n) for j in range(n))
+    return {'trace': round(float(trace), 4), 'frobenius': round(float(frobenius), 4), 'symmetric': symmetric}
+```
+
+Computes diagonal sum for trace, entry-wise root-sum-squares for Frobenius norm, and compares transpose entries.
+
+</Solution>

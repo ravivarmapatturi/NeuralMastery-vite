@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #722. Mathematics & Numerical Computing Module 3: Problem 12"
 description: "Master #722. Mathematics & Numerical Computing Module 3: Problem 12 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,37 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #722. Mathematics & Numerical Computing Module 3: Problem 12
+# #722. Jacobian Matrix Evaluation
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #722 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#722. Mathematics & Numerical Computing Module 3: Problem 12` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the Jacobian matrix of a vector-valued nonlinear mapping.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `nonlinear_jacobian(W, x, b)`: for a component-wise quadratic map `f_i(x) = sum_j (W_ij * x_j^2) + b_i`, compute the m x n Jacobian matrix where `J_ij = d f_i / d x_j = 2 * W_ij * x_j`. Round each float to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-12" />
+
+<Solution>
+
+```python
+def nonlinear_jacobian(W, x, b):
+    m = len(W)
+    n = len(x)
+    J = []
+    for i in range(m):
+        row = []
+        for j in range(n):
+            row.append(round(float(2.0 * W[i][j] * x[j]), 4))
+        J.append(row)
+    return J
+```
+
+Evaluates the analytical partial derivative 2 * W_ij * x_j for each matrix coordinate.
+
+</Solution>

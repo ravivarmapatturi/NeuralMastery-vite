@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #730. Mathematics & Numerical Computing Module 4: Problem 20"
 description: "Master #730. Mathematics & Numerical Computing Module 4: Problem 20 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,35 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #730. Mathematics & Numerical Computing Module 4: Problem 20
+# #730. Jensen-Shannon Divergence
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #730 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#730. Mathematics & Numerical Computing Module 4: Problem 20` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the bounded, symmetric Jensen-Shannon divergence between two distributions.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `jensen_shannon_divergence(p, q)`: compute midpoint distribution `M = 0.5*(p + q)`, then evaluate `JSD(p || q) = 0.5 * D_KL(p || M) + 0.5 * D_KL(q || M)` in base-2 bits. Return float rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-20" />
+
+<Solution>
+
+```python
+import math
+
+def jensen_shannon_divergence(p, q):
+    m = [0.5 * (pi + qi) for pi, qi in zip(p, q)]
+    kl_pm = sum(pi * math.log2(pi / mi) for pi, mi in zip(p, m) if pi > 1e-12)
+    kl_qm = sum(qi * math.log2(qi / mi) for qi, mi in zip(q, m) if qi > 1e-12)
+    jsd = 0.5 * kl_pm + 0.5 * kl_qm
+    return round(float(jsd), 4)
+```
+
+Constructs average distribution mixture M and averages the relative entropies to avoid infinite divergence.
+
+</Solution>

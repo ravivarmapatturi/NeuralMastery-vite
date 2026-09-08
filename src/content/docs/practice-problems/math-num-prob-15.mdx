@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #725. Mathematics & Numerical Computing Module 3: Problem 15"
 description: "Master #725. Mathematics & Numerical Computing Module 3: Problem 15 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,36 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #725. Mathematics & Numerical Computing Module 3: Problem 15
+# #725. Directional Derivative along Unit Vector
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #725 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#725. Mathematics & Numerical Computing Module 3: Problem 15` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the rate of change of a multivariable function along an arbitrary vector direction.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `directional_derivative(grad, direction)`: normalize `direction` to unit vector `u = direction / ||direction||` and calculate the inner product `grad . u`. If `||direction|| < 1e-9`, return `0.0`. Round result to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-15" />
+
+<Solution>
+
+```python
+import math
+
+def directional_derivative(grad, direction):
+    norm_v = math.sqrt(sum(d ** 2 for d in direction))
+    if norm_v < 1e-9:
+        return 0.0
+    u = [d / norm_v for d in direction]
+    val = sum(g * d for g, d in zip(grad, u))
+    return round(float(val), 4)
+```
+
+Normalizes search vector to unit length and takes dot product with gradient.
+
+</Solution>

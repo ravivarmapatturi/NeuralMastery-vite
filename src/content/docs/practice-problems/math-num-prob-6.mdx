@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #716. Mathematics & Numerical Computing Module 2: Problem 6"
 description: "Master #716. Mathematics & Numerical Computing Module 2: Problem 6 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,39 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #716. Mathematics & Numerical Computing Module 2: Problem 6
+# #716. Matrix Multiplication from Scratch
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #716 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#716. Mathematics & Numerical Computing Module 2: Problem 6` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement matrix-matrix multiplication without third-party numerical packages.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `matrix_multiply(A, B)`: given an n x m matrix A and an m x k matrix B, return their product C = A x B of dimension n x k. Round each element to 4 decimal places.
 
 <PracticePlayground problemId="math-num-prob-6" />
+
+<Solution>
+
+```python
+def matrix_multiply(A, B):
+    n = len(A)
+    m = len(A[0]) if n > 0 else 0
+    k = len(B[0]) if len(B) > 0 else 0
+    C = []
+    for i in range(n):
+        row = []
+        for j in range(k):
+            val = sum(A[i][p] * B[p][j] for p in range(m))
+            row.append(round(float(val), 4))
+        C.append(row)
+    return C
+```
+
+Three nested loops accumulate the dot product of row i of A and column j of B.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 46: Problem 166"
 sidebar_position: 166
 description: "Curriculum Problem 166 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #166** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-45`.
+## Overview
+
+Apply the closed-form coordinate-wise soft-thresholding update for L1-regularized Lasso regression.
+
+## Task
+
+Implement `lasso_coordinate_descent_step(rho_j, z_j, l1_lambda)`: evaluate soft-thresholding `S(rho, lambda) = rho + lambda` if `rho < -lambda`, `rho - lambda` if `rho > lambda`, else `0.0`. Return `w_j = S(rho_j, l1_lambda) / z_j` rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-46" />
 
 <Solution>
 
 ```python
-def math_num_p46(data):
-    # Reference implementation
-    return data
+def lasso_coordinate_descent_step(rho_j, z_j, l1_lambda):
+    if rho_j < -l1_lambda:
+        s = rho_j + l1_lambda
+    elif rho_j > l1_lambda:
+        s = rho_j - l1_lambda
+    else:
+        s = 0.0
+    w_j = s / z_j if abs(z_j) > 1e-9 else 0.0
+    return round(float(w_j), 4)
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Evaluates proximal operator of L1 norm to enforce exact sparsity.
 
 </Solution>

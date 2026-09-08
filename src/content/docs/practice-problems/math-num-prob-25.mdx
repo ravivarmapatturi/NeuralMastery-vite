@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #735. Mathematics & Numerical Computing Module 5: Problem 25"
 description: "Master #735. Mathematics & Numerical Computing Module 5: Problem 25 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,36 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #735. Mathematics & Numerical Computing Module 5: Problem 25
+# #735. Adam Optimizer Single Step Update
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #735 of 1072 | **Points**: 90 XP
 
 ## Overview
 
-Implement `#735. Mathematics & Numerical Computing Module 5: Problem 25` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a complete Adam optimizer update with analytical bias correction.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `adam_step(w, grad, m, v, t, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8)`: update biased first moment `m_next = beta1*m + (1-beta1)*grad`, biased second moment `v_next = beta2*v + (1-beta2)*grad^2`. Correct biases: `m_hat = m_next / (1 - beta1^t)` and `v_hat = v_next / (1 - beta2^t)`. Update `w_next = w - (lr / (sqrt(v_hat) + eps)) * m_hat`. Return `{"w": list, "m": list, "v": list}` rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-25" />
+
+<Solution>
+
+```python
+import math
+
+def adam_step(w, grad, m, v, t=1, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8):
+    m_next = [beta1 * mi + (1.0 - beta1) * gi for mi, gi in zip(m, grad)]
+    v_next = [beta2 * vi + (1.0 - beta2) * (gi ** 2) for vi, gi in zip(v, grad)]
+    m_hat = [mi_n / (1.0 - beta1 ** t) for mi_n in m_next]
+    v_hat = [vi_n / (1.0 - beta2 ** t) for vi_n in v_next]
+    w_next = [wi - (lr / (math.sqrt(vh) + eps)) * mh for wi, vh, mh in zip(w, v_hat, m_hat)]
+    return {'w': [round(float(x), 4) for x in w_next], 'm': [round(float(x), 4) for x in m_next], 'v': [round(float(x), 4) for x in v_next]}
+```
+
+Updates first and second moment moving averages, corrects zero-initialization bias, and applies preconditioned step.
+
+</Solution>

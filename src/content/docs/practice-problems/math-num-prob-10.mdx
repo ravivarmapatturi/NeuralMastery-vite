@@ -1,23 +1,46 @@
 ---
-placeholder: true
 title: "Practice: #720. Mathematics & Numerical Computing Module 2: Problem 10"
 description: "Master #720. Mathematics & Numerical Computing Module 2: Problem 10 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+difficulty: "medium"
 topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #720. Mathematics & Numerical Computing Module 2: Problem 10
+# #720. Power Iteration for Dominant Eigenpair
 
-**Track**: Mathematics & Numerical Computing | **Rank**: #720 of 1072 | **Points**: 40 XP
+**Track**: Mathematics & Numerical Computing | **Rank**: #720 of 1072 | **Points**: 60 XP
 
 ## Overview
 
-Implement `#720. Mathematics & Numerical Computing Module 2: Problem 10` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Estimate the dominant eigenvalue and eigenvector of a matrix via repeated matrix-vector multiplication.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `power_iteration(A, num_iters=20)`: initialize vector `b = [1.0]*n`. At each iteration compute `b_next = A * b` and normalize `b = b_next / ||b_next||`. After `num_iters`, compute the Rayleigh quotient eigenvalue `lambda = (b . A*b) / (b . b)`. Return `{"eigenvalue": float, "eigenvector": list[float]}` rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-10" />
+
+<Solution>
+
+```python
+import math
+
+def power_iteration(A, num_iters=20):
+    n = len(A)
+    b = [1.0] * n
+    for _ in range(num_iters):
+        b_next = [sum(A[i][j] * b[j] for j in range(n)) for i in range(n)]
+        norm = math.sqrt(sum(x ** 2 for x in b_next))
+        if norm < 1e-9:
+            break
+        b = [x / norm for x in b_next]
+    Ab = [sum(A[i][j] * b[j] for j in range(n)) for i in range(n)]
+    rayleigh = sum(b[i] * Ab[i] for i in range(n))
+    return {'eigenvalue': round(float(rayleigh), 4), 'eigenvector': [round(float(x), 4) for x in b]}
+```
+
+Repeatedly multiplies by A and normalizes, projecting out non-dominant eigen-components, then evaluates Rayleigh quotient.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #711. Mathematics & Numerical Computing Module 1: Problem 1"
 description: "Master #711. Mathematics & Numerical Computing Module 1: Problem 1 in the Mathematics & Numerical Computing track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,34 @@ topic: "Mathematics & Numerical Computing"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
-# #711. Mathematics & Numerical Computing Module 1: Problem 1
+# #711. Euclidean and Manhattan Vector Norms
 
 **Track**: Mathematics & Numerical Computing | **Rank**: #711 of 1072 | **Points**: 40 XP
 
 ## Overview
 
-Implement `#711. Mathematics & Numerical Computing Module 1: Problem 1` to advance your mastery in **Mathematics & Numerical Computing**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute L1, L2, and L-infinity norms of an n-dimensional vector.
 
 ## Task
 
-Implement the function `mathematics_and_numerical_computing_module_1_problem_1`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `vector_norms(v)`: calculate the Manhattan norm (sum of absolute values), Euclidean norm (square root of sum of squares), and Chebyshev/L-infinity norm (maximum absolute value). Return a dict `{"l1": float, "l2": float, "linf": float}` with all values rounded to 4 decimal places.
 
 <PracticePlayground problemId="math-num-prob-1" />
+
+<Solution>
+
+```python
+import math
+
+def vector_norms(v):
+    l1 = sum(abs(x) for x in v)
+    l2 = math.sqrt(sum(x ** 2 for x in v))
+    linf = max(abs(x) for x in v) if v else 0.0
+    return {'l1': round(float(l1), 4), 'l2': round(float(l2), 4), 'linf': round(float(linf), 4)}
+```
+
+L1 computes sum of absolute coordinates, L2 computes Euclidean length, and Linf computes the supremum norm.
+
+</Solution>

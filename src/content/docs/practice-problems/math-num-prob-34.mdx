@@ -1,9 +1,8 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 34: Problem 154"
 sidebar_position: 154
 description: "Curriculum Problem 154 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
-difficulty: medium
+difficulty: hard
 topic: math-numerical
 ---
 
@@ -12,20 +11,48 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Mathematics Module 34: Problem 154
 
-**Rank #154** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
+**Rank #154** · Difficulty: **Hard** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-33`.
+## Overview
+
+Decompose matrix A into orthogonal Q and upper triangular R factors.
+
+## Task
+
+Implement `qr_decomposition(A)`: for an m x n matrix A with m `>=` n, compute `Q` (m x n) and `R` (n x n) such that `A = Q * R` using Gram-Schmidt orthogonalization. Return `{"Q": list[list[float]], "R": list[list[float]]}` with entries rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-34" />
 
 <Solution>
 
 ```python
-def math_num_p34(data):
-    # Reference implementation
-    return data
+import math
+
+def qr_decomposition(A):
+    m = len(A)
+    n = len(A[0])
+    cols = [[A[i][j] for i in range(m)] for j in range(n)]
+    Q_cols = []
+    R = [[0.0] * n for _ in range(n)]
+    for j in range(n):
+        v = list(cols[j])
+        for i in range(j):
+            q_i = Q_cols[i]
+            r_ij = sum(q_i[k] * cols[j][k] for k in range(m))
+            R[i][j] = r_ij
+            v = [v[k] - r_ij * q_i[k] for k in range(m)]
+        r_jj = math.sqrt(sum(x ** 2 for x in v))
+        R[j][j] = r_jj
+        if r_jj > 1e-9:
+            q_j = [x / r_jj for x in v]
+        else:
+            q_j = [0.0] * m
+        Q_cols.append(q_j)
+    Q = [[round(float(Q_cols[j][i]), 4) for j in range(n)] for i in range(m)]
+    R_res = [[round(float(R[i][j]), 4) for j in range(n)] for i in range(n)]
+    return {'Q': Q, 'R': R_res}
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Executes modified Gram-Schmidt across matrix columns to populate Q and R.
 
 </Solution>

@@ -1,9 +1,8 @@
 ---
-placeholder: true
 title: "Practice: Mathematics Module 58: Problem 178"
 sidebar_position: 178
 description: "Curriculum Problem 178 (Stage 3: Mathematics & Numerical Computing): Master Mathematics / numerical computing."
-difficulty: hard
+difficulty: medium
 topic: math-numerical
 ---
 
@@ -12,20 +11,31 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Mathematics Module 58: Problem 178
 
-**Rank #178** · Difficulty: **Hard** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
+**Rank #178** · Difficulty: **Medium** · Stage: **Stage 3: Mathematics & Numerical Computing** · Category: **Math & Numerical**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `math-num-prob-57`.
+## Overview
+
+Solve a diagonally dominant linear system iteratively using immediate in-place Gauss-Seidel updates.
+
+## Task
+
+Implement `gauss_seidel_iteration(A, b, x0, num_iters=5)`: for `num_iters` cycles, update each coordinate `i` from 0 to n-1 via `x[i] = (b[i] - sum_{j != i} A[i][j] * x[j]) / A[i][i]`, immediately utilizing updated values `x[j]` for `j < i`. Return solution vector `x` rounded to 4 decimals.
 
 <PracticePlayground problemId="math-num-prob-58" />
 
 <Solution>
 
 ```python
-def math_num_p58(data):
-    # Reference implementation
-    return data
+def gauss_seidel_iteration(A, b, x0, num_iters=5):
+    n = len(b)
+    x = list(x0)
+    for _ in range(num_iters):
+        for i in range(n):
+            sum_known = sum(A[i][j] * x[j] for j in range(n) if j != i)
+            x[i] = (b[i] - sum_known) / A[i][i]
+    return [round(float(v), 4) for v in x]
 ```
 
-This problem tests fundamental skills in Mathematics / numerical computing.
+Updates state vector in place so subsequent coordinate updates within the same iteration benefit from newer estimates.
 
 </Solution>
