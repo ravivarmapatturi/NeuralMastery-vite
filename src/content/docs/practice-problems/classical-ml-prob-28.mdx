@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 28: Problem 268"
 sidebar_position: 268
 description: "Curriculum Problem 268 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,27 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #268** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-27`.
+## Overview
+
+Compute nearest squared centroid distances for K-Means++ probabilistic initialization.
+
+## Task
+
+Implement `kmeans_plus_plus_distances(points, centroids)`: for each point `x`, find `min(sum((x[j] - c[j])**2 for c in centroids))`. Return list of minimum squared distances rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-28" />
 
 <Solution>
 
 ```python
-def classical_ml_p28(data):
-    # Reference implementation
-    return data
+def kmeans_plus_plus_distances(points, centroids):
+    d_sq_list = []
+    for pt in points:
+        min_d_sq = min(sum((x - c) ** 2 for x, c in zip(pt, cent)) for cent in centroids)
+        d_sq_list.append(round(float(min_d_sq), 4))
+    return d_sq_list
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+K-Means++ selects subsequent centroids with probability proportional to D(x)^2, ensuring well-spread initial centers and bounding expected error.
 
 </Solution>

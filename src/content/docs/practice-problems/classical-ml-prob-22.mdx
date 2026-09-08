@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 22: Problem 262"
 sidebar_position: 262
 description: "Curriculum Problem 262 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,43 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #262** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-21`.
+## Overview
+
+Classify spatial data points into core, border, or noise points under DBSCAN parameters.
+
+## Task
+
+Implement `dbscan_point_classifier(points, eps, min_samples)`: for each point, count points within Euclidean distance `eps` (including itself). If count `>= min_samples`, classify as `"core"`. If not core but within distance `eps` of at least one core point, classify as `"border"`. Otherwise classify as `"noise"`. Return list of classifications.
 
 <PracticePlayground problemId="classical-ml-prob-22" />
 
 <Solution>
 
 ```python
-def classical_ml_p22(data):
-    # Reference implementation
-    return data
+def dbscan_point_classifier(points, eps, min_samples):
+    n = len(points)
+    eps_sq = eps ** 2
+    neighbors = [[] for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            d_sq = sum((x - y) ** 2 for x, y in zip(points[i], points[j]))
+            if d_sq <= eps_sq:
+                neighbors[i].append(j)
+    
+    is_core = [len(neighbors[i]) >= min_samples for i in range(n)]
+    labels = []
+    for i in range(n):
+        if is_core[i]:
+            labels.append("core")
+        else:
+            has_core_neighbor = any(is_core[j] for j in neighbors[i])
+            if has_core_neighbor:
+                labels.append("border")
+            else:
+                labels.append("noise")
+    return labels
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+DBSCAN defines clusters as continuous dense regions of core points and reachable border points, isolating sparse outliers as noise.
 
 </Solution>

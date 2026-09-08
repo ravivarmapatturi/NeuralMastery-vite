@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 50: Problem 290"
 sidebar_position: 290
 description: "Curriculum Problem 290 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,28 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #290** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-49`.
+## Overview
+
+Evaluate recommendation quality at rank threshold k via Precision@K and Recall@K.
+
+## Task
+
+Implement `precision_recall_at_k(recommended, relevant, k)`: consider the first `k` recommendations. Precision is `hits / k`, and recall is `hits / len(relevant)` (or 0.0 if empty). Return dict with keys `"precision"` and `"recall"`, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-50" />
 
 <Solution>
 
 ```python
-def classical_ml_p50(data):
-    # Reference implementation
-    return data
+def precision_recall_at_k(recommended, relevant, k):
+    top_k = recommended[:k]
+    rel_set = set(relevant)
+    hits = sum(1 for item in top_k if item in rel_set)
+    precision = hits / k if k > 0 else 0.0
+    recall = hits / len(rel_set) if len(rel_set) > 0 else 0.0
+    return {"precision": round(float(precision), 4), "recall": round(float(recall), 4)}
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Precision@K measures the proportion of recommended items that are useful, while Recall@K measures the proportion of all relevant items captured in top-k.
 
 </Solution>

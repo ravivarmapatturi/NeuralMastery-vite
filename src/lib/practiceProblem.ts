@@ -45650,6 +45650,4939 @@ def rolling_pearson_correlation(series_x, series_y, window_size):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  'classical-ml-prob-16': {
+    id: 'classical-ml-prob-16',
+    title: "Complete Linkage Cluster Distance",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'complete_linkage_distance',
+    functionSignature: "complete_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
+    starterCode: `import math
+
+def complete_linkage_distance(cluster_a, cluster_b):
+    """Compute complete linkage (maximum pairwise distance) between two clusters.
+    Round result to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the complete-linkage maximum distance between two point clusters.",
+    taskDescription: "Implement `complete_linkage_distance(cluster_a, cluster_b)`: compute the maximum Euclidean distance between any point in `cluster_a` and any point in `cluster_b`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "cluster_a and cluster_b are non-empty lists of float vectors of equal dimensionality"
+],
+    hints: {
+      "small": "Iterate through all pairs of points across both clusters.",
+      "strong": "Track the maximum Euclidean distance seen across all pairs.",
+      "concept": "Complete linkage resists the chaining effect common to single linkage clustering."
+},
+    conceptConnections: [
+      {
+            "title": "Hierarchical Clustering",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Agglomerative clustering linkage criteria"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two 2D clusters",
+            "input": {
+                  "cluster_a": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              4.0,
+                              0.0
+                        ],
+                        [
+                              5.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 5.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Single point clusters",
+            "input": {
+                  "cluster_a": [
+                        [
+                              1.0,
+                              2.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              4.0,
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 5.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "3D clusters",
+            "input": {
+                  "cluster_a": [
+                        [
+                              0.0,
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              2.0,
+                              2.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 3.4641,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-17': {
+    id: 'classical-ml-prob-17',
+    title: "Logistic Regression Sigmoid Prediction",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'sigmoid_predict',
+    functionSignature: "sigmoid_predict(x: list[float], w: list[float], b: float) -> float",
+    starterCode: `import math
+
+def sigmoid_predict(x, w, b):
+    """Compute logistic regression sigmoid probability for sample x with weights w and bias b.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute binary class prediction probabilities using the logistic sigmoid function.",
+    taskDescription: "Implement `sigmoid_predict(x, w, b)`: evaluate linear logit `z = sum(x[i] * w[i]) + b` and apply numerically stable sigmoid `1 / (1 + exp(-z))` for `z >= 0` or `exp(z) / (1 + exp(z))` for `z < 0`. Round probability to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(x) == len(w)"
+],
+    hints: {
+      "small": "Calculate the dot product of x and w, then add b.",
+      "strong": "Use stable sigmoid branches to prevent overflow for large negative z.",
+      "concept": "Logistic regression models log-odds as a linear combination of input features."
+},
+    conceptConnections: [
+      {
+            "title": "Logistic Regression",
+            "route": "/docs/machine-learning/logistic-regression",
+            "description": "Binary classification via sigmoid activation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Zero logit gives half probability",
+            "input": {
+                  "x": [
+                        1.0,
+                        2.0
+                  ],
+                  "w": [
+                        0.0,
+                        0.0
+                  ],
+                  "b": 0.0
+            },
+            "expectedOutput": 0.5,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Positive logit",
+            "input": {
+                  "x": [
+                        2.0,
+                        1.0
+                  ],
+                  "w": [
+                        1.0,
+                        2.0
+                  ],
+                  "b": -2.0
+            },
+            "expectedOutput": 0.8808,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Large negative logit stability",
+            "input": {
+                  "x": [
+                        10.0
+                  ],
+                  "w": [
+                        -10.0
+                  ],
+                  "b": 0.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-18': {
+    id: 'classical-ml-prob-18',
+    title: "Silhouette Coefficient for a Single Sample",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'silhouette_sample',
+    functionSignature: "silhouette_sample(point: list[float], own_cluster: list[list[float]], other_clusters: list[list[list[float]]]) -> float",
+    starterCode: `import math
+
+def silhouette_sample(point, own_cluster, other_clusters):
+    """Compute silhouette coefficient for point in [-1.0, 1.0].
+    Round to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Measure cluster cohesion versus separation for an individual data sample.",
+    taskDescription: "Implement `silhouette_sample(point, own_cluster, other_clusters)`: let `a` be the average distance from `point` to all other points in `own_cluster` (0.0 if alone). Let `b` be the minimum over each cluster in `other_clusters` of the average distance from `point` to points in that cluster. Return `(b - a) / max(a, b)` (or 0.0 if max(a, b) == 0.0), rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "point and cluster elements are coordinate float lists",
+      "len(other_clusters) >= 1"
+],
+    hints: {
+      "small": "Calculate intra-cluster mean distance a and inter-cluster nearest mean distance b.",
+      "strong": "Formula is (b - a) / max(a, b). Return 0.0 if denominator is 0.0.",
+      "concept": "Silhouette analysis guides optimal cluster number k selection without ground truth labels."
+},
+    conceptConnections: [
+      {
+            "title": "Clustering Evaluation",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Cluster validity indices and silhouette analysis"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Well separated point",
+            "input": {
+                  "point": [
+                        0.0,
+                        0.0
+                  ],
+                  "own_cluster": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.1,
+                              0.0
+                        ]
+                  ],
+                  "other_clusters": [
+                        [
+                              [
+                                    10.0,
+                                    0.0
+                              ],
+                              [
+                                    10.1,
+                                    0.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.99,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Equal distance boundary point",
+            "input": {
+                  "point": [
+                        5.0,
+                        0.0
+                  ],
+                  "own_cluster": [
+                        [
+                              5.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "other_clusters": [
+                        [
+                              [
+                                    10.0,
+                                    0.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Singleton own cluster",
+            "input": {
+                  "point": [
+                        1.0,
+                        1.0
+                  ],
+                  "own_cluster": [
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "other_clusters": [
+                        [
+                              [
+                                    3.0,
+                                    3.0
+                              ]
+                        ]
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-19': {
+    id: 'classical-ml-prob-19',
+    title: "Ridge Regression Regularized Loss",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'ridge_loss',
+    functionSignature: "ridge_loss(y_true: list[float], y_pred: list[float], weights: list[float], alpha: float) -> float",
+    starterCode: `def ridge_loss(y_true, y_pred, weights, alpha):
+    """Compute total Ridge regression loss (MSE + alpha * ||w||_2^2).
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Calculate the total objective loss for L2 regularized Ridge regression.",
+    taskDescription: "Implement `ridge_loss(y_true, y_pred, weights, alpha)`: compute `MSE + alpha * sum(w**2)` where `MSE = (1/N) * sum((y_true[i] - y_pred[i])**2)`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(y_true) == len(y_pred)",
+      "alpha >= 0.0"
+],
+    hints: {
+      "small": "Calculate mean squared error over predictions first.",
+      "strong": "Add alpha times the sum of squared weights to the MSE.",
+      "concept": "Ridge regression shrinks coefficients continuously toward zero without inducing exact sparsity."
+},
+    conceptConnections: [
+      {
+            "title": "Ridge Regression",
+            "route": "/docs/machine-learning/ridge-regression",
+            "description": "Tikhonov L2 regularization in linear models"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect predictions with non-zero weights",
+            "input": {
+                  "y_true": [
+                        2.0,
+                        4.0
+                  ],
+                  "y_pred": [
+                        2.0,
+                        4.0
+                  ],
+                  "weights": [
+                        1.0,
+                        2.0
+                  ],
+                  "alpha": 0.5
+            },
+            "expectedOutput": 2.5,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero alpha standard MSE",
+            "input": {
+                  "y_true": [
+                        1.0,
+                        2.0
+                  ],
+                  "y_pred": [
+                        2.0,
+                        3.0
+                  ],
+                  "weights": [
+                        5.0
+                  ],
+                  "alpha": 0.0
+            },
+            "expectedOutput": 1.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Multiple weights high penalty",
+            "input": {
+                  "y_true": [
+                        10.0
+                  ],
+                  "y_pred": [
+                        8.0
+                  ],
+                  "weights": [
+                        2.0,
+                        -2.0,
+                        1.0
+                  ],
+                  "alpha": 2.0
+            },
+            "expectedOutput": 22.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-20': {
+    id: 'classical-ml-prob-20',
+    title: "Average Linkage Cluster Distance",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'average_linkage_distance',
+    functionSignature: "average_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
+    starterCode: `import math
+
+def average_linkage_distance(cluster_a, cluster_b):
+    """Compute average linkage distance between all cross-cluster point pairs.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute average pairwise linkage distance between two clustering groups.",
+    taskDescription: "Implement `average_linkage_distance(cluster_a, cluster_b)`: compute the arithmetic mean of Euclidean distances between all pairs `(pt_a, pt_b)` where `pt_a` is in `cluster_a` and `pt_b` is in `cluster_b`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "cluster_a and cluster_b are non-empty point lists with matching dimensions"
+],
+    hints: {
+      "small": "Sum pairwise Euclidean distances over all |A| * |B| pairs.",
+      "strong": "Divide sum by total pair count (|A| * |B|) and round to 4 decimals.",
+      "concept": "UPGMA (Unweighted Pair Group Method with Arithmetic Mean) relies on average linkage."
+},
+    conceptConnections: [
+      {
+            "title": "Hierarchical Linkage",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Hierarchical distance metrics"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Simple 1D points average",
+            "input": {
+                  "cluster_a": [
+                        [
+                              0.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              4.0
+                        ],
+                        [
+                              6.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 4.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Single points in 2D",
+            "input": {
+                  "cluster_a": [
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              4.0,
+                              5.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 5.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Asymmetric cluster sizes",
+            "input": {
+                  "cluster_a": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 1.1381,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-21': {
+    id: 'classical-ml-prob-21',
+    title: "Lasso Soft-Thresholding Operator Step",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'lasso_subgradient_step',
+    functionSignature: "lasso_subgradient_step(rho: float, z_j: float, alpha: float) -> float",
+    starterCode: `def lasso_subgradient_step(rho, z_j, alpha):
+    """Compute soft-thresholding coordinate descent update for Lasso.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Evaluate the closed-form coordinate descent update for L1 penalized Lasso coefficients.",
+    taskDescription: "Implement `lasso_subgradient_step(rho, z_j, alpha)`: if `z_j == 0.0`, return 0.0. Otherwise apply soft-thresholding: if `rho < -alpha`, return `(rho + alpha) / z_j`; if `rho > alpha`, return `(rho - alpha) / z_j`; else return 0.0. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "z_j >= 0.0",
+      "alpha >= 0.0"
+],
+    hints: {
+      "small": "Compare rho against alpha and -alpha.",
+      "strong": "If |rho| `<=` alpha, the optimal coordinate weight shrinks to exactly 0.0.",
+      "concept": "Coordinate descent with soft-thresholding is the standard solver algorithm for Lasso and Elastic Net."
+},
+    conceptConnections: [
+      {
+            "title": "Lasso Regression",
+            "route": "/docs/machine-learning/lasso-regression",
+            "description": "L1 regularization and coordinate descent"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Shrunk to zero inside threshold",
+            "input": {
+                  "rho": 0.5,
+                  "z_j": 2.0,
+                  "alpha": 1.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Positive outside threshold",
+            "input": {
+                  "rho": 5.0,
+                  "z_j": 2.0,
+                  "alpha": 1.0
+            },
+            "expectedOutput": 2.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Negative outside threshold",
+            "input": {
+                  "rho": -4.0,
+                  "z_j": 1.5,
+                  "alpha": 1.0
+            },
+            "expectedOutput": -2.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-22': {
+    id: 'classical-ml-prob-22',
+    title: "DBSCAN Point Type Classifier",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'dbscan_point_classifier',
+    functionSignature: "dbscan_point_classifier(points: list[list[float]], eps: float, min_samples: int) -> list[str]",
+    starterCode: `def dbscan_point_classifier(points, eps, min_samples):
+    """Classify each point as 'core', 'border', or 'noise'.
+    Returns list of category strings.
+    """
+    pass
+`,
+    mission: "Classify spatial data points into core, border, or noise points under DBSCAN parameters.",
+    taskDescription: "Implement `dbscan_point_classifier(points, eps, min_samples)`: for each point, count points within Euclidean distance `eps` (including itself). If count `>= min_samples`, classify as `\"core\"`. If not core but within distance `eps` of at least one core point, classify as `\"border\"`. Otherwise classify as `\"noise\"`. Return list of classifications.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "points is a list of coordinate float vectors",
+      "eps > 0.0, min_samples >= 1"
+],
+    hints: {
+      "small": "Identify all core points first by checking if neighbor count `>=` min_samples.",
+      "strong": "Non-core points that have at least one core neighbor are border points; others are noise.",
+      "concept": "DBSCAN identifies arbitrarily shaped clusters and filters noise without requiring cluster count k in advance."
+},
+    conceptConnections: [
+      {
+            "title": "DBSCAN Clustering",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Density-based spatial clustering"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Core, border, and noise line",
+            "input": {
+                  "points": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.5,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              10.0,
+                              10.0
+                        ]
+                  ],
+                  "eps": 0.6,
+                  "min_samples": 3
+            },
+            "expectedOutput": [
+                  "border",
+                  "core",
+                  "border",
+                  "noise"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "All noise high min_samples",
+            "input": {
+                  "points": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "eps": 0.5,
+                  "min_samples": 5
+            },
+            "expectedOutput": [
+                  "noise",
+                  "noise"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Tight dense cluster",
+            "input": {
+                  "points": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.1,
+                              0.1
+                        ],
+                        [
+                              0.1,
+                              -0.1
+                        ],
+                        [
+                              -0.1,
+                              0.0
+                        ]
+                  ],
+                  "eps": 0.5,
+                  "min_samples": 3
+            },
+            "expectedOutput": [
+                  "core",
+                  "core",
+                  "core",
+                  "core"
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-23': {
+    id: 'classical-ml-prob-23',
+    title: "Decision Tree Gini Impurity",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'gini_impurity',
+    functionSignature: "gini_impurity(labels: list[any]) -> float",
+    starterCode: `def gini_impurity(labels):
+    """Compute Gini impurity for class label list.
+    Round float to 4 decimal places. Empty list returns 0.0.
+    """
+    pass
+`,
+    mission: "Calculate the Gini impurity metric for a set of categorical target labels.",
+    taskDescription: "Implement `gini_impurity(labels)`: compute Gini impurity `1.0 - sum((count_k / N)**2)`. Return 0.0 for empty input. Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "labels is a list of hashable elements"
+],
+    hints: {
+      "small": "Count frequencies of each unique label.",
+      "strong": "Compute sum of squared proportions and subtract from 1.0.",
+      "concept": "CART (Classification and Regression Trees) uses Gini impurity to select optimal split conditions."
+},
+    conceptConnections: [
+      {
+            "title": "Decision Trees",
+            "route": "/docs/machine-learning/boosting",
+            "description": "Splitting criteria in decision trees"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Equal binary classes gives 0.5",
+            "input": {
+                  "labels": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": 0.5,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Pure single class gives 0.0",
+            "input": {
+                  "labels": [
+                        "cat",
+                        "cat",
+                        "cat"
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Three classes imbalanced",
+            "input": {
+                  "labels": [
+                        "a",
+                        "a",
+                        "b",
+                        "c"
+                  ]
+            },
+            "expectedOutput": 0.625,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-24': {
+    id: 'classical-ml-prob-24',
+    title: "Davies-Bouldin Pairwise Cluster Similarity",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'davies_bouldin_pair',
+    functionSignature: "davies_bouldin_pair(centroid_i: list[float], spread_i: float, centroid_j: list[float], spread_j: float) -> float",
+    starterCode: `import math
+
+def davies_bouldin_pair(centroid_i, spread_i, centroid_j, spread_j):
+    """Compute Davies-Bouldin similarity ratio R_ij between two clusters.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the Davies-Bouldin similarity ratio between a pair of clusters.",
+    taskDescription: "Implement `davies_bouldin_pair(centroid_i, spread_i, centroid_j, spread_j)`: calculate `R_ij = (spread_i + spread_j) / d(centroid_i, centroid_j)` where `d` is Euclidean distance. If distance is 0.0, return 0.0. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(centroid_i) == len(centroid_j)",
+      "spread_i >= 0.0, spread_j >= 0.0"
+],
+    hints: {
+      "small": "Calculate Euclidean distance between centroid_i and centroid_j.",
+      "strong": "Divide sum of spreads by centroid distance.",
+      "concept": "The Davies-Bouldin index evaluates cluster compactness relative to separation across all cluster pairs."
+},
+    conceptConnections: [
+      {
+            "title": "Clustering Validation",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Davies-Bouldin and cluster separation metrics"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Well separated clusters",
+            "input": {
+                  "centroid_i": [
+                        0.0,
+                        0.0
+                  ],
+                  "spread_i": 1.0,
+                  "centroid_j": [
+                        10.0,
+                        0.0
+                  ],
+                  "spread_j": 1.0
+            },
+            "expectedOutput": 0.2,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Overlapping clusters",
+            "input": {
+                  "centroid_i": [
+                        0.0,
+                        0.0
+                  ],
+                  "spread_i": 2.0,
+                  "centroid_j": [
+                        1.0,
+                        0.0
+                  ],
+                  "spread_j": 2.0
+            },
+            "expectedOutput": 4.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Identical centroids zero distance",
+            "input": {
+                  "centroid_i": [
+                        3.0,
+                        4.0
+                  ],
+                  "spread_i": 0.5,
+                  "centroid_j": [
+                        3.0,
+                        4.0
+                  ],
+                  "spread_j": 0.5
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-25': {
+    id: 'classical-ml-prob-25',
+    title: "Decision Tree Information Gain via Entropy",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'entropy_info_gain',
+    functionSignature: "entropy_info_gain(parent_labels: list[any], left_labels: list[any], right_labels: list[any]) -> float",
+    starterCode: `import math
+
+def entropy_info_gain(parent_labels, left_labels, right_labels):
+    """Compute Information Gain (entropy reduction) for split.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Measure Shannon entropy reduction achieved by partitioning a node in a decision tree.",
+    taskDescription: "Implement `entropy_info_gain(parent_labels, left_labels, right_labels)`: Shannon entropy is `H(S) = -sum(p_k * log2(p_k))` (0.0 for empty set). Information Gain is `H(parent) - (|left|/|parent|)*H(left) - (|right|/|parent|)*H(right)`. Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(left_labels) + len(right_labels) == len(parent_labels)"
+],
+    hints: {
+      "small": "Calculate entropy H for parent, left, and right sets using log2.",
+      "strong": "Weight child entropies by their relative size (|child| / |parent|).",
+      "concept": "ID3 and C4.5 decision tree algorithms maximize Information Gain to select optimal split conditions."
+},
+    conceptConnections: [
+      {
+            "title": "Decision Tree Entropy",
+            "route": "/docs/machine-learning/boosting",
+            "description": "Information gain and impurity measures"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect split gives 1.0 bit gain",
+            "input": {
+                  "parent_labels": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ],
+                  "left_labels": [
+                        0,
+                        0
+                  ],
+                  "right_labels": [
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Useless split zero gain",
+            "input": {
+                  "parent_labels": [
+                        0,
+                        1,
+                        0,
+                        1
+                  ],
+                  "left_labels": [
+                        0,
+                        1
+                  ],
+                  "right_labels": [
+                        0,
+                        1
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Pure parent zero initial entropy",
+            "input": {
+                  "parent_labels": [
+                        1,
+                        1
+                  ],
+                  "left_labels": [
+                        1
+                  ],
+                  "right_labels": [
+                        1
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-26': {
+    id: 'classical-ml-prob-26',
+    title: "User-Based Collaborative Filtering Rating Prediction",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'user_cf_prediction',
+    functionSignature: "user_cf_prediction(user_sims: list[float], ratings: list[float]) -> float",
+    starterCode: `def user_cf_prediction(user_sims, ratings):
+    """Compute similarity-weighted rating prediction for positive similarities.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Predict unobserved item ratings via similarity-weighted neighborhood aggregation.",
+    taskDescription: "Implement `user_cf_prediction(user_sims, ratings)`: given neighbor similarity weights `user_sims` and their item ratings `ratings`, compute `sum(s * r for s > 0) / sum(s for s > 0)`. If no positive similarities exist, return 0.0. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(user_sims) == len(ratings)"
+],
+    hints: {
+      "small": "Filter to pairs where similarity weight s `>` 0.0.",
+      "strong": "Divide sum of products by sum of positive similarities.",
+      "concept": "Neighborhood-based collaborative filtering forms the foundation of classic recommender systems."
+},
+    conceptConnections: [
+      {
+            "title": "Recommender Systems",
+            "route": "/docs/machine-learning/recommender-systems",
+            "description": "Collaborative filtering prediction formulas"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two positive neighbors",
+            "input": {
+                  "user_sims": [
+                        0.8,
+                        0.4
+                  ],
+                  "ratings": [
+                        5.0,
+                        3.0
+                  ]
+            },
+            "expectedOutput": 4.3333,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Ignore negative similarities",
+            "input": {
+                  "user_sims": [
+                        0.9,
+                        -0.5
+                  ],
+                  "ratings": [
+                        4.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": 4.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "No positive similarities returns zero",
+            "input": {
+                  "user_sims": [
+                        -0.2,
+                        -0.8
+                  ],
+                  "ratings": [
+                        5.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-27': {
+    id: 'classical-ml-prob-27',
+    title: "Best Split Threshold for Continuous Feature",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'best_split_threshold',
+    functionSignature: "best_split_threshold(feature_values: list[float], labels: list[any]) -> tuple[float, float]",
+    starterCode: `def best_split_threshold(feature_values, labels):
+    """Find threshold minimizing weighted Gini impurity.
+    Returns (best_threshold, min_weighted_gini).
+    """
+    pass
+`,
+    mission: "Find the optimal binary split point on a 1D continuous feature minimizing weighted Gini impurity.",
+    taskDescription: "Implement `best_split_threshold(feature_values, labels)`. Sort unique feature values; evaluate candidate thresholds midway between adjacent sorted values. Find threshold minimizing `(|left|/N)*Gini(left) + (|right|/N)*Gini(right)`. Return `(best_threshold, min_weighted_gini)`, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(feature_values) == len(labels)",
+      "len(feature_values) >= 2"
+],
+    hints: {
+      "small": "Extract sorted unique values and compute midpoints as thresholds.",
+      "strong": "Partition pairs where value `<=` threshold into left, and `>` threshold into right.",
+      "concept": "Continuous split finding is the computational bottleneck in training decision trees and gradient boosted trees."
+},
+    conceptConnections: [
+      {
+            "title": "Tree Splitting",
+            "route": "/docs/machine-learning/boosting",
+            "description": "Greedy split selection in decision trees"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect separation at 2.5",
+            "input": {
+                  "feature_values": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0
+                  ],
+                  "labels": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  2.5,
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Unsorted inputs with distinct classes",
+            "input": {
+                  "feature_values": [
+                        10.0,
+                        2.0,
+                        8.0,
+                        4.0
+                  ],
+                  "labels": [
+                        1,
+                        0,
+                        1,
+                        0
+                  ]
+            },
+            "expectedOutput": [
+                  6.0,
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Tied values",
+            "input": {
+                  "feature_values": [
+                        1.0,
+                        1.0,
+                        5.0,
+                        5.0
+                  ],
+                  "labels": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": [
+                  3.0,
+                  0.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-28': {
+    id: 'classical-ml-prob-28',
+    title: "K-Means++ Min Squared Centroid Distances",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'kmeans_plus_plus_distances',
+    functionSignature: "kmeans_plus_plus_distances(points: list[list[float]], centroids: list[list[float]]) -> list[float]",
+    starterCode: `def kmeans_plus_plus_distances(points, centroids):
+    """Compute min squared Euclidean distance from each point to nearest centroid.
+    Round floats to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute nearest squared centroid distances for K-Means++ probabilistic initialization.",
+    taskDescription: "Implement `kmeans_plus_plus_distances(points, centroids)`: for each point `x`, find `min(sum((x[j] - c[j])**2 for c in centroids))`. Return list of minimum squared distances rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "points and centroids are non-empty lists of float vectors of equal length"
+],
+    hints: {
+      "small": "Calculate squared Euclidean distance to each centroid in centroids.",
+      "strong": "Take the minimum squared distance per point.",
+      "concept": "K-Means++ initialization achieves an O(log k) competitive ratio over standard random centroid seeding."
+},
+    conceptConnections: [
+      {
+            "title": "K-Means Clustering",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "K-means and K-means++ initialization"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single centroid origin",
+            "input": {
+                  "points": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              2.0
+                        ]
+                  ],
+                  "centroids": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  1.0,
+                  4.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Two centroids pick closest",
+            "input": {
+                  "points": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              9.0,
+                              9.0
+                        ]
+                  ],
+                  "centroids": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              10.0,
+                              10.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  2.0,
+                  2.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Point lies exactly on centroid",
+            "input": {
+                  "points": [
+                        [
+                              5.0,
+                              5.0
+                        ]
+                  ],
+                  "centroids": [
+                        [
+                              5.0,
+                              5.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-29': {
+    id: 'classical-ml-prob-29',
+    title: "Perceptron Single Sample Learning Update",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'perceptron_step',
+    functionSignature: "perceptron_step(x: list[float], y: int, weights: list[float], bias: float, lr: float) -> dict",
+    starterCode: `def perceptron_step(x, y, weights, bias, lr):
+    """Execute single Perceptron training step.
+    Returns dict with keys 'weights', 'bias', 'updated'.
+    """
+    pass
+`,
+    mission: "Apply the classical Rosenblatt Perceptron mistake-driven parameter update.",
+    taskDescription: "Implement `perceptron_step(x, y, weights, bias, lr)`. Given label `y in {-1, 1}`, compute activation `z = sum(w_i * x_i) + bias`. If `y * z <= 0` (misclassification), update `w_i = w_i + lr * y * x_i` and `bias = bias + lr * y`, set `updated=True`. Else keep parameters unchanged and set `updated=False`. Round floats to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(x) == len(weights)",
+      "y in {-1, 1}"
+],
+    hints: {
+      "small": "Compute dot product of weights and x, then add bias.",
+      "strong": "Condition y * act `<=` 0 indicates a mistake requiring an update.",
+      "concept": "The Perceptron convergence theorem guarantees finite mistake bounds on linearly separable training sets."
+},
+    conceptConnections: [
+      {
+            "title": "Linear Classifiers",
+            "route": "/docs/machine-learning/linear-regression",
+            "description": "Perceptron and online linear classification"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Misclassified positive sample",
+            "input": {
+                  "x": [
+                        2.0,
+                        1.0
+                  ],
+                  "y": 1,
+                  "weights": [
+                        0.0,
+                        0.0
+                  ],
+                  "bias": 0.0,
+                  "lr": 1.0
+            },
+            "expectedOutput": {
+                  "weights": [
+                        2.0,
+                        1.0
+                  ],
+                  "bias": 1.0,
+                  "updated": true
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Correctly classified sample no update",
+            "input": {
+                  "x": [
+                        2.0,
+                        1.0
+                  ],
+                  "y": 1,
+                  "weights": [
+                        1.0,
+                        1.0
+                  ],
+                  "bias": 0.0,
+                  "lr": 1.0
+            },
+            "expectedOutput": {
+                  "weights": [
+                        1.0,
+                        1.0
+                  ],
+                  "bias": 0.0,
+                  "updated": false
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Misclassified negative sample",
+            "input": {
+                  "x": [
+                        1.0,
+                        2.0
+                  ],
+                  "y": -1,
+                  "weights": [
+                        1.0,
+                        1.0
+                  ],
+                  "bias": 1.0,
+                  "lr": 0.5
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.5,
+                        0.0
+                  ],
+                  "bias": 0.5,
+                  "updated": true
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-30': {
+    id: 'classical-ml-prob-30',
+    title: "Matrix Factorization Reconstruction Error",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'matrix_factorization_error',
+    functionSignature: "matrix_factorization_error(r_matrix: list[list[any]], p_matrix: list[list[float]], q_matrix: list[list[float]]) -> float",
+    starterCode: `def matrix_factorization_error(r_matrix, p_matrix, q_matrix):
+    """Compute sum of squared errors over observed entries in R vs P @ Q.T.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Evaluate the reconstruction sum of squared errors over observed rating matrix entries.",
+    taskDescription: "Implement `matrix_factorization_error(r_matrix, p_matrix, q_matrix)`: compute `sum((R[i][j] - dot(P[i], Q[j]))**2)` only over pairs `(i, j)` where `R[i][j] is not None`. `P` is of shape (N, K) and `Q` is of shape (M, K). Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(p_matrix[0]) == len(q_matrix[0])"
+],
+    hints: {
+      "small": "Only include positions (i, j) where r_matrix[i][j] is not None.",
+      "strong": "Compute dot product sum(P[i][k] * Q[j][k]) and square the difference.",
+      "concept": "Matrix factorization powers SVD-based recommendation models and collaborative filtering embeddings."
+},
+    conceptConnections: [
+      {
+            "title": "Matrix Factorization",
+            "route": "/docs/machine-learning/recommender-systems",
+            "description": "Low-rank matrix completion in recommender systems"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2x2 fully observed matrix",
+            "input": {
+                  "r_matrix": [
+                        [
+                              5.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              0.0
+                        ]
+                  ],
+                  "p_matrix": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              0.0
+                        ]
+                  ],
+                  "q_matrix": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 8.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Partially observed with None entries",
+            "input": {
+                  "r_matrix": [
+                        [
+                              5.0,
+                              null
+                        ],
+                        [
+                              null,
+                              2.0
+                        ]
+                  ],
+                  "p_matrix": [
+                        [
+                              2.0
+                        ],
+                        [
+                              1.0
+                        ]
+                  ],
+                  "q_matrix": [
+                        [
+                              2.5
+                        ],
+                        [
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero reconstruction error",
+            "input": {
+                  "r_matrix": [
+                        [
+                              6.0
+                        ]
+                  ],
+                  "p_matrix": [
+                        [
+                              2.0,
+                              1.0
+                        ]
+                  ],
+                  "q_matrix": [
+                        [
+                              2.0,
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-31': {
+    id: 'classical-ml-prob-31',
+    title: "Naive Bayes Maximum A Posteriori Predictor",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'naive_bayes_predict',
+    functionSignature: "naive_bayes_predict(class_priors: dict[str, float], feature_probs: dict[str, dict[int, dict[any, float]]], sample: list[any]) -> str",
+    starterCode: `import math
+
+def naive_bayes_predict(class_priors, feature_probs, sample):
+    """Predict class using Naive Bayes log-posterior maximization.
+    Returns predicted class label string.
+    """
+    pass
+`,
+    mission: "Classify a sample using categorical Naive Bayes log-likelihood scoring.",
+    taskDescription: "Implement `naive_bayes_predict(class_priors, feature_probs, sample)`: for each class, compute `log(prior) + sum(log(P(x_i | c)))`. Return the class label with the highest log posterior (tie-break alphabetically).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "class_priors is a dict with probabilities summing to 1.0"
+],
+    hints: {
+      "small": "Sum log probabilities instead of multiplying to prevent floating underflow.",
+      "strong": "Add log(prior) to the sum of feature log-probabilities for each class.",
+      "concept": "Naive Bayes conditional independence enables fast linear-time training on sparse high-dimensional data."
+},
+    conceptConnections: [
+      {
+            "title": "Naive Bayes",
+            "route": "/docs/machine-learning/naive-bayes-lda-qda",
+            "description": "Probabilistic classification and generative models"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Binary spam filter test",
+            "input": {
+                  "class_priors": {
+                        "spam": 0.4,
+                        "ham": 0.6
+                  },
+                  "feature_probs": {
+                        "spam": {
+                              "0": {
+                                    "win": 0.8,
+                                    "hello": 0.1
+                              }
+                        },
+                        "ham": {
+                              "0": {
+                                    "win": 0.05,
+                                    "hello": 0.7
+                              }
+                        }
+                  },
+                  "sample": [
+                        "win"
+                  ]
+            },
+            "expectedOutput": "spam",
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Multi-feature tie break",
+            "input": {
+                  "class_priors": {
+                        "A": 0.5,
+                        "B": 0.5
+                  },
+                  "feature_probs": {
+                        "A": {
+                              "0": {
+                                    "1": 0.5
+                              }
+                        },
+                        "B": {
+                              "0": {
+                                    "1": 0.5
+                              }
+                        }
+                  },
+                  "sample": [
+                        1
+                  ]
+            },
+            "expectedOutput": "A",
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Three features classification",
+            "input": {
+                  "class_priors": {
+                        "c1": 0.7,
+                        "c2": 0.3
+                  },
+                  "feature_probs": {
+                        "c1": {
+                              "0": {
+                                    "a": 0.5
+                              },
+                              "1": {
+                                    "b": 0.5
+                              }
+                        },
+                        "c2": {
+                              "0": {
+                                    "a": 0.1
+                              },
+                              "1": {
+                                    "b": 0.9
+                              }
+                        }
+                  },
+                  "sample": [
+                        "a",
+                        "b"
+                  ]
+            },
+            "expectedOutput": "c1",
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-32': {
+    id: 'classical-ml-prob-32',
+    title: "Centroid Linkage Cluster Distance",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'centroid_linkage_distance',
+    functionSignature: "centroid_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
+    starterCode: `import math
+
+def centroid_linkage_distance(cluster_a, cluster_b):
+    """Compute Euclidean distance between the centroids of two clusters.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Measure the Euclidean separation between the mean centroids of two point clusters.",
+    taskDescription: "Implement `centroid_linkage_distance(cluster_a, cluster_b)`: calculate the Euclidean distance between the center of mass (mean vector) of `cluster_a` and `cluster_b`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "cluster_a and cluster_b are non-empty point lists with matching dimension"
+],
+    hints: {
+      "small": "Calculate mean coordinates across each dimension for cluster_a and cluster_b.",
+      "strong": "Take the Euclidean L2 distance between the two resulting centroid vectors.",
+      "concept": "Centroid linkage is computationally efficient but can exhibit non-monotonic inversion in dendrograms."
+},
+    conceptConnections: [
+      {
+            "title": "Hierarchical Clustering",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Centroid and UPGMC linkage methods"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two 2D clusters",
+            "input": {
+                  "cluster_a": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              2.0,
+                              0.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              4.0,
+                              0.0
+                        ],
+                        [
+                              6.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 4.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Perpendicular displacement",
+            "input": {
+                  "cluster_a": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              3.0,
+                              4.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 5.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Coincident centroids",
+            "input": {
+                  "cluster_a": [
+                        [
+                              -1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "cluster_b": [
+                        [
+                              0.0,
+                              -1.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-33': {
+    id: 'classical-ml-prob-33',
+    title: "K-Nearest Neighbors (KNN) Regression Predictor",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'knn_regression_predict',
+    functionSignature: "knn_regression_predict(x_train: list[list[float]], y_train: list[float], x_query: list[float], k: int) -> float",
+    starterCode: `import math
+
+def knn_regression_predict(x_train, y_train, x_query, k):
+    """Predict continuous target by averaging targets of k nearest neighbors.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Predict a continuous regression target by averaging the targets of the k nearest training samples.",
+    taskDescription: "Implement `knn_regression_predict(x_train, y_train, x_query, k)`: compute Euclidean distances from `x_query` to all points in `x_train`. Select the `k` closest training points and return the mean of their `y_train` targets, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "1 <= k <= len(x_train)",
+      "len(x_train) == len(y_train)"
+],
+    hints: {
+      "small": "Calculate Euclidean distance from query point to all training points.",
+      "strong": "Sort by distance, take the first k targets, and compute their arithmetic mean.",
+      "concept": "K-Nearest Neighbors is an instance-based lazy learning algorithm without explicit training parameters."
+},
+    conceptConnections: [
+      {
+            "title": "KNN Algorithms",
+            "route": "/docs/machine-learning/linear-regression",
+            "description": "Non-parametric local regression and classification"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "k=2 nearest neighbors",
+            "input": {
+                  "x_train": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ],
+                        [
+                              10.0
+                        ]
+                  ],
+                  "y_train": [
+                        10.0,
+                        20.0,
+                        100.0
+                  ],
+                  "x_query": [
+                        1.5
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": 15.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "k=1 exact match",
+            "input": {
+                  "x_train": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              5.0,
+                              5.0
+                        ]
+                  ],
+                  "y_train": [
+                        42.0,
+                        99.0
+                  ],
+                  "x_query": [
+                        0.0,
+                        0.0
+                  ],
+                  "k": 1
+            },
+            "expectedOutput": 42.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Equal distance tie test",
+            "input": {
+                  "x_train": [
+                        [
+                              1.0
+                        ],
+                        [
+                              3.0
+                        ]
+                  ],
+                  "y_train": [
+                        10.0,
+                        20.0
+                  ],
+                  "x_query": [
+                        2.0
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": 15.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-34': {
+    id: 'classical-ml-prob-34',
+    title: "Clustering Purity Metric",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'cluster_purity',
+    functionSignature: "cluster_purity(cluster_assignments: list[int], true_labels: list[any]) -> float",
+    starterCode: `def cluster_purity(cluster_assignments, true_labels):
+    """Compute clustering purity = (1/N) * sum_k max_j |c_k cap t_j|.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Evaluate clustering alignment with ground truth using external cluster purity.",
+    taskDescription: "Implement `cluster_purity(cluster_assignments, true_labels)`: for each predicted cluster, find the count of its majority ground-truth class. Sum these maximum counts across all clusters and divide by total sample count `N`. Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(cluster_assignments) == len(true_labels)"
+],
+    hints: {
+      "small": "Group true labels by their assigned cluster ID.",
+      "strong": "Find the maximum class frequency in each cluster group and sum them up.",
+      "concept": "Purity ranges from 0 to 1, where 1 represents completely homogeneous clusters."
+},
+    conceptConnections: [
+      {
+            "title": "Clustering Metrics",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "External clustering evaluation metrics"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect purity binary clusters",
+            "input": {
+                  "cluster_assignments": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ],
+                  "true_labels": [
+                        "cat",
+                        "cat",
+                        "dog",
+                        "dog"
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Mixed cluster assignment",
+            "input": {
+                  "cluster_assignments": [
+                        0,
+                        0,
+                        0,
+                        1
+                  ],
+                  "true_labels": [
+                        "cat",
+                        "cat",
+                        "dog",
+                        "dog"
+                  ]
+            },
+            "expectedOutput": 0.75,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "All points in single cluster",
+            "input": {
+                  "cluster_assignments": [
+                        0,
+                        0,
+                        0,
+                        0
+                  ],
+                  "true_labels": [
+                        "a",
+                        "a",
+                        "b",
+                        "b"
+                  ]
+            },
+            "expectedOutput": 0.5,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-35': {
+    id: 'classical-ml-prob-35',
+    title: "Hinge Loss for Support Vector Machines",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'svm_hinge_loss',
+    functionSignature: "svm_hinge_loss(y_true: int, x: list[float], w: list[float], b: float) -> float",
+    starterCode: `def svm_hinge_loss(y_true, x, w, b):
+    """Compute SVM hinge loss max(0, 1 - y * (w.x + b)).
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the standard maximum-margin hinge loss for a single classification sample.",
+    taskDescription: "Implement `svm_hinge_loss(y_true, x, w, b)`: given `y_true in {-1, 1}`, linear margin is `margin = y_true * (sum(x[i] * w[i]) + b)`. Hinge loss is `max(0.0, 1.0 - margin)`. Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "y_true in {-1, 1}",
+      "len(x) == len(w)"
+],
+    hints: {
+      "small": "Calculate linear score z = dot(x, w) + b.",
+      "strong": "Compute margin y * z and apply max(0.0, 1.0 - margin).",
+      "concept": "The subgradient of hinge loss drives soft-margin Support Vector Machine optimization."
+},
+    conceptConnections: [
+      {
+            "title": "Support Vector Machines",
+            "route": "/docs/machine-learning/support-vector-machines",
+            "description": "Hinge loss and max-margin hyperplanes"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Sample beyond positive margin zero loss",
+            "input": {
+                  "y_true": 1,
+                  "x": [
+                        2.0,
+                        1.0
+                  ],
+                  "w": [
+                        1.0,
+                        0.0
+                  ],
+                  "b": 0.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Sample on margin zero loss",
+            "input": {
+                  "y_true": 1,
+                  "x": [
+                        1.0,
+                        0.0
+                  ],
+                  "w": [
+                        1.0,
+                        0.0
+                  ],
+                  "b": 0.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Misclassified sample positive loss",
+            "input": {
+                  "y_true": -1,
+                  "x": [
+                        1.0,
+                        2.0
+                  ],
+                  "w": [
+                        1.0,
+                        0.0
+                  ],
+                  "b": 0.0
+            },
+            "expectedOutput": 2.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-36': {
+    id: 'classical-ml-prob-36',
+    title: "1D Gaussian Mixture Model Expectation (E-Step)",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'gmm_e_step_1d',
+    functionSignature: "gmm_e_step_1d(x: list[float], weights: list[float], means: list[float], variances: list[float]) -> list[list[float]]",
+    starterCode: `import math
+
+def gmm_e_step_1d(x, weights, means, variances):
+    """Compute posterior responsibilities gamma_ik for 1D GMM.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute posterior latent component responsibilities in a 1D Gaussian Mixture Model.",
+    taskDescription: "Implement `gmm_e_step_1d(x, weights, means, variances)`: for each sample, compute unnormalized component densities `w_k * N(x; mu_k, var_k)` and normalize by their sum to obtain responsibilities. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(weights) == len(means) == len(variances)",
+      "variances > 0.0"
+],
+    hints: {
+      "small": "Evaluate standard normal PDF (1 / (std * sqrt(2*pi))) * exp(-0.5 * ((x - mu)/std)^2).",
+      "strong": "Multiply by mixing weight w_k and normalize across all components for each sample.",
+      "concept": "GMM Expectation-Maximization softens hard K-means assignments into probabilistic cluster memberships."
+},
+    conceptConnections: [
+      {
+            "title": "Gaussian Mixture Models",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Expectation-Maximization algorithm for GMMs"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two component 1D sample",
+            "input": {
+                  "x": [
+                        0.0,
+                        5.0
+                  ],
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        0.0,
+                        5.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        1.0,
+                        0.0
+                  ],
+                  [
+                        0.0,
+                        1.0
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Midway point equal responsibilities",
+            "input": {
+                  "x": [
+                        2.5
+                  ],
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        0.0,
+                        5.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.5,
+                        0.5
+                  ]
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Unequal mixing weights",
+            "input": {
+                  "x": [
+                        1.0
+                  ],
+                  "weights": [
+                        0.8,
+                        0.2
+                  ],
+                  "means": [
+                        1.0,
+                        1.0
+                  ],
+                  "variances": [
+                        1.0,
+                        2.0
+                  ]
+            },
+            "expectedOutput": [
+                  [
+                        0.8498,
+                        0.1502
+                  ]
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-37': {
+    id: 'classical-ml-prob-37',
+    title: "Exponential Loss for AdaBoost",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'adaboost_exp_loss',
+    functionSignature: "adaboost_exp_loss(y_true: list[int], f_x: list[float]) -> float",
+    starterCode: `import math
+
+def adaboost_exp_loss(y_true, f_x):
+    """Compute mean exponential loss (1/N) * sum(exp(-y * f(x))).
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the aggregate exponential loss function minimized by AdaBoost ensembles.",
+    taskDescription: "Implement `adaboost_exp_loss(y_true, f_x)`: given labels `y_true in {-1, 1}` and ensemble real scores `f_x`, compute `(1/N) * sum(exp(-y_true[i] * f_x[i]))`. Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(y_true) == len(f_x)",
+      "y_true in {-1, 1}"
+],
+    hints: {
+      "small": "Calculate margin product yt * fx for each sample.",
+      "strong": "Compute math.exp(-margin) for all samples and divide the sum by N.",
+      "concept": "AdaBoost is equivalent to forward stagewise additive modeling under exponential loss."
+},
+    conceptConnections: [
+      {
+            "title": "AdaBoost Boosting",
+            "route": "/docs/machine-learning/boosting",
+            "description": "Exponential loss and stagewise additive modeling"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Confident correct predictions",
+            "input": {
+                  "y_true": [
+                        1,
+                        -1
+                  ],
+                  "f_x": [
+                        2.0,
+                        -2.0
+                  ]
+            },
+            "expectedOutput": 0.1353,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero prediction margin gives 1.0 loss",
+            "input": {
+                  "y_true": [
+                        1,
+                        -1
+                  ],
+                  "f_x": [
+                        0.0,
+                        0.0
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Misclassified confident error",
+            "input": {
+                  "y_true": [
+                        1
+                  ],
+                  "f_x": [
+                        -2.0
+                  ]
+            },
+            "expectedOutput": 7.3891,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-38': {
+    id: 'classical-ml-prob-38',
+    title: "1D Gaussian Mixture Model Maximization (M-Step)",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'gmm_m_step_1d',
+    functionSignature: "gmm_m_step_1d(x: list[float], responsibilities: list[list[float]]) -> dict",
+    starterCode: `def gmm_m_step_1d(x, responsibilities):
+    """Execute M-step for 1D GMM to update weights, means, and variances.
+    Returns dict with updated parameters rounded to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Update component weights, means, and variances in the GMM M-step.",
+    taskDescription: "Implement `gmm_m_step_1d(x, responsibilities)`: for each component k, compute effective count `N_k = sum(gamma_ik)`. Update `w_k = N_k / N`, `mu_k = sum(gamma_ik * x_i) / N_k`, and `var_k = sum(gamma_ik * (x_i - mu_k)**2) / N_k`. Return dict with keys `\"weights\"`, `\"means\"`, `\"variances\"`, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(x) == len(responsibilities)"
+],
+    hints: {
+      "small": "Sum responsibilities along columns to get effective sample count N_k.",
+      "strong": "Compute weighted averages for mean and variance using column responsibilities.",
+      "concept": "The M-step guarantees non-decreasing observed log-likelihood at every EM iteration."
+},
+    conceptConnections: [
+      {
+            "title": "GMM EM Algorithm",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Maximization step for Gaussian parameters"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Hard assignments 2 clusters",
+            "input": {
+                  "x": [
+                        0.0,
+                        2.0,
+                        10.0,
+                        12.0
+                  ],
+                  "responsibilities": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        1.0,
+                        11.0
+                  ],
+                  "variances": [
+                        1.0,
+                        1.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Soft fuzzy assignments",
+            "input": {
+                  "x": [
+                        1.0,
+                        2.0
+                  ],
+                  "responsibilities": [
+                        [
+                              0.5,
+                              0.5
+                        ],
+                        [
+                              0.5,
+                              0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "means": [
+                        1.5,
+                        1.5
+                  ],
+                  "variances": [
+                        0.25,
+                        0.25
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Single component identity",
+            "input": {
+                  "x": [
+                        4.0,
+                        6.0
+                  ],
+                  "responsibilities": [
+                        [
+                              1.0
+                        ],
+                        [
+                              1.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "weights": [
+                        1.0
+                  ],
+                  "means": [
+                        5.0
+                  ],
+                  "variances": [
+                        1.0
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-39': {
+    id: 'classical-ml-prob-39',
+    title: "AdaBoost Sample Weight Re-weighting",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'adaboost_weight_update',
+    functionSignature: "adaboost_weight_update(sample_weights: list[float], y_true: list[int], predictions: list[int], alpha: float) -> list[float]",
+    starterCode: `import math
+
+def adaboost_weight_update(sample_weights, y_true, predictions, alpha):
+    """Update and renormalize AdaBoost sample distribution weights.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Re-weight training samples based on classifier correctness in an AdaBoost boosting round.",
+    taskDescription: "Implement `adaboost_weight_update(sample_weights, y_true, predictions, alpha)`: compute unnormalized weight `w_i * exp(-alpha * y_i * h_i)` where `y_i, h_i in {-1, 1}`. Normalize weights so their sum equals 1.0. Round each float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "sample_weights sum to approximately 1.0",
+      "y_true and predictions contain {-1, 1}"
+],
+    hints: {
+      "small": "Correct predictions have yt * pred == 1; mistakes have yt * pred == -1.",
+      "strong": "Multiply w by exp(-alpha * yt * pred) and divide all weights by sum(unnorm).",
+      "concept": "Distribution re-weighting is the mechanism by which boosting aggregates weak learners into a strong ensemble."
+},
+    conceptConnections: [
+      {
+            "title": "AdaBoost Algorithm",
+            "route": "/docs/machine-learning/boosting",
+            "description": "Sample distribution updates in boosting"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "One mistake one correct",
+            "input": {
+                  "sample_weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "y_true": [
+                        1,
+                        1
+                  ],
+                  "predictions": [
+                        1,
+                        -1
+                  ],
+                  "alpha": 0.5
+            },
+            "expectedOutput": [
+                  0.2689,
+                  0.7311
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "All correct weights remain uniform",
+            "input": {
+                  "sample_weights": [
+                        0.5,
+                        0.5
+                  ],
+                  "y_true": [
+                        1,
+                        -1
+                  ],
+                  "predictions": [
+                        1,
+                        -1
+                  ],
+                  "alpha": 1.0
+            },
+            "expectedOutput": [
+                  0.5,
+                  0.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Three samples strong alpha",
+            "input": {
+                  "sample_weights": [
+                        0.3333,
+                        0.3333,
+                        0.3334
+                  ],
+                  "y_true": [
+                        1,
+                        -1,
+                        1
+                  ],
+                  "predictions": [
+                        -1,
+                        -1,
+                        1
+                  ],
+                  "alpha": 0.8
+            },
+            "expectedOutput": [
+                  0.7123,
+                  0.1438,
+                  0.1439
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-40': {
+    id: 'classical-ml-prob-40',
+    title: "Calinski-Harabasz Variance Ratio Criterion",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'calinski_harabasz_score',
+    functionSignature: "calinski_harabasz_score(points: list[list[float]], cluster_labels: list[int]) -> float",
+    starterCode: `def calinski_harabasz_score(points, cluster_labels):
+    """Compute Calinski-Harabasz variance ratio criterion score.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Measure clustering quality as the ratio of between-cluster to within-cluster dispersion.",
+    taskDescription: "Implement `calinski_harabasz_score(points, cluster_labels)`: compute between-cluster dispersion `SSB = sum(n_k * ||c_k - c_global||**2)` and within-cluster dispersion `SSW = sum(sum(||x - c_k||**2))`. Return `(SSB / (k - 1)) / (SSW / (n - k))` (or 0.0 if k `<=` 1 or SSW == 0). Round to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(points) == len(cluster_labels)",
+      "dim >= 1"
+],
+    hints: {
+      "small": "Compute the global dataset centroid and individual cluster centroids.",
+      "strong": "Calculate between-group variance SSB and within-group variance SSW, scale by degrees of freedom.",
+      "concept": "The Calinski-Harabasz index provides a standard heuristic for finding the elbow point in cluster evaluation."
+},
+    conceptConnections: [
+      {
+            "title": "Clustering Metrics",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Internal cluster validation criteria"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two tight distinct clusters",
+            "input": {
+                  "points": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.1,
+                              0.1
+                        ],
+                        [
+                              10.0,
+                              10.0
+                        ],
+                        [
+                              10.1,
+                              10.1
+                        ]
+                  ],
+                  "cluster_labels": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": 20000.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Single cluster score zero",
+            "input": {
+                  "points": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              2.0,
+                              2.0
+                        ]
+                  ],
+                  "cluster_labels": [
+                        0,
+                        0
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Three 1D clusters",
+            "input": {
+                  "points": [
+                        [
+                              0.0
+                        ],
+                        [
+                              1.0
+                        ],
+                        [
+                              10.0
+                        ],
+                        [
+                              11.0
+                        ],
+                        [
+                              20.0
+                        ],
+                        [
+                              21.0
+                        ]
+                  ],
+                  "cluster_labels": [
+                        0,
+                        0,
+                        1,
+                        1,
+                        2,
+                        2
+                  ]
+            },
+            "expectedOutput": 400.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-41': {
+    id: 'classical-ml-prob-41',
+    title: "Gradient Boosting Pseudo-Residuals",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'gbm_pseudo_residuals',
+    functionSignature: "gbm_pseudo_residuals(y_true: list[float], raw_predictions: list[float], loss_type: str) -> list[float]",
+    starterCode: `import math
+
+def gbm_pseudo_residuals(y_true, raw_predictions, loss_type):
+    """Compute negative gradient direction (pseudo-residuals) for GBM.
+    loss_type is 'regression' or 'classification'.
+    Round floats to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute negative gradient pseudo-residuals for regression and binary classification gradient boosting.",
+    taskDescription: "Implement `gbm_pseudo_residuals(y_true, raw_predictions, loss_type)`: for `'regression'` (squared error), residual is `y - raw`. For `'classification'` (binary log loss with y in {0, 1}), residual is `y - sigmoid(raw)`. Return list of residuals rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(y_true) == len(raw_predictions)",
+      "loss_type in ['regression', 'classification']"
+],
+    hints: {
+      "small": "For regression, negative gradient of 0.5*(y - f)**2 is y - f.",
+      "strong": "For classification, convert raw logit to probability p via sigmoid, then residual is y - p.",
+      "concept": "Friedmans Gradient Boosting Machine casts boosting as gradient descent in function space."
+},
+    conceptConnections: [
+      {
+            "title": "Gradient Boosting",
+            "route": "/docs/machine-learning/boosting",
+            "description": "Pseudo-residuals in gradient tree boosting"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Regression residuals",
+            "input": {
+                  "y_true": [
+                        10.0,
+                        5.0
+                  ],
+                  "raw_predictions": [
+                        8.0,
+                        6.0
+                  ],
+                  "loss_type": "regression"
+            },
+            "expectedOutput": [
+                  2.0,
+                  -1.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Binary classification zero logits gives 0.5 probs",
+            "input": {
+                  "y_true": [
+                        1.0,
+                        0.0
+                  ],
+                  "raw_predictions": [
+                        0.0,
+                        0.0
+                  ],
+                  "loss_type": "classification"
+            },
+            "expectedOutput": [
+                  0.5,
+                  -0.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Classification confident prediction",
+            "input": {
+                  "y_true": [
+                        1.0,
+                        0.0
+                  ],
+                  "raw_predictions": [
+                        2.0,
+                        -2.0
+                  ],
+                  "loss_type": "classification"
+            },
+            "expectedOutput": [
+                  0.1192,
+                  -0.1192
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-42': {
+    id: 'classical-ml-prob-42',
+    title: "Clustering Pairwise Contingency Elements",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'cluster_contingency_pairs',
+    functionSignature: "cluster_contingency_pairs(labels_true: list[any], labels_pred: list[any]) -> dict[str, int]",
+    starterCode: `def cluster_contingency_pairs(labels_true, labels_pred):
+    """Count pairwise agreement quadruplets (tp, fp, fn, tn) for clustering evaluation.
+    Returns dict of counts.
+    """
+    pass
+`,
+    mission: "Count pair-wise agreement quadrants between ground truth and predicted clusterings.",
+    taskDescription: "Implement `cluster_contingency_pairs(labels_true, labels_pred)`: over all pairs `(i < j)`, count `tp` (same cluster in both), `fp` (same in pred, diff in true), `fn` (diff in pred, same in true), and `tn` (diff in both). Return dict with keys `\"tp\"`, `\"fp\"`, `\"fn\"`, `\"tn\"`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(labels_true) == len(labels_pred)"
+],
+    hints: {
+      "small": "Loop through all pairs 0 `<=` i `<` j `<` n.",
+      "strong": "Check boolean equalities same_true and same_pred for each pair.",
+      "concept": "Comparing pairs rather than cluster labels avoids the label-permutation ambiguity in unsupervised evaluation."
+},
+    conceptConnections: [
+      {
+            "title": "Clustering Rand Index",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Pairwise contingency evaluation for clustering"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect match 3 elements",
+            "input": {
+                  "labels_true": [
+                        0,
+                        0,
+                        1
+                  ],
+                  "labels_pred": [
+                        "a",
+                        "a",
+                        "b"
+                  ]
+            },
+            "expectedOutput": {
+                  "tp": 1,
+                  "fp": 0,
+                  "fn": 0,
+                  "tn": 2
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "All merged into one cluster",
+            "input": {
+                  "labels_true": [
+                        0,
+                        1,
+                        2
+                  ],
+                  "labels_pred": [
+                        0,
+                        0,
+                        0
+                  ]
+            },
+            "expectedOutput": {
+                  "tp": 0,
+                  "fp": 3,
+                  "fn": 0,
+                  "tn": 0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Complete mismatch opposite pairs",
+            "input": {
+                  "labels_true": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ],
+                  "labels_pred": [
+                        0,
+                        1,
+                        0,
+                        1
+                  ]
+            },
+            "expectedOutput": {
+                  "tp": 0,
+                  "fp": 2,
+                  "fn": 2,
+                  "tn": 2
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-43': {
+    id: 'classical-ml-prob-43',
+    title: "Linear Discriminant Analysis (LDA) Scatter Matrices",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'lda_scatter_matrices',
+    functionSignature: "lda_scatter_matrices(class0: list[list[float]], class1: list[list[float]]) -> dict",
+    starterCode: `def lda_scatter_matrices(class0, class1):
+    """Compute within-class scatter Sw and between-class scatter Sb for two classes.
+    Returns dict with keys 'sw' and 'sb'.
+    """
+    pass
+`,
+    mission: "Compute within-class (S_W) and between-class (S_B) scatter matrices for 2-class LDA.",
+    taskDescription: "Implement `lda_scatter_matrices(class0, class1)`: compute class mean vectors `m0` and `m1`. Compute within-class scatter `S_W = S_0 + S_1` where `S_c = sum((x - m_c)(x - m_c)^T)`. Compute between-class scatter `S_B = (m1 - m0)(m1 - m0)^T`. Return dict with keys `\"sw\"` and `\"sb\"`, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "class0 and class1 have identical feature dimensionality"
+],
+    hints: {
+      "small": "Calculate mean vectors m0 and m1 for each class.",
+      "strong": "Accumulate outer products (x - m)(x - m)^T across both classes for Sw.",
+      "concept": "Fishers linear discriminant projects data onto Sw^-1 (m1 - m0) for optimal class separation."
+},
+    conceptConnections: [
+      {
+            "title": "Linear Discriminant Analysis",
+            "route": "/docs/machine-learning/naive-bayes-lda-qda",
+            "description": "Fishers linear discriminant and scatter matrices"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two 2D classes",
+            "input": {
+                  "class0": [
+                        [
+                              1.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              3.0
+                        ]
+                  ],
+                  "class1": [
+                        [
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              6.0,
+                              7.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "sw": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "sb": [
+                        [
+                              16.0,
+                              16.0
+                        ],
+                        [
+                              16.0,
+                              16.0
+                        ]
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero within class scatter identical points",
+            "input": {
+                  "class0": [
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "class1": [
+                        [
+                              2.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "sw": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ],
+                  "sb": [
+                        [
+                              4.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "1D points check",
+            "input": {
+                  "class0": [
+                        [
+                              1.0
+                        ],
+                        [
+                              3.0
+                        ]
+                  ],
+                  "class1": [
+                        [
+                              7.0
+                        ],
+                        [
+                              9.0
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "sw": [
+                        [
+                              4.0
+                        ]
+                  ],
+                  "sb": [
+                        [
+                              36.0
+                        ]
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-44': {
+    id: 'classical-ml-prob-44',
+    title: "Slope One Collaborative Filtering Predictor",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'slope_one_predict',
+    functionSignature: "slope_one_predict(ratings: dict[str, float], dev_matrix: dict[str, dict[str, float]], count_matrix: dict[str, dict[str, int]], target_item: str) -> float",
+    starterCode: `def slope_one_predict(ratings, dev_matrix, count_matrix, target_item):
+    """Predict rating for target_item using Slope One algorithm.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Predict item ratings using the item-item differential Slope One recommendation scheme.",
+    taskDescription: "Implement `slope_one_predict(ratings, dev_matrix, count_matrix, target_item)`: for user ratings, prediction is `sum((r_ui + dev(target, i)) * count(target, i)) / sum(count(target, i))` over rated items `i != target_item`. Return 0.0 if no co-rated items exist. Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "ratings is a dict mapping item strings to float ratings"
+],
+    hints: {
+      "small": "Look up deviation dev(target, i) and co-rating count for each rated item.",
+      "strong": "Weighted sum of (r_ui + dev) by co-rating count, divided by total count.",
+      "concept": "Slope One operates online without retraining models when new user ratings arrive."
+},
+    conceptConnections: [
+      {
+            "title": "Collaborative Filtering",
+            "route": "/docs/machine-learning/recommender-systems",
+            "description": "Slope One and rating deviation predictors"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Single rated item with deviation +1",
+            "input": {
+                  "ratings": {
+                        "item_A": 4.0
+                  },
+                  "dev_matrix": {
+                        "item_B": {
+                              "item_A": 1.0
+                        }
+                  },
+                  "count_matrix": {
+                        "item_B": {
+                              "item_A": 5
+                        }
+                  },
+                  "target_item": "item_B"
+            },
+            "expectedOutput": 5.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Two rated items with differing counts",
+            "input": {
+                  "ratings": {
+                        "i1": 5.0,
+                        "i2": 3.0
+                  },
+                  "dev_matrix": {
+                        "target": {
+                              "i1": -1.0,
+                              "i2": 0.0
+                        }
+                  },
+                  "count_matrix": {
+                        "target": {
+                              "i1": 2,
+                              "i2": 2
+                        }
+                  },
+                  "target_item": "target"
+            },
+            "expectedOutput": 3.5,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Target has no co-rated items",
+            "input": {
+                  "ratings": {
+                        "i1": 4.0
+                  },
+                  "dev_matrix": {},
+                  "count_matrix": {},
+                  "target_item": "unknown"
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-45': {
+    id: 'classical-ml-prob-45',
+    title: "Elastic Net Regularization Penalty",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'elastic_net_penalty',
+    functionSignature: "elastic_net_penalty(weights: list[float], l1_ratio: float, alpha: float) -> float",
+    starterCode: `def elastic_net_penalty(weights, l1_ratio, alpha):
+    """Compute Elastic Net penalty alpha * (l1_ratio * ||w||_1 + 0.5 * (1 - l1_ratio) * ||w||_2^2).
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute the hybrid L1/L2 Elastic Net regularization penalty term.",
+    taskDescription: "Implement `elastic_net_penalty(weights, l1_ratio, alpha)`: calculate `alpha * (l1_ratio * sum(abs(w)) + 0.5 * (1.0 - l1_ratio) * sum(w**2))`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "0.0 <= l1_ratio <= 1.0",
+      "alpha >= 0.0"
+],
+    hints: {
+      "small": "Calculate L1 norm as sum(abs(w)) and L2 squared norm as sum(w**2).",
+      "strong": "Combine with l1_ratio and 0.5 * (1 - l1_ratio), then scale by alpha.",
+      "concept": "Elastic Net stabilizes Lasso when number of features p exceeds sample count n."
+},
+    conceptConnections: [
+      {
+            "title": "Elastic Net",
+            "route": "/docs/machine-learning/elastic-net",
+            "description": "Combined L1 and L2 regularization"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Pure L1 lasso limit (l1_ratio = 1.0)",
+            "input": {
+                  "weights": [
+                        1.0,
+                        -2.0
+                  ],
+                  "l1_ratio": 1.0,
+                  "alpha": 2.0
+            },
+            "expectedOutput": 6.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Pure L2 ridge limit (l1_ratio = 0.0)",
+            "input": {
+                  "weights": [
+                        2.0
+                  ],
+                  "l1_ratio": 0.0,
+                  "alpha": 1.0
+            },
+            "expectedOutput": 2.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Balanced 50/50 mixture",
+            "input": {
+                  "weights": [
+                        1.0,
+                        -1.0,
+                        2.0
+                  ],
+                  "l1_ratio": 0.5,
+                  "alpha": 1.5
+            },
+            "expectedOutput": 5.25,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-46': {
+    id: 'classical-ml-prob-46',
+    title: "K-Distance Graph for DBSCAN Epsilon Selection",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'k_distance_sorted',
+    functionSignature: "k_distance_sorted(points: list[list[float]], k: int) -> list[float]",
+    starterCode: `import math
+
+def k_distance_sorted(points, k):
+    """Compute sorted distances to k-th nearest neighbor across all points.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute sorted k-nearest-neighbor distances to identify the elbow threshold for DBSCAN epsilon.",
+    taskDescription: "Implement `k_distance_sorted(points, k)`: for each point, calculate the Euclidean distance to its k-th nearest neighbor (where neighbor 0 is the point itself). Return the k-distances sorted in ascending order, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "points is a list of coordinate float vectors",
+      "k >= 1"
+],
+    hints: {
+      "small": "Calculate all pairwise Euclidean distances from each point.",
+      "strong": "Sort neighbors per point and extract index k, then sort all extracted k-distances.",
+      "concept": "The k-distance plot is the canonical diagnostic for choosing the epsilon parameter in DBSCAN."
+},
+    conceptConnections: [
+      {
+            "title": "DBSCAN Parameter Tuning",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "K-distance graph and epsilon estimation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Line points with k=1",
+            "input": {
+                  "points": [
+                        [
+                              0.0
+                        ],
+                        [
+                              1.0
+                        ],
+                        [
+                              3.0
+                        ],
+                        [
+                              6.0
+                        ]
+                  ],
+                  "k": 1
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.0,
+                  2.0,
+                  3.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "2D grid points k=2",
+            "input": {
+                  "points": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              1.0
+                        ]
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "k exceeds neighbor count clamp",
+            "input": {
+                  "points": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ],
+                  "k": 5
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-47': {
+    id: 'classical-ml-prob-47',
+    title: "Huber Loss Robust Regression",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'huber_loss',
+    functionSignature: "huber_loss(y_true: list[float], y_pred: list[float], delta: float) -> float",
+    starterCode: `def huber_loss(y_true, y_pred, delta):
+    """Compute mean Huber loss over regression residuals with threshold delta.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Evaluate outlier-resilient Huber loss combining quadratic and linear penalty regimes.",
+    taskDescription: "Implement `huber_loss(y_true, y_pred, delta)`: for absolute residual `e = |y - pred|`, if `e <= delta`, loss is `0.5 * e**2`; otherwise loss is `delta * (e - 0.5 * delta)`. Return mean loss across samples, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(y_true) == len(y_pred)",
+      "delta > 0.0"
+],
+    hints: {
+      "small": "Calculate error e = abs(y_true[i] - y_pred[i]).",
+      "strong": "Branch on e `<=` delta: use 0.5 * e**2 versus delta * (e - 0.5 * delta).",
+      "concept": "Smooth transition between L2 and L1 penalties prevents large outliers from dominating model gradients."
+},
+    conceptConnections: [
+      {
+            "title": "Robust Regression",
+            "route": "/docs/machine-learning/linear-regression",
+            "description": "Huber loss and robust estimators"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Small residual quadratic regime",
+            "input": {
+                  "y_true": [
+                        1.0,
+                        2.0
+                  ],
+                  "y_pred": [
+                        1.5,
+                        2.5
+                  ],
+                  "delta": 1.0
+            },
+            "expectedOutput": 0.125,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Large outlier linear regime",
+            "input": {
+                  "y_true": [
+                        0.0
+                  ],
+                  "y_pred": [
+                        10.0
+                  ],
+                  "delta": 1.0
+            },
+            "expectedOutput": 9.5,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Residual exactly at threshold delta",
+            "input": {
+                  "y_true": [
+                        5.0
+                  ],
+                  "y_pred": [
+                        3.0
+                  ],
+                  "delta": 2.0
+            },
+            "expectedOutput": 2.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-48': {
+    id: 'classical-ml-prob-48',
+    title: "Mean Shift Kernel Centroid Update Step",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'mean_shift_step',
+    functionSignature: "mean_shift_step(center: list[float], points: list[list[float]], bandwidth: float) -> list[float]",
+    starterCode: `import math
+
+def mean_shift_step(center, points, bandwidth):
+    """Execute single Gaussian mean shift update step.
+    Round coordinates to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Shift a cluster centroid toward local probability density mode using a Gaussian kernel.",
+    taskDescription: "Implement `mean_shift_step(center, points, bandwidth)`: for each point, compute Gaussian kernel weight `exp(-0.5 * (d / bandwidth)**2)`. Return the weighted average of points, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "bandwidth > 0.0",
+      "len(center) == len(points[0])"
+],
+    hints: {
+      "small": "Compute Euclidean distance d from center to each point.",
+      "strong": "Weight each point coordinate by math.exp(-0.5 * (d / bandwidth)**2) and divide by sum of weights.",
+      "concept": "Mean shift discovers arbitrary cluster modes without prior specification of cluster count k."
+},
+    conceptConnections: [
+      {
+            "title": "Mean Shift Clustering",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Kernel density estimation and mode-seeking"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Shift toward dense neighbor",
+            "input": {
+                  "center": [
+                        0.0,
+                        0.0
+                  ],
+                  "points": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ]
+                  ],
+                  "bandwidth": 1.0
+            },
+            "expectedOutput": [
+                  0.3775,
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Symmetric points remain at origin",
+            "input": {
+                  "center": [
+                        0.0
+                  ],
+                  "points": [
+                        [
+                              -2.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ],
+                  "bandwidth": 2.0
+            },
+            "expectedOutput": [
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Far outlier gets tiny weight",
+            "input": {
+                  "center": [
+                        1.0,
+                        1.0
+                  ],
+                  "points": [
+                        [
+                              1.0,
+                              1.0
+                        ],
+                        [
+                              100.0,
+                              100.0
+                        ]
+                  ],
+                  "bandwidth": 1.0
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-49': {
+    id: 'classical-ml-prob-49',
+    title: "Regression Tree Variance Reduction Metric",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'variance_reduction',
+    functionSignature: "variance_reduction(parent_targets: list[float], left_targets: list[float], right_targets: list[float]) -> float",
+    starterCode: `def variance_reduction(parent_targets, left_targets, right_targets):
+    """Compute target variance reduction for candidate regression tree split.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Measure variance reduction achieved by splitting targets in a regression decision tree.",
+    taskDescription: "Implement `variance_reduction(parent_targets, left_targets, right_targets)`: population variance is `(1/N) * sum((y - mean)**2)`. Reduction is `Var(parent) - (|left|/N)*Var(left) - (|right|/N)*Var(right)`. Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(left_targets) + len(right_targets) == len(parent_targets)"
+],
+    hints: {
+      "small": "Calculate population variance for parent, left, and right target sets.",
+      "strong": "Weighted child variance is (|left|/N)*Var(left) + (|right|/N)*Var(right).",
+      "concept": "Regression trees choose splits that maximize variance reduction, minimizing overall residual sum of squares."
+},
+    conceptConnections: [
+      {
+            "title": "Regression Trees",
+            "route": "/docs/machine-learning/boosting",
+            "description": "Splitting criteria for regression trees"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Clean split into constant leaves",
+            "input": {
+                  "parent_targets": [
+                        1.0,
+                        1.0,
+                        5.0,
+                        5.0
+                  ],
+                  "left_targets": [
+                        1.0,
+                        1.0
+                  ],
+                  "right_targets": [
+                        5.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": 4.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero variance parent",
+            "input": {
+                  "parent_targets": [
+                        2.0,
+                        2.0
+                  ],
+                  "left_targets": [
+                        2.0
+                  ],
+                  "right_targets": [
+                        2.0
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Imbalanced child splits",
+            "input": {
+                  "parent_targets": [
+                        1.0,
+                        2.0,
+                        10.0
+                  ],
+                  "left_targets": [
+                        1.0,
+                        2.0
+                  ],
+                  "right_targets": [
+                        10.0
+                  ]
+            },
+            "expectedOutput": 16.0556,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-50': {
+    id: 'classical-ml-prob-50',
+    title: "Top-K Recommender Precision and Recall",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'precision_recall_at_k',
+    functionSignature: "precision_recall_at_k(recommended: list[str], relevant: list[str], k: int) -> dict",
+    starterCode: `def precision_recall_at_k(recommended, relevant, k):
+    """Compute Precision@K and Recall@K for recommendation ranking.
+    Returns dict with keys 'precision' and 'recall'.
+    """
+    pass
+`,
+    mission: "Evaluate recommendation quality at rank threshold k via Precision@K and Recall@K.",
+    taskDescription: "Implement `precision_recall_at_k(recommended, relevant, k)`: consider the first `k` recommendations. Precision is `hits / k`, and recall is `hits / len(relevant)` (or 0.0 if empty). Return dict with keys `\"precision\"` and `\"recall\"`, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "k >= 1"
+],
+    hints: {
+      "small": "Slice recommended[:k] and count intersection with relevant set.",
+      "strong": "Divide hit count by k for precision, and by total relevant items for recall.",
+      "concept": "Precision@K and Recall@K are standard rank-cutoff metrics for information retrieval and recommender systems."
+},
+    conceptConnections: [
+      {
+            "title": "Recommender Metrics",
+            "route": "/docs/machine-learning/recommender-systems",
+            "description": "Top-K ranking evaluation metrics"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "2 hits out of top 3 with 4 relevant",
+            "input": {
+                  "recommended": [
+                        "a",
+                        "b",
+                        "c",
+                        "d"
+                  ],
+                  "relevant": [
+                        "a",
+                        "c",
+                        "e",
+                        "f"
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": {
+                  "precision": 0.6667,
+                  "recall": 0.5
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Perfect top 2 precision and recall",
+            "input": {
+                  "recommended": [
+                        "x",
+                        "y"
+                  ],
+                  "relevant": [
+                        "x",
+                        "y"
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": {
+                  "precision": 1.0,
+                  "recall": 1.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero hits in top k",
+            "input": {
+                  "recommended": [
+                        "m",
+                        "n"
+                  ],
+                  "relevant": [
+                        "z"
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": {
+                  "precision": 0.0,
+                  "recall": 0.0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-51': {
+    id: 'classical-ml-prob-51',
+    title: "Clipped Multi-Class Cross-Entropy Log-Loss",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'multiclass_log_loss',
+    functionSignature: "multiclass_log_loss(y_true: list[int], pred_probs: list[list[float]], eps: float) -> float",
+    starterCode: `import math
+
+def multiclass_log_loss(y_true, pred_probs, eps):
+    """Compute average multi-class log loss with probability clipping.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Evaluate multi-class negative log-likelihood with numerical probability clipping.",
+    taskDescription: "Implement `multiclass_log_loss(y_true, pred_probs, eps)`: for each true class index `y_i`, clip probability `p = max(eps, min(1.0 - eps, pred_probs[i][y_i]))`. Loss is `-(1/N) * sum(log(p))`. Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(y_true) == len(pred_probs)",
+      "eps > 0.0"
+],
+    hints: {
+      "small": "Extract predicted probability corresponding to true class index y_true[i].",
+      "strong": "Clamp with max(eps, min(1 - eps, prob)) before computing -math.log(prob).",
+      "concept": "Cross-entropy log-loss evaluates calibration and uncertainty of probabilistic classifiers."
+},
+    conceptConnections: [
+      {
+            "title": "Cross Entropy Loss",
+            "route": "/docs/machine-learning/loss-functions",
+            "description": "Log-loss and classification cross-entropy"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect predictions with zero loss",
+            "input": {
+                  "y_true": [
+                        0,
+                        1
+                  ],
+                  "pred_probs": [
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "eps": 1e-15
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Confident error protected by clipping",
+            "input": {
+                  "y_true": [
+                        0
+                  ],
+                  "pred_probs": [
+                        [
+                              0.0,
+                              1.0
+                        ]
+                  ],
+                  "eps": 0.0001
+            },
+            "expectedOutput": 9.2103,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Three classes balanced loss",
+            "input": {
+                  "y_true": [
+                        0,
+                        1,
+                        2
+                  ],
+                  "pred_probs": [
+                        [
+                              0.3333,
+                              0.3333,
+                              0.3334
+                        ],
+                        [
+                              0.3333,
+                              0.3333,
+                              0.3334
+                        ],
+                        [
+                              0.3333,
+                              0.3333,
+                              0.3334
+                        ]
+                  ],
+                  "eps": 1e-15
+            },
+            "expectedOutput": 1.0986,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-52': {
+    id: 'classical-ml-prob-52',
+    title: "K-Medoids Cluster Medoid Selection",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'select_cluster_medoid',
+    functionSignature: "select_cluster_medoid(points: list[list[float]]) -> list[float]",
+    starterCode: `import math
+
+def select_cluster_medoid(points):
+    """Find the medoid point in points minimizing total distance to all other points.
+    Returns the medoid coordinate list.
+    """
+    pass
+`,
+    mission: "Identify the exemplar medoid point that minimizes intra-cluster distance sum.",
+    taskDescription: "Implement `select_cluster_medoid(points)`: find the point in `points` that minimizes the sum of Euclidean distances to all other points in `points` (tie-break by smallest index). Return the medoid point vector.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "points is a non-empty list of float vectors"
+],
+    hints: {
+      "small": "Iterate through each candidate point i in points.",
+      "strong": "Compute sum of Euclidean distances from points[i] to points[j] for all j.",
+      "concept": "K-Medoids (PAM) resists extreme outliers better than K-Means because it minimizes L1-like sum of distances."
+},
+    conceptConnections: [
+      {
+            "title": "K-Medoids Clustering",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Partitioning Around Medoids (PAM)"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "1D points center medoid",
+            "input": {
+                  "points": [
+                        [
+                              1.0
+                        ],
+                        [
+                              2.0
+                        ],
+                        [
+                              10.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  2.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "2D symmetric points pick origin",
+            "input": {
+                  "points": [
+                        [
+                              0.0,
+                              0.0
+                        ],
+                        [
+                              1.0,
+                              0.0
+                        ],
+                        [
+                              -1.0,
+                              0.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0.0,
+                  0.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Two points tie picks first",
+            "input": {
+                  "points": [
+                        [
+                              0.0
+                        ],
+                        [
+                              2.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  0.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-53': {
+    id: 'classical-ml-prob-53',
+    title: "F-Beta Score Calculator",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'f_beta_score',
+    functionSignature: "f_beta_score(tp: int, fp: int, fn: int, beta: float) -> float",
+    starterCode: `def f_beta_score(tp, fp, fn, beta):
+    """Compute F-beta score given confusion counts and weighting parameter beta.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Compute parameterized F-Beta scores weighting precision and recall preferences.",
+    taskDescription: "Implement `f_beta_score(tp, fp, fn, beta)`: precision is `tp / (tp + fp)`, recall is `tp / (tp + fn)`. Score is `(1 + beta**2) * (P * R) / (beta**2 * P + R)` (or 0.0 if denominator is 0). Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "tp >= 0, fp >= 0, fn >= 0",
+      "beta > 0.0"
+],
+    hints: {
+      "small": "Calculate precision P and recall R from confusion counts.",
+      "strong": "Use formula (1 + beta^2)*P*R / (beta^2 * P + R).",
+      "concept": "F-Beta is the harmonic mean of precision and recall with configurable trade-off coefficient beta."
+},
+    conceptConnections: [
+      {
+            "title": "Classification Metrics",
+            "route": "/docs/machine-learning/metrics-evaluation",
+            "description": "Precision, recall, and F-beta scores"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Standard F1 (beta=1.0)",
+            "input": {
+                  "tp": 8,
+                  "fp": 2,
+                  "fn": 2,
+                  "beta": 1.0
+            },
+            "expectedOutput": 0.8,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Recall focused F2 (beta=2.0)",
+            "input": {
+                  "tp": 5,
+                  "fp": 5,
+                  "fn": 1,
+                  "beta": 2.0
+            },
+            "expectedOutput": 0.7353,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero true positives returns zero",
+            "input": {
+                  "tp": 0,
+                  "fp": 10,
+                  "fn": 10,
+                  "beta": 1.0
+            },
+            "expectedOutput": 0.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-54': {
+    id: 'classical-ml-prob-54',
+    title: "Normalized Mutual Information (NMI) for Clustering",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'nmi_clustering',
+    functionSignature: "nmi_clustering(labels_true: list[any], labels_pred: list[any]) -> float",
+    starterCode: `import math
+
+def nmi_clustering(labels_true, labels_pred):
+    """Compute Normalized Mutual Information NMI(T, P) in [0.0, 1.0].
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Quantify shared information between true and predicted clusterings normalized by entropy.",
+    taskDescription: "Implement `nmi_clustering(labels_true, labels_pred)`: compute mutual information `MI(T, P) = sum(p(t, p) * log(p(t, p) / (p(t)*p(p))))`. Return normalized score `MI / sqrt(H(T) * H(P))` (or 1.0 if both entropies are 0). Round float to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(labels_true) == len(labels_pred)"
+],
+    hints: {
+      "small": "Calculate marginal entropies H(true) and H(pred) using natural log.",
+      "strong": "Sum joint probability terms p_tp * log(p_tp / (p_t * p_p)) for mutual information.",
+      "concept": "Normalized Mutual Information evaluates clustering alignment without requiring cluster ID correspondence."
+},
+    conceptConnections: [
+      {
+            "title": "Clustering Metrics",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Information theoretic cluster evaluation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect match NMI = 1.0",
+            "input": {
+                  "labels_true": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ],
+                  "labels_pred": [
+                        "a",
+                        "a",
+                        "b",
+                        "b"
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Independent clusterings low NMI",
+            "input": {
+                  "labels_true": [
+                        0,
+                        0,
+                        1,
+                        1
+                  ],
+                  "labels_pred": [
+                        0,
+                        1,
+                        0,
+                        1
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Three classes identical mapping",
+            "input": {
+                  "labels_true": [
+                        1,
+                        2,
+                        3
+                  ],
+                  "labels_pred": [
+                        "x",
+                        "y",
+                        "z"
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-55': {
+    id: 'classical-ml-prob-55',
+    title: "ROC Area Under the Curve (Trapezoidal AUC)",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'roc_auc_score',
+    functionSignature: "roc_auc_score(y_true: list[int], y_scores: list[float]) -> float",
+    starterCode: `def roc_auc_score(y_true, y_scores):
+    """Compute Trapezoidal ROC-AUC score for binary labels {0, 1}.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Calculate the Area Under the Receiver Operating Characteristic Curve (ROC-AUC).",
+    taskDescription: "Implement `roc_auc_score(y_true, y_scores)`: sort samples by predicted score descending. Compute TPR and FPR thresholds, integrating the trapezoidal area under the curve. Return AUC float rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "y_true contains {0, 1}",
+      "len(y_true) == len(y_scores)"
+],
+    hints: {
+      "small": "Sort pairs by score descending, grouping tied score thresholds.",
+      "strong": "Accumulate trapezoidal area segments 0.5 * (tpr + prev_tpr) * (fpr - prev_fpr).",
+      "concept": "ROC-AUC evaluates discriminative ranking quality independent of class prevalence."
+},
+    conceptConnections: [
+      {
+            "title": "ROC Curves",
+            "route": "/docs/machine-learning/metrics-evaluation",
+            "description": "Receiver Operating Characteristic analysis"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Perfect separation AUC = 1.0",
+            "input": {
+                  "y_true": [
+                        1,
+                        1,
+                        0,
+                        0
+                  ],
+                  "y_scores": [
+                        0.9,
+                        0.8,
+                        0.3,
+                        0.1
+                  ]
+            },
+            "expectedOutput": 1.0,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Random ordering AUC = 0.5",
+            "input": {
+                  "y_true": [
+                        1,
+                        0,
+                        1,
+                        0
+                  ],
+                  "y_scores": [
+                        0.5,
+                        0.5,
+                        0.5,
+                        0.5
+                  ]
+            },
+            "expectedOutput": 0.5,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Imperfect ranking with reversal",
+            "input": {
+                  "y_true": [
+                        1,
+                        0,
+                        1
+                  ],
+                  "y_scores": [
+                        0.9,
+                        0.8,
+                        0.7
+                  ]
+            },
+            "expectedOutput": 0.5,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-56': {
+    id: 'classical-ml-prob-56',
+    title: "Hierarchical Dendrogram Merge Step Finder",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'dendrogram_merge_step',
+    functionSignature: "dendrogram_merge_step(dist_matrix: list[list[float]], cluster_names: list[str]) -> dict",
+    starterCode: `def dendrogram_merge_step(dist_matrix, cluster_names):
+    """Find pair of closest clusters to merge from symmetric distance matrix.
+    Returns dict with keys 'cluster_1', 'cluster_2', 'distance'.
+    """
+    pass
+`,
+    mission: "Identify the pair of closest clusters to merge in an agglomerative clustering step.",
+    taskDescription: "Implement `dendrogram_merge_step(dist_matrix, cluster_names)`: find the pair of distinct clusters `(i < j)` with the minimum distance. Return dict with keys `\"cluster_1\"`, `\"cluster_2\"`, and `\"distance\"` (rounded to 4 decimal places).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "dist_matrix is symmetric with zeros on main diagonal"
+],
+    hints: {
+      "small": "Scan the upper triangle 0 `<=` i `<` j `<` n of the distance matrix.",
+      "strong": "Track indices i and j of the minimum distance entry.",
+      "concept": "The sequence of dendrogram merge heights visualizes multi-scale cluster organization."
+},
+    conceptConnections: [
+      {
+            "title": "Agglomerative Clustering",
+            "route": "/docs/machine-learning/gmm-spectral-clustering",
+            "description": "Dendrogram merges and hierarchical clustering"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Three clusters merge A and B",
+            "input": {
+                  "dist_matrix": [
+                        [
+                              0.0,
+                              1.5,
+                              4.0
+                        ],
+                        [
+                              1.5,
+                              0.0,
+                              3.2
+                        ],
+                        [
+                              4.0,
+                              3.2,
+                              0.0
+                        ]
+                  ],
+                  "cluster_names": [
+                        "A",
+                        "B",
+                        "C"
+                  ]
+            },
+            "expectedOutput": {
+                  "cluster_1": "A",
+                  "cluster_2": "B",
+                  "distance": 1.5
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Tied minimum pick smaller indices",
+            "input": {
+                  "dist_matrix": [
+                        [
+                              0.0,
+                              2.0,
+                              2.0
+                        ],
+                        [
+                              2.0,
+                              0.0,
+                              5.0
+                        ],
+                        [
+                              2.0,
+                              5.0,
+                              0.0
+                        ]
+                  ],
+                  "cluster_names": [
+                        "C1",
+                        "C2",
+                        "C3"
+                  ]
+            },
+            "expectedOutput": {
+                  "cluster_1": "C1",
+                  "cluster_2": "C2",
+                  "distance": 2.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Four clusters distant groups",
+            "input": {
+                  "dist_matrix": [
+                        [
+                              0.0,
+                              10.0,
+                              1.0,
+                              10.0
+                        ],
+                        [
+                              10.0,
+                              0.0,
+                              10.0,
+                              2.0
+                        ],
+                        [
+                              1.0,
+                              10.0,
+                              0.0,
+                              10.0
+                        ],
+                        [
+                              10.0,
+                              2.0,
+                              10.0,
+                              0.0
+                        ]
+                  ],
+                  "cluster_names": [
+                        "w",
+                        "x",
+                        "y",
+                        "z"
+                  ]
+            },
+            "expectedOutput": {
+                  "cluster_1": "w",
+                  "cluster_2": "y",
+                  "distance": 1.0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-57': {
+    id: 'classical-ml-prob-57',
+    title: "Stochastic Gradient Descent (SGD) with Momentum",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'sgd_momentum_step',
+    functionSignature: "sgd_momentum_step(weights: list[float], velocity: list[float], gradients: list[float], lr: float, momentum: float) -> dict",
+    starterCode: `def sgd_momentum_step(weights, velocity, gradients, lr, momentum):
+    """Execute single SGD with momentum parameter update step.
+    Returns dict with keys 'weights' and 'velocity'.
+    """
+    pass
+`,
+    mission: "Accelerate gradient descent trajectories using Polyak heavy-ball momentum.",
+    taskDescription: "Implement `sgd_momentum_step(weights, velocity, gradients, lr, momentum)`: update velocity as `v_next = momentum * v + lr * grad` and weights as `w_next = w - v_next`. Return dict with updated `\"weights\"` and `\"velocity\"`, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(weights) == len(velocity) == len(gradients)",
+      "0.0 <= momentum < 1.0"
+],
+    hints: {
+      "small": "Calculate velocity v = momentum * v + lr * grad.",
+      "strong": "Subtract new velocity from weights: w = w - v.",
+      "concept": "Momentum models a physical ball rolling down the loss surface with friction coefficient momentum."
+},
+    conceptConnections: [
+      {
+            "title": "Optimization Algorithms",
+            "route": "/docs/machine-learning/optimizers",
+            "description": "Stochastic gradient descent with momentum"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Zero initial velocity step",
+            "input": {
+                  "weights": [
+                        1.0,
+                        2.0
+                  ],
+                  "velocity": [
+                        0.0,
+                        0.0
+                  ],
+                  "gradients": [
+                        0.5,
+                        -0.5
+                  ],
+                  "lr": 0.1,
+                  "momentum": 0.9
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.95,
+                        2.05
+                  ],
+                  "velocity": [
+                        0.05,
+                        -0.05
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Accumulated velocity step",
+            "input": {
+                  "weights": [
+                        1.0
+                  ],
+                  "velocity": [
+                        0.1
+                  ],
+                  "gradients": [
+                        0.2
+                  ],
+                  "lr": 0.1,
+                  "momentum": 0.9
+            },
+            "expectedOutput": {
+                  "weights": [
+                        0.89
+                  ],
+                  "velocity": [
+                        0.11
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Zero momentum reduces to standard SGD",
+            "input": {
+                  "weights": [
+                        5.0
+                  ],
+                  "velocity": [
+                        0.0
+                  ],
+                  "gradients": [
+                        2.0
+                  ],
+                  "lr": 0.01,
+                  "momentum": 0.0
+            },
+            "expectedOutput": {
+                  "weights": [
+                        4.98
+                  ],
+                  "velocity": [
+                        0.02
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-58': {
+    id: 'classical-ml-prob-58',
+    title: "Bipartite User-Item Co-Occurrence Graph Projection",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'bipartite_item_projection',
+    functionSignature: "bipartite_item_projection(user_items: list[tuple[str, str]]) -> dict[str, dict[str, int]]",
+    starterCode: `def bipartite_item_projection(user_items):
+    """Project bipartite (user, item) graph onto item-item co-occurrence graph.
+    Returns nested dict mapping item to co-occurrence counts with other items.
+    """
+    pass
+`,
+    mission: "Project a bipartite interaction stream into an item-item co-occurrence adjacency graph.",
+    taskDescription: "Implement `bipartite_item_projection(user_items)`: given pairs of `(user, item)`, count how many distinct users interacted with both `item1` and `item2`. Return a nested dict mapping each sorted item to its neighbors with strictly positive co-occurrence counts.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "user_items is a list of (user_id, item_id) pairs"
+],
+    hints: {
+      "small": "Group items into sets by user ID.",
+      "strong": "For each user, increment co-occurrence count for all distinct item pairs they interacted with.",
+      "concept": "One-mode projection converts bipartite affiliate networks into homogeneous entity relationship graphs."
+},
+    conceptConnections: [
+      {
+            "title": "Graph Recommenders",
+            "route": "/docs/machine-learning/recommender-systems",
+            "description": "Item-item co-occurrence graphs and collaborative filtering"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Two users overlapping items",
+            "input": {
+                  "user_items": [
+                        [
+                              "u1",
+                              "i1"
+                        ],
+                        [
+                              "u1",
+                              "i2"
+                        ],
+                        [
+                              "u2",
+                              "i2"
+                        ],
+                        [
+                              "u2",
+                              "i3"
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "i1": {
+                        "i2": 1
+                  },
+                  "i2": {
+                        "i1": 1,
+                        "i3": 1
+                  },
+                  "i3": {
+                        "i2": 1
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Disjoint users zero co-occurrence",
+            "input": {
+                  "user_items": [
+                        [
+                              "u1",
+                              "a"
+                        ],
+                        [
+                              "u2",
+                              "b"
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "a": {},
+                  "b": {}
+            },
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Three items shared by one user",
+            "input": {
+                  "user_items": [
+                        [
+                              "u1",
+                              "x"
+                        ],
+                        [
+                              "u1",
+                              "y"
+                        ],
+                        [
+                              "u1",
+                              "z"
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "x": {
+                        "y": 1,
+                        "z": 1
+                  },
+                  "y": {
+                        "x": 1,
+                        "z": 1
+                  },
+                  "z": {
+                        "x": 1,
+                        "y": 1
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-59': {
+    id: 'classical-ml-prob-59',
+    title: "Categorical Target Encoding with M-Estimate Smoothing",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'target_encoding_smooth',
+    functionSignature: "target_encoding_smooth(categories: list[str], targets: list[float], m_weight: float) -> list[float]",
+    starterCode: `def target_encoding_smooth(categories, targets, m_weight):
+    """Compute m-estimate smoothed target encoding for categorical features.
+    Round each float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Encode high-cardinality categorical features using smoothed empirical target statistics.",
+    taskDescription: "Implement `target_encoding_smooth(categories, targets, m_weight)`: global mean is `G = mean(targets)`. For category `c` with count `n_c` and sum `S_c`, smoothed value is `(S_c + m_weight * G) / (n_c + m_weight)`. Return list of encoded floats rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(categories) == len(targets)",
+      "m_weight >= 0.0"
+],
+    hints: {
+      "small": "Calculate the global target mean first.",
+      "strong": "Weight empirical category sum by sample count and global mean by m_weight.",
+      "concept": "Target encoding replaces categorical text levels with scalar expectations of the supervised target."
+},
+    conceptConnections: [
+      {
+            "title": "Feature Engineering",
+            "route": "/docs/machine-learning/linear-regression",
+            "description": "Target encoding and categorical feature transformation"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Binary categories smoothing",
+            "input": {
+                  "categories": [
+                        "A",
+                        "A",
+                        "B"
+                  ],
+                  "targets": [
+                        1.0,
+                        1.0,
+                        0.0
+                  ],
+                  "m_weight": 1.0
+            },
+            "expectedOutput": [
+                  0.8889,
+                  0.8889,
+                  0.3333
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "Zero weight pure empirical mean",
+            "input": {
+                  "categories": [
+                        "A",
+                        "A"
+                  ],
+                  "targets": [
+                        2.0,
+                        4.0
+                  ],
+                  "m_weight": 0.0
+            },
+            "expectedOutput": [
+                  3.0,
+                  3.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "High weight shrinks to global mean",
+            "input": {
+                  "categories": [
+                        "rare",
+                        "common",
+                        "common"
+                  ],
+                  "targets": [
+                        10.0,
+                        1.0,
+                        1.0
+                  ],
+                  "m_weight": 100.0
+            },
+            "expectedOutput": [
+                  4.0594,
+                  3.9412,
+                  3.9412
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'classical-ml-prob-60': {
+    id: 'classical-ml-prob-60',
+    title: "Mean Reciprocal Rank (MRR) for Recommendation Lists",
+    difficulty: 'easy',
+    topic: "Classical Machine Learning",
+    estimatedTime: '10–15 min',
+    functionName: 'mean_reciprocal_rank',
+    functionSignature: "mean_reciprocal_rank(recommendation_lists: list[list[str]], relevant_items: list[list[str]]) -> float",
+    starterCode: `def mean_reciprocal_rank(recommendation_lists, relevant_items):
+    """Compute Mean Reciprocal Rank (MRR) across recommendation queries.
+    Round float to 4 decimal places.
+    """
+    pass
+`,
+    mission: "Measure rank positions of the first relevant recommendation across user queries.",
+    taskDescription: "Implement `mean_reciprocal_rank(recommendation_lists, relevant_items)`: for each query, find the 1-indexed rank of the first recommended item that is in `relevant_items`. The reciprocal rank is `1 / rank` (or 0.0 if no relevant item appears). Return the mean reciprocal rank across all queries, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "len(recommendation_lists) == len(relevant_items)"
+],
+    hints: {
+      "small": "Find the first item in the recommendation list that belongs to the relevant set.",
+      "strong": "Reciprocal rank is 1 / rank (1-indexed). Average these values across all queries.",
+      "concept": "MRR is the primary metric for single-answer search engines and question answering systems."
+},
+    conceptConnections: [
+      {
+            "title": "Ranking Evaluation",
+            "route": "/docs/machine-learning/recommender-systems",
+            "description": "Mean Reciprocal Rank and evaluation metrics"
+      }
+],
+    testCases: [
+      {
+            "id": "tc1",
+            "label": "Rank 1 and rank 2 hits gives 0.75 MRR",
+            "input": {
+                  "recommendation_lists": [
+                        [
+                              "a",
+                              "b"
+                        ],
+                        [
+                              "c",
+                              "d"
+                        ]
+                  ],
+                  "relevant_items": [
+                        [
+                              "a"
+                        ],
+                        [
+                              "d"
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.75,
+            "hidden": false
+      },
+      {
+            "id": "tc2",
+            "label": "No hits in recommendations gives zero",
+            "input": {
+                  "recommendation_lists": [
+                        [
+                              "x",
+                              "y"
+                        ]
+                  ],
+                  "relevant_items": [
+                        [
+                              "z"
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.0,
+            "hidden": false
+      },
+      {
+            "id": "tc3",
+            "label": "Rank 3 hit",
+            "input": {
+                  "recommendation_lists": [
+                        [
+                              "a",
+                              "b",
+                              "c"
+                        ]
+                  ],
+                  "relevant_items": [
+                        [
+                              "c"
+                        ]
+                  ]
+            },
+            "expectedOutput": 0.3333,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

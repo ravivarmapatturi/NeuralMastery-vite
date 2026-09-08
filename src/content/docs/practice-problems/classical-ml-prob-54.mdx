@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 54: Problem 294"
 sidebar_position: 294
 description: "Curriculum Problem 294 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,55 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #294** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-53`.
+## Overview
+
+Quantify shared information between true and predicted clusterings normalized by entropy.
+
+## Task
+
+Implement `nmi_clustering(labels_true, labels_pred)`: compute mutual information `MI(T, P) = sum(p(t, p) * log(p(t, p) / (p(t)*p(p))))`. Return normalized score `MI / sqrt(H(T) * H(P))` (or 1.0 if both entropies are 0). Round float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-54" />
 
 <Solution>
 
 ```python
-def classical_ml_p54(data):
-    # Reference implementation
-    return data
+import math
+from collections import Counter
+
+def nmi_clustering(labels_true, labels_pred):
+    n = len(labels_true)
+    if n == 0:
+        return 1.0
+    c_true = Counter(labels_true)
+    c_pred = Counter(labels_pred)
+    joint = Counter(zip(labels_true, labels_pred))
+
+    def entropy(counter):
+        h = 0.0
+        for cnt in counter.values():
+            p = cnt / n
+            if p > 0:
+                h -= p * math.log(p)
+        return h
+
+    h_true = entropy(c_true)
+    h_pred = entropy(c_pred)
+    
+    mi = 0.0
+    for (t, p), cnt in joint.items():
+        p_tp = cnt / n
+        p_t = c_true[t] / n
+        p_p = c_pred[p] / n
+        if p_tp > 0:
+            mi += p_tp * math.log(p_tp / (p_t * p_p))
+    
+    denom = math.sqrt(h_true * h_pred)
+    if denom == 0.0:
+        return 1.0 if h_true == h_pred else 0.0
+    return round(float(mi / denom), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+NMI measures non-linear mutual dependence between partition structures, invariant to label permutations and scaled by average marginal uncertainty.
 
 </Solution>

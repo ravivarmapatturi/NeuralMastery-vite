@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 30: Problem 270"
 sidebar_position: 270
 description: "Curriculum Problem 270 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #270** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-29`.
+## Overview
+
+Evaluate the reconstruction sum of squared errors over observed rating matrix entries.
+
+## Task
+
+Implement `matrix_factorization_error(r_matrix, p_matrix, q_matrix)`: compute `sum((R[i][j] - dot(P[i], Q[j]))**2)` only over pairs `(i, j)` where `R[i][j] is not None`. `P` is of shape (N, K) and `Q` is of shape (M, K). Round result to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-30" />
 
 <Solution>
 
 ```python
-def classical_ml_p30(data):
-    # Reference implementation
-    return data
+def matrix_factorization_error(r_matrix, p_matrix, q_matrix):
+    total_err = 0.0
+    n = len(r_matrix)
+    m = len(r_matrix[0])
+    for i in range(n):
+        for j in range(m):
+            val = r_matrix[i][j]
+            if val is not None:
+                pred = sum(p_matrix[i][k] * q_matrix[j][k] for k in range(len(p_matrix[0])))
+                total_err += (val - pred) ** 2
+    return round(float(total_err), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Latent factor models decompose sparse interaction matrices into low-rank user and item embeddings, minimizing reconstruction loss on observed feedback.
 
 </Solution>

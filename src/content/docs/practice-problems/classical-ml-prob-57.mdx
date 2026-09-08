@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 57: Problem 297"
 sidebar_position: 297
 description: "Curriculum Problem 297 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #297** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-56`.
+## Overview
+
+Accelerate gradient descent trajectories using Polyak heavy-ball momentum.
+
+## Task
+
+Implement `sgd_momentum_step(weights, velocity, gradients, lr, momentum)`: update velocity as `v_next = momentum * v + lr * grad` and weights as `w_next = w - v_next`. Return dict with updated `"weights"` and `"velocity"`, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-57" />
 
 <Solution>
 
 ```python
-def classical_ml_p57(data):
-    # Reference implementation
-    return data
+def sgd_momentum_step(weights, velocity, gradients, lr, momentum):
+    new_v = []
+    new_w = []
+    for w, v, g in zip(weights, velocity, gradients):
+        v_next = momentum * v + lr * g
+        w_next = w - v_next
+        new_v.append(round(float(v_next), 4))
+        new_w.append(round(float(w_next), 4))
+    return {"weights": new_w, "velocity": new_v}
 ```
 
-This problem tests fundamental skills in Classical ML.
+Momentum dampens oscillations along high-curvature ravines while accelerating progress down consistent gradient directions.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 25: Problem 265"
 sidebar_position: 265
 description: "Curriculum Problem 265 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,40 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #265** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-24`.
+## Overview
+
+Measure Shannon entropy reduction achieved by partitioning a node in a decision tree.
+
+## Task
+
+Implement `entropy_info_gain(parent_labels, left_labels, right_labels)`: Shannon entropy is `H(S) = -sum(p_k * log2(p_k))` (0.0 for empty set). Information Gain is `H(parent) - (|left|/|parent|)*H(left) - (|right|/|parent|)*H(right)`. Round float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-25" />
 
 <Solution>
 
 ```python
-def classical_ml_p25(data):
-    # Reference implementation
-    return data
+import math
+from collections import Counter
+
+def entropy_info_gain(parent_labels, left_labels, right_labels):
+    def entropy(lbls):
+        if not lbls:
+            return 0.0
+        counts = Counter(lbls)
+        n = len(lbls)
+        h = -sum((c / n) * math.log2(c / n) for c in counts.values() if c > 0)
+        return h
+
+    h_parent = entropy(parent_labels)
+    n_total = len(parent_labels)
+    if n_total == 0:
+        return 0.0
+    weighted_children = (len(left_labels) / n_total) * entropy(left_labels) + (len(right_labels) / n_total) * entropy(right_labels)
+    gain = h_parent - weighted_children
+    return round(float(gain), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Information gain quantifies uncertainty reduction about target classes upon splitting on a feature condition.
 
 </Solution>

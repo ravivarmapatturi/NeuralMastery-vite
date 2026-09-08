@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 60: Problem 300"
 sidebar_position: 300
 description: "Curriculum Problem 300 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #300** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-59`.
+## Overview
+
+Measure rank positions of the first relevant recommendation across user queries.
+
+## Task
+
+Implement `mean_reciprocal_rank(recommendation_lists, relevant_items)`: for each query, find the 1-indexed rank of the first recommended item that is in `relevant_items`. The reciprocal rank is `1 / rank` (or 0.0 if no relevant item appears). Return the mean reciprocal rank across all queries, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-60" />
 
 <Solution>
 
 ```python
-def classical_ml_p60(data):
-    # Reference implementation
-    return data
+def mean_reciprocal_rank(recommendation_lists, relevant_items):
+    rrs = []
+    for recs, rels in zip(recommendation_lists, relevant_items):
+        rel_set = set(rels)
+        rr = 0.0
+        for rank, item in enumerate(recs, start=1):
+            if item in rel_set:
+                rr = 1.0 / rank
+                break
+        rrs.append(rr)
+    mrr = sum(rrs) / len(rrs) if rrs else 0.0
+    return round(float(mrr), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+MRR emphasizes the position of the first successful match, rewarding models that place a correct recommendation at rank 1.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 23: Problem 263"
 sidebar_position: 263
 description: "Curriculum Problem 263 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #263** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-22`.
+## Overview
+
+Calculate the Gini impurity metric for a set of categorical target labels.
+
+## Task
+
+Implement `gini_impurity(labels)`: compute Gini impurity `1.0 - sum((count_k / N)**2)`. Return 0.0 for empty input. Round float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-23" />
 
 <Solution>
 
 ```python
-def classical_ml_p23(data):
-    # Reference implementation
-    return data
+from collections import Counter
+
+def gini_impurity(labels):
+    if not labels:
+        return 0.0
+    counts = Counter(labels)
+    n = len(labels)
+    sum_sq = sum((cnt / n) ** 2 for cnt in counts.values())
+    return round(float(1.0 - sum_sq), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Gini impurity measures the probability of misclassifying a randomly chosen element if randomly labeled according to class distribution.
 
 </Solution>

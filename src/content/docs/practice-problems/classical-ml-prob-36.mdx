@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 36: Problem 276"
 sidebar_position: 276
 description: "Curriculum Problem 276 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,39 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #276** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-35`.
+## Overview
+
+Compute posterior latent component responsibilities in a 1D Gaussian Mixture Model.
+
+## Task
+
+Implement `gmm_e_step_1d(x, weights, means, variances)`: for each sample, compute unnormalized component densities `w_k * N(x; mu_k, var_k)` and normalize by their sum to obtain responsibilities. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-36" />
 
 <Solution>
 
 ```python
-def classical_ml_p36(data):
-    # Reference implementation
-    return data
+import math
+
+def gmm_e_step_1d(x, weights, means, variances):
+    res = []
+    for val in x:
+        densities = []
+        for w, m, v in zip(weights, means, variances):
+            std = math.sqrt(max(1e-9, v))
+            exp_term = math.exp(-0.5 * ((val - m) ** 2) / max(1e-9, v))
+            pdf = (1.0 / (std * math.sqrt(2.0 * math.pi))) * exp_term
+            densities.append(w * pdf)
+        total = sum(densities)
+        if total > 0.0:
+            row = [round(float(d / total), 4) for d in densities]
+        else:
+            row = [round(1.0 / len(weights), 4)] * len(weights)
+        res.append(row)
+    return res
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+The E-step applies Bayes theorem to calculate the soft probability responsibility of each Gaussian component for generating each observation.
 
 </Solution>

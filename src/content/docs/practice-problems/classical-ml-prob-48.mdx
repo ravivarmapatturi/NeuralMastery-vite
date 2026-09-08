@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 48: Problem 288"
 sidebar_position: 288
 description: "Curriculum Problem 288 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,38 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #288** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-47`.
+## Overview
+
+Shift a cluster centroid toward local probability density mode using a Gaussian kernel.
+
+## Task
+
+Implement `mean_shift_step(center, points, bandwidth)`: for each point, compute Gaussian kernel weight `exp(-0.5 * (d / bandwidth)**2)`. Return the weighted average of points, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-48" />
 
 <Solution>
 
 ```python
-def classical_ml_p48(data):
-    # Reference implementation
-    return data
+import math
+
+def mean_shift_step(center, points, bandwidth):
+    weights = []
+    for pt in points:
+        d = math.sqrt(sum((a - b) ** 2 for a, b in zip(center, pt)))
+        w = math.exp(-0.5 * ((d / bandwidth) ** 2))
+        weights.append(w)
+    total_w = sum(weights)
+    dim = len(center)
+    if total_w == 0.0:
+        return [round(float(c), 4) for c in center]
+    new_center = []
+    for j in range(dim):
+        coord = sum(w * pt[j] for w, pt in zip(weights, points)) / total_w
+        new_center.append(round(float(coord), 4))
+    return new_center
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+The mean shift vector points directly along the gradient of the kernel density estimate, climbing toward local modes of the distribution.
 
 </Solution>

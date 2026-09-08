@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 32: Problem 272"
 sidebar_position: 272
 description: "Curriculum Problem 272 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,29 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #272** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-31`.
+## Overview
+
+Measure the Euclidean separation between the mean centroids of two point clusters.
+
+## Task
+
+Implement `centroid_linkage_distance(cluster_a, cluster_b)`: calculate the Euclidean distance between the center of mass (mean vector) of `cluster_a` and `cluster_b`. Round result to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-32" />
 
 <Solution>
 
 ```python
-def classical_ml_p32(data):
-    # Reference implementation
-    return data
+import math
+
+def centroid_linkage_distance(cluster_a, cluster_b):
+    dim = len(cluster_a[0])
+    ca = [sum(pt[j] for pt in cluster_a) / len(cluster_a) for j in range(dim)]
+    cb = [sum(pt[j] for pt in cluster_b) / len(cluster_b) for j in range(dim)]
+    dist = math.sqrt(sum((x - y) ** 2 for x, y in zip(ca, cb)))
+    return round(float(dist), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Centroid linkage collapses clusters into their respective center-of-mass representatives before computing inter-cluster distance.
 
 </Solution>

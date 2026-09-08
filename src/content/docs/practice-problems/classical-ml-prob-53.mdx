@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 53: Problem 293"
 sidebar_position: 293
 description: "Curriculum Problem 293 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,29 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #293** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-52`.
+## Overview
+
+Compute parameterized F-Beta scores weighting precision and recall preferences.
+
+## Task
+
+Implement `f_beta_score(tp, fp, fn, beta)`: precision is `tp / (tp + fp)`, recall is `tp / (tp + fn)`. Score is `(1 + beta**2) * (P * R) / (beta**2 * P + R)` (or 0.0 if denominator is 0). Round float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-53" />
 
 <Solution>
 
 ```python
-def classical_ml_p53(data):
-    # Reference implementation
-    return data
+def f_beta_score(tp, fp, fn, beta):
+    prec = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+    rec = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+    denom = (beta ** 2) * prec + rec
+    if denom == 0.0:
+        return 0.0
+    score = (1.0 + beta ** 2) * (prec * rec) / denom
+    return round(float(score), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Beta adjusts the relative importance of recall versus precision: beta=2 weights recall higher (e.g. medical diagnosis), while beta=0.5 weights precision higher.
 
 </Solution>

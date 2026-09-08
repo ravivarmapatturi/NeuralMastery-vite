@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 16: Problem 256"
 sidebar_position: 256
 description: "Curriculum Problem 256 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,31 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #256** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-15`.
+## Overview
+
+Compute the complete-linkage maximum distance between two point clusters.
+
+## Task
+
+Implement `complete_linkage_distance(cluster_a, cluster_b)`: compute the maximum Euclidean distance between any point in `cluster_a` and any point in `cluster_b`. Round result to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-16" />
 
 <Solution>
 
 ```python
-def classical_ml_p16(data):
-    # Reference implementation
-    return data
+import math
+
+def complete_linkage_distance(cluster_a, cluster_b):
+    max_d = 0.0
+    for pt_a in cluster_a:
+        for pt_b in cluster_b:
+            d = math.sqrt(sum((x - y) ** 2 for x, y in zip(pt_a, pt_b)))
+            if d > max_d:
+                max_d = d
+    return round(float(max_d), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Complete linkage computes the diameter of the merged cluster, creating compact, spherical clusters in agglomerative hierarchical clustering.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 17: Problem 257"
 sidebar_position: 257
 description: "Curriculum Problem 257 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,30 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #257** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-16`.
+## Overview
+
+Compute binary class prediction probabilities using the logistic sigmoid function.
+
+## Task
+
+Implement `sigmoid_predict(x, w, b)`: evaluate linear logit `z = sum(x[i] * w[i]) + b` and apply numerically stable sigmoid `1 / (1 + exp(-z))` for `z >= 0` or `exp(z) / (1 + exp(z))` for `z < 0`. Round probability to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-17" />
 
 <Solution>
 
 ```python
-def classical_ml_p17(data):
-    # Reference implementation
-    return data
+import math
+
+def sigmoid_predict(x, w, b):
+    z = sum(a * wt for a, wt in zip(x, w)) + b
+    if z >= 0:
+        sig = 1.0 / (1.0 + math.exp(-z))
+    else:
+        sig = math.exp(z) / (1.0 + math.exp(z))
+    return round(float(sig), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Sigmoid projects real-valued linear activations onto the probability range (0, 1) with monotonic log-odds interpretation.
 
 </Solution>

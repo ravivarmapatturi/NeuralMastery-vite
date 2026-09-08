@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 52: Problem 292"
 sidebar_position: 292
 description: "Curriculum Problem 292 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #292** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-51`.
+## Overview
+
+Identify the exemplar medoid point that minimizes intra-cluster distance sum.
+
+## Task
+
+Implement `select_cluster_medoid(points)`: find the point in `points` that minimizes the sum of Euclidean distances to all other points in `points` (tie-break by smallest index). Return the medoid point vector.
 
 <PracticePlayground problemId="classical-ml-prob-52" />
 
 <Solution>
 
 ```python
-def classical_ml_p52(data):
-    # Reference implementation
-    return data
+import math
+
+def select_cluster_medoid(points):
+    n = len(points)
+    best_idx = 0
+    best_dist_sum = float('inf')
+    for i in range(n):
+        s = sum(math.sqrt(sum((a - b) ** 2 for a, b in zip(points[i], points[j]))) for j in range(n))
+        if s < best_dist_sum:
+            best_dist_sum = s
+            best_idx = i
+    return points[best_idx]
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Unlike K-means centroids which are virtual arithmetic averages, K-medoids restricts cluster representatives to actual observed data points, enhancing interpretability and outlier robustness.
 
 </Solution>

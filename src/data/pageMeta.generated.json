@@ -4638,7 +4638,7 @@
       "description": "Curriculum Problem 256 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-17": {
       "slug": "practice-problems/classical-ml-prob-17",
@@ -4648,7 +4648,7 @@
       "description": "Curriculum Problem 257 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-18": {
       "slug": "practice-problems/classical-ml-prob-18",
@@ -4658,7 +4658,7 @@
       "description": "Curriculum Problem 258 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-19": {
       "slug": "practice-problems/classical-ml-prob-19",
@@ -4668,7 +4668,7 @@
       "description": "Curriculum Problem 259 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-2": {
       "slug": "practice-problems/classical-ml-prob-2",
@@ -4688,7 +4688,7 @@
       "description": "Curriculum Problem 260 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-21": {
       "slug": "practice-problems/classical-ml-prob-21",
@@ -4698,7 +4698,7 @@
       "description": "Curriculum Problem 261 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "easy",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-22": {
       "slug": "practice-problems/classical-ml-prob-22",
@@ -4708,7 +4708,7 @@
       "description": "Curriculum Problem 262 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-23": {
       "slug": "practice-problems/classical-ml-prob-23",
@@ -4718,7 +4718,7 @@
       "description": "Curriculum Problem 263 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-24": {
       "slug": "practice-problems/classical-ml-prob-24",
@@ -4728,7 +4728,7 @@
       "description": "Curriculum Problem 264 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-25": {
       "slug": "practice-problems/classical-ml-prob-25",
@@ -4738,7 +4738,7 @@
       "description": "Curriculum Problem 265 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-26": {
       "slug": "practice-problems/classical-ml-prob-26",
@@ -4748,7 +4748,7 @@
       "description": "Curriculum Problem 266 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-27": {
       "slug": "practice-problems/classical-ml-prob-27",
@@ -4758,7 +4758,7 @@
       "description": "Curriculum Problem 267 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-28": {
       "slug": "practice-problems/classical-ml-prob-28",
@@ -4768,7 +4768,7 @@
       "description": "Curriculum Problem 268 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-29": {
       "slug": "practice-problems/classical-ml-prob-29",
@@ -4778,7 +4778,7 @@
       "description": "Curriculum Problem 269 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-3": {
       "slug": "practice-problems/classical-ml-prob-3",
@@ -4798,7 +4798,7 @@
       "description": "Curriculum Problem 270 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-31": {
       "slug": "practice-problems/classical-ml-prob-31",
@@ -4808,7 +4808,7 @@
       "description": "Curriculum Problem 271 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-32": {
       "slug": "practice-problems/classical-ml-prob-32",
@@ -4818,7 +4818,7 @@
       "description": "Curriculum Problem 272 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-33": {
       "slug": "practice-problems/classical-ml-prob-33",
@@ -4828,7 +4828,7 @@
       "description": "Curriculum Problem 273 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-34": {
       "slug": "practice-problems/classical-ml-prob-34",
@@ -4838,7 +4838,7 @@
       "description": "Curriculum Problem 274 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-35": {
       "slug": "practice-problems/classical-ml-prob-35",
@@ -4848,7 +4848,7 @@
       "description": "Curriculum Problem 275 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-36": {
       "slug": "practice-problems/classical-ml-prob-36",
@@ -4858,7 +4858,7 @@
       "description": "Curriculum Problem 276 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-37": {
       "slug": "practice-problems/classical-ml-prob-37",
@@ -4868,7 +4868,7 @@
       "description": "Curriculum Problem 277 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-38": {
       "slug": "practice-problems/classical-ml-prob-38",
@@ -4878,7 +4878,7 @@
       "description": "Curriculum Problem 278 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-39": {
       "slug": "practice-problems/classical-ml-prob-39",
@@ -4888,7 +4888,7 @@
       "description": "Curriculum Problem 279 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-4": {
       "slug": "practice-problems/classical-ml-prob-4",
@@ -4908,7 +4908,7 @@
       "description": "Curriculum Problem 280 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-41": {
       "slug": "practice-problems/classical-ml-prob-41",
@@ -4918,7 +4918,7 @@
       "description": "Curriculum Problem 281 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-42": {
       "slug": "practice-problems/classical-ml-prob-42",
@@ -4928,7 +4928,7 @@
       "description": "Curriculum Problem 282 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-43": {
       "slug": "practice-problems/classical-ml-prob-43",
@@ -4938,7 +4938,7 @@
       "description": "Curriculum Problem 283 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-44": {
       "slug": "practice-problems/classical-ml-prob-44",
@@ -4948,7 +4948,7 @@
       "description": "Curriculum Problem 284 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-45": {
       "slug": "practice-problems/classical-ml-prob-45",
@@ -4958,7 +4958,7 @@
       "description": "Curriculum Problem 285 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-46": {
       "slug": "practice-problems/classical-ml-prob-46",
@@ -4968,7 +4968,7 @@
       "description": "Curriculum Problem 286 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-47": {
       "slug": "practice-problems/classical-ml-prob-47",
@@ -4978,7 +4978,7 @@
       "description": "Curriculum Problem 287 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-48": {
       "slug": "practice-problems/classical-ml-prob-48",
@@ -4988,7 +4988,7 @@
       "description": "Curriculum Problem 288 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "medium",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-49": {
       "slug": "practice-problems/classical-ml-prob-49",
@@ -4998,7 +4998,7 @@
       "description": "Curriculum Problem 289 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-5": {
       "slug": "practice-problems/classical-ml-prob-5",
@@ -5018,7 +5018,7 @@
       "description": "Curriculum Problem 290 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-51": {
       "slug": "practice-problems/classical-ml-prob-51",
@@ -5028,7 +5028,7 @@
       "description": "Curriculum Problem 291 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-52": {
       "slug": "practice-problems/classical-ml-prob-52",
@@ -5038,7 +5038,7 @@
       "description": "Curriculum Problem 292 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-53": {
       "slug": "practice-problems/classical-ml-prob-53",
@@ -5048,7 +5048,7 @@
       "description": "Curriculum Problem 293 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-54": {
       "slug": "practice-problems/classical-ml-prob-54",
@@ -5058,7 +5058,7 @@
       "description": "Curriculum Problem 294 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-55": {
       "slug": "practice-problems/classical-ml-prob-55",
@@ -5068,7 +5068,7 @@
       "description": "Curriculum Problem 295 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-56": {
       "slug": "practice-problems/classical-ml-prob-56",
@@ -5078,7 +5078,7 @@
       "description": "Curriculum Problem 296 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-57": {
       "slug": "practice-problems/classical-ml-prob-57",
@@ -5088,7 +5088,7 @@
       "description": "Curriculum Problem 297 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-58": {
       "slug": "practice-problems/classical-ml-prob-58",
@@ -5098,7 +5098,7 @@
       "description": "Curriculum Problem 298 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-59": {
       "slug": "practice-problems/classical-ml-prob-59",
@@ -5108,7 +5108,7 @@
       "description": "Curriculum Problem 299 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-6": {
       "slug": "practice-problems/classical-ml-prob-6",
@@ -5128,7 +5128,7 @@
       "description": "Curriculum Problem 300 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders.",
       "difficulty": "hard",
       "topic": "classical-ml",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/classical-ml-prob-7": {
       "slug": "practice-problems/classical-ml-prob-7",

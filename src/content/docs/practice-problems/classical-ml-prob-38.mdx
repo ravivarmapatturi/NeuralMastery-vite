@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 38: Problem 278"
 sidebar_position: 278
 description: "Curriculum Problem 278 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,36 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #278** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-37`.
+## Overview
+
+Update component weights, means, and variances in the GMM M-step.
+
+## Task
+
+Implement `gmm_m_step_1d(x, responsibilities)`: for each component k, compute effective count `N_k = sum(gamma_ik)`. Update `w_k = N_k / N`, `mu_k = sum(gamma_ik * x_i) / N_k`, and `var_k = sum(gamma_ik * (x_i - mu_k)**2) / N_k`. Return dict with keys `"weights"`, `"means"`, `"variances"`, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-38" />
 
 <Solution>
 
 ```python
-def classical_ml_p38(data):
-    # Reference implementation
-    return data
+def gmm_m_step_1d(x, responsibilities):
+    n = len(x)
+    k = len(responsibilities[0])
+    new_weights = []
+    new_means = []
+    new_variances = []
+    for col in range(k):
+        nk = sum(responsibilities[i][col] for i in range(n))
+        w = nk / n
+        mu = sum(responsibilities[i][col] * x[i] for i in range(n)) / nk if nk > 0 else 0.0
+        var = sum(responsibilities[i][col] * ((x[i] - mu) ** 2) for i in range(n)) / nk if nk > 0 else 1.0
+        new_weights.append(round(float(w), 4))
+        new_means.append(round(float(mu), 4))
+        new_variances.append(round(float(var), 4))
+    return {"weights": new_weights, "means": new_means, "variances": new_variances}
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+The M-step analytically maximizes the expected complete-data log-likelihood with respect to Gaussian parameters given fixed posterior responsibilities.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 35: Problem 275"
 sidebar_position: 275
 description: "Curriculum Problem 275 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,26 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #275** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-34`.
+## Overview
+
+Compute the standard maximum-margin hinge loss for a single classification sample.
+
+## Task
+
+Implement `svm_hinge_loss(y_true, x, w, b)`: given `y_true in {-1, 1}`, linear margin is `margin = y_true * (sum(x[i] * w[i]) + b)`. Hinge loss is `max(0.0, 1.0 - margin)`. Round float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-35" />
 
 <Solution>
 
 ```python
-def classical_ml_p35(data):
-    # Reference implementation
-    return data
+def svm_hinge_loss(y_true, x, w, b):
+    act = sum(a * wt for a, wt in zip(x, w)) + b
+    margin = y_true * act
+    loss = max(0.0, 1.0 - margin)
+    return round(float(loss), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Hinge loss incurs zero penalty when samples lie on or beyond the correct margin boundary, enforcing sparsity in support vectors.
 
 </Solution>

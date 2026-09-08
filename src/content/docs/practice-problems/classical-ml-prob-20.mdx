@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 20: Problem 260"
 sidebar_position: 260
 description: "Curriculum Problem 260 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #260** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-19`.
+## Overview
+
+Compute average pairwise linkage distance between two clustering groups.
+
+## Task
+
+Implement `average_linkage_distance(cluster_a, cluster_b)`: compute the arithmetic mean of Euclidean distances between all pairs `(pt_a, pt_b)` where `pt_a` is in `cluster_a` and `pt_b` is in `cluster_b`. Round result to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-20" />
 
 <Solution>
 
 ```python
-def classical_ml_p20(data):
-    # Reference implementation
-    return data
+import math
+
+def average_linkage_distance(cluster_a, cluster_b):
+    total_d = 0.0
+    count = 0
+    for pt_a in cluster_a:
+        for pt_b in cluster_b:
+            d = math.sqrt(sum((x - y) ** 2 for x, y in zip(pt_a, pt_b)))
+            total_d += d
+            count += 1
+    avg_d = total_d / count if count > 0 else 0.0
+    return round(float(avg_d), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Average linkage computes the expected distance between randomly chosen cross-cluster members, balancing single and complete linkage extremes.
 
 </Solution>

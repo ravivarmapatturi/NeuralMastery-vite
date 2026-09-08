@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 47: Problem 287"
 sidebar_position: 287
 description: "Curriculum Problem 287 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #287** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-46`.
+## Overview
+
+Evaluate outlier-resilient Huber loss combining quadratic and linear penalty regimes.
+
+## Task
+
+Implement `huber_loss(y_true, y_pred, delta)`: for absolute residual `e = |y - pred|`, if `e <= delta`, loss is `0.5 * e**2`; otherwise loss is `delta * (e - 0.5 * delta)`. Return mean loss across samples, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-47" />
 
 <Solution>
 
 ```python
-def classical_ml_p47(data):
-    # Reference implementation
-    return data
+def huber_loss(y_true, y_pred, delta):
+    n = len(y_true)
+    if n == 0:
+        return 0.0
+    total = 0.0
+    for yt, yp in zip(y_true, y_pred):
+        err = abs(yt - yp)
+        if err <= delta:
+            total += 0.5 * (err ** 2)
+        else:
+            total += delta * (err - 0.5 * delta)
+    return round(float(total / n), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Huber loss transitions smoothly from quadratic MSE for small residuals to linear MAE for large residuals, ensuring robust gradients under heavy-tailed noise.
 
 </Solution>

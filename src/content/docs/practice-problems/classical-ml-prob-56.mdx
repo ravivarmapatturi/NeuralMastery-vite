@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 56: Problem 296"
 sidebar_position: 296
 description: "Curriculum Problem 296 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,36 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #296** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-55`.
+## Overview
+
+Identify the pair of closest clusters to merge in an agglomerative clustering step.
+
+## Task
+
+Implement `dendrogram_merge_step(dist_matrix, cluster_names)`: find the pair of distinct clusters `(i < j)` with the minimum distance. Return dict with keys `"cluster_1"`, `"cluster_2"`, and `"distance"` (rounded to 4 decimal places).
 
 <PracticePlayground problemId="classical-ml-prob-56" />
 
 <Solution>
 
 ```python
-def classical_ml_p56(data):
-    # Reference implementation
-    return data
+def dendrogram_merge_step(dist_matrix, cluster_names):
+    n = len(dist_matrix)
+    min_d = float('inf')
+    best_i, best_j = -1, -1
+    for i in range(n):
+        for j in range(i + 1, n):
+            d = dist_matrix[i][j]
+            if d < min_d:
+                min_d = d
+                best_i, best_j = i, j
+    return {
+        "cluster_1": cluster_names[best_i],
+        "cluster_2": cluster_names[best_j],
+        "distance": round(float(min_d), 4)
+    }
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Agglomerative clustering iteratively merges the two closest clusters in the active distance matrix to construct the dendrogram hierarchy.
 
 </Solution>

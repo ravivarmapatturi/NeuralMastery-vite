@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 43: Problem 283"
 sidebar_position: 283
 description: "Curriculum Problem 283 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,40 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #283** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-42`.
+## Overview
+
+Compute within-class (S_W) and between-class (S_B) scatter matrices for 2-class LDA.
+
+## Task
+
+Implement `lda_scatter_matrices(class0, class1)`: compute class mean vectors `m0` and `m1`. Compute within-class scatter `S_W = S_0 + S_1` where `S_c = sum((x - m_c)(x - m_c)^T)`. Compute between-class scatter `S_B = (m1 - m0)(m1 - m0)^T`. Return dict with keys `"sw"` and `"sb"`, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-43" />
 
 <Solution>
 
 ```python
-def classical_ml_p43(data):
-    # Reference implementation
-    return data
+def lda_scatter_matrices(class0, class1):
+    dim = len(class0[0])
+    m0 = [sum(p[j] for p in class0) / len(class0) for j in range(dim)]
+    m1 = [sum(p[j] for p in class1) / len(class1) for j in range(dim)]
+    sw = [[0.0] * dim for _ in range(dim)]
+    for p in class0:
+        d = [p[j] - m0[j] for j in range(dim)]
+        for r in range(dim):
+            for c in range(dim):
+                sw[r][c] += d[r] * d[c]
+    for p in class1:
+        d = [p[j] - m1[j] for j in range(dim)]
+        for r in range(dim):
+            for c in range(dim):
+                sw[r][c] += d[r] * d[c]
+    d_mean = [m1[j] - m0[j] for j in range(dim)]
+    sb = [[round(float(d_mean[r] * d_mean[c]), 4) for c in range(dim)] for r in range(dim)]
+    sw_rounded = [[round(float(sw[r][c]), 4) for c in range(dim)] for r in range(dim)]
+    return {"sw": sw_rounded, "sb": sb}
 ```
 
-This problem tests fundamental skills in Classical ML.
+Fishers LDA finds projection directions that simultaneously maximize between-class variance and minimize within-class variance via the Rayleigh quotient.
 
 </Solution>

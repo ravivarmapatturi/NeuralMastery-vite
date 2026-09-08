@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 59: Problem 299"
 sidebar_position: 299
 description: "Curriculum Problem 299 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,37 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #299** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-58`.
+## Overview
+
+Encode high-cardinality categorical features using smoothed empirical target statistics.
+
+## Task
+
+Implement `target_encoding_smooth(categories, targets, m_weight)`: global mean is `G = mean(targets)`. For category `c` with count `n_c` and sum `S_c`, smoothed value is `(S_c + m_weight * G) / (n_c + m_weight)`. Return list of encoded floats rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-59" />
 
 <Solution>
 
 ```python
-def classical_ml_p59(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def target_encoding_smooth(categories, targets, m_weight):
+    global_mean = sum(targets) / len(targets) if targets else 0.0
+    cat_counts = defaultdict(int)
+    cat_sums = defaultdict(float)
+    for c, y in zip(categories, targets):
+        cat_counts[c] += 1
+        cat_sums[c] += y
+    encoded = []
+    for c in categories:
+        cnt = cat_counts[c]
+        s = cat_sums[c]
+        val = (s + m_weight * global_mean) / (cnt + m_weight)
+        encoded.append(round(float(val), 4))
+    return encoded
 ```
 
-This problem tests fundamental skills in Classical ML.
+M-estimate smoothing shrinks category empirical means toward the global baseline according to category sample size, preventing target leakage on sparse levels.
 
 </Solution>

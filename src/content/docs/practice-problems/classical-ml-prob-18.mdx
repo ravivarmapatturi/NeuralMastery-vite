@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 18: Problem 258"
 sidebar_position: 258
 description: "Curriculum Problem 258 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,40 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #258** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-17`.
+## Overview
+
+Measure cluster cohesion versus separation for an individual data sample.
+
+## Task
+
+Implement `silhouette_sample(point, own_cluster, other_clusters)`: let `a` be the average distance from `point` to all other points in `own_cluster` (0.0 if alone). Let `b` be the minimum over each cluster in `other_clusters` of the average distance from `point` to points in that cluster. Return `(b - a) / max(a, b)` (or 0.0 if max(a, b) == 0.0), rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-18" />
 
 <Solution>
 
 ```python
-def classical_ml_p18(data):
-    # Reference implementation
-    return data
+import math
+
+def silhouette_sample(point, own_cluster, other_clusters):
+    own_pts = [p for p in own_cluster if p != point]
+    if not own_pts:
+        a = 0.0
+    else:
+        a = sum(math.sqrt(sum((x - y) ** 2 for x, y in zip(point, p))) for p in own_pts) / len(own_pts)
+    
+    b_vals = []
+    for cl in other_clusters:
+        if cl:
+            mean_d = sum(math.sqrt(sum((x - y) ** 2 for x, y in zip(point, p))) for p in cl) / len(cl)
+            b_vals.append(mean_d)
+    b = min(b_vals) if b_vals else 0.0
+    
+    denom = max(a, b)
+    s = (b - a) / denom if denom > 0 else 0.0
+    return round(float(s), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Silhouette values near +1 indicate dense, well-isolated cluster assignments, while negative values indicate likely assignment to the wrong cluster.
 
 </Solution>

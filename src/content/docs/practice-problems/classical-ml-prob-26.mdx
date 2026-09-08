@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 26: Problem 266"
 sidebar_position: 266
 description: "Curriculum Problem 266 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,29 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #266** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-25`.
+## Overview
+
+Predict unobserved item ratings via similarity-weighted neighborhood aggregation.
+
+## Task
+
+Implement `user_cf_prediction(user_sims, ratings)`: given neighbor similarity weights `user_sims` and their item ratings `ratings`, compute `sum(s * r for s > 0) / sum(s for s > 0)`. If no positive similarities exist, return 0.0. Round result to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-26" />
 
 <Solution>
 
 ```python
-def classical_ml_p26(data):
-    # Reference implementation
-    return data
+def user_cf_prediction(user_sims, ratings):
+    pos_sims = [(s, r) for s, r in zip(user_sims, ratings) if s > 0.0]
+    if not pos_sims:
+        return 0.0
+    num = sum(s * r for s, r in pos_sims)
+    denom = sum(s for s, _ in pos_sims)
+    pred = num / denom if denom > 0.0 else 0.0
+    return round(float(pred), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Collaborative filtering estimates target user preferences by taking a weighted consensus of historical opinions from similar users.
 
 </Solution>

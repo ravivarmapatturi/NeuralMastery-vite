@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 24: Problem 264"
 sidebar_position: 264
 description: "Curriculum Problem 264 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,29 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #264** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-23`.
+## Overview
+
+Compute the Davies-Bouldin similarity ratio between a pair of clusters.
+
+## Task
+
+Implement `davies_bouldin_pair(centroid_i, spread_i, centroid_j, spread_j)`: calculate `R_ij = (spread_i + spread_j) / d(centroid_i, centroid_j)` where `d` is Euclidean distance. If distance is 0.0, return 0.0. Round result to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-24" />
 
 <Solution>
 
 ```python
-def classical_ml_p24(data):
-    # Reference implementation
-    return data
+import math
+
+def davies_bouldin_pair(centroid_i, spread_i, centroid_j, spread_j):
+    dist = math.sqrt(sum((x - y) ** 2 for x, y in zip(centroid_i, centroid_j)))
+    if dist == 0.0:
+        return 0.0
+    val = (spread_i + spread_j) / dist
+    return round(float(val), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Davies-Bouldin compares intra-cluster spread against inter-cluster centroid separation; lower values indicate superior clustering quality.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 46: Problem 286"
 sidebar_position: 286
 description: "Curriculum Problem 286 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,36 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #286** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-45`.
+## Overview
+
+Compute sorted k-nearest-neighbor distances to identify the elbow threshold for DBSCAN epsilon.
+
+## Task
+
+Implement `k_distance_sorted(points, k)`: for each point, calculate the Euclidean distance to its k-th nearest neighbor (where neighbor 0 is the point itself). Return the k-distances sorted in ascending order, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-46" />
 
 <Solution>
 
 ```python
-def classical_ml_p46(data):
-    # Reference implementation
-    return data
+import math
+
+def k_distance_sorted(points, k):
+    n = len(points)
+    k_dists = []
+    for i in range(n):
+        dists = []
+        for j in range(n):
+            d = math.sqrt(sum((a - b) ** 2 for a, b in zip(points[i], points[j])))
+            dists.append(d)
+        dists.sort()
+        idx = min(k, len(dists) - 1)
+        k_dists.append(dists[idx])
+    k_dists.sort()
+    return [round(float(d), 4) for d in k_dists]
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Plotting the sorted k-distance curve reveals an elbow knee point separating dense cluster cores from sparse noise regimes.
 
 </Solution>

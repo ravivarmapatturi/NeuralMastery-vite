@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 29: Problem 269"
 sidebar_position: 269
 description: "Curriculum Problem 269 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #269** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-28`.
+## Overview
+
+Apply the classical Rosenblatt Perceptron mistake-driven parameter update.
+
+## Task
+
+Implement `perceptron_step(x, y, weights, bias, lr)`. Given label `y in {-1, 1}`, compute activation `z = sum(w_i * x_i) + bias`. If `y * z <= 0` (misclassification), update `w_i = w_i + lr * y * x_i` and `bias = bias + lr * y`, set `updated=True`. Else keep parameters unchanged and set `updated=False`. Round floats to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-29" />
 
 <Solution>
 
 ```python
-def classical_ml_p29(data):
-    # Reference implementation
-    return data
+def perceptron_step(x, y, weights, bias, lr):
+    act = sum(w * a for w, a in zip(weights, x)) + bias
+    if y * act <= 0.0:
+        new_w = [round(w + lr * y * a, 4) for w, a in zip(weights, x)]
+        new_b = round(bias + lr * y, 4)
+        updated = True
+    else:
+        new_w = [round(w, 4) for w in weights]
+        new_b = round(bias, 4)
+        updated = False
+    return {"weights": new_w, "bias": new_b, "updated": updated}
 ```
 
-This problem tests fundamental skills in Classical ML.
+Perceptron learning updates parameters only when an error occurs, rotating the decision hyperplane toward the misclassified sample.
 
 </Solution>

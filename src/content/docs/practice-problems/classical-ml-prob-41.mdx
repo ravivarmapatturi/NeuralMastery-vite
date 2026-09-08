@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 41: Problem 281"
 sidebar_position: 281
 description: "Curriculum Problem 281 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,33 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #281** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-40`.
+## Overview
+
+Compute negative gradient pseudo-residuals for regression and binary classification gradient boosting.
+
+## Task
+
+Implement `gbm_pseudo_residuals(y_true, raw_predictions, loss_type)`: for `'regression'` (squared error), residual is `y - raw`. For `'classification'` (binary log loss with y in {0, 1}), residual is `y - sigmoid(raw)`. Return list of residuals rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-41" />
 
 <Solution>
 
 ```python
-def classical_ml_p41(data):
-    # Reference implementation
-    return data
+import math
+
+def gbm_pseudo_residuals(y_true, raw_predictions, loss_type):
+    res = []
+    for yt, raw in zip(y_true, raw_predictions):
+        if loss_type == 'regression':
+            r = yt - raw
+        else:
+            p = 1.0 / (1.0 + math.exp(-raw)) if raw >= 0 else math.exp(raw) / (1.0 + math.exp(raw))
+            r = yt - p
+        res.append(round(float(r), 4))
+    return res
 ```
 
-This problem tests fundamental skills in Classical ML.
+Gradient boosting fits subsequent decision trees to the negative gradient of the loss function, generalising gradient descent to function space.
 
 </Solution>

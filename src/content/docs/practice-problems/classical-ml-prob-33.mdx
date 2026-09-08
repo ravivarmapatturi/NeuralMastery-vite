@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 33: Problem 273"
 sidebar_position: 273
 description: "Curriculum Problem 273 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,32 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #273** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-32`.
+## Overview
+
+Predict a continuous regression target by averaging the targets of the k nearest training samples.
+
+## Task
+
+Implement `knn_regression_predict(x_train, y_train, x_query, k)`: compute Euclidean distances from `x_query` to all points in `x_train`. Select the `k` closest training points and return the mean of their `y_train` targets, rounded to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-33" />
 
 <Solution>
 
 ```python
-def classical_ml_p33(data):
-    # Reference implementation
-    return data
+import math
+
+def knn_regression_predict(x_train, y_train, x_query, k):
+    distances = []
+    for xt, yt in zip(x_train, y_train):
+        d = math.sqrt(sum((a - b) ** 2 for a, b in zip(xt, x_query)))
+        distances.append((d, yt))
+    distances.sort(key=lambda x: x[0])
+    top_k = distances[:k]
+    avg = sum(yt for _, yt in top_k) / k if k > 0 else 0.0
+    return round(float(avg), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+KNN regression provides non-parametric local estimation, approximating the conditional expectation E[Y | X=x] via neighbor averaging.
 
 </Solution>

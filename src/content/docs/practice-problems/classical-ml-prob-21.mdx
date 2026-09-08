@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 21: Problem 261"
 sidebar_position: 261
 description: "Curriculum Problem 261 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,31 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #261** · Difficulty: **Easy** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-20`.
+## Overview
+
+Evaluate the closed-form coordinate descent update for L1 penalized Lasso coefficients.
+
+## Task
+
+Implement `lasso_subgradient_step(rho, z_j, alpha)`: if `z_j == 0.0`, return 0.0. Otherwise apply soft-thresholding: if `rho < -alpha`, return `(rho + alpha) / z_j`; if `rho > alpha`, return `(rho - alpha) / z_j`; else return 0.0. Round result to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-21" />
 
 <Solution>
 
 ```python
-def classical_ml_p21(data):
-    # Reference implementation
-    return data
+def lasso_subgradient_step(rho, z_j, alpha):
+    if z_j == 0.0:
+        return 0.0
+    if rho < -alpha:
+        w_j = (rho + alpha) / z_j
+    elif rho > alpha:
+        w_j = (rho - alpha) / z_j
+    else:
+        w_j = 0.0
+    return round(float(w_j), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+The soft-thresholding operator zeroes out partial correlations smaller than alpha, establishing exact sparsity in Lasso linear models.
 
 </Solution>

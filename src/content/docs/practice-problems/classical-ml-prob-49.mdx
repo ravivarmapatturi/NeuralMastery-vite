@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 49: Problem 289"
 sidebar_position: 289
 description: "Curriculum Problem 289 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,35 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #289** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-48`.
+## Overview
+
+Measure variance reduction achieved by splitting targets in a regression decision tree.
+
+## Task
+
+Implement `variance_reduction(parent_targets, left_targets, right_targets)`: population variance is `(1/N) * sum((y - mean)**2)`. Reduction is `Var(parent) - (|left|/N)*Var(left) - (|right|/N)*Var(right)`. Round float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-49" />
 
 <Solution>
 
 ```python
-def classical_ml_p49(data):
-    # Reference implementation
-    return data
+def variance_reduction(parent_targets, left_targets, right_targets):
+    def variance(arr):
+        if len(arr) <= 1:
+            return 0.0
+        m = sum(arr) / len(arr)
+        return sum((x - m) ** 2 for x in arr) / len(arr)
+
+    n = len(parent_targets)
+    if n == 0:
+        return 0.0
+    v_parent = variance(parent_targets)
+    v_children = (len(left_targets) / n) * variance(left_targets) + (len(right_targets) / n) * variance(right_targets)
+    reduction = max(0.0, v_parent - v_children)
+    return round(float(reduction), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Variance reduction measures MSE improvement from splitting a node into two constant-prediction child leaves.
 
 </Solution>

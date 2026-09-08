@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 58: Problem 298"
 sidebar_position: 298
 description: "Curriculum Problem 298 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,41 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #298** · Difficulty: **Hard** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-57`.
+## Overview
+
+Project a bipartite interaction stream into an item-item co-occurrence adjacency graph.
+
+## Task
+
+Implement `bipartite_item_projection(user_items)`: given pairs of `(user, item)`, count how many distinct users interacted with both `item1` and `item2`. Return a nested dict mapping each sorted item to its neighbors with strictly positive co-occurrence counts.
 
 <PracticePlayground problemId="classical-ml-prob-58" />
 
 <Solution>
 
 ```python
-def classical_ml_p58(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def bipartite_item_projection(user_items):
+    user_to_items = defaultdict(set)
+    for u, item in user_items:
+        user_to_items[u].add(item)
+    co_occur = defaultdict(lambda: defaultdict(int))
+    all_items = set()
+    for u, items in user_to_items.items():
+        sorted_items = sorted(list(items))
+        for it in sorted_items:
+            all_items.add(it)
+        for i in range(len(sorted_items)):
+            for j in range(i + 1, len(sorted_items)):
+                it1, it2 = sorted_items[i], sorted_items[j]
+                co_occur[it1][it2] += 1
+                co_occur[it2][it1] += 1
+    items_sorted = sorted(list(all_items))
+    res = {it: {other: co_occur[it][other] for other in items_sorted if other != it and co_occur[it][other] > 0} for it in items_sorted}
+    return res
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Bipartite one-mode projection connects entities that share intermediate common neighbors, forming the topology for item-item graph recommendation.
 
 </Solution>

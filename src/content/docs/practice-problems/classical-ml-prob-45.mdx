@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 45: Problem 285"
 sidebar_position: 285
 description: "Curriculum Problem 285 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,26 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #285** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-44`.
+## Overview
+
+Compute the hybrid L1/L2 Elastic Net regularization penalty term.
+
+## Task
+
+Implement `elastic_net_penalty(weights, l1_ratio, alpha)`: calculate `alpha * (l1_ratio * sum(abs(w)) + 0.5 * (1.0 - l1_ratio) * sum(w**2))`. Round result to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-45" />
 
 <Solution>
 
 ```python
-def classical_ml_p45(data):
-    # Reference implementation
-    return data
+def elastic_net_penalty(weights, l1_ratio, alpha):
+    l1 = sum(abs(w) for w in weights)
+    l2_sq = sum(w ** 2 for w in weights)
+    val = alpha * (l1_ratio * l1 + 0.5 * (1.0 - l1_ratio) * l2_sq)
+    return round(float(val), 4)
 ```
 
-This problem tests fundamental skills in Classical ML.
+Elastic Net combines L1 feature sparsity with L2 grouped feature selection, overcoming Lassos limitation when features are highly correlated.
 
 </Solution>

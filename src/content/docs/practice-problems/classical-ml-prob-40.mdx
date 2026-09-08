@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 40: Problem 280"
 sidebar_position: 280
 description: "Curriculum Problem 280 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,45 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #280** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-39`.
+## Overview
+
+Measure clustering quality as the ratio of between-cluster to within-cluster dispersion.
+
+## Task
+
+Implement `calinski_harabasz_score(points, cluster_labels)`: compute between-cluster dispersion `SSB = sum(n_k * ||c_k - c_global||**2)` and within-cluster dispersion `SSW = sum(sum(||x - c_k||**2))`. Return `(SSB / (k - 1)) / (SSW / (n - k))` (or 0.0 if k `<=` 1 or SSW == 0). Round to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-40" />
 
 <Solution>
 
 ```python
-def classical_ml_p40(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def calinski_harabasz_score(points, cluster_labels):
+    n = len(points)
+    dim = len(points[0])
+    clusters = defaultdict(list)
+    for pt, c in zip(points, cluster_labels):
+        clusters[c].append(pt)
+    k = len(clusters)
+    if k <= 1 or n <= k:
+        return 0.0
+    global_mean = [sum(pt[j] for pt in points) / n for j in range(dim)]
+    
+    ssw = 0.0
+    ssb = 0.0
+    for c, pts in clusters.items():
+        c_mean = [sum(p[j] for p in pts) / len(pts) for j in range(dim)]
+        ssw += sum(sum((p[j] - c_mean[j]) ** 2 for j in range(dim)) for p in pts)
+        ssb += len(pts) * sum((c_mean[j] - global_mean[j]) ** 2 for j in range(dim))
+    
+    if ssw == 0.0:
+        return 0.0
+    ch = (ssb / (k - 1)) / (ssw / (n - k))
+    return round(float(ch), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Higher Calinski-Harabasz scores indicate denser clusters that are farther apart from each other relative to their internal variance.
 
 </Solution>

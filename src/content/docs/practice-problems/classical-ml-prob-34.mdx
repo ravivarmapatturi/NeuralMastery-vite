@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 34: Problem 274"
 sidebar_position: 274
 description: "Curriculum Problem 274 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,35 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #274** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-33`.
+## Overview
+
+Evaluate clustering alignment with ground truth using external cluster purity.
+
+## Task
+
+Implement `cluster_purity(cluster_assignments, true_labels)`: for each predicted cluster, find the count of its majority ground-truth class. Sum these maximum counts across all clusters and divide by total sample count `N`. Round float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-34" />
 
 <Solution>
 
 ```python
-def classical_ml_p34(data):
-    # Reference implementation
-    return data
+from collections import defaultdict, Counter
+
+def cluster_purity(cluster_assignments, true_labels):
+    n = len(cluster_assignments)
+    if n == 0:
+        return 0.0
+    clusters = defaultdict(list)
+    for c, t in zip(cluster_assignments, true_labels):
+        clusters[c].append(t)
+    correct = 0
+    for c, lbls in clusters.items():
+        counts = Counter(lbls)
+        correct += max(counts.values())
+    return round(float(correct / n), 4)
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Purity measures the fraction of samples correctly assigned when each cluster is mapped to its most frequent ground truth class.
 
 </Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Clustering Module 42: Problem 282"
 sidebar_position: 282
 description: "Curriculum Problem 282 (Stage 5: Classical Machine Learning & Optimization): Master Clustering / recommenders."
@@ -14,18 +13,37 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #282** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-41`.
+## Overview
+
+Count pair-wise agreement quadrants between ground truth and predicted clusterings.
+
+## Task
+
+Implement `cluster_contingency_pairs(labels_true, labels_pred)`: over all pairs `(i < j)`, count `tp` (same cluster in both), `fp` (same in pred, diff in true), `fn` (diff in pred, same in true), and `tn` (diff in both). Return dict with keys `"tp"`, `"fp"`, `"fn"`, `"tn"`.
 
 <PracticePlayground problemId="classical-ml-prob-42" />
 
 <Solution>
 
 ```python
-def classical_ml_p42(data):
-    # Reference implementation
-    return data
+def cluster_contingency_pairs(labels_true, labels_pred):
+    n = len(labels_true)
+    tp, fp, fn, tn = 0, 0, 0, 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            same_true = (labels_true[i] == labels_true[j])
+            same_pred = (labels_pred[i] == labels_pred[j])
+            if same_true and same_pred:
+                tp += 1
+            elif not same_true and same_pred:
+                fp += 1
+            elif same_true and not same_pred:
+                fn += 1
+            else:
+                tn += 1
+    return {"tp": tp, "fp": fp, "fn": fn, "tn": tn}
 ```
 
-This problem tests fundamental skills in Clustering / recommenders.
+Pairwise contingency quadrants form the basis for the Rand Index (RI), Adjusted Rand Index (ARI), and Jaccard cluster index.
 
 </Solution>

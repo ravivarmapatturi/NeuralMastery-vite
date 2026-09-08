@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: Classical ML Module 39: Problem 279"
 sidebar_position: 279
 description: "Curriculum Problem 279 (Stage 5: Classical Machine Learning & Optimization): Master Classical ML."
@@ -14,18 +13,27 @@ import { Solution } from '../../../components/content/ExpandableDepth';
 
 **Rank #279** · Difficulty: **Medium** · Stage: **Stage 5: Classical Machine Learning & Optimization** · Category: **Classical ML**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-38`.
+## Overview
+
+Re-weight training samples based on classifier correctness in an AdaBoost boosting round.
+
+## Task
+
+Implement `adaboost_weight_update(sample_weights, y_true, predictions, alpha)`: compute unnormalized weight `w_i * exp(-alpha * y_i * h_i)` where `y_i, h_i in {-1, 1}`. Normalize weights so their sum equals 1.0. Round each float to 4 decimal places.
 
 <PracticePlayground problemId="classical-ml-prob-39" />
 
 <Solution>
 
 ```python
-def classical_ml_p39(data):
-    # Reference implementation
-    return data
+import math
+
+def adaboost_weight_update(sample_weights, y_true, predictions, alpha):
+    unnorm = [w * math.exp(-alpha * yt * pred) for w, yt, pred in zip(sample_weights, y_true, predictions)]
+    z = sum(unnorm)
+    return [round(float(w / z), 4) for w in unnorm]
 ```
 
-This problem tests fundamental skills in Classical ML.
+AdaBoost inflates the probability weight of misclassified samples by exp(alpha) and shrinks correct samples by exp(-alpha), focusing subsequent learners on hard examples.
 
 </Solution>
