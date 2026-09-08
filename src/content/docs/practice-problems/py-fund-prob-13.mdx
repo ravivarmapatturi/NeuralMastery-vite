@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #513. Python & Programming Fundamentals Module 3: Problem 13"
 description: "Master #513. Python & Programming Fundamentals Module 3: Problem 13 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,41 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #513. Python & Programming Fundamentals Module 3: Problem 13
 
-**Track**: Python & Programming Fundamentals | **Rank**: #513 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #513 of 1072 | **Points**
 
 ## Overview
 
-Implement `#513. Python & Programming Fundamentals Module 3: Problem 13` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Simulate network call retries with exponential backoff delays and maximum retry exhaustion limits.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `retry_with_backoff_simulator(failure_count, max_retries)`: an operation fails `failure_count` times before succeeding. The first execution is attempt 1. If it fails, delay by `1.0 * (2 ** 0) = 1.0s` before attempt 2, `2.0s` before attempt 3, etc. Up to `max_retries` retries are allowed. Return `{"attempts": int, "succeeded": bool, "total_delay": float}` (delay rounded to 2 decimals).
 
 <PracticePlayground problemId="py-fund-prob-13" />
+
+<Solution>
+
+```python
+def retry_with_backoff_simulator(failure_count, max_retries):
+    attempts = 0
+    total_delay = 0.0
+    succeeded = False
+    base_delay = 1.0
+    for i in range(max_retries + 1):
+        attempts += 1
+        if i < failure_count:
+            if i < max_retries:
+                total_delay += base_delay * (2 ** i)
+        else:
+            succeeded = True
+            break
+    return {'attempts': attempts, 'succeeded': succeeded, 'total_delay': round(total_delay, 2)}
+```
+
+Simulating attempts sequentially models exact production retry budget limits and total sleep time.
+
+</Solution>

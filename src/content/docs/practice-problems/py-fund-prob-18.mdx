@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #518. Python & Programming Fundamentals Module 4: Problem 18"
 description: "Master #518. Python & Programming Fundamentals Module 4: Problem 18 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,31 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #518. Python & Programming Fundamentals Module 4: Problem 18
 
-**Track**: Python & Programming Fundamentals | **Rank**: #518 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #518 of 1072 | **Points**
 
 ## Overview
 
-Implement `#518. Python & Programming Fundamentals Module 4: Problem 18` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Verify multiset equivalence across sparse frequency maps with explicit zero-count handling.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `frequency_map_equality(freq_a, freq_b)`: return `True` if two frequency dictionaries represent identical multisets. Keys with frequency `0` must be treated as non-existent (e.g. `{"x": 2, "y": 0}` equals `{"x": 2}`).
 
 <PracticePlayground problemId="py-fund-prob-18" />
+
+<Solution>
+
+```python
+def frequency_map_equality(freq_a, freq_b):
+    clean_a = {k: v for k, v in freq_a.items() if v != 0}
+    clean_b = {k: v for k, v in freq_b.items() if v != 0}
+    return clean_a == clean_b
+```
+
+Pruning zero-valued keys standardizes sparse counters for direct dictionary equivalence testing.
+
+</Solution>

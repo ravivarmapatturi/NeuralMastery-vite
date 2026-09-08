@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #523. Python & Programming Fundamentals Module 5: Problem 23"
 description: "Master #523. Python & Programming Fundamentals Module 5: Problem 23 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,49 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #523. Python & Programming Fundamentals Module 5: Problem 23
 
-**Track**: Python & Programming Fundamentals | **Rank**: #523 of 1072 | **Points**: 90 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #523 of 1072 | **Points**
 
 ## Overview
 
-Implement `#523. Python & Programming Fundamentals Module 5: Problem 23` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Measure the longest dependency path in directed execution graphs with cyclic deadlock detection.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dependency_graph_depth(graph)`: find the maximum depth (number of edges in the longest directed path) in `graph` (mapping node to list of neighbors). If any directed cycle exists, return `-1`. If `graph` is empty or has no edges, return `0`.
 
 <PracticePlayground problemId="py-fund-prob-23" />
+
+<Solution>
+
+```python
+def dependency_graph_depth(graph):
+    memo = {}
+    visiting = set()
+    def dfs(u):
+        if u in visiting: return -1
+        if u in memo: return memo[u]
+        visiting.add(u)
+        max_d = 0
+        for v in graph.get(u, []):
+            sub = dfs(v)
+            if sub == -1: return -1
+            max_d = max(max_d, 1 + sub)
+        visiting.remove(u)
+        memo[u] = max_d
+        return max_d
+
+    max_depth = 0
+    for n in graph:
+        d = dfs(n)
+        if d == -1: return -1
+        max_depth = max(max_depth, d)
+    return max_depth
+```
+
+Memoized depth-first search computes the critical path length in linear time while catching cycles.
+
+</Solution>

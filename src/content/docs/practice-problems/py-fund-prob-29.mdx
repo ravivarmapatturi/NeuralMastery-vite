@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #529. Python & Programming Fundamentals Module 6: Problem 29"
 description: "Master #529. Python & Programming Fundamentals Module 6: Problem 29 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,71 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #529. Python & Programming Fundamentals Module 6: Problem 29
 
-**Track**: Python & Programming Fundamentals | **Rank**: #529 of 1072 | **Points**: 90 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #529 of 1072 | **Points**
 
 ## Overview
 
-Implement `#529. Python & Programming Fundamentals Module 6: Problem 29` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Simulate an optimal O(1) Least Frequently Used (LFU) cache eviction policy with LRU tie-breaking.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `lfu_cache_simulator(operations, capacity)`: manage key-value pairs where the least frequently accessed item is evicted when capacity is reached. If multiple keys share the minimum frequency, evict the least recently used key among them. Return a list of results for all `get` operations (-1 for missing keys).
 
 <PracticePlayground problemId="py-fund-prob-29" />
+
+<Solution>
+
+```python
+from collections import defaultdict, OrderedDict
+
+def lfu_cache_simulator(operations, capacity):
+    if capacity <= 0:
+        return [-1 for op in operations if op.get('op') == 'get']
+    key_val, key_freq = {}, {}
+    freq_keys = defaultdict(OrderedDict)
+    min_freq = 0
+    out = []
+    for op in operations:
+        action = op.get('op')
+        key = op.get('key')
+        if action == 'get':
+            if key in key_val:
+                val = key_val[key]
+                f = key_freq[key]
+                key_freq[key] = f + 1
+                del freq_keys[f][key]
+                freq_keys[f + 1][key] = True
+                if f == min_freq and not freq_keys[f]:
+                    min_freq += 1
+                out.append(val)
+            else:
+                out.append(-1)
+        elif action == 'put':
+            val = op.get('val')
+            if key in key_val:
+                key_val[key] = val
+                f = key_freq[key]
+                key_freq[key] = f + 1
+                del freq_keys[f][key]
+                freq_keys[f + 1][key] = True
+                if f == min_freq and not freq_keys[f]:
+                    min_freq += 1
+            else:
+                if len(key_val) >= capacity:
+                    evict_k, _ = freq_keys[min_freq].popitem(last=False)
+                    del key_val[evict_k]
+                    del key_freq[evict_k]
+                key_val[key] = val
+                key_freq[key] = 1
+                freq_keys[1][key] = True
+                min_freq = 1
+    return out
+```
+
+Combining key-frequency maps with frequency-indexed OrderedDicts achieves O(1) time complexity for both get and put operations.
+
+</Solution>

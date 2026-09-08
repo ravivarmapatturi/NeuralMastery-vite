@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #508. Python & Programming Fundamentals Module 2: Problem 8"
 description: "Master #508. Python & Programming Fundamentals Module 2: Problem 8 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,38 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #508. Python & Programming Fundamentals Module 2: Problem 8
 
-**Track**: Python & Programming Fundamentals | **Rank**: #508 of 1072 | **Points**: 40 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #508 of 1072 | **Points**
 
 ## Overview
 
-Implement `#508. Python & Programming Fundamentals Module 2: Problem 8` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Verify whether an array is monotonic (monotonically non-decreasing or non-increasing).
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_monotonic(nums)`: return `True` if `nums` is monotonic (either all elements satisfy `nums[i] <= nums[i+1]` or all satisfy `nums[i] >= nums[i+1]`), and `False` otherwise. Arrays of length 2 or fewer are always monotonic.
 
 <PracticePlayground problemId="py-fund-prob-8" />
+
+<Solution>
+
+```python
+def is_monotonic(nums):
+    if len(nums) <= 2:
+        return True
+    increasing = True
+    decreasing = True
+    for i in range(len(nums) - 1):
+        if nums[i] > nums[i + 1]:
+            increasing = False
+        if nums[i] < nums[i + 1]:
+            decreasing = False
+    return increasing or decreasing
+```
+
+Checking adjacent direction changes simultaneously validates monotonicity in a single O(n) pass.
+
+</Solution>

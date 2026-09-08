@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #530. Python & Programming Fundamentals Module 6: Problem 30"
 description: "Master #530. Python & Programming Fundamentals Module 6: Problem 30 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,52 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #530. Python & Programming Fundamentals Module 6: Problem 30
 
-**Track**: Python & Programming Fundamentals | **Rank**: #530 of 1072 | **Points**: 90 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #530 of 1072 | **Points**
 
 ## Overview
 
-Implement `#530. Python & Programming Fundamentals Module 6: Problem 30` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Simulate fully persistent immutable stack versioning supporting historical branching and inspection.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_6_problem_30`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `immutable_persistent_stack_simulator(operations)`: maintain a persistent stack where past states are never overwritten. Version `0` is the initial empty stack. Support `push` (creates and returns a new version ID), `pop` (returns `{"val": top, "version": new_ver}` without mutating parent version), and `peek` (returns top value of specified version). Return results list of all operations.
 
 <PracticePlayground problemId="py-fund-prob-30" />
+
+<Solution>
+
+```python
+def immutable_persistent_stack_simulator(operations):
+    versions = {0: ()}
+    next_ver = 1
+    out = []
+    for op in operations:
+        action = op.get('op')
+        v = op.get('version', 0)
+        curr = versions.get(v, ())
+        if action == 'push':
+            new_stack = curr + (op.get('val'),)
+            versions[next_ver] = new_stack
+            out.append(next_ver)
+            next_ver += 1
+        elif action == 'pop':
+            if curr:
+                val = curr[-1]
+                new_stack = curr[:-1]
+                versions[next_ver] = new_stack
+                out.append({'val': val, 'version': next_ver})
+                next_ver += 1
+            else:
+                out.append({'val': None, 'version': v})
+        elif action == 'peek':
+            out.append(curr[-1] if curr else None)
+    return out
+```
+
+Using immutable tuples preserves past state snapshots while enabling O(1) branching without side effects.
+
+</Solution>

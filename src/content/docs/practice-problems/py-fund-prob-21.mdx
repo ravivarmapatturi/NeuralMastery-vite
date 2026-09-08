@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #521. Python & Programming Fundamentals Module 5: Problem 21"
 description: "Master #521. Python & Programming Fundamentals Module 5: Problem 21 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,33 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #521. Python & Programming Fundamentals Module 5: Problem 21
 
-**Track**: Python & Programming Fundamentals | **Rank**: #521 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #521 of 1072 | **Points**
 
 ## Overview
 
-Implement `#521. Python & Programming Fundamentals Module 5: Problem 21` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Extract the top k frequent words with deterministic lexicographical tie-breaking.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `top_k_frequent_words(words, k)`: identify the `k` most frequent words in `words`. Sort the results primarily by descending frequency, and break ties by ascending alphabetical order. Return at most `k` words.
 
 <PracticePlayground problemId="py-fund-prob-21" />
+
+<Solution>
+
+```python
+from collections import Counter
+
+def top_k_frequent_words(words, k):
+    counts = Counter(words)
+    sorted_words = sorted(counts.keys(), key=lambda w: (-counts[w], w))
+    return sorted_words[:k]
+```
+
+Python tuple sorting key `(-count, word)` sorts primarily by descending frequency and secondarily by lexicographical order.
+
+</Solution>

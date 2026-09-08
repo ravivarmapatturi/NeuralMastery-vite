@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #582. Linked Lists / Stacks / Queues Module 5: Problem 22"
 description: "Master #582. Linked Lists / Stacks / Queues Module 5: Problem 22 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,42 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #582. Linked Lists / Stacks / Queues Module 5: Problem 22
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #582 of 1072 | **Points**: 60 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #582 of 1072 | **Points**
 
 ## Overview
 
-Implement `#582. Linked Lists / Stacks / Queues Module 5: Problem 22` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Simulate 1D kinetic collision cascades using stack-based momentum resolution.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `asteroid_collision(asteroids)`: asteroids move along a 1D line: positive integers move right, negative integers move left. Their absolute value represents size. When moving toward each other, the smaller asteroid explodes; if sizes are equal, both explode. Asteroids moving in the same direction never meet. Return the state of surviving asteroids.
 
 <PracticePlayground problemId="ll-queue-prob-22" />
+
+<Solution>
+
+```python
+def asteroid_collision(asteroids):
+    stack = []
+    for ast in asteroids:
+        alive = True
+        while alive and ast < 0 and stack and stack[-1] > 0:
+            if stack[-1] < -ast:
+                stack.pop()
+            elif stack[-1] == -ast:
+                stack.pop()
+                alive = False
+            else:
+                alive = False
+        if alive:
+            stack.append(ast)
+    return stack
+```
+
+Stacking surviving right-moving asteroids and resolving incoming negative asteroids in LIFO order processes collisions in O(n) time.
+
+</Solution>

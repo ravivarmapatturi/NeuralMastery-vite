@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #526. Python & Programming Fundamentals Module 6: Problem 26"
 description: "Master #526. Python & Programming Fundamentals Module 6: Problem 26 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,38 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #526. Python & Programming Fundamentals Module 6: Problem 26
 
-**Track**: Python & Programming Fundamentals | **Rank**: #526 of 1072 | **Points**: 90 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #526 of 1072 | **Points**
 
 ## Overview
 
-Implement `#526. Python & Programming Fundamentals Module 6: Problem 26` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Verify bracket nesting balance across mixed expressions containing arbitrary non-bracket characters.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `expression_parenthesization_validator(s)`: check whether all round `()`, curly `{}`, and square `[]` brackets in `s` are properly nested and matched. Characters that are not brackets are ignored. Return `True` if balanced, `False` otherwise.
 
 <PracticePlayground problemId="py-fund-prob-26" />
+
+<Solution>
+
+```python
+def expression_parenthesization_validator(s):
+    matching = {')': '(', '}': '{', ']': '['}
+    stack = []
+    for ch in s:
+        if ch in matching.values():
+            stack.append(ch)
+        elif ch in matching:
+            if not stack or stack[-1] != matching[ch]:
+                return False
+            stack.pop()
+    return len(stack) == 0
+```
+
+A pushdown stack matches opening and closing delimiters in exact Last-In-First-Out order.
+
+</Solution>

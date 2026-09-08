@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #502. Python & Programming Fundamentals Module 1: Problem 2"
 description: "Master #502. Python & Programming Fundamentals Module 1: Problem 2 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,30 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #502. Python & Programming Fundamentals Module 1: Problem 2
 
-**Track**: Python & Programming Fundamentals | **Rank**: #502 of 1072 | **Points**: 40 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #502 of 1072 | **Points**
 
 ## Overview
 
-Implement `#502. Python & Programming Fundamentals Module 1: Problem 2` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Identify the second distinct maximum order statistic across unsorted numerical collections.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `find_second_largest(nums)`: return the second largest distinct integer in `nums`. If `nums` contains fewer than two distinct numbers, return `None`.
 
 <PracticePlayground problemId="py-fund-prob-2" />
+
+<Solution>
+
+```python
+def find_second_largest(nums):
+    unique = sorted(set(nums), reverse=True)
+    return unique[1] if len(unique) >= 2 else None
+```
+
+Converting to a set removes duplicates before sorting to retrieve the second largest distinct value.
+
+</Solution>

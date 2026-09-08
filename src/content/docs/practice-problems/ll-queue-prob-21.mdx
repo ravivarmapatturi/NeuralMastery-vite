@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #581. Linked Lists / Stacks / Queues Module 5: Problem 21"
 description: "Master #581. Linked Lists / Stacks / Queues Module 5: Problem 21 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,47 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #581. Linked Lists / Stacks / Queues Module 5: Problem 21
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #581 of 1072 | **Points**: 60 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #581 of 1072 | **Points**
 
 ## Overview
 
-Implement `#581. Linked Lists / Stacks / Queues Module 5: Problem 21` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Unpack arbitrarily nested repeat strings using dual multiplier and string accumulator stacks.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_5_problem_21`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `decode_string(s)`: decode an encoded string of the pattern `k[encoded_string]`. Digits precede brackets and indicate the repeat count `k`. Brackets may be nested arbitrarily deep (e.g. `"3[a2[c]]"` -`>` `"accaccacc"`).
 
 <PracticePlayground problemId="ll-queue-prob-21" />
+
+<Solution>
+
+```python
+def decode_string(s):
+    count_stack = []
+    str_stack = []
+    curr_str = ""
+    curr_k = 0
+    for ch in s:
+        if ch.isdigit():
+            curr_k = curr_k * 10 + int(ch)
+        elif ch == '[':
+            count_stack.append(curr_k)
+            str_stack.append(curr_str)
+            curr_str = ""
+            curr_k = 0
+        elif ch == ']':
+            k = count_stack.pop()
+            prev = str_stack.pop()
+            curr_str = prev + curr_str * k
+        else:
+            curr_str += ch
+    return curr_str
+```
+
+Dual stacks capture nested scoping by pushing parent string contexts before recursing into bracket blocks.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #528. Python & Programming Fundamentals Module 6: Problem 28"
 description: "Master #528. Python & Programming Fundamentals Module 6: Problem 28 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,48 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #528. Python & Programming Fundamentals Module 6: Problem 28
 
-**Track**: Python & Programming Fundamentals | **Rank**: #528 of 1072 | **Points**: 90 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #528 of 1072 | **Points**
 
 ## Overview
 
-Implement `#528. Python & Programming Fundamentals Module 6: Problem 28` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Simulate space-efficient probabilistic set membership testing using an m-bit Bloom filter array.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `bloom_filter_simulator(elements, test_elements, m, num_hashes)`: initialize an `m`-bit array of zeros. For each inserted string in `elements`, set bits at `(val * b + ord(c)) % m` using prime bases `[31, 37, 41, 43, 47, 53, 59, 61][:num_hashes]`. Then test each item in `test_elements`, returning `True` if all corresponding bit positions are set (1), and `False` otherwise.
 
 <PracticePlayground problemId="py-fund-prob-28" />
+
+<Solution>
+
+```python
+def bloom_filter_simulator(elements, test_elements, m, num_hashes):
+    bit_array = [0] * m
+    bases = [31, 37, 41, 43, 47, 53, 59, 61][:num_hashes]
+    for el in elements:
+        for b in bases:
+            val = 0
+            for c in el:
+                val = (val * b + ord(c)) % m
+            bit_array[val] = 1
+    results = []
+    for test in test_elements:
+        present = True
+        for b in bases:
+            val = 0
+            for c in test:
+                val = (val * b + ord(c)) % m
+            if bit_array[val] == 0:
+                present = False
+                break
+        results.append(present)
+    return results
+```
+
+Hashing strings into bit positions tests set membership with zero false negatives and constant bit memory.
+
+</Solution>

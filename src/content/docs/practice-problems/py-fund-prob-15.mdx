@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #515. Python & Programming Fundamentals Module 3: Problem 15"
 description: "Master #515. Python & Programming Fundamentals Module 3: Problem 15 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,39 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #515. Python & Programming Fundamentals Module 3: Problem 15
 
-**Track**: Python & Programming Fundamentals | **Rank**: #515 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #515 of 1072 | **Points**
 
 ## Overview
 
-Implement `#515. Python & Programming Fundamentals Module 3: Problem 15` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Determine the length of the longest consecutive integer sequence in an unsorted array in linear O(n) time.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `longest_consecutive_subsequence(nums)`: find the length of the longest consecutive elements sequence in `nums` (e.g. `[100, 4, 200, 1, 3, 2]` has consecutive sequence `[1, 2, 3, 4]`, returning 4). Must run in O(n) time.
 
 <PracticePlayground problemId="py-fund-prob-15" />
+
+<Solution>
+
+```python
+def longest_consecutive_subsequence(nums):
+    num_set = set(nums)
+    max_streak = 0
+    for num in num_set:
+        if num - 1 not in num_set:
+            curr_num = num
+            curr_streak = 1
+            while curr_num + 1 in num_set:
+                curr_num += 1
+                curr_streak += 1
+            max_streak = max(max_streak, curr_streak)
+    return max_streak
+```
+
+Checking `num - 1 not in num_set` identifies true sequence boundaries, yielding strict O(n) runtime.
+
+</Solution>

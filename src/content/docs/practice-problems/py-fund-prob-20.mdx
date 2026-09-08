@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #520. Python & Programming Fundamentals Module 4: Problem 20"
 description: "Master #520. Python & Programming Fundamentals Module 4: Problem 20 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,44 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #520. Python & Programming Fundamentals Module 4: Problem 20
 
-**Track**: Python & Programming Fundamentals | **Rank**: #520 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #520 of 1072 | **Points**
 
 ## Overview
 
-Implement `#520. Python & Programming Fundamentals Module 4: Problem 20` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Safely parse and coerce string/raw values in dictionary datasets into typed primitives.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `safe_cast_dict(records, types)`: iterate over `records` and convert fields according to `types` (`"int"`, `"float"`, `"str"`, `"bool"`). Strings for boolean type evaluate to `True` for `"true"`, `"1"`, `"yes"` (case-insensitive). If a cast throws `ValueError` or `TypeError`, set the field to `None`. Return a new list of updated record dictionaries.
 
 <PracticePlayground problemId="py-fund-prob-20" />
+
+<Solution>
+
+```python
+def safe_cast_dict(records, types):
+    out = []
+    for r in records:
+        new_r = dict(r)
+        for field, target in types.items():
+            if field in new_r:
+                val = new_r[field]
+                try:
+                    if target == 'int': new_r[field] = int(val)
+                    elif target == 'float': new_r[field] = float(val)
+                    elif target == 'str': new_r[field] = str(val)
+                    elif target == 'bool':
+                        new_r[field] = val.lower() in ('true', '1', 'yes') if isinstance(val, str) else bool(val)
+                except (ValueError, TypeError):
+                    new_r[field] = None
+        out.append(new_r)
+    return out
+```
+
+Defensive type casting handles corrupted telemetry rows gracefully without terminating batch jobs.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #588. Linked Lists / Stacks / Queues Module 6: Problem 28"
 description: "Master #588. Linked Lists / Stacks / Queues Module 6: Problem 28 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,50 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #588. Linked Lists / Stacks / Queues Module 6: Problem 28
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #588 of 1072 | **Points**: 90 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #588 of 1072 | **Points**
 
 ## Overview
 
-Implement `#588. Linked Lists / Stacks / Queues Module 6: Problem 28` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Permute linked list structures by reversing consecutive blocks of K nodes in-place in O(1) space.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `reverse_k_group(head, k)`: reverse nodes in `head` `k` at a time. If the number of remaining nodes at the end is less than `k`, leave them un-reversed in their original order. Modifies pointers in-place in O(1) memory.
 
 <PracticePlayground problemId="ll-queue-prob-28" />
+
+<Solution>
+
+```python
+def reverse_k_group(head, k):
+    if not head or k <= 1:
+        return head
+    dummy = {'val': 0, 'next': head}
+    prev_group = dummy
+    while True:
+        kth = prev_group
+        for _ in range(k):
+            kth = kth.get('next')
+            if not kth: return dummy['next']
+        group_next = kth.get('next')
+
+        prev = group_next
+        curr = prev_group['next']
+        while curr != group_next:
+            nxt = curr.get('next')
+            curr['next'] = prev
+            prev = curr
+            curr = nxt
+
+        temp = prev_group['next']
+        prev_group['next'] = kth
+        prev_group = temp
+```
+
+Checking for K nodes before reversing ensures incomplete terminal blocks remain untouched while earlier segments invert in O(n).
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #504. Python & Programming Fundamentals Module 1: Problem 4"
 description: "Master #504. Python & Programming Fundamentals Module 1: Problem 4 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,35 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #504. Python & Programming Fundamentals Module 1: Problem 4
 
-**Track**: Python & Programming Fundamentals | **Rank**: #504 of 1072 | **Points**: 40 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #504 of 1072 | **Points**
 
 ## Overview
 
-Implement `#504. Python & Programming Fundamentals Module 1: Problem 4` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Filter adjacent duplicate elements in streaming sequences while preserving non-adjacent recurrences.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `remove_consecutive_duplicates(items)`: remove any element that is identical to its immediate predecessor in `items`. Non-adjacent duplicates must be preserved. If `items` is empty, return `[]`.
 
 <PracticePlayground problemId="py-fund-prob-4" />
+
+<Solution>
+
+```python
+def remove_consecutive_duplicates(items):
+    if not items:
+        return []
+    out = [items[0]]
+    for x in items[1:]:
+        if x != out[-1]:
+            out.append(x)
+    return out
+```
+
+Checking each incoming item against out[-1] enforces adjacency uniqueness in a single pass.
+
+</Solution>

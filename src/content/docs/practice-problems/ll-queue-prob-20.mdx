@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #580. Linked Lists / Stacks / Queues Module 4: Problem 20"
 description: "Master #580. Linked Lists / Stacks / Queues Module 4: Problem 20 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,38 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #580. Linked Lists / Stacks / Queues Module 4: Problem 20
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #580 of 1072 | **Points**: 60 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #580 of 1072 | **Points**
 
 ## Overview
 
-Implement `#580. Linked Lists / Stacks / Queues Module 4: Problem 20` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Normalize Unix filesystem paths resolving dot (.), double-dot (..), and redundant slashes.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `simplify_path(path)`: convert an absolute Unix path into its canonical normalized form. Handle `.` (current dir), `..` (parent dir), and multiple consecutive slashes `//`. Root is `"/"`.
 
 <PracticePlayground problemId="ll-queue-prob-20" />
+
+<Solution>
+
+```python
+def simplify_path(path):
+    tokens = path.split('/')
+    stack = []
+    for t in tokens:
+        if t == '' or t == '.':
+            continue
+        elif t == '..':
+            if stack: stack.pop()
+        else:
+            stack.append(t)
+    return '/' + '/'.join(stack)
+```
+
+Splitting on slash and managing directory push/pop operations normalizes paths in linear time.
+
+</Solution>

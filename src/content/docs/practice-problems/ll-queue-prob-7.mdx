@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #567. Linked Lists / Stacks / Queues Module 2: Problem 7"
 description: "Master #567. Linked Lists / Stacks / Queues Module 2: Problem 7 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,34 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #567. Linked Lists / Stacks / Queues Module 2: Problem 7
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #567 of 1072 | **Points**: 40 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #567 of 1072 | **Points**
 
 ## Overview
 
-Implement `#567. Linked Lists / Stacks / Queues Module 2: Problem 7` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Locate the exact midpoint of a linked list in a single pass using Floyd's tortoise-and-hare two-pointer method.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `middle_node(head)`: find the middle node of the singly linked list. If there are two middle nodes (even length), return the second middle node.
 
 <PracticePlayground problemId="ll-queue-prob-7" />
+
+<Solution>
+
+```python
+def middle_node(head):
+    slow = head
+    fast = head
+    while fast and fast.get('next'):
+        slow = slow.get('next')
+        fast = fast['next'].get('next')
+    return slow
+```
+
+Because fast travels twice as fast as slow, slow lands exactly on the midpoint when fast reaches the end.
+
+</Solution>

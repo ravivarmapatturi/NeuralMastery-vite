@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #527. Python & Programming Fundamentals Module 6: Problem 27"
 description: "Master #527. Python & Programming Fundamentals Module 6: Problem 27 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,48 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #527. Python & Programming Fundamentals Module 6: Problem 27
 
-**Track**: Python & Programming Fundamentals | **Rank**: #527 of 1072 | **Points**: 90 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #527 of 1072 | **Points**
 
 ## Overview
 
-Implement `#527. Python & Programming Fundamentals Module 6: Problem 27` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Simulate an enterprise pub/sub message broker dispatching topics with wildcards (* and #).
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `event_bus_dispatcher_simulator(subscriptions, events)`: match event topics against subscription filters. A single asterisk `*` matches exactly one dot-separated segment; hash `#` matches zero or more segments. When an event matches a subscription, log `"<sub_id>:<topic>:<payload>"`. Return all delivery logs in dispatch order.
 
 <PracticePlayground problemId="py-fund-prob-27" />
+
+<Solution>
+
+```python
+import re
+
+def event_bus_dispatcher_simulator(subscriptions, events):
+    def to_regex(pat):
+        parts = pat.split('.')
+        reg = []
+        for p in parts:
+            if p == '*': reg.append(r'[^.]+')
+            elif p == '#': reg.append(r'.*')
+            else: reg.append(re.escape(p))
+        return '^' + r'\.'.join(reg) + '$'
+
+    subs = [(s['id'], re.compile(to_regex(s['topic']))) for s in subscriptions]
+    out = []
+    for ev in events:
+        top = ev.get('topic', '')
+        payload = ev.get('payload', '')
+        for sub_id, reg in subs:
+            if reg.match(top):
+                out.append(f"{sub_id}:{top}:{payload}")
+    return out
+```
+
+Pre-compiling pattern wildcards into regular expressions matches high-throughput event topics efficiently.
+
+</Solution>

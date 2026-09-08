@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #525. Python & Programming Fundamentals Module 5: Problem 25"
 description: "Master #525. Python & Programming Fundamentals Module 5: Problem 25 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,39 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #525. Python & Programming Fundamentals Module 5: Problem 25
 
-**Track**: Python & Programming Fundamentals | **Rank**: #525 of 1072 | **Points**: 90 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #525 of 1072 | **Points**
 
 ## Overview
 
-Implement `#525. Python & Programming Fundamentals Module 5: Problem 25` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement recursive JSON serialization from scratch supporting nested objects, lists, escaping, and primitives.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `custom_json_serializer(data)`: serialize Python primitives (`None -> null`, `bool -> true/false`, numbers, strings with escaped quotes/newlines, lists, and dicts) into standard JSON syntax without using the standard library `json` module.
 
 <PracticePlayground problemId="py-fund-prob-25" />
+
+<Solution>
+
+```python
+def custom_json_serializer(data):
+    if data is None: return "null"
+    if isinstance(data, bool): return "true" if data else "false"
+    if isinstance(data, (int, float)): return str(data)
+    if isinstance(data, str):
+        escaped = data.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n').replace('\t', '\\t')
+        return f'"{escaped}"'
+    if isinstance(data, list):
+        return f'[{", ".join(custom_json_serializer(x) for x in data)}]'
+    if isinstance(data, dict):
+        return f'{{{", ".join(f"\"{k}\": {custom_json_serializer(v)}" for k, v in data.items())}}}'
+    return "null"
+```
+
+Checking booleans before integers and recursively formatting nested composites generates valid JSON text.
+
+</Solution>

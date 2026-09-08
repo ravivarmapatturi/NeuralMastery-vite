@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #511. Python & Programming Fundamentals Module 3: Problem 11"
 description: "Master #511. Python & Programming Fundamentals Module 3: Problem 11 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,43 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #511. Python & Programming Fundamentals Module 3: Problem 11
 
-**Track**: Python & Programming Fundamentals | **Rank**: #511 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #511 of 1072 | **Points**
 
 ## Overview
 
-Implement `#511. Python & Programming Fundamentals Module 3: Problem 11` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Track continuous running median values across expanding numerical streams.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cumulative_moving_median(nums)`: after each number is ingested, compute the current median of all numbers seen so far. If the count of observed numbers is even, the median is the average of the two middle elements. Round each median to 4 decimal places. Return `[]` for empty input.
 
 <PracticePlayground problemId="py-fund-prob-11" />
+
+<Solution>
+
+```python
+import bisect
+
+def cumulative_moving_median(nums):
+    if not nums:
+        return []
+    medians = []
+    window = []
+    for x in nums:
+        bisect.insort(window, x)
+        m = len(window)
+        if m % 2 == 1:
+            med = float(window[m // 2])
+        else:
+            med = (window[m // 2 - 1] + window[m // 2]) / 2.0
+        medians.append(round(med, 4))
+    return medians
+```
+
+Inserting via bisect maintains sorted order so median extraction takes O(1) time per element.
+
+</Solution>

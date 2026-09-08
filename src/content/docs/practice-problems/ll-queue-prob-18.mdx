@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #578. Linked Lists / Stacks / Queues Module 4: Problem 18"
 description: "Master #578. Linked Lists / Stacks / Queues Module 4: Problem 18 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,42 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #578. Linked Lists / Stacks / Queues Module 4: Problem 18
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #578 of 1072 | **Points**: 60 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #578 of 1072 | **Points**
 
 ## Overview
 
-Implement `#578. Linked Lists / Stacks / Queues Module 4: Problem 18` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Linearize multilevel hierarchical linked lists into a single 1D chain using depth-first stack traversal.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `flatten_multilevel_list(head)`: each node contains `val`, `next`, and optional `child` pointing to a sub-list. Flatten the structure in depth-first preorder (child subtrees are traversed before continuing along `next`). Return the flattened list head.
 
 <PracticePlayground problemId="ll-queue-prob-18" />
+
+<Solution>
+
+```python
+def flatten_multilevel_list(head):
+    if not head:
+        return None
+    dummy = {'val': 0, 'next': None}
+    prev = dummy
+    stack = [head]
+    while stack:
+        curr = stack.pop()
+        prev['next'] = {'val': curr['val'], 'next': None}
+        prev = prev['next']
+        if curr.get('next'):
+            stack.append(curr['next'])
+        if curr.get('child'):
+            stack.append(curr['child'])
+    return dummy['next']
+```
+
+Using a LIFO stack prioritizing child pointers before next pointers produces the canonical depth-first linear ordering.
+
+</Solution>

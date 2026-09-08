@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #570. Linked Lists / Stacks / Queues Module 2: Problem 10"
 description: "Master #570. Linked Lists / Stacks / Queues Module 2: Problem 10 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,37 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #570. Linked Lists / Stacks / Queues Module 2: Problem 10
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #570 of 1072 | **Points**: 40 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #570 of 1072 | **Points**
 
 ## Overview
 
-Implement `#570. Linked Lists / Stacks / Queues Module 2: Problem 10` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Simulate keystroke editor backspace operations using LIFO stack buffering.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `backspace_compare(s, t)`: return `True` if `s` and `t` result in identical text after interpreting `#` as a backspace deleting the previous character. If the editor is empty, `#` does nothing.
 
 <PracticePlayground problemId="ll-queue-prob-10" />
+
+<Solution>
+
+```python
+def backspace_compare(s, t):
+    def build(st):
+        stack = []
+        for ch in st:
+            if ch == '#':
+                if stack: stack.pop()
+            else:
+                stack.append(ch)
+        return "".join(stack)
+    return build(s) == build(t)
+```
+
+Pushing characters and popping on "#" generates the exact final typed buffer in linear time.
+
+</Solution>

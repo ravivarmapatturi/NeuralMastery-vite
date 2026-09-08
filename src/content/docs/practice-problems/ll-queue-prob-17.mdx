@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #577. Linked Lists / Stacks / Queues Module 4: Problem 17"
 description: "Master #577. Linked Lists / Stacks / Queues Module 4: Problem 17 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,37 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #577. Linked Lists / Stacks / Queues Module 4: Problem 17
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #577 of 1072 | **Points**: 60 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #577 of 1072 | **Points**
 
 ## Overview
 
-Implement `#577. Linked Lists / Stacks / Queues Module 4: Problem 17` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Find the waiting time until the next strictly greater value in an array using a monotonic decreasing stack.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `daily_temperatures(temperatures)`: for each day `i`, find the number of days you would have to wait until a warmer temperature occurs. If no warmer day exists in the future, set `answer[i] = 0`.
 
 <PracticePlayground problemId="ll-queue-prob-17" />
+
+<Solution>
+
+```python
+def daily_temperatures(temperatures):
+    n = len(temperatures)
+    ans = [0] * n
+    stack = []
+    for i, t in enumerate(temperatures):
+        while stack and temperatures[stack[-1]] < t:
+            prev = stack.pop()
+            ans[prev] = i - prev
+        stack.append(i)
+    return ans
+```
+
+Each index enters and leaves the stack at most once, guaranteeing strict O(n) linear execution time.
+
+</Solution>

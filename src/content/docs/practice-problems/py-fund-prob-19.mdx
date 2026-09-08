@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #519. Python & Programming Fundamentals Module 4: Problem 19"
 description: "Master #519. Python & Programming Fundamentals Module 4: Problem 19 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,37 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #519. Python & Programming Fundamentals Module 4: Problem 19
 
-**Track**: Python & Programming Fundamentals | **Rank**: #519 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #519 of 1072 | **Points**
 
 ## Overview
 
-Implement `#519. Python & Programming Fundamentals Module 4: Problem 19` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute primary, secondary, and union diagonal sums for square matrices with central cell deduplication.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `matrix_diagonal_sums(matrix)`: given an `n x n` square integer matrix, compute `{"main": main_sum, "anti": anti_sum, "total": total_sum}`. The `main` diagonal runs from `(0, 0)` to `(n-1, n-1)`; the `anti` diagonal runs from `(0, n-1)` to `(n-1, 0)`. The `total` sum includes all diagonal cells without double-counting the central element in odd-sized matrices.
 
 <PracticePlayground problemId="py-fund-prob-19" />
+
+<Solution>
+
+```python
+def matrix_diagonal_sums(matrix):
+    if not matrix or not matrix[0]:
+        return {'main': 0, 'anti': 0, 'total': 0}
+    n = len(matrix)
+    main_sum = sum(matrix[i][i] for i in range(n))
+    anti_sum = sum(matrix[i][n - 1 - i] for i in range(n))
+    total = main_sum + anti_sum
+    if n % 2 == 1:
+        total -= matrix[n // 2][n // 2]
+    return {'main': main_sum, 'anti': anti_sum, 'total': total}
+```
+
+Computing diagonal coordinates simultaneously in a single loop visits diagonals in O(n) linear steps.
+
+</Solution>

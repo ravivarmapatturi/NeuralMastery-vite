@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #566. Linked Lists / Stacks / Queues Module 2: Problem 6"
 description: "Master #566. Linked Lists / Stacks / Queues Module 2: Problem 6 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #566. Linked Lists / Stacks / Queues Module 2: Problem 6
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #566 of 1072 | **Points**: 40 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #566 of 1072 | **Points**
 
 ## Overview
 
-Implement `#566. Linked Lists / Stacks / Queues Module 2: Problem 6` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Delete all occurrences of a target value from a singly linked list using a dummy sentinel node.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `remove_elements(head, val)`: remove all nodes of the linked list that have `node["val"] == val`. Return the new head of the list.
 
 <PracticePlayground problemId="ll-queue-prob-6" />
+
+<Solution>
+
+```python
+def remove_elements(head, val):
+    dummy = {'val': 0, 'next': head}
+    curr = dummy
+    while curr.get('next'):
+        if curr['next']['val'] == val:
+            curr['next'] = curr['next']['next']
+        else:
+            curr = curr['next']
+    return dummy['next']
+```
+
+Preceding head with a dummy node allows deleting any node, including the original head, with identical pointer rewiring logic.
+
+</Solution>

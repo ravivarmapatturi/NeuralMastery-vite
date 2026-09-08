@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #510. Python & Programming Fundamentals Module 2: Problem 10"
 description: "Master #510. Python & Programming Fundamentals Module 2: Problem 10 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,36 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #510. Python & Programming Fundamentals Module 2: Problem 10
 
-**Track**: Python & Programming Fundamentals | **Rank**: #510 of 1072 | **Points**: 40 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #510 of 1072 | **Points**
 
 ## Overview
 
-Implement `#510. Python & Programming Fundamentals Module 2: Problem 10` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Interleave two sequences in alternating turn order with trailing tail preservation.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `interleave_lists(a, b)`: merge lists `a` and `b` alternating elements: `a[0], b[0], a[1], b[1], ...`. When one list is exhausted, append all remaining items from the longer list.
 
 <PracticePlayground problemId="py-fund-prob-10" />
+
+<Solution>
+
+```python
+def interleave_lists(a, b):
+    res = []
+    n = max(len(a), len(b))
+    for i in range(n):
+        if i < len(a):
+            res.append(a[i])
+        if i < len(b):
+            res.append(b[i])
+    return res
+```
+
+Alternating bounds-checked insertions guarantee safe tail concatenation in O(len(a) + len(b)) time.
+
+</Solution>

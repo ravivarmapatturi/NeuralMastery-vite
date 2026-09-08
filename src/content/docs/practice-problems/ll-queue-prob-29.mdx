@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #589. Linked Lists / Stacks / Queues Module 6: Problem 29"
 description: "Master #589. Linked Lists / Stacks / Queues Module 6: Problem 29 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,38 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #589. Linked Lists / Stacks / Queues Module 6: Problem 29
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #589 of 1072 | **Points**: 90 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #589 of 1072 | **Points**
 
 ## Overview
 
-Implement `#589. Linked Lists / Stacks / Queues Module 6: Problem 29` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute the maximal rectangular area bounding contiguous histogram columns in strict linear time.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `largest_rectangle_area(heights)`: find the area of the largest rectangle that can be formed within the given histogram bar heights. Must run in O(n) time using a monotonic increasing stack.
 
 <PracticePlayground problemId="ll-queue-prob-29" />
+
+<Solution>
+
+```python
+def largest_rectangle_area(heights):
+    stack = []
+    max_area = 0
+    extended = heights + [0]
+    for i, h in enumerate(extended):
+        while stack and extended[stack[-1]] > h:
+            top_h = extended[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, top_h * width)
+        stack.append(i)
+    return max_area
+```
+
+Popping bars strictly taller than the current index discovers their maximal left and right boundaries in O(n) amortized steps.
+
+</Solution>

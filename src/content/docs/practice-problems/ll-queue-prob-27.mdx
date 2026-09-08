@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #587. Linked Lists / Stacks / Queues Module 6: Problem 27"
 description: "Master #587. Linked Lists / Stacks / Queues Module 6: Problem 27 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,47 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #587. Linked Lists / Stacks / Queues Module 6: Problem 27
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #587 of 1072 | **Points**: 90 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #587 of 1072 | **Points**
 
 ## Overview
 
-Implement `#587. Linked Lists / Stacks / Queues Module 6: Problem 27` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Merge K independently sorted linked lists in O(N log K) time using a priority queue min-heap.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_k_sorted_lists(lists)`: given an array of `k` sorted linked lists, merge all nodes into a single sorted linked list in ascending order. Must run in O(N log k) time where N is the total count of nodes across all lists.
 
 <PracticePlayground problemId="ll-queue-prob-27" />
+
+<Solution>
+
+```python
+import heapq
+
+def merge_k_sorted_lists(lists):
+    heap = []
+    entry_id = 0
+    for h in lists:
+        if h:
+            heapq.heappush(heap, (h['val'], entry_id, h))
+            entry_id += 1
+    dummy = {'val': 0, 'next': None}
+    curr = dummy
+    while heap:
+        val, _, node = heapq.heappop(heap)
+        curr['next'] = {'val': val, 'next': None}
+        curr = curr['next']
+        if node.get('next'):
+            nxt = node['next']
+            heapq.heappush(heap, (nxt['val'], entry_id, nxt))
+            entry_id += 1
+    return dummy['next']
+```
+
+A min-heap of size K retrieves the smallest available node across all lists in O(log K) per step.
+
+</Solution>

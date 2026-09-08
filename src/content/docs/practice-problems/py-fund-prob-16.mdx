@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #516. Python & Programming Fundamentals Module 4: Problem 16"
 description: "Master #516. Python & Programming Fundamentals Module 4: Problem 16 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,42 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #516. Python & Programming Fundamentals Module 4: Problem 16
 
-**Track**: Python & Programming Fundamentals | **Rank**: #516 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #516 of 1072 | **Points**
 
 ## Overview
 
-Implement `#516. Python & Programming Fundamentals Module 4: Problem 16` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Merge two independently sorted lists into a unified sorted sequence in linear time.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `merge_sorted_streams(stream1, stream2)`: given two sorted integer lists in non-decreasing order, merge them into a single sorted list using a two-pointer scan. Must run in O(len(stream1) + len(stream2)) time.
 
 <PracticePlayground problemId="py-fund-prob-16" />
+
+<Solution>
+
+```python
+def merge_sorted_streams(stream1, stream2):
+    i, j = 0, 0
+    merged = []
+    while i < len(stream1) and j < len(stream2):
+        if stream1[i] <= stream2[j]:
+            merged.append(stream1[i])
+            i += 1
+        else:
+            merged.append(stream2[j])
+            j += 1
+    if i < len(stream1):
+        merged.extend(stream1[i:])
+    if j < len(stream2):
+        merged.extend(stream2[j:])
+    return merged
+```
+
+Advancing pointers simultaneously produces an O(n + m) sorted union without full sorting recomputation.
+
+</Solution>

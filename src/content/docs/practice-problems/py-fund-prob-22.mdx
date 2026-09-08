@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #522. Python & Programming Fundamentals Module 5: Problem 22"
 description: "Master #522. Python & Programming Fundamentals Module 5: Problem 22 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,38 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #522. Python & Programming Fundamentals Module 5: Problem 22
 
-**Track**: Python & Programming Fundamentals | **Rank**: #522 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #522 of 1072 | **Points**
 
 ## Overview
 
-Implement `#522. Python & Programming Fundamentals Module 5: Problem 22` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement modular alphabetic rotational encryption preserving letter case and non-alphabetic characters.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_5_problem_22`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `string_character_offset_cipher(text, shift)`: shift every alphabetic letter in `text` by `shift` places along the alphabet, wrapping circularly around 26 letters. Preserves uppercase and lowercase casing. Non-alphabetic characters (digits, spaces, punctuation) remain unchanged.
 
 <PracticePlayground problemId="py-fund-prob-22" />
+
+<Solution>
+
+```python
+def string_character_offset_cipher(text, shift):
+    res = []
+    shift = shift % 26
+    for ch in text:
+        if ch.isupper():
+            res.append(chr((ord(ch) - ord('A') + shift) % 26 + ord('A')))
+        elif ch.islower():
+            res.append(chr((ord(ch) - ord('a') + shift) % 26 + ord('a')))
+        else:
+            res.append(ch)
+    return "".join(res)
+```
+
+Modular arithmetic with base offsets ord("A") and ord("a") wraps characters within their alphabet boundaries.
+
+</Solution>

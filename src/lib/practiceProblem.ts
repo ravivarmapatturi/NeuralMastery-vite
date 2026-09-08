@@ -21692,6 +21692,5164 @@ def cross_entropy_loss(logits, target_idx):
 ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  'py-fund-prob-1': {
+    id: 'py-fund-prob-1',
+    title: "Vowel and Consonant Frequency Counter",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'count_vowels_and_consonants',
+    functionSignature: "count_vowels_and_consonants(text: str) -> dict[str, int]",
+    starterCode: `def count_vowels_and_consonants(text):
+    """Count the number of vowels and consonants in text (ignoring case, punctuation, whitespace).
+    Return dict {'vowels': int, 'consonants': int}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count vowels and consonants across text strings ignoring non-alphabetic symbols.",
+    taskDescription: "Implement `count_vowels_and_consonants(text)`: scan `text` and return `{\"vowels\": v, \"consonants\": c}` where `v` is the count of vowels (a, e, i, o, u case-insensitive) and `c` is the count of alphabetic consonants. Digits, whitespace, and punctuation are ignored.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Case-insensitive vowel and consonant matching.",
+      "Non-alphabetic characters are ignored."
+],
+    hints: {
+      "small": "Check ch.isalpha() before checking whether ch in \"aeiouAEIOU\".",
+      "strong": "Maintain two counters and increment based on membership in a vowels set.",
+      "concept": "Character classification forms the basis of lexical analyzers and feature extraction in NLP pipelines."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Character categorization and dictionary counts"
+      }
+],
+    testCases: [
+      {
+            "id": "hello_world",
+            "label": "Standard Phrase",
+            "input": {
+                  "text": "Hello, World!"
+            },
+            "expectedOutput": {
+                  "vowels": 3,
+                  "consonants": 7
+            },
+            "hidden": false
+      },
+      {
+            "id": "vowels_only",
+            "label": "Vowels Only",
+            "input": {
+                  "text": "aeiouAEIOU"
+            },
+            "expectedOutput": {
+                  "vowels": 10,
+                  "consonants": 0
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_string",
+            "label": "Empty String",
+            "input": {
+                  "text": ""
+            },
+            "expectedOutput": {
+                  "vowels": 0,
+                  "consonants": 0
+            },
+            "hidden": false
+      },
+      {
+            "id": "numbers_symbols",
+            "label": "Numbers and Punctuation",
+            "input": {
+                  "text": "12345 @#$%"
+            },
+            "expectedOutput": {
+                  "vowels": 0,
+                  "consonants": 0
+            },
+            "hidden": true
+      },
+      {
+            "id": "mixed_case",
+            "label": "Mixed Casing Text",
+            "input": {
+                  "text": "Python AI Engineering"
+            },
+            "expectedOutput": {
+                  "vowels": 8,
+                  "consonants": 11
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-2': {
+    id: 'py-fund-prob-2',
+    title: "Find Second Largest Unique Element",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'find_second_largest',
+    functionSignature: "find_second_largest(nums: list[int]) -> int | None",
+    starterCode: `def find_second_largest(nums):
+    """Find the second largest unique value in list nums.
+    If fewer than two unique elements exist, return None."""
+    # Your implementation here
+    pass
+`,
+    mission: "Identify the second distinct maximum order statistic across unsorted numerical collections.",
+    taskDescription: "Implement `find_second_largest(nums)`: return the second largest distinct integer in `nums`. If `nums` contains fewer than two distinct numbers, return `None`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Must consider only unique elements (e.g. [5, 5, 4] returns 4).",
+      "Returns None if no second distinct value exists."
+],
+    hints: {
+      "small": "Deduplicate elements using set(nums).",
+      "strong": "Sort unique values descending and return index 1 if length >= 2.",
+      "concept": "Order statistics with deduplication ensure robust thresholding when outliers or duplicate peaks occur."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Set uniqueness and array order statistics"
+      }
+],
+    testCases: [
+      {
+            "id": "distinct_list",
+            "label": "Distinct Numbers",
+            "input": {
+                  "nums": [
+                        10,
+                        20,
+                        4,
+                        45,
+                        99
+                  ]
+            },
+            "expectedOutput": 45,
+            "hidden": false
+      },
+      {
+            "id": "with_duplicate_max",
+            "label": "Duplicate Maximum",
+            "input": {
+                  "nums": [
+                        5,
+                        5,
+                        4,
+                        3
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "all_identical",
+            "label": "All Identical Elements",
+            "input": {
+                  "nums": [
+                        7,
+                        7,
+                        7
+                  ]
+            },
+            "expectedOutput": null,
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty List",
+            "input": {
+                  "nums": []
+            },
+            "expectedOutput": null,
+            "hidden": true
+      },
+      {
+            "id": "single_element",
+            "label": "Single Element List",
+            "input": {
+                  "nums": [
+                        42
+                  ]
+            },
+            "expectedOutput": null,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-3': {
+    id: 'py-fund-prob-3',
+    title: "2D Matrix Column Sum Aggregator",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'matrix_column_sums',
+    functionSignature: "matrix_column_sums(matrix: list[list[float]]) -> list[float]",
+    starterCode: `def matrix_column_sums(matrix):
+    """Compute sum of each column in a 2D matrix of numbers.
+    Return list of column sums rounded to 4 decimal places. Return [] if empty."""
+    # Your implementation here
+    pass
+`,
+    mission: "Aggregate 2D matrix elements column-wise along axis 0 in pure Python.",
+    taskDescription: "Implement `matrix_column_sums(matrix)`: given an `m x n` numerical matrix (list of row lists), compute the vertical sum of each column across all rows. Round results to 4 decimal places. Return `[]` if `matrix` is empty or has zero rows.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Matrix rows have uniform length.",
+      "Outputs rounded to 4 decimal places."
+],
+    hints: {
+      "small": "Initialize a sums list of size len(matrix[0]) with zeros.",
+      "strong": "Iterate through each row and add row[c] to sums[c].",
+      "concept": "Column-wise summation corresponds to axis=0 aggregation in tensor libraries."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Nested list iteration and 2D arrays"
+      }
+],
+    testCases: [
+      {
+            "id": "three_by_three",
+            "label": "3x3 Matrix Column Sums",
+            "input": {
+                  "matrix": [
+                        [
+                              1.0,
+                              2.0,
+                              3.0
+                        ],
+                        [
+                              4.0,
+                              5.0,
+                              6.0
+                        ],
+                        [
+                              7.0,
+                              8.0,
+                              9.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  12.0,
+                  15.0,
+                  18.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "rectangular",
+            "label": "Rectangular 2x4 Matrix",
+            "input": {
+                  "matrix": [
+                        [
+                              1.5,
+                              2.5,
+                              3.5,
+                              4.5
+                        ],
+                        [
+                              0.5,
+                              0.5,
+                              0.5,
+                              0.5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  2.0,
+                  3.0,
+                  4.0,
+                  5.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_matrix",
+            "label": "Empty Matrix",
+            "input": {
+                  "matrix": []
+            },
+            "expectedOutput": [],
+            "hidden": false
+      },
+      {
+            "id": "single_row",
+            "label": "Single Row Matrix",
+            "input": {
+                  "matrix": [
+                        [
+                              10.0,
+                              -5.0
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  10.0,
+                  -5.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-4': {
+    id: 'py-fund-prob-4',
+    title: "Remove Consecutive Duplicate Items",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'remove_consecutive_duplicates',
+    functionSignature: "remove_consecutive_duplicates(items: list[any]) -> list[any]",
+    starterCode: `def remove_consecutive_duplicates(items):
+    """Remove adjacent consecutive duplicate items from items while preserving first occurrence.
+    For example, [1, 2, 2, 3, 2, 2] -> [1, 2, 3, 2]. Empty input returns []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Filter adjacent duplicate elements in streaming sequences while preserving non-adjacent recurrences.",
+    taskDescription: "Implement `remove_consecutive_duplicates(items)`: remove any element that is identical to its immediate predecessor in `items`. Non-adjacent duplicates must be preserved. If `items` is empty, return `[]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Preserves non-adjacent occurrences.",
+      "Runs in linear O(n) time."
+],
+    hints: {
+      "small": "Append the first element, then append subsequent elements only if they differ from the last appended element.",
+      "strong": "Compare each item to out[-1] before appending.",
+      "concept": "Consecutive deduplication is the primary compression step in delta encoding and speech frame collapsing."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "List comprehensions and sequential filtering"
+      }
+],
+    testCases: [
+      {
+            "id": "consecutive_runs",
+            "label": "Repeated Consecutive Elements",
+            "input": {
+                  "items": [
+                        1,
+                        2,
+                        2,
+                        3,
+                        2,
+                        2
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3,
+                  2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "all_same",
+            "label": "All Same Elements",
+            "input": {
+                  "items": [
+                        "a",
+                        "a",
+                        "a",
+                        "a"
+                  ]
+            },
+            "expectedOutput": [
+                  "a"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "all_distinct",
+            "label": "Already Distinct Elements",
+            "input": {
+                  "items": [
+                        1,
+                        2,
+                        3,
+                        4
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3,
+                  4
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty List",
+            "input": {
+                  "items": []
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-5': {
+    id: 'py-fund-prob-5',
+    title: "Word Length Distribution Histogram",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'word_length_histogram',
+    functionSignature: "word_length_histogram(words: list[str]) -> dict[int, int]",
+    starterCode: `def word_length_histogram(words):
+    """Compute histogram mapping word length to frequency of occurrence.
+    Return dictionary sorted by integer length keys. Empty list returns {}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute token length frequency distributions for text corpus profiling.",
+    taskDescription: "Implement `word_length_histogram(words)`: count the frequency of each word length across list `words`. Return a dictionary mapping integer lengths to occurrence counts, with keys sorted in ascending order. Return `{}` for empty input.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Keys in returned dictionary must be sorted integers.",
+      "Handles empty string words (length 0)."
+],
+    hints: {
+      "small": "Count len(w) into a frequency dictionary.",
+      "strong": "Return dict(sorted(hist.items())) to guarantee sorted keys.",
+      "concept": "Length histograms profile vocabulary complexity and assist subword tokenizer vocabulary sizing."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Dictionary bucketing and sorted mapping views"
+      }
+],
+    testCases: [
+      {
+            "id": "standard_words",
+            "label": "Standard Word List",
+            "input": {
+                  "words": [
+                        "apple",
+                        "banana",
+                        "cat",
+                        "dog",
+                        "elephant"
+                  ]
+            },
+            "expectedOutput": {
+                  "3": 2,
+                  "5": 1,
+                  "6": 1,
+                  "8": 1
+            },
+            "hidden": false
+      },
+      {
+            "id": "equal_lengths",
+            "label": "Uniform Length Words",
+            "input": {
+                  "words": [
+                        "hi",
+                        "to",
+                        "in",
+                        "on"
+                  ]
+            },
+            "expectedOutput": {
+                  "2": 4
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_words",
+            "label": "Empty Words List",
+            "input": {
+                  "words": []
+            },
+            "expectedOutput": {},
+            "hidden": false
+      },
+      {
+            "id": "with_empty_string",
+            "label": "Word List with Empty Token",
+            "input": {
+                  "words": [
+                        "",
+                        "a",
+                        "bb"
+                  ]
+            },
+            "expectedOutput": {
+                  "0": 1,
+                  "1": 1,
+                  "2": 1
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-6': {
+    id: 'py-fund-prob-6',
+    title: "Fixed-Width String Chunker",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'chunk_string',
+    functionSignature: "chunk_string(s: str, size: int) -> list[str]",
+    starterCode: `def chunk_string(s, size):
+    """Split string s into equal chunks of length size. The final chunk may be shorter.
+    If size <= 0 or s is empty, return []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Split long strings into fixed-character text segments for chunked embedding generation.",
+    taskDescription: "Implement `chunk_string(s, size)`: partition string `s` into consecutive substrings of length `size`. The final substring contains the remaining characters if `len(s)` is not an exact multiple of `size`. If `size <= 0` or `s == \"\"`, return `[]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Handles trailing remainder chunks cleanly.",
+      "Invalid size <= 0 returns []."
+],
+    hints: {
+      "small": "Use a list comprehension with range(0, len(s), size).",
+      "strong": "[s[i:i + size] for i in range(0, len(s), size)] slices the string into chunks.",
+      "concept": "Fixed-width text chunking prepares document strings for retrieval-augmented generation context windows."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "String slicing and range stepping"
+      }
+],
+    testCases: [
+      {
+            "id": "exact_multiple",
+            "label": "Exact Multiple Chunking",
+            "input": {
+                  "s": "abcdefghi",
+                  "size": 3
+            },
+            "expectedOutput": [
+                  "abc",
+                  "def",
+                  "ghi"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "with_remainder",
+            "label": "Chunking with Remainder",
+            "input": {
+                  "s": "abcdefghij",
+                  "size": 4
+            },
+            "expectedOutput": [
+                  "abcd",
+                  "efgh",
+                  "ij"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "size_larger",
+            "label": "Size Larger than String",
+            "input": {
+                  "s": "hello",
+                  "size": 10
+            },
+            "expectedOutput": [
+                  "hello"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_string",
+            "label": "Empty String",
+            "input": {
+                  "s": "",
+                  "size": 3
+            },
+            "expectedOutput": [],
+            "hidden": true
+      },
+      {
+            "id": "invalid_size",
+            "label": "Zero or Negative Size",
+            "input": {
+                  "s": "test",
+                  "size": 0
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-7': {
+    id: 'py-fund-prob-7',
+    title: "Multi-Value Inverted Index Dictionary",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'dict_invert_multi',
+    functionSignature: "dict_invert_multi(d: dict) -> dict",
+    starterCode: `def dict_invert_multi(d):
+    """Invert dictionary d such that original values become keys mapping to sorted lists
+    of corresponding original keys. Return dict sorted by keys."""
+    # Your implementation here
+    pass
+`,
+    mission: "Invert key-value mappings where multiple keys map to the same value, producing an inverted index list.",
+    taskDescription: "Implement `dict_invert_multi(d)`: invert dictionary `d` so each distinct value becomes a key mapping to a sorted list of original keys that mapped to it. Return the inverted dictionary with its keys sorted in ascending order.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Values in returned dictionary must be sorted lists of keys.",
+      "Outer dictionary keys must be sorted."
+],
+    hints: {
+      "small": "Use a defaultdict(list) or dict.setdefault(val, []).",
+      "strong": "Group keys by value, sort each list of keys, and sort the resulting dictionary keys.",
+      "concept": "Inverted indexing maps documents or entities by shared attributes for fast search lookups."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Inverted indices and dictionary grouping"
+      }
+],
+    testCases: [
+      {
+            "id": "mixed_groups",
+            "label": "Mixed Shared Values",
+            "input": {
+                  "d": {
+                        "a": 1,
+                        "b": 2,
+                        "c": 1,
+                        "d": 3
+                  }
+            },
+            "expectedOutput": {
+                  "1": [
+                        "a",
+                        "c"
+                  ],
+                  "2": [
+                        "b"
+                  ],
+                  "3": [
+                        "d"
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "all_same_value",
+            "label": "All Same Value",
+            "input": {
+                  "d": {
+                        "x": 10,
+                        "y": 10,
+                        "z": 10
+                  }
+            },
+            "expectedOutput": {
+                  "10": [
+                        "x",
+                        "y",
+                        "z"
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_dict",
+            "label": "Empty Dictionary",
+            "input": {
+                  "d": {}
+            },
+            "expectedOutput": {},
+            "hidden": false
+      },
+      {
+            "id": "unique_values",
+            "label": "All Unique Values",
+            "input": {
+                  "d": {
+                        "p": "alpha",
+                        "q": "beta"
+                  }
+            },
+            "expectedOutput": {
+                  "alpha": [
+                        "p"
+                  ],
+                  "beta": [
+                        "q"
+                  ]
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-8': {
+    id: 'py-fund-prob-8',
+    title: "Monotonic Array Sequence Validator",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'is_monotonic',
+    functionSignature: "is_monotonic(nums: list[int | float]) -> bool",
+    starterCode: `def is_monotonic(nums):
+    """Determine if array nums is monotonic (entirely non-decreasing or entirely non-increasing).
+    Arrays with length <= 2 are always monotonic."""
+    # Your implementation here
+    pass
+`,
+    mission: "Verify whether an array is monotonic (monotonically non-decreasing or non-increasing).",
+    taskDescription: "Implement `is_monotonic(nums)`: return `True` if `nums` is monotonic (either all elements satisfy `nums[i] <= nums[i+1]` or all satisfy `nums[i] >= nums[i+1]`), and `False` otherwise. Arrays of length 2 or fewer are always monotonic.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Permits adjacent equal elements.",
+      "Runs in linear O(n) single pass."
+],
+    hints: {
+      "small": "Track two boolean flags: increasing and decreasing.",
+      "strong": "If nums[i] > nums[i+1], set increasing = False. If nums[i] < nums[i+1], set decreasing = False. Return increasing or decreasing.",
+      "concept": "Monotonicity checks validate sorted checkpoints and monotonic activation function curves."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Boolean flags and pairwise element comparison"
+      }
+],
+    testCases: [
+      {
+            "id": "strictly_increasing",
+            "label": "Monotonically Increasing",
+            "input": {
+                  "nums": [
+                        1,
+                        2,
+                        2,
+                        3
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "strictly_decreasing",
+            "label": "Monotonically Decreasing",
+            "input": {
+                  "nums": [
+                        6,
+                        5,
+                        4,
+                        4
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "non_monotonic",
+            "label": "Non-Monotonic Sequence",
+            "input": {
+                  "nums": [
+                        1,
+                        3,
+                        2
+                  ]
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "constant_array",
+            "label": "Constant Array",
+            "input": {
+                  "nums": [
+                        1,
+                        1,
+                        1
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": true
+      },
+      {
+            "id": "short_list",
+            "label": "Short List Length 2",
+            "input": {
+                  "nums": [
+                        10,
+                        5
+                  ]
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-9': {
+    id: 'py-fund-prob-9',
+    title: "Shallow 2D List Concatenator",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'flatten_shallow',
+    functionSignature: "flatten_shallow(lists: list[list[any]]) -> list[any]",
+    starterCode: `def flatten_shallow(lists):
+    """Concatenate a list of sublists into a single flat list (1 level deep).
+    Empty input returns []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Concatenate nested lists one level deep into a continuous 1D list.",
+    taskDescription: "Implement `flatten_shallow(lists)`: flatten a 2D list of sublists into a 1D sequence containing all elements in order. Empty sublists are omitted cleanly. Return `[]` for empty input.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Flattens exactly one level deep.",
+      "Preserves original sublist item ordering."
+],
+    hints: {
+      "small": "Iterate through each sublist and use out.extend(sublist).",
+      "strong": "A list comprehension `[x for sub in lists for x in sub]` flattens in a single expression.",
+      "concept": "Shallow flattening combines batch evaluation outputs and rag retrieval chunks into unified candidate streams."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Nested list comprehensions and concatenation"
+      }
+],
+    testCases: [
+      {
+            "id": "standard_2d",
+            "label": "Standard Sublists",
+            "input": {
+                  "lists": [
+                        [
+                              1,
+                              2
+                        ],
+                        [
+                              3,
+                              4
+                        ],
+                        [
+                              5
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "with_empty_sublists",
+            "label": "Sublists with Empty Entries",
+            "input": {
+                  "lists": [
+                        [],
+                        [
+                              1,
+                              2
+                        ],
+                        [],
+                        [
+                              3
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_outer_list",
+            "label": "Empty Outer List",
+            "input": {
+                  "lists": []
+            },
+            "expectedOutput": [],
+            "hidden": false
+      },
+      {
+            "id": "single_elements",
+            "label": "Single Item Sublists",
+            "input": {
+                  "lists": [
+                        [
+                              "a"
+                        ],
+                        [
+                              "b"
+                        ],
+                        [
+                              "c"
+                        ]
+                  ]
+            },
+            "expectedOutput": [
+                  "a",
+                  "b",
+                  "c"
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-10': {
+    id: 'py-fund-prob-10',
+    title: "Two-Stream Alternating List Interleaver",
+    difficulty: 'easy',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '10–15 min',
+    functionName: 'interleave_lists',
+    functionSignature: "interleave_lists(a: list[any], b: list[any]) -> list[any]",
+    starterCode: `def interleave_lists(a, b):
+    """Interleave elements of lists a and b alternatingly, starting with a.
+    If one list is longer, append remaining elements at the end."""
+    # Your implementation here
+    pass
+`,
+    mission: "Interleave two sequences in alternating turn order with trailing tail preservation.",
+    taskDescription: "Implement `interleave_lists(a, b)`: merge lists `a` and `b` alternating elements: `a[0], b[0], a[1], b[1], ...`. When one list is exhausted, append all remaining items from the longer list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Starts with element from list a.",
+      "Handles lists of different lengths."
+],
+    hints: {
+      "small": "Iterate up to max(len(a), len(b)) and append a[i] and b[i] when within bounds.",
+      "strong": "Loop for i in range(max(len(a), len(b))): if i < len(a): res.append(a[i]); if i < len(b): res.append(b[i]).",
+      "concept": "Interleaving merges multi-source search results and multiplexes conversational speaker turns."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Sequence merging and dual-pointer indexing"
+      }
+],
+    testCases: [
+      {
+            "id": "equal_lengths",
+            "label": "Equal Length Lists",
+            "input": {
+                  "a": [
+                        1,
+                        2,
+                        3
+                  ],
+                  "b": [
+                        "a",
+                        "b",
+                        "c"
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  "a",
+                  2,
+                  "b",
+                  3,
+                  "c"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "first_longer",
+            "label": "First List Longer",
+            "input": {
+                  "a": [
+                        1,
+                        2,
+                        3,
+                        4
+                  ],
+                  "b": [
+                        "a",
+                        "b"
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  "a",
+                  2,
+                  "b",
+                  3,
+                  4
+            ],
+            "hidden": false
+      },
+      {
+            "id": "second_longer",
+            "label": "Second List Longer",
+            "input": {
+                  "a": [
+                        "x"
+                  ],
+                  "b": [
+                        10,
+                        20,
+                        30
+                  ]
+            },
+            "expectedOutput": [
+                  "x",
+                  10,
+                  20,
+                  30
+            ],
+            "hidden": false
+      },
+      {
+            "id": "one_empty",
+            "label": "One List Empty",
+            "input": {
+                  "a": [],
+                  "b": [
+                        1,
+                        2
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-11': {
+    id: 'py-fund-prob-11',
+    title: "Cumulative Running Median Tracker",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'cumulative_moving_median',
+    functionSignature: "cumulative_moving_median(nums: list[float]) -> list[float]",
+    starterCode: `def cumulative_moving_median(nums):
+    """Compute the running median after each element in nums is observed.
+    Return list of medians rounded to 4 decimal places. Empty input returns []."""
+    # Your implementation here
+    pass
+`,
+    mission: "Track continuous running median values across expanding numerical streams.",
+    taskDescription: "Implement `cumulative_moving_median(nums)`: after each number is ingested, compute the current median of all numbers seen so far. If the count of observed numbers is even, the median is the average of the two middle elements. Round each median to 4 decimal places. Return `[]` for empty input.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Even count median is the arithmetic mean of the two central numbers.",
+      "Output medians rounded to 4 decimal places."
+],
+    hints: {
+      "small": "Maintain a sorted list using bisect.insort, or use two heaps (max-heap for lower half, min-heap for upper half).",
+      "strong": "With bisect.insort, find index m // 2 if odd, or average of (m // 2 - 1) and (m // 2) if even.",
+      "concept": "Two-heap running median computation finds the middle element in O(1) time and O(log n) insertion time."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Two-heap median tracking and binary search insertion"
+      }
+],
+    testCases: [
+      {
+            "id": "standard_sequence",
+            "label": "Standard Ingestion Sequence",
+            "input": {
+                  "nums": [
+                        2.0,
+                        1.0,
+                        5.0,
+                        7.0,
+                        2.0,
+                        0.0,
+                        5.0
+                  ]
+            },
+            "expectedOutput": [
+                  2.0,
+                  1.5,
+                  2.0,
+                  3.5,
+                  2.0,
+                  2.0,
+                  2.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "already_sorted",
+            "label": "Already Sorted Stream",
+            "input": {
+                  "nums": [
+                        1.0,
+                        2.0,
+                        3.0,
+                        4.0
+                  ]
+            },
+            "expectedOutput": [
+                  1.0,
+                  1.5,
+                  2.0,
+                  2.5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single_number",
+            "label": "Single Number Stream",
+            "input": {
+                  "nums": [
+                        10.0
+                  ]
+            },
+            "expectedOutput": [
+                  10.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_input",
+            "label": "Empty Stream",
+            "input": {
+                  "nums": []
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-12': {
+    id: 'py-fund-prob-12',
+    title: "Predicate Partition Classifier",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'group_by_predicate',
+    functionSignature: "group_by_predicate(items: list[any], predicate_name: str) -> dict[str, list[any]]",
+    starterCode: `def group_by_predicate(items, predicate_name):
+    """Partition items into {'true': [...], 'false': [...]} based on predicate_name:
+    - 'is_even': integers divisible by 2
+    - 'is_positive': numeric values > 0
+    - 'is_nonempty_str': strings with len > 0"""
+    # Your implementation here
+    pass
+`,
+    mission: "Partition collections into binary truth buckets via named predicate dispatch.",
+    taskDescription: "Implement `group_by_predicate(items, predicate_name)`: partition `items` into `{\"true\": [...], \"false\": [...]}` based on named rules: `\"is_even\"` (integers with `item % 2 == 0`), `\"is_positive\"` (numeric values with `item > 0`), and `\"is_nonempty_str\"` (strings with `len(item) > 0`). Preserves order within partitioned lists.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Supported predicate names: \"is_even\", \"is_positive\", \"is_nonempty_str\".",
+      "Preserves item ordering within true and false lists."
+],
+    hints: {
+      "small": "Dispatch on predicate_name using conditional logic or a mapping of handler lambdas.",
+      "strong": "Ensure type checks guard against non-numeric items before applying modulo.",
+      "concept": "Predicate partitioning is the core primitive behind data routing, outlier separation, and train/test splitting."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Function dispatching and conditional filtering"
+      }
+],
+    testCases: [
+      {
+            "id": "even_partition",
+            "label": "Partition by Is Even",
+            "input": {
+                  "items": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6
+                  ],
+                  "predicate_name": "is_even"
+            },
+            "expectedOutput": {
+                  "true": [
+                        2,
+                        4,
+                        6
+                  ],
+                  "false": [
+                        1,
+                        3,
+                        5
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "positive_partition",
+            "label": "Partition by Is Positive",
+            "input": {
+                  "items": [
+                        -2.0,
+                        0.0,
+                        3.5,
+                        -1.0,
+                        10.0
+                  ],
+                  "predicate_name": "is_positive"
+            },
+            "expectedOutput": {
+                  "true": [
+                        3.5,
+                        10.0
+                  ],
+                  "false": [
+                        -2.0,
+                        0.0,
+                        -1.0
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "str_partition",
+            "label": "Partition by Non-empty String",
+            "input": {
+                  "items": [
+                        "hello",
+                        "",
+                        "world",
+                        "",
+                        "!"
+                  ],
+                  "predicate_name": "is_nonempty_str"
+            },
+            "expectedOutput": {
+                  "true": [
+                        "hello",
+                        "world",
+                        "!"
+                  ],
+                  "false": [
+                        "",
+                        ""
+                  ]
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty Items List",
+            "input": {
+                  "items": [],
+                  "predicate_name": "is_even"
+            },
+            "expectedOutput": {
+                  "true": [],
+                  "false": []
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-13': {
+    id: 'py-fund-prob-13',
+    title: "Retry with Exponential Backoff Simulator",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'retry_with_backoff_simulator',
+    functionSignature: "retry_with_backoff_simulator(failure_count: int, max_retries: int) -> dict",
+    starterCode: `def retry_with_backoff_simulator(failure_count, max_retries):
+    """Simulate retry execution where an operation fails failure_count times before succeeding.
+    Initial try is attempt 1. Up to max_retries retries permitted.
+    Delay before retry i (0-based) is 1.0 * (2 ** i).
+    Return {'attempts': int, 'succeeded': bool, 'total_delay': float}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate network call retries with exponential backoff delays and maximum retry exhaustion limits.",
+    taskDescription: "Implement `retry_with_backoff_simulator(failure_count, max_retries)`: an operation fails `failure_count` times before succeeding. The first execution is attempt 1. If it fails, delay by `1.0 * (2 ** 0) = 1.0s` before attempt 2, `2.0s` before attempt 3, etc. Up to `max_retries` retries are allowed. Return `{\"attempts\": int, \"succeeded\": bool, \"total_delay\": float}` (delay rounded to 2 decimals).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Initial attempt counts as attempt 1.",
+      "Backoff delay applies only between retry attempts."
+],
+    hints: {
+      "small": "Track total attempts and accumulated backoff delay.",
+      "strong": "Loop i from 0 to max_retries. If i < failure_count, accumulate delay = 2 ** i if i < max_retries; otherwise break with succeeded = True.",
+      "concept": "Exponential backoff with jitter and retry caps prevents distributed denial of service upon upstream recovery."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Loop execution and stateful retry patterns"
+      }
+],
+    testCases: [
+      {
+            "id": "immediate_success",
+            "label": "Zero Failures Immediate Success",
+            "input": {
+                  "failure_count": 0,
+                  "max_retries": 3
+            },
+            "expectedOutput": {
+                  "attempts": 1,
+                  "succeeded": true,
+                  "total_delay": 0.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "success_after_retries",
+            "label": "Success After Two Retries",
+            "input": {
+                  "failure_count": 2,
+                  "max_retries": 3
+            },
+            "expectedOutput": {
+                  "attempts": 3,
+                  "succeeded": true,
+                  "total_delay": 3.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "exhausted_retries",
+            "label": "Max Retries Exhausted",
+            "input": {
+                  "failure_count": 5,
+                  "max_retries": 2
+            },
+            "expectedOutput": {
+                  "attempts": 3,
+                  "succeeded": false,
+                  "total_delay": 3.0
+            },
+            "hidden": false
+      },
+      {
+            "id": "exact_retries_limit",
+            "label": "Success on Last Retry",
+            "input": {
+                  "failure_count": 3,
+                  "max_retries": 3
+            },
+            "expectedOutput": {
+                  "attempts": 4,
+                  "succeeded": true,
+                  "total_delay": 7.0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-14': {
+    id: 'py-fund-prob-14',
+    title: "Recursive Nested Key Counter",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'nested_key_counter',
+    functionSignature: "nested_key_counter(data: any) -> int",
+    starterCode: `def nested_key_counter(data):
+    """Count the total number of dictionary keys across all levels of nested dictionaries and lists."""
+    # Your implementation here
+    pass
+`,
+    mission: "Count the total number of dictionary keys embedded in arbitrary combinations of nested dictionaries and lists.",
+    taskDescription: "Implement `nested_key_counter(data)`: traverse arbitrary JSON data structures and count how many dictionary keys exist across all nesting levels, including dictionaries inside lists.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Traverses both sub-dictionaries and list elements.",
+      "Returns 0 for non-dictionary primitives."
+],
+    hints: {
+      "small": "Use a recursive function that checks whether current node is a dict or list.",
+      "strong": "If dict, add len(dict.keys()) and recurse on each value. If list, recurse on each element.",
+      "concept": "Deep tree traversal quantifies payload schema complexity and serializable key metrics."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Recursive structure inspection and tree traversal"
+      }
+],
+    testCases: [
+      {
+            "id": "simple_nested",
+            "label": "Simple Nested Dict",
+            "input": {
+                  "data": {
+                        "a": 1,
+                        "b": {
+                              "c": 2,
+                              "d": 3
+                        }
+                  }
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "dict_inside_list",
+            "label": "Dicts Inside Lists",
+            "input": {
+                  "data": {
+                        "users": [
+                              {
+                                    "name": "Ada"
+                              },
+                              {
+                                    "name": "Alan",
+                                    "id": 2
+                              }
+                        ]
+                  }
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "flat_dict",
+            "label": "Flat Dict",
+            "input": {
+                  "data": {
+                        "x": 1,
+                        "y": 2
+                  }
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "empty_dict",
+            "label": "Empty Dict",
+            "input": {
+                  "data": {}
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      },
+      {
+            "id": "primitive_value",
+            "label": "Scalar Primitive",
+            "input": {
+                  "data": 42
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-15': {
+    id: 'py-fund-prob-15',
+    title: "Longest Consecutive Sequence",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'longest_consecutive_subsequence',
+    functionSignature: "longest_consecutive_subsequence(nums: list[int]) -> int",
+    starterCode: `def longest_consecutive_subsequence(nums):
+    """Find the length of the longest consecutive elements sequence in nums in O(n) time.
+    Elements need not be contiguous in the original list."""
+    # Your implementation here
+    pass
+`,
+    mission: "Determine the length of the longest consecutive integer sequence in an unsorted array in linear O(n) time.",
+    taskDescription: "Implement `longest_consecutive_subsequence(nums)`: find the length of the longest consecutive elements sequence in `nums` (e.g. `[100, 4, 200, 1, 3, 2]` has consecutive sequence `[1, 2, 3, 4]`, returning 4). Must run in O(n) time.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Must achieve O(n) time complexity using a hash set.",
+      "Empty input returns 0."
+],
+    hints: {
+      "small": "Store all numbers in a Python set for O(1) membership lookups.",
+      "strong": "Only start counting a sequence from num if (num - 1) is NOT in the set.",
+      "concept": "Starting streak counting only from sequence heads guarantees each element is visited at most twice, preserving O(n) time."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Hash set streak detection and linear time optimization"
+      }
+],
+    testCases: [
+      {
+            "id": "classic_sequence",
+            "label": "Classic Unsorted Sequence",
+            "input": {
+                  "nums": [
+                        100,
+                        4,
+                        200,
+                        1,
+                        3,
+                        2
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "with_duplicates",
+            "label": "Sequence with Duplicates",
+            "input": {
+                  "nums": [
+                        0,
+                        3,
+                        7,
+                        2,
+                        5,
+                        8,
+                        4,
+                        6,
+                        0,
+                        1
+                  ]
+            },
+            "expectedOutput": 9,
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty List",
+            "input": {
+                  "nums": []
+            },
+            "expectedOutput": 0,
+            "hidden": false
+      },
+      {
+            "id": "single_number",
+            "label": "Single Element",
+            "input": {
+                  "nums": [
+                        99
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": true
+      },
+      {
+            "id": "no_consecutive",
+            "label": "No Consecutive Pairs",
+            "input": {
+                  "nums": [
+                        10,
+                        20,
+                        30
+                  ]
+            },
+            "expectedOutput": 1,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-16': {
+    id: 'py-fund-prob-16',
+    title: "Two-Way Sorted Stream Merger",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'merge_sorted_streams',
+    functionSignature: "merge_sorted_streams(stream1: list[int], stream2: list[int]) -> list[int]",
+    starterCode: `def merge_sorted_streams(stream1, stream2):
+    """Merge two sorted integer streams stream1 and stream2 into a single sorted list in O(n+m) time."""
+    # Your implementation here
+    pass
+`,
+    mission: "Merge two independently sorted lists into a unified sorted sequence in linear time.",
+    taskDescription: "Implement `merge_sorted_streams(stream1, stream2)`: given two sorted integer lists in non-decreasing order, merge them into a single sorted list using a two-pointer scan. Must run in O(len(stream1) + len(stream2)) time.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Linear O(n + m) time using two pointers.",
+      "Preserves duplicate elements from both lists."
+],
+    hints: {
+      "small": "Maintain pointer i for stream1 and pointer j for stream2.",
+      "strong": "Compare stream1[i] and stream2[j], append the smaller element, advance its pointer, and extend any remaining tail at the end.",
+      "concept": "Two-way merging is the merge phase of merge sort and log-structured merge trees."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Two-pointer merging and merge sort foundation"
+      }
+],
+    testCases: [
+      {
+            "id": "interleaved",
+            "label": "Interleaved Elements",
+            "input": {
+                  "stream1": [
+                        1,
+                        3,
+                        5
+                  ],
+                  "stream2": [
+                        2,
+                        4,
+                        6
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+            ],
+            "hidden": false
+      },
+      {
+            "id": "disjoint_ranges",
+            "label": "Disjoint Number Ranges",
+            "input": {
+                  "stream1": [
+                        1,
+                        2,
+                        3
+                  ],
+                  "stream2": [
+                        10,
+                        20
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3,
+                  10,
+                  20
+            ],
+            "hidden": false
+      },
+      {
+            "id": "with_duplicates",
+            "label": "Shared Duplicate Values",
+            "input": {
+                  "stream1": [
+                        2,
+                        2,
+                        5
+                  ],
+                  "stream2": [
+                        2,
+                        3,
+                        5
+                  ]
+            },
+            "expectedOutput": [
+                  2,
+                  2,
+                  2,
+                  3,
+                  5,
+                  5
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_first",
+            "label": "First Stream Empty",
+            "input": {
+                  "stream1": [],
+                  "stream2": [
+                        1,
+                        2
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-17': {
+    id: 'py-fund-prob-17',
+    title: "Boolean Query Filter Evaluator",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'evaluate_boolean_query',
+    functionSignature: "evaluate_boolean_query(record: dict, query: dict) -> bool",
+    starterCode: `def evaluate_boolean_query(record, query):
+    """Evaluate record dict against boolean query with optional clauses:
+    - 'all_of': list of condition dicts (all must match)
+    - 'any_of': list of condition dicts (at least one must match)
+    - 'none_of': list of condition dicts (none may match)
+    Condition dict: {'field': str, 'op': 'eq'|'gt'|'lt'|'in', 'val': any}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Evaluate compound boolean filter expressions against dictionary records for database predicate pushdown.",
+    taskDescription: "Implement `evaluate_boolean_query(record, query)`: test `record` against `query` supporting `\"all_of\"`, `\"any_of\"`, and `\"none_of\"` clauses. Conditions specify `{\"field\": ..., \"op\": \"eq\"|\"gt\"|\"lt\"|\"in\", \"val\": ...}`. Return `True` if all specified clauses are satisfied, and `False` otherwise.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Supported ops: \"eq\", \"gt\", \"lt\", \"in\".",
+      "Missing record field fails condition."
+],
+    hints: {
+      "small": "Write a helper function to evaluate a single condition on record.",
+      "strong": "Check all_of using Python all(), any_of using any(), and none_of using not any().",
+      "concept": "Declarative boolean query engines evaluate filtering rules in search engines and event streams."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Dictionary predicate evaluation and logical short-circuiting"
+      }
+],
+    testCases: [
+      {
+            "id": "all_of_match",
+            "label": "All Of Clause Satisfied",
+            "input": {
+                  "record": {
+                        "status": "active",
+                        "age": 30,
+                        "role": "admin"
+                  },
+                  "query": {
+                        "all_of": [
+                              {
+                                    "field": "status",
+                                    "op": "eq",
+                                    "val": "active"
+                              },
+                              {
+                                    "field": "age",
+                                    "op": "gt",
+                                    "val": 25
+                              }
+                        ]
+                  }
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "none_of_violated",
+            "label": "None Of Clause Violated",
+            "input": {
+                  "record": {
+                        "tier": "guest"
+                  },
+                  "query": {
+                        "none_of": [
+                              {
+                                    "field": "tier",
+                                    "op": "eq",
+                                    "val": "guest"
+                              }
+                        ]
+                  }
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "any_of_in_operator",
+            "label": "Any Of with In Operator",
+            "input": {
+                  "record": {
+                        "tag": "ml"
+                  },
+                  "query": {
+                        "any_of": [
+                              {
+                                    "field": "tag",
+                                    "op": "in",
+                                    "val": [
+                                          "ai",
+                                          "ml",
+                                          "dl"
+                                    ]
+                              }
+                        ]
+                  }
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "missing_field_fails",
+            "label": "Missing Field Fails Condition",
+            "input": {
+                  "record": {
+                        "name": "Alice"
+                  },
+                  "query": {
+                        "all_of": [
+                              {
+                                    "field": "age",
+                                    "op": "gt",
+                                    "val": 18
+                              }
+                        ]
+                  }
+            },
+            "expectedOutput": false,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-18': {
+    id: 'py-fund-prob-18',
+    title: "Multiset Frequency Map Equivalence Checker",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'frequency_map_equality',
+    functionSignature: "frequency_map_equality(freq_a: dict[str, int], freq_b: dict[str, int]) -> bool",
+    starterCode: `def frequency_map_equality(freq_a, freq_b):
+    """Determine if frequency maps freq_a and freq_b represent identical multisets.
+    Keys with count 0 must be treated as absent."""
+    # Your implementation here
+    pass
+`,
+    mission: "Verify multiset equivalence across sparse frequency maps with explicit zero-count handling.",
+    taskDescription: "Implement `frequency_map_equality(freq_a, freq_b)`: return `True` if two frequency dictionaries represent identical multisets. Keys with frequency `0` must be treated as non-existent (e.g. `{\"x\": 2, \"y\": 0}` equals `{\"x\": 2}`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Zero-count keys are treated as absent.",
+      "Negative counts are considered normal non-zero counts."
+],
+    hints: {
+      "small": "Filter out all keys whose value is 0 from both dictionaries.",
+      "strong": "clean_a = {k: v for k, v in freq_a.items() if v != 0}; return clean_a == clean_b.",
+      "concept": "Sparse frequency map normalization allows accurate multiset comparison across sparse data structures."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Dictionary comprehension and multiset equality"
+      }
+],
+    testCases: [
+      {
+            "id": "identical_with_zeros",
+            "label": "Equivalent with Zero Count Keys",
+            "input": {
+                  "freq_a": {
+                        "apple": 3,
+                        "banana": 2,
+                        "cherry": 0
+                  },
+                  "freq_b": {
+                        "apple": 3,
+                        "banana": 2
+                  }
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "different_counts",
+            "label": "Different Key Counts",
+            "input": {
+                  "freq_a": {
+                        "x": 1
+                  },
+                  "freq_b": {
+                        "x": 2
+                  }
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "all_zeros_and_empty",
+            "label": "All Zeros Equals Empty",
+            "input": {
+                  "freq_a": {
+                        "a": 0,
+                        "b": 0
+                  },
+                  "freq_b": {}
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "completely_disjoint",
+            "label": "Completely Disjoint Keys",
+            "input": {
+                  "freq_a": {
+                        "k1": 5
+                  },
+                  "freq_b": {
+                        "k2": 5
+                  }
+            },
+            "expectedOutput": false,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-19': {
+    id: 'py-fund-prob-19',
+    title: "Square Matrix Diagonal Sums",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'matrix_diagonal_sums',
+    functionSignature: "matrix_diagonal_sums(matrix: list[list[int]]) -> dict[str, int]",
+    starterCode: `def matrix_diagonal_sums(matrix):
+    """Compute primary diagonal sum, secondary (anti) diagonal sum, and total combined sum
+    (counting the central intersection element only once for odd-dimension square matrices).
+    Return {'main': int, 'anti': int, 'total': int}."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute primary, secondary, and union diagonal sums for square matrices with central cell deduplication.",
+    taskDescription: "Implement `matrix_diagonal_sums(matrix)`: given an `n x n` square integer matrix, compute `{\"main\": main_sum, \"anti\": anti_sum, \"total\": total_sum}`. The `main` diagonal runs from `(0, 0)` to `(n-1, n-1)`; the `anti` diagonal runs from `(0, n-1)` to `(n-1, 0)`. The `total` sum includes all diagonal cells without double-counting the central element in odd-sized matrices.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Matrix is square (n x n).",
+      "Central element is counted only once in total sum."
+],
+    hints: {
+      "small": "Loop i from 0 to n-1. Main diagonal element is matrix[i][i], anti diagonal is matrix[i][n - 1 - i].",
+      "strong": "If n is odd, subtract matrix[n // 2][n // 2] from total to avoid double-counting.",
+      "concept": "Trace computation and diagonal projections are foundational matrix operations in linear algebra."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "2D indexing and coordinate arithmetic"
+      }
+],
+    testCases: [
+      {
+            "id": "three_by_three",
+            "label": "3x3 Matrix with Center Cell",
+            "input": {
+                  "matrix": [
+                        [
+                              1,
+                              2,
+                              3
+                        ],
+                        [
+                              4,
+                              5,
+                              6
+                        ],
+                        [
+                              7,
+                              8,
+                              9
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "main": 15,
+                  "anti": 15,
+                  "total": 25
+            },
+            "hidden": false
+      },
+      {
+            "id": "four_by_four",
+            "label": "4x4 Even Dimension Matrix",
+            "input": {
+                  "matrix": [
+                        [
+                              1,
+                              1,
+                              1,
+                              1
+                        ],
+                        [
+                              1,
+                              1,
+                              1,
+                              1
+                        ],
+                        [
+                              1,
+                              1,
+                              1,
+                              1
+                        ],
+                        [
+                              1,
+                              1,
+                              1,
+                              1
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "main": 4,
+                  "anti": 4,
+                  "total": 8
+            },
+            "hidden": false
+      },
+      {
+            "id": "single_cell",
+            "label": "1x1 Matrix",
+            "input": {
+                  "matrix": [
+                        [
+                              5
+                        ]
+                  ]
+            },
+            "expectedOutput": {
+                  "main": 5,
+                  "anti": 5,
+                  "total": 5
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_matrix",
+            "label": "Empty Matrix",
+            "input": {
+                  "matrix": []
+            },
+            "expectedOutput": {
+                  "main": 0,
+                  "anti": 0,
+                  "total": 0
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-20': {
+    id: 'py-fund-prob-20',
+    title: "Defensive Tabular Record Type Coercion",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'safe_cast_dict',
+    functionSignature: "safe_cast_dict(records: list[dict], types: dict[str, str]) -> list[dict]",
+    starterCode: `def safe_cast_dict(records, types):
+    """Cast fields in records to target types specified in types dict ('int', 'float', 'str', 'bool').
+    If casting fails, set field to None. Return new list of dicts."""
+    # Your implementation here
+    pass
+`,
+    mission: "Safely parse and coerce string/raw values in dictionary datasets into typed primitives.",
+    taskDescription: "Implement `safe_cast_dict(records, types)`: iterate over `records` and convert fields according to `types` (`\"int\"`, `\"float\"`, `\"str\"`, `\"bool\"`). Strings for boolean type evaluate to `True` for `\"true\"`, `\"1\"`, `\"yes\"` (case-insensitive). If a cast throws `ValueError` or `TypeError`, set the field to `None`. Return a new list of updated record dictionaries.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Supported types: \"int\", \"float\", \"str\", \"bool\".",
+      "Invalid conversions are replaced with None without raising exceptions."
+],
+    hints: {
+      "small": "Wrap each cast in a try-except block catching (ValueError, TypeError).",
+      "strong": "For bool, check if string is in (\"true\", \"1\", \"yes\").",
+      "concept": "Defensive type coercion sanitizes dirty CSV/JSON rows before schema validation."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Type casting, exception handling, and tabular pipelines"
+      }
+],
+    testCases: [
+      {
+            "id": "valid_coercion",
+            "label": "Successful Type Casts",
+            "input": {
+                  "records": [
+                        {
+                              "age": "25",
+                              "score": "98.5",
+                              "active": "True"
+                        }
+                  ],
+                  "types": {
+                        "age": "int",
+                        "score": "float",
+                        "active": "bool"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "age": 25,
+                        "score": 98.5,
+                        "active": true
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "failed_cast_to_none",
+            "label": "Failed Cast Produces None",
+            "input": {
+                  "records": [
+                        {
+                              "age": "N/A",
+                              "score": "unknown"
+                        }
+                  ],
+                  "types": {
+                        "age": "int",
+                        "score": "float"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "age": null,
+                        "score": null
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "unmentioned_fields_preserved",
+            "label": "Unmentioned Fields Preserved",
+            "input": {
+                  "records": [
+                        {
+                              "name": "Alice",
+                              "id": "101"
+                        }
+                  ],
+                  "types": {
+                        "id": "int"
+                  }
+            },
+            "expectedOutput": [
+                  {
+                        "name": "Alice",
+                        "id": 101
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_records",
+            "label": "Empty Records List",
+            "input": {
+                  "records": [],
+                  "types": {
+                        "val": "int"
+                  }
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-21': {
+    id: 'py-fund-prob-21',
+    title: "Top K Frequent Words with Lexicographical Sorting",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'top_k_frequent_words',
+    functionSignature: "top_k_frequent_words(words: list[str], k: int) -> list[str]",
+    starterCode: `def top_k_frequent_words(words, k):
+    """Return the k most frequent words sorted by frequency from highest to lowest.
+    Words with the same frequency must be sorted in ascending alphabetical order."""
+    # Your implementation here
+    pass
+`,
+    mission: "Extract the top k frequent words with deterministic lexicographical tie-breaking.",
+    taskDescription: "Implement `top_k_frequent_words(words, k)`: identify the `k` most frequent words in `words`. Sort the results primarily by descending frequency, and break ties by ascending alphabetical order. Return at most `k` words.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Ties in frequency broken by alphabetical (ASCII) order.",
+      "Runs in O(n log k) or O(n log n) time."
+],
+    hints: {
+      "small": "Count frequencies using collections.Counter.",
+      "strong": "Sort unique words with key=lambda w: (-counts[w], w) and slice the first k items.",
+      "concept": "Composite key sorting resolves multi-objective ranking in search and keyword extraction."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Counter frequencies and composite sort keys"
+      }
+],
+    testCases: [
+      {
+            "id": "standard_top_k",
+            "label": "Standard Word Set",
+            "input": {
+                  "words": [
+                        "i",
+                        "love",
+                        "leetcode",
+                        "i",
+                        "love",
+                        "coding"
+                  ],
+                  "k": 2
+            },
+            "expectedOutput": [
+                  "i",
+                  "love"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tie_breaking_words",
+            "label": "Alphabetical Tie Breaking",
+            "input": {
+                  "words": [
+                        "the",
+                        "day",
+                        "is",
+                        "sunny",
+                        "the",
+                        "the",
+                        "the",
+                        "sunny",
+                        "is",
+                        "is"
+                  ],
+                  "k": 4
+            },
+            "expectedOutput": [
+                  "the",
+                  "is",
+                  "sunny",
+                  "day"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single_word_set",
+            "label": "Single Word List",
+            "input": {
+                  "words": [
+                        "apple"
+                  ],
+                  "k": 1
+            },
+            "expectedOutput": [
+                  "apple"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "k_larger_than_vocabulary",
+            "label": "K Exceeds Vocabulary Size",
+            "input": {
+                  "words": [
+                        "a",
+                        "b"
+                  ],
+                  "k": 5
+            },
+            "expectedOutput": [
+                  "a",
+                  "b"
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-22': {
+    id: 'py-fund-prob-22',
+    title: "Caesar Character Offset Cipher",
+    difficulty: 'medium',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '15–20 min',
+    functionName: 'string_character_offset_cipher',
+    functionSignature: "string_character_offset_cipher(text: str, shift: int) -> str",
+    starterCode: `def string_character_offset_cipher(text, shift):
+    """Encrypt text by shifting alphabetic characters by shift positions (wrapping around A-Z / a-z).
+    Preserve casing and leave non-alphabetic characters untouched."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement modular alphabetic rotational encryption preserving letter case and non-alphabetic characters.",
+    taskDescription: "Implement `string_character_offset_cipher(text, shift)`: shift every alphabetic letter in `text` by `shift` places along the alphabet, wrapping circularly around 26 letters. Preserves uppercase and lowercase casing. Non-alphabetic characters (digits, spaces, punctuation) remain unchanged.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Shift can be negative or larger than 26 (modulo 26 arithmetic).",
+      "Preserves casing and punctuation."
+],
+    hints: {
+      "small": "Normalize shift with shift = shift % 26.",
+      "strong": "For lowercase: chr((ord(ch) - ord(\"a\") + shift) % 26 + ord(\"a\")). Do similarly for uppercase.",
+      "concept": "Modular arithmetic maps cyclic group structures in cryptography and hashing."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Modular character arithmetic and string transformation"
+      }
+],
+    testCases: [
+      {
+            "id": "simple_shift_three",
+            "label": "Shift by 3",
+            "input": {
+                  "text": "abc XYZ",
+                  "shift": 3
+            },
+            "expectedOutput": "def ABC",
+            "hidden": false
+      },
+      {
+            "id": "negative_shift",
+            "label": "Negative Shift Wrap",
+            "input": {
+                  "text": "def",
+                  "shift": -3
+            },
+            "expectedOutput": "abc",
+            "hidden": false
+      },
+      {
+            "id": "large_shift",
+            "label": "Shift Larger Than 26",
+            "input": {
+                  "text": "Hello, World!",
+                  "shift": 28
+            },
+            "expectedOutput": "Jgnnq, Yqtnf!",
+            "hidden": false
+      },
+      {
+            "id": "non_alpha_text",
+            "label": "Numbers and Punctuation Only",
+            "input": {
+                  "text": "1234 !@#$",
+                  "shift": 5
+            },
+            "expectedOutput": "1234 !@#$",
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-23': {
+    id: 'py-fund-prob-23',
+    title: "Dependency Graph Maximum Depth & Cycle Audit",
+    difficulty: 'hard',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '20–25 min',
+    functionName: 'dependency_graph_depth',
+    functionSignature: "dependency_graph_depth(graph: dict[str, list[str]]) -> int",
+    starterCode: `def dependency_graph_depth(graph):
+    """Compute the maximum path length (number of edges) in directed dependency graph.
+    If a cycle exists, return -1. Empty graph returns 0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Measure the longest dependency path in directed execution graphs with cyclic deadlock detection.",
+    taskDescription: "Implement `dependency_graph_depth(graph)`: find the maximum depth (number of edges in the longest directed path) in `graph` (mapping node to list of neighbors). If any directed cycle exists, return `-1`. If `graph` is empty or has no edges, return `0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Cycle detection: returns -1 on cycle.",
+      "Runs in O(V + E) using memoized DFS with visiting recursion stack."
+],
+    hints: {
+      "small": "Track visiting nodes in a set to catch cycles during DFS.",
+      "strong": "Memoize the longest path starting from each node: memo[u] = 1 + max(dfs(v)).",
+      "concept": "Longest path in a DAG defines the critical path and minimum parallel execution makespan."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "DAG critical path analysis and cycle detection"
+      }
+],
+    testCases: [
+      {
+            "id": "linear_chain",
+            "label": "Linear 3-Node Chain",
+            "input": {
+                  "graph": {
+                        "A": [
+                              "B"
+                        ],
+                        "B": [
+                              "C"
+                        ],
+                        "C": []
+                  }
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "cycle_present",
+            "label": "Cyclic Graph",
+            "input": {
+                  "graph": {
+                        "A": [
+                              "B"
+                        ],
+                        "B": [
+                              "A"
+                        ]
+                  }
+            },
+            "expectedOutput": -1,
+            "hidden": false
+      },
+      {
+            "id": "fork_join",
+            "label": "Diamond Fork-Join DAG",
+            "input": {
+                  "graph": {
+                        "A": [
+                              "B",
+                              "C"
+                        ],
+                        "B": [
+                              "D"
+                        ],
+                        "C": [
+                              "D"
+                        ],
+                        "D": []
+                  }
+            },
+            "expectedOutput": 2,
+            "hidden": false
+      },
+      {
+            "id": "empty_graph",
+            "label": "Empty Graph",
+            "input": {
+                  "graph": {}
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-24': {
+    id: 'py-fund-prob-24',
+    title: "Streaming Sliding Window Percentile Tracker",
+    difficulty: 'hard',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '20–25 min',
+    functionName: 'stream_sliding_percentile',
+    functionSignature: "stream_sliding_percentile(nums: list[float], window_size: int, percentile: float) -> list[float]",
+    starterCode: `def stream_sliding_percentile(nums, window_size, percentile):
+    """Compute the sliding window percentile using the nearest rank method:
+    rank_index = max(0, ceil(percentile * window_size) - 1) on sorted window.
+    Return list of percentile values rounded to 4 decimals."""
+    # Your implementation here
+    pass
+`,
+    mission: "Track non-parametric sliding window percentile statistics over streaming latency and telemetry metrics.",
+    taskDescription: "Implement `stream_sliding_percentile(nums, window_size, percentile)`: compute the percentile over each sliding window of length `window_size` in `nums`. Use the nearest-rank method: index `max(0, ceil(percentile * window_size) - 1)` in the sorted window. Round output values to 4 decimal places. Return `[]` if `window_size <= 0` or `len(nums) < window_size`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Percentile is a float in range (0.0, 1.0].",
+      "Uses nearest rank indexing formula."
+],
+    hints: {
+      "small": "Calculate rank_index = max(0, math.ceil(percentile * window_size) - 1).",
+      "strong": "For each window, sort elements and select window[rank_index].",
+      "concept": "Sliding percentiles track p95 and p99 service level objectives across sliding latency telemetry."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Sliding window arrays and order statistics"
+      }
+],
+    testCases: [
+      {
+            "id": "p90_latencies",
+            "label": "90th Percentile Window 5",
+            "input": {
+                  "nums": [
+                        10.0,
+                        20.0,
+                        30.0,
+                        40.0,
+                        50.0,
+                        60.0
+                  ],
+                  "window_size": 5,
+                  "percentile": 0.9
+            },
+            "expectedOutput": [
+                  50.0,
+                  60.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "p50_median",
+            "label": "50th Percentile (Median)",
+            "input": {
+                  "nums": [
+                        5.0,
+                        1.0,
+                        9.0,
+                        3.0
+                  ],
+                  "window_size": 3,
+                  "percentile": 0.5
+            },
+            "expectedOutput": [
+                  5.0,
+                  3.0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "window_too_large",
+            "label": "Window Size Exceeds Array",
+            "input": {
+                  "nums": [
+                        1.0,
+                        2.0
+                  ],
+                  "window_size": 4,
+                  "percentile": 0.5
+            },
+            "expectedOutput": [],
+            "hidden": false
+      },
+      {
+            "id": "p100_maximum",
+            "label": "100th Percentile Max",
+            "input": {
+                  "nums": [
+                        10.0,
+                        40.0,
+                        20.0
+                  ],
+                  "window_size": 2,
+                  "percentile": 1.0
+            },
+            "expectedOutput": [
+                  40.0,
+                  40.0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-25': {
+    id: 'py-fund-prob-25',
+    title: "Recursive Pure-Python JSON Serializer",
+    difficulty: 'hard',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '20–25 min',
+    functionName: 'custom_json_serializer',
+    functionSignature: "custom_json_serializer(data: any) -> str",
+    starterCode: `def custom_json_serializer(data):
+    """Serialize primitive and nested Python data (None, bool, int, float, str, list, dict)
+    into a valid JSON string without using json.dumps()."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement recursive JSON serialization from scratch supporting nested objects, lists, escaping, and primitives.",
+    taskDescription: "Implement `custom_json_serializer(data)`: serialize Python primitives (`None -> null`, `bool -> true/false`, numbers, strings with escaped quotes/newlines, lists, and dicts) into standard JSON syntax without using the standard library `json` module.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "No use of json module.",
+      "Properly escapes quotes and backslashes in strings."
+],
+    hints: {
+      "small": "Branch on type: None, bool, int/float, str, list, dict.",
+      "strong": "Note that bool is a subclass of int in Python: test isinstance(data, bool) BEFORE int/float.",
+      "concept": "Tree serialization recursively converts memory object graphs into linear byte streams."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Object model serialization and recursion"
+      }
+],
+    testCases: [
+      {
+            "id": "nested_dict_list",
+            "label": "Nested Dictionary with List",
+            "input": {
+                  "data": {
+                        "name": "Alice",
+                        "scores": [
+                              95,
+                              100
+                        ],
+                        "verified": true
+                  }
+            },
+            "expectedOutput": "{\"name\": \"Alice\", \"scores\": [95, 100], \"verified\": true}",
+            "hidden": false
+      },
+      {
+            "id": "primitives",
+            "label": "Null and Primitives",
+            "input": {
+                  "data": [
+                        null,
+                        false,
+                        3.14
+                  ]
+            },
+            "expectedOutput": "[null, false, 3.14]",
+            "hidden": false
+      },
+      {
+            "id": "escaped_string",
+            "label": "String with Escapes",
+            "input": {
+                  "data": {
+                        "quote": "He said \"hello\""
+                  }
+            },
+            "expectedOutput": "{\"quote\": \"He said \\\"hello\\\"\"}",
+            "hidden": false
+      },
+      {
+            "id": "empty_structures",
+            "label": "Empty Dict and List",
+            "input": {
+                  "data": {
+                        "empty_arr": [],
+                        "empty_map": {}
+                  }
+            },
+            "expectedOutput": "{\"empty_arr\": [], \"empty_map\": {}}",
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-26': {
+    id: 'py-fund-prob-26',
+    title: "Balanced Delimiter Bracket Validator",
+    difficulty: 'hard',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '20–25 min',
+    functionName: 'expression_parenthesization_validator',
+    functionSignature: "expression_parenthesization_validator(s: str) -> bool",
+    starterCode: `def expression_parenthesization_validator(s):
+    """Determine if brackets (), {}, [] in string s are correctly paired and nested.
+    Non-bracket characters are ignored. Return True if balanced, else False."""
+    # Your implementation here
+    pass
+`,
+    mission: "Verify bracket nesting balance across mixed expressions containing arbitrary non-bracket characters.",
+    taskDescription: "Implement `expression_parenthesization_validator(s)`: check whether all round `()`, curly `{}`, and square `[]` brackets in `s` are properly nested and matched. Characters that are not brackets are ignored. Return `True` if balanced, `False` otherwise.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Non-bracket characters are skipped.",
+      "Runs in linear O(n) time and O(n) space using a stack."
+],
+    hints: {
+      "small": "Push opening brackets onto a stack; pop when encountering corresponding closing brackets.",
+      "strong": "If closing bracket does not match stack top or stack is empty, return False. At end, verify stack is empty.",
+      "concept": "Context-free grammar matching uses pushdown automata (stacks) to enforce balanced hierarchical scope."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Stack-based grammar parsing and syntax validation"
+      }
+],
+    testCases: [
+      {
+            "id": "valid_mixed",
+            "label": "Valid Nested Expression",
+            "input": {
+                  "s": "{ [a + b] * (c - d) }"
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "mismatched_types",
+            "label": "Mismatched Bracket Types",
+            "input": {
+                  "s": "( [ ) ]"
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "unclosed_bracket",
+            "label": "Unclosed Opening Bracket",
+            "input": {
+                  "s": "{(})"
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "no_brackets",
+            "label": "No Brackets in String",
+            "input": {
+                  "s": "hello world 123"
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-27': {
+    id: 'py-fund-prob-27',
+    title: "Pub/Sub Topic Pattern Dispatcher",
+    difficulty: 'hard',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '20–25 min',
+    functionName: 'event_bus_dispatcher_simulator',
+    functionSignature: "event_bus_dispatcher_simulator(subscriptions: list[dict], events: list[dict]) -> list[str]",
+    starterCode: `def event_bus_dispatcher_simulator(subscriptions, events):
+    """Dispatch events to matching subscribers.
+    Subscriptions: [{'topic': 'sensor.*', 'id': 'sub1'}].
+    Wildcard '*' matches a single dot-delimited segment; '#' matches zero or more segments.
+    Return list of formatted delivery strings: '{sub_id}:{topic}:{payload}'."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate an enterprise pub/sub message broker dispatching topics with wildcards (* and #).",
+    taskDescription: "Implement `event_bus_dispatcher_simulator(subscriptions, events)`: match event topics against subscription filters. A single asterisk `*` matches exactly one dot-separated segment; hash `#` matches zero or more segments. When an event matches a subscription, log `\"<sub_id>:<topic>:<payload>\"`. Return all delivery logs in dispatch order.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Preserves subscription evaluation order per event.",
+      "* matches single segment; # matches arbitrary segments."
+],
+    hints: {
+      "small": "Convert topic wildcard expressions to regular expressions before dispatching events.",
+      "strong": "Replace * with [^.]+ and # with .*, escaping literal dots.",
+      "concept": "Topic trees and trie routing power MQTT, RabbitMQ, and enterprise event buses."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Event-driven architecture and pattern matching"
+      }
+],
+    testCases: [
+      {
+            "id": "single_wildcard",
+            "label": "Single Asterisk Wildcard",
+            "input": {
+                  "subscriptions": [
+                        {
+                              "topic": "sensor.*.temp",
+                              "id": "temp_monitor"
+                        }
+                  ],
+                  "events": [
+                        {
+                              "topic": "sensor.kitchen.temp",
+                              "payload": "22C"
+                        },
+                        {
+                              "topic": "sensor.kitchen.humidity",
+                              "payload": "45%"
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  "temp_monitor:sensor.kitchen.temp:22C"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "hash_wildcard",
+            "label": "Hash Wildcard Match",
+            "input": {
+                  "subscriptions": [
+                        {
+                              "topic": "alerts.#",
+                              "id": "pager"
+                        }
+                  ],
+                  "events": [
+                        {
+                              "topic": "alerts.eu.west.cpu",
+                              "payload": "high"
+                        },
+                        {
+                              "topic": "info.status",
+                              "payload": "ok"
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  "pager:alerts.eu.west.cpu:high"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "exact_match",
+            "label": "Exact Topic Match",
+            "input": {
+                  "subscriptions": [
+                        {
+                              "topic": "order.placed",
+                              "id": "billing"
+                        }
+                  ],
+                  "events": [
+                        {
+                              "topic": "order.placed",
+                              "payload": "id_42"
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  "billing:order.placed:id_42"
+            ],
+            "hidden": false
+      },
+      {
+            "id": "no_matching_events",
+            "label": "No Subscribers Match",
+            "input": {
+                  "subscriptions": [
+                        {
+                              "topic": "logs.error",
+                              "id": "logger"
+                        }
+                  ],
+                  "events": [
+                        {
+                              "topic": "logs.info",
+                              "payload": "boot"
+                        }
+                  ]
+            },
+            "expectedOutput": [],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-28': {
+    id: 'py-fund-prob-28',
+    title: "Probabilistic Bloom Filter Simulator",
+    difficulty: 'hard',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '20–25 min',
+    functionName: 'bloom_filter_simulator',
+    functionSignature: "bloom_filter_simulator(elements: list[str], test_elements: list[str], m: int, num_hashes: int) -> list[bool]",
+    starterCode: `def bloom_filter_simulator(elements, test_elements, m, num_hashes):
+    """Simulate an m-bit Bloom filter using num_hashes hash functions from prime bases:
+    [31, 37, 41, 43, 47, 53, 59, 61][:num_hashes] where h_b(s) = sum(ord(c) * (b ** j)) % m.
+    Insert elements, then test each element in test_elements. Return list of bools."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate space-efficient probabilistic set membership testing using an m-bit Bloom filter array.",
+    taskDescription: "Implement `bloom_filter_simulator(elements, test_elements, m, num_hashes)`: initialize an `m`-bit array of zeros. For each inserted string in `elements`, set bits at `(val * b + ord(c)) % m` using prime bases `[31, 37, 41, 43, 47, 53, 59, 61][:num_hashes]`. Then test each item in `test_elements`, returning `True` if all corresponding bit positions are set (1), and `False` otherwise.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Deterministic polynomial hash functions with specified prime bases.",
+      "Bit array length m >= 1."
+],
+    hints: {
+      "small": "Bit array is list of m zeros. Insert by setting bits to 1.",
+      "strong": "For query test, if any hashed index is 0, it is guaranteed not in the set (return False).",
+      "concept": "Bloom filters guarantee zero false negatives with bounded false positives in database read caching."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Probabilistic data structures and bit arrays"
+      }
+],
+    testCases: [
+      {
+            "id": "inserted_members",
+            "label": "Test Inserted Members",
+            "input": {
+                  "elements": [
+                        "apple",
+                        "banana",
+                        "orange"
+                  ],
+                  "test_elements": [
+                        "apple",
+                        "grape"
+                  ],
+                  "m": 100,
+                  "num_hashes": 3
+            },
+            "expectedOutput": [
+                  true,
+                  false
+            ],
+            "hidden": false
+      },
+      {
+            "id": "all_absent",
+            "label": "All Absent Keys",
+            "input": {
+                  "elements": [
+                        "user1",
+                        "user2"
+                  ],
+                  "test_elements": [
+                        "user99",
+                        "user100"
+                  ],
+                  "m": 50,
+                  "num_hashes": 2
+            },
+            "expectedOutput": [
+                  false,
+                  false
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_filter",
+            "label": "Query on Empty Filter",
+            "input": {
+                  "elements": [],
+                  "test_elements": [
+                        "item"
+                  ],
+                  "m": 32,
+                  "num_hashes": 2
+            },
+            "expectedOutput": [
+                  false
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single_hash",
+            "label": "Single Hash Function",
+            "input": {
+                  "elements": [
+                        "alpha"
+                  ],
+                  "test_elements": [
+                        "alpha",
+                        "beta"
+                  ],
+                  "m": 64,
+                  "num_hashes": 1
+            },
+            "expectedOutput": [
+                  true,
+                  false
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-29': {
+    id: 'py-fund-prob-29',
+    title: "Least Frequently Used (LFU) Cache Simulator",
+    difficulty: 'hard',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '20–25 min',
+    functionName: 'lfu_cache_simulator',
+    functionSignature: "lfu_cache_simulator(operations: list[dict], capacity: int) -> list[any]",
+    starterCode: `def lfu_cache_simulator(operations, capacity):
+    """Simulate Least Frequently Used (LFU) cache of capacity with operations:
+    {'op': 'put', 'key': k, 'val': v} and {'op': 'get', 'key': k}.
+    Ties in frequency evicted by LRU. Return list of results for 'get' ops."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate an optimal O(1) Least Frequently Used (LFU) cache eviction policy with LRU tie-breaking.",
+    taskDescription: "Implement `lfu_cache_simulator(operations, capacity)`: manage key-value pairs where the least frequently accessed item is evicted when capacity is reached. If multiple keys share the minimum frequency, evict the least recently used key among them. Return a list of results for all `get` operations (-1 for missing keys).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Capacity is an integer >= 0.",
+      "Tie-break between equal frequencies evicts least recently accessed."
+],
+    hints: {
+      "small": "Maintain frequency maps and an OrderedDict of keys for each frequency count.",
+      "strong": "Track min_freq integer. On eviction, pop the oldest item from freq_keys[min_freq].",
+      "concept": "LFU caching protects long-term popular items from eviction caused by short temporary bursts."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Double hash table and OrderedDict cache structures"
+      }
+],
+    testCases: [
+      {
+            "id": "lfu_eviction_sequence",
+            "label": "Frequency Based Eviction",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "put",
+                              "key": 1,
+                              "val": 1
+                        },
+                        {
+                              "op": "put",
+                              "key": 2,
+                              "val": 2
+                        },
+                        {
+                              "op": "get",
+                              "key": 1
+                        },
+                        {
+                              "op": "put",
+                              "key": 3,
+                              "val": 3
+                        },
+                        {
+                              "op": "get",
+                              "key": 2
+                        },
+                        {
+                              "op": "get",
+                              "key": 3
+                        }
+                  ],
+                  "capacity": 2
+            },
+            "expectedOutput": [
+                  1,
+                  -1,
+                  3
+            ],
+            "hidden": false
+      },
+      {
+            "id": "tie_break_lru",
+            "label": "Tie-break Between Frequency 1",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "put",
+                              "key": 1,
+                              "val": 10
+                        },
+                        {
+                              "op": "put",
+                              "key": 2,
+                              "val": 20
+                        },
+                        {
+                              "op": "put",
+                              "key": 3,
+                              "val": 30
+                        },
+                        {
+                              "op": "get",
+                              "key": 1
+                        },
+                        {
+                              "op": "get",
+                              "key": 2
+                        },
+                        {
+                              "op": "get",
+                              "key": 3
+                        }
+                  ],
+                  "capacity": 2
+            },
+            "expectedOutput": [
+                  -1,
+                  20,
+                  30
+            ],
+            "hidden": false
+      },
+      {
+            "id": "capacity_zero",
+            "label": "Zero Capacity Cache",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "put",
+                              "key": 1,
+                              "val": 1
+                        },
+                        {
+                              "op": "get",
+                              "key": 1
+                        }
+                  ],
+                  "capacity": 0
+            },
+            "expectedOutput": [
+                  -1
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'py-fund-prob-30': {
+    id: 'py-fund-prob-30',
+    title: "Immutable Persistent Stack Simulator",
+    difficulty: 'hard',
+    topic: "Python & Programming Fundamentals",
+    estimatedTime: '20–25 min',
+    functionName: 'immutable_persistent_stack_simulator',
+    functionSignature: "immutable_persistent_stack_simulator(operations: list[dict]) -> list[any]",
+    starterCode: `def immutable_persistent_stack_simulator(operations):
+    """Simulate a fully persistent stack where versions are immutable.
+    Version 0 is empty stack ().
+    - {'op': 'push', 'version': v, 'val': x}: returns new version integer
+    - {'op': 'pop', 'version': v}: returns {'val': popped_val, 'version': new_v} (or {'val': None, 'version': v} if empty)
+    - {'op': 'peek', 'version': v}: returns top element (or None if empty)"""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate fully persistent immutable stack versioning supporting historical branching and inspection.",
+    taskDescription: "Implement `immutable_persistent_stack_simulator(operations)`: maintain a persistent stack where past states are never overwritten. Version `0` is the initial empty stack. Support `push` (creates and returns a new version ID), `pop` (returns `{\"val\": top, \"version\": new_ver}` without mutating parent version), and `peek` (returns top value of specified version). Return results list of all operations.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Past versions remain accessible and immutable.",
+      "Version IDs increment sequentially starting at 1."
+],
+    hints: {
+      "small": "Represent each version as an immutable tuple or linked node referencing its parent.",
+      "strong": "On push, new_stack = versions[v] + (val,); record versions[next_id] = new_stack and advance next_id.",
+      "concept": "Persistent data structures allow time-travel debugging, undo trees, and concurrent lock-free state sharing."
+},
+    conceptConnections: [
+      {
+            "title": "Language Fundamentals",
+            "route": "/docs/python-engineering/language-fundamentals-and-oop",
+            "description": "Immutable tuples and persistent functional data structures"
+      }
+],
+    testCases: [
+      {
+            "id": "branching_stack",
+            "label": "Branching Version Tree",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "push",
+                              "version": 0,
+                              "val": 10
+                        },
+                        {
+                              "op": "push",
+                              "version": 1,
+                              "val": 20
+                        },
+                        {
+                              "op": "push",
+                              "version": 1,
+                              "val": 30
+                        },
+                        {
+                              "op": "peek",
+                              "version": 2
+                        },
+                        {
+                              "op": "peek",
+                              "version": 3
+                        },
+                        {
+                              "op": "pop",
+                              "version": 2
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  2,
+                  3,
+                  20,
+                  30,
+                  {
+                        "val": 20,
+                        "version": 4
+                  }
+            ],
+            "hidden": false
+      },
+      {
+            "id": "pop_empty",
+            "label": "Pop from Empty Stack Version",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "pop",
+                              "version": 0
+                        },
+                        {
+                              "op": "peek",
+                              "version": 0
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  {
+                        "val": null,
+                        "version": 0
+                  },
+                  null
+            ],
+            "hidden": false
+      },
+      {
+            "id": "chain_push_pop",
+            "label": "Sequential Push and Pop Chain",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "push",
+                              "version": 0,
+                              "val": "a"
+                        },
+                        {
+                              "op": "pop",
+                              "version": 1
+                        },
+                        {
+                              "op": "peek",
+                              "version": 2
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  {
+                        "val": "a",
+                        "version": 2
+                  },
+                  null
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-6': {
+    id: 'll-queue-prob-6',
+    title: "Remove Linked List Elements by Value",
+    difficulty: 'easy',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '10–15 min',
+    functionName: 'remove_elements',
+    functionSignature: "remove_elements(head: dict | None, val: int) -> dict | None",
+    starterCode: `def remove_elements(head, val):
+    """Remove all nodes from linked list that have node['val'] == val.
+    Nodes are {'val': int, 'next': node | None}. Return head of modified list."""
+    # Your implementation here
+    pass
+`,
+    mission: "Delete all occurrences of a target value from a singly linked list using a dummy sentinel node.",
+    taskDescription: "Implement `remove_elements(head, val)`: remove all nodes of the linked list that have `node[\"val\"] == val`. Return the new head of the list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Nodes are represented as {\"val\": int, \"next\": dict | None}.",
+      "Operates in-place in O(n) time and O(1) space."
+],
+    hints: {
+      "small": "Use a sentinel dummy node before head so removing the head node is handled uniformly.",
+      "strong": "dummy = {\"val\": 0, \"next\": head}; while curr[\"next\"]: if curr[\"next\"][\"val\"] == val: curr[\"next\"] = curr[\"next\"][\"next\"] else: curr = curr[\"next\"].",
+      "concept": "Sentinel nodes eliminate edge cases when deleting the head node of a singly linked list."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Linked list manipulation with sentinel dummy nodes"
+      }
+],
+    testCases: [
+      {
+            "id": "multiple_matches",
+            "label": "Multiple Occurrences Removed",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": {
+                                    "val": 3,
+                                    "next": {
+                                          "val": 4,
+                                          "next": {
+                                                "val": 5,
+                                                "next": null
+                                          }
+                                    }
+                              }
+                        }
+                  },
+                  "val": 6
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": {
+                        "val": 2,
+                        "next": {
+                              "val": 3,
+                              "next": {
+                                    "val": 4,
+                                    "next": {
+                                          "val": 5,
+                                          "next": null
+                                    }
+                              }
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "all_matching",
+            "label": "All Nodes Match Val",
+            "input": {
+                  "head": {
+                        "val": 7,
+                        "next": {
+                              "val": 7,
+                              "next": {
+                                    "val": 7,
+                                    "next": {
+                                          "val": 7,
+                                          "next": null
+                                    }
+                              }
+                        }
+                  },
+                  "val": 7
+            },
+            "expectedOutput": null,
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty List",
+            "input": {
+                  "head": null,
+                  "val": 1
+            },
+            "expectedOutput": null,
+            "hidden": false
+      },
+      {
+            "id": "head_match",
+            "label": "Head Node Matches",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": {
+                                    "val": 3,
+                                    "next": null
+                              }
+                        }
+                  },
+                  "val": 1
+            },
+            "expectedOutput": {
+                  "val": 2,
+                  "next": {
+                        "val": 3,
+                        "next": null
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-7': {
+    id: 'll-queue-prob-7',
+    title: "Find Middle Node of Linked List",
+    difficulty: 'easy',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '10–15 min',
+    functionName: 'middle_node',
+    functionSignature: "middle_node(head: dict | None) -> dict | None",
+    starterCode: `def middle_node(head):
+    """Find the middle node of singly linked list head.
+    If there are two middle nodes (even length), return the second middle node."""
+    # Your implementation here
+    pass
+`,
+    mission: "Locate the exact midpoint of a linked list in a single pass using Floyd's tortoise-and-hare two-pointer method.",
+    taskDescription: "Implement `middle_node(head)`: find the middle node of the singly linked list. If there are two middle nodes (even length), return the second middle node.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Single O(n) pass without counting length in advance.",
+      "O(1) extra space."
+],
+    hints: {
+      "small": "Advance slow pointer by 1 step and fast pointer by 2 steps.",
+      "strong": "while fast and fast.get(\"next\"): slow = slow[\"next\"]; fast = fast[\"next\"][\"next\"]. Return slow.",
+      "concept": "Floyd's fast and slow pointers locate fractional proportions along streams in a single linear pass."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Two-pointer tortoise and hare traversal"
+      }
+],
+    testCases: [
+      {
+            "id": "odd_length",
+            "label": "Odd Length List",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": {
+                                    "val": 3,
+                                    "next": {
+                                          "val": 4,
+                                          "next": {
+                                                "val": 5,
+                                                "next": null
+                                          }
+                                    }
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 3,
+                  "next": {
+                        "val": 4,
+                        "next": {
+                              "val": 5,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "even_length",
+            "label": "Even Length List (Second Middle)",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": {
+                                    "val": 3,
+                                    "next": {
+                                          "val": 4,
+                                          "next": {
+                                                "val": 5,
+                                                "next": {
+                                                      "val": 6,
+                                                      "next": null
+                                                }
+                                          }
+                                    }
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 4,
+                  "next": {
+                        "val": 5,
+                        "next": {
+                              "val": 6,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "single_node",
+            "label": "Single Node",
+            "input": {
+                  "head": {
+                        "val": 42,
+                        "next": null
+                  }
+            },
+            "expectedOutput": {
+                  "val": 42,
+                  "next": null
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty List",
+            "input": {
+                  "head": null
+            },
+            "expectedOutput": null,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-8': {
+    id: 'll-queue-prob-8',
+    title: "Remove Duplicates from Sorted List",
+    difficulty: 'easy',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '10–15 min',
+    functionName: 'delete_duplicates_sorted',
+    functionSignature: "delete_duplicates_sorted(head: dict | None) -> dict | None",
+    starterCode: `def delete_duplicates_sorted(head):
+    """Delete duplicate values from sorted linked list so each element appears only once.
+    Return head of modified list."""
+    # Your implementation here
+    pass
+`,
+    mission: "Deduplicate adjacent elements in sorted singly linked lists in O(1) auxiliary memory.",
+    taskDescription: "Implement `delete_duplicates_sorted(head)`: delete duplicate values from a sorted singly linked list so that each element appears exactly once. Return the list head.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Input list is sorted in non-decreasing order.",
+      "Runs in O(n) time and O(1) space."
+],
+    hints: {
+      "small": "Compare curr[\"val\"] with curr[\"next\"][\"val\"].",
+      "strong": "If equal, bypass the duplicate node by skipping to curr[\"next\"][\"next\"] without advancing curr.",
+      "concept": "Sorted linked lists confine duplicate elements to contiguous neighbors, enabling in-place deletion."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "In-place linked list pointer manipulation"
+      }
+],
+    testCases: [
+      {
+            "id": "duplicates_present",
+            "label": "List with Consecutive Duplicates",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": {
+                                    "val": 3,
+                                    "next": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": {
+                        "val": 2,
+                        "next": {
+                              "val": 3,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "all_identical",
+            "label": "All Duplicate Values",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": null
+                  }
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": null
+            },
+            "hidden": false
+      },
+      {
+            "id": "already_unique",
+            "label": "Already Unique List",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": {
+                                    "val": 3,
+                                    "next": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": {
+                        "val": 2,
+                        "next": {
+                              "val": 3,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty List",
+            "input": {
+                  "head": null
+            },
+            "expectedOutput": null,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-9': {
+    id: 'll-queue-prob-9',
+    title: "O(1) Minimum Tracking Stack (MinStack)",
+    difficulty: 'easy',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '10–15 min',
+    functionName: 'min_stack_ops',
+    functionSignature: "min_stack_ops(operations: list[dict]) -> list[any]",
+    starterCode: `def min_stack_ops(operations):
+    """Simulate MinStack supporting push(val), pop(), top(), and get_min() in O(1) time.
+    Operations: {'op': 'push', 'val': x}, {'op': 'pop'}, {'op': 'top'}, {'op': 'get_min'}.
+    Return list of results for 'top' and 'get_min' calls."""
+    # Your implementation here
+    pass
+`,
+    mission: "Design a stack that retrieves the current minimum element in constant O(1) time.",
+    taskDescription: "Implement `min_stack_ops(operations)`: simulate a stack supporting operations `push`, `pop`, `top`, and `get_min`. Each must operate in O(1) time. Return a list of results for all `top` and `get_min` operations.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "All operations run in strict O(1) time.",
+      "Top and get_min return None if stack is empty."
+],
+    hints: {
+      "small": "Use an auxiliary stack that records the minimum value seen up to each depth.",
+      "strong": "On each push, append min(val, min_stack[-1]) to min_stack. Pop from both stacks synchronously.",
+      "concept": "Tracking historical cumulative statistics alongside stack frames enables constant-time queries."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Monotonic and auxiliary tracking stacks"
+      }
+],
+    testCases: [
+      {
+            "id": "standard_min_stack",
+            "label": "Standard MinStack Operations",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "push",
+                              "val": -2
+                        },
+                        {
+                              "op": "push",
+                              "val": 0
+                        },
+                        {
+                              "op": "push",
+                              "val": -3
+                        },
+                        {
+                              "op": "get_min"
+                        },
+                        {
+                              "op": "pop"
+                        },
+                        {
+                              "op": "top"
+                        },
+                        {
+                              "op": "get_min"
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  -3,
+                  0,
+                  -2
+            ],
+            "hidden": false
+      },
+      {
+            "id": "ascending_pushes",
+            "label": "Ascending Pushes",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "push",
+                              "val": 10
+                        },
+                        {
+                              "op": "push",
+                              "val": 20
+                        },
+                        {
+                              "op": "get_min"
+                        },
+                        {
+                              "op": "top"
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  10,
+                  20
+            ],
+            "hidden": false
+      },
+      {
+            "id": "empty_queries",
+            "label": "Queries on Empty Stack",
+            "input": {
+                  "operations": [
+                        {
+                              "op": "top"
+                        },
+                        {
+                              "op": "get_min"
+                        }
+                  ]
+            },
+            "expectedOutput": [
+                  null,
+                  null
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-10': {
+    id: 'll-queue-prob-10',
+    title: "Backspace String Compare with Stack Simulation",
+    difficulty: 'easy',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '10–15 min',
+    functionName: 'backspace_compare',
+    functionSignature: "backspace_compare(s: str, t: str) -> bool",
+    starterCode: `def backspace_compare(s, t):
+    """Determine if strings s and t are equal when typed into empty text editors
+    where '#' represents a backspace character."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate keystroke editor backspace operations using LIFO stack buffering.",
+    taskDescription: "Implement `backspace_compare(s, t)`: return `True` if `s` and `t` result in identical text after interpreting `#` as a backspace deleting the previous character. If the editor is empty, `#` does nothing.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Backspace on empty buffer has no effect.",
+      "Runs in O(len(s) + len(t)) linear time."
+],
+    hints: {
+      "small": "Process each string with a stack: append characters, and pop on \"#\".",
+      "strong": "Write a helper function to build the final string using a list as a stack.",
+      "concept": "Undo buffers and text editors use stack abstractions to process backspace keystrokes."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Stack simulation of interactive user inputs"
+      }
+],
+    testCases: [
+      {
+            "id": "equal_after_backspace",
+            "label": "Equal with Backspaces",
+            "input": {
+                  "s": "ab#c",
+                  "t": "ad#c"
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "both_reduced_to_empty",
+            "label": "Both Reduced to Empty",
+            "input": {
+                  "s": "ab##",
+                  "t": "c#d#"
+            },
+            "expectedOutput": true,
+            "hidden": false
+      },
+      {
+            "id": "unequal_strings",
+            "label": "Unequal Result Strings",
+            "input": {
+                  "s": "a#c",
+                  "t": "b"
+            },
+            "expectedOutput": false,
+            "hidden": false
+      },
+      {
+            "id": "leading_backspaces",
+            "label": "Leading Backspaces on Empty",
+            "input": {
+                  "s": "###a",
+                  "t": "a"
+            },
+            "expectedOutput": true,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-17': {
+    id: 'll-queue-prob-17',
+    title: "Daily Temperatures Monotonic Stack",
+    difficulty: 'medium',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '15–20 min',
+    functionName: 'daily_temperatures',
+    functionSignature: "daily_temperatures(temperatures: list[int]) -> list[int]",
+    starterCode: `def daily_temperatures(temperatures):
+    """Return array answer where answer[i] is the number of days until a warmer temperature.
+    If no future day is warmer, answer[i] == 0."""
+    # Your implementation here
+    pass
+`,
+    mission: "Find the waiting time until the next strictly greater value in an array using a monotonic decreasing stack.",
+    taskDescription: "Implement `daily_temperatures(temperatures)`: for each day `i`, find the number of days you would have to wait until a warmer temperature occurs. If no warmer day exists in the future, set `answer[i] = 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Must run in linear O(n) time using a monotonic stack.",
+      "O(n) space complexity."
+],
+    hints: {
+      "small": "Store indices of temperatures in a stack maintaining decreasing order.",
+      "strong": "When temperatures[i] exceeds the temperature at stack[-1], pop and record distance i - prev_idx.",
+      "concept": "Monotonic stacks solve next-greater-element problems in amortized O(1) time per element."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Monotonic stack for next-greater-element queries"
+      }
+],
+    testCases: [
+      {
+            "id": "mixed_temperatures",
+            "label": "Mixed Temperatures",
+            "input": {
+                  "temperatures": [
+                        73,
+                        74,
+                        75,
+                        71,
+                        69,
+                        72,
+                        76,
+                        73
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  1,
+                  4,
+                  2,
+                  1,
+                  1,
+                  0,
+                  0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "monotonically_increasing",
+            "label": "Increasing Temperatures",
+            "input": {
+                  "temperatures": [
+                        30,
+                        40,
+                        50,
+                        60
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  1,
+                  1,
+                  0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "monotonically_decreasing",
+            "label": "Decreasing Temperatures (No Warmer Days)",
+            "input": {
+                  "temperatures": [
+                        30,
+                        60,
+                        90
+                  ]
+            },
+            "expectedOutput": [
+                  1,
+                  1,
+                  0
+            ],
+            "hidden": false
+      },
+      {
+            "id": "all_equal",
+            "label": "Equal Temperatures",
+            "input": {
+                  "temperatures": [
+                        70,
+                        70,
+                        70
+                  ]
+            },
+            "expectedOutput": [
+                  0,
+                  0,
+                  0
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-18': {
+    id: 'll-queue-prob-18',
+    title: "Flatten Multilevel Linked List",
+    difficulty: 'medium',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '15–20 min',
+    functionName: 'flatten_multilevel_list',
+    functionSignature: "flatten_multilevel_list(head: dict | None) -> dict | None",
+    starterCode: `def flatten_multilevel_list(head):
+    """Flatten a multilevel singly linked list where nodes have 'val', 'next', and optional 'child'.
+    Depth-first order: child nodes are traversed before next nodes.
+    Return the head of the new flattened list (without child pointers)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Linearize multilevel hierarchical linked lists into a single 1D chain using depth-first stack traversal.",
+    taskDescription: "Implement `flatten_multilevel_list(head)`: each node contains `val`, `next`, and optional `child` pointing to a sub-list. Flatten the structure in depth-first preorder (child subtrees are traversed before continuing along `next`). Return the flattened list head.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Preorder depth-first flattening order.",
+      "Resulting nodes only retain \"val\" and \"next\"."
+],
+    hints: {
+      "small": "Use an explicit stack initialized with head.",
+      "strong": "Push next child first, then child pointer (so child is popped and visited before next).",
+      "concept": "Flattening tree-structured linked lists mirrors pre-order AST serialization."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Depth-first search and tree flattening using stacks"
+      }
+],
+    testCases: [
+      {
+            "id": "multilevel_child",
+            "label": "List with Child Sub-list",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": null,
+                              "child": null
+                        },
+                        "child": {
+                              "val": 3,
+                              "next": null,
+                              "child": null
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": {
+                        "val": 3,
+                        "next": {
+                              "val": 2,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "flat_list_identity",
+            "label": "Already Flat List",
+            "input": {
+                  "head": {
+                        "val": 10,
+                        "next": {
+                              "val": 20,
+                              "next": {
+                                    "val": 30,
+                                    "next": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 10,
+                  "next": {
+                        "val": 20,
+                        "next": {
+                              "val": 30,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty Multilevel List",
+            "input": {
+                  "head": null
+            },
+            "expectedOutput": null,
+            "hidden": false
+      },
+      {
+            "id": "deep_child_branch",
+            "label": "Deep Child Chain",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": null,
+                        "child": {
+                              "val": 2,
+                              "next": null,
+                              "child": {
+                                    "val": 3,
+                                    "next": null,
+                                    "child": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": {
+                        "val": 2,
+                        "next": {
+                              "val": 3,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-19': {
+    id: 'll-queue-prob-19',
+    title: "Swap Nodes in Pairs in Singly Linked List",
+    difficulty: 'medium',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '15–20 min',
+    functionName: 'swap_pairs',
+    functionSignature: "swap_pairs(head: dict | None) -> dict | None",
+    starterCode: `def swap_pairs(head):
+    """Swap every two adjacent nodes of linked list head and return new head.
+    Must swap nodes themselves, not just their values."""
+    # Your implementation here
+    pass
+`,
+    mission: "In-place pairwise pointer permutation of adjacent linked list node pairs.",
+    taskDescription: "Implement `swap_pairs(head)`: swap every two adjacent nodes in `head` and return the new head. You must swap the actual nodes themselves by updating pointers in O(1) space.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Operates in-place without creating new nodes.",
+      "Odd-length trailing nodes remain in place."
+],
+    hints: {
+      "small": "Create a dummy node pointing to head.",
+      "strong": "Set first = prev[\"next\"], second = first[\"next\"]. Rewire first[\"next\"] = second[\"next\"], second[\"next\"] = first, prev[\"next\"] = second.",
+      "concept": "Pointer permutation around sentinel anchors is the primary pattern for group list reversals."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "In-place node swapping and pointer rewiring"
+      }
+],
+    testCases: [
+      {
+            "id": "four_nodes",
+            "label": "Four Node Even List",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 4,
+                              "next": {
+                                    "val": 3,
+                                    "next": null
+                              }
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 2,
+                  "next": {
+                        "val": 1,
+                        "next": {
+                              "val": 4,
+                              "next": {
+                                    "val": 3,
+                                    "next": null
+                              }
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "three_nodes_odd",
+            "label": "Three Node Odd List",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 3,
+                              "next": null
+                        }
+                  }
+            },
+            "expectedOutput": {
+                  "val": 2,
+                  "next": {
+                        "val": 1,
+                        "next": {
+                              "val": 3,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "single_node",
+            "label": "Single Node",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": null
+                  }
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": null
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_list",
+            "label": "Empty List",
+            "input": {
+                  "head": null
+            },
+            "expectedOutput": null,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-20': {
+    id: 'll-queue-prob-20',
+    title: "Canonical Unix Path Normalizer",
+    difficulty: 'medium',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '15–20 min',
+    functionName: 'simplify_path',
+    functionSignature: "simplify_path(path: str) -> str",
+    starterCode: `def simplify_path(path):
+    """Simplify an absolute Unix filesystem path string into its canonical form.
+    Handles '.', '..', and multiple consecutive slashes '/'."""
+    # Your implementation here
+    pass
+`,
+    mission: "Normalize Unix filesystem paths resolving dot (.), double-dot (..), and redundant slashes.",
+    taskDescription: "Implement `simplify_path(path)`: convert an absolute Unix path into its canonical normalized form. Handle `.` (current dir), `..` (parent dir), and multiple consecutive slashes `//`. Root is `\"/\"`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Returns path starting with \"/\" without trailing slash (unless root).",
+      "Cannot traverse above root directory via \"..\"."
+],
+    hints: {
+      "small": "Split path by \"/\" and filter components with a stack.",
+      "strong": "Ignore empty tokens and \".\". On \"..\", pop from stack if non-empty. Otherwise push directory name.",
+      "concept": "Filesystem navigation and URL resolution naturally map to directory stack states."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Stack-based directory path resolution"
+      }
+],
+    testCases: [
+      {
+            "id": "trailing_slash",
+            "label": "Trailing Slash and Doubled Slash",
+            "input": {
+                  "path": "/home//foo/"
+            },
+            "expectedOutput": "/home/foo",
+            "hidden": false
+      },
+      {
+            "id": "parent_navigation",
+            "label": "Parent Directory Resolution",
+            "input": {
+                  "path": "/home/user/Documents/../Pictures"
+            },
+            "expectedOutput": "/home/user/Pictures",
+            "hidden": false
+      },
+      {
+            "id": "root_boundary",
+            "label": "Root Boundary Navigation",
+            "input": {
+                  "path": "/../"
+            },
+            "expectedOutput": "/",
+            "hidden": false
+      },
+      {
+            "id": "multiple_dots",
+            "label": "Multiple Dots as Filename",
+            "input": {
+                  "path": "/.../a/../b/c/../d/./"
+            },
+            "expectedOutput": "/.../b/d",
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-21': {
+    id: 'll-queue-prob-21',
+    title: "Decode Nested Run-Length Encoded String",
+    difficulty: 'medium',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '15–20 min',
+    functionName: 'decode_string',
+    functionSignature: "decode_string(s: str) -> str",
+    starterCode: `def decode_string(s):
+    """Decode string formatted as k[encoded_string] where encoded_string inside square brackets
+    is repeated exactly k times. Handles arbitrary nesting (e.g. '3[a2[c]]' -> 'accaccacc')."""
+    # Your implementation here
+    pass
+`,
+    mission: "Unpack arbitrarily nested repeat strings using dual multiplier and string accumulator stacks.",
+    taskDescription: "Implement `decode_string(s)`: decode an encoded string of the pattern `k[encoded_string]`. Digits precede brackets and indicate the repeat count `k`. Brackets may be nested arbitrarily deep (e.g. `\"3[a2[c]]\"` -> `\"accaccacc\"`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Handles multi-digit repeat counts k.",
+      "Preserves nested grammar order."
+],
+    hints: {
+      "small": "Maintain two stacks: one for repeat counts (k) and one for parent strings.",
+      "strong": "On \"[\", push current k and current string to stacks. On \"]\", pop and repeat current string k times, appending to popped parent.",
+      "concept": "Recursive bracket expansion is a context-free language parsing problem solved via dual pushdown stacks."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Nested string decoding with dual stacks"
+      }
+],
+    testCases: [
+      {
+            "id": "nested_repeat",
+            "label": "Nested Repeats",
+            "input": {
+                  "s": "3[a2[c]]"
+            },
+            "expectedOutput": "accaccacc",
+            "hidden": false
+      },
+      {
+            "id": "adjacent_repeats",
+            "label": "Adjacent Repeats",
+            "input": {
+                  "s": "3[a]2[bc]"
+            },
+            "expectedOutput": "aaabcbc",
+            "hidden": false
+      },
+      {
+            "id": "mixed_outside",
+            "label": "Text Outside Brackets",
+            "input": {
+                  "s": "2[abc]3[cd]ef"
+            },
+            "expectedOutput": "abcabccdcdcdef",
+            "hidden": false
+      },
+      {
+            "id": "multi_digit",
+            "label": "Multi-digit Count",
+            "input": {
+                  "s": "10[a]"
+            },
+            "expectedOutput": "aaaaaaaaaa",
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-22': {
+    id: 'll-queue-prob-22',
+    title: "Asteroid Collision Trajectory Simulator",
+    difficulty: 'medium',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '15–20 min',
+    functionName: 'asteroid_collision',
+    functionSignature: "asteroid_collision(asteroids: list[int]) -> list[int]",
+    starterCode: `def asteroid_collision(asteroids):
+    """Simulate asteroid collisions where positive means moving right, negative moving left.
+    Absolute value is size. Equal sizes destroy both. Larger destroys smaller. Return survivors."""
+    # Your implementation here
+    pass
+`,
+    mission: "Simulate 1D kinetic collision cascades using stack-based momentum resolution.",
+    taskDescription: "Implement `asteroid_collision(asteroids)`: asteroids move along a 1D line: positive integers move right, negative integers move left. Their absolute value represents size. When moving toward each other, the smaller asteroid explodes; if sizes are equal, both explode. Asteroids moving in the same direction never meet. Return the state of surviving asteroids.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Collision only occurs when a left-moving asteroid (negative) meets a right-moving asteroid (positive).",
+      "Runs in linear O(n) time."
+],
+    hints: {
+      "small": "Use a stack of surviving asteroids moving right.",
+      "strong": "When a negative asteroid arrives, collide it against top positive asteroids in the stack until it explodes or stack top is negative.",
+      "concept": "Collision resolution models stack-based event resolution in computational geometry and particle simulations."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Stack simulation and event processing"
+      }
+],
+    testCases: [
+      {
+            "id": "clean_collision",
+            "label": "Different Size Collision",
+            "input": {
+                  "asteroids": [
+                        5,
+                        10,
+                        -5
+                  ]
+            },
+            "expectedOutput": [
+                  5,
+                  10
+            ],
+            "hidden": false
+      },
+      {
+            "id": "mutual_destruction",
+            "label": "Equal Size Mutual Annihilation",
+            "input": {
+                  "asteroids": [
+                        8,
+                        -8
+                  ]
+            },
+            "expectedOutput": [],
+            "hidden": false
+      },
+      {
+            "id": "left_destroys_multi",
+            "label": "Large Left Asteroid Cascades",
+            "input": {
+                  "asteroids": [
+                        10,
+                        2,
+                        -5
+                  ]
+            },
+            "expectedOutput": [
+                  10
+            ],
+            "hidden": false
+      },
+      {
+            "id": "no_collisions",
+            "label": "Diverging Asteroids (No Collision)",
+            "input": {
+                  "asteroids": [
+                        -2,
+                        -1,
+                        1,
+                        2
+                  ]
+            },
+            "expectedOutput": [
+                  -2,
+                  -1,
+                  1,
+                  2
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-27': {
+    id: 'll-queue-prob-27',
+    title: "Merge K Sorted Linked Lists with Min-Heap",
+    difficulty: 'hard',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '20–25 min',
+    functionName: 'merge_k_sorted_lists',
+    functionSignature: "merge_k_sorted_lists(lists: list[dict | None]) -> dict | None",
+    starterCode: `def merge_k_sorted_lists(lists):
+    """Merge k sorted linked lists into one sorted linked list.
+    Return head of merged list. Input is a list of head nodes."""
+    # Your implementation here
+    pass
+`,
+    mission: "Merge K independently sorted linked lists in O(N log K) time using a priority queue min-heap.",
+    taskDescription: "Implement `merge_k_sorted_lists(lists)`: given an array of `k` sorted linked lists, merge all nodes into a single sorted linked list in ascending order. Must run in O(N log k) time where N is the total count of nodes across all lists.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Operates in O(N log k) time using a min-heap.",
+      "Handles empty lists and empty input arrays."
+],
+    hints: {
+      "small": "Push the head of each non-empty list into a min-heap.",
+      "strong": "Use a tuple (node[\"val\"], unique_counter, node) to avoid uncomparable dict errors in heapq.",
+      "concept": "K-way merging with priority queues forms the foundation of external sort and LSM-tree compaction."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "K-way merging with priority queues and heaps"
+      }
+],
+    testCases: [
+      {
+            "id": "three_lists",
+            "label": "Three Sorted Lists",
+            "input": {
+                  "lists": [
+                        {
+                              "val": 1,
+                              "next": {
+                                    "val": 4,
+                                    "next": {
+                                          "val": 5,
+                                          "next": null
+                                    }
+                              }
+                        },
+                        {
+                              "val": 1,
+                              "next": {
+                                    "val": 3,
+                                    "next": {
+                                          "val": 4,
+                                          "next": null
+                                    }
+                              }
+                        },
+                        {
+                              "val": 2,
+                              "next": {
+                                    "val": 6,
+                                    "next": null
+                              }
+                        }
+                  ]
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": {
+                                    "val": 3,
+                                    "next": {
+                                          "val": 4,
+                                          "next": {
+                                                "val": 4,
+                                                "next": {
+                                                      "val": 5,
+                                                      "next": {
+                                                            "val": 6,
+                                                            "next": null
+                                                      }
+                                                }
+                                          }
+                                    }
+                              }
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "empty_lists_array",
+            "label": "Empty Array of Lists",
+            "input": {
+                  "lists": []
+            },
+            "expectedOutput": null,
+            "hidden": false
+      },
+      {
+            "id": "contains_empty_head",
+            "label": "Array with Empty List Heads",
+            "input": {
+                  "lists": [
+                        null,
+                        {
+                              "val": 1,
+                              "next": null
+                        }
+                  ]
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": null
+            },
+            "hidden": false
+      },
+      {
+            "id": "disjoint_values",
+            "label": "Disjoint Values Across Lists",
+            "input": {
+                  "lists": [
+                        {
+                              "val": 10,
+                              "next": {
+                                    "val": 20,
+                                    "next": null
+                              }
+                        },
+                        {
+                              "val": 15,
+                              "next": {
+                                    "val": 25,
+                                    "next": null
+                              }
+                        }
+                  ]
+            },
+            "expectedOutput": {
+                  "val": 10,
+                  "next": {
+                        "val": 15,
+                        "next": {
+                              "val": 20,
+                              "next": {
+                                    "val": 25,
+                                    "next": null
+                              }
+                        }
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-28': {
+    id: 'll-queue-prob-28',
+    title: "Reverse Nodes in K-Group Blocks",
+    difficulty: 'hard',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '20–25 min',
+    functionName: 'reverse_k_group',
+    functionSignature: "reverse_k_group(head: dict | None, k: int) -> dict | None",
+    starterCode: `def reverse_k_group(head, k):
+    """Reverse nodes of linked list k at a time and return modified head.
+    If the remaining number of nodes is less than k, leave them in original order."""
+    # Your implementation here
+    pass
+`,
+    mission: "Permute linked list structures by reversing consecutive blocks of K nodes in-place in O(1) space.",
+    taskDescription: "Implement `reverse_k_group(head, k)`: reverse nodes in `head` `k` at a time. If the number of remaining nodes at the end is less than `k`, leave them un-reversed in their original order. Modifies pointers in-place in O(1) memory.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "1 <= k <= length of list.",
+      "Runs in O(n) time and O(1) extra space."
+],
+    hints: {
+      "small": "First verify that at least k nodes remain in the current group.",
+      "strong": "Standard three-pointer reversal of the k-node segment, then reconnect the boundaries with the previous group and next group.",
+      "concept": "K-group block reversal combines lookahead boundary testing with local iterative pointer reversal."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "In-place block reversal of singly linked lists"
+      }
+],
+    testCases: [
+      {
+            "id": "k_is_two",
+            "label": "Reverse Pairs (k=2)",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 4,
+                              "next": {
+                                    "val": 3,
+                                    "next": {
+                                          "val": 5,
+                                          "next": null
+                                    }
+                              }
+                        }
+                  },
+                  "k": 2
+            },
+            "expectedOutput": {
+                  "val": 2,
+                  "next": {
+                        "val": 1,
+                        "next": {
+                              "val": 4,
+                              "next": {
+                                    "val": 3,
+                                    "next": {
+                                          "val": 5,
+                                          "next": null
+                                    }
+                              }
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "k_is_three",
+            "label": "Reverse Triplets (k=3)",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 4,
+                              "next": {
+                                    "val": 5,
+                                    "next": null
+                              }
+                        }
+                  },
+                  "k": 3
+            },
+            "expectedOutput": {
+                  "val": 3,
+                  "next": {
+                        "val": 2,
+                        "next": {
+                              "val": 1,
+                              "next": {
+                                    "val": 4,
+                                    "next": {
+                                          "val": 5,
+                                          "next": null
+                                    }
+                              }
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "k_equals_length",
+            "label": "k Equals List Length",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": null
+                  },
+                  "k": 3
+            },
+            "expectedOutput": {
+                  "val": 3,
+                  "next": {
+                        "val": 2,
+                        "next": {
+                              "val": 1,
+                              "next": null
+                        }
+                  }
+            },
+            "hidden": false
+      },
+      {
+            "id": "k_one",
+            "label": "k Equals 1 (No-op)",
+            "input": {
+                  "head": {
+                        "val": 1,
+                        "next": {
+                              "val": 2,
+                              "next": null
+                        }
+                  },
+                  "k": 1
+            },
+            "expectedOutput": {
+                  "val": 1,
+                  "next": {
+                        "val": 2,
+                        "next": null
+                  }
+            },
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-29': {
+    id: 'll-queue-prob-29',
+    title: "Largest Rectangle in Histogram (Monotonic Stack)",
+    difficulty: 'hard',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '20–25 min',
+    functionName: 'largest_rectangle_area',
+    functionSignature: "largest_rectangle_area(heights: list[int]) -> int",
+    starterCode: `def largest_rectangle_area(heights):
+    """Find the area of the largest rectangle in histogram heights in O(n) time using a stack."""
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the maximal rectangular area bounding contiguous histogram columns in strict linear time.",
+    taskDescription: "Implement `largest_rectangle_area(heights)`: find the area of the largest rectangle that can be formed within the given histogram bar heights. Must run in O(n) time using a monotonic increasing stack.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Runs in linear O(n) time and O(n) space.",
+      "Heights are non-negative integers."
+],
+    hints: {
+      "small": "Maintain a stack of bar indices in strictly increasing height order.",
+      "strong": "When a shorter bar arrives, pop from the stack and compute area with height = popped_height and width = (i - stack[-1] - 1).",
+      "concept": "Monotonic stack expansion computes maximal spanning intervals for all elements simultaneously."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Monotonic stack for maximal rectangular area"
+      }
+],
+    testCases: [
+      {
+            "id": "classic_histogram",
+            "label": "Classic Histogram",
+            "input": {
+                  "heights": [
+                        2,
+                        1,
+                        5,
+                        6,
+                        2,
+                        3
+                  ]
+            },
+            "expectedOutput": 10,
+            "hidden": false
+      },
+      {
+            "id": "two_bars",
+            "label": "Two Equal Bars",
+            "input": {
+                  "heights": [
+                        2,
+                        4
+                  ]
+            },
+            "expectedOutput": 4,
+            "hidden": false
+      },
+      {
+            "id": "single_bar",
+            "label": "Single Bar",
+            "input": {
+                  "heights": [
+                        7
+                  ]
+            },
+            "expectedOutput": 7,
+            "hidden": false
+      },
+      {
+            "id": "all_equal_bars",
+            "label": "Uniform Heights",
+            "input": {
+                  "heights": [
+                        3,
+                        3,
+                        3,
+                        3
+                  ]
+            },
+            "expectedOutput": 12,
+            "hidden": true
+      },
+      {
+            "id": "empty_histogram",
+            "label": "Empty Histogram",
+            "input": {
+                  "heights": []
+            },
+            "expectedOutput": 0,
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'll-queue-prob-30': {
+    id: 'll-queue-prob-30',
+    title: "Sliding Window Maximum with Monotonic Deque",
+    difficulty: 'hard',
+    topic: "Linked Lists / Stacks / Queues",
+    estimatedTime: '20–25 min',
+    functionName: 'sliding_window_max_queue',
+    functionSignature: "sliding_window_max_queue(nums: list[int], k: int) -> list[int]",
+    starterCode: `def sliding_window_max_queue(nums, k):
+    """Find the maximum value in each sliding window of size k in array nums in O(n) time
+    using a monotonic double-ended queue."""
+    # Your implementation here
+    pass
+`,
+    mission: "Track sliding window maximum values in strict O(n) linear time using a monotonic double-ended queue (deque).",
+    taskDescription: "Implement `sliding_window_max_queue(nums, k)`: compute the maximum element in every continuous window of length `k` as it slides across `nums`. Must achieve O(n) overall runtime using a monotonic deque.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      "Libraries are allowed; Pure Python implementation earns +10 Bonus XP!",
+      "Must achieve strict O(n) runtime using collections.deque.",
+      "1 <= k <= len(nums)."
+],
+    hints: {
+      "small": "Store indices in a deque maintaining strictly decreasing values.",
+      "strong": "Pop indices from right of deque while nums[deq[-1]] < nums[i]; popleft index if it falls outside the window (i - k + 1). deq[0] is the window maximum.",
+      "concept": "Monotonic deques maintain optimal extrema over sliding windows in amortized O(1) time per step."
+},
+    conceptConnections: [
+      {
+            "title": "DSA Coding",
+            "route": "/docs/interview-prep/dsa-coding",
+            "description": "Monotonic deque for sliding window maximum"
+      }
+],
+    testCases: [
+      {
+            "id": "standard_window_k3",
+            "label": "Standard Array Window 3",
+            "input": {
+                  "nums": [
+                        1,
+                        3,
+                        -1,
+                        -3,
+                        5,
+                        3,
+                        6,
+                        7
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": [
+                  3,
+                  3,
+                  5,
+                  5,
+                  6,
+                  7
+            ],
+            "hidden": false
+      },
+      {
+            "id": "window_k1",
+            "label": "Window Size 1",
+            "input": {
+                  "nums": [
+                        10,
+                        20,
+                        30
+                  ],
+                  "k": 1
+            },
+            "expectedOutput": [
+                  10,
+                  20,
+                  30
+            ],
+            "hidden": false
+      },
+      {
+            "id": "monotonically_decreasing",
+            "label": "Decreasing Array",
+            "input": {
+                  "nums": [
+                        9,
+                        8,
+                        7,
+                        6,
+                        5
+                  ],
+                  "k": 3
+            },
+            "expectedOutput": [
+                  9,
+                  8,
+                  7
+            ],
+            "hidden": false
+      },
+      {
+            "id": "single_element",
+            "label": "Single Element",
+            "input": {
+                  "nums": [
+                        42
+                  ],
+                  "k": 1
+            },
+            "expectedOutput": [
+                  42
+            ],
+            "hidden": true
+      }
+],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

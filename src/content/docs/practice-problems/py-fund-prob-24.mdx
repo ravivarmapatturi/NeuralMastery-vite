@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #524. Python & Programming Fundamentals Module 5: Problem 24"
 description: "Master #524. Python & Programming Fundamentals Module 5: Problem 24 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "hard"
@@ -7,17 +6,38 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #524. Python & Programming Fundamentals Module 5: Problem 24
 
-**Track**: Python & Programming Fundamentals | **Rank**: #524 of 1072 | **Points**: 90 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #524 of 1072 | **Points**
 
 ## Overview
 
-Implement `#524. Python & Programming Fundamentals Module 5: Problem 24` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Track non-parametric sliding window percentile statistics over streaming latency and telemetry metrics.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `stream_sliding_percentile(nums, window_size, percentile)`: compute the percentile over each sliding window of length `window_size` in `nums`. Use the nearest-rank method: index `max(0, ceil(percentile * window_size) - 1)` in the sorted window. Round output values to 4 decimal places. Return `[]` if `window_size <= 0` or `len(nums) < window_size`.
 
 <PracticePlayground problemId="py-fund-prob-24" />
+
+<Solution>
+
+```python
+import math
+
+def stream_sliding_percentile(nums, window_size, percentile):
+    if window_size <= 0 or len(nums) < window_size:
+        return []
+    res = []
+    rank_idx = max(0, math.ceil(percentile * window_size) - 1)
+    for i in range(len(nums) - window_size + 1):
+        window = sorted(nums[i:i + window_size])
+        res.append(round(float(window[rank_idx]), 4))
+    return res
+```
+
+Nearest-rank indexing retrieves robust distribution quantiles across streaming intervals.
+
+</Solution>

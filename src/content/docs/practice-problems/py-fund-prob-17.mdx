@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #517. Python & Programming Fundamentals Module 4: Problem 17"
 description: "Master #517. Python & Programming Fundamentals Module 4: Problem 17 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "medium"
@@ -7,17 +6,48 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #517. Python & Programming Fundamentals Module 4: Problem 17
 
-**Track**: Python & Programming Fundamentals | **Rank**: #517 of 1072 | **Points**: 60 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #517 of 1072 | **Points**
 
 ## Overview
 
-Implement `#517. Python & Programming Fundamentals Module 4: Problem 17` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Evaluate compound boolean filter expressions against dictionary records for database predicate pushdown.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `evaluate_boolean_query(record, query)`: test `record` against `query` supporting `"all_of"`, `"any_of"`, and `"none_of"` clauses. Conditions specify `{"field": ..., "op": "eq"|"gt"|"lt"|"in", "val": ...}`. Return `True` if all specified clauses are satisfied, and `False` otherwise.
 
 <PracticePlayground problemId="py-fund-prob-17" />
+
+<Solution>
+
+```python
+def evaluate_boolean_query(record, query):
+    def check_cond(c):
+        f = c.get('field')
+        op = c.get('op')
+        target = c.get('val')
+        if f not in record:
+            return False
+        val = record[f]
+        if op == 'eq': return val == target
+        if op == 'gt': return val > target
+        if op == 'lt': return val < target
+        if op == 'in': return val in target
+        return False
+
+    if 'all_of' in query and not all(check_cond(c) for c in query['all_of']):
+        return False
+    if 'any_of' in query and not any(check_cond(c) for c in query['any_of']):
+        return False
+    if 'none_of' in query and any(check_cond(c) for c in query['none_of']):
+        return False
+    return True
+```
+
+Composable condition predicates evaluate hierarchical boolean queries in a single inspection pass.
+
+</Solution>

@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #505. Python & Programming Fundamentals Module 1: Problem 5"
 description: "Master #505. Python & Programming Fundamentals Module 1: Problem 5 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,33 @@ topic: "Python & Programming Fundamentals"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #505. Python & Programming Fundamentals Module 1: Problem 5
 
-**Track**: Python & Programming Fundamentals | **Rank**: #505 of 1072 | **Points**: 40 XP
+**Track**: Python & Programming Fundamentals | **Rank**: #505 of 1072 | **Points**
 
 ## Overview
 
-Implement `#505. Python & Programming Fundamentals Module 1: Problem 5` to advance your mastery in **Python & Programming Fundamentals**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Compute token length frequency distributions for text corpus profiling.
 
 ## Task
 
-Implement the function `python_and_programming_fundamentals_module_1_problem_5`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `word_length_histogram(words)`: count the frequency of each word length across list `words`. Return a dictionary mapping integer lengths to occurrence counts, with keys sorted in ascending order. Return `{}` for empty input.
 
 <PracticePlayground problemId="py-fund-prob-5" />
+
+<Solution>
+
+```python
+def word_length_histogram(words):
+    hist = {}
+    for w in words:
+        length = len(w)
+        hist[length] = hist.get(length, 0) + 1
+    return dict(sorted(hist.items()))
+```
+
+Counting lengths into a dictionary and sorting items returns a canonical length frequency table.
+
+</Solution>

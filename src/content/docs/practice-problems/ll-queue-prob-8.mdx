@@ -1,5 +1,4 @@
 ---
-placeholder: true
 title: "Practice: #568. Linked Lists / Stacks / Queues Module 2: Problem 8"
 description: "Master #568. Linked Lists / Stacks / Queues Module 2: Problem 8 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
 difficulty: "easy"
@@ -7,17 +6,35 @@ topic: "Linked Lists / Stacks / Queues"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
+import { Solution } from '../../../components/content/ExpandableDepth';
 
 # #568. Linked Lists / Stacks / Queues Module 2: Problem 8
 
-**Track**: Linked Lists / Stacks / Queues | **Rank**: #568 of 1072 | **Points**: 40 XP
+**Track**: Linked Lists / Stacks / Queues | **Rank**: #568 of 1072 | **Points**
 
 ## Overview
 
-Implement `#568. Linked Lists / Stacks / Queues Module 2: Problem 8` to advance your mastery in **Linked Lists / Stacks / Queues**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Deduplicate adjacent elements in sorted singly linked lists in O(1) auxiliary memory.
 
 ## Task
 
-Implement the function `linked_lists___stacks___queues_module_2_problem_8`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `delete_duplicates_sorted(head)`: delete duplicate values from a sorted singly linked list so that each element appears exactly once. Return the list head.
 
 <PracticePlayground problemId="ll-queue-prob-8" />
+
+<Solution>
+
+```python
+def delete_duplicates_sorted(head):
+    curr = head
+    while curr and curr.get('next'):
+        if curr['val'] == curr['next']['val']:
+            curr['next'] = curr['next']['next']
+        else:
+            curr = curr['next']
+    return head
+```
+
+Skipping redundant adjacent nodes in-place retains distinct elements in a single linear sweep.
+
+</Solution>

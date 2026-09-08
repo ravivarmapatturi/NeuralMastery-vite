@@ -9288,7 +9288,7 @@
       "description": "Master #570. Linked Lists / Stacks / Queues Module 2: Problem 10 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-11": {
       "slug": "practice-problems/ll-queue-prob-11",
@@ -9358,7 +9358,7 @@
       "description": "Master #577. Linked Lists / Stacks / Queues Module 4: Problem 17 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-18": {
       "slug": "practice-problems/ll-queue-prob-18",
@@ -9368,7 +9368,7 @@
       "description": "Master #578. Linked Lists / Stacks / Queues Module 4: Problem 18 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-19": {
       "slug": "practice-problems/ll-queue-prob-19",
@@ -9378,7 +9378,7 @@
       "description": "Master #579. Linked Lists / Stacks / Queues Module 4: Problem 19 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-2": {
       "slug": "practice-problems/ll-queue-prob-2",
@@ -9398,7 +9398,7 @@
       "description": "Master #580. Linked Lists / Stacks / Queues Module 4: Problem 20 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-21": {
       "slug": "practice-problems/ll-queue-prob-21",
@@ -9408,7 +9408,7 @@
       "description": "Master #581. Linked Lists / Stacks / Queues Module 5: Problem 21 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-22": {
       "slug": "practice-problems/ll-queue-prob-22",
@@ -9418,7 +9418,7 @@
       "description": "Master #582. Linked Lists / Stacks / Queues Module 5: Problem 22 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-23": {
       "slug": "practice-problems/ll-queue-prob-23",
@@ -9468,7 +9468,7 @@
       "description": "Master #587. Linked Lists / Stacks / Queues Module 6: Problem 27 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-28": {
       "slug": "practice-problems/ll-queue-prob-28",
@@ -9478,7 +9478,7 @@
       "description": "Master #588. Linked Lists / Stacks / Queues Module 6: Problem 28 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-29": {
       "slug": "practice-problems/ll-queue-prob-29",
@@ -9488,7 +9488,7 @@
       "description": "Master #589. Linked Lists / Stacks / Queues Module 6: Problem 29 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-3": {
       "slug": "practice-problems/ll-queue-prob-3",
@@ -9508,7 +9508,7 @@
       "description": "Master #590. Linked Lists / Stacks / Queues Module 6: Problem 30 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-4": {
       "slug": "practice-problems/ll-queue-prob-4",
@@ -9538,7 +9538,7 @@
       "description": "Master #566. Linked Lists / Stacks / Queues Module 2: Problem 6 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-7": {
       "slug": "practice-problems/ll-queue-prob-7",
@@ -9548,7 +9548,7 @@
       "description": "Master #567. Linked Lists / Stacks / Queues Module 2: Problem 7 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-8": {
       "slug": "practice-problems/ll-queue-prob-8",
@@ -9558,7 +9558,7 @@
       "description": "Master #568. Linked Lists / Stacks / Queues Module 2: Problem 8 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ll-queue-prob-9": {
       "slug": "practice-problems/ll-queue-prob-9",
@@ -9568,7 +9568,7 @@
       "description": "Master #569. Linked Lists / Stacks / Queues Module 2: Problem 9 in the Linked Lists / Stacks / Queues track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Linked Lists / Stacks / Queues",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-app-prob-1": {
       "slug": "practice-problems/llm-app-prob-1",
@@ -15228,7 +15228,7 @@
       "description": "Master #501. Python & Programming Fundamentals Module 1: Problem 1 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-10": {
       "slug": "practice-problems/py-fund-prob-10",
@@ -15238,7 +15238,7 @@
       "description": "Master #510. Python & Programming Fundamentals Module 2: Problem 10 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-11": {
       "slug": "practice-problems/py-fund-prob-11",
@@ -15248,7 +15248,7 @@
       "description": "Master #511. Python & Programming Fundamentals Module 3: Problem 11 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-12": {
       "slug": "practice-problems/py-fund-prob-12",
@@ -15258,7 +15258,7 @@
       "description": "Master #512. Python & Programming Fundamentals Module 3: Problem 12 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-13": {
       "slug": "practice-problems/py-fund-prob-13",
@@ -15268,7 +15268,7 @@
       "description": "Master #513. Python & Programming Fundamentals Module 3: Problem 13 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-14": {
       "slug": "practice-problems/py-fund-prob-14",
@@ -15278,7 +15278,7 @@
       "description": "Master #514. Python & Programming Fundamentals Module 3: Problem 14 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-15": {
       "slug": "practice-problems/py-fund-prob-15",
@@ -15288,7 +15288,7 @@
       "description": "Master #515. Python & Programming Fundamentals Module 3: Problem 15 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-16": {
       "slug": "practice-problems/py-fund-prob-16",
@@ -15298,7 +15298,7 @@
       "description": "Master #516. Python & Programming Fundamentals Module 4: Problem 16 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-17": {
       "slug": "practice-problems/py-fund-prob-17",
@@ -15308,7 +15308,7 @@
       "description": "Master #517. Python & Programming Fundamentals Module 4: Problem 17 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-18": {
       "slug": "practice-problems/py-fund-prob-18",
@@ -15318,7 +15318,7 @@
       "description": "Master #518. Python & Programming Fundamentals Module 4: Problem 18 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-19": {
       "slug": "practice-problems/py-fund-prob-19",
@@ -15328,7 +15328,7 @@
       "description": "Master #519. Python & Programming Fundamentals Module 4: Problem 19 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-2": {
       "slug": "practice-problems/py-fund-prob-2",
@@ -15338,7 +15338,7 @@
       "description": "Master #502. Python & Programming Fundamentals Module 1: Problem 2 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-20": {
       "slug": "practice-problems/py-fund-prob-20",
@@ -15348,7 +15348,7 @@
       "description": "Master #520. Python & Programming Fundamentals Module 4: Problem 20 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-21": {
       "slug": "practice-problems/py-fund-prob-21",
@@ -15358,7 +15358,7 @@
       "description": "Master #521. Python & Programming Fundamentals Module 5: Problem 21 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-22": {
       "slug": "practice-problems/py-fund-prob-22",
@@ -15368,7 +15368,7 @@
       "description": "Master #522. Python & Programming Fundamentals Module 5: Problem 22 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-23": {
       "slug": "practice-problems/py-fund-prob-23",
@@ -15378,7 +15378,7 @@
       "description": "Master #523. Python & Programming Fundamentals Module 5: Problem 23 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-24": {
       "slug": "practice-problems/py-fund-prob-24",
@@ -15388,7 +15388,7 @@
       "description": "Master #524. Python & Programming Fundamentals Module 5: Problem 24 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-25": {
       "slug": "practice-problems/py-fund-prob-25",
@@ -15398,7 +15398,7 @@
       "description": "Master #525. Python & Programming Fundamentals Module 5: Problem 25 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-26": {
       "slug": "practice-problems/py-fund-prob-26",
@@ -15408,7 +15408,7 @@
       "description": "Master #526. Python & Programming Fundamentals Module 6: Problem 26 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-27": {
       "slug": "practice-problems/py-fund-prob-27",
@@ -15418,7 +15418,7 @@
       "description": "Master #527. Python & Programming Fundamentals Module 6: Problem 27 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-28": {
       "slug": "practice-problems/py-fund-prob-28",
@@ -15428,7 +15428,7 @@
       "description": "Master #528. Python & Programming Fundamentals Module 6: Problem 28 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-29": {
       "slug": "practice-problems/py-fund-prob-29",
@@ -15438,7 +15438,7 @@
       "description": "Master #529. Python & Programming Fundamentals Module 6: Problem 29 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-3": {
       "slug": "practice-problems/py-fund-prob-3",
@@ -15448,7 +15448,7 @@
       "description": "Master #503. Python & Programming Fundamentals Module 1: Problem 3 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-30": {
       "slug": "practice-problems/py-fund-prob-30",
@@ -15458,7 +15458,7 @@
       "description": "Master #530. Python & Programming Fundamentals Module 6: Problem 30 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-4": {
       "slug": "practice-problems/py-fund-prob-4",
@@ -15468,7 +15468,7 @@
       "description": "Master #504. Python & Programming Fundamentals Module 1: Problem 4 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-5": {
       "slug": "practice-problems/py-fund-prob-5",
@@ -15478,7 +15478,7 @@
       "description": "Master #505. Python & Programming Fundamentals Module 1: Problem 5 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-6": {
       "slug": "practice-problems/py-fund-prob-6",
@@ -15488,7 +15488,7 @@
       "description": "Master #506. Python & Programming Fundamentals Module 2: Problem 6 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-7": {
       "slug": "practice-problems/py-fund-prob-7",
@@ -15498,7 +15498,7 @@
       "description": "Master #507. Python & Programming Fundamentals Module 2: Problem 7 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-8": {
       "slug": "practice-problems/py-fund-prob-8",
@@ -15508,7 +15508,7 @@
       "description": "Master #508. Python & Programming Fundamentals Module 2: Problem 8 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-fund-prob-9": {
       "slug": "practice-problems/py-fund-prob-9",
@@ -15518,7 +15518,7 @@
       "description": "Master #509. Python & Programming Fundamentals Module 2: Problem 9 in the Python & Programming Fundamentals track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "Python & Programming Fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/rag-fund-prob-1": {
       "slug": "practice-problems/rag-fund-prob-1",
