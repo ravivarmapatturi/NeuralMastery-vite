@@ -10779,6 +10779,2359 @@ def compute_bleu_1(reference, candidate):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'ds-algo-prob-1': {
+    id: 'ds-algo-prob-1',
+    title: 'Reverse Linked List',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'reverse_list',
+    functionSignature: 'reverse_list(head: dict | None) -> dict | None',
+    starterCode: `def reverse_list(head):
+    """head: a linked-list node as {'val', 'next'} (next is None at the
+    tail), or None for an empty list. Reverse the list and return the
+    new head."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Reverse Linked List with the classic three-pointer iterative technique -- the warmup every later list problem (palindrome check, k-group reversal, reorder list) builds on.',
+    taskDescription: "Implement `reverse_list(head)`: walk the list once, at each node save `next` before overwriting it to point backward at `prev`, then advance both `prev` and `cur`. Return `prev` once `cur` is None.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty list (head is None) reverses to None.',
+      'Must run in O(n) time and O(1) extra space (iterative, not recursion building a new list).',
+    ],
+    hints: {
+      small: 'At each node, before you move on, redirect its `next` pointer to point at the previous node instead of the next one.',
+      strong: 'prev = None; cur = head; while cur: nxt = cur["next"]; cur["next"] = prev; prev = cur; cur = nxt; return prev.',
+      concept: 'Three pointers (prev, cur, nxt) is the standard in-place linked-list reversal pattern -- save `next` before you destroy it by overwriting `cur["next"]`, or you lose the rest of the list.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The base in-place pointer-manipulation pattern for linked lists' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Five-Node List', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } } }, expectedOutput: { val: 5, next: { val: 4, next: { val: 3, next: { val: 2, next: { val: 1, next: null } } } } }, hidden: false },
+      { id: 'two-node', label: 'Two-Node List', input: { head: { val: 1, next: { val: 2, next: null } } }, expectedOutput: { val: 2, next: { val: 1, next: null } }, hidden: false },
+      { id: 'empty', label: 'Empty List', input: { head: null }, expectedOutput: null, hidden: true },
+      { id: 'single', label: 'Single Node', input: { head: { val: 7, next: null } }, expectedOutput: { val: 7, next: null }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-2': {
+    id: 'ds-algo-prob-2',
+    title: 'Binary Tree Level Order Traversal',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'level_order',
+    functionSignature: 'level_order(root: dict | None) -> list[list[int]]',
+    starterCode: `def level_order(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return a
+    list of lists, one per level from root to leaves, in left-to-right
+    order within each level."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Binary Tree Level Order Traversal with BFS -- the foundational breadth-first tree pattern every zigzag/right-side-view/connect-pointers variant reuses.',
+    taskDescription: "Implement `level_order(root)`: use a queue seeded with root. Repeatedly snapshot the current queue length (that count is exactly one level's worth of nodes), pop that many nodes into a level list while enqueueing their children, then append the level to the result.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree (root is None) returns an empty list.',
+      'Each inner list must preserve left-to-right order within its level.',
+    ],
+    hints: {
+      small: 'Use a queue. Before draining one level, record how many nodes are currently in the queue -- that is exactly the size of this level.',
+      strong: 'q = deque([root]); while q: level=[]; for _ in range(len(q)): node=q.popleft(); level.append(node["val"]); enqueue children; result.append(level).',
+      concept: 'Snapshotting `len(q)` before the inner loop is what separates level-by-level BFS from plain BFS -- without it you get one flat list, not grouped levels.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'BFS with explicit level-boundary tracking on tree-shaped data' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Classic 5-Node Tree', input: { root: { val: 3, left: { val: 9, left: null, right: null }, right: { val: 20, left: { val: 15, left: null, right: null }, right: { val: 7, left: null, right: null } } } }, expectedOutput: [[3], [9, 20], [15, 7]], hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: [], hidden: false },
+      { id: 'single', label: 'Single Node', input: { root: { val: 1, left: null, right: null } }, expectedOutput: [[1]], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-3': {
+    id: 'ds-algo-prob-3',
+    title: 'Number of Islands',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'num_islands',
+    functionSignature: 'num_islands(grid: list[list[str]]) -> int',
+    starterCode: `def num_islands(grid):
+    """grid: a 2D list of '1' (land) and '0' (water) strings. Return the
+    count of islands -- maximal groups of '1' cells connected up/down/
+    left/right."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Number of Islands with DFS -- the canonical grid connected-components problem underlying Flood Fill, Pacific Atlantic Water Flow, and Surrounded Regions.",
+    taskDescription: "Implement `num_islands(grid)`: scan every cell; whenever you find an unvisited '1', increment the island count and DFS outward marking every 4-directionally connected '1' cell as visited so it is never counted again.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Connectivity is 4-directional (up/down/left/right), not diagonal.',
+      'An all-water grid returns 0.',
+    ],
+    hints: {
+      small: 'Every time you find a "1" that has not been visited yet, that is the start of a brand-new island -- explore all its connected land before moving on.',
+      strong: 'for r,c in grid: if grid[r][c]=="1" and not visited[r][c]: count+=1; dfs(r,c) marking visited.',
+      concept: 'The DFS marks an entire connected component as visited in one call, so the outer double loop only ever triggers a new DFS at the very first cell of each undiscovered island -- that is what makes the count correct.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Grid DFS/BFS connected-components, the base pattern for flood-fill-style problems' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Two Islands', input: { grid: [["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]] }, expectedOutput: 3, hidden: false },
+      { id: 'mixed', label: 'Three Separate Islands', input: { grid: [["1","1","1"],["0","1","0"],["1","0","1"]] }, expectedOutput: 3, hidden: false },
+      { id: 'all-water', label: 'All Water', input: { grid: [["0"]] }, expectedOutput: 0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-4': {
+    id: 'ds-algo-prob-4',
+    title: 'Climbing Stairs',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'climb_stairs',
+    functionSignature: 'climb_stairs(n: int) -> int',
+    starterCode: `def climb_stairs(n):
+    """Return the number of distinct ways to reach stair n by taking 1
+    or 2 steps at a time."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Climbing Stairs, the simplest possible DP problem -- the answer is exactly Fibonacci(n+1), and it is the standard first example for the recurrence -> memo -> bottom-up -> O(1)-space progression.",
+    taskDescription: "Implement `climb_stairs(n)`: the number of ways to reach step n is the number of ways to reach step n-1 plus the number of ways to reach step n-2 (arriving via a 1-step or a 2-step). Roll two variables forward instead of building a full DP array.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'n >= 1.',
+      'Must run in O(n) time; O(1) space is achievable and preferred over a full DP array.',
+    ],
+    hints: {
+      small: 'The number of ways to reach step n is the ways to reach step n-1 plus the ways to reach step n-2 -- this is just Fibonacci in disguise.',
+      strong: 'a,b = 1,2; for _ in range(n-2): a,b = b,a+b; return b (with n<=2 returning n directly).',
+      concept: 'dp[n] = dp[n-1] + dp[n-2] is Kadane-style rolling DP: you never need more than the previous two values, so two variables replace an O(n) array.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The canonical rolling-variable 1-D DP pattern' },
+    ],
+    testCases: [
+      { id: 'two-steps', label: 'n = 2', input: { n: 2 }, expectedOutput: 2, hidden: false },
+      { id: 'three-steps', label: 'n = 3', input: { n: 3 }, expectedOutput: 3, hidden: false },
+      { id: 'five-steps', label: 'n = 5', input: { n: 5 }, expectedOutput: 8, hidden: false },
+      { id: 'one-step', label: 'n = 1 (Base Case)', input: { n: 1 }, expectedOutput: 1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-5': {
+    id: 'ds-algo-prob-5',
+    title: 'Valid Parentheses',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'is_valid',
+    functionSignature: 'is_valid(s: str) -> bool',
+    starterCode: `def is_valid(s):
+    """s: a string of the characters ()[]{}. Return True if every opener
+    is matched by the correct closer in valid nesting order."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Valid Parentheses, the canonical stack problem used verbatim in compilers, linters, and expression evaluators.',
+    taskDescription: "Implement `is_valid(s)`: push every opening bracket onto a stack. On a closing bracket, check the stack's top against a closer-to-opener map -- if it doesn't match (or the stack is empty), the string is invalid. Valid iff the stack is empty at the end.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty string is valid (returns True).',
+      'A closer with no matching opener on the stack makes the string invalid immediately.',
+    ],
+    hints: {
+      small: 'Openers get pushed. On a closer, the very top of the stack must be its matching opener -- otherwise the string is invalid.',
+      strong: 'mapping = {")":"(", "]":"[", "}":"{"}. For a closer c: if not stack or stack.pop() != mapping[c]: return False.',
+      concept: 'A stack naturally enforces last-opened-first-closed nesting order -- exactly the rule valid bracket strings must follow, which is why this problem is the canonical stack teaching example.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The stack-based matching pattern behind parser/compiler bracket validation' },
+    ],
+    testCases: [
+      { id: 'simple-valid', label: 'Simple Valid Pair', input: { s: '()' }, expectedOutput: true, hidden: false },
+      { id: 'multi-valid', label: 'Multiple Types Valid', input: { s: '()[]{}' }, expectedOutput: true, hidden: false },
+      { id: 'mismatched', label: 'Mismatched Closer', input: { s: '(]' }, expectedOutput: false, hidden: false },
+      { id: 'wrong-order', label: 'Wrong Nesting Order', input: { s: '([)]' }, expectedOutput: false, hidden: true },
+      { id: 'nested-valid', label: 'Properly Nested', input: { s: '{[]}' }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-6': {
+    id: 'ds-algo-prob-6',
+    title: 'Merge Two Sorted Lists',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'merge_two_lists',
+    functionSignature: 'merge_two_lists(list1: dict | None, list2: dict | None) -> dict | None',
+    starterCode: `def merge_two_lists(list1, list2):
+    """list1, list2: linked-list nodes as {'val', 'next'} (or None for
+    an empty list). Return the head of the merged, sorted list."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Merge Two Sorted Lists -- the merge step from Merge Sort, and the base case Merge K Sorted Lists reduces to.',
+    taskDescription: "Implement `merge_two_lists(list1, list2)`: use a dummy head node and a `cur` pointer. At each step, attach whichever of `list1`/`list2`'s front node has the smaller value, then advance that list and `cur`. When one list runs out, attach the remainder of the other.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Both inputs are already individually sorted ascending.',
+      'Either or both inputs may be None (empty list).',
+    ],
+    hints: {
+      small: 'Use a throwaway "dummy" head node so you never have to special-case attaching the very first node of the result.',
+      strong: 'dummy={"val":0,"next":None}; cur=dummy; while list1 and list2: attach smaller front, advance; cur["next"] = list1 or list2.',
+      concept: 'The dummy-head trick removes the need to track "is this the first node?" -- you always attach to `cur["next"]` and return `dummy["next"]` at the end.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The two-pointer merge step underlying merge sort and k-way list merging' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Interleaved Merge', input: { list1: { val: 1, next: { val: 2, next: { val: 4, next: null } } }, list2: { val: 1, next: { val: 3, next: { val: 4, next: null } } } }, expectedOutput: { val: 1, next: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 4, next: null } } } } } }, hidden: false },
+      { id: 'both-empty', label: 'Both Empty', input: { list1: null, list2: null }, expectedOutput: null, hidden: false },
+      { id: 'one-empty', label: 'One Empty', input: { list1: null, list2: { val: 0, next: null } }, expectedOutput: { val: 0, next: null }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-7': {
+    id: 'ds-algo-prob-7',
+    title: 'Count Nodes in Complete Binary Tree',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'count_nodes',
+    functionSignature: 'count_nodes(root: dict | None) -> int',
+    starterCode: `def count_nodes(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. The tree
+    is a complete binary tree. Return the total node count (0 for an
+    empty tree)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Count Nodes in a Complete Binary Tree -- tree recursion in its simplest form, with an efficient O(log^2 n) approach that exploits the completeness property.',
+    taskDescription: "Implement `count_nodes(root)`: measure the tree's left-edge depth and right-edge depth. If they're equal, the tree is perfect and has exactly 2^depth - 1 nodes -- return that directly. Otherwise recurse into both children and sum their counts plus 1 for the root.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree (root is None) has 0 nodes.',
+      'The input is always a valid complete binary tree.',
+    ],
+    hints: {
+      small: 'Follow the leftmost path and the rightmost path down from root and count their lengths -- if the two counts are equal, you already know exactly how many nodes are in this subtree without visiting the rest.',
+      strong: 'if left_depth == right_depth: return (1 << left_depth) - 1  # perfect subtree. Otherwise: return 1 + count_nodes(left) + count_nodes(right).',
+      concept: 'A plain O(n) traversal always works, but a complete tree guarantees that at least one child subtree of every node is perfect -- checking depths lets you skip counting that entire perfect half node-by-node.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Exploiting structural tree properties (completeness) to beat plain O(n) traversal' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Six-Node Complete Tree', input: { root: { val: 1, left: { val: 2, left: { val: 4, left: null, right: null }, right: { val: 5, left: null, right: null } }, right: { val: 3, left: { val: 6, left: null, right: null }, right: null } } }, expectedOutput: 6, hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: 0, hidden: false },
+      { id: 'single', label: 'Single Node', input: { root: { val: 1, left: null, right: null } }, expectedOutput: 1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-8': {
+    id: 'ds-algo-prob-8',
+    title: 'Flood Fill',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'flood_fill',
+    functionSignature: 'flood_fill(image: list[list[int]], sr: int, sc: int, color: int) -> list[list[int]]',
+    starterCode: `def flood_fill(image, sr, sc, color):
+    """image: a 2D list of ints. Starting from (sr, sc), recolor every
+    4-directionally connected cell sharing the starting color to
+    'color'. Return the modified image (do not mutate the input)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Flood Fill, the paint-bucket algorithm -- a direct DFS/BFS application on a 2D grid and a template for grid-traversal problems generally.',
+    taskDescription: "Implement `flood_fill(image, sr, sc, color)`: record the starting cell's original color, then DFS outward from (sr, sc), recoloring every cell that still matches the original color. If the starting color already equals the target color, return the image unchanged (to avoid infinite recursion).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must not mutate the caller\'s input list -- work on (or return) a copy.',
+      'If orig color == target color, return the image unchanged without recursing.',
+    ],
+    hints: {
+      small: 'Before recoloring anything, check whether the starting cell already has the target color -- if so you are already done, and skipping this check causes infinite recursion.',
+      strong: 'orig = image[sr][sc]; if orig == color: return image. Otherwise DFS from (sr,sc), recoloring any neighboring cell that still equals orig.',
+      concept: 'This is DFS connected-components with a side effect (mutation) instead of a count -- the same visited-boundary logic as Number of Islands, just writing a new value instead of incrementing a counter.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'DFS-with-mutation on a grid, the flood-fill/paint-bucket pattern' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Corner Fill', input: { image: [[1,1,1],[1,1,0],[1,0,1]], sr: 1, sc: 1, color: 2 }, expectedOutput: [[2,2,2],[2,2,0],[2,0,1]], hidden: false },
+      { id: 'same-color', label: 'Start Color Equals Target', input: { image: [[0,0,0],[0,0,0]], sr: 0, sc: 0, color: 0 }, expectedOutput: [[0,0,0],[0,0,0]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-9': {
+    id: 'ds-algo-prob-9',
+    title: 'House Robber',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'rob',
+    functionSignature: 'rob(nums: list[int]) -> int',
+    starterCode: `def rob(nums):
+    """nums: list of non-negative ints (money in each house). Return the
+    max sum collectible without robbing two adjacent houses."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement House Robber -- the classic 1-D DP problem with recurrence dp[i] = max(dp[i-1], dp[i-2] + nums[i]), reducible to O(1) space with two rolling variables.",
+    taskDescription: "Implement `rob(nums)`: at each house, decide whether skipping it (carry forward the best sum so far) or robbing it (best sum from two houses back, plus this house) is larger. Roll two variables (`prev2`, `prev1`) forward instead of a full DP array.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty list returns 0.',
+      'Must run in O(n) time and O(1) space.',
+    ],
+    hints: {
+      small: 'For each house, the best you can do is either skip it (keep the previous best) or rob it (best-from-two-houses-back plus this house\'s money).',
+      strong: 'prev2, prev1 = 0, 0; for n in nums: prev2, prev1 = prev1, max(prev1, prev2 + n); return prev1.',
+      concept: 'dp[i] = max(dp[i-1], dp[i-2] + nums[i]) only ever needs the two previous DP values, which is what lets the whole array collapse into two rolling variables.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The rolling-variable 1-D DP pattern applied to a non-adjacency constraint' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Skip-Then-Rob Pattern', input: { nums: [1, 2, 3, 1] }, expectedOutput: 4, hidden: false },
+      { id: 'alternate', label: 'Alternating Houses Optimal', input: { nums: [2, 7, 9, 3, 1] }, expectedOutput: 12, hidden: false },
+      { id: 'two-house', label: 'Two Houses', input: { nums: [2, 1] }, expectedOutput: 2, hidden: true },
+      { id: 'empty', label: 'Empty List', input: { nums: [] }, expectedOutput: 0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-10': {
+    id: 'ds-algo-prob-10',
+    title: 'Min Stack',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'min_stack_ops',
+    functionSignature: 'min_stack_ops(operations: list[list]) -> list',
+    starterCode: `def min_stack_ops(operations):
+    """operations: list of ['push', val] | ['pop'] | ['top'] | ['getMin'].
+    Simulate a MinStack; return a list with one entry per operation
+    (None for push/pop, the value for top/getMin)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Min Stack -- a stack augmented to return its current minimum in O(1), via the auxiliary min-stack pattern that generalizes to monotonic stacks and range-minimum queries.',
+    taskDescription: 'Implement `min_stack_ops(operations)` by simulating a MinStack with two internal stacks: the main stack, and a min-stack that only grows when a new value is <= its current top. Pop from the min-stack only when the value leaving the main stack equals its top.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'All four operations (push, pop, top, getMin) must run in O(1).',
+      'push and pop append None to the results list; top and getMin append their returned value.',
+    ],
+    hints: {
+      small: 'Keep a second stack alongside the main one that only ever holds the running minimum at each point in time.',
+      strong: 'On push(val): if not min_stack or val <= min_stack[-1]: min_stack.append(val). On pop(): if popped == min_stack[-1]: min_stack.pop().',
+      concept: 'Using `<=` (not `<`) when growing the min-stack is what makes popping a duplicate minimum correct -- it keeps one min-stack entry per occurrence of the current minimum value.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The auxiliary-stack pattern for O(1) running-aggregate queries' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Push, GetMin, Pop, Top, GetMin', input: { operations: [['push', -2], ['push', 0], ['push', -3], ['getMin'], ['pop'], ['top'], ['getMin']] }, expectedOutput: [null, null, null, -3, null, 0, -2], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-11': {
+    id: 'ds-algo-prob-11',
+    title: 'Linked List Cycle Detection',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'has_cycle',
+    functionSignature: 'has_cycle(vals: list[int], pos: int) -> bool',
+    starterCode: `def has_cycle(vals, pos):
+    """vals: node values to build a linked list from. pos: index the
+    tail's 'next' should point back to (-1 for no cycle). Build the
+    list, then return True if it has a cycle."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Linked List Cycle Detection using Floyd's tortoise-and-hare algorithm -- O(n) time, O(1) space, no extra visited set required.",
+    taskDescription: "Implement `has_cycle(vals, pos)`: build the linked list from `vals`, wiring the tail's `next` back to index `pos` if `pos != -1`. Then run two pointers, `slow` advancing one node per step and `fast` advancing two -- if they ever point to the same node, a cycle exists; if `fast` reaches the end, it does not.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'pos == -1 means no cycle -- the tail\'s next stays None.',
+      'An empty vals list has no cycle -- return False.',
+    ],
+    hints: {
+      small: 'Move one pointer twice as fast as the other -- if there is a loop, the faster pointer will eventually lap the slower one and land on the exact same node.',
+      strong: 'slow=fast=head; while fast and fast["next"]: slow=slow["next"]; fast=fast["next"]["next"]; if slow is fast: return True.',
+      concept: 'Floyd\'s algorithm needs no extra memory (unlike a visited-set approach) because a cycle guarantees the fast pointer will re-enter the loop and eventually coincide with the slow pointer -- pure pointer identity, no hashing required.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: "Floyd's two-pointer cycle detection, O(1)-space alternative to a visited set" },
+    ],
+    testCases: [
+      { id: 'has-cycle', label: 'Cycle Back to Index 1', input: { vals: [3, 2, 0, -4], pos: 1 }, expectedOutput: true, hidden: false },
+      { id: 'two-node-cycle', label: 'Two-Node Full Cycle', input: { vals: [1, 2], pos: 0 }, expectedOutput: true, hidden: false },
+      { id: 'no-cycle', label: 'No Cycle', input: { vals: [1], pos: -1 }, expectedOutput: false, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-12': {
+    id: 'ds-algo-prob-12',
+    title: 'Range Sum of BST',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'range_sum_bst',
+    functionSignature: 'range_sum_bst(root: dict | None, low: int, high: int) -> int',
+    starterCode: `def range_sum_bst(root, low, high):
+    """root: a BST node as {'val', 'left', 'right'}, or None. Return the
+    sum of all node values within the inclusive range [low, high]."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Range Sum of BST -- a range query that uses BST ordering to prune entire subtrees, far more efficient than a plain DFS visiting every node.',
+    taskDescription: "Implement `range_sum_bst(root, low, high)`: add the current node's value if it falls in [low, high]. Only recurse left if `root.val > low` (values further left could still be in range), and only recurse right if `root.val < high` -- otherwise that whole subtree is guaranteed out of range.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree (root is None) contributes 0.',
+      'The input is guaranteed to be a valid BST.',
+    ],
+    hints: {
+      small: 'Because it is a BST, if the current node\'s value is already below `low`, its entire left subtree must also be below `low` -- skip it entirely.',
+      strong: 'total = root["val"] if low <= root["val"] <= high else 0; recurse left only if root["val"] > low; recurse right only if root["val"] < high.',
+      concept: 'BST ordering turns an O(n) full-tree sum into a pruned traversal that skips whole subtrees guaranteed to be out of range -- the same pruning idea behind BST search and range-count queries.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'BST-ordering-aware pruning, more efficient than a full traversal' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Range [7, 15]', input: { root: { val: 10, left: { val: 5, left: { val: 3, left: null, right: null }, right: { val: 7, left: null, right: null } }, right: { val: 15, left: null, right: { val: 18, left: null, right: null } } }, low: 7, high: 15 }, expectedOutput: 32, hidden: false },
+      { id: 'deeper', label: 'Deeper Tree, Range [6, 10]', input: { root: { val: 10, left: { val: 5, left: { val: 3, left: { val: 1, left: null, right: null }, right: null }, right: { val: 7, left: null, right: null } }, right: { val: 15, left: { val: 13, left: null, right: null }, right: { val: 18, left: null, right: null } } }, low: 6, high: 10 }, expectedOutput: 17, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-13': {
+    id: 'ds-algo-prob-13',
+    title: 'BFS Shortest Path in Unweighted Graph',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'bfs_shortest_path',
+    functionSignature: 'bfs_shortest_path(graph: dict[str, list[str]], start: str, end: str) -> int',
+    starterCode: `def bfs_shortest_path(graph, start, end):
+    """graph: adjacency dict {node: [neighbors]}. Return the minimum
+    edge-count path length from start to end, or -1 if unreachable."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement BFS Shortest Path -- BFS is the correct minimum-edge-count algorithm for unweighted graphs, the pattern behind Word Ladder, Jump Game II, and Minimum Knight Moves.',
+    taskDescription: "Implement `bfs_shortest_path(graph, start, end)`: BFS from `start`, tracking distance. The first time you reach `end`, its distance is the shortest path (BFS explores all nodes at distance d before any at distance d+1, so the first arrival is guaranteed shortest).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'start == end returns 0 (zero edges needed).',
+      'An unreachable end returns -1.',
+    ],
+    hints: {
+      small: 'BFS visits nodes in order of increasing distance from the start -- the very first time you reach the target node is guaranteed to be via the shortest path.',
+      strong: 'q = deque([(start,0)]); visited={start}; while q: node,dist=q.popleft(); for nb in graph[node]: if nb==end: return dist+1; if nb not in visited: visit and enqueue (nb, dist+1).',
+      concept: 'Unlike DFS, BFS explores level-by-level, which is exactly why it -- not DFS -- gives the minimum edge count for unweighted graphs; DFS could stumble on a much longer path first.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'BFS as the correct shortest-path algorithm for unweighted graphs' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three-Hop Path', input: { graph: { A: ['B', 'C'], B: ['A', 'D'], C: ['A', 'D'], D: ['B', 'C', 'E'], E: ['D'] }, start: 'A', end: 'E' }, expectedOutput: 3, hidden: false },
+      { id: 'same-node', label: 'Start Equals End', input: { graph: { A: ['B', 'C'], B: ['A', 'D'], C: ['A', 'D'], D: ['B', 'C', 'E'], E: ['D'] }, start: 'A', end: 'A' }, expectedOutput: 0, hidden: false },
+      { id: 'unreachable', label: 'Unreachable Node', input: { graph: { A: ['B'], B: ['A'], C: [] }, start: 'A', end: 'C' }, expectedOutput: -1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-14': {
+    id: 'ds-algo-prob-14',
+    title: "Maximum Subarray (Kadane's Algorithm)",
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'max_subarray',
+    functionSignature: 'max_subarray(nums: list[int]) -> int',
+    starterCode: `def max_subarray(nums):
+    """nums: non-empty list of ints. Return the maximum sum of any
+    contiguous subarray."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Maximum Subarray with Kadane's algorithm -- the O(n), O(1)-space 'extend or restart' DP pattern that Maximum Product Subarray and circular-subarray variants build on.",
+    taskDescription: "Implement `max_subarray(nums)`: track a running sum `cur` that, at each element, either extends the previous subarray (`cur + n`) or restarts fresh at the current element (`n`), whichever is larger. Track the best `cur` seen at any point as the answer.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'nums has at least one element.',
+      'Must run in O(n) time and O(1) space.',
+    ],
+    hints: {
+      small: 'At each element, decide: is it better to keep extending the subarray I already have, or to just start a brand-new subarray right here?',
+      strong: 'cur = max_sum = nums[0]; for n in nums[1:]: cur = max(n, cur+n); max_sum = max(max_sum, cur); return max_sum.',
+      concept: "Once `cur` (the running sum) goes negative, no future subarray benefits from including it -- that's exactly why `max(n, cur+n)` \"restarts\" at the current element instead of always extending.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: "Kadane's algorithm, the extend-or-restart rolling-sum DP pattern" },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Mixed Positive/Negative', input: { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] }, expectedOutput: 6, hidden: false },
+      { id: 'single', label: 'Single Element', input: { nums: [1] }, expectedOutput: 1, hidden: false },
+      { id: 'all-positive', label: 'All Positive', input: { nums: [5, 4, -1, 7, 8] }, expectedOutput: 23, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-15': {
+    id: 'ds-algo-prob-15',
+    title: 'Implement Queue using Stacks',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'queue_using_stacks',
+    functionSignature: 'queue_using_stacks(operations: list[list]) -> list',
+    starterCode: `def queue_using_stacks(operations):
+    """operations: list of ['push', x] | ['pop'] | ['peek'] | ['empty'].
+    Simulate a FIFO queue using two stacks; return a list with one
+    entry per operation (None for push, the value/bool otherwise)."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Queue using Stacks -- the two-stack FIFO trick with amortized O(1) per operation, testing the 'lazy transfer' pattern and amortized-complexity reasoning.",
+    taskDescription: 'Implement `queue_using_stacks(operations)` using an `in_stack` (receives pushes) and an `out_stack` (serves pops/peeks). Only transfer everything from `in_stack` to `out_stack` when `out_stack` is empty -- this lazy transfer reverses order exactly once per element, giving FIFO behavior from two LIFO stacks.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'push appends None to the results list; pop/peek/empty append their return value.',
+      "Only transfer in_stack -> out_stack when out_stack is empty (the lazy-transfer invariant).",
+    ],
+    hints: {
+      small: 'Pushes go onto one stack. When you need to pop or peek, if your "output" stack is empty, dump everything from the "input" stack onto it first -- that reverses the order back to FIFO.',
+      strong: 'def _transfer(): if not out_stack: while in_stack: out_stack.append(in_stack.pop()). pop() and peek() call _transfer() first, then act on out_stack.',
+      concept: 'Each element crosses from in_stack to out_stack exactly once over its lifetime, so even though a single transfer can move many elements, the amortized cost per operation stays O(1).',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The lazy-transfer two-stack pattern and amortized O(1) analysis' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Push, Peek, Pop, Empty', input: { operations: [['push', 1], ['push', 2], ['peek'], ['pop'], ['empty']] }, expectedOutput: [null, null, 1, 1, false], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-16': {
+    id: 'ds-algo-prob-16',
+    title: 'Remove Nth Node From End of List',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'remove_nth_from_end',
+    functionSignature: 'remove_nth_from_end(head: dict | None, n: int) -> dict | None',
+    starterCode: `def remove_nth_from_end(head, n):
+    """head: a linked-list node as {'val', 'next'}. Remove the n-th node
+    counting from the end of the list (1-indexed) and return the new
+    head."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Remove Nth Node From End of List using the two-pointer gap trick -- a single-pass technique applicable to any "find the k-th node from the end" problem.',
+    taskDescription: "Implement `remove_nth_from_end(head, n)`: use a dummy head, then advance a `fast` pointer n+1 steps ahead of `slow`. Move both forward together until `fast` reaches the end -- `slow` now sits just before the node to remove, so unlink it via `slow['next'] = slow['next']['next']`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'n is always valid (1 <= n <= list length).',
+      'Must run in a single pass (O(L) time, O(1) space) -- do not compute the length first in a separate pass.',
+    ],
+    hints: {
+      small: 'Keep a gap of exactly n nodes between two pointers -- when the leading one runs off the end, the trailing one is right before the node you need to remove.',
+      strong: 'dummy={"val":0,"next":head}; fast=slow=dummy; advance fast n+1 times; while fast: advance both; slow["next"]=slow["next"]["next"].',
+      concept: "Using a dummy head node handles the edge case of removing the actual first node uniformly, with no special-casing -- the same trick used in Merge Two Sorted Lists.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The fixed-gap two-pointer technique for single-pass from-the-end lookups' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Remove Middle-Ish Node', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } }, n: 2 }, expectedOutput: { val: 1, next: { val: 2, next: { val: 3, next: { val: 5, next: null } } } }, hidden: false },
+      { id: 'single', label: 'Remove Only Node', input: { head: { val: 1, next: null }, n: 1 }, expectedOutput: null, hidden: false },
+      { id: 'remove-head', label: 'Remove Head of Two', input: { head: { val: 1, next: { val: 2, next: null } }, n: 2 }, expectedOutput: { val: 2, next: null }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-17': {
+    id: 'ds-algo-prob-17',
+    title: 'Symmetric Tree',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'is_symmetric',
+    functionSignature: 'is_symmetric(root: dict | None) -> bool',
+    starterCode: `def is_symmetric(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return
+    True if the tree is a mirror image of itself."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Symmetric Tree -- checking mirror-image structure via paired recursion, the base pattern for Subtree of Another Tree and Same Tree.',
+    taskDescription: "Implement `is_symmetric(root)` using a helper `check(l, r)` that verifies `l` and `r` are mirrors: both None is symmetric, exactly one None is not, otherwise values must match and `check(l.left, r.right)` and `check(l.right, r.left)` must both hold.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree (root is None) is symmetric -- return True.',
+      "Two subtrees are mirrors only if the outer pair (l.left vs r.right) AND the inner pair (l.right vs r.left) both mirror.",
+    ],
+    hints: {
+      small: 'A tree is symmetric if its left and right subtrees are mirror images of each other -- write a helper that checks whether two given subtrees mirror one another.',
+      strong: 'check(l,r): both None -> True; exactly one None -> False; else l.val==r.val and check(l.left,r.right) and check(l.right,r.left).',
+      concept: "The crossed recursive calls (l.left vs r.right, l.right vs r.left) are what encode \"mirror\" rather than \"identical\" -- a plain same-tree check would compare l.left to r.left instead.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Paired/crossed recursion for structural tree comparison' },
+    ],
+    testCases: [
+      { id: 'symmetric', label: 'Symmetric Tree', input: { root: { val: 1, left: { val: 2, left: { val: 3, left: null, right: null }, right: { val: 4, left: null, right: null } }, right: { val: 2, left: { val: 4, left: null, right: null }, right: { val: 3, left: null, right: null } } } }, expectedOutput: true, hidden: false },
+      { id: 'asymmetric', label: 'Asymmetric Tree', input: { root: { val: 1, left: { val: 2, left: null, right: { val: 3, left: null, right: null } }, right: { val: 2, left: null, right: { val: 3, left: null, right: null } } } }, expectedOutput: false, hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-18': {
+    id: 'ds-algo-prob-18',
+    title: 'Clone Graph',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'clone_graph',
+    functionSignature: 'clone_graph(adj: dict[int, list[int]], start: int) -> dict[int, list[int]]',
+    starterCode: `def clone_graph(adj, start):
+    """adj: adjacency dict {node_id: [neighbor_ids]}. Return a new
+    adjacency dict that is a deep clone of the graph reachable from
+    start."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Clone Graph via BFS -- the adjacency-list representation makes both DFS and BFS solutions straightforward, and this is the base pattern for any "duplicate this connected structure" problem.',
+    taskDescription: 'Implement `clone_graph(adj, start)`: BFS from `start`, and the first time a node is discovered add it to the `cloned` dict with an empty neighbor list before enqueueing it. For every node popped from the queue, append each of its original neighbors into the cloned adjacency list.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty adjacency dict returns an empty dict.',
+      'Only nodes reachable from start need to appear in the result.',
+    ],
+    hints: {
+      small: 'Track which nodes you have already discovered in the "cloned" dict itself -- if a neighbor is not already a key there, it is new and needs to be enqueued.',
+      strong: 'cloned={start:[]}; q=deque([start]); while q: node=q.popleft(); for nbr in adj[node]: if nbr not in cloned: cloned[nbr]=[]; q.append(nbr); cloned[node].append(nbr).',
+      concept: 'Using the clone dict itself as the visited set avoids a separate visited structure -- a common space-saving trick whenever the output naturally doubles as a discovery record.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'BFS graph traversal that reconstructs structure while discovering it' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Four-Node Cycle', input: { adj: { '1': [2, 4], '2': [1, 3], '3': [2, 4], '4': [1, 3] }, start: 1 }, expectedOutput: { '1': [2, 4], '2': [1, 3], '4': [1, 3], '3': [2, 4] }, hidden: false },
+      { id: 'single-no-edges', label: 'Single Isolated Node', input: { adj: { '1': [] }, start: 1 }, expectedOutput: { '1': [] }, hidden: false },
+      { id: 'empty-graph', label: 'Empty Graph', input: { adj: {}, start: 1 }, expectedOutput: {}, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-19': {
+    id: 'ds-algo-prob-19',
+    title: 'Coin Change (Minimum Coins)',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'coin_change',
+    functionSignature: 'coin_change(coins: list[int], amount: int) -> int',
+    starterCode: `def coin_change(coins, amount):
+    """coins: list of available coin denominations. Return the minimum
+    number of coins needed to make exactly 'amount', or -1 if
+    impossible."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Coin Change (Minimum Coins) -- the canonical unbounded-knapsack DP problem, sharing the same recurrence shape as Climbing Stairs but with arbitrary step sizes.',
+    taskDescription: 'Implement `coin_change(coins, amount)` with a bottom-up DP array `dp` where `dp[i]` is the fewest coins to make value `i`. `dp[0] = 0`; for every `i` from 1 to amount, try every coin `c <= i` and take `dp[i] = min(dp[i], dp[i-c] + 1)`.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'amount == 0 returns 0 (zero coins needed).',
+      'Return -1 if amount cannot be formed exactly from the given coins.',
+    ],
+    hints: {
+      small: 'For each target amount from 1 upward, try adding each coin denomination on top of a smaller, already-solved amount, and keep whichever choice uses the fewest coins.',
+      strong: 'dp=[inf]*(amount+1); dp[0]=0; for i in range(1,amount+1): for c in coins: if c<=i: dp[i]=min(dp[i], dp[i-c]+1).',
+      concept: 'Initializing unreachable amounts to infinity lets `min()` naturally ignore them without special-casing -- if `dp[amount]` is still infinity at the end, no combination of coins reaches it.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Bottom-up unbounded-knapsack DP, reused by Coin Change II and Perfect Squares' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three Coin Types', input: { coins: [1, 2, 5], amount: 11 }, expectedOutput: 3, hidden: false },
+      { id: 'impossible', label: 'Impossible Amount', input: { coins: [2], amount: 3 }, expectedOutput: -1, hidden: false },
+      { id: 'zero', label: 'Zero Amount', input: { coins: [1], amount: 0 }, expectedOutput: 0, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-20': {
+    id: 'ds-algo-prob-20',
+    title: 'Implement Stack using Queues',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'stack_using_queues',
+    functionSignature: 'stack_using_queues(operations: list[list]) -> list',
+    starterCode: `def stack_using_queues(operations):
+    """operations: list of ['push', x] | ['pop'] | ['top'] | ['empty'].
+    Simulate a LIFO stack using only queue operations; return a list
+    with one entry per operation (None for push, the value/bool
+    otherwise)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Stack using Queues -- the inverse of Queue using Stacks. Making push expensive (O(n)) instead of pop/top is what makes a single queue behave like a stack.',
+    taskDescription: 'Implement `stack_using_queues(operations)`: maintain one queue. On every `push(x)`, append `x`, then rotate all the OLDER elements behind it (dequeue and re-enqueue each one) so the newest element ends up at the front. `pop`/`top` then just dequeue/peek the front in O(1).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'push appends None to the results list; pop/top/empty append their return value.',
+      'After each push, the most-recently-pushed element must be at the front of the queue.',
+    ],
+    hints: {
+      small: 'Right after adding a new element to the queue, rotate every element that was already there around to the back -- that puts the new element at the front, which is where a stack\'s "top" needs to be.',
+      strong: 'def push(x): q.append(x); for _ in range(len(q)-1): q.append(q.popleft()). pop/top then just operate on q[0].',
+      concept: 'This is the mirror trade-off of Queue using Stacks: there, push was O(1) and pop/peek amortized O(1) via lazy transfer; here, push is O(n) every time but pop/top become simple O(1) front operations.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Simulating one abstract data type with another by choosing which operation absorbs the cost' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Push, Top, Pop, Empty', input: { operations: [['push', 1], ['push', 2], ['top'], ['pop'], ['empty']] }, expectedOutput: [null, null, 2, 2, false], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-21': {
+    id: 'ds-algo-prob-21',
+    title: 'Palindrome Linked List',
+    difficulty: 'easy',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '10–15 min',
+    functionName: 'is_palindrome_list',
+    functionSignature: 'is_palindrome_list(head: dict | None) -> bool',
+    starterCode: `def is_palindrome_list(head):
+    """head: a linked-list node as {'val', 'next'}, or None. Return True
+    if the list of values reads the same forward and backward."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Palindrome Linked List -- combining traversal and reversal-style thinking. The straightforward O(n)-space version collects values into a list; the O(1)-space version finds the middle and reverses the second half.',
+    taskDescription: 'Implement `is_palindrome_list(head)`: walk the list collecting every value into a Python list, then compare that list to its own reverse.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty list is trivially a palindrome -- return True.',
+      'A single-node list is trivially a palindrome -- return True.',
+    ],
+    hints: {
+      small: 'The simplest correct approach: walk the whole list into a plain Python list, then just check whether that list equals its own reverse.',
+      strong: 'vals=[]; cur=head; while cur: vals.append(cur["val"]); cur=cur["next"]. return vals == vals[::-1].',
+      concept: 'This O(n)-space version is a fine starting point; the O(1)-space follow-up finds the middle with slow/fast pointers, reverses the second half in place, and compares halves without ever materializing a full list.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Linked-list traversal reduced to a simple sequence-equality check' },
+    ],
+    testCases: [
+      { id: 'palindrome', label: 'Even-Length Palindrome', input: { head: { val: 1, next: { val: 2, next: { val: 2, next: { val: 1, next: null } } } } }, expectedOutput: true, hidden: false },
+      { id: 'not-palindrome', label: 'Not a Palindrome', input: { head: { val: 1, next: { val: 2, next: null } } }, expectedOutput: false, hidden: false },
+      { id: 'single', label: 'Single Node', input: { head: { val: 1, next: null } }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-22': {
+    id: 'ds-algo-prob-22',
+    title: 'Lowest Common Ancestor of BST',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'lca_bst',
+    functionSignature: 'lca_bst(root: dict, p: int, q: int) -> int | None',
+    starterCode: `def lca_bst(root, p, q):
+    """root: a BST node as {'val', 'left', 'right'}. p, q: values of two
+    nodes known to exist in the tree. Return the value of their lowest
+    common ancestor."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Lowest Common Ancestor of a BST, exploiting BST ordering to find the LCA with no extra memory and O(h) time -- the general (non-BST) version needs a different, more expensive approach.',
+    taskDescription: 'Implement `lca_bst(root, p, q)`: starting at root, if both p and q are less than the current value, the LCA must be in the left subtree; if both are greater, it must be in the right subtree; otherwise (the values split around, or equal, the current node) the current node IS the LCA.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Both p and q are guaranteed to exist in the tree.',
+      'A node can be its own ancestor (if p equals the current node\'s value while searching for q, that node is the LCA).',
+    ],
+    hints: {
+      small: 'Use the BST property to decide which single direction to go -- you never need to search both subtrees.',
+      strong: 'while root: if p<root.val and q<root.val: go left. elif p>root.val and q>root.val: go right. else: return root.val.',
+      concept: "The moment p and q no longer both fall on the same side of the current node's value, that node is exactly where their paths diverge -- which is the definition of the lowest common ancestor.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'BST-ordering-guided descent, an O(h) alternative to general tree LCA algorithms' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'LCA of 2 and 8', input: { root: { val: 6, left: { val: 2, left: { val: 0, left: null, right: null }, right: { val: 4, left: { val: 3, left: null, right: null }, right: { val: 5, left: null, right: null } } }, right: { val: 8, left: { val: 7, left: null, right: null }, right: { val: 9, left: null, right: null } } }, p: 2, q: 8 }, expectedOutput: 6, hidden: false },
+      { id: 'ancestor-is-node', label: 'One Node is Ancestor of the Other', input: { root: { val: 6, left: { val: 2, left: { val: 0, left: null, right: null }, right: { val: 4, left: { val: 3, left: null, right: null }, right: { val: 5, left: null, right: null } } }, right: { val: 8, left: { val: 7, left: null, right: null }, right: { val: 9, left: null, right: null } } }, p: 2, q: 4 }, expectedOutput: 2, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-23': {
+    id: 'ds-algo-prob-23',
+    title: 'Number of Connected Components (Union-Find)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'count_components',
+    functionSignature: 'count_components(n: int, edges: list[list[int]]) -> int',
+    starterCode: `def count_components(n, edges):
+    """n: number of nodes, labeled 0..n-1. edges: list of [u, v] pairs
+    (undirected). Return the number of connected components."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Number of Connected Components using Union-Find -- the canonical disjoint-set data structure, introducing path compression for near-O(1) operations.',
+    taskDescription: 'Implement `count_components(n, edges)` with a `parent` array (each node starts as its own root). For every edge, `union` the two endpoints\' roots together. `find(x)` walks up to the root, compressing the path as it goes. The answer is the number of distinct roots after processing every edge.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'No edges at all means every node is its own component (answer = n).',
+      'Nodes are numbered 0 through n-1 inclusive.',
+    ],
+    hints: {
+      small: 'Start with every node as its own separate group. For every edge, merge the two groups its endpoints belong to. Count how many distinct groups remain at the end.',
+      strong: 'find(x) follows parent pointers to the root (with path compression). union(x,y) sets parent[find(x)] = find(y). Answer: len(set(find(i) for i in range(n))).',
+      concept: 'Path compression (parent[x] = parent[parent[x]]) flattens the tree as you search, so repeated find() calls get progressively cheaper -- this is what keeps Union-Find nearly O(1) per operation instead of O(n) in the worst case.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Union-Find (disjoint-set) with path compression, the standard connectivity data structure' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Two Components', input: { n: 5, edges: [[0, 1], [1, 2], [3, 4]] }, expectedOutput: 2, hidden: false },
+      { id: 'fully-connected', label: 'One Fully Connected Component', input: { n: 5, edges: [[0, 1], [1, 2], [2, 3], [3, 4]] }, expectedOutput: 1, hidden: false },
+      { id: 'no-edges', label: 'No Edges At All', input: { n: 3, edges: [] }, expectedOutput: 3, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-24': {
+    id: 'ds-algo-prob-24',
+    title: 'Unique Paths',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'unique_paths',
+    functionSignature: 'unique_paths(m: int, n: int) -> int',
+    starterCode: `def unique_paths(m, n):
+    """Return the number of unique paths from the top-left to the
+    bottom-right of an m x n grid, moving only right or down at each
+    step."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Unique Paths -- a 2-D DP problem where each cell sums the cell above and the cell to its left. The closed-form answer is a binomial coefficient, but the DP generalizes cleanly to grids with obstacles.',
+    taskDescription: 'Implement `unique_paths(m, n)`: build an `m x n` grid where the entire first row and first column are 1 (only one way to reach any cell on the top or left edge). For every other cell, `dp[i][j] = dp[i-1][j] + dp[i][j-1]` (the paths arriving from above plus the paths arriving from the left).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'm, n >= 1.',
+      'A 1xN or Mx1 grid always has exactly 1 unique path.',
+    ],
+    hints: {
+      small: 'Any cell on the very top row or very left column can only be reached one way (straight along the edge) -- every other cell combines the ways to reach the cell above it and the cell to its left.',
+      strong: 'dp = [[1]*n for _ in range(m)]; for i in 1..m-1: for j in 1..n-1: dp[i][j] = dp[i-1][j] + dp[i][j-1]; return dp[m-1][n-1].',
+      concept: "This is the same additive-DP shape as Pascal's Triangle -- each value is the sum of the two values that could immediately precede it, which is exactly what makes the closed-form answer a binomial coefficient C(m+n-2, m-1).",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: '2-D grid DP, generalizable to versions with obstacles or weighted cells' },
+    ],
+    testCases: [
+      { id: 'basic', label: '3x7 Grid', input: { m: 3, n: 7 }, expectedOutput: 28, hidden: false },
+      { id: 'small', label: '3x2 Grid', input: { m: 3, n: 2 }, expectedOutput: 3, hidden: false },
+      { id: 'single-row', label: 'Single Row', input: { m: 1, n: 5 }, expectedOutput: 1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-25': {
+    id: 'ds-algo-prob-25',
+    title: 'LRU Cache',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'lru_cache_ops',
+    functionSignature: 'lru_cache_ops(capacity: int, operations: list[list]) -> list',
+    starterCode: `def lru_cache_ops(capacity, operations):
+    """capacity: max cache size. operations: list of ['put', key, value]
+    | ['get', key]. Simulate an LRU cache; return a list with one entry
+    per operation (None for put, the value or -1 for get)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement an LRU Cache -- the classic hashmap + ordering structure behind essentially every production caching layer.',
+    taskDescription: "Implement `lru_cache_ops(capacity, operations)` using an ordered structure: `get(key)` moves the key to the most-recently-used end and returns its value (or -1 if absent). `put(key, value)` inserts/updates and moves the key to most-recently-used; if this pushes the cache over capacity, evict the least-recently-used entry.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'get on a missing key returns -1 and does not affect ordering.',
+      'Evict the least-recently-used entry only when a put pushes the cache strictly over capacity.',
+    ],
+    hints: {
+      small: "Every time a key is touched (either read via get, or written/updated via put), it becomes the \"most recently used\" -- move it to that end. Whatever hasn't been touched in the longest time is what gets evicted.",
+      strong: "Python's collections.OrderedDict gives this almost for free: move_to_end(key) on every touch, and popitem(last=False) to evict the least-recently-used entry when over capacity.",
+      concept: 'A real production LRU cache builds this from scratch with a doubly-linked list (O(1) move-to-front/remove) plus a hashmap (O(1) key lookup) -- OrderedDict is exactly that combination, already implemented.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The hashmap + ordered-list design behind every real LRU cache implementation' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Eviction on Overflow', input: { capacity: 2, operations: [['put', 1, 1], ['put', 2, 2], ['get', 1], ['put', 3, 3], ['get', 2], ['put', 4, 4], ['get', 1], ['get', 3], ['get', 4]] }, expectedOutput: [null, null, 1, null, -1, null, -1, 3, 4], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-26': {
+    id: 'ds-algo-prob-26',
+    title: 'Add Two Numbers',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'add_two_numbers',
+    functionSignature: 'add_two_numbers(l1: dict, l2: dict) -> dict',
+    starterCode: `def add_two_numbers(l1, l2):
+    """l1, l2: linked-list nodes as {'val', 'next'}, digits stored in
+    reverse order (least significant digit first). Return the head of
+    a new list representing l1 + l2, also in reverse digit order."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Add Two Numbers -- ripple-carry addition performed directly on linked lists, testing carry propagation and simultaneous list construction.',
+    taskDescription: 'Implement `add_two_numbers(l1, l2)` with a dummy head and a running `carry`. At each step sum the current digits of `l1` and `l2` (if present) plus `carry`, split into a new `digit` and updated `carry` via `divmod(sum, 10)`, and append a new node holding `digit`. Continue while either list still has nodes or `carry` is nonzero.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Digits are stored least-significant-first (reverse order).',
+      'A final leftover carry (e.g. 5+5=10) must produce one extra trailing node.',
+    ],
+    hints: {
+      small: 'Add the two lists digit by digit exactly like elementary-school addition, carrying the overflow into the next column -- except the "columns" are already in the right order since digits are stored least-significant-first.',
+      strong: 's = carry + (l1.val if l1 else 0) + (l2.val if l2 else 0); carry, digit = divmod(s, 10); append digit; advance l1/l2 if present.',
+      concept: "Continuing the loop while `carry` is still nonzero (even after both lists are exhausted) is what correctly handles the final carry-out digit -- a common off-by-one mistake is to stop as soon as both lists run out.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Ripple-carry arithmetic implemented over a linked-list representation' },
+    ],
+    testCases: [
+      { id: 'basic', label: '342 + 465 = 807', input: { l1: { val: 2, next: { val: 4, next: { val: 3, next: null } } }, l2: { val: 5, next: { val: 6, next: { val: 4, next: null } } } }, expectedOutput: { val: 7, next: { val: 0, next: { val: 8, next: null } } }, hidden: false },
+      { id: 'zeros', label: '0 + 0 = 0', input: { l1: { val: 0, next: null }, l2: { val: 0, next: null } }, expectedOutput: { val: 0, next: null }, hidden: false },
+      { id: 'carry-overflow', label: 'Trailing Carry Creates New Digit', input: { l1: { val: 9, next: { val: 9, next: { val: 9, next: null } } }, l2: { val: 1, next: null } }, expectedOutput: { val: 0, next: { val: 0, next: { val: 0, next: { val: 1, next: null } } } }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-27': {
+    id: 'ds-algo-prob-27',
+    title: 'Binary Tree Right Side View',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'right_side_view',
+    functionSignature: 'right_side_view(root: dict | None) -> list[int]',
+    starterCode: `def right_side_view(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return
+    the value of the rightmost node at each level, top to bottom."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Binary Tree Right Side View -- BFS level order that only records the last node visited at each level, giving exactly the silhouette visible from the right.',
+    taskDescription: 'Implement `right_side_view(root)`: run standard level-order BFS, but at each level, only append the value of the LAST node dequeued in that level (the one at index `n-1` where `n` is the level\'s snapshot size) to the result.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree returns an empty list.',
+      'Only the rightmost node per level is recorded, not every node.',
+    ],
+    hints: {
+      small: 'Do a normal level-by-level BFS, but only keep the very last node you process at each level -- that is the one visible standing to the right of the tree.',
+      strong: 'q=deque([root]); while q: n=len(q); for i in range(n): node=q.popleft(); if i==n-1: result.append(node.val); enqueue children.',
+      concept: 'This is Level Order Traversal with one extra condition -- proof that many tree/BFS problems are the same traversal template with a different "what to record" rule at each step.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'BFS level tracking specialized to record only one node per level' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Tree with Missing Nodes', input: { root: { val: 1, left: { val: 2, left: null, right: { val: 5, left: null, right: null } }, right: { val: 3, left: null, right: { val: 4, left: null, right: null } } } }, expectedOutput: [1, 3, 4], hidden: false },
+      { id: 'empty', label: 'Empty Tree', input: { root: null }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-28': {
+    id: 'ds-algo-prob-28',
+    title: 'Course Schedule (Cycle Detection in DAG)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'can_finish',
+    functionSignature: 'can_finish(numCourses: int, prerequisites: list[list[int]]) -> bool',
+    starterCode: `def can_finish(numCourses, prerequisites):
+    """numCourses: courses labeled 0..numCourses-1. prerequisites: list
+    of [a, b] meaning course a requires course b first. Return True if
+    all courses can be completed (no circular dependency)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Course Schedule using three-color DFS cycle detection -- the foundational algorithm behind build systems, package managers, and task schedulers that must detect circular dependencies.',
+    taskDescription: 'Implement `can_finish(numCourses, prerequisites)`: build a graph where `b -> a` for every `[a, b]` prerequisite pair. DFS from every course, marking each node 1 ("visiting", currently on the recursion stack) then 2 ("done") once fully explored. If DFS ever revisits a node still marked 1, that is a back edge -- a cycle -- so return False.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'No prerequisites at all means every course can trivially be finished.',
+      'A self-referencing or circular prerequisite chain must return False.',
+    ],
+    hints: {
+      small: 'Walk each course\'s prerequisite chain. If you ever run back into a course that is already "in progress" on your current chain (not just already fully checked), that is a circular dependency.',
+      strong: 'visited=[0]*n (0=unvisited,1=visiting,2=done). dfs(node): if visited[node]==1: return False (cycle). if ==2: return True. mark 1, recurse into all neighbors, mark 2, return True.',
+      concept: 'The three-state marking (unvisited/visiting/done) is what distinguishes a real cycle from simply revisiting an already-fully-processed node through a different path -- a two-state visited/unvisited scheme cannot tell those apart.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Three-color DFS cycle detection, the basis of topological sort' },
+    ],
+    testCases: [
+      { id: 'no-cycle', label: 'Simple Valid Order', input: { numCourses: 2, prerequisites: [[1, 0]] }, expectedOutput: true, hidden: false },
+      { id: 'has-cycle', label: 'Circular Dependency', input: { numCourses: 2, prerequisites: [[1, 0], [0, 1]] }, expectedOutput: false, hidden: false },
+      { id: 'no-prereqs', label: 'No Prerequisites', input: { numCourses: 3, prerequisites: [] }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-29': {
+    id: 'ds-algo-prob-29',
+    title: 'Longest Increasing Subsequence',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'length_of_lis',
+    functionSignature: 'length_of_lis(nums: list[int]) -> int',
+    starterCode: `def length_of_lis(nums):
+    """Return the length of the longest strictly increasing subsequence
+    of nums (elements need not be contiguous)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Longest Increasing Subsequence with the patience-sort / binary-search technique -- O(n log n), a major upgrade over the naive O(n^2) DP.',
+    taskDescription: 'Implement `length_of_lis(nums)`: maintain a list `dp` where `dp[i]` is the smallest possible tail value of any increasing subsequence of length `i+1`. For each number, binary-search for its insertion position in `dp`; if it extends `dp`, append it, otherwise overwrite the existing value at that position. The final length of `dp` is the answer.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      '"Increasing" means strictly increasing (equal values do not extend the subsequence).',
+      'The subsequence need not be contiguous in the original array.',
+    ],
+    hints: {
+      small: "Keep a running list of the smallest possible \"last value\" for an increasing subsequence of each length seen so far -- a new number either extends this list or improves (lowers) one of its existing entries.",
+      strong: 'dp=[]; for n in nums: pos=bisect_left(dp,n); if pos==len(dp): dp.append(n) else: dp[pos]=n. return len(dp).',
+      concept: 'dp does not represent an actual subsequence -- only the smallest tail achievable for each length -- which is precisely what makes binary search valid (dp is always kept sorted) and gives the O(n log n) speedup over the O(n^2) DP.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The patience-sort technique, an O(n log n) DP-plus-binary-search pattern' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Mixed Sequence', input: { nums: [10, 9, 2, 5, 3, 7, 101, 18] }, expectedOutput: 4, hidden: false },
+      { id: 'with-repeats', label: 'Repeated and Increasing Mixed', input: { nums: [0, 1, 0, 3, 2, 3] }, expectedOutput: 4, hidden: false },
+      { id: 'all-same', label: 'All Equal Elements', input: { nums: [7, 7, 7, 7] }, expectedOutput: 1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-30': {
+    id: 'ds-algo-prob-30',
+    title: 'Design HashMap',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'hashmap_ops',
+    functionSignature: 'hashmap_ops(operations: list[list]) -> list',
+    starterCode: `def hashmap_ops(operations):
+    """operations: list of ['put', key, value] | ['get', key] |
+    ['remove', key]. Simulate a HashMap from scratch (chaining); return
+    a list with one entry per operation (None for put/remove, the
+    value or -1 for get)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement a HashMap from scratch using chaining -- understanding hash collision resolution is fundamental to how every language\'s dict/map type actually works underneath.',
+    taskDescription: 'Implement `hashmap_ops(operations)` with a fixed number of buckets, each holding a list of `[key, value]` pairs. `_h(key) = key % SIZE` picks the bucket. `put` scans its bucket to update an existing key in place, otherwise appends a new pair. `get` scans its bucket and returns the value or -1. `remove` filters the key out of its bucket.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'get on a missing key returns -1.',
+      'put on an existing key updates its value in place rather than adding a duplicate entry.',
+    ],
+    hints: {
+      small: 'Route every key to one of a fixed number of "buckets" using a simple modulo hash, then store the actual key-value pairs as a small list inside that bucket -- multiple keys can share a bucket (a collision), which is why each bucket is a list, not a single slot.',
+      strong: 'bucket = data[key % SIZE]. put: scan bucket for existing key to update, else append [key,value]. get/remove: scan the same bucket similarly.',
+      concept: 'Using a prime SIZE for the bucket count spreads keys out more evenly than a round number would, reducing how often multiple keys collide into the same bucket and keeping each bucket\'s scan close to O(1) on average.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Hash table internals: chaining as a collision-resolution strategy' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Put, Get, Update, Remove', input: { operations: [['put', 1, 1], ['put', 2, 2], ['get', 1], ['get', 3], ['put', 2, 1], ['get', 2], ['remove', 2], ['get', 2]] }, expectedOutput: [null, null, 1, -1, null, 1, null, -1], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-31': {
+    id: 'ds-algo-prob-31',
+    title: 'Reorder List',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'reorder_list',
+    functionSignature: 'reorder_list(head: dict) -> dict',
+    starterCode: `def reorder_list(head):
+    """head: a linked-list node as {'val', 'next'}. Reorder in place so
+    L0->L1->...->Ln becomes L0->Ln->L1->Ln-1->..., and return the (same)
+    head."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Reorder List by combining three classic linked-list techniques: find the middle, reverse the second half, then interleave the two halves.',
+    taskDescription: "Implement `reorder_list(head)` in three phases: (1) find the middle with slow/fast pointers, (2) reverse everything after the middle, (3) walk the first half and reversed second half together, splicing one node from each alternately.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must be done in place using pointer rewiring, not by building a new list from a Python list of values.',
+      'A one- or two-node list is already in its reordered form.',
+    ],
+    hints: {
+      small: 'Break the problem into the three techniques you already know: find the middle, reverse a list, then merge two lists -- just interleaved instead of by value.',
+      strong: 'Find mid via slow/fast. Reverse the second half. Alternately splice: first.next=second; second.next=old_first.next; advance both.',
+      concept: 'Combining previously-learned linked-list primitives (middle-finding, reversal, merging) into a three-phase pipeline is a common pattern for "harder" list problems -- they are rarely a genuinely new technique.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Composing multiple linked-list primitives into one algorithm' },
+    ],
+    testCases: [
+      { id: 'four-node', label: 'Four-Node List', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: null } } } } }, expectedOutput: { val: 1, next: { val: 4, next: { val: 2, next: { val: 3, next: null } } } }, hidden: false },
+      { id: 'five-node', label: 'Five-Node List', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } } }, expectedOutput: { val: 1, next: { val: 5, next: { val: 2, next: { val: 4, next: { val: 3, next: null } } } } }, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-32': {
+    id: 'ds-algo-prob-32',
+    title: 'Path Sum II (All Paths)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'path_sum_ii',
+    functionSignature: 'path_sum_ii(root: dict | None, target_sum: int) -> list[list[int]]',
+    starterCode: `def path_sum_ii(root, target_sum):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return all
+    root-to-leaf paths (as lists of values) whose values sum to
+    target_sum."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Path Sum II using DFS with backtracking -- the template that underlies Subsets, Permutations, and Combinations.',
+    taskDescription: 'Implement `path_sum_ii(root, target_sum)` with a DFS helper that carries a running sum and a `path` list. At every leaf, check if the running sum equals `target_sum` and if so record a copy of `path`. After exploring both children, `path.pop()` to backtrack before returning to the parent call.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Only root-to-LEAF paths count -- an internal node summing to target does not qualify.',
+      'An empty tree returns an empty list.',
+    ],
+    hints: {
+      small: 'Track the path you are currently walking as you go down; at every leaf, check whether the running total matches -- and always undo (pop) the last step before backtracking upward.',
+      strong: 'dfs(node, current, path): current+=node.val; path.append(node.val); if leaf and current==target: result.append(list(path)); recurse both children; path.pop().',
+      concept: 'Appending `list(path)` (a copy) rather than `path` itself is essential -- the same `path` list object keeps mutating as the DFS continues, so storing a reference instead of a snapshot would corrupt every previously-recorded answer.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'DFS-with-backtracking, the template for enumerate-all-paths/combinations problems' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Two Matching Paths', input: { root: { val: 5, left: { val: 4, left: { val: 11, left: { val: 7, left: null, right: null }, right: { val: 2, left: null, right: null } }, right: null }, right: { val: 8, left: { val: 13, left: null, right: null }, right: { val: 4, left: { val: 5, left: null, right: null }, right: { val: 1, left: null, right: null } } } }, target_sum: 22 }, expectedOutput: [[5, 4, 11, 2], [5, 8, 4, 5]], hidden: false },
+      { id: 'no-match', label: 'No Matching Path', input: { root: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: null, right: null } }, target_sum: 5 }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-33': {
+    id: 'ds-algo-prob-33',
+    title: 'Pacific Atlantic Water Flow',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'pacific_atlantic',
+    functionSignature: 'pacific_atlantic(heights: list[list[int]]) -> list[list[int]]',
+    starterCode: `def pacific_atlantic(heights):
+    """heights: 2D grid of elevations. Pacific touches the top and left
+    edges; Atlantic touches the bottom and right edges. Return sorted
+    [r, c] cells from which water can reach BOTH oceans."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Pacific Atlantic Water Flow by reversing the problem: BFS inland from each ocean\'s border, since asking "can this cell reach the ocean" is much harder than asking "can the ocean\'s BFS reach this cell."',
+    taskDescription: 'Implement `pacific_atlantic(heights)`: run BFS starting from every Pacific-adjacent cell (top row + left column) simultaneously, expanding to a neighbor only if its height is >= the current cell\'s height (water flows downhill, so reachable-in-reverse means uphill-or-equal). Do the same for Atlantic (bottom row + right column). The answer is the intersection of both reachable sets.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Water flows from a cell to an adjacent cell only if the adjacent cell\'s height is <= the current cell\'s height (so the reverse-BFS moves to heights >=).',
+      'Return the result sorted by [row, col].',
+    ],
+    hints: {
+      small: 'Instead of checking, for every single cell, whether water can eventually reach an ocean (expensive), run the flow backwards: start from the ocean edges and see which cells COULD have sent water there.',
+      strong: 'bfs(starts): visited=set(starts); expand to neighbor if heights[neighbor] >= heights[current] and not visited. Run once from Pacific borders, once from Atlantic borders, intersect.',
+      concept: "This \"BFS from the boundary inward\" reversal is a recurring trick whenever a problem asks about reachability TO a large set of destinations (both oceans) rather than FROM a single source -- it turns an expensive per-cell search into two cheap multi-source BFS passes.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Multi-source BFS run in reverse from a boundary, a reusable reachability trick' },
+    ],
+    testCases: [
+      { id: 'basic', label: '5x5 Grid', input: { heights: [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]] }, expectedOutput: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]], hidden: false },
+      { id: 'single-cell', label: 'Single Cell (Both Oceans)', input: { heights: [[1]] }, expectedOutput: [[0,0]], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-34': {
+    id: 'ds-algo-prob-34',
+    title: '0/1 Knapsack',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'knapsack',
+    functionSignature: 'knapsack(weights: list[int], values: list[int], capacity: int) -> int',
+    starterCode: `def knapsack(weights, values, capacity):
+    """weights[i]/values[i]: weight and value of item i. Return the max
+    total value achievable without exceeding capacity; each item may be
+    used at most once."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement 0/1 Knapsack, the classic bounded DP -- every "pick or skip each item once" problem is a variant of this shape.',
+    taskDescription: "Implement `knapsack(weights, values, capacity)` with a 2-D table `dp[i][w]` = best value achievable using the first `i` items with capacity `w`. At each item, `dp[i][w]` is either `dp[i-1][w]` (skip item i) or, if it fits, `dp[i-1][w-weights[i-1]] + values[i-1]` (take it) -- whichever is larger.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Each item can be used at most once (0/1, not unbounded).',
+      'capacity == 0 or an empty items list returns 0.',
+    ],
+    hints: {
+      small: 'For every item, you only have two choices: leave it out entirely, or take it (if it still fits) -- work out which choice gives more total value at every possible remaining capacity.',
+      strong: 'dp[i][w] = dp[i-1][w]; if weights[i-1] <= w: dp[i][w] = max(dp[i][w], dp[i-1][w-weights[i-1]] + values[i-1]).',
+      concept: 'Iterating capacity independently for every item (rather than combining items freely) is exactly what enforces the "each item used at most once" rule -- Coin Change/Coin Change II relax this to unlimited use and iterate differently as a result.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The bounded (0/1) knapsack DP shape, the base case for many resource-allocation DP problems' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Four Items', input: { weights: [1, 3, 4, 5], values: [1, 4, 5, 7], capacity: 7 }, expectedOutput: 9, hidden: false },
+      { id: 'three-items', label: 'Three Items, Small Capacity', input: { weights: [1, 2, 3], values: [6, 10, 12], capacity: 5 }, expectedOutput: 22, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-35': {
+    id: 'ds-algo-prob-35',
+    title: 'Implement Trie (Prefix Tree)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'trie_ops',
+    functionSignature: 'trie_ops(operations: list[list]) -> list',
+    starterCode: `def trie_ops(operations):
+    """operations: list of ['insert', word] | ['search', word] |
+    ['starts_with', prefix]. Simulate a Trie; return a list with one
+    entry per operation (None for insert, a bool for search/starts_with)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement a Trie (prefix tree) from scratch -- the core data structure behind autocomplete, spell-checkers, and IP routing tables.',
+    taskDescription: 'Implement `trie_ops(operations)` with a `TrieNode` holding a `children` dict and an `is_end` flag. `insert(word)` walks/creates a node per character, marking the last one `is_end=True`. `search(word)` walks the same path and requires both a full character match AND `is_end` on the final node. `starts_with(prefix)` only requires the path to exist, regardless of `is_end`.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'search requires an EXACT stored word (the final node must have is_end=True), not just a matching path.',
+      'starts_with only requires the prefix path to exist -- it does not need to be a complete stored word.',
+    ],
+    hints: {
+      small: 'A Trie is a tree where each edge is one character. "search" needs to reach a node that was explicitly marked as the end of some inserted word; "starts_with" is satisfied just by the path existing at all.',
+      strong: 'Each TrieNode has children={} and is_end=False. insert/search/starts_with all walk cur=cur.children[c] one character at a time; search additionally checks cur.is_end at the end.',
+      concept: 'The distinction between search and starts_with is entirely the `is_end` flag -- "app" being a prefix of "apple" does not make "app" itself a stored word unless it was separately inserted or is_end was set on that exact node.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The Trie data structure, the base of autocomplete and prefix-matching systems' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Insert, Search, Prefix, Re-insert', input: { operations: [['insert', 'apple'], ['search', 'apple'], ['search', 'app'], ['starts_with', 'app'], ['insert', 'app'], ['search', 'app']] }, expectedOutput: [null, true, false, true, null, true], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-36': {
+    id: 'ds-algo-prob-36',
+    title: 'Sort Linked List (Merge Sort)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'sort_list',
+    functionSignature: 'sort_list(head: dict | None) -> dict | None',
+    starterCode: `def sort_list(head):
+    """head: a linked-list node as {'val', 'next'}, or None. Sort the
+    list ascending using merge sort and return the new head."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Sort Linked List with merge sort -- O(n log n), and the algorithm that fits linked lists naturally since splitting at the middle is an O(n) pointer walk, not an array copy.',
+    taskDescription: 'Implement `sort_list(head)`: find the middle with slow/fast pointers (fast starts one step ahead so the split is even), cut the list there, recursively sort both halves, then merge the two sorted halves exactly like Merge Two Sorted Lists.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty list or single node is already sorted -- return it unchanged.',
+      'Must run in O(n log n) time (merge sort), not O(n^2) (e.g. repeated insertion).',
+    ],
+    hints: {
+      small: 'This is exactly merge sort, applied to a linked list instead of an array: split in half, sort each half recursively, then merge the two sorted halves back together.',
+      strong: 'slow,fast=head,head.next; advance slow 1 / fast 2 to find mid; cut; left=sort_list(head); right=sort_list(mid); merge left and right like Merge Two Sorted Lists.',
+      concept: 'Starting `fast` one node ahead of `slow` (at head.next, not head) is what makes the split even for both odd- and even-length lists -- getting this off-by-one wrong is the most common bug in this problem.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Merge sort applied to a linked list, reusing the two-list-merge primitive' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Four Unsorted Values', input: { head: { val: 4, next: { val: 2, next: { val: 1, next: { val: 3, next: null } } } } }, expectedOutput: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: null } } } }, hidden: false },
+      { id: 'with-negatives', label: 'With Negative and Zero', input: { head: { val: -1, next: { val: 5, next: { val: 3, next: { val: 4, next: { val: 0, next: null } } } } } }, expectedOutput: { val: -1, next: { val: 0, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } }, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-37': {
+    id: 'ds-algo-prob-37',
+    title: 'Validate Binary Search Tree',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'is_valid_bst',
+    functionSignature: 'is_valid_bst(root: dict | None) -> bool',
+    starterCode: `def is_valid_bst(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Return
+    True iff the tree is a valid BST: every node's value is strictly
+    between the min/max bounds imposed by its ancestors."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Validate Binary Search Tree by passing down a valid (min, max) range at each node -- comparing only to immediate children is a common wrong approach that misses violations from further-up ancestors.',
+    taskDescription: 'Implement `is_valid_bst(root)` with a helper that carries `min_val`/`max_val` bounds. At each node, the value must be strictly between the bounds; the left child receives an updated `max_val = root.val`, the right child receives an updated `min_val = root.val`.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'An empty tree is a valid BST -- return True.',
+      'Values must be STRICTLY within bounds -- a duplicate value equal to an ancestor bound is invalid.',
+    ],
+    hints: {
+      small: 'Comparing a node only to its direct left/right children is NOT enough -- a node deep in the left subtree must still be less than every ancestor up to the root, not just its immediate parent.',
+      strong: 'is_valid_bst(root, lo=-inf, hi=inf): if root.val<=lo or root.val>=hi: return False. Recurse left with (lo, root.val), right with (root.val, hi).',
+      concept: 'Threading the valid range down through recursive calls is what correctly propagates constraints from EVERY ancestor, not just the immediate parent -- this is the standard fix for the common "only compare to parent" bug.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Passing down accumulated constraints through recursion, rather than only comparing local siblings' },
+    ],
+    testCases: [
+      { id: 'valid', label: 'Valid Small BST', input: { root: { val: 2, left: { val: 1, left: null, right: null }, right: { val: 3, left: null, right: null } } }, expectedOutput: true, hidden: false },
+      { id: 'invalid-ancestor', label: 'Invalid: Violates a Non-Parent Ancestor', input: { root: { val: 5, left: { val: 1, left: null, right: null }, right: { val: 4, left: { val: 3, left: null, right: null }, right: { val: 6, left: null, right: null } } } }, expectedOutput: false, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-38': {
+    id: 'ds-algo-prob-38',
+    title: 'Walls and Gates (Multi-source BFS)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'walls_and_gates',
+    functionSignature: 'walls_and_gates(rooms: list[list[int]]) -> list[list[int]]',
+    starterCode: `def walls_and_gates(rooms):
+    """rooms: 2D grid where -1 is a wall, 0 is a gate, and 2147483647 is
+    an empty room. Return a new grid where every empty room is replaced
+    with its distance to the nearest gate."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Walls and Gates with multi-source BFS -- seeding the BFS queue with ALL gates at once computes every room\'s true shortest distance to its nearest gate in a single pass.',
+    taskDescription: "Implement `walls_and_gates(rooms)`: initialize the BFS queue with every cell that is currently a gate (value 0). Expand outward level by level; whenever an adjacent cell is still the empty-room sentinel (2147483647), set it to `current distance + 1` and enqueue it.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Walls (-1) are never overwritten and block BFS expansion.',
+      'Must not mutate the input grid -- work on (or return) a copy.',
+    ],
+    hints: {
+      small: 'Instead of running a separate BFS from every empty room to find its nearest gate (slow), start ONE BFS from all the gates simultaneously -- the first time a room is reached is guaranteed to be via its nearest gate.',
+      strong: 'q = deque of every (r,c) where rooms[r][c]==0. While q: pop (r,c); for each neighbor still ==INF: set to grid[r][c]+1, enqueue.',
+      concept: 'Seeding a BFS queue with multiple starting points instead of one is the "multi-source BFS" pattern -- it correctly computes shortest distance to the NEAREST of several sources in a single pass, rather than needing one BFS per source.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Multi-source BFS, computing shortest distance to the nearest of several sources at once' },
+    ],
+    testCases: [
+      { id: 'basic', label: '4x4 Grid with 2 Gates', input: { rooms: [[2147483647, -1, 0, 2147483647], [2147483647, 2147483647, 2147483647, -1], [2147483647, -1, 2147483647, -1], [0, -1, 2147483647, 2147483647]] }, expectedOutput: [[3, -1, 0, 1], [2, 2, 1, -1], [1, -1, 2, -1], [0, -1, 3, 4]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-39': {
+    id: 'ds-algo-prob-39',
+    title: 'Edit Distance (Levenshtein)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'min_distance',
+    functionSignature: 'min_distance(word1: str, word2: str) -> int',
+    starterCode: `def min_distance(word1, word2):
+    """Return the minimum number of single-character insert, delete, or
+    replace operations to transform word1 into word2."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Edit Distance (Levenshtein) -- the classic 2-D string-alignment DP, where dp[i][j] is the minimum edits to convert the first i characters of word1 into the first j characters of word2.',
+    taskDescription: "Implement `min_distance(word1, word2)`: build a `(m+1) x (n+1)` table where row 0 and column 0 are the base cases (converting to/from an empty string costs exactly the remaining length). For each cell, if the characters match, `dp[i][j] = dp[i-1][j-1]` (no edit needed); otherwise `dp[i][j] = 1 + min(delete, insert, replace)` from the three neighboring cells.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Operations allowed: insert one character, delete one character, or replace one character.',
+      'Converting to/from an empty string costs exactly the other string\'s length.',
+    ],
+    hints: {
+      small: 'Build a grid comparing every prefix of word1 to every prefix of word2. If the current characters already match, no new edit is needed there; otherwise the cheapest of insert/delete/replace, plus one, applies.',
+      strong: 'dp[i][0]=i; dp[0][j]=j; if word1[i-1]==word2[j-1]: dp[i][j]=dp[i-1][j-1]; else dp[i][j]=1+min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]).',
+      concept: 'The three neighboring cells correspond exactly to the three allowed operations: dp[i-1][j] is a deletion from word1, dp[i][j-1] is an insertion into word1, and dp[i-1][j-1] is a replacement (or a free match).',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: '2-D string-alignment DP, the base pattern behind diff tools and spell-checkers' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'horse -> ros', input: { word1: 'horse', word2: 'ros' }, expectedOutput: 3, hidden: false },
+      { id: 'longer', label: 'intention -> execution', input: { word1: 'intention', word2: 'execution' }, expectedOutput: 5, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-40': {
+    id: 'ds-algo-prob-40',
+    title: 'Word Search (Backtracking on Grid)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'exist',
+    functionSignature: 'exist(board: list[list[str]], word: str) -> bool',
+    starterCode: `def exist(board, word):
+    """board: 2D grid of single characters. Return True if word can be
+    traced through sequentially adjacent (4-directional) cells, never
+    reusing the same cell twice in one path."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Word Search using DFS backtracking on a grid -- the mark/recurse/unmark template that underlies every "search all paths through a grid without reusing cells" problem.',
+    taskDescription: 'Implement `exist(board, word)`: try every cell as a starting point. From a cell, DFS: if the character matches `word[idx]`, mark the cell visited, recurse into all 4 neighbors looking for `word[idx+1]`, then unmark the cell (backtrack) regardless of whether the recursion found anything, so other starting points can reuse it.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'The same cell cannot be reused twice within one candidate path.',
+      'Adjacency is 4-directional only (no diagonals).',
+    ],
+    hints: {
+      small: 'Try starting the search from every cell. From each attempt, walk letter by letter to neighboring cells -- but remember to "un-visit" a cell once you back out of it, so a DIFFERENT path starting elsewhere can still use it.',
+      strong: 'dfs(r,c,idx): if idx==len(word): return True. if out of bounds or visited or board[r][c]!=word[idx]: return False. mark visited; found = any neighbor dfs(...,idx+1); unmark; return found.',
+      concept: "Unmarking the cell after exploring it (`visited[r][c] = False`) is the actual \"backtracking\" step -- without it, a cell visited by one failed path attempt would incorrectly stay blocked for every other candidate path that starts elsewhere.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'DFS backtracking with mark/unmark, the canonical grid-search template' },
+    ],
+    testCases: [
+      { id: 'found', label: 'Word Found via Snake Path', input: { board: [['A', 'B', 'C', 'E'], ['S', 'F', 'C', 'S'], ['A', 'D', 'E', 'E']], word: 'ABCCED' }, expectedOutput: true, hidden: false },
+      { id: 'found-short', label: 'Short Word Found', input: { board: [['A', 'B', 'C', 'E'], ['S', 'F', 'C', 'S'], ['A', 'D', 'E', 'E']], word: 'SEE' }, expectedOutput: true, hidden: false },
+      { id: 'not-found-reuse', label: 'Not Found (Would Require Reusing a Cell)', input: { board: [['A', 'B', 'C', 'E'], ['S', 'F', 'C', 'S'], ['A', 'D', 'E', 'E']], word: 'ABCB' }, expectedOutput: false, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-41': {
+    id: 'ds-algo-prob-41',
+    title: 'Rotate List',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'rotate_right',
+    functionSignature: 'rotate_right(head: dict | None, k: int) -> dict | None',
+    starterCode: `def rotate_right(head, k):
+    """head: a linked-list node as {'val', 'next'}, or None. Rotate the
+    list to the right by k places and return the new head."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Rotate List by temporarily making the list circular, then cutting it at the correct point -- the modulo step handles k values larger than the list length efficiently.',
+    taskDescription: 'Implement `rotate_right(head, k)`: measure the list length, then connect the tail back to the head to form a circle. Take `k % length` to normalize k, find the new tail at position `length - k - 1`, and cut the circle there -- `new_tail.next` becomes the new head, and `new_tail.next` is set to None.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'k may be larger than the list length -- normalize with k % length first.',
+      'An empty list, single-node list, or k == 0 returns the list unchanged.',
+    ],
+    hints: {
+      small: 'k rotations on a list of length n is the same as k % n rotations -- rotating a full cycle (n times) brings you right back to where you started.',
+      strong: 'Measure length; connect tail.next=head (circular); k %= length; walk (length-k-1) steps from head to find the new tail; new_head=new_tail.next; new_tail.next=None.',
+      concept: 'Turning the list into a temporary circle is what makes finding the new cut point a simple forward walk instead of needing backward pointers -- the circle is always broken again before returning.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Temporary circular-list construction to simplify a rotation operation' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Rotate by 2', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } }, k: 2 }, expectedOutput: { val: 4, next: { val: 5, next: { val: 1, next: { val: 2, next: { val: 3, next: null } } } } }, hidden: false },
+      { id: 'k-larger', label: 'k Larger Than Length', input: { head: { val: 0, next: { val: 1, next: { val: 2, next: null } } }, k: 4 }, expectedOutput: { val: 2, next: { val: 0, next: { val: 1, next: null } } }, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-42': {
+    id: 'ds-algo-prob-42',
+    title: 'Flatten Binary Tree to Linked List',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'flatten',
+    functionSignature: 'flatten(root: dict | None) -> dict | None',
+    starterCode: `def flatten(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Flatten
+    the tree in-place into a "linked list" following preorder traversal
+    -- every node's 'left' becomes None, and 'right' chains to the next
+    preorder node. Return the (same) root."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Flatten Binary Tree to Linked List with a post-order recursive approach -- processing the right subtree first is what enables doing this with only O(h) extra space.',
+    taskDescription: "Implement `flatten(root)` recursively: flatten the left and right subtrees first (each recursive call returns that subtree's own flattened tail node). If there was a left subtree, splice it in: move it to `root['right']`, set `root['left']` to None, and connect the left subtree's tail to the original right subtree. Return whichever tail (right's, else left's, else root itself) is the flattened tail of this whole subtree.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Every node\'s "left" pointer must become None after flattening.',
+      'The resulting right-pointer chain must follow preorder (root, then left subtree, then right subtree).',
+    ],
+    hints: {
+      small: 'Think recursively, bottom-up: flatten both subtrees first (each becomes its own straight chain), then splice the flattened left chain in between the root and the flattened right chain.',
+      strong: 'left_tail=flatten(root.left); right_tail=flatten(root.right); if root.left: saved=root.right; root.right=root.left; root.left=None; left_tail.right=saved. return right_tail or left_tail or root.',
+      concept: 'Returning "the tail of this subtree\'s flattened chain" from every recursive call is what lets the parent call splice subtrees together in O(1) per node, without ever needing to re-walk a chain to find its end.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Post-order recursion that returns a usable handle (the tail) back up the call stack' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Six-Node Tree', input: { root: { val: 1, left: { val: 2, left: { val: 3, left: null, right: null }, right: { val: 4, left: null, right: null } }, right: { val: 5, left: null, right: { val: 6, left: null, right: null } } } }, expectedOutput: { val: 1, left: null, right: { val: 2, left: null, right: { val: 3, left: null, right: { val: 4, left: null, right: { val: 5, left: null, right: { val: 6, left: null, right: null } } } } } }, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-43': {
+    id: 'ds-algo-prob-43',
+    title: 'Minimum Spanning Tree (Kruskal)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'min_cost_connect',
+    functionSignature: 'min_cost_connect(n: int, connections: list[list[int]]) -> int',
+    starterCode: `def min_cost_connect(n, connections):
+    """n: cities labeled 1..n. connections[i] = [city1, city2, cost].
+    Return the minimum total cost to connect all cities (a spanning
+    tree), or -1 if it is impossible."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Minimum Spanning Tree via Kruskal's algorithm -- sort edges by cost, then greedily add the cheapest edge that does not create a cycle, using Union-Find to detect cycles in O(alpha(n)) per check.",
+    taskDescription: "Implement `min_cost_connect(n, connections)`: sort `connections` by cost ascending. For each edge in that order, use Union-Find: if the two cities are already in the same component (`union` returns False), skip the edge (it would create a cycle); otherwise add its cost and count it. Stop once `n-1` edges have been used (a spanning tree is complete) -- if you run out of edges first, return -1.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Cities are labeled 1 through n (not 0-indexed).',
+      'Return -1 if there is no way to connect all n cities with the given edges.',
+    ],
+    hints: {
+      small: 'Sort all possible connections from cheapest to most expensive. Greedily accept each one, UNLESS it would connect two cities that are already connected to each other some other way (which would be wasteful, since a tree connecting n cities needs exactly n-1 edges).',
+      strong: 'connections.sort(key=lambda x: x[2]). For u,v,w in connections: if union(u,v): cost+=w; edges_used+=1; if edges_used==n-1: return cost. Return -1 if loop finishes first.',
+      concept: "Kruskal's greedy choice (always take the globally cheapest edge that doesn't create a cycle) is provably optimal for minimum spanning trees -- Union-Find is what makes the cycle check itself nearly O(1) instead of an expensive traversal.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: "Kruskal's MST algorithm, a real-world use of Union-Find for greedy graph construction" },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three Cities, All Connectable', input: { n: 3, connections: [[1, 2, 5], [1, 3, 6], [2, 3, 1]] }, expectedOutput: 6, hidden: false },
+      { id: 'impossible', label: 'Impossible to Connect All Cities', input: { n: 4, connections: [[1, 2, 3], [3, 4, 4]] }, expectedOutput: -1, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-44': {
+    id: 'ds-algo-prob-44',
+    title: 'Coin Change II (Count Combinations)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'change',
+    functionSignature: 'change(amount: int, coins: list[int]) -> int',
+    starterCode: `def change(amount, coins):
+    """coins: list of available (unlimited-supply) coin denominations.
+    Return the number of DISTINCT combinations of coins that sum to
+    amount (order does not matter)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Coin Change II -- counting combinations (not permutations) with unlimited coins. Unlike Coin Change (minimum coins), the ORDER in which coins are chosen must not matter here, which changes how the DP loops must be nested.',
+    taskDescription: 'Implement `change(amount, coins)` with a 1-D DP array `dp` where `dp[i]` is the number of ways to make value `i`. Critically, iterate `coins` in the OUTER loop and amount in the inner loop: `dp[0] = 1` (one way to make 0 -- use no coins), and for each coin, add `dp[i - coin]` into `dp[i]` for every `i >= coin`.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Coins are unlimited in supply (unbounded knapsack, same as Coin Change).',
+      '[1,2] and [2,1] as a combination for the same coins are the SAME combination -- count each set of coin counts only once.',
+    ],
+    hints: {
+      small: 'If you looped amounts in the outer loop and coins in the inner loop instead, you would end up counting [1,2] and [2,1] as two different ways -- looping coins on the outside is what prevents that double-counting.',
+      strong: 'dp=[0]*(amount+1); dp[0]=1; for coin in coins: for i in range(coin, amount+1): dp[i] += dp[i-coin].',
+      concept: "The loop order is the entire difference between \"count combinations\" (coins outer) and \"count permutations\" (amount outer) in unbounded-knapsack-style DP -- a subtle but critical distinction worth internalizing.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Unbounded-knapsack counting DP, and why loop order determines combinations vs. permutations' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Amount 5, Coins [1,2,5]', input: { amount: 5, coins: [1, 2, 5] }, expectedOutput: 4, hidden: false },
+      { id: 'impossible', label: 'Impossible Amount', input: { amount: 3, coins: [2] }, expectedOutput: 0, hidden: false },
+      { id: 'exact-single-coin', label: 'Exact Single-Coin Match', input: { amount: 10, coins: [10] }, expectedOutput: 1, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-45': {
+    id: 'ds-algo-prob-45',
+    title: 'Design Twitter (Simplified Feed)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'twitter_ops',
+    functionSignature: 'twitter_ops(operations: list[list]) -> list',
+    starterCode: `def twitter_ops(operations):
+    """operations: list of ['postTweet',uid,tid] | ['getNewsFeed',uid] |
+    ['follow',followerId,followeeId] | ['unfollow',followerId,followeeId].
+    Simulate a simplified Twitter; return a list with one entry per
+    operation (None for post/follow/unfollow, a list of up to 10 tweet
+    ids for getNewsFeed)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement a simplified Twitter feed -- a practical combination of hash maps and timestamp-ordered event streams, the kind of system-design-adjacent problem that shows up once basic data structures feel comfortable.',
+    taskDescription: 'Implement `twitter_ops(operations)` tracking, per user, a list of `(timestamp, tweetId)` pairs, and a set of followees per follower. `postTweet` appends with a strictly increasing global counter as the timestamp. `getNewsFeed(userId)` gathers every tweet from the user AND everyone they follow, sorts by timestamp descending, and returns the top 10 tweet ids.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      "A user's own feed always includes their own tweets, even if they follow no one.",
+      'getNewsFeed returns at most the 10 most recent tweet ids, most recent first.',
+    ],
+    hints: {
+      small: 'Give every tweet a timestamp when it is posted (just an incrementing counter works fine). To build a feed, gather every tweet from the user and everyone they follow, then sort by that timestamp and keep only the newest 10.',
+      strong: 'post_tweet: tweets[uid].append((counter, tid)); counter+=1. get_news_feed: combine tweets[uid] with tweets[f] for every followee f, sort by -timestamp, take [:10].',
+      concept: 'A real production version replaces the "gather everything then sort" approach with a k-way merge over per-user tweet lists (each already time-sorted) using a heap, giving O(10 log k) per feed query instead of resorting everything -- worth knowing as the natural follow-up optimization.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Hash maps plus timestamp ordering, a practical system-design-flavored data structure problem' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Post, Follow, Feed, Unfollow', input: { operations: [['postTweet', 1, 5], ['getNewsFeed', 1], ['follow', 1, 2], ['postTweet', 2, 6], ['getNewsFeed', 1], ['unfollow', 1, 2], ['getNewsFeed', 1]] }, expectedOutput: [null, [5], null, null, [6, 5], null, [5]], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-46': {
+    id: 'ds-algo-prob-46',
+    title: 'Swap Nodes in Pairs',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'swap_pairs',
+    functionSignature: 'swap_pairs(head: dict | None) -> dict | None',
+    starterCode: `def swap_pairs(head):
+    """head: a linked-list node as {'val', 'next'}, or None. Swap every
+    two adjacent nodes (by rewiring pointers, not by changing values)
+    and return the new head."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Swap Nodes in Pairs with a dummy head, swapping the two nodes in each pair by rewiring pointers rather than copying values.',
+    taskDescription: "Implement `swap_pairs(head)` using a dummy node before the head and a `prev` pointer. While there are at least two more nodes, let `a` and `b` be the pair: set `prev.next=b`, `a.next=b.next`, `b.next=a`, then advance `prev` to `a` (now the second node in the swapped pair) for the next iteration.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Swap nodes by rewiring pointers, not by copying/swapping the val fields.',
+      'An odd-length list leaves its final unpaired node untouched.',
+    ],
+    hints: {
+      small: 'For each pair of two nodes, redirect the pointer from before the pair to point at the second node, then have the second node point at the first, and the first point at whatever came after the pair.',
+      strong: 'a=prev.next; b=a.next; prev.next=b; a.next=b.next; b.next=a; prev=a.',
+      concept: "Rewiring pointers (rather than swapping node.val) matters when node identity is meaningful elsewhere (e.g. external references to specific nodes) -- it's the more general and typically expected solution.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'In-place pointer rewiring for grouped linked-list transformations' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Four Nodes', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: null } } } } }, expectedOutput: { val: 2, next: { val: 1, next: { val: 4, next: { val: 3, next: null } } } }, hidden: false },
+      { id: 'odd-length', label: 'Odd Length, Last Node Unpaired', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: null } } } }, expectedOutput: { val: 2, next: { val: 1, next: { val: 3, next: null } } }, hidden: false },
+      { id: 'empty', label: 'Empty List', input: { head: null }, expectedOutput: null, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-47': {
+    id: 'ds-algo-prob-47',
+    title: 'All Nodes Distance K in Binary Tree',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'distance_k',
+    functionSignature: 'distance_k(root: dict, target_val: int, k: int) -> list[int]',
+    starterCode: `def distance_k(root, target_val, k):
+    """root: a tree node as {'val', 'left', 'right'}. Return, in any
+    order, the values of all nodes at exactly distance k from the node
+    whose value is target_val (distance can go up through parents)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement All Nodes Distance K by first building parent pointers, then BFS-ing from the target treating the tree as an UNDIRECTED graph -- distance can go through parents, not just children.',
+    taskDescription: "Implement `distance_k(root, target_val, k)` in two passes: (1) BFS the whole tree to build a `parent` map (child value -> parent node) and locate the target node. (2) BFS from the target, at each step exploring both children AND the parent (treating the tree as undirected), stopping expansion once distance k is reached.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Distance can travel through parent nodes, not only down through children -- a plain tree DFS from the target\'s children only is insufficient.',
+      'target_val is guaranteed to exist in the tree.',
+    ],
+    hints: {
+      small: "Regular tree traversal only lets you go DOWN toward children -- but a node at distance k could be an ancestor, or a cousin reached by going up first. Build a way to also step \"upward\" before searching.",
+      strong: 'First BFS the whole tree once, recording child_val -> parent_node. Then BFS from target using neighbors = [left, right, parent], stopping when dist==k.',
+      concept: "Adding a `parent` map is the standard trick to turn a tree (normally only traversable downward) into a graph traversable in ANY direction -- the same technique generalizes to any \"tree distance\" problem that isn't purely about descendants.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Adding parent pointers to traverse a tree as an undirected graph' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Distance 2 from Node 5', input: { root: { val: 3, left: { val: 5, left: { val: 6, left: null, right: null }, right: { val: 2, left: { val: 7, left: null, right: null }, right: { val: 4, left: null, right: null } } }, right: { val: 1, left: { val: 0, left: null, right: null }, right: { val: 8, left: null, right: null } } }, target_val: 5, k: 2 }, expectedOutput: [1, 4, 7], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-48': {
+    id: 'ds-algo-prob-48',
+    title: 'Cheapest Flights Within K Stops (Bellman-Ford)',
+    difficulty: 'medium',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '15–20 min',
+    functionName: 'find_cheapest_price',
+    functionSignature: 'find_cheapest_price(n: int, flights: list[list[int]], src: int, dst: int, k: int) -> int',
+    starterCode: `def find_cheapest_price(n, flights, src, dst, k):
+    """n: cities 0..n-1. flights[i] = [u, v, price]. Return the cheapest
+    price from src to dst using at most k stops (k+1 flights), or -1 if
+    impossible."""
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Cheapest Flights Within K Stops with a stop-limited variant of Bellman-Ford -- capping the number of relaxation rounds at k+1 is what enforces the stops constraint (Dijkstra's greedy approach does not respect a stops limit correctly).",
+    taskDescription: "Implement `find_cheapest_price(n, flights, src, dst, k)`: initialize `prices[src]=0`, everything else infinity. Run exactly `k+1` rounds of relaxation. On EACH round, relax edges using a SNAPSHOT of the previous round's prices (not the array being updated in-place) -- this ensures each round adds at most one new flight per path, correctly modeling the stops limit.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'k stops means at most k+1 flights (edges) on the path.',
+      'Return -1 if dst is unreachable within k stops.',
+    ],
+    hints: {
+      small: 'You cannot just use Dijkstra here -- the cheapest overall path might use more stops than allowed, while a slightly pricier path fits the stop limit. Limit yourself to exactly k+1 rounds of "try improving every price by one more flight."',
+      strong: 'prices=[inf]*n; prices[src]=0. Repeat k+1 times: tmp=prices.copy(); for u,v,w in flights: if prices[u]+w<tmp[v]: tmp[v]=prices[u]+w. prices=tmp.',
+      concept: "Relaxing from a SNAPSHOT (not the live array) each round is the key detail -- without it, a single round could chain multiple flights together and silently violate the k-stops constraint.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Bellman-Ford with a bounded number of relaxation rounds, for constrained shortest paths' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'One Stop Allowed', input: { n: 4, flights: [[0, 1, 100], [1, 2, 100], [2, 0, 100], [1, 3, 600], [2, 3, 200]], src: 0, dst: 3, k: 1 }, expectedOutput: 700, hidden: false },
+      { id: 'direct-cheaper', label: 'Multi-Hop Cheaper Within Limit', input: { n: 3, flights: [[0, 1, 100], [1, 2, 100], [0, 2, 500]], src: 0, dst: 2, k: 1 }, expectedOutput: 200, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-49': {
+    id: 'ds-algo-prob-49',
+    title: 'Word Break II (All Sentences)',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'word_break_ii',
+    functionSignature: 'word_break_ii(s: str, word_dict: list[str]) -> list[str]',
+    starterCode: `def word_break_ii(s, word_dict):
+    """word_dict: list of valid words. Return ALL possible sentences
+    formed by inserting spaces into s so every resulting word is in
+    word_dict (as a list of space-joined strings, any order)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Word Break II by enumerating all valid segmentations with top-down memoization -- the exponential-sized output is unavoidable, but memoization avoids recomputing shared subproblems.',
+    taskDescription: 'Implement `word_break_ii(s, word_dict)` with a memoized recursive helper `dp(start)` returning every valid list-of-words segmentation of `s[start:]`. For each `end` from `start+1` to `len(s)`, if `s[start:end]` is a valid word, prepend it to every result of `dp(end)`. Base case: `dp(len(s))` returns `[[]]` (one way to segment the empty remainder: use no more words).',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Return every valid full segmentation (space-joined), not just one.',
+      'If no valid segmentation exists, return an empty list.',
+    ],
+    hints: {
+      small: 'At every starting position, try every possible next word that matches the dictionary, then recursively find every way to segment whatever remains -- combine each choice with each recursive result.',
+      strong: 'dp(start): if start==len(s): return [[]]. for end in range(start+1, len(s)+1): if s[start:end] in word_set: for rest in dp(end): results.append([s[start:end]]+rest). memoize by start.',
+      concept: "The base case `dp(len(s)) == [[]]` (a list containing one EMPTY list) is what makes the prepend-and-combine logic work uniformly -- it represents \"there is exactly one way to segment nothing: use zero words,\" which lets the recursion terminate cleanly.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Memoized DFS that enumerates ALL solutions rather than just counting or checking existence' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Two Valid Segmentations', input: { s: 'catsanddog', word_dict: ['cat', 'cats', 'and', 'sand', 'dog'] }, expectedOutput: ['cat sand dog', 'cats and dog'], hidden: false },
+      { id: 'no-valid', label: 'No Valid Segmentation', input: { s: 'catsandog', word_dict: ['cats', 'dog', 'sand', 'and', 'cat'] }, expectedOutput: [], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-50': {
+    id: 'ds-algo-prob-50',
+    title: 'Maximum Frequency Stack',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'freq_stack_ops',
+    functionSignature: 'freq_stack_ops(operations: list[list]) -> list',
+    starterCode: `def freq_stack_ops(operations):
+    """operations: list of ['push', val] | ['pop']. Simulate a FreqStack
+    (pop removes and returns the most-frequent element pushed so far,
+    ties broken by most-recently-pushed); return a list with one entry
+    per operation (None for push, the popped value for pop)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Maximum Frequency Stack -- tracking per-element push counts AND grouping elements by their current frequency is what enables an O(1) pop of the most-frequent (most-recent-on-tie) element.',
+    taskDescription: 'Implement `freq_stack_ops(operations)` with two maps: `freq[val]` (current push count of val) and `group[f]` (a stack of elements whose CURRENT frequency is `f`, in push order). `push(val)` increments `freq[val]` and appends to `group[new_freq]`, updating `max_freq`. `pop()` pops from `group[max_freq]` (the most recent element at the highest frequency), decrements its freq, and drops `max_freq` if that group is now empty.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'On a frequency tie, pop the most RECENTLY pushed element among those tied.',
+      'All operations must be O(1) (no scanning to find the max frequency).',
+    ],
+    hints: {
+      small: "Keep two separate pieces of bookkeeping: how many times has each value been pushed so far, and, for each possible frequency count, which values currently sit at exactly that frequency (in the order they reached it).",
+      strong: 'push(val): f=freq[val]+1; freq[val]=f; max_freq=max(max_freq,f); group[f].append(val). pop(): val=group[max_freq].pop(); freq[val]-=1; if group[max_freq] empty: max_freq-=1.',
+      concept: "Popping from `group[max_freq]`'s END (a normal stack pop) automatically gives you the most-recently-pushed element at that frequency -- ties are broken by recency for free, with no extra bookkeeping.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Grouping elements by a live-updating property (frequency) for O(1) priority-style access' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Frequency and Recency Tiebreak', input: { operations: [['push', 5], ['push', 7], ['push', 5], ['push', 7], ['push', 4], ['push', 5], ['pop'], ['pop'], ['pop'], ['pop']] }, expectedOutput: [null, null, null, null, null, null, 5, 7, 5, 4], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-51': {
+    id: 'ds-algo-prob-51',
+    title: 'Reverse Nodes in k-Group',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'reverse_k_group',
+    functionSignature: 'reverse_k_group(head: dict | None, k: int) -> dict | None',
+    starterCode: `def reverse_k_group(head, k):
+    """head: a linked-list node as {'val', 'next'}. Reverse the list k
+    nodes at a time. If fewer than k nodes remain in a final group,
+    leave that remainder unchanged. Return the new head."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Reverse Nodes in k-Group by combining group-length verification, in-place reversal (same as Reverse Linked List), and careful pointer re-wiring between groups.',
+    taskDescription: 'Implement `reverse_k_group(head, k)`: repeatedly find the k-th node ahead of the current group boundary (`group_prev`) -- if fewer than k nodes remain, stop and leave them as-is. Otherwise reverse exactly that group of k nodes in place, reconnect `group_prev` to the new group head (the former k-th node), and advance `group_prev` to what was the group\'s original first node (now its tail) for the next iteration.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'A final group with fewer than k nodes remains UNREVERSED.',
+      'k >= 1; k == 1 leaves the list unchanged.',
+    ],
+    hints: {
+      small: 'Process the list group by group. Before reversing a group of k nodes, first check that k nodes actually exist starting there -- if not, you are at the tail-end remainder and must leave it alone.',
+      strong: 'get_kth(cur,k) walks k steps to find the group boundary (None if too short). Reverse cur..kth exactly like Reverse Linked List. Reconnect: group_prev.next=kth (new group head); group_prev becomes the old group start (now the group tail).',
+      concept: "This problem is exactly \"Reverse Linked List\" applied repeatedly to bounded-size chunks, with one added check (does a full group of k exist?) and one added bookkeeping step (reconnecting groups to each other) -- it doesn't need a genuinely new reversal technique.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Chunked in-place reversal, reusing the basic reversal primitive with boundary checks' },
+    ],
+    testCases: [
+      { id: 'even-groups', label: 'k=2, Exact Groups', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } }, k: 2 }, expectedOutput: { val: 2, next: { val: 1, next: { val: 4, next: { val: 3, next: { val: 5, next: null } } } } }, hidden: false },
+      { id: 'remainder', label: 'k=3, Leftover Remainder Unreversed', input: { head: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 5, next: null } } } } }, k: 3 }, expectedOutput: { val: 3, next: { val: 2, next: { val: 1, next: { val: 4, next: { val: 5, next: null } } } } }, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-52': {
+    id: 'ds-algo-prob-52',
+    title: 'Binary Tree Maximum Path Sum',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'max_path_sum',
+    functionSignature: 'max_path_sum(root: dict) -> int',
+    starterCode: `def max_path_sum(root):
+    """root: a tree node as {'val', 'left', 'right'}. A path is any
+    sequence of connected nodes (no node used twice), not required to
+    pass through the root. Return the maximum sum over all such paths."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Binary Tree Maximum Path Sum -- at each node, track the best "single-arm" contribution usable by the parent, while separately updating a global best for paths that bend through this node using both arms.',
+    taskDescription: 'Implement `max_path_sum(root)` with a post-order DFS helper. At each node: compute `left`/`right` as the best contribution from each child, CLAMPED to 0 (a negative subtree should never be included). Update the global answer with `node.val + left + right` (the best path bending through this node, using both arms). Return `node.val + max(left, right)` up to the parent -- a parent can only extend ONE arm, not both, since a path cannot branch.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'A path may consist of a single node (if all other options are worse, e.g. all-negative values).',
+      'Node values may be negative.',
+    ],
+    hints: {
+      small: 'For every node, there are two different questions: "what is the best path that BENDS at this node (using both children)?" (only useful as a final answer, cannot go further up) versus "what is the best STRAIGHT contribution this node can offer its parent?" (can only use one side, since a path cannot fork).',
+      strong: 'left=max(dfs(node.left),0); right=max(dfs(node.right),0); global_max=max(global_max, node.val+left+right); return node.val+max(left,right).',
+      concept: 'Clamping negative subtree contributions to 0 before use is what correctly models "just don\'t extend the path into that subtree" -- without the clamp, a very negative subtree would wrongly drag down every path sum that touches this node.',
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Post-order DFS returning a "usable by parent" value while separately tracking a global best' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Small Positive Tree', input: { root: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: null, right: null } } }, expectedOutput: 6, hidden: false },
+      { id: 'negative-root', label: 'Negative Root, Best Path Excludes It', input: { root: { val: -10, left: { val: 9, left: null, right: null }, right: { val: 20, left: { val: 15, left: null, right: null }, right: { val: 7, left: null, right: null } } } }, expectedOutput: 42, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-53': {
+    id: 'ds-algo-prob-53',
+    title: 'Word Ladder (BFS Shortest Transformation)',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'ladder_length',
+    functionSignature: 'ladder_length(begin_word: str, end_word: str, word_list: list[str]) -> int',
+    starterCode: `def ladder_length(begin_word, end_word, word_list):
+    """word_list: valid intermediate words. Return the length (number of
+    words, including begin_word and end_word) of the shortest
+    transformation sequence from begin_word to end_word where each step
+    changes exactly one letter and lands on a word in word_list, or 0
+    if no such sequence exists."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Word Ladder with BFS, where the implicit graph has an edge between any two words differing by exactly one letter -- BFS naturally finds the SHORTEST such transformation.',
+    taskDescription: "Implement `ladder_length(begin_word, end_word, word_list)`: BFS from `begin_word`. At each word, generate every possible one-letter variant (try every position, every letter a-z) -- if a variant equals `end_word`, return the current length + 1; if it's a valid, unvisited word, enqueue it. Return 0 if `end_word` is never reached (including if it's not even in `word_list`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Every intermediate word in the transformation must exist in word_list.',
+      'If end_word is not in word_list, no valid sequence can exist -- return 0 immediately.',
+    ],
+    hints: {
+      small: "Treat every word as a node, with an edge to any other word that differs by exactly one letter. Finding the shortest path in an unweighted graph is exactly what BFS is for.",
+      strong: 'For the current word, try replacing each position with every letter a-z; if the result is end_word, return length+1; if it is a valid unvisited word, enqueue (word, length+1).',
+      concept: "Generating candidate neighbors (trying all 26 letters at each position) rather than searching the whole word list for near-matches keeps each expansion step efficient -- O(word_length * 26) neighbors per word instead of comparing against every other word.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'BFS over an implicit graph, where edges are generated on the fly rather than given explicitly' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'hit to cog, 5-Step Ladder', input: { begin_word: 'hit', end_word: 'cog', word_list: ['hot', 'dot', 'dog', 'lot', 'log', 'cog'] }, expectedOutput: 5, hidden: false },
+      { id: 'no-path', label: 'end_word Not in word_list', input: { begin_word: 'hit', end_word: 'cog', word_list: ['hot', 'dot', 'dog', 'lot', 'log'] }, expectedOutput: 0, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-54': {
+    id: 'ds-algo-prob-54',
+    title: 'Regular Expression Matching',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'is_match',
+    functionSignature: 'is_match(s: str, p: str) -> bool',
+    starterCode: `def is_match(s, p):
+    """s: input string. p: pattern where '.' matches any single char and
+    '*' matches zero or more of the PRECEDING pattern element. Return
+    True if p matches the entirety of s."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Regular Expression Matching with 2-D DP -- a classic hard DP problem where careful case analysis of the `*` operator (zero occurrences vs. one more occurrence) is the entire difficulty.',
+    taskDescription: "Implement `is_match(s, p)` with `dp[i][j]` meaning \"does `s[:i]` match `p[:j]`?\". `dp[0][0] = True` (empty matches empty). Handle patterns like `a*` matching zero occurrences in row 0. For each cell: if `p[j-1] == '*'`, either use ZERO occurrences of the preceding element (`dp[i][j-2]`) or, if the preceding element matches `s[i-1]`, ONE MORE occurrence (`dp[i-1][j]`). Otherwise (a literal or `.`), it's a normal 1-1 character match against `dp[i-1][j-1]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      "'.' matches any single character; '*' matches zero or more of the character immediately preceding it in the pattern.",
+      'The match must cover the ENTIRE input string, not just a prefix.',
+    ],
+    hints: {
+      small: "The tricky operator is '*': it can either match nothing at all (skip the letter-and-star pair entirely) or match one more copy of the letter before it and keep trying -- consider both possibilities.",
+      strong: "if p[j-1]=='*': dp[i][j] = dp[i][j-2] (zero uses) or (dp[i-1][j] if p[j-2] in ('.', s[i-1]) else False). Else: dp[i][j] = dp[i-1][j-1] if p[j-1] in ('.', s[i-1]) else False.",
+      concept: "Initializing row 0 (empty string s) to handle patterns like `a*b*c*` correctly matching empty is a common source of off-by-one bugs -- `dp[0][j] = dp[0][j-2]` when `p[j-1]=='*'` is what makes an all-optional pattern correctly match the empty string.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: '2-D DP with careful multi-case transitions, the hardest common variant of string-matching DP' },
+    ],
+    testCases: [
+      { id: 'no-match', label: 'No Star, Lengths Differ', input: { s: 'aa', p: 'a' }, expectedOutput: false, hidden: false },
+      { id: 'star-repeat', label: 'Star Matches Repetition', input: { s: 'aa', p: 'a*' }, expectedOutput: true, hidden: false },
+      { id: 'dot-star', label: 'Dot-Star Matches Anything', input: { s: 'ab', p: '.*' }, expectedOutput: true, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-55': {
+    id: 'ds-algo-prob-55',
+    title: 'Find Median from Data Stream',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'median_finder_ops',
+    functionSignature: 'median_finder_ops(operations: list[list]) -> list',
+    starterCode: `def median_finder_ops(operations):
+    """operations: list of ['addNum', num] | ['findMedian']. Simulate a
+    MedianFinder; return a list with one entry per operation (None for
+    addNum, the current median as a float for findMedian)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Find Median from Data Stream using two heaps -- a max-heap for the lower half and a min-heap for the upper half -- giving O(log n) inserts and O(1) median queries.',
+    taskDescription: "Implement `median_finder_ops(operations)` maintaining `small` (a max-heap, simulated by negating values, holding the lower half) and `large` (a min-heap holding the upper half), balanced so `len(small)` is always either equal to or exactly one more than `len(large)`. `add_num`: push into `small`, then move its top into `large` to keep values correctly partitioned, then rebalance sizes if needed. `find_median`: return `-small[0]` if `small` has one extra element, otherwise the average of both tops.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'findMedian must return a float, always.',
+      "Python's heapq is a min-heap only -- simulate a max-heap by pushing/popping negated values.",
+    ],
+    hints: {
+      small: 'Split all numbers seen so far into a "lower half" and an "upper half," each kept sorted internally via a heap. If you always know the largest of the lower half and the smallest of the upper half, the median is easy to compute from just those two numbers.',
+      strong: 'small=[] (max-heap via negation), large=[] (min-heap). add_num: push(-num) to small; push popped-negated-max of small into large; if large bigger than small, move one back.',
+      concept: "Always routing every new number through `small` first, then immediately moving its max into `large`, is a simple trick that automatically keeps values correctly partitioned between the two heaps without extra comparison logic.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The two-heap median-maintenance pattern for streaming statistics' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Add 1, 2, Median, Add 3, Median', input: { operations: [['addNum', 1], ['addNum', 2], ['findMedian'], ['addNum', 3], ['findMedian']] }, expectedOutput: [null, null, 1.5, null, 2.0], hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-56': {
+    id: 'ds-algo-prob-56',
+    title: 'Merge K Sorted Lists',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'merge_k_lists',
+    functionSignature: 'merge_k_lists(lists: list[dict | None]) -> dict | None',
+    starterCode: `def merge_k_lists(lists):
+    """lists: a list of linked-list heads (each {'val', 'next'} or
+    None). Return the head of one fully merged, sorted linked list."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Merge K Sorted Lists using a min-heap of the k lists\' current front nodes -- O(n log k) versus O(n*k) for repeatedly merging lists pairwise one at a time.',
+    taskDescription: 'Implement `merge_k_lists(lists)`: push every non-empty list\'s head node onto a min-heap, keyed by value (with a tiebreaker counter to avoid ever comparing two node dicts directly, which would error). Repeatedly pop the smallest, append it to the result, and if that node has a successor, push the successor.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Some or all lists may be None (empty) -- skip those when seeding the heap.',
+      'Must run in O(n log k) time, not O(n*k) (repeated full pairwise merges).',
+    ],
+    hints: {
+      small: 'At any moment, the smallest value across ALL k lists is at the front of exactly one of them. A min-heap seeded with every list\'s current front node lets you always find that global smallest in O(log k) instead of scanning all k fronts every time.',
+      strong: 'heap of (val, counter, node) for each list head. Pop smallest, attach to result, push (node.next.val, counter, node.next) if it exists. counter avoids comparing dicts when values tie.',
+      concept: "A tiebreaking counter in the heap tuple is necessary because Python's heapq compares tuples element-by-element, and if two nodes have equal `val`, it would try to compare the raw dict objects next and raise a TypeError -- the counter guarantees a total order without ever reaching that comparison.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'K-way merge via a min-heap, generalizing the two-list merge to many lists at once' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Three Sorted Lists', input: { lists: [{ val: 1, next: { val: 4, next: { val: 5, next: null } } }, { val: 1, next: { val: 3, next: { val: 4, next: null } } }, { val: 2, next: { val: 6, next: null } }] }, expectedOutput: { val: 1, next: { val: 1, next: { val: 2, next: { val: 3, next: { val: 4, next: { val: 4, next: { val: 5, next: { val: 6, next: null } } } } } } } }, hidden: false },
+      { id: 'empty-list', label: 'Empty List of Lists', input: { lists: [] }, expectedOutput: null, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-57': {
+    id: 'ds-algo-prob-57',
+    title: 'Serialize and Deserialize Binary Tree',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'serialize_deserialize',
+    functionSignature: 'serialize_deserialize(root: dict | None) -> dict | None',
+    starterCode: `def serialize_deserialize(root):
+    """root: a tree node as {'val', 'left', 'right'}, or None. Serialize
+    the tree to a string and immediately deserialize it back. Return
+    the reconstructed root (which must be structurally identical to
+    the original)."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Serialize and Deserialize Binary Tree using preorder encoding with explicit null markers -- the same iterator-based decoding approach generalizes to any preorder or level-order tree encoding.',
+    taskDescription: "Implement `serialize_deserialize(root)` with two helpers: `serialize(node)` recursively emits `\"val,leftSerialized,rightSerialized\"`, using the literal string `'null'` for a missing node. `deserialize(data)` splits on commas into an iterator, then recursively `build()`s: pull the next token, return None if it is `'null'`, otherwise construct a node and recursively build its left THEN right children from the same iterator (preorder order must match how it was written).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'The round-tripped tree (serialize then deserialize) must be structurally identical to the input.',
+      'An empty tree (root is None) round-trips to None.',
+    ],
+    hints: {
+      small: 'Write the tree out as one long sequence, walking it root-then-left-then-right, and explicitly write a placeholder (like "null") for every missing child -- those placeholders are what let you reconstruct the exact same shape later.',
+      strong: 'serialize(node): "null" if not node else f"{node.val},{serialize(node.left)},{serialize(node.right)}". deserialize: iterate tokens; build() pulls one token, returns None or a node built from build(),build().',
+      concept: "Using an ITERATOR (not an index counter) over the split tokens is what lets each recursive `build()` call naturally consume exactly the tokens it needs and leave the rest for the next call -- this is the cleanest way to decode a preorder-with-nulls serialization.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Preorder tree serialization with null markers, and iterator-based reconstruction' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Five-Node Tree Round-Trips', input: { root: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: { val: 4, left: null, right: null }, right: { val: 5, left: null, right: null } } } }, expectedOutput: { val: 1, left: { val: 2, left: null, right: null }, right: { val: 3, left: { val: 4, left: null, right: null }, right: { val: 5, left: null, right: null } } }, hidden: false },
+      { id: 'empty', label: 'Empty Tree Round-Trips', input: { root: null }, expectedOutput: null, hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-58': {
+    id: 'ds-algo-prob-58',
+    title: 'Alien Dictionary (Topological Sort)',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'alien_order',
+    functionSignature: 'alien_order(words: list[str]) -> str',
+    starterCode: `def alien_order(words):
+    """words: a list assumed to be sorted according to an unknown alien
+    alphabet's lexicographic order. Return a valid character ordering
+    for that alphabet as a string, or '' if the words are inconsistent
+    with any valid ordering."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Alien Dictionary by extracting pairwise ordering constraints from adjacent words, then running a DFS-based topological sort -- a cycle in the constraint graph means no valid alphabet order exists.',
+    taskDescription: "Implement `alien_order(words)`: for each pair of adjacent words, find their first differing character and add a directed edge (earlier char comes before later char) -- stop comparing that pair after the first difference. A special invalid case: if one word is a strict prefix of the PREVIOUS word's characters but longer (e.g. `['abc', 'ab']`), no valid order can exist, return `''`. Then run a three-color DFS topological sort over all characters; if a cycle is detected, return `''`; otherwise return characters in reverse-finish order.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      "If a shorter word appears immediately AFTER a longer word that it is a prefix of (invalid lexicographic order), return ''.",
+      "A cycle anywhere in the extracted constraints means no valid ordering exists -- return ''.",
+    ],
+    hints: {
+      small: 'Compare each pair of consecutive words letter by letter until you find the first place they differ -- that single difference tells you exactly one ordering fact (this letter comes before that letter). Once you have all such facts, you need an order consistent with every one of them.',
+      strong: 'For adjacent w1,w2: find first index j where they differ, add edge w1[j]->w2[j], break. If no difference found and len(w1)>len(w2): invalid, return "". Then DFS topological sort (3-color) over the character graph; cycle -> return "".',
+      concept: "This is Course Schedule's exact cycle-detection DFS applied to characters instead of courses -- once you see the pairwise-constraint extraction step, the topological sort itself is identical to a problem you've already solved.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'Extracting graph constraints from sequence data, then topological sort' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Five Words, Valid Order', input: { words: ['wrt', 'wrf', 'er', 'ett', 'rftt'] }, expectedOutput: 'wertf', hidden: false },
+      { id: 'two-words', label: 'Simple Two-Word Order', input: { words: ['z', 'x'] }, expectedOutput: 'zx', hidden: false },
+      { id: 'cycle', label: 'Cyclic Constraint Is Invalid', input: { words: ['z', 'x', 'z'] }, expectedOutput: '', hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-59': {
+    id: 'ds-algo-prob-59',
+    title: 'Burst Balloons',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'max_coins',
+    functionSignature: 'max_coins(nums: list[int]) -> int',
+    starterCode: `def max_coins(nums):
+    """nums: balloon values. Bursting balloon i yields
+    nums[i-1]*nums[i]*nums[i+1] coins (treat positions outside the
+    array as having value 1). Return the max total coins obtainable by
+    bursting all balloons in some order."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Burst Balloons with interval DP -- the key insight is to think about which balloon is burst LAST in a range, not first, since that fixes stable neighbors for the DP transition.',
+    taskDescription: 'Implement `max_coins(nums)`: pad the array with a 1 on each end (so boundary bursts have well-defined neighbors). Define `dp[left][right]` as the max coins from bursting every balloon strictly between indices `left` and `right` (both endpoints untouched, acting as boundaries). For each interval, try every `k` as the LAST balloon burst in that interval: its reward is `nums[left]*nums[k]*nums[right]` (since when it\'s burst last, its immediate neighbors are exactly `left` and `right`), plus the best result of the two sub-intervals on either side of `k`.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Out-of-bounds neighbors (before index 0 or after the last index) count as value 1.',
+      'All balloons must eventually be burst.',
+    ],
+    hints: {
+      small: "Thinking about which balloon to burst FIRST is hard, because bursting it changes who its neighbors' neighbors are for every future choice. Thinking about which balloon is burst LAST within a range is much easier -- its neighbors at that final moment are guaranteed to still be the range's own boundaries.",
+      strong: 'Pad nums with 1 on both ends. dp[left][right] over increasing interval length: for k in (left+1, right): dp[left][right] = max(dp[left][right], nums[left]*nums[k]*nums[right] + dp[left][k] + dp[k][right]).',
+      concept: "Choosing the LAST balloon burst (rather than the first) is the classic trick for this style of interval DP -- it decouples the two resulting sub-intervals completely, since balloon k's burst-last neighbors are fixed regardless of what order the sub-intervals are each internally resolved in.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: "Interval DP keyed on \"last action in a range,\" a distinct family from linear 1-D DP" },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Four Balloons', input: { nums: [3, 1, 5, 8] }, expectedOutput: 167, hidden: false },
+      { id: 'two-balloons', label: 'Two Balloons', input: { nums: [1, 5] }, expectedOutput: 10, hidden: false },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  'ds-algo-prob-60': {
+    id: 'ds-algo-prob-60',
+    title: 'Sliding Window Maximum',
+    difficulty: 'hard',
+    topic: 'data-structures-algorithms',
+    estimatedTime: '20–25 min',
+    functionName: 'max_sliding_window',
+    functionSignature: 'max_sliding_window(nums: list[int], k: int) -> list[int]',
+    starterCode: `def max_sliding_window(nums, k):
+    """nums: list of ints. Return the maximum value in each contiguous
+    window of size k as the window slides from left to right."""
+    # Your implementation here
+    pass
+`,
+    mission: 'Implement Sliding Window Maximum using a monotonic decreasing deque of INDICES -- it maintains the current window\'s maximum in O(1) amortized per step, since every index is pushed and popped at most once total.',
+    taskDescription: 'Implement `max_sliding_window(nums, k)` with a deque storing indices in decreasing order of their VALUES. For each new index `i`: (1) drop the front index if it has fallen out of the window (`dq[0] == i - k`), (2) drop indices from the back whose values are `<=` the new value (they can never be the max again while the new, later, larger-or-equal value is still in the window), (3) append `i`, (4) once the window is full (`i >= k-1`), the front of the deque is the current window\'s max.',
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+      'Libraries are allowed and accepted normally; Pure Python earns +10 Bonus XP!',
+      'Must run in O(n) total time (amortized O(1) per element), not O(n*k) (recomputing the max for every window from scratch).',
+      'k <= len(nums).',
+    ],
+    hints: {
+      small: 'Keep track of candidates for "current window maximum" in a queue, but throw away any candidate as soon as you see a later value that is at least as large -- an earlier, smaller-or-equal value can never become the max again while that larger one is still around.',
+      strong: 'dq holds indices, values at those indices strictly decreasing front-to-back. Before adding i: pop front if out of window; pop back while nums[back] <= nums[i]; append i; if window full, answer is nums[dq[0]].',
+      concept: "Each index enters the deque exactly once and is removed at most once (either popped from the back for being dominated, or from the front for aging out) -- that's what gives the whole algorithm O(n) total work despite processing a sliding window at every step.",
+    },
+    conceptConnections: [
+      { title: 'General Coding (DSA)', route: '/docs/interview-prep/dsa-coding', description: 'The monotonic deque pattern, reused by Sliding Window Minimum and several DP-optimization problems' },
+    ],
+    testCases: [
+      { id: 'basic', label: 'Window Size 3', input: { nums: [1, 3, -1, -3, 5, 3, 6, 7], k: 3 }, expectedOutput: [3, 3, 5, 5, 6, 7], hidden: false },
+      { id: 'single-element-window', label: 'Window Size 1', input: { nums: [1], k: 1 }, expectedOutput: [1], hidden: true },
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 
   'numpy-pandas-prob-1': {
     id: 'numpy-pandas-prob-1',

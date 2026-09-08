@@ -1,31 +1,53 @@
 ---
-placeholder: true
-title: "Practice: Graphs Module 38: Problem 98"
+title: "Practice: #98. Graphs: Walls and Gates (Multi-source BFS)"
+description: "Implement Graphs: Walls and Gates (Multi-source BFS) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 98
-description: "Curriculum Problem 98 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Graphs Module 38: Problem 98
+# Graphs: Walls and Gates (Multi-source BFS)
 
 **Rank #98** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-37`.
+## Overview
+
+Implement `walls_and_gates(rooms)` -- multi-source BFS from all gates simultaneously. Computing shortest distances from multiple sources at once is a powerful BFS variant.
+
+## Task
+
+Implement the function `walls_and_gates(rooms)`. Fill each empty room with the distance to its nearest gate. Walls are -1, gates are 0, empty rooms are 2147483647.
 
 <PracticePlayground problemId="ds-algo-prob-38" />
 
 <Solution>
 
 ```python
-def ds_algo_p38(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def walls_and_gates(rooms):
+    import copy
+    INF = 2147483647
+    grid = copy.deepcopy(rooms)
+    rows, cols = len(grid), len(grid[0])
+    q = deque()
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 0:
+                q.append((r, c))
+    while q:
+        r, c = q.popleft()
+        for dr, dc in [(0,1),(0,-1),(1,0),(-1,0)]:
+            nr, nc = r+dr, c+dc
+            if 0<=nr<rows and 0<=nc<cols and grid[nr][nc]==INF:
+                grid[nr][nc] = grid[r][c] + 1
+                q.append((nr,nc))
+    return grid
 ```
 
-This problem tests fundamental skills in Graphs.
+Initialize the BFS queue with all gates (value 0). Expand outward, overwriting INF cells with their distance. Multi-source BFS gives optimal shortest distances to all gates simultaneously.
 
 </Solution>

@@ -1,31 +1,59 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 55: Problem 115"
+title: "Practice: #115. Advanced DS: Find Median from Data Stream"
+description: "Implement Advanced DS: Find Median from Data Stream in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 115
-description: "Curriculum Problem 115 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 55: Problem 115
+# Advanced DS: Find Median from Data Stream
 
 **Rank #115** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-54`.
+## Overview
+
+Implement `median_finder_ops(operations)` -- maintain a max-heap for the lower half and a min-heap for the upper half. Median is O(1) and each addNum is O(log n).
+
+## Task
+
+Implement the function `median_finder_ops(operations)`. Simulate a MedianFinder supporting `addNum(num)` and `findMedian()` (returns current median as a float).
 
 <PracticePlayground problemId="ds-algo-prob-55" />
 
 <Solution>
 
 ```python
-def ds_algo_p55(data):
-    # Reference implementation
-    return data
+import heapq
+
+def median_finder_ops(operations):
+    small = []  # max-heap (negate values)
+    large = []  # min-heap
+
+    def add_num(num):
+        heapq.heappush(small, -num)
+        heapq.heappush(large, -heapq.heappop(small))
+        if len(large) > len(small):
+            heapq.heappush(small, -heapq.heappop(large))
+
+    def find_median():
+        if len(small) > len(large):
+            return float(-small[0])
+        return (-small[0] + large[0]) / 2.0
+
+    results = []
+    for op in operations:
+        name = op[0]
+        if name == 'addNum':
+            add_num(op[1])
+            results.append(None)
+        elif name == 'findMedian':
+            results.append(find_median())
+    return results
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Two heaps: small (max-heap of lower half), large (min-heap of upper half). Always maintain `|small| >= |large|` with `|small| - |large| <= 1`. Median = small[0] or average of both tops. O(log n) add, O(1) median.
 
 </Solution>

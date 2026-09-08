@@ -1,31 +1,49 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 54: Problem 114"
+title: "Practice: #114. DP: Regular Expression Matching"
+description: "Implement DP: Regular Expression Matching in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 114
-description: "Curriculum Problem 114 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 54: Problem 114
+# DP: Regular Expression Matching
 
 **Rank #114** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-53`.
+## Overview
+
+Implement `is_match(s, p)` -- 2-D DP handling `.` (any char) and `*` (zero or more of preceding). A classic hard DP problem testing careful state-transition reasoning.
+
+## Task
+
+Implement the function `is_match(s, p)`. Return `True` if `s` matches pattern `p`. `.` matches any single character; `*` matches zero or more of the preceding element.
 
 <PracticePlayground problemId="ds-algo-prob-54" />
 
 <Solution>
 
 ```python
-def ds_algo_p54(data):
-    # Reference implementation
-    return data
+def is_match(s, p):
+    m, n = len(s), len(p)
+    dp = [[False]*(n+1) for _ in range(m+1)]
+    dp[0][0] = True
+    for j in range(2, n+1):
+        if p[j-1] == '*':
+            dp[0][j] = dp[0][j-2]
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if p[j-1] == '*':
+                dp[i][j] = dp[i][j-2]  # zero occurrences of p[j-2]
+                if p[j-2] == '.' or p[j-2] == s[i-1]:
+                    dp[i][j] = dp[i][j] or dp[i-1][j]  # one more occurrence
+            elif p[j-1] == '.' or p[j-1] == s[i-1]:
+                dp[i][j] = dp[i-1][j-1]
+    return dp[m][n]
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+dp[i][j] = does s[:i] match p[:j]. `*` has two cases: zero occurrences (copy dp[i][j-2]) or one more occurrence if the preceding pattern char matches (copy dp[i-1][j]). O(m*n) time and space.
 
 </Solution>

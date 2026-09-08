@@ -1,31 +1,52 @@
 ---
-placeholder: true
-title: "Practice: Graphs Module 3: Problem 63"
+title: "Practice: #63. Graphs: Number of Islands"
+description: "Implement Graphs: Number of Islands in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 63
-description: "Curriculum Problem 63 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Graphs Module 3: Problem 63
+# Graphs: Number of Islands
 
 **Rank #63** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-2`.
+## Overview
+
+Implement `num_islands(grid)` using DFS or BFS -- the canonical grid connected-components problem that is the foundation for Flood Fill, Pacific Atlantic Water Flow, and Surrounded Regions.
+
+## Task
+
+Implement the function `num_islands(grid)`. The grid contains `'1'` (land) and `'0'` (water) strings. Return the count of islands (maximal groups of `'1'` cells connected 4-directionally).
 
 <PracticePlayground problemId="ds-algo-prob-3" />
 
 <Solution>
 
 ```python
-def ds_algo_p3(data):
-    # Reference implementation
-    return data
+def num_islands(grid):
+    if not grid:
+        return 0
+    rows, cols = len(grid), len(grid[0])
+    visited = [[False]*cols for _ in range(rows)]
+    count = 0
+
+    def dfs(r, c):
+        if r < 0 or r >= rows or c < 0 or c >= cols or visited[r][c] or grid[r][c] == '0':
+            return
+        visited[r][c] = True
+        dfs(r+1,c); dfs(r-1,c); dfs(r,c+1); dfs(r,c-1)
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1' and not visited[r][c]:
+                count += 1
+                dfs(r, c)
+    return count
 ```
 
-This problem tests fundamental skills in Graphs.
+DFS from every unvisited `'1'` cell, marking visited cells. Each DFS call explores a full island. O(m*n) time and space.
 
 </Solution>

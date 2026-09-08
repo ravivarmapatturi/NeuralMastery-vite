@@ -1,31 +1,52 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 49: Problem 109"
+title: "Practice: #109. DP: Word Break II (All Sentences)"
+description: "Implement DP: Word Break II (All Sentences) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 109
-description: "Curriculum Problem 109 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 49: Problem 109
+# DP: Word Break II (All Sentences)
 
 **Rank #109** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-48`.
+## Overview
+
+Implement `word_break_ii(s, word_dict)` -- enumerate all valid segmentations using top-down memoization. Exponential output size is unavoidable but memoization avoids recomputing subproblems.
+
+## Task
+
+Implement the function `word_break_ii(s, word_dict)`. Return all possible sentences formed by inserting spaces in `s` so that each word is in `word_dict`.
 
 <PracticePlayground problemId="ds-algo-prob-49" />
 
 <Solution>
 
 ```python
-def ds_algo_p49(data):
-    # Reference implementation
-    return data
+def word_break_ii(s, word_dict):
+    word_set = set(word_dict)
+    memo = {}
+
+    def dp(start):
+        if start in memo:
+            return memo[start]
+        if start == len(s):
+            return [[]]
+        results = []
+        for end in range(start + 1, len(s) + 1):
+            word = s[start:end]
+            if word in word_set:
+                for rest in dp(end):
+                    results.append([word] + rest)
+        memo[start] = results
+        return results
+
+    return [' '.join(path) for path in dp(0)]
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+Top-down DP: memo[start] = all valid segmentation lists from position start. The memoization avoids exponential recomputation. Output construction can still be large. O(n^2 * 2^n) worst case.
 
 </Solution>

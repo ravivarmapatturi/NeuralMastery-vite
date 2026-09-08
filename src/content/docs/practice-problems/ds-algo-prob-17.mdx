@@ -1,31 +1,45 @@
 ---
-placeholder: true
-title: "Practice: Trees Module 17: Problem 77"
+title: "Practice: #77. Trees: Symmetric Tree"
+description: "Implement Trees: Symmetric Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 77
-description: "Curriculum Problem 77 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Trees Module 17: Problem 77
+# Trees: Symmetric Tree
 
 **Rank #77** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-16`.
+## Overview
+
+Implement `is_symmetric(root)` -- checking if a tree is its own mirror image. The base pattern for Subtree of Another Tree and Same Tree.
+
+## Task
+
+Implement the function `is_symmetric(root)`. Each node is `{'val', 'left', 'right'}`. Return `True` if the tree is a mirror of itself.
 
 <PracticePlayground problemId="ds-algo-prob-17" />
 
 <Solution>
 
 ```python
-def ds_algo_p17(data):
-    # Reference implementation
-    return data
+def is_symmetric(root):
+    def check(l, r):
+        if not l and not r:
+            return True
+        if not l or not r:
+            return False
+        return (l['val'] == r['val']
+                and check(l['left'], r['right'])
+                and check(l['right'], r['left']))
+    if not root:
+        return True
+    return check(root['left'], root['right'])
 ```
 
-This problem tests fundamental skills in Trees / binary search.
+Paired recursion: left.left mirrors right.right, and left.right mirrors right.left. An empty tree is symmetric. O(n) time.
 
 </Solution>

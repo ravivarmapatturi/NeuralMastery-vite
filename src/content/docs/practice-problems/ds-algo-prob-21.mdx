@@ -1,31 +1,40 @@
 ---
-placeholder: true
-title: "Practice: Linked lists Module 21: Problem 81"
+title: "Practice: #81. Linked Lists: Palindrome Linked List"
+description: "Implement Linked Lists: Palindrome Linked List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 81
-description: "Curriculum Problem 81 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Linked lists Module 21: Problem 81
+# Linked Lists: Palindrome Linked List
 
 **Rank #81** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-20`.
+## Overview
+
+Implement `is_palindrome_list(head)` -- find the middle, reverse the second half, compare both halves. Combines three foundational linked-list techniques.
+
+## Task
+
+Implement the function `is_palindrome_list(head)`. Each node is `{'val', 'next'}`. Return `True` if the linked list is a palindrome.
 
 <PracticePlayground problemId="ds-algo-prob-21" />
 
 <Solution>
 
 ```python
-def ds_algo_p21(data):
-    # Reference implementation
-    return data
+def is_palindrome_list(head):
+    vals = []
+    cur = head
+    while cur:
+        vals.append(cur['val'])
+        cur = cur['next']
+    return vals == vals[::-1]
 ```
 
-This problem tests fundamental skills in Linked lists / stacks / queues.
+Collect values into a list and check if the list equals its reverse. O(n) time, O(n) space. For O(1) space: reverse the second half and compare in-place.
 
 </Solution>

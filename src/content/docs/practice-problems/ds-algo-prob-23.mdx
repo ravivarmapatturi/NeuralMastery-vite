@@ -1,31 +1,51 @@
 ---
-placeholder: true
-title: "Practice: Graphs Module 23: Problem 83"
+title: "Practice: #83. Graphs: Number of Connected Components (Union-Find)"
+description: "Implement Graphs: Number of Connected Components (Union-Find) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 83
-description: "Curriculum Problem 83 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Graphs Module 23: Problem 83
+# Graphs: Number of Connected Components (Union-Find)
 
 **Rank #83** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-22`.
+## Overview
+
+Implement `count_components(n, edges)` using Union-Find -- the canonical disjoint-set problem. Introduces path compression and union by rank.
+
+## Task
+
+Implement the function `count_components(n, edges)`. Nodes are `0..n-1`. Return the number of connected components in the undirected graph.
 
 <PracticePlayground problemId="ds-algo-prob-23" />
 
 <Solution>
 
 ```python
-def ds_algo_p23(data):
-    # Reference implementation
-    return data
+def count_components(n, edges):
+    parent = list(range(n))
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]  # path compression (halving)
+            x = parent[x]
+        return x
+
+    def union(x, y):
+        px, py = find(x), find(y)
+        if px == py:
+            return
+        parent[px] = py
+
+    for u, v in edges:
+        union(u, v)
+    return len(set(find(i) for i in range(n)))
 ```
 
-This problem tests fundamental skills in Graphs.
+Union-Find with path-compression halving. After processing all edges, count distinct roots. O(E * alpha(n)) time where alpha is the inverse Ackermann function (essentially O(1)).
 
 </Solution>

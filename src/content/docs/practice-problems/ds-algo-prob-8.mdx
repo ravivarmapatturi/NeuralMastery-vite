@@ -1,31 +1,50 @@
 ---
-placeholder: true
-title: "Practice: Graphs Module 8: Problem 68"
+title: "Practice: #68. Graphs: Flood Fill"
+description: "Implement Graphs: Flood Fill in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 68
-description: "Curriculum Problem 68 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Graphs Module 8: Problem 68
+# Graphs: Flood Fill
 
 **Rank #68** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-7`.
+## Overview
+
+Implement `flood_fill(image, sr, sc, color)` -- the paint-bucket algorithm, a direct application of DFS/BFS on a 2D grid.
+
+## Task
+
+Implement the function `flood_fill(image, sr, sc, color)`. Starting from `(sr, sc)`, recolor all 4-directionally connected cells with the original starting color to `color`. Return the modified image.
 
 <PracticePlayground problemId="ds-algo-prob-8" />
 
 <Solution>
 
 ```python
-def ds_algo_p8(data):
-    # Reference implementation
-    return data
+import copy
+
+def flood_fill(image, sr, sc, color):
+    orig = image[sr][sc]
+    if orig == color:
+        return image
+    img = copy.deepcopy(image)
+    rows, cols = len(img), len(img[0])
+
+    def dfs(r, c):
+        if r < 0 or r >= rows or c < 0 or c >= cols or img[r][c] != orig:
+            return
+        img[r][c] = color
+        dfs(r+1,c); dfs(r-1,c); dfs(r,c+1); dfs(r,c-1)
+
+    dfs(sr, sc)
+    return img
 ```
 
-This problem tests fundamental skills in Graphs.
+Early-exit when `orig == color` prevents infinite recursion. DFS marks each cell before recursing to avoid revisiting. O(m*n) time, O(m*n) recursion stack.
 
 </Solution>

@@ -1,31 +1,44 @@
 ---
-placeholder: true
-title: "Practice: Linked lists Module 46: Problem 106"
+title: "Practice: #106. Linked Lists: Swap Nodes in Pairs"
+description: "Implement Linked Lists: Swap Nodes in Pairs in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 106
-description: "Curriculum Problem 106 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Linked lists Module 46: Problem 106
+# Linked Lists: Swap Nodes in Pairs
 
 **Rank #106** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-45`.
+## Overview
+
+Implement `swap_pairs(head)` -- swap every consecutive pair of nodes. A clean recursive or iterative solution with a dummy head.
+
+## Task
+
+Implement the function `swap_pairs(head)`. Each node is `{'val', 'next'}`. Swap every two adjacent nodes and return the new head. Do not modify node values.
 
 <PracticePlayground problemId="ds-algo-prob-46" />
 
 <Solution>
 
 ```python
-def ds_algo_p46(data):
-    # Reference implementation
-    return data
+def swap_pairs(head):
+    dummy = {'val': 0, 'next': head}
+    prev = dummy
+    while prev['next'] and prev['next']['next']:
+        a = prev['next']
+        b = prev['next']['next']
+        prev['next'] = b
+        a['next'] = b['next']
+        b['next'] = a
+        prev = a
+    return dummy['next']
 ```
 
-This problem tests fundamental skills in Linked lists / stacks / queues.
+Iterative: prev -> a -> b -> rest becomes prev -> b -> a -> rest. Advance prev to a (the new second node). Dummy head handles the first pair. O(n) time, O(1) space.
 
 </Solution>

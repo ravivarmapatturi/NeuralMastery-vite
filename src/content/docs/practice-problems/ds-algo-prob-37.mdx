@@ -1,31 +1,40 @@
 ---
-placeholder: true
-title: "Practice: Trees Module 37: Problem 97"
+title: "Practice: #97. Trees: Validate Binary Search Tree"
+description: "Implement Trees: Validate Binary Search Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 97
-description: "Curriculum Problem 97 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Trees Module 37: Problem 97
+# Trees: Validate Binary Search Tree
 
 **Rank #97** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-36`.
+## Overview
+
+Implement `is_valid_bst(root)` -- pass down valid ranges (min_val, max_val) at each node rather than just comparing children, which is a common wrong approach.
+
+## Task
+
+Implement the function `is_valid_bst(root)`. Each node is `{'val', 'left', 'right'}`. Return `True` if the tree is a valid BST (left subtree values `< root.val < right subtree values` at every node).
 
 <PracticePlayground problemId="ds-algo-prob-37" />
 
 <Solution>
 
 ```python
-def ds_algo_p37(data):
-    # Reference implementation
-    return data
+def is_valid_bst(root, min_val=float('-inf'), max_val=float('inf')):
+    if not root:
+        return True
+    if root['val'] <= min_val or root['val'] >= max_val:
+        return False
+    return (is_valid_bst(root['left'], min_val, root['val'])
+            and is_valid_bst(root['right'], root['val'], max_val))
 ```
 
-This problem tests fundamental skills in Trees / binary search.
+Pass the valid range (min_val, max_val) down. Each node must be strictly inside that range. Left subtree receives (min_val, root.val), right receives (root.val, max_val). O(n) time.
 
 </Solution>

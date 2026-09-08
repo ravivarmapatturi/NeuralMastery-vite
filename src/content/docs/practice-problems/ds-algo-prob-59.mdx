@@ -1,31 +1,46 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 59: Problem 119"
+title: "Practice: #119. DP: Burst Balloons"
+description: "Implement DP: Burst Balloons in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 119
-description: "Curriculum Problem 119 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 59: Problem 119
+# DP: Burst Balloons
 
 **Rank #119** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-58`.
+## Overview
+
+Implement `max_coins(nums)` -- interval DP where `dp[left][right]` = max coins from bursting all balloons strictly between indices left and right, with k as the LAST balloon burst.
+
+## Task
+
+Implement the function `max_coins(nums)`. Return the maximum coins obtainable by bursting all balloons. Bursting balloon i gives `nums[i-1] * nums[i] * nums[i+1]` coins (treat out-of-bounds as 1).
 
 <PracticePlayground problemId="ds-algo-prob-59" />
 
 <Solution>
 
 ```python
-def ds_algo_p59(data):
-    # Reference implementation
-    return data
+def max_coins(nums):
+    nums = [1] + nums + [1]
+    n = len(nums)
+    dp = [[0] * n for _ in range(n)]
+    for length in range(2, n):
+        for left in range(0, n - length):
+            right = left + length
+            for k in range(left + 1, right):
+                dp[left][right] = max(
+                    dp[left][right],
+                    nums[left] * nums[k] * nums[right] + dp[left][k] + dp[k][right]
+                )
+    return dp[0][n-1]
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+Interval DP: pad with 1s at both ends. dp[left][right] = max coins bursting all balloons in (left, right) exclusive. k is the LAST balloon to burst in that interval (so its neighbors are left and right). O(n^3) time.
 
 </Solution>

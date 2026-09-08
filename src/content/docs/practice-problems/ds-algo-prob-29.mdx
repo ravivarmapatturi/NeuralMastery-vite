@@ -1,31 +1,44 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 29: Problem 89"
+title: "Practice: #89. DP: Longest Increasing Subsequence"
+description: "Implement DP: Longest Increasing Subsequence in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 89
-description: "Curriculum Problem 89 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 29: Problem 89
+# DP: Longest Increasing Subsequence
 
 **Rank #89** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-28`.
+## Overview
+
+Implement `length_of_lis(nums)` -- the patience-sort / binary-search approach gives O(n log n), far better than the naive O(n^2) DP.
+
+## Task
+
+Implement the function `length_of_lis(nums)`. Return the length of the longest strictly increasing subsequence.
 
 <PracticePlayground problemId="ds-algo-prob-29" />
 
 <Solution>
 
 ```python
-def ds_algo_p29(data):
-    # Reference implementation
-    return data
+import bisect
+
+def length_of_lis(nums):
+    dp = []  # dp[i] = smallest tail element of all LIS of length i+1
+    for n in nums:
+        pos = bisect.bisect_left(dp, n)
+        if pos == len(dp):
+            dp.append(n)
+        else:
+            dp[pos] = n
+    return len(dp)
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+Patience sort: maintain a list of the smallest tails of increasing subsequences by length. Binary search for the insertion position. O(n log n) time, O(n) space.
 
 </Solution>

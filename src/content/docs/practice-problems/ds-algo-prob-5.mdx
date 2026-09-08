@@ -1,31 +1,44 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 5: Problem 65"
+title: "Practice: #65. Advanced DS: Valid Parentheses"
+description: "Implement Advanced DS: Valid Parentheses in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 65
-description: "Curriculum Problem 65 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 5: Problem 65
+# Advanced DS: Valid Parentheses
 
 **Rank #65** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-4`.
+## Overview
+
+Implement `is_valid(s)` -- the canonical stack problem. Used verbatim in compilers, linters, and as a component of expression-evaluator problems.
+
+## Task
+
+Implement the function `is_valid(s)`. Return `True` if the bracket string has every opener matched by its correct closer in valid nesting order.
 
 <PracticePlayground problemId="ds-algo-prob-5" />
 
 <Solution>
 
 ```python
-def ds_algo_p5(data):
-    # Reference implementation
-    return data
+def is_valid(s):
+    stack = []
+    mapping = {')': '(', ']': '[', '}': '{'}
+    for c in s:
+        if c in '([{':
+            stack.append(c)
+        else:
+            if not stack or stack[-1] != mapping[c]:
+                return False
+            stack.pop()
+    return len(stack) == 0
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Push openers; for closers check the stack top against a closing-to-opening mapping. A trailing non-empty stack means unmatched openers.
 
 </Solution>

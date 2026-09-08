@@ -1,31 +1,65 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 50: Problem 110"
+title: "Practice: #110. Advanced DS: Maximum Frequency Stack"
+description: "Implement Advanced DS: Maximum Frequency Stack in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 110
-description: "Curriculum Problem 110 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 50: Problem 110
+# Advanced DS: Maximum Frequency Stack
 
 **Rank #110** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-49`.
+## Overview
+
+Implement `freq_stack_ops(operations)` -- FreqStack tracks push counts per element and groups by frequency, enabling O(1) pop of the most frequent (breaking ties by recency).
+
+## Task
+
+Implement the function `freq_stack_ops(operations)`. Simulate a FreqStack supporting `push(val)` and `pop()` (removes and returns the most-frequent element; ties broken by most recent push).
 
 <PracticePlayground problemId="ds-algo-prob-50" />
 
 <Solution>
 
 ```python
-def ds_algo_p50(data):
-    # Reference implementation
-    return data
+def freq_stack_ops(operations):
+    class FreqStack:
+        def __init__(self):
+            self.freq = {}
+            self.group = {}   # freq -> stack of elements at that frequency
+            self.max_freq = 0
+
+        def push(self, val):
+            f = self.freq.get(val, 0) + 1
+            self.freq[val] = f
+            self.max_freq = max(self.max_freq, f)
+            if f not in self.group:
+                self.group[f] = []
+            self.group[f].append(val)
+
+        def pop(self):
+            val = self.group[self.max_freq].pop()
+            self.freq[val] -= 1
+            if not self.group[self.max_freq]:
+                self.max_freq -= 1
+            return val
+
+    fs = FreqStack()
+    results = []
+    for op in operations:
+        name = op[0]
+        if name == 'push':
+            fs.push(op[1])
+            results.append(None)
+        elif name == 'pop':
+            results.append(fs.pop())
+    return results
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Two maps: freq[val] = current frequency, group[freq] = stack of elements at that frequency. Push appends to group[new_freq]; pop takes from group[max_freq] and decrements. All O(1).
 
 </Solution>

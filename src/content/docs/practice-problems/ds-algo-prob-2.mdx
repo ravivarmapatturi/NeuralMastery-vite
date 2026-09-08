@@ -1,31 +1,51 @@
 ---
-placeholder: true
-title: "Practice: Trees Module 2: Problem 62"
+title: "Practice: #62. Trees: Binary Tree Level Order Traversal"
+description: "Implement Trees: Binary Tree Level Order Traversal in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 62
-description: "Curriculum Problem 62 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Trees Module 2: Problem 62
+# Trees: Binary Tree Level Order Traversal
 
 **Rank #62** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-1`.
+## Overview
+
+Implement `level_order(root)` using BFS -- the foundational tree traversal every breadth-first tree algorithm (zigzag level order, right-side view, connect next pointers) is built on.
+
+## Task
+
+Implement the function `level_order(root)`. Each node is a dict `{'val', 'left', 'right'}`. Return a list of lists, one per level of the tree from root to leaves.
 
 <PracticePlayground problemId="ds-algo-prob-2" />
 
 <Solution>
 
 ```python
-def ds_algo_p2(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def level_order(root):
+    if not root:
+        return []
+    result = []
+    q = deque([root])
+    while q:
+        level = []
+        for _ in range(len(q)):
+            node = q.popleft()
+            level.append(node['val'])
+            if node['left']:
+                q.append(node['left'])
+            if node['right']:
+                q.append(node['right'])
+        result.append(level)
+    return result
 ```
 
-This problem tests fundamental skills in Trees / binary search.
+Snapshot `len(q)` before the inner loop -- that count equals one level's nodes. Enqueue children for the next level. O(n) time, O(n) space.
 
 </Solution>

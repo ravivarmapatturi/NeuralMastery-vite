@@ -1,31 +1,76 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 45: Problem 105"
+title: "Practice: #105. Advanced DS: Design Twitter (Simplified Feed)"
+description: "Implement Advanced DS: Design Twitter (Simplified Feed) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 105
-description: "Curriculum Problem 105 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 45: Problem 105
+# Advanced DS: Design Twitter (Simplified Feed)
 
 **Rank #105** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-44`.
+## Overview
+
+Implement a simplified Twitter-style feed -- a practical application of heaps, hash maps, and ordered event streams. The full solution uses a k-way merge heap for O(10 log k) getNewsFeed.
+
+## Task
+
+Implement the function `twitter_ops(operations)`. Simulate Twitter with `postTweet(userId, tweetId)`, `getNewsFeed(userId)` (10 most recent from self+followees), `follow`, and `unfollow`.
 
 <PracticePlayground problemId="ds-algo-prob-45" />
 
 <Solution>
 
 ```python
-def ds_algo_p45(data):
-    # Reference implementation
-    return data
+def twitter_ops(operations):
+    time_counter = [0]
+    tweets = {}    # userId -> [(timestamp, tweetId)]
+    following = {} # userId -> set of followeeIds
+
+    def post_tweet(userId, tweetId):
+        if userId not in tweets:
+            tweets[userId] = []
+        tweets[userId].append((time_counter[0], tweetId))
+        time_counter[0] += 1
+
+    def get_news_feed(userId):
+        followees = following.get(userId, set()) | {userId}
+        all_tweets = []
+        for uid in followees:
+            all_tweets.extend(tweets.get(uid, []))
+        all_tweets.sort(key=lambda x: -x[0])
+        return [tid for _, tid in all_tweets[:10]]
+
+    def follow(followerId, followeeId):
+        if followerId not in following:
+            following[followerId] = set()
+        following[followerId].add(followeeId)
+
+    def unfollow(followerId, followeeId):
+        if followerId in following:
+            following[followerId].discard(followeeId)
+
+    results = []
+    for op in operations:
+        name = op[0]
+        if name == 'postTweet':
+            post_tweet(op[1], op[2])
+            results.append(None)
+        elif name == 'getNewsFeed':
+            results.append(get_news_feed(op[1])[:10])
+        elif name == 'follow':
+            follow(op[1], op[2])
+            results.append(None)
+        elif name == 'unfollow':
+            unfollow(op[1], op[2])
+            results.append(None)
+    return results
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Store tweets with timestamps; getNewsFeed merges all followee tweet lists and sorts by recency, taking top 10. For large scale: a k-way merge heap on per-user iterators gives O(10 log k) per query.
 
 </Solution>

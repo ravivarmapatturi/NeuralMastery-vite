@@ -1,31 +1,66 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 10: Problem 70"
+title: "Practice: #70. Advanced DS: Min Stack"
+description: "Implement Advanced DS: Min Stack in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 70
-description: "Curriculum Problem 70 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 10: Problem 70
+# Advanced DS: Min Stack
 
 **Rank #70** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-9`.
+## Overview
+
+Implement Min Stack -- a stack augmented to return the current minimum in O(1) time. The auxiliary min-stack pattern extends to monotonic stacks, range-minimum queries, and histogram area problems.
+
+## Task
+
+Implement the function `min_stack_ops(operations)`. Simulate a MinStack supporting `push(val)`, `pop()`, `top()`, and `getMin()`, all in O(1). Return the results of `top` and `getMin` calls.
 
 <PracticePlayground problemId="ds-algo-prob-10" />
 
 <Solution>
 
 ```python
-def ds_algo_p10(data):
-    # Reference implementation
-    return data
+def min_stack_ops(operations):
+    class MinStack:
+        def __init__(self):
+            self.stack = []
+            self.min_stack = []
+        def push(self, val):
+            self.stack.append(val)
+            if not self.min_stack or val <= self.min_stack[-1]:
+                self.min_stack.append(val)
+        def pop(self):
+            val = self.stack.pop()
+            if val == self.min_stack[-1]:
+                self.min_stack.pop()
+        def top(self):
+            return self.stack[-1]
+        def getMin(self):
+            return self.min_stack[-1]
+
+    ms = MinStack()
+    results = []
+    for op in operations:
+        name = op[0]
+        if name == 'push':
+            ms.push(op[1])
+            results.append(None)
+        elif name == 'pop':
+            ms.pop()
+            results.append(None)
+        elif name == 'top':
+            results.append(ms.top())
+        elif name == 'getMin':
+            results.append(ms.getMin())
+    return results
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Auxiliary min-stack: push to it only when the new value is `<= its current top`; pop from it only when the value leaving the main stack equals its top. All four operations are O(1).
 
 </Solution>

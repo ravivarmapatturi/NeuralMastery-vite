@@ -1,31 +1,51 @@
 ---
-placeholder: true
-title: "Practice: Trees Module 27: Problem 87"
+title: "Practice: #87. Trees: Binary Tree Right Side View"
+description: "Implement Trees: Binary Tree Right Side View in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 87
-description: "Curriculum Problem 87 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Trees Module 27: Problem 87
+# Trees: Binary Tree Right Side View
 
 **Rank #87** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-26`.
+## Overview
+
+Implement `right_side_view(root)` -- BFS level order but only recording the last node at each level. This is the view you would see standing to the right of the tree.
+
+## Task
+
+Implement the function `right_side_view(root)`. Each node is `{'val', 'left', 'right'}`. Return the values of the rightmost node at each level, from top to bottom.
 
 <PracticePlayground problemId="ds-algo-prob-27" />
 
 <Solution>
 
 ```python
-def ds_algo_p27(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def right_side_view(root):
+    if not root:
+        return []
+    result = []
+    q = deque([root])
+    while q:
+        n = len(q)
+        for i in range(n):
+            node = q.popleft()
+            if i == n - 1:
+                result.append(node['val'])
+            if node['left']:
+                q.append(node['left'])
+            if node['right']:
+                q.append(node['right'])
+    return result
 ```
 
-This problem tests fundamental skills in Trees / binary search.
+Level-order BFS; the last node dequeued at each level is the rightmost. Record it with `if i == n-1`. O(n) time.
 
 </Solution>

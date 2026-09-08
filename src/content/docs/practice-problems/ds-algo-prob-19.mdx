@@ -1,31 +1,41 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 19: Problem 79"
+title: "Practice: #79. DP: Coin Change (Minimum Coins)"
+description: "Implement DP: Coin Change (Minimum Coins) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 79
-description: "Curriculum Problem 79 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 19: Problem 79
+# DP: Coin Change (Minimum Coins)
 
 **Rank #79** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-18`.
+## Overview
+
+Implement `coin_change(coins, amount)` -- the canonical unbounded-knapsack DP problem. Same recurrence as Climbing Stairs but with arbitrary step sizes.
+
+## Task
+
+Implement the function `coin_change(coins, amount)`. Return the minimum number of coins needed to make `amount`, or `-1` if impossible.
 
 <PracticePlayground problemId="ds-algo-prob-19" />
 
 <Solution>
 
 ```python
-def ds_algo_p19(data):
-    # Reference implementation
-    return data
+def coin_change(coins, amount):
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0
+    for i in range(1, amount + 1):
+        for c in coins:
+            if c <= i:
+                dp[i] = min(dp[i], dp[i - c] + 1)
+    return dp[amount] if dp[amount] != float('inf') else -1
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+Bottom-up DP: dp[i] = min(dp[i-c]+1) over all valid coins c. dp[0]=0 is the base case. O(amount * len(coins)) time, O(amount) space.
 
 </Solution>

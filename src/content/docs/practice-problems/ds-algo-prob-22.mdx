@@ -1,31 +1,42 @@
 ---
-placeholder: true
-title: "Practice: Trees Module 22: Problem 82"
+title: "Practice: #82. Trees: Lowest Common Ancestor of BST"
+description: "Implement Trees: Lowest Common Ancestor of BST in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 82
-description: "Curriculum Problem 82 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Trees Module 22: Problem 82
+# Trees: Lowest Common Ancestor of BST
 
 **Rank #82** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-21`.
+## Overview
+
+Implement `lca_bst(root, p, q)` -- exploiting BST ordering for LCA without extra memory. The non-BST version (any binary tree) is harder and requires a different approach.
+
+## Task
+
+Implement the function `lca_bst(root, p, q)`. `root` is a BST node `{'val', 'left', 'right'}`. Return the value of the lowest common ancestor of nodes with values `p` and `q`.
 
 <PracticePlayground problemId="ds-algo-prob-22" />
 
 <Solution>
 
 ```python
-def ds_algo_p22(data):
-    # Reference implementation
-    return data
+def lca_bst(root, p, q):
+    while root:
+        if p < root['val'] and q < root['val']:
+            root = root['left']
+        elif p > root['val'] and q > root['val']:
+            root = root['right']
+        else:
+            return root['val']
+    return None
 ```
 
-This problem tests fundamental skills in Trees / binary search.
+BST ordering: if both p, q are less than root.val, LCA is in the left subtree; if both greater, right subtree; otherwise root is the LCA. O(h) time, O(1) space.
 
 </Solution>

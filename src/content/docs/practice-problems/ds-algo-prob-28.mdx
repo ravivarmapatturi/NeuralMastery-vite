@@ -1,31 +1,52 @@
 ---
-placeholder: true
-title: "Practice: Graphs Module 28: Problem 88"
+title: "Practice: #88. Graphs: Course Schedule (Cycle Detection in DAG)"
+description: "Implement Graphs: Course Schedule (Cycle Detection in DAG) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 88
-description: "Curriculum Problem 88 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Graphs Module 28: Problem 88
+# Graphs: Course Schedule (Cycle Detection in DAG)
 
 **Rank #88** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-27`.
+## Overview
+
+Implement `can_finish(numCourses, prerequisites)` -- topological sort via DFS with three-color marking. Foundational for build systems, package managers, and task schedulers.
+
+## Task
+
+Implement the function `can_finish(numCourses, prerequisites)`. Return `True` if all courses can be finished (no circular prerequisite dependency).
 
 <PracticePlayground problemId="ds-algo-prob-28" />
 
 <Solution>
 
 ```python
-def ds_algo_p28(data):
-    # Reference implementation
-    return data
+def can_finish(numCourses, prerequisites):
+    graph = {i: [] for i in range(numCourses)}
+    for a, b in prerequisites:
+        graph[b].append(a)
+    visited = [0] * numCourses  # 0=unvisited, 1=visiting, 2=done
+
+    def dfs(node):
+        if visited[node] == 1:
+            return False  # back edge -> cycle
+        if visited[node] == 2:
+            return True
+        visited[node] = 1
+        for nb in graph[node]:
+            if not dfs(nb):
+                return False
+        visited[node] = 2
+        return True
+
+    return all(dfs(i) for i in range(numCourses))
 ```
 
-This problem tests fundamental skills in Graphs.
+Three-color DFS: gray (1) = currently on the recursion stack; encountering a gray node means a cycle. Black (2) = fully processed, safe to skip. O(V+E) time.
 
 </Solution>

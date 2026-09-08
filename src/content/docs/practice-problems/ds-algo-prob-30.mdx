@@ -1,31 +1,70 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 30: Problem 90"
+title: "Practice: #90. Advanced DS: Design HashMap"
+description: "Implement Advanced DS: Design HashMap in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 90
-description: "Curriculum Problem 90 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 30: Problem 90
+# Advanced DS: Design HashMap
 
 **Rank #90** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-29`.
+## Overview
+
+Implement `hashmap_ops(operations)` -- a from-scratch hash map using chaining. Understanding hash collision resolution is fundamental to every language's dict/map implementation.
+
+## Task
+
+Implement the function `hashmap_ops(operations)`. Simulate a HashMap supporting `put(key, value)`, `get(key)` (returns `-1` if absent), and `remove(key)`.
 
 <PracticePlayground problemId="ds-algo-prob-30" />
 
 <Solution>
 
 ```python
-def ds_algo_p30(data):
-    # Reference implementation
-    return data
+def hashmap_ops(operations):
+    SIZE = 1009  # prime bucket count reduces collisions
+
+    class MyHashMap:
+        def __init__(self):
+            self.data = [[] for _ in range(SIZE)]
+        def _h(self, key):
+            return key % SIZE
+        def put(self, key, value):
+            bucket = self.data[self._h(key)]
+            for pair in bucket:
+                if pair[0] == key:
+                    pair[1] = value
+                    return
+            bucket.append([key, value])
+        def get(self, key):
+            for pair in self.data[self._h(key)]:
+                if pair[0] == key:
+                    return pair[1]
+            return -1
+        def remove(self, key):
+            h = self._h(key)
+            self.data[h] = [p for p in self.data[h] if p[0] != key]
+
+    hm = MyHashMap()
+    results = []
+    for op in operations:
+        name = op[0]
+        if name == 'put':
+            hm.put(op[1], op[2])
+            results.append(None)
+        elif name == 'get':
+            results.append(hm.get(op[1]))
+        elif name == 'remove':
+            hm.remove(op[1])
+            results.append(None)
+    return results
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Chaining with a prime number of buckets. Each bucket is a list of [key, value] pairs. put scans the bucket first to update in-place; get and remove scan similarly. O(1) average case.
 
 </Solution>

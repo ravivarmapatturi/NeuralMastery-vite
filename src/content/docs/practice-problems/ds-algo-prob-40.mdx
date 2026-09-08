@@ -1,31 +1,53 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 40: Problem 100"
+title: "Practice: #100. Advanced DS: Word Search (Backtracking on Grid)"
+description: "Implement Advanced DS: Word Search (Backtracking on Grid) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 100
-description: "Curriculum Problem 100 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 40: Problem 100
+# Advanced DS: Word Search (Backtracking on Grid)
 
 **Rank #100** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-39`.
+## Overview
+
+Implement `exist(board, word)` -- DFS backtracking on a grid. The visited-cell trick (mark, recurse, unmark) is the canonical backtracking template for grid search.
+
+## Task
+
+Implement the function `exist(board, word)`. Return `True` if `word` can be found in the grid by sequentially adjacent (4-directional) cells, not reusing the same cell.
 
 <PracticePlayground problemId="ds-algo-prob-40" />
 
 <Solution>
 
 ```python
-def ds_algo_p40(data):
-    # Reference implementation
-    return data
+def exist(board, word):
+    rows, cols = len(board), len(board[0])
+    visited = [[False]*cols for _ in range(rows)]
+
+    def dfs(r, c, idx):
+        if idx == len(word):
+            return True
+        if r<0 or r>=rows or c<0 or c>=cols or visited[r][c] or board[r][c]!=word[idx]:
+            return False
+        visited[r][c] = True
+        found = (dfs(r+1,c,idx+1) or dfs(r-1,c,idx+1) or
+                 dfs(r,c+1,idx+1) or dfs(r,c-1,idx+1))
+        visited[r][c] = False
+        return found
+
+    for r in range(rows):
+        for c in range(cols):
+            if dfs(r, c, 0):
+                return True
+    return False
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Mark visited before recursing, unmark on the way back (backtracking). Try every cell as a starting point. O(m*n*4^L) worst case where L = len(word).
 
 </Solution>

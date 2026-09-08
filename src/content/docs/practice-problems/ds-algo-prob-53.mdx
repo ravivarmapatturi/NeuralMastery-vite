@@ -1,31 +1,52 @@
 ---
-placeholder: true
-title: "Practice: Graphs Module 53: Problem 113"
+title: "Practice: #113. Graphs: Word Ladder (BFS Shortest Transformation)"
+description: "Implement Graphs: Word Ladder (BFS Shortest Transformation) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 113
-description: "Curriculum Problem 113 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Graphs Module 53: Problem 113
+# Graphs: Word Ladder (BFS Shortest Transformation)
 
 **Rank #113** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-52`.
+## Overview
+
+Implement `ladder_length(begin_word, end_word, word_list)` -- BFS where edges connect words differing by one letter. The trick is generating all one-letter neighbors efficiently.
+
+## Task
+
+Implement the function `ladder_length(begin_word, end_word, word_list)`. Return the length of the shortest transformation sequence from `begin_word` to `end_word` (each step changes one letter), or `0` if impossible.
 
 <PracticePlayground problemId="ds-algo-prob-53" />
 
 <Solution>
 
 ```python
-def ds_algo_p53(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def ladder_length(begin_word, end_word, word_list):
+    word_set = set(word_list)
+    if end_word not in word_set:
+        return 0
+    q = deque([(begin_word, 1)])
+    visited = {begin_word}
+    while q:
+        word, length = q.popleft()
+        for i in range(len(word)):
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                new_word = word[:i] + c + word[i+1:]
+                if new_word == end_word:
+                    return length + 1
+                if new_word in word_set and new_word not in visited:
+                    visited.add(new_word)
+                    q.append((new_word, length + 1))
+    return 0
 ```
 
-This problem tests fundamental skills in Graphs.
+BFS where neighbors are all words reachable by changing one character. Check end_word membership first (early exit). O(M^2 * N) time where M = word length, N = word list size.
 
 </Solution>

@@ -1,31 +1,39 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 24: Problem 84"
+title: "Practice: #84. DP: Unique Paths"
+description: "Implement DP: Unique Paths in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 84
-description: "Curriculum Problem 84 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 24: Problem 84
+# DP: Unique Paths
 
 **Rank #84** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-23`.
+## Overview
+
+Implement `unique_paths(m, n)` -- a 2-D DP problem where dp[i][j] = dp[i-1][j] + dp[i][j-1]. The mathematical answer is C(m+n-2, m-1) but DP generalizes to obstacles.
+
+## Task
+
+Implement the function `unique_paths(m, n)`. Return the number of unique paths from the top-left to the bottom-right of an `m x n` grid, moving only right or down.
 
 <PracticePlayground problemId="ds-algo-prob-24" />
 
 <Solution>
 
 ```python
-def ds_algo_p24(data):
-    # Reference implementation
-    return data
+def unique_paths(m, n):
+    dp = [[1] * n for _ in range(m)]
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+    return dp[m-1][n-1]
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+2-D DP: first row and column are all 1s (only one way to reach them). Fill remaining cells as sum of cell above and cell to the left. O(m*n) time, reducible to O(n) space.
 
 </Solution>

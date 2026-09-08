@@ -1,31 +1,69 @@
 ---
-placeholder: true
-title: "Practice: Trees Module 47: Problem 107"
+title: "Practice: #107. Trees: All Nodes Distance K in Binary Tree"
+description: "Implement Trees: All Nodes Distance K in Binary Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 107
-description: "Curriculum Problem 107 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Trees Module 47: Problem 107
+# Trees: All Nodes Distance K in Binary Tree
 
 **Rank #107** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-46`.
+## Overview
+
+Implement `distance_k(root, target_val, k)` -- add parent pointers via BFS, then BFS from the target treating the tree as an undirected graph.
+
+## Task
+
+Implement the function `distance_k(root, target_val, k)`. Return all node values at distance `k` from the node with value `target_val`, in any order.
 
 <PracticePlayground problemId="ds-algo-prob-47" />
 
 <Solution>
 
 ```python
-def ds_algo_p47(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def distance_k(root, target_val, k):
+    # Build parent pointers
+    parent = {}
+    target = None
+    q = deque([root])
+    while q:
+        node = q.popleft()
+        if node['val'] == target_val:
+            target = node
+        if node['left']:
+            parent[node['left']['val']] = node
+            q.append(node['left'])
+        if node['right']:
+            parent[node['right']['val']] = node
+            q.append(node['right'])
+    # BFS from target treating tree as undirected
+    visited = {target['val']}
+    q = deque([(target, 0)])
+    result = []
+    while q:
+        node, dist = q.popleft()
+        if dist == k:
+            result.append(node['val'])
+        if dist >= k:
+            continue
+        for nb in [node['left'], node['right']]:
+            if nb and nb['val'] not in visited:
+                visited.add(nb['val'])
+                q.append((nb, dist+1))
+        if node['val'] in parent and parent[node['val']]['val'] not in visited:
+            p = parent[node['val']]
+            visited.add(p['val'])
+            q.append((p, dist+1))
+    return sorted(result)
 ```
 
-This problem tests fundamental skills in Trees / binary search.
+Two-pass: BFS to find parent pointers + target node; then BFS from target over the undirected graph (children + parent). O(n) time.
 
 </Solution>

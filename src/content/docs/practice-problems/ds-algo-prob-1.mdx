@@ -1,31 +1,42 @@
 ---
-placeholder: true
-title: "Practice: Linked lists Module 1: Problem 61"
+title: "Practice: #61. Linked Lists: Reverse Linked List"
+description: "Implement Linked Lists: Reverse Linked List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 61
-description: "Curriculum Problem 61 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Linked lists Module 1: Problem 61
+# Linked Lists: Reverse Linked List
 
 **Rank #61** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-60`.
+## Overview
+
+Implement `reverse_list(head)`, the classic linked-list warmup that every subsequent list problem (palindrome detection, k-group reversal, merge operations) depends on.
+
+## Task
+
+Implement the function `reverse_list(head)`. Each node is a dict `{'val': int, 'next': node | None}`. Reverse the list in-place and return the new head.
 
 <PracticePlayground problemId="ds-algo-prob-1" />
 
 <Solution>
 
 ```python
-def ds_algo_p1(data):
-    # Reference implementation
-    return data
+def reverse_list(head):
+    prev = None
+    cur = head
+    while cur:
+        nxt = cur['next']
+        cur['next'] = prev
+        prev = cur
+        cur = nxt
+    return prev
 ```
 
-This problem tests fundamental skills in Linked lists / stacks / queues.
+Three-pointer iterative reversal: save `next`, redirect `cur.next` to `prev`, advance both pointers. O(n) time, O(1) space.
 
 </Solution>

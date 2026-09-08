@@ -1,31 +1,48 @@
 ---
-placeholder: true
-title: "Practice: Trees Module 7: Problem 67"
+title: "Practice: #67. Trees: Count Nodes in Complete Binary Tree"
+description: "Implement Trees: Count Nodes in Complete Binary Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 67
-description: "Curriculum Problem 67 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Trees Module 7: Problem 67
+# Trees: Count Nodes in Complete Binary Tree
 
 **Rank #67** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-6`.
+## Overview
+
+Implement `count_nodes(root)` -- tree recursion in its simplest form. The complete-tree property also enables an efficient O(log^2 n) approach worth understanding.
+
+## Task
+
+Implement the function `count_nodes(root)`. Each node is `{'val', 'left', 'right'}`. Return the total node count; return 0 for an empty tree.
 
 <PracticePlayground problemId="ds-algo-prob-7" />
 
 <Solution>
 
 ```python
-def ds_algo_p7(data):
-    # Reference implementation
-    return data
+def count_nodes(root):
+    if not root:
+        return 0
+    # O(log^2 n) approach using complete-tree property
+    left_depth = right_depth = 0
+    l, r = root, root
+    while l:
+        left_depth += 1
+        l = l['left']
+    while r:
+        right_depth += 1
+        r = r['right']
+    if left_depth == right_depth:
+        return (1 << left_depth) - 1  # perfect tree: 2^d - 1
+    return 1 + count_nodes(root['left']) + count_nodes(root['right'])
 ```
 
-This problem tests fundamental skills in Trees / binary search.
+If left depth equals right depth the subtree is perfect (return 2^d - 1). Otherwise recurse. O(log^2 n) total -- the depth measurement runs O(log n) at most O(log n) levels.
 
 </Solution>

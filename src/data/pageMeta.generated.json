@@ -7373,602 +7373,602 @@
     "/docs/practice-problems/ds-algo-prob-1": {
       "slug": "practice-problems/ds-algo-prob-1",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 1: Problem 61",
+      "title": "Practice: #61. Linked Lists: Reverse Linked List",
       "sidebarPosition": 61,
-      "description": "Curriculum Problem 61 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Reverse Linked List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-10": {
       "slug": "practice-problems/ds-algo-prob-10",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 10: Problem 70",
+      "title": "Practice: #70. Advanced DS: Min Stack",
       "sidebarPosition": 70,
-      "description": "Curriculum Problem 70 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Min Stack in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-11": {
       "slug": "practice-problems/ds-algo-prob-11",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 11: Problem 71",
+      "title": "Practice: #71. Linked Lists: Linked List Cycle Detection",
       "sidebarPosition": 71,
-      "description": "Curriculum Problem 71 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Linked List Cycle Detection in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-12": {
       "slug": "practice-problems/ds-algo-prob-12",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 12: Problem 72",
+      "title": "Practice: #72. Trees: Range Sum of BST",
       "sidebarPosition": 72,
-      "description": "Curriculum Problem 72 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Range Sum of BST in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-13": {
       "slug": "practice-problems/ds-algo-prob-13",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 13: Problem 73",
+      "title": "Practice: #73. Graphs: BFS Shortest Path in Unweighted Graph",
       "sidebarPosition": 73,
-      "description": "Curriculum Problem 73 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: BFS Shortest Path in Unweighted Graph in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-14": {
       "slug": "practice-problems/ds-algo-prob-14",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 14: Problem 74",
+      "title": "Practice: #74. DP: Maximum Subarray (Kadane's Algorithm)",
       "sidebarPosition": 74,
-      "description": "Curriculum Problem 74 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Maximum Subarray (Kadane's Algorithm) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-15": {
       "slug": "practice-problems/ds-algo-prob-15",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 15: Problem 75",
+      "title": "Practice: #75. Advanced DS: Implement Queue using Stacks",
       "sidebarPosition": 75,
-      "description": "Curriculum Problem 75 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Implement Queue using Stacks in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-16": {
       "slug": "practice-problems/ds-algo-prob-16",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 16: Problem 76",
+      "title": "Practice: #76. Linked Lists: Remove Nth Node From End of List",
       "sidebarPosition": 76,
-      "description": "Curriculum Problem 76 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Remove Nth Node From End of List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-17": {
       "slug": "practice-problems/ds-algo-prob-17",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 17: Problem 77",
+      "title": "Practice: #77. Trees: Symmetric Tree",
       "sidebarPosition": 77,
-      "description": "Curriculum Problem 77 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Symmetric Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-18": {
       "slug": "practice-problems/ds-algo-prob-18",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 18: Problem 78",
+      "title": "Practice: #78. Graphs: Clone Graph",
       "sidebarPosition": 78,
-      "description": "Curriculum Problem 78 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Clone Graph in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-19": {
       "slug": "practice-problems/ds-algo-prob-19",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 19: Problem 79",
+      "title": "Practice: #79. DP: Coin Change (Minimum Coins)",
       "sidebarPosition": 79,
-      "description": "Curriculum Problem 79 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Coin Change (Minimum Coins) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-2": {
       "slug": "practice-problems/ds-algo-prob-2",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 2: Problem 62",
+      "title": "Practice: #62. Trees: Binary Tree Level Order Traversal",
       "sidebarPosition": 62,
-      "description": "Curriculum Problem 62 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Binary Tree Level Order Traversal in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-20": {
       "slug": "practice-problems/ds-algo-prob-20",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 20: Problem 80",
+      "title": "Practice: #80. Advanced DS: Implement Stack using Queues",
       "sidebarPosition": 80,
-      "description": "Curriculum Problem 80 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Implement Stack using Queues in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-21": {
       "slug": "practice-problems/ds-algo-prob-21",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 21: Problem 81",
+      "title": "Practice: #81. Linked Lists: Palindrome Linked List",
       "sidebarPosition": 81,
-      "description": "Curriculum Problem 81 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Palindrome Linked List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-22": {
       "slug": "practice-problems/ds-algo-prob-22",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 22: Problem 82",
+      "title": "Practice: #82. Trees: Lowest Common Ancestor of BST",
       "sidebarPosition": 82,
-      "description": "Curriculum Problem 82 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Lowest Common Ancestor of BST in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-23": {
       "slug": "practice-problems/ds-algo-prob-23",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 23: Problem 83",
+      "title": "Practice: #83. Graphs: Number of Connected Components (Union-Find)",
       "sidebarPosition": 83,
-      "description": "Curriculum Problem 83 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Number of Connected Components (Union-Find) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-24": {
       "slug": "practice-problems/ds-algo-prob-24",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 24: Problem 84",
+      "title": "Practice: #84. DP: Unique Paths",
       "sidebarPosition": 84,
-      "description": "Curriculum Problem 84 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Unique Paths in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-25": {
       "slug": "practice-problems/ds-algo-prob-25",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 25: Problem 85",
+      "title": "Practice: #85. Advanced DS: LRU Cache",
       "sidebarPosition": 85,
-      "description": "Curriculum Problem 85 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: LRU Cache in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-26": {
       "slug": "practice-problems/ds-algo-prob-26",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 26: Problem 86",
+      "title": "Practice: #86. Linked Lists: Add Two Numbers",
       "sidebarPosition": 86,
-      "description": "Curriculum Problem 86 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Add Two Numbers in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-27": {
       "slug": "practice-problems/ds-algo-prob-27",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 27: Problem 87",
+      "title": "Practice: #87. Trees: Binary Tree Right Side View",
       "sidebarPosition": 87,
-      "description": "Curriculum Problem 87 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Binary Tree Right Side View in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-28": {
       "slug": "practice-problems/ds-algo-prob-28",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 28: Problem 88",
+      "title": "Practice: #88. Graphs: Course Schedule (Cycle Detection in DAG)",
       "sidebarPosition": 88,
-      "description": "Curriculum Problem 88 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Course Schedule (Cycle Detection in DAG) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-29": {
       "slug": "practice-problems/ds-algo-prob-29",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 29: Problem 89",
+      "title": "Practice: #89. DP: Longest Increasing Subsequence",
       "sidebarPosition": 89,
-      "description": "Curriculum Problem 89 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Longest Increasing Subsequence in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-3": {
       "slug": "practice-problems/ds-algo-prob-3",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 3: Problem 63",
+      "title": "Practice: #63. Graphs: Number of Islands",
       "sidebarPosition": 63,
-      "description": "Curriculum Problem 63 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Number of Islands in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-30": {
       "slug": "practice-problems/ds-algo-prob-30",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 30: Problem 90",
+      "title": "Practice: #90. Advanced DS: Design HashMap",
       "sidebarPosition": 90,
-      "description": "Curriculum Problem 90 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Design HashMap in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-31": {
       "slug": "practice-problems/ds-algo-prob-31",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 31: Problem 91",
+      "title": "Practice: #91. Linked Lists: Reorder List",
       "sidebarPosition": 91,
-      "description": "Curriculum Problem 91 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Reorder List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-32": {
       "slug": "practice-problems/ds-algo-prob-32",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 32: Problem 92",
+      "title": "Practice: #92. Trees: Path Sum II (All Paths)",
       "sidebarPosition": 92,
-      "description": "Curriculum Problem 92 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Path Sum II (All Paths) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-33": {
       "slug": "practice-problems/ds-algo-prob-33",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 33: Problem 93",
+      "title": "Practice: #93. Graphs: Pacific Atlantic Water Flow",
       "sidebarPosition": 93,
-      "description": "Curriculum Problem 93 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Pacific Atlantic Water Flow in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-34": {
       "slug": "practice-problems/ds-algo-prob-34",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 34: Problem 94",
+      "title": "Practice: #94. DP: 0/1 Knapsack",
       "sidebarPosition": 94,
-      "description": "Curriculum Problem 94 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: 0/1 Knapsack in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-35": {
       "slug": "practice-problems/ds-algo-prob-35",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 35: Problem 95",
+      "title": "Practice: #95. Advanced DS: Implement Trie (Prefix Tree)",
       "sidebarPosition": 95,
-      "description": "Curriculum Problem 95 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Implement Trie (Prefix Tree) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-36": {
       "slug": "practice-problems/ds-algo-prob-36",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 36: Problem 96",
+      "title": "Practice: #96. Linked Lists: Sort Linked List (Merge Sort)",
       "sidebarPosition": 96,
-      "description": "Curriculum Problem 96 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Sort Linked List (Merge Sort) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-37": {
       "slug": "practice-problems/ds-algo-prob-37",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 37: Problem 97",
+      "title": "Practice: #97. Trees: Validate Binary Search Tree",
       "sidebarPosition": 97,
-      "description": "Curriculum Problem 97 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Validate Binary Search Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-38": {
       "slug": "practice-problems/ds-algo-prob-38",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 38: Problem 98",
+      "title": "Practice: #98. Graphs: Walls and Gates (Multi-source BFS)",
       "sidebarPosition": 98,
-      "description": "Curriculum Problem 98 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Walls and Gates (Multi-source BFS) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-39": {
       "slug": "practice-problems/ds-algo-prob-39",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 39: Problem 99",
+      "title": "Practice: #99. DP: Edit Distance (Levenshtein)",
       "sidebarPosition": 99,
-      "description": "Curriculum Problem 99 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Edit Distance (Levenshtein) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-4": {
       "slug": "practice-problems/ds-algo-prob-4",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 4: Problem 64",
+      "title": "Practice: #64. DP: Climbing Stairs",
       "sidebarPosition": 64,
-      "description": "Curriculum Problem 64 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Climbing Stairs in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-40": {
       "slug": "practice-problems/ds-algo-prob-40",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 40: Problem 100",
+      "title": "Practice: #100. Advanced DS: Word Search (Backtracking on Grid)",
       "sidebarPosition": 100,
-      "description": "Curriculum Problem 100 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Word Search (Backtracking on Grid) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-41": {
       "slug": "practice-problems/ds-algo-prob-41",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 41: Problem 101",
+      "title": "Practice: #101. Linked Lists: Rotate List",
       "sidebarPosition": 101,
-      "description": "Curriculum Problem 101 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Rotate List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-42": {
       "slug": "practice-problems/ds-algo-prob-42",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 42: Problem 102",
+      "title": "Practice: #102. Trees: Flatten Binary Tree to Linked List",
       "sidebarPosition": 102,
-      "description": "Curriculum Problem 102 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Flatten Binary Tree to Linked List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-43": {
       "slug": "practice-problems/ds-algo-prob-43",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 43: Problem 103",
+      "title": "Practice: #103. Graphs: Minimum Spanning Tree (Kruskal)",
       "sidebarPosition": 103,
-      "description": "Curriculum Problem 103 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Minimum Spanning Tree (Kruskal) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-44": {
       "slug": "practice-problems/ds-algo-prob-44",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 44: Problem 104",
+      "title": "Practice: #104. DP: Coin Change II (Count Combinations)",
       "sidebarPosition": 104,
-      "description": "Curriculum Problem 104 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Coin Change II (Count Combinations) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-45": {
       "slug": "practice-problems/ds-algo-prob-45",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 45: Problem 105",
+      "title": "Practice: #105. Advanced DS: Design Twitter (Simplified Feed)",
       "sidebarPosition": 105,
-      "description": "Curriculum Problem 105 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Design Twitter (Simplified Feed) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-46": {
       "slug": "practice-problems/ds-algo-prob-46",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 46: Problem 106",
+      "title": "Practice: #106. Linked Lists: Swap Nodes in Pairs",
       "sidebarPosition": 106,
-      "description": "Curriculum Problem 106 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Swap Nodes in Pairs in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-47": {
       "slug": "practice-problems/ds-algo-prob-47",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 47: Problem 107",
+      "title": "Practice: #107. Trees: All Nodes Distance K in Binary Tree",
       "sidebarPosition": 107,
-      "description": "Curriculum Problem 107 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: All Nodes Distance K in Binary Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-48": {
       "slug": "practice-problems/ds-algo-prob-48",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 48: Problem 108",
+      "title": "Practice: #108. Graphs: Cheapest Flights Within K Stops (Bellman-Ford)",
       "sidebarPosition": 108,
-      "description": "Curriculum Problem 108 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Cheapest Flights Within K Stops (Bellman-Ford) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "medium",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-49": {
       "slug": "practice-problems/ds-algo-prob-49",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 49: Problem 109",
+      "title": "Practice: #109. DP: Word Break II (All Sentences)",
       "sidebarPosition": 109,
-      "description": "Curriculum Problem 109 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Word Break II (All Sentences) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-5": {
       "slug": "practice-problems/ds-algo-prob-5",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 5: Problem 65",
+      "title": "Practice: #65. Advanced DS: Valid Parentheses",
       "sidebarPosition": 65,
-      "description": "Curriculum Problem 65 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Valid Parentheses in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-50": {
       "slug": "practice-problems/ds-algo-prob-50",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 50: Problem 110",
+      "title": "Practice: #110. Advanced DS: Maximum Frequency Stack",
       "sidebarPosition": 110,
-      "description": "Curriculum Problem 110 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Maximum Frequency Stack in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-51": {
       "slug": "practice-problems/ds-algo-prob-51",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 51: Problem 111",
+      "title": "Practice: #111. Linked Lists: Reverse Nodes in k-Group",
       "sidebarPosition": 111,
-      "description": "Curriculum Problem 111 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Reverse Nodes in k-Group in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-52": {
       "slug": "practice-problems/ds-algo-prob-52",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 52: Problem 112",
+      "title": "Practice: #112. Trees: Binary Tree Maximum Path Sum",
       "sidebarPosition": 112,
-      "description": "Curriculum Problem 112 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Binary Tree Maximum Path Sum in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-53": {
       "slug": "practice-problems/ds-algo-prob-53",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 53: Problem 113",
+      "title": "Practice: #113. Graphs: Word Ladder (BFS Shortest Transformation)",
       "sidebarPosition": 113,
-      "description": "Curriculum Problem 113 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Word Ladder (BFS Shortest Transformation) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-54": {
       "slug": "practice-problems/ds-algo-prob-54",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 54: Problem 114",
+      "title": "Practice: #114. DP: Regular Expression Matching",
       "sidebarPosition": 114,
-      "description": "Curriculum Problem 114 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Regular Expression Matching in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-55": {
       "slug": "practice-problems/ds-algo-prob-55",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 55: Problem 115",
+      "title": "Practice: #115. Advanced DS: Find Median from Data Stream",
       "sidebarPosition": 115,
-      "description": "Curriculum Problem 115 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Find Median from Data Stream in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-56": {
       "slug": "practice-problems/ds-algo-prob-56",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 56: Problem 116",
+      "title": "Practice: #116. Linked Lists: Merge K Sorted Lists",
       "sidebarPosition": 116,
-      "description": "Curriculum Problem 116 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Merge K Sorted Lists in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-57": {
       "slug": "practice-problems/ds-algo-prob-57",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 57: Problem 117",
+      "title": "Practice: #117. Trees: Serialize and Deserialize Binary Tree",
       "sidebarPosition": 117,
-      "description": "Curriculum Problem 117 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Serialize and Deserialize Binary Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-58": {
       "slug": "practice-problems/ds-algo-prob-58",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 58: Problem 118",
+      "title": "Practice: #118. Graphs: Alien Dictionary (Topological Sort)",
       "sidebarPosition": 118,
-      "description": "Curriculum Problem 118 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Alien Dictionary (Topological Sort) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-59": {
       "slug": "practice-problems/ds-algo-prob-59",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 59: Problem 119",
+      "title": "Practice: #119. DP: Burst Balloons",
       "sidebarPosition": 119,
-      "description": "Curriculum Problem 119 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: Burst Balloons in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-6": {
       "slug": "practice-problems/ds-algo-prob-6",
       "section": "practice-problems",
-      "title": "Practice: Linked lists Module 6: Problem 66",
+      "title": "Practice: #66. Linked Lists: Merge Two Sorted Lists",
       "sidebarPosition": 66,
-      "description": "Curriculum Problem 66 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues.",
+      "description": "Implement Linked Lists: Merge Two Sorted Lists in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-60": {
       "slug": "practice-problems/ds-algo-prob-60",
       "section": "practice-problems",
-      "title": "Practice: Advanced data structures Module 60: Problem 120",
+      "title": "Practice: #120. Advanced DS: Sliding Window Maximum",
       "sidebarPosition": 120,
-      "description": "Curriculum Problem 120 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures.",
+      "description": "Implement Advanced DS: Sliding Window Maximum in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "hard",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-7": {
       "slug": "practice-problems/ds-algo-prob-7",
       "section": "practice-problems",
-      "title": "Practice: Trees Module 7: Problem 67",
+      "title": "Practice: #67. Trees: Count Nodes in Complete Binary Tree",
       "sidebarPosition": 67,
-      "description": "Curriculum Problem 67 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search.",
+      "description": "Implement Trees: Count Nodes in Complete Binary Tree in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-8": {
       "slug": "practice-problems/ds-algo-prob-8",
       "section": "practice-problems",
-      "title": "Practice: Graphs Module 8: Problem 68",
+      "title": "Practice: #68. Graphs: Flood Fill",
       "sidebarPosition": 68,
-      "description": "Curriculum Problem 68 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs.",
+      "description": "Implement Graphs: Flood Fill in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/ds-algo-prob-9": {
       "slug": "practice-problems/ds-algo-prob-9",
       "section": "practice-problems",
-      "title": "Practice: Dynamic programming Module 9: Problem 69",
+      "title": "Practice: #69. DP: House Robber",
       "sidebarPosition": 69,
-      "description": "Curriculum Problem 69 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking.",
+      "description": "Implement DP: House Robber in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum.",
       "difficulty": "easy",
       "topic": "data-structures-algorithms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/eval-obs-prob-1": {
       "slug": "practice-problems/eval-obs-prob-1",

@@ -1,31 +1,58 @@
 ---
-placeholder: true
-title: "Practice: Graphs Module 43: Problem 103"
+title: "Practice: #103. Graphs: Minimum Spanning Tree (Kruskal)"
+description: "Implement Graphs: Minimum Spanning Tree (Kruskal) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 103
-description: "Curriculum Problem 103 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Graphs Module 43: Problem 103
+# Graphs: Minimum Spanning Tree (Kruskal)
 
 **Rank #103** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-42`.
+## Overview
+
+Implement `min_cost_connect(n, connections)` using Kruskal's algorithm -- sort edges by cost, greedily add non-cycle edges using Union-Find.
+
+## Task
+
+Implement the function `min_cost_connect(n, connections)`. `connections[i]` is `[city1, city2, cost]`. Return the minimum cost to connect all cities, or `-1` if impossible.
 
 <PracticePlayground problemId="ds-algo-prob-43" />
 
 <Solution>
 
 ```python
-def ds_algo_p43(data):
-    # Reference implementation
-    return data
+def min_cost_connect(n, connections):
+    connections.sort(key=lambda x: x[2])
+    parent = list(range(n + 1))
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(x, y):
+        px, py = find(x), find(y)
+        if px == py:
+            return False
+        parent[px] = py
+        return True
+
+    cost = edges_used = 0
+    for u, v, w in connections:
+        if union(u, v):
+            cost += w
+            edges_used += 1
+            if edges_used == n - 1:
+                return cost
+    return -1
 ```
 
-This problem tests fundamental skills in Graphs.
+Kruskal's: sort edges by weight, add the cheapest edge that connects two different components (using Union-Find to detect cycles). Stop when n-1 edges are used. O(E log E) time.
 
 </Solution>

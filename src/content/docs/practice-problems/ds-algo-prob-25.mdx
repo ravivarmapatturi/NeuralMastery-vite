@@ -1,31 +1,60 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 25: Problem 85"
+title: "Practice: #85. Advanced DS: LRU Cache"
+description: "Implement Advanced DS: LRU Cache in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 85
-description: "Curriculum Problem 85 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 25: Problem 85
+# Advanced DS: LRU Cache
 
 **Rank #85** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-24`.
+## Overview
+
+Implement an LRU Cache -- the classic ordered-dict / doubly-linked-list + hashmap design. Every production caching system uses a variant of this structure.
+
+## Task
+
+Implement the function `lru_cache_ops(capacity, operations)`. Simulate an LRU cache. `get(key)` returns the value or `-1`; `put(key, value)` inserts/updates, evicting the LRU entry when over capacity.
 
 <PracticePlayground problemId="ds-algo-prob-25" />
 
 <Solution>
 
 ```python
-def ds_algo_p25(data):
-    # Reference implementation
-    return data
+from collections import OrderedDict
+
+def lru_cache_ops(capacity, operations):
+    cache = OrderedDict()
+
+    def get(key):
+        if key not in cache:
+            return -1
+        cache.move_to_end(key)
+        return cache[key]
+
+    def put(key, value):
+        if key in cache:
+            cache.move_to_end(key)
+        cache[key] = value
+        if len(cache) > capacity:
+            cache.popitem(last=False)
+
+    results = []
+    for op in operations:
+        name = op[0]
+        if name == 'put':
+            put(op[1], op[2])
+            results.append(None)
+        elif name == 'get':
+            results.append(get(op[1]))
+    return results
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Python's OrderedDict provides O(1) move_to_end and popitem(last=False). From scratch: combine a doubly-linked list (O(1) insert/delete) with a hashmap (O(1) lookup).
 
 </Solution>

@@ -1,31 +1,65 @@
 ---
-placeholder: true
-title: "Practice: Graphs Module 58: Problem 118"
+title: "Practice: #118. Graphs: Alien Dictionary (Topological Sort)"
+description: "Implement Graphs: Alien Dictionary (Topological Sort) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 118
-description: "Curriculum Problem 118 (Stage 2: Data Structures & Algorithmic Foundations): Master Graphs."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Graphs Module 58: Problem 118
+# Graphs: Alien Dictionary (Topological Sort)
 
 **Rank #118** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-57`.
+## Overview
+
+Implement `alien_order(words)` -- extract ordering constraints from adjacent word pairs, then topological sort (DFS cycle detection). Returns empty string on cycles.
+
+## Task
+
+Implement the function `alien_order(words)`. Given a list of words sorted in an alien language's lexicographic order, return the characters in the alien alphabet's order, or `''` if the ordering is inconsistent.
 
 <PracticePlayground problemId="ds-algo-prob-58" />
 
 <Solution>
 
 ```python
-def ds_algo_p58(data):
-    # Reference implementation
-    return data
+def alien_order(words):
+    graph = {c: set() for w in words for c in w}
+    for i in range(len(words) - 1):
+        w1, w2 = words[i], words[i+1]
+        for j in range(min(len(w1), len(w2))):
+            if w1[j] != w2[j]:
+                graph[w1[j]].add(w2[j])
+                break
+        else:
+            if len(w1) > len(w2):
+                return ''  # invalid: prefix comes after longer word
+
+    visited = {}  # False=in-progress, True=done
+    result = []
+
+    def dfs(char):
+        if char in visited:
+            return visited[char]
+        visited[char] = False
+        for nb in sorted(graph[char]):
+            if not dfs(nb):
+                return False
+        visited[char] = True
+        result.append(char)
+        return True
+
+    for c in sorted(graph):
+        if c not in visited:
+            if not dfs(c):
+                return ''
+
+    return ''.join(reversed(result))
 ```
 
-This problem tests fundamental skills in Graphs.
+Extract pair-wise constraints from adjacent words; DFS three-color topological sort detects cycles. Reverse the finish-order to get the topological ordering. O(C) where C = total characters across all words.
 
 </Solution>

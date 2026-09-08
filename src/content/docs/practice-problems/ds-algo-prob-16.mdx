@@ -1,31 +1,43 @@
 ---
-placeholder: true
-title: "Practice: Linked lists Module 16: Problem 76"
+title: "Practice: #76. Linked Lists: Remove Nth Node From End of List"
+description: "Implement Linked Lists: Remove Nth Node From End of List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 76
-description: "Curriculum Problem 76 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Linked lists Module 16: Problem 76
+# Linked Lists: Remove Nth Node From End of List
 
 **Rank #76** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-15`.
+## Overview
+
+Implement `remove_nth_from_end(head, n)` -- the two-pointer gap trick for single-pass removal, applicable to any 'find the k-th from the end' problem.
+
+## Task
+
+Implement the function `remove_nth_from_end(head, n)`. Each node is `{'val', 'next'}`. Remove the `n`-th node from the end and return the new head.
 
 <PracticePlayground problemId="ds-algo-prob-16" />
 
 <Solution>
 
 ```python
-def ds_algo_p16(data):
-    # Reference implementation
-    return data
+def remove_nth_from_end(head, n):
+    dummy = {'val': 0, 'next': head}
+    fast = slow = dummy
+    for _ in range(n + 1):
+        fast = fast['next']
+    while fast:
+        fast = fast['next']
+        slow = slow['next']
+    slow['next'] = slow['next']['next']
+    return dummy['next']
 ```
 
-This problem tests fundamental skills in Linked lists / stacks / queues.
+Advance fast n+1 steps; then move both until fast is None. slow.next is the node to remove. Dummy head handles edge cases cleanly. O(L) time, O(1) space.
 
 </Solution>

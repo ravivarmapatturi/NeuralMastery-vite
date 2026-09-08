@@ -1,31 +1,46 @@
 ---
-placeholder: true
-title: "Practice: Linked lists Module 6: Problem 66"
+title: "Practice: #66. Linked Lists: Merge Two Sorted Lists"
+description: "Implement Linked Lists: Merge Two Sorted Lists in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 66
-description: "Curriculum Problem 66 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Linked lists Module 6: Problem 66
+# Linked Lists: Merge Two Sorted Lists
 
 **Rank #66** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-5`.
+## Overview
+
+Implement `merge_two_lists(list1, list2)` -- the merge step from Merge Sort and the base case for Merge K Sorted Lists. A clean, iterative implementation using a dummy head.
+
+## Task
+
+Implement the function `merge_two_lists(list1, list2)`. Each list node is `{'val', 'next'}`. Return the head of the merged sorted list.
 
 <PracticePlayground problemId="ds-algo-prob-6" />
 
 <Solution>
 
 ```python
-def ds_algo_p6(data):
-    # Reference implementation
-    return data
+def merge_two_lists(list1, list2):
+    dummy = {'val': 0, 'next': None}
+    cur = dummy
+    while list1 and list2:
+        if list1['val'] <= list2['val']:
+            cur['next'] = list1
+            list1 = list1['next']
+        else:
+            cur['next'] = list2
+            list2 = list2['next']
+        cur = cur['next']
+    cur['next'] = list1 or list2
+    return dummy['next']
 ```
 
-This problem tests fundamental skills in Linked lists / stacks / queues.
+Dummy head avoids special-casing the first node. At each step pick the smaller front node; attach the remaining non-empty list at the end. O(m+n) time, O(1) space.
 
 </Solution>

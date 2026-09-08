@@ -1,31 +1,51 @@
 ---
-placeholder: true
-title: "Practice: Linked lists Module 41: Problem 101"
+title: "Practice: #101. Linked Lists: Rotate List"
+description: "Implement Linked Lists: Rotate List in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 101
-description: "Curriculum Problem 101 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Linked lists Module 41: Problem 101
+# Linked Lists: Rotate List
 
 **Rank #101** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-40`.
+## Overview
+
+Implement `rotate_right(head, k)` -- connect tail to head for a circular list, then cut at the right point. The modulo step handles `k >= length` efficiently.
+
+## Task
+
+Implement the function `rotate_right(head, k)`. Each node is `{'val', 'next'}`. Rotate the list to the right by `k` places and return the new head.
 
 <PracticePlayground problemId="ds-algo-prob-41" />
 
 <Solution>
 
 ```python
-def ds_algo_p41(data):
-    # Reference implementation
-    return data
+def rotate_right(head, k):
+    if not head or not head['next'] or k == 0:
+        return head
+    # Count length and form a cycle
+    length = 1
+    cur = head
+    while cur['next']:
+        cur = cur['next']
+        length += 1
+    cur['next'] = head  # make circular
+    k = k % length
+    steps = length - k
+    cur = head
+    for _ in range(steps - 1):
+        cur = cur['next']
+    new_head = cur['next']
+    cur['next'] = None
+    return new_head
 ```
 
-This problem tests fundamental skills in Linked lists / stacks / queues.
+Form a circular list, then find the new tail at position `length - (k % length) - 1`. Cut there to open the list at the new head. O(n) time, O(1) space.
 
 </Solution>

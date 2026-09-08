@@ -1,31 +1,64 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 20: Problem 80"
+title: "Practice: #80. Advanced DS: Implement Stack using Queues"
+description: "Implement Advanced DS: Implement Stack using Queues in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 80
-description: "Curriculum Problem 80 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 20: Problem 80
+# Advanced DS: Implement Stack using Queues
 
 **Rank #80** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-19`.
+## Overview
+
+Implement `stack_using_queues(operations)` -- the inverse of Queue using Stacks. Push is O(n) but pop/top are O(1), showing that the choice of expensive operation matters.
+
+## Task
+
+Implement the function `stack_using_queues(operations)`. Simulate a LIFO stack using only queues. Return results of `pop`, `top`, and `empty` operations (None for `push`).
 
 <PracticePlayground problemId="ds-algo-prob-20" />
 
 <Solution>
 
 ```python
-def ds_algo_p20(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def stack_using_queues(operations):
+    class MyStack:
+        def __init__(self):
+            self.q = deque()
+        def push(self, x):
+            self.q.append(x)
+            for _ in range(len(self.q) - 1):
+                self.q.append(self.q.popleft())
+        def pop(self):
+            return self.q.popleft()
+        def top(self):
+            return self.q[0]
+        def empty(self):
+            return not self.q
+
+    s = MyStack()
+    results = []
+    for op in operations:
+        name = op[0]
+        if name == 'push':
+            s.push(op[1])
+            results.append(None)
+        elif name == 'pop':
+            results.append(s.pop())
+        elif name == 'top':
+            results.append(s.top())
+        elif name == 'empty':
+            results.append(s.empty())
+    return results
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+After each push, rotate all older elements behind the new one so it sits at the front. Pop/top are then O(1) dequeue/peek. O(n) push, O(1) pop/top.
 
 </Solution>

@@ -1,31 +1,50 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 60: Problem 120"
+title: "Practice: #120. Advanced DS: Sliding Window Maximum"
+description: "Implement Advanced DS: Sliding Window Maximum in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 120
-description: "Curriculum Problem 120 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 60: Problem 120
+# Advanced DS: Sliding Window Maximum
 
 **Rank #120** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-59`.
+## Overview
+
+Implement `max_sliding_window(nums, k)` -- monotonic deque that maintains the max of the current window in O(1) per step. The same deque pattern applies to Sliding Window Minimum and Jump Game VI.
+
+## Task
+
+Implement the function `max_sliding_window(nums, k)`. Return the maximum value in each sliding window of size `k`.
 
 <PracticePlayground problemId="ds-algo-prob-60" />
 
 <Solution>
 
 ```python
-def ds_algo_p60(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def max_sliding_window(nums, k):
+    result = []
+    dq = deque()  # stores indices; front = index of current window's max
+    for i, n in enumerate(nums):
+        # Remove elements outside the window
+        if dq and dq[0] == i - k:
+            dq.popleft()
+        # Maintain decreasing order: remove smaller elements from back
+        while dq and nums[dq[-1]] <= n:
+            dq.pop()
+        dq.append(i)
+        # Window is full
+        if i >= k - 1:
+            result.append(nums[dq[0]])
+    return result
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Monotonic decreasing deque of indices. For each new element, pop the back while it is smaller (they can never be the maximum). Pop the front if it's out of the window. O(n) time -- each index pushed and popped at most once.
 
 </Solution>

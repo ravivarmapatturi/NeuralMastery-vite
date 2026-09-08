@@ -1,31 +1,40 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 44: Problem 104"
+title: "Practice: #104. DP: Coin Change II (Count Combinations)"
+description: "Implement DP: Coin Change II (Count Combinations) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 104
-description: "Curriculum Problem 104 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 44: Problem 104
+# DP: Coin Change II (Count Combinations)
 
 **Rank #104** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-43`.
+## Overview
+
+Implement `change(amount, coins)` -- count the number of ways to make `amount` using unlimited coins. Unlike Coin Change (min coins), the order of coins does NOT matter here.
+
+## Task
+
+Implement the function `change(amount, coins)`. Return the number of distinct combinations of coins that sum to `amount`.
 
 <PracticePlayground problemId="ds-algo-prob-44" />
 
 <Solution>
 
 ```python
-def ds_algo_p44(data):
-    # Reference implementation
-    return data
+def change(amount, coins):
+    dp = [0] * (amount + 1)
+    dp[0] = 1
+    for coin in coins:
+        for i in range(coin, amount + 1):
+            dp[i] += dp[i - coin]
+    return dp[amount]
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+Unbounded knapsack counting variant: iterate coins in the outer loop so each coin can be used unlimited times without counting permutations. dp[0]=1 is the base (empty sum). O(amount * len(coins)) time.
 
 </Solution>

@@ -1,31 +1,39 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 14: Problem 74"
+title: "Practice: #74. DP: Maximum Subarray (Kadane's Algorithm)"
+description: "Implement DP: Maximum Subarray (Kadane's Algorithm) in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 74
-description: "Curriculum Problem 74 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 14: Problem 74
+# DP: Maximum Subarray (Kadane's Algorithm)
 
 **Rank #74** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-13`.
+## Overview
+
+Implement `max_subarray(nums)` using Kadane's algorithm -- the O(n), O(1) 'extend or restart' DP pattern. Foundation for Maximum Product Subarray and circular maximum subarray variants.
+
+## Task
+
+Implement the function `max_subarray(nums)`. Return the maximum sum of any contiguous subarray of `nums`.
 
 <PracticePlayground problemId="ds-algo-prob-14" />
 
 <Solution>
 
 ```python
-def ds_algo_p14(data):
-    # Reference implementation
-    return data
+def max_subarray(nums):
+    cur = max_sum = nums[0]
+    for n in nums[1:]:
+        cur = max(n, cur + n)
+        max_sum = max(max_sum, cur)
+    return max_sum
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+Kadane's: `cur = max(n, cur+n)` -- restart when `cur` went negative. Track global max alongside. O(n) time, O(1) space.
 
 </Solution>

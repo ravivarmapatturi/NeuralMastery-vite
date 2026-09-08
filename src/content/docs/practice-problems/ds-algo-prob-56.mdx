@@ -1,31 +1,52 @@
 ---
-placeholder: true
-title: "Practice: Linked lists Module 56: Problem 116"
+title: "Practice: #116. Linked Lists: Merge K Sorted Lists"
+description: "Implement Linked Lists: Merge K Sorted Lists in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 116
-description: "Curriculum Problem 116 (Stage 2: Data Structures & Algorithmic Foundations): Master Linked lists / stacks / queues."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Linked lists Module 56: Problem 116
+# Linked Lists: Merge K Sorted Lists
 
 **Rank #116** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-55`.
+## Overview
+
+Implement `merge_k_lists(lists)` -- use a min-heap to always extend with the globally smallest current node. O(n log k) where k is the number of lists.
+
+## Task
+
+Implement the function `merge_k_lists(lists)`. Each element is a linked-list head `{'val', 'next'}` or None. Return the head of the merged sorted list.
 
 <PracticePlayground problemId="ds-algo-prob-56" />
 
 <Solution>
 
 ```python
-def ds_algo_p56(data):
-    # Reference implementation
-    return data
+import heapq
+
+def merge_k_lists(lists):
+    dummy = {'val': 0, 'next': None}
+    cur = dummy
+    heap = []
+    counter = 0
+    for lst in lists:
+        if lst:
+            heapq.heappush(heap, (lst['val'], counter, lst))
+            counter += 1
+    while heap:
+        val, _, node = heapq.heappop(heap)
+        cur['next'] = node
+        cur = cur['next']
+        if node['next']:
+            counter += 1
+            heapq.heappush(heap, (node['next']['val'], counter, node['next']))
+    return dummy['next']
 ```
 
-This problem tests fundamental skills in Linked lists / stacks / queues.
+Min-heap of (node_val, tiebreaker, node). Pop the smallest, append it to result, push its successor. O(n log k) time where n = total nodes, k = number of lists. Tiebreaker counter avoids comparing dicts.
 
 </Solution>

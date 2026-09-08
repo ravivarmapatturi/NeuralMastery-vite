@@ -1,31 +1,67 @@
 ---
-placeholder: true
-title: "Practice: Advanced data structures Module 15: Problem 75"
+title: "Practice: #75. Advanced DS: Implement Queue using Stacks"
+description: "Implement Advanced DS: Implement Queue using Stacks in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "easy"
+topic: "data-structures-algorithms"
 sidebar_position: 75
-description: "Curriculum Problem 75 (Stage 2: Data Structures & Algorithmic Foundations): Master Advanced data structures."
-difficulty: easy
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Advanced data structures Module 15: Problem 75
+# Advanced DS: Implement Queue using Stacks
 
 **Rank #75** · Difficulty: **Easy** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-14`.
+## Overview
+
+Implement `queue_using_stacks(operations)` -- the two-stack FIFO trick with amortized O(1) per operation. Tests understanding of amortized complexity and the `in`/`out` lazy-transfer pattern.
+
+## Task
+
+Implement the function `queue_using_stacks(operations)`. Simulate a FIFO queue using two stacks. Return results of `peek`, `pop`, and `empty` operations (None for `push`).
 
 <PracticePlayground problemId="ds-algo-prob-15" />
 
 <Solution>
 
 ```python
-def ds_algo_p15(data):
-    # Reference implementation
-    return data
+def queue_using_stacks(operations):
+    class MyQueue:
+        def __init__(self):
+            self.in_stack = []
+            self.out_stack = []
+        def push(self, x):
+            self.in_stack.append(x)
+        def pop(self):
+            self._transfer()
+            return self.out_stack.pop()
+        def peek(self):
+            self._transfer()
+            return self.out_stack[-1]
+        def empty(self):
+            return not self.in_stack and not self.out_stack
+        def _transfer(self):
+            if not self.out_stack:
+                while self.in_stack:
+                    self.out_stack.append(self.in_stack.pop())
+
+    q = MyQueue()
+    results = []
+    for op in operations:
+        name = op[0]
+        if name == 'push':
+            q.push(op[1])
+            results.append(None)
+        elif name == 'pop':
+            results.append(q.pop())
+        elif name == 'peek':
+            results.append(q.peek())
+        elif name == 'empty':
+            results.append(q.empty())
+    return results
 ```
 
-This problem tests fundamental skills in Advanced data structures.
+Lazy transfer: only move from in_stack to out_stack when out_stack is empty. Each element crosses once: amortized O(1) per operation.
 
 </Solution>

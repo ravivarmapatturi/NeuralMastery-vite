@@ -1,31 +1,46 @@
 ---
-placeholder: true
-title: "Practice: Trees Module 52: Problem 112"
+title: "Practice: #112. Trees: Binary Tree Maximum Path Sum"
+description: "Implement Trees: Binary Tree Maximum Path Sum in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "hard"
+topic: "data-structures-algorithms"
 sidebar_position: 112
-description: "Curriculum Problem 112 (Stage 2: Data Structures & Algorithmic Foundations): Master Trees / binary search."
-difficulty: hard
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Trees Module 52: Problem 112
+# Trees: Binary Tree Maximum Path Sum
 
 **Rank #112** · Difficulty: **Hard** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-51`.
+## Overview
+
+Implement `max_path_sum(root)` -- track the best 'pass-through' path at each node. A path can go through root, only left, only right, or just root itself.
+
+## Task
+
+Implement the function `max_path_sum(root)`. A path is any sequence of nodes from some starting node to some ending node along parent-child connections, used at most once. Return the maximum path sum.
 
 <PracticePlayground problemId="ds-algo-prob-52" />
 
 <Solution>
 
 ```python
-def ds_algo_p52(data):
-    # Reference implementation
-    return data
+def max_path_sum(root):
+    res = [float('-inf')]
+
+    def dfs(node):
+        if not node:
+            return 0
+        left = max(dfs(node['left']), 0)   # ignore negative contributions
+        right = max(dfs(node['right']), 0)
+        res[0] = max(res[0], node['val'] + left + right)  # path through root
+        return node['val'] + max(left, right)             # contribution to parent
+
+    dfs(root)
+    return res[0]
 ```
 
-This problem tests fundamental skills in Trees / binary search.
+Post-order DFS: clamp negative subtree contributions to 0 (don't extend a path downward if it hurts). Update global max with the sum passing through this node. Return the best single-arm to the parent. O(n) time.
 
 </Solution>

@@ -1,31 +1,42 @@
 ---
-placeholder: true
-title: "Practice: Dynamic programming Module 34: Problem 94"
+title: "Practice: #94. DP: 0/1 Knapsack"
+description: "Implement DP: 0/1 Knapsack in the Data Structures & Algorithms track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+difficulty: "medium"
+topic: "data-structures-algorithms"
 sidebar_position: 94
-description: "Curriculum Problem 94 (Stage 2: Data Structures & Algorithmic Foundations): Master Dynamic programming / greedy / backtracking."
-difficulty: medium
-topic: data-structures-algorithms
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Dynamic programming Module 34: Problem 94
+# DP: 0/1 Knapsack
 
 **Rank #94** · Difficulty: **Medium** · Stage: **Stage 2: Data Structures & Algorithmic Foundations** · Category: **Data Structures & Algorithms**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `ds-algo-prob-33`.
+## Overview
+
+Implement `knapsack(weights, values, capacity)` -- the classic bounded DP. Every DP problem with a 'pick or skip' decision on a finite set of items is a variant of this.
+
+## Task
+
+Implement the function `knapsack(weights, values, capacity)`. Return the maximum total value achievable by selecting items without exceeding `capacity`. Each item can be used at most once.
 
 <PracticePlayground problemId="ds-algo-prob-34" />
 
 <Solution>
 
 ```python
-def ds_algo_p34(data):
-    # Reference implementation
-    return data
+def knapsack(weights, values, capacity):
+    n = len(weights)
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for w in range(capacity + 1):
+            dp[i][w] = dp[i-1][w]  # skip item i
+            if weights[i-1] <= w:
+                dp[i][w] = max(dp[i][w], dp[i-1][w-weights[i-1]] + values[i-1])
+    return dp[n][capacity]
 ```
 
-This problem tests fundamental skills in Dynamic programming / greedy / backtracking.
+2-D DP: dp[i][w] = best value using first i items with capacity w. At each item, choose the better of skip or take. O(n * capacity) time and space; can reduce to O(capacity) space.
 
 </Solution>
