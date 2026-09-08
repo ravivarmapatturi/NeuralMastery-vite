@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
-import { getFlatPages, getPracticeProblems, type DocPage, type PracticeDifficulty } from '../lib/contentTree';
-import { SECTION_META, SECTION_ORDER } from '../data/sectionMeta';
+import { getPracticeProblems, type DocPage, type PracticeDifficulty } from '../lib/contentTree';
 import { useGamification } from '../contexts/GamificationContext';
 import { hasAward, pointsForDifficulty, SYSTEM_DESIGN_CHALLENGE_POINTS } from '../lib/gamification';
-import { useProgress } from '../contexts/ProgressContext';
-import { cleanPracticeTitle, nextLesson, practiceStats, recommendedProblem, relatedLesson } from '../lib/mastery';
+import { practiceStats } from '../lib/mastery';
+import { buildTopicLabels, getPracticeTracks } from '../lib/practiceTracks';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 
@@ -15,19 +14,6 @@ const DIFFICULTY_COLOR: Record<PracticeDifficulty, string> = {
   medium: 'var(--nm-accent-warn)',
   hard: 'var(--nm-accent-danger)',
 };
-
-/** dir (e.g. "mathematics-for-ai") -> its real, human label (e.g.
- * "Mathematics for AI") -- the same `topic:` frontmatter values Phase 2
- * tagged every problem with ARE these exact subsection dirs (deliberately,
- * see the taxonomy coordination with the Phase 2 session), so this is
- * just a lookup, not a second taxonomy. */
-function buildTopicLabels(): Record<string, string> {
-  const labels: Record<string, string> = {};
-  for (const key of SECTION_ORDER) {
-    for (const sub of SECTION_META[key].subsections) labels[sub.dir] = sub.label;
-  }
-  return labels;
-}
 
 /** A problem with no `difficulty` frontmatter is one of the 4 system-design
  * challenges (Phase 2 verified this is the ONLY reason difficulty is ever
@@ -50,40 +36,26 @@ export default function PracticeListPage() {
 
   const topicLabels = useMemo(buildTopicLabels, []);
   const { events } = useGamification();
-  const { understood } = useProgress();
-  const learnPages = useMemo(() => getFlatPages(), []);
 
   const [search, setSearch] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState<'all' | PracticeDifficulty | 'design'>('all');
   const [topicFilter, setTopicFilter] = useState<'all' | string>('all');
   const [viewMode, setViewMode] = useState<'roadmap' | 'table'>('roadmap');
 
-  const topics = useMemo(() => {
-    const set = new Set(problems.map((p) => p.topic).filter((t): t is string => !!t));
-    return Array.from(set).sort((a, b) => (topicLabels[a] ?? a).localeCompare(topicLabels[b] ?? b));
-  }, [problems, topicLabels]);
+  // Real tracks (topic + real problem count), computed from the actual
+  // catalogue -- never hardcoded, so this always reflects real shipped
+  // content. Sorted by count descending for the "Explore by Track & Tag"
+  // card grid; a separate alphabetical view feeds the topic filter dropdown.
+  const tracks = useMemo(() => getPracticeTracks(problems), [problems]);
+  const tracksByLabel = useMemo(() => [...tracks].sort((a, b) => a.label.localeCompare(b.label)), [tracks]);
+  const topics = useMemo(() => tracksByLabel.map((t) => t.topic), [tracksByLabel]);
+  const topicCounts = useMemo(() => Object.fromEntries(tracks.map((t) => [t.topic, t.count])), [tracks]);
 
   const solvedCount = problems.filter((p) => hasAward(events, p.route, isDesignChallenge(p) ? 'design' : 'complete')).length;
   const stats = practiceStats(problems, events);
-  const next = nextLesson(learnPages, understood);
-  const recommended = recommendedProblem(problems, events, next);
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 100;
-
-  const topicCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const p of problems) {
-      if (p.topic) {
-        counts[p.topic] = (counts[p.topic] || 0) + 1;
-      }
-    }
-    return counts;
-  }, [problems]);
-
-  const sortedTopics = useMemo(() => {
-    return Object.keys(topicCounts).sort((a, b) => (topicCounts[b] || 0) - (topicCounts[a] || 0));
-  }, [topicCounts]);
 
   const filtered = problems.filter((p) => {
     if (search && !p.title.toLowerCase().includes(search.toLowerCase())) return false;
@@ -154,41 +126,61 @@ export default function PracticeListPage() {
           </div>
         </div>
 
-        {/* Main content (left) + Explore by Track & Tag (right, sticky cards) --
-            the topic sidebar starts immediately below the header on every
-            screen size, and sits to the right of the main column once
-            there's room; on narrow viewports it wraps below instead. */}
-        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-          <div style={{ flex: '1 1 640px', minWidth: 0 }}>
+        <div>
             <div className="nm-mastery-metrics" aria-label="Practice progress">
               <div><strong>{stats.solved}</strong><span>problems solved</span></div>
               <div><strong>{stats.total - stats.solved}</strong><span>ready to solve</span></div>
               <div><strong>{stats.easySolved}/{stats.mediumSolved}/{stats.hardSolved}</strong><span>easy / medium / hard</span></div>
             </div>
 
-            <div className="nm-practice-guidance">
-          <div>
-            <p className="nm-eyebrow">Recommended next</p>
-            {recommended ? <>
-              <h2>{cleanPracticeTitle(recommended.title)}</h2>
-              <p>
-                {next ? `Your next lesson is ${next.title}. This is the nearest unsolved practice problem in the current curriculum.` : 'Your first unsolved practice problem, selected from the real catalogue.'}
-              </p>
-              <div className="nm-guidance-actions">
-                <Link className="nm-button nm-button-primary" to={recommended.route}>Start problem →</Link>
-                {relatedLesson(recommended, learnPages) && <Link className="nm-button nm-button-secondary" to={relatedLesson(recommended, learnPages)!.route}>Learn the concept →</Link>}
+            <div className="nm-practice-tracks" style={{ marginBottom: '1.75rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.7rem', gap: 8 }}>
+                <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--nm-text-primary)' }}>Explore by Track &amp; Tag</h2>
+                <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>{tracks.length} tracks</span>
               </div>
-            </> : <>
-              <h2>Practice complete</h2><p>You have solved every currently available problem. Continue exploring the curriculum while new practice arrives.</p>
-              <Link className="nm-button nm-button-primary" to="/learn">Continue learning →</Link>
-            </>}
-          </div>
-          <div className="nm-practice-guidance-side">
-            <span>Connected loop</span>
-            <strong>Learn → visualize → implement</strong>
-            <p>Every recommendation is drawn from your actual lesson progress and the problem catalogue—not a generic playlist.</p>
-          </div>
-        </div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))',
+                  gap: '0.7rem',
+                }}
+              >
+                {tracks.map((track) => (
+                  <Link
+                    key={track.slug}
+                    to={`/practice/track/${track.slug}`}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      gap: 10,
+                      padding: '0.85rem 1rem',
+                      minHeight: 84,
+                      borderRadius: 12,
+                      border: '1px solid var(--nm-border)',
+                      background: 'var(--nm-surface)',
+                      textDecoration: 'none',
+                      transition: 'border-color 0.15s ease, transform 0.15s ease',
+                    }}
+                  >
+                    <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>{track.label}</span>
+                    <span
+                      style={{
+                        alignSelf: 'flex-start',
+                        fontSize: 11,
+                        fontWeight: 800,
+                        padding: '0.15rem 0.55rem',
+                        borderRadius: 10,
+                        background: 'color-mix(in srgb, var(--nm-accent-primary) 12%, var(--nm-surface))',
+                        color: 'var(--nm-accent-primary)',
+                      }}
+                    >
+                      {track.count} problem{track.count === 1 ? '' : 's'}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
 
         {/* Filter Toolbar */}
         <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
@@ -422,75 +414,6 @@ export default function PracticeListPage() {
           </div>
         )}
           </div>
-
-          {/* Explore by Track & Tag -- topic cards, sticky on the right */}
-          <aside style={{ flex: '0 1 300px', minWidth: 260, position: 'sticky', top: 90 }}>
-            <div style={{ background: 'var(--nm-surface)', borderRadius: 12, border: '1px solid var(--nm-border)', padding: '1.2rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem', gap: 8 }}>
-                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
-                  Explore by Track &amp; Tag
-                </h3>
-                {topicFilter !== 'all' && (
-                  <button
-                    onClick={() => setTopicFilter('all')}
-                    style={{ background: 'none', border: 'none', color: 'var(--nm-accent-primary)', fontSize: 11.5, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}
-                  >
-                    Clear
-                  </button>
-                )}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: 560, overflowY: 'auto', paddingRight: 2 }}>
-                {sortedTopics.map((topic) => {
-                  const label = topicLabels[topic] ?? topic;
-                  const count = topicCounts[topic];
-                  const isActive = topicFilter === topic;
-                  return (
-                    <button
-                      key={topic}
-                      onClick={() => {
-                        const next = isActive ? 'all' : topic;
-                        setTopicFilter(next);
-                        setCurrentPage(1);
-                        setViewMode('table');
-                        document.getElementById('practice-catalogue')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '0.6rem 0.8rem',
-                        borderRadius: 10,
-                        fontSize: 12.5,
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        border: isActive ? '1.5px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
-                        background: isActive ? 'color-mix(in srgb, var(--nm-accent-primary) 12%, var(--nm-surface))' : 'var(--nm-bg)',
-                        color: isActive ? 'var(--nm-accent-primary)' : 'var(--nm-text-primary)',
-                        transition: 'all 0.15s ease',
-                      }}
-                    >
-                      <span>{label}</span>
-                      <span
-                        style={{
-                          fontSize: 10.5,
-                          fontWeight: 800,
-                          padding: '0.1rem 0.45rem',
-                          borderRadius: 10,
-                          background: isActive ? 'var(--nm-accent-primary)' : 'var(--nm-surface)',
-                          color: isActive ? '#fff' : 'var(--nm-text-muted)',
-                        }}
-                      >
-                        {count}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </aside>
-        </div>
 
       </section>
     </div>

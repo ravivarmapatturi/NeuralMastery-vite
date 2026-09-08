@@ -9,6 +9,7 @@ import PracticeProblemLayout from './components/layout/PracticeProblemLayout';
 import ChooserPage from './components/ChooserPage';
 import Home from './components/Home';
 import PracticeListPage from './components/PracticeListPage';
+import PracticeTrackPage from './components/PracticeTrackPage';
 import ProgressPage from './components/ProgressPage';
 import ProfilePage from './components/ProfilePage';
 import LeaderboardPage from './components/LeaderboardPage';
@@ -68,6 +69,7 @@ export default function App() {
                       <Route path="/" element={<ChooserPage />} />
                       <Route path="/learn" element={<Home />} />
                       <Route path="/practice" element={<PracticeListPage />} />
+                      <Route path="/practice/track/:topicSlug" element={<PracticeTrackPage />} />
                       <Route path="/practice/:slug" element={<PracticeProblemLayout />} />
                       <Route path="/progress" element={<ProgressPage />} />
                       <Route path="/profile" element={<ProfilePage />} />
