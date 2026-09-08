@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 28: Problem 28"
+title: "Practice: K-th Largest Element with Min-Heap"
 sidebar_position: 28
-description: "Curriculum Problem 28 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Identify the k-th largest order statistic using an O(n log k) bounded heap rather than full sorting."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,34 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 28: Problem 28
+# K-th Largest Element with Min-Heap
 
 **Rank #28** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-27`.
+## Overview
+
+Identify the k-th largest order statistic using an O(n log k) bounded heap rather than full sorting.
+
+## Task
+
+Implement `find_kth_largest(nums, k)`: find the `k`-th largest element in `nums` without performing a full O(n log n) sort, utilizing a min-heap of size `k`.
 
 <PracticePlayground problemId="py-foundations-prob-28" />
 
 <Solution>
 
 ```python
-def py_foundations_p28(data):
-    # Reference implementation
-    return data
+import heapq
+
+def find_kth_largest(nums, k):
+    heap = []
+    for x in nums:
+        heapq.heappush(heap, x)
+        if len(heap) > k:
+            heapq.heappop(heap)
+    return heap[0]
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Keeping a min-heap of capacity k guarantees the root holds the k-th largest element in O(n log k) runtime.
 
 </Solution>

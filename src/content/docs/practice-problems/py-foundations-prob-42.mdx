@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 42: Problem 42"
+title: "Practice: Dictionary Change Diff Engine"
 sidebar_position: 42
-description: "Curriculum Problem 42 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Generate structured diff patches identifying added, deleted, and modified key-value pairs."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,40 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 42: Problem 42
+# Dictionary Change Diff Engine
 
 **Rank #42** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-41`.
+## Overview
+
+Generate structured diff patches identifying added, deleted, and modified key-value pairs.
+
+## Task
+
+Implement `diff_dicts(dict_a, dict_b)`: calculate delta changes from `dict_a` to `dict_b`. Return `{"added": {...}, "removed": {...}, "modified": {key: {"old": ..., "new": ...}}}`.
 
 <PracticePlayground problemId="py-foundations-prob-42" />
 
 <Solution>
 
 ```python
-def py_foundations_p42(data):
-    # Reference implementation
-    return data
+def diff_dicts(dict_a, dict_b):
+    added = {}
+    removed = {}
+    modified = {}
+    all_keys = set(dict_a.keys()) | set(dict_b.keys())
+    for k in sorted(all_keys):
+        in_a = k in dict_a
+        in_b = k in dict_b
+        if in_b and not in_a:
+            added[k] = dict_b[k]
+        elif in_a and not in_b:
+            removed[k] = dict_a[k]
+        elif dict_a[k] != dict_b[k]:
+            modified[k] = {'old': dict_a[k], 'new': dict_b[k]}
+    return {'added': added, 'removed': removed, 'modified': modified}
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Set operations on dictionary keys yield instantaneous partitioning into symmetric differences and intersections.
 
 </Solution>

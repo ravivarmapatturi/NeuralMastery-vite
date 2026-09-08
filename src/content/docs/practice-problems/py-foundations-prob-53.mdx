@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 53: Problem 53"
+title: "Practice: Bounded Producer-Consumer Queue Simulator"
 sidebar_position: 53
-description: "Curriculum Problem 53 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Simulate bounded producer-consumer FIFO queue mechanics with overflow backpressure and underflow detection."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,46 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 53: Problem 53
+# Bounded Producer-Consumer Queue Simulator
 
 **Rank #53** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-52`.
+## Overview
+
+Simulate bounded producer-consumer FIFO queue mechanics with overflow backpressure and underflow detection.
+
+## Task
+
+Implement `simulate_producer_consumer(events, capacity)`: simulate a bounded queue. On `produce` event, if `len(queue) < capacity`, enqueue and log `"PRODUCED: <item>"`, else log `"DROPPED: <item>"`. On `consume` event, if queue is empty, log `"UNDERFLOW"`, else dequeue and log `"CONSUMED: <item>"`. Return the list of logged strings.
 
 <PracticePlayground problemId="py-foundations-prob-53" />
 
 <Solution>
 
 ```python
-def py_foundations_p53(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def simulate_producer_consumer(events, capacity):
+    queue = deque()
+    log = []
+    for ev in events:
+        action = ev.get('type')
+        if action == 'produce':
+            item = ev.get('item')
+            if len(queue) >= capacity:
+                log.append(f"DROPPED: {item}")
+            else:
+                queue.append(item)
+                log.append(f"PRODUCED: {item}")
+        elif action == 'consume':
+            if not queue:
+                log.append("UNDERFLOW")
+            else:
+                item = queue.popleft()
+                log.append(f"CONSUMED: {item}")
+    return log
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Using double-ended queues maintains strict FIFO ordering with constant-time push and pull operations.
 
 </Solution>

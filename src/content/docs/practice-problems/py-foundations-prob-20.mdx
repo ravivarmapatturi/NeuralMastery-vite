@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 20: Problem 20"
+title: "Practice: Longest Common Prefix"
 sidebar_position: 20
-description: "Curriculum Problem 20 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Extract the shared initial substring across a collection of candidate strings."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,35 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 20: Problem 20
+# Longest Common Prefix
 
 **Rank #20** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-19`.
+## Overview
+
+Extract the shared initial substring across a collection of candidate strings.
+
+## Task
+
+Implement `longest_common_prefix(strs)`: find the longest common prefix string shared by all strings in `strs`. If `strs` is empty or there is no common prefix, return `""`.
 
 <PracticePlayground problemId="py-foundations-prob-20" />
 
 <Solution>
 
 ```python
-def py_foundations_p20(data):
-    # Reference implementation
-    return data
+def longest_common_prefix(strs):
+    if not strs:
+        return ""
+    prefix = strs[0]
+    for s in strs[1:]:
+        while not s.startswith(prefix):
+            prefix = prefix[:-1]
+            if not prefix:
+                return ""
+    return prefix
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Horizontally scanning and truncating the candidate prefix against each string in sequence ensures linear time proportional to total character comparisons.
 
 </Solution>

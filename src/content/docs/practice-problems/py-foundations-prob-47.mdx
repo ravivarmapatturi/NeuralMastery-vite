@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 47: Problem 47"
+title: "Practice: Rolling Hash Substring Search (Rabin-Karp)"
 sidebar_position: 47
-description: "Curriculum Problem 47 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Search for pattern matches across long texts in linear expected time using rolling polynomial hashes."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,42 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 47: Problem 47
+# Rolling Hash Substring Search (Rabin-Karp)
 
 **Rank #47** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-46`.
+## Overview
+
+Search for pattern matches across long texts in linear expected time using rolling polynomial hashes.
+
+## Task
+
+Implement `rabin_karp_find(text, pattern)`: locate all occurrences of `pattern` in `text` and return their 0-based start indices in ascending order. If `pattern` is empty, longer than `text`, or not present, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-47" />
 
 <Solution>
 
 ```python
-def py_foundations_p47(data):
-    # Reference implementation
-    return data
+def rabin_karp_find(text, pattern):
+    if not pattern or not text or len(pattern) > len(text):
+        return []
+    n, m = len(text), len(pattern)
+    base, mod = 256, 1000000007
+    p_hash, t_hash = 0, 0
+    h = pow(base, m - 1, mod)
+    for i in range(m):
+        p_hash = (base * p_hash + ord(pattern[i])) % mod
+        t_hash = (base * t_hash + ord(text[i])) % mod
+    matches = []
+    for i in range(n - m + 1):
+        if p_hash == t_hash and text[i:i + m] == pattern:
+            matches.append(i)
+        if i < n - m:
+            t_hash = (base * (t_hash - ord(text[i]) * h) + ord(text[i + m])) % mod
+    return matches
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Rabin-Karp maintains an O(1) rolling hash window across the stream, comparing characters only upon hash equality.
 
 </Solution>

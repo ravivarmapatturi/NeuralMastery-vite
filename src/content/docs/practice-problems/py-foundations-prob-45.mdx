@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 45: Problem 45"
+title: "Practice: Longest Substring Without Repeating Characters"
 sidebar_position: 45
-description: "Curriculum Problem 45 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Find the maximum span of unique consecutive characters using a dynamic sliding window."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,35 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 45: Problem 45
+# Longest Substring Without Repeating Characters
 
 **Rank #45** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-44`.
+## Overview
+
+Find the maximum span of unique consecutive characters using a dynamic sliding window.
+
+## Task
+
+Implement `length_of_longest_substring(s)`: find the length of the longest substring of `s` that contains no duplicate characters.
 
 <PracticePlayground problemId="py-foundations-prob-45" />
 
 <Solution>
 
 ```python
-def py_foundations_p45(data):
-    # Reference implementation
-    return data
+def length_of_longest_substring(s):
+    seen = {}
+    start = 0
+    max_len = 0
+    for end, ch in enumerate(s):
+        if ch in seen and seen[ch] >= start:
+            start = seen[ch] + 1
+        seen[ch] = end
+        max_len = max(max_len, end - start + 1)
+    return max_len
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Advancing start pointer directly to seen[ch] + 1 when a duplicate is found achieves strict O(n) time complexity.
 
 </Solution>

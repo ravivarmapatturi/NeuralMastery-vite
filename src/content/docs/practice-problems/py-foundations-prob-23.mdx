@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 23: Problem 23"
+title: "Practice: LRU Cache Operation Simulator"
 sidebar_position: 23
-description: "Curriculum Problem 23 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Simulate an LRU cache eviction and access sequence preserving access recency ordering."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,49 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 23: Problem 23
+# LRU Cache Operation Simulator
 
 **Rank #23** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-22`.
+## Overview
+
+Simulate an LRU cache eviction and access sequence preserving access recency ordering.
+
+## Task
+
+Implement `lru_cache_access(operations, capacity)`: simulate a fixed-capacity LRU cache. When capacity is exceeded during a `put`, evict the least recently accessed key. Return a list containing the return values of all `get` operations (-1 when key is not found).
 
 <PracticePlayground problemId="py-foundations-prob-23" />
 
 <Solution>
 
 ```python
-def py_foundations_p23(data):
-    # Reference implementation
-    return data
+from collections import OrderedDict
+
+def lru_cache_access(operations, capacity):
+    cache = OrderedDict()
+    out = []
+    for op in operations:
+        name = op.get("op")
+        key = op.get("key")
+        if name == "get":
+            if key in cache:
+                cache.move_to_end(key)
+                out.append(cache[key])
+            else:
+                out.append(-1)
+        elif name == "put":
+            val = op.get("val")
+            if key in cache:
+                cache[key] = val
+                cache.move_to_end(key)
+            else:
+                if len(cache) >= capacity:
+                    cache.popitem(last=False)
+                cache[key] = val
+    return out
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+OrderedDict maintains O(1) key lookups alongside O(1) moves to head/tail for maintaining LRU order.
 
 </Solution>

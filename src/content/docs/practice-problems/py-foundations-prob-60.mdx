@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 60: Problem 60"
+title: "Practice: Grid Maze Shortest Path (BFS)"
 sidebar_position: 60
-description: "Curriculum Problem 60 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Navigate 2D grid obstacle environments using Breadth-First Search to discover the guaranteed shortest path."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,50 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 60: Problem 60
+# Grid Maze Shortest Path (BFS)
 
 **Rank #60** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-59`.
+## Overview
+
+Navigate 2D grid obstacle environments using Breadth-First Search to discover the guaranteed shortest path.
+
+## Task
+
+Implement `shortest_path_grid(grid, start, end)`: find the minimum number of steps to travel from `start` `[sr, sc]` to `end` `[er, ec]` on a 2D grid. Cells with value `0` are walkable; cells with value `1` are obstacles. Moves are restricted to 4 orthogonal directions (up, down, left, right). Return `-1` if no path exists.
 
 <PracticePlayground problemId="py-foundations-prob-60" />
 
 <Solution>
 
 ```python
-def py_foundations_p60(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def shortest_path_grid(grid, start, end):
+    if not grid or not grid[0]:
+        return -1
+    R, C = len(grid), len(grid[0])
+    sr, sc = start
+    er, ec = end
+    if grid[sr][sc] == 1 or grid[er][ec] == 1:
+        return -1
+    if sr == er and sc == ec:
+        return 0
+    queue = deque([(sr, sc, 0)])
+    visited = {(sr, sc)}
+    while queue:
+        r, c, dist = queue.popleft()
+        if r == er and c == ec:
+            return dist
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < R and 0 <= nc < C and grid[nr][nc] == 0:
+                if (nr, nc) not in visited:
+                    visited.add((nr, nc))
+                    queue.append((nr, nc, dist + 1))
+    return -1
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+BFS explores all cells at distance d before moving to distance d + 1, guaranteeing the shortest path in unweighted graphs.
 
 </Solution>

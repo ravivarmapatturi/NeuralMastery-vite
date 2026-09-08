@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 46: Problem 46"
+title: "Practice: Levenshtein Edit Distance Metric"
 sidebar_position: 46
-description: "Curriculum Problem 46 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Measure string similarity using the classical Wagner-Fischer dynamic programming edit distance."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,39 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 46: Problem 46
+# Levenshtein Edit Distance Metric
 
 **Rank #46** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-45`.
+## Overview
+
+Measure string similarity using the classical Wagner-Fischer dynamic programming edit distance.
+
+## Task
+
+Implement `edit_distance(word1, word2)`: calculate the minimum number of operations (insert a character, delete a character, replace a character) needed to transform `word1` into `word2`.
 
 <PracticePlayground problemId="py-foundations-prob-46" />
 
 <Solution>
 
 ```python
-def py_foundations_p46(data):
-    # Reference implementation
-    return data
+def edit_distance(word1, word2):
+    m, n = len(word1), len(word2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(m + 1):
+        dp[i][0] = i
+    for j in range(n + 1):
+        dp[0][j] = j
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if word1[i - 1] == word2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1]
+            else:
+                dp[i][j] = 1 + min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
+    return dp[m][n]
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+The Wagner-Fischer algorithm computes optimal sequence alignment transitions in O(m * n) polynomial time.
 
 </Solution>

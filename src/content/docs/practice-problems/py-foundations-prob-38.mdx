@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 38: Problem 38"
+title: "Practice: Circular Ring Buffer Simulator"
 sidebar_position: 38
-description: "Curriculum Problem 38 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Simulate a fixed-size ring buffer with automatic oldest-element eviction on overflow."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,39 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 38: Problem 38
+# Circular Ring Buffer Simulator
 
 **Rank #38** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-37`.
+## Overview
+
+Simulate a fixed-size ring buffer with automatic oldest-element eviction on overflow.
+
+## Task
+
+Implement `simulate_ring_buffer(operations, capacity)`: manage a circular buffer of fixed `capacity`. Operations are `push` (appends val, overwriting oldest if full), `pop` (removes and returns oldest item, or `None` if empty), and `to_list` (returns current items ordered oldest to newest). Return results for all `pop` and `to_list` operations.
 
 <PracticePlayground problemId="py-foundations-prob-38" />
 
 <Solution>
 
 ```python
-def py_foundations_p38(data):
-    # Reference implementation
-    return data
+from collections import deque
+
+def simulate_ring_buffer(operations, capacity):
+    buf = deque(maxlen=capacity)
+    out = []
+    for op in operations:
+        action = op.get('op')
+        if action == 'push':
+            buf.append(op.get('val'))
+        elif action == 'pop':
+            out.append(buf.popleft() if buf else None)
+        elif action == 'to_list':
+            out.append(list(buf))
+    return out
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Python collections.deque with maxlen manages bounded size in O(1) time per push/pop operation.
 
 </Solution>

@@ -14693,42 +14693,42 @@
     "/docs/practice-problems/py-foundations-prob-16": {
       "slug": "practice-problems/py-foundations-prob-16",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 16: Problem 16",
+      "title": "Practice: Two Sum with Index Map",
       "sidebarPosition": 16,
-      "description": "Curriculum Problem 16 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Find the two array elements that sum to the target value in a single O(n) pass using a hash map lookup.",
       "difficulty": "easy",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-17": {
       "slug": "practice-problems/py-foundations-prob-17",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 17: Problem 17",
+      "title": "Practice: Run-Length String Compression",
       "sidebarPosition": 17,
-      "description": "Curriculum Problem 17 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Encode repeated consecutive characters into character-count pairs, the cornerstone of lossless text and bitmap data compression.",
       "difficulty": "easy",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-18": {
       "slug": "practice-problems/py-foundations-prob-18",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 18: Problem 18",
+      "title": "Practice: Valid Anagram Verification",
       "sidebarPosition": 18,
-      "description": "Curriculum Problem 18 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Verify whether two strings contain the identical multiset of characters regardless of word order, case, or whitespace.",
       "difficulty": "easy",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-19": {
       "slug": "practice-problems/py-foundations-prob-19",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 19: Problem 19",
+      "title": "Practice: Recursive Nested List Depth",
       "sidebarPosition": 19,
-      "description": "Curriculum Problem 19 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Measure the maximum structural nesting depth of arbitrary recursive list hierarchies.",
       "difficulty": "easy",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-2": {
       "slug": "practice-problems/py-foundations-prob-2",
@@ -14743,102 +14743,102 @@
     "/docs/practice-problems/py-foundations-prob-20": {
       "slug": "practice-problems/py-foundations-prob-20",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 20: Problem 20",
+      "title": "Practice: Longest Common Prefix",
       "sidebarPosition": 20,
-      "description": "Curriculum Problem 20 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Extract the shared initial substring across a collection of candidate strings.",
       "difficulty": "easy",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-21": {
       "slug": "practice-problems/py-foundations-prob-21",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 21: Problem 21",
+      "title": "Practice: Sort Characters By Frequency",
       "sidebarPosition": 21,
-      "description": "Curriculum Problem 21 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Reorganize characters by frequency of occurrence with deterministic tie-breaking.",
       "difficulty": "easy",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-22": {
       "slug": "practice-problems/py-foundations-prob-22",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 22: Problem 22",
+      "title": "Practice: Streaming Sliding Window Mean",
       "sidebarPosition": 22,
-      "description": "Curriculum Problem 22 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Implement an O(n) moving average window filter by maintaining incremental running sums.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-23": {
       "slug": "practice-problems/py-foundations-prob-23",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 23: Problem 23",
+      "title": "Practice: LRU Cache Operation Simulator",
       "sidebarPosition": 23,
-      "description": "Curriculum Problem 23 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Simulate an LRU cache eviction and access sequence preserving access recency ordering.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-24": {
       "slug": "practice-problems/py-foundations-prob-24",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 24: Problem 24",
+      "title": "Practice: Flatten Nested Dictionary with Delimiters",
       "sidebarPosition": 24,
-      "description": "Curriculum Problem 24 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Convert deeply nested JSON dictionaries into flat dot-delimited key-value maps for serialization and tabular export.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-25": {
       "slug": "practice-problems/py-foundations-prob-25",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 25: Problem 25",
+      "title": "Practice: Unflatten Dotted Dictionary to Hierarchical Object",
       "sidebarPosition": 25,
-      "description": "Curriculum Problem 25 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Reconstruct hierarchical nested objects from flat delimited property paths (the exact inverse of flatten_dict).",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-26": {
       "slug": "practice-problems/py-foundations-prob-26",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 26: Problem 26",
+      "title": "Practice: Merge Overlapping Intervals",
       "sidebarPosition": 26,
-      "description": "Curriculum Problem 26 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Combine overlapping temporal and numerical ranges into a minimal set of disjoint contiguous intervals.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-27": {
       "slug": "practice-problems/py-foundations-prob-27",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 27: Problem 27",
+      "title": "Practice: Token Bucket Rate Limiter Simulator",
       "sidebarPosition": 27,
-      "description": "Curriculum Problem 27 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Simulate the industry-standard Token Bucket traffic-shaping algorithm for API throttling and LLM rate limiting.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-28": {
       "slug": "practice-problems/py-foundations-prob-28",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 28: Problem 28",
+      "title": "Practice: K-th Largest Element with Min-Heap",
       "sidebarPosition": 28,
-      "description": "Curriculum Problem 28 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Identify the k-th largest order statistic using an O(n log k) bounded heap rather than full sorting.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-29": {
       "slug": "practice-problems/py-foundations-prob-29",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 29: Problem 29",
+      "title": "Practice: Group Anagrams by Canonical Signature",
       "sidebarPosition": 29,
-      "description": "Curriculum Problem 29 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Partition words into anagram equivalence classes using canonical sorted-character hash keys.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-3": {
       "slug": "practice-problems/py-foundations-prob-3",
@@ -14853,102 +14853,102 @@
     "/docs/practice-problems/py-foundations-prob-30": {
       "slug": "practice-problems/py-foundations-prob-30",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 30: Problem 30",
+      "title": "Practice: Longest Palindromic Substring",
       "sidebarPosition": 30,
-      "description": "Curriculum Problem 30 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Locate the longest symmetric substring using optimal expand-around-center pointer traversal.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-31": {
       "slug": "practice-problems/py-foundations-prob-31",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 31: Problem 31",
+      "title": "Practice: Nested Schema Validation Engine",
       "sidebarPosition": 31,
-      "description": "Curriculum Problem 31 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Validate unstructured dictionary payloads against expected types and required field constraints.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-32": {
       "slug": "practice-problems/py-foundations-prob-32",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 32: Problem 32",
+      "title": "Practice: Greedy Word Wrap Formatter",
       "sidebarPosition": 32,
-      "description": "Curriculum Problem 32 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Break unstructured paragraphs into cleanly wrapped lines constrained to a maximum display column width.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-33": {
       "slug": "practice-problems/py-foundations-prob-33",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 33: Problem 33",
+      "title": "Practice: Batch Stream Pipeline Processor",
       "sidebarPosition": 33,
-      "description": "Curriculum Problem 33 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Partition sequential streaming data into fixed-size micro-batches with optional padding for vectorized ML inference.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-34": {
       "slug": "practice-problems/py-foundations-prob-34",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 34: Problem 34",
+      "title": "Practice: Roman Numeral Parser",
       "sidebarPosition": 34,
-      "description": "Curriculum Problem 34 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Parse additive and subtractive Roman numeral expressions into decimal integers.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-35": {
       "slug": "practice-problems/py-foundations-prob-35",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 35: Problem 35",
+      "title": "Practice: Matrix Spiral Traversal",
       "sidebarPosition": 35,
-      "description": "Curriculum Problem 35 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Unroll a 2D matrix into a 1D sequence in clockwise concentric spiral boundary order.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-36": {
       "slug": "practice-problems/py-foundations-prob-36",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 36: Problem 36",
+      "title": "Practice: Wildcard Pattern Matcher",
       "sidebarPosition": 36,
-      "description": "Curriculum Problem 36 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Evaluate wildcard glob expressions supporting single character (?) and arbitrary sequence (*) matchers.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-37": {
       "slug": "practice-problems/py-foundations-prob-37",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 37: Problem 37",
+      "title": "Practice: Prefix Tree (Trie) Simulator",
       "sidebarPosition": 37,
-      "description": "Curriculum Problem 37 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Build and query a prefix tree supporting dictionary insertion, exact lookup, and prefix matching.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-38": {
       "slug": "practice-problems/py-foundations-prob-38",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 38: Problem 38",
+      "title": "Practice: Circular Ring Buffer Simulator",
       "sidebarPosition": 38,
-      "description": "Curriculum Problem 38 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Simulate a fixed-size ring buffer with automatic oldest-element eviction on overflow.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-39": {
       "slug": "practice-problems/py-foundations-prob-39",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 39: Problem 39",
+      "title": "Practice: Exponential Backoff Delay Schedule",
       "sidebarPosition": 39,
-      "description": "Curriculum Problem 39 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Compute truncated exponential backoff intervals for network resilience and API retry handlers.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-4": {
       "slug": "practice-problems/py-foundations-prob-4",
@@ -14963,102 +14963,102 @@
     "/docs/practice-problems/py-foundations-prob-40": {
       "slug": "practice-problems/py-foundations-prob-40",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 40: Problem 40",
+      "title": "Practice: Graph Connected Components with Union-Find",
       "sidebarPosition": 40,
-      "description": "Curriculum Problem 40 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Count disconnected graph partitions using Disjoint Set Union (DSU) with path compression.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-41": {
       "slug": "practice-problems/py-foundations-prob-41",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 41: Problem 41",
+      "title": "Practice: Arithmetic Expression Evaluator",
       "sidebarPosition": 41,
-      "description": "Curriculum Problem 41 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Parse and evaluate arithmetic expressions respecting operator precedence without using eval().",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-42": {
       "slug": "practice-problems/py-foundations-prob-42",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 42: Problem 42",
+      "title": "Practice: Dictionary Change Diff Engine",
       "sidebarPosition": 42,
-      "description": "Curriculum Problem 42 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Generate structured diff patches identifying added, deleted, and modified key-value pairs.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-43": {
       "slug": "practice-problems/py-foundations-prob-43",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 43: Problem 43",
+      "title": "Practice: Reservoir Sampling Algorithm Step",
       "sidebarPosition": 43,
-      "description": "Curriculum Problem 43 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Simulate a single transition step of Jeffrey Vitter's Reservoir Sampling Algorithm R.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-44": {
       "slug": "practice-problems/py-foundations-prob-44",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 44: Problem 44",
+      "title": "Practice: Task Scheduling Topological Sort",
       "sidebarPosition": 44,
-      "description": "Curriculum Problem 44 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Schedule dependent tasks linearly using Kahn's topological sort algorithm with deterministic tie-breaking.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-45": {
       "slug": "practice-problems/py-foundations-prob-45",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 45: Problem 45",
+      "title": "Practice: Longest Substring Without Repeating Characters",
       "sidebarPosition": 45,
-      "description": "Curriculum Problem 45 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Find the maximum span of unique consecutive characters using a dynamic sliding window.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-46": {
       "slug": "practice-problems/py-foundations-prob-46",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 46: Problem 46",
+      "title": "Practice: Levenshtein Edit Distance Metric",
       "sidebarPosition": 46,
-      "description": "Curriculum Problem 46 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Measure string similarity using the classical Wagner-Fischer dynamic programming edit distance.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-47": {
       "slug": "practice-problems/py-foundations-prob-47",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 47: Problem 47",
+      "title": "Practice: Rolling Hash Substring Search (Rabin-Karp)",
       "sidebarPosition": 47,
-      "description": "Curriculum Problem 47 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Search for pattern matches across long texts in linear expected time using rolling polynomial hashes.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-48": {
       "slug": "practice-problems/py-foundations-prob-48",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 48: Problem 48",
+      "title": "Practice: Compact Range String Expansion Parser",
       "sidebarPosition": 48,
-      "description": "Curriculum Problem 48 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Parse compact human-readable range strings into deduplicated, sorted integer arrays.",
       "difficulty": "medium",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-49": {
       "slug": "practice-problems/py-foundations-prob-49",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 49: Problem 49",
+      "title": "Practice: Time-To-Live (TTL) Cache Simulator",
       "sidebarPosition": 49,
-      "description": "Curriculum Problem 49 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Simulate time-based cache expiration enforcing millisecond/second TTL validation semantics.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-5": {
       "slug": "practice-problems/py-foundations-prob-5",
@@ -15073,102 +15073,102 @@
     "/docs/practice-problems/py-foundations-prob-50": {
       "slug": "practice-problems/py-foundations-prob-50",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 50: Problem 50",
+      "title": "Practice: Package Build Order and Cycle Resolver",
       "sidebarPosition": 50,
-      "description": "Curriculum Problem 50 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Compute package compilation ordering and identify cyclic dependencies across software build graphs.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-51": {
       "slug": "practice-problems/py-foundations-prob-51",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 51: Problem 51",
+      "title": "Practice: Closed Interval List Intersections",
       "sidebarPosition": 51,
-      "description": "Curriculum Problem 51 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Compute pairwise intersection overlaps between two disjoint sorted interval streams in linear time.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-52": {
       "slug": "practice-problems/py-foundations-prob-52",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 52: Problem 52",
+      "title": "Practice: Tokenized Sequence Diff Generator (LCS)",
       "sidebarPosition": 52,
-      "description": "Curriculum Problem 52 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Generate structured diff edits (keep, add, remove) between two token sequences via Longest Common Subsequence backtracking.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-53": {
       "slug": "practice-problems/py-foundations-prob-53",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 53: Problem 53",
+      "title": "Practice: Bounded Producer-Consumer Queue Simulator",
       "sidebarPosition": 53,
-      "description": "Curriculum Problem 53 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Simulate bounded producer-consumer FIFO queue mechanics with overflow backpressure and underflow detection.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-54": {
       "slug": "practice-problems/py-foundations-prob-54",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 54: Problem 54",
+      "title": "Practice: JSONPath Query Expression Evaluator",
       "sidebarPosition": 54,
-      "description": "Curriculum Problem 54 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Evaluate JSONPath navigation queries supporting dot properties, wildcards, and list indexing.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-55": {
       "slug": "practice-problems/py-foundations-prob-55",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 55: Problem 55",
+      "title": "Practice: Huffman Optimal Prefix Codebook Generator",
       "sidebarPosition": 55,
-      "description": "Curriculum Problem 55 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Build an optimal lossless prefix codebook using the greedy priority queue Huffman tree construction.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-56": {
       "slug": "practice-problems/py-foundations-prob-56",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 56: Problem 56",
+      "title": "Practice: Minimum Window Substring Finder",
       "sidebarPosition": 56,
-      "description": "Curriculum Problem 56 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Locate the shortest substring covering a target multiset of characters in O(n) time using two-pointer sliding windows.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-57": {
       "slug": "practice-problems/py-foundations-prob-57",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 57: Problem 57",
+      "title": "Practice: Directed Graph Cycle Detection (3-Color DFS)",
       "sidebarPosition": 57,
-      "description": "Curriculum Problem 57 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Detect cycles in directed dependency networks using the classical white-gray-black tri-color DFS.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-58": {
       "slug": "practice-problems/py-foundations-prob-58",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 58: Problem 58",
+      "title": "Practice: Prefix Autocomplete Search Ranking",
       "sidebarPosition": 58,
-      "description": "Curriculum Problem 58 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Filter and rank autocomplete search query candidates with multi-attribute tie-breaking.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-59": {
       "slug": "practice-problems/py-foundations-prob-59",
       "section": "practice-problems",
-      "title": "Practice: Python & programming fundamentals Module 59: Problem 59",
+      "title": "Practice: Abstract Syntax Tree (AST) Evaluator",
       "sidebarPosition": 59,
-      "description": "Curriculum Problem 59 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals.",
+      "description": "Evaluate recursive expression abstract syntax trees with variable environment scoping.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-6": {
       "slug": "practice-problems/py-foundations-prob-6",
@@ -15183,12 +15183,12 @@
     "/docs/practice-problems/py-foundations-prob-60": {
       "slug": "practice-problems/py-foundations-prob-60",
       "section": "practice-problems",
-      "title": "Practice: Arrays Module 60: Problem 60",
+      "title": "Practice: Grid Maze Shortest Path (BFS)",
       "sidebarPosition": 60,
-      "description": "Curriculum Problem 60 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers.",
+      "description": "Navigate 2D grid obstacle environments using Breadth-First Search to discover the guaranteed shortest path.",
       "difficulty": "hard",
       "topic": "python-fundamentals",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/py-foundations-prob-7": {
       "slug": "practice-problems/py-foundations-prob-7",

@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 34: Problem 34"
+title: "Practice: Roman Numeral Parser"
 sidebar_position: 34
-description: "Curriculum Problem 34 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Parse additive and subtractive Roman numeral expressions into decimal integers."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,37 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 34: Problem 34
+# Roman Numeral Parser
 
 **Rank #34** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-33`.
+## Overview
+
+Parse additive and subtractive Roman numeral expressions into decimal integers.
+
+## Task
+
+Implement `roman_to_int(s)`: convert standard Roman numerals (`I=1, V=5, X=10, L=50, C=100, D=500, M=1000`) to integer values, accurately processing subtractive instances like `IV` (4) and `IX` (9).
 
 <PracticePlayground problemId="py-foundations-prob-34" />
 
 <Solution>
 
 ```python
-def py_foundations_p34(data):
-    # Reference implementation
-    return data
+def roman_to_int(s):
+    vals = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    total = 0
+    prev = 0
+    for ch in reversed(s):
+        curr = vals.get(ch, 0)
+        if curr < prev:
+            total -= curr
+        else:
+            total += curr
+        prev = curr
+    return total
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Traversing backwards turns subtractive notation into a simple comparison against the previous maximum symbol.
 
 </Solution>

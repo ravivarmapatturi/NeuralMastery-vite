@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 26: Problem 26"
+title: "Practice: Merge Overlapping Intervals"
 sidebar_position: 26
-description: "Curriculum Problem 26 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Combine overlapping temporal and numerical ranges into a minimal set of disjoint contiguous intervals."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,37 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 26: Problem 26
+# Merge Overlapping Intervals
 
 **Rank #26** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-25`.
+## Overview
+
+Combine overlapping temporal and numerical ranges into a minimal set of disjoint contiguous intervals.
+
+## Task
+
+Implement `merge_intervals(intervals)`: given an array of intervals `[start, end]`, merge all overlapping intervals and return a new array of non-overlapping intervals in ascending order.
 
 <PracticePlayground problemId="py-foundations-prob-26" />
 
 <Solution>
 
 ```python
-def py_foundations_p26(data):
-    # Reference implementation
-    return data
+def merge_intervals(intervals):
+    if not intervals:
+        return []
+    sorted_int = sorted(intervals, key=lambda x: x[0])
+    merged = [sorted_int[0]]
+    for start, end in sorted_int[1:]:
+        prev_start, prev_end = merged[-1]
+        if start <= prev_end:
+            merged[-1] = [prev_start, max(prev_end, end)]
+        else:
+            merged.append([start, end])
+    return merged
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Sorting intervals by start time reduces overlap resolution to comparing each interval start against the accumulated previous end.
 
 </Solution>

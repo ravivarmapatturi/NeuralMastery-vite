@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 25: Problem 25"
+title: "Practice: Unflatten Dotted Dictionary to Hierarchical Object"
 sidebar_position: 25
-description: "Curriculum Problem 25 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Reconstruct hierarchical nested objects from flat delimited property paths (the exact inverse of flatten_dict)."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,36 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 25: Problem 25
+# Unflatten Dotted Dictionary to Hierarchical Object
 
 **Rank #25** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-24`.
+## Overview
+
+Reconstruct hierarchical nested objects from flat delimited property paths (the exact inverse of flatten_dict).
+
+## Task
+
+Implement `unflatten_dict(flat, sep=".")`: split each key in `flat` by `sep` and reconstruct the corresponding nested dictionary tree structure with the given leaf values.
 
 <PracticePlayground problemId="py-foundations-prob-25" />
 
 <Solution>
 
 ```python
-def py_foundations_p25(data):
-    # Reference implementation
-    return data
+def unflatten_dict(flat, sep="."):
+    nested = {}
+    for k, v in flat.items():
+        parts = k.split(sep)
+        curr = nested
+        for part in parts[:-1]:
+            if part not in curr or not isinstance(curr[part], dict):
+                curr[part] = {}
+            curr = curr[part]
+        curr[parts[-1]] = v
+    return nested
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Iterating through split path tokens and maintaining pointer references down the dictionary tree builds nested maps in linear time.
 
 </Solution>

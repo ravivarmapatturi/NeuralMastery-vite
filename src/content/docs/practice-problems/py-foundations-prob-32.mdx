@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 32: Problem 32"
+title: "Practice: Greedy Word Wrap Formatter"
 sidebar_position: 32
-description: "Curriculum Problem 32 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Break unstructured paragraphs into cleanly wrapped lines constrained to a maximum display column width."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,42 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 32: Problem 32
+# Greedy Word Wrap Formatter
 
 **Rank #32** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-31`.
+## Overview
+
+Break unstructured paragraphs into cleanly wrapped lines constrained to a maximum display column width.
+
+## Task
+
+Implement `word_wrap(text, max_width)`: split `text` into whitespace-separated words and greedily pack as many words onto each line as possible without exceeding `max_width`. Words within a line must be separated by a single space. If `text` contains no words, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-32" />
 
 <Solution>
 
 ```python
-def py_foundations_p32(data):
-    # Reference implementation
-    return data
+def word_wrap(text, max_width):
+    words = text.split()
+    if not words:
+        return []
+    lines = []
+    curr_line = [words[0]]
+    curr_len = len(words[0])
+    for w in words[1:]:
+        if curr_len + 1 + len(w) <= max_width:
+            curr_line.append(w)
+            curr_len += 1 + len(w)
+        else:
+            lines.append(" ".join(curr_line))
+            curr_line = [w]
+            curr_len = len(w)
+    lines.append(" ".join(curr_line))
+    return lines
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Greedy packing checks whether the next token fits within the column limit before advancing to a new line.
 
 </Solution>

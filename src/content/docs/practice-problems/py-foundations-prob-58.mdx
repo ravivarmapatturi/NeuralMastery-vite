@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 58: Problem 58"
+title: "Practice: Prefix Autocomplete Search Ranking"
 sidebar_position: 58
-description: "Curriculum Problem 58 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Filter and rank autocomplete search query candidates with multi-attribute tie-breaking."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,32 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 58: Problem 58
+# Prefix Autocomplete Search Ranking
 
 **Rank #58** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-57`.
+## Overview
+
+Filter and rank autocomplete search query candidates with multi-attribute tie-breaking.
+
+## Task
+
+Implement `autocomplete(words_with_scores, prefix, top_k)`: given pairs of `(word, score)`, find all words starting with `prefix`. Rank them by descending popularity score, breaking ties alphabetically. Return at most `top_k` word strings.
 
 <PracticePlayground problemId="py-foundations-prob-58" />
 
 <Solution>
 
 ```python
-def py_foundations_p58(data):
-    # Reference implementation
-    return data
+def autocomplete(words_with_scores, prefix, top_k):
+    matches = []
+    for word, score in words_with_scores:
+        if word.startswith(prefix):
+            matches.append((score, word))
+    matches.sort(key=lambda x: (-x[0], x[1]))
+    return [w for _, w in matches[:top_k]]
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Filtering on prefix followed by sorting with composite key `(-score, word)` cleanly ranks candidate queries.
 
 </Solution>

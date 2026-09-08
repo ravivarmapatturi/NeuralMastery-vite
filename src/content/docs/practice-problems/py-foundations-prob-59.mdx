@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 59: Problem 59"
+title: "Practice: Abstract Syntax Tree (AST) Evaluator"
 sidebar_position: 59
-description: "Curriculum Problem 59 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Evaluate recursive expression abstract syntax trees with variable environment scoping."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,44 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 59: Problem 59
+# Abstract Syntax Tree (AST) Evaluator
 
 **Rank #59** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-58`.
+## Overview
+
+Evaluate recursive expression abstract syntax trees with variable environment scoping.
+
+## Task
+
+Implement `evaluate_ast(node, env)`: recursively evaluate an expression AST. Nodes are: numeric constants `{"type": "num", "val": float}`, variable references `{"type": "var", "name": str}` (looked up in `env`), and binary operators `{"type": "binop", "op": "+", "left": ..., "right": ...}`. Return the evaluated float result.
 
 <PracticePlayground problemId="py-foundations-prob-59" />
 
 <Solution>
 
 ```python
-def py_foundations_p59(data):
-    # Reference implementation
-    return data
+def evaluate_ast(node, env):
+    ntype = node.get('type')
+    if ntype == 'num':
+        return float(node.get('val', 0.0))
+    elif ntype == 'var':
+        return float(env.get(node.get('name'), 0.0))
+    elif ntype == 'binop':
+        op = node.get('op')
+        left = evaluate_ast(node.get('left'), env)
+        right = evaluate_ast(node.get('right'), env)
+        if op == '+':
+            return left + right
+        elif op == '-':
+            return left - right
+        elif op == '*':
+            return left * right
+        elif op == '/':
+            return left / right
+    return 0.0
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Tree recursion visits AST subnodes in post-order, computing operators from leaf values up to root.
 
 </Solution>

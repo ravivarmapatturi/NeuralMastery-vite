@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 48: Problem 48"
+title: "Practice: Compact Range String Expansion Parser"
 sidebar_position: 48
-description: "Curriculum Problem 48 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Parse compact human-readable range strings into deduplicated, sorted integer arrays."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,39 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 48: Problem 48
+# Compact Range String Expansion Parser
 
 **Rank #48** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-47`.
+## Overview
+
+Parse compact human-readable range strings into deduplicated, sorted integer arrays.
+
+## Task
+
+Implement `parse_ranges(range_str)`: parse strings containing integers and dash-separated ranges (e.g. `"1-3,5,8-10"`). Return a sorted list of unique integers. Whitespace around tokens must be tolerated. If `range_str` is empty, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-48" />
 
 <Solution>
 
 ```python
-def py_foundations_p48(data):
-    # Reference implementation
-    return data
+def parse_ranges(range_str):
+    if not range_str.strip():
+        return []
+    nums = set()
+    parts = [p.strip() for p in range_str.split(',') if p.strip()]
+    for p in parts:
+        if '-' in p:
+            sub = p.split('-')
+            start, end = int(sub[0]), int(sub[1])
+            for x in range(min(start, end), max(start, end) + 1):
+                nums.add(x)
+        else:
+            nums.add(int(p))
+    return sorted(nums)
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Splitting comma-separated tokens and expanding ranges into a hash set guarantees uniqueness before a final sort.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 17: Problem 17"
+title: "Practice: Run-Length String Compression"
 sidebar_position: 17
-description: "Curriculum Problem 17 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Encode repeated consecutive characters into character-count pairs, the cornerstone of lossless text and bitmap data compression."
 difficulty: easy
 topic: python-fundamentals
 ---
@@ -10,22 +9,40 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 17: Problem 17
+# Run-Length String Compression
 
 **Rank #17** · Difficulty: **Easy** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-16`.
+## Overview
+
+Encode repeated consecutive characters into character-count pairs, the cornerstone of lossless text and bitmap data compression.
+
+## Task
+
+Implement `run_length_encode(text)`: walk through the string and replace each run of identical consecutive characters with the character followed by the count of repetitions. Return `""` for an empty string.
 
 <PracticePlayground problemId="py-foundations-prob-17" />
 
 <Solution>
 
 ```python
-def py_foundations_p17(data):
-    # Reference implementation
-    return data
+def run_length_encode(text):
+    if not text:
+        return ""
+    res = []
+    curr_char = text[0]
+    count = 1
+    for ch in text[1:]:
+        if ch == curr_char:
+            count += 1
+        else:
+            res.append(f"{curr_char}{count}")
+            curr_char = ch
+            count = 1
+    res.append(f"{curr_char}{count}")
+    return "".join(res)
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Iterating through characters with an accumulator list and joining once at the end avoids Python quadratic string reallocation overhead.
 
 </Solution>

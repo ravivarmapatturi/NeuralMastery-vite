@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 56: Problem 56"
+title: "Practice: Minimum Window Substring Finder"
 sidebar_position: 56
-description: "Curriculum Problem 56 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Locate the shortest substring covering a target multiset of characters in O(n) time using two-pointer sliding windows."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,51 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 56: Problem 56
+# Minimum Window Substring Finder
 
 **Rank #56** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-55`.
+## Overview
+
+Locate the shortest substring covering a target multiset of characters in O(n) time using two-pointer sliding windows.
+
+## Task
+
+Implement `min_window(s, t)`: find the shortest contiguous substring of `s` that contains all the characters in `t` including duplicates. If no matching window exists, return `""`.
 
 <PracticePlayground problemId="py-foundations-prob-56" />
 
 <Solution>
 
 ```python
-def py_foundations_p56(data):
-    # Reference implementation
-    return data
+from collections import Counter
+
+def min_window(s, t):
+    if not s or not t or len(s) < len(t):
+        return ""
+    target = Counter(t)
+    required = len(target)
+    window = {}
+    formed = 0
+    l, r = 0, 0
+    ans = (float("inf"), 0, 0)
+    while r < len(s):
+        c = s[r]
+        window[c] = window.get(c, 0) + 1
+        if c in target and window[c] == target[c]:
+            formed += 1
+        while l <= r and formed == required:
+            if r - l + 1 < ans[0]:
+                ans = (r - l + 1, l, r)
+            c_l = s[l]
+            window[c_l] -= 1
+            if c_l in target and window[c_l] < target[c_l]:
+                formed -= 1
+            l += 1
+        r += 1
+    return "" if ans[0] == float("inf") else s[ans[1]:ans[2] + 1]
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+The left pointer only advances when the current window contains all target characters, ensuring exact minimal span discovery in linear time.
 
 </Solution>

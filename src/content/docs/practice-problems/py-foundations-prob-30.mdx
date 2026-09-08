@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 30: Problem 30"
+title: "Practice: Longest Palindromic Substring"
 sidebar_position: 30
-description: "Curriculum Problem 30 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Locate the longest symmetric substring using optimal expand-around-center pointer traversal."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,38 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 30: Problem 30
+# Longest Palindromic Substring
 
 **Rank #30** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-29`.
+## Overview
+
+Locate the longest symmetric substring using optimal expand-around-center pointer traversal.
+
+## Task
+
+Implement `longest_palindrome(s)`: find and return the longest substring of `s` that reads identically forward and backward. If multiple palindromes share the maximum length, return the one with the earliest starting index.
 
 <PracticePlayground problemId="py-foundations-prob-30" />
 
 <Solution>
 
 ```python
-def py_foundations_p30(data):
-    # Reference implementation
-    return data
+def longest_palindrome(s):
+    if not s:
+        return ""
+    start, max_len = 0, 1
+    for i in range(len(s)):
+        for l, r in [(i, i), (i, i + 1)]:
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if r - l + 1 > max_len:
+                    start = l
+                    max_len = r - l + 1
+                l -= 1
+                r += 1
+    return s[start:start + max_len]
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Expanding around all 2n-1 potential centers discovers the longest symmetric window in O(n^2) time with O(1) auxiliary space.
 
 </Solution>

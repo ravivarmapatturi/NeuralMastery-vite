@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 40: Problem 40"
+title: "Practice: Graph Connected Components with Union-Find"
 sidebar_position: 40
-description: "Curriculum Problem 40 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Count disconnected graph partitions using Disjoint Set Union (DSU) with path compression."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,42 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 40: Problem 40
+# Graph Connected Components with Union-Find
 
 **Rank #40** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-39`.
+## Overview
+
+Count disconnected graph partitions using Disjoint Set Union (DSU) with path compression.
+
+## Task
+
+Implement `connected_components_count(n, edges)`: given `n` nodes labeled `0` to `n - 1` and an undirected edge list `edges`, determine the total number of connected components using a Union-Find data structure.
 
 <PracticePlayground problemId="py-foundations-prob-40" />
 
 <Solution>
 
 ```python
-def py_foundations_p40(data):
-    # Reference implementation
-    return data
+def connected_components_count(n, edges):
+    parent = list(range(n))
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+    def union(x, y):
+        rx, ry = find(x), find(y)
+        if rx != ry:
+            parent[rx] = ry
+            return True
+        return False
+    components = n
+    for u, v in edges:
+        if union(u, v):
+            components -= 1
+    return components
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Path compression flattens tree depth during find operations, guaranteeing near-O(1) amortized union steps.
 
 </Solution>

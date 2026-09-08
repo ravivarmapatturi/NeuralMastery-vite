@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 33: Problem 33"
+title: "Practice: Batch Stream Pipeline Processor"
 sidebar_position: 33
-description: "Curriculum Problem 33 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Partition sequential streaming data into fixed-size micro-batches with optional padding for vectorized ML inference."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,35 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 33: Problem 33
+# Batch Stream Pipeline Processor
 
 **Rank #33** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-32`.
+## Overview
+
+Partition sequential streaming data into fixed-size micro-batches with optional padding for vectorized ML inference.
+
+## Task
+
+Implement `batch_process(items, batch_size, pad_value=None)`: split `items` into consecutive chunks of size `batch_size`. If `pad_value is not None` and the final chunk is shorter than `batch_size`, pad the chunk with `pad_value` until its length equals `batch_size`. If `batch_size <= 0`, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-33" />
 
 <Solution>
 
 ```python
-def py_foundations_p33(data):
-    # Reference implementation
-    return data
+def batch_process(items, batch_size, pad_value=None):
+    if batch_size <= 0:
+        return []
+    batches = []
+    for i in range(0, len(items), batch_size):
+        batch = list(items[i:i + batch_size])
+        if pad_value is not None and len(batch) < batch_size:
+            batch.extend([pad_value] * (batch_size - len(batch)))
+        batches.append(batch)
+    return batches
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Slicing by step size batch_size cleanly generates chunks with O(1) memory overhead beyond the created lists.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 49: Problem 49"
+title: "Practice: Time-To-Live (TTL) Cache Simulator"
 sidebar_position: 49
-description: "Curriculum Problem 49 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Simulate time-based cache expiration enforcing millisecond/second TTL validation semantics."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,47 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 49: Problem 49
+# Time-To-Live (TTL) Cache Simulator
 
 **Rank #49** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-48`.
+## Overview
+
+Simulate time-based cache expiration enforcing millisecond/second TTL validation semantics.
+
+## Task
+
+Implement `simulate_ttl_cache(operations, default_ttl)`: simulate a TTL cache. A key expires when query timestamp `t >= set_time + ttl`. If `ttl` is not provided in a `set` operation, use `default_ttl`. Return the results of all `get` operations (returning `None` for missing or expired entries).
 
 <PracticePlayground problemId="py-foundations-prob-49" />
 
 <Solution>
 
 ```python
-def py_foundations_p49(data):
-    # Reference implementation
-    return data
+def simulate_ttl_cache(operations, default_ttl):
+    cache = {}
+    out = []
+    for op in operations:
+        name = op.get('op')
+        k = op.get('key')
+        t = op.get('time', 0)
+        if name == 'set':
+            v = op.get('val')
+            ttl = op.get('ttl', default_ttl)
+            cache[k] = (v, t + ttl)
+        elif name == 'get':
+            if k in cache:
+                val, expiry = cache[k]
+                if t < expiry:
+                    out.append(val)
+                else:
+                    del cache[k]
+                    out.append(None)
+            else:
+                out.append(None)
+    return out
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Recording absolute expiration timestamps alongside values enables O(1) expiration checks on retrieval.
 
 </Solution>

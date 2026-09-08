@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 22: Problem 22"
+title: "Practice: Streaming Sliding Window Mean"
 sidebar_position: 22
-description: "Curriculum Problem 22 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Implement an O(n) moving average window filter by maintaining incremental running sums."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,34 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 22: Problem 22
+# Streaming Sliding Window Mean
 
 **Rank #22** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-21`.
+## Overview
+
+Implement an O(n) moving average window filter by maintaining incremental running sums.
+
+## Task
+
+Implement `sliding_window_average(nums, k)`: calculate the moving average for each continuous sub-array of length `k` across `nums`. Each mean must be rounded to 4 decimal places. If `len(nums) < k` or `k <= 0`, return `[]`.
 
 <PracticePlayground problemId="py-foundations-prob-22" />
 
 <Solution>
 
 ```python
-def py_foundations_p22(data):
-    # Reference implementation
-    return data
+def sliding_window_average(nums, k):
+    if k <= 0 or len(nums) < k:
+        return []
+    window_sum = sum(nums[:k])
+    result = [round(window_sum / k, 4)]
+    for i in range(k, len(nums)):
+        window_sum += nums[i] - nums[i - k]
+        result.append(round(window_sum / k, 4))
+    return result
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Adding the new element and subtracting the element sliding out of the window updates the sum in O(1) operations per element.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 29: Problem 29"
+title: "Practice: Group Anagrams by Canonical Signature"
 sidebar_position: 29
-description: "Curriculum Problem 29 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Partition words into anagram equivalence classes using canonical sorted-character hash keys."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,35 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 29: Problem 29
+# Group Anagrams by Canonical Signature
 
 **Rank #29** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-28`.
+## Overview
+
+Partition words into anagram equivalence classes using canonical sorted-character hash keys.
+
+## Task
+
+Implement `group_anagrams(words)`: group words that have identical characters. Return the groups with each group sorted alphabetically, and the outer list of groups sorted by the first element of each group.
 
 <PracticePlayground problemId="py-foundations-prob-29" />
 
 <Solution>
 
 ```python
-def py_foundations_p29(data):
-    # Reference implementation
-    return data
+from collections import defaultdict
+
+def group_anagrams(words):
+    groups = defaultdict(list)
+    for w in words:
+        key = "".join(sorted(w))
+        groups[key].append(w)
+    res = [sorted(g) for g in groups.values()]
+    res.sort(key=lambda g: g[0] if g else "")
+    return res
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Sorting each string gives a canonical key that clusters all anagrams into dictionary buckets in O(N * K log K) time.
 
 </Solution>

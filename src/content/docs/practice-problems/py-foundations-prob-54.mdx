@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 54: Problem 54"
+title: "Practice: JSONPath Query Expression Evaluator"
 sidebar_position: 54
-description: "Curriculum Problem 54 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Evaluate JSONPath navigation queries supporting dot properties, wildcards, and list indexing."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,56 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 54: Problem 54
+# JSONPath Query Expression Evaluator
 
 **Rank #54** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-53`.
+## Overview
+
+Evaluate JSONPath navigation queries supporting dot properties, wildcards, and list indexing.
+
+## Task
+
+Implement `query_json_path(data, path)`: execute a JSONPath query starting with `"$."`. Support dot-separated properties (e.g. `$.user.name`), list index lookups (e.g. `$.items[0]`), and list wildcard expansions (e.g. `$.items[*].id`). Return all matched values in a list.
 
 <PracticePlayground problemId="py-foundations-prob-54" />
 
 <Solution>
 
 ```python
-def py_foundations_p54(data):
-    # Reference implementation
-    return data
+import re
+
+def query_json_path(data, path):
+    if not path.startswith("$."):
+        return []
+    tokens = []
+    for part in path[2:].split('.'):
+        if not part:
+            continue
+        m = re.match(r'^([^\[]+)(\[(\*|\d+)\])?$', part)
+        if m:
+            tokens.append((m.group(1), m.group(3)))
+        else:
+            tokens.append((part, None))
+    curr = [data]
+    for key, idx in tokens:
+        next_curr = []
+        for obj in curr:
+            if isinstance(obj, dict) and key in obj:
+                val = obj[key]
+                if idx is None:
+                    next_curr.append(val)
+                elif idx == '*':
+                    if isinstance(val, list):
+                        next_curr.extend(val)
+                else:
+                    int_idx = int(idx)
+                    if isinstance(val, list) and 0 <= int_idx < len(val):
+                        next_curr.append(val[int_idx])
+        curr = next_curr
+    return curr
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Maintaining a frontier list of current matches and expanding through wildcard arrays cleanly traverses the document tree.
 
 </Solution>

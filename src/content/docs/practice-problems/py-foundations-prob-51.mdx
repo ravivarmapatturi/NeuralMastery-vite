@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 51: Problem 51"
+title: "Practice: Closed Interval List Intersections"
 sidebar_position: 51
-description: "Curriculum Problem 51 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Compute pairwise intersection overlaps between two disjoint sorted interval streams in linear time."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,38 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 51: Problem 51
+# Closed Interval List Intersections
 
 **Rank #51** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-50`.
+## Overview
+
+Compute pairwise intersection overlaps between two disjoint sorted interval streams in linear time.
+
+## Task
+
+Implement `interval_intersections(first_list, second_list)`: given two lists of closed intervals `[start, end]` (each list internally pairwise disjoint and sorted by start time), compute and return all overlapping interval intersections.
 
 <PracticePlayground problemId="py-foundations-prob-51" />
 
 <Solution>
 
 ```python
-def py_foundations_p51(data):
-    # Reference implementation
-    return data
+def interval_intersections(first_list, second_list):
+    i, j = 0, 0
+    intersections = []
+    while i < len(first_list) and j < len(second_list):
+        start = max(first_list[i][0], second_list[j][0])
+        end = min(first_list[i][1], second_list[j][1])
+        if start <= end:
+            intersections.append([start, end])
+        if first_list[i][1] < second_list[j][1]:
+            i += 1
+        else:
+            j += 1
+    return intersections
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Comparing boundaries with two pointers and advancing the earlier-ending interval guarantees full linear O(M + N) coverage.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 24: Problem 24"
+title: "Practice: Flatten Nested Dictionary with Delimiters"
 sidebar_position: 24
-description: "Curriculum Problem 24 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Convert deeply nested JSON dictionaries into flat dot-delimited key-value maps for serialization and tabular export."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,36 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 24: Problem 24
+# Flatten Nested Dictionary with Delimiters
 
 **Rank #24** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-23`.
+## Overview
+
+Convert deeply nested JSON dictionaries into flat dot-delimited key-value maps for serialization and tabular export.
+
+## Task
+
+Implement `flatten_dict(nested, sep=".")`: recursively traverse `nested`, constructing keys by concatenating path segments with `sep`. Return a flat dictionary mapping leaf values to full dotted path strings. Empty sub-dictionaries map to `{}`.
 
 <PracticePlayground problemId="py-foundations-prob-24" />
 
 <Solution>
 
 ```python
-def py_foundations_p24(data):
-    # Reference implementation
-    return data
+def flatten_dict(nested, sep="."):
+    flat = {}
+    def recurse(curr, prefix):
+        for k, v in curr.items():
+            new_key = f"{prefix}{sep}{k}" if prefix else str(k)
+            if isinstance(v, dict) and v:
+                recurse(v, new_key)
+            else:
+                flat[new_key] = v
+    recurse(nested, "")
+    return flat
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+A depth-first recursive walk records concatenated string paths for leaf values while visiting every sub-branch.
 
 </Solution>

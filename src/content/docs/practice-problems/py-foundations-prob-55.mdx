@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 55: Problem 55"
+title: "Practice: Huffman Optimal Prefix Codebook Generator"
 sidebar_position: 55
-description: "Curriculum Problem 55 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Build an optimal lossless prefix codebook using the greedy priority queue Huffman tree construction."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,46 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 55: Problem 55
+# Huffman Optimal Prefix Codebook Generator
 
 **Rank #55** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-54`.
+## Overview
+
+Build an optimal lossless prefix codebook using the greedy priority queue Huffman tree construction.
+
+## Task
+
+Implement `huffman_encoding(text)`: construct a Huffman coding tree from character frequencies in `text`. Return a dictionary mapping each unique character to its binary prefix code string (e.g. `{"A": "0", "B": "10", ...}`). The resulting dictionary should have its keys sorted. If `text` has only one unique character, map it to `"0"`. For empty text, return `{}`.
 
 <PracticePlayground problemId="py-foundations-prob-55" />
 
 <Solution>
 
 ```python
-def py_foundations_p55(data):
-    # Reference implementation
-    return data
+import heapq
+from collections import Counter
+
+def huffman_encoding(text):
+    if not text:
+        return {}
+    counts = Counter(text)
+    if len(counts) == 1:
+        return {text[0]: "0"}
+    heap = [[weight, [char, ""]] for char, weight in counts.items()]
+    heapq.heapify(heap)
+    while len(heap) > 1:
+        lo = heapq.heappop(heap)
+        hi = heapq.heappop(heap)
+        for pair in lo[1:]:
+            pair[1] = '0' + pair[1]
+        for pair in hi[1:]:
+            pair[1] = '1' + pair[1]
+        heapq.heappush(heap, [lo[0] + hi[0]] + lo[1:] + hi[1:])
+    codebook = {pair[0]: pair[1] for pair in heap[0][1:]}
+    return dict(sorted(codebook.items()))
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Greedily combining lowest-frequency subtrees via a min-heap creates a prefix-free code matching information-theoretic entropy limits.
 
 </Solution>

@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 37: Problem 37"
+title: "Practice: Prefix Tree (Trie) Simulator"
 sidebar_position: 37
-description: "Curriculum Problem 37 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Build and query a prefix tree supporting dictionary insertion, exact lookup, and prefix matching."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,62 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 37: Problem 37
+# Prefix Tree (Trie) Simulator
 
 **Rank #37** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-36`.
+## Overview
+
+Build and query a prefix tree supporting dictionary insertion, exact lookup, and prefix matching.
+
+## Task
+
+Implement `simulate_trie(operations)`: simulate a Trie tree. Support operations `insert`, `search` (returns boolean indicating exact word match), and `starts_with` (returns boolean indicating if any inserted word starts with the prefix). Return list of booleans resulting from `search` and `starts_with` calls.
 
 <PracticePlayground problemId="py-foundations-prob-37" />
 
 <Solution>
 
 ```python
-def py_foundations_p37(data):
-    # Reference implementation
-    return data
+def simulate_trie(operations):
+    class TrieNode:
+        def __init__(self):
+            self.children = {}
+            self.is_end = False
+
+    root = TrieNode()
+    out = []
+    for op in operations:
+        action = op.get('op')
+        word = op.get('word', '')
+        if action == 'insert':
+            curr = root
+            for ch in word:
+                if ch not in curr.children:
+                    curr.children[ch] = TrieNode()
+                curr = curr.children[ch]
+            curr.is_end = True
+        elif action == 'search':
+            curr = root
+            found = True
+            for ch in word:
+                if ch not in curr.children:
+                    found = False
+                    break
+                curr = curr.children[ch]
+            out.append(found and curr.is_end)
+        elif action == 'starts_with':
+            curr = root
+            found = True
+            for ch in word:
+                if ch not in curr.children:
+                    found = False
+                    break
+                curr = curr.children[ch]
+            out.append(found)
+    return out
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Character-by-character branch navigation yields optimal O(length) queries independent of total stored vocabulary size.
 
 </Solution>

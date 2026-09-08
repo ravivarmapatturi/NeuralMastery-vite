@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 36: Problem 36"
+title: "Practice: Wildcard Pattern Matcher"
 sidebar_position: 36
-description: "Curriculum Problem 36 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Evaluate wildcard glob expressions supporting single character (?) and arbitrary sequence (*) matchers."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,39 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 36: Problem 36
+# Wildcard Pattern Matcher
 
 **Rank #36** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-35`.
+## Overview
+
+Evaluate wildcard glob expressions supporting single character (?) and arbitrary sequence (*) matchers.
+
+## Task
+
+Implement `is_match_wildcard(s, p)`: return `True` if pattern `p` matches the entirety of string `s`, where `?` matches any single character and `*` matches any sequence of characters (including the empty sequence).
 
 <PracticePlayground problemId="py-foundations-prob-36" />
 
 <Solution>
 
 ```python
-def py_foundations_p36(data):
-    # Reference implementation
-    return data
+def is_match_wildcard(s, p):
+    m, n = len(s), len(p)
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+    dp[0][0] = True
+    for j in range(1, n + 1):
+        if p[j - 1] == '*':
+            dp[0][j] = dp[0][j - 1]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if p[j - 1] == '*':
+                dp[i][j] = dp[i][j - 1] or dp[i - 1][j]
+            elif p[j - 1] == '?' or s[i - 1] == p[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1]
+    return dp[m][n]
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+2D DP transitions capture both zero-character matches and multi-character consumption for asterisks.
 
 </Solution>

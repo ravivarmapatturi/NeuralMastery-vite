@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 39: Problem 39"
+title: "Practice: Exponential Backoff Delay Schedule"
 sidebar_position: 39
-description: "Curriculum Problem 39 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Compute truncated exponential backoff intervals for network resilience and API retry handlers."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,31 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 39: Problem 39
+# Exponential Backoff Delay Schedule
 
 **Rank #39** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-38`.
+## Overview
+
+Compute truncated exponential backoff intervals for network resilience and API retry handlers.
+
+## Task
+
+Implement `calculate_backoff_delays(base_delay, max_delay, attempts, factor=2.0)`: generate a list of delays for `attempts` consecutive retry attempts (indexed 0 to attempts - 1). The delay for attempt `i` is `min(max_delay, base_delay * (factor ** i))` rounded to 2 decimal places. Return `[]` if `attempts <= 0`.
 
 <PracticePlayground problemId="py-foundations-prob-39" />
 
 <Solution>
 
 ```python
-def py_foundations_p39(data):
-    # Reference implementation
-    return data
+def calculate_backoff_delays(base_delay, max_delay, attempts, factor=2.0):
+    delays = []
+    for i in range(attempts):
+        d = min(float(max_delay), float(base_delay) * (float(factor) ** i))
+        delays.append(round(d, 2))
+    return delays
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Computing geometric progression capped at max_delay generates predictable and bounded retry schedules.
 
 </Solution>

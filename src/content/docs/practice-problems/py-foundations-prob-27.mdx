@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 27: Problem 27"
+title: "Practice: Token Bucket Rate Limiter Simulator"
 sidebar_position: 27
-description: "Curriculum Problem 27 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Simulate the industry-standard Token Bucket traffic-shaping algorithm for API throttling and LLM rate limiting."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,39 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 27: Problem 27
+# Token Bucket Rate Limiter Simulator
 
 **Rank #27** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-26`.
+## Overview
+
+Simulate the industry-standard Token Bucket traffic-shaping algorithm for API throttling and LLM rate limiting.
+
+## Task
+
+Implement `simulate_token_bucket(requests, rate, capacity)`: the bucket starts at full `capacity`. At each arrival timestamp `t`, compute replenished tokens `(t - last_time) * rate` (capped at `capacity`). If `tokens >= 1.0`, consume 1.0 and record `True`, otherwise reject and record `False`.
 
 <PracticePlayground problemId="py-foundations-prob-27" />
 
 <Solution>
 
 ```python
-def py_foundations_p27(data):
-    # Reference implementation
-    return data
+def simulate_token_bucket(requests, rate, capacity):
+    tokens = float(capacity)
+    last_time = requests[0] if requests else 0.0
+    allowed = []
+    for t in requests:
+        elapsed = t - last_time
+        tokens = min(float(capacity), tokens + elapsed * rate)
+        last_time = t
+        if tokens >= 1.0:
+            tokens -= 1.0
+            allowed.append(True)
+        else:
+            allowed.append(False)
+    return allowed
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Calculating token replenishment lazily upon request arrival avoids background polling timers while ensuring exact traffic shaping.
 
 </Solution>

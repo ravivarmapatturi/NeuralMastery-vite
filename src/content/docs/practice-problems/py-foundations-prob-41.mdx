@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Python & programming fundamentals Module 41: Problem 41"
+title: "Practice: Arithmetic Expression Evaluator"
 sidebar_position: 41
-description: "Curriculum Problem 41 (Stage 1: AI Foundations & Python Programming): Master Python & programming fundamentals."
+description: "Parse and evaluate arithmetic expressions respecting operator precedence without using eval()."
 difficulty: medium
 topic: python-fundamentals
 ---
@@ -10,22 +9,46 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Python & programming fundamentals Module 41: Problem 41
+# Arithmetic Expression Evaluator
 
 **Rank #41** · Difficulty: **Medium** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-40`.
+## Overview
+
+Parse and evaluate arithmetic expressions respecting operator precedence without using eval().
+
+## Task
+
+Implement `evaluate_expression(expr)`: evaluate an arithmetic string containing integers, spaces, and operators `+`, `-`, `*`, `/`. Multiplication and division have higher precedence than addition and subtraction. Division truncates toward zero (e.g. `int(-3 / 2) == -1`). Do NOT use Python eval().
 
 <PracticePlayground problemId="py-foundations-prob-41" />
 
 <Solution>
 
 ```python
-def py_foundations_p41(data):
-    # Reference implementation
-    return data
+def evaluate_expression(expr):
+    s = expr.replace(" ", "")
+    stack = []
+    num = 0
+    sign = '+'
+    for i, ch in enumerate(s):
+        if ch.isdigit():
+            num = num * 10 + int(ch)
+        if not ch.isdigit() or i == len(s) - 1:
+            if sign == '+':
+                stack.append(num)
+            elif sign == '-':
+                stack.append(-num)
+            elif sign == '*':
+                stack.append(stack.pop() * num)
+            elif sign == '/':
+                prev = stack.pop()
+                stack.append(int(prev / num))
+            sign = ch
+            num = 0
+    return sum(stack)
 ```
 
-This problem tests fundamental skills in Python & programming fundamentals.
+Applying multiplication and division eagerly onto the stack reduces all terms to additive components that sum up in O(n) time.
 
 </Solution>

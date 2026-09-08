@@ -1,8 +1,7 @@
 ---
-placeholder: true
-title: "Practice: Arrays Module 50: Problem 50"
+title: "Practice: Package Build Order and Cycle Resolver"
 sidebar_position: 50
-description: "Curriculum Problem 50 (Stage 1: AI Foundations & Python Programming): Master Arrays / hashing / two pointers."
+description: "Compute package compilation ordering and identify cyclic dependencies across software build graphs."
 difficulty: hard
 topic: python-fundamentals
 ---
@@ -10,22 +9,49 @@ topic: python-fundamentals
 import PracticePlayground from '../../../components/content/PracticePlayground';
 import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Arrays Module 50: Problem 50
+# Package Build Order and Cycle Resolver
 
 **Rank #50** · Difficulty: **Hard** · Stage: **Stage 1: AI Foundations & Python Programming** · Category: **Python & Fundamentals**
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `py-foundations-prob-49`.
+## Overview
+
+Compute package compilation ordering and identify cyclic dependencies across software build graphs.
+
+## Task
+
+Implement `resolve_build_order(dependencies)`: given a dictionary where keys are packages and values are lists of required prerequisites, determine a valid build sequence. Return `{"has_cycle": bool, "build_order": list[str]}`. If a cycle exists, `build_order` must be `[]`. Break ties among available packages alphabetically.
 
 <PracticePlayground problemId="py-foundations-prob-50" />
 
 <Solution>
 
 ```python
-def py_foundations_p50(data):
-    # Reference implementation
-    return data
+import heapq
+
+def resolve_build_order(dependencies):
+    all_nodes = set(dependencies.keys())
+    for prereqs in dependencies.values():
+        all_nodes.update(prereqs)
+    adj = {node: [] for node in all_nodes}
+    in_degree = {node: 0 for node in all_nodes}
+    for pkg, prereqs in dependencies.items():
+        for pre in prereqs:
+            adj[pre].append(pkg)
+            in_degree[pkg] += 1
+    heap = [n for n in all_nodes if in_degree[n] == 0]
+    heapq.heapify(heap)
+    order = []
+    while heap:
+        node = heapq.heappop(heap)
+        order.append(node)
+        for nxt in adj[node]:
+            in_degree[nxt] -= 1
+            if in_degree[nxt] == 0:
+                heapq.heappush(heap, nxt)
+    has_cycle = len(order) < len(all_nodes)
+    return {'has_cycle': has_cycle, 'build_order': [] if has_cycle else order}
 ```
 
-This problem tests fundamental skills in Arrays / hashing / two pointers.
+Aggregating implicit prerequisites and driving Kahn's algorithm via heapq produces a canonical topological compile order.
 
 </Solution>
