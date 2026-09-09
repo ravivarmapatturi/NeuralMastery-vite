@@ -10223,92 +10223,92 @@
     "/docs/practice-problems/llm-internals-prob-41": {
       "slug": "practice-problems/llm-internals-prob-41",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 41: Problem 401",
-      "sidebarPosition": 401,
-      "description": "Curriculum Problem 401 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Perplexity From Cross-Entropy Loss",
+      "sidebarPosition": null,
+      "description": "Implement perplexity computation, the real, standard way a language model's cross-entropy loss is reported as an interpretable metric.",
+      "difficulty": "easy",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-42": {
       "slug": "practice-problems/llm-internals-prob-42",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 42: Problem 402",
-      "sidebarPosition": 402,
-      "description": "Curriculum Problem 402 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Byte-Pair Encoding: One Merge Step",
+      "sidebarPosition": null,
+      "description": "Implement one real Byte-Pair Encoding merge step, the core iterative operation that builds a BPE tokenizer's vocabulary from raw characters upward.",
+      "difficulty": "hard",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-43": {
       "slug": "practice-problems/llm-internals-prob-43",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 43: Problem 403",
-      "sidebarPosition": 403,
-      "description": "Curriculum Problem 403 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Greedy Longest-Match WordPiece Tokenization",
+      "sidebarPosition": null,
+      "description": "Implement WordPiece's real greedy longest-match-first tokenization algorithm (used by BERT), splitting an out-of-vocabulary word into known subword pieces.",
+      "difficulty": "hard",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-44": {
       "slug": "practice-problems/llm-internals-prob-44",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 44: Problem 404",
-      "sidebarPosition": 404,
-      "description": "Curriculum Problem 404 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: Standard LayerNorm Computation",
+      "sidebarPosition": null,
+      "description": "Implement standard LayerNorm, the original Transformer's real normalization layer, for direct comparison against RMSNorm's simplification.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-45": {
       "slug": "practice-problems/llm-internals-prob-45",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 45: Problem 405",
-      "sidebarPosition": 405,
-      "description": "Curriculum Problem 405 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "title": "Practice: GELU Activation (Tanh Approximation)",
+      "sidebarPosition": null,
+      "description": "Implement the tanh-approximated GELU activation, the real activation function used in BERT, GPT-2/3, and many other transformer feed-forward blocks.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-46": {
       "slug": "practice-problems/llm-internals-prob-46",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 46: Problem 406",
-      "sidebarPosition": 406,
-      "description": "Curriculum Problem 406 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: Sinusoidal Positional Encoding",
+      "sidebarPosition": null,
+      "description": "Implement the original Transformer's sinusoidal positional encoding formula, the fixed (non-learned) position representation from 'Attention Is All You Need.'",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-47": {
       "slug": "practice-problems/llm-internals-prob-47",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 47: Problem 407",
-      "sidebarPosition": 407,
-      "description": "Curriculum Problem 407 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "title": "Practice: Reshape Flat Vector Into Multi-Head Attention Heads",
+      "sidebarPosition": null,
+      "description": "Implement the multi-head split operation, dividing one flat query/key/value vector into the separate per-head sub-vectors multi-head attention actually operates on.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-48": {
       "slug": "practice-problems/llm-internals-prob-48",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 48: Problem 408",
-      "sidebarPosition": 408,
-      "description": "Curriculum Problem 408 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: FlashAttention: Compute SRAM-Bound Tile Size",
+      "sidebarPosition": null,
+      "description": "Implement a simplified FlashAttention tile-size calculation, the real memory-budgeting arithmetic behind why FlashAttention processes attention in blocks rather than materializing the full attention matrix.",
+      "difficulty": "hard",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-49": {
       "slug": "practice-problems/llm-internals-prob-49",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 49: Problem 409",
-      "sidebarPosition": 409,
-      "description": "Curriculum Problem 409 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "title": "Practice: Merge a LoRA Adapter Into the Base Weight",
+      "sidebarPosition": null,
+      "description": "Implement LoRA adapter merging, the real formula for folding a trained low-rank adapter back into the base model weight for zero-overhead inference.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-5": {
       "slug": "practice-problems/llm-internals-prob-5",
@@ -10323,102 +10323,102 @@
     "/docs/practice-problems/llm-internals-prob-50": {
       "slug": "practice-problems/llm-internals-prob-50",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 50: Problem 410",
-      "sidebarPosition": 410,
-      "description": "Curriculum Problem 410 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: INT8 Quantization Scale Computation",
+      "sidebarPosition": null,
+      "description": "Implement symmetric INT8 quantization scale computation, the real first step of quantizing a weight tensor's floating-point values into the int8 range.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-51": {
       "slug": "practice-problems/llm-internals-prob-51",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 51: Problem 411",
-      "sidebarPosition": 411,
-      "description": "Curriculum Problem 411 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "title": "Practice: Estimate Memory Saved by Gradient Checkpointing",
+      "sidebarPosition": null,
+      "description": "Implement a real gradient-checkpointing memory-savings estimate, quantifying the actual memory/compute tradeoff of not storing every layer's activations for backpropagation.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-52": {
       "slug": "practice-problems/llm-internals-prob-52",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 52: Problem 412",
-      "sidebarPosition": 412,
-      "description": "Curriculum Problem 412 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Mixture-of-Experts Top-K Routing",
+      "sidebarPosition": null,
+      "description": "Implement Mixture-of-Experts top-k routing, the real gating mechanism deciding which experts process a given token and how much weight each contributes.",
+      "difficulty": "hard",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-53": {
       "slug": "practice-problems/llm-internals-prob-53",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 53: Problem 413",
-      "sidebarPosition": 413,
-      "description": "Curriculum Problem 413 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "title": "Practice: Sliding Window Attention Mask",
+      "sidebarPosition": null,
+      "description": "Implement sliding-window attention masking, used in Mistral and Longformer-style models to bound attention cost for very long sequences.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-54": {
       "slug": "practice-problems/llm-internals-prob-54",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 54: Problem 414",
-      "sidebarPosition": 414,
-      "description": "Curriculum Problem 414 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: ALiBi Positional Bias",
+      "sidebarPosition": null,
+      "description": "Implement ALiBi (Attention with Linear Biases), a real alternative to RoPE/sinusoidal encoding that biases attention scores directly by distance instead of modifying the query/key vectors.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-55": {
       "slug": "practice-problems/llm-internals-prob-55",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 55: Problem 415",
-      "sidebarPosition": 415,
-      "description": "Curriculum Problem 415 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Token Embedding Lookup With Padding Handling",
+      "sidebarPosition": null,
+      "description": "Implement embedding lookup with correct padding-token handling, the real first layer of any transformer converting discrete token ids into continuous vectors.",
+      "difficulty": "easy",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-56": {
       "slug": "practice-problems/llm-internals-prob-56",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 56: Problem 416",
-      "sidebarPosition": 416,
-      "description": "Curriculum Problem 416 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: Cross-Entropy Loss for Next-Token Prediction",
+      "sidebarPosition": null,
+      "description": "Implement cross-entropy loss, the real, standard training objective for next-token prediction in language models.",
       "difficulty": "medium",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-57": {
       "slug": "practice-problems/llm-internals-prob-57",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 57: Problem 417",
-      "sidebarPosition": 417,
-      "description": "Curriculum Problem 417 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Label Smoothing Applied to Target Distribution",
+      "sidebarPosition": null,
+      "description": "Implement label smoothing, a real regularization technique softening the hard one-hot training target to prevent overconfident LLM predictions.",
+      "difficulty": "medium",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-58": {
       "slug": "practice-problems/llm-internals-prob-58",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 58: Problem 418",
-      "sidebarPosition": 418,
-      "description": "Curriculum Problem 418 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: NTK-Aware RoPE Scaling for Context Extension",
+      "sidebarPosition": null,
+      "description": "Implement NTK-aware RoPE base scaling, a real, practical technique for extending a pretrained model's context length beyond what it was originally trained on, without full retraining.",
       "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-59": {
       "slug": "practice-problems/llm-internals-prob-59",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 59: Problem 419",
-      "sidebarPosition": 419,
-      "description": "Curriculum Problem 419 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Check Weight Tying Validity",
+      "sidebarPosition": null,
+      "description": "Implement weight-tying shape validation, checking whether a model's input embedding and output (unembedding) layer weights can legally share the same underlying tensor.",
+      "difficulty": "easy",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-6": {
       "slug": "practice-problems/llm-internals-prob-6",
@@ -10433,102 +10433,102 @@
     "/docs/practice-problems/llm-internals-prob-60": {
       "slug": "practice-problems/llm-internals-prob-60",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 60: Problem 420",
-      "sidebarPosition": 420,
-      "description": "Curriculum Problem 420 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Pad Vocabulary Size for Hardware Efficiency",
+      "sidebarPosition": null,
+      "description": "Implement vocabulary-size padding, a real, common practical step rounding a tokenizer's actual vocab size up to a hardware-friendly multiple for faster matrix operations.",
+      "difficulty": "easy",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-61": {
       "slug": "practice-problems/llm-internals-prob-61",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 61: Problem 421",
-      "sidebarPosition": 421,
-      "description": "Curriculum Problem 421 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Logit Lens: Project Intermediate Hidden State",
+      "sidebarPosition": null,
+      "description": "Implement the Logit Lens interpretability technique, projecting an INTERMEDIATE (not final) layer's hidden state through the model's final unembedding matrix to see what token that layer 'would predict' if generation stopped there.",
+      "difficulty": "medium",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-62": {
       "slug": "practice-problems/llm-internals-prob-62",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 62: Problem 422",
-      "sidebarPosition": 422,
-      "description": "Curriculum Problem 422 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Build a Padding Attention Mask From Sequence Lengths",
+      "sidebarPosition": null,
+      "description": "Implement padding-mask construction, telling attention which positions in a batched, padded set of variable-length sequences are real tokens versus padding to ignore.",
+      "difficulty": "easy",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-63": {
       "slug": "practice-problems/llm-internals-prob-63",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 63: Problem 423",
-      "sidebarPosition": 423,
-      "description": "Curriculum Problem 423 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: KV Cache Size With Grouped Query Attention",
+      "sidebarPosition": null,
+      "description": "Implement KV-cache size estimation specifically accounting for Grouped Query Attention's reduced KV head count, the real reason GQA models have a measurably smaller serving memory footprint.",
+      "difficulty": "medium",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-64": {
       "slug": "practice-problems/llm-internals-prob-64",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 64: Problem 424",
-      "sidebarPosition": 424,
-      "description": "Curriculum Problem 424 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Chinchilla Compute-Optimal Token Count",
+      "sidebarPosition": null,
+      "description": "Implement the Chinchilla scaling-law's real compute-optimal token calculation, the finding that reshaped how the field allocates a fixed training compute budget between model size and data size.",
+      "difficulty": "medium",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-65": {
       "slug": "practice-problems/llm-internals-prob-65",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 65: Problem 425",
-      "sidebarPosition": 425,
-      "description": "Curriculum Problem 425 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "title": "Practice: KV Cache Eviction: Attention Sink Policy",
+      "sidebarPosition": null,
+      "description": "Implement the real Attention Sink KV-cache eviction policy (from StreamingLLM), which lets a model process an effectively unbounded stream of tokens under a fixed KV-cache budget without quality collapse.",
       "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-66": {
       "slug": "practice-problems/llm-internals-prob-66",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 66: Problem 426",
-      "sidebarPosition": 426,
-      "description": "Curriculum Problem 426 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: Speculative Decoding: Accept or Reject a Draft Token",
+      "sidebarPosition": null,
+      "description": "Implement speculative decoding's real acceptance test, the exact rejection-sampling rule that makes speculative decoding's output distribution IDENTICAL to standard autoregressive decoding from the target model (not merely a fast approximation).",
       "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-67": {
       "slug": "practice-problems/llm-internals-prob-67",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 67: Problem 427",
-      "sidebarPosition": 427,
-      "description": "Curriculum Problem 427 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Mixture-of-Depths: Token Layer-Skip Decision",
+      "sidebarPosition": null,
+      "description": "Implement Mixture-of-Depths' real per-token routing decision, letting individual tokens skip a transformer layer's computation entirely when a lightweight router judges it unnecessary for that token.",
+      "difficulty": "medium",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-68": {
       "slug": "practice-problems/llm-internals-prob-68",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 68: Problem 428",
-      "sidebarPosition": 428,
-      "description": "Curriculum Problem 428 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Detect Attention Entropy Collapse",
+      "sidebarPosition": null,
+      "description": "Implement attention-entropy computation, a real diagnostic metric for detecting when an attention head has collapsed to attending almost entirely to one position (a known real training pathology).",
+      "difficulty": "medium",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-69": {
       "slug": "practice-problems/llm-internals-prob-69",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 69: Problem 429",
-      "sidebarPosition": 429,
-      "description": "Curriculum Problem 429 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Compute Effective Batch Size With Gradient Accumulation",
+      "sidebarPosition": null,
+      "description": "Implement effective batch size computation, the real arithmetic behind how gradient accumulation and multi-device training combine to reach a target training batch size that wouldn't otherwise fit in memory.",
+      "difficulty": "easy",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-7": {
       "slug": "practice-problems/llm-internals-prob-7",
@@ -10543,12 +10543,12 @@
     "/docs/practice-problems/llm-internals-prob-70": {
       "slug": "practice-problems/llm-internals-prob-70",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 70: Problem 430",
-      "sidebarPosition": 430,
-      "description": "Curriculum Problem 430 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "hard",
-      "topic": "transformers-llms",
-      "placeholder": true
+      "title": "Practice: Detect Numerical Overflow Risk in Mixed-Precision Training",
+      "sidebarPosition": null,
+      "description": "Implement a real overflow-risk check for mixed-precision (fp16) training, catching activations that are approaching the representable range's limit before they actually overflow to Inf/NaN.",
+      "difficulty": "medium",
+      "topic": "Transformers & LLMs",
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-8": {
       "slug": "practice-problems/llm-internals-prob-8",

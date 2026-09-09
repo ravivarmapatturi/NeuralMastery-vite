@@ -26,6 +26,9 @@ export interface AwardEvent {
    * constants below) so a future point-value tuning never retroactively
    * changes a user's already-earned history. */
   points: number;
+  /** Whether hints were viewed prior to solving. If false, user solved independently (gold tier).
+   * If true or undefined (legacy awards), treated as bronze tier. */
+  hintUsed?: boolean;
 }
 
 export const MARK_UNDERSTOOD_POINTS = 10;
@@ -122,6 +125,21 @@ export function localDateString(d: Date = new Date()): string {
 
 export function hasAward(events: AwardEvent[], permalink: string, kind: AwardKind): boolean {
   return events.some((e) => e.permalink === permalink && e.kind === kind);
+}
+
+export function getProblemAward(events: AwardEvent[], permalink: string): AwardEvent | undefined {
+  return events.find((e) => e.permalink === permalink && (e.kind === 'complete' || e.kind === 'design'));
+}
+
+export type MasteryTier = 'gold' | 'bronze';
+
+/** Determines whether a solved problem was achieved independently (gold) or with hints (bronze) */
+export function getMasteryTier(award: AwardEvent | undefined): MasteryTier | null {
+  if (!award) return null;
+  // hintUsed explicitly false means solved independently
+  if (award.hintUsed === false) return 'gold';
+  // hintUsed true or undefined (legacy award) defaults consistently to bronze
+  return 'bronze';
 }
 
 export function totalPoints(events: AwardEvent[]): number {

@@ -149,9 +149,9 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
       'Must handle floating-point values and negative numbers correctly.',
     ],
     hints: {
-      small: 'Pair up corresponding elements from both vectors using zip(a, b) or an index loop.',
-      strong: 'Check len(a) != len(b) first and raise ValueError("mismatched lengths"). Then return sum(x * y for x, y in zip(a, b)).',
-      concept: 'The dot product computes a scalar sum of element-wise products: a · b = Σ (a_i * b_i). It measures direction alignment and is the fundamental operation in linear layers & attention scores.',
+      small: 'What operation connects each pair of corresponding coordinates, and how can you traverse both sequences together?',
+      strong: 'Before accumulating products with sum(), what check ensures that both vectors inhabit the same dimensional space?',
+      concept: 'Why is the dot product equivalent to measuring the projection of one vector onto another in high-dimensional embedding spaces?',
     },
     conceptConnections: [
       { title: 'Linear Algebra — Vectors', route: '/docs/mathematics-for-ai/linear-algebra#vectors', description: 'Vector spaces and geometric orientation' },
@@ -197,9 +197,9 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
       'Raise ValueError if any corresponding vector pair has len(a) != len(b).',
     ],
     hints: {
-      small: 'Check len(batch_a) != len(batch_b) first. Iterate through zip(batch_a, batch_b) and validate vector lengths.',
-      strong: 'For each pair (a, b), if len(a) != len(b) raise ValueError. Compute sum(x * y for x, y in zip(a, b)) and collect results.',
-      concept: 'Batch dot product is the core building block of batched matrix operations in batched linear layers and attention scoring.',
+      small: 'What invariant must hold between the two batches before computing pairs, and what Python builtin lets you pair them in lockstep?',
+      strong: 'When inspecting each vector pair (a, b), what condition requires raising a ValueError before computing sum(x * y)?',
+      concept: 'How do batched dot products serve as the foundational computational primitive in multi-head attention scores (Q K^T)?',
     },
     conceptConnections: [
       { title: 'Linear Algebra — Vectors', route: '/docs/mathematics-for-ai/linear-algebra#vectors', description: 'Vector space arithmetic' },
@@ -240,9 +240,9 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
       'Return 2D list of numbers.',
     ],
     hints: {
-      small: 'The element at result[i][j] is the dot product of A\'s i-th row and B\'s j-th column.',
-      strong: 'Construct column j of B using [row[j] for row in B], then compute sum(a * b for a, b in zip(row_a, col_b)).',
-      concept: 'Matrix multiplication combines linear transformations: (m x n) * (n x p) -> (m x p).',
+      small: 'What mathematical relationship must hold between the inner dimensions of matrix A and matrix B for multiplication to be defined?',
+      strong: 'If output cell C[i][j] is the dot product of row i from A and column j from B, how can you extract column j cleanly?',
+      concept: 'Why does matrix multiplication represent a composition of linear transformations across vector spaces?',
     },
     testCases: [
       { id: 'basic', label: '2x2 basic case', input: { A: [[1, 2], [3, 4]], B: [[5, 6], [7, 8]] }, expectedOutput: [[19, 22], [43, 50]], hidden: false },
@@ -281,9 +281,9 @@ def softmax(logits):
       'Return probability distribution summing to 1.0.',
     ],
     hints: {
-      small: 'Subtract max(logits) from each logit before applying math.exp().',
-      strong: 'm = max(logits); exps = [math.exp(x - m) for x in logits]; s = sum(exps); return [e / s for e in exps].',
-      concept: 'Softmax turns raw logit scores into valid probabilities summing to 1.',
+      small: 'How does exponentiation ensure non-negativity, and what normalization step transforms raw logits into a valid probability distribution?',
+      strong: 'To prevent floating-point overflow when large logits are exponentiated, what constant can you subtract from every logit without altering the ratios?',
+      concept: 'Why does subtracting max(z) leave the softmax output mathematically identical while preventing numerical overflow in deep networks?',
     },
     testCases: [
       { id: 'basic', label: 'Equal Logits', input: { logits: [1.0, 1.0, 1.0] }, expectedOutput: [1/3, 1/3, 1/3], hidden: false },
@@ -317,9 +317,9 @@ def sigmoid(x):
       'Return float in range (0, 1).',
     ],
     hints: {
-      small: 'Use 1 / (1 + math.exp(-x)).',
-      strong: 'Check if x is very negative to prevent overflow in math.exp(-x).',
-      concept: 'Sigmoid bounds linear output values to a binary probability range (0, 1).',
+      small: 'What mathematical function maps any real number smoothly into the open interval (0, 1)?',
+      strong: 'How can 1 / (1 + exp(-z)) be computed reliably, and what happens to the output as z approaches large positive or negative values?',
+      concept: 'Why did sigmoid historically serve as the standard activation for binary classification and gating mechanisms like LSTMs?',
     },
     testCases: [
       { id: 'zero', label: 'Sigmoid of 0', input: { x: 0.0 }, expectedOutput: 0.5, hidden: false },
@@ -358,9 +358,9 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
       'Output shape must strictly match (seq_len, d_model).',
     ],
     hints: {
-      small: 'Reshape Q, K, V to (seq_len, num_heads, d_k) and swap axes to (num_heads, seq_len, d_k).',
-      strong: 'Use np.matmul(Q_h, K_h.swapaxes(1, 2)) / np.sqrt(d_k), then apply softmax across axis=-1.',
-      concept: 'Multi-head attention projects inputs into multiple subspaces, allowing the model to attend to different aspects of context simultaneously.',
+      small: 'How does splitting key, query, and value projections into multiple representation subspaces allow the model to attend to different positions simultaneously?',
+      strong: 'After computing Q @ K.T / sqrt(d_k) and applying row-wise softmax, how do you re-combine the head outputs back into the original embedding dimension?',
+      concept: 'Why is dividing by sqrt(d_k) necessary to prevent the dot products from growing excessively large in high dimensions?',
     },
     testCases: [
       { id: 'shape', label: 'Output Shape Test', input: { Q: [[1.0, 0.0], [0.0, 1.0]], K: [[1.0, 0.0], [0.0, 1.0]], V: [[1.0, 2.0], [3.0, 4.0]], d_model: 2, num_heads: 1 }, expectedOutput: [[2.0, 3.0], [2.0, 3.0]], hidden: false },
@@ -394,9 +394,9 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
       'df/db = a',
     ],
     hints: {
-      small: 'Use the multivariable calculus power rule and product rule: df/da = b + 2a.',
-      strong: 'Evaluate df/da as b_val + 2 * a_val and df/db as a_val.',
-      concept: 'Reverse-mode autograd propagates gradients backwards through the computation graph using the chain rule.',
+      small: 'When a node produces an output through an operation, what references must it retain to propagate gradients backward during backpropagation?',
+      strong: 'How does topological sorting ensure that each node in a directed acyclic computation graph receives all its incoming gradients before computing its own?',
+      concept: 'How does the chain rule of calculus translate directly into reverse-mode automatic differentiation in computational graphs?',
     },
     testCases: [
       { id: 'basic', label: 'Evaluate at (2, 3)', input: { a_val: 2.0, b_val: 3.0 }, expectedOutput: [7.0, 2.0], hidden: false },
@@ -430,9 +430,9 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
       'Weight decay must be decoupled: param = param - lr * (m_hat / (sqrt(v_hat) + eps) + weight_decay * param).',
     ],
     hints: {
-      small: 'Compute m_next = beta1 * m + (1 - beta1) * grad and v_next = beta2 * v + (1 - beta2) * (grad^2).',
-      strong: 'Then divide by (1 - beta1**t) and (1 - beta2**t) before taking the param update step.',
-      concept: 'AdamW separates weight decay from gradient updates, preserving adaptive learning rates across sparse or varied gradients.',
+      small: 'How do exponentially decaying running averages of past gradients (first moment) and squared gradients (second moment) adapt the per-parameter learning rate?',
+      strong: 'Why does AdamW decouple weight decay directly from gradient updates rather than incorporating it as L2 penalty into the moving moments?',
+      concept: 'What subtle flaw in classical Adam with L2 regularization does decoupled weight decay in AdamW fix?',
     },
     testCases: [
       { id: 't1', label: 'Step 1 Update', input: { param: [1.0], grad: [0.1], m: [0.0], v: [0.0], t: 1, lr: 0.1, weight_decay: 0.01 }, expectedOutput: [[0.899, 0.01, 0.0001]], hidden: false },
@@ -614,9 +614,9 @@ def mcp_client_initialize(client_info, protocol_version="2024-11-05"):
       'Include protocolVersion, clientInfo, and capabilities in params.',
     ],
     hints: {
-      small: 'Construct a dictionary with jsonrpc "2.0", id 1, method "initialize", and params.',
-      strong: 'Use json.dumps to format dictionary as JSON string.',
-      concept: 'The initialize request negotiates protocol version and capabilities between MCP Client and Server.',
+      small: 'During client-server negotiation in the Model Context Protocol, what capability declaration exchange must occur before tools can be invoked?',
+      strong: 'How should protocol version compatibility be verified during initialization, and what JSON-RPC structure wraps the handshake request?',
+      concept: 'Why does MCP enforce explicit capability discovery rather than assuming a fixed tool and resource inventory?',
     },
     testCases: [
       { id: 'init_req', label: 'Initialize Payload', input: { client_info: { 'name': 'ClaudeDesktop', 'version': '1.0' }, protocol_version: '2024-11-05' }, expectedOutput: '{"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05", "capabilities": {"roots": {"listChanged": true}, "sampling": {}}, "clientInfo": {"name": "ClaudeDesktop", "version": "1.0"}}}', hidden: false },
@@ -648,9 +648,9 @@ def swish(x, beta=1.0):
     bonusDescription: 'Pure Python implementation',
     constraints: ['Compute element-wise x / (1 + exp(-beta * x)).'],
     hints: {
-      small: 'Apply x / (1 + exp(-beta * x)) for each element in list x.',
-      strong: 'Use math.exp for calculating e^(-beta * x).',
-      concept: 'Swish is a smooth, non-monotonic activation function discovered via neural architecture search.',
+      small: 'What property does multiplying the input x by its sigmoid activation sigmoid(beta * x) give the resulting curve near zero?',
+      strong: 'How does Swish avoid the hard zero-gradient problem of ReLU for negative inputs while remaining non-monotonic?',
+      concept: 'Why do smooth, non-monotonic activations often yield better gradient flow in deep architectures than standard piecewise linear units?',
     },
     testCases: [
       { id: 't1', label: 'Zero & Positive Input', input: { x: [0.0, 1.0, 2.0], beta: 1.0 }, expectedOutput: [0.0, 0.7310585786300049, 1.7615941559557646], hidden: false },
@@ -683,9 +683,9 @@ def selu(x, scale=1.0507009873554805, alpha=1.6732632423543772):
     bonusDescription: 'Pure Python implementation',
     constraints: ['If x > 0, return scale * x. Else return scale * alpha * (exp(x) - 1).'],
     hints: {
-      small: 'Check condition for each element x in list.',
-      strong: 'Use math.exp for calculating e^x.',
-      concept: 'SELU enables self-normalizing neural networks where activations converge toward zero mean and unit variance.',
+      small: 'Under what condition does an activation function induce self-normalizing properties across layers without explicit batch normalization?',
+      strong: 'What fixed scale (lambda) and alpha constants ensure mean zero and unit variance propagation when inputs are normalized?',
+      concept: 'Why does SELU prevent exploding and vanishing gradients in feed-forward networks by creating a fixed point for mean and variance?',
     },
     testCases: [
       { id: 't1', label: 'Positive and Zero', input: { x: [0.0, 1.0, 2.0] }, expectedOutput: [0.0, 1.0507009873554805, 2.101401974710961], hidden: false },
@@ -717,9 +717,9 @@ def selu(x, scale=1.0507009873554805, alpha=1.6732632423543772):
     bonusDescription: 'Pure Python implementation',
     constraints: ['Multiply kept values by 1 / (1 - drop_prob). Set dropped values to 0.0.'],
     hints: {
-      small: 'Scale kept values by 1.0 / (1.0 - drop_prob).',
-      strong: 'Multiply x[i] * mask[i] * scale.',
-      concept: 'Inverted dropout preserves activation magnitude during training so inference requires zero modification.',
+      small: 'During training, why must surviving activation values be scaled by 1 / (1 - p) in inverted dropout?',
+      strong: 'What difference in execution behavior should occur between training mode (stochastic mask) and inference mode (identity pass-through)?',
+      concept: 'Why does scaling during training eliminate the need to modify weights or activations at evaluation time?',
     },
     testCases: [
       { id: 't1', label: 'Dropout p=0.5', input: { x: [2.0, 4.0, 6.0, 8.0], drop_prob: 0.5, mask: [1, 0, 1, 0] }, expectedOutput: [4.0, 0.0, 12.0, 0.0], hidden: false },
@@ -752,9 +752,9 @@ def knn_predict(X_train, y_train, x_test, k):
     bonusDescription: 'Pure Python implementation',
     constraints: ['Compute Euclidean distance for each training sample. Select top k nearest labels.'],
     hints: {
-      small: 'Compute sqrt(sum((a - b)^2)). Sort distances ascending.',
-      strong: 'Use Counter(k_labels).most_common(1)[0][0] to pick majority label.',
-      concept: 'KNN is a non-parametric instance-based algorithm that classifies data points based on spatial proximity.',
+      small: 'Given a query point, how do you measure proximity against all labeled reference points and determine the dominant class?',
+      strong: 'What data structure or sorting strategy lets you identify the k smallest distances, and how should ties in majority voting be broken?',
+      concept: 'Why is KNN considered a non-parametric, lazy-learning algorithm that makes no explicit assumptions about underlying data distribution?',
     },
     testCases: [
       { id: 't1', label: '2D Classification k=3', input: { X_train: [[0,0], [0,1], [1,0], [5,5], [5,6]], y_train: [0, 0, 0, 1, 1], x_test: [0.5, 0.5], k: 3 }, expectedOutput: 0, hidden: false },
@@ -821,9 +821,9 @@ def euclidean_distance(a, b):
       'Must return a non-negative float.',
     ],
     hints: {
-      small: 'Subtract corresponding elements, square each difference, sum them, then take the square root.',
-      strong: 'Check len(a) != len(b) first and raise ValueError. Then return math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b))).',
-      concept: 'Euclidean distance is the straight-line distance between two points in vector space -- the default metric for flat (brute-force) vector indexes and the L2 index type in FAISS/pgvector.',
+      small: 'What formula calculates the straight-line Euclidean distance between two points across n dimensions?',
+      strong: 'Can you compute the sum of squared coordinate differences before taking the square root, and what check verifies matching dimensionality?',
+      concept: 'Why is Euclidean distance sensitive to feature scaling and the curse of dimensionality in high-dimensional vector spaces?',
     },
     conceptConnections: [
       { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'How vector indexes rank candidates by distance metric' },
@@ -863,9 +863,9 @@ def euclidean_distance(a, b):
       'Must return a non-negative float or int.',
     ],
     hints: {
-      small: 'Take the absolute difference of each corresponding pair of elements, then sum them.',
-      strong: 'Check len(a) != len(b) first and raise ValueError. Then return sum(abs(x - y) for x, y in zip(a, b)).',
-      concept: 'Manhattan distance sums absolute per-axis differences instead of squaring them -- it is less sensitive to a single large-magnitude axis than Euclidean distance.',
+      small: 'How does Manhattan (L1) distance measure distance along grid-aligned axes compared to Euclidean (L2) distance?',
+      strong: 'What function computes the absolute difference between coordinates, and how does sum(abs(a_i - b_i)) behave with sparse vectors?',
+      concept: 'Why is L1 distance often preferred over L2 when measuring distance in high-dimensional spaces with sparse outlier features?',
     },
     testCases: [
       { id: 'basic', label: 'Basic Case', input: { a: [0, 0], b: [3, 4] }, expectedOutput: 7, hidden: false, description: '|3| + |4| = 7' },
@@ -904,9 +904,9 @@ def cosine_similarity(a, b):
       'Must raise ValueError if either vector has zero magnitude (undefined direction).',
     ],
     hints: {
-      small: 'Compute the dot product, then divide by the product of the two vector magnitudes.',
-      strong: 'dot = sum(x*y for x, y in zip(a, b)); na = sqrt(sum(x*x for x in a)); nb = sqrt(sum(y*y for y in b)). Raise ValueError if na == 0 or nb == 0, else return dot / (na * nb).',
-      concept: 'Cosine similarity is scale-invariant: scaling a vector by any positive constant does not change its cosine similarity to another vector, only Euclidean distance would change.',
+      small: 'What does the cosine of the angle between two vectors tell you about their orientation, regardless of their individual magnitudes?',
+      strong: 'How do you combine the dot product with the product of L2 norms, and what safeguard prevents division by zero for zero vectors?',
+      concept: 'Why is cosine similarity the standard similarity metric for text embeddings where document length should not dominate semantic similarity?',
     },
     conceptConnections: [
       { title: 'Retrieval-Augmented Generation (RAG)', route: '/docs/llms-genai/rag', description: 'Cosine similarity ranks retrieved chunks against a query embedding' },
@@ -949,9 +949,9 @@ def normalize_vector(v):
       'The returned vector must have L2 norm 1.0 (within floating-point tolerance).',
     ],
     hints: {
-      small: 'Compute the L2 norm (magnitude) of v first, then divide every element by it.',
-      strong: 'n = math.sqrt(sum(x*x for x in v)). Raise ValueError if n == 0. Otherwise return [x / n for x in v].',
-      concept: 'Once every vector in an index is L2-normalized, dot(a, b) == cosine_similarity(a, b) -- many ANN libraries (e.g. FAISS IndexFlatIP) rely on this to turn cosine search into a cheaper inner-product search.',
+      small: 'What scalar divisor scales a non-zero vector such that its resulting Euclidean length equals exactly 1.0?',
+      strong: 'How do you compute the L2 norm first, and what should happen if the input vector has zero magnitude?',
+      concept: 'Why does unit normalization allow computing cosine similarity through a single dot product operation?',
     },
     testCases: [
       { id: 'basic', label: 'Basic 3-4-5 Vector', input: { v: [3, 4] }, expectedOutput: [0.6, 0.8], hidden: false, description: 'Magnitude 5 -> [3/5, 4/5]' },
@@ -989,9 +989,9 @@ def vector_magnitude(v):
       'The zero vector has magnitude 0.0 (not an error).',
     ],
     hints: {
-      small: 'Square every element, sum the squares, then take the square root of the total.',
-      strong: 'return math.sqrt(sum(x * x for x in v)).',
-      concept: 'Vector magnitude (L2 norm) measures a vector\'s length independent of direction -- it is the denominator in both cosine similarity and L2 normalization.',
+      small: 'What geometric property does the L2 norm of a vector quantify relative to the origin of the coordinate space?',
+      strong: 'How does taking the square root of the sum of squared elements compute vector magnitude without mutating the vector?',
+      concept: 'Why does vector magnitude reflect signal strength or confidence in learned representation spaces?',
     },
     testCases: [
       { id: 'basic', label: 'Basic 3-4-5 Case', input: { v: [3, 4] }, expectedOutput: 5.0, hidden: false },
@@ -1030,9 +1030,9 @@ def brute_force_knn(query, vectors, k):
       'Ties in distance must be broken by ascending original index.',
     ],
     hints: {
-      small: 'Compute the Euclidean distance from query to every vector, then sort by (distance, index) and take the first k indices.',
-      strong: 'dists = [(euclidean_distance(query, v), i) for i, v in enumerate(vectors)]; dists.sort(); return [i for _, i in dists[:k]] -- sorting tuples already breaks ties by the second element (index) since Python compares tuples lexicographically.',
-      concept: 'Brute-force k-NN is O(n*d) per query -- exact but too slow at scale, which is exactly why approximate structures like HNSW and IVF trade a small amount of recall for sub-linear query time.',
+      small: 'When scanning an entire corpus of vectors for the k closest matches, how can a min-heap or sorting array keep track of top candidates?',
+      strong: 'How do you associate each computed distance with its original document ID so you can return ranked (id, score) pairs?',
+      concept: 'What is the time complexity trade-off between exact brute-force search and approximate nearest neighbor (ANN) indexes like HNSW?',
     },
     conceptConnections: [
       { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Exact k-NN is the recall baseline every ANN index is measured against' },
@@ -1075,9 +1075,9 @@ def brute_force_knn(query, vectors, k):
       'An empty `documents` list, or documents with no tokens, should produce an empty dict for terms that never occur.',
     ],
     hints: {
-      small: 'For each document, get its unique tokens first (e.g. with set()), then record that document\'s index under each of those tokens.',
-      strong: 'index = {}; for doc_id, tokens in enumerate(documents): for term in set(tokens): index.setdefault(term, []).append(doc_id). Sort each list before returning.',
-      concept: 'An inverted index flips a term-per-document view into a document-list-per-term view -- turning "which words are in doc 5?" into an O(1) lookup for "which docs contain \'transformer\'?", the core operation behind keyword/BM25 search.',
+      small: 'How does mapping each unique token to the list of document IDs containing it invert the traditional document-to-term hierarchy?',
+      strong: 'What dictionary structure allows O(1) retrieval of candidate document lists for an incoming search query?',
+      concept: 'Why is an inverted index the core retrieval data structure powering sparse search engines like Lucene and BM25?',
     },
     conceptConnections: [
       { title: 'Retrieval & Reranking Architectures', route: '/docs/llms-genai/retrieval-and-reranking-architectures', description: 'Sparse (inverted-index/BM25) retrieval as a hybrid-search component alongside dense vector search' },
@@ -1121,9 +1121,9 @@ def cosine_similarity_matrix(vectors):
       'Raise ValueError if any input vector has zero magnitude.',
     ],
     hints: {
-      small: 'Loop over every pair (i, j) of vectors and compute their cosine similarity, storing it at matrix[i][j].',
-      strong: 'For i == j, the similarity with itself is always 1.0 -- skip the (redundant) computation there. Reuse a cosine_similarity(a, b) helper for i != j.',
-      concept: 'This matrix is exactly what graph-based ANN indexes like HNSW build (approximately, via greedy search) to decide which nodes to connect -- and what an offline "find near-duplicate embeddings" pass would scan directly.',
+      small: 'Given N vectors, what are the dimensions of their pairwise similarity matrix, and why is that matrix symmetric along its main diagonal?',
+      strong: 'If all vectors are pre-normalized to unit length, what single matrix operation computes all N×N pairwise cosine similarities at once?',
+      concept: 'Why does pre-normalizing embeddings reduce pairwise similarity search to an efficient matrix multiplication (X @ X.T)?',
     },
     testCases: [
       { id: 'basic', label: '3 Vectors (2D)', input: { vectors: [[1, 0], [0, 1], [1, 1]] }, expectedOutput: [[1.0, 0.0, 0.7071067811865475], [0.0, 1.0, 0.7071067811865475], [0.7071067811865475, 0.7071067811865475, 1.0]], hidden: false },
@@ -1162,9 +1162,9 @@ def cosine_similarity_matrix(vectors):
       'If min(vector) == max(vector) (zero range), return a list of all zeros instead of dividing by zero.',
     ],
     hints: {
-      small: 'Find lo = min(vector) and hi = max(vector). Each code is (x - lo) / (hi - lo) scaled up to the number of available levels, then rounded.',
-      strong: 'levels = 2**num_bits - 1; if hi == lo: return [0]*len(vector); return [round((x - lo) / (hi - lo) * levels) for x in vector].',
-      concept: 'Scalar quantization trades a small amount of precision (a handful of bits per dimension) for a 4x-32x memory reduction -- the same lo/hi range must be stored alongside the codes so a query vector can be quantized/compared the same way at search time.',
+      small: 'How does mapping continuous floating-point numbers into discrete integer bins compress vector storage in memory-constrained systems?',
+      strong: 'Given min and max bounds and an integer bit-width (e.g. 8-bit), how do you calculate step size and clamp values safely?',
+      concept: 'How does scalar quantization achieve a 4x reduction in RAM footprint for vector databases with minimal recall degradation?',
     },
     conceptConnections: [
       { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Quantization is how production vector indexes fit billions of embeddings in memory' },
@@ -1209,9 +1209,9 @@ def cosine_similarity_matrix(vectors):
       '`k` defaults to 60, the conventional RRF constant from the original paper.',
     ],
     hints: {
-      small: 'Give every document a running score. For each input ranking, walk it in order and add 1/(k + rank) to that document\'s score.',
-      strong: 'scores = {}; for ranking in rankings: for rank, doc_id in enumerate(ranking, start=1): scores[doc_id] = scores.get(doc_id, 0.0) + 1.0/(k+rank). Then return sorted(scores, key=lambda d: (-scores[d], d)).',
-      concept: 'RRF only needs rank positions, not raw similarity scores or BM25 scores -- which is exactly why it works to combine two rankings from completely different scoring scales (cosine similarity vs. BM25) without any score normalization step.',
+      small: 'How does reciprocal rank fusion combine multiple ranked retrieval lists without requiring raw score normalization?',
+      strong: 'Why does adding a smoothing constant k (typically 60) to the denominator 1 / (k + rank) prevent top-ranked outliers from dominating the fused score?',
+      concept: 'Why is RRF particularly robust when merging heterogeneous score distributions from dense vector search and sparse keyword search?',
     },
     conceptConnections: [
       { title: 'Retrieval & Reranking Architectures', route: '/docs/llms-genai/retrieval-and-reranking-architectures', description: 'RRF is the standard way to fuse dense and sparse retrieval rankings in hybrid search' },
@@ -1254,9 +1254,9 @@ def range_query(query, vectors, radius):
       'Return an empty list if no vector is within radius.',
     ],
     hints: {
-      small: 'Compute the distance from query to every vector, keep only the ones within radius, then sort the survivors by distance.',
-      strong: 'candidates = [(euclidean_distance(query, v), i) for i, v in enumerate(vectors) if euclidean_distance(query, v) <= radius]; candidates.sort(); return [i for _, i in candidates].',
-      concept: 'Unlike top-k search (always returns exactly k results), radius search returns a variable-size result set -- the query itself defines "relevant," not a fixed count, which is why it is the query mode DBSCAN-style clustering relies on.',
+      small: 'Instead of retrieving a fixed count k of nearest items, how do you collect all vectors whose distance falls within a threshold radius r?',
+      strong: 'What distance comparison determines inclusion in the result set, and how should results within the radius be ordered?',
+      concept: 'In what real-world applications (e.g. anomaly detection, deduplication) is radius search more appropriate than top-k nearest neighbor search?',
     },
     testCases: [
       { id: 'basic', label: 'Radius 1.5', input: { query: [0, 0], vectors: [[0, 0], [1, 0], [2, 0], [5, 5]], radius: 1.5 }, expectedOutput: [0, 1], hidden: false },
@@ -1297,9 +1297,9 @@ def deduplicate_near_duplicates(vectors, threshold):
       'Return kept indices in their original relative order.',
     ],
     hints: {
-      small: 'Keep a running list of indices you have decided to keep. For each new vector, compare it against every already-kept vector using cosine similarity.',
-      strong: 'kept = []; for i, v in enumerate(vectors): if not any(cosine_similarity(v, vectors[j]) >= threshold for j in kept): kept.append(i). Return kept.',
-      concept: 'This is a greedy O(n^2) dedup pass -- production systems approximate it at scale with locality-sensitive hashing (LSH) or by querying the index-so-far for near neighbors instead of comparing against every kept vector directly.',
+      small: 'When indexing millions of vectors, how can you identify and prune near-identical items whose similarity exceeds a tight threshold?',
+      strong: 'How can you iteratively maintain a deduplicated cluster set by checking new candidates against existing canonical centroids?',
+      concept: 'Why does deduplication improve retrieval diversity and reduce index storage in production RAG systems?',
     },
     conceptConnections: [
       { title: 'Vector Databases', route: '/docs/databases/vector/overview', description: 'Near-duplicate removal keeps an index compact and improves retrieval diversity' },
@@ -1387,9 +1387,9 @@ def deduplicate_near_duplicates(vectors, threshold):
       'l1 and l2 both default to 0.0, so calling with just `mse` and `weights` returns the unregularized mse unchanged.',
     ],
     hints: {
-      small: 'The L1 penalty is a strength times the sum of absolute weight values; the L2 penalty is a strength times the sum of squared weight values.',
-      strong: 'return mse + l1 * sum(abs(w) for w in weights) + l2 * sum(w * w for w in weights).',
-      concept: 'L1\'s penalty is proportional to |w| (constant gradient magnitude regardless of how large w already is), which is why Lasso can drive weights to EXACTLY zero (real feature selection); L2\'s penalty is proportional to w^2 (gradient shrinks as w approaches zero), which shrinks weights smoothly toward zero but essentially never all the way to it.',
+      small: 'How do L1 (Lasso) and L2 (Ridge) penalty terms differently affect the optimization landscape and parameter weights?',
+      strong: 'What derivative property causes L1 regularization to drive coefficients to exact zeros while L2 shrinks them smoothly toward zero?',
+      concept: 'Why does L1 regularization naturally perform feature selection whereas L2 handles multicollinearity among features?',
     },
     conceptConnections: [
       { title: 'Ridge Regression, In Full Depth', route: '/docs/machine-learning/ridge-regression', description: 'The L2 penalty term this problem adds to a base loss' },
@@ -1433,9 +1433,9 @@ def deduplicate_near_duplicates(vectors, threshold):
       'On a tie (multiple labels with the same top vote count for a sample), return the smallest tied label.',
     ],
     hints: {
-      small: 'For each sample index, collect that sample\'s prediction from every model, then find the most common one.',
-      strong: 'For sample s: votes = {}; for m in range(M): votes[predictions[m][s]] = votes.get(predictions[m][s], 0) + 1. Then pick the label with the max count, breaking ties by iterating candidate labels in sorted order and keeping the first one that reaches the max count.',
-      concept: 'Hard voting (majority of predicted labels) is what "bagging" ensembles like Random Forest use at prediction time -- each tree/model votes independently, and the ensemble\'s real advantage comes from the fact that uncorrelated individual errors tend to cancel out in the vote, not from any single model being better.',
+      small: 'How does combining predictions from multiple diverse base models reduce the overall variance of an ensemble classifier?',
+      strong: 'What voting strategy determines the winning class, and how do you resolve ties among predicted candidate labels?',
+      concept: 'What theoretical foundation (Condorcet jury theorem) explains why ensemble voting outperforms individual constituent estimators?',
     },
     conceptConnections: [
       { title: 'Random Forest & Extra Trees, In Full Depth', route: '/docs/machine-learning/random-forest', description: 'Majority voting as the aggregation step every bagging ensemble uses at prediction time' },
@@ -1476,9 +1476,9 @@ def linear_regression_normal_equation(X, y):
       'Assume X^T X is invertible (X has more rows than columns and no perfectly collinear features).',
     ],
     hints: {
-      small: 'Prepend a column of 1s to X first -- that column\'s learned weight becomes the intercept.',
-      strong: 'X_aug = np.hstack([np.ones((len(X), 1)), np.array(X)]); w = np.linalg.inv(X_aug.T @ X_aug) @ X_aug.T @ np.array(y); return w.tolist().',
-      concept: 'The normal equation comes from setting the gradient of the least-squares cost (1/2)||Xw - y||^2 to zero and solving directly -- no learning rate, no iterations, exact in one shot (at the cost of an O(d^3) matrix inversion, which is why gradient descent wins for very high-dimensional X).',
+      small: 'What closed-form matrix equation solves for the optimal linear regression weights without requiring iterative gradient descent?',
+      strong: 'In theta = (X^T X)^(-1) X^T y, what condition must X^T X satisfy for its matrix inverse to exist?',
+      concept: 'Why is the normal equation computationally expensive (O(d^3)) for high feature counts compared to stochastic gradient descent?',
     },
     conceptConnections: [
       { title: 'Linear Regression, In Full Depth', route: '/docs/machine-learning/linear-regression', description: 'The normal equation as the closed-form alternative to gradient descent' },
@@ -1520,9 +1520,9 @@ def logistic_regression_loss(X, y, weights, bias):
       'Return the MEAN loss across all rows, not the sum.',
     ],
     hints: {
-      small: 'This is dot_product + sigmoid + the binary cross-entropy formula, chained together per row, then averaged.',
-      strong: 'z = sum(w*x for w, x in zip(weights, xi)) + bias; p = 1/(1+math.exp(-z)); p = min(max(p, 1e-15), 1-1e-15); loss_i = -(yi*math.log(p) + (1-yi)*math.log(1-p)).',
-      concept: 'Binary cross-entropy is the negative log-likelihood of the true label under the model\'s predicted probability -- it heavily penalizes confident-but-wrong predictions (as p -> 0 for a true label of 1, -log(p) -> infinity), which is exactly why it (not MSE) is the loss classification models train against.',
+      small: 'How does cross-entropy penalize confident but incorrect probabilistic predictions compared to modest errors?',
+      strong: 'What numerical clipping safeguard prevents calculating log(0) when predicted probabilities reach exact 0 or 1?',
+      concept: 'Why is log-loss the natural negative log-likelihood loss function for Bernoulli-distributed binary classification targets?',
     },
     conceptConnections: [
       { title: 'Logistic Regression, In Full Depth', route: '/docs/machine-learning/logistic-regression', description: 'The sigmoid + binary cross-entropy pipeline this problem implements end to end' },
@@ -1565,9 +1565,9 @@ def information_gain(parent, left, right, criterion='gini'):
       'A perfectly pure child (all one class) has impurity exactly 0 under both criteria.',
     ],
     hints: {
-      small: 'Write one helper that computes impurity(labels, criterion) from class proportions, then call it three times (parent, left, right).',
-      strong: 'counts = per-class counts; gini = 1 - sum((c/n)**2 for c in counts.values()); entropy = -sum((c/n)*math.log2(c/n) for c in counts.values()). Weighted child impurity = (len(left)/n)*imp(left) + (len(right)/n)*imp(right).',
-      concept: 'A useless split (children have the same class distribution as the parent) always scores an information gain of exactly 0 -- a good sanity check for your implementation, since it means the split told the tree nothing new.',
+      small: 'How do Gini impurity and Information Gain measure the homogeneity of class distributions before and after a candidate split?',
+      strong: 'What formula calculates weighted average impurity across left and right child subsets, and how do you maximize split quality?',
+      concept: 'Why do decision trees greedily choose the split that maximizes information gain at each node?',
     },
     conceptConnections: [
       { title: 'Decision Trees, In Full Depth', route: '/docs/machine-learning/decision-tree', description: 'Gini impurity and information gain as the criteria CART/ID3 greedily maximize at every split' },

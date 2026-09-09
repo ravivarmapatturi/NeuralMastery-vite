@@ -77,7 +77,7 @@ interface GamificationContextValue {
    * 'medium' | 'hard' | undefined) -- see pointsForDifficulty in
    * lib/gamification.ts for why this scales the award instead of every
    * problem paying out the same flat value. */
-  awardProblemCompleted: (permalink: string, difficulty: string | undefined, bonusPoints?: number) => void;
+  awardProblemCompleted: (permalink: string, difficulty: string | undefined, bonusPoints?: number, hintUsed?: boolean) => void;
   awardSystemDesignCompleted: (permalink: string) => void;
   /** id: a stable, synthetic (non-URL) identifier for one flashcard --
    * e.g. "flashcard:home-kv-cache" -- not a real page permalink, so it's
@@ -405,11 +405,13 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   );
 
   const award = useCallback(
-
-    (permalink: string, kind: AwardEvent['kind'], points: number) => {
+    (permalink: string, kind: AwardEvent['kind'], points: number, hintUsed?: boolean) => {
       if (hasAward(events, permalink, kind)) return; // already awarded once, ever -- no double-counting on repeat marks/reruns
       const now = new Date(Date.now());
-      const nextEvents = [...events, { permalink, kind, date: localDateString(now), points }];
+      const nextEvents: AwardEvent[] = [
+        ...events,
+        { permalink, kind, date: localDateString(now), points, ...(hintUsed !== undefined ? { hintUsed } : {}) },
+      ];
 
       const oldStats = {
         totalXP: totalPoints(events),
@@ -468,8 +470,8 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
   const awardMarkUnderstood = useCallback((permalink: string) => award(permalink, 'mark', MARK_UNDERSTOOD_POINTS), [award]);
   const awardProblemCompleted = useCallback(
-    (permalink: string, difficulty: string | undefined, bonusPoints: number = 0) =>
-      award(permalink, 'complete', pointsForDifficulty(difficulty) + bonusPoints),
+    (permalink: string, difficulty: string | undefined, bonusPoints: number = 0, hintUsed?: boolean) =>
+      award(permalink, 'complete', pointsForDifficulty(difficulty) + bonusPoints, hintUsed),
     [award],
   );
   const awardFlashcardRevealed = useCallback((id: string) => award(id, 'flashcard', FLASHCARD_REVEAL_POINTS), [award]);

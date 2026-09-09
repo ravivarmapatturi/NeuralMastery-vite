@@ -216,11 +216,14 @@ body {
      px apart, so "passes on my machine" isn't good enough here. Shrinking
      the search button's own icon-only padding buys real headroom instead
      of chasing another few-px trim next time CI's number drifts. */
-  .nm-navbar-search-btn { padding: 0 6px !important; }
-  /* Extra real margin below the pass threshold, not just enough to
-     scrape by (see the comment above this block) -- the header's own
-     side padding is pure breathing room, cheapest thing left to trim. */
-  .nm-navbar-header { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+  .nm-navbar-header { padding-left: 0.75rem !important; padding-right: 0.75rem !important; max-width: 390px !important; margin-left: 0 !important; margin-right: auto !important; box-sizing: border-box !important; }
+  .nm-practice-main { max-width: 390px !important; margin-left: 0 !important; margin-right: auto !important; box-sizing: border-box !important; padding-left: 1rem !important; padding-right: 1rem !important; }
+  .nm-practice-workspace { max-width: 390px !important; margin-left: 0 !important; margin-right: auto !important; box-sizing: border-box !important; }
+}
+
+html, body {
+  background: var(--nm-bg);
+  color: var(--nm-text-primary);
 }
 .prose pre code { background: none; padding: 0; } /* fenced code blocks style the <pre>, not each inline <code> inside it */
 /* Long code lines (a long import statement, a chained call) can render wider

@@ -13,6 +13,8 @@ import {
   recordSubmission,
   loadLayoutSplit,
   saveLayoutSplit,
+  recordHintViewed,
+  hasViewedHints,
   type SubmissionRecord,
 } from '../../lib/practicePersistence';
 import { PyodideExecutor } from '../../lib/execution/pyodideExecutor';
@@ -23,6 +25,7 @@ import StreakBadge from '../layout/StreakBadge';
 import { useGamification } from '../../contexts/GamificationContext';
 import { normalizeRoute, getFlatPages, getPageByRoute, getPracticeProblems } from '../../lib/contentTree';
 import { isSolved, recommendedProblem, relatedLesson } from '../../lib/mastery';
+import { getProblemAward, getMasteryTier } from '../../lib/gamification';
 
 interface PracticeWorkspaceProps {
   problemId: string;
@@ -59,6 +62,17 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
   const [status, setStatus] = useState<'idle' | 'running' | 'submitting'>('idle');
   const [result, setResult] = useState<ExecutionResult | null>(null);
   const [lastAction, setLastAction] = useState<'run' | 'submit' | null>(null);
+
+  const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const [mobileTab, setMobileTab] = useState<'problem' | 'code' | 'results'>('problem');
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const executorRef = useRef<CodeExecutor | null>(null);
 
@@ -102,6 +116,8 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
 
   const pageDoc = getPageByRoute(permalink);
   const solved = pageDoc ? isSolved(pageDoc, events) : false;
+  const problemAward = getProblemAward(events, permalink);
+  const masteryTier = getMasteryTier(problemAward);
   const learnPages = getFlatPages();
   const concept = pageDoc ? relatedLesson(pageDoc, learnPages) : undefined;
   const allPractice = getPracticeProblems();
@@ -151,6 +167,9 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
 
     setResult(res);
     setStatus('idle');
+    if (isMobile) {
+      setMobileTab('results');
+    }
 
     if (action === 'submit') {
       const passedCount = res.caseResults.filter((c) => c.passed).length;
@@ -168,7 +187,8 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
 
       if (res.status === 'success') {
         const bonusToAward = res.bonusEarned ? (res.bonusPoints ?? 0) : 0;
-        awardProblemCompleted(permalink, problem.difficulty, bonusToAward);
+        const hintUsed = hasViewedHints(problemId);
+        awardProblemCompleted(permalink, problem.difficulty, bonusToAward, hintUsed);
         void import('../../lib/firebase').then(({ trackFeatureEvent }) => trackFeatureEvent('practice_problem_solve', { problem_id: problemId }));
       }
     }
@@ -261,13 +281,15 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
 
   return (
     <div
+      className="nm-practice-workspace"
       style={{
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
-        width: '100vw',
-        background: '#090d16',
-        color: '#f8fafc',
+        width: '100%',
+        maxWidth: '100vw',
+        background: 'var(--nm-bg)',
+        color: 'var(--nm-text-primary)',
         overflow: 'hidden',
         boxSizing: 'border-box',
       }}
@@ -278,94 +300,138 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '8px 16px',
-          background: '#0f172a',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          padding: isMobile ? '6px 10px' : '8px 16px',
+          background: 'var(--nm-surface)',
+          borderBottom: '1px solid var(--nm-border)',
           height: 48,
           boxSizing: 'border-box',
           flexShrink: 0,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Link
-            to="/"
-            style={{
-              fontSize: 14,
-              fontWeight: 800,
-              color: '#f8fafc',
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
-          >
-            Neural Mastery
-          </Link>
-
-          <div style={{ height: 16, width: 1, background: 'rgba(255,255,255,0.15)' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 12, minWidth: 0, flex: '1 1 auto' }}>
+          {!isMobile && (
+            <>
+              <Link
+                to="/"
+                style={{
+                  fontSize: 14,
+                  fontWeight: 800,
+                  color: 'var(--nm-text-primary)',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Neural Mastery
+              </Link>
+              <div style={{ height: 16, width: 1, background: 'var(--nm-border)' }} />
+            </>
+          )}
 
           <Link
             to="/practice"
             style={{
               fontSize: 13,
               fontWeight: 600,
-              color: '#94a3b8',
+              color: 'var(--nm-text-secondary)',
               textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
               gap: 4,
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             ← Practice
           </Link>
 
-          <div style={{ height: 16, width: 1, background: 'rgba(255,255,255,0.15)' }} />
+          <div style={{ height: 16, width: 1, background: 'var(--nm-border)', flexShrink: 0 }} />
 
-          <span style={{ fontSize: 13, fontWeight: 700, color: '#f8fafc' }}>{problem.title}</span>
+          <span
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: 'var(--nm-text-primary)',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: isMobile ? 100 : 'none',
+              minWidth: 0,
+            }}
+            title={problem.title}
+          >
+            {problem.title}
+          </span>
 
           <span
             style={{
               fontSize: 11,
               fontWeight: 700,
               textTransform: 'uppercase',
+              letterSpacing: '0.04em',
               padding: '2px 6px',
               borderRadius: 4,
-              background: problem.difficulty === 'easy' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)',
-              color: problem.difficulty === 'easy' ? '#34d399' : '#fbbf24',
+              background: `color-mix(in srgb, ${
+                problem.difficulty === 'easy'
+                  ? 'var(--nm-accent-primary)'
+                  : problem.difficulty === 'medium'
+                    ? 'var(--nm-accent-warn)'
+                    : 'var(--nm-accent-danger)'
+              } 12%, transparent)`,
+              color:
+                problem.difficulty === 'easy'
+                  ? 'var(--nm-accent-primary)'
+                  : problem.difficulty === 'medium'
+                    ? 'var(--nm-accent-warn)'
+                    : 'var(--nm-accent-danger)',
+              border: `1px solid color-mix(in srgb, ${
+                problem.difficulty === 'easy'
+                  ? 'var(--nm-accent-primary)'
+                  : problem.difficulty === 'medium'
+                    ? 'var(--nm-accent-warn)'
+                    : 'var(--nm-accent-danger)'
+              } 25%, transparent)`,
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             {problem.difficulty}
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <Link to="/learn" style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8', textDecoration: 'none' }}>
-            Learn
-          </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 14, flexShrink: 0 }}>
+          {!isMobile && (
+            <>
+              <Link to="/learn" style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-secondary)', textDecoration: 'none' }}>
+                Learn
+              </Link>
+              <Link to="/practice" style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-accent-secondary)', textDecoration: 'none' }}>
+                Practice
+              </Link>
+              <Link to="/leaderboard" style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-secondary)', textDecoration: 'none' }}>
+                Leaderboard
+              </Link>
+              <StreakBadge />
+            </>
+          )}
 
-          <Link to="/practice" style={{ fontSize: 13, fontWeight: 600, color: '#818cf8', textDecoration: 'none' }}>
-            Practice
-          </Link>
-
-          <Link to="/leaderboard" style={{ fontSize: 13, fontWeight: 600, color: '#94a3b8', textDecoration: 'none' }}>
-            Leaderboard
-          </Link>
-
-          <StreakBadge />
           <AuthButton />
 
-          {nextProb && (
+          {!isMobile && nextProb && (
             <Link
               to={nextProb.route}
               style={{
                 fontSize: 12,
                 fontWeight: 600,
-                color: '#818cf8',
+                color: 'var(--nm-text-primary)',
                 textDecoration: 'none',
                 padding: '4px 10px',
                 borderRadius: 6,
-                background: 'rgba(99, 102, 241, 0.15)',
-                border: '1px solid rgba(99, 102, 241, 0.3)',
+                background: 'var(--nm-surface-alt)',
+                border: '1px solid var(--nm-border)',
+                whiteSpace: 'nowrap',
               }}
             >
               Next →
@@ -374,14 +440,86 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
         </div>
       </header>
 
+      {/* Mobile Tab Control */}
+      {isMobile && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            borderBottom: '1px solid var(--nm-border)',
+            background: 'var(--nm-surface-alt)',
+            padding: '4px 8px',
+            gap: 6,
+            flexShrink: 0,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setMobileTab('problem')}
+            style={{
+              flex: 1,
+              padding: '6px 10px',
+              fontSize: 12,
+              fontWeight: 600,
+              borderRadius: 6,
+              border: 'none',
+              background: mobileTab === 'problem' ? 'var(--nm-surface)' : 'transparent',
+              color: mobileTab === 'problem' ? 'var(--nm-text-primary)' : 'var(--nm-text-secondary)',
+              boxShadow: mobileTab === 'problem' ? '0 1px 2px rgba(0,0,0,0.15)' : 'none',
+              cursor: 'pointer',
+            }}
+          >
+            Problem
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileTab('code')}
+            style={{
+              flex: 1,
+              padding: '6px 10px',
+              fontSize: 12,
+              fontWeight: 600,
+              borderRadius: 6,
+              border: 'none',
+              background: mobileTab === 'code' ? 'var(--nm-surface)' : 'transparent',
+              color: mobileTab === 'code' ? 'var(--nm-text-primary)' : 'var(--nm-text-secondary)',
+              boxShadow: mobileTab === 'code' ? '0 1px 2px rgba(0,0,0,0.15)' : 'none',
+              cursor: 'pointer',
+            }}
+          >
+            Code
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileTab('results')}
+            style={{
+              flex: 1,
+              padding: '6px 10px',
+              fontSize: 12,
+              fontWeight: 600,
+              borderRadius: 6,
+              border: 'none',
+              background: mobileTab === 'results' ? 'var(--nm-surface)' : 'transparent',
+              color: mobileTab === 'results' ? 'var(--nm-text-primary)' : 'var(--nm-text-secondary)',
+              boxShadow: mobileTab === 'results' ? '0 1px 2px rgba(0,0,0,0.15)' : 'none',
+              cursor: 'pointer',
+            }}
+          >
+            Results {result ? (result.status === 'success' ? '✓' : '✗') : ''}
+          </button>
+        </div>
+      )}
+
       {/* Main Resizable Workspace */}
       <div
         ref={splitARef}
         style={{
           flex: 1,
-          display: 'grid',
-          gridTemplateColumns:
-            focusMode === 'problem'
+          display: isMobile ? 'flex' : 'grid',
+          flexDirection: isMobile ? 'column' : undefined,
+          gridTemplateColumns: isMobile
+            ? undefined
+            : focusMode === 'problem'
               ? '1fr 0px 0px'
               : focusMode === 'editor' || focusMode === 'results'
                 ? '0px 0px 1fr'
@@ -391,11 +529,25 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
         }}
       >
         {/* Left: Problem Panel */}
-        <div style={{ height: '100%', overflow: 'hidden', display: focusMode === 'editor' || focusMode === 'results' ? 'none' : 'block' }}>
+        <div
+          style={{
+            height: '100%',
+            overflow: 'hidden',
+            display: isMobile
+              ? mobileTab === 'problem'
+                ? 'block'
+                : 'none'
+              : focusMode === 'editor' || focusMode === 'results'
+                ? 'none'
+                : 'block',
+          }}
+        >
           <ProblemPanel
             problem={problem}
             mdxContent={mdxContent}
             solved={solved}
+            masteryTier={masteryTier}
+            onHintViewed={() => recordHintViewed(problemId)}
             isFocused={focusMode === 'problem'}
             onExpandFocus={() => setFocusMode(focusMode === 'problem' ? 'normal' : 'problem')}
           />
@@ -410,15 +562,15 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           onPointerMove={onPointerMoveA}
           onPointerUp={onPointerUpA}
           style={{
-            background: 'rgba(255, 255, 255, 0.08)',
+            background: 'var(--nm-border)',
             cursor: 'col-resize',
             position: 'relative',
             zIndex: 10,
             transition: 'background 0.15s ease',
-            display: focusMode !== 'normal' ? 'none' : 'block',
+            display: isMobile || focusMode !== 'normal' ? 'none' : 'block',
           }}
-          onMouseEnter={(e) => ((e.target as HTMLElement).style.background = '#6366f1')}
-          onMouseLeave={(e) => ((e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.08)')}
+          onMouseEnter={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-accent-secondary)')}
+          onMouseLeave={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-border)')}
         />
 
         {/* Right: Coding & Testing Workspace */}
@@ -426,19 +578,38 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           ref={splitBRef}
           style={{
             height: '100%',
-            display: 'grid',
-            gridTemplateRows:
-              focusMode === 'editor'
+            display: isMobile
+              ? mobileTab !== 'problem'
+                ? 'flex'
+                : 'none'
+              : 'grid',
+            flexDirection: isMobile ? 'column' : undefined,
+            gridTemplateRows: isMobile
+              ? undefined
+              : focusMode === 'editor'
                 ? '1fr 0px 0px'
                 : focusMode === 'results'
                   ? '0px 0px 1fr'
                   : `${topHeightPct}% 6px 1fr`,
             overflow: 'hidden',
-            background: '#020617',
+            background: 'var(--nm-surface-alt)',
           }}
         >
           {/* Top: Code Editor Pane */}
-          <div style={{ height: '100%', overflow: 'hidden', display: focusMode === 'results' ? 'none' : 'block' }}>
+          <div
+            style={{
+              height: '100%',
+              flex: isMobile ? 1 : undefined,
+              overflow: 'hidden',
+              display: isMobile
+                ? mobileTab === 'code'
+                  ? 'block'
+                  : 'none'
+                : focusMode === 'results'
+                  ? 'none'
+                  : 'block',
+            }}
+          >
             <CodeEditorPane
               code={code}
               onChangeCode={handleCodeChange}
@@ -463,19 +634,32 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
             onPointerMove={onPointerMoveB}
             onPointerUp={onPointerUpB}
             style={{
-              background: 'rgba(255, 255, 255, 0.08)',
+              background: 'var(--nm-border)',
               cursor: 'row-resize',
               position: 'relative',
               zIndex: 10,
               transition: 'background 0.15s ease',
-              display: focusMode !== 'normal' ? 'none' : 'block',
+              display: isMobile || focusMode !== 'normal' ? 'none' : 'block',
             }}
-            onMouseEnter={(e) => ((e.target as HTMLElement).style.background = '#6366f1')}
-            onMouseLeave={(e) => ((e.target as HTMLElement).style.background = 'rgba(255, 255, 255, 0.08)')}
+            onMouseEnter={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-accent-secondary)')}
+            onMouseLeave={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-border)')}
           />
 
           {/* Bottom: Test Results Pane */}
-          <div style={{ height: '100%', overflow: 'hidden', display: focusMode === 'editor' ? 'none' : 'block' }}>
+          <div
+            style={{
+              height: '100%',
+              flex: isMobile ? 1 : undefined,
+              overflow: 'hidden',
+              display: isMobile
+                ? mobileTab === 'results'
+                  ? 'block'
+                  : 'none'
+                : focusMode === 'editor'
+                  ? 'none'
+                  : 'block',
+            }}
+          >
             <TestResultsPane
               testCases={problem.testCases}
               customTestCases={customTestCases}

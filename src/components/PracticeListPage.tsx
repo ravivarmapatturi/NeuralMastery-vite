@@ -3,11 +3,23 @@ import { Link } from 'react-router-dom';
 import Navbar from './layout/Navbar';
 import { getPracticeProblems, type DocPage, type PracticeDifficulty } from '../lib/contentTree';
 import { useGamification } from '../contexts/GamificationContext';
-import { hasAward, pointsForDifficulty, SYSTEM_DESIGN_CHALLENGE_POINTS } from '../lib/gamification';
-import { practiceStats } from '../lib/mastery';
+import {
+  hasAward,
+  pointsForDifficulty,
+  SYSTEM_DESIGN_CHALLENGE_POINTS,
+  getProblemAward,
+  getMasteryTier,
+} from '../lib/gamification';
+import { recommendedProblem } from '../lib/mastery';
+import { getPracticeProblem } from '../lib/practiceProblem';
 import { buildTopicLabels, getPracticeTracks } from '../lib/practiceTracks';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
+import {
+  GoldMasteryIcon,
+  BronzeMasteryIcon,
+  ArrowRightIcon,
+} from './icons/PracticeIcons';
 
 const DIFFICULTY_COLOR: Record<PracticeDifficulty, string> = {
   easy: 'var(--nm-accent-primary)',
@@ -15,12 +27,14 @@ const DIFFICULTY_COLOR: Record<PracticeDifficulty, string> = {
   hard: 'var(--nm-accent-danger)',
 };
 
-/** A problem with no `difficulty` frontmatter is one of the 4 system-design
- * challenges (Phase 2 verified this is the ONLY reason difficulty is ever
- * absent -- see the frontmatter coordination) -- a genuinely different
- * problem shape (free-text + rubric, self-assessed, no test suite) that
- * gets its own tag and point value rather than a fabricated Easy/Medium/Hard
- * label. */
+const TOPIC_ACCENTS = [
+  'var(--nm-accent-secondary)',
+  'var(--nm-accent-teal)',
+  'var(--nm-accent-purple)',
+  'var(--nm-accent-warn)',
+  'var(--nm-accent-primary)',
+];
+
 function isDesignChallenge(page: DocPage): boolean {
   return !page.difficulty;
 }
@@ -30,9 +44,11 @@ export default function PracticeListPage() {
   const placeholderCount = useMemo(() => problems.filter((p) => p.placeholder).length, [problems]);
   const realCount = problems.length - placeholderCount;
 
-  // Real, verified count leading first -- never inflated with placeholders.
   useDocumentTitle(`Practice AI — ${realCount} Real, Hands-On Problems (${placeholderCount} more being added)`);
-  useDocumentMeta('Practice AI', `A growing AI Engineering practice curriculum with ${realCount} real, hands-on problems (${placeholderCount} more being added) covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.`);
+  useDocumentMeta(
+    'Practice AI',
+    `A growing AI Engineering practice curriculum with ${realCount} real, hands-on problems (${placeholderCount} more being added) covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.`,
+  );
 
   const topicLabels = useMemo(buildTopicLabels, []);
   const { events } = useGamification();
@@ -42,17 +58,49 @@ export default function PracticeListPage() {
   const [topicFilter, setTopicFilter] = useState<'all' | string>('all');
   const [viewMode, setViewMode] = useState<'roadmap' | 'table'>('roadmap');
 
-  // Real tracks (topic + real problem count), computed from the actual
-  // catalogue -- never hardcoded, so this always reflects real shipped
-  // content. Sorted by count descending for the "Explore by Track & Tag"
-  // card grid; a separate alphabetical view feeds the topic filter dropdown.
   const tracks = useMemo(() => getPracticeTracks(problems), [problems]);
   const tracksByLabel = useMemo(() => [...tracks].sort((a, b) => a.label.localeCompare(b.label)), [tracks]);
   const topics = useMemo(() => tracksByLabel.map((t) => t.topic), [tracksByLabel]);
   const topicCounts = useMemo(() => Object.fromEntries(tracks.map((t) => [t.topic, t.count])), [tracks]);
 
   const solvedCount = problems.filter((p) => hasAward(events, p.route, isDesignChallenge(p) ? 'design' : 'complete')).length;
-  const stats = practiceStats(problems, events);
+
+  // Item 1: Continue Learning vs First-Time Foundations Card
+  const isFirstTime = solvedCount === 0;
+
+  const targetProblemDoc = useMemo(() => {
+    if (isFirstTime) {
+      return (
+        problems.find(
+          (p) =>
+            p.topic?.toLowerCase().includes('python') ||
+            p.topic?.toLowerCase().includes('foundations') ||
+            p.topic?.toLowerCase().includes('linear algebra'),
+        ) ?? problems[0]
+      );
+    }
+    return recommendedProblem(problems, events) ?? problems[0];
+  }, [isFirstTime, problems, events]);
+
+  const targetProblemMeta = useMemo(() => {
+    if (!targetProblemDoc) return null;
+    const slug = targetProblemDoc.route.replace(/^\/practice\//, '');
+    return getPracticeProblem(slug);
+  }, [targetProblemDoc]);
+
+  // Topic mastery stats
+  const topicMasteryList = useMemo(() => {
+    return tracks.map((track, idx) => {
+      const topicProblems = problems.filter((p) => p.topic === track.topic);
+      const solved = topicProblems.filter((p) =>
+        hasAward(events, p.route, isDesignChallenge(p) ? 'design' : 'complete'),
+      ).length;
+      const total = topicProblems.length;
+      const pct = total > 0 ? Math.round((solved / total) * 100) : 0;
+      const color = TOPIC_ACCENTS[idx % TOPIC_ACCENTS.length];
+      return { track, solved, total, pct, color };
+    });
+  }, [tracks, problems, events]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 100;
@@ -75,35 +123,70 @@ export default function PracticeListPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--nm-bg)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--nm-bg)', overflowX: 'hidden' }}>
       <Navbar />
 
-      <section style={{ maxWidth: 1350, margin: '0 auto', padding: '2.5rem 2rem 4rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.5rem' }}>
-          <div>
-            <h1 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 800, color: 'var(--nm-text-primary)', margin: '0 0 0.5rem' }}>
+      <main className="nm-practice-main" style={{ maxWidth: 1350, margin: '0 auto', padding: 'clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem) 4rem', boxSizing: 'border-box', width: '100%' }}>
+        {/* Header Section */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+            gap: '1.25rem',
+            marginBottom: '2rem',
+            maxWidth: '100%',
+          }}
+        >
+          <div style={{ flex: '1 1 300px', minWidth: 0, maxWidth: '100%' }}>
+            <h1
+              style={{
+                fontSize: 'clamp(1.4rem, 3.5vw, 2.2rem)',
+                fontWeight: 800,
+                color: 'var(--nm-text-primary)',
+                margin: '0 0 0.5rem',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.25,
+                overflowWrap: 'break-word',
+                wordBreak: 'break-word',
+              }}
+            >
               Practice AI — {realCount} Real, Hands-On Problems ({placeholderCount} more being added)
             </h1>
-            <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.5rem', lineHeight: 1.6, maxWidth: 780 }}>
-              {realCount} real AI engineering problems with working test suites and instant browser-based execution, covering the Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems) as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems). {placeholderCount} additional problem templates across the full catalogue are actively being populated with verified challenges.
+            <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.75rem', lineHeight: 1.6, maxWidth: 780, overflowWrap: 'break-word' }}>
+              {realCount} real AI engineering problems with working test suites and instant browser-based execution, covering
+              the Agentic AI Stack (Transformers, Decoding, Context, RAG, Agent Loops, MCP, Graph Engineering, Multi-Agent Systems)
+              as well as AI Foundations (DSA for AI, Math, NumPy, Pandas, Classical ML, Deep Learning, and Distributed Systems).
             </p>
             <p style={{ fontSize: 13, color: 'var(--nm-text-muted)', margin: '0 0 1.5rem' }}>
               {solvedCount} / {problems.length} solved
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--nm-surface)', padding: 4, borderRadius: 10, border: '1px solid var(--nm-border)' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: 4,
+              background: 'var(--nm-surface)',
+              padding: 4,
+              borderRadius: 8,
+              border: '1px solid var(--nm-border)',
+              flexWrap: 'wrap',
+              maxWidth: '100%',
+            }}
+          >
             <button
               onClick={() => setViewMode('roadmap')}
               style={{
-                padding: '0.4rem 0.8rem',
-                borderRadius: 8,
+                padding: '0.45rem 0.85rem',
+                borderRadius: 6,
                 fontSize: 12,
-                fontWeight: 700,
+                fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',
-                background: viewMode === 'roadmap' ? 'var(--nm-accent-primary)' : 'transparent',
-                color: viewMode === 'roadmap' ? '#fff' : 'var(--nm-text-muted)',
+                background: viewMode === 'roadmap' ? 'var(--nm-surface-alt)' : 'transparent',
+                color: viewMode === 'roadmap' ? 'var(--nm-text-primary)' : 'var(--nm-text-muted)',
               }}
             >
               Curriculum Roadmap
@@ -111,14 +194,14 @@ export default function PracticeListPage() {
             <button
               onClick={() => setViewMode('table')}
               style={{
-                padding: '0.4rem 0.8rem',
-                borderRadius: 8,
+                padding: '0.45rem 0.85rem',
+                borderRadius: 6,
                 fontSize: 12,
-                fontWeight: 700,
+                fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',
-                background: viewMode === 'table' ? 'var(--nm-accent-primary)' : 'transparent',
-                color: viewMode === 'table' ? '#fff' : 'var(--nm-text-muted)',
+                background: viewMode === 'table' ? 'var(--nm-surface-alt)' : 'transparent',
+                color: viewMode === 'table' ? 'var(--nm-text-primary)' : 'var(--nm-text-muted)',
               }}
             >
               All Catalogue ({problems.length})
@@ -126,64 +209,248 @@ export default function PracticeListPage() {
           </div>
         </div>
 
-        <div>
-            <div className="nm-mastery-metrics" aria-label="Practice progress">
-              <div><strong>{stats.solved}</strong><span>problems solved</span></div>
-              <div><strong>{stats.total - stats.solved}</strong><span>ready to solve</span></div>
-              <div><strong>{stats.easySolved}/{stats.mediumSolved}/{stats.hardSolved}</strong><span>easy / medium / hard</span></div>
-            </div>
-
-            <div className="nm-practice-tracks" style={{ marginBottom: '1.75rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.7rem', gap: 8 }}>
-                <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--nm-text-primary)' }}>Explore by Track &amp; Tag</h2>
-                <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>{tracks.length} tracks</span>
-              </div>
+        {/* Item 1: Continue Learning Card (or Start with Foundations) */}
+        {targetProblemDoc && (
+          <div
+            style={{
+              marginBottom: '2.5rem',
+              borderRadius: 12,
+              border: '1px solid var(--nm-border)',
+              background: 'var(--nm-surface)',
+              padding: 'clamp(16px, 3vw, 20px) clamp(16px, 3vw, 24px)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '1.25rem',
+              borderLeft: '4px solid var(--nm-accent-primary)',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
+            }}
+          >
+            <div style={{ maxWidth: 740, minWidth: 0, flex: '1 1 260px' }}>
               <div
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))',
-                  gap: '0.7rem',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                  color: 'var(--nm-accent-primary)',
+                  marginBottom: 6,
                 }}
               >
-                {tracks.map((track) => (
-                  <Link
-                    key={track.slug}
-                    to={`/practice/track/${track.slug}`}
+                {isFirstTime ? 'Start with Foundations' : 'Continue Learning'}
+              </div>
+              <h2
+                style={{
+                  margin: '0 0 8px',
+                  fontSize: 19,
+                  fontWeight: 700,
+                  color: 'var(--nm-text-primary)',
+                  overflowWrap: 'break-word',
+                  wordBreak: 'break-word',
+                }}
+              >
+                {targetProblemDoc.title.replace(/^Practice:\s*/, '')}
+              </h2>
+              <p
+                style={{
+                  margin: '0 0 12px',
+                  fontSize: 13.5,
+                  lineHeight: 1.55,
+                  color: 'var(--nm-text-secondary)',
+                  overflowWrap: 'break-word',
+                }}
+              >
+                {targetProblemMeta?.mission ||
+                  targetProblemDoc.description ||
+                  'Master essential AI algorithms and engineering practices with live browser validation.'}
+              </p>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                {targetProblemDoc.difficulty && (
+                  <span
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      gap: 10,
-                      padding: '0.85rem 1rem',
-                      minHeight: 84,
-                      borderRadius: 12,
-                      border: '1px solid var(--nm-border)',
-                      background: 'var(--nm-surface)',
-                      textDecoration: 'none',
-                      transition: 'border-color 0.15s ease, transform 0.15s ease',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      padding: '2px 7px',
+                      borderRadius: 4,
+                      background: `color-mix(in srgb, ${DIFFICULTY_COLOR[targetProblemDoc.difficulty]} 12%, transparent)`,
+                      color: DIFFICULTY_COLOR[targetProblemDoc.difficulty],
+                      border: `1px solid color-mix(in srgb, ${DIFFICULTY_COLOR[targetProblemDoc.difficulty]} 25%, transparent)`,
                     }}
                   >
-                    <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>{track.label}</span>
-                    <span
-                      style={{
-                        alignSelf: 'flex-start',
-                        fontSize: 11,
-                        fontWeight: 800,
-                        padding: '0.15rem 0.55rem',
-                        borderRadius: 10,
-                        background: 'color-mix(in srgb, var(--nm-accent-primary) 12%, var(--nm-surface))',
-                        color: 'var(--nm-accent-primary)',
-                      }}
-                    >
-                      {track.count} problem{track.count === 1 ? '' : 's'}
-                    </span>
-                  </Link>
-                ))}
+                    {targetProblemDoc.difficulty}
+                  </span>
+                )}
+                {targetProblemDoc.topic && (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 500,
+                      padding: '2px 7px',
+                      borderRadius: 4,
+                      background: 'var(--nm-surface-alt)',
+                      color: 'var(--nm-text-secondary)',
+                      border: '1px solid var(--nm-border)',
+                    }}
+                  >
+                    {topicLabels[targetProblemDoc.topic] ?? targetProblemDoc.topic}
+                  </span>
+                )}
               </div>
             </div>
 
+            <Link
+              to={targetProblemDoc.route}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '0.7rem 1.4rem',
+                borderRadius: 8,
+                background: 'var(--nm-accent-primary)',
+                color: 'var(--nm-bg, #fff)',
+                fontWeight: 700,
+                fontSize: 13.5,
+                textDecoration: 'none',
+                transition: 'opacity 0.15s ease',
+              }}
+            >
+              <span>{isFirstTime ? 'Start First Problem' : 'Continue Problem'}</span>
+              <ArrowRightIcon size={14} color="var(--nm-bg, #fff)" />
+            </Link>
+          </div>
+        )}
+
+        {/* Item 1: Real Per-Topic Mastery Bars */}
+        <div style={{ marginBottom: '2.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1rem' }}>
+            <div>
+              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
+                Topic Mastery
+              </h2>
+              <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginTop: 2 }}>
+                Real progress across verified engineering tracks
+              </div>
+            </div>
+            <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>{tracks.length} tracks</span>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(260px, 100%), 1fr))',
+              gap: '0.85rem',
+            }}
+          >
+            {topicMasteryList.map(({ track, solved, total, pct, color }) => (
+              <div
+                key={track.slug}
+                onClick={() => {
+                  setTopicFilter(track.topic);
+                  const el = document.getElementById('practice-catalogue');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                style={{
+                  padding: '12px 16px',
+                  borderRadius: 8,
+                  border: '1px solid var(--nm-border)',
+                  background: 'var(--nm-surface)',
+                  cursor: 'pointer',
+                  transition: 'border-color 0.15s ease',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-primary)' }}>
+                    {track.label}
+                  </span>
+                  <span style={{ fontSize: 11.5, fontWeight: 700, color: pct > 0 ? color : 'var(--nm-text-muted)' }}>
+                    {solved}/{total}
+                  </span>
+                </div>
+
+                {/* Styled progress bar */}
+                <div
+                  style={{
+                    height: 5,
+                    width: '100%',
+                    background: 'var(--nm-surface-alt)',
+                    borderRadius: 3,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      height: '100%',
+                      width: `${pct}%`,
+                      background: color,
+                      borderRadius: 3,
+                      transition: 'width 0.3s ease',
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Secondary: Explore by Track & Tag Grid (demoted below) */}
+        <div className="nm-practice-tracks" style={{ marginBottom: '2.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.85rem' }}>
+            <h2 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
+              Explore by Track &amp; Tag
+            </h2>
+            <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>Browse dedicated tracks</span>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(180px, 100%), 1fr))',
+              gap: '0.7rem',
+            }}
+          >
+            {tracks.map((track) => (
+              <Link
+                key={track.slug}
+                to={`/practice/track/${track.slug}`}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: 8,
+                  padding: '0.85rem 1rem',
+                  minHeight: 74,
+                  borderRadius: 8,
+                  border: '1px solid var(--nm-border)',
+                  background: 'var(--nm-surface)',
+                  textDecoration: 'none',
+                }}
+              >
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>
+                  {track.label}
+                </span>
+                <span
+                  style={{
+                    alignSelf: 'flex-start',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    padding: '0.15rem 0.5rem',
+                    borderRadius: 4,
+                    background: 'var(--nm-surface-alt)',
+                    color: 'var(--nm-text-muted)',
+                  }}
+                >
+                  {track.count} problem{track.count === 1 ? '' : 's'}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Filter Toolbar */}
-        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
           <input
             type="text"
             value={search}
@@ -196,11 +463,13 @@ export default function PracticeListPage() {
             style={{
               flex: '1 1 220px',
               padding: '0.5rem 0.75rem',
-              borderRadius: 8,
+              borderRadius: 6,
               border: '1px solid var(--nm-border)',
               background: 'var(--nm-surface)',
               color: 'var(--nm-text-primary)',
               fontSize: 13,
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}
           />
           <select
@@ -212,11 +481,13 @@ export default function PracticeListPage() {
             aria-label="Filter by difficulty"
             style={{
               padding: '0.5rem 0.6rem',
-              borderRadius: 8,
+              borderRadius: 6,
               border: '1px solid var(--nm-border)',
               background: 'var(--nm-surface)',
               color: 'var(--nm-text-primary)',
               fontSize: 13,
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}
           >
             <option value="all">All difficulties</option>
@@ -234,11 +505,13 @@ export default function PracticeListPage() {
             aria-label="Filter by topic"
             style={{
               padding: '0.5rem 0.6rem',
-              borderRadius: 8,
+              borderRadius: 6,
               border: '1px solid var(--nm-border)',
               background: 'var(--nm-surface)',
               color: 'var(--nm-text-primary)',
               fontSize: 13,
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}
           >
             <option value="all">All topics</option>
@@ -251,19 +524,28 @@ export default function PracticeListPage() {
         </div>
 
         {/* Catalogue Table */}
-        <div id="practice-catalogue" style={{ borderRadius: 12, border: '1px solid var(--nm-border)', overflow: 'hidden', scrollMarginTop: 90 }}>
+        <div
+          style={{
+            borderRadius: 8,
+            border: '1px solid var(--nm-border)',
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            maxWidth: '100%',
+          }}
+        >
+          <div id="practice-catalogue" style={{ minWidth: 620, scrollMarginTop: 90 }}>
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 110px 160px 90px 70px',
+              gridTemplateColumns: '1fr 110px 160px 130px 70px',
               gap: 8,
               padding: '0.6rem 1rem',
-              fontSize: 11.5,
+              fontSize: 11,
               fontWeight: 700,
               letterSpacing: '0.04em',
               textTransform: 'uppercase',
               color: 'var(--nm-text-muted)',
-              background: 'var(--nm-surface)',
+              background: 'var(--nm-surface-alt)',
               borderBottom: '1px solid var(--nm-border)',
             }}
           >
@@ -282,31 +564,36 @@ export default function PracticeListPage() {
             displayedProblems.map((p, i) => {
               const design = isDesignChallenge(p);
               const solved = hasAward(events, p.route, design ? 'design' : 'complete');
+              const award = getProblemAward(events, p.route);
+              const tier = getMasteryTier(award);
               const points = design ? SYSTEM_DESIGN_CHALLENGE_POINTS : pointsForDifficulty(p.difficulty);
+
               return (
                 <Link
                   key={p.route}
                   to={p.route}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 110px 160px 90px 70px',
+                    gridTemplateColumns: '1fr 110px 160px 130px 70px',
                     gap: 8,
                     alignItems: 'center',
                     padding: '0.65rem 1rem',
                     borderTop: i === 0 ? 'none' : '1px solid var(--nm-border)',
                     textDecoration: 'none',
-                    background: solved ? 'color-mix(in srgb, var(--nm-accent-primary) 5%, transparent)' : 'transparent',
+                    background: solved ? 'color-mix(in srgb, var(--nm-accent-primary) 3%, transparent)' : 'transparent',
                   }}
                 >
-                  <span style={{ fontSize: 13.5, color: 'var(--nm-text-primary)', fontWeight: 600 }}>{p.title.replace(/^Practice:\s*/, '')}</span>
+                  <span style={{ fontSize: 13.5, color: 'var(--nm-text-primary)', fontWeight: 500 }}>
+                    {p.title.replace(/^Practice:\s*/, '')}
+                  </span>
                   {design ? (
                     <span
                       style={{
                         fontSize: 11,
-                        fontWeight: 700,
+                        fontWeight: 600,
                         color: 'var(--nm-accent-purple)',
                         border: '1px solid var(--nm-accent-purple)',
-                        borderRadius: 6,
+                        borderRadius: 4,
                         padding: '0.1rem 0.4rem',
                         width: 'fit-content',
                       }}
@@ -314,39 +601,61 @@ export default function PracticeListPage() {
                       Design
                     </span>
                   ) : (
-                    <span style={{ fontSize: 12.5, fontWeight: 700, color: DIFFICULTY_COLOR[p.difficulty!], textTransform: 'capitalize' }}>
+                    <span
+                      style={{
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: DIFFICULTY_COLOR[p.difficulty!],
+                        textTransform: 'capitalize',
+                      }}
+                    >
                       {p.difficulty}
                     </span>
                   )}
-                  <span style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <span style={{ fontSize: 12.5, color: 'var(--nm-text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {p.topic ? (topicLabels[p.topic] ?? p.topic) : '—'}
                   </span>
-                  <span style={{ fontSize: 12.5, color: solved ? 'var(--nm-accent-primary)' : 'var(--nm-text-muted)', fontWeight: solved ? 700 : 400 }}>
-                    {solved ? '✓ Solved' : 'Not started'}
+                  <span style={{ fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                    {solved ? (
+                      tier === 'gold' ? (
+                        <span style={{ color: 'var(--nm-accent-warn)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                          <GoldMasteryIcon size={12} color="var(--nm-accent-warn)" />
+                          ✓ Solved (Independent)
+                        </span>
+                      ) : (
+                        <span style={{ color: 'var(--nm-accent-primary)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                          <BronzeMasteryIcon size={12} color="var(--nm-accent-primary)" />
+                          ✓ Solved (With hints)
+                        </span>
+                      )
+                    ) : (
+                      <span style={{ color: 'var(--nm-text-muted)' }}>Not started</span>
+                    )}
                   </span>
-                  <span style={{ fontSize: 12.5, color: 'var(--nm-text-muted)' }}>{points} pts</span>
+                  <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>{points} pts</span>
                 </Link>
               );
             })
           )}
+          </div>
         </div>
 
         {/* 100-per-Page Pagination Controls */}
         {totalPages > 1 && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem' }}>
-            <span style={{ fontSize: 13, color: 'var(--nm-text-muted)' }}>
-              Showing {((activePage - 1) * pageSize) + 1}–{Math.min(activePage * pageSize, filtered.length)} of {filtered.length} problems (Page {activePage} of {totalPages})
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '1.5rem', maxWidth: '100%' }}>
+            <span style={{ fontSize: 12.5, color: 'var(--nm-text-muted)' }}>
+              Showing {(activePage - 1) * pageSize + 1}–{Math.min(activePage * pageSize, filtered.length)} of {filtered.length} problems (Page {activePage} of {totalPages})
             </span>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
               <button
                 disabled={activePage === 1}
                 onClick={() => handlePageChange(activePage - 1)}
                 style={{
-                  padding: '0.45rem 0.85rem',
-                  borderRadius: 8,
-                  fontSize: 12.5,
-                  fontWeight: 700,
+                  padding: '0.4rem 0.8rem',
+                  borderRadius: 6,
+                  fontSize: 12,
+                  fontWeight: 600,
                   border: '1px solid var(--nm-border)',
                   background: activePage === 1 ? 'transparent' : 'var(--nm-surface)',
                   color: activePage === 1 ? 'var(--nm-text-muted)' : 'var(--nm-text-primary)',
@@ -358,7 +667,6 @@ export default function PracticeListPage() {
               </button>
 
               {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pageNum) => {
-                // Show first, last, current, and surrounding 1 page
                 if (
                   pageNum === 1 ||
                   pageNum === totalPages ||
@@ -370,14 +678,14 @@ export default function PracticeListPage() {
                       key={pageNum}
                       onClick={() => handlePageChange(pageNum)}
                       style={{
-                        minWidth: 34,
-                        padding: '0.45rem 0.6rem',
-                        borderRadius: 8,
-                        fontSize: 12.5,
-                        fontWeight: 700,
-                        border: isCurrent ? '1.5px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
+                        minWidth: 32,
+                        padding: '0.4rem 0.55rem',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        border: isCurrent ? '1px solid var(--nm-accent-primary)' : '1px solid var(--nm-border)',
                         background: isCurrent ? 'var(--nm-accent-primary)' : 'var(--nm-surface)',
-                        color: isCurrent ? '#fff' : 'var(--nm-text-primary)',
+                        color: isCurrent ? 'var(--nm-bg, #fff)' : 'var(--nm-text-primary)',
                         cursor: 'pointer',
                       }}
                     >
@@ -397,10 +705,10 @@ export default function PracticeListPage() {
                 disabled={activePage === totalPages}
                 onClick={() => handlePageChange(activePage + 1)}
                 style={{
-                  padding: '0.45rem 0.85rem',
-                  borderRadius: 8,
-                  fontSize: 12.5,
-                  fontWeight: 700,
+                  padding: '0.4rem 0.8rem',
+                  borderRadius: 6,
+                  fontSize: 12,
+                  fontWeight: 600,
                   border: '1px solid var(--nm-border)',
                   background: activePage === totalPages ? 'transparent' : 'var(--nm-surface)',
                   color: activePage === totalPages ? 'var(--nm-text-muted)' : 'var(--nm-text-primary)',
@@ -413,11 +721,7 @@ export default function PracticeListPage() {
             </div>
           </div>
         )}
-          </div>
-
-      </section>
+      </main>
     </div>
   );
 }
-
-

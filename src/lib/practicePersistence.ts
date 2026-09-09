@@ -116,3 +116,35 @@ export function saveLayoutSplit(split: PracticeLayoutSplit): void {
     // ignore
   }
 }
+
+const HINTS_VIEWED_KEY_PREFIX = 'nm_practice_hints_viewed_';
+
+/** Record that a hint was viewed for this problem before first solve */
+export function recordHintViewed(problemId: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(`${HINTS_VIEWED_KEY_PREFIX}${problemId}`, 'true');
+  } catch {
+    // ignore
+  }
+}
+
+/** Check if any hints were viewed for this problem */
+export function hasViewedHints(problemId: string): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return localStorage.getItem(`${HINTS_VIEWED_KEY_PREFIX}${problemId}`) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+/** Optional reset for hint tracking */
+export function clearHintViewed(problemId: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(`${HINTS_VIEWED_KEY_PREFIX}${problemId}`);
+  } catch {
+    // ignore
+  }
+}
