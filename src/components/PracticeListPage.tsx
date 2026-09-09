@@ -102,6 +102,27 @@ export default function PracticeListPage() {
     });
   }, [tracks, problems, events]);
 
+  // Sort order:
+  // 1. In-progress tracks (progress > 0% and < 100%) first (what the learner is actively working on),
+  //    sorted by percentage solved descending, then total problem count descending.
+  // 2. Unstarted tracks (0% progress), sorted by problem count descending (broadest tracks first).
+  // 3. Completed tracks (100% progress), sorted by problem count descending.
+  const sortedTracks = useMemo(() => {
+    const list = [...topicMasteryList].sort((a, b) => {
+      const pA = a.solved > 0 && a.solved < a.total ? 0 : a.solved === 0 ? 1 : 2;
+      const pB = b.solved > 0 && b.solved < b.total ? 0 : b.solved === 0 ? 1 : 2;
+      if (pA !== pB) return pA - pB;
+      if (pA === 0) {
+        return b.pct - a.pct || b.total - a.total;
+      }
+      return b.total - a.total;
+    });
+    return list.map((item, idx) => ({
+      ...item,
+      color: TOPIC_ACCENTS[idx % TOPIC_ACCENTS.length],
+    }));
+  }, [topicMasteryList]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 100;
 
@@ -323,50 +344,67 @@ export default function PracticeListPage() {
           </div>
         )}
 
-        {/* Item 1: Real Per-Topic Mastery Bars */}
-        <div style={{ marginBottom: '2.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1rem' }}>
+        {/* Practice Tracks */}
+        <div className="nm-practice-tracks" style={{ marginBottom: '2.5rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              marginBottom: '1rem',
+              flexWrap: 'wrap',
+              gap: 8,
+            }}
+          >
             <div>
               <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
-                Topic Mastery
+                Practice Tracks
               </h2>
               <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginTop: 2 }}>
-                Real progress across verified engineering tracks
+                {tracks.length} tracks, your real progress
               </div>
             </div>
-            <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>{tracks.length} tracks</span>
+            <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>Browse dedicated tracks</span>
           </div>
 
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(260px, 100%), 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(240px, 100%), 1fr))',
               gap: '0.85rem',
             }}
           >
-            {topicMasteryList.map(({ track, solved, total, pct, color }) => (
-              <div
+            {sortedTracks.map(({ track, solved, total, pct, color }) => (
+              <Link
                 key={track.slug}
-                onClick={() => {
-                  setTopicFilter(track.topic);
-                  const el = document.getElementById('practice-catalogue');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}
+                to={`/practice/track/${track.slug}`}
                 style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  gap: 10,
                   padding: '12px 16px',
                   borderRadius: 8,
                   border: '1px solid var(--nm-border)',
                   background: 'var(--nm-surface)',
-                  cursor: 'pointer',
+                  textDecoration: 'none',
                   transition: 'border-color 0.15s ease',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-primary)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>
                     {track.label}
                   </span>
-                  <span style={{ fontSize: 11.5, fontWeight: 700, color: pct > 0 ? color : 'var(--nm-text-muted)' }}>
-                    {solved}/{total}
+                  <span
+                    style={{
+                      fontSize: 11.5,
+                      fontWeight: 700,
+                      color: pct > 0 ? color : 'var(--nm-text-muted)',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {solved}/{total} solved
                   </span>
                 </div>
 
@@ -390,60 +428,6 @@ export default function PracticeListPage() {
                     }}
                   />
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Secondary: Explore by Track & Tag Grid (demoted below) */}
-        <div className="nm-practice-tracks" style={{ marginBottom: '2.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.85rem' }}>
-            <h2 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
-              Explore by Track &amp; Tag
-            </h2>
-            <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>Browse dedicated tracks</span>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(180px, 100%), 1fr))',
-              gap: '0.7rem',
-            }}
-          >
-            {tracks.map((track) => (
-              <Link
-                key={track.slug}
-                to={`/practice/track/${track.slug}`}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  gap: 8,
-                  padding: '0.85rem 1rem',
-                  minHeight: 74,
-                  borderRadius: 8,
-                  border: '1px solid var(--nm-border)',
-                  background: 'var(--nm-surface)',
-                  textDecoration: 'none',
-                }}
-              >
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>
-                  {track.label}
-                </span>
-                <span
-                  style={{
-                    alignSelf: 'flex-start',
-                    fontSize: 11,
-                    fontWeight: 600,
-                    padding: '0.15rem 0.5rem',
-                    borderRadius: 4,
-                    background: 'var(--nm-surface-alt)',
-                    color: 'var(--nm-text-muted)',
-                  }}
-                >
-                  {track.count} problem{track.count === 1 ? '' : 's'}
-                </span>
               </Link>
             ))}
           </div>

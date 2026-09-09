@@ -18,8 +18,8 @@ function isDesignChallenge(page: DocPage): boolean {
   return !page.difficulty;
 }
 
-/** A dedicated screen for one practice track/tag, reached by clicking a
- * card in "Explore by Track & Tag" on /practice. Shows only that track's
+/** A dedicated screen for one practice track, reached by clicking a
+ * card in "Practice Tracks" on /practice. Shows only that track's
  * real problems -- a real destination, not just an in-place filter. */
 export default function PracticeTrackPage() {
   const { topicSlug } = useParams<{ topicSlug: string }>();

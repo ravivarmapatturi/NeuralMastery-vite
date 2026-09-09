@@ -84,15 +84,16 @@ describe('PracticeListPage', () => {
     expect(screen.queryByRole('link', { name: /^Dot Product From Scratch/i })).not.toBeInTheDocument()
   })
 
-  it('renders "Explore by Track & Tag" as real cards, each linking to its own dedicated /practice/track/<slug> screen -- not the removed recommendation feature', () => {
+  it('renders "Practice Tracks" as unified real cards with inline progress, each linking to its own dedicated /practice/track/<slug> screen', () => {
     renderList()
     expect(screen.queryByText('Recommended next')).not.toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Explore by Track & Tag' })).toBeInTheDocument()
-    // Every track card is a real link to a dedicated screen, not an in-place filter toggle.
+    expect(screen.queryByText('Topic Mastery')).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Practice Tracks' })).toBeInTheDocument()
+    // Every track card is a real link to a dedicated screen with live progress.
     const trackLinks = screen.getAllByRole('link').filter((el) => el.getAttribute('href')?.startsWith('/practice/track/'))
     expect(trackLinks.length).toBeGreaterThan(0)
     for (const link of trackLinks) {
-      expect(link).toHaveTextContent(/\d+ problems?/)
+      expect(link).toHaveTextContent(/\d+\/\d+ solved/)
     }
   })
 })
