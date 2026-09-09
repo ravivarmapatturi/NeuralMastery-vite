@@ -1,34 +1,22 @@
 ---
 title: "Practice: Attention Distribution Entropy"
-sidebar_position: 382
 description: "Compute the Shannon entropy of an attention weight distribution to measure how focused vs. diffuse the attention pattern is."
-difficulty: medium
-topic: transformers-llms
+difficulty: "medium"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Attention Distribution Entropy
 
-**Rank #382** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `attention_entropy(attn_weights)` that computes Shannon entropy `H = -sum(p * log(p))` over a list of attention weights. Use a small epsilon (`1e-9`) inside the log to avoid `log(0)`. Return `abs(result)` rounded to 4 decimal places to avoid negative zero. Prerequisite: `llm-internals-prob-21`.
+## Overview
+
+Compute the Shannon entropy of an attention weight distribution to measure how focused vs. diffuse the attention pattern is.
+
+## Task
+
+Implement `attention_entropy(attn_weights)` that computes Shannon entropy `H = -sum(p * log(p + eps))` over a list of attention weights, with `eps = 1e-9` to avoid `log(0)`. Return `abs(result)` rounded to 4 decimal places. Raise `ValueError` if `attn_weights` is empty.
 
 <PracticePlayground problemId="llm-internals-prob-22" />
-
-<Solution>
-
-```python
-import math
-
-def attention_entropy(attn_weights):
-    if not attn_weights:
-        raise ValueError("attn_weights must be non-empty")
-    eps = 1e-9
-    return round(abs(-sum(p * math.log(p + eps) for p in attn_weights)), 4)
-```
-
-Entropy quantifies how "spread" an attention pattern is: a perfectly uniform distribution over `n` tokens has entropy `log(n)` (maximum), while attending 100% to one token has entropy 0 (minimum). Analyzing entropy across layers/heads reveals which heads are doing global context gathering vs. local pattern matching.
-
-</Solution>

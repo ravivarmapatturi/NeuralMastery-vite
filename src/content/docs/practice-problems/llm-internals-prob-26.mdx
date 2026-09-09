@@ -1,35 +1,22 @@
 ---
 title: "Practice: INT8 Quantization Error"
-sidebar_position: 386
-description: "Compute the quantization error introduced by symmetric INT8 quantization: the absolute difference between the original float and its dequantized approximation."
-difficulty: medium
-topic: transformers-llms
+description: "Compute the quantization error introduced by symmetric/asymmetric quantization."
+difficulty: "medium"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # INT8 Quantization Error
 
-**Rank #386** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `quantization_error(x, scale, zero_point=0, n_bits=8)` that computes the absolute quantization error for a single float value using symmetric INT8 quantization. Steps: quantize `q = clip(round(x / scale) + zero_point, -(2^(n_bits-1)), 2^(n_bits-1) - 1)`, then dequantize `x_hat = (q - zero_point) * scale`, then return `round(abs(x - x_hat), 6)`. Prerequisite: `llm-internals-prob-25`.
+## Overview
+
+Compute the quantization error introduced by symmetric/asymmetric quantization.
+
+## Task
+
+Implement `quantization_error(x, scale, zero_point=0, n_bits=8)` that computes the absolute difference between `x` and its dequantized reconstruction `x_hat`. Quantize `q = max(q_min, min(q_max, round(x / scale) + zero_point))`, then `x_hat = (q - zero_point) * scale`. Return `round(abs(x - x_hat), 6)`. Raise `ValueError` if `scale <= 0`.
 
 <PracticePlayground problemId="llm-internals-prob-26" />
-
-<Solution>
-
-```python
-def quantization_error(x, scale, zero_point=0, n_bits=8):
-    if scale <= 0:
-        raise ValueError("scale must be positive")
-    q_min = -(2 ** (n_bits - 1))
-    q_max = 2 ** (n_bits - 1) - 1
-    q = max(q_min, min(q_max, round(x / scale) + zero_point))
-    x_hat = (q - zero_point) * scale
-    return round(abs(x - x_hat), 6)
-```
-
-INT8 quantization maps 32-bit floats to 8-bit integers, reducing memory 4x and enabling faster integer math on dedicated hardware. The quantization error (also called rounding error) is bounded by `scale / 2` for values within the representable range. Choosing a scale that minimizes this error across the weight distribution is the key challenge in post-training quantization.
-
-</Solution>

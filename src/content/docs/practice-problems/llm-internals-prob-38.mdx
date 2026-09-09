@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 38: Problem 398"
-sidebar_position: 398
-description: "Curriculum Problem 398 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: KV Cache Memory Footprint with INT4 Quantization"
+description: "Calculate the exact memory capacity in bytes needed for a quantized key-value cache."
+difficulty: "medium"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 38: Problem 398
+# KV Cache Memory Footprint with INT4 Quantization
 
-**Rank #398** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-37`.
+## Overview
+
+Calculate the exact memory capacity in bytes needed for a quantized key-value cache.
+
+## Task
+
+Implement `kv_cache_quantized_bytes(num_layers, num_kv_heads, head_dim, seq_len, batch_size, bits=4)`. Total elements stored in KV cache is `num_layers * 2 * num_kv_heads * head_dim * seq_len * batch_size`. Bytes required is `int(elements * (bits / 8.0))`. Return the total byte count as integer.
 
 <PracticePlayground problemId="llm-internals-prob-38" />
-
-<Solution>
-
-```python
-def llm_internals_p38(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>

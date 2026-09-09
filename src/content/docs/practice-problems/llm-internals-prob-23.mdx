@@ -1,33 +1,22 @@
 ---
 title: "Practice: LoRA Adapter Parameter Count"
-sidebar_position: 383
 description: "Count the number of trainable parameters introduced by a LoRA low-rank adapter for a given weight matrix."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # LoRA Adapter Parameter Count
 
-**Rank #383** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `lora_param_count(d_in, d_out, rank)` that returns the total trainable parameters in a LoRA adapter: matrix A of shape `(d_in, rank)` plus matrix B of shape `(rank, d_out)`. The product `A @ B` approximates the full weight update `delta_W` of shape `(d_in, d_out)`, but with far fewer parameters when `rank << min(d_in, d_out)`. Prerequisite: `llm-internals-prob-22`.
+## Overview
+
+Count the number of trainable parameters introduced by a LoRA low-rank adapter for a given weight matrix.
+
+## Task
+
+Implement `lora_param_count(d_in, d_out, rank)` that returns the total trainable parameters in a LoRA adapter: matrix A of shape `(d_in, rank)` plus matrix B of shape `(rank, d_out)`. Raise `ValueError` if any argument is non-positive or if `rank > min(d_in, d_out)`.
 
 <PracticePlayground problemId="llm-internals-prob-23" />
-
-<Solution>
-
-```python
-def lora_param_count(d_in, d_out, rank):
-    if d_in <= 0 or d_out <= 0 or rank <= 0:
-        raise ValueError("d_in, d_out, and rank must be positive")
-    if rank > min(d_in, d_out):
-        raise ValueError("rank must not exceed min(d_in, d_out)")
-    return d_in * rank + rank * d_out
-```
-
-LoRA freezes the original weight matrix W and learns `W + A @ B` instead. For a 768x768 matrix (589,824 params), rank=8 needs only `768*8 + 8*768 = 12,288` params -- about 2% of the original. This makes fine-tuning 7B+ parameter LLMs feasible on a single GPU.
-
-</Solution>

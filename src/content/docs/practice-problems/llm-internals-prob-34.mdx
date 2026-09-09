@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 34: Problem 394"
-sidebar_position: 394
-description: "Curriculum Problem 394 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Speculative Decoding Draft Acceptance"
+description: "Implement draft verification in speculative decoding to accelerate autoregressive inference."
+difficulty: "medium"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 34: Problem 394
+# Speculative Decoding Draft Acceptance
 
-**Rank #394** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-33`.
+## Overview
+
+Implement draft verification in speculative decoding to accelerate autoregressive inference.
+
+## Task
+
+Implement `speculative_draft_acceptance(draft_probs, target_probs, draft_tokens)`. For each draft token `t` at step `k`, accept token `t` if `target_probs[k][t] >= draft_probs[k][t]`. Return the list of accepted tokens up to the first rejected token.
 
 <PracticePlayground problemId="llm-internals-prob-34" />
-
-<Solution>
-
-```python
-def llm_internals_p34(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>

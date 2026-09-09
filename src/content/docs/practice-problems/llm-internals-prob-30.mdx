@@ -1,31 +1,22 @@
 ---
 title: "Practice: ALiBi Position Bias"
-sidebar_position: 390
 description: "Compute the ALiBi (Attention with Linear Biases) position bias added to attention logits before softmax."
-difficulty: medium
-topic: transformers-llms
+difficulty: "medium"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # ALiBi Position Bias
 
-**Rank #390** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `alibi_bias(query_pos, key_pos, slope)` that computes the ALiBi attention bias: `-slope * abs(query_pos - key_pos)`. ALiBi adds a head-specific linear penalty proportional to token distance directly to attention logits before softmax -- no position embeddings in the input or learned positional parameters. Return the value rounded to 4 decimal places, using `abs()` to avoid negative-zero output. Prerequisite: `llm-internals-prob-29`.
+## Overview
+
+Compute the ALiBi (Attention with Linear Biases) position bias added to attention logits before softmax.
+
+## Task
+
+Implement `alibi_bias(query_pos, key_pos, slope)` that computes the linear attention penalty `-slope * abs(query_pos - key_pos)`. Return the value rounded to 4 decimal places. Raise `ValueError` if `slope < 0`.
 
 <PracticePlayground problemId="llm-internals-prob-30" />
-
-<Solution>
-
-```python
-def alibi_bias(query_pos, key_pos, slope):
-    if slope < 0:
-        raise ValueError("slope must be non-negative")
-    return round(-slope * abs(query_pos - key_pos), 4)
-```
-
-ALiBi replaces learned or sinusoidal position embeddings with a simple linear distance penalty subtracted from attention scores. Each head gets a different slope `m` (typically powers of 2: 1/2, 1/4, ...). This design enables zero-shot extrapolation to longer sequences than seen at training time -- when the model is trained on 1024 tokens but deployed with 2048, ALiBi heads continue to work correctly because the bias is computed analytically, not looked up from a learned table.
-
-</Solution>

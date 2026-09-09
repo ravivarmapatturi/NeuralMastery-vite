@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 33: Problem 393"
-sidebar_position: 393
-description: "Curriculum Problem 393 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Sliding Window Causal Attention Mask"
+description: "Construct a sliding window causal attention mask matrix used in long-context models like Mistral."
+difficulty: "medium"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 33: Problem 393
+# Sliding Window Causal Attention Mask
 
-**Rank #393** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-32`.
+## Overview
+
+Construct a sliding window causal attention mask matrix used in long-context models like Mistral.
+
+## Task
+
+Implement `sliding_window_mask(seq_len, window_size)`. Return a 2D integer matrix of size `seq_len x seq_len` where position `(i, j)` is `1` if `j <= i` and `(i - j) < window_size`, and `0` otherwise. Raise `ValueError` if `seq_len <= 0` or `window_size <= 0`.
 
 <PracticePlayground problemId="llm-internals-prob-33" />
-
-<Solution>
-
-```python
-def llm_internals_p33(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

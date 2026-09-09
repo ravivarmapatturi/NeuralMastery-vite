@@ -1,32 +1,22 @@
 ---
 title: "Practice: Beam Search Length Penalty Score"
-sidebar_position: 381
-description: "Apply Google's Wu et al. length penalty to a beam search raw log-probability score to prevent length bias."
-difficulty: medium
-topic: transformers-llms
+description: "Apply Google length penalty to a beam search raw log-probability score to prevent length bias."
+difficulty: "medium"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Beam Search Length Penalty Score
 
-**Rank #381** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `length_penalty_score(raw_log_prob, length, alpha=0.6)` using the Wu et al. formula: `score = raw_log_prob / lp` where `lp = ((5 + length) ** alpha) / (6 ** alpha)`. This normalizes beam scores by sequence length to prevent the decoder from unfairly preferring short sequences whose shorter paths accumulate less log-probability. Return the score rounded to 4 decimal places. Prerequisite: `llm-internals-prob-20`.
+## Overview
+
+Apply Google length penalty to a beam search raw log-probability score to prevent length bias.
+
+## Task
+
+Implement `length_penalty_score(raw_log_prob, length, alpha=0.6)` using the formula: `score = raw_log_prob / lp` where `lp = ((5 + length) ** alpha) / (6 ** alpha)`. Return the score rounded to 4 decimal places. Raise `ValueError` if `length <= 0`.
 
 <PracticePlayground problemId="llm-internals-prob-21" />
-
-<Solution>
-
-```python
-def length_penalty_score(raw_log_prob, length, alpha=0.6):
-    if length <= 0:
-        raise ValueError("length must be a positive integer")
-    lp = ((5 + length) ** alpha) / (6 ** alpha)
-    return round(raw_log_prob / lp, 4)
-```
-
-Without length normalization, beam search strongly favors short sequences since each additional token contributes a negative log-probability. The formula `((5+L)^alpha / 6^alpha)` approaches 1 at `L=1` (no penalty for a single token) and grows with length, effectively dividing away the length-induced bias. Alpha controls the aggressiveness: `alpha=0` disables normalization; `alpha=1` fully normalizes.
-
-</Solution>

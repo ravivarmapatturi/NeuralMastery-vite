@@ -125712,6 +125712,1930 @@ def compute_bleu_1(reference, candidate):
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  "llm-internals-prob-21": {
+    id: "llm-internals-prob-21",
+    title: "Beam Search Length Penalty Score",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "length_penalty_score",
+    functionSignature: "length_penalty_score(raw_log_prob: float, length: int, alpha: float = 0.6) -> float",
+    starterCode: `def length_penalty_score(raw_log_prob: float, length: int, alpha: float = 0.6) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Apply Google length penalty to a beam search raw log-probability score to prevent length bias.",
+    taskDescription: "Implement `length_penalty_score(raw_log_prob, length, alpha=0.6)` using the formula: `score = raw_log_prob / lp` where `lp = ((5 + length) ** alpha) / (6 ** alpha)`. Return the score rounded to 4 decimal places. Raise `ValueError` if `length <= 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`length > 0`",
+        "Round returned float to 4 decimal places."
+      ],
+    hints: {
+  "concept": "Beam search tends to favor shorter sequences; dividing by lp balances scores across sequence lengths.",
+        "small": "Compute lp = ((5 + length) ** alpha) / (6 ** alpha).",
+        "strong": "Raise ValueError if length is `<= 0`, then return round(raw_log_prob / lp, 4)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "short sequence",
+          "input": {
+            "alpha": 0.6,
+            "length": 5,
+            "raw_log_prob": -10.5
+          },
+          "expectedOutput": -7.7282,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "longer sequence alpha 0.6",
+          "input": {
+            "alpha": 0.6,
+            "length": 25,
+            "raw_log_prob": -30
+          },
+          "expectedOutput": -11.4219,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no penalty alpha 0.0",
+          "input": {
+            "alpha": 0,
+            "length": 10,
+            "raw_log_prob": -15
+          },
+          "expectedOutput": -15,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "strong penalty alpha 1.0",
+          "input": {
+            "alpha": 1,
+            "length": 50,
+            "raw_log_prob": -50
+          },
+          "expectedOutput": -5.4545,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-22": {
+    id: "llm-internals-prob-22",
+    title: "Attention Distribution Entropy",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "attention_entropy",
+    functionSignature: "attention_entropy(attn_weights: list[float]) -> float",
+    starterCode: `def attention_entropy(attn_weights: list[float]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Shannon entropy of an attention weight distribution to measure how focused vs. diffuse the attention pattern is.",
+    taskDescription: "Implement `attention_entropy(attn_weights)` that computes Shannon entropy `H = -sum(p * log(p + eps))` over a list of attention weights, with `eps = 1e-9` to avoid `log(0)`. Return `abs(result)` rounded to 4 decimal places. Raise `ValueError` if `attn_weights` is empty.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`len(attn_weights) > 0`",
+        "Round returned float to 4 decimal places."
+      ],
+    hints: {
+  "concept": "Low entropy indicates sharp, focused attention; high entropy indicates diffuse attention across all tokens.",
+        "small": "Sum p * math.log(p + 1e-9) for each weight p.",
+        "strong": "Negate the sum and use abs() before rounding to prevent negative zero."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "uniform distribution",
+          "input": {
+            "attn_weights": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "expectedOutput": 1.3863,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "peaked distribution",
+          "input": {
+            "attn_weights": [
+              0.97,
+              0.01,
+              0.01,
+              0.01
+            ]
+          },
+          "expectedOutput": 0.1677,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "binary choice",
+          "input": {
+            "attn_weights": [
+              0.5,
+              0.5
+            ]
+          },
+          "expectedOutput": 0.6931,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "sharp one-hot",
+          "input": {
+            "attn_weights": [
+              1,
+              0,
+              0
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-23": {
+    id: "llm-internals-prob-23",
+    title: "LoRA Adapter Parameter Count",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "lora_param_count",
+    functionSignature: "lora_param_count(d_in: int, d_out: int, rank: int) -> int",
+    starterCode: `def lora_param_count(d_in: int, d_out: int, rank: int) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Count the number of trainable parameters introduced by a LoRA low-rank adapter for a given weight matrix.",
+    taskDescription: "Implement `lora_param_count(d_in, d_out, rank)` that returns the total trainable parameters in a LoRA adapter: matrix A of shape `(d_in, rank)` plus matrix B of shape `(rank, d_out)`. Raise `ValueError` if any argument is non-positive or if `rank > min(d_in, d_out)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`d_in > 0`, `d_out > 0`, `rank > 0`",
+        "`rank <= min(d_in, d_out)`"
+      ],
+    hints: {
+  "concept": "LoRA reduces parameters from d_in * d_out down to rank * (d_in + d_out).",
+        "small": "Matrix A has d_in * rank elements; matrix B has rank * d_out elements.",
+        "strong": "Check rank `<= min(d_in, d_out)` and raise ValueError if violated."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "rank 8 projection",
+          "input": {
+            "d_in": 4096,
+            "d_out": 4096,
+            "rank": 8
+          },
+          "expectedOutput": 65536,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "rank 16 projection",
+          "input": {
+            "d_in": 768,
+            "d_out": 768,
+            "rank": 16
+          },
+          "expectedOutput": 24576,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "asymmetric projection",
+          "input": {
+            "d_in": 4096,
+            "d_out": 11008,
+            "rank": 4
+          },
+          "expectedOutput": 60416,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "minimal rank 1",
+          "input": {
+            "d_in": 512,
+            "d_out": 512,
+            "rank": 1
+          },
+          "expectedOutput": 1024,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-24": {
+    id: "llm-internals-prob-24",
+    title: "Flash Attention Block Count",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "flash_attention_blocks",
+    functionSignature: "flash_attention_blocks(seq_len: int, block_size: int) -> int",
+    starterCode: `def flash_attention_blocks(seq_len: int, block_size: int) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the number of tile blocks processed in Flash Attention block-sparse algorithm for a given sequence length and block size.",
+    taskDescription: "Implement `flash_attention_blocks(seq_len, block_size)` that returns `ceil(seq_len / block_size)` -- the number of SRAM-fitting tile blocks Flash Attention divides the query sequence into. Raise `ValueError` if either argument is non-positive.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`seq_len > 0`",
+        "`block_size > 0`"
+      ],
+    hints: {
+  "concept": "Flash Attention tiles the Q, K, V matrices to compute attention within GPU SRAM without materializing the full N x N matrix.",
+        "small": "Use math.ceil(seq_len / block_size).",
+        "strong": "Validate that both seq_len and block_size are positive integers."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "exact multiple",
+          "input": {
+            "block_size": 128,
+            "seq_len": 2048
+          },
+          "expectedOutput": 16,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "partial last block",
+          "input": {
+            "block_size": 128,
+            "seq_len": 2050
+          },
+          "expectedOutput": 17,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "sequence smaller than block",
+          "input": {
+            "block_size": 128,
+            "seq_len": 64
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large 8k context",
+          "input": {
+            "block_size": 256,
+            "seq_len": 8192
+          },
+          "expectedOutput": 32,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-25": {
+    id: "llm-internals-prob-25",
+    title: "Grouped Query Attention KV Head Count",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "gqa_kv_heads",
+    functionSignature: "gqa_kv_heads(num_q_heads: int, num_groups: int) -> int",
+    starterCode: `def gqa_kv_heads(num_q_heads: int, num_groups: int) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the number of key/value heads in Grouped Query Attention (GQA) given total query heads and groups.",
+    taskDescription: "Implement `gqa_kv_heads(num_q_heads, num_groups)` that returns `num_q_heads // num_groups` -- the number of key/value heads in Grouped Query Attention. Raise `ValueError` if either input is non-positive or if `num_q_heads % num_groups != 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`num_q_heads > 0` and `num_groups > 0`",
+        "`num_q_heads % num_groups == 0`"
+      ],
+    hints: {
+  "concept": "GQA bridges Multi-Head Attention (1 group) and Multi-Query Attention (num_q_heads groups).",
+        "small": "Divide num_q_heads by num_groups using integer division.",
+        "strong": "Raise ValueError if num_q_heads is not divisible by num_groups."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "llama-2 70b 64 heads 8 groups",
+          "input": {
+            "num_groups": 8,
+            "num_q_heads": 64
+          },
+          "expectedOutput": 8,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "32 heads 4 groups",
+          "input": {
+            "num_groups": 4,
+            "num_q_heads": 32
+          },
+          "expectedOutput": 8,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "mqa 32 heads 32 groups",
+          "input": {
+            "num_groups": 32,
+            "num_q_heads": 32
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "standard mha 16 heads 1 group",
+          "input": {
+            "num_groups": 1,
+            "num_q_heads": 16
+          },
+          "expectedOutput": 16,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-26": {
+    id: "llm-internals-prob-26",
+    title: "INT8 Quantization Error",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "quantization_error",
+    functionSignature: "quantization_error(x: float, scale: float, zero_point: int = 0, n_bits: int = 8) -> float",
+    starterCode: `def quantization_error(x: float, scale: float, zero_point: int = 0, n_bits: int = 8) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the quantization error introduced by symmetric/asymmetric quantization.",
+    taskDescription: "Implement `quantization_error(x, scale, zero_point=0, n_bits=8)` that computes the absolute difference between `x` and its dequantized reconstruction `x_hat`. Quantize `q = max(q_min, min(q_max, round(x / scale) + zero_point))`, then `x_hat = (q - zero_point) * scale`. Return `round(abs(x - x_hat), 6)`. Raise `ValueError` if `scale <= 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`scale > 0`",
+        "`n_bits >= 2`",
+        "Round error to 6 decimal places."
+      ],
+    hints: {
+  "concept": "Quantization maps high-precision floats to low-bit integers, trading precision for reduced memory bandwidth.",
+        "small": "q_min is -(2**(n_bits - 1)) and q_max is 2**(n_bits - 1) - 1.",
+        "strong": "Clip q to [q_min, q_max], compute x_hat, and return round(abs(x - x_hat), 6)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "small float value",
+          "input": {
+            "n_bits": 8,
+            "scale": 0.05,
+            "x": 0.42,
+            "zero_point": 0
+          },
+          "expectedOutput": 0.02,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "negative value",
+          "input": {
+            "n_bits": 8,
+            "scale": 0.1,
+            "x": -1.35,
+            "zero_point": 0
+          },
+          "expectedOutput": 0.05,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exact quantization step",
+          "input": {
+            "n_bits": 8,
+            "scale": 0.5,
+            "x": 2,
+            "zero_point": 0
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "clipping edge case",
+          "input": {
+            "n_bits": 8,
+            "scale": 0.1,
+            "x": 100,
+            "zero_point": 0
+          },
+          "expectedOutput": 87.3,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-27": {
+    id: "llm-internals-prob-27",
+    title: "GELU Activation Function",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "gelu",
+    functionSignature: "gelu(x: float) -> float",
+    starterCode: `def gelu(x: float) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the GELU (Gaussian Error Linear Unit) activation using the tanh approximation.",
+    taskDescription: "Implement `gelu(x)` using the tanh approximation: `0.5 * x * (1.0 + tanh(sqrt(2/pi) * (x + 0.044715 * x**3)))`. Return the result rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "Round output float to 4 decimal places."
+      ],
+    hints: {
+  "concept": "GELU weights inputs by their probability under a Gaussian distribution, smoothing the ReLU hinge.",
+        "small": "Compute coeff = math.sqrt(2.0 / math.pi).",
+        "strong": "Apply 0.5 * x * (1.0 + math.tanh(coeff * (x + 0.044715 * x**3)))."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "positive activation",
+          "input": {
+            "x": 1
+          },
+          "expectedOutput": 0.8412,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "zero input",
+          "input": {
+            "x": 0
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "negative input",
+          "input": {
+            "x": -1.5
+          },
+          "expectedOutput": -0.1004,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large positive",
+          "input": {
+            "x": 3
+          },
+          "expectedOutput": 2.9964,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-28": {
+    id: "llm-internals-prob-28",
+    title: "RoPE Frequency Band Computation",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "rope_frequencies",
+    functionSignature: "rope_frequencies(d_head: int, base: float = 10000) -> list[float]",
+    starterCode: `def rope_frequencies(d_head: int, base: float = 10000) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Rotary Position Embedding (RoPE) base frequencies for each pair of dimensions in a transformer head.",
+    taskDescription: "Implement `rope_frequencies(d_head, base=10000)` that returns a list of `d_head // 2` frequencies: `theta_i = base ** (-(2*i) / d_head)` for `i = 0, 1, ..., d_head//2 - 1`. Round each frequency to 6 decimal places. Raise `ValueError` if `d_head <= 0`, `d_head % 2 != 0`, or `base <= 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`d_head > 0` and `d_head % 2 == 0`",
+        "`base > 0`",
+        "Round each output element to 6 decimal places."
+      ],
+    hints: {
+  "concept": "RoPE frequencies govern the rotation speeds across embedding subspace pairs.",
+        "small": "Loop i from 0 to d_head // 2 - 1.",
+        "strong": "theta_i = base ** (-(2 * i) / d_head), rounded to 6 decimals."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "d_head 64",
+          "input": {
+            "base": 10000,
+            "d_head": 64
+          },
+          "expectedOutput": [
+            1,
+            0.749894,
+            0.562341,
+            0.421697,
+            0.316228,
+            0.237137,
+            0.177828,
+            0.133352,
+            0.1,
+            0.074989,
+            0.056234,
+            0.04217,
+            0.031623,
+            0.023714,
+            0.017783,
+            0.013335,
+            0.01,
+            0.007499,
+            0.005623,
+            0.004217,
+            0.003162,
+            0.002371,
+            0.001778,
+            0.001334,
+            0.001,
+            0.00075,
+            0.000562,
+            0.000422,
+            0.000316,
+            0.000237,
+            0.000178,
+            0.000133
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "d_head 8 small",
+          "input": {
+            "base": 10000,
+            "d_head": 8
+          },
+          "expectedOutput": [
+            1,
+            0.1,
+            0.01,
+            0.001
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "custom base 500000",
+          "input": {
+            "base": 500000,
+            "d_head": 16
+          },
+          "expectedOutput": [
+            1,
+            0.193923,
+            0.037606,
+            0.007293,
+            0.001414,
+            0.000274,
+            0.000053,
+            0.00001
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "d_head 4",
+          "input": {
+            "base": 10000,
+            "d_head": 4
+          },
+          "expectedOutput": [
+            1,
+            0.01
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-29": {
+    id: "llm-internals-prob-29",
+    title: "Cross-Entropy Loss from Logits",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "cross_entropy_loss",
+    functionSignature: "cross_entropy_loss(logits: list[float], target_idx: int) -> float",
+    starterCode: `def cross_entropy_loss(logits: list[float], target_idx: int) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the cross-entropy loss for a single-token prediction from raw logits and true target index.",
+    taskDescription: "Implement `cross_entropy_loss(logits, target_idx)`. Apply numerically stable softmax by subtracting `max(logits)`, then return `-log(p_target)` rounded to 4 decimal places. Raise `ValueError` if `logits` is empty, or `IndexError` if `target_idx` is out of bounds.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`len(logits) > 0`",
+        "`0 <= target_idx < len(logits)`",
+        "Round result to 4 decimal places."
+      ],
+    hints: {
+  "concept": "Standard training loss in autoregressive language modeling.",
+        "small": "Subtract max(logits) from each logit before exp() to prevent overflow.",
+        "strong": "Target probability is exp(target - max) / sum(exps); loss is -math.log(prob)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "confident correct target",
+          "input": {
+            "logits": [
+              10,
+              1,
+              0.5
+            ],
+            "target_idx": 0
+          },
+          "expectedOutput": 0.0002,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "uncertain target",
+          "input": {
+            "logits": [
+              2,
+              2,
+              2
+            ],
+            "target_idx": 1
+          },
+          "expectedOutput": 1.0986,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "confident wrong target",
+          "input": {
+            "logits": [
+              10,
+              1,
+              0.5
+            ],
+            "target_idx": 1
+          },
+          "expectedOutput": 9.0002,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "binary logits target 1",
+          "input": {
+            "logits": [
+              -1,
+              3
+            ],
+            "target_idx": 1
+          },
+          "expectedOutput": 0.0181,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-30": {
+    id: "llm-internals-prob-30",
+    title: "ALiBi Position Bias",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "alibi_bias",
+    functionSignature: "alibi_bias(query_pos: int, key_pos: int, slope: float) -> float",
+    starterCode: `def alibi_bias(query_pos: int, key_pos: int, slope: float) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the ALiBi (Attention with Linear Biases) position bias added to attention logits before softmax.",
+    taskDescription: "Implement `alibi_bias(query_pos, key_pos, slope)` that computes the linear attention penalty `-slope * abs(query_pos - key_pos)`. Return the value rounded to 4 decimal places. Raise `ValueError` if `slope < 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`slope >= 0`",
+        "Round result to 4 decimal places."
+      ],
+    hints: {
+  "concept": "ALiBi biases attention logits directly without position embeddings, enabling length extrapolation.",
+        "small": "Compute distance = abs(query_pos - key_pos).",
+        "strong": "Multiply -slope * distance and round to 4 decimal places."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "adjacent tokens slope 0.5",
+          "input": {
+            "key_pos": 4,
+            "query_pos": 5,
+            "slope": 0.5
+          },
+          "expectedOutput": -0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "self attention zero distance",
+          "input": {
+            "key_pos": 3,
+            "query_pos": 3,
+            "slope": 0.25
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "distant tokens slope 1.0",
+          "input": {
+            "key_pos": 2,
+            "query_pos": 10,
+            "slope": 1
+          },
+          "expectedOutput": -8,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "fractional slope distant",
+          "input": {
+            "key_pos": 0,
+            "query_pos": 20,
+            "slope": 0.125
+          },
+          "expectedOutput": -2.5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-31": {
+    id: "llm-internals-prob-31",
+    title: "Multi-Query Attention (MQA) Parameter Savings",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "mqa_parameter_savings",
+    functionSignature: "mqa_parameter_savings(d_model: int, num_heads: int) -> dict[str, int]",
+    starterCode: `def mqa_parameter_savings(d_model: int, num_heads: int) -> dict[str, int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate the parameter savings achieved by Multi-Query Attention compared to standard Multi-Head Attention.",
+    taskDescription: "Implement `mqa_parameter_savings(d_model, num_heads)`. In standard MHA, Q, K, V, O projections each have `d_model * d_model` parameters (total `4 * d_model**2`). In MQA, K and V projections share 1 head with shape `(d_model, d_k)` where `d_k = d_model // num_heads`, while Q and O remain `(d_model, d_model)`. Return dict with `'mha_params'`, `'mqa_params'`, and `'saved_params'`. Raise `ValueError` if `d_model <= 0`, `num_heads <= 0`, or `d_model % num_heads != 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`d_model > 0` and `num_heads > 0`",
+        "`d_model % num_heads == 0`"
+      ],
+    hints: {
+  "concept": "MQA drastically reduces the KV-cache footprint during autoregressive decoding.",
+        "small": "d_k = d_model // num_heads. MQA parameters = 2 * d_model**2 + 2 * d_model * d_k.",
+        "strong": "saved_params is mha_params - mqa_params."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "bert base 768 12 heads",
+          "input": {
+            "d_model": 768,
+            "num_heads": 12
+          },
+          "expectedOutput": {
+            "mha_params": 2359296,
+            "mqa_params": 1277952,
+            "saved_params": 1081344
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "llama-2 7b 4096 32 heads",
+          "input": {
+            "d_model": 4096,
+            "num_heads": 32
+          },
+          "expectedOutput": {
+            "mha_params": 67108864,
+            "mqa_params": 34603008,
+            "saved_params": 32505856
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "small model 256 4 heads",
+          "input": {
+            "d_model": 256,
+            "num_heads": 4
+          },
+          "expectedOutput": {
+            "mha_params": 262144,
+            "mqa_params": 163840,
+            "saved_params": 98304
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single head",
+          "input": {
+            "d_model": 512,
+            "num_heads": 1
+          },
+          "expectedOutput": {
+            "mha_params": 1048576,
+            "mqa_params": 1048576,
+            "saved_params": 0
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-32": {
+    id: "llm-internals-prob-32",
+    title: "Min-P Sampling Probability Threshold Filter",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "min_p_filter",
+    functionSignature: "min_p_filter(probs: list[float], min_p: float = 0.05) -> list[int]",
+    starterCode: `def min_p_filter(probs: list[float], min_p: float = 0.05) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Filter candidate next tokens using Min-P dynamic thresholding relative to top token probability.",
+    taskDescription: "Implement `min_p_filter(probs, min_p=0.05)` which determines the cutoff `threshold = min_p * max(probs)`. Returns original indices of all tokens with `prob >= threshold`, sorted in descending order of their probability. Return empty list if `probs` is empty.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`0.0 <= min_p <= 1.0`",
+        "probs contains valid non-negative probabilities."
+      ],
+    hints: {
+  "concept": "Min-P adapts truncation dynamically based on model confidence, avoiding over-truncation.",
+        "small": "Find max(probs) and calculate threshold = min_p * max_p.",
+        "strong": "Filter (index, prob) pairs where prob `>=` threshold, then sort descending by prob and extract indices."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "typical distribution",
+          "input": {
+            "min_p": 0.1,
+            "probs": [
+              0.7,
+              0.2,
+              0.08,
+              0.02
+            ]
+          },
+          "expectedOutput": [
+            0,
+            1,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "peaked distribution filters all tail",
+          "input": {
+            "min_p": 0.05,
+            "probs": [
+              0.95,
+              0.03,
+              0.01,
+              0.01
+            ]
+          },
+          "expectedOutput": [
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "uniform distribution keeps all",
+          "input": {
+            "min_p": 0.1,
+            "probs": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "expectedOutput": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "high min_p keeps only top",
+          "input": {
+            "min_p": 0.6,
+            "probs": [
+              0.6,
+              0.3,
+              0.08,
+              0.02
+            ]
+          },
+          "expectedOutput": [
+            0
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-33": {
+    id: "llm-internals-prob-33",
+    title: "Sliding Window Causal Attention Mask",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "sliding_window_mask",
+    functionSignature: "sliding_window_mask(seq_len: int, window_size: int) -> list[list[int]]",
+    starterCode: `def sliding_window_mask(seq_len: int, window_size: int) -> list[list[int]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Construct a sliding window causal attention mask matrix used in long-context models like Mistral.",
+    taskDescription: "Implement `sliding_window_mask(seq_len, window_size)`. Return a 2D integer matrix of size `seq_len x seq_len` where position `(i, j)` is `1` if `j <= i` and `(i - j) < window_size`, and `0` otherwise. Raise `ValueError` if `seq_len <= 0` or `window_size <= 0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`seq_len > 0`",
+        "`window_size > 0`"
+      ],
+    hints: {
+  "concept": "Sliding window attention bounds memory complexity to O(N * W) while preserving long-range reception over deep layers.",
+        "small": "For each row i and column j, check both j `<= i` and (i - j) `< window_size`.",
+        "strong": "Initialize rows with 1 when condition holds, else 0."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "seq 4 window 2",
+          "input": {
+            "seq_len": 4,
+            "window_size": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "seq 3 window 1",
+          "input": {
+            "seq_len": 3,
+            "window_size": 1
+          },
+          "expectedOutput": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "window exceeds seq len",
+          "input": {
+            "seq_len": 3,
+            "window_size": 5
+          },
+          "expectedOutput": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "seq 5 window 3",
+          "input": {
+            "seq_len": 5,
+            "window_size": 3
+          },
+          "expectedOutput": [
+            [
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              1
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-34": {
+    id: "llm-internals-prob-34",
+    title: "Speculative Decoding Draft Acceptance",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "speculative_draft_acceptance",
+    functionSignature: "speculative_draft_acceptance(draft_probs: list[list[float]], target_probs: list[list[float]], draft_tokens: list[int]) -> list[int]",
+    starterCode: `def speculative_draft_acceptance(draft_probs: list[list[float]], target_probs: list[list[float]], draft_tokens: list[int]) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement draft verification in speculative decoding to accelerate autoregressive inference.",
+    taskDescription: "Implement `speculative_draft_acceptance(draft_probs, target_probs, draft_tokens)`. For each draft token `t` at step `k`, accept token `t` if `target_probs[k][t] >= draft_probs[k][t]`. Return the list of accepted tokens up to the first rejected token.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`len(draft_probs) == len(target_probs) == len(draft_tokens)`"
+      ],
+    hints: {
+  "concept": "Speculative decoding verifies multiple tokens in parallel via one target model forward pass.",
+        "small": "Iterate through steps k in order; stop immediately at the first rejected token.",
+        "strong": "If target_probs[k][token] `>= draft_probs[k][token]`, append token; else break."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all draft tokens accepted",
+          "input": {
+            "draft_probs": [
+              [
+                0.4,
+                0.6
+              ],
+              [
+                0.3,
+                0.7
+              ]
+            ],
+            "draft_tokens": [
+              1,
+              1
+            ],
+            "target_probs": [
+              [
+                0.3,
+                0.7
+              ],
+              [
+                0.2,
+                0.8
+              ]
+            ]
+          },
+          "expectedOutput": [
+            1,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "second draft token rejected",
+          "input": {
+            "draft_probs": [
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.8,
+                0.2
+              ]
+            ],
+            "draft_tokens": [
+              0,
+              0
+            ],
+            "target_probs": [
+              [
+                0.6,
+                0.4
+              ],
+              [
+                0.3,
+                0.7
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "first token rejected immediately",
+          "input": {
+            "draft_probs": [
+              [
+                0.9,
+                0.1
+              ]
+            ],
+            "draft_tokens": [
+              0
+            ],
+            "target_probs": [
+              [
+                0.2,
+                0.8
+              ]
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multi-token chain 3 steps",
+          "input": {
+            "draft_probs": [
+              [
+                0.4,
+                0.6
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.3,
+                0.7
+              ]
+            ],
+            "draft_tokens": [
+              1,
+              0,
+              1
+            ],
+            "target_probs": [
+              [
+                0.4,
+                0.6
+              ],
+              [
+                0.6,
+                0.4
+              ],
+              [
+                0.1,
+                0.9
+              ]
+            ]
+          },
+          "expectedOutput": [
+            1,
+            0,
+            1
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-35": {
+    id: "llm-internals-prob-35",
+    title: "Repetition Penalty on Logits",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "apply_repetition_penalty",
+    functionSignature: "apply_repetition_penalty(logits: list[float], generated_token_ids: list[int], penalty: float = 1.2) -> list[float]",
+    starterCode: `def apply_repetition_penalty(logits: list[float], generated_token_ids: list[int], penalty: float = 1.2) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Penalize logits of previously generated tokens to discourage loops in text generation.",
+    taskDescription: "Implement `apply_repetition_penalty(logits, generated_token_ids, penalty=1.2)`. For each token ID present in `generated_token_ids`: if `logit > 0`, divide by `penalty`; if `logit <= 0`, multiply by `penalty`. Leave ungenerated token logits unchanged. Return rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`penalty >= 1.0`",
+        "Round each output element to 4 decimal places."
+      ],
+    hints: {
+  "concept": "Dividing positive logits and multiplying negative logits both decrease the softmax probability of repeated tokens.",
+        "small": "Use a set of unique generated token IDs.",
+        "strong": "If idx is valid: result[idx] = result[idx] / penalty if result[idx] > 0 else result[idx] * penalty."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "positive and negative logits",
+          "input": {
+            "generated_token_ids": [
+              0,
+              1
+            ],
+            "logits": [
+              2,
+              -1,
+              3
+            ],
+            "penalty": 1.2
+          },
+          "expectedOutput": [
+            1.6667,
+            -1.2,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no repeated tokens",
+          "input": {
+            "generated_token_ids": [],
+            "logits": [
+              1.5,
+              2.5,
+              -0.5
+            ],
+            "penalty": 1.5
+          },
+          "expectedOutput": [
+            1.5,
+            2.5,
+            -0.5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all tokens repeated",
+          "input": {
+            "generated_token_ids": [
+              0,
+              1,
+              2
+            ],
+            "logits": [
+              3,
+              0,
+              -2
+            ],
+            "penalty": 2
+          },
+          "expectedOutput": [
+            1.5,
+            0,
+            -4
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "out of range indices ignored",
+          "input": {
+            "generated_token_ids": [
+              0,
+              5
+            ],
+            "logits": [
+              1,
+              2
+            ],
+            "penalty": 1.2
+          },
+          "expectedOutput": [
+            0.8333,
+            2
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-36": {
+    id: "llm-internals-prob-36",
+    title: "LLM Inference FLOPs: Prefill vs Decode",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "calculate_inference_flops",
+    functionSignature: "calculate_inference_flops(num_params: int, prompt_tokens: int, generated_tokens: int) -> dict[str, int]",
+    starterCode: `def calculate_inference_flops(num_params: int, prompt_tokens: int, generated_tokens: int) -> dict[str, int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate computational complexity (FLOPs) for the prefill and decoding phases of LLM inference.",
+    taskDescription: "Implement `calculate_inference_flops(num_params, prompt_tokens, generated_tokens)`. Using standard model approximation `2 * num_params` FLOPs per token forward pass, compute `prefill_flops = 2 * num_params * prompt_tokens`, `decode_flops = 2 * num_params * generated_tokens`, and `total_flops = prefill_flops + decode_flops`. Return dict with `'prefill_flops'`, `'decode_flops'`, and `'total_flops'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`num_params > 0`, `prompt_tokens >= 0`, `generated_tokens >= 0`"
+      ],
+    hints: {
+  "concept": "Prefill is compute-bound (matrix-matrix multiplication), whereas decode is memory-bandwidth-bound (matrix-vector multiplication).",
+        "small": "Multiply 2 * num_params by token counts.",
+        "strong": "Prefill uses prompt_tokens, decode uses generated_tokens."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "7B model prompt 512 gen 128",
+          "input": {
+            "generated_tokens": 128,
+            "num_params": 7000000000,
+            "prompt_tokens": 512
+          },
+          "expectedOutput": {
+            "prefill_flops": 7168000000000,
+            "decode_flops": 1792000000000,
+            "total_flops": 8960000000000
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "1B model short prompt",
+          "input": {
+            "generated_tokens": 32,
+            "num_params": 1000000000,
+            "prompt_tokens": 64
+          },
+          "expectedOutput": {
+            "prefill_flops": 128000000000,
+            "decode_flops": 64000000000,
+            "total_flops": 192000000000
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "prefill only zero gen",
+          "input": {
+            "generated_tokens": 0,
+            "num_params": 2000000000,
+            "prompt_tokens": 256
+          },
+          "expectedOutput": {
+            "prefill_flops": 1024000000000,
+            "decode_flops": 0,
+            "total_flops": 1024000000000
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large 70B model",
+          "input": {
+            "generated_tokens": 256,
+            "num_params": 70000000000,
+            "prompt_tokens": 1024
+          },
+          "expectedOutput": {
+            "prefill_flops": 143360000000000,
+            "decode_flops": 35840000000000,
+            "total_flops": 179200000000000
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-37": {
+    id: "llm-internals-prob-37",
+    title: "RoPE 2D Vector Rotation",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "apply_rope_2d",
+    functionSignature: "apply_rope_2d(x1: float, x2: float, theta: float) -> list[float]",
+    starterCode: `def apply_rope_2d(x1: float, x2: float, theta: float) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Apply the 2D rotary embedding transformation to a pair of coordinate features.",
+    taskDescription: "Implement `apply_rope_2d(x1, x2, theta)`. Compute 2D rotation: `rot_x1 = x1 * cos(theta) - x2 * sin(theta)` and `rot_x2 = x1 * sin(theta) + x2 * cos(theta)`. Return `[round(rot_x1, 4), round(rot_x2, 4)]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "Round each output element to 4 decimal places."
+      ],
+    hints: {
+  "concept": "RoPE rotates 2D pairs of features, preserving inner products as functions of relative position.",
+        "small": "Use math.cos(theta) and math.sin(theta).",
+        "strong": "Apply standard 2D rotation matrix multiplication."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "90 degree rotation",
+          "input": {
+            "theta": 1.5707963267948966,
+            "x1": 1,
+            "x2": 0
+          },
+          "expectedOutput": [
+            0,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "zero angle identity",
+          "input": {
+            "theta": 0,
+            "x1": 3,
+            "x2": 4
+          },
+          "expectedOutput": [
+            3,
+            4
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "180 degree flip",
+          "input": {
+            "theta": 3.141592653589793,
+            "x1": 1,
+            "x2": 2
+          },
+          "expectedOutput": [
+            -1,
+            -2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "45 degree rotation",
+          "input": {
+            "theta": 0.7853981633974483,
+            "x1": 1,
+            "x2": 1
+          },
+          "expectedOutput": [
+            0,
+            1.4142
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-38": {
+    id: "llm-internals-prob-38",
+    title: "KV Cache Memory Footprint with INT4 Quantization",
+    difficulty: "medium",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "kv_cache_quantized_bytes",
+    functionSignature: "kv_cache_quantized_bytes(num_layers: int, num_kv_heads: int, head_dim: int, seq_len: int, batch_size: int, bits: int = 4) -> int",
+    starterCode: `def kv_cache_quantized_bytes(num_layers: int, num_kv_heads: int, head_dim: int, seq_len: int, batch_size: int, bits: int = 4) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate the exact memory capacity in bytes needed for a quantized key-value cache.",
+    taskDescription: "Implement `kv_cache_quantized_bytes(num_layers, num_kv_heads, head_dim, seq_len, batch_size, bits=4)`. Total elements stored in KV cache is `num_layers * 2 * num_kv_heads * head_dim * seq_len * batch_size`. Bytes required is `int(elements * (bits / 8.0))`. Return the total byte count as integer.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "All arguments positive integers.",
+        "bits is typically 4, 8, or 16."
+      ],
+    hints: {
+  "concept": "INT4 KV cache compression reduces GPU VRAM consumption by 75% relative to FP16.",
+        "small": "Factor of 2 accounts for both Key and Value tensors.",
+        "strong": "Multiply total elements by (bits / 8.0) and convert to int."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "llama-2 7b int4",
+          "input": {
+            "batch_size": 1,
+            "bits": 4,
+            "head_dim": 128,
+            "num_kv_heads": 8,
+            "num_layers": 32,
+            "seq_len": 2048
+          },
+          "expectedOutput": 67108864,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "llama-2 7b fp16 (16 bits)",
+          "input": {
+            "batch_size": 1,
+            "bits": 16,
+            "head_dim": 128,
+            "num_kv_heads": 8,
+            "num_layers": 32,
+            "seq_len": 2048
+          },
+          "expectedOutput": 268435456,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "batch 4 int8",
+          "input": {
+            "batch_size": 4,
+            "bits": 8,
+            "head_dim": 64,
+            "num_kv_heads": 4,
+            "num_layers": 24,
+            "seq_len": 1024
+          },
+          "expectedOutput": 50331648,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single layer test",
+          "input": {
+            "batch_size": 1,
+            "bits": 4,
+            "head_dim": 64,
+            "num_kv_heads": 2,
+            "num_layers": 1,
+            "seq_len": 512
+          },
+          "expectedOutput": 65536,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-39": {
+    id: "llm-internals-prob-39",
+    title: "Token Generation Throughput and Latency",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "compute_generation_metrics",
+    functionSignature: "compute_generation_metrics(time_to_first_token_ms: float, inter_token_latencies_ms: list[float]) -> dict[str, float]",
+    starterCode: `def compute_generation_metrics(time_to_first_token_ms: float, inter_token_latencies_ms: list[float]) -> dict[str, float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute TTFT, total latency, average inter-token latency, and token throughput (TPS).",
+    taskDescription: "Implement `compute_generation_metrics(time_to_first_token_ms, inter_token_latencies_ms)`. Calculate: `'ttft_ms'` (rounded to 2 decimals), `'total_latency_ms'` = `time_to_first_token_ms + sum(inter_token_latencies_ms)` (rounded to 2 decimals), `'avg_itls_ms'` = average inter-token latency (0.0 if empty, rounded to 2 decimals), and `'tokens_per_second'` = `(1 + len(inter_token_latencies_ms)) / (total_latency_ms / 1000.0)` (0.0 if total_ms `<= 0`, rounded to 2 decimals).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`time_to_first_token_ms >= 0.0`",
+        "All values rounded to 2 decimal places."
+      ],
+    hints: {
+  "concept": "Key streaming LLM metrics: Time-To-First-Token (TTFT) and Inter-Token Latency (ITL).",
+        "small": "Total tokens generated equals 1 (the first token) plus len(inter_token_latencies_ms).",
+        "strong": "Convert total latency from ms to seconds before dividing to obtain tokens per second."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "three token stream",
+          "input": {
+            "inter_token_latencies_ms": [
+              25,
+              24,
+              26
+            ],
+            "time_to_first_token_ms": 120
+          },
+          "expectedOutput": {
+            "ttft_ms": 120,
+            "total_latency_ms": 195,
+            "avg_itls_ms": 25,
+            "tokens_per_second": 20.51
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single generated token",
+          "input": {
+            "inter_token_latencies_ms": [],
+            "time_to_first_token_ms": 80
+          },
+          "expectedOutput": {
+            "ttft_ms": 80,
+            "total_latency_ms": 80,
+            "avg_itls_ms": 0,
+            "tokens_per_second": 12.5
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "slow first token fast generation",
+          "input": {
+            "inter_token_latencies_ms": [
+              10,
+              10,
+              10,
+              10
+            ],
+            "time_to_first_token_ms": 500
+          },
+          "expectedOutput": {
+            "ttft_ms": 500,
+            "total_latency_ms": 540,
+            "avg_itls_ms": 10,
+            "tokens_per_second": 9.26
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "jitter stream",
+          "input": {
+            "inter_token_latencies_ms": [
+              30,
+              45,
+              20,
+              35
+            ],
+            "time_to_first_token_ms": 150
+          },
+          "expectedOutput": {
+            "ttft_ms": 150,
+            "total_latency_ms": 280,
+            "avg_itls_ms": 32.5,
+            "tokens_per_second": 17.86
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "llm-internals-prob-40": {
+    id: "llm-internals-prob-40",
+    title: "Exact Match (EM) Evaluation Metric",
+    difficulty: "easy",
+    topic: "transformers-llms",
+    estimatedTime: '15 min',
+    functionName: "exact_match_score",
+    functionSignature: "exact_match_score(predictions: list[str], references: list[str]) -> float",
+    starterCode: `def exact_match_score(predictions: list[str], references: list[str]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Exact Match (EM) evaluation metric for QA benchmarks with text normalization.",
+    taskDescription: "Implement `exact_match_score(predictions, references)`. Normalize both prediction and reference text: convert to lowercase, strip punctuation, and normalize whitespace (`' '.join(text.split())`). Return the fraction of matching pairs rounded to 4 decimal places. Return 0.0 if empty or length mismatch.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "`len(predictions) == len(references)`",
+        "Return float in [0.0, 1.0] rounded to 4 decimal places."
+      ],
+    hints: {
+  "concept": "Exact Match (EM) is the standard metric on SQuAD, TriviaQA, and GSM8K benchmarks.",
+        "small": "Use re.sub(r'[^\\w\\s]', '', text) and text.lower().",
+        "strong": "Compare normalized strings; count matches and divide by len(predictions)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "case and punctuation invariance",
+          "input": {
+            "predictions": [
+              "The Eiffel Tower!",
+              "Paris"
+            ],
+            "references": [
+              "the eiffel tower",
+              "London"
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "perfect match all",
+          "input": {
+            "predictions": [
+              "42",
+              "Albert Einstein"
+            ],
+            "references": [
+              "42",
+              "albert einstein."
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero match",
+          "input": {
+            "predictions": [
+              "Yes",
+              "True"
+            ],
+            "references": [
+              "No",
+              "False"
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "extra whitespace normalization",
+          "input": {
+            "predictions": [
+              "  hello   world  "
+            ],
+            "references": [
+              "hello world"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 36: Problem 396"
-sidebar_position: 396
-description: "Curriculum Problem 396 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: LLM Inference FLOPs: Prefill vs Decode"
+description: "Calculate computational complexity (FLOPs) for the prefill and decoding phases of LLM inference."
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 36: Problem 396
+# LLM Inference FLOPs: Prefill vs Decode
 
-**Rank #396** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-35`.
+## Overview
+
+Calculate computational complexity (FLOPs) for the prefill and decoding phases of LLM inference.
+
+## Task
+
+Implement `calculate_inference_flops(num_params, prompt_tokens, generated_tokens)`. Using standard model approximation `2 * num_params` FLOPs per token forward pass, compute `prefill_flops = 2 * num_params * prompt_tokens`, `decode_flops = 2 * num_params * generated_tokens`, and `total_flops = prefill_flops + decode_flops`. Return dict with `'prefill_flops'`, `'decode_flops'`, and `'total_flops'`.
 
 <PracticePlayground problemId="llm-internals-prob-36" />
-
-<Solution>
-
-```python
-def llm_internals_p36(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>

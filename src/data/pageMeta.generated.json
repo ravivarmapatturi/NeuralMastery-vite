@@ -10004,8 +10004,8 @@
       "slug": "practice-problems/llm-internals-prob-21",
       "section": "practice-problems",
       "title": "Practice: Beam Search Length Penalty Score",
-      "sidebarPosition": 381,
-      "description": "Apply Google's Wu et al. length penalty to a beam search raw log-probability score to prevent length bias.",
+      "sidebarPosition": null,
+      "description": "Apply Google length penalty to a beam search raw log-probability score to prevent length bias.",
       "difficulty": "medium",
       "topic": "transformers-llms",
       "placeholder": false
@@ -10014,7 +10014,7 @@
       "slug": "practice-problems/llm-internals-prob-22",
       "section": "practice-problems",
       "title": "Practice: Attention Distribution Entropy",
-      "sidebarPosition": 382,
+      "sidebarPosition": null,
       "description": "Compute the Shannon entropy of an attention weight distribution to measure how focused vs. diffuse the attention pattern is.",
       "difficulty": "medium",
       "topic": "transformers-llms",
@@ -10024,7 +10024,7 @@
       "slug": "practice-problems/llm-internals-prob-23",
       "section": "practice-problems",
       "title": "Practice: LoRA Adapter Parameter Count",
-      "sidebarPosition": 383,
+      "sidebarPosition": null,
       "description": "Count the number of trainable parameters introduced by a LoRA low-rank adapter for a given weight matrix.",
       "difficulty": "easy",
       "topic": "transformers-llms",
@@ -10034,8 +10034,8 @@
       "slug": "practice-problems/llm-internals-prob-24",
       "section": "practice-problems",
       "title": "Practice: Flash Attention Block Count",
-      "sidebarPosition": 384,
-      "description": "Compute the number of tile blocks processed in Flash Attention's block-sparse algorithm for a given sequence length and block size.",
+      "sidebarPosition": null,
+      "description": "Compute the number of tile blocks processed in Flash Attention block-sparse algorithm for a given sequence length and block size.",
       "difficulty": "easy",
       "topic": "transformers-llms",
       "placeholder": false
@@ -10044,8 +10044,8 @@
       "slug": "practice-problems/llm-internals-prob-25",
       "section": "practice-problems",
       "title": "Practice: Grouped Query Attention KV Head Count",
-      "sidebarPosition": 385,
-      "description": "Compute the number of key/value heads in Grouped Query Attention (GQA) given the total query heads and number of groups.",
+      "sidebarPosition": null,
+      "description": "Compute the number of key/value heads in Grouped Query Attention (GQA) given total query heads and groups.",
       "difficulty": "easy",
       "topic": "transformers-llms",
       "placeholder": false
@@ -10054,8 +10054,8 @@
       "slug": "practice-problems/llm-internals-prob-26",
       "section": "practice-problems",
       "title": "Practice: INT8 Quantization Error",
-      "sidebarPosition": 386,
-      "description": "Compute the quantization error introduced by symmetric INT8 quantization: the absolute difference between the original float and its dequantized approximation.",
+      "sidebarPosition": null,
+      "description": "Compute the quantization error introduced by symmetric/asymmetric quantization.",
       "difficulty": "medium",
       "topic": "transformers-llms",
       "placeholder": false
@@ -10064,8 +10064,8 @@
       "slug": "practice-problems/llm-internals-prob-27",
       "section": "practice-problems",
       "title": "Practice: GELU Activation Function",
-      "sidebarPosition": 387,
-      "description": "Implement the GELU (Gaussian Error Linear Unit) activation using the tanh approximation -- the default non-linearity in GPT-2, BERT, and most modern LLMs.",
+      "sidebarPosition": null,
+      "description": "Implement the GELU (Gaussian Error Linear Unit) activation using the tanh approximation.",
       "difficulty": "medium",
       "topic": "transformers-llms",
       "placeholder": false
@@ -10074,8 +10074,8 @@
       "slug": "practice-problems/llm-internals-prob-28",
       "section": "practice-problems",
       "title": "Practice: RoPE Frequency Band Computation",
-      "sidebarPosition": 388,
-      "description": "Compute the Rotary Position Embedding (RoPE) base frequencies theta_i for each pair of dimensions in a transformer head.",
+      "sidebarPosition": null,
+      "description": "Compute the Rotary Position Embedding (RoPE) base frequencies for each pair of dimensions in a transformer head.",
       "difficulty": "medium",
       "topic": "transformers-llms",
       "placeholder": false
@@ -10084,8 +10084,8 @@
       "slug": "practice-problems/llm-internals-prob-29",
       "section": "practice-problems",
       "title": "Practice: Cross-Entropy Loss from Logits",
-      "sidebarPosition": 389,
-      "description": "Compute the cross-entropy loss for a single-token prediction from raw logits and the true token index.",
+      "sidebarPosition": null,
+      "description": "Compute the cross-entropy loss for a single-token prediction from raw logits and true target index.",
       "difficulty": "easy",
       "topic": "transformers-llms",
       "placeholder": false
@@ -10104,7 +10104,7 @@
       "slug": "practice-problems/llm-internals-prob-30",
       "section": "practice-problems",
       "title": "Practice: ALiBi Position Bias",
-      "sidebarPosition": 390,
+      "sidebarPosition": null,
       "description": "Compute the ALiBi (Attention with Linear Biases) position bias added to attention logits before softmax.",
       "difficulty": "medium",
       "topic": "transformers-llms",
@@ -10113,92 +10113,92 @@
     "/docs/practice-problems/llm-internals-prob-31": {
       "slug": "practice-problems/llm-internals-prob-31",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 31: Problem 391",
-      "sidebarPosition": 391,
-      "description": "Curriculum Problem 391 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "title": "Practice: Multi-Query Attention (MQA) Parameter Savings",
+      "sidebarPosition": null,
+      "description": "Calculate the parameter savings achieved by Multi-Query Attention compared to standard Multi-Head Attention.",
       "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-32": {
       "slug": "practice-problems/llm-internals-prob-32",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 32: Problem 392",
-      "sidebarPosition": 392,
-      "description": "Curriculum Problem 392 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "medium",
+      "title": "Practice: Min-P Sampling Probability Threshold Filter",
+      "sidebarPosition": null,
+      "description": "Filter candidate next tokens using Min-P dynamic thresholding relative to top token probability.",
+      "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-33": {
       "slug": "practice-problems/llm-internals-prob-33",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 33: Problem 393",
-      "sidebarPosition": 393,
-      "description": "Curriculum Problem 393 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
+      "title": "Practice: Sliding Window Causal Attention Mask",
+      "sidebarPosition": null,
+      "description": "Construct a sliding window causal attention mask matrix used in long-context models like Mistral.",
       "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-34": {
       "slug": "practice-problems/llm-internals-prob-34",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 34: Problem 394",
-      "sidebarPosition": 394,
-      "description": "Curriculum Problem 394 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: Speculative Decoding Draft Acceptance",
+      "sidebarPosition": null,
+      "description": "Implement draft verification in speculative decoding to accelerate autoregressive inference.",
       "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-35": {
       "slug": "practice-problems/llm-internals-prob-35",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 35: Problem 395",
-      "sidebarPosition": 395,
-      "description": "Curriculum Problem 395 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "medium",
+      "title": "Practice: Repetition Penalty on Logits",
+      "sidebarPosition": null,
+      "description": "Penalize logits of previously generated tokens to discourage loops in text generation.",
+      "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-36": {
       "slug": "practice-problems/llm-internals-prob-36",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 36: Problem 396",
-      "sidebarPosition": 396,
-      "description": "Curriculum Problem 396 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "medium",
+      "title": "Practice: LLM Inference FLOPs: Prefill vs Decode",
+      "sidebarPosition": null,
+      "description": "Calculate computational complexity (FLOPs) for the prefill and decoding phases of LLM inference.",
+      "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-37": {
       "slug": "practice-problems/llm-internals-prob-37",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 37: Problem 397",
-      "sidebarPosition": 397,
-      "description": "Curriculum Problem 397 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "medium",
+      "title": "Practice: RoPE 2D Vector Rotation",
+      "sidebarPosition": null,
+      "description": "Apply the 2D rotary embedding transformation to a pair of coordinate features.",
+      "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-38": {
       "slug": "practice-problems/llm-internals-prob-38",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 38: Problem 398",
-      "sidebarPosition": 398,
-      "description": "Curriculum Problem 398 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
+      "title": "Practice: KV Cache Memory Footprint with INT4 Quantization",
+      "sidebarPosition": null,
+      "description": "Calculate the exact memory capacity in bytes needed for a quantized key-value cache.",
       "difficulty": "medium",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-39": {
       "slug": "practice-problems/llm-internals-prob-39",
       "section": "practice-problems",
-      "title": "Practice: Transformers Module 39: Problem 399",
-      "sidebarPosition": 399,
-      "description": "Curriculum Problem 399 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals.",
-      "difficulty": "medium",
+      "title": "Practice: Token Generation Throughput and Latency",
+      "sidebarPosition": null,
+      "description": "Compute TTFT, total latency, average inter-token latency, and token throughput (TPS).",
+      "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-4": {
       "slug": "practice-problems/llm-internals-prob-4",
@@ -10213,12 +10213,12 @@
     "/docs/practice-problems/llm-internals-prob-40": {
       "slug": "practice-problems/llm-internals-prob-40",
       "section": "practice-problems",
-      "title": "Practice: LLM evaluation Module 40: Problem 400",
-      "sidebarPosition": 400,
-      "description": "Curriculum Problem 400 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation.",
-      "difficulty": "medium",
+      "title": "Practice: Exact Match (EM) Evaluation Metric",
+      "sidebarPosition": null,
+      "description": "Compute the Exact Match (EM) evaluation metric for QA benchmarks with text normalization.",
+      "difficulty": "easy",
       "topic": "transformers-llms",
-      "placeholder": true
+      "placeholder": false
     },
     "/docs/practice-problems/llm-internals-prob-41": {
       "slug": "practice-problems/llm-internals-prob-41",

@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 39: Problem 399"
-sidebar_position: 399
-description: "Curriculum Problem 399 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Token Generation Throughput and Latency"
+description: "Compute TTFT, total latency, average inter-token latency, and token throughput (TPS)."
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 39: Problem 399
+# Token Generation Throughput and Latency
 
-**Rank #399** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-38`.
+## Overview
+
+Compute TTFT, total latency, average inter-token latency, and token throughput (TPS).
+
+## Task
+
+Implement `compute_generation_metrics(time_to_first_token_ms, inter_token_latencies_ms)`. Calculate: `'ttft_ms'` (rounded to 2 decimals), `'total_latency_ms'` = `time_to_first_token_ms + sum(inter_token_latencies_ms)` (rounded to 2 decimals), `'avg_itls_ms'` = average inter-token latency (0.0 if empty, rounded to 2 decimals), and `'tokens_per_second'` = `(1 + len(inter_token_latencies_ms)) / (total_latency_ms / 1000.0)` (0.0 if total_ms `<= 0`, rounded to 2 decimals).
 
 <PracticePlayground problemId="llm-internals-prob-39" />
-
-<Solution>
-
-```python
-def llm_internals_p39(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

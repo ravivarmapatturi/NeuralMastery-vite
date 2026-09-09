@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 32: Problem 392"
-sidebar_position: 392
-description: "Curriculum Problem 392 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Min-P Sampling Probability Threshold Filter"
+description: "Filter candidate next tokens using Min-P dynamic thresholding relative to top token probability."
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 32: Problem 392
+# Min-P Sampling Probability Threshold Filter
 
-**Rank #392** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-31`.
+## Overview
+
+Filter candidate next tokens using Min-P dynamic thresholding relative to top token probability.
+
+## Task
+
+Implement `min_p_filter(probs, min_p=0.05)` which determines the cutoff `threshold = min_p * max(probs)`. Returns original indices of all tokens with `prob >= threshold`, sorted in descending order of their probability. Return empty list if `probs` is empty.
 
 <PracticePlayground problemId="llm-internals-prob-32" />
-
-<Solution>
-
-```python
-def llm_internals_p32(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>
