@@ -23,6 +23,7 @@ import type { CanvasComponentDefinition, CanvasSpec } from '../../lib/practicePr
 import { useGamification } from '../../contexts/GamificationContext';
 import { hasAward } from '../../lib/gamification';
 import { triggerConfetti } from '../ui/Confetti';
+import { loadCanvasState, saveCanvasState } from '../../lib/practicePersistence';
 
 interface CanvasAgentBuilderProps {
   canvasSpec: CanvasSpec;
@@ -81,11 +82,53 @@ export default function CanvasAgentBuilder({
     }));
   }, [canvasSpec, t.edge]);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(defaultNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(defaultEdges);
-  const [gradeResult, setGradeResult] = useState<ArchitectureGradeResult | null>(null);
+  // Restore the learner's own saved layout/wiring (if any) rather than
+  // always resetting to the unwired default on every page load -- this is
+  // the same real localStorage-backed pattern practicePersistence.ts
+  // already uses for the code editor and layout splitters.
+  const persisted = useMemo(() => loadCanvasState(problemId), [problemId]);
+
+  const initialNodes: Node[] = useMemo(() => {
+    if (!persisted) return defaultNodes;
+    const savedPositions = new Map(persisted.nodes.map((n) => [n.id, n.position]));
+    return defaultNodes.map((n) => (savedPositions.has(n.id) ? { ...n, position: savedPositions.get(n.id)! } : n));
+  }, [defaultNodes, persisted]);
+
+  const initialEdges: Edge[] = useMemo(() => {
+    if (!persisted || persisted.edges.length === 0) return defaultEdges;
+    const nodeIds = new Set(initialNodes.map((n) => n.id));
+    return persisted.edges
+      .filter((e) => nodeIds.has(e.source) && nodeIds.has(e.target))
+      .map((e) => ({
+        id: e.id,
+        source: e.source,
+        target: e.target,
+        label: e.label,
+        animated: true,
+        markerEnd: { type: MarkerType.ArrowClosed, width: 16, height: 16, color: t.accentSecondary },
+        style: { stroke: t.accentSecondary, strokeWidth: 2 },
+      }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultEdges, persisted, initialNodes]);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [gradeResult, setGradeResult] = useState<ArchitectureGradeResult | null>(() =>
+    initialEdges.length > 0 ? gradeArchitecture(initialNodes, initialEdges) : null,
+  );
   const [isFreshlyAwarded, setIsFreshlyAwarded] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(true);
+
+  // Persist the learner's own layout/wiring on every real change (drag,
+  // connect, delete, reset) -- never award/celebrate here, only Verify
+  // Architecture does that; this just keeps their work from vanishing on
+  // reload.
+  useEffect(() => {
+    saveCanvasState(problemId, {
+      nodes: nodes.map((n) => ({ id: n.id, position: n.position })),
+      edges: edges.map((e) => ({ id: e.id, source: e.source as string, target: e.target as string, label: typeof e.label === 'string' ? e.label : undefined })),
+    });
+  }, [problemId, nodes, edges]);
 
   // Helper to delete node
   const handleDeleteNode = useCallback(

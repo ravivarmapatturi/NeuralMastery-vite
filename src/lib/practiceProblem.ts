@@ -564,7 +564,7 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
           type: 'reasoner',
           label: 'LLM Reasoner',
           role: 'Core Reasoning Hub',
-          position: { x: 260, y: 140 },
+          position: { x: 280, y: 60 },
           description: 'The central hub executing ReAct Thought steps and deciding Actions vs Final Answer.',
         },
         {
@@ -572,7 +572,7 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
           type: 'tool',
           label: 'Tool Router',
           role: 'Action & Observation',
-          position: { x: 560, y: 60 },
+          position: { x: 580, y: 60 },
           description: 'Dispatches tool calls and returns observation output back to the Reasoner.',
         },
         {
@@ -580,7 +580,7 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
           type: 'memory',
           label: 'Memory / Context Store',
           role: 'State & Working Buffer',
-          position: { x: 260, y: 340 },
+          position: { x: 280, y: 260 },
           description: 'Buffers conversational context and working scratchpad state across steps.',
         },
         {
@@ -588,7 +588,7 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
           type: 'database',
           label: 'Database',
           role: 'Long-term Persistence',
-          position: { x: 560, y: 340 },
+          position: { x: 580, y: 260 },
           description: 'Checkpoints session memory. Must connect via Memory, not direct Reasoner.',
         },
         {
@@ -596,7 +596,7 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
           type: 'final_answer',
           label: 'Final Answer',
           role: 'Loop-Exit Condition',
-          position: { x: 20, y: 140 },
+          position: { x: 280, y: 460 },
           description: 'Loop termination exit node reached when agent reasoning completes.',
         },
       ],

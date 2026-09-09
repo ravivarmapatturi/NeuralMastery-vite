@@ -28,6 +28,7 @@ import { ServerExecutor } from '../../lib/execution/serverExecutor';
 import type { CodeExecutor, ExecutionResult } from '../../lib/execution/types';
 import AuthButton from '../layout/AuthButton';
 import StreakBadge from '../layout/StreakBadge';
+import { useColorMode } from '../../theme/ThemeProvider';
 import { showRewardToast } from '../ui/Confetti';
 import { useGamification } from '../../contexts/GamificationContext';
 import { normalizeRoute, getFlatPages, getPageByRoute, getPracticeProblems } from '../../lib/contentTree';
@@ -44,6 +45,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
   const location = useLocation();
   const permalink = normalizeRoute(location.pathname);
   const { events, awardProblemCompleted } = useGamification();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   // Layout splitters state
   const initialSplit = loadLayoutSplit();
@@ -506,6 +508,24 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
               <StreakBadge />
             </>
           )}
+
+          <button
+            type="button"
+            onClick={toggleColorMode}
+            aria-label="Toggle color mode"
+            style={{
+              width: 32,
+              height: 32,
+              flexShrink: 0,
+              borderRadius: '50%',
+              border: '1px solid var(--nm-border)',
+              background: 'transparent',
+              color: 'var(--nm-text-primary)',
+              cursor: 'pointer',
+            }}
+          >
+            {colorMode === 'dark' ? '☀' : '☾'}
+          </button>
 
           <AuthButton />
 

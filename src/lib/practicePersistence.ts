@@ -4,6 +4,31 @@ const CODE_KEY_PREFIX = 'nm_practice_code_';
 const CUSTOM_TESTS_KEY_PREFIX = 'nm_practice_custom_tests_';
 const SUBMISSIONS_KEY_PREFIX = 'nm_practice_submissions_';
 const LAYOUT_KEY = 'nm_practice_layout_split';
+const CANVAS_STATE_KEY_PREFIX = 'nm_practice_canvas_state_';
+
+export interface CanvasPersistedState {
+  nodes: Array<{ id: string; position: { x: number; y: number } }>;
+  edges: Array<{ id: string; source: string; target: string; label?: string }>;
+}
+
+export function loadCanvasState(problemId: string): CanvasPersistedState | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const val = localStorage.getItem(`${CANVAS_STATE_KEY_PREFIX}${problemId}`);
+    return val !== null ? (JSON.parse(val) as CanvasPersistedState) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveCanvasState(problemId: string, state: CanvasPersistedState): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(`${CANVAS_STATE_KEY_PREFIX}${problemId}`, JSON.stringify(state));
+  } catch {
+    // ignore quota error
+  }
+}
 
 export interface SubmissionRecord {
   id: string;
