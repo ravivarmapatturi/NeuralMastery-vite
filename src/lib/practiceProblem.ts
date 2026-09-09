@@ -139008,6 +139008,2030 @@ def right_side_view(root):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'planning-prob-1': {
+    id: 'planning-prob-1',
+    title: '#121. PDDL-style goal decomposition (goal stack)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'pddl_goal_decomposition',
+    functionSignature: 'pddl_goal_decomposition(goals: list[str]) -> list[str]',
+    starterCode: `def pddl_goal_decomposition(goals):
+    """Decompose conjunctive goals into a goal stack, returning subgoals in LIFO evaluation order.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Decompose complex multi-clause PDDL goals onto an evaluation goal stack for hierarchical regression.',
+    taskDescription: 'Implement `pddl_goal_decomposition(goals)`. Given a list of goal predicates, reverse the list to form a LIFO goal stack, popping subgoals one by one until empty. Return the order of popped subgoals.',
+    constraints: [
+      "goals is list of string predicates",
+      "Returns reversed list"
+],
+    hints: {
+      small: 'A goal stack resolves items in Last-In First-Out order.',
+      strong: 'return list(reversed(goals)).',
+      concept: 'Goal stacks tackle compound goals by solving individual sub-predicates sequentially.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '3-stage robotics assembly goals',
+        input: {
+            "goals": [
+              "on(A, B)",
+              "on(B, C)",
+              "clear(A)"
+            ]
+          },
+        expectedOutput: [
+            "clear(A)",
+            "on(B, C)",
+            "on(A, B)"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Single atomic goal',
+        input: {
+            "goals": [
+              "holding(A)"
+            ]
+          },
+        expectedOutput: [
+            "holding(A)"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Empty goal list',
+        input: {
+            "goals": []
+          },
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-2': {
+    id: 'planning-prob-2',
+    title: '#122. Task dependency graph topological ordering',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'task_dependency_topological_sort',
+    functionSignature: 'task_dependency_topological_sort(dependencies: dict) -> list[str]',
+    starterCode: `def task_dependency_topological_sort(dependencies):
+    """Sort tasks topologically given dependencies {task: [prerequisites]}.
+    Tie-break tasks ready at the same time alphabetically.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute a valid linear execution schedule for multi-step agent plans using Kahn\'s topological sort.',
+    taskDescription: 'Implement `task_dependency_topological_sort(dependencies)`. `dependencies` maps task -> list of required prerequisite tasks. Return a valid execution order, tie-breaking alphabetically among available tasks.',
+    constraints: [
+      "Acyclic dependencies",
+      "All mentioned tasks included in schedule"
+],
+    hints: {
+      small: 'Compute in-degrees (number of prerequisites) for each task.',
+      strong: 'Use a min-heap or sorted list of tasks with 0 in-degree. When task runs, decrement in-degree of its dependents.',
+      concept: 'Topological ordering guarantees no action is scheduled before its required preconditions are fulfilled.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard linear pipeline',
+        input: {
+            "dependencies": {
+              "deploy": [
+                "build",
+                "test"
+              ],
+              "test": [
+                "build"
+              ],
+              "build": []
+            }
+          },
+        expectedOutput: [
+            "build",
+            "test",
+            "deploy"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Independent tasks sorted alphabetically',
+        input: {
+            "dependencies": {
+              "C": [],
+              "A": [],
+              "B": []
+            }
+          },
+        expectedOutput: [
+            "A",
+            "B",
+            "C"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-3': {
+    id: 'planning-prob-3',
+    title: '#123. BFS planning (find shortest action sequence)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'bfs_planning',
+    functionSignature: 'bfs_planning(transitions: dict, start_state: str, goal_state: str) -> list[str]',
+    starterCode: `from collections import deque
+
+def bfs_planning(transitions, start_state, goal_state):
+    """Find shortest action sequence from start_state to goal_state.
+    transitions: {state: [(action_name, next_state)]}.
+    Return list of action_names, or None if unreachable.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Formulate state-space search as breadth-first path exploration to find minimal-step action plans.',
+    taskDescription: 'Implement `bfs_planning(transitions, start_state, goal_state)`. Return list of actions along the shortest path from start_state to goal_state, or None if no path exists. If start_state == goal_state, return [].',
+    constraints: [
+      "Finite state space",
+      "Returns list of action strings or None"
+],
+    hints: {
+      small: 'Queue stores (current_state, path_of_actions).',
+      strong: 'Track visited states in a set to prevent revisiting.',
+      concept: 'BFS finds the optimal plan in terms of fewest transition steps in unweighted state spaces.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '2-step navigation to goal',
+        input: {
+            "transitions": {
+              "room1": [
+                [
+                  "go_north",
+                  "hall"
+                ],
+                [
+                  "go_east",
+                  "closet"
+                ]
+              ],
+              "hall": [
+                [
+                  "go_east",
+                  "room2"
+                ]
+              ],
+              "closet": [],
+              "room2": []
+            },
+            "start_state": "room1",
+            "goal_state": "room2"
+          },
+        expectedOutput: [
+            "go_north",
+            "go_east"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Already at goal',
+        input: {
+            "transitions": {},
+            "start_state": "A",
+            "goal_state": "A"
+          },
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Unreachable goal',
+        input: {
+            "transitions": {
+              "A": [
+                [
+                  "hop",
+                  "B"
+                ]
+              ]
+            },
+            "start_state": "A",
+            "goal_state": "C"
+          },
+        expectedOutput: null,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-4': {
+    id: 'planning-prob-4',
+    title: '#124. DFS planning with backtracking',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'dfs_planning_backtrack',
+    functionSignature: 'dfs_planning_backtrack(transitions: dict, start: str, goal: str, max_depth: int = 5) -> list[str] | None',
+    starterCode: `def dfs_planning_backtrack(transitions, start, goal, max_depth=5):
+    """Find plan via depth-limited DFS with backtracking.
+    Return list of action names or None.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement depth-bounded search with state backtracking to locate goal configurations with low memory overhead.',
+    taskDescription: 'Implement `dfs_planning_backtrack(transitions, start, goal, max_depth=5)`. Find a path of actions of length <= max_depth using DFS. Backtrack upon hitting dead ends or max depth.',
+    constraints: [
+      "max_depth >= 1",
+      "Returns list of strings or None"
+],
+    hints: {
+      small: 'Use recursion or explicit stack with (state, path, visited).',
+      strong: 'If state == goal, return path. If len(path) == max_depth, return None.',
+      concept: 'Backtracking search explores deeply down candidate plan branches while retaining linear memory complexity.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Backtrack past dead end to reach goal',
+        input: {
+            "transitions": {
+              "s": [
+                [
+                  "try_bad",
+                  "dead_end"
+                ],
+                [
+                  "try_good",
+                  "g"
+                ]
+              ],
+              "dead_end": [],
+              "g": []
+            },
+            "start": "s",
+            "goal": "g",
+            "max_depth": 3
+          },
+        expectedOutput: [
+            "try_good"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-5': {
+    id: 'planning-prob-5',
+    title: '#125. A* planning heuristic (admissible heuristic)',
+    difficulty: 'easy',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '10–15 min',
+    functionName: 'a_star_cost',
+    functionSignature: 'a_star_cost(g_cost: float, h_cost: float) -> float',
+    starterCode: `def a_star_cost(g_cost, h_cost):
+    """Compute A* total evaluation function f(n) = g(n) + h(n).
+    Return float rounded to 4 decimal places.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute A* total estimated path cost by combining past path cost with future admissible heuristic estimates.',
+    taskDescription: 'Implement `a_star_cost(g_cost, h_cost)`. Return `round(g_cost + h_cost, 4)`. Raise `ValueError` if g_cost < 0 or h_cost < 0.',
+    constraints: [
+      "g_cost >= 0",
+      "h_cost >= 0"
+],
+    hints: {
+      small: 'Check for negative inputs first.',
+      strong: 'return round(g_cost + h_cost, 4).',
+      concept: 'An admissible heuristic never overestimates the true remaining cost, guaranteeing A* finds optimal plans.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard costs sum',
+        input: {
+            "g_cost": 3.5,
+            "h_cost": 2.25
+          },
+        expectedOutput: 5.75,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Zero heuristic at goal',
+        input: {
+            "g_cost": 10.0,
+            "h_cost": 0.0
+          },
+        expectedOutput: 10.0,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Negative cost raises ValueError',
+        input: {
+            "g_cost": -1.0,
+            "h_cost": 5.0
+          },
+        expectError: 'ValueError',
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-6': {
+    id: 'planning-prob-6',
+    title: '#126. STRIPS-style precondition/effect state update',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'strips_state_update',
+    functionSignature: 'strips_state_update(current_state: list[str], preconditions: list[str], add_effects: list[str], del_effects: list[str]) -> list[str]',
+    starterCode: `def strips_state_update(current_state, preconditions, add_effects, del_effects):
+    """Apply STRIPS action: if all preconditions in current_state,
+    return sorted((current_state - del_effects) + add_effects).
+    Raise ValueError if preconditions not satisfied.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Execute classical STRIPS domain state transitions by testing preconditions and applying add/delete effect lists.',
+    taskDescription: 'Implement `strips_state_update(current_state, preconditions, add_effects, del_effects)`. If all elements of `preconditions` exist in `current_state`, remove `del_effects` and add `add_effects`. Return sorted list of resulting state predicates. Raise `ValueError` if preconditions are violated.',
+    constraints: [
+      "Predicates are strings",
+      "Returns sorted list of unique predicates"
+],
+    hints: {
+      small: 'Convert current_state to a set to verify preconditions.issubset(state).',
+      strong: 'state = (state - set(del_effects)) | set(add_effects). Return sorted(state).',
+      concept: 'STRIPS representation models deterministic state evolution via discrete positive and negative effect sets.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Pick up block updates state correctly',
+        input: {
+            "current_state": [
+              "arm_empty",
+              "clear_A",
+              "on_table_A"
+            ],
+            "preconditions": [
+              "arm_empty",
+              "clear_A"
+            ],
+            "add_effects": [
+              "holding_A"
+            ],
+            "del_effects": [
+              "arm_empty",
+              "on_table_A"
+            ]
+          },
+        expectedOutput: [
+            "clear_A",
+            "holding_A"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Violated precondition raises ValueError',
+        input: {
+            "current_state": [
+              "on_table_A"
+            ],
+            "preconditions": [
+              "arm_empty"
+            ],
+            "add_effects": [],
+            "del_effects": []
+          },
+        expectError: 'ValueError',
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-7': {
+    id: 'planning-prob-7',
+    title: '#127. HTN (Hierarchical Task Network) method selection',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'htn_method_selection',
+    functionSignature: 'htn_method_selection(task: str, methods: list[dict], current_state: dict) -> str | None',
+    starterCode: `def htn_method_selection(task, methods, current_state):
+    """Select first method for task whose preconditions match current_state.
+    Each method has 'task', 'name', 'preconditions' (dict of required key:val).
+    Return method name, or None.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Resolve high-level compound tasks into specialized sub-methods within a Hierarchical Task Network (HTN).',
+    taskDescription: 'Implement `htn_method_selection(task, methods, current_state)`. Iterate through `methods` matching `method[\'task\'] == task`. Return the \'name\' of the first method whose \'preconditions\' (key-value pairs) are fully satisfied in `current_state`. Return None if none match.',
+    constraints: [
+      "methods is list of dicts",
+      "current_state is dict"
+],
+    hints: {
+      small: 'Filter methods where m[\'task\'] == task.',
+      strong: 'Check if all current_state.get(k) == v for k, v in m[\'preconditions\'].items().',
+      concept: 'HTN planning recursively expands abstract compound goals into concrete primitive actions.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Select flight method when distance is high',
+        input: {
+            "task": "travel",
+            "methods": [
+              {
+                "task": "travel",
+                "name": "drive_car",
+                "preconditions": {
+                  "has_car": true,
+                  "distance_near": true
+                }
+              },
+              {
+                "task": "travel",
+                "name": "fly_plane",
+                "preconditions": {
+                  "has_passport": true,
+                  "distance_near": false
+                }
+              }
+            ],
+            "current_state": {
+              "has_passport": true,
+              "distance_near": false
+            }
+          },
+        expectedOutput: "fly_plane",
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'No viable method found',
+        input: {
+            "task": "cook",
+            "methods": [
+              {
+                "task": "cook",
+                "name": "bake",
+                "preconditions": {
+                  "has_oven": true
+                }
+              }
+            ],
+            "current_state": {
+              "has_oven": false
+            }
+          },
+        expectedOutput: null,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-8': {
+    id: 'planning-prob-8',
+    title: '#128. Monte Carlo Tree Search UCT score',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'mcts_uct_score',
+    functionSignature: 'mcts_uct_score(node_wins: float, node_visits: int, parent_visits: int, c: float = 1.414) -> float',
+    starterCode: `import math
+
+def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
+    """Compute UCT score: (node_wins / node_visits) + c * sqrt(ln(parent_visits) / node_visits).
+    Return float rounded to 4 decimal places. Return inf if node_visits == 0.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Calculate Upper Confidence Bound applied to Trees (UCT) scores to balance exploitation and exploration in MCTS.',
+    taskDescription: 'Implement `mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414)`. Compute exploitation (wins/visits) + exploration c * sqrt(ln(parent_visits)/node_visits). Return float rounded to 4 decimal places. If node_visits == 0, return float(\'inf\').',
+    constraints: [
+      "parent_visits >= 1",
+      "node_visits >= 0"
+],
+    hints: {
+      small: 'If node_visits == 0, return float(\'inf\') to ensure unvisited nodes are prioritized.',
+      strong: 'return round(node_wins / node_visits + c * math.sqrt(math.log(parent_visits) / node_visits), 4).',
+      concept: 'UCT mathematically resolves the multi-armed bandit dilemma in deep tree rollouts.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Visited node standard UCT score',
+        input: {
+            "node_wins": 7.0,
+            "node_visits": 10,
+            "parent_visits": 50,
+            "c": 1.414
+          },
+        expectedOutput: 1.5844,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Unvisited child returns infinity',
+        input: {
+            "node_wins": 0.0,
+            "node_visits": 0,
+            "parent_visits": 20,
+            "c": 1.414
+          },
+        expectedOutput: Infinity,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-9': {
+    id: 'planning-prob-9',
+    title: '#129. ReAct (Reason + Act) trace parsing',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'parse_react_trace',
+    functionSignature: 'parse_react_trace(trace_text: str) -> list[dict]',
+    starterCode: `def parse_react_trace(trace_text):
+    """Parse multiline trace text into list of {'thought': str, 'action': str}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Parse raw multi-turn text generation into structured lists of ReAct reasoning thoughts and dispatched actions.',
+    taskDescription: 'Implement `parse_react_trace(trace_text)`. Extract pairs of Thought and Action lines. Return list of `{\'thought\': t_text, \'action\': a_text}` with stripped whitespace.',
+    constraints: [
+      "trace_text is string"
+],
+    hints: {
+      small: 'Look for lines starting with \'Thought:\' and \'Action:\'.',
+      strong: 'When an Action line appears following a Thought, record the pair.',
+      concept: 'Extracting structured steps from raw token output enables downstream execution harness dispatch.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '2-step ReAct trace parsing',
+        input: {
+            "trace_text": "Thought: Need to lookup user email\nAction: lookup(id=10)\nObservation: email is a@b.com\nThought: Now send confirmation\nAction: email(to='a@b.com')"
+          },
+        expectedOutput: [
+            {
+              "thought": "Need to lookup user email",
+              "action": "lookup(id=10)"
+            },
+            {
+              "thought": "Now send confirmation",
+              "action": "email(to='a@b.com')"
+            }
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-10': {
+    id: 'planning-prob-10',
+    title: '#130. Chain-of-thought step validity check',
+    difficulty: 'easy',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '10–15 min',
+    functionName: 'cot_step_validity',
+    functionSignature: 'cot_step_validity(steps: list[dict]) -> bool',
+    starterCode: `def cot_step_validity(steps):
+    """Verify that every step has 'step_num' (1, 2, 3...) strictly increasing starting at 1,
+    and non-empty 'rationale'.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Verify the structural integrity and 1-based sequential continuity of Chain-of-Thought reasoning steps.',
+    taskDescription: 'Implement `cot_step_validity(steps)`. Return True if `steps` is non-empty, every step has step_num == i+1 (starting at 1), and non-empty \'rationale\' string. Return False otherwise.',
+    constraints: [
+      "steps is list of dicts"
+],
+    hints: {
+      small: 'Check for empty list.',
+      strong: 'Verify step.get(\'step_num\') == i + 1 and bool(step.get(\'rationale\', \'\').strip()).',
+      concept: 'Validating reasoning step structure ensures uninterrupted logical coherence in multi-step proofs.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Valid 3-step sequence',
+        input: {
+            "steps": [
+              {
+                "step_num": 1,
+                "rationale": "Identify the given variables"
+              },
+              {
+                "step_num": 2,
+                "rationale": "Substitute into formula"
+              },
+              {
+                "step_num": 3,
+                "rationale": "Calculate result"
+              }
+            ]
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Non-contiguous step numbers invalid',
+        input: {
+            "steps": [
+              {
+                "step_num": 1,
+                "rationale": "Start"
+              },
+              {
+                "step_num": 3,
+                "rationale": "Skip step 2"
+              }
+            ]
+          },
+        expectedOutput: false,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-11': {
+    id: 'planning-prob-11',
+    title: '#131. Thought-Action-Observation triple extraction',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'extract_tao_triples',
+    functionSignature: 'extract_tao_triples(log_text: str) -> list[dict]',
+    starterCode: `def extract_tao_triples(log_text):
+    """Extract complete (Thought, Action, Observation) triples from log text.
+    Return list of {'thought': str, 'action': str, 'observation': str}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Extract complete (Thought, Action, Observation) triples from agent diagnostic transcripts.',
+    taskDescription: 'Implement `extract_tao_triples(log_text)`. Parse complete sequences of \'Thought:\', \'Action:\', and \'Observation:\'. Incomplete trailing triples are discarded.',
+    constraints: [
+      "log_text is string"
+],
+    hints: {
+      small: 'Collect thought, action, observation in state variables.',
+      strong: 'When observation is collected, push dict to results and reset state variables.',
+      concept: 'TAO triples represent the atomic building blocks of episodic agent interaction trajectories.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Single full triple extraction',
+        input: {
+            "log_text": "Thought: find file\nAction: ls()\nObservation: found a.txt"
+          },
+        expectedOutput: [
+            {
+              "thought": "find file",
+              "action": "ls()",
+              "observation": "found a.txt"
+            }
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-12': {
+    id: 'planning-prob-12',
+    title: '#132. Plan validation (precondition checking)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'validate_plan',
+    functionSignature: 'validate_plan(initial_state: list[str], plan: list[dict]) -> bool',
+    starterCode: `def validate_plan(initial_state, plan):
+    """Simulate plan step-by-step. Each action has 'preconditions', 'add', 'del'.
+    Return True if every action's preconditions are satisfied when executed, else False.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Simulate and validate multi-action plans forward from initial state, ensuring preconditions hold at every step.',
+    taskDescription: 'Implement `validate_plan(initial_state, plan)`. Track state set starting with `initial_state`. For each action, verify `set(action[\'preconditions\']).issubset(state)`. Update state by subtracting \'del\' and unioning \'add\'. Return True if all actions succeed, else False.',
+    constraints: [
+      "plan is list of action dicts"
+],
+    hints: {
+      small: 'Maintain state as a python set.',
+      strong: 'If not set(act[\'preconditions\']).issubset(curr_state): return False. Then update state.',
+      concept: 'Forward plan validation guarantees execution safety before dispatching irreversible physical actions.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Valid 2-step plan',
+        input: {
+            "initial_state": [
+              "door_closed",
+              "have_key"
+            ],
+            "plan": [
+              {
+                "preconditions": [
+                  "have_key",
+                  "door_closed"
+                ],
+                "add": [
+                  "door_open"
+                ],
+                "del": [
+                  "door_closed"
+                ]
+              },
+              {
+                "preconditions": [
+                  "door_open"
+                ],
+                "add": [
+                  "in_room"
+                ],
+                "del": []
+              }
+            ]
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Invalid plan where precondition fails',
+        input: {
+            "initial_state": [
+              "door_closed"
+            ],
+            "plan": [
+              {
+                "preconditions": [
+                  "have_key"
+                ],
+                "add": [
+                  "door_open"
+                ],
+                "del": []
+              }
+            ]
+          },
+        expectedOutput: false,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-13': {
+    id: 'planning-prob-13',
+    title: '#133. Goal regression (backward chaining)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'goal_regression_step',
+    functionSignature: 'goal_regression_step(subgoals: list[str], action: dict) -> list[str]',
+    starterCode: `def goal_regression_step(subgoals, action):
+    """Regress subgoals backwards through action:
+    return sorted((subgoals - action['add']) + action['preconditions']).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute weakest preconditions by regressing subgoals backwards through action effect definitions.',
+    taskDescription: 'Implement `goal_regression_step(subgoals, action)`. Regress subgoals through an action: remove predicates added by the action (`action[\'add\']`) and add the action\'s preconditions (`action[\'preconditions\']`). Return sorted unique list of resulting subgoals.',
+    constraints: [
+      "subgoals is list of strings",
+      "action contains 'add' and 'preconditions' lists"
+],
+    hints: {
+      small: 'Use set operations: (set(subgoals) - set(action[\'add\'])) | set(action[\'preconditions\']).',
+      strong: 'return sorted(list(res)).',
+      concept: 'Goal regression searches backwards from target goals to uncover necessary initial conditions.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Regress holding(A) through pick_up(A)',
+        input: {
+            "subgoals": [
+              "holding_A",
+              "clear_B"
+            ],
+            "action": {
+              "add": [
+                "holding_A"
+              ],
+              "preconditions": [
+                "arm_empty",
+                "clear_A"
+              ]
+            }
+          },
+        expectedOutput: [
+            "arm_empty",
+            "clear_A",
+            "clear_B"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-14': {
+    id: 'planning-prob-14',
+    title: '#134. Constraint satisfaction backtracking',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'csp_check_assignment',
+    functionSignature: 'csp_check_assignment(assignment: dict, constraints: list[dict]) -> bool',
+    starterCode: `def csp_check_assignment(assignment, constraints):
+    """Verify assignment satisfies binary inequality constraints.
+    Each constraint has 'var1', 'var2', 'relation' ('!=').
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Verify variable assignments against binary relational constraints in Constraint Satisfaction Problems (CSP).',
+    taskDescription: 'Implement `csp_check_assignment(assignment, constraints)`. For each constraint with relation \'!=\', if both var1 and var2 are present in `assignment`, verify `assignment[var1] != assignment[var2]`. Return True if all evaluated constraints hold, else False.',
+    constraints: [
+      "constraints is list of dicts",
+      "assignment is dict"
+],
+    hints: {
+      small: 'Check each constraint where both variables are bound.',
+      strong: 'If c.get(\'relation\') == \'!=\' and assignment[v1] == assignment[v2]: return False.',
+      concept: 'Consistency checking prunes inconsistent search branches in CSP map coloring and scheduling.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Valid coloring assignment',
+        input: {
+            "assignment": {
+              "WA": "red",
+              "NT": "green",
+              "SA": "blue"
+            },
+            "constraints": [
+              {
+                "var1": "WA",
+                "var2": "NT",
+                "relation": "!="
+              },
+              {
+                "var1": "WA",
+                "var2": "SA",
+                "relation": "!="
+              }
+            ]
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Violated inequality constraint',
+        input: {
+            "assignment": {
+              "A": 1,
+              "B": 1
+            },
+            "constraints": [
+              {
+                "var1": "A",
+                "var2": "B",
+                "relation": "!="
+              }
+            ]
+          },
+        expectedOutput: false,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-15': {
+    id: 'planning-prob-15',
+    title: '#135. Planning horizon limit enforcement',
+    difficulty: 'easy',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '10–15 min',
+    functionName: 'planning_horizon_limit',
+    functionSignature: 'planning_horizon_limit(plan: list[str], max_horizon: int) -> list[str]',
+    starterCode: `def planning_horizon_limit(plan, max_horizon):
+    """Truncate plan to at most max_horizon actions.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Bound multi-step action plans to a finite lookahead planning horizon to mitigate compounding uncertainty.',
+    taskDescription: 'Implement `planning_horizon_limit(plan, max_horizon)`. Return the slice of `plan` containing at most `max_horizon` actions.',
+    constraints: [
+      "max_horizon >= 0",
+      "plan is list of strings"
+],
+    hints: {
+      small: 'Use python list slicing.',
+      strong: 'return plan[:max_horizon].',
+      concept: 'Receding horizon control plans only up to a fixed depth before re-observing the environment.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Truncate 5-action plan to 3',
+        input: {
+            "plan": [
+              "a1",
+              "a2",
+              "a3",
+              "a4",
+              "a5"
+            ],
+            "max_horizon": 3
+          },
+        expectedOutput: [
+            "a1",
+            "a2",
+            "a3"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Plan shorter than horizon',
+        input: {
+            "plan": [
+              "a1"
+            ],
+            "max_horizon": 5
+          },
+        expectedOutput: [
+            "a1"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-16': {
+    id: 'planning-prob-16',
+    title: '#136. Subgoal identification from natural language',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'identify_subgoals',
+    functionSignature: 'identify_subgoals(task_text: str, keywords: list[str]) -> list[str]',
+    starterCode: `def identify_subgoals(task_text, keywords):
+    """Split task_text by sentences/clauses and return those containing any keyword.
+    Strip whitespace and filter non-empty.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Identify explicit procedural subgoals from user prompt instructions based on imperative transition keywords.',
+    taskDescription: 'Implement `identify_subgoals(task_text, keywords)`. Split task_text by \'.\', \';\', or \'\n\'. Return the list of stripped non-empty segments that contain at least one word from `keywords` (case-insensitive).',
+    constraints: [
+      "task_text is string",
+      "keywords is list of strings"
+],
+    hints: {
+      small: 'Replace \';\' and \'\n\' with \'.\' and split on \'.\'.',
+      strong: 'Filter segments containing any keyword in lowercased segment words.',
+      concept: 'Rule-based subgoal decomposition parses complex requests into discrete milestones.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Extract clauses containing \'first\' or \'then\'',
+        input: {
+            "task_text": "First download the dataset. Then preprocess the text. Finally train the model.",
+            "keywords": [
+              "first",
+              "then"
+            ]
+          },
+        expectedOutput: [
+            "First download the dataset",
+            "Then preprocess the text"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-17': {
+    id: 'planning-prob-17',
+    title: '#137. Action cost accumulation (total plan cost)',
+    difficulty: 'easy',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '10–15 min',
+    functionName: 'total_plan_cost',
+    functionSignature: 'total_plan_cost(plan_actions: list[str], cost_map: dict) -> float',
+    starterCode: `def total_plan_cost(plan_actions, cost_map):
+    """Calculate sum of action costs from cost_map. Default cost is 1.0 if unspecified.
+    Return float rounded to 4 decimal places.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute the cumulative execution cost of a plan based on non-uniform action cost mappings.',
+    taskDescription: 'Implement `total_plan_cost(plan_actions, cost_map)`. For each action in `plan_actions`, look up its cost in `cost_map` (defaulting to 1.0 if absent). Return total sum rounded to 4 decimal places.',
+    constraints: [
+      "plan_actions is list of strings",
+      "cost_map is dict mapping string to float"
+],
+    hints: {
+      small: 'Use cost_map.get(action, 1.0) inside sum().',
+      strong: 'return round(sum(cost_map.get(a, 1.0) for a in plan_actions), 4).',
+      concept: 'Action cost metrics differentiate between cheap local operations and expensive external queries.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Sum mixed action costs',
+        input: {
+            "plan_actions": [
+              "fetch",
+              "compute",
+              "fetch"
+            ],
+            "cost_map": {
+              "fetch": 2.5,
+              "compute": 0.5
+            }
+          },
+        expectedOutput: 5.5,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Fallback to default cost 1.0',
+        input: {
+            "plan_actions": [
+              "unknown_op"
+            ],
+            "cost_map": {}
+          },
+        expectedOutput: 1.0,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-18': {
+    id: 'planning-prob-18',
+    title: '#138. Plan repair (detect violated postcondition)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'detect_violated_condition',
+    functionSignature: 'detect_violated_condition(state: dict, required_conditions: dict) -> list[str]',
+    starterCode: `def detect_violated_condition(state, required_conditions):
+    """Find keys in required_conditions where state[k] != required_conditions[k].
+    Return sorted list of violated keys.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Detect discrepancies between expected postconditions and actual environment state during plan execution.',
+    taskDescription: 'Implement `detect_violated_condition(state, required_conditions)`. Return sorted list of keys in `required_conditions` where `state.get(k) != required_conditions[k]`.',
+    constraints: [
+      "state and required_conditions are dicts",
+      "Returns sorted list"
+],
+    hints: {
+      small: 'Compare state.get(k) with expected v for each key in required_conditions.',
+      strong: 'return sorted([k for k, v in required_conditions.items() if state.get(k) != v]).',
+      concept: 'Identifying unmet postconditions indicates exactly which subgoals require replanning.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Detect missing and mismatched conditions',
+        input: {
+            "state": {
+              "temp": 70,
+              "door": "closed"
+            },
+            "required_conditions": {
+              "temp": 70,
+              "door": "open",
+              "alarm": "off"
+            }
+          },
+        expectedOutput: [
+            "alarm",
+            "door"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'All conditions satisfied returns empty list',
+        input: {
+            "state": {
+              "auth": true
+            },
+            "required_conditions": {
+              "auth": true
+            }
+          },
+        expectedOutput: [],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-19': {
+    id: 'planning-prob-19',
+    title: '#139. Greedy best-first search for planning',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'greedy_best_first_step',
+    functionSignature: 'greedy_best_first_step(candidates: list[dict]) -> str | None',
+    starterCode: `def greedy_best_first_step(candidates):
+    """Each candidate has 'action' and 'h_cost'. Select action with minimum h_cost.
+    Tie-break by action name ascending. Return None if empty.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Select the next planning branch greedily based strictly on minimal estimated heuristic distance.',
+    taskDescription: 'Implement `greedy_best_first_step(candidates)`. Return the \'action\' from candidates having the smallest \'h_cost\'. Tie-break by \'action\' alphabetically. Return None if empty.',
+    constraints: [
+      "candidates is list of dicts with 'action' and 'h_cost'"
+],
+    hints: {
+      small: 'Sort candidates by (c[\'h_cost\'], c[\'action\']).',
+      strong: 'return candidates[0][\'action\'] after sorting.',
+      concept: 'Greedy best-first search expands the node that appears closest to the goal.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Select lowest heuristic cost action',
+        input: {
+            "candidates": [
+              {
+                "action": "jump",
+                "h_cost": 5.0
+              },
+              {
+                "action": "walk",
+                "h_cost": 2.0
+              },
+              {
+                "action": "crawl",
+                "h_cost": 8.0
+              }
+            ]
+          },
+        expectedOutput: "walk",
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Tie-break identical heuristic cost alphabetically',
+        input: {
+            "candidates": [
+              {
+                "action": "beta",
+                "h_cost": 3.0
+              },
+              {
+                "action": "alpha",
+                "h_cost": 3.0
+              }
+            ]
+          },
+        expectedOutput: "alpha",
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-20': {
+    id: 'planning-prob-20',
+    title: '#140. Iterative deepening planning',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'iterative_deepening_search',
+    functionSignature: 'iterative_deepening_search(depth_limits: list[int], target_depth: int) -> int',
+    starterCode: `def iterative_deepening_search(depth_limits, target_depth):
+    """Simulate IDDFS: find smallest depth_limit >= target_depth. Return that limit, or -1.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Simulate Iterative Deepening Depth-First Search (IDDFS) to combine BFS optimality with DFS space efficiency.',
+    taskDescription: 'Implement `iterative_deepening_search(depth_limits, target_depth)`. Return the first value in `depth_limits` that is >= `target_depth`. If none are >= target_depth, return -1.',
+    constraints: [
+      "depth_limits is list of increasing positive integers"
+],
+    hints: {
+      small: 'Iterate through depth_limits.',
+      strong: 'If limit >= target_depth, return limit immediately.',
+      concept: 'Iterative deepening combines the completeness of BFS with the linear memory consumption of DFS.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Target found at depth 4',
+        input: {
+            "depth_limits": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "target_depth": 4
+          },
+        expectedOutput: 4,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Target deeper than all limits returns -1',
+        input: {
+            "depth_limits": [
+              1,
+              2
+            ],
+            "target_depth": 10
+          },
+        expectedOutput: -1,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-21': {
+    id: 'planning-prob-21',
+    title: '#141. Multi-step rollout simulation',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'simulate_rollout',
+    functionSignature: 'simulate_rollout(state: int, actions: list[int]) -> int',
+    starterCode: `def simulate_rollout(state, actions):
+    """Apply sequential action deltas to scalar state. Return final state.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Simulate forward multi-step trajectory rollouts from current belief states to evaluate candidate plans.',
+    taskDescription: 'Implement `simulate_rollout(state, actions)`. Sequentially add each action delta in `actions` to `state`. Return final resulting integer state.',
+    constraints: [
+      "state is integer",
+      "actions is list of integers"
+],
+    hints: {
+      small: 'Iterate through actions and add to state.',
+      strong: 'return state + sum(actions).',
+      concept: 'Forward rollouts allow models to imagine the consequences of action sequences before executing.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Apply multiple positive and negative deltas',
+        input: {
+            "state": 10,
+            "actions": [
+              5,
+              -3,
+              8
+            ]
+          },
+        expectedOutput: 20,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Empty actions list preserves state',
+        input: {
+            "state": 42,
+            "actions": []
+          },
+        expectedOutput: 42,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-22': {
+    id: 'planning-prob-22',
+    title: '#142. Utility function scoring for plans',
+    difficulty: 'easy',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '10–15 min',
+    functionName: 'plan_utility',
+    functionSignature: 'plan_utility(reward: float, cost: float, discount: float) -> float',
+    starterCode: `def plan_utility(reward, cost, discount):
+    """Calculate utility = reward - (cost * discount).
+    Return float rounded to 4 decimal places.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Calculate discounted expected utility to balance goal satisfaction against resource expenditure.',
+    taskDescription: 'Implement `plan_utility(reward, cost, discount)`. Compute `reward - (cost * discount)`. Return float rounded to 4 decimal places.',
+    constraints: [
+      "discount >= 0.0"
+],
+    hints: {
+      small: 'Compute reward minus discounted cost.',
+      strong: 'return round(float(reward - (cost * discount)), 4).',
+      concept: 'Utility-based agents select actions that maximize expected satisfaction under cost trade-offs.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Positive net utility',
+        input: {
+            "reward": 100.0,
+            "cost": 20.0,
+            "discount": 0.5
+          },
+        expectedOutput: 90.0,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Zero discount ignores cost',
+        input: {
+            "reward": 50.0,
+            "cost": 100.0,
+            "discount": 0.0
+          },
+        expectedOutput: 50.0,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-23': {
+    id: 'planning-prob-23',
+    title: '#143. Risk-aware plan selection (variance)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'risk_aware_plan_selection',
+    functionSignature: 'risk_aware_plan_selection(plans: list[dict], risk_tolerance: float = 0.5) -> str | None',
+    starterCode: `def risk_aware_plan_selection(plans, risk_tolerance=0.5):
+    """Score plans by score = expected_return - risk_tolerance * variance.
+    Select plan with maximum score. Tie-break by name ascending.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Incorporate outcome variance into plan ranking to select risk-sensitive execution pathways.',
+    taskDescription: 'Implement `risk_aware_plan_selection(plans, risk_tolerance=0.5)`. Score each plan as `plan[\'expected_return\'] - risk_tolerance * plan[\'variance\']`. Return \'name\' of plan with maximum score. Tie-break by \'name\' alphabetically. Return None if plans is empty.',
+    constraints: [
+      "plans is list of dicts with 'name', 'expected_return', 'variance'"
+],
+    hints: {
+      small: 'Sort plans by (-score, plan[\'name\']).',
+      strong: 'return plans[0][\'name\'] after sorting.',
+      concept: 'Risk-averse planning penalizes plans with unpredictable outcome variance.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Select low variance plan under risk aversion',
+        input: {
+            "plans": [
+              {
+                "name": "high_risk",
+                "expected_return": 100.0,
+                "variance": 50.0
+              },
+              {
+                "name": "steady",
+                "expected_return": 85.0,
+                "variance": 5.0
+              }
+            ],
+            "risk_tolerance": 0.5
+          },
+        expectedOutput: "steady",
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-24': {
+    id: 'planning-prob-24',
+    title: '#144. Parallel task scheduling (independent actions)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'find_independent_tasks',
+    functionSignature: 'find_independent_tasks(tasks: list[dict]) -> list[str]',
+    starterCode: `def find_independent_tasks(tasks):
+    """Find task names that share NO resource locks with any other task.
+    Each task has 'name' and 'resources' (list of strings).
+    Return sorted list of names.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Identify completely non-conflicting tasks that can safely execute in parallel without resource contention.',
+    taskDescription: 'Implement `find_independent_tasks(tasks)`. A task is independent if none of its resources appear in the resource sets of any other task in the list. Return sorted list of independent task names.',
+    constraints: [
+      "tasks is list of dicts with 'name' and 'resources'"
+],
+    hints: {
+      small: 'Count how many tasks share each resource.',
+      strong: 'A task is independent if every resource it uses is used by exactly 1 task total.',
+      concept: 'Resource disjointness guarantees race-condition free concurrency.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'One task has unique resource, others conflict',
+        input: {
+            "tasks": [
+              {
+                "name": "t1",
+                "resources": [
+                  "cpu",
+                  "db"
+                ]
+              },
+              {
+                "name": "t2",
+                "resources": [
+                  "db"
+                ]
+              },
+              {
+                "name": "t3",
+                "resources": [
+                  "gpu"
+                ]
+              }
+            ]
+          },
+        expectedOutput: [
+            "t3"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-25': {
+    id: 'planning-prob-25',
+    title: '#145. Sequential task scheduling (dependencies)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'schedule_sequential_dependencies',
+    functionSignature: 'schedule_sequential_dependencies(tasks: list[dict]) -> list[str]',
+    starterCode: `def schedule_sequential_dependencies(tasks):
+    """Sequence tasks so prerequisites always execute before dependents.
+    Each task has 'id' and 'prereq' (single prereq id, or None).
+    Return list of task ids in valid execution order.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Order single-predecessor dependent tasks into a linear execution schedule.',
+    taskDescription: 'Implement `schedule_sequential_dependencies(tasks)`. Each task has \'id\' and optional \'prereq\'. Order tasks sequentially such that if task B has prereq A, A appears before B in the output list. Tie-break ready tasks by id ascending.',
+    constraints: [
+      "Acyclic single-parent dependencies"
+],
+    hints: {
+      small: 'Treat as topological sort where tasks with prereq=None are ready initially.',
+      strong: 'Maintain in-degree count (0 or 1) and release dependents sequentially.',
+      concept: 'Sequential scheduling serializes multi-step dependency chains into deterministic execution sequences.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '2 sequential chains ordered',
+        input: {
+            "tasks": [
+              {
+                "id": "step2",
+                "prereq": "step1"
+              },
+              {
+                "id": "step1",
+                "prereq": null
+              },
+              {
+                "id": "clean",
+                "prereq": null
+              }
+            ]
+          },
+        expectedOutput: [
+            "clean",
+            "step1",
+            "step2"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-26': {
+    id: 'planning-prob-26',
+    title: '#146. Plan summarization (step compression)',
+    difficulty: 'easy',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '10–15 min',
+    functionName: 'compress_consecutive_steps',
+    functionSignature: 'compress_consecutive_steps(actions: list[str]) -> list[dict]',
+    starterCode: `def compress_consecutive_steps(actions):
+    """Run-length encode consecutive identical actions: [{'action': a, 'count': n}, ...].
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compress redundant runs of identical repeated actions using run-length encoding (RLE) to save context tokens.',
+    taskDescription: 'Implement `compress_consecutive_steps(actions)`. Group consecutive identical actions into a list of dicts: `{\'action\': action_name, \'count\': consecutive_count}`.',
+    constraints: [
+      "actions is list of strings"
+],
+    hints: {
+      small: 'Iterate through actions tracking current action and streak count.',
+      strong: 'When action changes or at end, append {\'action\': curr, \'count\': streak}.',
+      concept: 'Step compression shortens repetitive navigation or polling actions into succinct summaries.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Compress 3 steps forward and 2 turns',
+        input: {
+            "actions": [
+              "forward",
+              "forward",
+              "forward",
+              "turn",
+              "turn"
+            ]
+          },
+        expectedOutput: [
+            {
+              "action": "forward",
+              "count": 3
+            },
+            {
+              "action": "turn",
+              "count": 2
+            }
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'All distinct actions have count 1',
+        input: {
+            "actions": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+        expectedOutput: [
+            {
+              "action": "a",
+              "count": 1
+            },
+            {
+              "action": "b",
+              "count": 1
+            },
+            {
+              "action": "c",
+              "count": 1
+            }
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Empty actions returns empty list',
+        input: {
+            "actions": []
+          },
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-27': {
+    id: 'planning-prob-27',
+    title: '#147. Alternative plan generation (beam search)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'beam_search_step',
+    functionSignature: 'beam_search_step(candidates: list[dict], beam_width: int = 2) -> list[str]',
+    starterCode: `def beam_search_step(candidates, beam_width=2):
+    """Select top beam_width candidates sorted by score descending.
+    Tie-break by candidate 'plan_id' ascending. Return list of plan_ids.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Maintain the top-k most promising plan hypotheses across search iterations using beam search selection.',
+    taskDescription: 'Implement `beam_search_step(candidates, beam_width=2)`. Each candidate has \'plan_id\' and \'score\'. Return the top `beam_width` plan_ids sorted by (-score, plan_id).',
+    constraints: [
+      "beam_width >= 1",
+      "candidates is list of dicts"
+],
+    hints: {
+      small: 'Sort candidates by (-c[\'score\'], c[\'plan_id\']).',
+      strong: 'return [c[\'plan_id\'] for c in sorted_candidates[:beam_width]].',
+      concept: 'Beam search bounds combinatorial tree explosion by retaining only the highest-scoring candidate beams.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Select top 2 beams among 4 plans',
+        input: {
+            "candidates": [
+              {
+                "plan_id": "p1",
+                "score": 8.5
+              },
+              {
+                "plan_id": "p2",
+                "score": 9.2
+              },
+              {
+                "plan_id": "p3",
+                "score": 7.0
+              },
+              {
+                "plan_id": "p4",
+                "score": 9.2
+              }
+            ],
+            "beam_width": 2
+          },
+        expectedOutput: [
+            "p2",
+            "p4"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-28': {
+    id: 'planning-prob-28',
+    title: '#148. Replanning trigger detection',
+    difficulty: 'easy',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '10–15 min',
+    functionName: 'should_trigger_replan',
+    functionSignature: 'should_trigger_replan(expected_state: dict, actual_state: dict) -> bool',
+    starterCode: `def should_trigger_replan(expected_state, actual_state):
+    """Trigger replan (return True) if actual_state differs from expected_state on any key in expected_state.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Trigger reactive replanning when observed execution state deviates from projected model expectations.',
+    taskDescription: 'Implement `should_trigger_replan(expected_state, actual_state)`. Return True if any key in `expected_state` has a different value in `actual_state` (or is missing in actual_state). Otherwise return False.',
+    constraints: [
+      "expected_state and actual_state are dicts"
+],
+    hints: {
+      small: 'Iterate through expected_state key-value pairs.',
+      strong: 'If actual_state.get(k) != v: return True.',
+      concept: 'Execution monitoring triggers replanning immediately when environmental drift invalidates active plans.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Unexpected state change triggers replan',
+        input: {
+            "expected_state": {
+              "door": "open"
+            },
+            "actual_state": {
+              "door": "closed"
+            }
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'State matches perfectly, no replan',
+        input: {
+            "expected_state": {
+              "door": "open"
+            },
+            "actual_state": {
+              "door": "open",
+              "battery": 90
+            }
+          },
+        expectedOutput: false,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-29': {
+    id: 'planning-prob-29',
+    title: '#149. Goal prioritization (importance weighting)',
+    difficulty: 'easy',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '10–15 min',
+    functionName: 'prioritize_goals',
+    functionSignature: 'prioritize_goals(goals: list[dict]) -> list[str]',
+    starterCode: `def prioritize_goals(goals):
+    """Sort goals by priority score = importance * urgency descending.
+    Each goal has 'name', 'importance', 'urgency'. Tie-break by name ascending.
+    Return sorted list of goal names.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Rank competing goals based on weighted importance and urgency scores to resolve agent scheduling conflict.',
+    taskDescription: 'Implement `prioritize_goals(goals)`. Score each goal as `goal[\'importance\'] * goal[\'urgency\']`. Return list of goal \'name\'s sorted by (-score, name).',
+    constraints: [
+      "goals is list of dicts with 'name', 'importance', 'urgency'"
+],
+    hints: {
+      small: 'Score = g[\'importance\'] * g[\'urgency\'].',
+      strong: 'Sort key: (-score, g[\'name\']).',
+      concept: 'Eisenhower-matrix goal prioritization balances critical urgent tasks against foundational objectives.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'High urgency and importance ranked first',
+        input: {
+            "goals": [
+              {
+                "name": "patch_security",
+                "importance": 10.0,
+                "urgency": 10.0
+              },
+              {
+                "name": "refactor_css",
+                "importance": 2.0,
+                "urgency": 1.0
+              },
+              {
+                "name": "write_docs",
+                "importance": 8.0,
+                "urgency": 3.0
+              }
+            ]
+          },
+        expectedOutput: [
+            "patch_security",
+            "write_docs",
+            "refactor_css"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'planning-prob-30': {
+    id: 'planning-prob-30',
+    title: '#150. Plan execution monitoring (state diff)',
+    difficulty: 'medium',
+    topic: 'Agent Planning & Reasoning',
+    estimatedTime: '15–20 min',
+    functionName: 'state_diff_monitor',
+    functionSignature: 'state_diff_monitor(before_state: dict, after_state: dict) -> dict',
+    starterCode: `def state_diff_monitor(before_state, after_state):
+    """Compute state delta:
+    'added': sorted keys in after but not before,
+    'removed': sorted keys in before but not after,
+    'changed': sorted keys present in both with different values.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute discrete structural state differentials (added, removed, changed) across action execution boundaries.',
+    taskDescription: 'Implement `state_diff_monitor(before_state, after_state)`. Return `{\'added\': sorted(added_keys), \'removed\': sorted(removed_keys), \'changed\': sorted(changed_keys)}`.',
+    constraints: [
+      "before_state and after_state are dicts"
+],
+    hints: {
+      small: 'Use set differences on dict keys.',
+      strong: 'changed keys are in before & after where before[k] != after[k].',
+      concept: 'State diffing provides exact granular verification of unintended side-effects.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Added, removed, and changed keys detected',
+        input: {
+            "before_state": {
+              "count": 1,
+              "status": "idle",
+              "obsolete": true
+            },
+            "after_state": {
+              "count": 2,
+              "status": "idle",
+              "new_flag": true
+            }
+          },
+        expectedOutput: {
+            "added": [
+              "new_flag"
+            ],
+            "removed": [
+              "obsolete"
+            ],
+            "changed": [
+              "count"
+            ]
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Identical states have all empty diff lists',
+        input: {
+            "before_state": {
+              "x": 10
+            },
+            "after_state": {
+              "x": 10
+            }
+          },
+        expectedOutput: {
+            "added": [],
+            "removed": [],
+            "changed": []
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
