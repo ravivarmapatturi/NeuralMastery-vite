@@ -130334,6 +130334,1247 @@ def attention_entropy(attention_weights):
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'mean-squared-error': {
+    id: 'mean-squared-error',
+    title: 'Practice: Mean Squared Error From Scratch',
+    difficulty: 'easy',
+    topic: 'Machine Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'mse',
+    functionSignature: 'mse(y_true: list[float], y_pred: list[float]) -> float',
+    starterCode: `def mse(y_true, y_pred):
+    """Compute mean squared error between y_true and y_pred.
+    Raise ValueError if lengths differ or if empty.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Mean Squared Error from scratch and verify its numerical behavior on sample predictions.',
+    taskDescription: 'Implement `mse(y_true, y_pred)`. Return the average squared difference between true and predicted values. Raise `ValueError` if the lists have different lengths or are empty.',
+    constraints: [
+      "y_true and y_pred must have the same length",
+      "Raise ValueError on empty inputs or mismatched lengths",
+      "Return a float representing the mean squared error"
+],
+    hints: {
+      small: 'Iterate through pairs using zip(y_true, y_pred) and compute (yp - yt) ** 2.',
+      strong: 'Check len(y_true) != len(y_pred) and len(y_true) == 0 first, raising ValueError. Then return sum(squared_errors) / len(y_true).',
+      concept: 'MSE measures average squared deviations, heavily penalizing large outliers.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Exact match zero error',
+        input: {
+            "y_true": [
+              1.0,
+              2.0,
+              3.0
+            ],
+            "y_pred": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          },
+        expectedOutput: 0.0,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Constant offset of 1.0',
+        input: {
+            "y_true": [
+              1.0,
+              2.0,
+              3.0
+            ],
+            "y_pred": [
+              2.0,
+              3.0,
+              4.0
+            ]
+          },
+        expectedOutput: 1.0,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Mixed positive and negative values',
+        input: {
+            "y_true": [
+              10.0,
+              -5.0,
+              2.5
+            ],
+            "y_pred": [
+              12.0,
+              -3.0,
+              2.0
+            ]
+          },
+        expectedOutput: 2.75,
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Mismatched lengths raises ValueError',
+        input: {
+            "y_true": [
+              1.0,
+              2.0
+            ],
+            "y_pred": [
+              1.0
+            ]
+          },
+        expectError: 'ValueError',
+        hidden: true
+      },
+      {
+        id: 'tc5',
+        label: 'Empty input raises ValueError',
+        input: {
+            "y_true": [],
+            "y_pred": []
+          },
+        expectError: 'ValueError',
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'weighted-rmse': {
+    id: 'weighted-rmse',
+    title: 'Practice: Weighted RMSE',
+    difficulty: 'medium',
+    topic: 'Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'weighted_rmse',
+    functionSignature: 'weighted_rmse(y_true: list[float], y_pred: list[float], weights: list[float]) -> float',
+    starterCode: `def weighted_rmse(y_true, y_pred, weights):
+    """Compute weighted root-mean-squared error.
+    Raise ValueError if lengths do not match or if sum of weights is zero.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Weighted RMSE to penalize prediction errors differently across observation weights.',
+    taskDescription: 'Implement `weighted_rmse(y_true, y_pred, weights)`. Compute `sqrt(sum(w * (yp - yt)**2) / sum(w))`. Raise `ValueError` if lengths differ or weights sum to 0.',
+    constraints: [
+      "All three lists must have identical lengths",
+      "Weights must not sum to zero",
+      "Raise ValueError on mismatched lengths or zero weight sum"
+],
+    hints: {
+      small: 'Pair up yt, yp, w using zip, then compute w * (yp - yt)**2.',
+      strong: 'Verify len(y_true) == len(y_pred) == len(weights) and sum(weights) != 0 before computing the square root.',
+      concept: 'Weighting observations allows giving higher importance to critical items or downweighting noisy samples.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Uniform weights matches standard RMSE',
+        input: {
+            "y_true": [
+              1.0,
+              2.0
+            ],
+            "y_pred": [
+              2.0,
+              3.0
+            ],
+            "weights": [
+              1.0,
+              1.0
+            ]
+          },
+        expectedOutput: 1.0,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Heavy weight on second sample',
+        input: {
+            "y_true": [
+              0.0,
+              0.0
+            ],
+            "y_pred": [
+              1.0,
+              3.0
+            ],
+            "weights": [
+              1.0,
+              3.0
+            ]
+          },
+        expectedOutput: 2.645751,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Zero total weight raises ValueError',
+        input: {
+            "y_true": [
+              1.0,
+              2.0
+            ],
+            "y_pred": [
+              1.0,
+              2.0
+            ],
+            "weights": [
+              -1.0,
+              1.0
+            ]
+          },
+        expectError: 'ValueError',
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Mismatched length raises ValueError',
+        input: {
+            "y_true": [
+              1.0
+            ],
+            "y_pred": [
+              1.0,
+              2.0
+            ],
+            "weights": [
+              1.0
+            ]
+          },
+        expectError: 'ValueError',
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'gradient-descent-step': {
+    id: 'gradient-descent-step',
+    title: 'Practice: One Gradient Descent Step for Linear Regression',
+    difficulty: 'medium',
+    topic: 'Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'gradient_descent_step',
+    functionSignature: 'gradient_descent_step(x: list[float], y: list[float], w: float, b: float, alpha: float) -> tuple[float, float]',
+    starterCode: `def gradient_descent_step(x, y, w, b, alpha):
+    """Compute one gradient descent step for univariate linear regression.
+    Return (new_w, new_b).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Derive and apply the exact full-batch gradient descent update for univariate linear regression parameters w and b.',
+    taskDescription: 'Implement `gradient_descent_step(x, y, w, b, alpha)`. For univariate linear regression y_hat = wx + b, compute dw = (2/n) * sum((y_hat_i - y_i) * x_i) and db = (2/n) * sum(y_hat_i - y_i), then return `[w - alpha * dw, b - alpha * db]`.',
+    constraints: [
+      "x and y must be lists of equal length n >= 1",
+      "alpha > 0",
+      "Return list or tuple of two floats [new_w, new_b]"
+],
+    hints: {
+      small: 'Compute predicted y_hat = [w * xi + b for xi in x], then errors = [yh - yi for yh, yi in zip(y_hat, y)].',
+      strong: 'dw = (2 / n) * sum(e * xi for e, xi in zip(errors, x)) and db = (2 / n) * sum(errors). Then subtract alpha * grad.',
+      concept: 'Full batch gradient descent computes the average gradient across all n training instances before updating.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Already at optimal parameters',
+        input: {
+            "x": [
+              1.0,
+              2.0,
+              3.0
+            ],
+            "y": [
+              2.0,
+              4.0,
+              6.0
+            ],
+            "w": 2.0,
+            "b": 0.0,
+            "alpha": 0.01
+          },
+        expectedOutput: [
+            2.0,
+            0.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Single step with initial zero weights',
+        input: {
+            "x": [
+              1.0,
+              2.0
+            ],
+            "y": [
+              3.0,
+              5.0
+            ],
+            "w": 0.0,
+            "b": 0.0,
+            "alpha": 0.1
+          },
+        expectedOutput: [
+            1.3,
+            0.8
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Negative slope scenario',
+        input: {
+            "x": [
+              -1.0,
+              1.0
+            ],
+            "y": [
+              2.0,
+              -2.0
+            ],
+            "w": 0.0,
+            "b": 1.0,
+            "alpha": 0.05
+          },
+        expectedOutput: [
+            -0.2,
+            0.9
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'kmeans-assignment-step': {
+    id: 'kmeans-assignment-step',
+    title: 'Practice: K-Means, One Assignment Step',
+    difficulty: 'medium',
+    topic: 'Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'kmeans_assignment_step',
+    functionSignature: 'kmeans_assignment_step(points: list[list[float]], centroids: list[list[float]]) -> list[int]',
+    starterCode: `def kmeans_assignment_step(points, centroids):
+    """Assign each point to its nearest centroid by squared Euclidean distance.
+    Break ties to the lowest centroid index.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement the assignment phase of K-Means clustering by finding the nearest centroid for every data point.',
+    taskDescription: 'Implement `kmeans_assignment_step(points, centroids)`. Return a list of cluster indices (0 to k-1) for each point based on minimal squared Euclidean distance.',
+    constraints: [
+      "Points and centroids share dimensionality d >= 1",
+      "Centroids list is non-empty",
+      "Ties must be broken in favor of the lower centroid index"
+],
+    hints: {
+      small: 'For each point, calculate the squared distance sum((pi - ci)**2 for pi, ci in zip(p, c)) for each centroid c.',
+      strong: 'Use min() with a key or distances.index(min(distances)) to naturally break ties by the lowest index.',
+      concept: 'The assignment step partitions the feature space into Voronoi cells around each centroid.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Points clearly belonging to distinct centroids',
+        input: {
+            "points": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                10.0,
+                10.0
+              ]
+            ],
+            "centroids": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                9.0,
+                9.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            0,
+            1
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Tie-breaking to lower centroid index',
+        input: {
+            "points": [
+              [
+                5.0,
+                5.0
+              ]
+            ],
+            "centroids": [
+              [
+                0.0,
+                5.0
+              ],
+              [
+                10.0,
+                5.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: '1D points clustering',
+        input: {
+            "points": [
+              [
+                1.0
+              ],
+              [
+                2.0
+              ],
+              [
+                8.0
+              ],
+              [
+                9.0
+              ]
+            ],
+            "centroids": [
+              [
+                1.5
+              ],
+              [
+                8.5
+              ]
+            ]
+          },
+        expectedOutput: [
+            0,
+            0,
+            1,
+            1
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'kmeans-update-step': {
+    id: 'kmeans-update-step',
+    title: 'Practice: K-Means, Centroid Update Step',
+    difficulty: 'medium',
+    topic: 'Machine Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'kmeans_update_step',
+    functionSignature: 'kmeans_update_step(points: list[list[float]], assignments: list[int], k: int, old_centroids: list[list[float]]) -> list[list[float]]',
+    starterCode: `def kmeans_update_step(points, assignments, k, old_centroids):
+    """Update centroids to the mean of assigned points.
+    If a cluster is empty, keep its old centroid position.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement the centroid update phase of K-Means clustering, correctly handling empty clusters without dividing by zero.',
+    taskDescription: 'Implement `kmeans_update_step(points, assignments, k, old_centroids)`. Each new centroid is the mean of points assigned to it. If no points are assigned to cluster j, retain `old_centroids[j]`.',
+    constraints: [
+      "k >= 1",
+      "len(old_centroids) == k",
+      "assignments contains integers from 0 to k-1",
+      "If cluster j has count 0, new centroid j is old_centroids[j]"
+],
+    hints: {
+      small: 'Maintain sum accumulators and count counters for each of the k clusters.',
+      strong: 'When count[j] == 0, append old_centroids[j]; otherwise divide each coordinate sum by count[j].',
+      concept: 'Empty cluster handling prevents NaN / ZeroDivisionError when centroids lose all members during iteration.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Two non-empty clusters',
+        input: {
+            "points": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                3.0,
+                3.0
+              ],
+              [
+                10.0,
+                10.0
+              ]
+            ],
+            "assignments": [
+              0,
+              0,
+              1
+            ],
+            "k": 2,
+            "old_centroids": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                5.0,
+                5.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              2.0,
+              2.0
+            ],
+            [
+              10.0,
+              10.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'One cluster receives no points',
+        input: {
+            "points": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                3.0,
+                4.0
+              ]
+            ],
+            "assignments": [
+              0,
+              0
+            ],
+            "k": 2,
+            "old_centroids": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                9.0,
+                9.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              2.0,
+              3.0
+            ],
+            [
+              9.0,
+              9.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single cluster with all points',
+        input: {
+            "points": [
+              [
+                2.0
+              ],
+              [
+                4.0
+              ],
+              [
+                6.0
+              ]
+            ],
+            "assignments": [
+              0,
+              0,
+              0
+            ],
+            "k": 1,
+            "old_centroids": [
+              [
+                0.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              4.0
+            ]
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'sigmoid-derivative': {
+    id: 'sigmoid-derivative',
+    title: 'Practice: Sigmoid Derivative (Vectorized, Numerically Stable)',
+    difficulty: 'medium',
+    topic: 'Deep Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'sigmoid_derivative',
+    functionSignature: 'sigmoid_derivative(z_list: list[float]) -> list[float]',
+    starterCode: `def sigmoid_derivative(z_list):
+    """Compute d(sigmoid(z))/dz for each z in z_list using a numerically stable sigmoid.
+    Return list of floats.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement the derivative of the sigmoid activation function without overflow or underflow even at extreme values.',
+    taskDescription: 'Implement `sigmoid_derivative(z_list)`. Return `[s * (1 - s) for s in sigmoid(z)]` where sigmoid is computed stably (using `1/(1 + exp(-z))` for z >= 0 and `exp(z)/(1 + exp(z))` for z < 0).',
+    constraints: [
+      "Must handle large positive and negative values (e.g. +/- 1000) without OverflowError",
+      "Return list of floats rounded to 6 decimal places"
+],
+    hints: {
+      small: 'For z < 0, computing exp(-z) can overflow. Instead rewrite as exp(z) / (1 + exp(z)).',
+      strong: 'Once stable sigmoid s is computed, the derivative is simply s * (1.0 - s).',
+      concept: 'The sigmoid derivative peaks at z=0 (value 0.25) and decays exponentially to 0 for large |z|, which leads to the vanishing gradient problem.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard values centered around 0',
+        input: {
+            "z_list": [
+              0.0,
+              1.0,
+              -1.0
+            ]
+          },
+        expectedOutput: [
+            0.25,
+            0.196612,
+            0.196612
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Extreme values without overflow',
+        input: {
+            "z_list": [
+              1000.0,
+              -1000.0
+            ]
+          },
+        expectedOutput: [
+            0.0,
+            0.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Empty input list',
+        input: {
+            "z_list": []
+          },
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'softmax-gradient': {
+    id: 'softmax-gradient',
+    title: 'Practice: Softmax Gradient (Vector-Jacobian Product)',
+    difficulty: 'hard',
+    topic: 'Deep Learning',
+    estimatedTime: '20–25 min',
+    functionName: 'softmax_gradient',
+    functionSignature: 'softmax_gradient(s: list[float], grad_output: list[float]) -> list[float]',
+    starterCode: `def softmax_gradient(s, grad_output):
+    """Compute the vector-Jacobian product for softmax in O(n) time.
+    s is the softmax probability vector, grad_output is dL/ds.
+    Return dL/dz.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute the softmax backpropagation gradient efficiently in O(n) time without constructing the full n x n Jacobian matrix.',
+    taskDescription: 'Implement `softmax_gradient(s, grad_output)`. Given softmax probabilities s and upstream gradient g, compute the vector-Jacobian product: (J^T g)_i = s_i * (g_i - sum_j s_j * g_j) in O(n) time.',
+    constraints: [
+      "len(s) == len(grad_output) >= 1",
+      "s is a valid probability distribution",
+      "O(n) time complexity required"
+],
+    hints: {
+      small: 'Compute the inner product dot = sum(si * gi for si, gi in zip(s, grad_output)) first.',
+      strong: 'Then the i-th gradient element is simply s[i] * (grad_output[i] - dot).',
+      concept: 'Avoiding the O(n^2) Jacobian matrix by factoring out the common dot product makes softmax backward passes fast and memory-efficient.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Uniform distribution with symmetric gradients',
+        input: {
+            "s": [
+              0.5,
+              0.5
+            ],
+            "grad_output": [
+              1.0,
+              -1.0
+            ]
+          },
+        expectedOutput: [
+            0.5,
+            -0.5
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Peaked distribution',
+        input: {
+            "s": [
+              0.8,
+              0.1,
+              0.1
+            ],
+            "grad_output": [
+              0.5,
+              -0.2,
+              -0.3
+            ]
+          },
+        expectedOutput: [
+            0.12,
+            -0.055,
+            -0.065
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single element trivial case',
+        input: {
+            "s": [
+              1.0
+            ],
+            "grad_output": [
+              2.5
+            ]
+          },
+        expectedOutput: [
+            0.0
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rms-normalization': {
+    id: 'rms-normalization',
+    title: 'Practice: RMS Normalization From Scratch',
+    difficulty: 'easy',
+    topic: 'Deep Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'rms_norm',
+    functionSignature: 'rms_norm(x: list[list[float]], gamma: list[float], eps: float = 1e-6) -> list[list[float]]',
+    starterCode: `import numpy as np
+
+def rms_norm(x, gamma, eps=1e-6):
+    """Compute RMS Normalization across the feature dimension.
+    x: 2D array or list of lists (batch_size, d)
+    gamma: 1D scale parameters (d,)
+    Return normalized output as list of lists.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Root Mean Square Normalization (RMSNorm), the computationally efficient LayerNorm alternative used in modern LLMs.',
+    taskDescription: 'Implement `rms_norm(x, gamma, eps=1e-6)`. For each row x_i, compute rms = sqrt(mean(x_i^2) + eps), and return (x / rms) * gamma.',
+    constraints: [
+      "x has shape (N, D)",
+      "gamma has shape (D,)",
+      "eps > 0 (defaults to 1e-6)",
+      "Returns list of lists or numpy array"
+],
+    hints: {
+      small: 'Use np.mean(x**2, axis=-1, keepdims=True) to compute mean squared value for each row.',
+      strong: 'rms = np.sqrt(mean_sq + eps), then normalize: (x / rms) * gamma.',
+      concept: 'RMSNorm simplifies LayerNorm by eliminating the mean subtraction step, saving ~7% training compute with zero loss in quality.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Identity scaling gamma = 1s',
+        input: {
+            "x": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                2.0,
+                2.0
+              ]
+            ],
+            "gamma": [
+              1.0,
+              1.0
+            ]
+          },
+        expectedOutput: [
+            [
+              1.0,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Non-uniform features and scaling',
+        input: {
+            "x": [
+              [
+                3.0,
+                4.0
+              ]
+            ],
+            "gamma": [
+              0.5,
+              2.0
+            ]
+          },
+        expectedOutput: [
+            [
+              0.424264,
+              2.262742
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Zero vector input with epsilon stabilization',
+        input: {
+            "x": [
+              [
+                0.0,
+                0.0
+              ]
+            ],
+            "gamma": [
+              1.0,
+              1.0
+            ]
+          },
+        expectedOutput: [
+            [
+              0.0,
+              0.0
+            ]
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'layer-normalization': {
+    id: 'layer-normalization',
+    title: 'Practice: Layer Normalization From Scratch',
+    difficulty: 'easy',
+    topic: 'Deep Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'layer_norm',
+    functionSignature: 'layer_norm(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]',
+    starterCode: `import numpy as np
+
+def layer_norm(x, gamma, beta, eps=1e-5):
+    """Compute Layer Normalization across the feature dimension.
+    Return normalized output as list of lists.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Layer Normalization from scratch for 2D activations with learnable affine parameters.',
+    taskDescription: 'Implement `layer_norm(x, gamma, beta, eps=1e-5)`. Normalize each sample across its features: (x - mean) / sqrt(var + eps) * gamma + beta.',
+    constraints: [
+      "x has shape (N, D)",
+      "gamma and beta have shape (D,)",
+      "eps > 0 (defaults to 1e-5)"
+],
+    hints: {
+      small: 'Compute mean and variance across axis=-1 with keepdims=True.',
+      strong: 'x_norm = (x - mean) / np.sqrt(var + eps), then multiply by gamma and add beta.',
+      concept: 'LayerNorm normalizes across channels/features independently per example, making it invariant to batch size.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard 2D sample',
+        input: {
+            "x": [
+              [
+                1.0,
+                2.0,
+                3.0
+              ]
+            ],
+            "gamma": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "beta": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+        expectedOutput: [
+            [
+              -1.224736,
+              0.0,
+              1.224736
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Custom affine scale and shift',
+        input: {
+            "x": [
+              [
+                2.0,
+                4.0
+              ]
+            ],
+            "gamma": [
+              2.0,
+              0.5
+            ],
+            "beta": [
+              1.0,
+              -1.0
+            ]
+          },
+        expectedOutput: [
+            [
+              -0.99999,
+              -0.500002
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Constant values across features',
+        input: {
+            "x": [
+              [
+                5.0,
+                5.0,
+                5.0
+              ]
+            ],
+            "gamma": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "beta": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+        expectedOutput: [
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'batch-normalization': {
+    id: 'batch-normalization',
+    title: 'Practice: Batch Normalization From Scratch',
+    difficulty: 'easy',
+    topic: 'Deep Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'batch_norm',
+    functionSignature: 'batch_norm(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]',
+    starterCode: `import numpy as np
+
+def batch_norm(x, gamma, beta, eps=1e-5):
+    """Compute Batch Normalization across the batch dimension (axis 0).
+    Return normalized output as list of lists.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Batch Normalization from scratch, standardizing features across the mini-batch.',
+    taskDescription: 'Implement `batch_norm(x, gamma, beta, eps=1e-5)`. Normalize each feature across the batch dimension (axis 0): (x - mean) / sqrt(var + eps) * gamma + beta.',
+    constraints: [
+      "x has shape (N, D) where N >= 2",
+      "gamma and beta have shape (D,)",
+      "eps > 0 (defaults to 1e-5)"
+],
+    hints: {
+      small: 'Compute mean and variance across axis=0 with keepdims=True.',
+      strong: 'Unlike LayerNorm which normalizes along rows (features), BatchNorm normalizes along columns (samples).',
+      concept: 'BatchNorm reduces internal covariate shift during training, allowing higher learning rates.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard batch of 3 samples across 2 features',
+        input: {
+            "x": [
+              [
+                1.0,
+                10.0
+              ],
+              [
+                2.0,
+                20.0
+              ],
+              [
+                3.0,
+                30.0
+              ]
+            ],
+            "gamma": [
+              1.0,
+              1.0
+            ],
+            "beta": [
+              0.0,
+              0.0
+            ]
+          },
+        expectedOutput: [
+            [
+              -1.224736,
+              -1.224745
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              1.224736,
+              1.224745
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Non-zero affine parameters',
+        input: {
+            "x": [
+              [
+                0.0,
+                2.0
+              ],
+              [
+                4.0,
+                6.0
+              ]
+            ],
+            "gamma": [
+              0.5,
+              2.0
+            ],
+            "beta": [
+              1.0,
+              -0.5
+            ]
+          },
+        expectedOutput: [
+            [
+              0.500001,
+              -2.499998
+            ],
+            [
+              1.499999,
+              1.499998
+            ]
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'categorical-cross-entropy': {
+    id: 'categorical-cross-entropy',
+    title: 'Practice: Categorical Cross-Entropy Loss From Scratch',
+    difficulty: 'easy',
+    topic: 'Deep Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'categorical_cross_entropy',
+    functionSignature: 'categorical_cross_entropy(y_pred: list[list[float]], y_true_idx: list[int], eps: float = 1e-12) -> float',
+    starterCode: `import numpy as np
+
+def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
+    """Compute mean categorical cross-entropy loss.
+    y_pred: (N, C) probability distributions
+    y_true_idx: (N,) true class indices
+    Return scalar float loss.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement numerically safe categorical cross-entropy loss for multi-class classification and language modeling.',
+    taskDescription: 'Implement `categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12)`. Compute -mean(log(clip(y_pred[i, y_true_idx[i]], eps, 1.0))).',
+    constraints: [
+      "y_pred has shape (N, C)",
+      "y_true_idx has shape (N,) with integers 0 <= idx < C",
+      "eps prevents log(0) domain errors"
+],
+    hints: {
+      small: 'Index into the probabilities assigned to the true classes using advanced indexing.',
+      strong: 'p = np.clip(y_pred[np.arange(n), y_true_idx], eps, 1.0), then return -np.mean(np.log(p)).',
+      concept: 'Cross-entropy loss quantifies the surprise of observing the true class under the predicted distribution.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Perfect prediction with zero loss',
+        input: {
+            "y_pred": [
+              [
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0
+              ]
+            ],
+            "y_true_idx": [
+              0,
+              1
+            ]
+          },
+        expectedOutput: -0.0,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Uniform prediction loss log(2)',
+        input: {
+            "y_pred": [
+              [
+                0.5,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ]
+            ],
+            "y_true_idx": [
+              0,
+              1
+            ]
+          },
+        expectedOutput: 0.693147,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Near-zero probability clipped by epsilon',
+        input: {
+            "y_pred": [
+              [
+                0.0,
+                1.0
+              ]
+            ],
+            "y_true_idx": [
+              0
+            ]
+          },
+        expectedOutput: 27.631021,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
