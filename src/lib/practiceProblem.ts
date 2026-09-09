@@ -136673,6 +136673,2341 @@ def right_side_view(root):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'agent-loop-prob-1': {
+    id: 'agent-loop-prob-1',
+    title: '#091. Minimal Agent Loop',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'minimal_agent_loop',
+    functionSignature: 'minimal_agent_loop(initial_state: dict, max_steps: int = 5) -> dict',
+    starterCode: `def minimal_agent_loop(initial_state, max_steps=5):
+    """Execute minimal agent step loop until goal is reached or max_steps exceeded.
+    Return final state dict with 'steps_taken' and 'status' ('completed' or 'max_steps_reached').
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement the core iterative control loop driving autonomous AI agents from initial prompt to goal completion.',
+    taskDescription: 'Implement `minimal_agent_loop(initial_state, max_steps=5)`. At each step, if `state.get(\'goal_reached\')` is True, stop with status \'completed\'. Otherwise increment \'step_count\' until max_steps is reached.',
+    constraints: [
+      "max_steps >= 1",
+      "Returns modified state dictionary"
+],
+    hints: {
+      small: 'Iterate up to max_steps in a while or for loop.',
+      strong: 'Check state.get(\'goal_reached\') before and after each simulated step.',
+      concept: 'The fundamental agent loop continuously cycles between perceiving state, taking action, and testing termination conditions.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Goal reached on second step',
+        input: {
+            "initial_state": {
+              "target_steps": 2,
+              "goal_reached": false
+            },
+            "max_steps": 5
+          },
+        expectedOutput: {
+            "target_steps": 2,
+            "goal_reached": true,
+            "step_count": 2,
+            "steps_taken": 2,
+            "status": "completed"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Goal already reached before execution',
+        input: {
+            "initial_state": {
+              "goal_reached": true
+            },
+            "max_steps": 3
+          },
+        expectedOutput: {
+            "goal_reached": true,
+            "steps_taken": 0,
+            "status": "completed"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Max steps reached without achieving goal',
+        input: {
+            "initial_state": {
+              "target_steps": 10,
+              "goal_reached": false
+            },
+            "max_steps": 2
+          },
+        expectedOutput: {
+            "target_steps": 10,
+            "goal_reached": false,
+            "step_count": 2,
+            "steps_taken": 2,
+            "status": "max_steps_reached"
+          },
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-2': {
+    id: 'agent-loop-prob-2',
+    title: '#092. ReAct Loop From Scratch',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'react_loop_from_scratch',
+    functionSignature: 'react_loop_from_scratch(thought: str, action: str, observation: str) -> dict',
+    starterCode: `def react_loop_from_scratch(thought, action, observation):
+    """Format and validate a single ReAct iteration step.
+    Return {'thought': thought, 'action': action, 'observation': observation, 'valid': bool}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Parse and structure single-iteration ReAct (Reason + Act) loop trajectories into validated execution schemas.',
+    taskDescription: 'Implement `react_loop_from_scratch(thought, action, observation)`. Format the ReAct step dictionary. Set `valid = True` only if thought, action, and observation are non-empty strings.',
+    constraints: [
+      "Inputs are strings",
+      "valid is boolean"
+],
+    hints: {
+      small: 'Check that each of thought, action, observation is non-empty after stripping whitespace.',
+      strong: 'valid = bool(thought.strip() and action.strip() and observation.strip()).',
+      concept: 'ReAct interleaves reasoning traces with task-specific actions for synergistic decision-making.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Valid complete ReAct step',
+        input: {
+            "thought": "Search for user record",
+            "action": "search_db(id=42)",
+            "observation": "Found user record"
+          },
+        expectedOutput: {
+            "thought": "Search for user record",
+            "action": "search_db(id=42)",
+            "observation": "Found user record",
+            "valid": true
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Missing observation invalidates step',
+        input: {
+            "thought": "Call API",
+            "action": "fetch()",
+            "observation": ""
+          },
+        expectedOutput: {
+            "thought": "Call API",
+            "action": "fetch()",
+            "observation": "",
+            "valid": false
+          },
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Whitespace only fields invalid',
+        input: {
+            "thought": "   ",
+            "action": "calc()",
+            "observation": "100"
+          },
+        expectedOutput: {
+            "thought": "",
+            "action": "calc()",
+            "observation": "100",
+            "valid": false
+          },
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-3': {
+    id: 'agent-loop-prob-3',
+    title: '#093. Agent Step Budget',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'agent_step_budget',
+    functionSignature: 'agent_step_budget(steps_taken: int, budget: int) -> dict',
+    starterCode: `def agent_step_budget(steps_taken, budget):
+    """Track remaining agent steps against budget.
+    Return {'remaining': int, 'exhausted': bool, 'pct_used': float}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Track and enforce execution step limits to guard autonomous agents against runaways and infinite loops.',
+    taskDescription: 'Implement `agent_step_budget(steps_taken, budget)`. Compute remaining steps `max(0, budget - steps_taken)`, `exhausted = (steps_taken >= budget)`, and `pct_used = min(1.0, steps_taken / budget)` rounded to 4 decimal places.',
+    constraints: [
+      "budget > 0",
+      "steps_taken >= 0"
+],
+    hints: {
+      small: 'Remaining steps cannot be negative.',
+      strong: 'pct_used = round(min(1.0, steps_taken / budget), 4).',
+      concept: 'Hard step budgets protect against non-terminating agent cycles and runaway token costs.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Halfway through step budget',
+        input: {
+            "steps_taken": 5,
+            "budget": 10
+          },
+        expectedOutput: {
+            "remaining": 5,
+            "exhausted": false,
+            "pct_used": 0.5
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Exact budget exhaustion',
+        input: {
+            "steps_taken": 10,
+            "budget": 10
+          },
+        expectedOutput: {
+            "remaining": 0,
+            "exhausted": true,
+            "pct_used": 1.0
+          },
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Exceeded budget clamped remaining to 0',
+        input: {
+            "steps_taken": 15,
+            "budget": 10
+          },
+        expectedOutput: {
+            "remaining": 0,
+            "exhausted": true,
+            "pct_used": 1.0
+          },
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-4': {
+    id: 'agent-loop-prob-4',
+    title: '#094. Loop Termination by No Progress',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'loop_termination_by_no_progress',
+    functionSignature: 'loop_termination_by_no_progress(state_history: list[str], patience: int = 3) -> bool',
+    starterCode: `def loop_termination_by_no_progress(state_history, patience=3):
+    """Detect if the last \`patience\` states are identical, indicating stagnation.
+    Return True if loop should terminate due to zero progress.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement stagnation detection by monitoring state progression history across a configurable patience window.',
+    taskDescription: 'Implement `loop_termination_by_no_progress(state_history, patience=3)`. If len(state_history) < patience, return False. Return True if the last `patience` elements of state_history are all identical.',
+    constraints: [
+      "patience >= 1",
+      "state_history is list of strings"
+],
+    hints: {
+      small: 'Examine the tail of state_history: state_history[-patience:].',
+      strong: 'Check if len(set(state_history[-patience:])) == 1.',
+      concept: 'Early termination on plateaued progress halts agents when they enter repetitive dead ends.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Stagnant identical states for 3 steps',
+        input: {
+            "state_history": [
+              "state_A",
+              "state_B",
+              "state_B",
+              "state_B"
+            ],
+            "patience": 3
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Progress made on recent step',
+        input: {
+            "state_history": [
+              "state_A",
+              "state_B",
+              "state_B",
+              "state_C"
+            ],
+            "patience": 3
+          },
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'History shorter than patience threshold',
+        input: {
+            "state_history": [
+              "state_X",
+              "state_X"
+            ],
+            "patience": 3
+          },
+        expectedOutput: false,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-5': {
+    id: 'agent-loop-prob-5',
+    title: '#095. Repeated Tool Call Detector',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'repeated_tool_call_detector',
+    functionSignature: 'repeated_tool_call_detector(tool_calls: list[dict], threshold: int = 3) -> bool',
+    starterCode: `def repeated_tool_call_detector(tool_calls, threshold=3):
+    """Detect if identical tool name and arguments are called consecutively >= threshold times.
+    Return True if repeated loop detected.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Detect degenerate tool repetition loops where an agent calls the same tool with identical parameters repeatedly.',
+    taskDescription: 'Implement `repeated_tool_call_detector(tool_calls, threshold=3)`. Each tool call is `{\'name\': str, \'args\': dict}`. Return True if any tool call with identical name and args is repeated consecutively at least `threshold` times.',
+    constraints: [
+      "threshold >= 2",
+      "tool_calls is list of dicts"
+],
+    hints: {
+      small: 'Serialize args to a canonical string (e.g. json.dumps(args, sort_keys=True)) for comparison.',
+      strong: 'Track current_streak of identical serialized calls. If current_streak >= threshold, return True.',
+      concept: 'Repetitive tool thrashing occurs when models get stuck in unproductive error-response feedback cycles.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Tool called with identical args 3 times consecutively',
+        input: {
+            "tool_calls": [
+              {
+                "name": "fetch",
+                "args": {
+                  "url": "http://api"
+                }
+              },
+              {
+                "name": "fetch",
+                "args": {
+                  "url": "http://api"
+                }
+              },
+              {
+                "name": "fetch",
+                "args": {
+                  "url": "http://api"
+                }
+              }
+            ],
+            "threshold": 3
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Arguments vary across calls',
+        input: {
+            "tool_calls": [
+              {
+                "name": "fetch",
+                "args": {
+                  "page": 1
+                }
+              },
+              {
+                "name": "fetch",
+                "args": {
+                  "page": 2
+                }
+              },
+              {
+                "name": "fetch",
+                "args": {
+                  "page": 3
+                }
+              }
+            ],
+            "threshold": 3
+          },
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Insufficient total calls',
+        input: {
+            "tool_calls": [
+              {
+                "name": "search",
+                "args": {}
+              }
+            ],
+            "threshold": 3
+          },
+        expectedOutput: false,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-6': {
+    id: 'agent-loop-prob-6',
+    title: '#096. Agent Loop Replay',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'agent_loop_replay',
+    functionSignature: 'agent_loop_replay(trace_events: list[dict]) -> dict',
+    starterCode: `def agent_loop_replay(trace_events):
+    """Replay execution trace events to reconstruct final state.
+    Events have 'type' ('set', 'add', 'clear') and 'key', 'val'.
+    Return reconstructed state dict.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Reconstruct and verify agent state by replaying deterministic execution logs event by event.',
+    taskDescription: 'Implement `agent_loop_replay(trace_events)`. Process events in sequence: \'set\' assigns state[key] = val, \'add\' adds val to numeric state[key], \'clear\' resets state to {}.',
+    constraints: [
+      "trace_events is list of dicts"
+],
+    hints: {
+      small: 'Initialize empty state = {} and process events in index order.',
+      strong: 'Handle event[\'type\']: \'set\', \'add\', and \'clear\'.',
+      concept: 'Event sourcing allows deterministic debugging, time-travel evaluation, and offline agent auditing.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Set and add operations replay',
+        input: {
+            "trace_events": [
+              {
+                "type": "set",
+                "key": "status",
+                "val": "active"
+              },
+              {
+                "type": "set",
+                "key": "tokens",
+                "val": 100
+              },
+              {
+                "type": "add",
+                "key": "tokens",
+                "val": 50
+              }
+            ]
+          },
+        expectedOutput: {
+            "status": "active",
+            "tokens": 150
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Clear event resets state',
+        input: {
+            "trace_events": [
+              {
+                "type": "set",
+                "key": "x",
+                "val": 10
+              },
+              {
+                "type": "clear"
+              },
+              {
+                "type": "set",
+                "key": "y",
+                "val": 20
+              }
+            ]
+          },
+        expectedOutput: {
+            "y": 20
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-7': {
+    id: 'agent-loop-prob-7',
+    title: '#097. Deterministic Replay',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'deterministic_replay',
+    functionSignature: 'deterministic_replay(event_log: list[dict], seed: int) -> bool',
+    starterCode: `def deterministic_replay(event_log, seed):
+    """Verify that event sequence has monotonically non-decreasing timestamps and valid checksum.
+    Return True if valid replay log, False otherwise.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Validate deterministic execution invariants (strictly ordered timestamps and seed verification) across recorded agent logs.',
+    taskDescription: 'Implement `deterministic_replay(event_log, seed)`. Return True if event timestamps are monotonically non-decreasing and seed > 0. If event_log is empty, return seed > 0.',
+    constraints: [
+      "seed is integer",
+      "event_log is list of dicts with 'timestamp'"
+],
+    hints: {
+      small: 'Check seed > 0 first.',
+      strong: 'Verify for i in range(1, len(event_log)): event_log[i][\'timestamp\'] >= event_log[i-1][\'timestamp\'].',
+      concept: 'Deterministic replay verification ensures trace files represent realistic causal executions.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Valid chronological events',
+        input: {
+            "event_log": [
+              {
+                "timestamp": 100
+              },
+              {
+                "timestamp": 105
+              },
+              {
+                "timestamp": 120
+              }
+            ],
+            "seed": 42
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Invalid out-of-order timestamp',
+        input: {
+            "event_log": [
+              {
+                "timestamp": 200
+              },
+              {
+                "timestamp": 150
+              }
+            ],
+            "seed": 42
+          },
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Invalid non-positive seed',
+        input: {
+            "event_log": [
+              {
+                "timestamp": 100
+              }
+            ],
+            "seed": 0
+          },
+        expectedOutput: false,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-8': {
+    id: 'agent-loop-prob-8',
+    title: '#098. Tool Result Truncation',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'tool_result_truncation',
+    functionSignature: 'tool_result_truncation(result_str: str, max_chars: int = 1000) -> str',
+    starterCode: `def tool_result_truncation(result_str, max_chars=1000):
+    """Truncate tool output if it exceeds max_chars, retaining head and tail with notice.
+    Return formatted string.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Truncate massive tool execution outputs to protect LLM context windows while retaining critical head and tail content.',
+    taskDescription: 'Implement `tool_result_truncation(result_str, max_chars=1000)`. If len(result_str) <= max_chars, return result_str. Otherwise split budget equally between head and tail: result_str[:half] + f\'\n... [truncated {truncated_count} chars] ...\n\' + result_str[-half:].',
+    constraints: [
+      "max_chars >= 20",
+      "result_str is string"
+],
+    hints: {
+      small: 'half = max_chars // 2.',
+      strong: 'truncated_count = len(result_str) - 2 * half.',
+      concept: 'Preserving output beginnings and ends ensures status codes, schemas, and summary conclusions remain visible to the agent.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'String under budget returned untouched',
+        input: {
+            "result_str": "Short status output",
+            "max_chars": 50
+          },
+        expectedOutput: "Short status output",
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Long string truncated with middle notice',
+        input: {
+            "result_str": "START_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx_END",
+            "max_chars": 20
+          },
+        expectedOutput: "START_xxxx\n... [truncated 90 chars] ...\nxxxxxx_END",
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-9': {
+    id: 'agent-loop-prob-9',
+    title: '#099. Agent State Recovery',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'agent_state_recovery',
+    functionSignature: 'agent_state_recovery(checkpoint: dict, error_message: str) -> dict',
+    starterCode: `def agent_state_recovery(checkpoint, error_message):
+    """Recover agent state from checkpoint upon failure.
+    Return recovered state with 'recovered': True and 'last_error': error_message.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Roll back corrupted agent memory to the most recent healthy checkpoint upon fatal tool execution exceptions.',
+    taskDescription: 'Implement `agent_state_recovery(checkpoint, error_message)`. Deep-copy checkpoint dictionary, increment \'recovery_count\' by 1, set \'recovered\': True, and record \'last_error\': error_message.',
+    constraints: [
+      "checkpoint is dict",
+      "error_message is string"
+],
+    hints: {
+      small: 'Create a new dict to avoid mutating checkpoint.',
+      strong: 'rec[\'recovery_count\'] = rec.get(\'recovery_count\', 0) + 1.',
+      concept: 'Transactional checkpointing ensures transient API timeouts do not corrupt long-running agent workflows.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'First recovery on fresh checkpoint',
+        input: {
+            "checkpoint": {
+              "step": 4,
+              "memory": [
+                "init"
+              ]
+            },
+            "error_message": "Timeout 504"
+          },
+        expectedOutput: {
+            "step": 4,
+            "memory": [
+              "init"
+            ],
+            "recovery_count": 1,
+            "recovered": true,
+            "last_error": "Timeout 504"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Subsequent recovery increments recovery_count',
+        input: {
+            "checkpoint": {
+              "recovery_count": 1
+            },
+            "error_message": "Rate limit 429"
+          },
+        expectedOutput: {
+            "recovery_count": 2,
+            "recovered": true,
+            "last_error": "Rate limit 429"
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-10': {
+    id: 'agent-loop-prob-10',
+    title: '#100. Infinite Loop Guard',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'infinite_loop_guard',
+    functionSignature: 'infinite_loop_guard(visited_actions: list[str], max_repeats: int = 2) -> bool',
+    starterCode: `def infinite_loop_guard(visited_actions, max_repeats=2):
+    """Check if any 2-action cycle (A -> B -> A -> B) repeats >= max_repeats times at tail.
+    Return True if infinite cycle detected.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Detect 2-step oscillating cycles in agent action selection to intercept infinite loops early.',
+    taskDescription: 'Implement `infinite_loop_guard(visited_actions, max_repeats=2)`. If the tail of visited_actions forms a 2-element repeating pattern `[A, B] * max_repeats` with A != B, return True.',
+    constraints: [
+      "max_repeats >= 2",
+      "visited_actions is list of action strings"
+],
+    hints: {
+      small: 'Length of pattern to check is 2 * max_repeats.',
+      strong: 'Extract tail = visited_actions[-(2 * max_repeats):]. Check if tail == [tail[0], tail[1]] * max_repeats and tail[0] != tail[1].',
+      concept: 'Oscillating loop guards prevent ping-pong traps between complementary tools (e.g. edit -> test -> edit -> test).',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Oscillating loop detected A -> B -> A -> B',
+        input: {
+            "visited_actions": [
+              "init",
+              "search",
+              "browse",
+              "search",
+              "browse"
+            ],
+            "max_repeats": 2
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'No cycle in progressing actions',
+        input: {
+            "visited_actions": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "max_repeats": 2
+          },
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'History too short',
+        input: {
+            "visited_actions": [
+              "A",
+              "B"
+            ],
+            "max_repeats": 2
+          },
+        expectedOutput: false,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-11': {
+    id: 'agent-loop-prob-11',
+    title: '#101. Tool Output Schema Validator',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'tool_output_schema_validator',
+    functionSignature: 'tool_output_schema_validator(output: dict, expected_keys: list[str]) -> dict',
+    starterCode: `def tool_output_schema_validator(output, expected_keys):
+    """Validate output dictionary contains all expected_keys.
+    Return {'valid': bool, 'missing_keys': list[str]}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Validate that tool outputs conform to expected schema dictionaries before propagating into agent memory.',
+    taskDescription: 'Implement `tool_output_schema_validator(output, expected_keys)`. Return `{\'valid\': len(missing) == 0, \'missing_keys\': sorted(missing)}` where missing is keys present in expected_keys but absent in output.',
+    constraints: [
+      "output is dict",
+      "expected_keys is list of strings"
+],
+    hints: {
+      small: 'Find missing keys with [k for k in expected_keys if k not in output].',
+      strong: 'Sort missing keys alphabetically in return dict.',
+      concept: 'Runtime schema validation prevents downstream type errors when external APIs return unexpected payloads.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Valid schema containing all keys',
+        input: {
+            "output": {
+              "status": "ok",
+              "code": 200
+            },
+            "expected_keys": [
+              "status",
+              "code"
+            ]
+          },
+        expectedOutput: {
+            "valid": true,
+            "missing_keys": []
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Missing keys identified',
+        input: {
+            "output": {
+              "status": "ok"
+            },
+            "expected_keys": [
+              "status",
+              "code",
+              "data"
+            ]
+          },
+        expectedOutput: {
+            "valid": false,
+            "missing_keys": [
+              "code",
+              "data"
+            ]
+          },
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Empty expected keys always valid',
+        input: {
+            "output": {},
+            "expected_keys": []
+          },
+        expectedOutput: {
+            "valid": true,
+            "missing_keys": []
+          },
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-12': {
+    id: 'agent-loop-prob-12',
+    title: '#102. Asynchronous Tool Runner',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'asynchronous_tool_runner',
+    functionSignature: 'asynchronous_tool_runner(tasks: list[dict]) -> list[dict]',
+    starterCode: `def asynchronous_tool_runner(tasks):
+    """Sort tasks by priority ('high': 0, 'medium': 1, 'low': 2) and tie-break by id.
+    Return ordered list of task dicts.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Schedule asynchronous tool invocations by priority tier to optimize parallel agent execution throughput.',
+    taskDescription: 'Implement `asynchronous_tool_runner(tasks)`. Sort tasks by priority (\'high\' < \'medium\' < \'low\') and tie-break by \'id\' ascending.',
+    constraints: [
+      "tasks is list of dicts with 'id' and 'priority'"
+],
+    hints: {
+      small: 'Map priorities to integers: {\'high\': 0, \'medium\': 1, \'low\': 2}.',
+      strong: 'Sort key: (priority_map.get(t[\'priority\'], 3), t[\'id\']).',
+      concept: 'Priority-based scheduling ensures critical path dependencies run first during parallel agent execution.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Sort mixed priorities',
+        input: {
+            "tasks": [
+              {
+                "id": "t3",
+                "priority": "low"
+              },
+              {
+                "id": "t1",
+                "priority": "high"
+              },
+              {
+                "id": "t2",
+                "priority": "medium"
+              }
+            ]
+          },
+        expectedOutput: [
+            {
+              "id": "t1",
+              "priority": "high"
+            },
+            {
+              "id": "t2",
+              "priority": "medium"
+            },
+            {
+              "id": "t3",
+              "priority": "low"
+            }
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Tie-break identical priorities by id',
+        input: {
+            "tasks": [
+              {
+                "id": "b",
+                "priority": "high"
+              },
+              {
+                "id": "a",
+                "priority": "high"
+              }
+            ]
+          },
+        expectedOutput: [
+            {
+              "id": "a",
+              "priority": "high"
+            },
+            {
+              "id": "b",
+              "priority": "high"
+            }
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-13': {
+    id: 'agent-loop-prob-13',
+    title: '#103. Parallel Tool Execution Engine',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'parallel_tool_execution_engine',
+    functionSignature: 'parallel_tool_execution_engine(tool_invocations: list[dict]) -> list[list[str]]',
+    starterCode: `def parallel_tool_execution_engine(tool_invocations):
+    """Group independent tool invocations into parallel execution batches.
+    Each item has 'id' and 'depends_on' (list of ids).
+    Return list of batches (lists of tool ids).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Construct dependency-respecting parallel execution stages (topological layering) for batch tool calls.',
+    taskDescription: 'Implement `parallel_tool_execution_engine(tool_invocations)`. Group tools into layers where all tools in layer L only depend on tools in layers < L. Sort ids within each batch alphabetically.',
+    constraints: [
+      "Acyclic dependencies",
+      "tool_invocations is list of dicts"
+],
+    hints: {
+      small: 'Tools with empty depends_on form the first batch.',
+      strong: 'Once a batch completes, resolve remaining tools whose dependencies are fully satisfied.',
+      concept: 'Topological layering enables multi-tool agents to dispatch non-conflicting actions concurrently.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Independent tools in first batch, dependent in second',
+        input: {
+            "tool_invocations": [
+              {
+                "id": "t1",
+                "depends_on": []
+              },
+              {
+                "id": "t2",
+                "depends_on": []
+              },
+              {
+                "id": "t3",
+                "depends_on": [
+                  "t1",
+                  "t2"
+                ]
+              }
+            ]
+          },
+        expectedOutput: [
+            [
+              "t1",
+              "t2"
+            ],
+            [
+              "t3"
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Linear chain 3 batches',
+        input: {
+            "tool_invocations": [
+              {
+                "id": "c",
+                "depends_on": [
+                  "b"
+                ]
+              },
+              {
+                "id": "b",
+                "depends_on": [
+                  "a"
+                ]
+              },
+              {
+                "id": "a",
+                "depends_on": []
+              }
+            ]
+          },
+        expectedOutput: [
+            [
+              "a"
+            ],
+            [
+              "b"
+            ],
+            [
+              "c"
+            ]
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-14': {
+    id: 'agent-loop-prob-14',
+    title: '#104. Tool Execution Timeout Handler',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'tool_execution_timeout_handler',
+    functionSignature: 'tool_execution_timeout_handler(elapsed_ms: int, timeout_ms: int) -> dict',
+    starterCode: `def tool_execution_timeout_handler(elapsed_ms, timeout_ms):
+    """Evaluate tool execution elapsed time against timeout threshold.
+    Return {'status': 'timeout' | 'ok', 'overage_ms': int}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Handle execution timeouts gracefully, reporting overages and triggering fallback paths.',
+    taskDescription: 'Implement `tool_execution_timeout_handler(elapsed_ms, timeout_ms)`. If elapsed_ms > timeout_ms, return `{\'status\': \'timeout\', \'overage_ms\': elapsed_ms - timeout_ms}`. Otherwise return `{\'status\': \'ok\', \'overage_ms\': 0}`.',
+    constraints: [
+      "elapsed_ms >= 0",
+      "timeout_ms >= 0"
+],
+    hints: {
+      small: 'Compare elapsed_ms with timeout_ms.',
+      strong: 'overage_ms is max(0, elapsed_ms - timeout_ms).',
+      concept: 'Strict timeouts prevent blocked sockets and deadlocks from permanently stalling agent workflows.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Execution completed safely within timeout',
+        input: {
+            "elapsed_ms": 350,
+            "timeout_ms": 1000
+          },
+        expectedOutput: {
+            "status": "ok",
+            "overage_ms": 0
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Execution timed out with 200ms overage',
+        input: {
+            "elapsed_ms": 1200,
+            "timeout_ms": 1000
+          },
+        expectedOutput: {
+            "status": "timeout",
+            "overage_ms": 200
+          },
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Exact boundary match is ok',
+        input: {
+            "elapsed_ms": 500,
+            "timeout_ms": 500
+          },
+        expectedOutput: {
+            "status": "ok",
+            "overage_ms": 0
+          },
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-15': {
+    id: 'agent-loop-prob-15',
+    title: '#105. Agent Action Dispatched Log',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'agent_action_dispatched_log',
+    functionSignature: 'agent_action_dispatched_log(action: str, params: dict, timestamp: int) -> dict',
+    starterCode: `def agent_action_dispatched_log(action, params, timestamp):
+    """Create structured dispatch log entry with param count and status 'dispatched'.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Format standardized action dispatch events for downstream observability and compliance pipelines.',
+    taskDescription: 'Implement `agent_action_dispatched_log(action, params, timestamp)`. Return dict `{\'action\': action, \'params\': params, \'param_count\': len(params), \'timestamp\': timestamp, \'status\': \'dispatched\'}`.',
+    constraints: [
+      "action is string",
+      "params is dict",
+      "timestamp is integer"
+],
+    hints: {
+      small: 'Construct dictionary with the required fields.',
+      strong: 'Count parameters using len(params).',
+      concept: 'Structured event logging enables full lineage tracking and replayability of agent decisions.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard dispatch with 2 parameters',
+        input: {
+            "action": "write_file",
+            "params": {
+              "path": "/tmp/a",
+              "content": "hi"
+            },
+            "timestamp": 1700000000
+          },
+        expectedOutput: {
+            "action": "write_file",
+            "params": {
+              "path": "/tmp/a",
+              "content": "hi"
+            },
+            "param_count": 2,
+            "timestamp": 1700000000,
+            "status": "dispatched"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'No-arg tool dispatch',
+        input: {
+            "action": "list_files",
+            "params": {},
+            "timestamp": 1700000010
+          },
+        expectedOutput: {
+            "action": "list_files",
+            "params": {},
+            "param_count": 0,
+            "timestamp": 1700000010,
+            "status": "dispatched"
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-16': {
+    id: 'agent-loop-prob-16',
+    title: '#106. Tool Argument Transformer',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'tool_argument_transformer',
+    functionSignature: 'tool_argument_transformer(raw_args: dict, type_mapping: dict) -> dict',
+    starterCode: `def tool_argument_transformer(raw_args, type_mapping):
+    """Coerce string arguments to target types ('int', 'float', 'bool').
+    Return transformed argument dict.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Transform and cast raw string arguments extracted by LLM parsing into strongly-typed primitives.',
+    taskDescription: 'Implement `tool_argument_transformer(raw_args, type_mapping)`. For each key in type_mapping, convert raw_args[key]: \'int\' -> int(), \'float\' -> float(), \'bool\' -> True if str.lower() == \'true\' else False.',
+    constraints: [
+      "type_mapping maps keys to 'int', 'float', 'bool'"
+],
+    hints: {
+      small: 'Iterate through raw_args and cast if key is in type_mapping.',
+      strong: 'For bool: str(v).strip().lower() == \'true\'.',
+      concept: 'Robust type coercion bridges free-form LLM string generation with typed system interfaces.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Coerce int, float, and bool',
+        input: {
+            "raw_args": {
+              "count": "42",
+              "rate": "3.14",
+              "verbose": "true",
+              "name": "sample"
+            },
+            "type_mapping": {
+              "count": "int",
+              "rate": "float",
+              "verbose": "bool"
+            }
+          },
+        expectedOutput: {
+            "count": 42,
+            "rate": 3.14,
+            "verbose": true,
+            "name": "sample"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Bool false parsing',
+        input: {
+            "raw_args": {
+              "flag": "FALSE"
+            },
+            "type_mapping": {
+              "flag": "bool"
+            }
+          },
+        expectedOutput: {
+            "flag": false
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-17': {
+    id: 'agent-loop-prob-17',
+    title: '#107. Agent Decision Point Logger',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'agent_decision_point_logger',
+    functionSignature: 'agent_decision_point_logger(alternatives: list[str], chosen: str, rationale: str) -> dict',
+    starterCode: `def agent_decision_point_logger(alternatives, chosen, rationale):
+    """Log decision point with rejected alternatives and selection rationale.
+    Return formatted audit dict.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Log branch selections and alternative options during agent planning for post-hoc alignment audits.',
+    taskDescription: 'Implement `agent_decision_point_logger(alternatives, chosen, rationale)`. Return `{\'chosen\': chosen, \'rejected\': [a for a in alternatives if a != chosen], \'rationale\': rationale, \'alternative_count\': len(alternatives)}`.',
+    constraints: [
+      "chosen is in alternatives",
+      "rationale is non-empty string"
+],
+    hints: {
+      small: 'Filter alternatives excluding chosen.',
+      strong: 'rejected = [a for a in alternatives if a != chosen].',
+      concept: 'Recording counterfactual rejected actions is vital for Reinforcement Learning from AI Feedback (RLAIF).',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Select best tool among 3 alternatives',
+        input: {
+            "alternatives": [
+              "sql_query",
+              "vector_search",
+              "web_search"
+            ],
+            "chosen": "sql_query",
+            "rationale": "Exact financial metric requested"
+          },
+        expectedOutput: {
+            "chosen": "sql_query",
+            "rejected": [
+              "vector_search",
+              "web_search"
+            ],
+            "rationale": "Exact financial metric requested",
+            "alternative_count": 3
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Single alternative selected',
+        input: {
+            "alternatives": [
+              "run"
+            ],
+            "chosen": "run",
+            "rationale": "Only option"
+          },
+        expectedOutput: {
+            "chosen": "run",
+            "rejected": [],
+            "rationale": "Only option",
+            "alternative_count": 1
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-18': {
+    id: 'agent-loop-prob-18',
+    title: '#108. Dynamic Tool Selector',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'dynamic_tool_selector',
+    functionSignature: 'dynamic_tool_selector(query: str, tools: list[dict]) -> list[str]',
+    starterCode: `def dynamic_tool_selector(query, tools):
+    """Select tools whose descriptions contain any words from query.
+    Rank by match count descending, tie-break by tool name ascending.
+    Return list of matching tool names.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Dynamically select relevant tools from large tool registries using lexical overlap scoring.',
+    taskDescription: 'Implement `dynamic_tool_selector(query, tools)`. For each tool in `tools` (with \'name\' and \'description\'), count how many distinct query words (case-insensitive) appear in tool description. Return names of tools with match score > 0 sorted by (-score, name).',
+    constraints: [
+      "tools is list of dicts with 'name' and 'description'"
+],
+    hints: {
+      small: 'Tokenize query into a lowercase set of words.',
+      strong: 'score = sum(1 for w in q_words if w in desc_words). Filter score > 0, sort by (-score, name).',
+      concept: 'Pruning irrelevant tools from the prompt context reduces hallucinations and saves token cost.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Match database and search tools',
+        input: {
+            "query": "query database customer table",
+            "tools": [
+              {
+                "name": "sql_query",
+                "description": "query relational database tables directly"
+              },
+              {
+                "name": "calculator",
+                "description": "evaluate math arithmetic expressions"
+              },
+              {
+                "name": "customer_search",
+                "description": "search customer records by name"
+              }
+            ]
+          },
+        expectedOutput: [
+            "sql_query",
+            "customer_search"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'No matching tools returns empty list',
+        input: {
+            "query": "play music audio",
+            "tools": [
+              {
+                "name": "grep",
+                "description": "search text files"
+              }
+            ]
+          },
+        expectedOutput: [],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-19': {
+    id: 'agent-loop-prob-19',
+    title: '#109. Sub-Agent Loop Call',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'sub_agent_loop_call',
+    functionSignature: 'sub_agent_loop_call(parent_task: str, subagent_spec: dict) -> dict',
+    starterCode: `def sub_agent_loop_call(parent_task, subagent_spec):
+    """Delegate subtask to subagent with isolated context.
+    subagent_spec: {'role': str, 'subtask': str}.
+    Return {'parent_task': str, 'delegated_to': str, 'subtask': str, 'status': 'spawned'}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Encapsulate task delegation to specialized sub-agents with scoped execution boundaries.',
+    taskDescription: 'Implement `sub_agent_loop_call(parent_task, subagent_spec)`. Return `{\'parent_task\': parent_task, \'delegated_to\': subagent_spec[\'role\'], \'subtask\': subagent_spec[\'subtask\'], \'status\': \'spawned\'}`.',
+    constraints: [
+      "parent_task is string",
+      "subagent_spec contains 'role' and 'subtask'"
+],
+    hints: {
+      small: 'Format dictionary with required fields.',
+      strong: 'Extract \'role\' and \'subtask\' from subagent_spec.',
+      concept: 'Sub-agent delegation isolates reasoning context and prevents context window bloat.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Delegate code review to specialist',
+        input: {
+            "parent_task": "Refactor codebase",
+            "subagent_spec": {
+              "role": "code_reviewer",
+              "subtask": "Audit memory leaks"
+            }
+          },
+        expectedOutput: {
+            "parent_task": "Refactor codebase",
+            "delegated_to": "code_reviewer",
+            "subtask": "Audit memory leaks",
+            "status": "spawned"
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-20': {
+    id: 'agent-loop-prob-20',
+    title: '#110. Tool Failure Fallback Strategy',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'tool_failure_fallback_strategy',
+    functionSignature: 'tool_failure_fallback_strategy(primary_tool: str, fallback_tool: str, primary_failed: bool) -> str',
+    starterCode: `def tool_failure_fallback_strategy(primary_tool, fallback_tool, primary_failed):
+    """Select fallback_tool if primary_failed is True, else return primary_tool.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement dynamic fallback routing to switch from primary tools to backup providers on failure.',
+    taskDescription: 'Implement `tool_failure_fallback_strategy(primary_tool, fallback_tool, primary_failed)`. Return fallback_tool if primary_failed is True, else primary_tool.',
+    constraints: [
+      "Tool names are strings",
+      "primary_failed is boolean"
+],
+    hints: {
+      small: 'Check boolean primary_failed.',
+      strong: 'return fallback_tool if primary_failed else primary_tool.',
+      concept: 'Graceful fallback degradation maintains system availability during third-party tool outages.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Primary succeeded',
+        input: {
+            "primary_tool": "fast_search",
+            "fallback_tool": "deep_search",
+            "primary_failed": false
+          },
+        expectedOutput: "fast_search",
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Primary failed, fallback activated',
+        input: {
+            "primary_tool": "fast_search",
+            "fallback_tool": "deep_search",
+            "primary_failed": true
+          },
+        expectedOutput: "deep_search",
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-21': {
+    id: 'agent-loop-prob-21',
+    title: '#111. Human in the Loop Pause',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'human_in_the_loop_pause',
+    functionSignature: 'human_in_the_loop_pause(confidence: float, threshold: float = 0.8) -> bool',
+    starterCode: `def human_in_the_loop_pause(confidence, threshold=0.8):
+    """Determine whether agent loop should pause for human feedback based on confidence.
+    Return True if confidence < threshold.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Gate automated agent execution on confidence thresholds, requesting human clarification when uncertain.',
+    taskDescription: 'Implement `human_in_the_loop_pause(confidence, threshold=0.8)`. Return True if confidence is strictly less than threshold, False otherwise.',
+    constraints: [
+      "0.0 <= confidence <= 1.0",
+      "0.0 <= threshold <= 1.0"
+],
+    hints: {
+      small: 'Compare confidence < threshold.',
+      strong: 'return bool(confidence < threshold).',
+      concept: 'Human-in-the-loop interruption halts low-confidence actions before unintended side-effects occur.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'High confidence proceeds autonomously',
+        input: {
+            "confidence": 0.95,
+            "threshold": 0.8
+          },
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Low confidence triggers pause',
+        input: {
+            "confidence": 0.65,
+            "threshold": 0.8
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Exact threshold match proceeds',
+        input: {
+            "confidence": 0.8,
+            "threshold": 0.8
+          },
+        expectedOutput: false,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-22': {
+    id: 'agent-loop-prob-22',
+    title: '#112. Human Approval Gate',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'human_approval_gate',
+    functionSignature: 'human_approval_gate(action_type: str, sensitive_actions: list[str]) -> dict',
+    starterCode: `def human_approval_gate(action_type, sensitive_actions):
+    """Check if action_type is in sensitive_actions.
+    Return {'requires_approval': bool, 'action': action_type}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Intercept privileged or destructive actions (e.g. deletions, financial transfers) behind an approval checkpoint.',
+    taskDescription: 'Implement `human_approval_gate(action_type, sensitive_actions)`. Return `{\'requires_approval\': action_type in sensitive_actions, \'action\': action_type}`.',
+    constraints: [
+      "action_type is string",
+      "sensitive_actions is list of strings"
+],
+    hints: {
+      small: 'Use python \'in\' membership check.',
+      strong: 'return {\'requires_approval\': action_type in sensitive_actions, \'action\': action_type}.',
+      concept: 'Safety barriers ensure models cannot execute irreversible operations without explicit human sign-off.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Dangerous delete action requires approval',
+        input: {
+            "action_type": "delete_database",
+            "sensitive_actions": [
+              "delete_database",
+              "transfer_funds"
+            ]
+          },
+        expectedOutput: {
+            "requires_approval": true,
+            "action": "delete_database"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Read action proceeds without approval',
+        input: {
+            "action_type": "read_logs",
+            "sensitive_actions": [
+              "delete_database"
+            ]
+          },
+        expectedOutput: {
+            "requires_approval": false,
+            "action": "read_logs"
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-23': {
+    id: 'agent-loop-prob-23',
+    title: '#113. Agent State Serializer',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'agent_state_serializer',
+    functionSignature: 'agent_state_serializer(state: dict) -> str',
+    starterCode: `def agent_state_serializer(state):
+    """Serialize agent state to deterministic sorted canonical JSON string.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Serialize internal agent memory structures into canonical, byte-for-byte deterministic JSON strings.',
+    taskDescription: 'Implement `agent_state_serializer(state)`. Return JSON serialized string with keys sorted alphabetically (`sort_keys=True`).',
+    constraints: [
+      "state is serializable dict"
+],
+    hints: {
+      small: 'Use json.dumps with sort_keys=True.',
+      strong: 'return json.dumps(state, sort_keys=True).',
+      concept: 'Canonical serialization enables hash-based state deduplication and cryptographically verifiable audit logs.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Sorted keys serialization',
+        input: {
+            "state": {
+              "z": 1,
+              "a": 2,
+              "m": 3
+            }
+          },
+        expectedOutput: "{\"a\": 2, \"m\": 3, \"z\": 1}",
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Empty dict serialization',
+        input: {
+            "state": {}
+          },
+        expectedOutput: "{}",
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-24': {
+    id: 'agent-loop-prob-24',
+    title: '#114. Agent Context Window Trimmer',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'agent_context_window_trimmer',
+    functionSignature: 'agent_context_window_trimmer(messages: list[dict], max_tokens: int) -> list[dict]',
+    starterCode: `def agent_context_window_trimmer(messages, max_tokens):
+    """Trim oldest non-system messages to keep estimated tokens <= max_tokens.
+    Each message has 'role' and 'content'. Estimate tokens as len(content) // 4.
+    Always preserve the first message if role == 'system'.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Manage conversational message history to strictly fit LLM context limits while protecting system prompts.',
+    taskDescription: 'Implement `agent_context_window_trimmer(messages, max_tokens)`. Estimate tokens per message as len(msg[\'content\']) // 4. Always retain the first message if role is \'system\'. Evict the oldest non-system messages until total estimated tokens <= max_tokens.',
+    constraints: [
+      "max_tokens >= 0",
+      "messages is list of message dicts"
+],
+    hints: {
+      small: 'Separate system message (if index 0) from conversation history.',
+      strong: 'Evict from the beginning of conversation history until sum(tokens) <= max_tokens.',
+      concept: 'Sliding context window trimming discards ancient turn history to make room for new tool observations.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Keep system prompt and trim oldest user message',
+        input: {
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are a helpful assistant."
+              },
+              {
+                "role": "user",
+                "content": "Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context Old obsolete context "
+              },
+              {
+                "role": "user",
+                "content": "Recent question"
+              }
+            ],
+            "max_tokens": 30
+          },
+        expectedOutput: [
+            {
+              "role": "system",
+              "content": "You are a helpful assistant."
+            },
+            {
+              "role": "user",
+              "content": "Recent question"
+            }
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'All messages fit within budget',
+        input: {
+            "messages": [
+              {
+                "role": "user",
+                "content": "Hello"
+              },
+              {
+                "role": "assistant",
+                "content": "Hi"
+              }
+            ],
+            "max_tokens": 100
+          },
+        expectedOutput: [
+            {
+              "role": "user",
+              "content": "Hello"
+            },
+            {
+              "role": "assistant",
+              "content": "Hi"
+            }
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-25': {
+    id: 'agent-loop-prob-25',
+    title: '#115. Step Execution Cost Tracker',
+    difficulty: 'easy',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '10–15 min',
+    functionName: 'step_execution_cost_tracker',
+    functionSignature: 'step_execution_cost_tracker(prompt_tokens: int, completion_tokens: int, prompt_rate: float, completion_rate: float) -> float',
+    starterCode: `def step_execution_cost_tracker(prompt_tokens, completion_tokens, prompt_rate, completion_rate):
+    """Calculate inference cost: (prompt_tokens * prompt_rate + completion_tokens * completion_rate) / 1e6.
+    Return dollar cost rounded to 6 decimal places.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Track financial token expenditures per execution step to prevent budget blowouts in autonomous systems.',
+    taskDescription: 'Implement `step_execution_cost_tracker(prompt_tokens, completion_tokens, prompt_rate, completion_rate)`. Rates are per 1M tokens. Compute total cost in dollars rounded to 6 decimal places.',
+    constraints: [
+      "Tokens are non-negative integers",
+      "Rates are non-negative floats"
+],
+    hints: {
+      small: 'Divide tokens by 1,000,000 before multiplying by rate, or multiply and divide by 1e6.',
+      strong: 'return round((prompt_tokens * prompt_rate + completion_tokens * completion_rate) / 1_000_000, 6).',
+      concept: 'Accurate token accounting is essential for multi-tenant LLM rate limiting and cost attribution.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard step cost calculation',
+        input: {
+            "prompt_tokens": 1000,
+            "completion_tokens": 200,
+            "prompt_rate": 2.5,
+            "completion_rate": 10.0
+          },
+        expectedOutput: 0.0045,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Zero tokens cost 0.0',
+        input: {
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "prompt_rate": 3.0,
+            "completion_rate": 15.0
+          },
+        expectedOutput: 0.0,
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-26': {
+    id: 'agent-loop-prob-26',
+    title: '#116. Agent Run History Compactor',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'agent_run_history_compactor',
+    functionSignature: 'agent_run_history_compactor(history: list[dict]) -> list[dict]',
+    starterCode: `def agent_run_history_compactor(history):
+    """Compact history by merging consecutive messages from the same role.
+    Join contents with '\n'.
+    Return compacted list of message dicts.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compact conversational trajectories by coalescing adjacent same-role messages into unified blocks.',
+    taskDescription: 'Implement `agent_run_history_compactor(history)`. Merge consecutive entries sharing the same \'role\' by joining their \'content\' with \'\n\'.',
+    constraints: [
+      "history is list of dicts with 'role' and 'content'"
+],
+    hints: {
+      small: 'Iterate through history and check if current role matches previous message\'s role.',
+      strong: 'If role matches, append \'\n\' + content to previous; else append a new message dict.',
+      concept: 'Message compaction eliminates redundant role headers and satisfies strict alternating role API requirements.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Merge consecutive user messages',
+        input: {
+            "history": [
+              {
+                "role": "user",
+                "content": "Part 1"
+              },
+              {
+                "role": "user",
+                "content": "Part 2"
+              },
+              {
+                "role": "assistant",
+                "content": "Answer"
+              }
+            ]
+          },
+        expectedOutput: [
+            {
+              "role": "user",
+              "content": "Part 1\nPart 2"
+            },
+            {
+              "role": "assistant",
+              "content": "Answer"
+            }
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Already alternating history unchanged',
+        input: {
+            "history": [
+              {
+                "role": "user",
+                "content": "A"
+              },
+              {
+                "role": "assistant",
+                "content": "B"
+              }
+            ]
+          },
+        expectedOutput: [
+            {
+              "role": "user",
+              "content": "A"
+            },
+            {
+              "role": "assistant",
+              "content": "B"
+            }
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-27': {
+    id: 'agent-loop-prob-27',
+    title: '#117. Tool Call Deduplicator',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'tool_call_deduplicator',
+    functionSignature: 'tool_call_deduplicator(tool_calls: list[dict]) -> list[dict]',
+    starterCode: `def tool_call_deduplicator(tool_calls):
+    """Remove duplicate tool calls with identical name and arguments while preserving first occurrence order.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Eliminate redundant duplicate tool invocations generated by batch parallel LLM decodings.',
+    taskDescription: 'Implement `tool_call_deduplicator(tool_calls)`. Remove identical duplicate tool calls (matching name and args) while preserving original order.',
+    constraints: [
+      "tool_calls is list of dicts with 'name' and 'args'"
+],
+    hints: {
+      small: 'Use a set of canonical string keys: (call[\'name\'], json.dumps(call[\'args\'], sort_keys=True)).',
+      strong: 'Only append to result if the key has not been seen before.',
+      concept: 'Deduplication prevents executing expensive external queries multiple times in the same step.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Remove duplicate query call',
+        input: {
+            "tool_calls": [
+              {
+                "name": "search",
+                "args": {
+                  "q": "python"
+                }
+              },
+              {
+                "name": "calc",
+                "args": {
+                  "expr": "1+1"
+                }
+              },
+              {
+                "name": "search",
+                "args": {
+                  "q": "python"
+                }
+              }
+            ]
+          },
+        expectedOutput: [
+            {
+              "name": "search",
+              "args": {
+                "q": "python"
+              }
+            },
+            {
+              "name": "calc",
+              "args": {
+                "expr": "1+1"
+              }
+            }
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Distinct args preserved',
+        input: {
+            "tool_calls": [
+              {
+                "name": "search",
+                "args": {
+                  "q": "a"
+                }
+              },
+              {
+                "name": "search",
+                "args": {
+                  "q": "b"
+                }
+              }
+            ]
+          },
+        expectedOutput: [
+            {
+              "name": "search",
+              "args": {
+                "q": "a"
+              }
+            },
+            {
+              "name": "search",
+              "args": {
+                "q": "b"
+              }
+            }
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-28': {
+    id: 'agent-loop-prob-28',
+    title: '#118. Streaming ReAct Loop',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'streaming_react_loop',
+    functionSignature: 'streaming_react_loop(tokens: list[str]) -> dict',
+    starterCode: `def streaming_react_loop(tokens):
+    """Parse streamed tokens into 'thought' and 'action' sections.
+    Text before 'Action:' is thought, text after 'Action:' is action.
+    Return {'thought': str, 'action': str}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Parse incremental streamed token chunks into live reasoning thoughts and dispatched action calls.',
+    taskDescription: 'Implement `streaming_react_loop(tokens)`. Join tokens into full text. If \'Action:\' in text, split into thought (before) and action (after). Otherwise thought is full text and action is \'\'. Strip whitespace from both.',
+    constraints: [
+      "tokens is list of string chunks"
+],
+    hints: {
+      small: 'full_text = \'\'.join(tokens).',
+      strong: 'parts = full_text.split(\'Action:\', 1). Strip both parts.',
+      concept: 'Real-time stream parsing allows agents to begin preparing tool execution before generation finishes.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Tokens stream thought then Action',
+        input: {
+            "tokens": [
+              "I need ",
+              "to search. ",
+              "\nAction: ",
+              "search_tool(query='docs')"
+            ]
+          },
+        expectedOutput: {
+            "thought": "I need to search.",
+            "action": "search_tool(query='docs')"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Thought only stream',
+        input: {
+            "tokens": [
+              "Pondering ",
+              "the question deeply."
+            ]
+          },
+        expectedOutput: {
+            "thought": "Pondering the question deeply.",
+            "action": ""
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-29': {
+    id: 'agent-loop-prob-29',
+    title: '#119. Fault Tolerant Agent Runner',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'fault_tolerant_agent_runner',
+    functionSignature: 'fault_tolerant_agent_runner(attempts: list[bool], max_retries: int = 3) -> dict',
+    starterCode: `def fault_tolerant_agent_runner(attempts, max_retries=3):
+    """Simulate retry loop over boolean attempt outcomes (True = success, False = fail).
+    Return {'succeeded': bool, 'attempts_used': int}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement retry logic with backoff boundaries to guarantee fault-tolerant agent execution across flaky networks.',
+    taskDescription: 'Implement `fault_tolerant_agent_runner(attempts, max_retries=3)`. Iterate through attempts up to max_retries. If True is encountered, stop immediately with `succeeded: True`. If exhausted without True, return `succeeded: False`.',
+    constraints: [
+      "max_retries >= 1",
+      "attempts is list of booleans"
+],
+    hints: {
+      small: 'Loop up to min(len(attempts), max_retries).',
+      strong: 'Track attempts_used. If attempts[i] is True, return succeeded: True.',
+      concept: 'Resilient retry mechanisms turn transient network blips into invisible self-healing recoveries.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Succeeds on second attempt',
+        input: {
+            "attempts": [
+              false,
+              true,
+              false
+            ],
+            "max_retries": 3
+          },
+        expectedOutput: {
+            "succeeded": true,
+            "attempts_used": 2
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Succeeds immediately on first attempt',
+        input: {
+            "attempts": [
+              true
+            ],
+            "max_retries": 3
+          },
+        expectedOutput: {
+            "succeeded": true,
+            "attempts_used": 1
+          },
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Fails all 3 retries',
+        input: {
+            "attempts": [
+              false,
+              false,
+              false,
+              true
+            ],
+            "max_retries": 3
+          },
+        expectedOutput: {
+            "succeeded": false,
+            "attempts_used": 3
+          },
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'agent-loop-prob-30': {
+    id: 'agent-loop-prob-30',
+    title: '#120. Self Healing Agent Step',
+    difficulty: 'medium',
+    topic: 'Agent Loop Engineering',
+    estimatedTime: '15–20 min',
+    functionName: 'self_healing_agent_step',
+    functionSignature: 'self_healing_agent_step(failed_call: dict, error_feedback: str) -> dict',
+    starterCode: `def self_healing_agent_step(failed_call, error_feedback):
+    """Repair failed tool call using error feedback.
+    failed_call: {'tool': str, 'args': dict}.
+    If 'unknown parameter: X' in error_feedback, remove key X.
+    Return repaired call dict.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Repair malformed tool invocations in response to execution feedback using reflection and heuristic correction.',
+    taskDescription: 'Implement `self_healing_agent_step(failed_call, error_feedback)`. If error_feedback starts with \'unknown parameter: \', parse the bad param name and remove it from args. Return the repaired tool call dict with \'repaired\': True.',
+    constraints: [
+      "failed_call contains 'tool' and 'args' dict"
+],
+    hints: {
+      small: 'Inspect error_feedback for \'unknown parameter: \'.',
+      strong: 'bad_key = error_feedback.split(\'unknown parameter: \')[1].strip(). Delete bad_key from args copy.',
+      concept: 'Self-healing loops allow agents to auto-correct schema errors based on compiler and runtime diagnostics.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Remove unknown parameter \'foo\' from args',
+        input: {
+            "failed_call": {
+              "tool": "search",
+              "args": {
+                "query": "ai",
+                "foo": "bar"
+              }
+            },
+            "error_feedback": "Error: unknown parameter: foo"
+          },
+        expectedOutput: {
+            "tool": "search",
+            "args": {
+              "query": "ai"
+            },
+            "repaired": true
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Unrecognized error left unchanged',
+        input: {
+            "failed_call": {
+              "tool": "search",
+              "args": {
+                "query": "ai"
+              }
+            },
+            "error_feedback": "Connection refused"
+          },
+        expectedOutput: {
+            "tool": "search",
+            "args": {
+              "query": "ai"
+            },
+            "repaired": false
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
