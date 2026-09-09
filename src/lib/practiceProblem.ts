@@ -131575,6 +131575,977 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     ],
     runtime: { language: 'python', capabilities: ['python', 'numpy'] },
   },
+  'sample-mean-variance': {
+    id: 'sample-mean-variance',
+    title: 'Practice: Sample Mean and Variance From Scratch',
+    difficulty: 'easy',
+    topic: 'Mathematics for AI',
+    estimatedTime: '10–15 min',
+    functionName: 'sample_mean_and_variance',
+    functionSignature: 'sample_mean_and_variance(data: list[float]) -> tuple[float, float]',
+    starterCode: `def sample_mean_and_variance(data):
+    """Compute (mean, variance) of a list of numbers.
+    Raise ValueError if data is empty.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute the sample mean and population variance of a numerical series from scratch.',
+    taskDescription: 'Implement `sample_mean_and_variance(data)`. Return `[mean, variance]` where mean = sum(data)/n and variance = sum((x - mean)**2)/n. Raise `ValueError` if data is empty.',
+    constraints: [
+      "data is a non-empty list of numbers",
+      "Raise ValueError on empty input",
+      "Return list or tuple of two floats [mean, variance] rounded to 6 decimal places"
+],
+    hints: {
+      small: 'First compute mean = sum(data) / len(data).',
+      strong: 'Then compute variance = sum((x - mean) ** 2 for x in data) / len(data).',
+      concept: 'Variance measures the average squared deviation of data points from their mean.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Simple integer sequence',
+        input: {
+            "data": [
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0
+            ]
+          },
+        expectedOutput: [
+            3.0,
+            2.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Constant data with zero variance',
+        input: {
+            "data": [
+              4.0,
+              4.0,
+              4.0
+            ]
+          },
+        expectedOutput: [
+            4.0,
+            0.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single element',
+        input: {
+            "data": [
+              42.0
+            ]
+          },
+        expectedOutput: [
+            42.0,
+            0.0
+          ],
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Empty input raises ValueError',
+        input: {
+            "data": []
+          },
+        expectError: 'ValueError',
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'standardize-dataset': {
+    id: 'standardize-dataset',
+    title: 'Practice: Standardize a Dataset (Z-Score Normalization)',
+    difficulty: 'easy',
+    topic: 'Mathematics for AI',
+    estimatedTime: '10–15 min',
+    functionName: 'standardize',
+    functionSignature: 'standardize(data: list[float]) -> list[float]',
+    starterCode: `def standardize(data):
+    """Compute z-score standardized values: (x - mean) / std.
+    Raise ValueError if variance is zero or data is empty.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Apply Z-score standardization to transform numerical data into zero-mean, unit-variance representation.',
+    taskDescription: 'Implement `standardize(data)`. For each element x, compute (x - mean) / std where std = sqrt(variance). Raise `ValueError` if variance is zero or data is empty.',
+    constraints: [
+      "data is a non-empty list of numbers",
+      "Raise ValueError if variance is zero or data is empty"
+],
+    hints: {
+      small: 'Compute mean and variance first. std = math.sqrt(variance).',
+      strong: 'If variance == 0 or not data, raise ValueError. Return [(x - mean) / std for x in data].',
+      concept: 'Standardization centers data at 0 with standard deviation 1, preventing features with large scales from dominating gradient updates.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Symmetric dataset centered at zero',
+        input: {
+            "data": [
+              -10.0,
+              0.0,
+              10.0
+            ]
+          },
+        expectedOutput: [
+            -1.224745,
+            0.0,
+            1.224745
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Two elements equidistant from mean',
+        input: {
+            "data": [
+              2.0,
+              4.0
+            ]
+          },
+        expectedOutput: [
+            -1.0,
+            1.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Zero variance raises ValueError',
+        input: {
+            "data": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          },
+        expectError: 'ValueError',
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Empty data raises ValueError',
+        input: {
+            "data": []
+          },
+        expectError: 'ValueError',
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'bayes-posterior': {
+    id: 'bayes-posterior',
+    title: 'Practice: Bayes\' Theorem, Posterior From Scratch',
+    difficulty: 'medium',
+    topic: 'Mathematics for AI',
+    estimatedTime: '15–20 min',
+    functionName: 'bayes_posterior',
+    functionSignature: 'bayes_posterior(prior: float, sensitivity: float, false_positive_rate: float) -> float',
+    starterCode: `def bayes_posterior(prior, sensitivity, false_positive_rate):
+    """Compute P(Condition | Positive) using Bayes' Theorem.
+    prior: P(Condition)
+    sensitivity: P(Positive | Condition) (true positive rate)
+    false_positive_rate: P(Positive | Not Condition)
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute Bayesian posterior probabilities given prior belief, sensitivity, and false positive rate.',
+    taskDescription: 'Implement `bayes_posterior(prior, sensitivity, false_positive_rate)`. Compute P(A|B) = P(B|A)*P(A) / (P(B|A)*P(A) + P(B|~A)*P(~A)). Return float rounded to 6 decimal places.',
+    constraints: [
+      "0 <= prior <= 1",
+      "0 <= sensitivity <= 1",
+      "0 <= false_positive_rate <= 1",
+      "Denominator must be non-zero"
+],
+    hints: {
+      small: 'Numerator is sensitivity * prior.',
+      strong: 'Denominator is sensitivity * prior + false_positive_rate * (1 - prior). Return numerator / denominator.',
+      concept: 'Bayes\' rule updates the prior probability of an event upon observing new diagnostic evidence.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Classic rare disease testing paradox',
+        input: {
+            "prior": 0.01,
+            "sensitivity": 0.99,
+            "false_positive_rate": 0.05
+          },
+        expectedOutput: 0.166667,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Uninformative 50/50 prior with high accuracy',
+        input: {
+            "prior": 0.5,
+            "sensitivity": 0.9,
+            "false_positive_rate": 0.1
+          },
+        expectedOutput: 0.9,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Perfect test with zero false positive rate',
+        input: {
+            "prior": 0.2,
+            "sensitivity": 1.0,
+            "false_positive_rate": 0.0
+          },
+        expectedOutput: 1.0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'numerical-gradient': {
+    id: 'numerical-gradient',
+    title: 'Practice: Numerical Gradient via Finite Differences',
+    difficulty: 'medium',
+    topic: 'Mathematics for AI',
+    estimatedTime: '15–20 min',
+    functionName: 'numerical_gradient',
+    functionSignature: 'numerical_gradient(f: any, x: list[float], h: float = 1e-5) -> list[float]',
+    starterCode: `def numerical_gradient(f, x, h=1e-5):
+    """f: callable (e.g. lambda x: ...) or string expression in terms of x (e.g. 'x[0]**2').
+    x: point to differentiate at (list of numbers).
+    Return list of partial derivatives, one per dimension of x.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement numerical gradient checking via central finite differences to verify analytical derivative computations.',
+    taskDescription: 'Implement `numerical_gradient(f, x, h=1e-5)`. For each dimension i, compute (f(x + h*e_i) - f(x - h*e_i)) / (2*h). Support callable functions and string expressions in terms of `x`.',
+    constraints: [
+      "len(x) >= 1",
+      "h > 0 (defaults to 1e-5)",
+      "Return list of partial derivatives rounded to 4 decimal places"
+],
+    hints: {
+      small: 'Convert f to a callable if it is passed as a string expression.',
+      strong: 'For each dimension i, perturb x[i] by +h and -h, keeping all other coordinates identical. Compute (f(x_plus) - f(x_minus)) / (2 * h).',
+      concept: 'Central differences provide O(h^2) approximation error, making them ideal for numerical gradient validation.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '1D quadratic function x[0]**2 at x=3.0',
+        input: {
+            "f": "x[0]**2",
+            "x": [
+              3.0
+            ]
+          },
+        expectedOutput: [
+            6.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: '2D paraboloid x[0]**2 + x[1]**2 at (3.0, 4.0)',
+        input: {
+            "f": "x[0]**2 + x[1]**2",
+            "x": [
+              3.0,
+              4.0
+            ]
+          },
+        expectedOutput: [
+            6.0,
+            8.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Bilinear interaction term x[0] * x[1] at (2.0, 5.0)',
+        input: {
+            "f": "x[0] * x[1]",
+            "x": [
+              2.0,
+              5.0
+            ]
+          },
+        expectedOutput: [
+            5.0,
+            2.0
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'cosine-similarity': {
+    id: 'cosine-similarity',
+    title: 'Practice: Cosine Similarity From Scratch',
+    difficulty: 'easy',
+    topic: 'NLP',
+    estimatedTime: '10–15 min',
+    functionName: 'cosine_similarity',
+    functionSignature: 'cosine_similarity(a: list[float], b: list[float]) -> float',
+    starterCode: `def cosine_similarity(a, b):
+    """Compute cosine similarity between two non-empty vectors: dot(a, b) / (norm(a) * norm(b)).
+    Raise ValueError if lengths differ or if either vector has zero magnitude.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement cosine similarity from scratch, the foundational metric for comparing dense embeddings in semantic search and NLP.',
+    taskDescription: 'Implement `cosine_similarity(a, b)`. Compute dot(a, b) / (||a|| * ||b||). Raise `ValueError` if lengths differ or either vector has zero norm.',
+    constraints: [
+      "len(a) == len(b) >= 1",
+      "Vectors must have non-zero magnitude",
+      "Return float between -1.0 and 1.0 rounded to 6 decimal places"
+],
+    hints: {
+      small: 'Compute dot = sum(x * y for x, y in zip(a, b)).',
+      strong: 'Compute norm_a = math.sqrt(sum(x**2 for x in a)) and norm_b. If norm_a == 0 or norm_b == 0, raise ValueError.',
+      concept: 'Cosine similarity measures the angle between two embedding vectors regardless of their magnitude.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Orthogonal vectors have cosine similarity 0',
+        input: {
+            "a": [
+              1.0,
+              0.0
+            ],
+            "b": [
+              0.0,
+              1.0
+            ]
+          },
+        expectedOutput: 0.0,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Identical vectors have cosine similarity 1',
+        input: {
+            "a": [
+              1.0,
+              2.0,
+              3.0
+            ],
+            "b": [
+              1.0,
+              2.0,
+              3.0
+            ]
+          },
+        expectedOutput: 1.0,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Opposite vectors have cosine similarity -1',
+        input: {
+            "a": [
+              1.0,
+              0.0
+            ],
+            "b": [
+              -2.0,
+              0.0
+            ]
+          },
+        expectedOutput: -1.0,
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Zero magnitude vector raises ValueError',
+        input: {
+            "a": [
+              0.0,
+              0.0
+            ],
+            "b": [
+              1.0,
+              1.0
+            ]
+          },
+        expectError: 'ValueError',
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'cosine-similarity-matrix': {
+    id: 'cosine-similarity-matrix',
+    title: 'Practice: Pairwise Cosine Similarity Matrix',
+    difficulty: 'medium',
+    topic: 'NLP',
+    estimatedTime: '15–20 min',
+    functionName: 'cosine_similarity_matrix',
+    functionSignature: 'cosine_similarity_matrix(vectors: list[list[float]]) -> list[list[float]]',
+    starterCode: `def cosine_similarity_matrix(vectors):
+    """Compute the n x n pairwise cosine similarity matrix for a list of n vectors.
+    Raise ValueError if any vector has zero magnitude.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Construct an all-pairs pairwise cosine similarity matrix for a set of embedding vectors.',
+    taskDescription: 'Implement `cosine_similarity_matrix(vectors)`. Return an n x n matrix where cell [i][j] is the cosine similarity between vectors[i] and vectors[j]. Raise `ValueError` if any vector has zero norm.',
+    constraints: [
+      "n >= 1 vectors",
+      "All vectors have equal dimension d >= 1",
+      "Raise ValueError if any vector has zero magnitude"
+],
+    hints: {
+      small: 'Precompute the Euclidean norm of all vectors upfront in O(n*d) time.',
+      strong: 'Matrix[i][j] = dot(vectors[i], vectors[j]) / (norms[i] * norms[j]). Note that diagonal entries are 1.0.',
+      concept: 'Pairwise similarity matrices power clustering algorithms and nearest-neighbor search caches.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Two orthogonal vectors 2x2 identity matrix',
+        input: {
+            "vectors": [
+              [
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Three vectors with varying angles',
+        input: {
+            "vectors": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              1.0,
+              0.707107,
+              0.707107
+            ],
+            [
+              0.707107,
+              1.0,
+              0.0
+            ],
+            [
+              0.707107,
+              0.0,
+              1.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Zero vector raises ValueError',
+        input: {
+            "vectors": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          },
+        expectError: 'ValueError',
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'tf-idf-weight': {
+    id: 'tf-idf-weight',
+    title: 'Practice: TF-IDF Weight From Scratch',
+    difficulty: 'easy',
+    topic: 'NLP',
+    estimatedTime: '10–15 min',
+    functionName: 'tf_idf',
+    functionSignature: 'tf_idf(term: str, document: list[str], corpus: list[list[str]]) -> float',
+    starterCode: `def tf_idf(term, document, corpus):
+    """Compute TF-IDF weight for a term in a document given a corpus.
+    TF = document.count(term) / len(document)
+    IDF = math.log(len(corpus) / df) where df = docs in corpus containing term.
+    Return TF * IDF.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute Term Frequency-Inverse Document Frequency (TF-IDF) weights to quantify word importance in text collections.',
+    taskDescription: 'Implement `tf_idf(term, document, corpus)`. Compute TF = document.count(term) / len(document) and IDF = ln(len(corpus) / df). Return TF * IDF rounded to 6 decimal places. Return 0.0 if df is 0.',
+    constraints: [
+      "document is a list of string tokens with len >= 1",
+      "corpus is a list of token lists with len >= 1",
+      "Uses natural log math.log"
+],
+    hints: {
+      small: 'Count how many documents in corpus contain term to obtain df.',
+      strong: 'If df == 0, return 0.0. Otherwise TF = document.count(term)/len(document), IDF = math.log(len(corpus)/df).',
+      concept: 'TF-IDF balances how frequently a word appears locally against its rarity globally across the corpus.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Common term appearing in multiple documents',
+        input: {
+            "term": "neural",
+            "document": [
+              "deep",
+              "neural",
+              "network"
+            ],
+            "corpus": [
+              [
+                "neural",
+                "network"
+              ],
+              [
+                "deep",
+                "learning"
+              ],
+              [
+                "convolutional",
+                "neural",
+                "network"
+              ]
+            ]
+          },
+        expectedOutput: 0.135155,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Rare term unique to one document',
+        input: {
+            "term": "transformer",
+            "document": [
+              "attention",
+              "transformer"
+            ],
+            "corpus": [
+              [
+                "attention",
+                "transformer"
+              ],
+              [
+                "word2vec",
+                "embeddings"
+              ],
+              [
+                "recurrent",
+                "lstm"
+              ],
+              [
+                "ngram",
+                "model"
+              ]
+            ]
+          },
+        expectedOutput: 0.693147,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Term absent from document',
+        input: {
+            "term": "missing",
+            "document": [
+              "quick",
+              "fox"
+            ],
+            "corpus": [
+              [
+                "quick",
+                "fox"
+              ],
+              [
+                "missing",
+                "token"
+              ]
+            ]
+          },
+        expectedOutput: 0.0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'convolution-2d': {
+    id: 'convolution-2d',
+    title: 'Practice: 2D Convolution From Scratch',
+    difficulty: 'medium',
+    topic: 'Computer Vision',
+    estimatedTime: '15–20 min',
+    functionName: 'convolve2d',
+    functionSignature: 'convolve2d(image: list[list[float]], kernel: list[list[float]]) -> list[list[float]]',
+    starterCode: `def convolve2d(image, kernel):
+    """Compute 2D valid cross-correlation / convolution between image and kernel.
+    Return the (H - Kh + 1) x (W - Kw + 1) output grid.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement a 2D spatial convolution operation from scratch without external libraries, the core layer in CNN architectures.',
+    taskDescription: 'Implement `convolve2d(image, kernel)`. Apply the kernel across all valid positions without padding. Output dimension is (H - Kh + 1) x (W - Kw + 1).',
+    constraints: [
+      "image height H >= Kh, width W >= Kw",
+      "kernel is non-empty 2D grid",
+      "Returns 2D list of numbers"
+],
+    hints: {
+      small: 'The output grid has dimensions out_h = len(image) - len(kernel) + 1 and out_w = len(image[0]) - len(kernel[0]) + 1.',
+      strong: 'For each (i, j), sum image[i + ki][j + kj] * kernel[ki][kj] over all kernel cells.',
+      concept: 'Convolution detects local feature patterns (edges, textures, shapes) translation-invariantly across image coordinates.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '3x3 image with 2x2 edge filter',
+        input: {
+            "image": [
+              [
+                1.0,
+                2.0,
+                3.0
+              ],
+              [
+                4.0,
+                5.0,
+                6.0
+              ],
+              [
+                7.0,
+                8.0,
+                9.0
+              ]
+            ],
+            "kernel": [
+              [
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                -1.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              -4.0,
+              -4.0
+            ],
+            [
+              -4.0,
+              -4.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Identity kernel matching image dimensions',
+        input: {
+            "image": [
+              [
+                5.0
+              ]
+            ],
+            "kernel": [
+              [
+                2.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              10.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Horizontal edge detector',
+        input: {
+            "image": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ],
+            "kernel": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                -1.0,
+                -1.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              2.0
+            ]
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'discounted-return': {
+    id: 'discounted-return',
+    title: 'Practice: Discounted Return From Scratch',
+    difficulty: 'easy',
+    topic: 'Reinforcement Learning',
+    estimatedTime: '10–15 min',
+    functionName: 'discounted_return',
+    functionSignature: 'discounted_return(rewards: list[float], gamma: float) -> float',
+    starterCode: `def discounted_return(rewards, gamma):
+    """Compute total discounted return G = sum(gamma^t * r_t for t in 0..T-1).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Calculate the cumulative discounted return of an RL trajectory given a sequence of rewards and discount factor gamma.',
+    taskDescription: 'Implement `discounted_return(rewards, gamma)`. Compute G = sum(gamma**t * r for t, r in enumerate(rewards)). Return float rounded to 6 decimal places.',
+    constraints: [
+      "0.0 <= gamma <= 1.0",
+      "rewards is a list of numbers (possibly empty, returning 0.0)"
+],
+    hints: {
+      small: 'Enumerate rewards with their timestep t: gamma ** t * r.',
+      strong: 'return sum(gamma ** t * r for t, r in enumerate(rewards)).',
+      concept: 'The discount factor gamma bounds future returns and prioritizes immediate rewards over distant future rewards.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Unit discount factor gamma = 1.0',
+        input: {
+            "rewards": [
+              1.0,
+              2.0,
+              3.0
+            ],
+            "gamma": 1.0
+          },
+        expectedOutput: 6.0,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Geometric discounting gamma = 0.5',
+        input: {
+            "rewards": [
+              10.0,
+              10.0,
+              10.0
+            ],
+            "gamma": 0.5
+          },
+        expectedOutput: 17.5,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Empty trajectory returns 0.0',
+        input: {
+            "rewards": [],
+            "gamma": 0.99
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'returns-to-go': {
+    id: 'returns-to-go',
+    title: 'Practice: Full Return-to-Go Sequence',
+    difficulty: 'medium',
+    topic: 'Reinforcement Learning',
+    estimatedTime: '15–20 min',
+    functionName: 'returns_to_go',
+    functionSignature: 'returns_to_go(rewards: list[float], gamma: float) -> list[float]',
+    starterCode: `def returns_to_go(rewards, gamma):
+    """Compute the return-to-go G_t for each timestep t in O(T) time.
+    G_t = r_t + gamma * G_{t+1}.
+    Return list of returns-to-go.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute the full sequence of returns-to-go along a trajectory in linear O(T) time using backwards recurrence.',
+    taskDescription: 'Implement `returns_to_go(rewards, gamma)`. Compute G_t for every timestep t in 0..T-1 using the backwards recursive formula G_t = r_t + gamma * G_{t+1}.',
+    constraints: [
+      "0.0 <= gamma <= 1.0",
+      "O(T) linear time complexity required",
+      "Returns list of floats with length equal to rewards"
+],
+    hints: {
+      small: 'Iterate backwards from T-1 down to 0, maintaining a running return accumulator.',
+      strong: 'running = rewards[t] + gamma * running, then assign result[t] = running.',
+      concept: 'Backwards accumulation avoids redundant O(T^2) summations, which is critical when computing policy gradients on long rollouts.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Constant reward sequence gamma = 0.9',
+        input: {
+            "rewards": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "gamma": 0.9
+          },
+        expectedOutput: [
+            2.71,
+            1.9,
+            1.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Terminal reward only',
+        input: {
+            "rewards": [
+              0.0,
+              0.0,
+              100.0
+            ],
+            "gamma": 0.5
+          },
+        expectedOutput: [
+            25.0,
+            50.0,
+            100.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single timestep reward',
+        input: {
+            "rewards": [
+              5.0
+            ],
+            "gamma": 0.99
+          },
+        expectedOutput: [
+            5.0
+          ],
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Empty rewards list',
+        input: {
+            "rewards": [],
+            "gamma": 0.95
+          },
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
