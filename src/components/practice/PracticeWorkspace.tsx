@@ -10,6 +10,7 @@ import { getPracticeProblem, type PracticeTestCase } from '../../lib/practicePro
 // it into every practice page's main bundle regardless of whether the
 // visitor ever opens Canvas mode.
 const CanvasAgentBuilder = lazy(() => import('../canvas/CanvasAgentBuilder'));
+const GuidedBuildPane = lazy(() => import('./GuidedBuildPane'));
 import {
   loadSavedCode,
   saveUserCode,
@@ -75,9 +76,10 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
   const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [mobileTab, setMobileTab] = useState<'problem' | 'code' | 'results' | 'canvas'>('problem');
 
-  // Canvas / Python mode state
+  // Canvas / Python / Guided mode state
   const hasCanvas = Boolean(problem?.canvasSpec);
-  const [workspaceMode, setWorkspaceMode] = useState<'canvas' | 'python'>(() => (hasCanvas ? 'canvas' : 'python'));
+  const hasGuided = Boolean(problem?.guidedSteps && problem.guidedSteps.length > 0);
+  const [workspaceMode, setWorkspaceMode] = useState<'canvas' | 'python' | 'guided'>(() => (hasCanvas ? 'canvas' : 'python'));
 
   useEffect(() => {
     if (hasCanvas) {
@@ -87,7 +89,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
     }
   }, [hasCanvas, problemId]);
 
-  const modeToggle = hasCanvas ? (
+  const modeToggle = (hasCanvas || hasGuided) ? (
     <div
       role="tablist"
       aria-label="Workspace mode"
@@ -102,29 +104,31 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
         gap: 2,
       }}
     >
-      <button
-        type="button"
-        role="tab"
-        aria-selected={workspaceMode === 'canvas'}
-        data-testid="toggle-canvas-mode"
-        onClick={() => setWorkspaceMode('canvas')}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 5,
-          padding: '3px 9px',
-          fontSize: 12,
-          fontWeight: 700,
-          borderRadius: 4,
-          border: 'none',
-          cursor: 'pointer',
-          background: workspaceMode === 'canvas' ? 'var(--nm-accent-primary, #3DDC97)' : 'transparent',
-          color: workspaceMode === 'canvas' ? '#0A0A0B' : 'var(--nm-text-secondary, #ABABB3)',
-          transition: 'all 0.15s ease',
-        }}
-      >
-        <span>🎨</span> Canvas
-      </button>
+      {hasCanvas && (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={workspaceMode === 'canvas'}
+          data-testid="toggle-canvas-mode"
+          onClick={() => setWorkspaceMode('canvas')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 5,
+            padding: '3px 9px',
+            fontSize: 12,
+            fontWeight: 700,
+            borderRadius: 4,
+            border: 'none',
+            cursor: 'pointer',
+            background: workspaceMode === 'canvas' ? 'var(--nm-accent-primary, #3DDC97)' : 'transparent',
+            color: workspaceMode === 'canvas' ? '#0A0A0B' : 'var(--nm-text-secondary, #ABABB3)',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <span>🎨</span> Canvas
+        </button>
+      )}
       <button
         type="button"
         role="tab"
@@ -148,6 +152,31 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
       >
         <span>🐍</span> Python
       </button>
+      {hasGuided && (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={workspaceMode === 'guided'}
+          data-testid="toggle-guided-mode"
+          onClick={() => setWorkspaceMode('guided')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 5,
+            padding: '3px 9px',
+            fontSize: 12,
+            fontWeight: 700,
+            borderRadius: 4,
+            border: 'none',
+            cursor: 'pointer',
+            background: workspaceMode === 'guided' ? 'var(--nm-accent-primary, #3DDC97)' : 'transparent',
+            color: workspaceMode === 'guided' ? '#0A0A0B' : 'var(--nm-text-secondary, #ABABB3)',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <span>🪜</span> Guided
+        </button>
+      )}
     </div>
   ) : null;
 
@@ -770,20 +799,40 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
                     : 'block',
               }}
             >
-              <CodeEditorPane
-                code={code}
-                onChangeCode={handleCodeChange}
-                onRun={handleRun}
-                onSubmit={handleSubmit}
-                onReset={handleReset}
-                onStop={handleStop}
-                isBusy={isBusy}
-                status={status}
-                saveStatus={saveStatus}
-                isFullscreen={focusMode === 'editor'}
-                onToggleFullscreen={() => setFocusMode(focusMode === 'editor' ? 'normal' : 'editor')}
-                modeToggle={modeToggle}
-              />
+              {workspaceMode === 'guided' && problem?.guidedSteps ? (
+                <Suspense fallback={<div style={{ padding: 20, color: 'var(--nm-text-muted)' }}>Loading guided mode…</div>}>
+                  <GuidedBuildPane
+                    problemId={problemId}
+                    steps={problem.guidedSteps}
+                    code={code}
+                    onChangeCode={handleCodeChange}
+                    onRun={handleRun}
+                    onSubmit={handleSubmit}
+                    onStop={handleStop}
+                    isBusy={isBusy}
+                    status={status}
+                    saveStatus={saveStatus}
+                    isFullscreen={focusMode === 'editor'}
+                    onToggleFullscreen={() => setFocusMode(focusMode === 'editor' ? 'normal' : 'editor')}
+                    modeToggle={modeToggle}
+                  />
+                </Suspense>
+              ) : (
+                <CodeEditorPane
+                  code={code}
+                  onChangeCode={handleCodeChange}
+                  onRun={handleRun}
+                  onSubmit={handleSubmit}
+                  onReset={handleReset}
+                  onStop={handleStop}
+                  isBusy={isBusy}
+                  status={status}
+                  saveStatus={saveStatus}
+                  isFullscreen={focusMode === 'editor'}
+                  onToggleFullscreen={() => setFocusMode(focusMode === 'editor' ? 'normal' : 'editor')}
+                  modeToggle={modeToggle}
+                />
+              )}
             </div>
 
             {/* Splitter B (Vertical Divider) */}

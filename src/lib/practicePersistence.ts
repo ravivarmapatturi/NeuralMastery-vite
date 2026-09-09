@@ -173,3 +173,36 @@ export function clearHintViewed(problemId: string): void {
     // ignore
   }
 }
+
+const GUIDED_STEP_KEY_PREFIX = 'nm_practice_guided_step_';
+
+/** Load current guided step index (0 to 5) */
+export function loadGuidedStep(problemId: string): number {
+  if (typeof window === 'undefined') return 0;
+  try {
+    const val = localStorage.getItem(`${GUIDED_STEP_KEY_PREFIX}${problemId}`);
+    return val !== null ? parseInt(val, 10) : 0;
+  } catch {
+    return 0;
+  }
+}
+
+/** Save current guided step index */
+export function saveGuidedStep(problemId: string, step: number): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(`${GUIDED_STEP_KEY_PREFIX}${problemId}`, String(step));
+  } catch {
+    // ignore
+  }
+}
+
+/** Clear guided step progress */
+export function clearGuidedStep(problemId: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(`${GUIDED_STEP_KEY_PREFIX}${problemId}`);
+  } catch {
+    // ignore
+  }
+}
